@@ -27,7 +27,7 @@ public class JobManager extends AbstractJobManager {
 
     @Override
     protected JobHolder jobWrapDo(String name, Scheduled scheduled, JobHandler handler) {
-        JobHolder jobHolder = new JobHolder(name, scheduled, handler);
+        JobHolder jobHolder = super.jobWrapDo(name, scheduled, handler);
         jobHolder.setAttachment(new SimpleScheduler(jobHolder));
 
         return jobHolder;

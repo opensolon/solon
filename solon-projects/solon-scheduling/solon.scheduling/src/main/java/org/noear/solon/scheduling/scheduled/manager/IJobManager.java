@@ -5,6 +5,7 @@ import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 import org.noear.solon.scheduling.scheduled.JobHolder;
+import org.noear.solon.scheduling.scheduled.JobInterceptor;
 
 import java.util.Map;
 
@@ -13,6 +14,16 @@ import java.util.Map;
  * @since 2.2
  */
 public interface IJobManager extends Lifecycle {
+    /**
+     * 设置任务拦截器
+     * */
+    void setJobInterceptor(JobInterceptor jobInterceptor);
+
+    /**
+     * 获取任务拦截器
+     * */
+    JobInterceptor getJobInterceptor();
+
     /**
      * 任务添加
      * */

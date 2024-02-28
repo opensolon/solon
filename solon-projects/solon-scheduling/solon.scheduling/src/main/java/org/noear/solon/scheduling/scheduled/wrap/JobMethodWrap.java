@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.scheduled.impl;
+package org.noear.solon.scheduling.scheduled.wrap;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
@@ -16,12 +16,12 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 2.2
  */
-public class JobMethodImpl implements JobHandler {
+public class JobMethodWrap implements JobHandler {
     BeanWrap beanWrap;
     MethodWrap method;
     MethodHandler methodHandler;
 
-    public JobMethodImpl(BeanWrap beanWrap, Method method) {
+    public JobMethodWrap(BeanWrap beanWrap, Method method) {
         this.beanWrap = beanWrap;
         this.method = beanWrap.context().methodGet(method);
         this.methodHandler = new MethodHandler(beanWrap, method, true);

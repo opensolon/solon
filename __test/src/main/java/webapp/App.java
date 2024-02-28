@@ -18,6 +18,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
+import org.noear.solon.scheduling.annotation.EnableScheduling;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
@@ -40,6 +41,7 @@ import java.util.Properties;
 @Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
 //@EnableQuartz
+//@EnableScheduling
 @SolonMain
 public class App {
 

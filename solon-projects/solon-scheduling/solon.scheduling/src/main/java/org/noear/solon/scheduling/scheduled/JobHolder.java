@@ -3,6 +3,8 @@ package org.noear.solon.scheduling.scheduled;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.scheduling.annotation.Scheduled;
+import org.noear.solon.scheduling.scheduled.manager.IJobManager;
+import org.noear.solon.scheduling.scheduled.wrap.JobImpl;
 
 import java.util.Map;
 
@@ -13,16 +15,19 @@ import java.util.Map;
  * @since 2.2
  */
 public class JobHolder implements JobHandler {
-    protected String name;
-    protected Scheduled scheduled;
-    protected JobHandler handler;
+    protected final String name;
+    protected final Scheduled scheduled;
+    protected final JobHandler handler;
+    protected final IJobManager jobManager;
+
     protected Map<String, String> data;
     protected Object attachment;
 
-    public JobHolder(String name, Scheduled scheduled, JobHandler handler) {
+    public JobHolder(IJobManager jobManager, String name, Scheduled scheduled, JobHandler handler) {
         this.name = name;
         this.scheduled = scheduled;
         this.handler = handler;
+        this.jobManager = jobManager;
     }
 
     /**
@@ -75,6 +80,10 @@ public class JobHolder implements JobHandler {
             ctx.paramMap().putAll(data);
         }
 
-        handler.handle(ctx);
+        if(jobManager.getJobInterceptor() == null) {
+            handler.handle(ctx);
+        }else{
+            jobManager.getJobInterceptor().doIntercept(new JobImpl(this, ctx), handler);
+        }
     }
 }

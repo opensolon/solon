@@ -1,10 +1,12 @@
 package org.noear.solon.scheduling.scheduled.manager;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 import org.noear.solon.scheduling.scheduled.JobHolder;
+import org.noear.solon.scheduling.scheduled.JobInterceptor;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +21,28 @@ import java.util.Map;
 public abstract class AbstractJobManager implements IJobManager {
 
     protected Map<String, JobHolder> jobMap = new HashMap<>();
+    protected JobInterceptor jobInterceptor;
+
+    public AbstractJobManager(){
+        Solon.context().getBeanAsync(JobInterceptor.class, bean->{
+            jobInterceptor = bean;
+        });
+    }
+
+    /**
+     * 设置拦截器
+     * */
+    public void setJobInterceptor(JobInterceptor jobInterceptor) {
+        this.jobInterceptor = jobInterceptor;
+    }
+
+    /**
+     * 拦截器
+     * */
+    @Override
+    public JobInterceptor getJobInterceptor() {
+        return jobInterceptor;
+    }
 
     /**
      * 任务添加
@@ -47,7 +71,7 @@ public abstract class AbstractJobManager implements IJobManager {
      * 任务包装
      */
     protected JobHolder jobWrapDo(String name, Scheduled scheduled, JobHandler handler) {
-        return new JobHolder(name, scheduled, handler);
+        return new JobHolder(this, name, scheduled, handler);
     }
 
     /**

@@ -1,10 +1,10 @@
 package webapp.demoe_schedule;
 
-import org.noear.solon.extend.quartz.Quartz;
+import org.noear.solon.scheduling.annotation.Scheduled;
 
 import java.util.Date;
 
-@Quartz(cron7x = "0 0/1 * * * ? *")
+@Scheduled(cron = "0 0/1 * * * ? *")
 public class QuartzRun2 implements Runnable {
 
     @Override
