@@ -12,7 +12,7 @@ import java.util.Map;
  * @author noear 2021/2/26 created
  */
 public class SolonMDCAdapter implements MDCAdapter {
-    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(true);
+    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(false);
     private static final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
 
     @Override
