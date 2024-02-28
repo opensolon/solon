@@ -18,6 +18,14 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
+### 2.7.2
+* 添加 folkmq rpc 服务端适配支持
+* 调整 newThreadLocal 全改为 false
+* 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
+* 优化 solon.boot.smarthttp 适配的内存使用
+* 添加 公共锁 Utils.locker()
+* fastjson2 升为 2.0.47
+
 ### 2.7.1
 * 添加 solon LifecycleBean:prestop 生命节点，方便用户做安全停止
 * 添加 solon.scheduling IJobManager:jobGetAll 接口
