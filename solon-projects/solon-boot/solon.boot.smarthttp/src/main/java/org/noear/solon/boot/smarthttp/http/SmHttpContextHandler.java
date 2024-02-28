@@ -43,12 +43,16 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
         SmHttpContext ctx = request.getAttachment().get(httpHolderKey);
         if (ctx != null && ctx.innerIsAsync()) {
-            for (ContextAsyncListener listener : ctx.innerAsyncListeners()) {
-                try {
-                    listener.onComplete(ctx);
-                } catch (Throwable e) {
-                    log.warn(e.getMessage(), e);
+            try {
+                for (ContextAsyncListener listener : ctx.innerAsyncListeners()) {
+                    try {
+                        listener.onComplete(ctx);
+                    } catch (Throwable e) {
+                        log.warn(e.getMessage(), e);
+                    }
                 }
+            } finally {
+                request.getAttachment().remove(httpHolderKey);
             }
         }
     }
@@ -61,15 +65,21 @@ public class SmHttpContextHandler extends HttpServerHandler {
         }
         request.getAttachment().put(httpHolderKey, ctx);
 
-        if (executor == null) {
-            handle0(ctx, future);
-        } else {
-            try {
-                executor.execute(() -> {
-                    handle0(ctx, future);
-                });
-            } catch (RejectedExecutionException e) {
+        try {
+            if (executor == null) {
                 handle0(ctx, future);
+            } else {
+                try {
+                    executor.execute(() -> {
+                        handle0(ctx, future);
+                    });
+                } catch (RejectedExecutionException e) {
+                    handle0(ctx, future);
+                }
+            }
+        } finally {
+            if (ctx.innerIsAsync() == false) {
+                request.getAttachment().remove(httpHolderKey);
             }
         }
     }

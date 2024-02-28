@@ -24,7 +24,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
 
         WebSocketImpl webSocket = new WebSocketImpl(request1);
         request1.getHeaderNames().forEach(name -> {
@@ -56,22 +56,27 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     }
 
     private void onCloseDo(WebSocketRequest request) {
-        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
-        WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
-        if (webSocket.isClosed()) {
-            return;
-        } else {
-            webSocket.close();
-        }
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
 
-        webSocketRouter.getListener().onClose(webSocket);
+        try {
+            WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
+            if (webSocket.isClosed()) {
+                return;
+            } else {
+                webSocket.close();
+            }
+
+            webSocketRouter.getListener().onClose(webSocket);
+        } finally {
+            request1.getAttachment().remove(SESSION_KEY);
+        }
     }
 
     @Override
     public void handlePing(WebSocketRequest request, WebSocketResponse response) {
         super.handlePing(request, response);
 
-        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
         WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
         if (webSocket != null) {
             webSocket.onReceive();
@@ -82,9 +87,9 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     public void handlePong(WebSocketRequest request, WebSocketResponse response) {
         super.handlePong(request, response);
 
-        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
         WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
-        if(webSocket != null) {
+        if (webSocket != null) {
             webSocket.onReceive();
         }
     }
@@ -92,7 +97,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
             WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocket.onReceive();
 
@@ -105,7 +110,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
             WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocket.onReceive();
 
@@ -118,7 +123,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void onError(WebSocketRequest request, Throwable error) {
         try {
-            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
             WebSocket webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocketRouter.getListener().onError(webSocket, error);
         } catch (Throwable e) {
