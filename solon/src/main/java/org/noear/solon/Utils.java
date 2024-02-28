@@ -14,6 +14,7 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -24,11 +25,19 @@ import java.util.function.Function;
  * */
 public class Utils {
     public static final String TAG_classpath = "classpath:";
+    private static ReentrantLock comLocker = new ReentrantLock();
 
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+
+    /**
+     * 公共锁（仅用于一次性的场景）
+     * */
+    public static ReentrantLock locker(){
+        return comLocker;
+    }
 
     /**
      * 异步执行
