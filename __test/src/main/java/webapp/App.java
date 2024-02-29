@@ -69,8 +69,8 @@ public class App {
         }
 
 
-        FactoryManager.threadLocalFactory((inheritable)->{
-            if(inheritable) {
+        FactoryManager.threadLocalFactory((applyFor, inheritance0)->{
+            if(inheritance0) {
                 return new InheritableThreadLocal();
             }else {
                 return new ThreadLocal();

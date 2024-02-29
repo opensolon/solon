@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.mvc.MvcFactoryDefault;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * 工厂管理器（后续会迁入更多的工厂管理）
@@ -15,8 +15,8 @@ public final class FactoryManager {
     //
     // threadLocalFactory
     //
-    private static Function<Boolean, ThreadLocal> threadLocalFactory = (inheritable) -> {
-        if (inheritable) {
+    private static BiFunction<Class<?>, Boolean, ThreadLocal> threadLocalFactory = (applyFor, inheritance0) -> {
+        if (inheritance0) {
             return new InheritableThreadLocal<>();
         } else {
             return new ThreadLocal<>();
@@ -26,7 +26,7 @@ public final class FactoryManager {
     /**
      * 配置线程状态管理工厂
      */
-    public static <T> void threadLocalFactory(Function<Boolean, ThreadLocal> function) {
+    public static <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> function) {
         if (function != null) {
             threadLocalFactory = function;
         }
@@ -34,9 +34,12 @@ public final class FactoryManager {
 
     /**
      * 创建线程状态
+     *
+     * @param applyFor     申请应用的类
+     * @param inheritance0 原始可继随性
      */
-    public static <T> ThreadLocal<T> newThreadLocal(boolean inheritable) {
-        return threadLocalFactory.apply(inheritable);
+    public static <T> ThreadLocal<T> newThreadLocal(Class<?> applyFor, boolean inheritance0) {
+        return threadLocalFactory.apply(applyFor, inheritance0);
     }
 
     //////////

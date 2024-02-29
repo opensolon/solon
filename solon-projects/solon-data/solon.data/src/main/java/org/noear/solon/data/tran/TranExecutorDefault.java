@@ -25,7 +25,7 @@ public class TranExecutorDefault implements TranExecutor {
 
     }
 
-    protected ThreadLocal<Stack<TranEntity>> local = FactoryManager.newThreadLocal(false);
+    protected ThreadLocal<Stack<TranEntity>> local = FactoryManager.newThreadLocal(TranExecutorDefault.class, false);
 
     /**
      * 是否在事务中

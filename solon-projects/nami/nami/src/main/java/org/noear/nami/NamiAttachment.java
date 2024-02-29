@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 1.4
  */
 public final class NamiAttachment {
-    private final static ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(true);
+    private final static ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(NamiAttachment.class, false);
 
     private static Map<String, String> getContextMap0() {
         Map<String, String> tmp = threadMap.get();

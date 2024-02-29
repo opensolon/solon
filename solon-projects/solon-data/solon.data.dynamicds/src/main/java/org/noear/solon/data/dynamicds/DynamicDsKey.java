@@ -9,7 +9,7 @@ import org.noear.solon.core.FactoryManager;
  * @since 2.5
  */
 public class DynamicDsKey {
-    static ThreadLocal<String> targetThreadLocal = FactoryManager.newThreadLocal(false);
+    static ThreadLocal<String> targetThreadLocal = FactoryManager.newThreadLocal(DynamicDsKey.class, false);
 
     /**
      * 移除状态

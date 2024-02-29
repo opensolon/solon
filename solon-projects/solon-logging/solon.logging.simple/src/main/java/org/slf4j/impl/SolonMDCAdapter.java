@@ -9,10 +9,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @author noear 2021/2/26 created
+ * @author noear
+ * @since 1.11
  */
 public class SolonMDCAdapter implements MDCAdapter {
-    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(false);
+    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
     private static final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
 
     @Override
