@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.folkmq.service;
 
 import org.noear.folkmq.FolkMQ;
 import org.noear.folkmq.client.MqClient;
+import org.noear.folkmq.client.MqConsumeListener;
 import org.noear.folkmq.client.MqMessage;
 import org.noear.folkmq.client.MqTransactionCheckback;
 import org.noear.solon.Solon;
@@ -11,7 +12,6 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
-import org.noear.solon.cloud.extend.folkmq.handle.MqMvcHandler;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqConsumeHandler;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
@@ -58,7 +58,7 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
             client.transactionCheckback(bean);
         });
 
-        Solon.context().getBeanAsync(MqMvcHandler.class, bean->{
+        Solon.context().getBeanAsync(MqConsumeListener.class, bean->{
             client.listen(bean);
         });
 
