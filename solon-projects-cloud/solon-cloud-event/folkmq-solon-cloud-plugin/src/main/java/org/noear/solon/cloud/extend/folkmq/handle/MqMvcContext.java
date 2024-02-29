@@ -10,8 +10,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.IoUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URI;
@@ -23,12 +21,12 @@ import java.util.Map;
  * @author noear
  * @since 2.7
  */
-public class MqContext extends ContextEmpty {
+public class MqMvcContext extends ContextEmpty {
     private MqMessageReceivedImpl _request;
     private EntityDefault _response;
     private MethodType _method;
 
-    public MqContext(MqMessageReceivedImpl message) throws IOException {
+    public MqMvcContext(MqMessageReceivedImpl message) throws IOException {
         _request = message;
         _response = new EntityDefault();
 

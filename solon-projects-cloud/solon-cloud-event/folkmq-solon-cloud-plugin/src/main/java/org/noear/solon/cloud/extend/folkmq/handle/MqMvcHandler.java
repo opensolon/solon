@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 2.0
  */
-public class MqToHandler implements MqConsumeHandler {
-    private static final Logger log = LoggerFactory.getLogger(MqToHandler.class);
+public class MqMvcHandler implements MqConsumeHandler {
+    private static final Logger log = LoggerFactory.getLogger(MqMvcHandler.class);
 
 
     @Override
@@ -27,7 +27,7 @@ public class MqToHandler implements MqConsumeHandler {
         }
 
         try {
-            MqContext ctx = new MqContext((MqMessageReceivedImpl) message);
+            MqMvcContext ctx = new MqMvcContext((MqMessageReceivedImpl) message);
 
             Solon.app().tryHandle(ctx);
 
