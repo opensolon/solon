@@ -25,6 +25,8 @@
 * 调整 newThreadLocal 全改为 false
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
 * 优化 solon.boot.smarthttp 适配的内存使用
+* socket.d 升为 2.4.5
+* folkmq 升为 1.2.3
 * fastjson2 升为 2.0.47
 
 ### 2.7.1

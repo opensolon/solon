@@ -24,8 +24,6 @@ import java.util.Map;
  * @since 2.7
  */
 public class MqContext extends ContextEmpty {
-    static final Logger log = LoggerFactory.getLogger(MqContext.class);
-
     private MqMessageReceivedImpl _request;
     private EntityDefault _response;
     private MethodType _method;
@@ -212,12 +210,12 @@ public class MqContext extends ContextEmpty {
     private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {
         if (dataSize > 0 || status() == 200) {
             _response.dataSet(dataStream);
-            _request.acknowledge(_response);
+            _request.response(_response);
         } else {
             if (errors == null) {
-                _request.acknowledge(new MqAlarm("Service status code: " + status()));
+                _request.response(new MqAlarm("Service status code: " + status()));
             } else {
-                _request.acknowledge(new MqAlarm(errors.getMessage()));
+                _request.response(new MqAlarm(errors.getMessage()));
             }
         }
     }

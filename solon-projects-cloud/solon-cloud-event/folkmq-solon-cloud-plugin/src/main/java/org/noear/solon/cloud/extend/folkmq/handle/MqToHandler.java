@@ -34,14 +34,14 @@ public class MqToHandler implements MqConsumeHandler {
             if (ctx.getHandled() || ctx.status() != 404) {
                 ctx.commit();
             } else {
-                message.acknowledge(new MqAlarm("No event handler was found! like code=404"));
+                message.response(new MqAlarm("No event handler was found! like code=404"));
             }
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
             log.warn(e.getMessage(), e);
 
-            message.acknowledge(new MqAlarm("No event handler was found! like code=404"));
+            message.response(new MqAlarm("No event handler was found! like code=404"));
         }
     }
 }
