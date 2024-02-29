@@ -19,14 +19,15 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.2
-* 添加 folkmq rpc 服务端转 mvc 适配支持
-* 添加 公共锁 Utils.locker()
+* 添加 公共锁 Utils.locker() 给初始化场景使用
 * 添加 scheduling 调度任务拦截机制 JobInterceptor
-* 调整 newThreadLocal 全改为 false
+* 调整 newThreadLocal 默认改为 false
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
 * 优化 solon.boot.smarthttp 适配的内存使用
+* 优化 FactoryManager.newThreadLocal 接口设计，方便定制扩展
 * socket.d 升为 2.4.5
 * folkmq 升为 1.2.3
+* sqltoy 升为 5.2.98
 * fastjson2 升为 2.0.47
 * redisson 调为 3.23.5
 
