@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>folkmq</artifactId>
+            <artifactId>folkmq-solon</artifactId>
             <version>${folkmq.version}</version>
         </dependency>
 
