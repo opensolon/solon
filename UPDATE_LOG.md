@@ -28,6 +28,7 @@
 * socket.d 升为 2.4.5
 * folkmq 升为 1.2.3
 * fastjson2 升为 2.0.47
+* redisson 调为 3.23.5
 
 ### 2.7.1
 * 添加 solon LifecycleBean:prestop 生命节点，方便用户做安全停止
