@@ -34,14 +34,16 @@ public class RocketmqProducer {
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (producer != null) {
                 return;
             }
 
-            if(Utils.isEmpty(config.getAccessKey())) {
+            if (Utils.isEmpty(config.getAccessKey())) {
                 producer = new DefaultMQProducer();
-            }else{
+            } else {
                 RPCHook rpcHook = new AclClientRPCHook(new SessionCredentials(config.getAccessKey(), config.getSecretKey()));
                 producer = new DefaultMQProducer(rpcHook);
             }
@@ -70,6 +72,8 @@ public class RocketmqProducer {
             }
 
             producer.start();
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

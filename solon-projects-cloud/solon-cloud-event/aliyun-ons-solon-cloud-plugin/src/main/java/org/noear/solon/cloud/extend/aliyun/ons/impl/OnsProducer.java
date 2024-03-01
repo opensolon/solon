@@ -4,6 +4,7 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.SendResult;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,10 @@ public class OnsProducer {
         if (producer != null) {
             return;
         }
-        synchronized (this) {
+
+        Utils.locker().lock();
+
+        try {
             if (producer != null) {
                 return;
             }
@@ -35,6 +39,8 @@ public class OnsProducer {
 
             log.debug("Ons producer started: " + producer.isStarted());
 
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

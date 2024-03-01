@@ -55,7 +55,9 @@ public class JwtSessionState extends SessionStateBase {
 
     protected Claims sessionMap() {
         if (sessionMap == null) {
-            synchronized (this) {
+            Utils.locker().lock();
+
+            try {
                 if (sessionMap == null) {
                     sessionMap = new DefaultClaims(); //先初始化一下，避免异常时进入死循环
 
@@ -65,7 +67,7 @@ public class JwtSessionState extends SessionStateBase {
                     if (Utils.isNotEmpty(token) && token.contains(".")) {
                         Claims claims = JwtUtils.parseJwt(token);
 
-                        if(claims != null) {
+                        if (claims != null) {
                             if (SessionProp.session_jwt_allowUseHeader || sesId.equals(claims.getId())) {
                                 if (SessionProp.session_jwt_allowExpire) {
                                     if (claims.getExpiration() != null &&
@@ -81,6 +83,8 @@ public class JwtSessionState extends SessionStateBase {
 
                     sessionToken = null;
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 

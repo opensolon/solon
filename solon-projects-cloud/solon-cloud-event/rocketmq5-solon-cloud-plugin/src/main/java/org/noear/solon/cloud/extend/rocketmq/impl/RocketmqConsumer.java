@@ -40,7 +40,9 @@ public class RocketmqConsumer implements Closeable {
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (consumer != null) {
                 return;
             }
@@ -52,7 +54,7 @@ public class RocketmqConsumer implements Closeable {
             //服务地址
             builder.setEndpoints(config.getServer());
             //账号密码
-            if(Utils.isNotEmpty(config.getAccessKey())) {
+            if (Utils.isNotEmpty(config.getAccessKey())) {
                 builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
             }
 
@@ -101,6 +103,8 @@ public class RocketmqConsumer implements Closeable {
             consumer = consumerBuilder.build();
 
             log.trace("Rocketmq5 consumer started!");
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

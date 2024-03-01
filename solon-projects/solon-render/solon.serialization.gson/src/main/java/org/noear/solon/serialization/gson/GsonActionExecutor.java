@@ -32,10 +32,14 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
     private Gson gson;
     public Gson gson() {
         if (gson == null) {
-            synchronized (this) {
+            Utils.locker().lock();
+
+            try {
                 if (gson == null) {
                     gson = config.create();
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 

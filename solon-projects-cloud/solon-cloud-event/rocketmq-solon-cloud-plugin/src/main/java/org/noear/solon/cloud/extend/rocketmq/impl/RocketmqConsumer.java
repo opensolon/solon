@@ -36,16 +36,18 @@ public class RocketmqConsumer {
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (consumer != null) {
                 return;
             }
 
             RocketmqConsumerHandler handler = new RocketmqConsumerHandler(config, observerManger);
 
-            if(Utils.isEmpty(config.getAccessKey())){
+            if (Utils.isEmpty(config.getAccessKey())) {
                 consumer = new DefaultMQPushConsumer();
-            }else{
+            } else {
                 RPCHook rpcHook = new AclClientRPCHook(new SessionCredentials(config.getAccessKey(), config.getSecretKey()));
                 consumer = new DefaultMQPushConsumer(rpcHook);
             }
@@ -103,6 +105,8 @@ public class RocketmqConsumer {
             consumer.start();
 
             log.trace("Rocketmq consumer started!");
+        } finally {
+            Utils.locker().unlock();
         }
     }
 }

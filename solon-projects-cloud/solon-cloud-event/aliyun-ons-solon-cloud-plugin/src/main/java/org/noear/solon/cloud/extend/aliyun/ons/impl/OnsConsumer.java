@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.aliyun.ons.impl;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
@@ -31,7 +32,9 @@ public class OnsConsumer {
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (consumer != null) {
                 return;
             }
@@ -63,11 +66,13 @@ public class OnsConsumer {
             consumer.setSubscriptionTable(subscriptionTable);
             consumer.start();
 
-            if(consumer.isStarted()) {
+            if (consumer.isStarted()) {
                 log.trace("Ons consumer started!");
-            }else{
+            } else {
                 log.warn("Ons consumer start failure!");
             }
+        } finally {
+            Utils.locker().unlock();
         }
     }
 }

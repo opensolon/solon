@@ -48,13 +48,17 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (producer != null) {
                 return;
             }
 
             Properties properties = config.getProducerProperties();
             producer = new KafkaProducer<>(properties);
+        } finally {
+            Utils.locker().unlock();
         }
     }
 
@@ -63,13 +67,17 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (consumer != null) {
                 return;
             }
 
             Properties properties = config.getConsumerProperties();
             consumer = new KafkaConsumer<>(properties);
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

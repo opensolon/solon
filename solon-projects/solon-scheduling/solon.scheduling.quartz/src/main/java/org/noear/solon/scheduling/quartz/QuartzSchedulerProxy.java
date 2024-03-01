@@ -141,12 +141,16 @@ public class QuartzSchedulerProxy implements Lifecycle {
 
     private void tryInitScheduler() throws SchedulerException {
         if (_scheduler == null) {
-            synchronized (this) {
+            Utils.locker().lock();
+
+            try {
                 if (_scheduler == null) {
                     //默认使用：直接本地调用
                     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
                     _scheduler = schedulerFactory.getScheduler();
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
     }

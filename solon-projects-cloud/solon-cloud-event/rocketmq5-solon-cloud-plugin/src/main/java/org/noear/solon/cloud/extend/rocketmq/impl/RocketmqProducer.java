@@ -30,7 +30,9 @@ public class RocketmqProducer implements Closeable {
             return;
         }
 
-        synchronized (this) {
+        Utils.locker().lock();
+
+        try {
             if (producer != null) {
                 return;
             }
@@ -43,7 +45,7 @@ public class RocketmqProducer implements Closeable {
             //服务地址
             builder.setEndpoints(config.getServer());
             //账号密码
-            if(Utils.isNotEmpty(config.getAccessKey())) {
+            if (Utils.isNotEmpty(config.getAccessKey())) {
                 builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
             }
 
@@ -57,6 +59,8 @@ public class RocketmqProducer implements Closeable {
             producer = serviceProvider.newProducerBuilder()
                     .setClientConfiguration(configuration)
                     .build();
+        } finally {
+            Utils.locker().unlock();
         }
     }
 
