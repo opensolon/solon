@@ -25,8 +25,8 @@
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
 * 优化 solon.boot.smarthttp 适配的内存使用
 * 优化 FactoryManager.newThreadLocal 接口设计，方便定制扩展
-* socket.d 升为 2.4.5
-* folkmq 升为 1.2.3
+* socket.d 升为 2.4.6
+* folkmq 升为 1.2.4
 * sqltoy 升为 5.2.98
 * fastjson2 升为 2.0.47
 * redisson 调为 3.23.5
