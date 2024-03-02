@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
@@ -11,7 +12,6 @@ import javax.net.ssl.SSLContext;
 import java.util.concurrent.Executor;
 
 /**
- * Jl Http Server（允许被复用）
  * @author noear
  * @since 2.2
  */

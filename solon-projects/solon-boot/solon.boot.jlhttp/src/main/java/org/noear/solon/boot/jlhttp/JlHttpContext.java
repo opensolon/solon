@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;

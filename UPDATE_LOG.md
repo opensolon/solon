@@ -22,8 +22,9 @@
 * 添加 公共锁 Utils.locker() 给初始化场景使用
 * 添加 scheduling 调度任务拦截机制 JobInterceptor
 * 调整 newThreadLocal 默认改为 false
+* 调整 jlhttp 源码独立为 solon.jlhttp 仓库再转依赖
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
-* 优化 solon.boot.smarthttp 适配的内存使用
+* 优化 solon.boot.smarthttp 适配在空跑时的内存情况
 * 优化 FactoryManager.newThreadLocal 接口设计，方便定制扩展
 * socket.d 升为 2.4.6
 * folkmq 升为 1.2.4
