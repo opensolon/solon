@@ -1,6 +1,7 @@
 package org.apache.logging.log4j.solon.integration;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
@@ -38,6 +39,8 @@ public class LogIncubatorImpl implements LogIncubator {
                 }
             }
         }
+
+        ThreadContext.put("pid", System.getProperty("PID"));
 
         //尝试从配置里获取
         URL url = getUrlOfConfig();

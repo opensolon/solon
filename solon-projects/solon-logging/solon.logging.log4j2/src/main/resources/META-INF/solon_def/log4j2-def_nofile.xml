@@ -3,7 +3,7 @@
     <Properties>
         <Property name="APP_NAME">${sys:solon.app.name:-solon}</Property>
 
-        <Property name="CONSOLE_LOG_PATTERN_DEF">%highlight{%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]:} %n%msg%n</Property>
+        <Property name="CONSOLE_LOG_PATTERN_DEF">%highlight{%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #%5X{pid} [-%t][*%X{traceId}]%tags[%logger{20}]:} %n%msg%n</Property>
         <Property name="CONSOLE_LOG_PATTERN">${sys:solon.logging.appender.console.pattern:-${CONSOLE_LOG_PATTERN_DEF}}</Property>
         <Property name="CONSOLE_LOG_LEVEL">${sys:solon.logging.appender.console.level:-TRACE}</Property>
 

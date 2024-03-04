@@ -63,7 +63,7 @@ public class DefaultLogbackConfiguration {
                 "solon");
 
         putProperty(config, "CONSOLE_LOG_PATTERN", "solon.logging.appender.console.pattern",
-                "%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]:) %n%msg%n");
+                "%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #${PID:-} [-%t][*%X{traceId}]%tags[%logger{20}]:) %n%msg%n");
         putProperty(config, "CONSOLE_LOG_LEVEL", "solon.logging.appender.console.level",
                 "TRACE");
 

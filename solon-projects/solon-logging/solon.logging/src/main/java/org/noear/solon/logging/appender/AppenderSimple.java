@@ -42,6 +42,7 @@ public class AppenderSimple extends AppenderBase {
         StringBuilder buf = new StringBuilder();
         buf.append(logEvent.getLevel().name()).append(" ");
         buf.append(dateTimeF.format(dateTime)).append(" ");
+        buf.append("#").append(System.getProperty("PID")).append(" ");
         buf.append("[-").append(Thread.currentThread().getName()).append("]");
 
         if (logEvent.getMetainfo() != null) {
