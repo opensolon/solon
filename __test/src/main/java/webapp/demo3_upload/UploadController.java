@@ -14,16 +14,23 @@ public class UploadController {
     //支持上传文件参数（file 变量名，与表单变量名保持一致）
     @Post
     @Mapping("f1")
-    public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
+    public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Throwable {
+        String hint = null;
         if (file != null) {
             if (file2 == null) {
-                return "成功：" + file.getName() + ": " + file.getContentSize() + "; null";
+                hint = "成功：" + file.getName() + ": " + file.getContentSize() + "; null";
             } else {
-                return "成功：" + file.getName() + ": " + file.getContentSize() + "; " + file2.getName() + ": " + file2.getContentSize();
+                hint = "成功：" + file.getName() + ": " + file.getContentSize() + "; " + file2.getName() + ": " + file2.getContentSize();
             }
+        } else {
+            hint = "失败：" + ctx.path();
         }
 
-        return "失败：" + ctx.path();
+        if(file != null){
+            file.delete();
+        }
+
+        return hint;
     }
 
     @Post

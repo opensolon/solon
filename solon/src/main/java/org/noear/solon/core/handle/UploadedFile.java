@@ -1,8 +1,5 @@
 package org.noear.solon.core.handle;
 
-
-import org.noear.solon.core.util.RunUtil;
-
 import java.io.*;
 
 /**
@@ -23,7 +20,11 @@ import java.io.*;
  * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile extends DownloadedFile {
-    private Runnable deleteRunnable;
+    /**
+     * 删除动作
+     * */
+    private Closeable deleteAction;
+
     /**
      * 扩展名（例：jpg）
      */
@@ -60,18 +61,18 @@ public class UploadedFile extends DownloadedFile {
      * @param name        文件名
      * @param extension   文件后缀名
      */
-    public UploadedFile(Runnable deleteRunnable, String contentType, long contentSize, InputStream content, String name, String extension) {
+    public UploadedFile(Closeable deleteAction, String contentType, long contentSize, InputStream content, String name, String extension) {
         super(contentType, contentSize, content, name);
         this.extension = extension;
-        this.deleteRunnable = deleteRunnable;
+        this.deleteAction = deleteAction;
     }
 
     /**
      * 删除临时文件
      */
-    public void tryDelete() {
-        if (deleteRunnable != null) {
-            RunUtil.runAndTry(deleteRunnable::run);
+    public void delete() throws IOException {
+        if (deleteAction != null) {
+            deleteAction.close();
         }
     }
 
