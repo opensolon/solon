@@ -21,6 +21,7 @@
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
 * 添加 scheduling 调度任务拦截机制 JobInterceptor
+* 添加 UploadedFile:tryDelete 尝试删除临时文件方法
 * 调整 newThreadLocal 默认改为 false
 * 调整 jlhttp 源码独立为 jlhttp 仓库再转依赖
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题

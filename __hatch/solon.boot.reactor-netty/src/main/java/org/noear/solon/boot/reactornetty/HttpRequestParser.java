@@ -31,7 +31,7 @@ class HttpRequestParser {
         HttpMethod method = _request.method();
 
         // url 参数
-        if(_request.uri().indexOf("?") > 0) {
+        if (_request.uri().indexOf("?") > 0) {
             QueryStringDecoder decoder = new QueryStringDecoder(_request.uri());
 
             decoder.parameters().entrySet().forEach(entry -> {
@@ -43,7 +43,7 @@ class HttpRequestParser {
         // body
         if (HttpMethod.POST == method
                 || HttpMethod.PUT == method
-                ||  HttpMethod.DELETE == method
+                || HttpMethod.DELETE == method
                 || HttpMethod.PATCH == method) {
 
             HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(_request);
@@ -89,7 +89,7 @@ class HttpRequestParser {
                         extension = name.substring(idx + 1);
                     }
 
-                    UploadedFile f1 = new UploadedFile(contentType, contentSize, content, name, extension);
+                    UploadedFile f1 = new UploadedFile(null, contentType, contentSize, content, name, extension);
 
                     tmp.add(f1);
                 }

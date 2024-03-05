@@ -29,9 +29,9 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(JdkHttpContext context, HttpMultipart part) throws IOException{
+    private static void doBuildFiles(JdkHttpContext context, HttpMultipart part) throws IOException {
         List<UploadedFile> list = context._fileMap.get(part.getName());
-        if(list == null){
+        if (list == null) {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
         }
@@ -46,7 +46,7 @@ class MultipartUtil {
             extension = name.substring(idx + 1);
         }
 
-        UploadedFile f1 = new UploadedFile(contentType, contentSize, content, name, extension);
+        UploadedFile f1 = new UploadedFile(null, contentType, contentSize, content, name, extension);
 
         list.add(f1);
     }

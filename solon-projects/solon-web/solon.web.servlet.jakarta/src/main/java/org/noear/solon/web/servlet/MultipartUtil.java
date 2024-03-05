@@ -56,7 +56,7 @@ class MultipartUtil {
             extension = name.substring(idx + 1);
         }
 
-        UploadedFile f1 = new UploadedFile(contentType, contentSize, content, name, extension);
+        UploadedFile f1 = new UploadedFile(new MultipartDelete(part), contentType, contentSize, content, name, extension);
 
         list.add(f1);
     }
