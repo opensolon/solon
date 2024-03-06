@@ -14,21 +14,33 @@ import java.lang.reflect.AnnotatedElement;
  * @since 2.7
  */
 public class ActionParamResolver {
+
     /**
      * 分析
-     * */
+     */
     public static void resolve(ActionParam vo, AnnotatedElement element) {
-        if (resolveBody(vo, element) == false) {
-            if (resolveParam(vo, element) == false) {
-                if (resolvePathVar(vo, element) == false) {
-                    if (resolvePath(vo, element) == false) {
-                        if (resolveHeader(vo, element) == false) {
-                            resolveCookie(vo, element);
-                        }
-                    }
-                }
-            }
+        // 分析 Body 注解
+        if (resolveBody(vo, element)) {
+            return;
         }
+        // 分析 Param 注解
+        if (resolveParam(vo, element)) {
+            return;
+        }
+        // 分析 PathVar 注解
+        if (resolvePathVar(vo, element)) {
+            return;
+        }
+        // 分析 Path 注解
+        if (resolvePath(vo, element)) {
+            return;
+        }
+        // 分析 Header 注解
+        if (resolveHeader(vo, element)) {
+            return;
+        }
+        // 分析 Cookie 注解
+        resolveCookie(vo, element);
     }
 
     /**
