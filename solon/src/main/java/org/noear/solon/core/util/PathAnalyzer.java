@@ -1,5 +1,6 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
 
 import java.util.LinkedHashMap;
@@ -32,12 +33,16 @@ public class PathAnalyzer {
     public static PathAnalyzer get(String expr) {
         PathAnalyzer pa = cached.get(expr);
         if (pa == null) {
-            synchronized (cached) {
+            Utils.locker().lock();
+
+            try {
                 pa = cached.get(expr);
                 if (pa == null) {
                     pa = new PathAnalyzer(expr);
                     cached.put(expr, pa);
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 

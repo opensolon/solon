@@ -1,5 +1,7 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -118,13 +120,17 @@ public class GenericUtil {
     public static Map<String, Type> getGenericInfo(Type type) {
         Map<String, Type> tmp = genericInfoCached.get(type);
         if (tmp == null) {
-            synchronized (type) {
+            Utils.locker().lock();
+
+            try {
                 tmp = genericInfoCached.get(type);
 
                 if (tmp == null) {
                     tmp = createTypeGenericMap(type);
                     genericInfoCached.put(type, tmp);
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 

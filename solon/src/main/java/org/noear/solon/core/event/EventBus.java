@@ -1,5 +1,6 @@
 package org.noear.solon.core.event;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.exception.EventException;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -146,8 +147,14 @@ public final class EventBus {
      * @param eventType 事件类型
      * @param listener  事件监听者
      */
-    public synchronized static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
-        pipelineDo(eventType).add(listener);
+    public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
+        Utils.locker().lock();
+
+        try {
+            pipelineDo(eventType).add(listener);
+        } finally {
+            Utils.locker().unlock();
+        }
     }
 
     /**
@@ -157,8 +164,14 @@ public final class EventBus {
      * @param index     顺序位
      * @param listener  事件监听者
      */
-    public synchronized static <T> void subscribe(Class<T> eventType, int index, EventListener<T> listener) {
-        pipelineDo(eventType).add(index, listener);
+    public static <T> void subscribe(Class<T> eventType, int index, EventListener<T> listener) {
+        Utils.locker().lock();
+
+        try {
+            pipelineDo(eventType).add(index, listener);
+        } finally {
+            Utils.locker().unlock();
+        }
     }
 
     /**
@@ -191,10 +204,16 @@ public final class EventBus {
      *
      * @param listener 事件监听者
      */
-    public synchronized static <T> void unsubscribe(EventListener<T> listener) {
-        Class<?>[] ets = GenericUtil.resolveTypeArguments(listener.getClass(), EventListener.class);
-        if (ets != null && ets.length > 0) {
-            pipelineDo((Class<T>) ets[0]).remove(listener);
+    public static <T> void unsubscribe(EventListener<T> listener) {
+        Utils.locker().lock();
+
+        try {
+            Class<?>[] ets = GenericUtil.resolveTypeArguments(listener.getClass(), EventListener.class);
+            if (ets != null && ets.length > 0) {
+                pipelineDo((Class<T>) ets[0]).remove(listener);
+            }
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

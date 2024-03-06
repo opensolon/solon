@@ -1,5 +1,6 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -30,12 +31,16 @@ public class ClassWrap {
     public static ClassWrap get(Class<?> clz) {
         ClassWrap cw = cached.get(clz);
         if (cw == null) {
-            synchronized (clz) {
+            Utils.locker().lock();
+
+            try {
                 cw = cached.get(clz);
                 if (cw == null) {
                     cw = new ClassWrap(clz);
                     cached.put(clz, cw);
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 

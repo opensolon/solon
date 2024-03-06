@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.snowflake.service;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudIdService;
 import org.noear.solon.cloud.service.CloudIdServiceFactory;
@@ -29,12 +30,16 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
         CloudIdService tmp = cached.get(block);
 
         if (tmp == null) {
-            synchronized (cached) {
+            Utils.locker().lock();
+
+            try {
                 tmp = cached.get(block);
                 if (tmp == null) {
                     tmp = new CloudIdServiceImp(block, workId, idStart);
                     cached.put(block, tmp);
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
 
