@@ -11,7 +11,6 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializer;
-import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.http.HttpServerConfigure;
@@ -142,28 +141,5 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         handler.addLifeCycleListener(new JtContainerInitializer(handler.getServletContext()));
 
         return handler;
-    }
-
-    protected Handler getJettyHandler() {
-        //::走Handler接口
-        JtHttpContextHandler _handler = new JtHttpContextHandler();
-
-        if (Solon.app().enableSessionState()) {
-            //需要session state
-            //
-            SessionHandler s_handler = new SessionHandler();
-
-            if (ServerProps.session_timeout > 0) {
-                s_handler.setMaxInactiveInterval(ServerProps.session_timeout);
-            }
-
-            s_handler.setHandler(_handler);
-
-            return s_handler;
-        } else {
-            //不需要session state
-            //
-            return _handler;
-        }
     }
 }

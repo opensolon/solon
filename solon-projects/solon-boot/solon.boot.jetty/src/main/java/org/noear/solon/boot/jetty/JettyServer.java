@@ -68,12 +68,6 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
      * 获取Server Handler
      */
     protected Handler buildHandler() throws IOException {
-        if (ClassUtil.hasClass(() -> org.eclipse.jetty.servlet.ServletContextHandler.class)) {
-            //::走Servlet接口（需要多个包）
-            return getServletHandler();
-        } else {
-            //::走Handler接口（有些功能力会缺失）
-            return getJettyHandler();
-        }
+        return getServletHandler();
     }
 }
