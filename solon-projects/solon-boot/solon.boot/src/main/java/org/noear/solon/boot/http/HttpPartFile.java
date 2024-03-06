@@ -19,13 +19,13 @@ public class HttpPartFile {
     private File tempfile;
     private InputStream content;
 
-    public HttpPartFile(InputStream ins) throws IOException {
-        if (ServerProps.request_useTempfile && ins.available() > 0) {
+    public HttpPartFile(String filename, InputStream ins) throws IOException {
+        if (ServerProps.request_useTempfile && Utils.isNotEmpty(filename)) {
             if (tempdir == null) {
                 Utils.locker().lock();
                 try {
                     if (tempdir == null) {
-                        tempdir = Files.createTempDirectory("solon.");
+                        tempdir = Files.createTempDirectory("solon.upload");
                     }
                 } finally {
                     Utils.locker().unlock();

@@ -38,15 +38,15 @@ class MultipartUtil {
 
 
         String contentType = part.getHeaders().get("Content-Type");
-        HttpPartFile partFile = new HttpPartFile(new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
-        String name = part.getFilename();
+        String filename = part.getFilename();
         String extension = null;
-        int idx = name.lastIndexOf(".");
+        int idx = filename.lastIndexOf(".");
         if (idx > 0) {
-            extension = name.substring(idx + 1);
+            extension = filename.substring(idx + 1);
         }
 
-        UploadedFile f1 = new UploadedFile(partFile::delete, contentType, partFile.getSize(), partFile.getContent(), name, extension);
+        HttpPartFile partFile = new HttpPartFile(filename, new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
+        UploadedFile f1 = new UploadedFile(partFile::delete, contentType, partFile.getSize(), partFile.getContent(), filename, extension);
 
         list.add(f1);
     }
