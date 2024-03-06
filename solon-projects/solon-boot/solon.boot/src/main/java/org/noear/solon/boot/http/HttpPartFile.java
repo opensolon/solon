@@ -6,6 +6,7 @@ import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * 临时文件
@@ -14,17 +15,29 @@ import java.nio.file.Files;
  * @since 2.7
  */
 public class HttpPartFile {
-    private File tmpfile;
+    private static Path tempdir;
+    private File tempfile;
     private InputStream content;
 
     public HttpPartFile(InputStream ins) throws IOException {
-        if (ServerProps.request_useTempfile) {
-            tmpfile = Files.createTempFile(Utils.guid(), ".tmp").toFile();
-            try (OutputStream outs = new FileOutputStream(tmpfile)) {
+        if (ServerProps.request_useTempfile && ins.available() > 0) {
+            if (tempdir == null) {
+                Utils.locker().lock();
+                try {
+                    if (tempdir == null) {
+                        tempdir = Files.createTempDirectory("solon.");
+                    }
+                } finally {
+                    Utils.locker().unlock();
+                }
+            }
+
+            tempfile = Files.createTempFile(tempdir,"solon.", ".tmp").toFile();
+            try (OutputStream outs = new FileOutputStream(tempfile)) {
                 IoUtil.transferTo(ins, outs);
             }
 
-            content = new FileInputStream(tmpfile);
+            content = new FileInputStream(tempfile);
         } else {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             IoUtil.transferTo(ins, output);
@@ -37,8 +50,12 @@ public class HttpPartFile {
      * 删除
      */
     public void delete() throws IOException {
-        if (tmpfile != null) {
-            tmpfile.delete();
+        if (tempfile != null) {
+            try {
+                content.close();
+            } finally {
+                tempfile.delete();
+            }
         }
     }
 
