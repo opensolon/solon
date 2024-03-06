@@ -1,15 +1,11 @@
 package org.noear.solon.core.mvc;
 
-import java.lang.reflect.AnnotatedElement;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Cookie;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Path;
-import org.noear.solon.annotation.PathVar;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.ActionParam;
+
+import java.lang.reflect.AnnotatedElement;
 
 /**
  * Action 参数分析器
