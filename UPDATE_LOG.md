@@ -21,7 +21,14 @@
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
 * 添加 scheduling 调度任务拦截机制 JobInterceptor
-* 添加 UploadedFile:tryDelete 尝试删除临时文件方法
+* 添加 UploadedFile:delete 尝试删除临时文件方法
+* 添加 server.request.useTempfile 新的配置支持
+* 添加 solon.boot.jdkhttp 上传文件缓存的可选功能
+* 添加 solon.boot.jlhttp 上传文件缓存的可选功能
+* 添加 solon.boot.smarthttp 上传文件缓存的可选功能
+* 添加 solon.boot.jetty 上传文件缓存的可选功能
+* 添加 日志打印默认格式显示进程号
+* 调整 部分锁的处理方式（synchronized 改为 ReentrantLock），更好的兼容虚拟线程
 * 调整 newThreadLocal 默认改为 false
 * 调整 jlhttp 源码独立为 jlhttp 仓库再转依赖
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
