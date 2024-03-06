@@ -4,14 +4,24 @@ package org.noear.solon.boot;
  * @author noear
  * @since 1.6
  */
-public class ServerConstants {
-    public static final String SERVER_KEY_STORE = "server.ssl.keyStore";
-    public static final String SERVER_KEY_TYPE = "server.ssl.keyType";
-    public static final String SERVER_KEY_PASSWORD = "server.ssl.keyPassword";
+public interface ServerConstants {
+    String SERVER_SSL_KEY_STORE = "server.ssl.keyStore";
+    String SERVER_SSL_KEY_TYPE = "server.ssl.keyType";
+    String SERVER_SSL_KEY_PASSWORD = "server.ssl.keyPassword";
 
-    public static final String SIGNAL_HTTP = "http";
-    public static final String SIGNAL_SOCKET = "socket";
-    public static final String SIGNAL_WEBSOCKET = "websocket";
+    String SERVER_HTTP_GZIP_ENABLE = "server.http.gzip.enable";
+    String SERVER_HTTP_GZIP_MINSIZE = "server.http.gzip.minSize";
+    String SERVER_HTTP_GZIP_MIMETYPES = "server.http.gzip.mimeTypes";
 
-    public static final int SIGNAL_LIFECYCLE_INDEX = 99;
+    String SERVER_REQUEST_MAXHEADERSIZE = "server.request.maxHeaderSize";
+    String SERVER_REQUEST_MAXBODYSIZE ="server.request.maxBodySize";
+    String SERVER_REQUEST_MAXFILESIZE = "server.request.maxFileSize";
+    String SERVER_REQUEST_USETEMPFILE = "server.request.useTempfile";
+    String SERVER_REQUEST_ENCODING = "server.request.encoding";
+
+    String SIGNAL_HTTP = "http";
+    String SIGNAL_SOCKET = "socket";
+    String SIGNAL_WEBSOCKET = "websocket";
+
+    int SIGNAL_LIFECYCLE_INDEX = 99;
 }

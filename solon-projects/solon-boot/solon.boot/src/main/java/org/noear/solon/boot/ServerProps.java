@@ -27,9 +27,14 @@ public class ServerProps {
      * */
     public static final long request_maxBodySize;
     /**
-     * 分片最大文件大小
+     * 上传最大文件大小
      * */
     public static final long request_maxFileSize;
+    /**
+     * 上传使用临时文件
+     * */
+    public static final boolean request_useTempfile;
+
     /**
      * 会话超时
      * */
@@ -57,30 +62,32 @@ public class ServerProps {
         // for request
         //
 
-        tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
+        tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
         request_maxHeaderSize = (int)getSize(tmp, 8192L);//8k
 
-        tmp = Solon.cfg().get("server.request.maxBodySize", "").trim().toLowerCase();//k数
+        tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXBODYSIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置
             tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
         }
         request_maxBodySize = getSize(tmp, 2097152L);//2m
 
-        tmp = Solon.cfg().get("server.request.maxFileSize", "").trim().toLowerCase();//k数
+        tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXFILESIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             request_maxFileSize = request_maxBodySize;
         } else {
             request_maxFileSize = getSize(tmp, 2097152L);//2m
         }
 
-        tmp = Solon.cfg().get("server.request.encoding", "").trim();
+        tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_ENCODING, "").trim();
 
         if (Utils.isEmpty(tmp)) {
             request_encoding = Solon.encoding();
         } else {
             request_encoding = tmp;
         }
+
+        request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE,false);
 
         //
         // for session

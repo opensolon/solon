@@ -1,6 +1,7 @@
 package org.noear.solon.boot.prop;
 
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
 
 import java.util.HashSet;
@@ -79,9 +80,9 @@ public class GzipProps {
             return;
         }
 
-        enable = Solon.cfg().getBool("server.http.gzip.enable", false);
-        minSize = Solon.cfg().getLong("server.http.gzip.minSize", 4096);
-        Solon.cfg().getMap("server.http.gzip.mimeTypes").forEach((key, val) -> {
+        enable = Solon.cfg().getBool(ServerConstants.SERVER_HTTP_GZIP_ENABLE, false);
+        minSize = Solon.cfg().getLong(ServerConstants.SERVER_HTTP_GZIP_MINSIZE, 4096);
+        Solon.cfg().getMap(ServerConstants.SERVER_HTTP_GZIP_MIMETYPES).forEach((key, val) -> {
             for (String mime : val.split(",")) {
                 mimeTypes.add(mime);
             }
