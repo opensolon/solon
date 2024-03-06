@@ -32,9 +32,10 @@ public class HttpPartFile {
                 }
             }
 
-            tempfile = Files.createTempFile(tempdir,"solon.", ".tmp").toFile();
-            try (OutputStream outs = new FileOutputStream(tempfile)) {
+            tempfile = Files.createTempFile(tempdir, "solon.", ".tmp").toFile();
+            try (OutputStream outs = new BufferedOutputStream(new FileOutputStream(tempfile))) {
                 IoUtil.transferTo(ins, outs);
+                outs.flush();
             }
 
             content = new FileInputStream(tempfile);
