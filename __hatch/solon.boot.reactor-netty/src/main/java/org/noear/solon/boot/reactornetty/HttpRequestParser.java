@@ -89,7 +89,7 @@ class HttpRequestParser {
                         extension = name.substring(idx + 1);
                     }
 
-                    UploadedFile f1 = new UploadedFile(null, contentType, contentSize, content, name, extension);
+                    UploadedFile f1 = new UploadedFile(f0::delete, contentType, contentSize, content, name, extension);
 
                     tmp.add(f1);
                 }

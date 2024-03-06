@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp.http;
 
 
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipart;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipartCollection;
 import org.noear.solon.boot.io.LimitedInputStream;
@@ -39,8 +40,7 @@ class MultipartUtil {
         }
 
         String contentType = part.getHeaders().get("Content-Type");
-        InputStream content = read(new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
-        int contentSize = content.available();
+        HttpPartFile partFile = new HttpPartFile(new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
         String name = part.getFilename();
         String extension = null;
         int idx = name.lastIndexOf(".");
@@ -48,7 +48,7 @@ class MultipartUtil {
             extension = name.substring(idx + 1);
         }
 
-        UploadedFile f1 = new UploadedFile(null,contentType, contentSize, content, name, extension);
+        UploadedFile f1 = new UploadedFile(partFile::delete,contentType, partFile.getSize(), partFile.getContent(), name, extension);
 
         list.add(f1);
     }
@@ -61,14 +61,4 @@ class MultipartUtil {
         return !isField(filePart);
     }
 
-    private static ByteArrayInputStream read(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-        }
-        return new ByteArrayInputStream(output.toByteArray());
-    }
 }
