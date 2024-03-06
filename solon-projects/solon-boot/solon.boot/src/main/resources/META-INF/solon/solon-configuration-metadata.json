@@ -45,6 +45,12 @@
       "description": "设定最大的请求头大小"
     },
     {
+      "name": "server.request.useTempfile",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "设定使用上传临时文件"
+    },
+    {
       "name": "server.request.encoding",
       "type": "java.lang.String",
       "defaultValue": "utf-8",
