@@ -8,16 +8,13 @@ import org.noear.solon.cloud.model.BreakerEntrySim;
  * @since 1.3
  */
 public class CloudBreakerServiceImpl extends CloudBreakerServiceLocalImpl {
-    private static CloudBreakerServiceImpl instance;
-    public static synchronized CloudBreakerServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new CloudBreakerServiceImpl();
-        }
+    private static CloudBreakerServiceImpl instance = new CloudBreakerServiceImpl();
 
+    public static CloudBreakerServiceImpl getInstance() {
         return instance;
     }
 
-    private CloudBreakerServiceImpl(){
+    private CloudBreakerServiceImpl() {
         super();
     }
 
