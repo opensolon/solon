@@ -15,7 +15,7 @@ import java.nio.file.Files;
  */
 public class HttpPartFile {
     private File tmpfile;
-    private InputStream inputStream;
+    private InputStream content;
 
     public HttpPartFile(InputStream ins) throws IOException {
         if (ServerProps.request_useTempfile) {
@@ -24,12 +24,12 @@ public class HttpPartFile {
                 IoUtil.transferTo(ins, outs);
             }
 
-            inputStream = new FileInputStream(tmpfile);
+            content = new FileInputStream(tmpfile);
         } else {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             IoUtil.transferTo(ins, output);
 
-            inputStream = new ByteArrayInputStream(output.toByteArray());
+            content = new ByteArrayInputStream(output.toByteArray());
         }
     }
 
@@ -46,13 +46,13 @@ public class HttpPartFile {
      * 获取内容
      */
     public InputStream getContent() throws IOException {
-        return inputStream;
+        return content;
     }
 
     /**
      * 获取大小
      */
     public int getSize() throws IOException {
-        return inputStream.available();
+        return content.available();
     }
 }
