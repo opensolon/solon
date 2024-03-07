@@ -39,6 +39,8 @@ public interface Router {
 
     /**
      * 区分大小写（默认不区分）
+     *
+     * @param caseSensitive 区分大小写
      */
     default void caseSensitive(boolean caseSensitive) {
         PathAnalyzer.setCaseSensitive(caseSensitive);
@@ -77,6 +79,11 @@ public interface Router {
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
+    /**
+     * 移除路由关系
+     *
+     * @param pathPrefix 路径前缀
+     */
     void remove(String pathPrefix);
 
     /**
@@ -91,10 +98,10 @@ public interface Router {
     /**
      * 获取某个路径的某个处理点的路由记录
      *
-     * @since 2.6
      * @param path     路径
      * @param endpoint 处理点
      * @return 路径处理点的路由记录
+     * @since 2.6
      */
     Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
 
