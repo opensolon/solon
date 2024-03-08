@@ -1,6 +1,5 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
-import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import java.nio.ByteBuffer;
 
 public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     static final Logger log = LoggerFactory.getLogger(SmWebSocketHandleImpl.class);
-    static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
     static final AttachKey<WebSocketImpl> SESSION_KEY = AttachKey.valueOf("SESSION");
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
@@ -37,11 +35,6 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
         request1.getAttachment().put(SESSION_KEY, webSocket);
 
         webSocketRouter.getListener().onOpen(webSocket);
-
-        //设置闲置超时
-        if (wsProps.getIdleTimeout() > 0) {
-            webSocket.setIdleTimeout(wsProps.getIdleTimeout());
-        }
     }
 
     @Override

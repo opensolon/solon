@@ -5,6 +5,7 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImpl;
 import org.noear.solon.boot.ssl.SslConfig;
@@ -88,6 +89,14 @@ public class SmHttpServer implements ServerLifecycle {
 
         //这个是基于通讯层的。。。需要对 http 层和 ws 层分别定制
         _config.setHttpIdleTimeout((int)props.getIdleTimeoutOrDefault());
+
+        if(enableWebSocket) {
+            WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
+            // WS 闲置超时
+            if (wsProps.getIdleTimeout() > 0) {
+                _config.setWsIdleTimeout((int) wsProps.getIdleTimeout());
+            }
+        }
 
 
         if (ServerProps.request_maxHeaderSize > 0) {
