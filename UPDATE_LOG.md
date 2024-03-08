@@ -31,6 +31,7 @@
 * 调整 框架内的 ThreadLocal 默认为非继承
 * 调整 jlhttp 源码独立为 jlhttp 仓库再转依赖引用
 * 调整 cron 源码独立为 java-cron 仓库再转依赖引用
+* 调整 smarthttp 的内部日志级为 WARN
 * 优化 部分锁的处理方式（synchronized 改为 ReentrantLock），更好的兼容虚拟线程
 * 优化 solon.boot.smarthttp 适配在空跑时的内存情况
 * 优化 solon.boot.smarthttp 的 websocket 闲置超时处理

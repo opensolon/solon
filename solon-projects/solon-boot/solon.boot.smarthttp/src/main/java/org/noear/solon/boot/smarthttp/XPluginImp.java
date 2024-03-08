@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
@@ -45,7 +46,13 @@ public final class XPluginImp implements Plugin {
         });
     }
 
+    private static final String SMARTHTTP_LOG_LEVEL = "smarthttp.log.level";
+
     private void start0(SolonApp app) throws Throwable {
+        if(Utils.isEmpty(System.getProperty(SMARTHTTP_LOG_LEVEL))) {
+            System.setProperty(SMARTHTTP_LOG_LEVEL, "WARNING");
+        }
+
         //初始化属性
         ServerProps.init();
 
