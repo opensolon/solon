@@ -22,7 +22,7 @@ import java.io.*;
 public class UploadedFile extends DownloadedFile {
     /**
      * 删除动作
-     * */
+     */
     private Closeable deleteAction;
 
     /**
@@ -50,6 +50,19 @@ public class UploadedFile extends DownloadedFile {
      */
     public UploadedFile(String contentType, InputStream content, String name) {
         super(contentType, content, name);
+    }
+
+    /**
+     * 基于上传输入的构建函数
+     *
+     * @param contentType 内容类型
+     * @param contentSize 内容大小
+     * @param content     内容流
+     * @param name        文件名
+     * @param extension   文件后缀名
+     */
+    public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
+        this(null, contentType, contentSize, content, name, extension);
     }
 
     /**
