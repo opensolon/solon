@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.7.2-SNAPSHOT</version>
+    <version>2.7.2</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,18 +23,18 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.7.2-SNAPSHOT</solon.version>
-        <solon-admin.version>2.7.1</solon-admin.version>
-        <solon-integration.version>2.7.1</solon-integration.version>
+        <solon.version>2.7.2</solon.version>
+        <solon-admin.version>2.7.2</solon-admin.version>
+        <solon-integration.version>2.7.2</solon-integration.version>
 
         <snack3.version>3.2.88</snack3.version>
         <weed3.version>3.4.33</weed3.version>
-        <wood.version>1.2.6</wood.version>
+        <wood.version>1.2.7</wood.version>
         <water.version>2.13.1</water.version>
         <luffy.version>1.7.4</luffy.version>
         <redisx.version>1.6.2</redisx.version>
         <socketd.version>2.4.6</socketd.version>
-        <folkmq.version>1.3.0</folkmq.version>
+        <folkmq.version>1.3.1</folkmq.version>
         <redisson.version>3.23.5</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
@@ -55,7 +55,7 @@
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
         <smartsocket.version>1.5.42</smartsocket.version>
-        <smarthttp.version>1.3.9</smarthttp.version>
+        <smarthttp.version>1.4.0</smarthttp.version>
         <vertx.version>4.4.1</vertx.version>
 
 
@@ -86,8 +86,6 @@
         <junit5.version>5.9.1</junit5.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
-
-        <mybatis.version>3.5.15</mybatis.version>
 
         <hikaricp.version>4.0.3</hikaricp.version>
         <hikaricp5.version>5.1.0</hikaricp5.version>
@@ -144,6 +142,7 @@
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
         <freemarker.version>2.3.31</freemarker.version>
 
+        <mybatis.version>3.5.15</mybatis.version>
         <activerecord.version>5.1.3</activerecord.version>
         <beetlsql.version>3.30.0-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.98</sqltoy.version>
@@ -154,7 +153,7 @@
 
         <liteflow.version>2.11.4.2</liteflow.version>
         <forest.version>1.5.36</forest.version>
-        <shardingsphere.version>5.4.1</shardingsphere.version>
+        <shardingsphere.version>5.3.2</shardingsphere.version>
         <seata.version>2.0.0</seata.version>
         <wx-java.version>4.6.0</wx-java.version>
         <graphql-java.version>18.3</graphql-java.version>
@@ -1655,6 +1654,12 @@
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.aot</artifactId>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
