@@ -35,5 +35,9 @@
         <module>../../solon-projects-cloud/solon-cloud-file/minio7-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-file/fastdfs-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-file/file-s3-solon-cloud-plugin</module>
+
+        <module>../../solon-projects-cloud/solon-cloud-job/xxl-job-solon-cloud-plugin</module>
+        <module>../../solon-projects-cloud/solon-cloud-job/quartz-solon-cloud-plugin</module>
+        <module>../../solon-projects-cloud/solon-cloud-job/powerjob-solon-cloud-plugin</module>
     </modules>
 </project>

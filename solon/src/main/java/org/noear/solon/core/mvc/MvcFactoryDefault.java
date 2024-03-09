@@ -15,19 +15,19 @@ import java.util.function.Predicate;
  * @since 2.7
  */
 public class MvcFactoryDefault implements MvcFactory {
-    public ActionLoader createHandlerLoader(BeanWrap wrap) {
+    public ActionLoader createLoader(BeanWrap wrap) {
         return new ActionLoaderDefault(wrap);
     }
 
-    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping) {
-        return createHandlerLoader(wrap, mapping, wrap.remoting(), null, true);
+    public ActionLoader createLoader(BeanWrap wrap, String mapping) {
+        return createLoader(wrap, mapping, wrap.remoting(), null, true);
     }
 
-    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
-        return createHandlerLoader(wrap, mapping, remoting, null, true);
+    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting) {
+        return createLoader(wrap, mapping, remoting, null, true);
     }
 
-    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
+    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
         return new ActionLoaderDefault(wrap, mapping, remoting, render, allowMapping);
     }
 
@@ -37,7 +37,7 @@ public class MvcFactoryDefault implements MvcFactory {
     }
 
     @Override
-    public void resolveActionParam(ActionParam vo, AnnotatedElement element) {
+    public void resolveParam(ActionParam vo, AnnotatedElement element) {
         ActionParamResolver.resolve(vo, element);
     }
 

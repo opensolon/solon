@@ -202,7 +202,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            FactoryManager.mvcFactory().createHandlerLoader(bw).load(Solon.app());
+            FactoryManager.mvcFactory().createLoader(bw).load(Solon.app());
         });
 
         //注册 @Inject 注入器

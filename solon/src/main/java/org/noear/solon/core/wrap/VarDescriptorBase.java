@@ -70,7 +70,7 @@ public abstract class VarDescriptorBase implements VarDescriptor {
     protected void init() {
         //没有时，不处理
         if (FactoryManager.hasMvcFactory()) {
-            FactoryManager.mvcFactory().resolveActionParam(vo, element);
+            FactoryManager.mvcFactory().resolveParam(vo, element);
         }
     }
 
