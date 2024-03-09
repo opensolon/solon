@@ -42,6 +42,7 @@
 * socket.d 升为 2.4.6
 * folkmq 升为 1.3.1
 * sqltoy 升为 5.2.98
+* beetlsql 升为 3.30.1-RELEASE
 * mybatis-flex 升为 1.8.2
 * fastjson2 升为 2.0.47
 * smarthttp 升为 1.4.0
