@@ -28,22 +28,22 @@
 * 添加 solon.boot.smarthttp 上传文件缓存的可选功能
 * 添加 solon.boot.jetty 上传文件缓存的可选功能
 * 添加 日志打印默认格式显示进程号
-* 调整 框架内的 ThreadLocal 默认为非继承
+* 调整 框架内的 ThreadLocal 默认为非继承，通过 FactoryManager 可定制
 * 调整 jlhttp 源码独立为 jlhttp 仓库再转依赖引用
 * 调整 cron 源码独立为 java-cron 仓库再转依赖引用
 * 调整 smarthttp 的内部日志级为 WARN
-* 优化 部分锁的处理方式（synchronized 改为 ReentrantLock），更好的兼容虚拟线程
+* 优化 部分锁的处理方式（synchronized 改为 ReentrantLock）
 * 优化 solon.boot.smarthttp 适配在空跑时的内存情况
 * 优化 solon.boot.smarthttp 的 websocket 闲置超时处理
 * 优化 FactoryManager.newThreadLocal 接口设计，方便定制扩展
 * 修复 knife4j 适配未鉴权时在 undowtow + 非本地IP情况下 500 的问题
+* redisson 调为 3.23.5
+* shardingsphere 调为 5.3.2
 * socket.d 升为 2.4.6
 * folkmq 升为 1.3.1
 * sqltoy 升为 5.2.98
 * mybatis-flex 升为 1.8.2
 * fastjson2 升为 2.0.47
-* redisson 调为 3.23.5
-* shardingsphere 调为 5.3.2
 * smarthttp 升为 1.4.0
 
 ### 2.7.1
