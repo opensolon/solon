@@ -8,7 +8,6 @@ import org.noear.solon.core.event.AppPrestopEndEvent;
 import org.noear.solon.core.event.AppStopEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ConsumerEx;
-import org.noear.solon.core.util.LicenceUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import java.lang.management.ManagementFactory;
@@ -184,9 +183,6 @@ public class Solon {
         }
 
         //5.启动完成
-        if (LicenceUtil.global().isEnable()) {
-            LogUtil.global().info(LicenceUtil.global().getDescription());
-        }
 
         LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
