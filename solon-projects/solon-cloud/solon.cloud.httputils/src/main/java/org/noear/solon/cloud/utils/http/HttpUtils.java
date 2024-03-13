@@ -498,9 +498,9 @@ public class HttpUtils {
     /**
      * 执行请求，返回响应对象
      * */
-    public Response exec(String mothod) throws IOException {
+    public Response exec(String method) throws IOException {
         try {
-            return execDo(mothod);
+            return execDo(method);
         } catch (IOException e) {
             throw new IOException(_url + ", request failed", e);
         }
@@ -509,8 +509,8 @@ public class HttpUtils {
     /**
      * 执行请求，返回Body字符串
      * */
-    public String execAsBody(String mothod) throws IOException {
-        Response tmp = exec(mothod);
+    public String execAsBody(String method) throws IOException {
+        Response tmp = exec(method);
 
         int code = tmp.code();
         String text = tmp.body().string();
@@ -525,8 +525,8 @@ public class HttpUtils {
     /**
      * 执行请求，返回状态码
      * */
-    public int execAsCode(String mothod) throws IOException {
-        return exec(mothod).code();
+    public int execAsCode(String method) throws IOException {
+        return exec(method).code();
     }
 
     /**
@@ -547,16 +547,26 @@ public class HttpUtils {
         postAsync(null);
     }
 
-    public void postAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
-        _callback = callback;
-        _callAsync = true;
-        exec("POST");
+    public void postAsync(HttpCallback<Boolean, Response, Exception> callback) {
+        execAsync("POST", callback);
     }
 
-    public void headAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
+    public void getAsync(HttpCallback<Boolean, Response, Exception> callback)  {
+        execAsync("GET", callback);
+    }
+
+    public void headAsync(HttpCallback<Boolean, Response, Exception> callback)  {
+        execAsync("HEAD", callback);
+    }
+
+    public void execAsync(String method, HttpCallback<Boolean, Response, Exception> callback) {
         _callback = callback;
         _callAsync = true;
-        exec("HEAD");
+        try {
+            execDo(method);
+        } catch (IOException e) {
+            throw new RuntimeException(_url + ", request failed", e);
+        }
     }
 
     /**
