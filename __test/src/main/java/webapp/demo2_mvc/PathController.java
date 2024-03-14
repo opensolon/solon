@@ -13,22 +13,27 @@ import org.noear.solon.annotation.Singleton;
 @Controller
 public class PathController {
     @Mapping("/test0**")
-    public String test0(){
+    public String test0() {
         return "ok";
     }
 
     @Mapping("/test1/?")
-    public String test1(){
+    public String test1() {
         return "ok";
     }
 
     @Mapping("/test2/?*")
-    public String test2(){
+    public String test2() {
         return "ok";
     }
 
     @Mapping("/test3/{name}")
-    public String test3(@Path("name") String name){
+    public String test3_a(@Path("name") String name) {
         return "ok";
+    }
+
+    @Mapping("/test3/b")
+    public String test3_b(String name) {
+        return name;
     }
 }

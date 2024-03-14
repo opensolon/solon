@@ -43,4 +43,9 @@ public class HttpPathTest extends HttpTester {
         assert path("/demo2/path/test3/solon").get().equals("ok");
         assert path("/demo2/path/test3/solon").data("name", "noear").post().equals("ok");
     }
+
+    @Test
+    public void test3_b() throws Exception {
+        assert path("/demo2/path/test3/b").data("name", "noear").post().equals("noear");
+    }
 }
