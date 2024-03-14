@@ -6,12 +6,13 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.health.HealthChecker;
 import org.noear.solon.health.HealthHandler;
+import org.noear.solon.health.HealthIndicator;
 
 /**
  * @author iYarnFog
  * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class HealthPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //
@@ -20,8 +21,8 @@ public class XPluginImp implements Plugin {
         Solon.app().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
         Solon.app().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
 
-        //添加 HealthHandler 自动注册
-        context.subWrapsOfType(HealthHandler.class, bw -> {
+        //添加 HealthIndicator 自动注册
+        context.subWrapsOfType(HealthIndicator.class, bw -> {
             if (Utils.isEmpty(bw.name())) {
                 //使用类名作指标名
                 HealthChecker.addIndicator(bw.clz().getSimpleName(), bw.get());
