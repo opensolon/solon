@@ -16,10 +16,7 @@ import org.noear.solon.view.ViewConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
@@ -208,7 +205,7 @@ public class FreemarkerRender implements Render {
         //添加 context 变量
         mv.putIfAbsent("context", ctx);
 
-        PrintWriter writer = new PrintWriter(outputStream.get());
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream.get(), Solon.encoding()));
 
         Template template = null;
 
