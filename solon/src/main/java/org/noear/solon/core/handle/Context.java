@@ -225,7 +225,9 @@ public abstract class Context {
     public String path() {
         if (path == null && url() != null) {
             path = uri().getPath();
-
+            if(path == null){
+                this.path = "";
+            }
             if (path.contains("//")) {
                 path = Utils.trimDuplicates(path, '/');
             }
