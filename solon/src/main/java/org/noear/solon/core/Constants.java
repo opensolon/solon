@@ -12,5 +12,4 @@ public class Constants {
     public static final String mainHandler = "mainHandler";
     public static final String mainStatus = "mainStatus";
     public static final String action = "action";
-    public static final String emptyStr = "";
 }
