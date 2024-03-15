@@ -54,7 +54,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             }
         }
 
-        //scan cless @Around
+        //scan class @Around
         for (Annotation anno : declaringClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
