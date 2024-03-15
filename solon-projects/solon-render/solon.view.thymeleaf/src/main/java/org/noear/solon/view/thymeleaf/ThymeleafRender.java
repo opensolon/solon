@@ -1,6 +1,7 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -202,11 +203,9 @@ public class ThymeleafRender implements Render {
             context.setLocale(ctx.getLocale());
         }
 
-
-        PrintWriter writer = new PrintWriter(outputStream.get());
-
+        // 输出流
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream.get(), ServerProps.response_encoding));
         provider.process(mv.view(), context, writer);
-
         writer.flush();
     }
 }

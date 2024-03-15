@@ -5,6 +5,7 @@ import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -16,10 +17,7 @@ import org.noear.solon.view.ViewConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
@@ -254,7 +252,8 @@ public class EnjoyRender implements Render {
             template = provider.getTemplate(mv.view());
         }
 
-        PrintWriter writer = new PrintWriter(outputStream.get());
+        // 输出流
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream.get(), ServerProps.response_encoding));
         template.render(mv.model(), writer);
         writer.flush();
     }

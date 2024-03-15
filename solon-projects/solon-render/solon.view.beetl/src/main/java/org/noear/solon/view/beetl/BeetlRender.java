@@ -16,6 +16,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
+import org.noear.solon.boot.ServerProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ public class BeetlRender implements Render {
 
 
     private ClassLoader classLoader;
-    private Configuration cfg = null;
+    private Configuration config = null;
 
     private GroupTemplate provider = null;
     private GroupTemplate providerOfDebug = null;
@@ -66,6 +67,13 @@ public class BeetlRender implements Render {
         return providerOfDebug;
     }
 
+    /**
+     * 获取配置
+     * */
+    public Configuration getConfig() {
+        return config;
+    }
+
     //不要要入参，方便后面多视图混用
     //
     public BeetlRender() {
@@ -76,7 +84,8 @@ public class BeetlRender implements Render {
         this.classLoader = classLoader;
 
         try {
-            cfg = Configuration.defaultConfiguration();
+            config = Configuration.defaultConfiguration();
+            config.setCharset(ServerProps.response_encoding);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -128,7 +137,7 @@ public class BeetlRender implements Render {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), Solon.encoding());
                 loader.setAutoCheck(true);
-                providerOfDebug = new GroupTemplate(loader, cfg);
+                providerOfDebug = new GroupTemplate(loader, config);
 
                 //通过事件扩展
                 EventBus.publish(providerOfDebug);
@@ -145,7 +154,7 @@ public class BeetlRender implements Render {
 
         try {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, ViewConfig.getViewPrefix());
-            provider = new GroupTemplate(loader, cfg);
+            provider = new GroupTemplate(loader, config);
 
             //通过事件扩展
             EventBus.publish(provider);

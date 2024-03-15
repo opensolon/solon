@@ -7,6 +7,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -17,10 +18,7 @@ import org.noear.solon.view.ViewConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
@@ -249,8 +247,7 @@ public class VelocityRender implements Render {
         sharedVariables.forEach((k, v) -> vc.put(k, v));
 
         // 输出流
-        PrintWriter writer = new PrintWriter(outputStream.get());
-        // 转换输出
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream.get(), ServerProps.response_encoding));
         template.merge(vc, writer);
         writer.flush();
     }
