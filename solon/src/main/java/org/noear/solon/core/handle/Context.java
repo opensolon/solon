@@ -4,7 +4,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.*;
+import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.IpUtil;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Nullable;
@@ -14,14 +17,19 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import static org.noear.solon.core.Constants.emptyStr;
 
 /**
  * 通用上下文接口（实现：Context + Handler 架构）
  *
  * @author noear
  * @since 1.0
- * */
+ */
 public abstract class Context {
     /**
      * 获取当前线程的上下文
@@ -34,14 +42,14 @@ public abstract class Context {
 
     /**
      * 获取地区
-     * */
+     */
     public Locale getLocale() {
         return locale;
     }
 
     /**
      * 设置地区
-     * */
+     */
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
@@ -53,14 +61,14 @@ public abstract class Context {
 
     /**
      * 设置处理状态
-     * */
+     */
     public void setHandled(boolean handled) {
         this.handled = handled;
     }
 
     /**
      * 获取处理状态
-     * */
+     */
     public boolean getHandled() {
         return handled;
     }
@@ -72,14 +80,14 @@ public abstract class Context {
 
     /**
      * 设置渲染状态
-     * */
+     */
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
 
     /**
      * 获取渲染状态
-     * */
+     */
     public boolean getRendered() {
         return rendered;
     }
@@ -91,10 +99,11 @@ public abstract class Context {
 
     /**
      * 获取远程IP
+     *
      * @deprecated 2.5
-     * */
+     */
     @Deprecated
-    public String ip(){
+    public String ip() {
         return remoteIp();
     }
 
@@ -103,6 +112,7 @@ public abstract class Context {
      * 获取远程IP
      */
     public abstract String remoteIp();
+
     /**
      * 获取远程Port
      */
@@ -112,7 +122,7 @@ public abstract class Context {
 
     /**
      * 获取客户端真实IP
-     * */
+     */
     public String realIp() {
         if (realIp == null) {
             realIp = IpUtil.global().getRealIp(this);
@@ -123,22 +133,25 @@ public abstract class Context {
 
     /**
      * ::默认不自动处理；仅在取文件时解析
-     * */
+     */
     private boolean allowMultipart = true;
+
     /**
      * 是否自动解析分段内容
-     * */
+     */
     public boolean autoMultipart() {
         return allowMultipart;
     }
+
     /**
      * 设置是否自动解析分段内容
-     * */
+     */
     public void autoMultipart(boolean auto) {
         this.allowMultipart = auto;
     }
 
     Boolean isFormUrlencoded;
+
     /**
      * 是否为编码窗体
      */
@@ -156,6 +169,7 @@ public abstract class Context {
     }
 
     Boolean isMultipart;
+
     /**
      * 是否为分段内容
      */
@@ -173,9 +187,10 @@ public abstract class Context {
     }
 
     Boolean isMultipartFormData;
+
     /**
      * 是否为分段表单数据
-     * */
+     */
     public boolean isMultipartFormData() {
         if (isMultipartFormData == null) {
             String temp = contentType();
@@ -203,7 +218,7 @@ public abstract class Context {
 
     /**
      * 获取请求协议并大写
-     * */
+     */
     public String protocolAsUpper() {
         if (protocolAsUpper == null) {
             protocolAsUpper = protocol().toUpperCase();
@@ -219,13 +234,17 @@ public abstract class Context {
 
 
     private String path;
+
     /**
      * 获取请求的URI路径
      */
     public String path() {
         if (path == null && url() != null) {
             path = uri().getPath();
-
+            //取不到path时，返回空串
+            if (path == null) {
+                this.path = emptyStr;
+            }
             if (path.contains("//")) {
                 path = Utils.trimDuplicates(path, '/');
             }
@@ -265,7 +284,7 @@ public abstract class Context {
 
     /**
      * 获取请求的URI路径并大写
-     * */
+     */
     public String pathAsUpper() {
         if (pathAsUpper == null) {
             pathAsUpper = path().toUpperCase();
@@ -279,7 +298,7 @@ public abstract class Context {
 
     /**
      * 获取请求的URI路径并大写
-     * */
+     */
     public String pathAsLower() {
         if (pathAsLower == null) {
             pathAsLower = path().toLowerCase();
@@ -290,7 +309,7 @@ public abstract class Context {
 
     /**
      * 是否为 ssl 请求
-     * */
+     */
     public abstract boolean isSecure();
 
     /**
@@ -322,14 +341,14 @@ public abstract class Context {
 
     /**
      * 获取查询字符串
-     * */
+     */
     public abstract String queryString();
 
     private String accept;
 
     /**
      * 获取 Accept 头信息
-     * */
+     */
     public String accept() {
         if (accept == null) {
             accept = headerOrDefault("Accept", "");
@@ -350,7 +369,7 @@ public abstract class Context {
 
     /**
      * 获取body内容
-     * */
+     */
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
@@ -365,7 +384,7 @@ public abstract class Context {
 
     /**
      * 获取新的body
-     * */
+     */
     public String bodyNew() throws IOException {
         if (bodyNew == null) {
             return body();
@@ -376,7 +395,7 @@ public abstract class Context {
 
     /**
      * 设置新的body
-     * */
+     */
     public void bodyNew(String bodyNew) {
         this.bodyNew = bodyNew;
     }
@@ -421,8 +440,8 @@ public abstract class Context {
 
     /**
      * 获取参数
-     * */
-    public String param(String name){
+     */
+    public String param(String name) {
         return paramMap().get(name);
     }
 
@@ -430,7 +449,7 @@ public abstract class Context {
      * 获取参数
      *
      * @deprecated 2.3
-     * */
+     */
     @Deprecated
     public String param(String key, String def) {
         return paramOrDefault(key, def);
@@ -438,63 +457,63 @@ public abstract class Context {
 
     /**
      * 获取参数或默认
-     * */
+     */
     public String paramOrDefault(String key, String def) {
         return paramMap().getOrDefault(key, def);
     }
 
     /**
      * 获取参数并转为int
-     * */
+     */
     public int paramAsInt(String name) {
         return paramAsInt(name, 0);
     }
 
     /**
      * 获取参数并转为int
-     * */
+     */
     public int paramAsInt(String name, int def) {
         return Integer.parseInt(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
      * 获取参数并转为long
-     * */
+     */
     public long paramAsLong(String name) {
         return paramAsLong(name, 0);
     }
 
     /**
      * 获取参数并转为long
-     * */
+     */
     public long paramAsLong(String name, long def) {
         return Long.parseLong(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
      * 获取参数并转为double
-     * */
+     */
     public double paramAsDouble(String name) {
         return paramAsDouble(name, 0);
     }
 
     /**
      * 获取参数并转为double
-     * */
+     */
     public double paramAsDouble(String name, double def) {
         return Double.parseDouble(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
      * 获取参数并转为BigDecimal
-     * */
+     */
     public BigDecimal paramAsDecimal(String name) {
         return paramAsDecimal(name, BigDecimal.ZERO);
     }
 
     /**
      * 获取参数并转为BigDecimal
-     * */
+     */
     public BigDecimal paramAsDecimal(String name, BigDecimal def) {
         String tmp = param(name);
         if (Utils.isEmpty(tmp)) {
@@ -506,7 +525,7 @@ public abstract class Context {
 
     /**
      * 获取参数并转为Bean
-     * */
+     */
     public <T> T paramAsBean(Class<T> type) {
         //不如参数注入的强；不支持 body 转换;
         return ClassWrap.get(type).newBy(this::param, this);
@@ -514,12 +533,12 @@ public abstract class Context {
 
     /**
      * 获取所有参数并转为map
-     * */
+     */
     public abstract NvMap paramMap();
 
     /**
      * 设置参数
-     * */
+     */
     public void paramSet(String name, String val) {
         paramMap().put(name, val);
         paramsAdd(name, val);
@@ -527,12 +546,12 @@ public abstract class Context {
 
     /**
      * 获取所有参数并转为Map
-     * */
+     */
     public abstract Map<String, List<String>> paramsMap();
 
     /**
      * 添加参数
-     * */
+     */
     public void paramsAdd(String name, String val) {
         if (paramsMap() != null) {
             List<String> ary = paramsMap().get(name);
@@ -544,7 +563,7 @@ public abstract class Context {
         }
     }
 
-    public abstract Map<String,List<UploadedFile>> filesMap() throws IOException;
+    public abstract Map<String, List<UploadedFile>> filesMap() throws IOException;
 
     /**
      * 获取上传文件数组
@@ -577,7 +596,7 @@ public abstract class Context {
      * 获取 cookie
      *
      * @param name cookie名
-     * @param def 默认值
+     * @param def  默认值
      * @deprecated 2.5
      */
     @Deprecated
@@ -589,7 +608,7 @@ public abstract class Context {
      * 获取 cookie
      *
      * @param name cookie名
-     * @param def 默认值
+     * @param def  默认值
      */
     public String cookieOrDefault(String name, String def) {
         return cookieMap().getOrDefault(name, def);
@@ -613,7 +632,7 @@ public abstract class Context {
      * 获取 header
      *
      * @param name header名
-     * @param def 默认值
+     * @param def  默认值
      * @deprecated 2.3
      */
     @Deprecated
@@ -642,7 +661,7 @@ public abstract class Context {
      */
     public String[] headerValues(String name) {
         List<String> list = headersMap().get(name);
-        if(list == null){
+        if (list == null) {
             return null;
         }
 
@@ -658,7 +677,7 @@ public abstract class Context {
 
     /**
      * 获取 sessionState
-     * */
+     */
     public SessionState sessionState() {
         if (sessionState == null) {
             sessionState = Solon.app().chainManager().getSessionState(this);
@@ -690,7 +709,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Deprecated
-    public  <T> T session(String name, @NonNull T def) {
+    public <T> T session(String name, @NonNull T def) {
         return sessionOrDefault(name, def);
     }
 
@@ -700,53 +719,53 @@ public abstract class Context {
      * @param name 状态名
      * @since 2.3
      */
-    public abstract  <T> T sessionOrDefault(String name, @NonNull T def);
+    public abstract <T> T sessionOrDefault(String name, @NonNull T def);
 
     /**
      * 获取 session 状态，并以 int 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract int sessionAsInt(String name);
 
     /**
      * 获取 session 状态，并以 int 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract int sessionAsInt(String name, int def);
 
     /**
      * 获取 session 状态，并以 long 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract long sessionAsLong(String name);
 
     /**
      * 获取 session 状态，并以 long 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract long sessionAsLong(String name, long def);
 
     /**
      * 获取 session 状态，并以 double 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract double sessionAsDouble(String name);
 
     /**
      * 获取 session 状态，并以 double 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public abstract double sessionAsDouble(String name, double def);
 
@@ -754,7 +773,7 @@ public abstract class Context {
      * 设置 session 状态
      *
      * @param name 状态名
-     * @param val 值
+     * @param val  值
      */
     public abstract void sessionSet(String name, Object val);
 
@@ -762,12 +781,12 @@ public abstract class Context {
      * 移除 session 状态
      *
      * @param name 状态名
-     * */
-    public abstract void  sessionRemove(String name);
+     */
+    public abstract void sessionRemove(String name);
 
     /**
      * 清空 session 状态
-     * */
+     */
     public abstract void sessionClear();
 
     //======================
@@ -800,7 +819,7 @@ public abstract class Context {
 
     /**
      * 获取设置的新内容类型
-     * */
+     */
     public String contentTypeNew() {
         return contentTypeNew;
     }
@@ -811,7 +830,7 @@ public abstract class Context {
 
     /**
      * 设置内容长度
-     * */
+     */
     public void contentLength(long size) {
         if (size >= 0) {
             headerSet("Content-Length", String.valueOf(size));
@@ -898,33 +917,33 @@ public abstract class Context {
 
     /**
      * 获取响应 header
-     * */
+     */
     public abstract String headerOfResponse(String name);
 
     /**
      * 设置 cookie
-     * */
+     */
     public void cookieSet(String name, String val) {
         cookieSet(name, val, null, -1);
     }
 
     /**
      * 设置 cookie
-     * */
+     */
     public void cookieSet(String name, String val, int maxAge) {
         cookieSet(name, val, null, maxAge);
     }
 
     /**
      * 设置 cookie
-     * */
+     */
     public void cookieSet(String name, String val, String domain, int maxAge) {
         cookieSet(name, val, domain, "/", maxAge);
     }
 
     /**
      * 设置 cookie
-     * */
+     */
     public abstract void cookieSet(String name, String val, String domain, String path, int maxAge);
 
     /**
@@ -948,7 +967,7 @@ public abstract class Context {
 
     /**
      * 转发
-     * */
+     */
     public void forward(String pathNew) {
         if (Utils.isEmpty(Solon.cfg().serverContextPath())) {
             pathNew(pathNew);
@@ -969,15 +988,15 @@ public abstract class Context {
     /**
      * 设置输出状态
      */
-    public void status(int status){
+    public void status(int status) {
         statusDoSet(status);
     }
 
     /**
      * @deprecated 1.8
-     * */
+     */
     @Deprecated
-    public void statusSet(int status){
+    public void statusSet(int status) {
         statusDoSet(status);
     }
 
@@ -988,7 +1007,7 @@ public abstract class Context {
 
     /**
      * 获取自定义特性并转为Map
-     * */
+     */
     public Map<String, Object> attrMap() {//改为懒加载
         if (attrMap == null) {
             attrMap = new IgnoreCaseMap<>();
@@ -1058,14 +1077,14 @@ public abstract class Context {
 
     /**
      * 渲染数据
-     * */
+     */
     public final void render(String view, Map<String, ?> data) throws Throwable {
         render(new ModelAndView(view, data));
     }
 
     /**
      * 渲染数据并返回
-     * */
+     */
     public final String renderAndReturn(Object obj) throws Throwable {
         return RenderManager.global.renderAndReturn(obj, this);
     }
@@ -1074,7 +1093,7 @@ public abstract class Context {
 
     /**
      * 是否为远程调用
-     * */
+     */
     public boolean remoting() {
         return _remoting;
     }
@@ -1086,68 +1105,67 @@ public abstract class Context {
 
     /**
      * 冲刷
-     * */
+     */
     public abstract void flush() throws IOException;
 
 
     /**
      * 关闭响应（一些特殊的boot才有效）
-     * */
+     */
     public abstract void close() throws IOException;
 
     /**
      * 是否支持异步
-     * */
+     */
     public abstract boolean asyncSupported();
 
     /**
      * 异步开始
-     * */
+     */
     public abstract void asyncStart(long timeout, ContextAsyncListener listener);
 
     /**
      * 异步开始
-     * */
-    public void asyncStart(){
+     */
+    public void asyncStart() {
         asyncStart(0L, null);
     }
 
     /**
      * 异步完成
-     * */
+     */
     public abstract void asyncComplete() throws IOException;
-
 
 
     /**
      * 用于在处理链中透传处理结果
-     * */
+     */
     public @Nullable Object result;
 
     /**
      * 用于在处理链中透传处理错误
-     * */
+     */
     public @Nullable Throwable errors;
 
 
     /**
      * 获取当前控制器
-     * */
+     */
     public @Nullable Object controller() {
         return attr(Constants.controller);
     }
 
     /**
      * 获取当前动作
-     * */
+     */
     public @Nullable Action action() {
         return attr(Constants.action);
     }
 
     /**
      * 获取当前主处理器
-     * */
-    public @Nullable Handler mainHandler(){
+     */
+    public @Nullable Handler mainHandler() {
         return attr(Constants.mainHandler);
     }
 }
