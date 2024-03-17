@@ -1,6 +1,7 @@
 package org.noear.solon.validation;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.validation.annotation.*;
@@ -14,7 +15,14 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         ValidatorManager.VALIDATE_ALL = Solon.cfg().getBool("solon.validation.validateAll", false);
 
-        context.beanInterceptorAdd(Valid.class, new BeanValidateInterceptor(), 1);
+        boolean allControllerValidation = Solon.cfg().getBool("solon.validation.allControllerValidation", false);
+
+        if(allControllerValidation){
+            // 给所有controller开启效验
+            context.beanInterceptorAdd(Controller.class, new BeanValidateInterceptor(), 1);
+        }else{
+            context.beanInterceptorAdd(Valid.class, new BeanValidateInterceptor(), 1);
+        }
 
         //ValidatorFailureHandler
         context.getBeanAsync(ValidatorFailureHandler.class, (bean) -> {
