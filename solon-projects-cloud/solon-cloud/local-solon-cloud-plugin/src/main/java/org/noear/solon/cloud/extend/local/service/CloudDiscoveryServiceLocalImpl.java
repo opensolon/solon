@@ -45,7 +45,12 @@ public class CloudDiscoveryServiceLocalImpl implements CloudDiscoveryService {
 
     @Override
     public Discovery find(String group, String service) {
-        return serviceMap.get(service);
+        Discovery tmp = serviceMap.get(service);
+        if (tmp == null) {
+            tmp = new Discovery(service);
+        }
+
+        return tmp;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class CloudDiscoveryServiceLocalImpl implements CloudDiscoveryService {
 
     /**
      * 通知观察者
-     * */
+     */
     private void onRegister(Discovery discovery) {
         if (serviceMap.containsKey(discovery.service())) {
 
