@@ -18,6 +18,14 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
+### 2.7.3
+* 添加 solon.cloud.httputils 异步处理接口
+* 优化 solon.view 后端模板的编码配置处理
+* 优化 非 http/https 协议包的处理（被人刷包）
+* 优化 local-solon-cloud-plugin 本地服务发现的查找处理，避免失败
+* 修复 solon.health HealthIndicator 自动注册无效的问题
+* sqltoy 升为 5.2.100
+
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
 * 添加 scheduling 调度任务拦截机制 JobInterceptor
