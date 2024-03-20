@@ -61,6 +61,11 @@ public class NamiClientAnno implements NamiClient {
     }
 
     @Override
+    public boolean localFirst() {
+        return anno.localFirst();
+    }
+
+    @Override
     public Class<? extends NamiConfiguration> configuration() {
         return anno.configuration();
     }

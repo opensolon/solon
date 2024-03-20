@@ -28,12 +28,29 @@ public class XPluginImp implements Plugin {
                 return;
             }
 
+            boolean localFirst = anno.localFirst();
+
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name())) {
                 NamiClient anno2 = varH.getType().getAnnotation(NamiClient.class);
                 if (anno2 != null) {
                     anno = anno2;
                 }
             }
+
+            localFirst |= anno.localFirst();
+
+            if(localFirst){
+                //如果本地优化，开始找 Bean；如果找到就替换注入目标
+                context.getBeanAsync(varH.getType(), bean->{
+                    varH.setValue(bean);
+                });
+
+                if(varH.isDone()){
+                    //如果已注入完成
+                    return;
+                }
+            }
+
 
             //代理一下，把 name 改掉
             anno = new NamiClientAnno(anno);

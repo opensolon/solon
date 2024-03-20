@@ -59,6 +59,11 @@ public @interface NamiClient {
     int heartbeat() default 0;
 
     /**
+     * 本地优化（如果为 true，则先找本地实现组件）
+     * */
+    boolean localFirst() default false;
+
+    /**
      * 指定配置器
      * */
     Class<? extends NamiConfiguration> configuration() default NamiConfigurationDefault.class;

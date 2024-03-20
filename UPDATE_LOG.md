@@ -20,6 +20,7 @@
 
 ### 2.7.3
 * 添加 solon.cloud.httputils 异步处理接口
+* 添加 NamiClient::localFirst 属性，增加本地实现组件优先支持
 * 优化 solon.view 后端模板的编码配置处理
 * 优化 非 http/https 协议包的处理（被人刷包）
 * 优化 local-solon-cloud-plugin 本地服务发现的查找处理，避免失败
