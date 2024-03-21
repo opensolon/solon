@@ -33,8 +33,8 @@
         <water.version>2.13.1</water.version>
         <luffy.version>1.7.4</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.4.6</socketd.version>
-        <folkmq.version>1.3.1</folkmq.version>
+        <socketd.version>2.4.7</socketd.version>
+        <folkmq.version>1.3.2</folkmq.version>
         <redisson.version>3.23.5</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
@@ -145,7 +145,7 @@
         <mybatis.version>3.5.15</mybatis.version>
         <activerecord.version>5.1.3</activerecord.version>
         <beetlsql.version>3.30.1-RELEASE</beetlsql.version>
-        <sqltoy.version>5.2.100</sqltoy.version>
+        <sqltoy.version>5.2.98</sqltoy.version>
         <mybatis-flex.version>1.8.2</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.1</dbvisitor.version>

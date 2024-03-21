@@ -25,7 +25,8 @@
 * 优化 非 http/https 协议包的处理（被人刷包）
 * 优化 local-solon-cloud-plugin 本地服务发现的查找处理，避免失败
 * 修复 solon.health HealthIndicator 自动注册无效的问题
-* sqltoy 升为 5.2.100
+* socket.d 升为 2.4.7
+* folkmq 升为 1.3.2
 
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
