@@ -9,7 +9,7 @@ import org.noear.solon.annotation.Controller;
  * 简单的http处理(带简单的内部导航 + 前后置处理)
  * */
 @Mapping("/demo1/run2/*")
-@Component
+@Controller
 public class Run2Handler extends Gateway {
     @Override
     protected void register() {
