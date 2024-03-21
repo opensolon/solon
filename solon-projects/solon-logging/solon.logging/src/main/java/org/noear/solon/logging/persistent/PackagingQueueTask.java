@@ -16,7 +16,7 @@ public interface PackagingQueueTask<Event> {
     /**
      * 设置空闲休息时间
      * */
-    void setInterval(long interval);
+    void setIdleInterval(long idleInterval);
     /**
      * 设置包装合大小
      * */

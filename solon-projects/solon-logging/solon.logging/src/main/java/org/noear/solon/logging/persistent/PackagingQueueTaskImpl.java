@@ -19,8 +19,8 @@ public class PackagingQueueTaskImpl<Event> implements PackagingQueueTask<Event>,
     /**
      * 休息时间
      * */
-    private long interval = 500; //必须大于等于100
-    private final long interval_min = 100;
+    private long idleInterval = 500; //必须大于等于min
+    private final long idleInterval_min = 10;
 
     /**
      * 包装合大小
@@ -75,15 +75,15 @@ public class PackagingQueueTaskImpl<Event> implements PackagingQueueTask<Event>,
      * 空闲休息时间
      * */
     public long getInterval() {
-        return interval;
+        return idleInterval;
     }
 
     /**
      * 设置空闲休息时间
      * */
-    public void setInterval(long interval) {
-        if (interval >= interval_min) {
-            this.interval = interval;
+    public void setIdleInterval(long interval) {
+        if (interval >= idleInterval_min) {
+            this.idleInterval = interval;
         }
     }
 
