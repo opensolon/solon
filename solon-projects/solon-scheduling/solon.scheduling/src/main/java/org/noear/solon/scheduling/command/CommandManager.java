@@ -27,7 +27,7 @@ public class CommandManager {
     /**
      * 注册
      *
-     * @param command 命令
+     * @param command  命令
      * @param executor 执行器
      */
     public void register(String command, CommandExecutor executor) {
@@ -59,14 +59,23 @@ public class CommandManager {
      * 执行全部命令
      */
     public void executeAll() {
+        CommandExecutor def = executorMap.get("");
+        if (def != null) {
+            executeDo("", def);
+        }
+
         for (Map.Entry<String, CommandExecutor> kv : executorMap.entrySet()) {
             if (Solon.cfg().argx().containsKey(kv.getKey())) {
-                try {
-                    kv.getValue().execute(kv.getKey());
-                } catch (Throwable e) {
-                    log.warn("Command execute failed, cmd={}", kv.getKey(), e);
-                }
+                executeDo(kv.getKey(), kv.getValue());
             }
+        }
+    }
+
+    private void executeDo(String cmd, CommandExecutor executor) {
+        try {
+            executor.execute(cmd);
+        } catch (Throwable e) {
+            log.warn("Command execute failed, cmd={}", cmd, e);
         }
     }
 }
