@@ -7,6 +7,7 @@ import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.solon.data.util.InvKeys;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.data.util.StringLocker;
 
 /**
  * 缓存执行器
@@ -43,9 +44,8 @@ public class CacheExecutorImp {
         Object result = null;
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
-        String keyLock = key + ":lock";
-
-        synchronized (keyLock.intern()) {
+        StringLocker.lock(key);
+        try {
 
             //1.从缓存获取
             //
@@ -74,6 +74,8 @@ public class CacheExecutorImp {
             }
 
             return result;
+        } finally {
+            StringLocker.unlock(key);
         }
     }
 
