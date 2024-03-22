@@ -9,6 +9,7 @@ import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -24,6 +25,7 @@ import java.util.function.Function;
 public class Props extends Properties {
     private ClassLoader classLoader;
     private Map<String, String> tempPropMap = new TreeMap<>();
+    private ReentrantLock SELF_LOCK = new ReentrantLock();
 
     public Props() {
         //不产生 defaults
@@ -45,11 +47,17 @@ public class Props extends Properties {
     }
 
     @Override
-    public synchronized int size() {
-        if (defaults == null) {
-            return super.size();
-        } else {
-            return super.size() + defaults.size();
+    public int size() {
+        SELF_LOCK.lock();
+
+        try {
+            if (defaults == null) {
+                return super.size();
+            } else {
+                return super.size() + defaults.size();
+            }
+        } finally {
+            SELF_LOCK.unlock();
         }
     }
 
@@ -310,15 +318,21 @@ public class Props extends Properties {
      * 重写 forEach，增加 defaults 的遍历
      */
     @Override
-    public synchronized void forEach(BiConsumer<? super Object, ? super Object> action) {
-        super.forEach(action);
+    public void forEach(BiConsumer<? super Object, ? super Object> action) {
+        SELF_LOCK.lock();
 
-        if (defaults != null) {
-            defaults.forEach((k, v) -> {
-                if (super.containsKey(k) == false) {
-                    action.accept(k, v);
-                }
-            });
+        try {
+            super.forEach(action);
+
+            if (defaults != null) {
+                defaults.forEach((k, v) -> {
+                    if (super.containsKey(k) == false) {
+                        action.accept(k, v);
+                    }
+                });
+            }
+        } finally {
+            SELF_LOCK.unlock();
         }
     }
 
@@ -337,19 +351,25 @@ public class Props extends Properties {
      * 设置应用属性
      */
     @Override
-    public synchronized Object put(Object key, Object value) {
-        Object obj = super.put(key, value);
+    public Object put(Object key, Object value) {
+        SELF_LOCK.lock();
 
-        if (key instanceof String && value instanceof String) {
-            _changeEvent.forEach(event -> {
-                event.accept((String) key, (String) value);
-            });
+        try {
+            Object obj = super.put(key, value);
+
+            if (key instanceof String && value instanceof String) {
+                _changeEvent.forEach(event -> {
+                    event.accept((String) key, (String) value);
+                });
+            }
+
+            return obj;
+        } finally {
+            SELF_LOCK.unlock();
         }
-
-        return obj;
     }
 
-    public synchronized void putIfNotNull(Object key, Object value) {
+    public void putIfNotNull(Object key, Object value) {
         if (key != null && value != null) {
             this.put(key, value);
         }

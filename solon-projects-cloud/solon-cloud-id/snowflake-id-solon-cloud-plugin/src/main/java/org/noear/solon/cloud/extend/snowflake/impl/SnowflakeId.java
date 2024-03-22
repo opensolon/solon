@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.snowflake.impl;
 import org.noear.solon.cloud.model.Instance;
 
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
@@ -92,11 +93,23 @@ public class SnowflakeId {
     //毫秒内序列的最大值 4095
     private final long seqMaxNum = ~(-1 << seqLen);
 
+    private final ReentrantLock ID_LOCK = new ReentrantLock();
+
 
     /**
      * 获取下一个Id
-     * */
-    public synchronized long nextId() {
+     */
+    public long nextId() {
+        ID_LOCK.lock();
+
+        try {
+            return nextId0();
+        } finally {
+            ID_LOCK.unlock();
+        }
+    }
+
+    private long nextId0() {
         long now = System.currentTimeMillis();
 
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
