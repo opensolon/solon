@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.exception.InjectionException;
 
 import java.util.ArrayList;
@@ -58,59 +59,71 @@ public class InjectGather implements Runnable {
      * 运行（变量收集完成后，回调运行）
      */
     @Override
-    public synchronized void run() {
-        if (done) {
-            return;
-        }
+    public void run() {
+        Utils.locker().lock();
 
-        for (VarHolder p1 : vars) {
-            if (p1.isDone() == false) {
+        try {
+            if (done) {
                 return;
             }
-        }
 
-        if (vars.size() != varSize) {
-            return;
-        }
-
-        done = true;
-        if (onDone != null) {
-            List<Object> args = new ArrayList<>(vars.size());
             for (VarHolder p1 : vars) {
-                args.add(p1.getValue());
+                if (p1.isDone() == false) {
+                    return;
+                }
             }
 
-            onDone.accept(args.toArray());
+            if (vars.size() != varSize) {
+                return;
+            }
+
+            done = true;
+            if (onDone != null) {
+                List<Object> args = new ArrayList<>(vars.size());
+                for (VarHolder p1 : vars) {
+                    args.add(p1.getValue());
+                }
+
+                onDone.accept(args.toArray());
+            }
+        } finally {
+            Utils.locker().unlock();
         }
     }
 
     /**
      * 检测
      */
-    public synchronized void check() throws Exception {
-        if (done) {
-            return;
-        }
+    public void check() throws Exception {
+        Utils.locker().lock();
 
-        if (vars.size() != varSize) {
-            return;
-        }
-
-        for (VarHolder p1 : vars) {
-            if (p1.isDone() == false && p1.required()) {
-                throw new InjectionException("Required injection failed: " + p1.getFullName());
+        try {
+            if (done) {
+                return;
             }
-        }
 
-        if (onDone != null && requireRun) {
-            //补触 onDone
-            List<Object> args = new ArrayList<>(vars.size());
+            if (vars.size() != varSize) {
+                return;
+            }
+
             for (VarHolder p1 : vars) {
-                args.add(p1.getValue());
+                if (p1.isDone() == false && p1.required()) {
+                    throw new InjectionException("Required injection failed: " + p1.getFullName());
+                }
             }
 
-            done = true;
-            onDone.accept(args.toArray());
+            if (onDone != null && requireRun) {
+                //补触 onDone
+                List<Object> args = new ArrayList<>(vars.size());
+                for (VarHolder p1 : vars) {
+                    args.add(p1.getValue());
+                }
+
+                done = true;
+                onDone.accept(args.toArray());
+            }
+        } finally {
+            Utils.locker().unlock();
         }
     }
 }

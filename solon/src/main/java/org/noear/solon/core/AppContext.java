@@ -71,12 +71,16 @@ public class AppContext extends BeanContainer {
     public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
         if (mw == null) {
-            synchronized (method) {
+            SYNC_LOCK.lock();
+
+            try {
                 mw = methodCached.get(method);
                 if (mw == null) {
                     mw = new MethodWrap(this, method);
                     methodCached.put(method, mw);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
