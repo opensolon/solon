@@ -14,7 +14,7 @@ public class DemoTest {
     @Test
     public void test() {
         SnowflakeId snowflakeId = new SnowflakeId(1, 1);
-        IdWorker idWorker = new IdWorker(1, 1, 1);
+        SnowflakeId idWorker = new SnowflakeId(1, 1);
 
         long id10 = snowflakeId.nextId();
         long id11 = idWorker.nextId();

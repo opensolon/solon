@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
@@ -21,17 +22,21 @@ public class JwtUtils {
 
     private static String TOKEN_HEADER = "Bearer ";
     private static Key key = null;
+    private static final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     /**
      * 根据配置获取签名密钥
-     * */
+     */
     private static Key getKey() {
         if (key == null) {
-            synchronized (JwtSessionStateFactory.getInstance()) {
+            SYNC_LOCK.lock();
+            try {
                 if (key == null) {
                     String signKey0 = JwtSessionStateFactory.getInstance().signKey();
                     key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(signKey0));
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
