@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 云端名单（本地摸拟实现）
@@ -19,10 +20,13 @@ import java.util.Map;
  */
 public class CloudListServiceLocalImpl implements CloudListService {
     static final String LIST_KEY_FORMAT = "list/%s-%s.json";
-    Map<String, List<String>> listMap = new HashMap<>();
+    private Map<String, List<String>> listMap = new HashMap<>();
 
     private final String server;
-    public CloudListServiceLocalImpl(CloudProps cloudProps){
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
+
+    public CloudListServiceLocalImpl(CloudProps cloudProps) {
         this.server = cloudProps.getServer();
     }
 
@@ -46,7 +50,9 @@ public class CloudListServiceLocalImpl implements CloudListService {
         List<String> listVal = listMap.get(listKey);
 
         if (listVal == null) {
-            synchronized (listMap) {
+            SYNC_LOCK.lock();
+
+            try {
                 listVal = listMap.get(listKey);
 
                 if (listVal == null) {
@@ -67,6 +73,8 @@ public class CloudListServiceLocalImpl implements CloudListService {
 
                     listMap.put(listKey, listVal);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 

@@ -25,7 +25,7 @@ import java.util.function.Function;
 public class Props extends Properties {
     private ClassLoader classLoader;
     private Map<String, String> tempPropMap = new TreeMap<>();
-    private ReentrantLock SELF_LOCK = new ReentrantLock();
+    private ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public Props() {
         //不产生 defaults
@@ -48,7 +48,7 @@ public class Props extends Properties {
 
     @Override
     public int size() {
-        SELF_LOCK.lock();
+        SYNC_LOCK.lock();
 
         try {
             if (defaults == null) {
@@ -57,7 +57,7 @@ public class Props extends Properties {
                 return super.size() + defaults.size();
             }
         } finally {
-            SELF_LOCK.unlock();
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -319,7 +319,7 @@ public class Props extends Properties {
      */
     @Override
     public void forEach(BiConsumer<? super Object, ? super Object> action) {
-        SELF_LOCK.lock();
+        SYNC_LOCK.lock();
 
         try {
             super.forEach(action);
@@ -332,7 +332,7 @@ public class Props extends Properties {
                 });
             }
         } finally {
-            SELF_LOCK.unlock();
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -352,7 +352,7 @@ public class Props extends Properties {
      */
     @Override
     public Object put(Object key, Object value) {
-        SELF_LOCK.lock();
+        SYNC_LOCK.lock();
 
         try {
             Object obj = super.put(key, value);
@@ -365,7 +365,7 @@ public class Props extends Properties {
 
             return obj;
         } finally {
-            SELF_LOCK.unlock();
+            SYNC_LOCK.unlock();
         }
     }
 

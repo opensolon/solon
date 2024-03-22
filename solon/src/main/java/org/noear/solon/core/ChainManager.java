@@ -9,6 +9,7 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 请求链管理
@@ -19,13 +20,15 @@ import java.util.*;
 public class ChainManager {
     /**
      * 类型集合（用于重复检测）
-     * */
+     */
     private final Set<Class<?>> typeSet = new HashSet<>();
 
     /**
      * 过滤器 节点
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public Collection<Filter> getFilterNodes() {
         List<Filter> tmp = new ArrayList<>();
@@ -40,26 +43,38 @@ public class ChainManager {
     /**
      * 添加过滤器
      */
-    public synchronized void addFilter(Filter filter, int index) {
-        typeSet.add(filter.getClass());
+    public void addFilter(Filter filter, int index) {
+        SYNC_LOCK.lock();
 
-        filterNodes.add(new RankEntity(filter, index));
-        filterNodes.sort(Comparator.comparingInt(f -> f.index));
+        try {
+            typeSet.add(filter.getClass());
+
+            filterNodes.add(new RankEntity(filter, index));
+            filterNodes.sort(Comparator.comparingInt(f -> f.index));
+        } finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     /**
      * 添加过滤器，如果有相同类的则不加
      */
-    public synchronized void addFilterIfAbsent(Filter filter, int index) {
-        if (typeSet.contains(filter.getClass())) {
-            return;
+    public void addFilterIfAbsent(Filter filter, int index) {
+        SYNC_LOCK.lock();
+
+        try {
+            if (typeSet.contains(filter.getClass())) {
+                return;
+            }
+
+            //有同步锁，就不复用上面的代码了
+            typeSet.add(filter.getClass());
+
+            filterNodes.add(new RankEntity(filter, index));
+            filterNodes.sort(Comparator.comparingInt(f -> f.index));
+        } finally {
+            SYNC_LOCK.unlock();
         }
-
-        //有同步锁，就不复用上面的代码了
-        typeSet.add(filter.getClass());
-
-        filterNodes.add(new RankEntity(filter, index));
-        filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
@@ -78,7 +93,7 @@ public class ChainManager {
 
     /**
      * 获取所有路由拦截器
-     * */
+     */
     public Collection<RouterInterceptor> getInterceptorNodes() {
         List<RouterInterceptor> tmp = new ArrayList<>();
 
@@ -97,43 +112,61 @@ public class ChainManager {
     /**
      * 添加路由拦截器
      */
-    public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
-        typeSet.add(interceptor.getClass());
+    public void addInterceptor(RouterInterceptor interceptor, int index) {
+        SYNC_LOCK.lock();
 
-        interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
-        interceptorNodes.add(new RankEntity<>(interceptor, index));
-        interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+        try {
+            typeSet.add(interceptor.getClass());
+
+            interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
+            interceptorNodes.add(new RankEntity<>(interceptor, index));
+            interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+        } finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     /**
      * 添加路由拦截器，如果有相同类的则不加
      */
-    public synchronized void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
-        if (typeSet.contains(interceptor.getClass())) {
-            return;
+    public void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
+        SYNC_LOCK.lock();
+
+        try {
+            if (typeSet.contains(interceptor.getClass())) {
+                return;
+            }
+
+            //有同步锁，就不复用上面的代码了
+            typeSet.add(interceptor.getClass());
+
+            interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
+            interceptorNodes.add(new RankEntity<>(interceptor, index));
+            interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+        } finally {
+            SYNC_LOCK.unlock();
         }
-
-        //有同步锁，就不复用上面的代码了
-        typeSet.add(interceptor.getClass());
-
-        interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
-        interceptorNodes.add(new RankEntity<>(interceptor, index));
-        interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
      * 移除路由拦截器
      */
-    public synchronized <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
-        typeSet.add(clz);
+    public <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
+        SYNC_LOCK.lock();
 
-        interceptorNodes.removeIf(i -> {
-            if (i.target instanceof RouterInterceptorLimiter) {
-                return ((RouterInterceptorLimiter) i.target).getInterceptor().getClass() == clz;
-            } else {
-                return i.target.getClass() == clz;
-            }
-        });
+        try {
+            typeSet.add(clz);
+
+            interceptorNodes.removeIf(i -> {
+                if (i.target instanceof RouterInterceptorLimiter) {
+                    return ((RouterInterceptorLimiter) i.target).getInterceptor().getClass() == clz;
+                } else {
+                    return i.target.getClass() == clz;
+                }
+            });
+        } finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     /**

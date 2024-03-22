@@ -9,6 +9,7 @@ import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
 import java.util.Date;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 public class CloudFileServiceLocalImpl implements CloudFileService {
     private File root;
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public CloudFileServiceLocalImpl(String rootDir) {
         this.root = new File(rootDir, "file");
@@ -95,25 +97,27 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
         }
 
         File dir = new File(root, bucket);
-        if (dir.exists() == false) {
-            synchronized (bucket.intern()) {
+
+        SYNC_LOCK.lock();
+        try {
+            if (dir.exists() == false) {
                 if (dir.exists() == false) {
                     dir.mkdirs();
                 }
             }
-        }
 
-        int last = key.lastIndexOf('/');
-        if (last > 0) {
-            String dir2Str = key.substring(0, last);
-            File dir2Tmp = new File(dir, dir2Str);
-            if (dir2Tmp.exists() == false) {
-                synchronized (dir2Str.intern()) {
+            int last = key.lastIndexOf('/');
+            if (last > 0) {
+                String dir2Str = key.substring(0, last);
+                File dir2Tmp = new File(dir, dir2Str);
+                if (dir2Tmp.exists() == false) {
                     if (dir2Tmp.exists() == false) {
                         dir2Tmp.mkdirs();
                     }
                 }
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
 
         File file = new File(dir, key);

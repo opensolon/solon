@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.file.s3.service;
 
-import org.apache.http.MethodNotSupportedException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
@@ -14,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * CloudFileService 的本地实现
@@ -24,6 +24,7 @@ import java.util.Date;
 public class CloudFileServiceOfLocalImpl implements CloudFileService {
     private final String bucketDef;
     private final File root;
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public CloudFileServiceOfLocalImpl(String bucketDef, Props props) {
         String endpoint = props.getProperty("endpoint");
@@ -122,25 +123,28 @@ public class CloudFileServiceOfLocalImpl implements CloudFileService {
         }
 
         File dir = new File(root, bucket);
-        if (dir.exists() == false) {
-            synchronized (bucket.intern()) {
+
+        SYNC_LOCK.lock();
+
+        try {
+            if (dir.exists() == false) {
                 if (dir.exists() == false) {
                     dir.mkdirs();
                 }
             }
-        }
 
-        int last = key.lastIndexOf('/');
-        if (last > 0) {
-            String dir2Str = key.substring(0, last);
-            File dir2Tmp = new File(dir, dir2Str);
-            if (dir2Tmp.exists() == false) {
-                synchronized (dir2Str.intern()) {
+            int last = key.lastIndexOf('/');
+            if (last > 0) {
+                String dir2Str = key.substring(0, last);
+                File dir2Tmp = new File(dir, dir2Str);
+                if (dir2Tmp.exists() == false) {
                     if (dir2Tmp.exists() == false) {
                         dir2Tmp.mkdirs();
                     }
                 }
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
 
         File file = new File(dir, key);
