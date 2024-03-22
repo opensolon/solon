@@ -7,6 +7,8 @@ import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.validation.annotation.NoRepeatSubmit;
 import org.noear.solon.validation.annotation.NoRepeatSubmitChecker;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author noear 2021/6/12 created
  */
@@ -16,11 +18,14 @@ public class NoRepeatSubmitCheckerImpl implements NoRepeatSubmitChecker {
     @Inject
     CacheService cache;
 
+    final ReentrantLock SYNC_LOCK = new ReentrantLock();
+
     @Override
     public boolean check(NoRepeatSubmit anno, Context ctx, String submitHash, int limitSeconds) {
         String key2 = "lock." + submitHash;
 
-        synchronized (key2.intern()) {
+        SYNC_LOCK.lock();
+        try {
             Object tmp = cache.get(key2, Object.class);
 
             if (tmp == null) {
@@ -30,6 +35,8 @@ public class NoRepeatSubmitCheckerImpl implements NoRepeatSubmitChecker {
             } else {
                 return false;
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 }

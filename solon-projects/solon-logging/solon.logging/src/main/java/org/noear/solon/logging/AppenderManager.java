@@ -1,11 +1,11 @@
 package org.noear.solon.logging;
 
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.LogEvent;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 添加器管理员
@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class AppenderManager {
 
-    private static Map<String,AppenderHolder> appenderMap = new HashMap<>();
+    private static Map<String,AppenderHolder> appenderMap = new ConcurrentHashMap<>();
     private static List<AppenderHolder> appenderValues = new ArrayList<>();
 
     static {
@@ -36,20 +36,16 @@ public class AppenderManager {
      * @param name     名称
      * @param appender 添加器
      */
-    public synchronized static void register(String name, Appender appender) {
+    public static void register(String name, Appender appender) {
         registerDo(name, appender, false);
-
-        //打印须异步（不然可能死循环）//不需要打印了，必要不大
-        //LogUtil.global().debugAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     private static void registerDo(String name, Appender appender, boolean printed) {
-        if (appenderMap.containsKey(name) == false) {
+        appenderMap.computeIfAbsent(name, k -> {
             AppenderHolder holder = new AppenderHolder(name, appender, printed);
-
-            appenderMap.put(name, holder);
             appenderValues.add(holder);
-        }
+            return holder;
+        });
     }
 
     /**

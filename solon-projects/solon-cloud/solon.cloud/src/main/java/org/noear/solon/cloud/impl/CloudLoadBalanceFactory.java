@@ -3,8 +3,8 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.LoadBalance;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 /**
@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
  */
 public class CloudLoadBalanceFactory implements LoadBalance.Factory {
 
-    private Map<String, CloudLoadBalance> cached = new HashMap<>();
+    private final Map<String, CloudLoadBalance> cached = new ConcurrentHashMap<>();
 
     /**
      * 获取负载均衡
@@ -70,20 +70,11 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         }
 
         String cacheKey = group + ":" + service;
+        String group2 = group;
 
-        CloudLoadBalance tmp = cached.get(cacheKey);
-
-        if (tmp == null) {
-            synchronized (cached) {
-                tmp = cached.get(cacheKey);
-
-                if (tmp == null) {
-                    tmp = new CloudLoadBalance(group, service);
-                    cached.put(cacheKey, tmp);
-                }
-            }
-        }
-        return tmp;
+        return cached.computeIfAbsent(cacheKey, k -> {
+            return new CloudLoadBalance(group2, service);
+        });
     }
 
     /**
@@ -95,18 +86,10 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         }
 
         String cacheKey = group + ":" + service;
+        String group2 = group;
 
-        CloudLoadBalance tmp = cached.get(cacheKey);
-
-        if (tmp == null) {
-            synchronized (cached) {
-                tmp = cached.get(cacheKey);
-
-                if (tmp == null) {
-                    tmp = new CloudLoadBalance(group, service, discovery);
-                    cached.put(cacheKey, tmp);
-                }
-            }
-        }
+        cached.computeIfAbsent(cacheKey, k -> {
+            return new CloudLoadBalance(group2, service, discovery);
+        });
     }
 }

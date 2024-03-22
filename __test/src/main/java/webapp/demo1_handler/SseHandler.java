@@ -6,6 +6,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 @Mapping("/sse")
 @Component
 public class SseHandler implements Handler , EventListener<SseHandler.SseEvent> {
-    List<SseEvent> sseEvents = new ArrayList<>();
+    private List<SseEvent> sseEvents = new ArrayList<>();
 
     @Override
     public void handle(Context ctx) throws Throwable {
@@ -23,11 +24,11 @@ public class SseHandler implements Handler , EventListener<SseHandler.SseEvent> 
 
         while (true) {
             if (sseEvents.size() > 0) {
-                synchronized (sseEvents) {
-                    for (SseEvent event : sseEvents) {
-                        ctx.output(event.toString());
-                        ctx.flush();
-                    }
+                Iterator<SseEvent> iterator = sseEvents.iterator();
+                while (iterator.hasNext()) {
+                    SseEvent event = iterator.next();
+                    ctx.output(event.toString());
+                    ctx.flush();
                 }
             } else {
                 Thread.sleep(1000);
@@ -37,9 +38,7 @@ public class SseHandler implements Handler , EventListener<SseHandler.SseEvent> 
 
     @Override
     public void onEvent(SseEvent sseEvent) throws Throwable {
-        synchronized (sseEvents) {
-            sseEvents.add(sseEvent);
-        }
+        sseEvents.add(sseEvent);
     }
 
 

@@ -6,6 +6,7 @@ import org.noear.solon.core.util.RunUtil;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 默认缓存服务
@@ -20,6 +21,9 @@ public class LocalCacheService implements CacheService {
 
     //缓存存储器
     private final Map<String, Entity> _data = new ConcurrentHashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
+
+
     public LocalCacheService() {
         this(30);
     }
@@ -43,8 +47,8 @@ public class LocalCacheService implements CacheService {
     /**
      * 保存
      *
-     * @param key 缓存键
-     * @param obj 对象
+     * @param key     缓存键
+     * @param obj     对象
      * @param seconds 秒数
      */
     @Override
@@ -53,7 +57,8 @@ public class LocalCacheService implements CacheService {
             seconds = getDefalutSeconds();
         }
 
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+        try {
             Entity ent = _data.get(key);
             if (ent == null) {
                 //如果末存在，则新建实体
@@ -71,6 +76,8 @@ public class LocalCacheService implements CacheService {
                     _data.remove(key);
                 }, seconds * 1000L);
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -83,7 +90,7 @@ public class LocalCacheService implements CacheService {
     public <T> T get(String key, Class<T> clz) {
         Entity ent = _data.get(key);
 
-        return ent == null ? null : (T)ent.value;
+        return ent == null ? null : (T) ent.value;
     }
 
     /**
@@ -93,18 +100,21 @@ public class LocalCacheService implements CacheService {
      */
     @Override
     public void remove(String key) {
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+        try {
             Entity ent = _data.remove(key);
 
             if (ent != null) {
                 ent.futureDel();
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
     /**
      * 表空
-     * */
+     */
     public void clear() {
         for (Entity ent : _data.values()) {
             ent.futureDel();
@@ -120,7 +130,7 @@ public class LocalCacheService implements CacheService {
 
     /**
      * 存储实体
-     * */
+     */
     private static class Entity {
         public Object value;
         public Future future;

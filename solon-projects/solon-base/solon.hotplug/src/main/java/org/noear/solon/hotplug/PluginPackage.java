@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 外接小程序包
@@ -38,6 +39,8 @@ public class PluginPackage {
      * Aop 上下文
      */
     private AppContext context;
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public PluginPackage(File file, PluginClassLoader classLoader, List<PluginEntity> plugins) {
         this.file = file;
@@ -90,41 +93,56 @@ public class PluginPackage {
     /**
      * 启动插件包
      */
-    public synchronized PluginPackage start() {
-        for (PluginEntity p1 : plugins) {
-            p1.init(context);
+    public PluginPackage start() {
+        SYNC_LOCK.lock();
+        try {
+            for (PluginEntity p1 : plugins) {
+                p1.init(context);
+            }
+
+            for (PluginEntity p1 : plugins) {
+                p1.start(context);
+            }
+
+            context.start();
+            started = true;
+
+            return this;
+        } finally {
+            SYNC_LOCK.unlock();
         }
-
-        for (PluginEntity p1 : plugins) {
-            p1.start(context);
-        }
-
-        context.start();
-        started = true;
-
-        return this;
     }
 
     /**
      * 预停止插件包
      */
-    public synchronized void prestop() {
-        started = false;
-        for (PluginEntity p1 : plugins) {
-            p1.prestop();
+    public void prestop() {
+        SYNC_LOCK.lock();
+        try {
+            started = false;
+            for (PluginEntity p1 : plugins) {
+                p1.prestop();
+            }
+            context.prestop();
+        } finally {
+            SYNC_LOCK.unlock();
         }
-        context.prestop();
     }
 
     /**
      * 停止插件包
      */
-    public synchronized void stop() {
-        started = false;
-        for (PluginEntity p1 : plugins) {
-            p1.stop();
+    public void stop() {
+        SYNC_LOCK.lock();
+        try {
+            started = false;
+            for (PluginEntity p1 : plugins) {
+                p1.stop();
+            }
+            context.stop();
+            context.clear();
+        } finally {
+            SYNC_LOCK.unlock();
         }
-        context.stop();
-        context.clear();
     }
 }

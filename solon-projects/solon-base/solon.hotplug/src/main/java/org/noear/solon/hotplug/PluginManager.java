@@ -9,6 +9,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 外接小程序管理器
@@ -17,7 +18,7 @@ import java.util.*;
  * @since 1.8
  */
 public class PluginManager {
-    static final Map<String, PluginInfo> pluginMap = new HashMap<>();
+    static final Map<String, PluginInfo> pluginMap = new ConcurrentHashMap<>();
 
     static {
         Properties pops = Solon.cfg().getProp("solon.hotplug");
@@ -31,24 +32,22 @@ public class PluginManager {
         }
     }
 
-    public synchronized static Collection<PluginInfo> getPlugins(){
+    public static Collection<PluginInfo> getPlugins(){
         return pluginMap.values();
     }
 
-    public synchronized static void add(String name, File file){
-        if(pluginMap.containsKey(name)){
-            return;
-        }
-
-        pluginMap.put(name, new PluginInfo(name, file));
+    public static void add(String name, File file) {
+        pluginMap.computeIfAbsent(name, k -> {
+            return new PluginInfo(name, file);
+        });
     }
 
-    public synchronized static void remove(String name){
+    public static void remove(String name){
         pluginMap.remove(name);
     }
 
 
-    public synchronized static PluginPackage load(String name) {
+    public static PluginPackage load(String name) {
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
@@ -62,7 +61,7 @@ public class PluginManager {
         return info.getAddinPackage();
     }
 
-    public synchronized static void unload(String name){
+    public static void unload(String name){
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
@@ -77,7 +76,7 @@ public class PluginManager {
         info.setAddinPackage(null);
     }
 
-    public synchronized static void start(String name) {
+    public static void start(String name) {
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
@@ -96,7 +95,7 @@ public class PluginManager {
         info.getAddinPackage().start();
     }
 
-    public synchronized static void stop(String name){
+    public static void stop(String name){
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
@@ -119,7 +118,7 @@ public class PluginManager {
      *
      * @param file 文件
      * */
-    public synchronized static PluginPackage loadJar(File file) {
+    public static PluginPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
             PluginClassLoader classLoader = new PluginClassLoader(AppClassLoader.global());
@@ -141,7 +140,7 @@ public class PluginManager {
      *
      * @param pluginPackage 插件包
      * */
-    public synchronized static void unloadJar(PluginPackage pluginPackage) {
+    public static void unloadJar(PluginPackage pluginPackage) {
         try {
             pluginPackage.prestop();
             pluginPackage.stop();
