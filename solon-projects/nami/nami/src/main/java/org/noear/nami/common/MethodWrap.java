@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 函数包装器（预处理并缓存）
@@ -14,28 +15,18 @@ import java.util.Map;
  * @since 1.2
  */
 public class MethodWrap {
-    private static final Map<Method, MethodWrap> cached = new HashMap<>();
+    private static final Map<Method, MethodWrap> cached = new ConcurrentHashMap<>();
 
     public static MethodWrap get(Method method) {
-        MethodWrap mw = cached.get(method);
-        if (mw == null) {
-            synchronized (method) {
-                mw = cached.get(method);
-                if (mw == null) {
-                    mw = new MethodWrap(method);
-                    cached.put(method, mw);
-                }
-            }
-        }
-
+        MethodWrap mw = cached.computeIfAbsent(method, k -> new MethodWrap(method));
         return mw;
     }
 
-    protected void resolveMappingAnno(Method m){
+    protected void resolveMappingAnno(Method m) {
         mappingAnno = m.getAnnotation(NamiMapping.class);
-        if(mappingAnno == null){
+        if (mappingAnno == null) {
             Mapping anno = m.getAnnotation(Mapping.class);
-            if(anno != null){
+            if (anno != null) {
                 mappingAnno = new NamiMappingAnno(anno);
             }
         }
@@ -97,7 +88,7 @@ public class MethodWrap {
     private String bodyName;
     private NamiBody bodyAnno;
     private NamiMapping mappingAnno;
-    private Map<String,String> mappingHeaders;
+    private Map<String, String> mappingHeaders;
     private String act;
     private String fun;
 

@@ -33,7 +33,7 @@ public class PropertiesYaml extends Properties {
         }
     }
 
-    public  void loadYml(Reader reader) throws IOException {
+    public void loadYml(Reader reader) throws IOException {
         //支持多部分切割
         List<String> partList = splitParts(reader);
 
@@ -46,7 +46,7 @@ public class PropertiesYaml extends Properties {
                 continue;
             }
             final int fi = i;
-            this.loadYml(partStr, partProp->{
+            this.loadYml(partStr, partProp -> {
                 //2.同步环境变量
                 if (envRef.get() == null && fi == 0 && partProp.containsKey(SOLON_ENV)) {
                     envRef.set(String.valueOf(partProp.get(SOLON_ENV)));
@@ -54,22 +54,26 @@ public class PropertiesYaml extends Properties {
             });
         }
     }
-    public  void loadYml(String str) {
+
+    public void loadYml(String str) {
         this.loadYml(str, null);
     }
 
-    public synchronized void loadYml(String str, Consumer<Map<Object, Object>> c) {
+    public void loadYml(String str, Consumer<Map<Object, Object>> c) {
         //1.加载部分属性
         Object tmp = createYaml().load(str);
         Map<Object, Object> partProp = new TreeMap<>();
         load0(partProp, "", tmp);
+
         if (partProp.size() == 0) {
             return;
         }
-        if(c != null){
+
+        if (c != null) {
             //2.其他操作，如同步环境变量
             c.accept(partProp);
         }
+
         //3.根据条件过滤加载
         if (partProp.containsKey(SOLON_ENV_ON)) {
             //如果有环境条件，尝试匹配 //支持多环境匹配。例：solon.env.on: pro1 | pro2
@@ -84,7 +88,7 @@ public class PropertiesYaml extends Properties {
 
     /**
      * 切割多部分
-     * */
+     */
     private List<String> splitParts(Reader reader) throws IOException {
         List<String> partList = new ArrayList<>();
         //支持多部分切割
