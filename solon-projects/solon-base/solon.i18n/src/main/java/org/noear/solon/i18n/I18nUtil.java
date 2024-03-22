@@ -6,6 +6,7 @@ import org.noear.solon.i18n.impl.I18nBundleFactoryLocal;
 import org.noear.solon.i18n.impl.LocaleResolverHeader;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 国际化工具
@@ -21,7 +22,7 @@ public class I18nUtil {
     /**
      * 国际化内容包缓存
      */
-    private static final Map<String, I18nBundle> bundleCached = new HashMap<>();
+    private static final Map<String, I18nBundle> bundleCached = new ConcurrentHashMap<>();
 
     /**
      * 地区解析器
@@ -64,18 +65,9 @@ public class I18nUtil {
     public static I18nBundle getBundle(String bundleName, Locale locale) {
         String cacheKey = bundleName + "#" + locale.hashCode();
 
-        I18nBundle bundle = bundleCached.get(cacheKey);
-
-        if (bundle == null) {
-            synchronized (bundleCached) {
-                bundle = bundleCached.get(cacheKey);
-
-                if (bundle == null) {
-                    bundle = bundleFactory.create(bundleName, locale);
-                    bundleCached.put(cacheKey, bundle);
-                }
-            }
-        }
+        I18nBundle bundle = bundleCached.computeIfAbsent(cacheKey,k->{
+            return  bundleFactory.create(bundleName, locale);
+        });
 
         return bundle;
     }

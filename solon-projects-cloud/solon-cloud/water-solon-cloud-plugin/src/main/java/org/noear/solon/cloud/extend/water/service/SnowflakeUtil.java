@@ -6,6 +6,7 @@ import org.noear.water.utils.LocalUtils;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear 2021/4/30 created
@@ -83,8 +84,18 @@ public class SnowflakeUtil {
      */
     private static final long SEQ_MAX_NUM = ~(-1 << SEQ_LEN);
 
+    private static final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
-    public synchronized static long genId() {
+    public static long genId() {
+        SYNC_LOCK.lock();
+        try {
+            return genId0();
+        } finally {
+            SYNC_LOCK.unlock();
+        }
+    }
+
+    private static long genId0() {
         long now = System.currentTimeMillis();
 
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常

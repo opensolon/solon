@@ -86,35 +86,44 @@ public class LogOptions {
     /**
      * 初始化记录器默认等级
      */
-    private static synchronized void loggerLevelMapInit() {
-        if (loggerLevelMapInited) {
-            return;
-        }
-
+    private static void loggerLevelMapInit() {
         if (Solon.app() == null) {
             return;
         }
 
-        loggerLevelMapInited = true;
+        if (loggerLevelMapInited) {
+            return;
+        }
 
-        Properties props = Solon.cfg().getProp("solon.logging.logger");
+        Utils.locker().lock();
+        try {
+            if (loggerLevelMapInited) {
+                return;
+            }
 
-        if (props.size() > 0) {
-            props.forEach((k, v) -> {
-                String key = (String) k;
-                String val = (String) v;
+            loggerLevelMapInited = true;
 
-                if (key.endsWith(".level")) {
-                    String loggerExpr = key.substring(0, key.length() - 6);
-                    Level loggerLevel = Level.of(val, Level.INFO);
+            Properties props = Solon.cfg().getProp("solon.logging.logger");
 
-                    LogOptions.addLoggerLevel(loggerExpr, loggerLevel);
+            if (props.size() > 0) {
+                props.forEach((k, v) -> {
+                    String key = (String) k;
+                    String val = (String) v;
 
-                    if ("root".equals(loggerExpr)) {
-                        rootLevel = loggerLevel;
+                    if (key.endsWith(".level")) {
+                        String loggerExpr = key.substring(0, key.length() - 6);
+                        Level loggerLevel = Level.of(val, Level.INFO);
+
+                        LogOptions.addLoggerLevel(loggerExpr, loggerLevel);
+
+                        if ("root".equals(loggerExpr)) {
+                            rootLevel = loggerLevel;
+                        }
                     }
-                }
-            });
+                });
+            }
+        } finally {
+            Utils.locker().unlock();
         }
     }
 }

@@ -4,12 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear 2022/6/24 created
  */
 public class MapPutTest {
     private static Map<String, Object> cached = new ConcurrentHashMap<>();
+    private static ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     @Test
     public void test() {
@@ -25,12 +27,14 @@ public class MapPutTest {
     private Object get1(String key) { //5
         Object val = cached.get(key);
         if (val == null) {
-            synchronized (cached) {
+            try {
                 val = cached.get(key);
 
                 if (val == null) {
                     cached.put(key, key + ":1");
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
