@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Nami - 扩展管理器
@@ -18,7 +19,7 @@ public class NamiManager {
     static final Map<String, Decoder> decoderMap = new HashMap<>();
     static final Map<String, Encoder> encoderMap = new HashMap<>();
     static final Map<String, Channel> channelMap = new HashMap<>();
-    static final Map<Class<?>, NamiConfiguration> configuratorMap = new HashMap<>();
+    static final Map<Class<?>, NamiConfiguration> configuratorMap = new ConcurrentHashMap<>();
 
     static Decoder decoderFirst;
     static Encoder encoderFirst;
@@ -147,17 +148,9 @@ public class NamiManager {
      * 获取配置器
      */
     public static NamiConfiguration getConfigurator(Class<? extends NamiConfiguration> clz) throws Exception {
-        NamiConfiguration tmp = configuratorMap.get(clz);
-
-        if (tmp == null) {
-            synchronized (clz) {
-                tmp = configuratorMap.get(clz);
-                if (tmp == null) {
-                    tmp = ClassUtil.newInstance(clz);
-                    configuratorMap.put(clz, tmp);
-                }
-            }
-        }
+        NamiConfiguration tmp = configuratorMap.computeIfAbsent(clz, k->{
+            return ClassUtil.tryInstance(clz, null);
+        });
 
         return tmp;
     }

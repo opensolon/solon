@@ -104,6 +104,10 @@ public class ClassUtil {
     public static <T> T tryInstance(ClassLoader classLoader, String className, Properties prop) {
         Class<?> clz = loadClass(classLoader, className);
 
+        return tryInstance(clz, prop);
+    }
+
+    public static <T> T tryInstance(Class<?> clz, Properties prop) {
         if (clz == null) {
             return null;
         } else {

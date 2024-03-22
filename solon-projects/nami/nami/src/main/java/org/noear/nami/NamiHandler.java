@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ public class NamiHandler implements InvocationHandler {
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
     private final Class<?> clz0;
-    private final Map<String, Map> pathKeysCached = new LinkedHashMap<>();
+    private final Map<String, Map> pathKeysCached = new ConcurrentHashMap<>();
 
     /**
      * @param config 配置
@@ -138,8 +139,8 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //调用 Object 函数
-        if(method.getDeclaringClass() == Object.class){
-            return MethodHandlerUtils.invokeObject(clz0,proxy, method, vals);
+        if (method.getDeclaringClass() == Object.class) {
+            return MethodHandlerUtils.invokeObject(clz0, proxy, method, vals);
         }
 
         MethodWrap methodWrap = MethodWrap.get(method);
@@ -257,7 +258,7 @@ public class NamiHandler implements InvocationHandler {
             type = method.getReturnType();
         }
 
-        if(url.startsWith("sd:")){
+        if (url.startsWith("sd:")) {
             url = url.substring(3);
         }
 
@@ -273,21 +274,14 @@ public class NamiHandler implements InvocationHandler {
     }
 
     private Map<String, String> buildPathKeys(String path) {
-        Map<String, String> pathKeys = pathKeysCached.get(path);
-        if (pathKeys == null) {
-            synchronized (pathKeysCached) {
-                pathKeys = pathKeysCached.get(path);
-                if (pathKeys == null) {
-                    pathKeys = new LinkedHashMap<>();
-
-                    Matcher pm = pathKeyExpr.matcher(path);
-
-                    while (pm.find()) {
-                        pathKeys.put(pm.group(), pm.group(1));
-                    }
-                }
+        Map<String, String> pathKeys = pathKeysCached.computeIfAbsent(path, k -> {
+            Map<String, String> pks = new LinkedHashMap<>();
+            Matcher pm = pathKeyExpr.matcher(path);
+            while (pm.find()) {
+                pks.put(pm.group(), pm.group(1));
             }
-        }
+            return pks;
+        });
 
         return pathKeys;
     }

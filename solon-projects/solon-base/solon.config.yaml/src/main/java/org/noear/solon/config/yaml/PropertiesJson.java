@@ -12,7 +12,7 @@ import java.util.Properties;
  * @since 1.5
  * */
 public class PropertiesJson extends Properties {
-    public synchronized void loadJson(String text) throws IOException {
+    public void loadJson(String text) throws IOException {
         ONode.loadStr(text).bindTo(this);
     }
 }
