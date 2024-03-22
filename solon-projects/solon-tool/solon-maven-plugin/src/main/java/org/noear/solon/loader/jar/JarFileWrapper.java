@@ -89,7 +89,7 @@ class JarFileWrapper extends AbstractJarFile {
 	}
 
 	@Override
-	public synchronized InputStream getInputStream(ZipEntry ze) throws IOException {
+	public InputStream getInputStream(ZipEntry ze) throws IOException {
 		return this.parent.getInputStream(ze);
 	}
 

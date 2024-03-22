@@ -15,6 +15,7 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
@@ -60,6 +61,9 @@ public class JarFile extends java.util.jar.JarFile {
 	private SoftReference<Manifest> manifest;
 
 	private boolean signed;
+
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
 	/**
 	 * Create a new {@link JarFile} backed by the specified file.
@@ -197,19 +201,18 @@ public class JarFile extends java.util.jar.JarFile {
 	}
 
 	@Override
-	public synchronized InputStream getInputStream(ZipEntry ze) throws IOException {
+	public InputStream getInputStream(ZipEntry ze) throws IOException {
 		return getInputStream(ze, RandomAccessData.ResourceAccess.PER_READ);
 	}
 
-	public InputStream getInputStream(ZipEntry ze, RandomAccessData.ResourceAccess access)
-			throws IOException {
-		if (ze instanceof JarEntry) {
+	public InputStream getInputStream(ZipEntry ze, RandomAccessData.ResourceAccess access) throws IOException {
+        if (ze instanceof JarEntry) {
 			return this.entries.getInputStream((JarEntry) ze, access);
 		}
 		return getInputStream((ze != null ? ze.getName() : null), access);
 	}
 
-	InputStream getInputStream(String name, RandomAccessData.ResourceAccess access) throws IOException {
+	private InputStream getInputStream(String name, RandomAccessData.ResourceAccess access) throws IOException {
 		return this.entries.getInputStream(name, access);
 	}
 
@@ -219,8 +222,7 @@ public class JarFile extends java.util.jar.JarFile {
 	 * @return a {@link JarFile} for the entry
 	 * @throws IOException if the nested jar file cannot be read
 	 */
-	public synchronized JarFile getNestedJarFile(final ZipEntry entry)
-			throws IOException {
+	public JarFile getNestedJarFile(final ZipEntry entry) throws IOException {
 		return getNestedJarFile((JarEntry) entry);
 	}
 
@@ -230,15 +232,17 @@ public class JarFile extends java.util.jar.JarFile {
 	 * @return a {@link JarFile} for the entry
 	 * @throws IOException if the nested jar file cannot be read
 	 */
-	public synchronized JarFile getNestedJarFile(JarEntry entry) throws IOException {
-		try {
-			return createJarFileFromEntry(entry);
-		}
-		catch (Exception ex) {
-			throw new IOException(
-					"Unable to open nested jar file '" + entry.getName() + "'", ex);
-		}
-	}
+	public JarFile getNestedJarFile(JarEntry entry) throws IOException {
+        SYNC_LOCK.lock();
+        try {
+            return createJarFileFromEntry(entry);
+        } catch (Exception ex) {
+            throw new IOException(
+                    "Unable to open nested jar file '" + entry.getName() + "'", ex);
+        } finally {
+            SYNC_LOCK.unlock();
+        }
+    }
 
 	private JarFile createJarFileFromEntry(JarEntry entry) throws IOException {
 		if (entry.isDirectory()) {

@@ -10,6 +10,8 @@ import org.noear.solon.cloud.tracing.integration.SolonFilterTracing;
 import org.noear.solon.cloud.tracing.service.TracerFactory;
 import org.noear.solon.core.util.LogUtil;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * 跟踪管理器
  *
@@ -17,16 +19,16 @@ import org.noear.solon.core.util.LogUtil;
  * @since 1.7
  */
 public class TracingManager {
-    private static boolean enabled;
+    private static AtomicBoolean enabled = new AtomicBoolean();
 
     /**
      * 启用
      */
-    public synchronized static void enable(String excluded) {
-        if (enabled) {
+    public static void enable(String excluded) {
+        if (enabled.get()) {
             return;
         } else {
-            enabled = true;
+            enabled.set(true);
         }
 
         //添加 nami 适配
@@ -42,7 +44,7 @@ public class TracingManager {
     /**
      * 注册
      */
-    public static synchronized void register(TracerFactory service) {
+    public static void register(TracerFactory service) {
         try {
             Solon.context().wrapAndPut(Tracer.class, service.create());
 

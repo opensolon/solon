@@ -5,8 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.LoadBalance;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 通道代理（提供集群调用支持）
@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 1.9
  */
 public class GrpcChannelProxy extends Channel {
-    private final Map<String, Channel>  channelMap = new HashMap<>();
+    private final Map<String, Channel> channelMap = new ConcurrentHashMap<>();
 
     private LoadBalance upstream;
 
@@ -29,8 +29,6 @@ public class GrpcChannelProxy extends Channel {
         if (upstream == null) {
             throw new IllegalStateException("No service upstream found: " + service);
         }
-
-
     }
 
     @Override
@@ -45,20 +43,13 @@ public class GrpcChannelProxy extends Channel {
 
     private Channel getChannel() {
         String server = upstream.getServer();
-        Channel real = channelMap.get(server);
 
-        if (real == null) {
-            synchronized (channelMap) {
-                real = channelMap.get(server);
-                if (real == null) {
-                    URI uri = URI.create(server);
-                    real = ManagedChannelBuilder.forAddress(uri.getHost(), uri.getPort())
-                            .usePlaintext()
-                            .build();
-                    channelMap.put(server, real);
-                }
-            }
-        }
+        Channel real = channelMap.computeIfAbsent(server, k -> {
+            URI uri = URI.create(server);
+            return ManagedChannelBuilder.forAddress(uri.getHost(), uri.getPort())
+                    .usePlaintext()
+                    .build();
+        });
 
         return real;
     }

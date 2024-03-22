@@ -7,15 +7,15 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author noear
  * @since 1.2
  * */
 public class XPluginImp implements Plugin {
-    private Map<NamiClient, Object> cached = new LinkedHashMap<>();
+    private Map<NamiClient, Object> cached = new ConcurrentHashMap<>();
 
     @Override
     public void start(AppContext context) {
@@ -39,13 +39,13 @@ public class XPluginImp implements Plugin {
 
             localFirst |= anno.localFirst();
 
-            if(localFirst){
+            if (localFirst) {
                 //如果本地优化，开始找 Bean；如果找到就替换注入目标
-                context.getBeanAsync(varH.getType(), bean->{
+                context.getBeanAsync(varH.getType(), bean -> {
                     varH.setValue(bean);
                 });
 
-                if(varH.isDone()){
+                if (varH.isDone()) {
                     //如果已注入完成
                     return;
                 }
@@ -61,16 +61,9 @@ public class XPluginImp implements Plugin {
                 InfoUtils.print(varH.getType(), anno);
             }
 
-            Object obj = cached.get(anno);
-            if (obj == null) {
-                synchronized (anno) {
-                    obj = cached.get(anno);
-                    if (obj == null) {
-                        obj = Nami.builder().create(varH.getType(), anno);
-                        cached.put(anno, obj);
-                    }
-                }
-            }
+            Object obj = cached.computeIfAbsent(anno, k -> {
+                return Nami.builder().create(varH.getType(), k);
+            });
 
             varH.setValue(obj);
         });

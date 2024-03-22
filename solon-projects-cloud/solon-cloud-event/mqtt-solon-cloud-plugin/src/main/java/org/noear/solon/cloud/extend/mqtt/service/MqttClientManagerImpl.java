@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Mqtt 客户端管理器实现
@@ -137,18 +138,29 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     }
 
 
-    IMqttAsyncClient client;
+    private IMqttAsyncClient client;
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     /**
      * 获取客户端
      */
     @Override
-    public synchronized IMqttAsyncClient getClient() {
-        if (client == null) {
-            client = createClient();
+    public IMqttAsyncClient getClient() {
+        if (client != null) {
+            return client;
         }
 
-        return client;
+        SYNC_LOCK.lock();
+        try {
+            if (client == null) {
+                client = createClient();
+            }
+
+            return client;
+        } finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     @Override

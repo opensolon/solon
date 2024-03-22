@@ -20,7 +20,7 @@ import java.util.TimeZone;
 public class CloudJobServiceImpl implements CloudJobService {
     public static final CloudJobServiceImpl instance = new CloudJobServiceImpl();
 
-    Scheduler _scheduler = null;
+    private Scheduler _scheduler = null;
 
     public void setScheduler(Scheduler scheduler) {
         //如果已存在，则不可替换
@@ -31,12 +31,16 @@ public class CloudJobServiceImpl implements CloudJobService {
 
     private void tryInitScheduler() throws SchedulerException {
         if (_scheduler == null) {
-            synchronized (CloudJobServiceImpl.class) {
+            Utils.locker().lock();
+
+            try {
                 if (_scheduler == null) {
                     //默认使用：直接本地调用
                     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
                     _scheduler = schedulerFactory.getScheduler();
                 }
+            } finally {
+                Utils.locker().unlock();
             }
         }
     }

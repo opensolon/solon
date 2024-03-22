@@ -10,6 +10,7 @@ import org.noear.socketd.transport.core.Session;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Socketd 客户端通道
@@ -22,12 +23,14 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
     public static final SocketdClientChannel instance = new SocketdClientChannel();
 
     private final Map<String, SocketdChannel> channelMap = new HashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     private SocketdChannel get(String hostname, String url) {
         SocketdChannel channel = channelMap.get(hostname);
 
         if (channel == null) {
-            synchronized (channelMap) {
+            SYNC_LOCK.lock();
+            try {
                 channel = channelMap.get(hostname);
 
                 if (channel == null) {
@@ -43,6 +46,8 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
                         throw new IllegalStateException(e);
                     }
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 

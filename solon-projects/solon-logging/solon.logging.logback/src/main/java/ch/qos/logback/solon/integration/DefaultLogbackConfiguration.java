@@ -14,6 +14,7 @@ import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.solon.SolonAppender;
 import ch.qos.logback.solon.SolonTagsConverter;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ import java.util.List;
  */
 public class DefaultLogbackConfiguration {
     void apply(LogbackConfigurator config) {
-        synchronized (config.getConfigurationLock()) {
+        Utils.locker().lock();
+        try {
             prepare(config);
-
 
             boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
             boolean consoleEnable = Solon.cfg().getBool("solon.logging.appender.console.enable", true);
@@ -52,6 +53,8 @@ public class DefaultLogbackConfiguration {
             Appender<ILoggingEvent>[] appenderAry = new Appender[appenderList.size()];
             Level rootLevel = Level.toLevel(resolve(config, "${LOGGER_ROOT_LEVEL}"));
             config.root(rootLevel, appenderList.toArray(appenderAry));
+        } finally {
+            Utils.locker().unlock();
         }
     }
 

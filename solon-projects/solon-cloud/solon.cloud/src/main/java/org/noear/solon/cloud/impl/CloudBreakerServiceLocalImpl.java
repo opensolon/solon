@@ -6,8 +6,8 @@ import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.cloud.service.CloudBreakerService;
 import org.noear.solon.core.Props;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 本地熔断服务
@@ -23,7 +23,7 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
     static final String CONFIG_PREFIX = "solon.cloud.local.breaker";
     static final String CONFIG_DEF = "root";
 
-    private Map<String, BreakerEntrySim> breakers = new HashMap<>();
+    private Map<String, BreakerEntrySim> breakers = new ConcurrentHashMap<>();
     private int rootValue = 0;
 
     public CloudBreakerServiceLocalImpl() {
@@ -31,7 +31,7 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
 
         if (props.size() > 0) {
             //默认值
-            rootValue = props.getInt(CONFIG_DEF,0);
+            rootValue = props.getInt(CONFIG_DEF, 0);
 
             //初始化
             //
@@ -63,18 +63,12 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
 
     @Override
     public AutoCloseable entry(String breakerName) throws BreakerException {
-        BreakerEntrySim tmp = breakers.get(breakerName);
+        BreakerEntrySim tmp = null;
 
-        if(tmp == null && rootValue > 0) {
-            //动态创建
-            synchronized (breakers) {
-                tmp = breakers.get(breakerName);
-
-                if (tmp == null) {
-                    tmp = create(breakerName, rootValue);
-                    breakers.put(breakerName, tmp);
-                }
-            }
+        if (rootValue > 0) {
+            tmp = breakers.computeIfAbsent(breakerName, k -> create(breakerName, rootValue));
+        } else {
+            tmp = breakers.get(breakerName);
         }
 
         if (tmp == null) {

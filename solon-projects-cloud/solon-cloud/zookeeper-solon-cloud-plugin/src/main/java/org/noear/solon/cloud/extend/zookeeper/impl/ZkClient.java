@@ -1,14 +1,12 @@
 package org.noear.solon.cloud.extend.zookeeper.impl;
 
 import org.apache.zookeeper.*;
-import org.noear.solon.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
@@ -19,18 +17,24 @@ public class ZkClient {
     private String server;
     private int sessionTimeout;
     private ZooKeeper real;
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public ZkClient(String server, int sessionTimeout) {
         this.server = server;
         this.sessionTimeout = sessionTimeout;
     }
 
-    public synchronized void connectServer() {
-        if (real != null) {
-            return;
-        }
+    public void connectServer() {
+        SYNC_LOCK.lock();
+        try {
+            if (real != null) {
+                return;
+            }
 
-        connectServer0();
+            connectServer0();
+        }finally {
+            SYNC_LOCK.unlock();
+        }
     }
 
     private void connectServer0() {

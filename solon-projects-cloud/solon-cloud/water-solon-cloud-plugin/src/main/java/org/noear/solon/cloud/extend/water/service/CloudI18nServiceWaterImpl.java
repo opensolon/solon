@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
@@ -25,6 +25,7 @@ public class CloudI18nServiceWaterImpl implements CloudI18nService {
 
     private String packNameDefault;
     private Map<String, Pack> packMap = new HashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public CloudI18nServiceWaterImpl(CloudProps cloudProps){
         packNameDefault = cloudProps.getI18nDefault();
@@ -60,7 +61,8 @@ public class CloudI18nServiceWaterImpl implements CloudI18nService {
         Pack pack = packMap.get(packKey);
 
         if (pack == null) {
-            synchronized (packMap) {
+            SYNC_LOCK.lock();
+            try {
                 pack = packMap.get(packKey);
 
                 if (pack == null) {
@@ -70,6 +72,8 @@ public class CloudI18nServiceWaterImpl implements CloudI18nService {
                 }
 
                 packMap.put(packKey, pack);
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
