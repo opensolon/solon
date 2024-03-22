@@ -5,8 +5,8 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -17,15 +17,7 @@ import java.io.PrintWriter;
  */
 public abstract class OutputStreamAppender extends AppenderSimple {
     protected PrintWriter out = null;
-
-    protected void setOutput(OutputStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        setOutput(new PrintWriter(stream, true));
-    }
-
+    protected final ReentrantLock SYNC_LOCK = new ReentrantLock(true);
     protected void setOutput(PrintWriter writer) {
         if (writer == null) {
             return;
@@ -55,7 +47,8 @@ public abstract class OutputStreamAppender extends AppenderSimple {
 
     @Override
     protected void appendDo(Level level, String title, Object content) {
-        synchronized (out) {
+        SYNC_LOCK.lock();
+        try {
             //print title
             //
             switch (level) {
@@ -83,6 +76,8 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             } else {
                 out.println(ONode.stringify(content));
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 }

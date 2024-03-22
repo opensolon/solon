@@ -1,9 +1,7 @@
 package org.noear.solon.logging.appender;
 
-import org.noear.solon.Solon;
-import org.noear.solon.logging.event.Level;
-
 import java.io.Console;
+import java.io.PrintWriter;
 
 /**
  * 控制台添加器实现类（限制在调试模式或文件模式下打印）
@@ -15,10 +13,10 @@ public class ConsoleAppender extends OutputStreamAppender {
     public ConsoleAppender() {
         Console console = System.console();
 
-        if (console != null) {
+        if (console != null && console.writer() != null) {
             setOutput(console.writer());
         } else {
-            setOutput(System.out);
+            setOutput(new PrintWriter(System.out, true));
         }
     }
 }
