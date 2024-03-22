@@ -1,8 +1,8 @@
 package org.noear.solon.web.staticfiles;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 静态文件类型配置
@@ -12,7 +12,7 @@ import java.util.Map;
  * @since 1.6
  * */
 public class StaticMimes {
-    static final Map<String, String> mimeMap = new HashMap<>();
+    static final Map<String, String> mimeMap = new ConcurrentHashMap<>();
 
     static {
         mimeMap.put(".abs", "audio/x-mpeg");
@@ -211,7 +211,7 @@ public class StaticMimes {
     /**
      * 添加 Mime 记录
      */
-    public synchronized static String add(String extension, String conentType) {
+    public static String add(String extension, String conentType) {
         return mimeMap.put(extension, conentType);
     }
 

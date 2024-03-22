@@ -4,6 +4,7 @@ import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Sse 发射处理器
@@ -15,6 +16,7 @@ public class SseEmitterHandler {
     private final SseEmitter emitter;
     private final Context ctx;
     private final AtomicBoolean stopped = new AtomicBoolean(false);
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock(true);
 
     public SseEmitterHandler(SseEmitter emitter) {
         this.ctx = Context.current();
@@ -37,7 +39,7 @@ public class SseEmitterHandler {
      *
      * @param event 事件数据
      */
-    public synchronized void send(SseEvent event) throws IOException {
+    public void send(SseEvent event) throws IOException {
         if (event == null) {
             throw new IllegalArgumentException("SSE event cannot be null");
         }
@@ -46,6 +48,7 @@ public class SseEmitterHandler {
             throw new IllegalStateException("SSE emitter was stopped");
         }
 
+        SYNC_LOCK.lock();
         try {
             ctx.output(event.build());
             ctx.flush();
@@ -53,20 +56,22 @@ public class SseEmitterHandler {
             stopOnError(e);
 
             throw e;
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
     /**
      * 完成（用于手动控制）
      */
-    public void complete() throws IOException{
+    public void complete() throws IOException {
         stop();
     }
 
     /**
      * 因出错停目
      */
-    protected void stopOnError(Throwable e) throws IOException{
+    protected void stopOnError(Throwable e) throws IOException {
         if (emitter.onError != null) {
             emitter.onError.accept(e);
         }
@@ -77,7 +82,7 @@ public class SseEmitterHandler {
     /**
      * 因操时停止（异步操时）
      */
-    protected void stopOnTimeout() throws IOException{
+    protected void stopOnTimeout() throws IOException {
         if (emitter.onTimeout != null) {
             emitter.onTimeout.run();
         }
@@ -88,15 +93,20 @@ public class SseEmitterHandler {
     /**
      * 停止
      */
-    protected synchronized void stop() throws IOException {
+    protected void stop() throws IOException {
         if (stopped.get() == false) {
             stopped.set(true);
 
-            if (emitter.onCompletion != null) {
-                emitter.onCompletion.run();
-            }
+            SYNC_LOCK.lock();
+            try {
+                if (emitter.onCompletion != null) {
+                    emitter.onCompletion.run();
+                }
 
-            ctx.asyncComplete();
+                ctx.asyncComplete();
+            } finally {
+                SYNC_LOCK.unlock();
+            }
         }
     }
 }

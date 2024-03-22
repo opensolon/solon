@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 定时存储器（做为Session存储方案）
@@ -14,17 +15,20 @@ class ScheduledStore {
     private int _defaultSeconds;
 
     private Map<String, Entity> _data = new HashMap<>();   //缓存存储器
+    private ReentrantLock SYNC_LOCK = new ReentrantLock();
 
-    public ScheduledStore(int seconds){
+    public ScheduledStore(int seconds) {
         _defaultSeconds = seconds;
     }
 
-    public Collection<String> keys(){
+    public Collection<String> keys() {
         return _data.keySet();
     }
 
     public void put(String block, String key, Object obj) {
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+
+        try {
             Entity ent = _data.get(block);
             if (ent == null) {
                 ent = new Entity();
@@ -38,6 +42,8 @@ class ScheduledStore {
             ent.future = RunUtil.delay(() -> {
                 _data.remove(block);
             }, _defaultSeconds * 1000);
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -62,41 +68,51 @@ class ScheduledStore {
     }
 
     public void remove(String block, String key) {
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+
+        try {
             Entity ent = _data.get(block);
             if (ent != null) {
                 ent.map.remove(key);
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
     public void clear(String block) {
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+        try {
             Entity ent = _data.get(block);
             if (ent != null) {
                 ent.futureDel();
 
                 _data.remove(block);
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
     public void clear() {
-        synchronized (_data) {
+        SYNC_LOCK.lock();
+        try {
             for (Entity ent : _data.values()) {
                 ent.futureDel();
             }
 
             _data.clear();
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
     //存储实体
     private static class Entity {
-        public Map<String,Object> map = new ConcurrentHashMap<>();
+        public Map<String, Object> map = new ConcurrentHashMap<>();
         public Future future;
 
-        protected void futureDel(){
+        protected void futureDel() {
             if (future != null) {
                 future.cancel(true);
                 future = null;

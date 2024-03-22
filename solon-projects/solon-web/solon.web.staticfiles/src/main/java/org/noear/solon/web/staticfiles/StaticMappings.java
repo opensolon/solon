@@ -1,8 +1,8 @@
 package org.noear.solon.web.staticfiles;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 静态文件映射
@@ -11,7 +11,7 @@ import java.util.Map;
  * @since 1.0
  * */
 public class StaticMappings {
-    static final Map<StaticRepository, StaticLocation> locationMap = new HashMap<>();
+    static final Map<StaticRepository, StaticLocation> locationMap = new ConcurrentHashMap<>();
 
     /**
      * 映射数量
@@ -26,7 +26,7 @@ public class StaticMappings {
      * @param pathPrefix 路径前缀
      * @param repository 资源仓库
      */
-    public synchronized static void add(String pathPrefix, StaticRepository repository) {
+    public static void add(String pathPrefix, StaticRepository repository) {
         addDo(pathPrefix, repository, false);
     }
 
@@ -43,7 +43,7 @@ public class StaticMappings {
     /**
      * 移除仓库
      */
-    public synchronized static void remove(StaticRepository repository) {
+    public static void remove(StaticRepository repository) {
         locationMap.remove(repository);
     }
 
