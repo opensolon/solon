@@ -12,6 +12,7 @@ import org.noear.solon.cloud.service.CloudConfigService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 云端配置（本地摸拟实现）
@@ -26,6 +27,8 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
     private final Map<String, Config> configMap = new HashMap<>();
 
     private final String server;
+
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     public CloudConfigServiceLocalImpl(CloudProps cloudProps) {
         this.server = cloudProps.getServer();
@@ -45,8 +48,9 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
         String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         Config configVal = configMap.get(configKey);
 
-        if (configVal == null) {
-            synchronized (configMap) {
+        SYNC_LOCK.lock();
+        try {
+            if (configVal == null) {
                 configVal = configMap.get(configKey);
 
                 if (configVal == null) {
@@ -60,6 +64,8 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
                     }
                 }
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
 
         return configVal;
@@ -78,7 +84,8 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
         String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         Config configVal = pull(group, name);
 
-        synchronized (configMap) {
+        SYNC_LOCK.lock();
+        try {
             if (configVal == null) {
                 configVal = new Config(group, name, value, 0);
                 configMap.put(configKey, configVal);
@@ -87,6 +94,8 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
             if (configVal != null) {
                 configVal.updateValue(value, configVal.version() + 1);
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
 
         return true;

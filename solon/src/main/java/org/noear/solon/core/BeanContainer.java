@@ -18,6 +18,7 @@ import java.io.Closeable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.*;
 
 /**
@@ -31,6 +32,8 @@ public abstract class BeanContainer {
     private final ClassLoader classLoader;
     private Map<Class<?>, Object> attachments = new HashMap<>();
     private final AotCollector aot = new AotCollector();
+
+    protected final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
 
     public BeanContainer(ClassLoader classLoader, Props props) {
@@ -89,7 +92,9 @@ public abstract class BeanContainer {
     public <T> T attachmentOf(Class<T> clz, Supplier<T> supplier) {
         T tmp = (T) attachments.get(clz);
         if (tmp == null) {
-            synchronized (clz) {
+            SYNC_LOCK.lock();
+
+            try {
                 tmp = (T) attachments.get(clz);
                 if (tmp == null) {
                     tmp = supplier.get();
@@ -98,6 +103,8 @@ public abstract class BeanContainer {
                     //同时注册到容器
                     wrapAndPut(clz, tmp);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
@@ -306,13 +313,16 @@ public abstract class BeanContainer {
      */
     protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
-            synchronized (beanSubscribers) {
+            SYNC_LOCK.lock();
+            try {
                 Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
                 if (tmp == null) {
                     tmp = new LinkedHashSet<>();
                     beanSubscribers.put(nameOrType, tmp);
                 }
                 tmp.add(callback);
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
     }
@@ -321,8 +331,11 @@ public abstract class BeanContainer {
      * wrap 外部订阅
      */
     protected void wrapExternalSubscribe(Consumer<BeanWrap> callback) {
-        synchronized (wrapExternalConsumers) {
+        SYNC_LOCK.lock();
+        try {
             wrapExternalConsumers.add(callback);
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -334,7 +347,8 @@ public abstract class BeanContainer {
             return;
         }
 
-        synchronized (beanSubscribers) {
+        SYNC_LOCK.lock();
+        try {
             //避免在forEach时，对它进行add
             Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
             if (tmp != null) {
@@ -342,6 +356,8 @@ public abstract class BeanContainer {
                     s1.accept(wrap);
                 }
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -350,10 +366,13 @@ public abstract class BeanContainer {
      */
     public void wrapPublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
-        synchronized (wrapExternalConsumers) {
+        SYNC_LOCK.lock();
+        try {
             for (Consumer<BeanWrap> s1 : wrapExternalConsumers) {
                 s1.accept(wrap);
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -366,14 +385,19 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public synchronized void putWrap(String name, BeanWrap wrap) {
-        if (Utils.isNotEmpty(name) && wrap.raw() != null) {
-            if (beanWrapsOfName.containsKey(name) == false) {
-                beanWrapsOfName.put(name, wrap);
-                beanWrapSet.add(wrap);
+    public void putWrap(String name, BeanWrap wrap) {
+        SYNC_LOCK.lock();
+        try {
+            if (Utils.isNotEmpty(name) && wrap.raw() != null) {
+                if (beanWrapsOfName.containsKey(name) == false) {
+                    beanWrapsOfName.put(name, wrap);
+                    beanWrapSet.add(wrap);
 
-                beanNotice(name, wrap);
+                    beanNotice(name, wrap);
+                }
             }
+        } finally {
+            SYNC_LOCK.unlock();
         }
     }
 
@@ -382,16 +406,21 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public synchronized void putWrap(Class<?> type, BeanWrap wrap) {
+    public void putWrap(Class<?> type, BeanWrap wrap) {
         if (type != null && wrap.raw() != null) {
             //
             //wrap.raw()==null, 说明它是接口；等它完成代理再注册；以@Db为例，可以看一下
             //
-            if (beanWrapsOfType.containsKey(type) == false) {
-                beanWrapsOfType.put(type, wrap);
-                beanWrapSet.add(wrap);
+            SYNC_LOCK.lock();
+            try {
+                if (beanWrapsOfType.containsKey(type) == false) {
+                    beanWrapsOfType.put(type, wrap);
+                    beanWrapSet.add(wrap);
 
-                beanNotice(type, wrap);
+                    beanNotice(type, wrap);
+                }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
     }
@@ -499,7 +528,7 @@ public abstract class BeanContainer {
      *
      * @param baseType 基类
      */
-    public <T> Map<String,T> getBeansMapOfType(Class<T> baseType) {
+    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
@@ -716,11 +745,11 @@ public abstract class BeanContainer {
                 });
 
                 //补尝处理
-                if(Iterable.class.isAssignableFrom(varH.getType()) == false
-                        && Map.class.isAssignableFrom(varH.getType()) == false){
+                if (Iterable.class.isAssignableFrom(varH.getType()) == false
+                        && Map.class.isAssignableFrom(varH.getType()) == false) {
 
-                    lifecycle(()->{
-                        if(varH.isDone() == false) {
+                    lifecycle(() -> {
+                        if (varH.isDone() == false) {
                             BeanWrap bw = getWrap(varH.getType());
                             if (bw != null) {
                                 varH.setValue(bw.get());
@@ -977,7 +1006,7 @@ public abstract class BeanContainer {
 
     /**
      * bean 停止（if Closeable）
-     * */
+     */
     protected void beanStop0() {
         for (BeanWrap bw : beanWrapSet) {
             if (bw.raw() instanceof Closeable) {
