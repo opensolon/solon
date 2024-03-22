@@ -27,6 +27,7 @@
 * 修复 solon.health HealthIndicator 自动注册无效的问题
 * socket.d 升为 2.4.7
 * folkmq 升为 1.3.2
+* snack3 升为 3.2.89
 
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
