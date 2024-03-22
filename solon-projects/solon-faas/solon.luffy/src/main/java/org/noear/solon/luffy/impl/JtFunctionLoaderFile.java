@@ -1,6 +1,5 @@
 package org.noear.solon.luffy.impl;
 
-import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.IoUtil;
@@ -14,6 +13,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 函数加载器 -外部文件实现
@@ -25,6 +25,7 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
     static final Logger log = LoggerFactory.getLogger(JtFunctionLoaderFile.class);
 
     private final Map<String, AFileModel> fileCached = new LinkedHashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     private File _baseDir;
 
@@ -50,7 +51,8 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
         AFileModel fileModel = fileCached.get(path);
 
         if (fileModel == null) {
-            synchronized (fileCached) {
+            SYNC_LOCK.lock();
+            try {
                 fileModel = fileCached.get(path);
 
                 if (fileModel == null) {
@@ -59,19 +61,24 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
 
                     fileCached.put(path, fileModel);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
         if (fileModel.update_fulltime.getTime() != file.lastModified()) {
-            synchronized (fileCached) {
+            SYNC_LOCK.lock();
+            try {
                 if (fileModel.update_fulltime.getTime() != file.lastModified()) {
                     fileFillDo(fileModel, file, path);
                 }
 
-                if(fileModel.content != null){
+                if (fileModel.content != null) {
                     //如果有更新，移除缓存
                     JtRun.dele(path);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
