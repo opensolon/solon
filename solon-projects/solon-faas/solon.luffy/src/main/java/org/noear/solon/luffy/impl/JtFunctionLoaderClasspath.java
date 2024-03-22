@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 函数加载器 - 资源目录实现
@@ -22,13 +23,15 @@ import java.util.Map;
 public class JtFunctionLoaderClasspath implements JtFunctionLoader {
 
     private final Map<String, AFileModel> fileCached = new LinkedHashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = fileCached.get(path);
 
         if (file == null) {
-            synchronized (fileCached) {
+            SYNC_LOCK.lock();
+            try {
                 file = fileCached.get(path);
 
                 if (file == null) {
@@ -36,6 +39,8 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
 
                     fileCached.put(path, file);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 

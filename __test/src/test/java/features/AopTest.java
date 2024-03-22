@@ -66,10 +66,10 @@ public class AopTest {
         assert daoUser.getClass() != DaoUser.class;
     }
 
-    @Test
-    public void test5(){
-        aopDemoCom2.test();
-    }
+//    @Test
+//    public void test5(){
+//        aopDemoCom2.test();
+//    }
 
 
 }

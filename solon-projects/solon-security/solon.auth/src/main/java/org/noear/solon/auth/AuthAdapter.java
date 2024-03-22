@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.auth.impl.AuthRuleImpl;
 
 import java.util.Collection;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
@@ -18,12 +19,13 @@ public class AuthAdapter {
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
     private AuthFailureHandler authFailure = new AuthFailureHandlerDefault();
+    private ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     //=================//=================//=================
 
     /**
      * 获取登录Url
-     * */
+     */
     public String loginUrl() {
         return loginUrl;
     }
@@ -43,8 +45,8 @@ public class AuthAdapter {
      * 添加一个授权规则
      *
      * @param builder 规则构建器
-     * */
-    public synchronized AuthAdapter addRule(Consumer<AuthRule> builder) {
+     */
+    public AuthAdapter addRule(Consumer<AuthRule> builder) {
         AuthRuleImpl rule = new AuthRuleImpl();
         builder.accept(rule);
 
@@ -57,7 +59,7 @@ public class AuthAdapter {
      * 添加一批授权规则（构建规则）
      *
      * @param rules 规则集合
-     * */
+     */
     public AuthAdapter addRules(Collection<AuthRule> rules) {
         rules.forEach(r -> addRuleDo(r));
         return this;
@@ -68,23 +70,28 @@ public class AuthAdapter {
      * 添加授权规则
      *
      * @param rule 规则
-     * */
-    private synchronized void addRuleDo(AuthRule rule) {
-        if (authRuleHandler == null) {
-            authRuleHandler = new AuthRuleHandler();
-            authRuleHandler.setPathPrefix(authRulePathPrefix);
+     */
+    private void addRuleDo(AuthRule rule) {
+        SYNC_LOCK.lock();
+        try {
+            if (authRuleHandler == null) {
+                authRuleHandler = new AuthRuleHandler();
+                authRuleHandler.setPathPrefix(authRulePathPrefix);
 
-            Solon.app().before(authRuleHandler);
+                Solon.app().before(authRuleHandler);
+            }
+
+            authRuleHandler.addRule(rule);
+        } finally {
+            SYNC_LOCK.unlock();
         }
-
-        authRuleHandler.addRule(rule);
     }
 
     /**
      * 设置规则路径前缀（用于支持 AuthAdapterSupplier 的前缀特性）
      *
      * @param pathPrefix 路径前缀
-     * */
+     */
     protected void setRulePathPrefix(String pathPrefix) {
         authRulePathPrefix = pathPrefix;
 
@@ -97,7 +104,7 @@ public class AuthAdapter {
 
     /**
      * 获取认证处理器
-     * */
+     */
     public AuthProcessor processor() {
         return authProcessor;
     }
@@ -117,14 +124,14 @@ public class AuthAdapter {
 
     /**
      * 获取默认的验证出错处理
-     * */
+     */
     public AuthFailureHandler failure() {
         return authFailure;
     }
 
     /**
      * 设定默认的验证出错处理
-     * */
+     */
     public AuthAdapter failure(AuthFailureHandler handler) {
         authFailure = handler;
         return this;

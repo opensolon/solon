@@ -7,17 +7,19 @@ import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author noear
  * @since 1.3
  */
 public class CrossOriginInterceptor implements Handler {
-    Map<CrossOrigin, CrossHandler> handlerMap = new HashMap<>();
+    private Map<CrossOrigin, CrossHandler> handlerMap = new HashMap<>();
+    private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        if(ctx.getHandled()){
+        if (ctx.getHandled()) {
             return;
         }
 
@@ -41,7 +43,8 @@ public class CrossOriginInterceptor implements Handler {
         CrossHandler handler = handlerMap.get(anno);
 
         if (handler == null) {
-            synchronized (anno) {
+            SYNC_LOCK.lock();
+            try {
                 handler = handlerMap.get(anno);
 
                 if (handler == null) {
@@ -49,6 +52,8 @@ public class CrossOriginInterceptor implements Handler {
 
                     handlerMap.put(anno, handler);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
         }
 
