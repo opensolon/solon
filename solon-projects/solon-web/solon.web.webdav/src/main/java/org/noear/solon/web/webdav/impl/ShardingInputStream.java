@@ -76,20 +76,20 @@ public class ShardingInputStream extends InputStream {
 
     @Override
     public void close() {
-        try{
+        try {
             this.in.close();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     @Override
-    public synchronized void mark(int readlimit) {
+    public void mark(int readlimit) {
         throw new RuntimeException("此流不支持标记");
     }
 
     @Override
-    public synchronized void reset() {
+    public void reset() {
         throw new RuntimeException("此流不支持重置");
     }
 }
