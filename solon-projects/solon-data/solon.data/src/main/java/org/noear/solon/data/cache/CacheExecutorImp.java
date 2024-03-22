@@ -7,7 +7,7 @@ import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.solon.data.util.InvKeys;
 import org.noear.solon.core.util.SupplierEx;
-import org.noear.solon.data.util.StringLocker;
+import org.noear.solon.data.util.StringMutexLock;
 
 /**
  * 缓存执行器
@@ -17,6 +17,7 @@ import org.noear.solon.data.util.StringLocker;
  * */
 public class CacheExecutorImp {
     public static final CacheExecutorImp global = new CacheExecutorImp();
+    private final StringMutexLock SYNC_LOCK = new StringMutexLock();
 
     /**
      * 添加缓存
@@ -44,7 +45,7 @@ public class CacheExecutorImp {
         Object result = null;
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
-        StringLocker.lock(key);
+        SYNC_LOCK.lock(key);
         try {
 
             //1.从缓存获取
@@ -75,7 +76,7 @@ public class CacheExecutorImp {
 
             return result;
         } finally {
-            StringLocker.unlock(key);
+            SYNC_LOCK.unlock(key);
         }
     }
 

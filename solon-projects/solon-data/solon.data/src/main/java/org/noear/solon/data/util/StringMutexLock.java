@@ -5,18 +5,18 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 字符串锁
+ * 字符串排它锁
  *
  * @author noear
  * @since 2.7
  */
-public class StringLocker {
-    private static final ConcurrentMap<String, CountDownLatch> lockKeyHolder = new ConcurrentHashMap<>();
+public class StringMutexLock {
+    private final ConcurrentMap<String, CountDownLatch> lockKeyHolder = new ConcurrentHashMap<>();
 
     /**
      * 锁
      */
-    public static void lock(String lockKey) {
+    public void lock(String lockKey) {
         while (!tryLock(lockKey)) {
             try {
                 blockOnSecondLevelLock(lockKey);
@@ -30,7 +30,7 @@ public class StringLocker {
     /**
      * 解锁
      */
-    public static boolean unlock(String lockKey) {
+    public boolean unlock(String lockKey) {
         // 先删除锁，再释放锁，此处会导致后续进来的并发优先执行，无影响
         CountDownLatch realLock = getAndReleaseLock1(lockKey);
         releaseSecondLevelLock(realLock);
@@ -40,7 +40,7 @@ public class StringLocker {
     /**
      * 尝试锁
      */
-    private static boolean tryLock(String lockKey) {
+    private boolean tryLock(String lockKey) {
         return lockKeyHolder.putIfAbsent(lockKey, new CountDownLatch(1)) == null;
     }
 
@@ -49,14 +49,14 @@ public class StringLocker {
      *
      * @return 真正的锁
      */
-    private static CountDownLatch getAndReleaseLock1(String lockKey) {
+    private CountDownLatch getAndReleaseLock1(String lockKey) {
         return lockKeyHolder.remove(lockKey);
     }
 
     /**
      * 二级锁锁定（锁升级）
      */
-    private static void blockOnSecondLevelLock(String lockKey) throws InterruptedException {
+    private void blockOnSecondLevelLock(String lockKey) throws InterruptedException {
         CountDownLatch realLock = getRealLockByKey(lockKey);
         // 为 null 说明此时锁已被删除，  next race
         if (realLock != null) {
@@ -69,7 +69,7 @@ public class StringLocker {
      *
      * @param realLock 锁实例
      */
-    private static void releaseSecondLevelLock(CountDownLatch realLock) {
+    private void releaseSecondLevelLock(CountDownLatch realLock) {
         realLock.countDown();
     }
 
@@ -78,7 +78,7 @@ public class StringLocker {
      *
      * @return 锁实例
      */
-    private static CountDownLatch getRealLockByKey(String lockKey) {
+    private CountDownLatch getRealLockByKey(String lockKey) {
         return lockKeyHolder.get(lockKey);
     }
 }
