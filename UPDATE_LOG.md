@@ -19,6 +19,8 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.3
+* 添加 java 22 支持
+* 添加 solon.threads.virtual.enabled 配置支持
 * 添加 solon.cloud.httputils 异步处理接口
 * 添加 NamiClient::localFirst 属性，增加本地实现组件优先支持
 * 优化 solon.view 后端模板的编码配置处理
@@ -29,6 +31,7 @@
 * socket.d 升为 2.4.7
 * folkmq 升为 1.3.2
 * snack3 升为 3.2.90
+* asm 升为 9.6
 
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
