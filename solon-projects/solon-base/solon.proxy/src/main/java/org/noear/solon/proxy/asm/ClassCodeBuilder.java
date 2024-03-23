@@ -22,8 +22,10 @@ public class ClassCodeBuilder {
             return Opcodes.V11;
         } else if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
             return Opcodes.V17;
-        } else {
+        } else if (JavaUtil.JAVA_MAJOR_VERSION < 22) {
             return Opcodes.V21;
+        } else {
+            return Opcodes.V22;
         }
     }
 
