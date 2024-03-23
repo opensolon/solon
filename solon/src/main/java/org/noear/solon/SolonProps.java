@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -46,6 +47,8 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
+    private boolean enabledVirtualThreads = false; //solon.threads.virtual.enable: true
+
     private String env;
 
     private Locale locale;
@@ -53,7 +56,7 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-    public SolonProps(SolonApp app, NvMap args) throws Exception{
+    public SolonProps(SolonApp app, NvMap args) throws Exception {
         super(System.getProperties());
 
         //1.关联应用
@@ -127,14 +130,14 @@ public final class SolonProps extends Props {
 
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        Map<String,String> loadKeyMap = new TreeMap<>();
+        Map<String, String> loadKeyMap = new TreeMap<>();
         doFind("solon.config.load", (key, val) -> {
             if (key.equals("") || key.startsWith("[")) {
                 loadKeyMap.put(key, val);
             }
         });
 
-        for(String loadKey : loadKeyMap.values()) {
+        for (String loadKey : loadKeyMap.values()) {
             addConfig(loadKey, true, sysPropOrg);
         }
 
@@ -151,7 +154,7 @@ public final class SolonProps extends Props {
                 && app.sourceLocation().getPath().endsWith(".zip") == false
                 && app.sourceLocation().getPath().contains(".zip!/") == false);
 
-        if(NativeDetector.inNativeImage()){
+        if (NativeDetector.inNativeImage()) {
             //如果是原生运行
             isFilesMode = false;
         }
@@ -185,6 +188,11 @@ public final class SolonProps extends Props {
             Locale.setDefault(locale);
         } else {
             locale = Locale.getDefault();
+        }
+
+        //8.
+        if (JavaUtil.JAVA_MAJOR_VERSION >= 21) {
+            enabledVirtualThreads = getBool("solon.threads.virtual.enabled", false);
         }
     }
 
@@ -692,5 +700,9 @@ public final class SolonProps extends Props {
         }
 
         return stopDelay;
+    }
+
+    public boolean isEnabledVirtualThreads() {
+        return enabledVirtualThreads;
     }
 }

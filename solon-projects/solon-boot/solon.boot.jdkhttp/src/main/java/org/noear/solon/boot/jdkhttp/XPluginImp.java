@@ -9,6 +9,7 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ThreadsUtil;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -62,7 +63,12 @@ public final class XPluginImp implements Plugin {
 
 
         _server = new JdkHttpServerComb();
-        _server.setExecutor(props.getBioExecutor("jdkhttp-"));
+
+        if (Solon.cfg().isEnabledVirtualThreads()) {
+            _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+        } else {
+            _server.setExecutor(props.getBioExecutor("jdkhttp-"));
+        }
         _server.setHandler(Solon.app()::tryHandle);
 
         //尝试事件扩展
@@ -91,6 +97,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_boot_ver()+")");
+        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_boot_ver() + ")");
     }
 }

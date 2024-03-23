@@ -47,6 +47,8 @@ solon.config.load:
 
 solon.locale: "en_US"
 
+solon.threads.virtual.enabled: true
+
 solon.cloud.local:
   server: "classpath:META-INF/solon-cloud/"
   breaker:
@@ -211,3 +213,4 @@ envtest.name: test
 ---
 solon.env.on: dev
 envtest.title: dev
+

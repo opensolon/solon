@@ -1,5 +1,6 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 import java.util.concurrent.*;
@@ -26,16 +27,21 @@ public class RunUtil {
     private static ScheduledExecutorService scheduledExecutor;
 
     static {
-        parallelExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                60L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(),
-                new NamedThreadFactory("Solon-executor-"));
+        if (Solon.app() != null && Solon.cfg().isEnabledVirtualThreads()) {
+            parallelExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
+            asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
+        } else {
+            parallelExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                    60L, TimeUnit.SECONDS,
+                    new SynchronousQueue<Runnable>(),
+                    new NamedThreadFactory("Solon-executor-"));
 
-        int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-        asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(),
-                new NamedThreadFactory("Solon-asyncExecutor-"));
+            int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+            asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,
+                    0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue<Runnable>(),
+                    new NamedThreadFactory("Solon-asyncExecutor-"));
+        }
 
         int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
         scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
