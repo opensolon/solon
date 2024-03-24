@@ -1,27 +1,57 @@
 package org.slf4j.impl;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.FactoryManager;
-import org.slf4j.helpers.ThreadLocalMapOfStacks;
 import org.slf4j.spi.MDCAdapter;
 
-import java.util.Deque;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author noear
  * @since 1.11
  */
 public class SolonMDCAdapter implements MDCAdapter {
-    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
-    private static final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
+    //改为懒加载
+    private static ThreadLocal<Map<String, Deque<String>>> _threadMapOfStacks;
+    private static ThreadLocal<Map<String, String>> _threadMap;
+
+    private static ThreadLocal<Map<String, String>> threadMap() {
+        if (_threadMap == null) {
+            Utils.locker().lock();
+            try {
+                if (_threadMap == null) {
+                    _threadMap = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
+                }
+            } finally {
+                Utils.locker().unlock();
+            }
+        }
+
+        return _threadMap;
+    }
+
+    private static ThreadLocal<Map<String, Deque<String>>> threadMapOfStacks() {
+        if (_threadMapOfStacks == null) {
+            Utils.locker().lock();
+            try {
+                if (_threadMapOfStacks == null) {
+                    _threadMapOfStacks = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
+                }
+            } finally {
+                Utils.locker().unlock();
+            }
+        }
+
+        return _threadMapOfStacks;
+    }
+
 
     @Override
     public void put(String key, String val) {
-        Map<String, String> ht = threadMap.get();
+        Map<String, String> ht = threadMap().get();
         if (ht == null) {
             ht = new LinkedHashMap<>();
-            threadMap.set(ht);
+            threadMap().set(ht);
         }
 
         ht.put(key, val);
@@ -29,7 +59,7 @@ public class SolonMDCAdapter implements MDCAdapter {
 
     @Override
     public String get(String key) {
-        Map<String, String> ht = threadMap.get();
+        Map<String, String> ht = threadMap().get();
         if (ht != null) {
             return ht.get(key);
         } else {
@@ -39,7 +69,7 @@ public class SolonMDCAdapter implements MDCAdapter {
 
     @Override
     public void remove(String key) {
-        Map<String, String> ht = threadMap.get();
+        Map<String, String> ht = threadMap().get();
         if (ht != null) {
             ht.remove(key);
         }
@@ -47,12 +77,12 @@ public class SolonMDCAdapter implements MDCAdapter {
 
     @Override
     public void clear() {
-        threadMap.set(null);
+        threadMap().set(null);
     }
 
     @Override
     public Map<String, String> getCopyOfContextMap() {
-        Map<String, String> map = threadMap.get();
+        Map<String, String> map = threadMap().get();
         if (map != null) {
             return new LinkedHashMap<>(map);
         } else {
@@ -62,26 +92,68 @@ public class SolonMDCAdapter implements MDCAdapter {
 
     @Override
     public void setContextMap(Map<String, String> map) {
-        threadMap.set(map);
+        threadMap().set(map);
     }
 
     @Override
     public void pushByKey(String key, String value) {
-        threadLocalMapOfDeques.pushByKey(key, value);
+        if (key != null) {
+            Map<String, Deque<String>> map = this.threadMapOfStacks().get();
+            if (map == null) {
+                map = new HashMap();
+                this.threadMapOfStacks().set(map);
+            }
+
+            Deque<String> deque = (Deque) ((Map) map).get(key);
+            if (deque == null) {
+                deque = new ArrayDeque();
+            }
+
+            deque.push(value);
+            map.put(key, deque);
+        }
     }
 
     @Override
     public String popByKey(String key) {
-        return threadLocalMapOfDeques.popByKey(key);
+        if (key == null) {
+            return null;
+        } else {
+            Map<String, Deque<String>> map = threadMapOfStacks().get();
+            if (map == null) {
+                return null;
+            } else {
+                Deque<String> deque = map.get(key);
+                return deque == null ? null : deque.pop();
+            }
+        }
     }
 
     @Override
     public Deque<String> getCopyOfDequeByKey(String key) {
-        return threadLocalMapOfDeques.getCopyOfDequeByKey(key);
+        if (key == null) {
+            return null;
+        } else {
+            Map<String, Deque<String>> map = threadMapOfStacks().get();
+            if (map == null) {
+                return null;
+            } else {
+                Deque<String> deque = map.get(key);
+                return deque == null ? null : new ArrayDeque(deque);
+            }
+        }
     }
 
     @Override
     public void clearDequeByKey(String key) {
-        threadLocalMapOfDeques.clearDequeByKey(key);
+        if (key != null) {
+            Map<String, Deque<String>> map = threadMapOfStacks().get();
+            if (map != null) {
+                Deque<String> deque = map.get(key);
+                if (deque != null) {
+                    deque.clear();
+                }
+            }
+        }
     }
 }
