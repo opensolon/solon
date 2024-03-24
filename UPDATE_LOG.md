@@ -34,6 +34,7 @@
 * asm 升为 9.6
 * nacos1 升为 1.4.7
 * nacos2 升为 2.3.1
+* redisson 升为 3.27.2
 
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用
