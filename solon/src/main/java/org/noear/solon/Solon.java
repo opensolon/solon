@@ -60,6 +60,17 @@ public class Solon {
     }
 
     /**
+     * 应用配置
+     */
+    public static SolonProps cfg() {
+        if (app == null) {
+            return null;
+        } else {
+            return app.cfg();
+        }
+    }
+
+    /**
      * 应用上下文
      */
     public static AppContext context() {
@@ -68,13 +79,6 @@ public class Solon {
         } else {
             return app.context();
         }
-    }
-
-    /**
-     * 应用配置
-     */
-    public static SolonProps cfg() {
-        return app().cfg();
     }
 
     /**
