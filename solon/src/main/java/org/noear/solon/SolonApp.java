@@ -15,6 +15,7 @@ import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 
@@ -511,6 +512,22 @@ public class SolonApp extends RouterWrapper {
      */
     public <T> SolonApp onEvent(Class<T> type, int index, EventListener<T> handler) {
         EventBus.subscribe(type, index, handler);
+        return this;
+    }
+
+    /**
+     * 配置线程状态工厂
+     * */
+    public SolonApp threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory){
+        FactoryManager.threadLocalFactory(factory);
+        return this;
+    }
+
+    /**
+     * 配置负载均衡工厂
+     * */
+    public SolonApp loadBalanceFactory(LoadBalance.Factory factory){
+        FactoryManager.loadBalanceFactory(factory);
         return this;
     }
 

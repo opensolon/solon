@@ -26,9 +26,9 @@ public final class FactoryManager {
     /**
      * 配置线程状态管理工厂
      */
-    public static <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> function) {
-        if (function != null) {
-            threadLocalFactory = function;
+    public static <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
+        if (factory != null) {
+            threadLocalFactory = factory;
         }
     }
 
