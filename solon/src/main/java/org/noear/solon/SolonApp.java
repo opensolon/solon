@@ -61,6 +61,13 @@ public class SolonApp extends RouterWrapper {
     }
 
     /**
+     * 工厂管理器
+     * */
+    public FactoryManager factoryManager(){
+        return FactoryManager.getGlobal();
+    }
+
+    /**
      * 应用属性（或配置）
      */
     public SolonProps cfg() {
@@ -512,22 +519,6 @@ public class SolonApp extends RouterWrapper {
      */
     public <T> SolonApp onEvent(Class<T> type, int index, EventListener<T> handler) {
         EventBus.subscribe(type, index, handler);
-        return this;
-    }
-
-    /**
-     * 配置线程状态工厂
-     * */
-    public SolonApp threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory){
-        FactoryManager.threadLocalFactory(factory);
-        return this;
-    }
-
-    /**
-     * 配置负载均衡工厂
-     * */
-    public SolonApp loadBalanceFactory(LoadBalance.Factory factory){
-        FactoryManager.loadBalanceFactory(factory);
         return this;
     }
 

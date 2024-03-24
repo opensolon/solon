@@ -48,7 +48,7 @@ public interface LoadBalance {
      * @param group   服务分组
      */
     static LoadBalance get(String group, String service) {
-        return FactoryManager.newLoadBalance(group, service);
+        return FactoryManager.getGlobal().newLoadBalance(group, service);
     }
 
 

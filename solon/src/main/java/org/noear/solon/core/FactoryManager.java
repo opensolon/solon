@@ -11,11 +11,17 @@ import java.util.function.BiFunction;
  * @since 2.5
  */
 public final class FactoryManager {
+    private static final FactoryManager global = new FactoryManager();
+
+    public static FactoryManager getGlobal() {
+        return global;
+    }
+
     //////////
     //
     // threadLocalFactory
     //
-    private static BiFunction<Class<?>, Boolean, ThreadLocal> threadLocalFactory = (applyFor, inheritance0) -> {
+    private BiFunction<Class<?>, Boolean, ThreadLocal> threadLocalFactory = (applyFor, inheritance0) -> {
         if (inheritance0) {
             return new InheritableThreadLocal<>();
         } else {
@@ -26,7 +32,7 @@ public final class FactoryManager {
     /**
      * 配置线程状态管理工厂
      */
-    public static <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
+    public <T> void threadLocalFactory(BiFunction<Class<?>, Boolean, ThreadLocal> factory) {
         if (factory != null) {
             threadLocalFactory = factory;
         }
@@ -38,7 +44,7 @@ public final class FactoryManager {
      * @param applyFor     申请应用的类
      * @param inheritance0 原始可继随性
      */
-    public static <T> ThreadLocal<T> newThreadLocal(Class<?> applyFor, boolean inheritance0) {
+    public <T> ThreadLocal<T> newThreadLocal(Class<?> applyFor, boolean inheritance0) {
         return threadLocalFactory.apply(applyFor, inheritance0);
     }
 
@@ -46,12 +52,12 @@ public final class FactoryManager {
     //
     // loadBalanceFactory 对接
     //
-    protected static LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
+    protected LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
 
     /**
      * 配置负载工厂
      */
-    public static void loadBalanceFactory(LoadBalance.Factory factory) {
+    public void loadBalanceFactory(LoadBalance.Factory factory) {
         if (factory != null) {
             loadBalanceFactory = factory;
         }
@@ -60,7 +66,7 @@ public final class FactoryManager {
     /**
      * 创建负载
      */
-    public static LoadBalance newLoadBalance(String group, String service) {
+    public LoadBalance newLoadBalance(String group, String service) {
         return loadBalanceFactory.create(group, service);
     }
 
@@ -69,20 +75,20 @@ public final class FactoryManager {
     //
     // mvcFactory 对接
     //
-    private static MvcFactory mvcFactory = new MvcFactoryDefault();
+    private MvcFactory mvcFactory = new MvcFactoryDefault();
 
-    public static boolean hasMvcFactory() {
+    public boolean hasMvcFactory() {
         return mvcFactory != null;
     }
 
-    public static MvcFactory mvcFactory() {
+    public MvcFactory mvcFactory() {
         if (mvcFactory == null) {
             throw new IllegalStateException("The 'solon.mvc' plugin is missing");
         }
         return mvcFactory;
     }
 
-    public static void mvcFactory(MvcFactory factory) {
+    public void mvcFactory(MvcFactory factory) {
         if (factory != null) {
             mvcFactory = factory;
         }

@@ -68,16 +68,6 @@ public class App {
             return;
         }
 
-
-        FactoryManager.threadLocalFactory((applyFor, inheritance0)->{
-            if(inheritance0) {
-                return new InheritableThreadLocal();
-            }else {
-                return new ThreadLocal();
-            }
-        });
-
-
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
         //LogUtil.globalSet(new LogUtilToSlf4j());
 
@@ -98,6 +88,14 @@ public class App {
             //x.converterManager().register(new CatTypeConverter());
 
             //x.onStatus(404, c->c.render("404了"));
+
+            x.factoryManager().threadLocalFactory((applyFor, inheritance0)->{
+                if(inheritance0) {
+                    return new InheritableThreadLocal();
+                }else {
+                    return new ThreadLocal();
+                }
+            });
 
             x.onEvent(JsonRenderFactory.class, e->{
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());

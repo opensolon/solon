@@ -15,7 +15,7 @@ public class ContextUtil {
 
     public static final String contentTypeDef = "text/plain;charset=UTF-8";
 
-    private final static ThreadLocal<Context> threadLocal = FactoryManager.newThreadLocal(ContextUtil.class, false);
+    private final static ThreadLocal<Context> threadLocal = FactoryManager.getGlobal().newThreadLocal(ContextUtil.class, false);
 
     /**
      * 设置当前线程的上下文

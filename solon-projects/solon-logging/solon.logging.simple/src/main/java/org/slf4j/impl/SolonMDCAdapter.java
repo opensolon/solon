@@ -20,7 +20,7 @@ public class SolonMDCAdapter implements MDCAdapter {
             Utils.locker().lock();
             try {
                 if (_threadMap == null) {
-                    _threadMap = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
+                    _threadMap = FactoryManager.getGlobal().newThreadLocal(SolonMDCAdapter.class, false);
                 }
             } finally {
                 Utils.locker().unlock();
@@ -35,7 +35,7 @@ public class SolonMDCAdapter implements MDCAdapter {
             Utils.locker().lock();
             try {
                 if (_threadMapOfStacks == null) {
-                    _threadMapOfStacks = FactoryManager.newThreadLocal(SolonMDCAdapter.class, false);
+                    _threadMapOfStacks = FactoryManager.getGlobal().newThreadLocal(SolonMDCAdapter.class, false);
                 }
             } finally {
                 Utils.locker().unlock();

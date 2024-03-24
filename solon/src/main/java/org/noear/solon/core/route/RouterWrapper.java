@@ -220,14 +220,14 @@ public abstract class RouterWrapper implements HandlerSlots {
     public void add(String expr, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
         if (bw != null) {
-            FactoryManager.mvcFactory().createLoader(bw, expr).load(this);
+            FactoryManager.getGlobal().mvcFactory().createLoader(bw, expr).load(this);
         }
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         if (bw != null) {
-            FactoryManager.mvcFactory().createLoader(bw, expr, remoting).load(this);
+            FactoryManager.getGlobal().mvcFactory().createLoader(bw, expr, remoting).load(this);
         }
     }
 
