@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
+
 /**
  * 负载均衡器（为服务提供一个简单的负载接口；起到适配中介效果）
  *
@@ -48,7 +50,7 @@ public interface LoadBalance {
      * @param group   服务分组
      */
     static LoadBalance get(String group, String service) {
-        return FactoryManager.getGlobal().newLoadBalance(group, service);
+        return Solon.app().factoryManager().newLoadBalance(group, service);
     }
 
 

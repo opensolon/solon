@@ -206,7 +206,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            FactoryManager.getGlobal().mvcFactory().createLoader(bw).load(Solon.app());
+            Solon.app().factoryManager().mvcFactory().createLoader(bw).load(Solon.app());
         });
 
         //注册 @Inject 注入器
@@ -316,7 +316,7 @@ public class AppContext extends BeanContainer {
 
         //LoadBalance.Factory
         if (LoadBalance.Factory.class.isAssignableFrom(clz)) {
-            FactoryManager.getGlobal().loadBalanceFactory(bw.raw());
+            Solon.app().factoryManager().loadBalanceFactory(bw.raw());
         }
 
         //Handler

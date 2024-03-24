@@ -1,6 +1,6 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.FactoryManager;
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ActionParam;
 
 import java.lang.reflect.AnnotatedElement;
@@ -69,8 +69,8 @@ public abstract class VarDescriptorBase implements VarDescriptor {
 
     protected void init() {
         //没有时，不处理
-        if (FactoryManager.getGlobal().hasMvcFactory()) {
-            FactoryManager.getGlobal().mvcFactory().resolveParam(vo, element);
+        if (Solon.app().factoryManager().hasMvcFactory()) {
+            Solon.app().factoryManager().mvcFactory().resolveParam(vo, element);
         }
     }
 

@@ -1,9 +1,9 @@
 package org.noear.solon.core.mvc;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
@@ -98,7 +98,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         Handler handler = bw.raw();
-        Set<MethodType> v0 = FactoryManager.getGlobal().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
+        Set<MethodType> v0 = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
         if (v0.size() == 0) {
             v0 = new HashSet<>(Arrays.asList(bMapping.method()));
         }
@@ -135,7 +135,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         Set<MethodType> b_limitMethodSet = new HashSet<>();
         Set<MethodType> b_addinMethodSet = new HashSet<>();
 
-        FactoryManager.getGlobal().mvcFactory().findMethodTypes(b_limitMethodSet, t -> bw.clz().getAnnotation(t) != null);
+        Solon.app().factoryManager().mvcFactory().findMethodTypes(b_limitMethodSet, t -> bw.clz().getAnnotation(t) != null);
         loadControllerAide(b_addinMethodSet);
         if (b_limitMethodSet.size() == 0 && bMapping != null) {
             //如果没有独立注解，尝试获取 Mapping 上的方式
@@ -176,7 +176,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         Set<MethodType> m_addinMethodSet = new HashSet<>(b_addinMethodSet);
 
         //获取 action 的 methodTypes
-        FactoryManager.getGlobal().mvcFactory().findMethodTypes(m_limitMethodSet, t -> method.getAnnotation(t) != null);
+        Solon.app().factoryManager().mvcFactory().findMethodTypes(m_limitMethodSet, t -> method.getAnnotation(t) != null);
 
         //构建 path and method
         if (m_map != null) {

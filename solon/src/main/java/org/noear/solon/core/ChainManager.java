@@ -262,7 +262,7 @@ public class ChainManager {
 
     public ActionExecuteHandler getExecuteHandlerDefault() {
         if (executeHandlerDefault == null) {
-            return FactoryManager.getGlobal().mvcFactory().getExecuteHandlerDefault();
+            return Solon.app().factoryManager().mvcFactory().getExecuteHandlerDefault();
         } else {
             return executeHandlerDefault;
         }

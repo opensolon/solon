@@ -53,12 +53,12 @@ public class XPluginImp implements Plugin , InitializingBean {
             }
 
             //设置负载工厂
-            FactoryManager.getGlobal().loadBalanceFactory(CloudClient.loadBalance());
+            Solon.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
         } else {
             //@since 1.6
             if (CloudClient.loadBalance().count() > 0) {
                 //设置负载工厂
-                FactoryManager.getGlobal().loadBalanceFactory(CloudClient.loadBalance());
+                Solon.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
             }
         }
 

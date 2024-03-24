@@ -365,7 +365,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
         }
 
-        ActionLoader uw = FactoryManager.getGlobal().mvcFactory().createLoader(beanWp, bPath, remoting, this, allowActionMapping());
+        ActionLoader uw = Solon.app().factoryManager().mvcFactory().createLoader(beanWp, bPath, remoting, this, allowActionMapping());
 
         uw.load((expr, method, handler) -> {
             if (path == null) {

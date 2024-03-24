@@ -1,9 +1,9 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
-import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.*;
 
 /**
@@ -220,14 +220,14 @@ public abstract class RouterWrapper implements HandlerSlots {
     public void add(String expr, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
         if (bw != null) {
-            FactoryManager.getGlobal().mvcFactory().createLoader(bw, expr).load(this);
+            Solon.app().factoryManager().mvcFactory().createLoader(bw, expr).load(this);
         }
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         if (bw != null) {
-            FactoryManager.getGlobal().mvcFactory().createLoader(bw, expr, remoting).load(this);
+            Solon.app().factoryManager().mvcFactory().createLoader(bw, expr, remoting).load(this);
         }
     }
 
