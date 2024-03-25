@@ -1,6 +1,7 @@
 package org.noear.solon.core.handle;
 
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.FactoryManager;
 
@@ -35,6 +36,13 @@ public class ContextUtil {
      * 获取当前线程的上下文
      * */
     public static Context current(){
-        return threadLocal.get();
+        Context tmp = threadLocal.get();
+
+        if (tmp == null && Solon.cfg().testing()) {
+            tmp = new ContextEmpty();
+            threadLocal.set(tmp);
+        }
+
+        return tmp;
     }
 }

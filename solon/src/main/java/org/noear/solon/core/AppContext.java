@@ -363,7 +363,7 @@ public class AppContext extends BeanContainer {
             Solon.app().converterManager().register(c);
         }
 
-        //Converter
+        //ConverterFactory
         if (ConverterFactory.class.isAssignableFrom(clz)) {
             ConverterFactory cf = bw.raw();
             Solon.app().converterManager().register(cf);
