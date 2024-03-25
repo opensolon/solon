@@ -19,13 +19,13 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.3
-* 添加 java 22 支持
+* 增加 java 22 支持
 * 添加 solon.threads.virtual.enabled 配置支持
 * 添加 solon.cloud.httputils 异步处理接口
 * 添加 NamiClient::localFirst 属性，增加本地实现组件优先支持
 * 添加 Context::filesDelete 批量删除临时文件方法
 * 优化 solon.view 后端模板的编码配置处理
-* 优化 非 http/https 协议包的处理（被人刷包）
+* 优化 非 http/https 协议包的处理（被人刷假包）
 * 优化 local-solon-cloud-plugin 本地服务发现的查找处理，避免失败
 * 优化 部分锁的处理方式（synchronized 改为 ReentrantLock）
 * 优化 jetty 的 multipart 解析处理
@@ -38,6 +38,7 @@
 * nacos1 升为 1.4.7
 * nacos2 升为 2.3.1
 * redisson 升为 3.27.2
+* undertow 升为 2.2.31.Final
 
 ### 2.7.2
 * 添加 公共锁 Utils.locker() 给初始化场景使用

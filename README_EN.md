@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.7.3-M3
+Solon v2.7.3
 </h1>
 <p align="center">
 	<strong>Java's new application development framework. Faster, smaller, and easier!</strong>
@@ -59,18 +59,22 @@ Built from scratch, it has its own standard specification and open ecology
 ## Features:
 
 Better cost performance for computing:
-* Reduced runtime cost: 2-3 times more concurrency per second Memory saving 1/3 ~ 1/2
+
+* Reduced runtime cost: 2-3 times more concurrency per second Memory savings of 1/3 ~ 1/2
 
 Greater developer productivity and a simpler coding experience:
+
 * Reduced learning cost: simple source code; It is easy for beginners to get started; Easy to use
 * Debugging efficiency: restarts are 5-10 times faster; Locate problems faster
 
 Faster production and deployment experience:
+
 * Smaller service packs, faster CI/DI: 1/2-1/10 pack size
 * Cloud native is more friendly (faster image pull, faster container ready) : packaging is 1/2-1/10 smaller, startup is 5-10 times faster
 
 Freer runtime compatibility options:
-* Supports java8, java11, java17, java21 runtime as well
+
+* Supports java8, java11, java17, java21, java22 runtime
 
 ## Ecosystem Architecture Diagram:
 

@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.7.3-M3</version>
+    <version>2.7.3</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,9 +23,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.7.3-M3</solon.version>
-        <solon-admin.version>2.7.3-M2</solon-admin.version>
-        <solon-integration.version>2.7.3-M2</solon-integration.version>
+        <solon.version>2.7.3</solon.version>
+        <solon-admin.version>2.7.3</solon-admin.version>
+        <solon-integration.version>2.7.3</solon-integration.version>
 
         <snack3.version>3.2.90</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -49,7 +49,7 @@
         <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
 
         <jetty.version>9.4.54.v20240208</jetty.version>
-        <undertow.version>2.2.30.Final</undertow.version>
+        <undertow.version>2.2.31.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
