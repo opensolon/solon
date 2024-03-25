@@ -33,6 +33,7 @@
 * socket.d 升为 2.4.7
 * folkmq 升为 1.3.2
 * snack3 升为 3.2.90
+* sqltoy 升为 5.6.2.jre8
 * asm 升为 9.6
 * nacos1 升为 1.4.7
 * nacos2 升为 2.3.1
