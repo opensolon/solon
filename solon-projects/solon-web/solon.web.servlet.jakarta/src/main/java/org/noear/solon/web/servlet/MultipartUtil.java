@@ -1,10 +1,13 @@
 package org.noear.solon.web.servlet;
 
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.UploadedFile;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
+import org.noear.solon.core.util.IoUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,6 +26,10 @@ class MultipartUtil {
         for (Part part : request.getParts()) {
             if (isFile(part)) {
                 doBuildFiles(context, filesMap, part);
+            } else {
+                if (request.getParameterMap() == null || request.getParameterMap().isEmpty()) {
+                    context.paramSet(part.getName(), IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                }
             }
         }
     }
