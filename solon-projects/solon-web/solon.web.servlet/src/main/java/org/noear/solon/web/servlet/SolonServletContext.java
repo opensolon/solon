@@ -31,7 +31,6 @@ import java.util.*;
 public class SolonServletContext extends WebContextBase {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    protected Map<String, List<UploadedFile>> _fileMap;
 
     protected boolean innerIsAsync() {
         return asyncContext != null;
@@ -40,7 +39,7 @@ public class SolonServletContext extends WebContextBase {
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
-        _fileMap = new HashMap<>();
+        _filesMap = new HashMap<>();
 
         if (sessionState().replaceable()) {
             sessionState = new SolonServletSessionState(request);
@@ -57,7 +56,7 @@ public class SolonServletContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this);
+            MultipartUtil.buildParamsAndFiles(this, _filesMap);
         }
     }
 
@@ -195,7 +194,7 @@ public class SolonServletContext extends WebContextBase {
                 throw new IOException(e);
             }
 
-            return _fileMap;
+            return _filesMap;
         } else {
             return Collections.emptyMap();
         }

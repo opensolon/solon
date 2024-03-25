@@ -549,6 +549,11 @@ public abstract class Context {
     public abstract Map<String,List<UploadedFile>> filesMap() throws IOException;
 
     /**
+     * 删除所有上传文件
+     * */
+    public abstract void filesDelete() throws IOException;
+
+    /**
      * 获取上传文件数组
      *
      * @param name 文件名

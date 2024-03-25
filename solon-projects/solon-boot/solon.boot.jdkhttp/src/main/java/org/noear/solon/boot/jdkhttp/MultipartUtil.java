@@ -12,9 +12,10 @@ import org.noear.solon.core.handle.UploadedFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JdkHttpContext context) throws IOException {
+    public static void buildParamsAndFiles(JdkHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
         HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) context.request());
 
         while (parts.hasNext()) {
@@ -22,16 +23,16 @@ class MultipartUtil {
             if (isFile(part) == false) {
                 context.paramSet(part.name, part.getString());
             } else {
-                doBuildFiles(context, part);
+                doBuildFiles(context, filesMap, part);
             }
         }
     }
 
-    private static void doBuildFiles(JdkHttpContext context, HttpMultipart part) throws IOException {
-        List<UploadedFile> list = context._fileMap.get(part.getName());
+    private static void doBuildFiles(JdkHttpContext context, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
+        List<UploadedFile> list = filesMap.get(part.getName());
         if (list == null) {
             list = new ArrayList<>();
-            context._fileMap.put(part.getName(), list);
+            filesMap.put(part.getName(), list);
         }
 
         String contentType = part.getHeaders().get("Content-Type");

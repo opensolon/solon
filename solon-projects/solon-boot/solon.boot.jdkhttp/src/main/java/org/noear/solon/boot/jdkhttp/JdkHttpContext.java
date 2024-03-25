@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 public class JdkHttpContext extends WebContextBase {
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
-    protected Map<String, List<UploadedFile>> _fileMap;
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L; //默认30秒
@@ -41,7 +40,7 @@ public class JdkHttpContext extends WebContextBase {
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
         _parameters = (Map<String, Object>) _exchange.getAttribute("parameters");
-        _fileMap = new HashMap<>();
+        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -55,7 +54,7 @@ public class JdkHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this);
+            MultipartUtil.buildParamsAndFiles(this, _filesMap);
         }
     }
 
@@ -220,7 +219,7 @@ public class JdkHttpContext extends WebContextBase {
         if (isMultipartFormData()) {
             loadMultipartFormData();
 
-            return _fileMap;
+            return _filesMap;
         } else {
             return Collections.emptyMap();
         }

@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class JlHttpContext extends WebContextBase {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
-    protected Map<String, List<UploadedFile>> _fileMap;
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L;//默认30秒
@@ -39,7 +38,7 @@ public class JlHttpContext extends WebContextBase {
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
         _response = response;
-        _fileMap = new HashMap<>();
+        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -53,7 +52,7 @@ public class JlHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this);
+            MultipartUtil.buildParamsAndFiles(this, _filesMap);
         }
     }
 
@@ -207,7 +206,7 @@ public class JlHttpContext extends WebContextBase {
         if (isMultipartFormData()) {
             loadMultipartFormData();
 
-            return _fileMap;
+            return _filesMap;
         } else {
             return Collections.emptyMap();
         }

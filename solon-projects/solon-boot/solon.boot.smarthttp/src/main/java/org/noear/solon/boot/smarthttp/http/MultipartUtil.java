@@ -15,28 +15,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(SmHttpContext context) throws IOException{
+    public static void buildParamsAndFiles(SmHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
         HttpRequest request = (HttpRequest) context.request();
         HttpMultipartCollection parts = new HttpMultipartCollection(request);
 
-        while (parts.hasNext()){
+        while (parts.hasNext()) {
             HttpMultipart part = parts.next();
 
-            if(isFile(part) == false){
+            if (isFile(part) == false) {
                 context.paramSet(part.name, part.getString());
-            }else{
-                doBuildFiles(context, part);
+            } else {
+                doBuildFiles(context, filesMap, part);
             }
         }
     }
 
-    private static void doBuildFiles(SmHttpContext context, HttpMultipart part) throws IOException{
-        List<UploadedFile> list = context._fileMap.get(part.getName());
-        if(list == null){
+    private static void doBuildFiles(SmHttpContext context, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
+        List<UploadedFile> list = filesMap.get(part.getName());
+        if (list == null) {
             list = new ArrayList<>();
-            context._fileMap.put(part.getName(), list);
+            filesMap.put(part.getName(), list);
         }
 
         String contentType = part.getHeaders().get("Content-Type");
@@ -48,17 +49,16 @@ class MultipartUtil {
         }
 
         HttpPartFile partFile = new HttpPartFile(filename, new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
-        UploadedFile f1 = new UploadedFile(partFile::delete,contentType, partFile.getSize(), partFile.getContent(), filename, extension);
+        UploadedFile f1 = new UploadedFile(partFile::delete, contentType, partFile.getSize(), partFile.getContent(), filename, extension);
 
         list.add(f1);
     }
 
-    private static boolean isField(HttpMultipart filePart){
+    private static boolean isField(HttpMultipart filePart) {
         return filePart.getFilename() == null;
     }
 
-    private static boolean isFile(HttpMultipart filePart){
+    private static boolean isFile(HttpMultipart filePart) {
         return !isField(filePart);
     }
-
 }

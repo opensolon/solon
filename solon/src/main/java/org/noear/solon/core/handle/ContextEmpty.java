@@ -127,6 +127,11 @@ public class ContextEmpty extends Context {
         return filesMap;
     }
 
+    @Override
+    public void filesDelete() throws IOException{
+
+    }
+
 
     @Override
     public String cookie(String key) {

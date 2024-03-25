@@ -29,7 +29,6 @@ public class SmHttpContext extends WebContextBase {
 
     private HttpRequest _request;
     private HttpResponse _response;
-    protected Map<String, List<UploadedFile>> _fileMap;
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L;//默认30秒
@@ -58,7 +57,7 @@ public class SmHttpContext extends WebContextBase {
         _response = response;
         _asyncFuture = future;
 
-        _fileMap = new HashMap<>();
+        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -72,7 +71,7 @@ public class SmHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this);
+            MultipartUtil.buildParamsAndFiles(this, _filesMap);
         }
     }
 
@@ -210,7 +209,7 @@ public class SmHttpContext extends WebContextBase {
         if (isMultipartFormData()) {
             loadMultipartFormData();
 
-            return _fileMap;
+            return _filesMap;
         } else {
             return Collections.emptyMap();
         }

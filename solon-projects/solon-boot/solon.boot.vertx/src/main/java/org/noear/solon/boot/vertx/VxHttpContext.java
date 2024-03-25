@@ -116,6 +116,11 @@ public class VxHttpContext extends Context {
     }
 
     @Override
+    public void filesDelete() throws IOException {
+
+    }
+
+    @Override
     public NvMap cookieMap() {
         return null;
     }

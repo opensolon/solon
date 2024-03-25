@@ -6,15 +6,13 @@ import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JlHttpContext context) throws IOException {
+    public static void buildParamsAndFiles(JlHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
         HTTPServer.Request request = (HTTPServer.Request) context.request();
         HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
 
@@ -24,16 +22,16 @@ class MultipartUtil {
             if (isFile(part) == false) {
                 context.paramSet(part.name, part.getString());
             } else {
-                doBuildFiles(context, part);
+                doBuildFiles(context, filesMap, part);
             }
         }
     }
 
-    private static void doBuildFiles(JlHttpContext context, HTTPServer.MultipartIterator.Part part) throws IOException {
-        List<UploadedFile> list = context._fileMap.get(part.getName());
+    private static void doBuildFiles(JlHttpContext context, Map<String, List<UploadedFile>> filesMap, HTTPServer.MultipartIterator.Part part) throws IOException {
+        List<UploadedFile> list = filesMap.get(part.getName());
         if (list == null) {
             list = new ArrayList<>();
-            context._fileMap.put(part.getName(), list);
+            filesMap.put(part.getName(), list);
         }
 
 
@@ -58,5 +56,4 @@ class MultipartUtil {
     private static boolean isFile(HTTPServer.MultipartIterator.Part filePart) {
         return !isField(filePart);
     }
-
 }

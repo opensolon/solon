@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author noear
@@ -16,21 +17,21 @@ import java.util.List;
  * */
 class MultipartUtil {
 
-    public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {
+    public static void buildParamsAndFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         for (Part part : request.getParts()) {
             if (isFile(part)) {
-                doBuildFiles(context, part);
+                doBuildFiles(context, filesMap, part);
             }
         }
     }
 
-    private static void doBuildFiles(SolonServletContext context, Part part) throws IOException {
-        List<UploadedFile> list = context._fileMap.get(part.getName());
+    private static void doBuildFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap, Part part) throws IOException {
+        List<UploadedFile> list = filesMap.get(part.getName());
         if (list == null) {
             list = new ArrayList<>();
-            context._fileMap.put(part.getName(), list);
+            filesMap.put(part.getName(), list);
         }
 
         String contentType = part.getContentType();
