@@ -23,10 +23,12 @@
 * 添加 solon.threads.virtual.enabled 配置支持
 * 添加 solon.cloud.httputils 异步处理接口
 * 添加 NamiClient::localFirst 属性，增加本地实现组件优先支持
+* 添加 Context::filesDelete 批量删除临时文件方法
 * 优化 solon.view 后端模板的编码配置处理
 * 优化 非 http/https 协议包的处理（被人刷包）
 * 优化 local-solon-cloud-plugin 本地服务发现的查找处理，避免失败
 * 优化 部分锁的处理方式（synchronized 改为 ReentrantLock）
+* 优化 jetty 的 multipart 解析处理
 * 修复 solon.health HealthIndicator 自动注册无效的问题
 * socket.d 升为 2.4.7
 * folkmq 升为 1.3.2
