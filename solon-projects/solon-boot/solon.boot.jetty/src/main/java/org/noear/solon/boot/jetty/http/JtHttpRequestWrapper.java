@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jetty.http;
 
-import org.eclipse.jetty.util.MultiPartInputStreamParser;
+import org.eclipse.jetty.http.MultiPartFormInputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +14,9 @@ import java.util.Collection;
  * @since 2.7
  */
 public class JtHttpRequestWrapper extends HttpServletRequestWrapper {
-    private final MultiPartInputStreamParser multiPartParser;
+    private final MultiPartFormInputStream multiPartParser;
 
-    public JtHttpRequestWrapper(HttpServletRequest request, MultiPartInputStreamParser multiPartParser) {
+    public JtHttpRequestWrapper(HttpServletRequest request, MultiPartFormInputStream multiPartParser) {
         super(request);
         this.multiPartParser = multiPartParser;
     }
