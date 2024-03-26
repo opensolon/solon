@@ -34,7 +34,8 @@ public class FreemarkerRender implements Render {
         return _global;
     }
 
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
+    private final String viewPrefix;
 
     private Configuration provider;
     private Configuration providerOfDebug;
@@ -56,10 +57,20 @@ public class FreemarkerRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
-        this(AppClassLoader.global());
+        this(AppClassLoader.global(), null);
     }
+
     public FreemarkerRender(ClassLoader classLoader) {
+        this(classLoader, null);
+    }
+
+    public FreemarkerRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
+        if(viewPrefix == null){
+            this.viewPrefix = ViewConfig.getViewPrefix();
+        }else {
+            this.viewPrefix = viewPrefix;
+        }
 
         forDebug();
         forRelease();
@@ -88,7 +99,7 @@ public class FreemarkerRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource("/");
+        URL rooturi = ResourceUtil.getResource(classLoader,"/");
         if(rooturi == null){
             return;
         }
@@ -101,10 +112,10 @@ public class FreemarkerRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
+            String dir_str = rootdir + "src/main/resources" + viewPrefix;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
+                dir_str = rootdir + "src/main/webapp" + viewPrefix;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -132,7 +143,7 @@ public class FreemarkerRender implements Render {
         provider.setDefaultEncoding("utf-8");
 
         try {
-            provider.setClassLoaderForTemplateLoading(classLoader, ViewConfig.getViewPrefix());
+            provider.setClassLoaderForTemplateLoading(classLoader, viewPrefix);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }

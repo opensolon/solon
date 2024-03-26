@@ -47,7 +47,9 @@ public class BeetlRender implements Render {
 
 
 
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
+    private final String viewPrefix;
+
     private Configuration config = null;
 
     private GroupTemplate provider = null;
@@ -77,11 +79,20 @@ public class BeetlRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public BeetlRender() {
-        this(AppClassLoader.global());
+        this(AppClassLoader.global(), null);
     }
 
     public BeetlRender(ClassLoader classLoader) {
+        this(classLoader, null);
+    }
+
+    public BeetlRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
+        if(viewPrefix == null){
+            this.viewPrefix = ViewConfig.getViewPrefix();
+        }else {
+            this.viewPrefix = viewPrefix;
+        }
 
         try {
             config = Configuration.defaultConfiguration();
@@ -116,7 +127,7 @@ public class BeetlRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource("/");
+        URL rooturi = ResourceUtil.getResource(classLoader,"/");
         if (rooturi == null) {
             return;
         }
@@ -125,10 +136,10 @@ public class BeetlRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
+            String dir_str = rootdir + "src/main/resources" + viewPrefix;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
+                dir_str = rootdir + "src/main/webapp" + viewPrefix;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -153,7 +164,7 @@ public class BeetlRender implements Render {
         }
 
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, ViewConfig.getViewPrefix());
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
             provider = new GroupTemplate(loader, config);
 
             //通过事件扩展

@@ -43,9 +43,10 @@ public class ThymeleafRender implements Render {
         return _global;
     }
 
+    private final ClassLoader classLoader;
+    private final String viewPrefix;
 
     private Map<String, Object> sharedVariables = new HashMap<>();
-    private ClassLoader classLoader;
     private TemplateEngine provider = new TemplateEngine();
 
     /**
@@ -56,11 +57,20 @@ public class ThymeleafRender implements Render {
     }
 
     public ThymeleafRender() {
-        this(AppClassLoader.global());
+        this(AppClassLoader.global(), null);
     }
 
     public ThymeleafRender(ClassLoader classLoader) {
+        this(classLoader, null);
+    }
+
+    public ThymeleafRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
+        if(viewPrefix == null){
+            this.viewPrefix = ViewConfig.getViewPrefix();
+        }else {
+            this.viewPrefix = viewPrefix;
+        }
 
         forDebug();
         forRelease();
@@ -84,7 +94,7 @@ public class ThymeleafRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource("/");
+        URL rooturi = ResourceUtil.getResource(classLoader,"/");
         if (rooturi == null) {
             return;
         }
@@ -93,10 +103,10 @@ public class ThymeleafRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
+            String dir_str = rootdir + "src/main/resources" + viewPrefix;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
+                dir_str = rootdir + "src/main/webapp" + viewPrefix;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -123,7 +133,7 @@ public class ThymeleafRender implements Render {
     private void forRelease() {
         ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(classLoader);
 
-        _loader.setPrefix(ViewConfig.getViewPrefix());
+        _loader.setPrefix(viewPrefix);
         _loader.setTemplateMode(TemplateMode.HTML);
         _loader.setCacheable(true);
         _loader.setCharacterEncoding("utf-8");

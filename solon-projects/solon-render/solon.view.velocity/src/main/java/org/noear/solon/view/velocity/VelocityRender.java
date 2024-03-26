@@ -8,6 +8,7 @@ import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -43,6 +44,9 @@ public class VelocityRender implements Render {
         return _global;
     }
 
+    private final ClassLoader classLoader;
+    private final String viewPrefix;
+
     private Map<String, Object> sharedVariables = new HashMap<>();
     private RuntimeInstance provider;
     private RuntimeInstance providerOfDebug;
@@ -62,6 +66,20 @@ public class VelocityRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public VelocityRender() {
+        this(AppClassLoader.global(), null);
+    }
+
+    public VelocityRender(ClassLoader classLoader) {
+        this(classLoader, null);
+    }
+
+    public VelocityRender(ClassLoader classLoader, String viewPrefix) {
+        this.classLoader = classLoader;
+        if(viewPrefix == null){
+            this.viewPrefix = ViewConfig.getViewPrefix();
+        }else {
+            this.viewPrefix = viewPrefix;
+        }
 
         forDebug();
         forRelease();
@@ -115,7 +133,7 @@ public class VelocityRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource("/");
+        URL rooturi = ResourceUtil.getResource(classLoader,"/");
         if (rooturi == null) {
             return;
         }
@@ -126,10 +144,10 @@ public class VelocityRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
+            String dir_str = rootdir + "src/main/resources" + viewPrefix;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
+                dir_str = rootdir + "src/main/webapp" + viewPrefix;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -154,7 +172,7 @@ public class VelocityRender implements Render {
 
         provider = new RuntimeInstance();
 
-        URL resource = ResourceUtil.getResource(ViewConfig.getViewPrefix());
+        URL resource = ResourceUtil.getResource(classLoader, viewPrefix);
         if (resource == null) {
             return;
         }
