@@ -34,5 +34,6 @@
         <module>../../solon-projects/solon-web/solon.web.sdl</module>
         <module>../../solon-projects/solon-web/solon.web.sse</module>
         <module>../../solon-projects/solon-web/solon.web.flux</module>
+        <module>../../solon-projects/solon-web/solon.web.rx</module>
     </modules>
 </project>

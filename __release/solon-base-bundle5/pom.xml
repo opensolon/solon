@@ -25,6 +25,7 @@
         <module>../../solon-projects/solon-render/solon.serialization.fury</module>
         <module>../../solon-projects/solon-render/solon.serialization.hessian</module>
         <module>../../solon-projects/solon-render/solon.serialization.protostuff</module>
+
         <module>../../solon-projects/solon-render/solon.view</module>
         <module>../../solon-projects/solon-render/solon.view.freemarker</module>
         <module>../../solon-projects/solon-render/solon.view.jsp</module>
