@@ -25,16 +25,11 @@
         <module>../../solon-projects-cloud/solon-cloud/etcd-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud/polaris-solon-cloud-plugin</module>
 
-        <module>../../solon-projects-cloud/solon-cloud-config/kubernetes-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-discovery/jmdns-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-rpc/grpc-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-rpc/thrift-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-trace/opentracing-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-trace/jaeger-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-trace/zipkin-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-id/snowflake-id-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-breaker/guava-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-breaker/sentinel-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-breaker/semaphore-solon-cloud-plugin</module>
     </modules>
 </project>
