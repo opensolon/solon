@@ -7,7 +7,7 @@ import org.noear.solon.Solon;
 
 /**
  * @author noear
- * @since 2.3
+ * @since 2.7
  */
 public class VxHttpHandler implements Handler<HttpServerRequest> {
     @Override

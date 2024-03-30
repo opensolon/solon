@@ -1,58 +1,116 @@
 package org.noear.solon.boot.vertx;
 
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import org.noear.solon.Utils;
+import org.noear.solon.boot.web.Constants;
+import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextAsyncListener;
-import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.lang.NonNull;
+import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * @author noear 2023/6/24 created
+ * @author noear
+ * @since 2.7
  */
-public class VxHttpContext extends Context {
-    public VxHttpContext(HttpServerRequest request, HttpServerResponse response){
+public class VxHttpContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(VxHttpContext.class);
 
+    private HttpServerRequest _request;
+    private HttpServerResponse _response;
+
+    private boolean _isAsync;
+    private long _asyncTimeout = 30000L;//默认30秒
+    private CompletableFuture<Object> _asyncFuture;
+    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
+
+    protected HttpServerRequest innerGetRequest() {
+        return _request;
+    }
+
+    protected HttpServerResponse innerGetResponse() {
+        return _response;
+    }
+
+    protected boolean innerIsAsync() {
+        return _isAsync;
+    }
+
+    protected List<ContextAsyncListener> innerAsyncListeners() {
+        return _asyncListeners;
+    }
+
+    public VxHttpContext(HttpServerRequest request, HttpServerResponse response){
+        this._request = request;
+        this._response = response;
+
+        _filesMap = new HashMap<>();
+    }
+
+    private boolean _loadMultipartFormData = false;
+
+    private void loadMultipartFormData() throws IOException {
+        if (_loadMultipartFormData) {
+            return;
+        } else {
+            _loadMultipartFormData = true;
+        }
+
+        //文件上传需要
+        if (isMultipartFormData()) {
+            //MultipartUtil.buildParamsAndFiles(this, _filesMap);
+        }
     }
 
     @Override
     public Object request() {
-        return null;
+        return _request;
     }
 
     @Override
     public String remoteIp() {
-        return null;
+        return _request.remoteAddress().host();
     }
 
     @Override
     public int remotePort() {
-        return 0;
+        return _request.remoteAddress().port();
     }
 
     @Override
     public String method() {
-        return null;
+        return _request.method().name();
     }
 
     @Override
     public String protocol() {
-        return null;
+        return "http";
     }
 
+    private URI _uri;
     @Override
     public URI uri() {
-        return null;
+        if(_uri == null){
+            _uri = URI.create(url());
+        }
+
+        return _uri;
     }
 
     @Override
@@ -62,147 +120,180 @@ public class VxHttpContext extends Context {
 
     @Override
     public String url() {
-        return null;
+        return _request.absoluteURI();
     }
 
+
+    private int contentLength = -2;
     @Override
     public long contentLength() {
-        return 0;
-    }
+        if (contentLength > -2) {
+            return contentLength;
+        } else {
+            String tmp = _request.getHeader("Content-Length");
+            if (Utils.isEmpty(tmp)) {
+                contentLength = -1;
+            } else {
+                contentLength = Integer.parseInt(tmp);
+            }
 
-    @Override
-    public String contentType() {
-        return null;
-    }
-
-    @Override
-    public String contentCharset() {
-        return null;
+            return contentLength;
+        }
     }
 
     @Override
     public String queryString() {
-        return null;
+        return _request.query();
     }
 
+    private InputStream bodyAsStream;
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return null;
+        if (bodyAsStream != null) {
+            return bodyAsStream;
+        } else {
+            CompletableFuture<Buffer> future = new CompletableFuture<>();
+            _request.body(r -> {
+                if (r.succeeded()) {
+                    future.complete(r.result());
+                } else {
+                    future.completeExceptionally(r.cause());
+                }
+            });
+            Buffer buffer;
+            try {
+                buffer = future.get();
+            } catch (Throwable e) {
+                throw new IOException(e);
+            }
+
+            bodyAsStream = new ByteArrayInputStream(buffer.getBytes());
+            return bodyAsStream;
+        }
     }
 
-    @Override
-    public String[] paramValues(String name) {
-        return null;
-    }
-
-    @Override
-    public String param(String name) {
-        return null;
-    }
-
+    private NvMap _paramMap;
     @Override
     public NvMap paramMap() {
-        return null;
+        if (_paramMap == null) {
+            _paramMap = new NvMap();
+
+            try {
+                if (autoMultipart()) {
+                    loadMultipartFormData();
+                }
+
+                for (Map.Entry<String, String> entry : _request.params()) {
+                    _paramMap.put(entry.getKey(), entry.getValue());
+                }
+
+                for (Map.Entry<String, String> entry : _request.formAttributes()) {
+                    _paramMap.put(entry.getKey(), entry.getValue());
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return _paramMap;
     }
 
+    private Map<String, List<String>> _paramsMap;
     @Override
     public Map<String, List<String>> paramsMap() {
-        return null;
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            try {
+                if (autoMultipart()) {
+                    loadMultipartFormData();
+                }
+                for (String name : _request.params().names()) {
+                    _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.params().getAll(name));
+                }
+
+                for (String name : _request.formAttributes().names()) {
+                    _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.formAttributes().getAll(name));
+                }
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        return _paramsMap;
     }
 
     @Override
     public Map<String, List<UploadedFile>> filesMap() throws IOException {
-        return null;
-    }
+        if (isMultipartFormData()) {
+            loadMultipartFormData();
 
-    @Override
-    public void filesDelete() throws IOException {
-
+            return _filesMap;
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     @Override
     public NvMap cookieMap() {
-        return null;
+        if (_cookieMap == null) {
+            _cookieMap = new NvMap();
+
+            for (Cookie c1 : _request.cookies()) {
+                _cookieMap.put(c1.getName(), c1.getValue());
+            }
+        }
+
+        return _cookieMap;
     }
+    private NvMap _cookieMap;
 
     @Override
     public NvMap headerMap() {
-        return null;
+        if (_headerMap == null) {
+            _headerMap = new NvMap();
+
+            for (Map.Entry<String, String> kv : _request.headers()) {
+                _headerMap.put(kv.getKey(), kv.getValue());
+            }
+        }
+
+        return _headerMap;
     }
+
+    private NvMap _headerMap;
 
     @Override
     public Map<String, List<String>> headersMap() {
-        return null;
+        if (_headersMap == null) {
+            _headersMap = new IgnoreCaseMap<>();
+
+            for (String name : _request.headers().names()) {
+                _headersMap.put(name, new ArrayList<>(_request.headers().getAll(name)));
+            }
+        }
+
+        return _headersMap;
     }
-
-    @Override
-    public String sessionId() {
-        return null;
-    }
-
-    @Override
-    public <T> T session(String name, Class<T> clz) {
-        return null;
-    }
-
-    @Override
-    public <T> T sessionOrDefault(String name, @NonNull T def) {
-        return null;
-    }
-
-    @Override
-    public int sessionAsInt(String name) {
-        return 0;
-    }
-
-    @Override
-    public int sessionAsInt(String name, int def) {
-        return 0;
-    }
-
-    @Override
-    public long sessionAsLong(String name) {
-        return 0;
-    }
-
-    @Override
-    public long sessionAsLong(String name, long def) {
-        return 0;
-    }
-
-    @Override
-    public double sessionAsDouble(String name) {
-        return 0;
-    }
-
-    @Override
-    public double sessionAsDouble(String name, double def) {
-        return 0;
-    }
-
-    @Override
-    public void sessionSet(String name, Object val) {
-
-    }
-
-    @Override
-    public void sessionRemove(String name) {
-
-    }
-
-    @Override
-    public void sessionClear() {
-
-    }
+    private Map<String, List<String>> _headersMap;
 
     @Override
     public Object response() {
-        return null;
+        return _response;
     }
 
     @Override
     protected void contentTypeDoSet(String contentType) {
+        if (charset != null) {
+            if (contentType.indexOf(";") < 0) {
+                headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
+                return;
+            }
+        }
 
+        headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
     }
 
     @Override
@@ -217,17 +308,7 @@ public class VxHttpContext extends Context {
 
     @Override
     public OutputStream outputStream() throws IOException {
-        return null;
-    }
-
-    @Override
-    public void outputAsFile(DownloadedFile file) throws IOException {
-
-    }
-
-    @Override
-    public void outputAsFile(File file) throws IOException {
-
+        return _response.send();
     }
 
     @Override
@@ -267,26 +348,90 @@ public class VxHttpContext extends Context {
 
     @Override
     public void flush() throws IOException {
-
+        if (_allows_write) {
+            outputStream().flush();
+        }
     }
 
     @Override
     public void close() throws IOException {
-
+        _response.close();
     }
 
     @Override
     public boolean asyncSupported() {
-        return false;
+        return true;
     }
 
     @Override
     public void asyncStart(long timeout, ContextAsyncListener listener) {
+        if (_isAsync == false) {
+            _isAsync = true;
 
+            if(listener != null) {
+                _asyncListeners.add(listener);
+            }
+
+            if (timeout != 0) {
+                _asyncTimeout = timeout;
+            }
+
+            if (_asyncTimeout > 0) {
+                RunUtil.delay(() -> {
+                    for (ContextAsyncListener listener1 : _asyncListeners) {
+                        try {
+                            listener1.onTimeout(this);
+                        } catch (IOException e) {
+                            log.warn(e.getMessage(), e);
+                        }
+                    }
+                }, _asyncTimeout);
+            }
+        }
     }
+
 
     @Override
     public void asyncComplete() throws IOException {
+        if (_isAsync) {
+            try {
+                innerCommit();
+            } finally {
+                _asyncFuture.complete(this);
+            }
+        }
+    }
 
+    @Override
+    protected void innerCommit() throws IOException {
+        if (getHandled() || status() >= 200) {
+            sendHeaders(true);
+        } else {
+            status(404);
+            sendHeaders(true);
+        }
+    }
+
+    private boolean _headers_sent = false;
+    private boolean _allows_write = true;
+
+    private void sendHeaders(boolean isCommit) throws IOException {
+        if (!_headers_sent) {
+            _headers_sent = true;
+
+            if ("HEAD".equals(method())) {
+                _allows_write = false;
+            }
+
+            if (sessionState() != null) {
+                sessionState().sessionPublish();
+            }
+
+            _response.setHttpStatus(HttpStatus.valueOf(status()));
+
+            if (isCommit || _allows_write == false) {
+                _response.setContentLength(0);
+            }
+        }
     }
 }

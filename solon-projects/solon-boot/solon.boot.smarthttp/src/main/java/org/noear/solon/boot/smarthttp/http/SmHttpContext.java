@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class SmHttpContext extends WebContextBase {
-    static final Logger log = LoggerFactory.getLogger(SmHttpContextHandler.class);
+    static final Logger log = LoggerFactory.getLogger(SmHttpContext.class);
 
     private HttpRequest _request;
     private HttpResponse _response;
