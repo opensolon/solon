@@ -56,7 +56,7 @@ public class VxHttpContext extends WebContextBase {
         return _asyncListeners;
     }
 
-    public VxHttpContext(HttpServerRequest request, HttpServerResponse response){
+    public VxHttpContext(HttpServerRequest request, HttpServerResponse response) {
         this._request = request;
         this._response = response;
 
@@ -104,9 +104,10 @@ public class VxHttpContext extends WebContextBase {
     }
 
     private URI _uri;
+
     @Override
     public URI uri() {
-        if(_uri == null){
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
@@ -125,6 +126,7 @@ public class VxHttpContext extends WebContextBase {
 
 
     private int contentLength = -2;
+
     @Override
     public long contentLength() {
         if (contentLength > -2) {
@@ -147,6 +149,7 @@ public class VxHttpContext extends WebContextBase {
     }
 
     private InputStream bodyAsStream;
+
     @Override
     public InputStream bodyAsStream() throws IOException {
         if (bodyAsStream != null) {
@@ -173,6 +176,7 @@ public class VxHttpContext extends WebContextBase {
     }
 
     private NvMap _paramMap;
+
     @Override
     public NvMap paramMap() {
         if (_paramMap == null) {
@@ -201,6 +205,7 @@ public class VxHttpContext extends WebContextBase {
     }
 
     private Map<String, List<String>> _paramsMap;
+
     @Override
     public Map<String, List<String>> paramsMap() {
         if (_paramsMap == null) {
@@ -248,6 +253,7 @@ public class VxHttpContext extends WebContextBase {
 
         return _cookieMap;
     }
+
     private NvMap _cookieMap;
 
     @Override
@@ -277,6 +283,7 @@ public class VxHttpContext extends WebContextBase {
 
         return _headersMap;
     }
+
     private Map<String, List<String>> _headersMap;
 
     @Override
@@ -308,7 +315,8 @@ public class VxHttpContext extends WebContextBase {
 
     @Override
     public OutputStream outputStream() throws IOException {
-        return _response.send();
+        _response.send();
+        return null;
     }
 
     @Override
@@ -368,7 +376,7 @@ public class VxHttpContext extends WebContextBase {
         if (_isAsync == false) {
             _isAsync = true;
 
-            if(listener != null) {
+            if (listener != null) {
                 _asyncListeners.add(listener);
             }
 
@@ -427,10 +435,10 @@ public class VxHttpContext extends WebContextBase {
                 sessionState().sessionPublish();
             }
 
-            _response.setHttpStatus(HttpStatus.valueOf(status()));
+            _response.setStatusCode(status());
 
             if (isCommit || _allows_write == false) {
-                _response.setContentLength(0);
+                _response.putHeader("Content-Length", "0");
             }
         }
     }
