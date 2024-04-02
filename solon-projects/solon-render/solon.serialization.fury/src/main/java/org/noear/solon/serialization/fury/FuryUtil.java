@@ -48,7 +48,7 @@ public class FuryUtil {
         });
     }
 
-    public static void loadBlackList(){
+    private static void loadBlackList(){
         try (InputStream is =
                      FuryUtil.class.getClassLoader().getResourceAsStream(BLACKLIST_TXT_PATH)) {
             if (is != null) {
