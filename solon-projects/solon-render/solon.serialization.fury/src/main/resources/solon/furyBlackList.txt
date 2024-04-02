@@ -256,3 +256,6 @@ weblogic.ejb20.internal.LocalHomeHandleImpl
 weblogic.jms.common.ObjectMessageImpl
 com.atomikos.icatch.jta.RemoteClientUserTransaction
 com.caucho.naming.QBindingEnumeration
+com.sun.org.apache.xpath.internal.objects.XStringForFSB
+com.caucho.naming.ContextImpl
+com.caucho.naming.MemoryModel

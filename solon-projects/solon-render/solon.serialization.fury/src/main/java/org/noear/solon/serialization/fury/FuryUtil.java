@@ -20,11 +20,12 @@ import java.util.stream.Collectors;
  */
 public class FuryUtil {
     private static final String BLACKLIST_TXT_PATH = "solon/furyBlackList.txt";
-    public static final Set<String> DEFAULT_BLACKLIST_SET ;
+    public static Set<String> DEFAULT_BLACKLIST_SET ;
 
     public static final ThreadSafeFury fury = getFurySerializer();
 
     private static ThreadSafeFury getFurySerializer() {
+        loadBlackList();
         return new ThreadLocalFury(classLoader -> {
             Fury f = Fury.builder()
                     .withAsyncCompilation(true)
@@ -47,7 +48,7 @@ public class FuryUtil {
         });
     }
 
-    static {
+    public static void loadBlackList(){
         try (InputStream is =
                      FuryUtil.class.getClassLoader().getResourceAsStream(BLACKLIST_TXT_PATH)) {
             if (is != null) {
