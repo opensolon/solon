@@ -123,6 +123,30 @@ public class ResourceUtil {
         }
     }
 
+    /**
+     * 获取资源并转为 InputStream
+     *
+     * @param name        内部资源名称
+     */
+    public static InputStream getResourceAsStream(String name) throws IOException {
+        return getResourceAsStream(AppClassLoader.global(), name);
+    }
+
+    /**
+     * 获取资源并转为 InputStream
+     *
+     * @param classLoader 类加载器
+     * @param name        内部资源名称
+     */
+    public static InputStream getResourceAsStream(ClassLoader classLoader, String name) throws IOException {
+        URL url = getResource(classLoader, name);
+        if (url != null) {
+            return url.openStream();
+        } else {
+            return null;
+        }
+    }
+
 
     /**
      * 查找资源

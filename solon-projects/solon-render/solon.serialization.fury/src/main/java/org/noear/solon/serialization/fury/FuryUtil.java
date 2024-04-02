@@ -5,6 +5,7 @@ import io.fury.ThreadLocalFury;
 import io.fury.ThreadSafeFury;
 import io.fury.config.Language;
 import io.fury.resolver.AllowListChecker;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * @since 2.5
  */
 public class FuryUtil {
-    private static final String BLACKLIST_TXT_PATH = "solon/furyBlackList.txt";
+    private static final String BLACKLIST_TXT_PATH = "META-INF/solon/furyBlackList.txt";
     public static Set<String> DEFAULT_BLACKLIST_SET ;
 
     public static final ThreadSafeFury fury = getFurySerializer();
@@ -49,8 +50,7 @@ public class FuryUtil {
     }
 
     private static void loadBlackList(){
-        try (InputStream is =
-                     FuryUtil.class.getClassLoader().getResourceAsStream(BLACKLIST_TXT_PATH)) {
+        try (InputStream is = ResourceUtil.getResourceAsStream(BLACKLIST_TXT_PATH)) {
             if (is != null) {
                 DEFAULT_BLACKLIST_SET =
                         new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
