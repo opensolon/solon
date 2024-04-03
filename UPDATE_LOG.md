@@ -18,6 +18,13 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
+### 2.7.4
+* 新增 solon.web.rx 插件
+* 添加 SolonException 异常基类
+* 添加 模板渲染器指定前缀的构造函数
+* 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
+* vertx 升为 4.5.6
+
 ### 2.7.3
 * 增加 java 22 支持
 * 添加 solon.threads.virtual.enabled 配置支持
