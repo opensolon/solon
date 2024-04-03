@@ -680,7 +680,7 @@ public abstract class BeanContainer {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
         for (Class<?> c : list) {
-            if (c.getName().contains("java.") == false) {
+            if (c.getName().startsWith("java.") == false) {
                 putWrap(c, bw);
             }
         }
