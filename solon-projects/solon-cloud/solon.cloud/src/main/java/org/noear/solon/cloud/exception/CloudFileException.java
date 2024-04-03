@@ -1,10 +1,12 @@
 package org.noear.solon.cloud.exception;
 
+import org.noear.solon.exception.SolonException;
+
 /**
  * @author noear
  * @since 1.3
  */
-public class CloudFileException extends RuntimeException {
+public class CloudFileException extends SolonException {
     /**
      * @since 1.11
      */

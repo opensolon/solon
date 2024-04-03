@@ -1,6 +1,8 @@
 package org.noear.solon.web.webdav;
 
-public class WebDavActionException extends RuntimeException {
+import org.noear.solon.exception.SolonException;
+
+public class WebDavActionException extends SolonException {
     private int code;
 
     public WebDavActionException(int code) {

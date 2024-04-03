@@ -7,6 +7,10 @@ package org.noear.solon.exception;
  * @since 2.7
  */
 public class SolonException extends RuntimeException {
+    public SolonException(){
+        super();
+    }
+
     public SolonException(Throwable cause) {
         super(cause);
     }

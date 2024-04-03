@@ -1,6 +1,7 @@
 package org.noear.solon.validation;
 
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.exception.SolonException;
 
 import java.lang.annotation.Annotation;
 
@@ -10,7 +11,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.4
  */
-public class ValidatorException extends RuntimeException {
+public class ValidatorException extends SolonException {
     private int code;
     private Annotation annotation;
     private Result result;
