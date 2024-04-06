@@ -27,6 +27,7 @@
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
 * snack3 升为 3.2.91
 * jackson 升为 2.17.0
+* fastjson2 升为 2.0.48
 * mybatis-flex 升为 1.8.6
 * beetlsql 升为 3.30.4-RELEASE
 * netty 升为 4.1.107.Final
