@@ -24,6 +24,9 @@
 * 添加 模板渲染器指定前缀的构造函数
 * 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
+* mybatis-flex 升为 1.8.6
+* jackson 升为 2.17.0
+* netty 升为 4.1.107.Final
 * vertx 升为 4.5.6
 * hutool 升为 5.8.27
 * smartsocket 升为 1.5.43
