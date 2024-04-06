@@ -40,6 +40,7 @@
 * freemarker 升为 2.3.32
 * beetl 升为 3.16.0.RELEASE
 * thymeleaf 升为 3.1.2.RELEASE
+* log4j 升为 2.23.1
 * slf4j 升为 2.0.12
 
 ### 2.7.3
