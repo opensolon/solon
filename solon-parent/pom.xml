@@ -181,45 +181,16 @@
     <developers>
         <developer>
             <name>noear</name>
-            <email>noear@live.cn</email>
             <organization>noear.org</organization>
-            <organizationUrl>http://www.noear.org</organizationUrl>
-        </developer>
-        <developer>
-            <name>夜の孤城</name>
-        </developer>
-        <developer>
-            <name>馒头虫/瓢虫</name>
-            <url>https://www.jianshu.com/u/ec230216606c</url>
-        </developer>
-        <developer>
-            <name>iYarnFog</name>
-            <email>1340761826@qq.com</email>
-            <organization>iying.top</organization>
-            <organizationUrl>https://i.iying.top/</organizationUrl>
-        </developer>
-        <developer>
-            <name>cym1102</name>
-        </developer>
-        <developer>
-            <name>tomsun28</name>
-        </developer>
-        <developer>
-            <name>brucelwl</name>
-            <email>841326226@qq.com</email>
-        </developer>
-        <developer>
-            <name>YukaiTang</name>
-            <email>2420177044@qq.com</email>
-            <url>https://blog.csdn.net/fanduifandui</url>
+            <organizationUrl>https://solon.noear.org</organizationUrl>
         </developer>
     </developers>
+
     <scm>
         <connection>scm:git:git@github.com:noear/solon.git</connection>
         <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
         <url>https://github.com/noear/solon</url>
     </scm>
-
 
     <dependencyManagement>
         <dependencies>
