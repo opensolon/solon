@@ -36,6 +36,7 @@
 * thrift 升为 0.20.0
 * freemarker 升为 2.3.32
 * beetl 升为 3.16.0.RELEASE
+* thymeleaf 升为 3.1.2.RELEASE
 
 ### 2.7.3
 * 增加 java 22 支持
