@@ -111,7 +111,7 @@
         <grpc.version>1.62.2</grpc.version>
         <thrift.version>0.20.0</thrift.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.2.10</dubbo3.version>
+        <dubbo3.version>3.2.11</dubbo3.version>
 
         <rocketmq4.version>4.9.7</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>

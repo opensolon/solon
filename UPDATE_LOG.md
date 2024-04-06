@@ -37,6 +37,7 @@
 * aws-java-sdk-s3 升为 1.12.695
 * grpc 升为 1.62.2
 * thrift 升为 0.20.0
+* dubbo3 升为 3.2.11
 * freemarker 升为 2.3.32
 * beetl 升为 3.16.0.RELEASE
 * thymeleaf 升为 3.1.2.RELEASE
