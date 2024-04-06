@@ -31,6 +31,7 @@
 * hutool 升为 5.8.27
 * smartsocket 升为 1.5.43
 * smarthttp 升为 1.4.1
+* aws-java-sdk-s3 升为 1.12.695
 
 ### 2.7.3
 * 增加 java 22 支持

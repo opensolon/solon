@@ -126,7 +126,7 @@
         <polaris.version>1.14.1</polaris.version>
 
         <feign.version>8.18.0</feign.version>
-        <aws.s3.version>1.12.347</aws.s3.version>
+        <aws.s3.version>1.12.695</aws.s3.version>
         <quartz.version>2.3.2</quartz.version>
         <powerjob.version>4.3.6</powerjob.version>
 
