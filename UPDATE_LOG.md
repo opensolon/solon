@@ -23,9 +23,12 @@
 * 添加 SolonException 异常基类
 * 添加 模板渲染器指定前缀的构造函数
 * 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
+* 调整 solon.view 渲染实例添加容器注册（提供容器扩展方式）
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
-* mybatis-flex 升为 1.8.6
+* snack3 升为 3.2.91
 * jackson 升为 2.17.0
+* mybatis-flex 升为 1.8.6
+* beetlsql 升为 3.30.4-RELEASE
 * netty 升为 4.1.107.Final
 * vertx 升为 4.5.6
 * hutool 升为 5.8.27
