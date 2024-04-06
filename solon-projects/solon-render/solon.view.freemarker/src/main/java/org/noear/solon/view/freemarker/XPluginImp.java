@@ -37,6 +37,7 @@ public class XPluginImp implements Plugin {
 
         RenderManager.register(render);
         RenderManager.mapping(".ftl", render);
+        context.wrapAndPut(FreemarkerRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, new AuthPermissionsTag());

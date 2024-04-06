@@ -35,6 +35,7 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".htm", render);
         RenderManager.mapping(".btl", render);
+        context.wrapAndPut(BeetlRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);

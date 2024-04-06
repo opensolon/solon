@@ -33,6 +33,7 @@ public class XPluginImp implements Plugin {
 
         RenderManager.register(render);
         RenderManager.mapping(".vm", render);
+        context.wrapAndPut(VelocityRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(new AuthPermissionsTag());

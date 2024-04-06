@@ -33,6 +33,7 @@ public class XPluginImp implements Plugin {
 
         RenderManager.register(render);
         RenderManager.mapping(".shtm", render);
+        context.wrapAndPut(EnjoyRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);
