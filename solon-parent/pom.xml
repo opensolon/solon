@@ -41,7 +41,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.47</fastjson2.version>
         <okhttp.version>3.14.9</okhttp.version>
-        <hutool.version>5.8.25</hutool.version>
+        <hutool.version>5.8.27</hutool.version>
 
         <asm.version>9.6</asm.version>
 
@@ -54,8 +54,8 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
-        <smartsocket.version>1.5.42</smartsocket.version>
-        <smarthttp.version>1.4.0</smarthttp.version>
+        <smartsocket.version>1.5.43</smartsocket.version>
+        <smarthttp.version>1.4.1</smarthttp.version>
         <vertx.version>4.5.6</vertx.version>
 
 

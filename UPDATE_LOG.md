@@ -25,6 +25,9 @@
 * 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
 * vertx 升为 4.5.6
+* hutool 升为 5.8.27
+* smartsocket 升为 1.5.43
+* smarthttp 升为 1.4.1
 
 ### 2.7.3
 * 增加 java 22 支持

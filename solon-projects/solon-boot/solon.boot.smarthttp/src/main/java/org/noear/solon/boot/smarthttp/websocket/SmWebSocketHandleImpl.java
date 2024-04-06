@@ -4,6 +4,7 @@ import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartboot.http.common.codec.websocket.CloseReason;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handler.WebSocketDefaultHandler;
@@ -44,7 +45,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     }
 
     @Override
-    public void onClose(WebSocketRequest request, WebSocketResponse response) {
+    public void onClose(WebSocketRequest request, WebSocketResponse response, CloseReason closeReason)  {
         onCloseDo(request);
     }
 
