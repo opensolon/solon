@@ -138,21 +138,32 @@ public class SimpleScheduler implements Lifecycle {
     private void runAsCron() throws Throwable {
         //::按表达式调度（并行调用）
         nextTime = cron.getNextValidTimeAfter(baseTime);
-        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
 
-        if (sleepMillis >= 0) {
-            baseTime = nextTime;
-            nextTime = cron.getNextValidTimeAfter(baseTime);
+        if (nextTime != null) {
+            sleepMillis = System.currentTimeMillis() - nextTime.getTime();
 
-            if (sleepMillis <= 1000) {
-                RunUtil.parallel(this::exec0);
+            if (sleepMillis >= 0) {
+                if (sleepMillis <= 1000) {
+                    RunUtil.parallel(this::exec0);
+                }
 
-                //重新设定休息时间
-                sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+                baseTime = nextTime;
+                nextTime = cron.getNextValidTimeAfter(baseTime);
+                if (nextTime != null) {
+                    if (sleepMillis <= 1000) {
+                        //重新设定休息时间
+                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+                    }
+                }
             }
         }
 
-        sleep0(sleepMillis);
+        if (nextTime == null) {
+            isStarted = false;
+            log.warn("The cron expression has expired, and the job is complete!");
+        } else {
+            sleep0(sleepMillis);
+        }
     }
 
     /**

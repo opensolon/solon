@@ -36,4 +36,14 @@ public class JobOfMethod {
     public void job25() {
         log.warn(new Date() + ": 0/10 * * * * ? *");
     }
+
+    @Scheduled(cron = "00 38 17 11 3 ? 2024")
+    public void job26() {
+        log.warn(new Date() + ": 00 38 17 11 3 ? 2024");
+    }
+
+    @Scheduled(cron = "* 22 11 6 4 ? 2024")
+    public void job27() {
+        log.warn(new Date() + ": * 13 11 6 4 ? 2024");
+    }
 }
