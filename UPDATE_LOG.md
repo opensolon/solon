@@ -33,6 +33,7 @@
 * smarthttp 升为 1.4.1
 * aws-java-sdk-s3 升为 1.12.695
 * grpc 升为 1.62.2
+* thrift 升为 0.20.0
 
 ### 2.7.3
 * 增加 java 22 支持
