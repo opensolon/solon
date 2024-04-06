@@ -32,6 +32,7 @@
 * smartsocket 升为 1.5.43
 * smarthttp 升为 1.4.1
 * aws-java-sdk-s3 升为 1.12.695
+* grpc 升为 1.62.2
 
 ### 2.7.3
 * 增加 java 22 支持
