@@ -21,9 +21,9 @@
 ### 2.7.4
 * 新增 solon.web.rx 插件
 * 添加 SolonException 异常基类
-* 添加 模板渲染器指定前缀的构造函数
+* 添加 solon.view 模板渲染器指定视图前缀的构造函数
+* 添加 solon.view 模板渲染器的容器注册（提供容器扩展方式）
 * 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
-* 调整 solon.view 渲染实例添加容器注册（提供容器扩展方式）
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
 * snack3 升为 3.2.91
 * jackson 升为 2.17.0
@@ -40,6 +40,7 @@
 * freemarker 升为 2.3.32
 * beetl 升为 3.16.0.RELEASE
 * thymeleaf 升为 3.1.2.RELEASE
+* slf4j 升为 2.0.12
 
 ### 2.7.3
 * 增加 java 22 支持

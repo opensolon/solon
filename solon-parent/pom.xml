@@ -92,7 +92,7 @@
 
         <guava.version>32.1.3-jre</guava.version>
 
-        <slf4j.version>2.0.11</slf4j.version>
+        <slf4j.version>2.0.12</slf4j.version>
         <log4j.version>2.22.1</log4j.version>
         <logback.version>1.3.14</logback.version>
         <jansi.version>2.4.0</jansi.version>
