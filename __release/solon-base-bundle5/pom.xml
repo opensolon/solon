@@ -16,23 +16,23 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/solon-render/solon.serialization</module>
-        <module>../../solon-projects/solon-render/solon.serialization.snack3</module>
-        <module>../../solon-projects/solon-render/solon.serialization.fastjson</module>
-        <module>../../solon-projects/solon-render/solon.serialization.fastjson2</module>
-        <module>../../solon-projects/solon-render/solon.serialization.jackson</module>
-        <module>../../solon-projects/solon-render/solon.serialization.gson</module>
-        <module>../../solon-projects/solon-render/solon.serialization.fury</module>
-        <module>../../solon-projects/solon-render/solon.serialization.hessian</module>
-        <module>../../solon-projects/solon-render/solon.serialization.protostuff</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.snack3</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.fastjson</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.fastjson2</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.jackson</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.gson</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.fury</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.hessian</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.protostuff</module>
 
-        <module>../../solon-projects/solon-render/solon.view</module>
-        <module>../../solon-projects/solon-render/solon.view.freemarker</module>
-        <module>../../solon-projects/solon-render/solon.view.jsp</module>
-        <module>../../solon-projects/solon-render/solon.view.jsp.jakarta</module>
-        <module>../../solon-projects/solon-render/solon.view.velocity</module>
-        <module>../../solon-projects/solon-render/solon.view.thymeleaf</module>
-        <module>../../solon-projects/solon-render/solon.view.enjoy</module>
-        <module>../../solon-projects/solon-render/solon.view.beetl</module>
+        <module>../../solon-projects/solon-view/solon.view</module>
+        <module>../../solon-projects/solon-view/solon.view.freemarker</module>
+        <module>../../solon-projects/solon-view/solon.view.jsp</module>
+        <module>../../solon-projects/solon-view/solon.view.jsp.jakarta</module>
+        <module>../../solon-projects/solon-view/solon.view.velocity</module>
+        <module>../../solon-projects/solon-view/solon.view.thymeleaf</module>
+        <module>../../solon-projects/solon-view/solon.view.enjoy</module>
+        <module>../../solon-projects/solon-view/solon.view.beetl</module>
     </modules>
 </project>
