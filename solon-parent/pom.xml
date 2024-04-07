@@ -25,7 +25,7 @@
 
         <solon.version>2.7.4-SNAPSHOT</solon.version>
         <solon-admin.version>2.7.3</solon-admin.version>
-        <solon-integration.version>2.7.3</solon-integration.version>
+        <solon-integration.version>2.7.4-SNAPSHOT</solon-integration.version>
 
         <snack3.version>3.2.91</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -929,6 +929,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-tkmapper-solon-plugin</artifactId>
                 <version>${solon-integration.version}</version>
             </dependency>
 
