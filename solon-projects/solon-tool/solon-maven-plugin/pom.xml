@@ -19,13 +19,18 @@
             <name>heixiaoma</name>
             <email>heixiaoma@gmail.com</email>
             <organization>noear.org</organization>
-            <organizationUrl>http://www.noear.org</organizationUrl>
             <url>https://github.com/noear</url>
             <timezone>GMT+8</timezone>
         </developer>
     </developers>
 
     <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-loader</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
@@ -84,6 +89,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
