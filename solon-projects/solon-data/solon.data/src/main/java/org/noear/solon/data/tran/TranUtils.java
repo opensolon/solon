@@ -58,4 +58,11 @@ public final class TranUtils {
     public static Connection getConnection(DataSource ds) throws SQLException {
         return executor.getConnection(ds);
     }
+
+    /**
+     * 获取链接代理
+     */
+    public static Connection getConnectionProxy(DataSource ds) throws SQLException {
+        return new ConnectionProxy(executor.getConnection(ds));
+    }
 }
