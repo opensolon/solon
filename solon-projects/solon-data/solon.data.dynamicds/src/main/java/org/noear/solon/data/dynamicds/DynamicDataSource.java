@@ -75,10 +75,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
 
-        if (targetDataSources == null) {
-            targetDataSources = new LinkedHashMap<>();
-        }
-
         targetDataSources.putAll(targetDataSources);
     }
 
