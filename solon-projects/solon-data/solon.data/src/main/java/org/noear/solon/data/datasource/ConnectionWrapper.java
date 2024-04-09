@@ -12,7 +12,11 @@ import java.util.concurrent.Executor;
  * @since 2.7
  */
 public class ConnectionWrapper implements Connection {
-    protected final Connection real;
+    private final Connection real;
+
+    public Connection getReal() {
+        return real;
+    }
 
     public ConnectionWrapper(Connection real) {
         this.real = real;

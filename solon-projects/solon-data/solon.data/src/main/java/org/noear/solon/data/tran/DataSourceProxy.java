@@ -19,6 +19,6 @@ public class DataSourceProxy extends DataSourceWrapper {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return TranUtils.getConnectionProxy(this.real);
+        return TranUtils.getConnectionProxy(getReal());
     }
 }

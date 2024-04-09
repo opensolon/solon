@@ -16,7 +16,11 @@ import java.util.logging.Logger;
  * @since 2.7
  */
 public class DataSourceWrapper implements DataSource , Closeable {
-    protected final DataSource real;
+    private final DataSource real;
+
+    public DataSource getReal() {
+        return real;
+    }
 
     public DataSourceWrapper(DataSource real) {
         this.real = real;
