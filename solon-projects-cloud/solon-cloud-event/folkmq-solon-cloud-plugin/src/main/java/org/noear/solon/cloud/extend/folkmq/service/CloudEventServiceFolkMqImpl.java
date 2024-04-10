@@ -83,7 +83,12 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         //new topic
         String topicNew = FolkmqProps.getTopicNew(event);
         try {
-            MqMessage message = new MqMessage(event.content()).scheduled(event.scheduled()).qos(event.qos());
+            MqMessage message = new MqMessage(event.content())
+                    .attr("key",event.key())
+                    .scheduled(event.scheduled())
+                    .tag(event.tags())
+                    .qos(event.qos());
+
             if (publishTimeout > 0) {
                 //同步
                 client.publish(topicNew, message);

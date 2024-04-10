@@ -29,7 +29,9 @@ public class FolkmqConsumeHandler implements MqConsumeHandler {
     public void consume(MqMessageReceived message) throws IOException {
         try {
             Event event = new Event(message.getTopic(), message.getContent());
+            event.key(message.getAttr("key"));
             event.times(message.getTimes());
+            event.tags(message.getTag());
 
             //已设置自动延时策略
             boolean isOk = onReceive(event);
