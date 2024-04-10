@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -379,6 +378,39 @@ public abstract class BeanContainer {
 
     //public abstract BeanWrap wrap(Class<?> clz, Object raw);
 
+    /**
+     * 删除 bean 包装
+     */
+    public void delWrap(String name) {
+        if (Utils.isNotEmpty(name)) {
+            SYNC_LOCK.lock();
+            try {
+                BeanWrap bw = beanWrapsOfName.remove(name);
+                if (bw != null) {
+                    beanWrapSet.remove(bw);
+                }
+            } finally {
+                SYNC_LOCK.unlock();
+            }
+        }
+    }
+
+    /**
+     * 删除 bean 包装
+     */
+    public void delWrap(Class<?> type) {
+        if (type != null) {
+            SYNC_LOCK.lock();
+            try {
+                BeanWrap bw = beanWrapsOfType.remove(type);
+                if (bw != null) {
+                    beanWrapSet.remove(bw);
+                }
+            } finally {
+                SYNC_LOCK.unlock();
+            }
+        }
+    }
 
     /**
      * 存入bean库（存入成功会进行通知）
@@ -386,18 +418,18 @@ public abstract class BeanContainer {
      * @param wrap 如果raw为null，拒绝注册
      */
     public void putWrap(String name, BeanWrap wrap) {
-        SYNC_LOCK.lock();
-        try {
-            if (Utils.isNotEmpty(name) && wrap.raw() != null) {
+        if (Utils.isNotEmpty(name) && wrap.raw() != null) {
+            SYNC_LOCK.lock();
+            try {
                 if (beanWrapsOfName.containsKey(name) == false) {
                     beanWrapsOfName.put(name, wrap);
                     beanWrapSet.add(wrap);
 
                     beanNotice(name, wrap);
                 }
+            } finally {
+                SYNC_LOCK.unlock();
             }
-        } finally {
-            SYNC_LOCK.unlock();
         }
     }
 
