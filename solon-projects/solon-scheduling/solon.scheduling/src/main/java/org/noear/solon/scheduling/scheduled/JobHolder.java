@@ -80,10 +80,12 @@ public class JobHolder implements JobHandler {
             ctx.paramMap().putAll(data);
         }
 
-        if(jobManager.getJobInterceptor() == null) {
+        if (jobManager.hasJobInterceptor()) {
+            Job job = new JobImpl(this, ctx);
+            JobHandlerChain handlerChain = new JobHandlerChain(job, handler, jobManager.getJobInterceptors());
+            handlerChain.handle(ctx);
+        } else {
             handler.handle(ctx);
-        }else{
-            jobManager.getJobInterceptor().doIntercept(new JobImpl(this, ctx), handler);
         }
     }
 }

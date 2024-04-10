@@ -2,15 +2,14 @@ package org.noear.solon.scheduling.scheduled.manager;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.noear.solon.scheduling.scheduled.JobInterceptor;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 任务管理者
@@ -20,29 +19,48 @@ import java.util.Map;
  */
 public abstract class AbstractJobManager implements IJobManager {
 
-    protected Map<String, JobHolder> jobMap = new HashMap<>();
-    protected JobInterceptor jobInterceptor;
+    protected final Map<String, JobHolder> jobMap = new HashMap<>();
+    protected final List<RankEntity<JobInterceptor>> jobInterceptorNodes = new ArrayList<>();
 
-    public AbstractJobManager(){
-        Solon.context().getBeanAsync(JobInterceptor.class, bean->{
-            jobInterceptor = bean;
+    public AbstractJobManager() {
+        Solon.context().subWrapsOfType(JobInterceptor.class, bw -> {
+            addJobInterceptor(bw.index(), bw.raw());
         });
     }
 
     /**
      * 设置拦截器
-     * */
+     */
+    @Deprecated
     public void setJobInterceptor(JobInterceptor jobInterceptor) {
-        this.jobInterceptor = jobInterceptor;
+        addJobInterceptor(0, jobInterceptor);
+    }
+
+    /**
+     * 添加拦截器
+     */
+    @Override
+    public void addJobInterceptor(int index, JobInterceptor jobInterceptor) {
+        jobInterceptorNodes.add(new RankEntity<>(jobInterceptor, index));
+        jobInterceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+    }
+
+    /**
+     * 是否有任务拦截器
+     */
+    @Override
+    public boolean hasJobInterceptor() {
+        return jobInterceptorNodes.size() > 0;
     }
 
     /**
      * 拦截器
-     * */
+     */
     @Override
-    public JobInterceptor getJobInterceptor() {
-        return jobInterceptor;
+    public List<RankEntity<JobInterceptor>> getJobInterceptors() {
+        return jobInterceptorNodes;
     }
+
 
     /**
      * 任务添加
@@ -127,8 +145,6 @@ public abstract class AbstractJobManager implements IJobManager {
         jobStop(name);
         jobMap.remove(name);
     }
-
-
 
 
     protected boolean isStarted = false;
