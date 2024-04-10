@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.model;
 
 import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.CloudJobHandlerChain;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.core.handle.Context;
 
@@ -51,10 +52,12 @@ public class JobHolder implements CloudJobHandler {
      */
     @Override
     public void handle(Context ctx) throws Throwable {
-        if (CloudManager.jobInterceptor() == null) {
+        if (CloudManager.jobInterceptors() == null || CloudManager.jobInterceptors().isEmpty()) {
             handler.handle(ctx);
         } else {
-            CloudManager.jobInterceptor().doIntercept(new JobImpl(this, ctx), handler);
+            Job job = new JobImpl(this, ctx);
+            CloudJobHandlerChain handlerChain = new CloudJobHandlerChain(job, handler, CloudManager.jobInterceptors());
+            handlerChain.handle(ctx);
         }
     }
 }

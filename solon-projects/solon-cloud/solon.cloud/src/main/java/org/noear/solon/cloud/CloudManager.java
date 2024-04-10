@@ -6,8 +6,10 @@ import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.RankEntity;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +59,7 @@ public class CloudManager {
 
     /**
      * 去端国际化服务
-     * */
+     */
     private static CloudI18nService i18nService;
 
     /**
@@ -215,6 +217,17 @@ public class CloudManager {
         LogUtil.global().info("Cloud: CloudIdServiceFactory registered from the " + factory.getClass().getTypeName());
     }
 
+    /**
+     * 登记Job拦截器
+     */
+    public void register(int index, CloudJobInterceptor jobInterceptor) {
+        if (jobServiceManager != null) {
+            jobServiceManager.addJobInterceptor(index, jobInterceptor);
+        }
+
+        LogUtil.global().info("Cloud: CloudJobInterceptor registered from the " + jobInterceptor.getClass().getTypeName());
+    }
+
     protected static CloudBreakerService breakerService() {
         return breakerService;
     }
@@ -233,7 +246,7 @@ public class CloudManager {
 
     /**
      * 事件拦截器（仅内部使用）
-     * */
+     */
     public static CloudEventInterceptor eventInterceptor() {
         if (eventServiceManager == null) {
             return null;
@@ -258,7 +271,9 @@ public class CloudManager {
         return fileService;
     }
 
-    protected static CloudI18nService i18nService(){return i18nService;}
+    protected static CloudI18nService i18nService() {
+        return i18nService;
+    }
 
     protected static CloudTraceService traceService() {
         return traceService;
@@ -282,12 +297,12 @@ public class CloudManager {
 
     /**
      * 任务拦截器（仅内部使用）
-     * */
-    public static CloudJobInterceptor jobInterceptor() {
+     */
+    public static List<RankEntity<CloudJobInterceptor>> jobInterceptors() {
         if (jobServiceManager == null) {
             return null;
         }
 
-        return jobServiceManager.getJobInterceptor();
+        return jobServiceManager.getJobInterceptors();
     }
 }

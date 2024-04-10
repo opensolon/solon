@@ -5,6 +5,7 @@ import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.cloud.extend.local.impl.job.CloudJobRunnable;
 import org.noear.solon.cloud.extend.local.impl.job.Cron7X;
 import org.noear.solon.cloud.extend.local.impl.job.JobManager;
+import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.utils.TagsMDC;
@@ -21,12 +22,13 @@ public class CloudJobServiceLocalImpl implements CloudJobService {
     @Override
     public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         try {
+            JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);
             Cron7X cron7X = Cron7X.parse(cron7x);
 
             if (cron7X.getInterval() == null) {
-                JobManager.add(name, description, cron7x, new CloudJobRunnable(handler));
+                JobManager.add(name, description, cron7x, new CloudJobRunnable(jobHolder));
             } else {
-                JobManager.add(name, description, cron7X.getInterval(), new CloudJobRunnable(handler));
+                JobManager.add(name, description, cron7X.getInterval(), new CloudJobRunnable(jobHolder));
             }
 
             TagsMDC.tag0("CloudJob");

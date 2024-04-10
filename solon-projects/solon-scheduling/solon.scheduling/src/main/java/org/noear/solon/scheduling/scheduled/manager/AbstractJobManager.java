@@ -58,7 +58,7 @@ public abstract class AbstractJobManager implements IJobManager {
      */
     @Override
     public List<RankEntity<JobInterceptor>> getJobInterceptors() {
-        return jobInterceptorNodes;
+        return Collections.unmodifiableList(jobInterceptorNodes);
     }
 
 
