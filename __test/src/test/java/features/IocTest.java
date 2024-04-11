@@ -16,12 +16,15 @@ import webapp.dso.AutoConfigTest;
 @ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 //@SolonTest(value = webapp.TestApp.class, args = "-server.port=9001")
-public class AopTest {
+public class IocTest {
     @Inject
     Bean2 bean2;
 
     @Inject("${testpath}")
     String testpath;
+
+    @Inject("${HOME}")
+    String java_opts;
 
     @Inject
     AutoConfigTest autoConfigTest;
@@ -71,5 +74,9 @@ public class AopTest {
 //        aopDemoCom2.test();
 //    }
 
-
+    @Test
+    public void evn_inject() {
+        System.out.println(System.getenv("HOME"));
+        assert java_opts != null;
+    }
 }

@@ -10,7 +10,7 @@ import webapp.demo6_aop.Bean2;
 
 @ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
-public class AopTest_u5 {
+public class IocTest_u5 {
     @Inject
     Bean2 bean2;
 
