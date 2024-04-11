@@ -29,7 +29,7 @@ public class FolkmqConsumeHandler implements MqConsumeHandler {
     public void consume(MqMessageReceived message) throws IOException {
         try {
             Event event = new Event(message.getTopic(), message.getContent());
-            event.key(message.getAttr("key"));
+            event.key(message.getTid());
             event.times(message.getTimes());
             event.tags(message.getTag());
 
