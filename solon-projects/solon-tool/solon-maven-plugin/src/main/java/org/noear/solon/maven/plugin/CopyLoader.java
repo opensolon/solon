@@ -11,6 +11,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.noear.solon.loader.JarLauncher;
 
 /**
  * @author hxm
@@ -38,8 +39,8 @@ public class CopyLoader {
 
     private static boolean setLoader() throws IOException {
         try {
-            //获取当前类所在路径
-            ProtectionDomain protectionDomain = CopyLoader.class.getProtectionDomain();
+            //获取 JarLauncher 类所在路径
+            ProtectionDomain protectionDomain = JarLauncher.class.getProtectionDomain();
             CodeSource codeSource = protectionDomain.getCodeSource();
             URI location = (codeSource == null ? null : codeSource.getLocation().toURI());
             String mavenPluginJarPath = (location == null ? null : location.getSchemeSpecificPart());
