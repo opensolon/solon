@@ -73,7 +73,7 @@ Better developer productivity, easier coding experience:
 
 Faster production and deployment experience:
 
-* Artifacts: Packaging shrunk to 50%-90%
+* Artifacts: 50% ~ 90% smaller packaging
 * Deploy: images are fast to pull and start up (5-10x)
 
 Wider runtime compatibility:
