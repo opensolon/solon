@@ -29,6 +29,9 @@ Solon v2.7.4
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
 	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-22-green.svg" alt="jdk-22" />
+	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
 		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
@@ -60,21 +63,23 @@ Solon v2.7.4
 
 更高的计算性价比：
 
-* 降低运行成本：每秒并发高 2～ 3 倍；内存节省 1/3 ~ 1/2
+* 吞吐：每秒并发高 2～ 3 倍
+* 资源：内存节省 50%
 
-更高的开发效率，更简单的编码体验：
+更好的开发效率，更简单的编码体验：
 
-* 降低学习成本：源码简单；新手入门容易；使用方便
-* 提高调试效率：重启快 5 ～ 10 倍；更快定位问题
+* 开发：架构灵活简洁；入门快
+* 调试：重启快 5 ～ 10 倍；定位问题更快
 
 更快的生产与部署体验：
 
-* 服务包更小，CI/DI 更快：打包缩到 1/2 ~ 1/10
-* 云原生更友好（镜像拉取快，容器就绪快）：打包缩到 1/2 ~ 1/10，启动快 5 ～ 10 倍
+* 工件：打包缩到 50% ~ 90%
+* 部署：镜像拉取快，启动快（5 ～ 10 倍）
 
-更自由的运行时兼容选择：
+更大的运行时兼容范围：
 
-* 同时支持 java8、java11、java17、java21、java22 的运行时
+* 突破：非 java-ee 架构，更灵活
+* 兼容：同时兼容 java8、java11、java17、java21、java22 运行时
 
 
 ## 生态架构图：

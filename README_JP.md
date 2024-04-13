@@ -29,6 +29,9 @@ Solon v2.7.4
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
 	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-22-green.svg" alt="jdk-22" />
+	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
 		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
@@ -56,23 +59,25 @@ Solon v2.7.4
 
 ## 特徴です:
 
-計算費用対効果が高くなります：
+計算費用対効果が高くなります
 
-* ランニングコストを下げます:1秒間に高い2 ~ 3倍を併発します;3分の1 ~ 2分の1のメモリ節約です
+* スループット:1秒間に2 ~ 3倍の量を併発します
+* リソース:メモリ50%節約します
 
-より効率的で簡単なコーディング体験ができます：
+より効率的で簡単なコーディング体験ができます
 
-* 学習コストを下げます:ソースコードは簡単です;初心者は入門しやすいです;使いやすいです
-* 調整の効率を高めます:再起動速い5 ~ 10倍;より速く問題を特定します
+* 開発:柔軟で簡潔なアーキテクチャです;入りが早いです
+* 調整します:再開します速い5 ~ 10倍;特定の問題の方が早いです
 
-より速い生産と配備の経験ができます：
+より速い生産と配備の経験ができます
 
-* サービスパックはさらに小さくなり、CI/DIはさらに速くなります。パッケージは1/2 ~ 1/10になります。
-* クラウドネイティブの方がフレンドリー(ミラーリングが早く、コンテナが早く):パッケージが1/2 ~ 1/10に縮んで、起働が5 ~ 10倍速くなります。
+* 作業物:梱包50% ~ 90%に縮小します
+* 部署:ミラーリングが速く、起働が速いです(5 ~ 10倍)
 
-自由な動作時互換性の選択ができます：
+ランタイム互換範囲が広がります
 
-* java8、java11、java17、java21、java22のランタイムに対応しています。
+* ブレークスルー:非java-eeアーキテクチャ、より柔軟性があります
+* 互換性:同時互換性java8、java11、java17、java21、java22ランタイム
 
 ## エコシステム：
 

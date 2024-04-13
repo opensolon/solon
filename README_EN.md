@@ -29,6 +29,9 @@ Solon v2.7.4
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
 	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-22-green.svg" alt="jdk-22" />
+	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
 		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
@@ -60,21 +63,23 @@ Built from scratch, it has its own standard specification and open ecology
 
 Better cost performance for computing:
 
-* Reduced runtime cost: 2-3 times more concurrency per second Memory savings of 1/3 ~ 1/2
+* Throughput: 2-3 times higher concurrency per second
+* Resources: 50% memory savings
 
-Greater developer productivity and a simpler coding experience:
+Better developer productivity, easier coding experience:
 
-* Reduced learning cost: simple source code; It is easy for beginners to get started; Easy to use
-* Debugging efficiency: restarts are 5-10 times faster; Locate problems faster
+* Development: Flexible and simple architecture; Quick to get started
+* Debugging: Restarts are 5-10 times faster. Locating problems faster
 
 Faster production and deployment experience:
 
-* Smaller service packs, faster CI/DI: 1/2-1/10 pack size
-* Cloud native is more friendly (faster image pull, faster container ready) : packaging is 1/2-1/10 smaller, startup is 5-10 times faster
+* Artifacts: Packaging shrunk to 50%-90%
+* Deploy: images are fast to pull and start up (5-10x)
 
-Freer runtime compatibility options:
+Wider runtime compatibility:
 
-* Supports java8, java11, java17, java21, java22 runtime
+* Breakthrough: Non-Java-EE architecture, more flexibility
+* Compatibility: Compatible with java8, java11, java17, java21, java22 runtime
 
 ## Ecosystem Architecture Diagram:
 
