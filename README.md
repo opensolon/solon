@@ -52,7 +52,7 @@ Solon v2.7.4
 <hr />
 
 <p align="center">
-2 to 3 times more concurrency 50% memory savings Startup is 5-10 times faster. 50% to 90% packaging reduction Compatible with java8 ~ java22
+2 to 3 times more concurrency 50% memory savings Startup is 5-10 times faster. 50% ~ 90% smaller packaging; Compatible with java8 ~ java22
 <br/>
 Built from scratch, with more flexible interface specifications and an open ecosystem
 </p>
