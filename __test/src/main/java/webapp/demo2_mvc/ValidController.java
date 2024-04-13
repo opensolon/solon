@@ -165,7 +165,7 @@ public class ValidController {
 
     //这是基于 bean 的验证体系
     @Mapping("beanlist2")
-    public String beanlist2(@Validated List<ValidModel> list) {
+    public String beanlist2(@NotNull @Size(min = 1) @Validated List<ValidModel> list) {
         return "OK";
     }
 

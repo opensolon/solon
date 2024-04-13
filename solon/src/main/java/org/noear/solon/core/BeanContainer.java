@@ -381,7 +381,7 @@ public abstract class BeanContainer {
     /**
      * 删除 bean 包装
      */
-    public void delWrap(String name) {
+    public void removeWrap(String name) {
         if (Utils.isNotEmpty(name)) {
             SYNC_LOCK.lock();
             try {
@@ -398,7 +398,7 @@ public abstract class BeanContainer {
     /**
      * 删除 bean 包装
      */
-    public void delWrap(Class<?> type) {
+    public void removeWrap(Class<?> type) {
         if (type != null) {
             SYNC_LOCK.lock();
             try {

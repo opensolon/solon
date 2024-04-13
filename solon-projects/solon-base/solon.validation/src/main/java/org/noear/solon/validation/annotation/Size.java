@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.5
  */
-@Target({ElementType.FIELD})
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Size {
     int min() default 0;

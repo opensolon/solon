@@ -256,6 +256,13 @@ public class HttpValidTest extends HttpTester {
     }
 
     @Test
+    public void test2v_beanlist2_b() throws IOException {
+        assert path("/demo2/valid/beanlist2").bodyJson("[]").post().equals("OK") == false;
+        assert path("/demo2/valid/beanlist2").bodyJson("[{}]").post().equals("OK") == false;
+    }
+
+
+    @Test
     public void test2v_map() throws IOException {
         ONode node = ONode.loadStr("{a:{mobile:'x',password:'x'},b:{mobile:'y',password:'y'}}");
 

@@ -22,7 +22,7 @@ public class AppContextTest {
         context.putWrap("test", context.wrapAndPut(String.class, "test"));
         assert context.getBean("test") != null;
 
-        context.delWrap("test");
+        context.removeWrap("test");
         assert context.getBean("test") == null;
     }
 }

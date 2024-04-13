@@ -26,13 +26,18 @@
 * 添加 solon.data TranUtils:getConnectionProxy 接口，方便不同的事务对接
 * 添加 solon.scheduling 对多个 JobInterceptor 及排序支持
 * 添加 solon.cloud 对多个 CloudJobInterceptor 及排序支持
-* 添加 AppContext::delWrap 接口
+* 添加 solon.validation `@Size` 验证注解支持参数
+* 添加 AppContext::removeWrap 接口
+* 添加 folkmq-solon-cloud-plugin 对 event:key 支持
+* 添加 大写开头的环境变量注入支持
 * 调整 bean 的基类注册的排除条件改为“java.”开头（之前为包含）
 * 修复 solon.scheduling.simple 在使用单点 cron 表过式时，会出现 npe 的问题
+* socket.d 升为 2.4.10
+* folkmq 升为 1.4.2
 * snack3 升为 3.2.92
 * jackson 升为 2.17.0
 * fastjson2 升为 2.0.48
-* mybatis-flex 升为 1.8.6
+* mybatis-flex 升为 1.8.7
 * beetlsql 升为 3.30.4-RELEASE
 * netty 升为 4.1.107.Final
 * vertx 升为 4.5.6
