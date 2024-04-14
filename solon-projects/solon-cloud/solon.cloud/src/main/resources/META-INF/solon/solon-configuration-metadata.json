@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "solon.cloud.*.server",
+      "type": "java.lang.String",
+      "description": "服务地址"
+    },
+    {
+      "name": "solon.cloud.*.namespace",
+      "type": "java.lang.String",
+      "description": "服务命名空间"
+    }
+  ]
+}
