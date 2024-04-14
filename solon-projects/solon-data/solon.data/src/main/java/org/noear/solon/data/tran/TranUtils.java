@@ -60,9 +60,20 @@ public final class TranUtils {
     }
 
     /**
-     * 获取链接代理
+     * 获取链接代理（一般，用于第三方框架事务对接）
      */
     public static Connection getConnectionProxy(DataSource ds) throws SQLException {
         return new ConnectionProxy(executor.getConnection(ds));
+    }
+
+    /**
+     * 获取数据源代理（一般，用于第三方框架事务对接）
+     */
+    public static DataSource getDataSourceProxy(DataSource ds) {
+        if (ds instanceof DataSourceProxy) {
+            return ds;
+        } else {
+            return new DataSourceProxy(ds);
+        }
     }
 }
