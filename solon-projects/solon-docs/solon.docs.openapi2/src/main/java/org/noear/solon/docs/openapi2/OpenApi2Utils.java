@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
-import org.noear.solon.docs.util.JsonUtil;
+import org.noear.solon.docs.openapi2.util.JsonUtil;
 
 import java.io.IOException;
 import java.util.List;

@@ -6,7 +6,7 @@ import com.swagger.demo.model.HttpCodes;
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
 import io.swagger.models.parameters.HeaderParameter;
-import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.models.ApiEnum;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
 

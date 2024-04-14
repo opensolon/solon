@@ -1,7 +1,10 @@
-package org.noear.solon.docs;
+package org.noear.solon.docs.models;
 
 /**
- * Swagger 注解所需的类型汇总
+ * 接口枚举常量
+ *
+ * @author noear
+ * @since 2.2
  */
 public class ApiEnum {
     // httpMethod

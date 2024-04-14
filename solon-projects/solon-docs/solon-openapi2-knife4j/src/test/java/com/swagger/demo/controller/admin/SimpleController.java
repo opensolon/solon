@@ -17,7 +17,7 @@ import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
 import org.noear.solon.annotation.Put;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.models.ApiEnum;
 import com.swagger.demo.model.ResultModel;
 
 import java.util.HashMap;

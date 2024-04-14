@@ -1,6 +1,8 @@
 package org.noear.solon.docs;
 
 /**
+ * 文档类型
+ *
  * @author noear
  * @since 2.4
  */

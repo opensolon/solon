@@ -7,6 +7,9 @@ import java.util.*;
 
 /**
  * 文档摘要
+ *
+ * @author noear
+ * @since 2.2
  * */
 public class DocDocket {
     private String version = "2.0";
