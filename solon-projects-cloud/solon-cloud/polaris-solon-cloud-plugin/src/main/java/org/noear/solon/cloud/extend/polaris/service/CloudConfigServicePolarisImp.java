@@ -24,13 +24,15 @@ import java.util.*;
  * @since 1.11
  * */
 public class CloudConfigServicePolarisImp implements CloudConfigService , Closeable {
+    private final CloudProps cloudProps;
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
     private ConfigFileService real;
 
 
     public CloudConfigServicePolarisImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
         String server = cloudProps.getConfigServer();
-        String namespace = Solon.cfg().appNamespace();
+        String namespace = cloudProps.getNamespace();
 
         ConfigurationImpl cfgImpl = PolarisProps.getCfgImpl();
 
@@ -61,7 +63,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
             group = Solon.cfg().appGroup();
         }
 
-        ConfigFile configFile = real.getConfigFile(Solon.cfg().appNamespace(), group, name);
+        ConfigFile configFile = real.getConfigFile(cloudProps.getNamespace(), group, name);
         return new Config(group, name, configFile.getContent(), 0);
     }
 
@@ -109,7 +111,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
         observerMap.put(observer, entity);
 
 
-        ConfigFile configFile = real.getConfigFile(Solon.cfg().appNamespace(), group, name);
+        ConfigFile configFile = real.getConfigFile(cloudProps.getNamespace(), group, name);
 
         configFile.addChangeListener(event -> {
             entity.handle(new Config(entity.group, entity.key, event.getNewValue(), System.currentTimeMillis()));

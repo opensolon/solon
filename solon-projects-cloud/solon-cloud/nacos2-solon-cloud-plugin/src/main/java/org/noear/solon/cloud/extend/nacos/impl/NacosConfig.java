@@ -42,8 +42,8 @@ public class NacosConfig {
             properties.putIfAbsent(PropertyKeyConst.PASSWORD, password);
         }
 
-        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            properties.putIfAbsent(PropertyKeyConst.NAMESPACE, Solon.cfg().appNamespace());
+        if (Utils.isNotEmpty(cloudProps.getNamespace())) {
+            properties.putIfAbsent(PropertyKeyConst.NAMESPACE, cloudProps.getNamespace());
         }
 
         return properties;

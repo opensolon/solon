@@ -28,18 +28,19 @@ import java.util.Objects;
  * @since 1.11
  * */
 public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , Closeable {
+    private final CloudProps cloudProps;
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
     public CloudDiscoveryServicePolarisImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
         String server = cloudProps.getDiscoveryServer();
-        String namespace = Solon.cfg().appNamespace();
 
         ConfigurationImpl cfgImpl = PolarisProps.getCfgImpl();
 
         //发现集群设置
         ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getDiscoverCluster();
-        clusterConfig.setNamespace(namespace);
+        clusterConfig.setNamespace(cloudProps.getNamespace());
 
         //发现连接设置(8091)
         ServerConnectorConfigImpl connectorConfig = cfgImpl.getGlobal().getServerConnector();
@@ -77,7 +78,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
         }
 
         InstanceRegisterRequest request = new InstanceRegisterRequest();
-        request.setNamespace(Solon.cfg().appNamespace());
+        request.setNamespace(cloudProps.getNamespace());
         request.setWeight((int) instance.weight());
         request.setMetadata(instance.meta());
         request.setService(instance.service());
@@ -103,7 +104,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
         }
         InstanceDeregisterRequest deregisterRequest = new InstanceDeregisterRequest();
 
-        deregisterRequest.setNamespace(Solon.cfg().appNamespace());
+        deregisterRequest.setNamespace(cloudProps.getNamespace());
         deregisterRequest.setService(instance.service());
         deregisterRequest.setHost(ss[0]);
         deregisterRequest.setPort(Integer.parseInt(ss[1]));
@@ -122,7 +123,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         GetHealthyInstancesRequest request = new GetHealthyInstancesRequest();
 
-        request.setNamespace(Solon.cfg().appNamespace());
+        request.setNamespace(cloudProps.getNamespace());
         request.setService(service);
 
         InstancesResponse instancesResponse = consumerAPI.getHealthyInstances(request);
@@ -161,7 +162,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
         CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group, service, observer);
 
         WatchServiceRequest request = WatchServiceRequest.builder()
-                .namespace(Solon.cfg().appNamespace())
+                .namespace(cloudProps.getNamespace())
                 .service(service)
                 .listeners(Collections.singletonList(event -> {
                     Discovery discovery = new Discovery(service);

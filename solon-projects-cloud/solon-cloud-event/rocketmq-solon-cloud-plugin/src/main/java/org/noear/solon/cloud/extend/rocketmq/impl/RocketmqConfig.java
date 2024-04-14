@@ -41,7 +41,7 @@ public class RocketmqConfig {
     public RocketmqConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
         channelName = cloudProps.getEventChannel();
-        namespace = Solon.cfg().appNamespace();
+        namespace = cloudProps.getNamespace();
 
         accessKey = cloudProps.getEventAccessKey();
         secretKey = cloudProps.getEventSecretKey();

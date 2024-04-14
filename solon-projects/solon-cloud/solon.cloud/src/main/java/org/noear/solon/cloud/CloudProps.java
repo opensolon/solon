@@ -1,6 +1,8 @@
 package org.noear.solon.cloud;
 
 import java.util.Properties;
+
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Props;
@@ -33,6 +35,8 @@ public class CloudProps {
     private String TOKEN = "solon.cloud.@@.token";
     private String ALARM = "solon.cloud.@@.alarm";
 
+
+    private String NAMESPACE = "solon.cloud.@@.namespace";
 
     private String USERNAME = "solon.cloud.@@.username";
     private String PASSWORD = "solon.cloud.@@.password";
@@ -137,6 +141,8 @@ public class CloudProps {
         TOKEN = TOKEN.replace("@@", frame);
         ALARM = ALARM.replace("@@", frame);
 
+        NAMESPACE = NAMESPACE.replace("@@", frame);
+
         USERNAME = USERNAME.replace("@@", frame);
         PASSWORD = PASSWORD.replace("@@", frame);
         ACCESS_KEY = ACCESS_KEY.replace("@@", frame);
@@ -231,6 +237,20 @@ public class CloudProps {
         return appContext.cfg().get(ALARM);
     }
 
+    private String namespace;
+
+    public String getNamespace() {
+        namespace = appContext.cfg().get(NAMESPACE);
+        if (Utils.isEmpty(namespace)) {
+            namespace = Solon.cfg().appNamespace();
+        }
+
+        if (namespace == null) {
+            namespace = "";
+        }
+
+        return namespace;
+    }
 
     private String username;
 

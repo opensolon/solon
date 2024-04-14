@@ -132,7 +132,7 @@ public class RabbitConfig {
         String tmp = cloudProps.getValue(RabbitmqProps.PROP_EVENT_virtualHost);
 
         if (Utils.isEmpty(tmp)) {
-            return Solon.cfg().appNamespace();
+            return cloudProps.getNamespace();
         } else {
             return tmp;
         }
