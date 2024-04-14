@@ -18,6 +18,11 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
+### 2.7.6
+* 添加 solon.data TranUtils:getDataSourceProxy 方法
+* 添加 solon.cloud CloudProps:getNamespace 方法
+* redisx 升为 1.6.3
+
 ### 2.7.5
 * 新增 solon.web.rx 插件
 * 添加 SolonException 异常基类

@@ -32,7 +32,7 @@
         <wood.version>1.2.7</wood.version>
         <water.version>2.13.1</water.version>
         <luffy.version>1.7.4</luffy.version>
-        <redisx.version>1.6.2</redisx.version>
+        <redisx.version>1.6.3</redisx.version>
         <socketd.version>2.4.10</socketd.version>
         <folkmq.version>1.4.2</folkmq.version>
         <redisson.version>3.27.2</redisson.version>
