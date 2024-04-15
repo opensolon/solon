@@ -7,6 +7,8 @@ import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
@@ -34,8 +36,8 @@ public class Utils {
 
     /**
      * 公共锁（仅用于一次性的场景）
-     * */
-    public static ReentrantLock locker(){
+     */
+    public static ReentrantLock locker() {
         return comLocker;
     }
 
@@ -839,5 +841,15 @@ public class Utils {
         }
 
         return classLoader;
+    }
+
+    /**
+     * 获取进程号
+     */
+    public static String pid() {
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        String pid = rb.getName().split("@")[0];
+        System.setProperty("PID", pid);
+        return pid;
     }
 }

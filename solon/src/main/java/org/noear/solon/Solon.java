@@ -144,9 +144,7 @@ public class Solon {
         System.getProperties().putIfAbsent("java.awt.headless", "true");
 
         //确定PID
-        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-        String pid = rb.getName().split("@")[0];
-        System.setProperty("PID", pid);
+        String pid = Utils.pid();
 
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         AppClassLoader.bindingThread();
