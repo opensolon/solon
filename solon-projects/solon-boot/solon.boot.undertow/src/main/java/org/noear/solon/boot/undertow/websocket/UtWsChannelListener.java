@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.xnio.Pooled;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
@@ -28,7 +29,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             result = channel.receive();
         } catch (Throwable e) {
             receiveThrowable = true;
-            this.onError(channel, e);
+            if (e instanceof SocketException == false) {
+                this.onError(channel, e);
+            }
         }
 
         try {
