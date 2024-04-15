@@ -40,6 +40,9 @@ public class LogIncubatorImpl implements LogIncubator {
             }
         }
 
+        //加载pid
+        Utils.pid();
+
         ThreadContext.put("pid", System.getProperty("PID"));
 
         //尝试从配置里获取

@@ -44,6 +44,9 @@ public class LogIncubatorImpl implements LogIncubator {
             }
         }
 
+        //加载pid
+        Utils.pid();
+
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 

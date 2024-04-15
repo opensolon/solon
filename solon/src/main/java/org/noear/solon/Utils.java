@@ -843,13 +843,18 @@ public class Utils {
         return classLoader;
     }
 
+
+    private static String _pid;
     /**
      * 获取进程号
      */
     public static String pid() {
-        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-        String pid = rb.getName().split("@")[0];
-        System.setProperty("PID", pid);
-        return pid;
+        if (_pid == null) {
+            RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+            _pid = rb.getName().split("@")[0];
+            System.setProperty("PID", _pid);
+        }
+
+        return _pid;
     }
 }

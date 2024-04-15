@@ -1,5 +1,6 @@
 package org.slf4j.impl;
 
+import org.noear.solon.Utils;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.spi.MDCAdapter;
@@ -31,6 +32,7 @@ public class SolonServiceProvider implements SLF4JServiceProvider {
 
     @Override
     public void initialize() {
-
+        //加载pid
+        Utils.pid();
     }
 }

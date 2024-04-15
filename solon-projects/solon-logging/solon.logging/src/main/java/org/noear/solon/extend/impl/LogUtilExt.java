@@ -1,7 +1,6 @@
 package org.noear.solon.extend.impl;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.LogIncubator;
 import org.slf4j.Logger;
@@ -21,9 +20,6 @@ public class LogUtilExt extends LogUtil {
     public LogUtilExt() {
         if (Solon.app() != null) {
             incubate();
-        } else {
-            //加载pid
-            Utils.pid();
         }
     }
 
