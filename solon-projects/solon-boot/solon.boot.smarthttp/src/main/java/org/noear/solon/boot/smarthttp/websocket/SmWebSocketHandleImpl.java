@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
             if (webSocket.isClosed()) {
                 return;
             } else {
-                webSocket.close();
+                RunUtil.runAndTry(webSocket::close);
             }
 
             webSocketRouter.getListener().onClose(webSocket);

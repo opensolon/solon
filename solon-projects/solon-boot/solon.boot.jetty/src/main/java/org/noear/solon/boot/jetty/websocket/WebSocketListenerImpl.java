@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
         if (webSocket.isClosed()) {
             return;
         } else {
-            webSocket.close();
+            RunUtil.runAndTry(webSocket::close);
         }
 
         webSocketRouter.getListener().onClose(webSocket);

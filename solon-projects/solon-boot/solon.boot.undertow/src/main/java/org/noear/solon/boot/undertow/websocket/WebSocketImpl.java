@@ -70,9 +70,9 @@ public class WebSocketImpl extends WebSocketBase {
         super.close();
         try {
             real.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug("{}", e);
+                log.debug("WebSocket close error", e);
             }
         }
     }

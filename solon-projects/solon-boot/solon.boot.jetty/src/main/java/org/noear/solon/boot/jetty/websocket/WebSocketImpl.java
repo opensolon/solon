@@ -2,6 +2,8 @@ package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.noear.solon.net.websocket.WebSocketBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,6 +14,7 @@ import java.nio.ByteBuffer;
  * @since 2.6
  */
 public class WebSocketImpl extends WebSocketBase {
+    private static final Logger log = LoggerFactory.getLogger(WebSocketImpl.class);
     private final Session real;
     public WebSocketImpl(Session real){
         this.real = real;
@@ -62,6 +65,12 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public void close() {
         super.close();
-        real.close();
+        try {
+            real.close();
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.debug("WebSocket close error", e);
+            }
+        }
     }
 }

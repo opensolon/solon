@@ -6,6 +6,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,7 @@ public class WsServer extends WebSocketServer {
         if (webSocket.isClosed()) {
             return;
         } else {
-            webSocket.close();
+            RunUtil.runAndTry(webSocket::close);
         }
 
         webSocketRouter.getListener().onClose(webSocket);

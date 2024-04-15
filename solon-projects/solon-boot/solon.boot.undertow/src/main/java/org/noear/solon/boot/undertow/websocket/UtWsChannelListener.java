@@ -2,6 +2,7 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
         if (webSocket.isClosed()) {
             return;
         } else {
-            webSocket.close();
+            RunUtil.runAndTry(webSocket::close);
         }
         webSocketRouter.getListener().onClose(webSocket);
     }

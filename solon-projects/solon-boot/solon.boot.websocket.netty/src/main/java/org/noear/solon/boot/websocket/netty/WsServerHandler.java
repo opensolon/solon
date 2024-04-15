@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 
@@ -158,7 +159,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
         if (webSocket.isClosed()) {
             return;
         } else {
-            webSocket.close();
+            RunUtil.runAndTry(webSocket::close);
         }
         webSocketRouter.getListener().onClose(webSocket);
     }
