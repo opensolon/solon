@@ -8,7 +8,7 @@
         <Property name="CONSOLE_LOG_LEVEL">${sys:solon.logging.appender.console.level:-TRACE}</Property>
 
         <Property name="FILE_LOG_NAME">${sys:solon.logging.appender.file.name:-logs/${APP_NAME}}</Property>
-        <Property name="FILE_LOG_PATTERN_DEF">%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n</Property>
+        <Property name="FILE_LOG_PATTERN_DEF">%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} #%5X{pid} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n</Property>
         <Property name="FILE_LOG_PATTERN">${sys:solon.logging.appender.file.pattern:-${FILE_LOG_PATTERN_DEF}}</Property>
         <Property name="FILE_LOG_LEVEL">${sys:solon.logging.appender.file.level:-INFO}</Property>
         <Property name="FILE_LOG_MAX_HISTORY">${sys:solon.logging.appender.file.maxHistory:-7}</Property>
