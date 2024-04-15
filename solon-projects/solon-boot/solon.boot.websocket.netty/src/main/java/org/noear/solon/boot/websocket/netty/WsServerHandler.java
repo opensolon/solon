@@ -14,6 +14,8 @@ import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
@@ -22,6 +24,7 @@ import java.nio.ByteBuffer;
  * @since 2.3
  */
 public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
+    static final Logger log = LoggerFactory.getLogger(WsServerHandler.class);
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
     public static final AttributeKey<WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
@@ -105,7 +108,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
 
-        if(frame instanceof PongWebSocketFrame) {
+        if (frame instanceof PongWebSocketFrame) {
             WebSocketImpl webSocket = ctx.attr(SessionKey).get();
             if (webSocket != null) {
                 webSocket.onReceive();
@@ -129,9 +132,9 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             WebSocketImpl webSocket = ctx.attr(SessionKey).get();
             webSocket.onReceive();
 
-            byte[] msgBytes = frame.content().array();
+            ByteBuffer msgBuf = frame.content().nioBuffer();
 
-            webSocketRouter.getListener().onMessage(webSocket, ByteBuffer.wrap(msgBytes));
+            webSocketRouter.getListener().onMessage(webSocket, msgBuf);
             return;
         }
     }
@@ -143,6 +146,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             buf.release();
             HttpUtil.setContentLength(resp, resp.content().readableBytes());
         }
+
         ChannelFuture f = ctx.channel().writeAndFlush(resp);
         if (!HttpUtil.isKeepAlive(resp) || resp.status().code() != 200) {
             f.addListener(ChannelFutureListener.CLOSE);
@@ -170,8 +174,13 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //listener.onError();
-        WebSocket webSocket = ctx.attr(SessionKey).get();
-        webSocketRouter.getListener().onError(webSocket, cause);
-        ctx.close();
+        try {
+            WebSocket webSocket = ctx.attr(SessionKey).get();
+            webSocketRouter.getListener().onError(webSocket, cause);
+        } catch (Throwable e) {
+            log.warn(e.getMessage(), e);
+        }
+
+        RunUtil.runAndTry(ctx::close);
     }
 }
