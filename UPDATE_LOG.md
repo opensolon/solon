@@ -24,7 +24,7 @@
 * 修复 solon.boot.undertow 的 ws 适配在 window 下异常关闭处理时，无法触发 onClose 事件的问题
 * 修复 solon.boot.websocket.netty 接收二进制码时出错的问题
 * redisx 升为 1.6.3
-* fastjson2 调为 2.0.47
+* fastjson2 升为 2.0.49
 
 ### 2.7.5
 * 新增 solon.web.rx 插件
