@@ -73,6 +73,7 @@
         <swagger.version>1.6.11</swagger.version>
         <swagger2.version>2.1.13</swagger2.version>
         <knife4j.version>4.5.0</knife4j.version>
+        <therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 
         <jackson.version>2.17.0</jackson.version>
         <gson.version>2.10.1</gson.version>
@@ -382,6 +383,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.docs</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.docs.openapi2</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
@@ -1420,6 +1426,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-docs-openapi2-javadoc</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-admin-client</artifactId>
                 <version>${solon-admin.version}</version>
             </dependency>
@@ -1673,6 +1685,18 @@
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
                         <encoding>UTF-8</encoding>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>com.github.therapi</groupId>
+                                <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                                <version>${therapi-runtime-javadoc.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <compilerArgs>
+                            <arg>
+                                -Amapstruct.defaultComponentModel=solon
+                            </arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
