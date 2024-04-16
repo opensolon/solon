@@ -21,15 +21,20 @@ import org.noear.solon.core.AppClassLoader;
  */
 public class ResourceUtil {
     public static final String TAG_classpath = "classpath:";
-    public static final String TAG_classpath_ = "classpath*:";
+    public static final String TAG_classpath_ = "classpath*:"; //为了兼容用户旧的习惯
 
     public static boolean hasClasspath(String path) {
         return path.startsWith(TAG_classpath) || path.startsWith(TAG_classpath_);
     }
 
     public static String remClasspath(String path) {
-        return path.replace(TAG_classpath, "")
-                .replace(TAG_classpath_, "");
+        int idx = path.indexOf(":");
+
+        if (idx == 10 || idx == 11) {
+            return path.substring(idx);
+        } else {
+            return path;
+        }
     }
 
     /**
@@ -190,8 +195,8 @@ public class ResourceUtil {
      * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
      */
     public static URL findResource(ClassLoader classLoader, String uri) {
-        if (uri.startsWith(Utils.TAG_classpath)) {
-            return getResource(classLoader, uri.substring(Utils.TAG_classpath.length()));
+        if (hasClasspath(uri)) {
+            return getResource(classLoader, remClasspath(uri));
         } else {
             try {
                 File file = Utils.getFile(uri);
@@ -297,8 +302,8 @@ public class ResourceUtil {
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
         List<String> paths = new ArrayList<>();
 
-        if (resExpr.startsWith(Utils.TAG_classpath)) {
-            resExpr = resExpr.substring(Utils.TAG_classpath.length());
+        if (hasClasspath(resExpr)) {
+            resExpr = remClasspath(resExpr);
         }
 
         if(resExpr.startsWith("/")){

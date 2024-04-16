@@ -26,8 +26,11 @@ import java.util.function.Function;
  * @since 1.0
  * */
 public class Utils {
+    /**
+     * @deprecated 2.7
+     * */
+    @Deprecated
     public static final String TAG_classpath = "classpath:";
-    public static final String TAG_classpath_ = "classpath*:";
 
     private static ReentrantLock comLocker = new ReentrantLock();
 
