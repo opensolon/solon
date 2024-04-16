@@ -28,7 +28,7 @@ public class PathTest {
         long start = System.currentTimeMillis();
         for(int i=0; i<100000; i++) {
             String path = "/a//b/c//d/e";
-            path = path.replaceAll("//","/");
+            path = path.replace("//","/");
 
             //System.out.println(path);
         }

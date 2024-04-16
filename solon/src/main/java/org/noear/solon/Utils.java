@@ -128,7 +128,7 @@ public class Utils {
      * 生成UGID
      */
     public static String guid() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     /**
