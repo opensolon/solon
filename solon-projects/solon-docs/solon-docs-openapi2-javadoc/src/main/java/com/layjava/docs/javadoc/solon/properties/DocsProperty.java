@@ -6,6 +6,12 @@ import org.noear.solon.core.handle.Result;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 文档配置属性
+ *
+ * @author chengliang
+ * @since  2024/04/16
+ */
 public class DocsProperty {
 
     /**
