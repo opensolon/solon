@@ -568,7 +568,7 @@ public class AppContext extends BeanContainer {
                 .sorted(Comparator.comparing(s -> s.length()))
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
-                    className = className.replace("/", ".");
+                    className = className.replace('/', '.');
 
                     Class<?> clz = ClassUtil.loadClass(classLoader, className);
                     if (clz != null) {
@@ -912,6 +912,7 @@ public class AppContext extends BeanContainer {
         //全部跑完后，检查注入情况
         List<InjectGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
                 .collect(Collectors.toList());
+
         if (gatherList.size() > 0) {
             for (InjectGather gather : gatherList) {
                 IndexUtil.buildGatherIndex(gather, gatherList);

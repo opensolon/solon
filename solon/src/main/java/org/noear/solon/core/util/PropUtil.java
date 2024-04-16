@@ -25,7 +25,7 @@ public class PropUtil {
 
         //如果有默认值，则获取
         String def = null;
-        int defIdx = expr.indexOf(":");
+        int defIdx = expr.indexOf(':');
         if (defIdx > 0) {
             if (expr.length() > defIdx + 1) {
                 def = expr.substring(defIdx + 1).trim();
@@ -50,14 +50,14 @@ public class PropUtil {
     /**
      * 根据表达式获取配置值
      *
-     * @param expr 兼容 ${key} or key or ${key:def} or key:def
+     * @param expr   兼容 ${key} or key or ${key:def} or key:def
      * @param useDef 是否使用默认值
      */
     public static String getByExp(Properties main, Properties target, String expr, boolean useDef) {
         String[] nameAndDef = expSplit(expr);
 
         String name = nameAndDef[0];
-        if(Utils.isEmpty(name)){
+        if (Utils.isEmpty(name)) {
             return nameAndDef[1];
         }
 
@@ -94,7 +94,6 @@ public class PropUtil {
     }
 
 
-
     /**
      * 根据模板获取配置值
      *
@@ -107,7 +106,7 @@ public class PropUtil {
     /**
      * 根据模板获取配置值
      *
-     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param tml    模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      * @param useDef 是否使用默认值
      */
     public static String getByTml(Properties main, Properties target, String tml, boolean useDef) {
@@ -122,7 +121,7 @@ public class PropUtil {
             if (start < 0) {
                 return tml;
             } else {
-                end = tml.indexOf("}", start);
+                end = tml.indexOf('}', start);
 
                 if (end < 0) {
                     throw new IllegalStateException("Invalid template expression: " + tml);
