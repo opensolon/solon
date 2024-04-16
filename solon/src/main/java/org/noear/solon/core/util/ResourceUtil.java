@@ -28,7 +28,7 @@ public class ResourceUtil {
     }
 
     public static String remClasspath(String path) {
-        int idx = path.indexOf(":");
+        int idx = path.indexOf(':');
 
         if (idx == 9 || idx == 10) {
             return path.substring(idx + 1);
@@ -244,45 +244,54 @@ public class ResourceUtil {
         List<Class<?>> clzList = new ArrayList<>();
 
 
-        if (clzExpr.indexOf("*") < 0) {
-            //说明是单个类
-            String className;
-
+        if (clzExpr.indexOf('*') < 0) {
             if (clzExpr.endsWith(".class")) {
-                className = clzExpr.substring(0, clzExpr.length() - 6);
-            } else {
-                className = clzExpr;
-            }
-
-            Class<?> clz = ClassUtil.loadClass(classLoader, className);
-            if (clz != null) {
-                clzList.add(clz);
-            }
-
-            return clzList;
-        }else {
-            //说明是一批类
-            if (clzExpr.endsWith(".class")) {
+                //说明是单个类
                 clzExpr = clzExpr.substring(0, clzExpr.length() - 6);
+
+                Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
+                if (clz != null) {
+                    clzList.add(clz);
+                }
+
+                return clzList;
             } else {
                 int idx = clzExpr.lastIndexOf('.');
-                if (clzExpr.indexOf('*', idx) < 0) {
-                    //.后面没带*，可能是包名
-                    if (Character.isLetter(clzExpr.charAt(idx + 1))) { //44=$ 97=a
-                        //开头为小写，算作是包名
-                        clzExpr = clzExpr + ".*";
+                if (idx > 0 && Character.isLowerCase(clzExpr.charAt(idx + 1))) { //44=$ 97=a
+                    //开头为小写，算作是包名
+                    clzExpr = clzExpr + ".*";
+                } else {
+                    Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
+                    if (clz != null) {
+                        clzList.add(clz);
                     }
+
+                    return clzList;
                 }
             }
         }
 
 
-        clzExpr = clzExpr.replace(".", "/");
+        //说明是一批类
+        if (clzExpr.endsWith(".class")) {
+            clzExpr = clzExpr.substring(0, clzExpr.length() - 6);
+        } else {
+            int idx = clzExpr.lastIndexOf('.');
+            if (idx > 0 && clzExpr.indexOf('*', idx) < 0) {
+                //.后面没带*，可能是包名
+                if (Character.isLowerCase(clzExpr.charAt(idx + 1))) { //44=$ 97=a
+                    //开头为小写，算作是包名
+                    clzExpr = clzExpr + ".*";
+                }
+            }
+        }
+
+        clzExpr = clzExpr.replace('.', '/');
         clzExpr = clzExpr + ".class"; //查找时要带 class
 
         ResourceUtil.scanResources(classLoader, clzExpr).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
-            className = className.replace("/", ".");
+            className = className.replace('/', '.');
 
             Class<?> clz = ClassUtil.loadClass(classLoader, className);
             if (clz != null) {
@@ -324,7 +333,7 @@ public class ResourceUtil {
             resExpr = resExpr.substring(1);
         }
 
-        if (resExpr.contains("/*") == false) { //说明没有*符
+        if (resExpr.indexOf('*') < 0) { //说明没有*符
             paths.add(resExpr);
             return paths;
         }
@@ -339,11 +348,11 @@ public class ResourceUtil {
         String dir = resExpr.substring(0, dirIdx);
 
         //确定后缀
-        int sufIdx = resExpr.lastIndexOf(".");
+        int sufIdx = resExpr.lastIndexOf('.');
         String suf = null;
         if (sufIdx > 0) {
             suf = resExpr.substring(sufIdx);
-            if (suf.contains("*")) {
+            if (suf.indexOf('*') >= 0) {
                 sufIdx = -1;
                 suf = null;
             }
@@ -355,11 +364,11 @@ public class ResourceUtil {
 
         //匹配表达式
         //"/**"
-        expr = expr.replaceAll("/\\*\\*", "(/[^/]#)#"); //#暂代*
+        expr = expr.replace("/**", "(/[^/]#)#"); //#暂代*
         //"*"
-        expr = expr.replaceAll("\\*", "[^/]+");
+        expr = expr.replace("*", "[^/]+");
         //"#"
-        expr = expr.replaceAll("#", "*"); //#转回*
+        expr = expr.replace('#', '*'); //#转回*
 
         Pattern pattern = Pattern.compile(expr);
 
@@ -380,5 +389,4 @@ public class ResourceUtil {
 
         return paths;
     }
-
 }

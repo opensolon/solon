@@ -108,4 +108,22 @@ public class ClassPathTest {
         System.out.println(classes.size());
         assert classes.size() >= 2;
     }
+
+    @Test
+    public void resolveClasses4(){
+        //
+        //如果是apt代理，会找到更多的类
+        //
+
+        Collection<Class<?>> classes;
+
+        classes = ResourceUtil.scanClasses("webapp.dso.cache");
+        System.out.println(classes.size());
+        assert classes.size() >= 2;
+
+
+        classes = ResourceUtil.scanClasses("webapp.dso.cache.OathServer");
+        System.out.println(classes.size());
+        assert classes.size() == 1;
+    }
 }
