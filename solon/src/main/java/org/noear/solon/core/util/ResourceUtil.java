@@ -221,6 +221,9 @@ public class ResourceUtil {
     //a.*
     //a.**.*
     //a.**.b.*
+    //a.**.b.*Mapper
+    //a.**.b //算包名
+    //a.**.B //算类名
 
     /**
      * 扫描类
@@ -240,8 +243,9 @@ public class ResourceUtil {
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
         List<Class<?>> clzList = new ArrayList<>();
 
-        //说明是单个类
+
         if (clzExpr.indexOf("*") < 0) {
+            //说明是单个类
             String className;
 
             if (clzExpr.endsWith(".class")) {
@@ -256,15 +260,25 @@ public class ResourceUtil {
             }
 
             return clzList;
+        }else {
+            //说明是一批类
+            if (clzExpr.endsWith(".class")) {
+                clzExpr = clzExpr.substring(0, clzExpr.length() - 6);
+            } else {
+                int idx = clzExpr.lastIndexOf('.');
+                if (clzExpr.indexOf('*', idx) < 0) {
+                    //.后面没带*，可能是包名
+                    if (Character.isLetter(clzExpr.charAt(idx + 1))) { //44=$ 97=a
+                        //开头为小写，算作是包名
+                        clzExpr = clzExpr + ".*";
+                    }
+                }
+            }
         }
 
-        if (clzExpr.endsWith(".class") == false) {
-            clzExpr = clzExpr + ".class";
-        }
 
         clzExpr = clzExpr.replace(".", "/");
-        clzExpr = clzExpr.replace("/class", ".class");//xxx.class 会变成 xxx/class
-
+        clzExpr = clzExpr + ".class"; //查找时要带 class
 
         ResourceUtil.scanResources(classLoader, clzExpr).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
@@ -337,11 +351,15 @@ public class ResourceUtil {
 
         int sufIdx2 = sufIdx;
         String suf2 = suf;
+        String expr = resExpr;
 
         //匹配表达式
-        String expr = resExpr.replaceAll("/\\*\\.", "/[^\\./]+\\.");
-        expr = expr.replaceAll("/\\*\\*/", "(/[^/]*)*/");
-        expr = expr.replaceAll("/\\*/", "/[^/]+/");
+        //"/**"
+        expr = expr.replaceAll("/\\*\\*", "(/[^/]#)#"); //#暂代*
+        //"*"
+        expr = expr.replaceAll("\\*", "[^/]+");
+        //"#"
+        expr = expr.replaceAll("#", "*"); //#转回*
 
         Pattern pattern = Pattern.compile(expr);
 

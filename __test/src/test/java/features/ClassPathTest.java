@@ -90,4 +90,22 @@ public class ClassPathTest {
         System.out.println(classes.size());
         assert classes.size() >= 8;
     }
+
+    @Test
+    public void resolveClasses3(){
+        //
+        //如果是apt代理，会找到更多的类
+        //
+
+        Collection<Class<?>> classes;
+
+        classes = ResourceUtil.scanClasses("webapp.**.cache.*Server");
+        System.out.println(classes.size());
+        assert classes.size() == 1;
+
+
+        classes = ResourceUtil.scanClasses("webapp.*.cache");
+        System.out.println(classes.size());
+        assert classes.size() >= 2;
+    }
 }
