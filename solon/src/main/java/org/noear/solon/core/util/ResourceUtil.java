@@ -30,8 +30,8 @@ public class ResourceUtil {
     public static String remClasspath(String path) {
         int idx = path.indexOf(":");
 
-        if (idx == 10 || idx == 11) {
-            return path.substring(idx);
+        if (idx == 9 || idx == 10) {
+            return path.substring(idx + 1);
         } else {
             return path;
         }
