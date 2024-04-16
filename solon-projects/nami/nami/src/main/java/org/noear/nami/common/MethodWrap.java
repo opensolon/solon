@@ -61,10 +61,11 @@ public class MethodWrap {
             //格式2: GET user/a.0.1
             if (mappingAnno.value().length() > 0) {
                 String val = mappingAnno.value().trim();
+                int idx = val.indexOf(" ");
 
-                if (val.indexOf(" ") > 0) {
-                    act = val.split(" ")[0];
-                    fun = val.split(" ")[1];
+                if (idx > 0) {
+                    act = val.substring(0, idx);
+                    fun = val.substring(idx + 1);
                 } else {
                     act = val;
                 }
