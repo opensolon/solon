@@ -19,7 +19,7 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.6
-* 添加 solon 对 `classpath*:` 表达式支持
+* 添加 solon 对 `classpath*:` 表达式支持（兼容旧的习惯）
 * 添加 solon.data TranUtils:getDataSourceProxy 方法
 * 添加 solon.cloud CloudProps:getNamespace 方法
 * 修复 solon.boot.undertow 的 ws 适配在 window 下异常关闭处理时，无法触发 onClose 事件的问题
