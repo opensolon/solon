@@ -20,6 +20,17 @@ import org.noear.solon.core.AppClassLoader;
  * @since 2.0
  */
 public class ResourceUtil {
+    public static final String TAG_classpath = "classpath:";
+    public static final String TAG_classpath_ = "classpath*:";
+
+    public static boolean hasClasspath(String path) {
+        return path.startsWith(TAG_classpath) || path.startsWith(TAG_classpath_);
+    }
+
+    public static String remClasspath(String path) {
+        return path.replace(TAG_classpath, "")
+                .replace(TAG_classpath_, "");
+    }
 
     /**
      * 获取资源URL集

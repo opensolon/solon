@@ -27,6 +27,8 @@ import java.util.function.Function;
  * */
 public class Utils {
     public static final String TAG_classpath = "classpath:";
+    public static final String TAG_classpath_ = "classpath*:";
+
     private static ReentrantLock comLocker = new ReentrantLock();
 
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();

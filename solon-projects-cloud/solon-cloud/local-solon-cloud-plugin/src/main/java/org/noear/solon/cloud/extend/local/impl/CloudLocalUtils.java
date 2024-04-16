@@ -19,9 +19,9 @@ public class CloudLocalUtils {
             //默认目录
             String resourceKey = "META-INF/solon-cloud/" + key;
             return ResourceUtil.getResourceAsString(resourceKey);
-        } else if (server.startsWith(Utils.TAG_classpath)) {
+        } else if (ResourceUtil.hasClasspath(server)) {
             //资源目录
-            String resourceKey = server.substring(Utils.TAG_classpath.length()) + key;
+            String resourceKey = ResourceUtil.remClasspath(server) + key;
             return ResourceUtil.getResourceAsString(resourceKey);
         } else {
             //本地目录

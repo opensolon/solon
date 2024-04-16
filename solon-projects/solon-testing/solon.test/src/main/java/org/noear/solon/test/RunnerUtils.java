@@ -13,6 +13,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.annotation.Rollback;
 import org.noear.solon.test.annotation.TestPropertySource;
 import org.noear.solon.test.annotation.TestRollback;
@@ -62,8 +63,8 @@ public class RunnerUtils {
         }
 
         for (String uri : propertySources) {
-            if (uri.startsWith(Utils.TAG_classpath)) {
-                context.cfg().loadAdd(uri.substring(Utils.TAG_classpath.length()));
+            if (ResourceUtil.hasClasspath(uri)) {
+                context.cfg().loadAdd(ResourceUtil.remClasspath(uri));
             } else {
                 context.cfg().loadAdd(new File(uri).toURI().toURL());
             }

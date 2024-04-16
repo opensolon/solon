@@ -9,6 +9,7 @@ import org.noear.solon.cloud.extend.local.service.*;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 /**
  * @author noear
@@ -59,7 +60,7 @@ public class XPluginImp implements Plugin {
         if (cloudProps.getFileEnable()) {
             //不是空，并且不是"classpath:"开头
             if (Utils.isNotEmpty(cloudProps.getServer()) &&
-                    cloudProps.getServer().startsWith(Utils.TAG_classpath) == false) {
+                    ResourceUtil.hasClasspath(cloudProps.getServer()) == false) {
                 CloudManager.register(new CloudFileServiceLocalImpl(cloudProps.getServer()));
             } else {
                 LogUtil.global().warn("The local file service cannot be enabled: no server configuration");
