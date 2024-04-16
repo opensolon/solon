@@ -22,6 +22,7 @@
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
         <solon.version>2.7.6-SNAPSHOT</solon.version>
         <solon-admin.version>2.7.5</solon-admin.version>
@@ -392,7 +393,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.docs.openapi2</artifactId>
+                <artifactId>solon-docs-openapi2-javadoc</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
@@ -1426,12 +1427,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-docs-openapi2-javadoc</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-admin-client</artifactId>
                 <version>${solon-admin.version}</version>
             </dependency>
@@ -1684,19 +1679,7 @@
                         <compilerArgument>-parameters</compilerArgument>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
-                        <encoding>UTF-8</encoding>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>com.github.therapi</groupId>
-                                <artifactId>therapi-runtime-javadoc-scribe</artifactId>
-                                <version>${therapi-runtime-javadoc.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                        <compilerArgs>
-                            <arg>
-                                -Amapstruct.defaultComponentModel=solon
-                            </arg>
-                        </compilerArgs>
+                        <encoding>${maven.compiler.encoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
