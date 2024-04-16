@@ -35,7 +35,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
 import org.noear.solon.docs.models.ApiContact;
-import org.noear.solon.docs.models.ApiEnum;
+import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.models.ApiScheme;
 

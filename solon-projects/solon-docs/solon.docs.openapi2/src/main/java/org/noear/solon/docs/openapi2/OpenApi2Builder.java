@@ -22,7 +22,7 @@ import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.docs.models.ApiEnum;
+import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
 import org.noear.solon.docs.models.ApiContact;

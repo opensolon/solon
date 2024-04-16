@@ -1,4 +1,4 @@
-package org.noear.solon.docs.models;
+package org.noear.solon.docs;
 
 /**
  * 接口枚举常量

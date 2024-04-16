@@ -7,7 +7,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.docs.models.ApiEnum;
+import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
 import org.noear.solon.docs.openapi2.wrap.ApiParamAnno;
 import org.noear.solon.docs.openapi2.wrap.ApiParamImpl;
