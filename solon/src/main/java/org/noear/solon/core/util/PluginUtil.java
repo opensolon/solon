@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.PluginEntity;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.Properties;
 import java.util.function.Consumer;
 
@@ -23,32 +24,24 @@ public class PluginUtil {
      */
     public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）
-        ScanUtil.scan(classLoader, "META-INF/solon", n -> {
-                    return n.endsWith(".properties") || n.endsWith(".yml");
-                })
-                .stream()
-                .map(k -> {
-                    URL resource = ResourceUtil.getResource(classLoader, k);
-                    if (resource == null) {
-                        // native 时，扫描出来的resource可能是不存在的（这种情况就是bug），需要给于用户提示，反馈给社区
-                        LogUtil.global().warn("solon plugin: name=" + k + ", resource is null");
-                    }
-                    return resource;
-                })
-                .filter(url -> {
-                    if (url == null) {
-                        return false;
-                    } else {
-                        if (Utils.isNotEmpty(limitFile)) {
-                            return url.toString().contains(limitFile);
-                        }
-                        return true;
-                    }
-                })
-                .forEach(url -> {
-                    Properties props = Utils.loadProperties(url);
-                    findPlugins(classLoader, props, consumer);
-                });
+        Collection<String> nameList = ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties"));
+        boolean isLimitFile = Utils.isNotEmpty(limitFile);
+
+        for (String name : nameList) {
+            URL res = ResourceUtil.getResource(classLoader, name);
+
+            if (res == null) {
+                // native 时，扫描出来的resource可能是不存在的（这种情况就是bug），需要给于用户提示，反馈给社区
+                LogUtil.global().warn("Solon plugin: name=" + name + ", resource is null");
+            } else {
+                if (isLimitFile && name.indexOf(limitFile) < 0) {
+                    continue;
+                }
+
+                Properties props = Utils.loadProperties(res);
+                findPlugins(classLoader, props, consumer);
+            }
+        }
     }
 
     /**
@@ -58,7 +51,12 @@ public class PluginUtil {
         String pluginStr = props.getProperty("solon.plugin");
 
         if (Utils.isNotEmpty(pluginStr)) {
-            int priority = Integer.parseInt(props.getProperty("solon.plugin.priority", "0"));
+            String priorityStr = props.getProperty("solon.plugin.priority");
+            int priority = 0;
+            if (Utils.isNotEmpty(priorityStr)) {
+                priority = Integer.parseInt(priorityStr);
+            }
+
             String[] plugins = pluginStr.trim().split(",");
 
             for (String clzName : plugins) {
