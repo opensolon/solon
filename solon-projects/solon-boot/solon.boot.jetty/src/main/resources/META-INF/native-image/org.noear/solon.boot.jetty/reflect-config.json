@@ -1,0 +1,10 @@
+[
+  {
+    "name": "org.noear.solon.boot.jetty.http.JtHttpContextServletHandler",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.noear.solon.boot.jetty.websocket.WebSocketListenerImpl",
+    "allDeclaredConstructors": true
+  }
+]
