@@ -861,9 +861,9 @@ public class OpenApi2Builder {
                             fieldPr.setItems(itemPr);
                         } else {
                             Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
-                            itemPr.setTitle(fieldTitle);
-                            itemPr.setDescription(fieldComment);
                             if (itemPr != null) {
+                                itemPr.setTitle(fieldTitle);
+                                itemPr.setDescription(fieldComment);
                                 fieldPr.setItems(itemPr);
                             } else {
                                 ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
