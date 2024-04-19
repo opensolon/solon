@@ -237,7 +237,7 @@ public class ValidatorManager {
                     List<BeanValidateInfo> list = (List<BeanValidateInfo>) rst.getData();
                     result.getData().addAll(list);
                 }else {
-                    BeanValidateInfo beanValidateInfo = new BeanValidateInfo(anno, valid.message(anno));
+                    BeanValidateInfo beanValidateInfo = new BeanValidateInfo(label, anno, valid.message(anno));
                     message = beanValidateInfo.message;
                     rst.setData(beanValidateInfo);
                     result.getData().add(beanValidateInfo);
@@ -347,12 +347,12 @@ public class ValidatorManager {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
                             }else {
-                                rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fieldWrap.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
                         }else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
-                                rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fieldWrap.getName(), anno, valid.message(anno)));
                             }
                             return rst;
                         }
