@@ -20,7 +20,14 @@ public class BeanValidateInfo extends Result {
      * */
     public final String message;
 
-    public BeanValidateInfo(Annotation anno, String message) {
+    /**
+     * 验证结果对应的验证名称
+     * 可能是实体里的字段名称，也可能是参数里的参数名称
+     */
+    public final String name;
+
+    public BeanValidateInfo(String name, Annotation anno, String message) {
+        this.name = name;
         this.anno = anno;
         this.message = message;
     }
