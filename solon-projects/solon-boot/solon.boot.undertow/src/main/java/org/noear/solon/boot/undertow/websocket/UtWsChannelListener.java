@@ -117,6 +117,22 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     }
 
     @Override
+    protected void onPing(WebSocketChannel webSocketChannel, StreamSourceFrameChannel channel) throws IOException {
+        super.onPing(webSocketChannel, channel);
+
+        WebSocketImpl webSocket = (WebSocketImpl) webSocketChannel.getAttribute(SESSION_KEY);
+        webSocketRouter.getListener().onPing(webSocket);
+    }
+
+    @Override
+    protected void onPong(WebSocketChannel webSocketChannel, StreamSourceFrameChannel messageChannel) throws IOException {
+        super.onPong(webSocketChannel, messageChannel);
+
+        WebSocketImpl webSocket = (WebSocketImpl) webSocketChannel.getAttribute(SESSION_KEY);
+        webSocketRouter.getListener().onPong(webSocket);
+    }
+
+    @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
         try {
             WebSocketImpl webSocket = (WebSocketImpl) channel.getAttribute(SESSION_KEY);
