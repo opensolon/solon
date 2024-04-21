@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.eclipse.jetty.websocket.api.WebSocketPingPongListener;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class WebSocketListenerImpl extends WebSocketAdapter {
+public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocketPingPongListener {
     static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
     private WebSocketImpl webSocket;
@@ -63,5 +64,15 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
     @Override
     public void onWebSocketError(Throwable cause) {
         webSocketRouter.getListener().onError(webSocket, cause);
+    }
+
+    @Override
+    public void onWebSocketPing(ByteBuffer byteBuffer) {
+        webSocketRouter.getListener().onPing(webSocket);
+    }
+
+    @Override
+    public void onWebSocketPong(ByteBuffer byteBuffer) {
+        webSocketRouter.getListener().onPong(webSocket);
     }
 }
