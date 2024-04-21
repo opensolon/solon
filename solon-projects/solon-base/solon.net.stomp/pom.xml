@@ -30,5 +30,12 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.ejlchina</groupId>
+            <artifactId>okhttps-stomp</artifactId>
+            <version>3.5.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

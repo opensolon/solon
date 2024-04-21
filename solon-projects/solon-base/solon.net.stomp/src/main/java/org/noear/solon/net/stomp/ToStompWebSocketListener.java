@@ -12,23 +12,23 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class StompWebSocketListener implements WebSocketListener {
-    static Logger log = LoggerFactory.getLogger(StompEventListener.class);
+public class ToStompWebSocketListener implements WebSocketListener {
+    static Logger log = LoggerFactory.getLogger(StompListener.class);
 
 
-    private StompEventListener stompEventListener;
+    private StompListener stompListener;
 
     private MsgCodec msgCodec = new MsgCodecImpl();
 
 
-    public StompWebSocketListener(StompEventListener stompEventListener){
-        this.stompEventListener = stompEventListener;
+    public ToStompWebSocketListener(StompListener stompListener){
+        this.stompListener = stompListener;
     }
 
 
     @Override
     public void onOpen(WebSocket socket) {
-        stompEventListener.onOpen(socket);
+        stompListener.onOpen(socket);
     }
 
     @Override
@@ -39,28 +39,28 @@ public class StompWebSocketListener implements WebSocketListener {
             atomicBoolean.set(Boolean.FALSE);
             switch (StrUtil.blankToDefault(msg.getCommand(), "")) {
                 case Commands.CONNECT: {
-                    stompEventListener.onConnect(socket, msg);
+                    stompListener.onConnect(socket, msg);
                     break;
                 }
                 case Commands.DISCONNECT: {
-                    stompEventListener.onDisconnect(socket, msg);
+                    stompListener.onDisconnect(socket, msg);
                     break;
                 }
                 case Commands.SUBSCRIBE: {
-                    stompEventListener.onSubscribe(socket, msg);
+                    stompListener.onSubscribe(socket, msg);
                     break;
                 }
                 case Commands.UNSUBSCRIBE: {
-                    stompEventListener.onUnsubscribe(socket, msg);
+                    stompListener.onUnsubscribe(socket, msg);
                     break;
                 }
                 case Commands.SEND: {
-                    stompEventListener.onSend(socket, msg);
+                    stompListener.onSend(socket, msg);
                     break;
                 }
                 case Commands.ACK:
                 case Commands.NACK: {
-                    stompEventListener.onAck(socket, msg);
+                    stompListener.onAck(socket, msg);
                     break;
                 }
                 default: {
@@ -92,7 +92,7 @@ public class StompWebSocketListener implements WebSocketListener {
 
     @Override
     public void onClose(WebSocket socket) {
-        stompEventListener.onClose(socket);
+        stompListener.onClose(socket);
     }
 
     @Override

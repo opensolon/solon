@@ -3,7 +3,7 @@ package org.noear.solon.net.stomp;
 
 import org.noear.solon.net.websocket.WebSocket;
 
-public interface StompEventListener {
+public interface StompListener {
     void onOpen(WebSocket socket);
 
     void onConnect(WebSocket socket, Message message);
