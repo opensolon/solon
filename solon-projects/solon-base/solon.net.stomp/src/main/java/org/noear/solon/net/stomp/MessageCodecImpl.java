@@ -1,12 +1,15 @@
 package org.noear.solon.net.stomp;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * 消息编解码器实现
+ *
+ * @author limliu
+ * @since 2.7
+ */
 public class MessageCodecImpl implements MessageCodec {
 
     /**
@@ -149,8 +152,14 @@ public class MessageCodecImpl implements MessageCodec {
                 .split(headerDelimiter);
         List<Header> headers = new ArrayList<>(strHeaders.length);
         for (String header : strHeaders) {
-            int start = StrUtil.indexOf(header, headerKvDelimiter, 0, false);
-            headers.add(new Header(URLUtil.decode(StrUtil.sub(header, 0, start)), URLUtil.decode(StrUtil.sub(header, start + headerKvDelimiter.length(), header.length()))));
+            if (header == null) {
+                continue;
+            }
+            int start = header.indexOf(headerKvDelimiter);
+            if (start < 1) {
+                continue;
+            }
+            headers.add(new Header(header.substring(0, start), header.substring(start + headerKvDelimiter.length(), header.length())));
         }
         return headers;
     }

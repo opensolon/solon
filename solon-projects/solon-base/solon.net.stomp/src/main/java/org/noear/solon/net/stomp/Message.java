@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-
+/**
+ * @author limliu
+ * @since 2.7
+ */
 public class Message {
 
     private final String command;

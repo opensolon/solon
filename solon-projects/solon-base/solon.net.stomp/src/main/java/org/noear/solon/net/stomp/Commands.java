@@ -2,6 +2,8 @@ package org.noear.solon.net.stomp;
 
 /**
  * 命令
+ * @author limliu
+ * @since 2.7
  */
 public class Commands {
 
