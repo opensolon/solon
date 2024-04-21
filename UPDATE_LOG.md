@@ -26,6 +26,7 @@
 * 修复 solon.boot.websocket.netty 接收二进制码时出错的问题
 * redisx 升为 1.6.3
 * fastjson2 升为 2.0.49
+* wood 升为 1.2.9
 
 ### 2.7.5
 * 新增 solon.web.rx 插件
