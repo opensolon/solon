@@ -29,6 +29,7 @@
 * redisx 升为 1.6.3
 * fastjson2 升为 2.0.49
 * wood 升为 1.2.9
+* mybatis-flex 升为 1.8.8
 
 ### 2.7.5
 * 新增 solon.web.rx 插件
