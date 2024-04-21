@@ -92,6 +92,8 @@ public class WsServer extends WebSocketServer {
         if (webSocket != null) {
             webSocket.onReceive();
         }
+
+        webSocketRouter.getListener().onPing(webSocket);
     }
 
     @Override
@@ -102,6 +104,8 @@ public class WsServer extends WebSocketServer {
         if (webSocket != null) {
             webSocket.onReceive();
         }
+
+        webSocketRouter.getListener().onPong(webSocket);
     }
 
     @Override

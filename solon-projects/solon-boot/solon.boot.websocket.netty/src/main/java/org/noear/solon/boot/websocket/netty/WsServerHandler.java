@@ -105,6 +105,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             if (webSocket != null) {
                 webSocket.onReceive();
             }
+            webSocketRouter.getListener().onPing(webSocket);
             return;
         }
 
@@ -113,6 +114,8 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             if (webSocket != null) {
                 webSocket.onReceive();
             }
+
+            webSocketRouter.getListener().onPong(webSocket);
             return;
         }
 
