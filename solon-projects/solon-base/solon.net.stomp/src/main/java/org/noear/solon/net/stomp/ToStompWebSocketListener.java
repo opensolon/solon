@@ -1,6 +1,7 @@
 package org.noear.solon.net.stomp;
 
 
+import cn.hutool.core.util.StrUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -9,60 +10,65 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
-/**
- * web ws消息转stomp消息
- * @author limliu
- * @since 2.7
- */
+
 public class ToStompWebSocketListener implements WebSocketListener {
-    static Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
+    static Logger log = LoggerFactory.getLogger(StompListener.class);
 
+    private StompListener listener;
 
-    private StompListener stompListener;
+    private MessageCodec messageCodec = new MessageCodecImpl();
 
+    public ToStompWebSocketListener() {
+        this(null);
+    }
 
-    public ToStompWebSocketListener(StompListener stompListener){
-        this.stompListener = stompListener;
+    public ToStompWebSocketListener(StompListener listener) {
+        setListener(listener);
+    }
+
+    public void setListener(StompListener listener) {
+        if (listener != null) {
+            this.listener = listener;
+        }
     }
 
 
     @Override
     public void onOpen(WebSocket socket) {
-        stompListener.onOpen(socket);
+        listener.onOpen(socket);
     }
 
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(Boolean.TRUE);
-        StompUtil.msgCodec.decode(text, msg -> {
+
+        messageCodec.decode(text, msg -> {
             atomicBoolean.set(Boolean.FALSE);
-            String command = msg.getCommand() == null ? "" : msg.getCommand();
-            switch (command) {
+            switch (StrUtil.blankToDefault(msg.getCommand(), "")) {
                 case Commands.CONNECT: {
-                    stompListener.onConnect(socket, msg);
+                    listener.onConnect(socket, msg);
                     break;
                 }
                 case Commands.DISCONNECT: {
-                    stompListener.onDisconnect(socket, msg);
+                    listener.onDisconnect(socket, msg);
                     break;
                 }
                 case Commands.SUBSCRIBE: {
-                    stompListener.onSubscribe(socket, msg);
+                    listener.onSubscribe(socket, msg);
                     break;
                 }
                 case Commands.UNSUBSCRIBE: {
-                    stompListener.onUnsubscribe(socket, msg);
+                    listener.onUnsubscribe(socket, msg);
                     break;
                 }
                 case Commands.SEND: {
-                    stompListener.onSend(socket, msg);
+                    listener.onSend(socket, msg);
                     break;
                 }
                 case Commands.ACK:
                 case Commands.NACK: {
-                    stompListener.onAck(socket, msg);
+                    listener.onAck(socket, msg);
                     break;
                 }
                 default: {
@@ -83,7 +89,7 @@ public class ToStompWebSocketListener implements WebSocketListener {
     }
 
     protected void doSend(WebSocket socket, Message message) {
-        socket.send(ByteBuffer.wrap(StompUtil.msgCodec.encode(message).getBytes(StandardCharsets.UTF_8)));
+
     }
 
     @Override
@@ -94,7 +100,7 @@ public class ToStompWebSocketListener implements WebSocketListener {
 
     @Override
     public void onClose(WebSocket socket) {
-        stompListener.onClose(socket);
+        listener.onClose(socket);
     }
 
     @Override

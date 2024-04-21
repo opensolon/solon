@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * @author limliu
  * @since 2.7
  */
-public interface MsgCodec {
+public interface MessageCodec {
 
     /**
      * 编码
