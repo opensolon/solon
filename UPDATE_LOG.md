@@ -19,9 +19,10 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.6
+* 新增 solon-docs-openapi2-javadoc 插件
 * 添加 solon 对 `classpath*:` 表达式支持（兼容旧的习惯）
 * 添加 solon.data TranUtils:getDataSourceProxy 方法
-* 添加 solon.cloud CloudProps:getNamespace 方法
+* 添加 solon.cloud CloudProps:getNamespace 方法，允许每个中间件有自己 namespace 配置
 * 修复 solon.boot.undertow 的 ws 适配在 window 下异常关闭处理时，无法触发 onClose 事件的问题
 * 修复 solon.boot.websocket.netty 接收二进制码时出错的问题
 * 调整 solon.net websocket 没有路由记录时，将自动关闭
