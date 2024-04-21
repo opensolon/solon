@@ -60,37 +60,51 @@ public class PipelineWebSocketListener implements WebSocketListener {
     }
 
     @Override
-    public void onOpen(WebSocket socket) {
+    public void onOpen(WebSocket s) {
         for (WebSocketListener listener : pipeline) {
-            listener.onOpen(socket);
+            listener.onOpen(s);
         }
     }
 
     @Override
-    public void onMessage(WebSocket socket, String text) throws IOException {
+    public void onMessage(WebSocket s, String text) throws IOException {
         for (WebSocketListener listener : pipeline) {
-            listener.onMessage(socket, text);
+            listener.onMessage(s, text);
         }
     }
 
     @Override
-    public void onMessage(WebSocket socket, ByteBuffer binary) throws IOException {
+    public void onMessage(WebSocket s, ByteBuffer binary) throws IOException {
         for (WebSocketListener listener : pipeline) {
-            listener.onMessage(socket, binary);
+            listener.onMessage(s, binary);
         }
     }
 
     @Override
-    public void onClose(WebSocket socket) {
+    public void onClose(WebSocket s) {
         for (WebSocketListener listener : pipeline) {
-            listener.onClose(socket);
+            listener.onClose(s);
         }
     }
 
     @Override
-    public void onError(WebSocket socket, Throwable error) {
+    public void onError(WebSocket s, Throwable error) {
         for (WebSocketListener listener : pipeline) {
-            listener.onError(socket, error);
+            listener.onError(s, error);
+        }
+    }
+
+    @Override
+    public void onPing(WebSocket s) {
+        for (WebSocketListener listener : pipeline) {
+            listener.onPing(s);
+        }
+    }
+
+    @Override
+    public void onPong(WebSocket s) {
+        for (WebSocketListener listener : pipeline) {
+            listener.onPong(s);
         }
     }
 }

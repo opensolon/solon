@@ -34,4 +34,16 @@ public interface WebSocketListener {
      * 出错时
      */
     void onError(WebSocket socket, Throwable error);
+
+    /**
+     * Ping 时
+     */
+    default void onPing(WebSocket socket) {
+    }
+
+    /**
+     * Pong 时
+     */
+    default void onPong(WebSocket socket) {
+    }
 }

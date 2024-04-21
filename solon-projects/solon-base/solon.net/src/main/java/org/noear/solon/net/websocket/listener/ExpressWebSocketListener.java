@@ -77,4 +77,14 @@ public class ExpressWebSocketListener implements WebSocketListener {
     public void onError(WebSocket s, Throwable e) {
         listener.onError(s, e);
     }
+
+    @Override
+    public void onPing(WebSocket s) {
+        listener.onPing(s);
+    }
+
+    @Override
+    public void onPong(WebSocket s) {
+        listener.onPong(s);
+    }
 }

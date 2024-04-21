@@ -124,4 +124,20 @@ public class PathWebSocketListener implements WebSocketListener {
             l1.onError(s, error);
         }
     }
+
+    @Override
+    public void onPing(WebSocket s) {
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onPing(s);
+        }
+    }
+
+    @Override
+    public void onPong(WebSocket s) {
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onPong(s);
+        }
+    }
 }
