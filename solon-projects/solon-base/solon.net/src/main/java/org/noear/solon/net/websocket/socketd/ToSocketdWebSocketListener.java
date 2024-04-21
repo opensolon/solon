@@ -121,6 +121,35 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
     }
 
+    @Override
+    public void onPing(WebSocket socket) {
+        assertHandshake(socket);
+    }
+
+    @Override
+    public void onPong(WebSocket socket) {
+        assertHandshake(socket);
+    }
+
+    /**
+     * 禁止 ws 客户端连接 sd:ws 服务（避免因为 ws 心跳，又不会触发空闲超时）
+     */
+    protected boolean assertHandshake(WebSocket conn) {
+        ChannelInternal channel = getChannel(conn);
+
+        if (channel == null || channel.getHandshake() == null) {
+            conn.close();
+
+            if (log.isWarnEnabled()) {
+                log.warn("Server channel no handshake onPingPong");
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
     private static class InnerChannelSupporter implements ChannelSupporter<WebSocket> {
         private ToSocketdWebSocketListener l;
 
