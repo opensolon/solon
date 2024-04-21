@@ -65,7 +65,7 @@ public abstract class StompListener {
      */
     public void onConnect(WebSocket socket, Message message) {
         String heartBeat = message.getHeader(Header.HEART_BEAT);
-        StompUtil.send(socket, new Message(Commands.CONNECTED, List.of(new Header(Header.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)), new Header(Header.SERVER, "stomp"), new Header(Header.VERSION, "1.2"))));
+        StompUtil.send(socket, new Message(Commands.CONNECTED, Arrays.asList(new Header(Header.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)), new Header(Header.SERVER, "stomp"), new Header(Header.VERSION, "1.2"))));
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class StompListener {
      */
     public void onDisconnect(WebSocket socket, Message message) {
         String receiptId = message.getHeader(Header.RECEIPT);
-        StompUtil.send(socket, new Message(Commands.RECEIPT, List.of(new Header(Header.RECEIPT_ID, receiptId))));
+        StompUtil.send(socket, new Message(Commands.RECEIPT, Arrays.asList(new Header(Header.RECEIPT_ID, receiptId))));
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class StompListener {
         }
         final String receiptId = message.getHeader(Header.RECEIPT);
         if (receiptId != null) {
-            StompUtil.send(socket, new Message(Commands.RECEIPT, List.of(new Header(Header.RECEIPT_ID, receiptId))));
+            StompUtil.send(socket, new Message(Commands.RECEIPT, Arrays.asList(new Header(Header.RECEIPT_ID, receiptId))));
         }
     }
 
