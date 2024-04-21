@@ -9,6 +9,7 @@ import org.noear.solon.net.stomp.ToStompWebSocketListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
+ * stomp server 测试
  * @author noear
  * @since 2.4
  */
@@ -32,46 +33,46 @@ public class StompServerTest {
     }
 
     @Component
-    public class StompListenerImpl implements StompListener {
+    public class StompListenerImpl extends StompListener {
 
         @Override
         public void onOpen(WebSocket socket) {
-
+            super.onOpen(socket);
         }
 
         @Override
         public void onConnect(WebSocket socket, Message message) {
-
+            super.onConnect(socket, message);
         }
 
         @Override
         public void onClose(WebSocket socket) {
-
+            super.onClose(socket);
         }
 
         @Override
         public void onDisconnect(WebSocket socket, Message message) {
-
+            super.onDisconnect(socket, message);
         }
 
         @Override
         public void onSubscribe(WebSocket socket, Message message) {
-
+            super.onSubscribe(socket, message);
         }
 
         @Override
         public void onUnsubscribe(WebSocket socket, Message message) {
-
+            super.onSubscribe(socket, message);
         }
 
         @Override
         public void onSend(WebSocket socket, Message message) {
-
+            super.onSend(socket, message);
         }
 
         @Override
         public void onAck(WebSocket socket, Message message) {
-
+            super.onAck(socket, message);
         }
     }
 }

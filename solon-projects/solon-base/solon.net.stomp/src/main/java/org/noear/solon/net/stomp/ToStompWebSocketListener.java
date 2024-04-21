@@ -1,7 +1,6 @@
 package org.noear.solon.net.stomp;
 
 
-import cn.hutool.core.util.StrUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -16,8 +15,6 @@ public class ToStompWebSocketListener implements WebSocketListener {
     static Logger log = LoggerFactory.getLogger(StompListener.class);
 
     private StompListener listener;
-
-    private MessageCodec messageCodec = new MessageCodecImpl();
 
     public ToStompWebSocketListener() {
         this(null);
@@ -42,10 +39,10 @@ public class ToStompWebSocketListener implements WebSocketListener {
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(Boolean.TRUE);
-
-        messageCodec.decode(text, msg -> {
+        StompUtil.msgCodec.decode(text, msg -> {
             atomicBoolean.set(Boolean.FALSE);
-            switch (StrUtil.blankToDefault(msg.getCommand(), "")) {
+            String command = msg.getCommand() == null ? "" : msg.getCommand();
+            switch (command) {
                 case Commands.CONNECT: {
                     listener.onConnect(socket, msg);
                     break;
@@ -89,7 +86,7 @@ public class ToStompWebSocketListener implements WebSocketListener {
     }
 
     protected void doSend(WebSocket socket, Message message) {
-
+        StompUtil.send(socket, message);
     }
 
     @Override

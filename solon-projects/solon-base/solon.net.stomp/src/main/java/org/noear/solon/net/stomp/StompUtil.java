@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  */
 public abstract class StompUtil {
 
-    public final static MsgCodec msgCodec = new MsgCodecImpl();
+    public final static MessageCodec msgCodec = new MessageCodecImpl();
 
     public static void send(WebSocket webSocket, Message message) {
         try {
