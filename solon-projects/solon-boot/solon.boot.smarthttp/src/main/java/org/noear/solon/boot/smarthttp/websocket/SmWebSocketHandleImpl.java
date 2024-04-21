@@ -76,6 +76,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
         if (webSocket != null) {
             webSocket.onReceive();
         }
+
+        webSocketRouter.getListener().onPing(webSocket);
     }
 
     @Override
@@ -87,6 +89,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
         if (webSocket != null) {
             webSocket.onReceive();
         }
+
+        webSocketRouter.getListener().onPong(webSocket);
     }
 
     @Override
@@ -114,6 +118,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
             log.warn(e.getMessage(), e);
         }
     }
+
 
     @Override
     public void onError(WebSocketRequest request, Throwable error) {
