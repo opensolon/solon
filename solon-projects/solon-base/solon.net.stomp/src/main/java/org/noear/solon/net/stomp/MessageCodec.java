@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * Stomp 消息编解码器
  * @since v3.1.0
  */
-public interface MsgCodec {
+public interface MessageCodec {
 
     /**
      * 编码

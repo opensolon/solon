@@ -1,6 +1,7 @@
 package demo;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompListener;
@@ -22,10 +23,15 @@ public class StompServerTest {
     public class ChatToStompWebSocketListener extends ToStompWebSocketListener {
 
         public ChatToStompWebSocketListener() {
-            super(new StompListenerImpl());
+            super();
+
+            Solon.context().getBeanAsync(StompListener.class, bean -> {
+                setListener(bean);
+            });
         }
     }
 
+    @Component
     public class StompListenerImpl implements StompListener {
 
         @Override
