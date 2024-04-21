@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class WebSocketRouter {
     private final PipelineWebSocketListener rootListener = new PipelineWebSocketListener();
-    private final PathWebSocketListener pathListener = new PathWebSocketListener();
+    private final PathWebSocketListener pathListener = new PathWebSocketListener(true);
     private final Set<String> paths = new HashSet<>();
 
     private WebSocketRouter() {

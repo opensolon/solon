@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class SocketdRouter {
     private final PipelineListener rootListener = new PipelineListener();
-    private final PathListenerPlus pathListener = new PathListenerPlus();
+    private final PathListenerPlus pathListener = new PathListenerPlus(true);
     private final Set<String> paths = new HashSet<>();
 
     private SocketdRouter() {

@@ -6,6 +6,8 @@ import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -15,10 +17,18 @@ import java.nio.ByteBuffer;
  * @since 2.5
  */
 public class PathWebSocketListener implements WebSocketListener {
+    static final Logger log = LoggerFactory.getLogger(PathWebSocketListener.class);
+
     private final RoutingTable<WebSocketListener> routingTable;
+    private final boolean autoClose;
 
     public PathWebSocketListener() {
-        routingTable = new RoutingTableDefault<>();
+       this(false);
+    }
+
+    public PathWebSocketListener(boolean autoClose) {
+        this.routingTable = new RoutingTableDefault<>();
+        this.autoClose = autoClose;
     }
 
     public int count() {
@@ -77,6 +87,9 @@ public class PathWebSocketListener implements WebSocketListener {
         WebSocketListener l1 = matching(s);
         if (l1 != null) {
             l1.onOpen(s);
+        } else if (autoClose) {
+            s.close();
+            log.warn("Route failed. The connection will close. id={}", s.id());
         }
     }
 
