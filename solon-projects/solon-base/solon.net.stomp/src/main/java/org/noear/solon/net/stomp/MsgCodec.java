@@ -4,9 +4,11 @@ package org.noear.solon.net.stomp;
 
 import java.util.function.Consumer;
 
+
 /**
- * Stomp 消息编解码器
- * @since v3.1.0
+ * 消息编解码器
+ * @author limliu
+ * @since 2.7
  */
 public interface MsgCodec {
 

@@ -1,7 +1,6 @@
 package org.noear.solon.net.stomp;
 
 
-import cn.hutool.core.util.StrUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -10,15 +9,18 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+/**
+ * web ws消息转stomp消息
+ * @author limliu
+ * @since 2.7
+ */
 public class ToStompWebSocketListener implements WebSocketListener {
-    static Logger log = LoggerFactory.getLogger(StompListener.class);
+    static Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
 
 
     private StompListener stompListener;
-
-    private MsgCodec msgCodec = new MsgCodecImpl();
 
 
     public ToStompWebSocketListener(StompListener stompListener){
@@ -34,10 +36,10 @@ public class ToStompWebSocketListener implements WebSocketListener {
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(Boolean.TRUE);
-
-        msgCodec.decode(text, msg -> {
+        StompUtil.msgCodec.decode(text, msg -> {
             atomicBoolean.set(Boolean.FALSE);
-            switch (StrUtil.blankToDefault(msg.getCommand(), "")) {
+            String command = msg.getCommand() == null ? "" : msg.getCommand();
+            switch (command) {
                 case Commands.CONNECT: {
                     stompListener.onConnect(socket, msg);
                     break;
@@ -81,7 +83,7 @@ public class ToStompWebSocketListener implements WebSocketListener {
     }
 
     protected void doSend(WebSocket socket, Message message) {
-
+        socket.send(ByteBuffer.wrap(StompUtil.msgCodec.encode(message).getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override

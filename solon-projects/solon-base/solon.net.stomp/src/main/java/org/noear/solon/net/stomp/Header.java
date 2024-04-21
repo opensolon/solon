@@ -1,5 +1,9 @@
 package org.noear.solon.net.stomp;
-
+/**
+ * head
+ * @author limliu
+ * @since 2.7
+ */
 public class Header {
 
     /**
