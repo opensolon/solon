@@ -11,6 +11,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 
@@ -625,6 +626,11 @@ public class AppContext extends BeanContainer {
      * 尝试生成 bean
      */
     protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Throwable {
+        if (NativeDetector.isAotRuntime()) {
+            //如果是 aot 则注册函数
+            methodGet(m);
+        }
+
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
