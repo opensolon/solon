@@ -251,7 +251,7 @@ public class AppContext extends BeanContainer {
                 Type type = varH.getGenericType().getActualTypeArguments()[0];
                 if (type instanceof Class) {
                     varH.required(required);
-                    lifecycle(LifecycleIndex.COLLECTION_INJECT, () -> {
+                    lifecycle(LifecycleIndex.COLLECTION_INJECT_USES, () -> {
                         if (varH.isDone()) {
                             return;
                         }
@@ -269,7 +269,7 @@ public class AppContext extends BeanContainer {
                 Type valType = varH.getGenericType().getActualTypeArguments()[1];
                 if (String.class == keyType && valType instanceof Class) {
                     varH.required(required);
-                    lifecycle(LifecycleIndex.COLLECTION_INJECT, () -> {
+                    lifecycle(LifecycleIndex.COLLECTION_INJECT_USES, () -> {
                         if (varH.isDone()) {
                             return;
                         }
