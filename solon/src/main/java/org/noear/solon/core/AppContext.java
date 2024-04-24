@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -256,8 +257,8 @@ public class AppContext extends BeanContainer {
                             return;
                         }
 
-                        List beanList = this.getBeansOfType((Class<? extends Object>) type);
-                        varH.setValue(beanList);
+                        BeanSupplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                        varH.setValue(beanListSupplier);
                     });
                     return;
                 }
@@ -274,8 +275,8 @@ public class AppContext extends BeanContainer {
                             return;
                         }
 
-                        Map<String, ?> beanMap = this.getBeansMapOfType((Class<?>) valType);
-                        varH.setValue(beanMap);
+                        BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                        varH.setValue(beanMapSupplier);
                     });
                     return;
                 }

@@ -1,11 +1,13 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanSupplier;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
+import java.util.function.Supplier;
 
 /**
  * 字段变量容器 临时对象
@@ -16,14 +18,14 @@ import java.lang.reflect.ParameterizedType;
  * @since 1.0
  * */
 public class VarHolderOfField implements VarHolder {
-    protected final FieldWrap fw;
-    protected final Object obj;
-    protected final AppContext ctx;
+    private final FieldWrap fw;
+    private final Object obj;
+    private final AppContext ctx;
 
-    protected Object val;
-    protected boolean required = false;
-    protected boolean done;
-    protected Runnable onDone;
+    private Object val;
+    private boolean required = false;
+    private boolean done;
+    private Runnable onDone;
 
     public VarHolderOfField(AppContext ctx, FieldWrap fw, Object obj, Runnable onDone) {
         this.ctx = ctx;
@@ -87,7 +89,11 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public void setValue(Object val) {
-        if(val != null) {
+        if (val != null) {
+            if (val instanceof BeanSupplier) {
+                val = ((BeanSupplier) val).get();
+            }
+
             fw.setValue(obj, val, true);
 
             ctx.aot().registerJdkProxyType(getType(), val);

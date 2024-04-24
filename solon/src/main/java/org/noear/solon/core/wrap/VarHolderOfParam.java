@@ -1,11 +1,13 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanSupplier;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.function.Supplier;
 
 /**
  * 参数变量容器 临时对象
@@ -20,10 +22,10 @@ public class VarHolderOfParam implements VarHolder {
     private final ParameterizedType genericType;
     private final AppContext ctx;
 
-    protected Object val;
-    protected boolean done;
-    protected boolean required = false;
-    protected Runnable onDone;
+    private Object val;
+    private boolean done;
+    private boolean required = false;
+    private Runnable onDone;
 
     public VarHolderOfParam(AppContext ctx, Parameter p, Runnable onDone) {
         this.ctx = ctx;
@@ -105,7 +107,11 @@ public class VarHolderOfParam implements VarHolder {
      * 获取值
      * */
     public Object getValue() {
-        return val;
+        if (val instanceof BeanSupplier) {
+            return ((BeanSupplier) val).get();
+        } else {
+            return val;
+        }
     }
 
     /**
