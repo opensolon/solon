@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
             eventService = new CloudEventServiceRocketmqImp(cloudProps);
             CloudManager.register(eventService);
 
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventService.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventService.subscribe());
         }
     }
 

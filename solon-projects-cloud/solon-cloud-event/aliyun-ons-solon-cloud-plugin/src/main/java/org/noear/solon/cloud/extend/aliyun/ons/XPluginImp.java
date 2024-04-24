@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());
         }
     }
 }

@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         VelocityRender render = VelocityRender.global();
 
-        context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {

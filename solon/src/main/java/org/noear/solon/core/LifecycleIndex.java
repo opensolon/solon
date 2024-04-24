@@ -7,9 +7,9 @@ package org.noear.solon.core;
  * @since 2.7
  */
 public interface LifecycleIndex {
-    int class_condition_if_missing = -980;
-    int method_condition_if_missing = -970;
-    int collection_inject = -960;
-    int plugin_bean_uses = -950;
-    int gateway_bean_uses = -940;
+    int CLASS_CONDITION_IF_MISSING = -980;
+    int METHOD_CONDITION_IF_MISSING = -970;
+    int COLLECTION_INJECT = -960;
+    int PLUGIN_BEAN_USES = -950;
+    int GATEWAY_BEAN_USES = -940;
 }

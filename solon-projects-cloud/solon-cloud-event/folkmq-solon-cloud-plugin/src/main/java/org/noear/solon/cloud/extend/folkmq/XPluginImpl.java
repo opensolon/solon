@@ -25,7 +25,7 @@ public class XPluginImpl implements Plugin {
             CloudEventServiceFolkMqImpl eventServiceImp = new CloudEventServiceFolkMqImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());
         }
     }
 }

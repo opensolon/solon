@@ -178,7 +178,7 @@ public class XPluginImp implements Plugin, InitializingBean {
                        0, new HandlerConfigUpdate(configServiceImp));
             }
 
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());
         }
 
         if (cloudProps.getLockEnable()) {
@@ -192,7 +192,7 @@ public class XPluginImp implements Plugin, InitializingBean {
         if (cloudProps.getJobEnable()) {
             CloudManager.register(CloudJobServiceWaterImpl.instance);
 
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
                 CloudJobServiceWaterImpl.instance.push();
             });
         }

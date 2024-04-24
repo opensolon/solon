@@ -251,7 +251,7 @@ public class AppContext extends BeanContainer {
                 Type type = varH.getGenericType().getActualTypeArguments()[0];
                 if (type instanceof Class) {
                     varH.required(required);
-                    lifecycle(LifecycleIndex.collection_inject, () -> {
+                    lifecycle(LifecycleIndex.COLLECTION_INJECT, () -> {
                         if (varH.isDone()) {
                             return;
                         }
@@ -269,7 +269,7 @@ public class AppContext extends BeanContainer {
                 Type valType = varH.getGenericType().getActualTypeArguments()[1];
                 if (String.class == keyType && valType instanceof Class) {
                     varH.required(required);
-                    lifecycle(LifecycleIndex.collection_inject, () -> {
+                    lifecycle(LifecycleIndex.COLLECTION_INJECT, () -> {
                         if (varH.isDone()) {
                             return;
                         }
@@ -634,7 +634,7 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
-            lifecycle(LifecycleIndex.method_condition_if_missing, () -> tryCreateBeanOfMethod0(bw, m, ma, mc));
+            lifecycle(LifecycleIndex.METHOD_CONDITION_IF_MISSING, () -> tryCreateBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
         }
@@ -665,7 +665,7 @@ public class AppContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(cc)) {
-            lifecycle(LifecycleIndex.class_condition_if_missing, () -> tryCreateBeanOfClass0(clz, cc));
+            lifecycle(LifecycleIndex.CLASS_CONDITION_IF_MISSING, () -> tryCreateBeanOfClass0(clz, cc));
         } else {
             tryCreateBeanOfClass0(clz, cc);
         }

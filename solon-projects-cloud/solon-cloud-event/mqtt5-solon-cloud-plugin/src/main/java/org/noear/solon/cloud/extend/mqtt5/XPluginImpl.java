@@ -27,7 +27,7 @@ public class XPluginImpl implements Plugin {
             CloudManager.register(eventServiceImp);
 
             context.wrapAndPut(MqttClientManager.class, eventServiceImp.getClientManager());
-            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());
         }
     }
 }
