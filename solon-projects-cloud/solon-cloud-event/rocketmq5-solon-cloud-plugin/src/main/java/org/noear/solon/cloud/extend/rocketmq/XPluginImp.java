@@ -5,6 +5,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rocketmq.service.CloudEventServiceRocketmqImp;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -26,7 +27,7 @@ public class XPluginImp implements Plugin {
             eventService = new CloudEventServiceRocketmqImp(cloudProps);
             CloudManager.register(eventService);
 
-            context.lifecycle(-99, () -> eventService.subscribe());
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventService.subscribe());
         }
     }
 

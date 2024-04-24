@@ -3,6 +3,7 @@ package org.noear.solon.serialization.fastjson2;
 import com.alibaba.fastjson2.JSONWriter;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -29,7 +30,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

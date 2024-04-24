@@ -6,6 +6,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.jedis.service.CloudEventServiceJedisImpl;
 import org.noear.solon.cloud.extend.jedis.service.CloudLockServiceJedisImpl;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -27,7 +28,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceJedisImpl eventServiceImp = new CloudEventServiceJedisImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.lifecycle(-99, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
         }
     }
 }

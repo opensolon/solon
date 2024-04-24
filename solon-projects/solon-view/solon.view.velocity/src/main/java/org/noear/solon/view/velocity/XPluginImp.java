@@ -3,6 +3,7 @@ package org.noear.solon.view.velocity;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.core.util.ClassUtil;
@@ -15,7 +16,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         VelocityRender render = VelocityRender.global();
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {

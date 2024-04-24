@@ -5,6 +5,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.kafka.service.CloudEventServiceKafkaImpl;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -26,7 +27,7 @@ public class XPluginImpl implements Plugin {
             eventServiceImpl = new CloudEventServiceKafkaImpl(cloudProps);
             CloudManager.register(eventServiceImpl);
 
-            context.lifecycle(-99, () -> eventServiceImpl.subscribe());
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImpl.subscribe());
         }
     }
 

@@ -5,6 +5,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.folkmq.service.CloudEventServiceFolkMqImpl;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -24,7 +25,7 @@ public class XPluginImpl implements Plugin {
             CloudEventServiceFolkMqImpl eventServiceImp = new CloudEventServiceFolkMqImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.lifecycle(-99, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
         }
     }
 }

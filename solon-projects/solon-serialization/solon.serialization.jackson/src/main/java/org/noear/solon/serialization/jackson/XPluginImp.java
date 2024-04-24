@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -35,7 +36,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(JacksonRenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

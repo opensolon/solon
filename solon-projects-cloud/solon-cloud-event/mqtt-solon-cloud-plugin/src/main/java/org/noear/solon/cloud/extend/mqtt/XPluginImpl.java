@@ -6,6 +6,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.mqtt.service.CloudEventServiceMqtt3;
 import org.noear.solon.cloud.extend.mqtt.service.MqttClientManager;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -26,7 +27,7 @@ public class XPluginImpl implements Plugin {
             CloudManager.register(eventServiceImp);
 
             context.wrapAndPut(MqttClientManager.class, eventServiceImp.getClientManager());
-            context.lifecycle(-99, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> eventServiceImp.subscribe());
         }
     }
 }

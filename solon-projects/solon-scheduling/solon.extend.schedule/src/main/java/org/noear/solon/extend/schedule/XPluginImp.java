@@ -1,6 +1,7 @@
 package org.noear.solon.extend.schedule;
 
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -12,7 +13,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-        context.lifecycle(-99, () -> {
+        context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
             context.beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {
                     JobManager.register(new JobEntity(v.name(), v.raw()));

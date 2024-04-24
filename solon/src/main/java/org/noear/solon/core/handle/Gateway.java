@@ -277,7 +277,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加接口（remoting 的 bean 建议一个个添加，并同时添加前缀 path）
      */
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Solon.context().lifecycle(-98, () -> {
+        Solon.context().lifecycle(LifecycleIndex.gateway_bean_uses, () -> {
             Solon.context().beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {

@@ -7,6 +7,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.local.impl.job.JobManager;
 import org.noear.solon.cloud.extend.local.service.*;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -46,7 +47,7 @@ public class XPluginImp implements Plugin {
         if (cloudProps.getJobEnable()) {
             CloudManager.register(new CloudJobServiceLocalImpl());
 
-            context.lifecycle(-99, () -> {
+            context.lifecycle(LifecycleIndex.plugin_bean_uses, () -> {
                 if (JobManager.count() > 0) {
                     JobManager.start();
                 }

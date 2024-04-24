@@ -3,6 +3,7 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -29,7 +30,7 @@ public class XPluginImp implements Plugin {
         FastjsonRenderTypedFactory renderTypedFactory = new FastjsonRenderTypedFactory();
         context.wrapAndPut(FastjsonRenderTypedFactory.class, renderTypedFactory);
 
-        context.lifecycle(-99, () ->{
+        context.lifecycle(LifecycleIndex.plugin_bean_uses, () ->{
             //晚点加载，给定制更多时机
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
