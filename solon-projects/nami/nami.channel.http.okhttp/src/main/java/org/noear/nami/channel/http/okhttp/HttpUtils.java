@@ -46,7 +46,7 @@ class HttpUtils {
     }
 
     private Charset _charset;
-    private RequestBody _body;
+    private RequestBody _body = RequestBody.create(null, new byte[0]);
     private Map<String,String> _form;
 
     private Request.Builder _builder;
