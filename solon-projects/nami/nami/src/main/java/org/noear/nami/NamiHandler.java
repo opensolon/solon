@@ -161,6 +161,8 @@ public class NamiHandler implements InvocationHandler {
         //确定body及默认编码
         if (methodWrap.getBodyName() != null) {
             body = args.get(methodWrap.getBodyName());
+            // body 已经单独处理了，从 args 中删除
+            args.remove(methodWrap.getBodyName());
 
             if (config.getEncoder() == null) {
                 headers.putIfAbsent(Constants.HEADER_CONTENT_TYPE, methodWrap.getBodyAnno().contentType());
