@@ -29,6 +29,8 @@ public class Config {
         docket.globalResponseCodes(new HttpCodes());
         //docket.securityDefinitionInHeader("token");
         docket.basicAuth(openApiExtensionResolver.getSetting().getBasic());
+        docket.securityExtensions("token", new ApiKeyAuthDefinition().name("Authorization").in(In.HEADER));
+        docket.globalParams(new HeaderParameter().name("Authorization").required(true));
         docket.vendorExtensions(openApiExtensionResolver.buildExtensions());
 
         return docket;

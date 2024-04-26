@@ -21,6 +21,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.*;
 import io.swagger.models.properties.*;
 import io.swagger.models.refs.RefFormat;
+import io.swagger.solon.annotation.ApiNoAuthorize;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
 import org.noear.solon.Solon;
@@ -326,12 +327,12 @@ public class OpenApi2Builder {
             // operation.setDescription(apiAction.notes());
             operation.setDeprecated(actionHolder.isAnnotationPresent(Deprecated.class));
 
-//            if ((actionHolder.isAnnotationPresent(ApiNoAuthorize.class) ||
-//                    actionHolder.controllerClz().isAnnotationPresent(ApiNoAuthorize.class)) == false) {
-//                for (String securityName : docket.securityDefinitions().keySet()) {
-//                    operation.security(new SecurityRequirement(securityName).scope("global"));
-//                }
-//            }
+            if ((actionHolder.isAnnotationPresent(ApiNoAuthorize.class) ||
+                    actionHolder.controllerClz().isAnnotationPresent(ApiNoAuthorize.class)) == false) {
+                for (String securityName : docket.securityExtensions().keySet()) {
+                    operation.security(new SecurityRequirement(securityName).scope("global"));
+                }
+            }
 
 
             String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
