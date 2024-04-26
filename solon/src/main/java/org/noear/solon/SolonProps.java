@@ -138,7 +138,13 @@ public final class SolonProps extends Props {
         });
 
         for (String loadKey : loadKeyMap.values()) {
-            addConfig(loadKey, true, sysPropOrg);
+            if (loadKey.contains("*")) {
+                for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
+                    addConfig(loadKey0, true, sysPropOrg);
+                }
+            } else {
+                addConfig(loadKey, true, sysPropOrg);
+            }
         }
 
         //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）

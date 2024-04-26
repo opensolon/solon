@@ -30,6 +30,7 @@
 * 添加 solon.net WebSocketListener::onPing,onPong 方法，允许获得 ping/pong 的监听
 * 添加 solon.validation 校验出错的结果里带上当前校验的名称（该名称是当前校验的参数名称或者是实体对象字段名称）
 * 添加 nami json 解码器，对普通 string 的支持（如果返回类型为 string ，则解码失败时以普通 string 返回）
+* 添加 "solon.config.load" 对资源表达式的支持（例："config/*.yml"）
 * 优化 solon.net ToSocketdWebSocketListener 防止 websocket 恶意空连
 * 优化 非 solon 测试环境下，日志打印添加 pid 显示支持
 * 优化 ResourceUtil 扫描类或资源的能力，增加支持 `*Mapper` 表达式
