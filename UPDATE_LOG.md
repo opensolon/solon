@@ -20,12 +20,26 @@
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
+* 新增 solon.net.stomp 插件
+* 新增 solon.boot.jetty 原生编译支持
+* 新增 solon.boot.undertow 原生编译支持
 * 添加 solon 对 `classpath*:` 表达式支持（兼容旧的习惯）
+* 添加 solon Utils:pid 方法（方便获取进程号）
 * 添加 solon.data TranUtils:getDataSourceProxy 方法
 * 添加 solon.cloud CloudProps:getNamespace 方法，允许每个中间件有自己 namespace 配置
+* 添加 solon.net WebSocketListener::onPing,onPong 方法，允许获得 ping/pong 的监听
+* 添加 solon.validation 校验出错的结果里带上当前校验的名称（该名称是当前校验的参数名称或者是实体对象字段名称）
+* 添加 nami json 解码器，对普通 string 的支持（如果返回类型为 string ，则解码失败时以普通 string 返回）
+* 优化 solon.net ToSocketdWebSocketListener 防止 websocket 恶意空连
+* 优化 非 solon 测试环境下，日志打印添加 pid 显示支持
+* 优化 ResourceUtil 扫描类或资源的能力，增加支持 `*Mapper` 表达式
+* 优化 Aot 时的函数注册处理（修复 原生运行时组件代理失败的问题）
+* 优化 Bean 集合的注入处理
 * 修复 solon.boot.undertow 的 ws 适配在 window 下异常关闭处理时，无法触发 onClose 事件的问题
 * 修复 solon.boot.websocket.netty 接收二进制码时出错的问题
-* 调整 solon.net websocket 没有路由记录时，将自动关闭
+* 修复 nami 在请求参数为空时被转换成GET操作的问题
+* 修复 solon.docs.openapi2 没有同步 operation.security 的问题。
+* 调整 solon.net websocket 没有路由记录时，将自动关闭（更安全）
 * redisx 升为 1.6.3
 * fastjson2 升为 2.0.49
 * wood 升为 1.2.9
