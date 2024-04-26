@@ -32,7 +32,7 @@ public class PropsActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (Utils.isEmpty(ct) || ctx.isFormUrlencoded()) {
+        if (Utils.isEmpty(ct)) {
             for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
                 if (kv.getKey().indexOf('.') > 0 || kv.getKey().indexOf('[') > 0) {
                     return true;

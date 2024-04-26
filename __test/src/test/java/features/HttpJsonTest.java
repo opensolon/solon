@@ -68,14 +68,14 @@ public class HttpJsonTest extends HttpTester {
         assert tmp.contains("1,2");
     }
 
-    @Test
-    public void json_bean_2() throws Exception {
-        String tmp = path("/demo2/json/bean")
-                .data("user.id","1")
-                .data("user.name","noear")
-                .post();
-        assert tmp.contains("noear");
-    }
+//    @Test
+//    public void json_bean_2() throws Exception {
+//        String tmp = path("/demo2/json/bean")
+//                .data("user.id","1")
+//                .data("user.name","noear")
+//                .post();
+//        assert tmp.contains("noear");
+//    }
 
     @Test
     public void json_bean2() throws Exception {
