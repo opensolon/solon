@@ -246,7 +246,7 @@ public class ChainManager {
     public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
         String ct = c.contentType();
 
-        if (ct != null && paramSize > 0) {
+        if (paramSize > 0) {
             //
             //仅有参数时，才执行执行其它执行器
             //

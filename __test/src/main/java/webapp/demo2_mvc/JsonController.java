@@ -39,6 +39,11 @@ public class JsonController {
         }
     }
 
+    @Mapping("/bean")
+    public Object bean(UserModel user) {
+        return user;
+    }
+
     @Mapping("/body")
     public Integer body(@Body String body) {
         if (Utils.isEmpty(body)) {

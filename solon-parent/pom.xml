@@ -28,7 +28,7 @@
         <solon-admin.version>2.7.5</solon-admin.version>
         <solon-integration.version>2.7.6-M5</solon-integration.version>
 
-        <snack3.version>3.2.92</snack3.version>
+        <snack3.version>3.2.94</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.9</wood.version>
         <water.version>2.13.1</water.version>
@@ -597,6 +597,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.snack3</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.props</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
