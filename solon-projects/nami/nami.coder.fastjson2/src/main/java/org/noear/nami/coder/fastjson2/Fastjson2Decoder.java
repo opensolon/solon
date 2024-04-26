@@ -46,7 +46,11 @@ public class Fastjson2Decoder implements Decoder {
                 returnVal = JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
             }
         } catch (Throwable ex) {
-            returnVal = ex;
+            if (String.class == type) {
+                returnVal = str;
+            } else {
+                returnVal = ex;
+            }
         }
 
         if (returnVal != null && returnVal instanceof Throwable) {
