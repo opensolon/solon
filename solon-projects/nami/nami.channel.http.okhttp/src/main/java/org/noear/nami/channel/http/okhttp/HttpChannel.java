@@ -18,19 +18,20 @@ public class HttpChannel extends ChannelBase implements Channel {
         //0.检测method
         boolean is_get = Constants.METHOD_GET.equals(ctx.action);
         String url = ctx.url;
-        String cxtType = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
 
         //0.尝试重构url
-        //a. GET 方法，统一用 query 参数
-        //b. 非 GET 方法时，有 NamiBody 的参数 已经从 args 移除了，多判断 contentType 是 application/json 时，才加到 query 参数中
-        if ((is_get && ctx.args.size() > 0) || (cxtType.contains("application/json") && ctx.args.size() > 0)) {
+        // a. GET 方法，统一用 query 参数
+        // b. body 提交时，参数转到 query 上（有 NamiBody 的参数 已经从 args 移除了）
+        if ((is_get && ctx.args.size() > 0) || (ctx.bodyInited && ctx.args.size() > 0)) {
             StringBuilder sb = new StringBuilder(ctx.url);
             //如果URL中含有固定参数,应该用'&'添加参数
             sb.append(ctx.url.contains("?") ? "&" : "?");
 
             ctx.args.forEach((k, v) -> {
                 if (v != null) {
-                    sb.append(k).append("=").append(HttpUtils.urlEncode(v.toString())).append("&");
+                    sb.append(k).append("=")
+                            .append(HttpUtils.urlEncode(v.toString()))
+                            .append("&");
                 }
             });
 

@@ -18,7 +18,7 @@ public class Context {
     public final Config config;
     /**
      * 目标
-     * */
+     */
     public final Object target;
     /**
      * 函数
@@ -31,14 +31,6 @@ public class Context {
     public final String action;
 
     /**
-     * 请求头信息
-     */
-    public final Map<String, String> headers = new LinkedHashMap<>();
-    /**
-     * 请求参数
-     */
-    public final Map<String, Object> args = new LinkedHashMap<>();
-    /**
      * 请求地址
      */
     public final String url;
@@ -48,17 +40,33 @@ public class Context {
     public final URI uri;
 
     /**
-     * 请求体
+     * 请求头信息
+     */
+    public final Map<String, String> headers = new LinkedHashMap<>();
+    /**
+     * 请求参数
+     */
+    public final Map<String, Object> args = new LinkedHashMap<>();
+
+    /**
+     * 请求主体
      */
     public Object body;
 
+    /**
+     * 请求主体有初始化过（@NameBody）
+     */
+    public final boolean bodyInited;
 
-    public Context(Config config, Object target, Method method, String action, String url) {
+
+    public Context(Config config, Object target, Method method, String action, String url, Object body) {
         this.config = config;
         this.target = target;
         this.method = method;
         this.action = action;
         this.url = url;
         this.uri = URI.create(url);
+        this.body = body;
+        this.bodyInited = body != null;
     }
 }

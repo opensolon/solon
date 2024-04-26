@@ -14,8 +14,8 @@ public class Invocation extends Context {
     private List<Filter> filters = new ArrayList<>();
     private int index;
 
-    public Invocation(Config config, Object proxy, Method method, String action, String url, Filter actuator) {
-        super(config, proxy, method, action, url);
+    public Invocation(Config config, Object proxy, Method method, String action, String url, Object body, Filter actuator) {
+        super(config, proxy, method, action, url, body);
         this.headers.putAll(config.getHeaders());
         this.filters.addAll(config.getFilters());
         this.filters.add(actuator);

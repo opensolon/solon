@@ -3,7 +3,6 @@ package org.noear.nami.channel.http.hutool;
 import cn.hutool.http.HttpResponse;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.Charset;
 
@@ -22,7 +21,9 @@ public class HttpChannel extends ChannelBase implements Channel {
         String url = ctx.url;
 
         //0.尝试重构url
-        if (is_get && ctx.args.size() > 0) {
+        // a. GET 方法，统一用 query 参数
+        // b. body 提交时，参数转到 query 上（有 NamiBody 的参数 已经从 args 移除了）
+        if ((is_get && ctx.args.size() > 0) || (ctx.bodyInited && ctx.args.size() > 0)) {
             StringBuilder sb = new StringBuilder(ctx.url);
             //如果URL中含有固定参数,应该用'&'添加参数
             sb.append(ctx.url.contains("?") ? "&" : "?");
@@ -51,8 +52,11 @@ public class HttpChannel extends ChannelBase implements Channel {
         Encoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
-        if (is_get || ctx.args.size() == 0) {
+        if (is_get) {
             response = http.exec(Constants.METHOD_GET);
+        } else if (ctx.args.size() == 0 && ctx.body == null) {
+            // 增强query时，已经将body的参数移除了，所以需要一起判断body也为空
+            response = http.exec(ctx.action);
         } else {
             if (encoder == null) {
                 String ct0 = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");

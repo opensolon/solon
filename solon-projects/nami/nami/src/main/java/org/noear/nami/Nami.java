@@ -119,7 +119,7 @@ public class Nami {
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            Invocation invocation = new Invocation(_config, _target,_method, _action, _url, this::callDo);
+            Invocation invocation = new Invocation(_config, _target,_method, _action, _url, body, this::callDo);
 
 
             if (headers != null) {
@@ -128,10 +128,6 @@ public class Nami {
 
             if (args != null) {
                 invocation.args.putAll(args);
-            }
-
-            if (body != null) {
-                invocation.body = body;
             }
 
             _result = invocation.invoke();
