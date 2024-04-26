@@ -13,5 +13,8 @@ public interface ComplexModelService1 {
     @NamiMapping("PUT")
     void save(@NamiBody ComplexModel model);
 
+    @NamiMapping("POST")
+    String save2(String name1, @NamiBody ComplexModel model);
+
     ComplexModel read(Integer modelId);
 }

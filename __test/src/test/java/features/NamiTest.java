@@ -36,6 +36,15 @@ public class NamiTest {
 
         assert complexModelService1.read(12).getModelId() == 12;
     }
+    @Test
+    public void test1b() {
+        ComplexModel model = new ComplexModel();
+        model.setModelId(11);
+        String rst = complexModelService1.save2("noear",model);
+
+        assert rst.contains("noear");
+        assert rst.contains("11");
+    }
 
     @Test
     public void test1_2() {
