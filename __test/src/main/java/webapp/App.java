@@ -3,7 +3,6 @@ package webapp;
 import cn.dev33.satoken.SaManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.SolonBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Import;
@@ -13,12 +12,11 @@ import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
-import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
-import org.noear.solon.scheduling.annotation.EnableScheduling;
+import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
@@ -69,19 +67,10 @@ public class App {
         }
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
-        //LogUtil.globalSet(new LogUtilToSlf4j());
 
         //构建方式
-        SolonApp app = new SolonBuilder().onAppInitEnd(e -> {
-            StaticMappings.add("/", new ExtendStaticRepository());
-            System.out.println("1.初始化完成");
-        }).onAppPluginLoadEnd(e -> {
-            System.out.println("2.插件加载完成了");
-        }).onAppBeanLoadEnd(e -> {
-            System.out.println("3.Bean扫描并加载完成");
-        }).onAppLoadEnd(e -> {
-            System.out.println("4.应用全加载完成了");
-        }).start(App.class, args, x -> {
+
+        Solon.start(App.class, args, x -> {
             x.enableSocketD(true);
             x.enableWebSocket(true);
 
@@ -101,8 +90,16 @@ public class App {
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
 
+            x.onEvent(PropertiesActionExecutor.class, e->{
+                e.includeFormUrlencoded(true);
+            });
+
             x.onEvent(HttpServerConfigure.class, e->{
                 //e.enableDebug(true);
+            });
+
+            x.onEvent(AppInitEndEvent.class, e->{
+                StaticMappings.add("/", new ExtendStaticRepository());
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
@@ -110,7 +107,7 @@ public class App {
             StaticMappings.add("/sa-token/",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
-        initApp(app);
+        initApp(Solon.app());
     }
 
     static void initApp(SolonApp app){

@@ -159,27 +159,7 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public NvMap paramMap() {
-        if (_paramMap == null) {
-            _paramMap = new NvMap();
-
-            try {
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                _parameters.forEach((k, v) -> {
-                    if (v instanceof List) {
-                        _paramMap.put(k, ((List<String>) v).get(0));
-                    } else {
-                        _paramMap.put(k, (String) v);
-                    }
-                });
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-        }
+        paramsMapInit();
 
         return _paramMap;
     }
@@ -188,30 +168,40 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public Map<String, List<String>> paramsMap() {
+        paramsMapInit();
+
+        return _paramsMap;
+    }
+
+    private void paramsMapInit() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
+            _paramMap = new NvMap();
 
             try {
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
-                _parameters.forEach((k, v) -> {
+                for (Map.Entry<String, Object> kv : _parameters.entrySet()) {
+                    String k = kv.getKey(); //内部已 urlDecode
+                    Object v = kv.getValue();
+
                     if (v instanceof List) {
                         _paramsMap.put(k, (List<String>) v);
+                        _paramMap.put(k, ((List<String>) v).get(0));
                     } else {
                         List<String> list = new ArrayList<>();
                         list.add((String) v);
+
                         _paramsMap.put(k, list);
+                        _paramMap.put(k, (String) v);
                     }
-                });
+                }
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
-
         }
-
-        return _paramsMap;
     }
 
     @Override

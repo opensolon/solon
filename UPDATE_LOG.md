@@ -46,7 +46,7 @@
 * fastjson2 升为 2.0.49
 * wood 升为 1.2.9
 * mybatis-flex 升为 1.8.8
-* snack3 升为 3.2.93
+* snack3 升为 3.2.95
 
 ### 2.7.5
 * 新增 solon.web.rx 插件
