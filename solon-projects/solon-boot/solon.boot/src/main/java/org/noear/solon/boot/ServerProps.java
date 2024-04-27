@@ -3,6 +3,9 @@ package org.noear.solon.boot;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
  * 服务公共属性
  *
@@ -12,45 +15,45 @@ import org.noear.solon.Utils;
 public class ServerProps {
     /**
      * 是否输出元信息
-     * */
+     */
     public static final boolean output_meta;
     /**
      * 请求编码
-     * */
+     */
     public static final String request_encoding;
     /**
      * 请求最大头大小
-     * */
+     */
     public static final int request_maxHeaderSize;
     /**
      * 请求最大主体大小
-     * */
+     */
     public static final long request_maxBodySize;
     /**
      * 上传最大文件大小
-     * */
+     */
     public static final long request_maxFileSize;
     /**
      * 上传使用临时文件
-     * */
+     */
     public static final boolean request_useTempfile;
 
     /**
      * 会话超时
-     * */
+     */
     public static final int session_timeout;
     /**
      * 会话状态域
-     * */
+     */
     public static final String session_state_domain;
 
 
     /**
      * 响应编码
-     * */
+     */
     public static final String response_encoding;
 
-    public static void init(){
+    public static void init() {
         //空的，别去掉
     }
 
@@ -63,7 +66,7 @@ public class ServerProps {
         //
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXHEADERSIZE, "").trim().toLowerCase();//k数
-        request_maxHeaderSize = (int)getSize(tmp, 8192L);//8k
+        request_maxHeaderSize = (int) getSize(tmp, 8192L);//8k
 
         tmp = Solon.cfg().get(ServerConstants.SERVER_REQUEST_MAXBODYSIZE, "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
@@ -87,7 +90,7 @@ public class ServerProps {
             request_encoding = tmp;
         }
 
-        request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE,false);
+        request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
 
         //
         // for session
@@ -106,6 +109,10 @@ public class ServerProps {
         } else {
             response_encoding = tmp;
         }
+    }
+
+    public static String urlDecode(String str) throws UnsupportedEncodingException {
+        return URLDecoder.decode(str, request_encoding);
     }
 
     static void synProps(String appProp, String sysProp) {

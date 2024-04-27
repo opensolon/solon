@@ -1,6 +1,5 @@
 package org.noear.solon.boot.smarthttp.http;
 
-
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipart;
@@ -9,10 +8,7 @@ import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

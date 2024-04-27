@@ -141,7 +141,7 @@ public class SmHttpContext extends WebContextBase {
                 if (queryString == null) {
                     queryString = "";
                 } else {
-                    queryString = URLDecoder.decode(queryString, ServerProps.request_encoding);
+                    queryString = ServerProps.urlDecode(queryString);
                 }
             }
 
@@ -160,23 +160,7 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public NvMap paramMap() {
-        if (_paramMap == null) {
-            _paramMap = new NvMap();
-
-            try {
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
-                    _paramMap.put(entry.getKey(), entry.getValue()[0]);
-                }
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-        }
+        paramsMapInit();
 
         return _paramMap;
     }
@@ -185,23 +169,30 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public Map<String, List<String>> paramsMap() {
+        paramsMapInit();
+
+        return _paramsMap;
+    }
+
+    private void paramsMapInit() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
+            _paramMap = new NvMap();
 
             try {
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
-                _request.getParameters().forEach((k, v) -> {
-                    _paramsMap.put(k, Utils.asList(v));
-                });
+                for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
+                    String key = ServerProps.urlDecode(entry.getKey());
+                    _paramsMap.put(key, Utils.asList(entry.getValue()));
+                    _paramMap.put(key, entry.getValue()[0]);
+                }
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
         }
-
-        return _paramsMap;
     }
 
     @Override
