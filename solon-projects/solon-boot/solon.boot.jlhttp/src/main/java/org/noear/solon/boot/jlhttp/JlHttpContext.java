@@ -155,19 +155,7 @@ public class JlHttpContext extends WebContextBase {
 
     @Override
     public NvMap paramMap() {
-        if (_paramMap == null) {
-            _paramMap = new NvMap();
-
-            try {
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                _paramMap.putAll(_request.getParams());
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
+        paramsMapInit();
 
         return _paramMap;
     }
@@ -176,13 +164,22 @@ public class JlHttpContext extends WebContextBase {
 
     @Override
     public Map<String, List<String>> paramsMap() {
+        paramsMapInit();
+
+        return _paramsMap;
+    }
+
+    private Map<String, List<String>> paramsMapInit() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
+            _paramMap = new NvMap();
 
             try {
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
+
+                _paramMap.putAll(_request.getParams());
 
                 for (String[] kv : _request.getParamsList()) {
                     List<String> list = _paramsMap.get(kv[0]);

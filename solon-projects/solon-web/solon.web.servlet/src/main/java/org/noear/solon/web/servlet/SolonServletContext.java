@@ -139,25 +139,7 @@ public class SolonServletContext extends WebContextBase {
 
     @Override
     public NvMap paramMap() {
-        if (_paramMap == null) {
-            _paramMap = new NvMap();
-
-            try {
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                Enumeration<String> names = _request.getParameterNames();
-
-                while (names.hasMoreElements()) {
-                    String name = names.nextElement();
-                    String value = _request.getParameter(name);
-                    _paramMap.put(name, value);
-                }
-            } catch (IOException | ServletException e) {
-                throw new IllegalStateException(e);
-            }
-        }
+        paramsMapInit();
 
         return _paramMap;
     }
@@ -166,17 +148,25 @@ public class SolonServletContext extends WebContextBase {
 
     @Override
     public Map<String, List<String>> paramsMap() {
+        paramsMapInit();
+
+        return _paramsMap;
+    }
+
+    private Map<String, List<String>> paramsMapInit() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
+            _paramMap = new NvMap();
 
             try {
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
-                _request.getParameterMap().forEach((k, v) -> {
-                    _paramsMap.put(k, Utils.asList(v));
-                });
+                for (Map.Entry<String, String[]> kv : _request.getParameterMap().entrySet()) {
+                    _paramsMap.put(kv.getKey(), Utils.asList(kv.getValue()));
+                    _paramMap.put(kv.getKey(), kv.getValue()[0]);
+                }
             } catch (IOException | ServletException e) {
                 throw new IllegalStateException(e);
             }
