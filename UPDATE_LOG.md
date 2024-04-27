@@ -20,7 +20,7 @@
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
-* 新增 solon.serialization.props 插件（支持 ?a.b=1 prop 风格的参数）
+* 新增 solon.serialization.properties 插件（支持 ?a.b=1 prop 风格的参数）
 * 新增 solon.net.stomp 插件
 * 新增 solon.boot.jetty 原生编译支持
 * 新增 solon.boot.undertow 原生编译支持
