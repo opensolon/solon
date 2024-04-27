@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.serialization.props</artifactId>
+    <artifactId>solon.serialization.properties</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

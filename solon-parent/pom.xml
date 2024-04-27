@@ -601,7 +601,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.props</artifactId>
+                <artifactId>solon.serialization.properties</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

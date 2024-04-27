@@ -68,6 +68,14 @@ public class HttpJsonTest extends HttpTester {
         assert tmp.contains("1,2");
     }
 
+    @Test
+    public void json_bean_b() throws Exception {
+        String tmp = path("/demo2/json/bean?user.id=1&user.name=noear&user.aaa[]=1&user.aaa[]=2").header("X-Serialization","@properties").get();
+        assert tmp.contains("name=noear");
+        assert tmp.contains("aaa[0]=1");
+        assert tmp.contains("aaa[1]=2");
+    }
+
 //    @Test
 //    public void json_bean_2() throws Exception {
 //        String tmp = path("/demo2/json/bean")

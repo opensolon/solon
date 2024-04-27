@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.props;
+package org.noear.solon.serialization.properties;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Prop 动作执行器
+ * Properties 动作执行器
  *
  * @author noear
- * @since 1.0
+ * @since 2.7
  * */
-public class PropsActionExecutor extends ActionExecuteHandlerDefault {
+public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     private final Options config = Options.def().add(Feature.DisableClassNameRead);
 
     /**
