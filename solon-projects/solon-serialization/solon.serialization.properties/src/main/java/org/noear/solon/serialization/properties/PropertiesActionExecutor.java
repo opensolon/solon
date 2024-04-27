@@ -4,8 +4,8 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.NameValues;
 import org.noear.snack.core.Options;
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -22,17 +22,26 @@ import java.util.Map;
  * */
 public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     private final Options config = Options.def().add(Feature.DisableClassNameRead);
+    private boolean includeFormUrlencoded = false;
+
+    /**
+     * 包括 FormUrlencoded
+     * */
+    public void includeFormUrlencoded(boolean includeFormUrlencoded) {
+        this.includeFormUrlencoded = includeFormUrlencoded;
+    }
 
     /**
      * 反序列化配置
-     * */
-    public Options config(){
+     */
+    public Options config() {
         return config;
     }
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (Utils.isEmpty(ct)) {
+        if (MethodType.GET.name.equals(ctx.method()) || (includeFormUrlencoded && ctx.isFormUrlencoded())) {
+
             for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
                 if (kv.getKey().indexOf('.') > 0 || kv.getKey().indexOf('[') > 0) {
                     return true;
@@ -57,10 +66,10 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
 
     /**
      * @since 1.11 增加 requireBody 支持
-     * */
+     */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
+        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -85,7 +94,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
                     //支持泛型的转换
                     if (p.isGenericType()) {
                         return tmp.get(p.getName()).toObject(p.getGenericType());
-                    }else{
+                    } else {
                         return tmp.get(p.getName()).toObject(pt);
                     }
                 }
@@ -107,7 +116,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
                 //支持泛型的转换 如：Map<T>
                 if (p.isGenericType()) {
                     return tmp.toObject(p.getGenericType());
-                }else{
+                } else {
                     return tmp.toObject(pt);
                 }
             }
@@ -123,7 +132,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
             if (p.isGenericType()) {
                 //转换带泛型的集合
                 return tmp.toObject(p.getGenericType());
-            }else{
+            } else {
                 //不仅可以转换为List 还可以转换成Set
                 return tmp.toObject(pt);
             }
