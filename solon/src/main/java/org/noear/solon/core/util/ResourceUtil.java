@@ -333,15 +333,16 @@ public class ResourceUtil {
             resExpr = resExpr.substring(1);
         }
 
-        if (resExpr.indexOf('*') < 0) { //说明没有*符
+        int xinIdx = resExpr.indexOf('*');
+        if (xinIdx < 0) { //说明没有*符
             paths.add(resExpr);
             return paths;
         }
 
         //确定没有星号的起始目录
-        int dirIdx = resExpr.indexOf("/*");
+        int dirIdx = resExpr.indexOf("/");
 
-        if (dirIdx < 1) {
+        if (dirIdx < 1 || dirIdx > xinIdx) {
             throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " + resExpr);
         }
 

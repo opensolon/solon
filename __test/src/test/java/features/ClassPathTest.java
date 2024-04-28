@@ -91,6 +91,7 @@ public class ClassPathTest {
         assert classes.size() >= 8;
     }
 
+
     @Test
     public void resolveClasses3(){
         //
@@ -125,5 +126,16 @@ public class ClassPathTest {
         classes = ResourceUtil.scanClasses("webapp.dso.cache.OathServer");
         System.out.println(classes.size());
         assert classes.size() == 1;
+    }
+
+
+
+    @Test
+    public void resolveClasses5(){
+        Collection<String> resSet;
+
+        resSet = ResourceUtil.scanResources("classpath*:props_test/dev-*.yml");
+        System.out.println(resSet.size());
+        assert resSet.size() == 2;
     }
 }
