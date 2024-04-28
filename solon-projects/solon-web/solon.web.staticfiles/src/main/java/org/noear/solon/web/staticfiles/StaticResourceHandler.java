@@ -55,20 +55,25 @@ public class StaticResourceHandler implements Handler {
 
         //找资源
         URL resUri = null;
-        boolean resUriZiped = false;
+        String resUriZiped = null;
 
         String acceptEncoding = ctx.headerOrDefault("Accept-Encoding", "");
 
         if (GzipProps.hasMime(conentType)) {
             //如果有支持压缩的类型
-            if (acceptEncoding.contains("br")) {
-                resUri = StaticMappings.find(path + ".br");
-            } else if (acceptEncoding.contains("gzip")) {
+            if (acceptEncoding.contains("gzip")) {
                 resUri = StaticMappings.find(path + ".gz");
+                if (resUri != null) {
+                    resUriZiped = "gzip";
+                }
             }
 
-            //是否有压缩的
-            resUriZiped = resUri != null;
+            if (resUri == null && acceptEncoding.contains("br")) {
+                resUri = StaticMappings.find(path + ".br");
+                if (resUri != null) {
+                    resUriZiped = "br";
+                }
+            }
         }
 
         if (resUri == null) {
@@ -98,7 +103,7 @@ public class StaticResourceHandler implements Handler {
 
 
             //开始输出：
-            if (resUriZiped && acceptEncoding.contains("br")) {
+            if ("br".equals(resUriZiped) && acceptEncoding.contains("br")) {
                 //如果支持 br
                 try (InputStream stream = resUri.openStream()) {
                     ctx.contentType(conentType);
@@ -109,7 +114,7 @@ public class StaticResourceHandler implements Handler {
                 return;
             }
 
-            if (resUriZiped && acceptEncoding.contains("gzip")) {
+            if ("gzip".equals(resUriZiped) && acceptEncoding.contains("gzip")) {
                 //如果支持 gzip
                 try (InputStream stream = resUri.openStream()) {
                     ctx.contentType(conentType);

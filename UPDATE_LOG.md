@@ -37,6 +37,7 @@
 * 优化 ResourceUtil 扫描类或资源的能力，增加支持 `*Mapper` 表达式
 * 优化 Aot 时的函数注册处理（修复 原生运行时组件代理失败的问题）
 * 优化 Bean 集合的注入处理
+* 优化 StaticResourceHandler 对静态资源的压缩支持，改为先查找压缩文件
 * 修复 solon.boot.undertow 的 ws 适配在 window 下异常关闭处理时，无法触发 onClose 事件的问题
 * 修复 solon.boot.websocket.netty 接收二进制码时出错的问题
 * 修复 nami 在请求参数为空时被转换成GET操作的问题
