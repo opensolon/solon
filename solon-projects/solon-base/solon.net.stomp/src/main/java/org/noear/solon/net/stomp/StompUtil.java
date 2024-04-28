@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Pattern;
 
 /**
@@ -25,7 +24,7 @@ public abstract class StompUtil {
     /**
      * 地址与session映射
      */
-    public final static Set<DestinationInfo> DESTINATION_INFO_SET = new CopyOnWriteArraySet<>();
+    public final static Set<DestinationInfo> DESTINATION_INFO_SET = new HashSet<>();
 
     /**
      * 地址匹配正则
@@ -42,7 +41,9 @@ public abstract class StompUtil {
      */
     public static void send(WebSocket webSocket, Message message) {
         try {
-            webSocket.send(ByteBuffer.wrap(msgCodec.encode(message).getBytes(StandardCharsets.UTF_8)));
+            if (webSocket.isValid()) {
+                webSocket.send(ByteBuffer.wrap(msgCodec.encode(message).getBytes(StandardCharsets.UTF_8)));
+            }
         } finally {
             if (!webSocket.isValid()) {
                 webSocket.close();

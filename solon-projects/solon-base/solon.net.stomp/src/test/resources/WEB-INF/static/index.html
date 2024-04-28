@@ -67,7 +67,7 @@
                 console.info('Connected', frame);
                 stompClient.subscribe('/topic/todoTask1/*', function (response) {
                     showResponse(response.body);
-                    response.ack({"message-id": response.headers["message-id"]});
+                    //response.ack({"message-id": response.headers["message-id"]});
                 }, {ack: 'client'});
 
                 var subscription = stompClient.subscribe('/topic/todoTask2/*', function (response) {
@@ -97,11 +97,13 @@
     }
 
     function send() {
-        stompClient.publish({
-            destination: "/topic/todoTask1/open",
-            body: $('#messgae').val(),
-            headers: {"openPersistence": "true", "openAck": "true"}
-        });
+        if($('#message').val()){
+            stompClient.publish({
+                destination: "/topic/todoTask1/open",
+                body: $('#message').val(),
+                headers: {"openPersistence": "true", "openAck": "true"}
+            });
+        }
     }
 
     function showResponse(message) {
