@@ -9,31 +9,47 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ToStompWebSocketListener implements WebSocketListener {
-    static Logger log = LoggerFactory.getLogger(StompListener.class);
+/**
+ * websocket转stomp处理
+ *
+ * @author limliu
+ * @since 2.7
+ */
+public abstract class ToStompWebSocketListener implements WebSocketListener {
+    static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
 
-    private StompListener listener;
+    private List<IStompListener> listenerList = new ArrayList<>();
 
     public ToStompWebSocketListener() {
         this(null);
     }
 
-    public ToStompWebSocketListener(StompListener listener) {
-        setListener(listener);
+    public ToStompWebSocketListener(IStompListener listener) {
+        this.addListener(new StompListenerImpl(), listener);
     }
 
-    public void setListener(StompListener listener) {
-        if (listener != null) {
-            this.listener = listener;
+    public void addListener(IStompListener... listeners) {
+        if (listeners == null || listeners.length == 0) {
+            return;
+        }
+        for (IStompListener listener : listeners) {
+            if (listener == null) {
+                continue;
+            }
+            listenerList.add(listener);
         }
     }
 
 
     @Override
     public void onOpen(WebSocket socket) {
-        listener.onOpen(socket);
+        for (IStompListener listener : listenerList) {
+            listener.onOpen(socket);
+        }
     }
 
     @Override
@@ -44,28 +60,40 @@ public class ToStompWebSocketListener implements WebSocketListener {
             String command = msg.getCommand() == null ? "" : msg.getCommand();
             switch (command) {
                 case Commands.CONNECT: {
-                    listener.onConnect(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onConnect(socket, msg);
+                    }
                     break;
                 }
                 case Commands.DISCONNECT: {
-                    listener.onDisconnect(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onDisconnect(socket, msg);
+                    }
                     break;
                 }
                 case Commands.SUBSCRIBE: {
-                    listener.onSubscribe(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onSubscribe(socket, msg);
+                    }
                     break;
                 }
                 case Commands.UNSUBSCRIBE: {
-                    listener.onUnsubscribe(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onUnsubscribe(socket, msg);
+                    }
                     break;
                 }
                 case Commands.SEND: {
-                    listener.onSend(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onSend(socket, msg);
+                    }
                     break;
                 }
                 case Commands.ACK:
                 case Commands.NACK: {
-                    listener.onAck(socket, msg);
+                    for (IStompListener listener : listenerList) {
+                        listener.onAck(socket, msg);
+                    }
                     break;
                 }
                 default: {
@@ -97,7 +125,9 @@ public class ToStompWebSocketListener implements WebSocketListener {
 
     @Override
     public void onClose(WebSocket socket) {
-        listener.onClose(socket);
+        for (IStompListener listener : listenerList) {
+            listener.onClose(socket);
+        }
     }
 
     @Override

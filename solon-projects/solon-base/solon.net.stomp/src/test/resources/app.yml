@@ -1,0 +1,16 @@
+solon:
+  env: dev
+solon.app:
+  name: 'solon-demo'
+
+# 记录器级别的配置示例
+solon.logging:
+  logger:
+    root: #默认记录器配置
+      level: INFO
+  appender:
+    console:
+      enable: true #是否启用
+      pattern: "%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} ${PID:-} [-%t][*%X{traceId}]%tags[%cyan(%logger{12}).%M\\(%F:%L\\))]: %msg%n"
+    file:
+      enable: false #是否启用

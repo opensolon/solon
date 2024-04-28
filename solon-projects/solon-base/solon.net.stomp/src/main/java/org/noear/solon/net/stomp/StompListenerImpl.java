@@ -5,9 +5,8 @@ import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -17,23 +16,10 @@ import java.util.regex.Pattern;
  * @author limliu
  * @since 2.7
  */
-public abstract class StompListener {
-    static Logger log = LoggerFactory.getLogger(StompListener.class);
+public final class StompListenerImpl implements IStompListener {
 
-    /**
-     * session存放
-     */
-    protected final static Map<String, WebSocket> WEB_SOCKET_MAP = new ConcurrentHashMap<>();
+    static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
 
-    /**
-     * 地址与session映射
-     */
-    protected final static Set<DestinationInfo> DESTINATION_INFO_SET = new CopyOnWriteArraySet<>();
-
-    /**
-     * 地址匹配正则
-     */
-    protected final static ConcurrentHashMap<String, Pattern> DESTINATION_MATCH = new ConcurrentHashMap<>();
 
     /**
      * 可以放鉴权，参数可以通过Head或者地址栏
@@ -41,8 +27,9 @@ public abstract class StompListener {
      *
      * @param socket
      */
+    @Override
     public void onOpen(WebSocket socket) {
-        WEB_SOCKET_MAP.put(socket.id(), socket);
+        StompUtil.WEB_SOCKET_MAP.put(socket.id(), socket);
     }
 
     /**
@@ -51,8 +38,9 @@ public abstract class StompListener {
      *
      * @param socket
      */
+    @Override
     public void onClose(WebSocket socket) {
-        WEB_SOCKET_MAP.remove(socket);
+        StompUtil.WEB_SOCKET_MAP.remove(socket);
         this.onUnsubscribe(socket, null);
     }
 
@@ -63,6 +51,7 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onConnect(WebSocket socket, Message message) {
         String heartBeat = message.getHeader(Header.HEART_BEAT);
         StompUtil.send(socket, new Message(Commands.CONNECTED, Arrays.asList(new Header(Header.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)), new Header(Header.SERVER, "stomp"), new Header(Header.VERSION, "1.2"))));
@@ -75,6 +64,7 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onDisconnect(WebSocket socket, Message message) {
         String receiptId = message.getHeader(Header.RECEIPT);
         StompUtil.send(socket, new Message(Commands.RECEIPT, Arrays.asList(new Header(Header.RECEIPT_ID, receiptId))));
@@ -86,6 +76,7 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onSubscribe(WebSocket socket, Message message) {
         final String subscriptionId = message.getHeader(Header.ID);
         final String destination = message.getHeader(Header.DESTINATION);
@@ -97,10 +88,10 @@ public abstract class StompListener {
         destinationInfo.setSessionId(socket.id());
         destinationInfo.setDestination(destination);
         destinationInfo.setSubscription(subscriptionId);
-        DESTINATION_INFO_SET.add(destinationInfo);
-        if (!DESTINATION_MATCH.containsKey(destination)) {
+        StompUtil.DESTINATION_INFO_SET.add(destinationInfo);
+        if (!StompUtil.DESTINATION_MATCH.containsKey(destination)) {
             String destinationRegexp = "^" + destination.replaceAll("\\*\\*", ".+").replaceAll("\\*", ".+") + "$";
-            DESTINATION_MATCH.put(destination, Pattern.compile(destinationRegexp));
+            StompUtil.DESTINATION_MATCH.put(destination, Pattern.compile(destinationRegexp));
         }
         final String receiptId = message.getHeader(Header.RECEIPT);
         if (receiptId != null) {
@@ -115,6 +106,7 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onUnsubscribe(WebSocket socket, Message message) {
         final String sessionId = socket.id();
         if (message == null) {
@@ -136,27 +128,14 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onSend(WebSocket socket, Message message) {
         String destination = message.getHeader(Header.DESTINATION);
         if (destination == null || destination.length() == 0) {
             StompUtil.send(socket, new Message(Commands.ERROR, "Required 'destination' header missed"));
             return;
         }
-        DESTINATION_INFO_SET.parallelStream().filter(destinationInfo -> {
-            return DESTINATION_MATCH.get(destinationInfo.getDestination()).matcher(destination).matches();
-        }).forEach(destinationInfo -> {
-            WebSocket sendSocket = WEB_SOCKET_MAP.get(destinationInfo.getSessionId());
-            if (sendSocket == null) {
-                return;
-            }
-            Message replyMessage = new Message(Commands.MESSAGE, message.getPayload());
-            String contentType = message.getHeader(Header.CONTENT_TYPE);
-            if (contentType != null && contentType.length() > 0) {
-                replyMessage.headers(Header.CONTENT_TYPE, contentType);
-            }
-            replyMessage.headers(Header.DESTINATION, destinationInfo.getDestination()).headers(Header.MESSAGE_ID, UUID.randomUUID().toString()).headers(Header.SUBSCRIPTION, destinationInfo.getSubscription());
-            StompUtil.send(sendSocket, replyMessage);
-        });
+        StompUtil.send(destination, message.getPayload(), message.getHeader(Header.CONTENT_TYPE));
     }
 
     /**
@@ -165,6 +144,7 @@ public abstract class StompListener {
      * @param socket
      * @param message
      */
+    @Override
     public void onAck(WebSocket socket, Message message) {
 
     }
@@ -176,7 +156,7 @@ public abstract class StompListener {
      * @param function
      */
     protected void unSubscribeHandle(Function<DestinationInfo, Boolean> function) {
-        Iterator<DestinationInfo> iterator = DESTINATION_INFO_SET.iterator();
+        Iterator<DestinationInfo> iterator = StompUtil.DESTINATION_INFO_SET.iterator();
         while (iterator.hasNext()) {
             if (function.apply(iterator.next())) {
                 iterator.remove();
