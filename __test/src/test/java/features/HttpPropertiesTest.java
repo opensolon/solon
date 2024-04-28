@@ -25,9 +25,7 @@ public class HttpPropertiesTest extends HttpTester {
 
     @Test
     public void json_bean_encode() throws Exception {
-        String url_params_encoded = "user.id=1&user.name=noear&user.aaa%5B%5D=1&user.aaa%5B%5D=2";
-
-        String tmp = path("/demo2/json/bean?" + url_params_encoded).get();
+        String tmp = path("/demo2/json/bean?user.id=1&user.name=noear&user.aaa%5B%5D=1&user.aaa%5B%5D=2").get();
         assert tmp.contains("noear");
         assert tmp.contains("[");
         assert tmp.contains("1,2");

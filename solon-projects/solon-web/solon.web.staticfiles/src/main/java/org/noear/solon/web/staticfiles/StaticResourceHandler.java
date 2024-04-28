@@ -54,9 +54,29 @@ public class StaticResourceHandler implements Handler {
         }
 
         //找资源
-        URL uri = StaticMappings.find(path);
+        URL resUri = null;
+        boolean resUriZiped = false;
 
-        if (uri != null) {
+        String acceptEncoding = ctx.headerOrDefault("Accept-Encoding", "");
+
+        if (GzipProps.hasMime(conentType)) {
+            //如果有支持压缩的类型
+            if (acceptEncoding.contains("br")) {
+                resUri = StaticMappings.find(path + ".br");
+            } else if (acceptEncoding.contains("gzip")) {
+                resUri = StaticMappings.find(path + ".gz");
+            }
+
+            //是否有压缩的
+            resUriZiped = resUri != null;
+        }
+
+        if (resUri == null) {
+            //如果还没有资源
+            resUri = StaticMappings.find(path);
+        }
+
+        if (resUri != null) {
             ctx.setHandled(true);
 
             String modified_since = ctx.header("If-Modified-Since");
@@ -77,41 +97,31 @@ public class StaticResourceHandler implements Handler {
             }
 
 
-            //如果支持配置的类型
-            if (GzipProps.hasMime(conentType)) {
-
-                String ae = ctx.headerOrDefault("Accept-Encoding", "");
-
-                if (ae.contains("br")) {
-                    //如果支持 br
-                    URL zipedFile = StaticMappings.find(path + ".br");
-                    if (zipedFile != null) {
-                        try (InputStream stream = zipedFile.openStream()) {
-                            ctx.contentType(conentType);
-                            ctx.headerSet("Vary", "Accept-Encoding");
-                            ctx.headerSet("Content-Encoding", "br");
-                            OutputUtils.global().outputStreamAsRange(ctx, stream, stream.available());
-                        }
-                        return;
-                    }
+            //开始输出：
+            if (resUriZiped && acceptEncoding.contains("br")) {
+                //如果支持 br
+                try (InputStream stream = resUri.openStream()) {
+                    ctx.contentType(conentType);
+                    ctx.headerSet("Vary", "Accept-Encoding");
+                    ctx.headerSet("Content-Encoding", "br");
+                    OutputUtils.global().outputStreamAsRange(ctx, stream, stream.available());
                 }
-
-                if (ae.contains("gzip")) {
-                    //如果支持 gzip
-                    URL zipedFile = StaticMappings.find(path + ".gz");
-                    if (zipedFile != null) {
-                        try (InputStream stream = zipedFile.openStream()) {
-                            ctx.contentType(conentType);
-                            ctx.headerSet("Vary", "Accept-Encoding");
-                            ctx.headerSet("Content-Encoding", "gzip");
-                            OutputUtils.global().outputStreamAsRange(ctx, stream, stream.available());
-                        }
-                        return;
-                    }
-                }
+                return;
             }
 
-            OutputUtils.global().outputFile(ctx, uri, conentType, StaticConfig.getCacheMaxAge() >= 0);
+            if (resUriZiped && acceptEncoding.contains("gzip")) {
+                //如果支持 gzip
+                try (InputStream stream = resUri.openStream()) {
+                    ctx.contentType(conentType);
+                    ctx.headerSet("Vary", "Accept-Encoding");
+                    ctx.headerSet("Content-Encoding", "gzip");
+                    OutputUtils.global().outputStreamAsRange(ctx, stream, stream.available());
+                }
+                return;
+            }
+
+
+            OutputUtils.global().outputFile(ctx, resUri, conentType, StaticConfig.getCacheMaxAge() >= 0);
         }
     }
 
