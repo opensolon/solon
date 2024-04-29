@@ -160,7 +160,7 @@ public abstract class StompUtil {
         }
         replyMessage.addHeader(Header.DESTINATION, destination);
         if (headers != null && headers.size() > 0) {
-            replyMessage.getHeaders().addAll(headers);
+            replyMessage.getHeaderAll().addAll(headers);
         }
         return replyMessage;
     }

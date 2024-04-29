@@ -4,14 +4,14 @@ import org.noear.solon.net.stomp.Header;
 import org.noear.solon.net.stomp.Message;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author limliu
  * @since 2.7
  */
-public class MessageImpl implements Message{
+public class MessageImpl implements Message {
     private final String command;
     private final List<Header> headers;
     private final String payload;
@@ -35,19 +35,24 @@ public class MessageImpl implements Message{
         return this;
     }
 
-    public List<Header> getHeaders() {
+    public List<Header> getHeaderAll() {
         return headers;
     }
 
-    public String header(String key) {
+    public String getHeader(String key) {
         if (headers == null) {
             return null;
         }
-        AtomicReference<String> stringAtomicReference = new AtomicReference<>();
-        headers.stream().filter(header -> key.equals(header.getKey())).findFirst().ifPresent(header -> {
-            stringAtomicReference.set(header.getValue());
-        });
-        return stringAtomicReference.get();
+
+        Iterator<Header> iterator = headers.iterator();
+        while (iterator.hasNext()) {
+            Header h = iterator.next();
+            if (key.equals(h.getKey())) {
+                return h.getValue();
+            }
+        }
+
+        return null;
     }
 
     public String getPayload() {

@@ -25,15 +25,15 @@ public interface Message {
      *
      * @return
      */
-    List<Header> getHeaders();
+    List<Header> getHeaderAll();
 
     /**
-     * 基于指定key获取head中对应的值
+     * 获取head
      *
      * @param key 参考#Header
      * @return
      */
-    String header(String key);
+    String getHeader(String key);
 
     /**
      * 获取消息内容

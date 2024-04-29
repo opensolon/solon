@@ -70,7 +70,7 @@ public class MessageCodecImpl implements MessageCodec {
     }
 
     protected List<Header> msgHeaders(Message input) {
-        List<Header> headers = input.getHeaders();
+        List<Header> headers = input.getHeaderAll();
         return new ArrayList<>(headers);
     }
 
