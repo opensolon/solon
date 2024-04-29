@@ -3,7 +3,9 @@ package demo;
 
 import com.ejlchina.okhttps.OkHttps;
 import com.ejlchina.okhttps.WHttpTask;
+import com.ejlchina.stomp.Commands;
 import com.ejlchina.stomp.Header;
+import com.ejlchina.stomp.Message;
 import com.ejlchina.stomp.Stomp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +25,29 @@ import java.util.function.Consumer;
  * @since 2.7
  */
 public class StompClientTest {
+
     static final Logger log = LoggerFactory.getLogger(StompClientTest.class);
 
 
     public static void main(String[] args) throws Exception {
-        WHttpTask whttpTask = OkHttps.webSocket("ws://127.0.0.1:8080/chat")
+        WHttpTask whttpTask = OkHttps.webSocket("ws://127.0.0.1:8080/chat?user=test001")
                 .heatbeat(5, 5);
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("resource", "test"));
+        AtomicInteger atomicInteger = new AtomicInteger();
         conn(whttpTask, headers, 1, (stompSession) -> {
+            //接收消息
             stompSession.subscribe("/topic/todoTask1/*", new ArrayList<>(), msg -> {
                 log.info("{}", msg);
             });
+            //客户端发消息给服务端
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Message message = transform(Commands.SEND, "/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自客户端");
+                    stompSession.send(message);
+                }
+            }, 2000, 2000);
         });
     }
 
@@ -71,5 +84,65 @@ public class StompClientTest {
         }).setOnException(e -> {
             log.info("webSocket OnException {}", e.getMessage());
         }).connect(headers);
+    }
+
+    /**
+     * 消息转换
+     *
+     * @param command
+     * @param destination
+     * @param payload
+     * @return
+     */
+    public static Message transform(String command, String destination, String payload) {
+        return transform(command, destination, payload, null, null);
+    }
+
+    /**
+     * 消息转换
+     *
+     * @param command
+     * @param destination
+     * @param payload
+     * @param contentType
+     * @return
+     */
+    public static Message transform(String command, String destination, String payload, String contentType) {
+        return transform(command, destination, payload, contentType, null);
+    }
+
+    /**
+     * 消息转换
+     *
+     * @param command
+     * @param destination
+     * @param payload
+     * @param headers
+     * @return
+     */
+    public static Message transform(String command, String destination, String payload, List<Header> headers) {
+        return transform(command, destination, payload, null, headers);
+    }
+
+    /**
+     * 消息转换
+     *
+     * @param command
+     * @param destination
+     * @param payload
+     * @param contentType
+     * @param headers
+     * @return
+     */
+    public static Message transform(String command, String destination, String payload, String contentType, List<Header> headers) {
+        Message message = new Message(command, new ArrayList<>(), payload);
+        if (contentType != null && contentType.length() > 0) {
+            message.getHeaders().add(new Header(Header.CONTENT_TYPE, contentType));
+        }
+        message.getHeaders().add(new Header(Header.DESTINATION, destination));
+        if (headers != null && headers.size() > 0) {
+            message.getHeaders().addAll(headers);
+        }
+        return message;
     }
 }

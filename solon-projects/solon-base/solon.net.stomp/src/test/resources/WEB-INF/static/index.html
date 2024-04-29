@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>WebSocket stomp + 广播式</title>
+</head>
+<body onload="setConnected(false)">
+<noscript>
+    <h2 style="color:#ff0000">貌似你的浏览器不支持websocket</h2>
+</noscript>
+<div>
+    <div id="localinfo"></div>
+    <div>
+        <br><label for="wsurl">输入WS地址</label>
+        <input type="text" id="wsurl" value="ws://127.0.0.1:8080/chat"><br>
+        <button id="connect" onclick="connect()">连接</button>
+        <button id="disconnect" onclick="disconnect();">断开连接</button>
+    </div>
+    <div id="conversationDiv" style="visibility: hidden;">
+        <label for="message">输入消息</label> <input type="text" id="message">
+        <button id="send" onclick="send();">发送</button>
+        <br>
+        <p id="response"
+           style="max-width:1498px;min-height:350px;max-height:350px;border:1px solid;overflow-y:auto;"></p>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/stomp.umd.min-5.4.4.js"></script>
+<script type="text/javascript">
+
+    var stompClient = null;
+
+    function setConnected(connected) {
+        document.getElementById('connect').disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+        $('#response').html();
+    }
+
+    function connect() {
+        //https://stomp-js.github.io/api-docs/latest/classes/Client.html
+        var stompConfig = {
+            connectHeaders: {
+                'connectedCallUri': 'www.baidu.com?test=123',
+                'disconnectedCallUri': 'www.baidu.com?test=321',
+                "resource": "pc-web",
+                "name": "web测试"
+            },
+            disconnectHeaders: {},
+            debug: function (str) {
+                console.log(str);
+            },
+            //等于0则不自动重连
+            reconnectDelay: 5000,
+            heartbeatIncoming: 0,
+            heartbeatOutgoing: 0,
+            stompVersions: {
+                protocolVersions: function () {
+                    return [];
+                },
+                supportedVersions: function(){
+                    return [];
+                }
+            },
+            onConnect: function (frame) {
+                setConnected(true);
+                console.info('Connected', frame);
+                stompClient.subscribe('/topic/todoTask1/*', function (response) {
+                    showResponse(response.body);
+                    //response.ack({"message-id": response.headers["message-id"]});
+                }, {ack: 'client'});
+
+                var subscription = stompClient.subscribe('/topic/todoTask2/*', function (response) {
+
+                }, {});
+                subscription.unsubscribe();
+            },
+            onWebSocketClose: function (frame) {
+                console.error("onWebSocketClose", frame);
+                setConnected(false);
+            }
+        }
+        var wsurl = $('#wsurl').val();
+        console.error("stompConfig", stompConfig);
+        stompClient = new StompJs.Client($.extend({
+            brokerURL: wsurl
+        }, stompConfig));
+        stompClient.activate();
+    }
+
+    function disconnect(frame) {
+        if (stompClient != null) {
+            stompClient.deactivate();
+        }
+        stompClient = null;
+        setConnected(false);
+    }
+
+    function send() {
+        if($('#message').val()){
+            stompClient.publish({
+                destination: "/topic/todoTask1/open",
+                body: $('#message').val(),
+                headers: {"openPersistence": "true", "openAck": "true"}
+            });
+        }
+    }
+
+    function showResponse(message) {
+        var response = $('#response');
+        response.append(message + "</br>");
+        var div = document.getElementById('response');
+        div.scrollTop = div.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
