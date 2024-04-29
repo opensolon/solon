@@ -1,6 +1,10 @@
 package org.noear.solon.net.stomp;
 
 
+import org.noear.solon.net.stomp.impl.Commands;
+import org.noear.solon.net.stomp.impl.MessageImpl;
+import org.noear.solon.net.stomp.impl.StompListenerImpl;
+import org.noear.solon.net.stomp.impl.StompUtil;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -22,21 +26,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class ToStompWebSocketListener implements WebSocketListener {
     static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
 
-    private List<IStompListener> listenerList = new ArrayList<>();
+    private List<StompListener> listenerList = new ArrayList<>();
 
     public ToStompWebSocketListener() {
         this(null);
     }
 
-    public ToStompWebSocketListener(IStompListener listener) {
+    public ToStompWebSocketListener(StompListener listener) {
         this.addListener(new StompListenerImpl(), listener);
     }
 
-    public void addListener(IStompListener... listeners) {
+    public void addListener(StompListener... listeners) {
         if (listeners == null || listeners.length == 0) {
             return;
         }
-        for (IStompListener listener : listeners) {
+        for (StompListener listener : listeners) {
             if (listener == null) {
                 continue;
             }
@@ -47,7 +51,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
 
     @Override
     public void onOpen(WebSocket socket) {
-        for (IStompListener listener : listenerList) {
+        for (StompListener listener : listenerList) {
             listener.onOpen(socket);
         }
     }
@@ -60,38 +64,38 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
             String command = msg.getCommand() == null ? "" : msg.getCommand();
             switch (command) {
                 case Commands.CONNECT: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onConnect(socket, msg);
                     }
                     break;
                 }
                 case Commands.DISCONNECT: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onDisconnect(socket, msg);
                     }
                     break;
                 }
                 case Commands.SUBSCRIBE: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onSubscribe(socket, msg);
                     }
                     break;
                 }
                 case Commands.UNSUBSCRIBE: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onUnsubscribe(socket, msg);
                     }
                     break;
                 }
                 case Commands.SEND: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onSend(socket, msg);
                     }
                     break;
                 }
                 case Commands.ACK:
                 case Commands.NACK: {
-                    for (IStompListener listener : listenerList) {
+                    for (StompListener listener : listenerList) {
                         listener.onAck(socket, msg);
                     }
                     break;
@@ -99,7 +103,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
                 default: {
                     //未知命令
                     log.warn("session unknown, {}\r\n{}", socket.id(), text);
-                    doSend(socket, new Message(Commands.UNKNOWN, text));
+                    doSend(socket, new MessageImpl(Commands.UNKNOWN, text));
                 }
             }
         });
@@ -109,7 +113,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
                 log.debug("session ping, {}", socket.id());
             }
             //可能是ping，响应
-            doSend(socket, new Message(Commands.MESSAGE, text));
+            doSend(socket, new MessageImpl(Commands.MESSAGE, text));
         }
     }
 
@@ -125,7 +129,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
 
     @Override
     public void onClose(WebSocket socket) {
-        for (IStompListener listener : listenerList) {
+        for (StompListener listener : listenerList) {
             listener.onClose(socket);
         }
     }

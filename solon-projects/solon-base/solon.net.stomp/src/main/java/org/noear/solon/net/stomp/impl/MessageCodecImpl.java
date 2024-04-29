@@ -1,4 +1,7 @@
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.impl;
+
+import org.noear.solon.net.stomp.Header;
+import org.noear.solon.net.stomp.Message;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,84 +1,29 @@
 package org.noear.solon.net.stomp;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 消息
+ *
  * @author limliu
  * @since 2.7
  */
-public class Message {
+public interface Message {
 
-    private final String command;
-    private final List<Header> headers;
-    private final String payload;
+    Message addHeader(String key, String val);
 
-    public Message(String command, String payload) {
-        this(command, null, payload);
-    }
+    List<Header> getHeaders();
 
-    public Message(String command, List<Header> headers) {
-        this(command, headers, null);
-    }
+    String getHeader(String key);
 
-    public Message(String command, List<Header> headers, String payload) {
-        this.command = command;
-        this.headers = (headers == null) ? new ArrayList<>() : headers;
-        this.payload = payload;
-    }
+    String getPayload();
 
-    public Message headers(String key, String val) {
-        this.headers.add(new Header(key, val));
-        return this;
-    }
-
-    public List<Header> getHeaders() {
-        return headers;
-    }
-
-    public String getHeader(String key) {
-        if (headers == null) {
-            return null;
-        }
-
-        AtomicReference<String> stringAtomicReference = new AtomicReference<>();
-        headers.stream().filter(header -> key.equals(header.getKey())).findFirst().ifPresent(header -> {
-            stringAtomicReference.set(header.getValue());
-        });
-        return stringAtomicReference.get();
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    public String getCommand() {
-        return command;
-    }
+    String getCommand();
 
 
-    public String headerValue(String key) {
-        Header header = header(key);
-        if (header != null) {
-            return header.getValue();
-        }
-        return null;
-    }
+    String headerValue(String key);
 
-    public Header header(String key) {
-        if (headers != null) {
-            for (Header header : headers) {
-                if (header.getKey().equals(key)) return header;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Message {command='" + command + "', headers=" + headers + ", payload='" + payload + "'}";
-    }
+    Header header(String key);
 
 }

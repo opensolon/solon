@@ -1,5 +1,7 @@
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.impl;
 
+import org.noear.solon.net.stomp.Header;
+import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
@@ -152,11 +154,11 @@ public abstract class StompUtil {
      * @return
      */
     public static Message transform(String command, String destination, String payload, String contentType, List<Header> headers) {
-        Message replyMessage = new Message(command, payload);
+        Message replyMessage = new MessageImpl(command, payload);
         if (contentType != null && contentType.length() > 0) {
-            replyMessage.headers(Header.CONTENT_TYPE, contentType);
+            replyMessage.addHeader(Header.CONTENT_TYPE, contentType);
         }
-        replyMessage.headers(Header.DESTINATION, destination);
+        replyMessage.addHeader(Header.DESTINATION, destination);
         if (headers != null && headers.size() > 0) {
             replyMessage.getHeaders().addAll(headers);
         }

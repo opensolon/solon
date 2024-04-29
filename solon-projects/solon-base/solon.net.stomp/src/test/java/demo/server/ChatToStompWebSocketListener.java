@@ -3,7 +3,7 @@ package demo.server;
 
 import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.stomp.StompUtil;
+import org.noear.solon.net.stomp.impl.StompUtil;
 import org.noear.solon.net.stomp.ToStompWebSocketListener;
 
 import java.util.Timer;

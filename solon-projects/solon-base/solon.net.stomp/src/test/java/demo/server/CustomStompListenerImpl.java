@@ -1,7 +1,7 @@
 package demo.server;
 
 import org.noear.solon.annotation.Component;
-import org.noear.solon.net.stomp.IStompListener;
+import org.noear.solon.net.stomp.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
@@ -11,7 +11,7 @@ import org.noear.solon.net.websocket.WebSocket;
  * @since 2.4
  */
 @Component
-public class CustomStompListenerImpl implements IStompListener {
+public class CustomStompListenerImpl implements StompListener {
 
     @Override
     public void onOpen(WebSocket socket) {

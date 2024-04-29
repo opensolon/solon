@@ -1,6 +1,7 @@
 package org.noear.solon.net.stomp;
 /**
- * head
+ * 头信息
+ *
  * @author limliu
  * @since 2.7
  */

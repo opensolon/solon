@@ -1,4 +1,4 @@
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.impl;
 
 /**
  * 通道信息

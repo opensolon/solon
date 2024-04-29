@@ -3,20 +3,19 @@ package org.noear.solon.net.stomp;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
- * 消息处理监听
+ * 消息监听器
  *
  * @author limliu
  * @since 2.7
  */
-public interface IStompListener {
+public interface StompListener {
 
     /**
      * 打开链接，可以鉴权；参数通过url和head方式指定
      *
      * @param socket
      */
-    default void onOpen(WebSocket socket) {
-    }
+    void onOpen(WebSocket socket);
 
     /**
      * 创建链接
@@ -24,16 +23,14 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onConnect(WebSocket socket, Message message) {
-    }
+    void onConnect(WebSocket socket, Message message);
 
     /**
      * 链接关闭，被动监听；当断开时触发
      *
      * @param socket
      */
-    default void onClose(WebSocket socket) {
-    }
+    void onClose(WebSocket socket);
 
 
     /**
@@ -42,8 +39,7 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onDisconnect(WebSocket socket, Message message) {
-    }
+    void onDisconnect(WebSocket socket, Message message);
 
 
     /**
@@ -52,8 +48,7 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onSubscribe(WebSocket socket, Message message) {
-    }
+    void onSubscribe(WebSocket socket, Message message);
 
     /**
      * 取消消息订阅
@@ -61,8 +56,7 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onUnsubscribe(WebSocket socket, Message message) {
-    }
+    void onUnsubscribe(WebSocket socket, Message message);
 
 
     /**
@@ -71,8 +65,7 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onSend(WebSocket socket, Message message) {
-    }
+    void onSend(WebSocket socket, Message message);
 
 
     /**
@@ -81,6 +74,5 @@ public interface IStompListener {
      * @param socket
      * @param message
      */
-    default void onAck(WebSocket socket, Message message) {
-    }
+    void onAck(WebSocket socket, Message message);
 }
