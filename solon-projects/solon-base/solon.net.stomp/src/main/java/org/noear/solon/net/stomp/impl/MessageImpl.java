@@ -39,11 +39,10 @@ public class MessageImpl implements Message{
         return headers;
     }
 
-    public String getHeader(String key) {
+    public String header(String key) {
         if (headers == null) {
             return null;
         }
-
         AtomicReference<String> stringAtomicReference = new AtomicReference<>();
         headers.stream().filter(header -> key.equals(header.getKey())).findFirst().ifPresent(header -> {
             stringAtomicReference.set(header.getValue());
@@ -57,24 +56,6 @@ public class MessageImpl implements Message{
 
     public String getCommand() {
         return command;
-    }
-
-
-    public String headerValue(String key) {
-        Header header = header(key);
-        if (header != null) {
-            return header.getValue();
-        }
-        return null;
-    }
-
-    public Header header(String key) {
-        if (headers != null) {
-            for (Header header : headers) {
-                if (header.getKey().equals(key)) return header;
-            }
-        }
-        return null;
     }
 
     @Override
