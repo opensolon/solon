@@ -27,11 +27,17 @@ public @interface Condition {
 
     /**
      * 缺少 bean type
+     *
+     * @deprecated 2.7
      * */
+    @Deprecated
     Class<?> onMissingBean() default Void.class;
 
     /**
      * 缺少 bean name
+     *
+     * @deprecated 2.7
      * */
+    @Deprecated
     String onMissingBeanName() default "";
 }
