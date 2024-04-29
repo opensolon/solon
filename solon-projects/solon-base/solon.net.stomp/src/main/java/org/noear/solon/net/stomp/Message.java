@@ -15,15 +15,10 @@ public interface Message {
 
     List<Header> getHeaders();
 
-    String getHeader(String key);
+    String header(String key);
 
     String getPayload();
 
     String getCommand();
-
-
-    String headerValue(String key);
-
-    Header header(String key);
 
 }
