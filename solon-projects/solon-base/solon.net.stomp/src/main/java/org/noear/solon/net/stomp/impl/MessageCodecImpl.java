@@ -176,7 +176,7 @@ public class MessageCodecImpl implements MessageCodec {
     }
 
     protected Message createMessage(String command, List<Header> headers, String payload) {
-        return new Message(command, headers, payload);
+        return new MessageImpl(command, headers, payload);
     }
 
     public String getCommandEnd() {
