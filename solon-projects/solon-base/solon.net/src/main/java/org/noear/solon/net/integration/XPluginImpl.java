@@ -9,6 +9,7 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.socketd.SocketdRouter;
 import org.noear.solon.net.websocket.WebSocketListener;
+import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
 
@@ -46,8 +47,26 @@ public class XPluginImpl implements Plugin {
         String path = anno.value();
         boolean registered = false;
 
-        //socket.d
-        if (ClassUtil.hasClass(() -> Listener.class)) {
+
+        if (bw.raw() instanceof WebSocketListenerSupplier) {
+            //websocket //第一优先
+            if (Utils.isEmpty(path)) {
+                path = "**";
+            }
+
+            WebSocketListenerSupplier supplier = bw.raw();
+            webSocketRouter.of(path, supplier.getWebSocketListener());
+            registered = true;
+        } else if (bw.raw() instanceof WebSocketListener) {
+            //websocket //第二优先
+            if (Utils.isEmpty(path)) {
+                path = "**";
+            }
+
+            webSocketRouter.of(path, bw.raw());
+            registered = true;
+        } else if (ClassUtil.hasClass(() -> Listener.class)) {
+            //socket.d //第三优先
             if (bw.raw() instanceof Listener) {
                 if (Utils.isEmpty(path)) {
                     path = "**";
@@ -56,16 +75,6 @@ public class XPluginImpl implements Plugin {
                 socketdRouter.of(path, bw.raw());
                 registered = true;
             }
-        }
-
-        //websocket
-        if (bw.raw() instanceof WebSocketListener) {
-            if (Utils.isEmpty(path)) {
-                path = "**";
-            }
-
-            webSocketRouter.of(path, bw.raw());
-            registered = true;
         }
 
         if (registered == false) {
