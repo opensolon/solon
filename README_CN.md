@@ -5,6 +5,8 @@ Solon v2.7.6
 </h1>
 <p align="center">
 	<strong>Java 新的应用开发框架，更快、更小、更简单！</strong>
+    <br/>
+    <strong>【开放原子开源基金会，孵化项目】</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>

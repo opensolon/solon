@@ -5,6 +5,8 @@ Solon v2.7.6
 </h1>
 <p align="center">
 	<strong>Новая система разработки приложений Java, быстрее, меньше и проще!</strong>
+    <br/>
+    <strong>[Фонд открытого атома, инкубационный проект]</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>

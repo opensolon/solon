@@ -5,6 +5,8 @@ Solon v2.7.6
 </h1>
 <p align="center">
 	<strong>Java's new application development framework. Faster, smaller, and easier!</strong>
+    <br/>
+    <strong>[OpenAtom foundation, incubation project]</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>

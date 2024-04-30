@@ -5,6 +5,8 @@ Solon v2.7.6
 </h1>
 <p align="center">
 	<strong>Javaの新しいアプリケーション開発フレームワーク、より速く、より小さく、より簡単です!</strong>
+    <br/>
+    <strong>【オープン・アトム・オープンソース財団インキュベーション・プログラムです】</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
