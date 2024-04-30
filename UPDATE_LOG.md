@@ -26,8 +26,8 @@
 * 新增 solon-docs-openapi2-javadoc 插件
 * 新增 solon.serialization.properties 插件（支持 ?a.b=1 prop 风格的参数）
 * 新增 solon.net.stomp 插件
-* 新增 solon.boot.jetty 原生编译支持
-* 新增 solon.boot.undertow 原生编译支持
+* 添加 solon.boot.jetty 原生编译支持
+* 添加 solon.boot.undertow 原生编译支持
 * 添加 solon 对 `classpath*:` 表达式支持（兼容旧的习惯）
 * 添加 solon Utils:pid 方法（方便获取进程号）
 * 添加 solon.data TranUtils:getDataSourceProxy 方法
