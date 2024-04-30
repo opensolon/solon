@@ -18,6 +18,10 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
+### 2.7.7
+* 新增 solon.cloud.gateway 插件
+* 优化 拦截体系与 rx 的兼容
+
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
 * 新增 solon.serialization.properties 插件（支持 ?a.b=1 prop 风格的参数）
@@ -29,9 +33,11 @@
 * 添加 solon.data TranUtils:getDataSourceProxy 方法
 * 添加 solon.cloud CloudProps:getNamespace 方法，允许每个中间件有自己 namespace 配置
 * 添加 solon.net WebSocketListener::onPing,onPong 方法，允许获得 ping/pong 的监听
+* 添加 solon.net WebSocketListenerSupplier 接口，简化 ws 扩展适配
 * 添加 solon.validation 校验出错的结果里带上当前校验的名称（该名称是当前校验的参数名称或者是实体对象字段名称）
 * 添加 nami json 解码器，对普通 string 的支持（如果返回类型为 string ，则解码失败时以普通 string 返回）
 * 添加 "solon.config.load" 对资源表达式的支持（例："config/*.yml"）
+* 添加 solon.boot.smarthttp 对参数 key 的 urlDecode 处理
 * 优化 solon.net ToSocketdWebSocketListener 防止 websocket 恶意空连
 * 优化 非 solon 测试环境下，日志打印添加 pid 显示支持
 * 优化 ResourceUtil 扫描类或资源的能力，增加支持 `*Mapper` 表达式
@@ -43,11 +49,13 @@
 * 修复 nami 在请求参数为空时被转换成GET操作的问题
 * 修复 solon.docs.openapi2 没有同步 operation.security 的问题。
 * 调整 solon.net websocket 没有路由记录时，将自动关闭（更安全）
+* 调整 solon Condition::onMissingBean 标为弃用
 * redisx 升为 1.6.3
 * fastjson2 升为 2.0.49
 * wood 升为 1.2.9
 * mybatis-flex 升为 1.8.8
 * snack3 升为 3.2.95
+* socket.d 升为 2.4.14
 
 ### 2.7.5
 * 新增 solon.web.rx 插件
