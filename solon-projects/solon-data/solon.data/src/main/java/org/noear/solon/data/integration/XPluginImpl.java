@@ -26,7 +26,7 @@ public class XPluginImpl implements Plugin {
 
             context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
 
-            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
                 if (context.hasWrap(CacheService.class) == false) {
                     context.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }

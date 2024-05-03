@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceJedisImpl eventServiceImp = new CloudEventServiceJedisImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> eventServiceImp.subscribe());
         }
     }
 }

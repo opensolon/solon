@@ -36,7 +36,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(JacksonRenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

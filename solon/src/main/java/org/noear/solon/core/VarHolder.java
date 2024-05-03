@@ -21,33 +21,43 @@ import java.lang.reflect.ParameterizedType;
 public interface VarHolder {
     /**
      * 应用上下文
-     * */
+     */
     AppContext context();
 
     /**
-     * 泛型（可能为 null）
-     * */
+     * 是否为字段
+     */
+    boolean isField();
+
+    /**
+     * 获取依赖类型
+     */
+    Class<?> getDependencyType();
+
+    /**
+     * 设定依赖类型
+     */
+    void setDependencyType(Class<?> dependencyType);
+
+    /**
+     * 获取泛型（可能为 null）
+     */
     @Nullable
     ParameterizedType getGenericType();
 
     /**
-     * 是否为字段
-     * */
-    boolean isField();
-
-    /**
-     * 类型
+     * 获取类型
      */
     Class<?> getType();
 
     /**
-     * 注解
+     * 获取注解集合
      */
     Annotation[] getAnnoS();
 
     /**
      * 获取完整名字
-     * */
+     */
     String getFullName();
 
     /**
@@ -56,22 +66,27 @@ public interface VarHolder {
     void setValue(Object val);
 
     /**
+     * 只是设置值
+     */
+    void setValueOnly(Object val);
+
+    /**
      * 获取值
-     * */
+     */
     Object getValue();
 
     /**
      * 是否为完成的（设置值后即为完成态）
-     * */
+     */
     boolean isDone();
 
     /**
      * 是否必须
-     * */
+     */
     boolean required();
 
     /**
      * 设定必须
-     * */
+     */
     void required(boolean required);
 }

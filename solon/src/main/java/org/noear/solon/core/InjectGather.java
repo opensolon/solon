@@ -27,11 +27,14 @@ public class InjectGather implements Runnable {
     private boolean requireRun;
     //输出类型
     private Class<?> outType;
+    //是否字段
+    private boolean isMethod;
     //执行顺序位
     public int index;
 
-    public InjectGather(Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
+    public InjectGather(boolean isMethod, Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
         this.requireRun = requireRun;
+        this.isMethod = isMethod;
         this.onDone = onDone;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
@@ -40,6 +43,10 @@ public class InjectGather implements Runnable {
 
     public boolean isDone() {
         return done;
+    }
+
+    public boolean isMethod() {
+        return this.isMethod;
     }
 
     public Class<?> getOutType() {

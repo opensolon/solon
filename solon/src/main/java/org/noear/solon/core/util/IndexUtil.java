@@ -40,12 +40,12 @@ public class IndexUtil {
                 if (clazzStack.contains(v1.getType())) {
                     //避免死循环
                     Optional<InjectGather> tmp = gathers.stream()
-                            .filter(g2 -> g2.getOutType().equals(v1.getType()))
+                            .filter(g2 -> g2.getOutType().isAssignableFrom(v1.getDependencyType()))
                             .findFirst();
 
-                    if(tmp.isPresent()){
+                    if (tmp.isPresent()) {
                         int index = tmp.get().index + 1;
-                        if(g1.index < index){
+                        if (g1.index < index) {
                             g1.index = index;
                         }
                     }
@@ -56,7 +56,7 @@ public class IndexUtil {
                 }
 
                 Optional<InjectGather> tmp = gathers.stream()
-                        .filter(g2 -> g2.getOutType().equals(v1.getType()))
+                        .filter(g2 -> g2.getOutType().isAssignableFrom(v1.getDependencyType()))
                         .findFirst();
 
                 if (tmp.isPresent()) {

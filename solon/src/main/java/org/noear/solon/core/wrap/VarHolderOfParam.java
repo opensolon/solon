@@ -21,6 +21,7 @@ public class VarHolderOfParam implements VarHolder {
     private final Parameter p;
     private final ParameterizedType genericType;
     private final AppContext ctx;
+    private Class<?> dependencyType;
 
     private Object val;
     private boolean done;
@@ -50,6 +51,14 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     /**
+     * 是否为字段
+     * */
+    @Override
+    public boolean isField() {
+        return false;
+    }
+
+    /**
      * 泛型（可能为 null）
      * */
     @Override
@@ -57,12 +66,19 @@ public class VarHolderOfParam implements VarHolder {
         return genericType;
     }
 
-    /**
-     * 是否为字段
-     * */
+
     @Override
-    public boolean isField() {
-        return false;
+    public Class<?> getDependencyType() {
+        if (dependencyType == null) {
+            return getType();
+        } else {
+            return dependencyType;
+        }
+    }
+
+    @Override
+    public void setDependencyType(Class<?> dependencyType) {
+        this.dependencyType = dependencyType;
     }
 
     /**
@@ -101,6 +117,11 @@ public class VarHolderOfParam implements VarHolder {
         if (onDone != null) {
             onDone.run();
         }
+    }
+
+    @Override
+    public void setValueOnly(Object val) {
+        this.val = val;
     }
 
     /**

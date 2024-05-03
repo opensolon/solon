@@ -21,6 +21,7 @@ public class VarHolderOfField implements VarHolder {
     private final FieldWrap fw;
     private final Object obj;
     private final AppContext ctx;
+    private Class<?> dependencyType;
 
     private Object val;
     private boolean required = false;
@@ -44,6 +45,14 @@ public class VarHolderOfField implements VarHolder {
     }
 
     /**
+     * 是否为字段
+     * */
+    @Override
+    public boolean isField() {
+        return true;
+    }
+
+    /**
      * 泛型（可能为null）
      * */
     @Override
@@ -51,12 +60,19 @@ public class VarHolderOfField implements VarHolder {
         return fw.genericType;
     }
 
-    /**
-     * 是否为字段
-     * */
+
     @Override
-    public boolean isField() {
-        return true;
+    public Class<?> getDependencyType() {
+        if (dependencyType == null) {
+            return getType();
+        } else {
+            return dependencyType;
+        }
+    }
+
+    @Override
+    public void setDependencyType(Class<?> dependencyType) {
+        this.dependencyType = dependencyType;
     }
 
     /**
@@ -105,6 +121,11 @@ public class VarHolderOfField implements VarHolder {
         if (onDone != null) {
             onDone.run();
         }
+    }
+
+    @Override
+    public void setValueOnly(Object val) {
+        setValue(val);
     }
 
     /**

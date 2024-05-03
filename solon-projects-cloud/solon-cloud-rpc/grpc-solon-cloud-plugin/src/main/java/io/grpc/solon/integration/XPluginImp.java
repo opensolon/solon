@@ -49,7 +49,7 @@ public class XPluginImp implements Plugin {
         context.beanBuilderAdd(GrpcService.class, new GrpcServiceBeanBuilder(serviceMap));
         context.beanInjectorAdd(GrpcClient.class, new GrpcClientBeanInjector(clientMap));
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
             startForServer(Solon.app());
         });
     }

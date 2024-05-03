@@ -19,7 +19,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +39,9 @@ public class AppContext extends BeanContainer {
     public AppContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
         initialize();
+        lifecycle(LifecycleIndex.PARAM_COLLECTION_INJECT, () -> {
+            this.startInjectReview(true);
+        });
     }
 
     /**
@@ -251,15 +253,22 @@ public class AppContext extends BeanContainer {
                 //支持 List<Bean> 注入
                 Type type = varH.getGenericType().getActualTypeArguments()[0];
                 if (type instanceof Class) {
-                    varH.required(required);
-                    lifecycle(LifecycleIndex.COLLECTION_INJECT_USES, () -> {
-                        if (varH.isDone()) {
-                            return;
-                        }
+                    if (varH.isField()) {
+                        varH.required(required);
+                        lifecycle(LifecycleIndex.FIELD_COLLECTION_INJECT, () -> {
+                            if (varH.isDone()) {
+                                return;
+                            }
 
+                            BeanSupplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                            varH.setValue(beanListSupplier);
+                        });
+                    } else {
+                        varH.required(false);
+                        varH.setDependencyType((Class<?>) type);
                         BeanSupplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
-                        varH.setValue(beanListSupplier);
-                    });
+                        varH.setValueOnly(beanListSupplier);
+                    }
                     return;
                 }
             }
@@ -269,15 +278,22 @@ public class AppContext extends BeanContainer {
                 Type keyType = varH.getGenericType().getActualTypeArguments()[0];
                 Type valType = varH.getGenericType().getActualTypeArguments()[1];
                 if (String.class == keyType && valType instanceof Class) {
-                    varH.required(required);
-                    lifecycle(LifecycleIndex.COLLECTION_INJECT_USES, () -> {
-                        if (varH.isDone()) {
-                            return;
-                        }
+                    if (varH.isField()) {
+                        varH.required(required);
+                        lifecycle(LifecycleIndex.FIELD_COLLECTION_INJECT, () -> {
+                            if (varH.isDone()) {
+                                return;
+                            }
 
+                            BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                            varH.setValue(beanMapSupplier);
+                        });
+                    } else {
+                        varH.required(false);
+                        varH.setDependencyType((Class<?>) valType);
                         BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
                         varH.setValue(beanMapSupplier);
-                    });
+                    }
                     return;
                 }
             }
@@ -471,7 +487,7 @@ public class AppContext extends BeanContainer {
                 RunUtil.runOrThrow(initBean::afterInjection);
             } else {
                 //需要注入（可能）
-                InjectGather gather = new InjectGather(clzWrap.clz(), true, fwList.size(), (args2) -> {
+                InjectGather gather = new InjectGather(false, clzWrap.clz(), true, fwList.size(), (args2) -> {
                     RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
@@ -490,7 +506,7 @@ public class AppContext extends BeanContainer {
 
             } else {
                 //需要注入（可能）
-                InjectGather gather = new InjectGather(clzWrap.clz(), true, fwList.size(), null);
+                InjectGather gather = new InjectGather(false, clzWrap.clz(), true, fwList.size(), null);
 
                 //添加到集合
                 gatherSet.add(gather);
@@ -735,7 +751,7 @@ public class AppContext extends BeanContainer {
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
-            InjectGather gather = new InjectGather(mWrap.getReturnType(), true, size2, (args2) -> {
+            InjectGather gather = new InjectGather(true, mWrap.getReturnType(), true, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
@@ -892,7 +908,7 @@ public class AppContext extends BeanContainer {
             startBeanLifecycle();
 
             //开始注入审查 //支持自动排序
-            startInjectReview();
+            startInjectReview(false);
         } catch (Throwable e) {
             throw new IllegalStateException("AppContext start failed", e);
         }
@@ -915,10 +931,18 @@ public class AppContext extends BeanContainer {
     /**
      * 开始注入审查（支持自动排序）
      */
-    private void startInjectReview() throws Throwable {
+    private void startInjectReview(boolean onlyMethod) throws Throwable {
         //全部跑完后，检查注入情况
-        List<InjectGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
-                .collect(Collectors.toList());
+        List<InjectGather> gatherList = null;
+
+        if (onlyMethod) {
+            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == true)
+                    .collect(Collectors.toList());
+        } else {
+            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
+                    .collect(Collectors.toList());
+        }
+
 
         if (gatherList.size() > 0) {
             for (InjectGather gather : gatherList) {
