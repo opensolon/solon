@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
+ * 顺序位工具类
+ *
  * @author noear
  * @since 2.5
  */

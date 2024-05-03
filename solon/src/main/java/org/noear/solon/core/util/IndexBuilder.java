@@ -9,7 +9,7 @@ import java.util.Map;
 import org.noear.solon.annotation.Inject;
 
 /**
- * 构建初始化的index
+ * 顺序位构建器（构建类的依赖顺序）
  *
  * @author cym1102
  * @since 1.6
