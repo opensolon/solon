@@ -2,12 +2,12 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanSupplier;
+import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.function.Supplier;
 
 /**
  * 参数变量容器 临时对象
@@ -26,12 +26,13 @@ public class VarHolderOfParam implements VarHolder {
     private Object val;
     private boolean done;
     private boolean required = false;
-    private Runnable onDone;
 
-    public VarHolderOfParam(AppContext ctx, Parameter p, Runnable onDone) {
+    private InjectGather gather;
+
+    public VarHolderOfParam(AppContext ctx, Parameter p, InjectGather gather) {
         this.ctx = ctx;
         this.p = p;
-        this.onDone = onDone;
+        this.gather = gather;
 
         //简化处理 //只在 @Bean 时有用；不会有复杂的泛型
         Type tmp = p.getParameterizedType();
@@ -44,7 +45,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 应用上下文
-     * */
+     */
     @Override
     public AppContext context() {
         return ctx;
@@ -52,7 +53,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 是否为字段
-     * */
+     */
     @Override
     public boolean isField() {
         return false;
@@ -60,7 +61,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 泛型（可能为 null）
-     * */
+     */
     @Override
     public @Nullable ParameterizedType getGenericType() {
         return genericType;
@@ -99,7 +100,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 获取完整名字
-     * */
+     */
     @Override
     public String getFullName() {
         Executable e = p.getDeclaringExecutable();
@@ -114,8 +115,8 @@ public class VarHolderOfParam implements VarHolder {
         this.val = val;
         this.done = true;
 
-        if (onDone != null) {
-            onDone.run();
+        if (gather != null) {
+            gather.run();
         }
     }
 
@@ -126,7 +127,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 获取值
-     * */
+     */
     public Object getValue() {
         if (val instanceof BeanSupplier) {
             return ((BeanSupplier) val).get();
@@ -137,14 +138,14 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 是否为完成的（设置值后即为完成态）
-     * */
+     */
     public boolean isDone() {
         return done;
     }
 
     /**
      * 是否必须
-     * */
+     */
     @Override
     public boolean required() {
         return required;
@@ -152,7 +153,7 @@ public class VarHolderOfParam implements VarHolder {
 
     /**
      * 设定必须
-     * */
+     */
     @Override
     public void required(boolean required) {
         this.required = required;

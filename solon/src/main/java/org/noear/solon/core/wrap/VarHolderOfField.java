@@ -2,12 +2,12 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanSupplier;
+import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
-import java.util.function.Supplier;
 
 /**
  * 字段变量容器 临时对象
@@ -26,14 +26,14 @@ public class VarHolderOfField implements VarHolder {
     private Object val;
     private boolean required = false;
     private boolean done;
-    private Runnable onDone;
+    private InjectGather gather;
 
-    public VarHolderOfField(AppContext ctx, FieldWrap fw, Object obj, Runnable onDone) {
+    public VarHolderOfField(AppContext ctx, FieldWrap fw, Object obj, InjectGather gather) {
         this.ctx = ctx;
         this.fw = fw;
         this.obj = obj;
 
-        this.onDone = onDone;
+        this.gather = gather;
     }
 
     /**
@@ -118,8 +118,8 @@ public class VarHolderOfField implements VarHolder {
         this.val = val;
         this.done = true;
 
-        if (onDone != null) {
-            onDone.run();
+        if (gather != null) {
+            gather.run();
         }
     }
 

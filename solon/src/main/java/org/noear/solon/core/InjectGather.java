@@ -27,7 +27,7 @@ public class InjectGather implements Runnable {
     private boolean requireRun;
     //输出类型
     private Class<?> outType;
-    //是否字段
+    //是否方法
     private boolean isMethod;
     //执行顺序位
     public int index;

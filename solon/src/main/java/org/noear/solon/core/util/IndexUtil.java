@@ -5,7 +5,6 @@ import org.noear.solon.core.VarHolder;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -37,33 +36,28 @@ public class IndexUtil {
 
         for (VarHolder v1 : g1.getVars()) {
             if (v1.isDone() == false) {
-                if (clazzStack.contains(v1.getType())) {
-                    //避免死循环
-                    Optional<InjectGather> tmp = gathers.stream()
-                            .filter(g2 -> g2.getOutType().isAssignableFrom(v1.getDependencyType()))
-                            .findFirst();
-
-                    if (tmp.isPresent()) {
-                        int index = tmp.get().index + 1;
-                        if (g1.index < index) {
-                            g1.index = index;
+                if (clazzStack.contains(v1.getDependencyType())) {
+                    for (InjectGather tmp : gathers) {
+                        if (v1.getDependencyType().isAssignableFrom(tmp.getOutType())) {
+                            int index = tmp.index + 1;
+                            if (g1.index < index) {
+                                g1.index = index;
+                            }
                         }
                     }
 
                     continue;
                 } else {
-                    clazzStack.add(v1.getType());
+                    clazzStack.add(v1.getDependencyType());
                 }
 
-                Optional<InjectGather> tmp = gathers.stream()
-                        .filter(g2 -> g2.getOutType().isAssignableFrom(v1.getDependencyType()))
-                        .findFirst();
+                for (InjectGather tmp : gathers) {
+                    if (v1.getDependencyType().isAssignableFrom(tmp.getOutType())) {
+                        int index = buildGatherIndex0(tmp, gathers, clazzStack) + 1;
 
-                if (tmp.isPresent()) {
-                    int index = buildGatherIndex0(tmp.get(), gathers, clazzStack) + 1;
-
-                    if (g1.index < index) {
-                        g1.index = index;
+                        if (g1.index < index) {
+                            g1.index = index;
+                        }
                     }
                 }
             }
