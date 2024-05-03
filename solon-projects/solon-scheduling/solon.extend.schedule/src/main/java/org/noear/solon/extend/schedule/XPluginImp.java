@@ -13,7 +13,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
             context.beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {
                     JobManager.register(new JobEntity(v.name(), v.raw()));

@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

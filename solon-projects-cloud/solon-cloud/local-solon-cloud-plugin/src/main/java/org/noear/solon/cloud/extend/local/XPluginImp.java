@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
         if (cloudProps.getJobEnable()) {
             CloudManager.register(new CloudJobServiceLocalImpl());
 
-            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
                 if (JobManager.count() > 0) {
                     JobManager.start();
                 }

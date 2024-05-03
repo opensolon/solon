@@ -18,7 +18,7 @@ public class XPluginImpl implements Plugin {
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory);
         EventBus.publish(renderFactory);
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_BUILD, () -> {
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
             RenderManager.mapping("@properties", renderFactory.create());
         });
