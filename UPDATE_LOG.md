@@ -18,9 +18,10 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
-### 2.7.7
+### 2.8.0
 * 新增 solon.cloud.gateway 插件
 * 优化 拦截体系与 rx 的兼容
+* 优化 `onMissingBean` 条件与 `List[Bean]` 注入的边界问题
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
