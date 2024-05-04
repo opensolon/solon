@@ -335,6 +335,16 @@ public class VxHttpContext extends WebContextBase {
     }
 
     @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<String> headerNamesOfResponse() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public void cookieSet(String name, String val, String domain, String path, int maxAge) {
 
     }
