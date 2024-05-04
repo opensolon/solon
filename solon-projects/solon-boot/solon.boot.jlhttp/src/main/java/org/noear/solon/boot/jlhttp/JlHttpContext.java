@@ -351,6 +351,30 @@ public class JlHttpContext extends WebContextBase {
     }
 
     @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        List<String> values = new ArrayList<>();
+
+        for (HTTPServer.Header h1 : _response.getHeaders()) {
+            if (h1.getName().equalsIgnoreCase(name)) {
+                values.add(h1.getValue());
+            }
+        }
+
+        return values;
+    }
+
+    @Override
+    public Collection<String> headerNamesOfResponse() {
+        Set<String> names = new HashSet<>();
+
+        for (HTTPServer.Header h1 : _response.getHeaders()) {
+            names.add(h1.getName());
+        }
+
+        return names;
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");

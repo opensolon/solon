@@ -309,6 +309,16 @@ public class SolonServletContext extends WebContextBase {
         return _response.getHeader(name);
     }
 
+    @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        return _response.getHeaders(name);
+    }
+
+    @Override
+    public Collection<String> headerNamesOfResponse(){
+        return _response.getHeaderNames();
+    }
+
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {

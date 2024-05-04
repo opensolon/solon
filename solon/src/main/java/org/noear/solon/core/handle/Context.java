@@ -909,6 +909,16 @@ public abstract class Context {
     public abstract String headerOfResponse(String name);
 
     /**
+     * 获取响应 header
+     * */
+    public abstract Collection<String> headerValuesOfResponse(String name);
+
+    /**
+     * 获取响应 headerNames
+     * */
+    public abstract Collection<String> headerNamesOfResponse();
+
+    /**
      * 设置 cookie
      * */
     public void cookieSet(String name, String val) {

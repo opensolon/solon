@@ -347,6 +347,17 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        return _response.getHeaders(name);
+    }
+
+
+    @Override
+    public Collection<String> headerNamesOfResponse() {
+        return _response.getHeaderNames();
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie cookie = new Cookie(key, val);
 

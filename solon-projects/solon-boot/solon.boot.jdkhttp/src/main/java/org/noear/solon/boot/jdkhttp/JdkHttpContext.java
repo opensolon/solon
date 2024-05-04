@@ -358,6 +358,16 @@ public class JdkHttpContext extends WebContextBase {
     }
 
     @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        return _exchange.getResponseHeaders().get(name);
+    }
+
+    @Override
+    public Collection<String> headerNamesOfResponse() {
+        return _exchange.getResponseHeaders().keySet();
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
