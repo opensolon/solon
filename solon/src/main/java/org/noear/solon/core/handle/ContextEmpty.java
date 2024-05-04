@@ -288,6 +288,16 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public Collection<String> headerValuesOfResponse(String name) {
+        return Arrays.asList(headerMap().get(name));
+    }
+
+    @Override
+    public Collection<String> headerNamesOfResponse() {
+        return headerMap().keySet();
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         cookieMap().put(key,val);
     }
