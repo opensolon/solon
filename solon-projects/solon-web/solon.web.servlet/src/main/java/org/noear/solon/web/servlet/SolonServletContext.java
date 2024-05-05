@@ -61,6 +61,19 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
+    public Object pull(Class<?> clz) {
+        Object tmp = super.pull(clz);
+
+        if (tmp == null) {
+            if (clz.isInstance(_request.getSession())) {
+                return _request.getSession();
+            }
+        }
+
+        return tmp;
+    }
+
+    @Override
     public Object request() {
         return _request;
     }
