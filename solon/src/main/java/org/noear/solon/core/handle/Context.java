@@ -85,6 +85,25 @@ public abstract class Context {
     }
 
     /**
+     * 拉取
+     * */
+    public Object pull(Class<?> clz) {
+        if (clz.isInstance(request())) {
+            return request();
+        }
+
+        if (clz.isInstance(response())) {
+            return response();
+        }
+
+        if (clz.isInstance(sessionState())) {
+            return sessionState();
+        }
+
+        return null;
+    }
+
+    /**
      * 获取请求对象
      */
     public abstract Object request();

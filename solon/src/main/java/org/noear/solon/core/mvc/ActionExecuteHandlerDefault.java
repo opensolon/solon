@@ -80,22 +80,19 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 //如果是 UploadedFile
                 //
                 args.add(ctx.file(p.getName()));
-            } else if (pt.isInstance(ctx.request())) { //getTypeName().equals("javax.servlet.http.HttpServletRequest")
-                args.add(ctx.request());
-            } else if (pt.isInstance(ctx.response())) { //getTypeName().equals("javax.servlet.http.HttpServletResponse")
-                args.add(ctx.response());
             } else {
-                Object tv = null;
+                Object tv = ctx.pull(pt);
 
-
-                if (p.isRequiredBody()) {
-                    //需要 body 数据
-                    if (String.class.equals(pt)) {
-                        tv = ctx.bodyNew();
-                    } else if (InputStream.class.equals(pt)) {
-                        tv = ctx.bodyAsStream();
-                    } else if (Map.class.equals(pt) && bodyObj instanceof NvMap) {
-                        tv = bodyObj;
+                if (tv == null) {
+                    if (p.isRequiredBody()) {
+                        //需要 body 数据
+                        if (String.class.equals(pt)) {
+                            tv = ctx.bodyNew();
+                        } else if (InputStream.class.equals(pt)) {
+                            tv = ctx.bodyAsStream();
+                        } else if (Map.class.equals(pt) && bodyObj instanceof NvMap) {
+                            tv = bodyObj;
+                        }
                     }
                 }
 
