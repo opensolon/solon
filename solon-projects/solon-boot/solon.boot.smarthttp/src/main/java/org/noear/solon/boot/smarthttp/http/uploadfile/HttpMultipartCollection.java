@@ -38,14 +38,14 @@ public class HttpMultipartCollection implements Iterator<HttpMultipart> {
         next = false;
         HttpMultipart p = new HttpMultipart();
         try {
-            p.headers = Utils.readHeaders(in);
+            p.setHeaders(Utils.readHeaders(in));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
-        Map<String, String> cd = p.headers.getParams("Content-Disposition");
-        p.name = cd.get("name");
-        p.filename = cd.get("filename");
-        p.body = in;
+        Map<String, String> cd = p.getHeaders().getParams("Content-Disposition");
+        p.setName(cd.get("name"));
+        p.setFilename(cd.get("filename"));
+        p.setBody(in);
         return p;
     }
 

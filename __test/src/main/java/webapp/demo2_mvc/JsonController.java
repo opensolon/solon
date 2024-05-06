@@ -1,5 +1,6 @@
 package webapp.demo2_mvc;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
@@ -42,6 +43,11 @@ public class JsonController {
     @Mapping("/bean")
     public Object bean(UserModel user) {
         return user;
+    }
+
+    @Mapping("/bean_map")
+    public String bean_map(@Body Map<String, Object> user) {
+        return ONode.stringify(user);
     }
 
     @Mapping("/body")

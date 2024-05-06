@@ -22,7 +22,7 @@ class MultipartUtil {
             HttpMultipart part = parts.next();
 
             if (isFile(part) == false) {
-                context.paramSet(part.name, part.getString());
+                context.paramSet(part.getName(), part.getString());
             } else {
                 doBuildFiles(context, filesMap, part);
             }
