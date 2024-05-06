@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.8.0-SNAPSHOT</version>
+    <version>2.8.0-M2</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,9 +24,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>2.8.0-SNAPSHOT</solon.version>
+        <solon.version>2.8.0-M2</solon.version>
         <solon-admin.version>2.7.6</solon-admin.version>
-        <solon-integration.version>2.8.0-M1</solon-integration.version>
+        <solon-integration.version>2.8.0-M2</solon-integration.version>
 
         <snack3.version>3.2.95</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -148,7 +148,7 @@
         <mybatis.version>3.5.15</mybatis.version>
         <activerecord.version>5.1.3</activerecord.version>
         <beetlsql.version>3.30.4-RELEASE</beetlsql.version>
-        <sqltoy.version>5.6.4.jre8</sqltoy.version>
+        <sqltoy.version>5.6.5.jre8</sqltoy.version>
         <mybatis-flex.version>1.8.8</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.1</dbvisitor.version>
