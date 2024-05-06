@@ -24,6 +24,8 @@
 * 优化 solon.serialization.properties 处理，扩大范围
 * 优化 拦截体系与 rx 的兼容
 * 优化 `onMissingBean` 条件与 `List[Bean]` 注入的边界问题
+* snack3 升为 3.2.96
+* sqltoy 升为 5.6.5.jre8
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
