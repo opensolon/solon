@@ -39,6 +39,9 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
         this.allowPostForm = allowPostForm;
     }
 
+    /**
+     * @deprecated 2.8
+     * */
     @Deprecated
     public void includeFormUrlencoded(boolean allowPostForm){
         this.allowPostForm(allowPostForm);
