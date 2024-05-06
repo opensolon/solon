@@ -23,34 +23,36 @@ class MultipartUtil {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         for (Part part : request.getParts()) {
+            String name = ServerProps.urlDecode(part.getName());
+
             if (isFile(part)) {
-                doBuildFiles(context, filesMap, part);
+                doBuildFiles(name, filesMap, part);
             } else {
                 if (request.getParameterMap() == null || request.getParameterMap().isEmpty()) {
-                    context.paramSet(part.getName(), IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                    context.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                 }
             }
         }
     }
 
-    private static void doBuildFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap, Part part) throws IOException {
-        List<UploadedFile> list = filesMap.get(part.getName());
+    private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, Part part) throws IOException {
+        List<UploadedFile> list = filesMap.get(name);
         if (list == null) {
             list = new ArrayList<>();
-            filesMap.put(part.getName(), list);
+            filesMap.put(name, list);
         }
 
         String contentType = part.getContentType();
         long contentSize = part.getSize();
         InputStream content = part.getInputStream(); //可以转成 ByteArrayInputStream
-        String name = part.getSubmittedFileName();
+        String fileName = part.getSubmittedFileName();
         String extension = null;
-        int idx = name.lastIndexOf(".");
+        int idx = fileName.lastIndexOf(".");
         if (idx > 0) {
-            extension = name.substring(idx + 1);
+            extension = fileName.substring(idx + 1);
         }
 
-        UploadedFile f1 = new UploadedFile(part::delete, contentType, contentSize, content, name, extension);
+        UploadedFile f1 = new UploadedFile(part::delete, contentType, contentSize, content, fileName, extension);
 
         list.add(f1);
     }
