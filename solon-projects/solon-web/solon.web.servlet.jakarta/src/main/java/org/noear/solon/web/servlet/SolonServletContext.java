@@ -1,6 +1,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -177,8 +178,10 @@ public class SolonServletContext extends WebContextBase {
                 }
 
                 for (Map.Entry<String, String[]> kv : _request.getParameterMap().entrySet()) {
-                    _paramsMap.put(kv.getKey(), Utils.asList(kv.getValue()));
-                    _paramMap.put(kv.getKey(), kv.getValue()[0]);
+                    String name = ServerProps.urlDecode(kv.getKey());
+
+                    _paramsMap.put(name, Utils.asList(kv.getValue()));
+                    _paramMap.put(name, kv.getValue()[0]);
                 }
             } catch (IOException | ServletException e) {
                 throw new IllegalStateException(e);

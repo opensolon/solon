@@ -1,5 +1,6 @@
 package org.noear.solon.web.servlet;
 
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.UploadedFile;
 
@@ -19,7 +20,6 @@ import java.util.Map;
  * @since 1.2
  * */
 class MultipartUtil {
-
     public static void buildParamsAndFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
@@ -29,7 +29,7 @@ class MultipartUtil {
             if (isFile(part)) {
                 doBuildFiles(name, filesMap, part);
             } else {
-                if (request.getParameterMap() == null || request.getParameterMap().isEmpty()) {
+                if (Utils.isEmpty(request.getParameterMap())) {
                     context.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                 }
             }
