@@ -20,19 +20,21 @@ class MultipartUtil {
 
         while (parts.hasNext()) {
             HttpMultipart part = parts.next();
+            String name = ServerProps.urlDecode(part.getName());
+
             if (isFile(part) == false) {
-                context.paramSet(part.name, part.getString());
+                context.paramSet(name, part.getString());
             } else {
-                doBuildFiles(context, filesMap, part);
+                doBuildFiles(name, filesMap, part);
             }
         }
     }
 
-    private static void doBuildFiles(JdkHttpContext context, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
-        List<UploadedFile> list = filesMap.get(part.getName());
+    private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
+        List<UploadedFile> list = filesMap.get(name);
         if (list == null) {
             list = new ArrayList<>();
-            filesMap.put(part.getName(), list);
+            filesMap.put(name, list);
         }
 
         String contentType = part.getHeaders().get("Content-Type");
