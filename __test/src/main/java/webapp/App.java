@@ -91,7 +91,7 @@ public class App {
             });
 
             x.onEvent(PropertiesActionExecutor.class, e->{
-                e.includeFormUrlencoded(true);
+                e.allowPostForm(true);
             });
 
             x.onEvent(HttpServerConfigure.class, e->{

@@ -21,6 +21,7 @@
 ### 2.8.0
 * 新增 solon.cloud.gateway 插件
 * 添加 序列化安全名单接口
+* 优化 solon.serialization.properties 处理，扩大范围
 * 优化 拦截体系与 rx 的兼容
 * 优化 `onMissingBean` 条件与 `List[Bean]` 注入的边界问题
 

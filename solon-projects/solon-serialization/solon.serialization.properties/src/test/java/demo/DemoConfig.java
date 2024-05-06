@@ -10,6 +10,6 @@ import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 @Configuration
 public class DemoConfig {
     public void xxx(PropertiesActionExecutor actionExecutor){
-        actionExecutor.includeFormUrlencoded(true);
+        actionExecutor.allowPostForm(true);
     }
 }

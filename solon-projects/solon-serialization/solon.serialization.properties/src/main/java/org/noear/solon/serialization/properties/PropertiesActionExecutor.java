@@ -22,13 +22,21 @@ import java.util.Map;
  * */
 public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     private final Options config = Options.def().add(Feature.DisableClassNameRead);
-    private boolean includeFormUrlencoded = false;
+    private boolean allowGet = true;
+    private boolean allowPostForm = false;
 
     /**
-     * 包括 FormUrlencoded
-     * */
-    public void includeFormUrlencoded(boolean includeFormUrlencoded) {
-        this.includeFormUrlencoded = includeFormUrlencoded;
+     * 允许处理 Get 请求
+     */
+    public void allowGet(boolean allowGet) {
+        this.allowGet = allowGet;
+    }
+
+    /**
+     * 允许处理 PostForm 请求
+     */
+    public void allowPostForm(boolean allowPostForm) {
+        this.allowPostForm = allowPostForm;
     }
 
     /**
@@ -40,8 +48,8 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (MethodType.GET.name.equals(ctx.method()) || (includeFormUrlencoded && ctx.isFormUrlencoded())) {
-
+        if (allowGet && MethodType.GET.name.equals(ctx.method()) ||
+                (allowPostForm && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
             for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
                 if (kv.getKey().indexOf('.') > 0 || kv.getKey().indexOf('[') > 0) {
                     return true;
