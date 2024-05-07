@@ -43,4 +43,9 @@ public @interface Bean {
      * 排序（只对部分类型有效）
      * */
     int index() default 0;
+
+    /**
+     * 需要注入
+     * */
+    boolean injected() default false;
 }

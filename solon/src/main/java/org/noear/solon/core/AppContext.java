@@ -791,6 +791,11 @@ public class AppContext extends BeanContainer {
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
             } else {
+                if(anno.injected()){
+                    //执行注入
+                    beanInject(raw);
+                }
+
                 //@Bean 动态构建的bean, 可通过事件广播进行扩展
                 EventBus.publish(raw);//@deprecated
 
