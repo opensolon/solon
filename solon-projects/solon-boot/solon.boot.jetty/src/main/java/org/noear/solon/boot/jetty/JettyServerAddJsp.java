@@ -31,16 +31,6 @@ class JettyServerAddJsp extends JettyServer {
     }
 
     private void enableJspSupport(ServletContextHandler handler) throws IOException {
-        // Establish Scratch directory for the servlet context (used by JSP compilation)
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File scratchDir = new File(tempDir.toString(), "solon.boot.jetty");
-
-        if (!scratchDir.exists()) {
-            if (!scratchDir.mkdirs()) {
-                throw new IOException("Unable to create scratch directory: " + scratchDir);
-            }
-        }
-        handler.setAttribute("javax.servlet.context.tempdir", scratchDir);
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the

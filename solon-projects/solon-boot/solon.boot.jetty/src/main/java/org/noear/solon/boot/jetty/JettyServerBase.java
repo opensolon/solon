@@ -18,6 +18,7 @@ import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.SSLContext;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -139,6 +140,18 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
         //添加容器初始器
         handler.addLifeCycleListener(new JtContainerInitializer(handler.getServletContext()));
+
+
+        //添加临时文件（用于jsp编译，或文件上传）
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File scratchDir = new File(tempDir.toString(), "solon.boot.jetty");
+
+        if (!scratchDir.exists()) {
+            if (!scratchDir.mkdirs()) {
+                throw new IOException("Unable to create scratch directory: " + scratchDir);
+            }
+        }
+        handler.setAttribute("javax.servlet.context.tempdir", scratchDir);
 
         return handler;
     }

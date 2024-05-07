@@ -109,4 +109,17 @@ public class HttpPropertiesTest extends HttpTester {
         assert tmp.contains("noear");
         assert json.equals(tmp);
     }
+
+    @Test
+    public void json_bean_map_post5() throws Exception {
+        String tmp = path("/demo2/props/bean_map")
+                .data("vers[refRuleApiId_Eq]", "1")
+                .data("vers[\"id_Eq\"]", "2")
+                .data("vers['createdBy_EQ']", "3")
+                .multipart(true)
+                .post();
+        String json = "{\"vers\":{\"id_Eq\":\"2\",\"createdBy_EQ\":\"3\",\"refRuleApiId_Eq\":\"1\"}}";
+
+        assert json.equals(tmp);
+    }
 }
