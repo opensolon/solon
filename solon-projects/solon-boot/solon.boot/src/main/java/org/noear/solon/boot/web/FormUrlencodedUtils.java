@@ -5,7 +5,6 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 
 /**
  * 编码窗体工具类
@@ -16,13 +15,9 @@ import java.net.URLDecoder;
 public class FormUrlencodedUtils {
     /**
      * 预处理
-     * */
+     */
     public static void pretreatment(Context ctx) throws IOException {
         if (ctx.isFormUrlencoded() == false) {
-            return;
-        }
-
-        if (ctx.paramMap().size() > 0) {
             return;
         }
 
@@ -33,10 +28,11 @@ public class FormUrlencodedUtils {
         String[] ss = ctx.bodyNew().split("&");
 
         for (String s1 : ss) {
-            String[] ss2 = s1.split("=");
-
-            if (ss2.length == 2) {
-                ctx.paramSet(ss2[0], URLDecoder.decode(ss2[1], ServerProps.request_encoding));
+            int idx = s1.indexOf('=');
+            if (idx > 0) {
+                String name = ServerProps.urlDecode(s1.substring(0, idx));
+                String value = ServerProps.urlDecode(s1.substring(idx + 1));
+                ctx.paramSet(name, value);
             }
         }
     }

@@ -25,4 +25,9 @@ public class Param5Controller {
     public String test3(CatTypeModel model) {
         return model.getCat().title;
     }
+
+    @Mapping("test4")
+    public String test4(String a, String b) {
+        return a + ":" + b;
+    }
 }
