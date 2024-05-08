@@ -19,11 +19,16 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.8.0
-* 新增 solon.cloud.gateway 插件
-* 添加 序列化安全名单接口
+* 新增 solon.cloud.gateway 插件?
+* 添加 序列化安全名单接口?
+* 添加 `@Bean::injected`
+* 添加 TmlUtil 工具类
+* 优化 Bean 集合注入时，乎略泛型
+* 优化 smarthttp 和 jetty 适配，queryString 和 from-data 同时有数据时的处理
+* 优化 jetty 适配的临时目录处理
 * 优化 solon.serialization.properties 处理，扩大范围
 * 优化 拦截体系与 rx 的兼容
-* 优化 `onMissingBean` 条件与 `List[Bean]` 注入的边界问题
+* 优化 onMissingBean 条件与 Bean 集合注入的边界问题
 * snack3 升为 3.2.96
 * sqltoy 升为 5.6.5.jre8
 
