@@ -42,21 +42,24 @@ public class HttpParam5Test extends HttpTester {
         assert "demo1".equals(rst);
     }
 
+    private static final String test4_rst1 = "{\"a\":[\"1\"],\"b\":[\"2\"]}";
+    private static final String test4_rst2 = "{\"b\":[\"2\"],\"a\":[\"1\"]}";
+
     @Test
     public void test4() throws Exception {
         String rst = path("/demo2/param5/test4?a=1").data("b", "2").post();
-        assert "1:2".equals(rst);
+        assert test4_rst1.equals(rst) || test4_rst2.equals(rst);
 
         rst = path("/demo2/param5/test4?a=1").data("b", "2").multipart(true).post();
-        assert "1:2".equals(rst);
+        assert test4_rst1.equals(rst) || test4_rst2.equals(rst);
     }
 
     @Test
     public void test4_2() throws Exception {
         String rst = path("/demo2/param5/test4?a=1").data("b", "2").delete();
-        assert "1:2".equals(rst);
+        assert test4_rst1.equals(rst) || test4_rst2.equals(rst);
 
         rst = path("/demo2/param5/test4?a=1").data("b", "2").multipart(true).delete();
-        assert "1:2".equals(rst);
+        assert test4_rst1.equals(rst) || test4_rst2.equals(rst);
     }
 }

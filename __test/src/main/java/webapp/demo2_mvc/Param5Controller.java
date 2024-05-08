@@ -1,6 +1,8 @@
 package webapp.demo2_mvc;
 
+import org.noear.snack.ONode;
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Context;
 import webapp.models.CatType;
 import webapp.models.CatTypeModel;
 
@@ -27,7 +29,7 @@ public class Param5Controller {
     }
 
     @Mapping("test4")
-    public String test4(String a, String b) {
-        return a + ":" + b;
+    public String test4(Context ctx) {
+        return ONode.stringify(ctx.paramsMap());
     }
 }
