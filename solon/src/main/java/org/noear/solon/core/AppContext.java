@@ -251,7 +251,13 @@ public class AppContext extends BeanContainer {
         if (Utils.isEmpty(name) && varH.getGenericType() != null) {
             if (List.class == varH.getType()) {
                 //支持 List<Bean> 注入
-                Type type = varH.getGenericType().getActualTypeArguments()[0];
+                Type type0 = varH.getGenericType().getActualTypeArguments()[0];
+                if(type0 instanceof ParameterizedType) {
+                    type0 = ((ParameterizedType) type0).getRawType();
+                }
+
+                Type type = type0;
+
                 if (type instanceof Class) {
                     if (varH.isField()) {
                         varH.required(required);
@@ -276,7 +282,14 @@ public class AppContext extends BeanContainer {
             if (Map.class == varH.getType()) {
                 //支持 Map<String,Bean> 注入
                 Type keyType = varH.getGenericType().getActualTypeArguments()[0];
-                Type valType = varH.getGenericType().getActualTypeArguments()[1];
+                Type valType0 = varH.getGenericType().getActualTypeArguments()[1];
+
+                if(valType0 instanceof ParameterizedType) {
+                    valType0 = ((ParameterizedType) valType0).getRawType();
+                }
+
+                Type valType = valType0;
+
                 if (String.class == keyType && valType instanceof Class) {
                     if (varH.isField()) {
                         varH.required(required);
@@ -292,7 +305,7 @@ public class AppContext extends BeanContainer {
                         varH.required(false);
                         varH.setDependencyType((Class<?>) valType);
                         BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
-                        varH.setValue(beanMapSupplier);
+                        varH.setValueOnly(beanMapSupplier);
                     }
                     return;
                 }
