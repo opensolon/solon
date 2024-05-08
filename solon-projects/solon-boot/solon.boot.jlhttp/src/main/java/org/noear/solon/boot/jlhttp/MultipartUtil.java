@@ -20,10 +20,10 @@ class MultipartUtil {
             HTTPServer.MultipartIterator.Part part = parts.next();
             String name = ServerProps.urlDecode(part.getName());
 
-            if (isFile(part) == false) {
-                context.paramSet(name, part.getString());
-            } else {
+            if (isFile(part)) {
                 doBuildFiles(name, filesMap, part);
+            } else {
+                context.paramSet(name, part.getString());
             }
         }
     }
