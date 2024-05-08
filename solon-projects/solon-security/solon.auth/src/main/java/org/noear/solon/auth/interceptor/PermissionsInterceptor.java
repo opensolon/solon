@@ -3,6 +3,7 @@ package org.noear.solon.auth.interceptor;
 import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthPermissions;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Result;
 
 /**
@@ -18,7 +19,9 @@ public class PermissionsInterceptor extends AbstractInterceptor<AuthPermissions>
     }
 
     @Override
-    public Result verify(AuthPermissions anno) throws Exception {
+    public Result verify(AuthPermissions anno, Invocation inv) throws Exception {
+
+
         if (AuthUtil.verifyPermissions(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {

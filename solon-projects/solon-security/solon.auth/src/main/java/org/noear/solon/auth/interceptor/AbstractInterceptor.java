@@ -26,7 +26,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
         }
 
         if (anno != null) {
-            Result rst = verify(anno);
+            Result rst = verify(anno, inv);
 
             if (rst.getCode() != Result.SUCCEED_CODE) {
                 Context ctx = Context.current();
@@ -46,7 +46,13 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
     }
 
 
+    /**
+     * 注解类型
+     */
     public abstract Class<T> type();
 
-    public abstract Result verify(T anno) throws Exception;
+    /**
+     * 验证
+     */
+    public abstract Result verify(T anno, Invocation inv) throws Exception;
 }

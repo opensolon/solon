@@ -3,6 +3,7 @@ package org.noear.solon.auth.interceptor;
 import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthPath;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 
@@ -19,7 +20,7 @@ public class PathInterceptor extends AbstractInterceptor<AuthPath> {
     }
 
     @Override
-    public Result verify(AuthPath anno) throws Exception {
+    public Result verify(AuthPath anno, Invocation inv) throws Exception {
         Context ctx = Context.current();
 
         if (ctx == null) {

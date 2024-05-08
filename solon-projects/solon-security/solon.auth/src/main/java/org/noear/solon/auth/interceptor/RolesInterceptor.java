@@ -3,6 +3,7 @@ package org.noear.solon.auth.interceptor;
 import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthRoles;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Result;
 
 /**
@@ -18,7 +19,7 @@ public class RolesInterceptor extends AbstractInterceptor<AuthRoles> {
     }
 
     @Override
-    public Result verify(AuthRoles anno) throws Exception {
+    public Result verify(AuthRoles anno, Invocation inv) throws Exception {
         if (AuthUtil.verifyRoles(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {
