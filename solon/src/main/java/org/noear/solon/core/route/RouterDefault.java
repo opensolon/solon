@@ -9,7 +9,7 @@ import java.util.*;
  * @author noear
  * @since 1.3
  */
-public class RouterDefault implements Router{
+public class RouterDefault implements Router {
     //for handler
     private final RoutingTable<Handler>[] routesH;
 
@@ -20,14 +20,15 @@ public class RouterDefault implements Router{
         routesH[1] = new RoutingTableDefault<>();//main
         routesH[2] = new RoutingTableDefault<>();//after:2
     }
+
     /**
      * 添加路由关系 for Handler
      *
-     * @param path 路径
+     * @param path     路径
      * @param endpoint 处理点
-     * @param method 方法
-     * @param index 顺序位
-     * @param handler 处理接口
+     * @param method   方法
+     * @param index    顺序位
+     * @param handler  处理接口
      */
     @Override
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
@@ -41,38 +42,15 @@ public class RouterDefault implements Router{
         }
     }
 
-    @Override
-    public void remove(String pathPrefix) {
-        routesH[Endpoint.before.code].remove(pathPrefix);
-        routesH[Endpoint.main.code].remove(pathPrefix);
-        routesH[Endpoint.after.code].remove(pathPrefix);
-    }
-
-    /**
-     * 获取某个处理点的所有路由记录
-     *
-     * @param endpoint 处理点
-     * @return 处理点的所有路由记录
-     * */
-    @Override
-    public Collection<Routing<Handler>> getAll(Endpoint endpoint){
-        return routesH[endpoint.code].getAll();
-    }
-
-    @Override
-    public Collection<Routing<Handler>> getBy(String path, Endpoint endpoint) {
-        return routesH[endpoint.code].getBy(path);
-    }
-
-
-
     /**
      * 区配一个处理（根据上下文）
      *
-     * @param ctx 上下文
+     * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一个匹配的处理
+     * @deprecated 2.8
      */
+    @Deprecated
     @Override
     public Handler matchOne(Context ctx, Endpoint endpoint) {
         String pathNew = ctx.pathNew();
@@ -101,7 +79,7 @@ public class RouterDefault implements Router{
     /**
      * 区配多个处理（根据上下文）
      *
-     * @param ctx 上下文
+     * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一批匹配的处理
      */
@@ -114,6 +92,42 @@ public class RouterDefault implements Router{
     }
 
 
+    /**
+     * 获取某个处理点的所有路由记录（管理用）
+     *
+     * @param endpoint 处理点
+     * @return 处理点的所有路由记录
+     */
+    @Override
+    public Collection<Routing<Handler>> getAll(Endpoint endpoint) {
+        return routesH[endpoint.code].getAll();
+    }
+
+    /**
+     * 获取某个路径的某个处理点的路由记录（管理用）
+     *
+     * @param path     路径
+     * @param endpoint 处理点
+     * @return 路径处理点的路由记录
+     * @since 2.6
+     */
+    @Override
+    public Collection<Routing<Handler>> getBy(String path, Endpoint endpoint) {
+        return routesH[endpoint.code].getBy(path);
+    }
+
+
+    /**
+     * 移除路由关系
+     *
+     * @param pathPrefix 路径前缀
+     */
+    @Override
+    public void remove(String pathPrefix) {
+        routesH[Endpoint.before.code].remove(pathPrefix);
+        routesH[Endpoint.main.code].remove(pathPrefix);
+        routesH[Endpoint.after.code].remove(pathPrefix);
+    }
 
     /**
      * 清空路由关系

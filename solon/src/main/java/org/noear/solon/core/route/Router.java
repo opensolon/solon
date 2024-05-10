@@ -79,32 +79,6 @@ public interface Router {
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
-    /**
-     * 移除路由关系
-     *
-     * @param pathPrefix 路径前缀
-     */
-    void remove(String pathPrefix);
-
-    /**
-     * 获取某个处理点的所有路由记录
-     *
-     * @param endpoint 处理点
-     * @return 处理点的所有路由记录
-     */
-    Collection<Routing<Handler>> getAll(Endpoint endpoint);
-
-
-    /**
-     * 获取某个路径的某个处理点的路由记录
-     *
-     * @param path     路径
-     * @param endpoint 处理点
-     * @return 路径处理点的路由记录
-     * @since 2.6
-     */
-    Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
-
 
     /**
      * 区配一个处理（根据上下文）
@@ -112,11 +86,13 @@ public interface Router {
      * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一个匹配的处理
+     * @deprecated 2.8
      */
+    @Deprecated
     Handler matchOne(Context ctx, Endpoint endpoint);
 
     /**
-     * 区配主处理（根据上下文）
+     * 区配一个主处理（根据上下文）
      *
      * @param ctx 上下文
      * @return 一个匹配的处理
@@ -132,6 +108,33 @@ public interface Router {
      * @since 2.5
      */
     List<Handler> matchMore(Context ctx, Endpoint endpoint);
+
+
+    /**
+     * 获取某个处理点的所有路由记录（管理用）
+     *
+     * @param endpoint 处理点
+     * @return 处理点的所有路由记录
+     */
+    Collection<Routing<Handler>> getAll(Endpoint endpoint);
+
+    /**
+     * 获取某个路径的某个处理点的路由记录（管理用）
+     *
+     * @param path     路径
+     * @param endpoint 处理点
+     * @return 路径处理点的路由记录
+     * @since 2.6
+     */
+    Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
+
+
+    /**
+     * 移除路由关系
+     *
+     * @param pathPrefix 路径前缀
+     */
+    void remove(String pathPrefix);
 
     /**
      * 清空路由关系
