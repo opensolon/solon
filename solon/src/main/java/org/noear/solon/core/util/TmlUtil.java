@@ -4,6 +4,7 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,75 +17,60 @@ import java.util.regex.Pattern;
  */
 public class TmlUtil {
     public static String parse(String tml, Invocation inv) {
-        if (tml.indexOf("$") < 0) {
+        if (tml.indexOf('$') < 0) {
             return tml;
         }
 
-        return parse(tml, inv.argsAsMap(), null);
+        return parse(tml, inv.argsAsMap());
     }
 
     public static String parse(String tml, Invocation inv, Object rst) {
-        if (tml.indexOf("$") < 0) {
+        if (tml.indexOf('$') < 0) {
             return tml;
         }
 
-        return parse(tml, inv.argsAsMap(), rst);
+        Map<String, Object> model = new HashMap<>(inv.argsAsMap());
+        model.put("", rst);
+
+        return parse(tml, model);
     }
 
     /**
      * 解析模板
      *
-     * <code><pre>name=${name}</pre></code>
+     * <pre><code>name=${name},type={.type}</code></pre>
      *
-     * @param tml    模板
-     * @param params 参数
+     * @param view  模板
+     * @param model 参数
      */
-    public static String parse(String tml, Map<String, Object> params) {
-        return parse(tml, params, null);
-    }
-
-
-    /**
-     * 解析模板
-     *
-     * <code><pre>name=${name}</pre></code>
-     *
-     * @param tml    模板
-     * @param params 参数
-     * @param result 结果
-     */
-    public static String parse(String tml, Map<String, Object> params, Object result) {
-        if (tml.indexOf("$") < 0) {
-            return tml;
+    public static String parse(String view, Map<String, Object> model) {
+        if (view.indexOf('$') < 0) {
+            return view;
         }
 
-        String str2 = tml;
+        StringBuilder str2 = new StringBuilder(view);
 
         //${name}
         //${.name}
         //${obj.name}
-        Pattern pattern = Pattern.compile("\\$\\{(\\w*\\.?\\w+)\\}");
-        Matcher m = pattern.matcher(tml);
+        Matcher m = tmpPattern.matcher(view);
         while (m.find()) {
             String mark = m.group(0);
             String name = m.group(1);
 
-            if (params.containsKey(name)) {
+            if (model.containsKey(name)) {
                 //说明从输入参数取值
-                String val = String.valueOf(params.get(name));
-
-                str2 = str2.replace(mark, val);
-            } else if (name.contains(".")) {
+                String val = String.valueOf(model.get(name));
+                int idx = str2.indexOf(mark);
+                str2 = str2.replace(idx, idx + mark.length(), val);
+            } else if (name.indexOf('.') >= 0) {
                 //说明要从返回结果取值
                 Object obj;
                 String fieldKey = null;
                 String fieldVal = null;
-                if (name.startsWith(".")) {
-                    obj = result;
-                    fieldKey = name.substring(1);
-                } else {
+                {
                     String[] cf = name.split("\\.");
-                    obj = params.get(cf[0]);
+                    obj = model.get(cf[0]);
                     fieldKey = cf[1];
                 }
 
@@ -96,7 +82,7 @@ public class TmlUtil {
                     } else {
                         FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
                         if (fw == null) {
-                            throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
+                            throw new IllegalArgumentException("Missing tml parameter (result field): " + name);
                         }
 
                         try {
@@ -115,13 +101,17 @@ public class TmlUtil {
                     fieldVal = "";
                 }
 
-                str2 = str2.replace(mark, fieldVal);
+                int idx = str2.indexOf(mark);
+                str2 = str2.replace(idx, idx + mark.length(), fieldVal);
             } else {
                 //如果缺少参数就出异常，容易发现问题
                 throw new IllegalArgumentException("Missing tml parameter: " + name);
             }
         }
 
-        return str2;
+
+        return str2.toString();
     }
+
+    private static final Pattern tmpPattern = Pattern.compile("\\$\\{(\\w*\\.?\\w+)\\}");
 }

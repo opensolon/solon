@@ -1,7 +1,6 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.*;
 
@@ -42,9 +41,7 @@ public interface Router {
      *
      * @param caseSensitive 区分大小写
      */
-    default void caseSensitive(boolean caseSensitive) {
-        PathAnalyzer.setCaseSensitive(caseSensitive);
-    }
+    void caseSensitive(boolean caseSensitive);
 
     /**
      * 添加路由关系 for Handler

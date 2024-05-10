@@ -2,6 +2,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.*;
 
@@ -19,6 +20,11 @@ public class RouterDefault implements Router {
         routesH[0] = new RoutingTableDefault<>();//before:0
         routesH[1] = new RoutingTableDefault<>();//main
         routesH[2] = new RoutingTableDefault<>();//after:2
+    }
+
+    @Override
+    public void caseSensitive(boolean caseSensitive) {
+        PathAnalyzer.setCaseSensitive(caseSensitive);
     }
 
     /**
