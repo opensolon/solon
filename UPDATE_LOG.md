@@ -22,7 +22,8 @@
 * 新增 solon.cloud.gateway 插件?
 * 添加 序列化安全名单接口?
 * 添加 `@Bean::injected`
-* 添加 TmlUtil 工具类
+* 添加 `TmlUtil` 工具类
+* 添加 `AbstractRoutingDataSource` 对事务管理的支持
 * 优化 Bean 集合注入时，乎略泛型
 * 优化 smarthttp 和 jetty 适配，queryString 和 from-data 同时有数据时的处理
 * 优化 jetty 适配的临时目录处理

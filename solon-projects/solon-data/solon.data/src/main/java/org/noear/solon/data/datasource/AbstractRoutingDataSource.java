@@ -62,13 +62,13 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
     /**
      * 确定当前数据源键
      */
-    protected abstract String determineCurrentKey();
+    public abstract String determineCurrentKey();
 
 
     /**
      * 确定当前目标数据源
      */
-    protected DataSource determineCurrentTarget() {
+    public DataSource determineCurrentTarget() {
         String targetKey = determineCurrentKey();
 
         if (Utils.isEmpty(targetKey)) {

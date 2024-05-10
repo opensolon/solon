@@ -3,6 +3,7 @@ package org.noear.solon.data.tran.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.datasource.AbstractRoutingDataSource;
 import org.noear.solon.data.tran.TranListener;
 import org.noear.solon.data.tran.TranListenerSet;
 import org.noear.solon.data.tran.TranNode;
@@ -43,6 +44,11 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     public Connection getConnection(DataSource ds) throws SQLException {
+        if(ds instanceof AbstractRoutingDataSource){
+            //支持动态数据源事务管理
+            ds = ((AbstractRoutingDataSource)ds).determineCurrentTarget();
+        }
+
         if (conMap.containsKey(ds)) {
             return conMap.get(ds);
         } else {

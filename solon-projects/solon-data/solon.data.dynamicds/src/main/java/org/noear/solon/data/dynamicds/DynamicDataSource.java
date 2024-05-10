@@ -114,7 +114,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
     }
 
     @Override
-    protected String determineCurrentKey() {
+    public String determineCurrentKey() {
         return DynamicDsKey.getCurrent();
     }
 }
