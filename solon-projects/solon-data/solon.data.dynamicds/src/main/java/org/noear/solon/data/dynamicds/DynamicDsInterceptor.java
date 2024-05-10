@@ -2,6 +2,7 @@ package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.util.TmlUtil;
 import org.noear.solon.data.util.InvKeys;
 
 /**
@@ -26,7 +27,7 @@ public class DynamicDsInterceptor implements Interceptor {
             String backup = DynamicDsKey.getCurrent();
 
             try {
-                String dsName = InvKeys.buildByTmlAndInv(anno.value(), inv);
+                String dsName = TmlUtil.parse(anno.value(), inv);
 
                 DynamicDsKey.setCurrent(dsName);
                 return inv.invoke();
