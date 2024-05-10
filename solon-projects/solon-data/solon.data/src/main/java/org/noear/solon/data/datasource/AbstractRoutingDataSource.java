@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author noear
  * @since 1.11
  */
-public abstract class AbstractRoutingDataSource implements DataSource, Closeable {
+public abstract class AbstractRoutingDataSource implements RoutingDataSource, DataSource, Closeable {
     protected DataSource defaultTargetDataSource;
     protected Map<String, DataSource> targetDataSources;
 
@@ -30,7 +30,7 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
 
     /**
      * 设置目标数据源集合（替换掉旧的）
-     * */
+     */
     public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
         if (targetDataSources == null) { //null 就可以了，因为还有 defaultTargetDataSource
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
@@ -41,7 +41,7 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
 
     /**
      * 设置默认目标数据源
-     * */
+     */
     public void setDefaultTargetDataSource(DataSource defaultTargetDataSource) {
         if (defaultTargetDataSource == null) {
             throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
@@ -52,11 +52,10 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
 
     /**
      * 设置严格模式
-     * */
+     */
     public void setStrict(boolean strict) {
         this.strict = strict;
     }
-
 
 
     /**
@@ -144,8 +143,8 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
         }
 
         if (defaultTargetDataSource != null) {
-            if(targetDataSources != null){
-                if(targetDataSources.containsValue(defaultTargetDataSource)){
+            if (targetDataSources != null) {
+                if (targetDataSources.containsValue(defaultTargetDataSource)) {
                     return;
                 }
             }
@@ -156,8 +155,8 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
 
     /**
      * 尝试关闭数据源
-     * */
-    protected void closeDataSource(DataSource ds) throws IOException{
+     */
+    protected void closeDataSource(DataSource ds) throws IOException {
         if (ds instanceof Closeable) {
             ((Closeable) ds).close();
         }
