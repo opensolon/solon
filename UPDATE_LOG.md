@@ -28,8 +28,10 @@
 * 优化 smarthttp 和 jetty 适配，queryString 和 from-data 同时有数据时的处理
 * 优化 jetty 适配的临时目录处理
 * 优化 solon.serialization.properties 处理，扩大范围
-* 优化 拦截体系与 rx 的兼容
+* 优化 拦截体系与 rx 的兼容？
 * 优化 onMissingBean 条件与 Bean 集合注入的边界问题
+* 优化 sa-token 的 json 序列化处理
+* 优化 配置加载同步，带 - 的不同步到 System
 * snack3 升为 3.2.96
 * sqltoy 升为 5.6.5.jre8
 
