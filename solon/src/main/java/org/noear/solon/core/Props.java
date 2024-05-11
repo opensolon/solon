@@ -528,13 +528,14 @@ public class Props extends Properties {
                     }
 
                     if (v1 != null) {
-                        if (toSystem) {
-                            System.getProperties().put(k1, v1);
-                        }
-
                         put(k1, v1);
 
-                        if (key.indexOf('-') >= 0) {
+                        if (key.indexOf('-') < 0) {
+                            if (toSystem) {
+                                //带 - 的不同步到 System
+                                System.getProperties().put(k1, v1);
+                            }
+                        } else {
                             String camelKey = Utils.snakeToCamel(key);
                             if (addIfAbsent) {
                                 putIfAbsent(camelKey, v1);
