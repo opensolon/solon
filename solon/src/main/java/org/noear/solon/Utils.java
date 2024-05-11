@@ -256,6 +256,30 @@ public class Utils {
     }
 
     /**
+     * 蛇形转驼峰
+     *
+     * @since 2.8
+     * */
+    public static String snakeToCamel(String name) {
+        if (name.indexOf('-') < 0) {
+            return name;
+        }
+
+        String[] ss = name.split("-");
+        StringBuilder sb = new StringBuilder(name.length());
+        sb.append(ss[0]);
+        for (int i = 1; i < ss.length; i++) {
+            if (ss[i].length() > 1) {
+                sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
+            } else {
+                sb.append(ss[i].toUpperCase());
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
      * 检查字符串是否为空
      *
      * @param s 字符串
