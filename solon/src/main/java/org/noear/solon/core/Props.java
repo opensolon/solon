@@ -113,7 +113,7 @@ public class Props extends Properties {
      * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     protected String getByTmpl(String tmpl, Properties props) {
-        return PropUtil.getByTml(this, props, tml);
+        return PropUtil.getByTml(this, props, tmpl);
     }
 
     /**

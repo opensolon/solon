@@ -2,7 +2,7 @@ package org.noear.solon.data.util;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.util.TmlUtil;
+import org.noear.solon.core.util.TmplUtil;
 
 import java.lang.reflect.Method;
 
@@ -42,7 +42,7 @@ public class InvKeys {
      * @param inv 拦截动作
      */
     public static String buildByTmlAndInv(String tml, Invocation inv) {
-        return TmlUtil.parse(tml, inv, null);
+        return TmplUtil.parse(tml, inv, null);
     }
 
     /**
@@ -53,6 +53,6 @@ public class InvKeys {
      * @param rst 返回值
      */
     public static String buildByTmlAndInv(String tml, Invocation inv, Object rst) {
-        return TmlUtil.parse(tml, inv, rst);
+        return TmplUtil.parse(tml, inv, rst);
     }
 }

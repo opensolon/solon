@@ -15,24 +15,24 @@ import java.util.regex.Pattern;
  * @author noear
  * @since 2.8
  */
-public class TmlUtil {
-    public static String parse(String tml, Invocation inv) {
-        if (tml.indexOf('$') < 0) {
-            return tml;
+public class TmplUtil {
+    public static String parse(String tmpl, Invocation inv) {
+        if (tmpl.indexOf('$') < 0) {
+            return tmpl;
         }
 
-        return parse(tml, inv.argsAsMap());
+        return parse(tmpl, inv.argsAsMap());
     }
 
-    public static String parse(String tml, Invocation inv, Object rst) {
-        if (tml.indexOf('$') < 0) {
-            return tml;
+    public static String parse(String tmpl, Invocation inv, Object rst) {
+        if (tmpl.indexOf('$') < 0) {
+            return tmpl;
         }
 
         Map<String, Object> model = new HashMap<>(inv.argsAsMap());
         model.put("", rst);
 
-        return parse(tml, model);
+        return parse(tmpl, model);
     }
 
     /**
@@ -82,7 +82,7 @@ public class TmlUtil {
                     } else {
                         FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
                         if (fw == null) {
-                            throw new IllegalArgumentException("Missing tml parameter (result field): " + name);
+                            throw new IllegalArgumentException("Missing tmpl parameter (result field): " + name);
                         }
 
                         try {
@@ -105,7 +105,7 @@ public class TmlUtil {
                 str2 = str2.replace(idx, idx + mark.length(), fieldVal);
             } else {
                 //如果缺少参数就出异常，容易发现问题
-                throw new IllegalArgumentException("Missing tml parameter: " + name);
+                throw new IllegalArgumentException("Missing tmpl parameter: " + name);
             }
         }
 

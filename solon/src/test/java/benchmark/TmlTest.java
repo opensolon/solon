@@ -1,6 +1,6 @@
 package benchmark;
 
-import org.noear.solon.core.util.TmlUtil;
+import org.noear.solon.core.util.TmplUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,14 +16,14 @@ public class TmlTest {
         model.put("label", 1);
         model.put("",model);
 
-        System.out.println(TmlUtil.parse(view, model));
+        System.out.println(TmplUtil.parse(view, model));
 
 
         long timeStart = System.currentTimeMillis();
 
 
         for (int i = 0; i < 100_000; i++) {
-            TmlUtil.parse(view, model);
+            TmplUtil.parse(view, model);
         }
 
         System.out.println(System.currentTimeMillis() - timeStart);

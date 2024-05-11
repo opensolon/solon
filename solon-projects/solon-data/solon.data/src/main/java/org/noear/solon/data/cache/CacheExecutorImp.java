@@ -2,7 +2,7 @@ package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.util.TmlUtil;
+import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
@@ -39,7 +39,7 @@ public class CacheExecutorImp {
             key = InvKeys.buildByInv(inv);
         } else {
             //格式化key
-            key = TmlUtil.parse(key, inv);
+            key = TmplUtil.parse(key, inv);
         }
 
 
@@ -64,7 +64,7 @@ public class CacheExecutorImp {
                     cs.store(key, result, anno.seconds());
 
                     if (Utils.isNotEmpty(anno.tags())) {
-                        String tags = TmlUtil.parse(anno.tags(), inv, result);
+                        String tags = TmplUtil.parse(anno.tags(), inv, result);
                         CacheTags ct = new CacheTags(cs);
 
                         //4.添加缓存标签
@@ -97,7 +97,7 @@ public class CacheExecutorImp {
 
         //按 key 清除缓存
         if (Utils.isNotEmpty(anno.keys())) {
-            String keys = TmlUtil.parse(anno.keys(), inv, rstValue);
+            String keys = TmplUtil.parse(anno.keys(), inv, rstValue);
 
             for (String key : keys.split(",")) {
                 cs.remove(key);
@@ -106,7 +106,7 @@ public class CacheExecutorImp {
 
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = TmlUtil.parse(anno.tags(), inv, rstValue);
+            String tags = TmplUtil.parse(anno.tags(), inv, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -131,13 +131,13 @@ public class CacheExecutorImp {
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = TmlUtil.parse(anno.key(), inv, rstValue);
+            String key = TmplUtil.parse(anno.key(), inv, rstValue);
             cs.store(key, rstValue, anno.seconds());
         }
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = TmlUtil.parse(anno.tags(), inv, rstValue);
+            String tags = TmplUtil.parse(anno.tags(), inv, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
