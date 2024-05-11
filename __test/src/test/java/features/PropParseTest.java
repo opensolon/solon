@@ -15,10 +15,10 @@ import webapp.App;
 public class PropParseTest {
     @Test
     public void test(){
-        assert  "solon.app.group".equals(Solon.cfg().getByParse("solon.app.group"));
-        assert  "test".equals(Solon.cfg().getByParse("${solon.app.group}"));
-        assert  "test_topic".equals(Solon.cfg().getByParse("${solon.app.group}_topic"));
-        assert  "event_test_topic".equals(Solon.cfg().getByParse("event_${solon.app.group}_topic"));
-        assert  "event_test".equals(Solon.cfg().getByParse("event_${solon.app.group}"));
+        assert  "solon.app.group".equals(Solon.cfg().getByTmpl("solon.app.group"));
+        assert  "test".equals(Solon.cfg().getByTmpl("${solon.app.group}"));
+        assert  "test_topic".equals(Solon.cfg().getByTmpl("${solon.app.group}_topic"));
+        assert  "event_test_topic".equals(Solon.cfg().getByTmpl("event_${solon.app.group}_topic"));
+        assert  "event_test".equals(Solon.cfg().getByTmpl("event_${solon.app.group}"));
     }
 }

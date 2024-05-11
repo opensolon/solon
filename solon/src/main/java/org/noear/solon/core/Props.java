@@ -95,15 +95,24 @@ public class Props extends Properties {
 
     /**
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @deprecated 2.8
      */
+    @Deprecated
     public String getByParse(String tml) {
-        return getByParse(tml, null);
+        return getByTmpl(tml);
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
-    protected String getByParse(String tml, Properties props) {
+    public String getByTmpl(String tmpl) {
+        return getByTmpl(tmpl, null);
+    }
+
+    /**
+     * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     */
+    protected String getByTmpl(String tmpl, Properties props) {
         return PropUtil.getByTml(this, props, tml);
     }
 
@@ -111,7 +120,7 @@ public class Props extends Properties {
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      * @param  useDef 是否使用默认值
      */
-    protected String getByParse(String tml, Properties props, boolean useDef) {
+    protected String getByTmpl(String tml, Properties props, boolean useDef) {
         return PropUtil.getByTml(this, props, tml, useDef);
     }
 
@@ -392,12 +401,12 @@ public class Props extends Properties {
         }
 
         for (String uri : anno.profiles()) {
-            uri = getByParse(uri);
+            uri = getByTmpl(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
         }
 
         for (String uri : anno.profilesIfAbsent()) {
-            uri = getByParse(uri);
+            uri = getByTmpl(uri);
             loadAddIfAbsent(ResourceUtil.findResource(classLoader, uri));
         }
     }
@@ -412,7 +421,7 @@ public class Props extends Properties {
         }
 
         for (String uri : anno.value()) {
-            uri = getByParse(uri);
+            uri = getByTmpl(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
         }
     }
@@ -506,7 +515,7 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
                         String valExp = (String) v1;
-                        v1 = getByParse(valExp, props, isEnd);
+                        v1 = getByTmpl(valExp, props, isEnd);
 
                         if (v1 == null) {
                             if (!isEnd) {

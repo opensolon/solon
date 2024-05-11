@@ -27,12 +27,12 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
         }
 
         //支持${xxx}配置
-        String name = Solon.cfg().getByParse(anno.value());
+        String name = Solon.cfg().getByTmpl(anno.value());
         if (Utils.isEmpty(name)) {
-            name = Solon.cfg().getByParse(anno.name());
+            name = Solon.cfg().getByTmpl(anno.name());
         }
         //支持${xxx}配置
-        String description = Solon.cfg().getByParse(anno.description());
+        String description = Solon.cfg().getByTmpl(anno.description());
 
         if (name.trim().length() == 0) {
             throw new IllegalStateException("CloudJob name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");

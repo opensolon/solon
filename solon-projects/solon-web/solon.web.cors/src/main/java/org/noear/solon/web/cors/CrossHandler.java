@@ -19,7 +19,7 @@ public class CrossHandler extends AbstractCross<CrossHandler> implements Handler
     public CrossHandler(CrossOrigin anno) {
         maxAge(anno.maxAge());
         //支持表达式配置: ${xxx}
-        allowedOrigins(Solon.cfg().getByParse(anno.origins()));
+        allowedOrigins(Solon.cfg().getByTmpl(anno.origins()));
         allowCredentials(anno.credentials());
     }
 

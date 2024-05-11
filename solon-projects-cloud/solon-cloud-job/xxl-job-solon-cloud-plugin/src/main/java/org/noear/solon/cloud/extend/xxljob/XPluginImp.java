@@ -43,7 +43,7 @@ public class XPluginImp implements Plugin {
         //添加 @CloudJob 对 IJobHandler 类的支持 //@since 2.0
         CloudJobBeanBuilder.getInstance().addBuilder(IJobHandler.class,(clz, bw, anno) -> {
             //支持${xxx}配置
-            String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
+            String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
             //提示：不支持CloudJob拦截器
             XxlJobExecutor.registJobHandler(name, bw.raw());
         });

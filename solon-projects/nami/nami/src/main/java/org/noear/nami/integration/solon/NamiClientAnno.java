@@ -17,7 +17,7 @@ public class NamiClientAnno implements NamiClient {
 
     public NamiClientAnno(NamiClient anno) {
         this.anno = anno;
-        this.name = Solon.cfg().getByParse(anno.name());
+        this.name = Solon.cfg().getByTmpl(anno.name());
     }
 
     @Override

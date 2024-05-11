@@ -38,9 +38,9 @@ public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
         //默认添加 CloudJobHandler 构建器
         addBuilder(CloudJobHandler.class, (clz, bw, anno) -> {
             //支持${xxx}配置
-            String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
+            String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
             //支持${xxx}配置
-            String description = Solon.cfg().getByParse(anno.description());
+            String description = Solon.cfg().getByTmpl(anno.description());
 
             CloudClient.job().register(name, anno.cron7x(), description, new CloudJobBean(bw));
         });
