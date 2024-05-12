@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 /**
  * 转到 Sokcet.D 协议的 WebSocketListener（服务端、客户端，都可用）
@@ -28,6 +29,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     private final Config config;
     private final InnerChannelAssistant assistant;
     private final Processor processor;
+    private final InnerListenerWrapper listenerWrapper;
 
     private final InnerChannelSupporter supporter;
 
@@ -38,7 +40,9 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     public ToSocketdWebSocketListener(Config config, Listener listener) {
         this.config = config;
         this.assistant = new InnerChannelAssistant(config);
+        this.listenerWrapper = new InnerListenerWrapper();
         this.processor = new ProcessorDefault();
+        this.processor.setListener(listenerWrapper);
         this.supporter = new InnerChannelSupporter(this);
 
         if (listener == null) {
@@ -54,7 +58,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
      * 设置 Socket.D 监听器
      */
     public void setListener(Listener listener) {
-        this.processor.setListener(listener);
+        this.listenerWrapper.setListener(listener);
     }
 
     /**
@@ -73,7 +77,11 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
 
     @Override
     public void onOpen(WebSocket socket) {
-        getChannel(socket);
+        ChannelInternal channel = getChannel(socket);
+
+        //头信息
+        Map<String, String> headerMap = socket.paramMap();
+        channel.getSession().attrPut(InnerListenerWrapper.WS_HANDSHAKE_HEADER, headerMap);
     }
 
     @Override
