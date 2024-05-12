@@ -34,6 +34,7 @@
 * 优化 配置加载同步，带 - 的不同步到 System
 * snack3 升为 3.2.96
 * sqltoy 升为 5.6.5.jre8
+* socket.d 升为 2.4.15
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
