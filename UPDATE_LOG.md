@@ -33,8 +33,11 @@
 * 优化 sa-token 的 json 序列化处理
 * 优化 配置加载同步，带 - 的不同步到 System
 * snack3 升为 3.2.96
-* sqltoy 升为 5.6.5.jre8
 * socket.d 升为 2.4.16
+* folkmq 升为 1.4.4
+* fastjson2 升为 2.0.50
+* mybatis-flex 升为 1.8.9
+* sqltoy 升为 5.6.5.jre8
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
