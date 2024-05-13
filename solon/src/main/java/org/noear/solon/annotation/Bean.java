@@ -35,7 +35,7 @@ public @interface Bean {
     String tag() default "";
 
     /**
-     * 同时注册类型，仅当名称非空时有效
+     * 要类型的（同时注册类型），仅当名称非空时有效
      * */
     boolean typed() default false;
 
@@ -45,7 +45,7 @@ public @interface Bean {
     int index() default 0;
 
     /**
-     * 需要注入
+     * 要注入的
      * */
     boolean injected() default false;
 }

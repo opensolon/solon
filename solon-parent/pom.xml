@@ -133,7 +133,7 @@
         <quartz.version>2.3.2</quartz.version>
         <powerjob.version>4.3.6</powerjob.version>
 
-        <sa-token.version>1.37.0</sa-token.version>
+        <sa-token.version>1.38.0</sa-token.version>
         <sms4j.version>3.1.1</sms4j.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
