@@ -34,7 +34,7 @@
 * 优化 onMissingBean 条件与 Bean 集合注入的边界问题！
 * 优化 sa-token 的 json 序列化处理
 * 优化 配置加载同步，带 - 的不同步到 System
-* snack3 升为 3.2.96
+* snack3 升为 3.2.97
 * socket.d 升为 2.4.16
 * folkmq 升为 1.4.4
 * fastjson2 升为 2.0.50
