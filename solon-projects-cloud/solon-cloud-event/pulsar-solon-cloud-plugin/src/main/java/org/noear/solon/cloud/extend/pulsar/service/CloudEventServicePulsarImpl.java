@@ -11,8 +11,11 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.pulsar.PulsarProps;
 import org.noear.solon.cloud.extend.pulsar.impl.PulsarMessageListenerImpl;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -21,7 +24,8 @@ import java.util.ArrayList;
  * @author noear
  * @since 1.5
  */
-public class CloudEventServicePulsarImp implements CloudEventServicePlus {
+public class CloudEventServicePulsarImpl implements CloudEventServicePlus {
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServicePulsarImpl.class);
 
     private static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
     private static final String PROP_EVENT_producerGroup = "event.producerGroup";
@@ -30,7 +34,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
 
     private PulsarClient client;
 
-    public CloudEventServicePulsarImp(CloudProps cloudProps) {
+    public CloudEventServicePulsarImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         try {
@@ -40,6 +44,11 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
         } catch (PulsarClientException e) {
             throw new CloudEventException(e);
         }
+    }
+
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //不支持事务消息
+        log.warn("Message transactions are not supported!");
     }
 
     @Override
@@ -54,6 +63,10 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
+        }
+
+        if(event.transaction() != null){
+            beginTransaction(event.transaction());
         }
 
         //new topic

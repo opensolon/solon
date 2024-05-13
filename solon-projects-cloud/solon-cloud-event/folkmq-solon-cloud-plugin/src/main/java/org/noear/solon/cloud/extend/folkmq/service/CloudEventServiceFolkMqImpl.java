@@ -1,10 +1,7 @@
 package org.noear.solon.cloud.extend.folkmq.service;
 
 import org.noear.folkmq.FolkMQ;
-import org.noear.folkmq.client.MqClient;
-import org.noear.folkmq.client.MqConsumeListener;
-import org.noear.folkmq.client.MqMessage;
-import org.noear.folkmq.client.MqTransactionCheckback;
+import org.noear.folkmq.client.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
@@ -13,7 +10,9 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqConsumeHandler;
+import org.noear.solon.cloud.extend.folkmq.impl.FolkmqTransactionListener;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -54,11 +53,11 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         Solon.context().wrapAndPut(MqClient.class, client);
 
         //异步获取 MqTransactionCheckback
-        Solon.context().getBeanAsync(MqTransactionCheckback.class, bean->{
+        Solon.context().getBeanAsync(MqTransactionCheckback.class, bean -> {
             client.transactionCheckback(bean);
         });
 
-        Solon.context().getBeanAsync(MqConsumeListener.class, bean->{
+        Solon.context().getBeanAsync(MqConsumeListener.class, bean -> {
             client.listen(bean);
         });
 
@@ -68,6 +67,15 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+
+    private void beginTransaction(EventTransaction transaction) {
+        if (transaction.getListener(FolkmqTransactionListener.class) != null) {
+            return;
+        }
+
+        transaction.setListener(new FolkmqTransactionListener(client.newTransaction()));
     }
 
     @Override
@@ -80,6 +88,10 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
+        if (event.transaction() != null) {
+            beginTransaction(event.transaction());
+        }
+
         //new topic
         String topicNew = FolkmqProps.getTopicNew(event);
         try {
@@ -87,6 +99,11 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
                     .scheduled(event.scheduled())
                     .tag(event.tags())
                     .qos(event.qos());
+
+            if (event.transaction() != null) {
+                MqTransaction transaction = event.transaction().getListener(FolkmqTransactionListener.class).getTransaction();
+                message.transaction(transaction);
+            }
 
             if (publishTimeout > 0) {
                 //同步

@@ -10,25 +10,36 @@ import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConfig;
 import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConsumer;
 import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsProducer;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author cgy
  * @since 1.11
  */
-public class CloudEventServiceOnsImp implements CloudEventServicePlus {
+public class CloudEventServiceOnsImpl implements CloudEventServicePlus {
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServiceOnsImpl.class);
+
     private CloudProps cloudProps;
     private OnsProducer producer;
     private OnsConsumer consumer;
 
-    public CloudEventServiceOnsImp(CloudProps cloudProps) {
+    public CloudEventServiceOnsImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         OnsConfig config = new OnsConfig(cloudProps);
 
         producer = new OnsProducer(config);
         consumer = new OnsConsumer(config);
+    }
+
+
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //不支持事务消息
+        log.warn("Message transactions are not supported!");
     }
 
     @Override
@@ -43,6 +54,10 @@ public class CloudEventServiceOnsImp implements CloudEventServicePlus {
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
+        }
+
+        if (event.transaction() != null) {
+            beginTransaction(event.transaction());
         }
 
         //new topic

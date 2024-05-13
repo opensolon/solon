@@ -4,6 +4,7 @@ import org.apache.rocketmq.client.apis.*;
 import org.apache.rocketmq.client.apis.message.Message;
 import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
+import org.apache.rocketmq.client.apis.producer.Transaction;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Event;
@@ -64,6 +65,10 @@ public class RocketmqProducer implements Closeable {
         }
     }
 
+    public Transaction beginTransaction() throws ClientException {
+        return producer.beginTransaction();
+    }
+
     public boolean publish(CloudProps cloudProps, Event event, String topic) throws ClientException {
         init(cloudProps);
 
@@ -71,7 +76,14 @@ public class RocketmqProducer implements Closeable {
         Message message = MessageUtil.buildNewMeaage(serviceProvider, event, topic);
 
         //发送消息，需要关注发送结果，并捕获失败等异常。
-        SendReceipt sendReceipt = producer.send(message);
+        SendReceipt sendReceipt = null;
+
+        if (event.transaction() == null) {
+            sendReceipt = producer.send(message);
+        } else {
+            Transaction transaction = event.transaction().getListener(RocketmqTransactionListener.class).getTransaction();
+            sendReceipt = producer.send(message, transaction);
+        }
 
         if (sendReceipt != null) {
             return true;
@@ -82,7 +94,7 @@ public class RocketmqProducer implements Closeable {
 
     @Override
     public void close() throws IOException {
-        if(producer != null){
+        if (producer != null) {
             producer.close();
         }
     }

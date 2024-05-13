@@ -10,7 +10,9 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.activemq.ActivemqProps;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqConsumer;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqProducer;
+import org.noear.solon.cloud.extend.activemq.impl.ActivemqTransactionListener;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -58,6 +60,18 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         consumer = new ActivemqConsumer(factory, producer);
     }
 
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        if(transaction.getListener(ActivemqTransactionListener.class) != null){
+            return;
+        }
+
+        try {
+            transaction.setListener(new ActivemqTransactionListener(producer.beginTransaction()));
+        } catch (Exception e) {
+            throw new CloudEventException(e);
+        }
+    }
+
     @Override
     public boolean publish(Event event) throws CloudEventException {
         if (Utils.isEmpty(event.topic())) {
@@ -70,6 +84,10 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
+        }
+
+        if(event.transaction()!=null){
+            beginTransaction(event.transaction());
         }
 
         //new topic

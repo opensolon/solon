@@ -10,10 +10,13 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.jedis.JedisProps;
 import org.noear.solon.cloud.extend.jedis.impl.JedisEventConsumer;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 分布式事件适配
@@ -22,6 +25,8 @@ import org.noear.solon.core.util.RunUtil;
  * @since 1.10
  */
 public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServiceJedisImpl.class);
+
     private final RedisClient client;
     private final CloudProps cloudProps;
 
@@ -45,6 +50,11 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
         this.cloudProps = cloudProps;
     }
 
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //不支持事务消息
+        log.warn("Message transactions are not supported!");
+    }
+
     @Override
     public boolean publish(Event event) throws CloudEventException {
         if (Utils.isEmpty(event.topic())) {
@@ -57,6 +67,10 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
+        }
+
+        if(event.transaction() != null){
+            beginTransaction(event.transaction());
         }
 
         //new topic

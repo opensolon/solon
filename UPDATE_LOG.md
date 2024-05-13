@@ -20,6 +20,7 @@
 
 ### 2.8.1
 * 新增 solon.cloud.gateway 插件?
+* 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
@@ -27,6 +28,7 @@
 * 添加 `@Bean::injected`
 * 添加 `TmplUtil` 工具类（提供简单模板支持）
 * 添加 `RoutingDataSource` 对事务管理的支持（即动态数据源支持事务管理）
+* 添加 Solon Cloud Event 消息事务支持！
 * 优化 Bean 集合注入时，乎略泛型
 * 优化 smarthttp 和 jetty 适配，queryString 和 from-data 同时有数据时的处理
 * 优化 jetty 适配的临时目录处理

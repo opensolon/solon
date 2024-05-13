@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.noear.solon.Utils;
 
@@ -18,8 +19,9 @@ import java.util.concurrent.TimeoutException;
 public class RabbitChannelFactory {
     private ConnectionFactory connectionFactory;
     private RabbitConfig config;
+    private Connection connection;
 
-    public RabbitChannelFactory(RabbitConfig config) {
+    public RabbitChannelFactory(RabbitConfig config) throws IOException, TimeoutException {
         this.config = config;
 
         String host = config.server.split(":")[0];
@@ -46,6 +48,19 @@ public class RabbitChannelFactory {
         connectionFactory.setAutomaticRecoveryEnabled(true);
         // 每5秒尝试重试连接一次
         connectionFactory.setNetworkRecoveryInterval(5000L);
+
+        //创建连接
+        connection = connectionFactory.newConnection();
+    }
+
+
+    /**
+     * 创建通道
+     */
+    public Channel createChannel() throws IOException, TimeoutException {
+        Channel channel = connection.createChannel();
+
+        return initChannel(channel);
     }
 
     private Channel initChannel(Channel channel) throws IOException {
@@ -65,15 +80,5 @@ public class RabbitChannelFactory {
         channel.basicQos(config.prefetchCount); //申明同时接收数量
 
         return channel;
-    }
-
-
-    /**
-     * 创建通道
-     */
-    public Channel createChannel() throws IOException, TimeoutException {
-        Channel channel = connectionFactory.newConnection().createChannel();
-
-        return initChannel(channel);
     }
 }

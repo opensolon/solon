@@ -13,6 +13,7 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.kafka.impl.KafkaConfig;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.3
  */
 public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closeable {
-    static final Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImpl.class);
 
     private final KafkaConfig config;
     private KafkaProducer<String, String> producer;
@@ -81,12 +82,21 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
         }
     }
 
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //不支持事务消息
+        log.warn("Message transactions are not supported!");
+    }
+
     @Override
     public boolean publish(Event event) throws CloudEventException {
         initProducer();
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
+        }
+
+        if(event.transaction() != null){
+            beginTransaction(event.transaction());
         }
 
         Future<RecordMetadata> future = producer.send(new ProducerRecord<>(event.topic(), event.key(), event.content()));

@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.aliyun.ons;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.aliyun.ons.service.CloudEventServiceOnsImp;
+import org.noear.solon.cloud.extend.aliyun.ons.service.CloudEventServiceOnsImpl;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(cloudProps);
+            CloudEventServiceOnsImpl eventServiceImp = new CloudEventServiceOnsImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
             context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventServiceImp.subscribe());

@@ -7,8 +7,11 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author noear
@@ -16,6 +19,7 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @since 2.5
  */
 public class CloudEventServiceMqtt5 implements CloudEventServicePlus {
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServiceMqtt5.class);
 
     private final CloudProps cloudProps;
 
@@ -43,10 +47,17 @@ public class CloudEventServiceMqtt5 implements CloudEventServicePlus {
         this.clientManager = new MqttClientManagerImpl(observerMap, cloudProps);
     }
 
-
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //不支持事务消息
+        log.warn("Message transactions are not supported!");
+    }
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
+        if(event.transaction() != null){
+            beginTransaction(event.transaction());
+        }
+
         MqttMessage message = new MqttMessage();
         message.setQos(event.qos());
         message.setRetained(event.retained());

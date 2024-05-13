@@ -1,46 +1,45 @@
-package org.noear.solon.cloud.extend.rabbitmq.service;
+package org.noear.solon.cloud.extend.rocketmq.service;
 
-import com.rabbitmq.client.Channel;
+import org.apache.rocketmq.client.exception.MQClientException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
-import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitChannelFactory;
-import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConfig;
-import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConsumer;
-import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitProducer;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
+import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
+import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
+import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
+public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
+    private static final Logger log = LoggerFactory.getLogger(CloudEventServiceRocketmqImpl.class);
 
+    private CloudProps cloudProps;
+    private RocketmqProducer producer;
+    private RocketmqConsumer consumer;
 
-    private final CloudProps cloudProps;
-    private RabbitProducer producer;
-    private RabbitConsumer consumer;
-
-    public CloudEventServiceRabbitmqImp(CloudProps cloudProps) {
+    public CloudEventServiceRocketmqImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
-        try {
-            RabbitConfig config = new RabbitConfig(cloudProps);
-            RabbitChannelFactory factory = new RabbitChannelFactory(config);
+        RocketmqConfig config = new RocketmqConfig(cloudProps);
 
-            Channel channel = factory.createChannel();
+        producer = new RocketmqProducer(config);
+        consumer = new RocketmqConsumer(config);
+    }
 
-            producer = new RabbitProducer(config, channel);
-            consumer = new RabbitConsumer(config, channel, producer);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+        //4.0的事务与本地事务耦合太高，不好适配
+        log.warn("Message transactions are not supported!");
     }
 
     @Override
@@ -57,31 +56,44 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
+        if (event.transaction() == null) {
+            beginTransaction(event.transaction());
+        }
+
         //new topic
         String topicNew;
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MARK + event.topic();
+            topicNew = event.group() + RocketmqProps.GROUP_SPLIT_MARK + event.topic();
         }
 
+        topicNew = topicNew.replace(".", "_");
+
         try {
-            return producer.publish(event, topicNew);
+            return producer.publish(cloudProps, event, topicNew);
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
     }
 
+
     CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
+        topic = topic.replace(".", "_");
+
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + RabbitmqProps.GROUP_SPLIT_MARK + topic;
+            topicNew = group + RocketmqProps.GROUP_SPLIT_MARK + topic;
+        }
+
+        if (Utils.isEmpty(tag)) {
+            tag = "*";
         }
 
         observerManger.add(topicNew, level, group, topic, tag, qos, observer);
@@ -90,13 +102,12 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
             try {
-                consumer.init(observerManger);
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
+                consumer.init(cloudProps, observerManger);
+            } catch (MQClientException e) {
+                throw new IllegalStateException(e);
             }
         }
     }
-
 
     private String channel;
     private String group;

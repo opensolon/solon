@@ -17,12 +17,12 @@ import java.nio.charset.StandardCharsets;
  */
 public class RabbitProducer {
     private RabbitConfig config;
-    private Channel channel;
+    private Channel channelDefault;
     private AMQP.BasicProperties eventPropsDefault;
 
     public RabbitProducer(RabbitConfig config, Channel channel) {
         this.config = config;
-        this.channel = channel;
+        this.channelDefault = channel;
         this.eventPropsDefault = newEventProps().build();
     }
 
@@ -41,6 +41,13 @@ public class RabbitProducer {
             props = newEventProps().expiration(String.valueOf(delay)).build();
         } else {
             props = eventPropsDefault;
+        }
+
+        Channel channel = null;
+        if (event.transaction() == null) {
+            channel = channelDefault;
+        } else {
+            channel = event.transaction().getListener(RabbitTransactionListener.class).getTransaction();
         }
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
