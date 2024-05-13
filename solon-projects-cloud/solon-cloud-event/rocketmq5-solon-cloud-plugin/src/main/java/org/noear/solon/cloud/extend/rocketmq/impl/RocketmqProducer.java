@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 import org.apache.rocketmq.client.apis.*;
 import org.apache.rocketmq.client.apis.message.Message;
 import org.apache.rocketmq.client.apis.producer.*;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Event;
@@ -55,10 +56,14 @@ public class RocketmqProducer implements Closeable {
 
             ClientConfiguration configuration = builder.build();
 
-            producer = serviceProvider.newProducerBuilder()
-                    .setClientConfiguration(configuration)
-                    .setTransactionChecker(messageView -> TransactionResolution.COMMIT)
-                    .build();
+            ProducerBuilder producerBuilder = serviceProvider.newProducerBuilder()
+                    .setClientConfiguration(configuration);
+
+            Solon.context().getBeanAsync(TransactionChecker.class, bean -> {
+                producerBuilder.setTransactionChecker(bean);
+            });
+
+            producer = producerBuilder.build();
 
         } finally {
             Utils.locker().unlock();

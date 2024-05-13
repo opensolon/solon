@@ -24,10 +24,12 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getEventEnable()) {
-            eventService = new CloudEventServiceRocketmqImp(cloudProps);
-            CloudManager.register(eventService);
+            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+                eventService = new CloudEventServiceRocketmqImp(cloudProps);
+                CloudManager.register(eventService);
 
-            context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> eventService.subscribe());
+                eventService.subscribe();
+            });
         }
     }
 
