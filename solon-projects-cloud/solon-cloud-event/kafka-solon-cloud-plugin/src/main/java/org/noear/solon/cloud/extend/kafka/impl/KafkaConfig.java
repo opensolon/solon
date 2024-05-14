@@ -35,7 +35,7 @@ public class KafkaConfig {
         return eventGroup;
     }
 
-    public KafkaConfig(CloudProps cloudProps){
+    public KafkaConfig(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         server = cloudProps.getEventServer();
@@ -53,15 +53,18 @@ public class KafkaConfig {
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         //发送ack级别（最高了）
         properties.put(ProducerConfig.ACKS_CONFIG, "all");
-        //重试次数  //幂等时要大于0
-        properties.put(ProducerConfig.RETRIES_CONFIG, 1);
+
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //默认是16384Bytes，即16kB
 
-        //开启幂等和事务
-        properties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-
-        if(forTran) {
+        if (forTran) {
+            //重试次数  //幂等时要大于0
+            properties.put(ProducerConfig.RETRIES_CONFIG, 1);
+            //开启幂等和事务
+            properties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
             properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, Utils.guid());
+        } else {
+            //重试次数
+            properties.put(ProducerConfig.RETRIES_CONFIG, 0);
         }
 
         //绑定定制属性
