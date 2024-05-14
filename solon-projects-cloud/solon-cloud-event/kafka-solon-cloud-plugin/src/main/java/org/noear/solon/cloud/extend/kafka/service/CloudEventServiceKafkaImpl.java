@@ -12,6 +12,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.kafka.impl.KafkaConfig;
+import org.noear.solon.cloud.extend.kafka.impl.KafkaTransactionListener;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -58,6 +59,9 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
 
             Properties properties = config.getProducerProperties();
             producer = new KafkaProducer<>(properties);
+
+            //支持事务
+            producer.initTransactions();
         } finally {
             Utils.locker().unlock();
         }
@@ -83,8 +87,16 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
     }
 
     private void beginTransaction(EventTran transaction) throws CloudEventException {
-        //不支持事务消息
-        log.warn("Event transactions are not supported!");
+        if (transaction.getListener(KafkaTransactionListener.class) != null) {
+            return;
+        }
+
+        try {
+            producer.beginTransaction();
+            transaction.setListener(new KafkaTransactionListener(producer));
+        } catch (Exception e) {
+            throw new CloudEventException(e);
+        }
     }
 
     @Override

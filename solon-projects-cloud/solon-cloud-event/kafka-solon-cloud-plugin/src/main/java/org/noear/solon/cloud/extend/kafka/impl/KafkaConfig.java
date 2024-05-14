@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 
 import java.util.Properties;
@@ -55,6 +56,7 @@ public class KafkaConfig {
         //重试次数
         properties.put(ProducerConfig.RETRIES_CONFIG, 0);
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //默认是16384Bytes，即16kB
+        properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, Utils.guid());
 
         //绑定定制属性
         Properties props = cloudProps.getEventProducerProps();
