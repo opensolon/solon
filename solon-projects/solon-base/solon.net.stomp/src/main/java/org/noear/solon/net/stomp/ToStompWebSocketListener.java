@@ -1,10 +1,11 @@
 package org.noear.solon.net.stomp;
 
 
-import org.noear.solon.net.stomp.impl.Commands;
-import org.noear.solon.net.stomp.impl.MessageImpl;
-import org.noear.solon.net.stomp.impl.StompListenerImpl;
-import org.noear.solon.net.stomp.impl.StompUtil;
+import org.noear.snack.core.utils.StringUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.stomp.impl.*;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -27,13 +28,23 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
     static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
 
     private List<StompListener> listenerList = new ArrayList<>();
+    private StompMessageOperations stompMessageOperations;
+    protected StompMessageSendingTemplate stompMessageSendingTemplate;
 
     public ToStompWebSocketListener() {
         this(null);
     }
 
     public ToStompWebSocketListener(StompListener listener) {
-        this.addListener(new StompListenerImpl(), listener);
+        ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
+        if(serverEndpoint == null || StringUtil.isEmpty(serverEndpoint.value())){
+            throw new RuntimeException("Path is not null");
+        }
+        this.stompMessageOperations = new StompMessageOperations();
+        this.stompMessageSendingTemplate = new StompMessageSendingTemplate(stompMessageOperations);
+        BeanWrap bw = Solon.context().wrap(StompMessageSendingTemplate.class, this.stompMessageSendingTemplate);
+        Solon.context().beanRegister(bw, serverEndpoint.value(), true);
+        this.addListener(new StompListenerImpl(stompMessageOperations, this.stompMessageSendingTemplate), listener);
     }
 
     public void addListener(StompListener... listeners) {
@@ -59,7 +70,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(Boolean.TRUE);
-        StompUtil.msgCodec.decode(text, msg -> {
+        stompMessageOperations.getMsgCodec().decode(text, msg -> {
             atomicBoolean.set(Boolean.FALSE);
             String command = msg.getCommand() == null ? "" : msg.getCommand();
             switch (command) {
@@ -118,7 +129,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
     }
 
     protected void doSend(WebSocket socket, Message message) {
-        StompUtil.send(socket, message);
+        stompMessageSendingTemplate.send(socket, message);
     }
 
     @Override
