@@ -234,6 +234,10 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             producer.close();
         }
 
+        if (producerTran != null) {
+            producerTran.close();
+        }
+
         if (consumer != null) {
             consumer.close();
         }
