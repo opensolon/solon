@@ -43,6 +43,7 @@
 * mybatis-flex 升为 1.8.9
 * sqltoy 升为 5.6.5.jre8
 * sa-token 升为 1.38.0
+* kafka 升为 3.7.0
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
