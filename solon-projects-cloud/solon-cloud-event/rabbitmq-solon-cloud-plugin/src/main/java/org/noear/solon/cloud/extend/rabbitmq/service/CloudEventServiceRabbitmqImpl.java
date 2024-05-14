@@ -35,7 +35,7 @@ public class CloudEventServiceRabbitmqImpl implements CloudEventServicePlus {
             RabbitConfig config = new RabbitConfig(cloudProps);
             factory = new RabbitChannelFactory(config);
 
-            Channel channel = factory.createChannel();
+            Channel channel = factory.createChannel(false);
 
             producer = new RabbitProducer(config, channel);
             consumer = new RabbitConsumer(config, channel, producer);
@@ -50,7 +50,7 @@ public class CloudEventServiceRabbitmqImpl implements CloudEventServicePlus {
         }
 
         try {
-            Channel channelTx = factory.createChannel();
+            Channel channelTx = factory.createChannel(true);
             channelTx.txSelect();
             transaction.setListener(new RabbitTransactionListener(channelTx));
         } catch (Exception e) {

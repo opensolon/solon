@@ -52,7 +52,7 @@ public class RabbitProducer {
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
 
-        if (config.publishTimeout > 0) {
+        if (config.publishTimeout > 0  && event.tran() == null) {
             return channel.waitForConfirms(config.publishTimeout);
         } else {
             return true;

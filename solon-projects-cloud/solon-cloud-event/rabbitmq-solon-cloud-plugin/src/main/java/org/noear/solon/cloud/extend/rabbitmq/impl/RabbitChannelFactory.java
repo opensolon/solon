@@ -57,13 +57,13 @@ public class RabbitChannelFactory {
     /**
      * 创建通道
      */
-    public Channel createChannel() throws IOException, TimeoutException {
+    public Channel createChannel(boolean forTran) throws IOException, TimeoutException {
         Channel channel = connection.createChannel();
 
-        return initChannel(channel);
+        return initChannel(channel, forTran);
     }
 
-    private Channel initChannel(Channel channel) throws IOException {
+    private Channel initChannel(Channel channel, boolean forTran) throws IOException {
         //for exchange
         channel.exchangeDeclare(config.exchangeName,
                 config.exchangeType,
@@ -72,7 +72,7 @@ public class RabbitChannelFactory {
                 config.internal, new HashMap<>());
 
         //for producer
-        if (config.publishTimeout > 0) {
+        if (config.publishTimeout > 0 && forTran == false) {
             channel.confirmSelect(); //申明需要发布确认（以提高可靠性）
         }
 
