@@ -50,14 +50,14 @@ public abstract class DbTranNode implements TranNode {
     /**
      * 回滚
      * */
-    public void rollback() throws Throwable {
+    public void rollback() {
         //确保每个子处事，都有机会回滚
         //
         for (DbTranNode n1 : children) {
             try {
                 n1.rollback();
             } catch (Throwable e) {
-                log.warn(e.getMessage(), e);
+                log.warn("Rollback failure", e);
             }
         }
     }

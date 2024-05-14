@@ -117,10 +117,14 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     @Override
-    public void rollback() throws Throwable {
+    public void rollback() {
         super.rollback();
         for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
-            kv.getValue().rollback();
+            try {
+                kv.getValue().rollback();
+            }catch (Throwable e) {
+                log.warn("Rollback failure", e);
+            }
         }
 
         //回滚后
