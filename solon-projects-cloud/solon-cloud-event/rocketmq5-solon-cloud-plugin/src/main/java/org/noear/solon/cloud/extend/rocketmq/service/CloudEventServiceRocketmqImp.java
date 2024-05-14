@@ -12,7 +12,7 @@ import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqTransactionListener;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
@@ -37,7 +37,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus, Clos
         consumer = new RocketmqConsumer(config);
     }
 
-    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+    private void beginTransaction(EventTran transaction) throws CloudEventException {
         if (transaction.getListener(RocketmqTransactionListener.class) != null) {
             return;
         }
@@ -63,8 +63,8 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus, Clos
             event.key(Utils.guid());
         }
 
-        if(event.transaction() != null){
-            beginTransaction(event.transaction());
+        if(event.tran() != null){
+            beginTransaction(event.tran());
         }
 
         //new topic

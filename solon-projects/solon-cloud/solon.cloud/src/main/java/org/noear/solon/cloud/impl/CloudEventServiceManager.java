@@ -1,8 +1,6 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.CloudEventInterceptor;
-import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
@@ -14,10 +12,6 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @since 1.3
  */
 public interface CloudEventServiceManager extends CloudEventService {
-    /**
-     * 新建事务
-     */
-    EventTransaction newTransaction();
 
     /**
      * 获取事件拦截器

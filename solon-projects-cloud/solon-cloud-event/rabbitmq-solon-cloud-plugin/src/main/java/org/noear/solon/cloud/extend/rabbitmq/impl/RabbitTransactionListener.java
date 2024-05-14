@@ -1,13 +1,13 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
-import org.noear.solon.cloud.model.EventTransactionListener;
+import org.noear.solon.cloud.model.EventTranListener;
 
 /**
  * @author noear
  * @since 2.8
  */
-public class RabbitTransactionListener implements EventTransactionListener {
+public class RabbitTransactionListener implements EventTranListener {
     private Channel transaction;
 
     public Channel getTransaction() {

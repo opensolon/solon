@@ -20,7 +20,7 @@ public class Event implements Serializable {
     private transient String channel;
     private transient int qos = 1;
     private transient boolean retained = false;
-    private transient EventTransaction transaction;
+    private transient EventTran tran;
 
     public Event() {
         //序列化需要
@@ -39,15 +39,15 @@ public class Event implements Serializable {
     /**
      * 获取事务
      */
-    public EventTransaction transaction() {
-        return transaction;
+    public EventTran tran() {
+        return tran;
     }
 
     /**
      * 配置事务
      */
-    public Event transaction(EventTransaction transaction) {
-        this.transaction = transaction;
+    public Event tran(EventTran tran) {
+        this.tran = tran;
         return this;
     }
 

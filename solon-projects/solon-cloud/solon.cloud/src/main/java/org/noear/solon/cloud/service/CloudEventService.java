@@ -4,6 +4,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventTran;
 
 /**
  * 云端事件服务（事件总线服务）
@@ -12,6 +13,13 @@ import org.noear.solon.cloud.model.Event;
  * @since 1.2
  */
 public interface CloudEventService {
+    /**
+     * 新建事务
+     */
+    default EventTran newTransaction(){
+        return new EventTran();
+    }
+
     /**
      * 发布事件
      *

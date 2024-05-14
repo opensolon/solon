@@ -65,10 +65,10 @@ public class ActivemqProducer {
         //创建会话
         Session session = null;
 
-        if (event.transaction() == null) {
+        if (event.tran() == null) {
             session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         } else {
-            session = event.transaction().getListener(ActivemqTransactionListener.class).getTransaction();
+            session = event.tran().getListener(ActivemqTransactionListener.class).getTransaction();
         }
 
         //创建一个目标

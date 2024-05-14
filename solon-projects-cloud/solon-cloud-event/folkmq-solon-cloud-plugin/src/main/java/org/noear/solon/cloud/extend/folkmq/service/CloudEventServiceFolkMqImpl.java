@@ -12,7 +12,7 @@ import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqConsumeHandler;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqTransactionListener;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -70,7 +70,7 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
     }
 
 
-    private void beginTransaction(EventTransaction transaction) {
+    private void beginTransaction(EventTran transaction) {
         if (transaction.getListener(FolkmqTransactionListener.class) != null) {
             return;
         }
@@ -88,8 +88,8 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
-        if (event.transaction() != null) {
-            beginTransaction(event.transaction());
+        if (event.tran() != null) {
+            beginTransaction(event.tran());
         }
 
         //new topic
@@ -100,8 +100,8 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
                     .tag(event.tags())
                     .qos(event.qos());
 
-            if (event.transaction() != null) {
-                MqTransaction transaction = event.transaction().getListener(FolkmqTransactionListener.class).getTransaction();
+            if (event.tran() != null) {
+                MqTransaction transaction = event.tran().getListener(FolkmqTransactionListener.class).getTransaction();
                 message.transaction(transaction);
             }
 

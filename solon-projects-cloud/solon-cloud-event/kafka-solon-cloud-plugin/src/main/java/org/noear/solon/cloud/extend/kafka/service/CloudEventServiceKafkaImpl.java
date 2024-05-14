@@ -13,7 +13,7 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.kafka.impl.KafkaConfig;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -82,7 +82,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
         }
     }
 
-    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+    private void beginTransaction(EventTran transaction) throws CloudEventException {
         //不支持事务消息
         log.warn("Message transactions are not supported!");
     }
@@ -95,8 +95,8 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             event.key(Utils.guid());
         }
 
-        if(event.transaction() != null){
-            beginTransaction(event.transaction());
+        if(event.tran() != null){
+            beginTransaction(event.tran());
         }
 
         Future<RecordMetadata> future = producer.send(new ProducerRecord<>(event.topic(), event.key(), event.content()));

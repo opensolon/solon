@@ -11,7 +11,7 @@ import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
         consumer = new RocketmqConsumer(config);
     }
 
-    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+    private void beginTransaction(EventTran transaction) throws CloudEventException {
         //4.0的事务与本地事务耦合太高，不好适配
         log.warn("Message transactions are not supported!");
     }
@@ -56,8 +56,8 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
-        if (event.transaction() == null) {
-            beginTransaction(event.transaction());
+        if (event.tran() == null) {
+            beginTransaction(event.tran());
         }
 
         //new topic

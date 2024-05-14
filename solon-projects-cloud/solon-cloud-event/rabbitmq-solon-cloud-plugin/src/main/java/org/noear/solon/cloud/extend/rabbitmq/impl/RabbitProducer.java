@@ -44,10 +44,10 @@ public class RabbitProducer {
         }
 
         Channel channel = null;
-        if (event.transaction() == null) {
+        if (event.tran() == null) {
             channel = channelDefault;
         } else {
-            channel = event.transaction().getListener(RabbitTransactionListener.class).getTransaction();
+            channel = event.tran().getListener(RabbitTransactionListener.class).getTransaction();
         }
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);

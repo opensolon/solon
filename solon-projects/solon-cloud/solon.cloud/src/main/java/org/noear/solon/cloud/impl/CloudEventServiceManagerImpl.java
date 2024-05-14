@@ -7,7 +7,6 @@ import org.noear.solon.cloud.CloudEventInterceptor;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
@@ -28,11 +27,6 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
         Solon.context().getBeanAsync(CloudEventInterceptor.class, bean -> {
             eventInterceptor = bean;
         });
-    }
-
-    @Override
-    public EventTransaction newTransaction() {
-        return new EventTransaction();
     }
 
     /**

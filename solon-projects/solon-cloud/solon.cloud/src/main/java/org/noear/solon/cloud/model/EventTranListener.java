@@ -6,7 +6,7 @@ package org.noear.solon.cloud.model;
  * @author noear
  * @since 2.9
  */
-public interface EventTransactionListener {
+public interface EventTranListener {
     /**
      * 事务提交时
      */

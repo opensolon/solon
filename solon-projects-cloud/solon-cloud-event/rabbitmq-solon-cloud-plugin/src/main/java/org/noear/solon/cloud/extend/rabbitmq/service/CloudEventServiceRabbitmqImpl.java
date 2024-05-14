@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.rabbitmq.service;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -10,7 +9,7 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.extend.rabbitmq.impl.*;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class CloudEventServiceRabbitmqImpl implements CloudEventServicePlus {
         }
     }
 
-    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
+    private void beginTransaction(EventTran transaction) throws CloudEventException {
         if (transaction.getListener(RabbitTransactionListener.class) != null) {
             return;
         }
@@ -73,8 +72,8 @@ public class CloudEventServiceRabbitmqImpl implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
-        if(event.transaction()!=null){
-            beginTransaction(event.transaction());
+        if(event.tran()!=null){
+            beginTransaction(event.tran());
         }
 
         //new topic

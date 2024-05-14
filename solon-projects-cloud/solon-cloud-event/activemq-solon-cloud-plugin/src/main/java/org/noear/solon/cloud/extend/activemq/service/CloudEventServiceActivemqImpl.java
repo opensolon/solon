@@ -12,7 +12,7 @@ import org.noear.solon.cloud.extend.activemq.impl.ActivemqConsumer;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqProducer;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqTransactionListener;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventTransaction;
+import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
@@ -22,13 +22,13 @@ import org.slf4j.LoggerFactory;
  * @author liuxuehua12
  * @since 2.0
  */
-public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
-    static Logger log = LoggerFactory.getLogger(CloudEventServiceActivemqImp.class);
+public class CloudEventServiceActivemqImpl implements CloudEventServicePlus {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceActivemqImpl.class);
     private CloudProps cloudProps;
     private ActivemqProducer producer;
     private ActivemqConsumer consumer;
 
-    public CloudEventServiceActivemqImp(CloudProps cloudProps) {
+    public CloudEventServiceActivemqImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         ActiveMQConnectionFactory factory = null;
@@ -60,8 +60,8 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         consumer = new ActivemqConsumer(factory, producer);
     }
 
-    private void beginTransaction(EventTransaction transaction) throws CloudEventException {
-        if(transaction.getListener(ActivemqTransactionListener.class) != null){
+    private void beginTransaction(EventTran transaction) throws CloudEventException {
+        if (transaction.getListener(ActivemqTransactionListener.class) != null) {
             return;
         }
 
@@ -86,8 +86,9 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
-        if(event.transaction()!=null){
-            beginTransaction(event.transaction());
+        if (event.tran() != null) {
+            //如果有事务
+            beginTransaction(event.tran());
         }
 
         //new topic

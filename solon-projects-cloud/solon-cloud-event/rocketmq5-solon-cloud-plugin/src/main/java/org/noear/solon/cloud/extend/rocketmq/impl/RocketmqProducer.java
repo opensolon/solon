@@ -25,7 +25,7 @@ public class RocketmqProducer implements Closeable {
         this.config = config;
     }
 
-    private void init(CloudProps cloudProps) throws ClientException {
+    private void lazyInit(CloudProps cloudProps) throws ClientException {
         if (producer != null) {
             return;
         }
@@ -75,7 +75,7 @@ public class RocketmqProducer implements Closeable {
     }
 
     public boolean publish(CloudProps cloudProps, Event event, String topic) throws ClientException {
-        init(cloudProps);
+        lazyInit(cloudProps);
 
         //普通消息发送。
         Message message = MessageUtil.buildNewMeaage(serviceProvider, event, topic);
@@ -83,10 +83,10 @@ public class RocketmqProducer implements Closeable {
         //发送消息，需要关注发送结果，并捕获失败等异常。
         SendReceipt sendReceipt = null;
 
-        if (event.transaction() == null) {
+        if (event.tran() == null) {
             sendReceipt = producer.send(message);
         } else {
-            Transaction transaction = event.transaction().getListener(RocketmqTransactionListener.class).getTransaction();
+            Transaction transaction = event.tran().getListener(RocketmqTransactionListener.class).getTransaction();
             sendReceipt = producer.send(message, transaction);
         }
 

@@ -2,7 +2,6 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.acl.common.AclClientRPCHook;
 import org.apache.rocketmq.acl.common.SessionCredentials;
-import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -29,7 +28,7 @@ public class RocketmqProducer {
         this.config = config;
     }
 
-    private void init(CloudProps cloudProps) throws MQClientException {
+    private void lazyInit(CloudProps cloudProps) throws MQClientException {
         if (producer != null) {
             return;
         }
@@ -78,7 +77,7 @@ public class RocketmqProducer {
     }
 
     public boolean publish(CloudProps cloudProps, Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException {
-        init(cloudProps);
+        lazyInit(cloudProps);
 
         Message message = MessageUtil.buildNewMeaage(event, topic);
 
