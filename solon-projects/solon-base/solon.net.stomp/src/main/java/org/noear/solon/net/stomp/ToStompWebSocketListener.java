@@ -4,6 +4,7 @@ package org.noear.solon.net.stomp;
 import org.noear.snack.core.utils.StringUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.impl.*;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -30,18 +31,19 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
     private StompMessageOperations stompMessageOperations;
     protected StompMessageSendingTemplate stompMessageSendingTemplate;
 
-    public ToStompWebSocketListener(String path) {
-        this(path, null);
+    public ToStompWebSocketListener() {
+        this(null);
     }
 
-    public ToStompWebSocketListener(String path, StompListener listener) {
-        if(StringUtil.isEmpty(path)){
+    public ToStompWebSocketListener(StompListener listener) {
+        ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
+        if(serverEndpoint == null || StringUtil.isEmpty(serverEndpoint.value())){
             throw new RuntimeException("Path is not null");
         }
         this.stompMessageOperations = new StompMessageOperations();
         this.stompMessageSendingTemplate = new StompMessageSendingTemplate(stompMessageOperations);
         BeanWrap bw = Solon.context().wrap(StompMessageSendingTemplate.class, this.stompMessageSendingTemplate);
-        Solon.context().beanRegister(bw, path, true);
+        Solon.context().beanRegister(bw, serverEndpoint.value(), true);
         this.addListener(new StompListenerImpl(stompMessageOperations, this.stompMessageSendingTemplate), listener);
     }
 

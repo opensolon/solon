@@ -25,7 +25,7 @@ public class ChatToStompWebSocketListener extends ToStompWebSocketListener {
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     public ChatToStompWebSocketListener() {
-        super("/chat");
+        super();
         //此处仅为示例，实际按需扩展，可以不添加
         Solon.context().getBeanAsync(CustomStompListenerImpl.class, bean -> {
             this.addListener(bean);
