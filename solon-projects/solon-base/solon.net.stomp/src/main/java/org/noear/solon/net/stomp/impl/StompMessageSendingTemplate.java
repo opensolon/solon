@@ -6,9 +6,9 @@ import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * stomp 处理工具类
@@ -16,24 +16,19 @@ import java.util.regex.Pattern;
  * @author limliu
  * @since 2.7
  */
-public abstract class StompUtil {
+public final class StompMessageSendingTemplate {
 
     /**
-     * session存放
+     *
      */
-    public final static Map<String, WebSocket> WEB_SOCKET_MAP = new ConcurrentHashMap<>();
+    private StompMessageOperations stompMessageOperations;
 
     /**
-     * 地址与session映射
+     * @param stompMessageOperations
      */
-    public final static Set<DestinationInfo> DESTINATION_INFO_SET = new HashSet<>();
-
-    /**
-     * 地址匹配正则
-     */
-    public final static ConcurrentHashMap<String, Pattern> DESTINATION_MATCH = new ConcurrentHashMap<>();
-
-    public final static MessageCodec msgCodec = new MessageCodecImpl();
+    public StompMessageSendingTemplate(StompMessageOperations stompMessageOperations) {
+        this.stompMessageOperations = stompMessageOperations;
+    }
 
     /**
      * 指定链接发送消息
@@ -41,10 +36,10 @@ public abstract class StompUtil {
      * @param webSocket
      * @param message
      */
-    public static void send(WebSocket webSocket, Message message) {
+    public void send(WebSocket webSocket, Message message) {
         try {
             if (webSocket.isValid()) {
-                webSocket.send(ByteBuffer.wrap(msgCodec.encode(message).getBytes(StandardCharsets.UTF_8)));
+                webSocket.send(ByteBuffer.wrap(stompMessageOperations.getMsgCodec().encode(message).getBytes(StandardCharsets.UTF_8)));
             }
         } finally {
             if (!webSocket.isValid()) {
@@ -59,7 +54,7 @@ public abstract class StompUtil {
      * @param destination
      * @param payload
      */
-    public static void send(String destination, String payload) {
+    public void send(String destination, String payload) {
         send(destination, payload, null, null);
     }
 
@@ -70,7 +65,7 @@ public abstract class StompUtil {
      * @param payload
      * @param headers
      */
-    public static void send(String destination, String payload, List<Header> headers) {
+    public void send(String destination, String payload, List<Header> headers) {
         send(destination, payload, null, headers);
     }
 
@@ -81,7 +76,7 @@ public abstract class StompUtil {
      * @param payload
      * @param contentType
      */
-    public static void send(String destination, String payload, String contentType) {
+    public void send(String destination, String payload, String contentType) {
         send(destination, payload, contentType, null);
     }
 
@@ -93,11 +88,11 @@ public abstract class StompUtil {
      * @param contentType 消息类型
      * @param headers     消息head信息
      */
-    public static void send(String destination, String payload, String contentType, List<Header> headers) {
-        StompUtil.DESTINATION_INFO_SET.parallelStream().filter(destinationInfo -> {
-            return StompUtil.DESTINATION_MATCH.get(destinationInfo.getDestination()).matcher(destination).matches();
+    public void send(String destination, String payload, String contentType, List<Header> headers) {
+        stompMessageOperations.getDestinationInfoSet().parallelStream().filter(destinationInfo -> {
+            return stompMessageOperations.getDestinationMatch().get(destinationInfo.getDestination()).matcher(destination).matches();
         }).forEach(destinationInfo -> {
-            WebSocket sendSocket = StompUtil.WEB_SOCKET_MAP.get(destinationInfo.getSessionId());
+            WebSocket sendSocket = stompMessageOperations.getWebSocketMap().get(destinationInfo.getSessionId());
             if (sendSocket == null) {
                 return;
             }
@@ -113,7 +108,7 @@ public abstract class StompUtil {
      * @param payload
      * @return
      */
-    public static Message transform(String command, String destination, String payload) {
+    public Message transform(String command, String destination, String payload) {
         return transform(command, destination, payload, null, null);
     }
 
@@ -126,7 +121,7 @@ public abstract class StompUtil {
      * @param contentType
      * @return
      */
-    public static Message transform(String command, String destination, String payload, String contentType) {
+    public Message transform(String command, String destination, String payload, String contentType) {
         return transform(command, destination, payload, contentType, null);
     }
 
@@ -139,7 +134,7 @@ public abstract class StompUtil {
      * @param headers
      * @return
      */
-    public static Message transform(String command, String destination, String payload, List<Header> headers) {
+    public Message transform(String command, String destination, String payload, List<Header> headers) {
         return transform(command, destination, payload, null, headers);
     }
 
@@ -153,7 +148,7 @@ public abstract class StompUtil {
      * @param headers
      * @return
      */
-    public static Message transform(String command, String destination, String payload, String contentType, List<Header> headers) {
+    public Message transform(String command, String destination, String payload, String contentType, List<Header> headers) {
         Message replyMessage = new MessageImpl(command, payload);
         if (contentType != null && contentType.length() > 0) {
             replyMessage.addHeader(Header.CONTENT_TYPE, contentType);
@@ -164,6 +159,4 @@ public abstract class StompUtil {
         }
         return replyMessage;
     }
-
-
 }
