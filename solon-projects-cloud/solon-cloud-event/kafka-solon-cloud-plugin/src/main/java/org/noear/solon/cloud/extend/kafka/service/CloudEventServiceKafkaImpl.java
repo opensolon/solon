@@ -39,6 +39,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
 
     private final KafkaConfig config;
     private KafkaProducer<String, String> producer;
+    private KafkaProducer<String, String> producerTran;
     private KafkaConsumer<String, String> consumer;
 
     public CloudEventServiceKafkaImpl(CloudProps cloudProps) {
@@ -57,11 +58,11 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
                 return;
             }
 
-            Properties properties = config.getProducerProperties();
-            producer = new KafkaProducer<>(properties);
+            producer = new KafkaProducer<>(config.getProducerProperties(false));
 
             //支持事务
-            producer.initTransactions();
+            producerTran= new KafkaProducer<>(config.getProducerProperties(true));
+            producerTran.initTransactions();
         } finally {
             Utils.locker().unlock();
         }
@@ -92,8 +93,8 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
         }
 
         try {
-            producer.beginTransaction();
-            transaction.setListener(new KafkaTransactionListener(producer));
+            producerTran.beginTransaction();
+            transaction.setListener(new KafkaTransactionListener(producerTran));
         } catch (Exception e) {
             throw new CloudEventException(e);
         }
@@ -107,11 +108,19 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             event.key(Utils.guid());
         }
 
-        if(event.tran() != null){
+        if (event.tran() != null) {
             beginTransaction(event.tran());
         }
 
-        Future<RecordMetadata> future = producer.send(new ProducerRecord<>(event.topic(), event.key(), event.content()));
+        Future<RecordMetadata> future = null;
+
+        ProducerRecord<String, String> record = new ProducerRecord<>(event.topic(), event.key(), event.content());
+        if (event.tran() == null) {
+            future = producer.send(record);
+        } else {
+            future = producerTran.send(record);
+        }
+
         if (config.getPublishTimeout() > 0 && event.qos() > 0) {
             try {
                 future.get(config.getPublishTimeout(), TimeUnit.MILLISECONDS);

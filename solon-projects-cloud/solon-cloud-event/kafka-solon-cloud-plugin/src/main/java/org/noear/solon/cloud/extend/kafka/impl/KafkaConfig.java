@@ -45,7 +45,7 @@ public class KafkaConfig {
         eventGroup = cloudProps.getEventGroup();
     }
 
-    public Properties getProducerProperties() {
+    public Properties getProducerProperties(boolean forTran) {
         Properties properties = new Properties();
 
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
@@ -53,10 +53,16 @@ public class KafkaConfig {
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         //发送ack级别（最高了）
         properties.put(ProducerConfig.ACKS_CONFIG, "all");
-        //重试次数
-        properties.put(ProducerConfig.RETRIES_CONFIG, 0);
+        //重试次数  //幂等时要大于0
+        properties.put(ProducerConfig.RETRIES_CONFIG, 1);
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //默认是16384Bytes，即16kB
-        properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, Utils.guid());
+
+        //开启幂等和事务
+        properties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+
+        if(forTran) {
+            properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, Utils.guid());
+        }
 
         //绑定定制属性
         Properties props = cloudProps.getEventProducerProps();
@@ -78,7 +84,7 @@ public class KafkaConfig {
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
-        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 100);
+        //properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 5000);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         //绑定定制属性
