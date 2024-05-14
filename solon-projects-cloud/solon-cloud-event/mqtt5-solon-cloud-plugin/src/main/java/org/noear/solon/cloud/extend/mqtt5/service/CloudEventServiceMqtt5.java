@@ -49,7 +49,7 @@ public class CloudEventServiceMqtt5 implements CloudEventServicePlus {
 
     private void beginTransaction(EventTran transaction) throws CloudEventException {
         //不支持事务消息
-        log.warn("Message transactions are not supported!");
+        log.warn("Event transactions are not supported!");
     }
 
     @Override

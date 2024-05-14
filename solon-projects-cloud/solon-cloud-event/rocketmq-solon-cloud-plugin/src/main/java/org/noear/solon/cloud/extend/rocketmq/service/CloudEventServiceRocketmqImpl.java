@@ -39,7 +39,7 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
 
     private void beginTransaction(EventTran transaction) throws CloudEventException {
         //4.0的事务与本地事务耦合太高，不好适配
-        log.warn("Message transactions are not supported!");
+        log.warn("Event transactions are not supported!");
     }
 
     @Override
