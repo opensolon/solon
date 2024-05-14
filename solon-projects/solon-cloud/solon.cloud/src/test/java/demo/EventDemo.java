@@ -26,9 +26,7 @@ public class EventDemo {
 
     @Tran
     public void event_and_jdbc() {
-        EventTran eventTran = CloudClient.event().newTran();
-        TranUtils.listen(eventTran); //通过监听器，交由 @Tran 管理
-
+        EventTran eventTran = CloudClient.event().newTranAndJoin(); //加入 @Tran 管理
 
         CloudClient.event().publish(new Event("demo.event", "test1").tran(eventTran));
         CloudClient.event().publish(new Event("demo.event", "test2").tran(eventTran));
