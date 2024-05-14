@@ -16,7 +16,7 @@ public interface CloudEventService {
     /**
      * 新建事务
      */
-    default EventTran newTransaction(){
+    default EventTran newTran(){
         return new EventTran();
     }
 

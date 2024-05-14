@@ -11,7 +11,7 @@ import org.noear.solon.data.tran.TranUtils;
  */
 public class EventDemo {
     public void event_only() {
-        EventTran eventTran = CloudClient.event().newTransaction();
+        EventTran eventTran = CloudClient.event().newTran();
 
         try {
             CloudClient.event().publish(new Event("demo.event", "test1").tran(eventTran));
@@ -26,7 +26,7 @@ public class EventDemo {
 
     @Tran
     public void event_and_jdbc() {
-        EventTran eventTran = CloudClient.event().newTransaction();
+        EventTran eventTran = CloudClient.event().newTran();
         TranUtils.listen(eventTran); //通过监听器，交由 @Tran 管理
 
 

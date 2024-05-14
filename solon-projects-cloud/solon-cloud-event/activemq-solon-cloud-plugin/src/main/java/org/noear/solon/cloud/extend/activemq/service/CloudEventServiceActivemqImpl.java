@@ -60,13 +60,13 @@ public class CloudEventServiceActivemqImpl implements CloudEventServicePlus {
         consumer = new ActivemqConsumer(factory, producer);
     }
 
-    private void beginTransaction(EventTran transaction) throws CloudEventException {
-        if (transaction.getListener(ActivemqTransactionListener.class) != null) {
+    private void beginTransaction(EventTran eventTran) throws CloudEventException {
+        if (eventTran.getListener(ActivemqTransactionListener.class) != null) {
             return;
         }
 
         try {
-            transaction.setListener(new ActivemqTransactionListener(producer.beginTransaction()));
+            eventTran.setListener(new ActivemqTransactionListener(producer.beginTransaction()));
         } catch (Exception e) {
             throw new CloudEventException(e);
         }
