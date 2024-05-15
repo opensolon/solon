@@ -38,7 +38,11 @@ public class RocketmqConfig {
     //设置消息消费失败的最大重试次数，0表示默认
     private final int maxReconsumeTimes;
 
+    private final CloudProps cloudProps;
+
     public RocketmqConfig(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
         server = cloudProps.getEventServer();
         channelName = cloudProps.getEventChannel();
         namespace = cloudProps.getNamespace();
@@ -67,6 +71,10 @@ public class RocketmqConfig {
 
         log.trace("producerGroup=" + producerGroup);
         log.trace("consumerGroup=" + consumerGroup);
+    }
+
+    public CloudProps getCloudProps() {
+        return cloudProps;
     }
 
     /**

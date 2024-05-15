@@ -11,7 +11,6 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Event;
 
 import java.util.Properties;
@@ -28,7 +27,7 @@ public class RocketmqProducer {
         this.config = config;
     }
 
-    private void lazyInit(CloudProps cloudProps) throws MQClientException {
+    private void lazyInit() throws MQClientException {
         if (producer != null) {
             return;
         }
@@ -65,7 +64,7 @@ public class RocketmqProducer {
             producer.setRetryTimesWhenSendFailed(2);
 
             //绑定定制属性
-            Properties props = cloudProps.getEventProducerProps();
+            Properties props = config.getCloudProps().getEventProducerProps();
             if (props.size() > 0) {
                 Utils.injectProperties(producer, props);
             }
@@ -76,8 +75,8 @@ public class RocketmqProducer {
         }
     }
 
-    public boolean publish(CloudProps cloudProps, Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException {
-        lazyInit(cloudProps);
+    public boolean publish(Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException {
+        lazyInit();
 
         Message message = MessageUtil.buildNewMeaage(event, topic);
 

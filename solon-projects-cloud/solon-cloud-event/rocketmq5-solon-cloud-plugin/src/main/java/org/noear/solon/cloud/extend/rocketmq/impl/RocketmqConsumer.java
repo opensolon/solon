@@ -5,7 +5,6 @@ import org.apache.rocketmq.client.apis.consumer.FilterExpression;
 import org.apache.rocketmq.client.apis.consumer.PushConsumer;
 import org.apache.rocketmq.client.apis.consumer.PushConsumerBuilder;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class RocketmqConsumer implements Closeable {
         this.config = config;
     }
 
-    public void init(CloudProps cloudProps, CloudEventObserverManger observerManger) throws ClientException {
+    public void init(CloudEventObserverManger observerManger) throws ClientException {
         if (consumer != null) {
             return;
         }

@@ -78,7 +78,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus, Clos
         topicNew = topicNew.replace(".", "_");
 
         try {
-            return producer.publish(cloudProps, event, topicNew);
+            return producer.publish(event, topicNew);
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
@@ -109,7 +109,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus, Clos
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
             try {
-                consumer.init(cloudProps, observerManger);
+                consumer.init(observerManger);
             } catch (ClientException e) {
                 throw new IllegalStateException(e);
             }

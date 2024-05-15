@@ -25,7 +25,7 @@ public class RocketmqProducer implements Closeable {
         this.config = config;
     }
 
-    private void lazyInit(CloudProps cloudProps) throws ClientException {
+    private void lazyInit() throws ClientException {
         if (producer != null) {
             return;
         }
@@ -60,9 +60,11 @@ public class RocketmqProducer implements Closeable {
             ProducerBuilder producerBuilder = serviceProvider.newProducerBuilder()
                     .setClientConfiguration(configuration);
 
-            Solon.context().getBeanAsync(TransactionChecker.class, bean -> {
-                producerBuilder.setTransactionChecker(bean);
-            });
+            TransactionChecker transactionChecker = Solon.context().getBean(TransactionChecker.class);
+            if(transactionChecker == null){
+                transactionChecker = new RocketmqTransactionCheckerDefault();
+            }
+            producerBuilder.setTransactionChecker(transactionChecker);
 
             producer = producerBuilder.build();
 
@@ -72,11 +74,13 @@ public class RocketmqProducer implements Closeable {
     }
 
     public Transaction beginTransaction() throws ClientException {
+        lazyInit();
+
         return producer.beginTransaction();
     }
 
-    public boolean publish(CloudProps cloudProps, Event event, String topic) throws ClientException {
-        lazyInit(cloudProps);
+    public boolean publish(Event event, String topic) throws ClientException {
+        lazyInit();
 
         //普通消息发送。
         Message message = MessageUtil.buildNewMeaage(serviceProvider, event, topic);

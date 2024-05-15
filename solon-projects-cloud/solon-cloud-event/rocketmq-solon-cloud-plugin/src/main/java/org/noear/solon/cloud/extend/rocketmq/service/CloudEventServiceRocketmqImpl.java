@@ -71,7 +71,7 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
         topicNew = topicNew.replace(".", "_");
 
         try {
-            return producer.publish(cloudProps, event, topicNew);
+            return producer.publish(event, topicNew);
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
