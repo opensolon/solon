@@ -4,7 +4,7 @@
 Solon v2.8.2
 </h1>
 <p align="center">
-	<strong>Java 新的应用开发框架，更快、更小、更简单！</strong>
+	<strong>Java “新的”应用开发框架，更快、更小、更简单！</strong>
     <br/>
     <strong>【开放原子开源基金会，孵化项目】</strong>
 </p>
