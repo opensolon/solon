@@ -42,13 +42,14 @@ public class RocketmqProducer implements Closeable {
 
             ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
 
+
             //服务地址
             builder.setEndpoints(config.getServer());
+
             //账号密码
             if (Utils.isNotEmpty(config.getAccessKey())) {
                 builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
             }
-
             //发送超时时间，默认3000 单位ms
             if (config.getTimeout() > 0) {
                 builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));

@@ -29,7 +29,6 @@ public class RocketmqConsumer implements Closeable {
 
     ClientServiceProvider serviceProvider;
     private PushConsumer consumer;
-    private RocketmqConsumerHandler handler;
 
     public RocketmqConsumer(RocketmqConfig config) {
         this.config = config;
@@ -57,7 +56,6 @@ public class RocketmqConsumer implements Closeable {
             if (Utils.isNotEmpty(config.getAccessKey())) {
                 builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
             }
-
             //发送超时时间，默认3000 单位ms
             if (config.getTimeout() > 0) {
                 builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));
@@ -80,7 +78,7 @@ public class RocketmqConsumer implements Closeable {
                     subscriptionExpressions.put(topic, new FilterExpression(tagsExpr));
                 }
 
-                log.trace("Rocketmq5 consumer subscribe [" + topic + "(" + tagsExpr + ")] ok!");
+                log.trace("Rocketmq5 consumer will subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
 
             PushConsumerBuilder consumerBuilder = serviceProvider.newPushConsumerBuilder();
@@ -89,13 +87,12 @@ public class RocketmqConsumer implements Closeable {
             //消费组
             consumerBuilder.setConsumerGroup(config.getConsumerGroup());
             //监听
-            handler = new RocketmqConsumerHandler(config, observerManger);
-            consumerBuilder.setMessageListener(handler);
+            consumerBuilder.setMessageListener(new RocketmqConsumerHandler(config, observerManger));
             //订阅
             if (subscriptionExpressions.size() > 0) {
                 consumerBuilder.setSubscriptionExpressions(subscriptionExpressions);
             }
-
+            //消费线程数
             if (config.getConsumeThreadNums() > 0) {
                 consumerBuilder.setConsumptionThreadCount(config.getConsumeThreadNums());
             }
