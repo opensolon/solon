@@ -86,7 +86,7 @@ public class KafkaConfig {
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-        //隔离级别
+        //隔离级别（消息事务配套的）
         properties.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
         properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 5000);
