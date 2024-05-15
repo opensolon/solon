@@ -56,7 +56,7 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
-        if (event.tran() == null) {
+        if (event.tran() != null) {
             beginTransaction(event.tran());
         }
 

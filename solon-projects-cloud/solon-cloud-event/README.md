@@ -4,4 +4,4 @@
 * activemq
 * folkmq
 * rabbitmq
-* rocketmq5
+* rocketmq5（只能1条）
