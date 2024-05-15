@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.8.0-M7
+Solon v2.8.0
 </h1>
 <p align="center">
 	<strong>Новая система разработки приложений Java, быстрее, меньше и проще!</strong>

@@ -44,6 +44,8 @@
 * sqltoy 升为 5.6.5.jre8
 * sa-token 升为 1.38.0
 * kafka 升为 3.7.0
+* water 升为 2.13.2
+* luffy 升为 1.7.5
 
 ### 2.7.6
 * 新增 solon-docs-openapi2-javadoc 插件
