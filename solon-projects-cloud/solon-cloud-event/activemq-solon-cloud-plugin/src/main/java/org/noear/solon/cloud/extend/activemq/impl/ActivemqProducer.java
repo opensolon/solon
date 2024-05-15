@@ -43,8 +43,6 @@ public class ActivemqProducer {
      * 发布事件
      */
     public boolean publish(Event event, String topic) throws Exception {
-        init();
-
         long delay = 0;
         if (event.scheduled() != null) {
             delay = event.scheduled().getTime() - System.currentTimeMillis();
@@ -58,10 +56,14 @@ public class ActivemqProducer {
     }
 
     public Session beginTransaction() throws JMSException {
+        init();
+
         return connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
     }
 
     public boolean publish(Event event, String topic, long delay) throws JMSException {
+        init();
+
         //创建会话
         Session session = null;
 
