@@ -26,7 +26,10 @@ public interface CloudEventService {
      */
     default EventTran newTranAndJoin() {
         EventTran tran = newTran();
-        TranUtils.listen(tran);
+        if (TranUtils.inTrans()) {
+            TranUtils.listen(tran);
+        }
+
         return tran;
     }
 
