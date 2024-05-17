@@ -142,7 +142,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
 
     public void subscribe() {
         //订阅
-        if (observerManger.topicSize() > 0) {
+        if (consumerThread == null && observerManger.topicSize() > 0) {
             try {
                 initConsumer();
                 consumer.subscribe(observerManger.topicAll());
