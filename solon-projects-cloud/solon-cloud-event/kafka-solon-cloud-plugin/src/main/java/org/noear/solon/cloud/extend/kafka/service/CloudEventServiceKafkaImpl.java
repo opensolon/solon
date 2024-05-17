@@ -41,6 +41,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
     private KafkaProducer<String, String> producer;
     private KafkaProducer<String, String> producerTran;
     private KafkaConsumer<String, String> consumer;
+    private Thread consumerThread;
 
     public CloudEventServiceKafkaImpl(CloudProps cloudProps) {
         this.config = new KafkaConfig(cloudProps);
@@ -61,7 +62,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             producer = new KafkaProducer<>(config.getProducerProperties(false));
 
             //支持事务
-            producerTran= new KafkaProducer<>(config.getProducerProperties(true));
+            producerTran = new KafkaProducer<>(config.getProducerProperties(true));
             producerTran.initTransactions();
         } finally {
             Utils.locker().unlock();
@@ -147,7 +148,8 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
                 consumer.subscribe(observerManger.topicAll());
 
                 //开始拉取
-                new Thread(this::subscribePull).start();
+                consumerThread = new Thread(this::subscribePull);
+                consumerThread.start();
             } catch (Throwable ex) {
                 throw new RuntimeException(ex);
             }
@@ -155,7 +157,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
     }
 
     private void subscribePull() {
-        while (true) {
+        while (!consumerThread.isInterrupted()) {
             try {
                 subscribePullDo();
             } catch (EOFException e) {
@@ -178,21 +180,23 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
 
         Map<TopicPartition, OffsetAndMetadata> topicOffsets = new LinkedHashMap<>();
 
-        for (ConsumerRecord<String, String> record : records) {
-            Event event = new Event(record.topic(), record.value())
-                    .key(record.key())
-                    .channel(config.getEventChannel());
+        try {
+            //如果异常，就中止 for；把已收集的 topicOffsets 提交掉；然后重新拉取
+            for (ConsumerRecord<String, String> record : records) {
+                Event event = new Event(record.topic(), record.value())
+                        .key(record.key())
+                        .channel(config.getEventChannel());
 
-            try {
+
                 //接收并处理事件
                 if (onReceive(event)) {
                     //接收需要提交的偏移量
                     topicOffsets.put(new TopicPartition(record.topic(), record.partition()),
                             new OffsetAndMetadata(record.offset() + 1));
                 }
-            } catch (Throwable e) {
-                log.warn(e.getMessage(), e);
             }
+        } catch (Throwable e) {
+            log.warn(e.getMessage(), e);
         }
 
         if (topicOffsets.size() > 0) {
@@ -240,6 +244,10 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
 
         if (consumer != null) {
             consumer.close();
+        }
+
+        if (consumerThread != null) {
+            consumerThread.interrupt();
         }
     }
 }

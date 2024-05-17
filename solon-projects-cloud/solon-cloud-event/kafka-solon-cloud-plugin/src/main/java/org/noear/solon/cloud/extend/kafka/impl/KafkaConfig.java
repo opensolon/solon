@@ -88,8 +88,9 @@ public class KafkaConfig {
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         //隔离级别（消息事务配套的）
         properties.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
-        properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
-        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 5000);
+        properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 30_000);
+        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 30_000); //最大拉取间隔 30秒
+        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100); //最大拉取条数 100条
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         //绑定定制属性
