@@ -116,7 +116,7 @@ public class PropUtil {
 
         int start = 0, end = 0;
         while (true) {
-            start = tml.indexOf("${", start);
+            start = tml.indexOf("${");
 
             if (start < 0) {
                 return tml;
@@ -136,8 +136,6 @@ public class PropUtil {
                 }
 
                 tml = tml.substring(0, start) + value + tml.substring(end + 1);
-                //起始位增量
-                start = start + value.length();
             }
         }
     }

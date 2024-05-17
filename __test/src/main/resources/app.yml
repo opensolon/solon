@@ -1,3 +1,11 @@
+each:
+  a: ${each.b}_a
+  b: ${each.c}_b
+  c: ${each.d}_c
+  d: ${each.e}_d
+  e: ${GLOBAL_EACH}_e
+GLOBAL_EACH: "each_test"
+
 demo6:
   test:
     aaa: 121212
