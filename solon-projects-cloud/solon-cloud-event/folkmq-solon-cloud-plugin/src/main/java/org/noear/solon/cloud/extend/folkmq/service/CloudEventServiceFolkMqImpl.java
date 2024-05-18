@@ -12,6 +12,7 @@ import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqConsumeHandler;
 import org.noear.solon.cloud.extend.folkmq.impl.FolkmqTransactionListener;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.model.EventTran;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -138,7 +139,15 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
             Instance instance = Instance.local();
 
             for (String topicNew : observerManger.topicAll()) {
-                client.subscribe(topicNew, instance.service(), folkmqConsumeHandler);
+                EventObserver observer = observerManger.getByTopic(topicNew);
+
+                if (observer.getLevel() == EventLevel.instance) {
+                    //实例订阅
+                    client.subscribe(topicNew, instance.serviceAndAddress(), folkmqConsumeHandler);
+                } else {
+                    //集群订阅
+                    client.subscribe(topicNew, instance.service(), folkmqConsumeHandler);
+                }
             }
         }
     }
