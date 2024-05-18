@@ -102,7 +102,7 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
             try {
-                consumer.init(cloudProps, observerManger);
+                consumer.init(observerManger);
             } catch (MQClientException e) {
                 throw new IllegalStateException(e);
             }
