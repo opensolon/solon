@@ -5,10 +5,16 @@ import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.model.EventObserverMap;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,37 +23,51 @@ import java.util.Set;
  * @author cgy
  * @since 1.11
  */
-public class OnsConsumer {
+public class OnsConsumer implements Closeable {
     static Logger log = LoggerFactory.getLogger(OnsConsumer.class);
 
-    private OnsConfig config;
-    private ConsumerBean consumer;
+    private final OnsConfig config;
+    private ConsumerBean consumerOfCluster;
+    private ConsumerBean consumerOfInstance;
 
     public OnsConsumer(OnsConfig config) {
         this.config = config;
     }
 
-    public void init(CloudProps cloudProps, CloudEventObserverManger observerManger) {
-        if (consumer != null) {
+    public void init(CloudEventObserverManger observerManger) {
+        if (consumerOfCluster != null) {
             return;
         }
 
         Utils.locker().lock();
 
         try {
-            if (consumer != null) {
+            if (consumerOfCluster != null) {
                 return;
             }
 
-            consumer = new ConsumerBean();
-            consumer.setProperties(config.getConsumerProperties());
+            consumerOfCluster = buildConsumer(observerManger, config.getConsumerGroup(), EventLevel.cluster);
+            consumerOfInstance = buildConsumer(observerManger, Instance.local().serviceAndAddress(), EventLevel.instance);
 
-            OnsConsumerHandler handler = new OnsConsumerHandler(config, observerManger);
+        } finally {
+            Utils.locker().unlock();
+        }
+    }
 
-            Map<Subscription, MessageListener> subscriptionTable = new HashMap<>();
-            for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
-                String topic = kv.getKey();
-                Set<String> tags = kv.getValue();
+    private ConsumerBean buildConsumer(CloudEventObserverManger observerManger, String consumerGroup, EventLevel eventLevel) {
+        ConsumerBean consumer = new ConsumerBean();
+
+        consumer.setProperties(config.getConsumerProperties(consumerGroup));
+
+        OnsConsumerHandler handler = new OnsConsumerHandler(config, observerManger);
+
+        Map<Subscription, MessageListener> subscriptionTable = new HashMap<>();
+
+        for (String topic : observerManger.topicAll()) {
+            EventObserverMap tagsObserverMap = observerManger.topicOf(topic);
+            Collection<String> tags = tagsObserverMap.getTagsByLevel(eventLevel);
+
+            if (tags.size() > 0) {
                 String tagsExpr = String.join("||", tags);
 
                 Subscription subscription = new Subscription();
@@ -60,19 +80,30 @@ public class OnsConsumer {
 
                 subscriptionTable.put(subscription, handler);
 
-                log.trace("Ons consumer subscribe [" + topic + "(" + tagsExpr + ")] ok!");
+                log.trace("Ons consumer will subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
+        }
 
-            consumer.setSubscriptionTable(subscriptionTable);
-            consumer.start();
+        consumer.setSubscriptionTable(subscriptionTable);
+        consumer.start();
 
-            if (consumer.isStarted()) {
-                log.trace("Ons consumer started!");
-            } else {
-                log.warn("Ons consumer start failure!");
-            }
-        } finally {
-            Utils.locker().unlock();
+        if (consumer.isStarted()) {
+            log.trace("Ons consumer started!");
+        } else {
+            log.warn("Ons consumer start failure!");
+        }
+
+        return consumer;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (consumerOfCluster != null) {
+            consumerOfCluster.shutdown();
+        }
+
+        if (consumerOfInstance != null) {
+            consumerOfInstance.shutdown();
         }
     }
 }

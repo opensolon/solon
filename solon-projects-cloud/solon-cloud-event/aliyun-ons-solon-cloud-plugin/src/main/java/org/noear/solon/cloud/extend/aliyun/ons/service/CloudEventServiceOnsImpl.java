@@ -101,7 +101,7 @@ public class CloudEventServiceOnsImpl implements CloudEventServicePlus {
 
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
-            consumer.init(cloudProps, observerManger);
+            consumer.init(observerManger);
         }
     }
 

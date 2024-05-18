@@ -9,15 +9,18 @@ import org.noear.solon.cloud.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 /**
  * @author cgy
  * @since 1.11
  */
-public class OnsProducer {
+public class OnsProducer implements Closeable {
     static Logger log = LoggerFactory.getLogger(OnsProducer.class);
 
-    OnsConfig config;
-    Producer producer;
+    private OnsConfig config;
+    private Producer producer;
 
     public OnsProducer(OnsConfig config) {
         this.config = config;
@@ -55,5 +58,10 @@ public class OnsProducer {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+
     }
 }

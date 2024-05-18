@@ -13,15 +13,17 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Event;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class RocketmqProducer {
-    final RocketmqConfig config;
-    DefaultMQProducer producer;
+public class RocketmqProducer implements Closeable {
+    private final RocketmqConfig config;
+    private DefaultMQProducer producer;
 
     public RocketmqProducer(RocketmqConfig config) {
         this.config = config;
@@ -86,6 +88,13 @@ public class RocketmqProducer {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (producer != null) {
+            producer.shutdown();
         }
     }
 }

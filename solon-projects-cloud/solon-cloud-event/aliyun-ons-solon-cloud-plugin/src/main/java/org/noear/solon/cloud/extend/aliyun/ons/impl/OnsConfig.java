@@ -40,8 +40,11 @@ public class OnsConfig {
 
     //设置消息消费失败的最大重试次数，0表示默认
     private final int maxReconsumeTimes;
+    private final CloudProps cloudProps;
 
     public OnsConfig(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
         server = cloudProps.getEventServer();
         channelName = cloudProps.getEventChannel();
 
@@ -69,8 +72,16 @@ public class OnsConfig {
         log.trace("consumerGroup=" + consumerGroup);
     }
 
+    public CloudProps getCloudProps() {
+        return cloudProps;
+    }
+
     public String getChannelName() {
         return channelName;
+    }
+
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     public Properties getProducerProperties() {
@@ -80,9 +91,10 @@ public class OnsConfig {
         return producer;
     }
 
-    public Properties getConsumerProperties() {
+    public Properties getConsumerProperties(String consumerGroupId) {
         Properties consumer = getBaseProperties();
-        consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
+
+        consumer.put(PropertyKeyConst.GROUP_ID, consumerGroupId);
         //只能是集群模式
         consumer.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
         //实例的消费线程数

@@ -17,11 +17,14 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
+public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus , Closeable {
     private static final Logger log = LoggerFactory.getLogger(CloudEventServiceRocketmqImpl.class);
 
     private CloudProps cloudProps;
@@ -127,5 +130,16 @@ public class CloudEventServiceRocketmqImpl implements CloudEventServicePlus {
         }
 
         return group;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (consumer != null) {
+            consumer.close();
+        }
+
+        if (producer != null) {
+            producer.close();
+        }
     }
 }
