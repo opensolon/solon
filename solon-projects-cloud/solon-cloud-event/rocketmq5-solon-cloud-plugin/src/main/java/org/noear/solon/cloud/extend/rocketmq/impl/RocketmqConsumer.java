@@ -5,6 +5,9 @@ import org.apache.rocketmq.client.apis.consumer.FilterExpression;
 import org.apache.rocketmq.client.apis.consumer.PushConsumer;
 import org.apache.rocketmq.client.apis.consumer.PushConsumerBuilder;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.model.EventObserver;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,46 +29,59 @@ public class RocketmqConsumer implements Closeable {
 
     private RocketmqConfig config;
 
-    ClientServiceProvider serviceProvider;
-    private PushConsumer consumer;
+    private ClientServiceProvider serviceProvider;
+    private PushConsumer consumerOfCluster;
+    private PushConsumer consumerOfInstance;
 
     public RocketmqConsumer(RocketmqConfig config) {
         this.config = config;
+        this.serviceProvider = ClientServiceProvider.loadService();
     }
 
     public void init(CloudEventObserverManger observerManger) throws ClientException {
-        if (consumer != null) {
+        if (consumerOfCluster != null) {
             return;
         }
 
         Utils.locker().lock();
 
         try {
-            if (consumer != null) {
+            if (consumerOfCluster != null) {
                 return;
             }
 
-            serviceProvider = ClientServiceProvider.loadService();
+            consumerOfCluster = buildConsumer(observerManger, config.getConsumerGroup(), EventLevel.cluster);
+            consumerOfInstance = buildConsumer(observerManger, Instance.local().serviceAndAddress(), EventLevel.instance);
 
-            ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
+            log.trace("Rocketmq5 consumer started!");
+        } finally {
+            Utils.locker().unlock();
+        }
+    }
 
-            //服务地址
-            builder.setEndpoints(config.getServer());
-            //账号密码
-            if (Utils.isNotEmpty(config.getAccessKey())) {
-                builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
-            }
-            //发送超时时间，默认3000 单位ms
-            if (config.getTimeout() > 0) {
-                builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));
-            }
+    private PushConsumer buildConsumer(CloudEventObserverManger observerManger, String consumerGroup, EventLevel eventLevel) throws ClientException {
+        ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
 
-            ClientConfiguration configuration = builder.build();
+        //服务地址
+        builder.setEndpoints(config.getServer());
+        //账号密码
+        if (Utils.isNotEmpty(config.getAccessKey())) {
+            builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
+        }
+        //发送超时时间，默认3000 单位ms
+        if (config.getTimeout() > 0) {
+            builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));
+        }
+
+        ClientConfiguration configuration = builder.build();
 
 
-            Map<String, FilterExpression> subscriptionExpressions = new LinkedHashMap<>();
-            //要消费的topic，可使用tag进行简单过滤
-            for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
+        Map<String, FilterExpression> subscriptionExpressions = new LinkedHashMap<>();
+        //要消费的topic，可使用tag进行简单过滤
+        for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
+            EventObserver observer = observerManger.getByTopic(kv.getKey());
+
+            if (observer.getLevel() == eventLevel) {
                 String topic = kv.getKey();
                 Set<String> tags = kv.getValue();
                 String tagsExpr = String.join("||", tags);
@@ -79,35 +95,39 @@ public class RocketmqConsumer implements Closeable {
 
                 log.trace("Rocketmq5 consumer will subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
-
-            PushConsumerBuilder consumerBuilder = serviceProvider.newPushConsumerBuilder();
-
-            consumerBuilder.setClientConfiguration(configuration);
-            //消费组
-            consumerBuilder.setConsumerGroup(config.getConsumerGroup());
-            //监听
-            consumerBuilder.setMessageListener(new RocketmqConsumerHandler(config, observerManger));
-            //订阅
-            if (subscriptionExpressions.size() > 0) {
-                consumerBuilder.setSubscriptionExpressions(subscriptionExpressions);
-            }
-            //消费线程数
-            if (config.getConsumeThreadNums() > 0) {
-                consumerBuilder.setConsumptionThreadCount(config.getConsumeThreadNums());
-            }
-
-            consumer = consumerBuilder.build();
-
-            log.trace("Rocketmq5 consumer started!");
-        } finally {
-            Utils.locker().unlock();
         }
+
+        if (subscriptionExpressions.size() == 0) {
+            return null;
+        }
+
+        PushConsumerBuilder consumerBuilder = serviceProvider.newPushConsumerBuilder();
+
+        consumerBuilder.setClientConfiguration(configuration);
+        //消费组
+        consumerBuilder.setConsumerGroup(consumerGroup);
+        //监听
+        consumerBuilder.setMessageListener(new RocketmqConsumerHandler(config, observerManger));
+        //订阅
+        if (subscriptionExpressions.size() > 0) {
+            consumerBuilder.setSubscriptionExpressions(subscriptionExpressions);
+        }
+        //消费线程数
+        if (config.getConsumeThreadNums() > 0) {
+            consumerBuilder.setConsumptionThreadCount(config.getConsumeThreadNums());
+        }
+
+        return consumerBuilder.build();
     }
 
     @Override
     public void close() throws IOException {
-        if(consumer != null){
-            consumer.close();
+        if (consumerOfCluster != null) {
+            consumerOfCluster.close();
+        }
+
+        if (consumerOfInstance != null) {
+            consumerOfInstance.close();
         }
     }
 }
