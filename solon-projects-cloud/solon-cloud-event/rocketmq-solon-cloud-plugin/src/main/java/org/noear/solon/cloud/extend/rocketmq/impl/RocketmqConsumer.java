@@ -7,7 +7,7 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.remoting.RPCHook;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.EventLevel;
-import org.noear.solon.cloud.model.EventObserver;
+import org.noear.solon.cloud.model.EventObserverMap;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
@@ -15,9 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author noear
@@ -57,6 +55,9 @@ public class RocketmqConsumer implements Closeable {
         }
     }
 
+    /**
+     * @since 2.8
+     * */
     private DefaultMQPushConsumer buildConsumer(CloudEventObserverManger observerManger, String consumerGroup, EventLevel eventLevel) throws MQClientException {
         DefaultMQPushConsumer consumer;
 
@@ -102,12 +103,11 @@ public class RocketmqConsumer implements Closeable {
         boolean isOk = false;
 
         //要消费的topic，可使用tag进行简单过滤
-        for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
-            EventObserver observer = observerManger.getByTopic(kv.getKey());
+        for (String topic : observerManger.topicAll()) {
+            EventObserverMap tagsObserverMap = observerManger.topicOf(topic);
+            Collection<String> tags = tagsObserverMap.getTagsByLevel(eventLevel);
 
-            if (observer.getLevel() == eventLevel) {
-                String topic = kv.getKey();
-                Set<String> tags = kv.getValue();
+            if (tags.size() > 0) {
                 String tagsExpr = String.join("||", tags);
 
                 //支持 tag 过滤

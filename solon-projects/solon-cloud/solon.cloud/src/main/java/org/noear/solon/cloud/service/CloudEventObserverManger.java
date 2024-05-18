@@ -4,20 +4,17 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.EventObserver;
+import org.noear.solon.cloud.model.EventObserverMap;
 
 import java.util.*;
 
 /**
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class CloudEventObserverManger {
-    private static final String TAG_SPLIT_MARK = "@";
-
-    private Map<String, EventObserver> topicObserverMap = new LinkedHashMap<>();
-    private Map<String, EventObserver> topicAndTagObserverMap = new LinkedHashMap<>();
-
-    private Map<String, Set<String>> topicTagsMap = new LinkedHashMap<>();
+    private Map<String, EventObserverMap> topicObserverMap = new LinkedHashMap<>();
 
     /**
      * 主题数量
@@ -34,81 +31,54 @@ public class CloudEventObserverManger {
     }
 
     /**
-     * 所有主题与标签
+     * 主题映射射
      */
-    public Map<String, Set<String>> topicTags() {
-        return topicTagsMap;
+    public EventObserverMap topicOf(String topic) {
+        return topicObserverMap.get(topic);
     }
 
     /**
      * 获取事件处理
      */
     public EventObserver getByTopic(String topic) {
-        return topicObserverMap.get(topic);
-    }
+        EventObserverMap tmp = topicObserverMap.get(topic);
 
-    /**
-     * 获取事件处理（支持 tag）
-     */
-    public EventObserver getByTopicAndTag(String topicAndTag) {
-        return topicAndTagObserverMap.get(topicAndTag);
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.topicObserver();
+        }
     }
 
     /**
      * 获取事件处理（支持 tag）
      */
     public EventObserver getByTopicAndTag(String topic, String tag) {
-        String topicAndTag = topic + TAG_SPLIT_MARK + tag;
+        EventObserverMap tmp = topicObserverMap.get(topic);
 
-        return getByTopicAndTag(topicAndTag);
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.tagObserver(tag);
+        }
     }
 
     /**
      * 添加主题事件处理
      */
-    public void add(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
-        //主题关注关系
-        addTopicObserver(topic, level, group, topicRaw, tag, qos, observer);
+    public void add(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler handler) {
+        //构建主题关注映射
+        EventObserverMap eventObserverMap = topicObserverMap.computeIfAbsent(topic, t ->
+                new EventObserverMap(new EventObserver(level, group, topicRaw, tag, qos)));
 
-        //主题标签关注关系
-        addTopicAndTagObserver(topic, level, group, topicRaw, tag, qos, observer);
+        //添加主题处理
+        eventObserverMap.topicObserver().addHandler(handler);
 
-        //主题与标签
-        addTopicTags(topic, tag);
-    }
-
-    private void addTopicObserver(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
-        EventObserver eventObserver = topicObserverMap.get(topic);
-        if (eventObserver == null) {
-            eventObserver = new EventObserver(level, group, topicRaw, tag, qos);
-            topicObserverMap.put(topic, eventObserver);
+        if (Utils.isNotEmpty(tag)) {
+            //添加标签处理
+            eventObserverMap.tagObserverIfAbsent(tag, t ->
+                            new EventObserver(level, group, topicRaw, tag, qos))
+                    .addHandler(handler);
         }
-
-        eventObserver.addHandler(observer);
-    }
-
-    private void addTopicAndTagObserver(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
-        if (Utils.isEmpty(tag)) {
-            return;
-        }
-
-        String topicAndTag = topic + TAG_SPLIT_MARK + tag;
-        EventObserver eventObserver = topicAndTagObserverMap.get(topicAndTag);
-        if (eventObserver == null) {
-            eventObserver = new EventObserver(level, group, topicRaw, tag, qos);
-            topicAndTagObserverMap.put(topicAndTag, eventObserver);
-        }
-
-        eventObserver.addHandler(observer);
-    }
-
-    private void addTopicTags(String topic, String tag) {
-        Set<String> tags = topicTagsMap.get(topic);
-        if (tags == null) {
-            tags = new HashSet<>();
-            topicTagsMap.put(topic, tags);
-        }
-
-        tags.add(tag);
     }
 }

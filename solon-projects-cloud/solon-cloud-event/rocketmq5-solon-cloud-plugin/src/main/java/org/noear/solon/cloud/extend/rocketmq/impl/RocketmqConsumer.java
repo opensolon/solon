@@ -6,7 +6,7 @@ import org.apache.rocketmq.client.apis.consumer.PushConsumer;
 import org.apache.rocketmq.client.apis.consumer.PushConsumerBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.EventLevel;
-import org.noear.solon.cloud.model.EventObserver;
+import org.noear.solon.cloud.model.EventObserverMap;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author noear
@@ -59,6 +59,9 @@ public class RocketmqConsumer implements Closeable {
         }
     }
 
+    /**
+     * @since 2.8
+     * */
     private PushConsumer buildConsumer(CloudEventObserverManger observerManger, String consumerGroup, EventLevel eventLevel) throws ClientException {
         ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
 
@@ -78,12 +81,11 @@ public class RocketmqConsumer implements Closeable {
 
         Map<String, FilterExpression> subscriptionExpressions = new LinkedHashMap<>();
         //要消费的topic，可使用tag进行简单过滤
-        for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
-            EventObserver observer = observerManger.getByTopic(kv.getKey());
+        for (String topic : observerManger.topicAll()) {
+            EventObserverMap tagsObserverMap = observerManger.topicOf(topic);
+            Collection<String> tags = tagsObserverMap.getTagsByLevel(eventLevel);
 
-            if (observer.getLevel() == eventLevel) {
-                String topic = kv.getKey();
-                Set<String> tags = kv.getValue();
+            if (tags.size() > 0) {
                 String tagsExpr = String.join("||", tags);
 
                 //支持 tag 过滤
