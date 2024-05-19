@@ -113,6 +113,13 @@ public abstract class RouterWrapper implements HandlerSlots {
         _chainManager.addInterceptorIfAbsent(interceptor, index);
     }
 
+    /**
+     * 添加渲染器
+     * */
+    public void render(String name, Render render) {
+        RenderManager.mapping(name, render);
+    }
+
 
 
     /**
