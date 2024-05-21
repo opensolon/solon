@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Render;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class StringSerializerRender implements Render {
     /**
@@ -17,11 +18,13 @@ public class StringSerializerRender implements Render {
 
     /**
      * 序列化器
+     *
+     * @since 2.8
      */
-    StringSerializer serializer;
+    Serializer<String> serializer;
 
 
-    public StringSerializerRender(boolean typed,  StringSerializer serializer) {
+    public StringSerializerRender(boolean typed,  Serializer<String> serializer) {
         this.typed = typed;
         this.serializer = serializer;
     }
@@ -30,7 +33,7 @@ public class StringSerializerRender implements Render {
         return typed;
     }
 
-    public StringSerializer getSerializer() {
+    public Serializer<String> getSerializer() {
         return serializer;
     }
 
