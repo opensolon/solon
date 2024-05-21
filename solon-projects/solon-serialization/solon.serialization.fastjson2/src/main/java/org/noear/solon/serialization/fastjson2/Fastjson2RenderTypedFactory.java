@@ -15,7 +15,7 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
     private ObjectWriterProvider config;
     private JSONWriter.Feature[] features;
 
-    public Fastjson2RenderTypedFactory(){
+    public Fastjson2RenderTypedFactory() {
         features = new JSONWriter.Feature[]{
                 JSONWriter.Feature.BrowserCompatible,
                 JSONWriter.Feature.WriteClassName,
@@ -25,16 +25,18 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new Fastjson2Serializer(config,features));
+        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+        serializer.setSerializeConfig(config, features);
+
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override
     public ObjectWriterProvider config() {
-        if(config == null){
+        if (config == null) {
             config = new ObjectWriterProvider();
         }
 
         return config;
     }
-
 }

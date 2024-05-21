@@ -10,12 +10,13 @@ import org.noear.solon.serialization.StringSerializerRender;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     private SerializeConfig config;
     private SerializerFeature[] features;
 
-    public FastjsonRenderTypedFactory(){
+    public FastjsonRenderTypedFactory() {
         features = new SerializerFeature[]{
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteClassName,
@@ -25,7 +26,10 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new FastjsonSerializer(config, features));
+        FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+        serializer.setSerializeConfig(config, features);
+
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.Set;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
 
@@ -27,7 +28,10 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new FastjsonSerializer(config, features.toArray(new SerializerFeature[features.size()])));
+        FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+        serializer.setSerializeConfig(config, features.toArray(new SerializerFeature[features.size()]));
+
+        return new StringSerializerRender(false, serializer);
     }
 
     @Override

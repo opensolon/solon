@@ -27,7 +27,10 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new Fastjson2Serializer(config, features.toArray(new JSONWriter.Feature[features.size()])));
+        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+        serializer.setSerializeConfig(config, features.toArray(new JSONWriter.Feature[features.size()]));
+
+        return new StringSerializerRender(false, serializer);
     }
 
 
