@@ -7,12 +7,14 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.SocketServerProps;
+import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.socketd.SocketdRouter;
 
+import javax.net.ssl.SSLContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -45,24 +47,39 @@ public class XPluginImpl implements Plugin {
         ServerProps.init();
 
 
+        //ssl 配置支持
+        final SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_SOCKET);
+        final SSLContext sslContext;
+        if(sslConfig.isSslEnable()){
+             sslContext = sslConfig.getSslContext();
+        }else{
+            sslContext = null;
+        }
+
         SocketServerProps serverProps = new SocketServerProps(20000);
         ExecutorService exchangeExecutor = serverProps.getBioExecutor("Socketd-channelExecutor-");
 
         Server serverTmp = SocketD.createServerOrNull("sd:tcp");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
+            //总线扩展
+            EventBus.publish(serverTmp);
             startServer1(serverTmp, serverProps, 0);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:udp");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
+            //总线扩展
+            EventBus.publish(serverTmp);
             startServer1(serverTmp, serverProps, 1);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:ws");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
+            //总线扩展
+            EventBus.publish(serverTmp);
             startServer1(serverTmp, serverProps, 2);
         }
 
