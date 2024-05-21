@@ -36,7 +36,7 @@ public class PathListenerPlus extends PathListener {
             l1.onOpen(session);
         } else if (autoClose) {
             session.close();
-            log.warn("Route failed. The connection will close. id={}", session.sessionId());
+            log.warn("Route failed. The connection will close. path={}", session.path());
         }
     }
 

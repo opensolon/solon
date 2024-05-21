@@ -92,7 +92,7 @@ public class PathWebSocketListener implements WebSocketListener {
             l1.onOpen(s);
         } else if (autoClose) {
             s.close();
-            log.warn("Route failed. The connection will close. id={}", s.id());
+            log.warn("Route failed. The connection will close. path={}", s.path());
         }
     }
 
