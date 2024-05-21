@@ -31,7 +31,7 @@
 * 优化 kafka 适配的 ack 处理
 * socket.d 升为 2.4.18
 * folkmq 升为 1.4.6
-* wood 升为 1.2.10
+* wood 升为 1.2.11
 
 ### 2.8.0
 * 添加 `@Bean::injected`
