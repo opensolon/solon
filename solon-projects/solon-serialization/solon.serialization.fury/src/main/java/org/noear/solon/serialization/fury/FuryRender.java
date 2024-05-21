@@ -14,6 +14,8 @@ import java.util.Map;
  * @since 2.5
  * */
 public class FuryRender implements Render {
+    private final FuryBytesSerializer serializer = new FuryBytesSerializer();
+
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         byte[] bytes = null;
@@ -42,6 +44,6 @@ public class FuryRender implements Render {
     }
 
     private byte[] serializeDo(Object obj) throws Throwable {
-        return FuryUtil.fury.serialize(obj);
+        return serializer.serialize(obj);
     }
 }

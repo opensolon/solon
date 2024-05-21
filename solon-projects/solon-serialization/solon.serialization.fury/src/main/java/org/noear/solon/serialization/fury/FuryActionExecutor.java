@@ -13,6 +13,7 @@ import java.util.Map;
  * */
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/fury";
+    private final FuryBytesSerializer serializer = new FuryBytesSerializer();
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -25,15 +26,15 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return FuryUtil.fury.deserialize(ctx.bodyAsBytes());
+        return serializer.deserialize(ctx.bodyAsBytes(), null);
     }
 
     /**
      * @since 1.11 增加 requireBody 支持
-     * */
+     */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
+        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -46,7 +47,7 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
         if (bodyObj == null) {
             return null;
         } else {
-            if(p.isRequiredBody()){
+            if (p.isRequiredBody()) {
                 return bodyObj;
             }
 
