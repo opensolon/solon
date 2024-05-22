@@ -15,7 +15,7 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
     private Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
     public Fastjson2RenderTypedFactory() {
-        serializer.cfgWriteFeatures(false, true,
+        serializer.cfgSerializeFeatures(false, true,
                 JSONWriter.Feature.BrowserCompatible,
                 JSONWriter.Feature.WriteClassName,
                 JSONWriter.Feature.ReferenceDetection
@@ -33,6 +33,6 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public ObjectWriterProvider config() {
-        return serializer.getWriteContext().getProvider();
+        return serializer.getSerializeConfig().getProvider();
     }
 }

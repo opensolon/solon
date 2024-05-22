@@ -19,34 +19,33 @@ import java.io.IOException;
  * @since 2.8
  */
 public class Fastjson2StringSerializer implements ActionSerializer<String> {
-    private JSONWriter.Context writeContext;
+    private JSONWriter.Context serializeConfig;
+    private JSONReader.Context deserializeConfig;
 
-    private JSONReader.Context readerContext;
-
-    public JSONReader.Context getReaderContext() {
-        if (readerContext == null) {
-            readerContext = new JSONReader.Context(new ObjectReaderProvider());
-        }
-        return readerContext;
-    }
-
-    public void cfgReaderFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
-        for (JSONReader.Feature feature : features) {
-            getReaderContext().config(feature, isAdd);
-        }
-    }
-
-    public JSONWriter.Context getWriteContext() {
-        if (writeContext == null) {
-            writeContext = new JSONWriter.Context(new ObjectWriterProvider());
+    public JSONWriter.Context getSerializeConfig() {
+        if (serializeConfig == null) {
+            serializeConfig = new JSONWriter.Context(new ObjectWriterProvider());
         }
 
-        return writeContext;
+        return serializeConfig;
     }
 
-    public void cfgWriteFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
+    public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
         for (JSONWriter.Feature feature : features) {
-            getWriteContext().config(feature, isAdd);
+            getSerializeConfig().config(feature, isAdd);
+        }
+    }
+
+    public JSONReader.Context getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new JSONReader.Context(new ObjectReaderProvider());
+        }
+        return deserializeConfig;
+    }
+
+    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
+        for (JSONReader.Feature feature : features) {
+            getDeserializeConfig().config(feature, isAdd);
         }
     }
 
@@ -57,15 +56,15 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
 
     @Override
     public String serialize(Object obj) throws IOException {
-        return JSON.toJSONString(obj, getWriteContext());
+        return JSON.toJSONString(obj, getSerializeConfig());
     }
 
     @Override
     public Object deserialize(String data, Class<?> clz) throws IOException {
         if (clz == null) {
-            return JSON.parse(data, getReaderContext());
+            return JSON.parse(data, getDeserializeConfig());
         } else {
-            return JSON.parseObject(data, clz, getReaderContext());
+            return JSON.parseObject(data, clz, getDeserializeConfig());
         }
     }
 
@@ -74,7 +73,7 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            return JSON.parse(data, getReaderContext());
+            return JSON.parse(data, getDeserializeConfig());
         } else {
             return null;
         }

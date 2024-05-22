@@ -36,7 +36,7 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
      * @deprecated 2.8
      */
     public ParserConfig config() {
-        return serializer.getParserConfig();
+        return serializer.getDeserializeConfig();
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     private Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
     public Fastjson2RenderFactory() {
-        serializer.cfgWriteFeatures(false, true, JSONWriter.Feature.BrowserCompatible);
+        serializer.cfgSerializeFeatures(false, true, JSONWriter.Feature.BrowserCompatible);
     }
 
     public Fastjson2StringSerializer getSerializer() {
@@ -30,27 +30,27 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public ObjectWriterProvider config() {
-        return serializer.getWriteContext().getProvider();
+        return serializer.getSerializeConfig().getProvider();
     }
 
     /**
      * 重新设置特性
      */
     public void setFeatures(JSONWriter.Feature... features) {
-        serializer.cfgWriteFeatures(true, true, features);
+        serializer.cfgSerializeFeatures(true, true, features);
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(JSONWriter.Feature... features) {
-        serializer.cfgWriteFeatures(false, true, features);
+        serializer.cfgSerializeFeatures(false, true, features);
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(JSONWriter.Feature... features) {
-        serializer.cfgWriteFeatures(false, false, features);
+        serializer.cfgSerializeFeatures(false, false, features);
     }
 }

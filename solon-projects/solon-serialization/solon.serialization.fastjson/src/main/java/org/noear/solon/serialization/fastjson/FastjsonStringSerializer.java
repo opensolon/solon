@@ -22,8 +22,8 @@ import java.io.IOException;
 public class FastjsonStringSerializer implements ActionSerializer<String> {
     private SerializeConfig serializeConfig;
     private int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
-    private ParserConfig parserConfig;
-    private int parserFeatures = JSON.DEFAULT_PARSER_FEATURE;
+    private ParserConfig deserializeConfig;
+    private int deserializeFeatures = JSON.DEFAULT_PARSER_FEATURE;
 
     public SerializeConfig getSerializeConfig() {
         if (serializeConfig == null) {
@@ -47,24 +47,24 @@ public class FastjsonStringSerializer implements ActionSerializer<String> {
         }
     }
 
-    public ParserConfig getParserConfig() {
-        if (parserConfig == null) {
-            parserConfig = new ParserConfig();
+    public ParserConfig getDeserializeConfig() {
+        if (deserializeConfig == null) {
+            deserializeConfig = new ParserConfig();
         }
 
-        return parserConfig;
+        return deserializeConfig;
     }
 
-    public void cfgParserFeatures(boolean isReset, boolean isAdd, Feature... features) {
+    public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, Feature... features) {
         if (isReset) {
-            parserFeatures = JSON.DEFAULT_GENERATE_FEATURE;
+            deserializeFeatures = JSON.DEFAULT_GENERATE_FEATURE;
         }
 
         for (Feature feature : features) {
             if (isAdd) {
-                parserFeatures |= feature.getMask();
+                deserializeFeatures |= feature.getMask();
             } else {
-                parserFeatures &= ~feature.getMask();
+                deserializeFeatures &= ~feature.getMask();
             }
         }
 
@@ -87,16 +87,16 @@ public class FastjsonStringSerializer implements ActionSerializer<String> {
     @Override
     public Object deserialize(String data, Class<?> clz) throws IOException {
         if (clz == null) {
-            if (parserConfig == null) {
-                return JSON.parse(data, parserFeatures);
+            if (deserializeConfig == null) {
+                return JSON.parse(data, deserializeFeatures);
             } else {
-                return JSON.parse(data, parserConfig, parserFeatures);
+                return JSON.parse(data, deserializeConfig, deserializeFeatures);
             }
         } else {
-            if (parserConfig == null) {
-                return JSON.parseObject(data, clz, parserFeatures);
+            if (deserializeConfig == null) {
+                return JSON.parseObject(data, clz, deserializeFeatures);
             } else {
-                return JSON.parseObject(data, clz, parserConfig, parserFeatures);
+                return JSON.parseObject(data, clz, deserializeConfig, deserializeFeatures);
             }
         }
     }
@@ -106,10 +106,10 @@ public class FastjsonStringSerializer implements ActionSerializer<String> {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
-            if (parserConfig == null) {
-                return JSON.parse(data, parserFeatures);
+            if (deserializeConfig == null) {
+                return JSON.parse(data, deserializeFeatures);
             } else {
-                return JSON.parse(data, parserConfig, parserFeatures);
+                return JSON.parse(data, deserializeConfig, deserializeFeatures);
             }
         } else {
             return null;
