@@ -1,7 +1,6 @@
 package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.*;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -21,13 +20,27 @@ import java.util.List;
 public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
-    private final JSONReader.Context config = JSONFactory.createReadContext();
-    public JSONReader.Context config(){
-        return config;
-    }
+    private final  Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
     public Fastjson2ActionExecutor(){
-        config.config(JSONReader.Feature.ErrorOnEnumNotMatch);
+        serializer.getReaderContext().config();
+        serializer.getReaderContext().config(JSONReader.Feature.ErrorOnEnumNotMatch);
+    }
+
+    /**
+     * 获取序列化接口
+     */
+    public Fastjson2StringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 反序列化配置
+     *
+     * @deprecated 2.8
+     */
+    public JSONReader.Context config(){
+        return serializer.getReaderContext();
     }
 
     @Override
@@ -41,13 +54,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return JSON.parse(json, config);
-        } else {
-            return null;
-        }
+        return serializer.deserializeBody(ctx);
     }
 
     @Override

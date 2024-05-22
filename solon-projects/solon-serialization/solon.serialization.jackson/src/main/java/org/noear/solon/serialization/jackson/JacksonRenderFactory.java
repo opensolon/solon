@@ -15,6 +15,7 @@ import java.util.Set;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
 
@@ -37,7 +38,10 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
             config.enable(f1);
         }
 
-        return new StringSerializerRender(false, new JacksonSerializer(config));
+        JacksonStringSerializer serializer = new JacksonStringSerializer();
+        serializer.setConfig(config);
+
+        return new StringSerializerRender(false, serializer);
     }
 
     @Override

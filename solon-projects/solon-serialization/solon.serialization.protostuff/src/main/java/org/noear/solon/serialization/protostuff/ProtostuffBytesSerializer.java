@@ -4,19 +4,25 @@ import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.serialization.ActionSerializer;
+
+import java.io.IOException;
 
 /**
- * Protostuff 序列化工具
- *
  * @author noear
- * @since 1.2
- * @since 2.4
+ * @since 2.8
  */
-public class ProtostuffUtil {
-    private static final Schema<DataWrapper> WRAPPER_SCHEMA = RuntimeSchema.createFrom(DataWrapper.class);
+public class ProtostuffBytesSerializer implements ActionSerializer<byte[]> {
+    private final Schema<DataWrapper> WRAPPER_SCHEMA = RuntimeSchema.createFrom(DataWrapper.class);
 
-    //序列化对象
-    public static <T> byte[] serialize(T obj) {
+    @Override
+    public String name() {
+        return "protostuff-bytes";
+    }
+
+    @Override
+    public byte[] serialize(Object obj) throws IOException {
         LinkedBuffer buffer = LinkedBuffer.allocate();
 
         try {
@@ -33,9 +39,10 @@ public class ProtostuffUtil {
         }
     }
 
-    public static <T> T deserialize(byte[] data) {
+    @Override
+    public Object deserialize(byte[] data, Class<?> clz) throws IOException {
         try {
-            DataWrapper<T> wrapper = new DataWrapper<>();
+            DataWrapper wrapper = new DataWrapper();
             ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
             return wrapper.getData();
         } catch (RuntimeException e) {
@@ -45,6 +52,10 @@ public class ProtostuffUtil {
         }
     }
 
+    @Override
+    public Object deserializeBody(Context ctx) throws IOException {
+        return deserialize(ctx.bodyAsBytes(), null);
+    }
 
     //静态内部类
     public static class DataWrapper<T> {

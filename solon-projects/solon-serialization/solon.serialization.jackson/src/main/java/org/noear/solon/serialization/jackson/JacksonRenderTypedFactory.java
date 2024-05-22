@@ -2,7 +2,6 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,6 +14,7 @@ import org.noear.solon.serialization.StringSerializerRender;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     ObjectMapper config = new ObjectMapper();
@@ -33,7 +33,10 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     public Render create() {
         registerModule();
 
-        return new StringSerializerRender(true, new JacksonSerializer(config));
+        JacksonStringSerializer serializer = new JacksonStringSerializer();
+        serializer.setConfig(config);
+
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override

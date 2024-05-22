@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/protobuf";
+    private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
+
+    public ProtostuffBytesSerializer getSerializer() {
+        return serializer;
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -25,7 +30,7 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return ProtostuffUtil.deserialize(ctx.bodyAsBytes());
+        return serializer.deserializeBody(ctx);
     }
 
     /**

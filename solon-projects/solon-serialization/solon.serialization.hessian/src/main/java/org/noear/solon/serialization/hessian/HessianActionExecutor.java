@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecuteHandlerDefault {
@@ -23,7 +22,7 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(ctx.bodyAsBytes()));
+        Hessian2Input hi = new Hessian2Input(ctx.bodyAsStream());
         return hi.readObject();
     }
 

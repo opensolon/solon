@@ -5,7 +5,8 @@ import io.fury.ThreadLocalFury;
 import io.fury.ThreadSafeFury;
 import io.fury.config.Language;
 import io.fury.resolver.AllowListChecker;
-import org.noear.solon.serialization.Serializer;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.serialization.ActionSerializer;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,7 +17,7 @@ import java.util.Collection;
  * @author noear
  * @since 2.8
  */
-public class FuryBytesSerializer implements Serializer<byte[]> {
+public class FuryBytesSerializer implements ActionSerializer<byte[]> {
     private final Collection<String> blackList;
     private final AllowListChecker blackListChecker;
     private final ThreadSafeFury fury;
@@ -49,6 +50,10 @@ public class FuryBytesSerializer implements Serializer<byte[]> {
         blackListChecker.disallowClass(classNameOrPrefix);
     }
 
+    @Override
+    public String name() {
+        return "fury-bytes";
+    }
 
     @Override
     public byte[] serialize(Object obj) throws IOException {
@@ -62,5 +67,10 @@ public class FuryBytesSerializer implements Serializer<byte[]> {
         } else {
             return fury.deserializeJavaObject(data, clz);
         }
+    }
+
+    @Override
+    public Object deserializeBody(Context ctx) throws IOException {
+        return fury.deserialize(ctx.bodyAsBytes());
     }
 }

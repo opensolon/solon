@@ -15,6 +15,10 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/fury";
     private final FuryBytesSerializer serializer = new FuryBytesSerializer();
 
+    public FuryBytesSerializer getSerializer() {
+        return serializer;
+    }
+
     @Override
     public boolean matched(Context ctx, String ct) {
         if (ct != null && ct.startsWith(label)) {
@@ -26,7 +30,7 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserialize(ctx.bodyAsBytes(), null);
+        return serializer.deserializeBody(ctx);
     }
 
     /**

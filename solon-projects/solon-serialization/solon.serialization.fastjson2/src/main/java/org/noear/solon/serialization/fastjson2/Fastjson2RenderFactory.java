@@ -5,10 +5,6 @@ import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Json 渲染器工厂
  *
@@ -16,52 +12,45 @@ import java.util.Set;
  * @since 1.10
  */
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
-
-    private ObjectWriterProvider config;
-    private Set<JSONWriter.Feature> features;
+    private Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
     public Fastjson2RenderFactory() {
-        features = new HashSet<>();
-        features.add(JSONWriter.Feature.BrowserCompatible);
+        serializer.cfgWriteFeatures(false, true, JSONWriter.Feature.BrowserCompatible);
+    }
+
+    public Fastjson2StringSerializer getSerializer() {
+        return serializer;
     }
 
     @Override
     public Render create() {
-        Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
-        serializer.setSerializeConfig(config, features.toArray(new JSONWriter.Feature[features.size()]));
-
         return new StringSerializerRender(false, serializer);
     }
 
 
     @Override
     public ObjectWriterProvider config() {
-        if (config == null) {
-            config = new ObjectWriterProvider();
-        }
-
-        return config;
+        return serializer.getWriteContext().getProvider();
     }
 
     /**
      * 重新设置特性
      */
     public void setFeatures(JSONWriter.Feature... features) {
-        this.features.clear();
-        this.features.addAll(Arrays.asList(features));
+        serializer.cfgWriteFeatures(true, true, features);
     }
 
     /**
      * 添加特性
-     * */
+     */
     public void addFeatures(JSONWriter.Feature... features) {
-        this.features.addAll(Arrays.asList(features));
+        serializer.cfgWriteFeatures(false, true, features);
     }
 
     /**
      * 移除特性
-     * */
+     */
     public void removeFeatures(JSONWriter.Feature... features) {
-        this.features.removeAll(Arrays.asList(features));
+        serializer.cfgWriteFeatures(false, false, features);
     }
 }

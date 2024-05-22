@@ -7,26 +7,10 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializationConfig;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 //不要要入参，方便后面多视图混用
 //
 public class HessianRender implements Render {
-
-    @Override
-    public String renderAndReturn(Object data, Context ctx) throws Throwable {
-        byte[] bytes = null;
-        if (data instanceof ModelAndView) {
-            bytes = serializeDo(new LinkedHashMap((Map) data));
-        } else {
-            bytes = serializeDo(data);
-        }
-
-        return Base64.getEncoder().encodeToString(bytes);
-    }
-
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (SerializationConfig.isOutputMeta()) {
@@ -35,10 +19,11 @@ public class HessianRender implements Render {
 
         ctx.contentType("application/hessian");
 
+        Hessian2Output ho = new Hessian2Output(ctx.outputStream());
         if (obj instanceof ModelAndView) {
-            ctx.output(serializeDo(new LinkedHashMap((Map) obj)));
+            ho.writeObject(((ModelAndView) obj).model());
         } else {
-            ctx.output(serializeDo(obj));
+            ho.writeObject(obj);
         }
     }
 

@@ -12,18 +12,14 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.7
  */
 public class PropertiesRenderFactory  implements RenderFactory {
-    private final Options config;
+    private final PropertiesStringSerializer serializer = new PropertiesStringSerializer();
 
     public Options config() {
-        return config;
-    }
-
-    public PropertiesRenderFactory() {
-        config = Options.def();
+        return serializer.getConfig();
     }
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new PropertiesSerializer(config));
+        return new StringSerializerRender(false, serializer);
     }
 }

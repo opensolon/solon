@@ -12,13 +12,10 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
-
-
     private final Options config;
     public SnackRenderTypedFactory(){
         config = Options.serialize();
     }
-
 
     /**
      * 添加编码器
@@ -29,7 +26,10 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new SnackSerializer(config));
+        SnackStringSerializer serializer = new SnackStringSerializer();
+        serializer.setConfig(config);
+
+        return new StringSerializerRender(true,serializer);
     }
 
     @Override

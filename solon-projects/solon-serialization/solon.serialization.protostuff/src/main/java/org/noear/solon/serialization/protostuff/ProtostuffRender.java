@@ -11,6 +11,7 @@ import java.util.Base64;
  * @since 1.2
  */
 public class ProtostuffRender implements Render {
+    private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
 
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
@@ -29,6 +30,6 @@ public class ProtostuffRender implements Render {
     }
 
     private byte[] serializeDo(Object obj) throws Throwable {
-        return ProtostuffUtil.serialize(obj);
+        return serializer.serialize(obj);
     }
 }

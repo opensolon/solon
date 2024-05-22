@@ -11,21 +11,19 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
+    private final GsonStringSerializer serializer = new GsonStringSerializer();
 
-    private final GsonBuilder config;
     public GsonRenderTypedFactory() {
-        config = new GsonBuilder();
-        config.registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
+        serializer.getConfig().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
     }
-
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new GsonSerializer(config.create()));
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override
     public GsonBuilder config() {
-        return config;
+        return serializer.getConfig();
     }
 }

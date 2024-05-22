@@ -1,8 +1,8 @@
 package org.noear.solon.sessionstate.jedis;
 
 
+import org.noear.solon.core.serialize.Serializer;
 import org.noear.redisx.utils.SerializationUtil;
-import org.noear.solon.data.cache.Serializer;
 
 import java.util.Base64;
 
@@ -19,7 +19,7 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public String serialize(Object fromObj) throws Exception {
+    public String serialize(Object fromObj)  {
         if(fromObj == null){
             return null;
         }
@@ -29,7 +29,7 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String dta, Class<?> toClz) throws Exception {
+    public Object deserialize(String dta, Class<?> toClz) {
         if(dta == null){
             return null;
         }

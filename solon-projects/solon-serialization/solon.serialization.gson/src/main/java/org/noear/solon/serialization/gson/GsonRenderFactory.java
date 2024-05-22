@@ -12,28 +12,22 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class GsonRenderFactory extends GsonRenderFactoryBase {
-
-    private final GsonBuilder config;
-    public GsonRenderFactory() {
-        config = new GsonBuilder();
-    }
-
+    private final GsonStringSerializer serializer = new GsonStringSerializer();
 
     /**
      * 添加编码器
-     * */
+     */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        config.registerTypeAdapter(clz, encoder);
+        serializer.getConfig().registerTypeAdapter(clz, encoder);
     }
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new GsonSerializer(config.create()));
+        return new StringSerializerRender(false, serializer);
     }
-
 
     @Override
     public GsonBuilder config() {
-        return config;
+        return serializer.getConfig();
     }
 }

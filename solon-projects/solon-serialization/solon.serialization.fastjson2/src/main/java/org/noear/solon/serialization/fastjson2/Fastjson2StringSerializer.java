@@ -5,7 +5,9 @@ import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.reader.ObjectReaderProvider;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
-import org.noear.solon.serialization.Serializer;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.serialization.ActionSerializer;
 
 import java.io.IOException;
 
@@ -16,58 +18,65 @@ import java.io.IOException;
  * @since 1.10
  * @since 2.8
  */
-public class Fastjson2StringSerializer implements Serializer<String> {
-    private JSONWriter.Feature[] writeFeatures;
+public class Fastjson2StringSerializer implements ActionSerializer<String> {
     private JSONWriter.Context writeContext;
 
-    private JSONReader.Feature[] readerFeatures;
     private JSONReader.Context readerContext;
 
-    /**
-     * 设置序列化配置
-     */
-    public void setSerializeConfig(ObjectWriterProvider config, JSONWriter.Feature... features) {
-        this.writeFeatures = features;
+    public JSONReader.Context getReaderContext() {
+        if (readerContext == null) {
+            readerContext = new JSONReader.Context(new ObjectReaderProvider());
+        }
+        return readerContext;
+    }
 
-        if (config != null) {
-            this.writeContext = new JSONWriter.Context(config, features);
+    public void cfgReaderFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
+        for (JSONReader.Feature feature : features) {
+            getReaderContext().config(feature, isAdd);
         }
     }
 
-    /**
-     * 设置反序列化配置
-     */
-    public void setDeserializeCofnig(ObjectReaderProvider config, JSONReader.Feature... features) {
-        this.readerFeatures = features;
+    public JSONWriter.Context getWriteContext() {
+        if (writeContext == null) {
+            writeContext = new JSONWriter.Context(new ObjectWriterProvider());
+        }
 
-        if (config != null) {
-            this.readerContext = new JSONReader.Context(config, features);
+        return writeContext;
+    }
+
+    public void cfgWriteFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
+        for (JSONWriter.Feature feature : features) {
+            getWriteContext().config(feature, isAdd);
         }
     }
 
     @Override
+    public String name() {
+        return "fastjson2-json";
+    }
+
+    @Override
     public String serialize(Object obj) throws IOException {
-        if (writeContext == null) {
-            return JSON.toJSONString(obj, writeFeatures);
-        } else {
-            return JSON.toJSONString(obj, writeContext);
-        }
+        return JSON.toJSONString(obj, getWriteContext());
     }
 
     @Override
     public Object deserialize(String data, Class<?> clz) throws IOException {
         if (clz == null) {
-            if (readerContext == null) {
-                return JSON.parse(data, readerFeatures);
-            } else {
-                return JSON.parse(data, readerContext);
-            }
+            return JSON.parse(data, getReaderContext());
         } else {
-            if (readerContext == null) {
-                return JSON.parseObject(data, clz, readerFeatures);
-            } else {
-                return JSON.parseObject(data, clz, readerContext);
-            }
+            return JSON.parseObject(data, clz, getReaderContext());
+        }
+    }
+
+    @Override
+    public Object deserializeBody(Context ctx) throws IOException {
+        String data = ctx.bodyNew();
+
+        if (Utils.isNotEmpty(data)) {
+            return JSON.parse(data, getReaderContext());
+        } else {
+            return null;
         }
     }
 }

@@ -21,7 +21,10 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new SnackSerializer(config));
+        SnackStringSerializer serializer = new SnackStringSerializer();
+        serializer.setConfig(config);
+
+        return new StringSerializerRender(false,serializer);
     }
 
     @Override

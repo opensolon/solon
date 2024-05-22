@@ -1,7 +1,6 @@
 package org.noear.solon.serialization.gson;
 
 import com.google.gson.*;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -19,31 +18,19 @@ import java.util.List;
 public class GsonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
-    private final GsonBuilder config = new GsonBuilder();
+    private final GsonStringSerializer serializer = new GsonStringSerializer();
 
     public GsonActionExecutor(){
-        config.registerTypeAdapter(Date.class, new DateReadAdapter());
+        serializer.getConfig().registerTypeAdapter(Date.class, new DateReadAdapter());
     }
 
+    public GsonStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    @Deprecated
     public GsonBuilder config() {
-        return config;
-    }
-
-    private Gson gson;
-    public Gson gson() {
-        if (gson == null) {
-            Utils.locker().lock();
-
-            try {
-                if (gson == null) {
-                    gson = config.create();
-                }
-            } finally {
-                Utils.locker().unlock();
-            }
-        }
-
-        return gson;
+        return serializer.getConfig();
     }
 
     @Override
@@ -57,13 +44,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return JsonParser.parseString(json);
-        } else {
-            return null;
-        }
+        return serializer.deserializeBody(ctx);
     }
 
     @Override
@@ -92,9 +73,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.getName())) {
                     //支持泛型的转换
                     if (p.isGenericType()) {
-                        return gson().fromJson(tmp.get(p.getName()), p.getGenericType());
+                        return serializer.getGson().fromJson(tmp.get(p.getName()), p.getGenericType());
                     } else {
-                        return gson().fromJson(tmp.get(p.getName()), pt);
+                        return serializer.getGson().fromJson(tmp.get(p.getName()), pt);
                     }
                 }
             }
@@ -113,9 +94,9 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
                 //支持泛型的转换 如：Map<T>
                 if (p.isGenericType()) {
-                    return gson().fromJson(tmp, p.getGenericType());
+                    return serializer.getGson().fromJson(tmp, p.getGenericType());
                 } else {
-                    return gson().fromJson(tmp, pt);
+                    return serializer.getGson().fromJson(tmp, pt);
                 }
             }
         }
@@ -129,10 +110,10 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
             //集合类型转换
             if (p.isGenericType()) {
                 //转换带泛型的集合
-                return gson().fromJson(tmp, p.getGenericType());
+                return serializer.getGson().fromJson(tmp, p.getGenericType());
             } else {
                 //不仅可以转换为List 还可以转换成Set
-                return gson().fromJson(tmp, pt);
+                return serializer.getGson().fromJson(tmp, pt);
             }
         }
 

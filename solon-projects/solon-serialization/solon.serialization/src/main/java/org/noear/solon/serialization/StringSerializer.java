@@ -8,12 +8,24 @@ import java.io.IOException;
  * @author noear
  * @since 1.5
  * @deprecated 2.8
+ * @removal true
  */
 @Deprecated
-@FunctionalInterface
-public interface StringSerializer {
+public interface StringSerializer extends org.noear.solon.core.serialize.Serializer<String> {
+    /**
+     * 名字
+     */
+    default String name() {
+        return this.getClass().getSimpleName();
+    }
+
     /**
      * 序列化为字符串
-     * */
-    String serialize(Object source) throws IOException;
+     */
+    String serialize(Object fromObj) throws IOException;
+
+
+    default Object deserialize(String data, Class<?> toClz) throws IOException {
+        return null;
+    }
 }

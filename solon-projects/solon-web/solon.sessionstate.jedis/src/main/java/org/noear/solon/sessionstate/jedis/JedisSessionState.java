@@ -4,7 +4,7 @@ import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.data.cache.Serializer;
+import org.noear.solon.core.serialize.Serializer;
 
 import java.util.Collection;
 

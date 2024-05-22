@@ -1,6 +1,6 @@
 package org.noear.solon.data.cache.impl;
 
-import org.noear.solon.data.cache.Serializer;
+import org.noear.solon.core.serialize.Serializer;
 
 import java.io.*;
 import java.util.Base64;
@@ -20,7 +20,7 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public String serialize(Object obj) throws Exception {
+    public String serialize(Object obj) {
         if (obj == null) {
             return null;
         }
@@ -30,7 +30,7 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String dta, Class<?> clz) throws Exception {
+    public Object deserialize(String dta, Class<?> clz) {
         if (dta == null) {
             return null;
         }

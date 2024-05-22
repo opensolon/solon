@@ -5,10 +5,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Json 渲染器工厂
  *
@@ -17,51 +13,40 @@ import java.util.Set;
  * @since 2.8
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
-
-    private SerializeConfig config;
-    private Set<SerializerFeature> features;
+    private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
 
     public FastjsonRenderFactory() {
-        features = new HashSet<>();
-        features.add(SerializerFeature.BrowserCompatible);
+        serializer.cfgSerializerFeatures(false, true, SerializerFeature.BrowserCompatible);
     }
 
     @Override
     public Render create() {
-        FastjsonStringSerializer serializer = new FastjsonStringSerializer();
-        serializer.setSerializeConfig(config, features.toArray(new SerializerFeature[features.size()]));
-
         return new StringSerializerRender(false, serializer);
     }
 
     @Override
     public SerializeConfig config() {
-        if (config == null) {
-            config = new SerializeConfig();
-        }
-
-        return config;
+        return serializer.getSerializeConfig();
     }
 
     /**
      * 重新设置特性
      */
     public void setFeatures(SerializerFeature... features) {
-        this.features.clear();
-        this.features.addAll(Arrays.asList(features));
+        serializer.cfgSerializerFeatures(true, true, features);
     }
 
     /**
      * 添加特性
-     * */
+     */
     public void addFeatures(SerializerFeature... features) {
-        this.features.addAll(Arrays.asList(features));
+        serializer.cfgSerializerFeatures(false, true, features);
     }
 
     /**
      * 移除特性
-     * */
+     */
     public void removeFeatures(SerializerFeature... features) {
-        this.features.removeAll(Arrays.asList(features));
+        serializer.cfgSerializerFeatures(false, false, features);
     }
 }

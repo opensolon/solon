@@ -2,6 +2,7 @@ package org.noear.solon.serialization;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.core.serialize.Serializer;
 
 /**
  * 字符串序列化渲染器
@@ -14,14 +15,14 @@ public class StringSerializerRender implements Render {
     /**
      * 类型化
      */
-    boolean typed;
+    private boolean typed;
 
     /**
      * 序列化器
      *
      * @since 2.8
      */
-    Serializer<String> serializer;
+    private Serializer<String> serializer;
 
 
     public StringSerializerRender(boolean typed,  Serializer<String> serializer) {
@@ -40,7 +41,7 @@ public class StringSerializerRender implements Render {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName() + "#" + serializer.getClass().getSimpleName();
+        return this.getClass().getSimpleName() + "#" + serializer.name();
     }
 
     @Override

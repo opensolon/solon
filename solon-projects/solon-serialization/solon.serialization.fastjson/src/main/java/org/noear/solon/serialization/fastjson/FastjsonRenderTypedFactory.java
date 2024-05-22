@@ -13,31 +13,22 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.8
  */
 public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
-    private SerializeConfig config;
-    private SerializerFeature[] features;
+    private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
 
     public FastjsonRenderTypedFactory() {
-        features = new SerializerFeature[]{
+        serializer.cfgSerializerFeatures(false, true,
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteClassName,
-                SerializerFeature.DisableCircularReferenceDetect
-        };
+                SerializerFeature.DisableCircularReferenceDetect);
     }
 
     @Override
     public Render create() {
-        FastjsonStringSerializer serializer = new FastjsonStringSerializer();
-        serializer.setSerializeConfig(config, features);
-
         return new StringSerializerRender(true, serializer);
     }
 
     @Override
     public SerializeConfig config() {
-        if (config == null) {
-            config = new SerializeConfig();
-        }
-
-        return config;
+        return serializer.getSerializeConfig();
     }
 }

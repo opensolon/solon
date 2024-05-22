@@ -1,10 +1,8 @@
 package org.noear.solon.serialization.fastjson;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -23,13 +21,22 @@ import java.util.List;
 public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
-    private final ParserConfig config = new ParserConfig();
+    private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+
+    /**
+     * 获取序列化接口
+     */
+    public FastjsonStringSerializer getSerializer() {
+        return serializer;
+    }
 
     /**
      * 反序列化配置
-     * */
-    public ParserConfig config(){
-        return config;
+     *
+     * @deprecated 2.8
+     */
+    public ParserConfig config() {
+        return serializer.getParserConfig();
     }
 
     @Override
@@ -43,18 +50,12 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return JSON.parse(json, config);
-        } else {
-            return null;
-        }
+        return serializer.deserializeBody(ctx);
     }
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
+        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }

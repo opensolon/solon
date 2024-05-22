@@ -26,6 +26,7 @@
         <module>../../solon-projects/solon-serialization/solon.serialization.hessian</module>
         <module>../../solon-projects/solon-serialization/solon.serialization.protostuff</module>
         <module>../../solon-projects/solon-serialization/solon.serialization.properties</module>
+        <module>../../solon-projects/solon-serialization/solon.serialization.kryo</module>
 
         <module>../../solon-projects/solon-view/solon.view</module>
         <module>../../solon-projects/solon-view/solon.view.freemarker</module>

@@ -2,8 +2,8 @@ package org.noear.solon.cache.redisson;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.Serializer;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.slf4j.Logger;

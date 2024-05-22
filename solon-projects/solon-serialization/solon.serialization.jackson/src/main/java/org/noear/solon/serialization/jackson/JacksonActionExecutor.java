@@ -21,31 +21,29 @@ import java.util.List;
 public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
-    private ObjectMapper mapper_type = new ObjectMapper();
+    private JacksonStringSerializer serializer = new JacksonStringSerializer();
 
     public ObjectMapper config(){
-        return mapper_type;
+        return serializer.getConfig();
     }
 
     public void config(ObjectMapper objectMapper){
-        if(objectMapper != null){
-            mapper_type = objectMapper;
-        }
+        serializer.setConfig(objectMapper);
     }
 
     public JacksonActionExecutor() {
-        mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper_type.activateDefaultTypingAsProperty(
-                mapper_type.getPolymorphicTypeValidator(),
+        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getConfig().activateDefaultTypingAsProperty(
+                serializer.getConfig().getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        mapper_type.registerModule(new JavaTimeModule());
+        serializer.getConfig().registerModule(new JavaTimeModule());
         // 允许使用未带引号的字段名
-        mapper_type.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        serializer.getConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         // 允许使用单引号
-        mapper_type.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        serializer.getConfig().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {
-            return mapper_type.readTree(json);
+            return serializer.deserialize(json, null);
         } else {
             return null;
         }
@@ -97,7 +95,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.getName())) {
                     JsonNode m1 = tmp.get(p.getName());
 
-                    return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp<>(p));
+                    return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(m1), new TypeReferenceImp<>(p));
                 }
             }
 
@@ -114,7 +112,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
+                return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
             }
         }
 
@@ -124,12 +122,12 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
 
-            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
+            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
         }
 
         //return tmp.val().getRaw();
         if (tmp.isValueNode()) {
-            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
+            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
         } else {
             return null;
         }

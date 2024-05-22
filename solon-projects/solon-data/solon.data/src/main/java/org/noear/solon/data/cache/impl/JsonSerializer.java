@@ -1,7 +1,7 @@
 package org.noear.solon.data.cache.impl;
 
 import org.noear.snack.ONode;
-import org.noear.solon.data.cache.Serializer;
+import org.noear.solon.core.serialize.Serializer;
 
 /**
  * Json 序列化实现
@@ -18,12 +18,12 @@ public class JsonSerializer implements Serializer<String> {
     }
 
     @Override
-    public String serialize(Object fromObj) throws Exception {
+    public String serialize(Object fromObj)  {
         return ONode.stringify(fromObj);
     }
 
     @Override
-    public Object deserialize(String dta, Class<?> toClz) throws Exception {
+    public Object deserialize(String dta, Class<?> toClz) {
         return ONode.deserialize(dta, toClz);
     }
 }

@@ -5,20 +5,10 @@ package org.noear.solon.data.cache;
  *
  * @author noear
  * @since 1.5
+ * @deprecated 2.8
+ * @removal true
  * */
-public interface Serializer<T> {
-    /**
-     * 名称
-     */
-    String name();
+@Deprecated
+public interface Serializer<T> extends org.noear.solon.core.serialize.Serializer<T> {
 
-    /**
-     * 序列化
-     */
-    T serialize(Object fromObj) throws Exception;
-
-    /**
-     * 反序列化
-     */
-    Object deserialize(T dta, Class<?> toClz) throws Exception;
 }
