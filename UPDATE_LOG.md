@@ -30,6 +30,7 @@
 * 添加 rocketmq5 适配 EventLevel.instance 订阅支持
 * 添加 solon.boot.socketd 对 ssl 配置的支持
 * 优化 kafka 适配的 ack 处理
+* snack3 升为 3.2.98
 * socket.d 升为 2.4.18
 * folkmq 升为 1.4.6
 * wood 升为 1.2.11
