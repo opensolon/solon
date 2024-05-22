@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/hessian";
+    private HessianBytesSerializer serializer = new HessianBytesSerializer();
+
+    public HessianBytesSerializer getSerializer() {
+        return serializer;
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -22,8 +27,7 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        Hessian2Input hi = new Hessian2Input(ctx.bodyAsStream());
-        return hi.readObject();
+       return serializer.deserializeBody(ctx);
     }
 
     /**

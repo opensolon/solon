@@ -20,7 +20,7 @@ public class FuryRender implements Render {
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         byte[] bytes = null;
         if (data instanceof ModelAndView) {
-            bytes = serializeDo(new LinkedHashMap((Map) data));
+            bytes = serializeDo(((ModelAndView) data).model());
         } else {
             bytes = serializeDo(data);
         }
@@ -37,7 +37,7 @@ public class FuryRender implements Render {
         ctx.contentType("application/fury");
 
         if (obj instanceof ModelAndView) {
-            ctx.output(serializeDo(new LinkedHashMap((Map) obj)));
+            ctx.output(serializeDo(((ModelAndView) obj).model()));
         } else {
             ctx.output(serializeDo(obj));
         }

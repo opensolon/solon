@@ -7,6 +7,8 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializationConfig;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 //不要要入参，方便后面多视图混用
 //
@@ -19,11 +21,10 @@ public class HessianRender implements Render {
 
         ctx.contentType("application/hessian");
 
-        Hessian2Output ho = new Hessian2Output(ctx.outputStream());
         if (obj instanceof ModelAndView) {
-            ho.writeObject(((ModelAndView) obj).model());
+            ctx.output(serializeDo(((ModelAndView) obj).model()));
         } else {
-            ho.writeObject(obj);
+            ctx.output(serializeDo(obj));
         }
     }
 

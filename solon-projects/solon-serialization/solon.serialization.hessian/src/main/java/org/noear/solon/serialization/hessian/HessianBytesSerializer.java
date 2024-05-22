@@ -15,6 +15,11 @@ import java.io.IOException;
  */
 public class HessianBytesSerializer implements ActionSerializer<byte[]> {
     @Override
+    public String name() {
+        return "hessian-bytes";
+    }
+
+    @Override
     public byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -23,11 +28,6 @@ public class HessianBytesSerializer implements ActionSerializer<byte[]> {
         ho.close();
 
         return out.toByteArray();
-    }
-
-    @Override
-    public String name() {
-        return "hessian-bytes";
     }
 
     @Override
