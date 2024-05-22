@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.jackson;
+package org.noear.solon.serialization.jackson.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.2
  */
-public class TypeReferenceImp<T> extends TypeReference<T> {
+public class TypeReferenceImpl<T> extends TypeReference<T> {
     protected final Type _type2;
 
-    public TypeReferenceImp(ParamWrap p) {
+    public TypeReferenceImpl(ParamWrap p) {
         if (p.getGenericType() == null) {
             this._type2 = p.getType();
         } else {

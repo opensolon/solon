@@ -10,6 +10,7 @@ import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -95,7 +96,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 if (tmp.has(p.getName())) {
                     JsonNode m1 = tmp.get(p.getName());
 
-                    return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(m1), new TypeReferenceImp<>(p));
+                    return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(m1), new TypeReferenceImpl<>(p));
                 }
             }
 
@@ -112,7 +113,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
+                return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
             }
         }
 
@@ -122,12 +123,12 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
 
-            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
+            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         }
 
         //return tmp.val().getRaw();
         if (tmp.isValueNode()) {
-            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImp<>(p));
+            return serializer.getConfig().readValue(serializer.getConfig().treeAsTokens(tmp), new TypeReferenceImpl<>(p));
         } else {
             return null;
         }

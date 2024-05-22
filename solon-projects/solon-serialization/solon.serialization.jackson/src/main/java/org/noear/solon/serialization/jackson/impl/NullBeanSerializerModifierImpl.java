@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.jackson;
+package org.noear.solon.serialization.jackson.impl;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -26,13 +26,13 @@ public class NullBeanSerializerModifierImpl extends BeanSerializerModifier {
             BeanPropertyWriter writer = (BeanPropertyWriter) beanProperty;
 
             if (isArrayType(writer)) {
-                writer.assignNullSerializer(new NullValueSerializer(jsonProps,  writer.getType()));
+                writer.assignNullSerializer(new NullValueSerializerImpl(jsonProps,  writer.getType()));
             } else if (isNumberType(writer)) {
-                writer.assignNullSerializer(new NullValueSerializer(jsonProps,  writer.getType()));
+                writer.assignNullSerializer(new NullValueSerializerImpl(jsonProps,  writer.getType()));
             } else if (isBooleanType(writer)) {
-                writer.assignNullSerializer(new NullValueSerializer(jsonProps,  writer.getType()));
+                writer.assignNullSerializer(new NullValueSerializerImpl(jsonProps,  writer.getType()));
             } else if (isStringType(writer)) {
-                writer.assignNullSerializer(new NullValueSerializer(jsonProps,  writer.getType()));
+                writer.assignNullSerializer(new NullValueSerializerImpl(jsonProps,  writer.getType()));
             }
         }
 

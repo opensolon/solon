@@ -10,6 +10,7 @@ import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.serialization.jackson.impl.NullValueSerializerImpl;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
@@ -66,7 +67,7 @@ public class XPluginImp implements Plugin {
 //                        .withSerializerModifier(new NullBeanSerializerModifierImpl(jsonProps));
                 factory.config()
                         .getSerializerProvider()
-                        .setNullValueSerializer(new NullValueSerializer(jsonProps));
+                        .setNullValueSerializer(new NullValueSerializerImpl(jsonProps));
             }
 
             if(jsonProps.enumAsName){

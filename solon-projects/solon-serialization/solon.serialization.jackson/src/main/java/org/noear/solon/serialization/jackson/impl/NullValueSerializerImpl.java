@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.jackson;
+package org.noear.solon.serialization.jackson.impl;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
@@ -12,15 +12,15 @@ import java.util.Collection;
  * @author noear
  * @since 1.12
  */
-public class NullValueSerializer extends JsonSerializer<Object> {
+public class NullValueSerializerImpl extends JsonSerializer<Object> {
     private JsonProps jsonProps;
     public Class<?> type0;
 
-    public NullValueSerializer(JsonProps jsonProps) {
+    public NullValueSerializerImpl(JsonProps jsonProps) {
         this.jsonProps = jsonProps;
     }
 
-    public NullValueSerializer(JsonProps jsonProps, final JavaType type) {
+    public NullValueSerializerImpl(JsonProps jsonProps, final JavaType type) {
         this.jsonProps = jsonProps;
         this.type0 = type == null ? Object.class : type.getRawClass();
     }

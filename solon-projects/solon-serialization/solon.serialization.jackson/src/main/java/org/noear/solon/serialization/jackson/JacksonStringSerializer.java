@@ -14,7 +14,6 @@ import java.io.IOException;
  */
 public class JacksonStringSerializer implements ActionSerializer<String> {
     private ObjectMapper config;
-
     public ObjectMapper getConfig() {
         if (config == null) {
             config = new ObjectMapper();
