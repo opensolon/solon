@@ -2,6 +2,7 @@ package org.noear.solon.web.servlet;
 
 import jakarta.servlet.*;
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.AppInitEndEvent;
@@ -105,6 +106,22 @@ public class SolonServletContextListener implements ServletContextListener {
             }
         } else {
             throw new IllegalStateException("The main function was not found for: " + this.getClass().getName());
+        }
+    }
+
+    /**
+     * Servlet容器销毁时关闭Solon
+     */
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        // 1.获取SolonApp
+        SolonApp app = Solon.app();
+
+        // 2.阻塞关闭Solon
+        if (app.cfg().stopSafe()) {
+            Solon.stopBlock(false, app.cfg().stopDelay());
+        } else {
+            Solon.stopBlock(false, 0);
         }
     }
 }
