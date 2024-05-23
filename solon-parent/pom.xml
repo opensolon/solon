@@ -34,13 +34,13 @@
         <water.version>2.13.2</water.version>
         <luffy.version>1.7.5</luffy.version>
         <redisx.version>1.6.3</redisx.version>
-        <socketd.version>2.4.18</socketd.version>
+        <socketd.version>2.5.0</socketd.version>
         <folkmq.version>1.4.6</folkmq.version>
         <redisson.version>3.27.2</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.50</fastjson2.version>
+        <fastjson2.version>2.0.51-SNAPSHOT</fastjson2.version>
         <okhttp.version>3.14.9</okhttp.version>
         <hutool.version>5.8.27</hutool.version>
 
@@ -193,6 +193,17 @@
         <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
         <url>https://github.com/noear/solon</url>
     </scm>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
