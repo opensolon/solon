@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 2.8
  */
-public class BeanWrapLifecycle implements LifecycleBean {
+class BeanWrapLifecycle implements LifecycleBean {
     private BeanWrap bw;
     private Method initMethod;
     private int initIndex;
@@ -89,21 +89,25 @@ public class BeanWrapLifecycle implements LifecycleBean {
 
     @Override
     public void start() throws Throwable {
-        try {
-            initMethod.invoke(bw.raw());
-        } catch (InvocationTargetException e) {
-            Throwable e2 = e.getTargetException();
-            throw Utils.throwableUnwrap(e2);
+        if (initMethod != null) {
+            try {
+                initMethod.invoke(bw.raw());
+            } catch (InvocationTargetException e) {
+                Throwable e2 = e.getTargetException();
+                throw Utils.throwableUnwrap(e2);
+            }
         }
     }
 
     @Override
     public void stop() throws Throwable {
-        try {
-            destroyMethod.invoke(bw.raw());
-        } catch (InvocationTargetException e) {
-            Throwable e2 = e.getTargetException();
-            throw Utils.throwableUnwrap(e2);
+        if (destroyMethod != null) {
+            try {
+                destroyMethod.invoke(bw.raw());
+            } catch (InvocationTargetException e) {
+                Throwable e2 = e.getTargetException();
+                throw Utils.throwableUnwrap(e2);
+            }
         }
     }
 }
