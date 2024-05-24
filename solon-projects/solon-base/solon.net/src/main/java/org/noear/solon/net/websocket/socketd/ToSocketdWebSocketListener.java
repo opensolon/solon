@@ -189,7 +189,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
 
         @Override
-        public void write(WebSocket target, Frame frame) throws IOException {
+        public void write(WebSocket target, Frame frame, ChannelInternal channel) throws IOException {
             ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
             target.send(writer.getBuffer());
         }
