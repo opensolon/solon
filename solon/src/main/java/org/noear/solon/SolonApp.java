@@ -439,10 +439,9 @@ public class SolonApp extends RouterWrapper {
 
                 if (x.getHandled() == false) { //@since: 1.9
                     if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
-                        Integer mainStatus = x.attr(Constants.mainStatus); //支持405  //@since: 2.5
-
-                        if (mainStatus != null) {
-                            x.status(mainStatus);
+                        int statusPreview = x.statusPreview(); //支持405  //@since: 2.5
+                        if (statusPreview > 0) {
+                            x.status(statusPreview);
                         } else {
                             x.status(404);
                         }

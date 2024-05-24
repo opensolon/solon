@@ -997,6 +997,10 @@ public abstract class Context {
         setRendered(true);
     }
 
+    public int statusPreview(){
+       return attrOrDefault(Constants.mainStatus, 0);
+    }
+
     /**
      * 获取输出状态
      */
