@@ -1,0 +1,109 @@
+package org.noear.solon.core;
+
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Destroy;
+import org.noear.solon.annotation.Init;
+import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.util.IndexUtil;
+import org.noear.solon.core.wrap.ClassWrap;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ * @author noear
+ * @since 2.8
+ */
+public class BeanWrapLifecycle implements LifecycleBean {
+    private BeanWrap bw;
+    private Method initMethod;
+    private int initIndex;
+    private Method destroyMethod;
+
+    public BeanWrapLifecycle(BeanWrap bw) {
+        this.bw = bw;
+    }
+
+    public Method initMethod() {
+        return initMethod;
+    }
+
+    public Method destroyMethod() {
+        return destroyMethod;
+    }
+
+    public boolean check() {
+        if (bw.clz().isInterface()) {
+            return false;
+        }
+
+        if (bw.raw() == null) {
+            return false;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+
+        //找查注解函数
+        for (Method m : clzWrap.getDeclaredMethods()) {
+            Init initAnno = m.getAnnotation(Init.class);
+            if (initAnno != null) {
+                if (m.getParameters().length == 0) {
+                    //只接收没有参数的，支持非公有函数
+                    initMethod = m;
+                    initMethod.setAccessible(true);
+                    initIndex = initAnno.index();
+                }
+            } else {
+                Destroy destroyAnno = m.getAnnotation(Destroy.class);
+                if (destroyAnno != null) {
+                    if (m.getParameters().length == 0) {
+                        destroyMethod = m;
+                        destroyMethod.setAccessible(true);
+                    }
+                }
+            }
+
+            if (initMethod != null && destroyMethod != null) {
+                //如果两个都找到了，就不用找了
+                break;
+            }
+        }
+
+        //处理顺序位
+        if (initMethod != null) {
+            if (initIndex == 0) {
+                //如果为0，则自动识别
+                initIndex = IndexUtil.buildLifecycleIndex(bw.clz());
+            }
+        }
+
+        return initMethod != null || destroyMethod != null;
+    }
+
+    /**
+     * 顺序位
+     */
+    public int index() {
+        return initIndex;
+    }
+
+    @Override
+    public void start() throws Throwable {
+        try {
+            initMethod.invoke(bw.raw());
+        } catch (InvocationTargetException e) {
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
+        }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        try {
+            destroyMethod.invoke(bw.raw());
+        } catch (InvocationTargetException e) {
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
+        }
+    }
+}

@@ -71,9 +71,13 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
                 proxyClassGenerator.generateCode(settings, clz);
             }
 
-            //注册信息（构造函数，初始化函数等...）
+            //注册信息（构造函数，初始化函数、注销函数等...）
             if (beanWrap.clzInit() != null) {
                 metadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
+            }
+
+            if (beanWrap.clzDestroy() != null) {
+                metadata.registerMethod(beanWrap.clzDestroy(), ExecutableMode.INVOKE);
             }
 
             processBeanDo(metadata, clz, beanWrap.proxy() != null);

@@ -1,15 +1,10 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.noear.solon.Utils;
-import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.IndexUtil;
-import org.noear.solon.core.wrap.ClassWrap;
 
 /**
  * Bean 包装
@@ -23,10 +18,8 @@ import org.noear.solon.core.wrap.ClassWrap;
 public class BeanWrap {
     // bean clz
     private Class<?> clz;
-    // bean clz init method
-    private Method clzInit;
-    // bean clz init method index
-    private int clzInitIndex;
+    // bean lifecycle
+    private BeanWrapLifecycle lifecycle;
     // bean raw（初始实例）
     private Object raw;
     private Object rawUnproxied;
@@ -79,9 +72,6 @@ public class BeanWrap {
         singleton = (anoS == null || anoS.value()); //默认为单例
 
         annotations = clz.getAnnotations();
-
-        //构建初始化函数
-        tryBuildInit();
 
         //构建原生实例
         if (raw == null) {
@@ -144,10 +134,17 @@ public class BeanWrap {
     }
 
     /**
-     * 初始化bean的方法
+     * bean 类初始化函数
      */
     public Method clzInit() {
-        return clzInit;
+        return lifecycle.initMethod();
+    }
+
+    /**
+     * bean 类注销函数
+     */
+    public Method clzDestroy() {
+        return lifecycle.destroyMethod();
     }
 
     /**
@@ -295,51 +292,10 @@ public class BeanWrap {
      * @since 2.3
      */
     protected void tryInit() {
-        if (clzInit != null) {
-            if (clzInitIndex == 0) {
-                //如果为0，则自动识别
-                clzInitIndex = IndexUtil.buildLifecycleIndex(clz);
-            }
-
-            //保持与 LifecycleBean 相同策略：+1
-            context.lifecycle(clzInitIndex + 1, () -> {
-                try {
-                    if (raw() != null) {
-                        clzInit.invoke(raw());
-                    }
-                } catch (InvocationTargetException e) {
-                    Throwable e2 = e.getTargetException();
-                    throw Utils.throwableUnwrap(e2);
-                }
-            });
-        }
-    }
-
-    /**
-     * 尝试构建初始化函数
-     */
-    protected void tryBuildInit() {
-        if (clzInit != null) {
-            return;
-        }
-
-        if (clz.isInterface()) {
-            return;
-        }
-
-        ClassWrap clzWrap = ClassWrap.get(clz);
-
-        //查找初始化函数
-        for (Method m : clzWrap.getDeclaredMethods()) {
-            Init initAnno = m.getAnnotation(Init.class);
-            if (initAnno != null) {
-                if (m.getParameters().length == 0) {
-                    //只接收没有参数的，支持非公有函数
-                    clzInit = m;
-                    clzInit.setAccessible(true);
-                    clzInitIndex = initAnno.index();
-                }
-                break;
+        if (lifecycle == null) {
+            lifecycle = new BeanWrapLifecycle(this);
+            if (lifecycle.check()) {
+                context.lifecycle(lifecycle.index() + 1, lifecycle);
             }
         }
     }
