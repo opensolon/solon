@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONFactory;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.reader.ObjectReaderProvider;
@@ -31,6 +32,10 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
     }
 
     public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
+        if (isReset) {
+            getSerializeConfig().setFeatures(0);//JSONFactory.getDefaultWriterFeatures());
+        }
+
         for (JSONWriter.Feature feature : features) {
             getSerializeConfig().config(feature, isAdd);
         }
@@ -44,6 +49,10 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
     }
 
     public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
+        if (isReset) {
+            getDeserializeConfig().setFeatures(0);//JSONFactory.getDefaultReaderFeatures());
+        }
+
         for (JSONReader.Feature feature : features) {
             getDeserializeConfig().config(feature, isAdd);
         }
