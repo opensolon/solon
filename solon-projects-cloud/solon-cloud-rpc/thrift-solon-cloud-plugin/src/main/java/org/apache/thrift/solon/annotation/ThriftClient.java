@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Alias;
 import java.lang.annotation.*;
 
 /**
+ * @author LIAO.Chunping
  * @author noear
  * @since 1.10
  */
@@ -18,5 +19,9 @@ public @interface ThriftClient {
     @Alias("value")
     String name() default "";
 
-    String group() default "";
+    String ip() default "127.0.0.1";
+
+    int port() default 9090;
+
+    String serviceName() default "";
 }
