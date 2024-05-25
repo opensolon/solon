@@ -1,6 +1,6 @@
 package org.noear.solon.auth;
 
-import org.noear.solon.exception.SolonException;
+import org.noear.solon.core.exception.StatusException;
 
 /**
  * 认证异常
@@ -8,7 +8,7 @@ import org.noear.solon.exception.SolonException;
  * @author noear
  * @since 1.4
  */
-public class AuthException extends SolonException {
+public class AuthException extends StatusException {
     private final AuthStatus status;
 
     public AuthStatus getStatus() {
@@ -16,7 +16,7 @@ public class AuthException extends SolonException {
     }
 
     public AuthException(AuthStatus status, String message) {
-        super(message);
+        super(message, status.code);
         this.status = status;
     }
 }
