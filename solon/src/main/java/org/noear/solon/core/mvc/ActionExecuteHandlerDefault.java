@@ -2,6 +2,7 @@ package org.noear.solon.core.mvc;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -102,7 +103,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                         tv = changeValue(ctx, p, i, pt, bodyObj);
                     } catch (Exception e) {
                         String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
-                        throw new IllegalArgumentException("Action parameter change failed: " + methodFullName, e);
+                        throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);
                     }
                 }
 
@@ -136,8 +137,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
 
                 if (tv == null) {
                     if (p.isRequiredInput()) {
-                        ctx.status(400);
-                        throw new IllegalArgumentException(p.getRequiredHint());
+                        throw new StatusException(p.getRequiredHint(), 400);
                     }
                 }
 
