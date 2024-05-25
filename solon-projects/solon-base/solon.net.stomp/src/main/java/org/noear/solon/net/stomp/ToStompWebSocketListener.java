@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.impl.*;
+import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author limliu
  * @since 2.7
  */
-public abstract class ToStompWebSocketListener implements WebSocketListener {
+public abstract class ToStompWebSocketListener implements WebSocketListener, SubProtocolCapable {
     static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
 
     private List<StompListener> listenerList = new ArrayList<>();
@@ -59,6 +60,10 @@ public abstract class ToStompWebSocketListener implements WebSocketListener {
         }
     }
 
+    @Override
+    public String getSubProtocols() {
+        return "stomp";
+    }
 
     @Override
     public void onOpen(WebSocket socket) {
