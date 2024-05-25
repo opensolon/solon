@@ -31,7 +31,7 @@ class MultipartUtil {
                 }
             }
         } catch (Exception e) {
-            throw new StatusException("Request multipart processing failure", e, 400);
+            throw new StatusException("Bad Request", e, 400);
         }
     }
 

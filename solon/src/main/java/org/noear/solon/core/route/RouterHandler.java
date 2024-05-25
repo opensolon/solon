@@ -34,8 +34,12 @@ public class RouterHandler implements Handler, RouterInterceptor {
             h.handle(ctx);
             return ctx.status() != 404;
         } else {
-            int statusPreview = ctx.attrOrDefault(Constants.mainStatus, 400);
-            throw new StatusException("Request routing failure", statusPreview);
+            int code = ctx.attrOrDefault(Constants.mainStatus, 404);
+            if (code == 405) {
+                throw new StatusException("Method Not Allowed", code);
+            } else {
+                throw new StatusException("Not Found", code);
+            }
             //return false;
         }
     }
