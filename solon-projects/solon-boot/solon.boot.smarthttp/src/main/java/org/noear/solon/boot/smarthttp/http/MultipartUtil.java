@@ -5,7 +5,7 @@ import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipart;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipartCollection;
 import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.core.exception.HttpException;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 
@@ -31,7 +31,7 @@ class MultipartUtil {
                 }
             }
         } catch (Exception e) {
-            throw new HttpException("Multipart processing failed", e, 400);
+            throw new StatusException("Request multipart processing failure", e, 400);
         }
     }
 

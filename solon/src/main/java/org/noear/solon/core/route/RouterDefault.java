@@ -77,6 +77,7 @@ public class RouterDefault implements Router {
             ctx.attrSet(Constants.mainHandler, result.getData());
         } else {
             ctx.attrSet(Constants.mainStatus, result.getCode());
+
         }
 
         return result.getData();

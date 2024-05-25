@@ -1,7 +1,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.core.exception.HttpException;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.UploadedFile;
 
 import jakarta.servlet.ServletException;
@@ -34,7 +34,7 @@ class MultipartUtil {
                 }
             }
         } catch (Exception e) {
-            throw new HttpException("Multipart processing failed", e, 400);
+            throw new StatusException("Request multipart processing failure", e, 400);
         }
     }
 

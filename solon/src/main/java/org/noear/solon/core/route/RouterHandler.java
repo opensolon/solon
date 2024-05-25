@@ -2,6 +2,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Constants;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.lang.Nullable;
 
@@ -33,7 +34,9 @@ public class RouterHandler implements Handler, RouterInterceptor {
             h.handle(ctx);
             return ctx.status() != 404;
         } else {
-            return false;
+            int statusPreview = ctx.attrOrDefault(Constants.mainStatus, 400);
+            throw new StatusException("Request routing failure", statusPreview);
+            //return false;
         }
     }
 
