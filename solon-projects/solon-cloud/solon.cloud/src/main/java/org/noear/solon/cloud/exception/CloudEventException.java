@@ -1,12 +1,10 @@
 package org.noear.solon.cloud.exception;
 
-import org.noear.solon.exception.SolonException;
-
 /**
  * @author noear
  * @since 1.3
  */
-public class CloudEventException extends SolonException {
+public class CloudEventException extends CloudException {
     public CloudEventException(Throwable cause) {
         super(cause);
     }
