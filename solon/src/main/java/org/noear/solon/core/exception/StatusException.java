@@ -9,27 +9,27 @@ import org.noear.solon.exception.SolonException;
  * @since 2.4
  */
 public class StatusException extends SolonException {
-    private int statusPreivew;
+    private int code;
 
     /**
-     * 获取状态预览
+     * 获取状态码
      * */
-    public int getStatusPreivew() {
-        return statusPreivew;
+    public int getCode() {
+        return code;
     }
 
-    public StatusException(Throwable cause, int statusPreivew) {
+    public StatusException(Throwable cause, int code) {
         super(cause);
-        this.statusPreivew = statusPreivew;
+        this.code = code;
     }
 
-    public StatusException(String message, Throwable cause, int statusPreivew) {
+    public StatusException(String message, Throwable cause, int code) {
         super(message, cause);
-        this.statusPreivew = statusPreivew;
+        this.code = code;
     }
 
-    public StatusException(String message, int statusPreivew) {
+    public StatusException(String message, int code) {
         super(message);
-        this.statusPreivew = statusPreivew;
+        this.code = code;
     }
 }

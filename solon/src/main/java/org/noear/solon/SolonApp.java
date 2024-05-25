@@ -461,7 +461,7 @@ public class SolonApp extends RouterWrapper {
 
             //如果未处理，尝试处理
             if(ex instanceof StatusException){
-                x.status(((StatusException) ex).getStatusPreivew());
+                x.status(((StatusException) ex).getCode());
             }else {
                 if (x.getHandled() == false) {
                     if (x.status() < 400) {
