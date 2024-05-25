@@ -13,7 +13,7 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
-    static final Logger log = LoggerFactory.getLogger(UtWsChannelListener.class);
+    private static final Logger log = LoggerFactory.getLogger(UtWsChannelListener.class);
     private final String SESSION_KEY = "session";
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
@@ -62,7 +62,6 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
 
     public void onOpen(WebSocketHttpExchange exchange, WebSocketChannel channel) {
-
         WebSocketImpl webSocket = new WebSocketImpl(channel);
         exchange.getRequestHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
