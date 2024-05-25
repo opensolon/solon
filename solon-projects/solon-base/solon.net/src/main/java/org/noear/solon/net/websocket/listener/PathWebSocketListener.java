@@ -72,12 +72,16 @@ public class PathWebSocketListener implements WebSocketListener {
     /**
      * 区配一个目标
      */
-    protected WebSocketListener matching(WebSocket s) {
-        if(s == null){
+    public WebSocketListener matching(WebSocket s) {
+        if (s == null) {
             return null;
         }
         String path = s.path();
 
+        return matching(path);
+    }
+
+    public WebSocketListener matching(String path) {
         if (path == null) {
             return null;
         } else {

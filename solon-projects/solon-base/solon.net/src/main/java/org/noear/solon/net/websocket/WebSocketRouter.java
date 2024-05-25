@@ -72,4 +72,18 @@ public class WebSocketRouter {
     public Collection<String> getPaths() {
         return Collections.unmodifiableSet(paths);
     }
+
+    public SubProtocolCapable getSubProtocol(String path) {
+        WebSocketListener tmp = matching(path);
+
+        if (tmp != null && tmp instanceof SubProtocolCapable) {
+            return (SubProtocolCapable) tmp;
+        } else {
+            return null;
+        }
+    }
+
+    public WebSocketListener matching(String path) {
+        return pathListener.matching(path);
+    }
 }
