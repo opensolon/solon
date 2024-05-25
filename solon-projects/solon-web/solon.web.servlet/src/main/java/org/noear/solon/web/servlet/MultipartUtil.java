@@ -1,6 +1,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.core.exception.HttpException;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 
@@ -19,16 +20,20 @@ import java.util.Map;
  * */
 class MultipartUtil {
     public static void buildParamsAndFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) context.request();
+        try {
+            HttpServletRequest request = (HttpServletRequest) context.request();
 
-        for (Part part : request.getParts()) {
-            String name = ServerProps.urlDecode(part.getName());
+            for (Part part : request.getParts()) {
+                String name = ServerProps.urlDecode(part.getName());
 
-            if (isFile(part)) {
-                doBuildFiles(name, filesMap, part);
-            } else {
-                context.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                if (isFile(part)) {
+                    doBuildFiles(name, filesMap, part);
+                } else {
+                    context.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                }
             }
+        } catch (Exception e) {
+            throw new HttpException("Multipart processing failed", e, 400);
         }
     }
 

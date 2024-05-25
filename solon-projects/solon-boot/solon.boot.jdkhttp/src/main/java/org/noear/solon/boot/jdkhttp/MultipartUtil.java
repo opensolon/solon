@@ -7,6 +7,7 @@ import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipart;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipartCollection;
 import org.noear.solon.boot.io.LimitedInputStream;
+import org.noear.solon.core.exception.HttpException;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.IOException;
@@ -16,17 +17,21 @@ import java.util.Map;
 
 class MultipartUtil {
     public static void buildParamsAndFiles(JdkHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
-        HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) context.request());
+        try {
+            HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) context.request());
 
-        while (parts.hasNext()) {
-            HttpMultipart part = parts.next();
-            String name = ServerProps.urlDecode(part.getName());
+            while (parts.hasNext()) {
+                HttpMultipart part = parts.next();
+                String name = ServerProps.urlDecode(part.getName());
 
-            if (isFile(part)) {
-                doBuildFiles(name, filesMap, part);
-            } else {
-                context.paramSet(name, part.getString());
+                if (isFile(part)) {
+                    doBuildFiles(name, filesMap, part);
+                } else {
+                    context.paramSet(name, part.getString());
+                }
             }
+        } catch (Exception e) {
+            throw new HttpException("Multipart processing failed", e, 400);
         }
     }
 
