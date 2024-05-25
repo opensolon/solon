@@ -204,7 +204,7 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test2int_2() throws IOException {
-        assert path("/demo2/param/int?num=s").execAsCode("GET") == 500;
+        assert path("/demo2/param/int?num=s").execAsCode("GET") == 400;
     }
 
 
