@@ -2,6 +2,7 @@ package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 
@@ -41,6 +42,10 @@ public class ExpressWebSocketListener implements WebSocketListener {
                 pathAnalyzer = PathAnalyzer.get(path);
             }
         }
+    }
+
+    public WebSocketListener getListener() {
+        return listener;
     }
 
     @Override

@@ -198,8 +198,14 @@ public class ToSocketdWebSocketListener implements WebSocketListener, SubProtoco
 
         @Override
         public void write(WebSocket target, Frame frame, ChannelInternal channel) throws IOException {
-            ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
-            target.send(writer.getBuffer());
+            try {
+                channel.writeAcquire(frame);
+
+                ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
+                target.send(writer.getBuffer());
+            } finally {
+                channel.writeRelease(frame);
+            }
         }
 
         public Frame read(ByteBuffer buffer) throws IOException {
