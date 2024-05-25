@@ -16,6 +16,7 @@ import org.smartboot.http.server.impl.WebSocketResponseImpl;
 import org.smartboot.socket.util.AttachKey;
 import org.smartboot.socket.util.Attachment;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
@@ -24,19 +25,24 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
+
+    @Override
+    public void willHeaderComplete(WebSocketRequestImpl request, WebSocketResponseImpl response) {
+        super.willHeaderComplete(request, response);
+
+        //添加子协议支持
+        String path = URI.create(request.getRequestURL()).getPath();
+        SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
+        if (subProtocolCapable != null) {
+            response.setHeader("Sec-WebSocket-Protocol",subProtocolCapable.getSubProtocols());
+        }
+    }
+
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
         WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
-        WebSocketResponseImpl response1 = (WebSocketResponseImpl) response;
 
         WebSocketImpl webSocket = new WebSocketImpl(request1);
-
-        //添加子协议支持
-        String path = webSocket.path();
-        SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
-        if (subProtocolCapable != null) {
-            response1.setHeader("Sec-WebSocket-Protocol",subProtocolCapable.getSubProtocols());
-        }
 
         //转移头信息
         request1.getHeaderNames().forEach(name -> {
