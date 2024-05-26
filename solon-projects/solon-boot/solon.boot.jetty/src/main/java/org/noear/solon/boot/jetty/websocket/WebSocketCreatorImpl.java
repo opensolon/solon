@@ -18,7 +18,7 @@ public class WebSocketCreatorImpl implements WebSocketCreator {
     @Override
     public Object createWebSocket(ServletUpgradeRequest servletUpgradeRequest, ServletUpgradeResponse servletUpgradeResponse) {
         //添加子协议支持
-        String path = servletUpgradeRequest.getRequestPath();
+        String path = servletUpgradeRequest.getRequestURI().getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             servletUpgradeResponse.setAcceptedSubProtocol(subProtocolCapable.getSubProtocols());
