@@ -20,6 +20,7 @@ public class WebSocketListenerImpl extends WebSocketAdapter implements WebSocket
     public void onWebSocketConnect(Session session) {
         super.onWebSocketConnect(session);
 
+        session.getPolicy().setMaxTextMessageBufferSize(17_000_000);
         webSocket = new WebSocketImpl(session);
         session.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {

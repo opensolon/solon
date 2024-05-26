@@ -1,6 +1,7 @@
 package webapp;
 
 import cn.dev33.satoken.SaManager;
+import freemarker.template.Configuration;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -100,6 +101,11 @@ public class App {
 
             x.onEvent(AppInitEndEvent.class, e->{
                 StaticMappings.add("/", new ExtendStaticRepository());
+            });
+
+            x.onEvent(Configuration.class, e -> {
+                System.out.println("%%%%%%%%%%%%%%%%%%");
+                e.setSetting("classic_compatible", "true");
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
