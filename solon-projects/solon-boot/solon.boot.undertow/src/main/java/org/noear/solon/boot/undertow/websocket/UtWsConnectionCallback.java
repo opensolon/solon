@@ -12,15 +12,17 @@ public class UtWsConnectionCallback implements WebSocketConnectionCallback {
     private final UtWsChannelListener listener = new UtWsChannelListener();
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
-    @Override
-    public void onConnect(WebSocketHttpExchange exchange, WebSocketChannel channel) {
+    public void onHandshake(WebSocketHttpExchange exchange){
         //添加子协议支持
         String path = URI.create(exchange.getRequestURI()).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             exchange.setResponseHeader("Sec-WebSocket-Protocol", subProtocolCapable.getSubProtocols());
         }
+    }
 
+    @Override
+    public void onConnect(WebSocketHttpExchange exchange, WebSocketChannel channel) {
         listener.onOpen(exchange, channel);
 
         channel.getReceiveSetter().set(listener);
