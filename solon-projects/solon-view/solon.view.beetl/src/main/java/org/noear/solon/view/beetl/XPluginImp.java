@@ -18,16 +18,16 @@ public class XPluginImp implements Plugin {
         BeetlRender render = BeetlRender.global();
 
         context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
-            context.beanForeach((k, v) -> {
+            context.beanForeach((k, bw) -> {
                 if (k.startsWith("view:")) { //java view widget
-                    if (Tag.class.isAssignableFrom(v.clz())) {
-                        render.putDirective(k.split(":")[1], (Class<? extends Tag>) v.clz());
+                    if (Tag.class.isAssignableFrom(bw.clz())) {
+                        render.putDirective(k.split(":")[1], new BeetlTagFactory(bw));
                     }
                     return;
                 }
 
                 if (k.startsWith("share:")) { //java share object
-                    render.putVariable(k.split(":")[1], v.raw());
+                    render.putVariable(k.split(":")[1], bw.raw());
                     return;
                 }
             });

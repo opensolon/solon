@@ -7,6 +7,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
 import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
+import org.beetl.core.tag.TagFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
@@ -184,6 +185,21 @@ public class BeetlRender implements Render {
 
             if (providerOfDebug != null) {
                 providerOfDebug.registerTag(name, clz);
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 添加共享指令（自定义标签）
+     */
+    public void putDirective(String name, TagFactory tagFactory) {
+        try {
+            provider.registerTagFactory(name, tagFactory);
+
+            if (providerOfDebug != null) {
+                providerOfDebug.registerTagFactory(name, tagFactory);
             }
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
