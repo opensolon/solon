@@ -1,13 +1,11 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Feature;
-import org.noear.snack.core.exts.ThData;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.ContextRemovedEvent;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
@@ -45,11 +43,6 @@ public class XPluginImp implements Plugin {
         EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
-
-        //上下文移除后，执行 ThData 清理
-        EventBus.subscribe(ContextRemovedEvent.class, e -> {
-            ThData.clear();
-        });
     }
 
     private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {
