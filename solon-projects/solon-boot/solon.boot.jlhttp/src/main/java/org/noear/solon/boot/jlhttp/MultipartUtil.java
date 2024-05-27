@@ -4,6 +4,7 @@ import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.io.LimitedInputStream;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.IOException;
@@ -13,18 +14,22 @@ import java.util.Map;
 
 class MultipartUtil {
     public static void buildParamsAndFiles(JlHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
-        HTTPServer.Request request = (HTTPServer.Request) context.request();
-        HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
+        try {
+            HTTPServer.Request request = (HTTPServer.Request) context.request();
+            HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
 
-        while (parts.hasNext()) {
-            HTTPServer.MultipartIterator.Part part = parts.next();
-            String name = ServerProps.urlDecode(part.getName());
+            while (parts.hasNext()) {
+                HTTPServer.MultipartIterator.Part part = parts.next();
+                String name = ServerProps.urlDecode(part.getName());
 
-            if (isFile(part)) {
-                doBuildFiles(name, filesMap, part);
-            } else {
-                context.paramSet(name, part.getString());
+                if (isFile(part)) {
+                    doBuildFiles(name, filesMap, part);
+                } else {
+                    context.paramSet(name, part.getString());
+                }
             }
+        } catch (Exception e) {
+            throw new StatusException("Bad Request", e, 400);
         }
     }
 

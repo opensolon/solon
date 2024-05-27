@@ -1,6 +1,7 @@
 package org.noear.solon.net.websocket;
 
 import org.noear.solon.Solon;
+import org.noear.solon.net.websocket.listener.ExpressWebSocketListener;
 import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
 import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 
@@ -71,5 +72,25 @@ public class WebSocketRouter {
 
     public Collection<String> getPaths() {
         return Collections.unmodifiableSet(paths);
+    }
+
+    public SubProtocolCapable getSubProtocol(String path) {
+        WebSocketListener tmp = matching(path);
+
+        if (tmp != null) {
+            if (tmp instanceof ExpressWebSocketListener) {
+                tmp = ((ExpressWebSocketListener) tmp).getListener();
+            }
+
+            if (tmp instanceof SubProtocolCapable) {
+                return (SubProtocolCapable) tmp;
+            }
+        }
+
+        return null;
+    }
+
+    public WebSocketListener matching(String path) {
+        return pathListener.matching(path);
     }
 }

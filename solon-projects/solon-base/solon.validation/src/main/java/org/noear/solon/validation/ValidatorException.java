@@ -1,7 +1,7 @@
 package org.noear.solon.validation;
 
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.exception.SolonException;
 
 import java.lang.annotation.Annotation;
 
@@ -11,35 +11,26 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.4
  */
-public class ValidatorException extends SolonException {
-    private int code;
+public class ValidatorException extends StatusException {
     private Annotation annotation;
     private Result result;
 
     /**
-     * 获取状态码
-     * */
-    public int getCode() {
-        return code;
-    }
-
-    /**
      * 获取触发的注解
-     * */
+     */
     public Annotation getAnnotation() {
         return annotation;
     }
 
     /**
      * 获取结果
-     * */
+     */
     public Result getResult() {
         return result;
     }
 
     public ValidatorException(int code, String message, Annotation annotation, Result result) {
-        super(message);
-        this.code = code;
+        super(message, code);
         this.annotation = annotation;
         this.result = result;
     }

@@ -5,6 +5,7 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.convert.ConverterManager;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.event.*;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -15,7 +16,6 @@ import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 
@@ -437,17 +437,18 @@ public class SolonApp extends RouterWrapper {
             } else {
                 chainManager().doFilter(x);
 
-                if (x.getHandled() == false) { //@since: 1.9
-                    if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
-                        int statusPreview = x.statusPreview(); //支持405  //@since: 2.5
-                        if (statusPreview > 0) {
-                            x.status(statusPreview);
-                        } else {
-                            x.status(404);
-                        }
-                    }
-                    //x.setHandled(true);  //todo: 不能加，对websocket有影响
-                }
+                //todo: 改由 HttpException 处理（不会到这里来了）
+//                if (x.getHandled() == false) { //@since: 1.9
+//                    if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
+//                        int statusPreview = x.statusPreview(); //支持405  //@since: 2.5
+//                        if (statusPreview > 0) {
+//                            x.status(statusPreview);
+//                        } else {
+//                            x.status(404);
+//                        }
+//                    }
+//                    //x.setHandled(true);  //todo: 不能加，对websocket有影响
+//                }
             }
 
             //40x,50x...
@@ -459,11 +460,15 @@ public class SolonApp extends RouterWrapper {
             LogUtil.global().warn("SolonApp tryHandle failed!", ex);
 
             //如果未处理，尝试处理
-            if (x.getHandled() == false) {
-                if (x.status() < 400) {
-                    x.status(500);
+            if(ex instanceof StatusException){
+                x.status(((StatusException) ex).getCode());
+            }else {
+                if (x.getHandled() == false) {
+                    if (x.status() < 400) {
+                        x.status(500);
+                    }
+                    //x.setHandled(true); 不再需要
                 }
-                //x.setHandled(true); 不再需要
             }
 
             //如果未渲染，尝试渲染

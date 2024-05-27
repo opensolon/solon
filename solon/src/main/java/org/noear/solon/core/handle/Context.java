@@ -157,7 +157,7 @@ public abstract class Context {
         this.allowMultipart = auto;
     }
 
-    Boolean isFormUrlencoded;
+    private Boolean isFormUrlencoded;
     /**
      * 是否为编码窗体
      */
@@ -174,7 +174,7 @@ public abstract class Context {
         return isFormUrlencoded;
     }
 
-    Boolean isMultipart;
+    private Boolean isMultipart;
     /**
      * 是否为分段内容
      */
@@ -995,10 +995,6 @@ public abstract class Context {
         Solon.app().tryHandle(this);
         setHandled(true);
         setRendered(true);
-    }
-
-    public int statusPreview(){
-       return attrOrDefault(Constants.mainStatus, 0);
     }
 
     /**

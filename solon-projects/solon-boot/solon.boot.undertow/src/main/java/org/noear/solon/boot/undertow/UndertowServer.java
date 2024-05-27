@@ -11,10 +11,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.undertow.http.UtHttpContextServletHandler;
-import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
+import org.noear.solon.boot.undertow.websocket.UtWsProtocolHandshakeHandler;
 import org.noear.solon.core.event.EventBus;
-
-import static io.undertow.Handlers.websocket;
 
 /**
  * @author  by: Yukai
@@ -96,7 +94,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         }
 
         if (app.enableWebSocket()) {
-            builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
+            builder.setHandler(new UtWsProtocolHandshakeHandler(httpHandler));
         } else {
             builder.setHandler(httpHandler);
         }

@@ -25,13 +25,25 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.8.1
+* 添加 `@Destroy` 注解（与 `@Init` 呼应）
+* 添加 ContextRemovedEvent 事件，在 web 场景下提供轻量的线程状态清理机制
+* 添加 Serializer 接口，统一多处模块的序列化定义
+* 添加 BytesSerializerRender 类，对应 StringSerializerRender
+* 添加 WebSocket 子协议校验支持（smarthttp,jetty,undertow,java-websocket,netty-websocket）
+* 添加 Stomp 服务端适配 WebSocket 子协议验证
 * 添加 配置名二次引用支持
-* 添加 folkmq 适配 EventLevel.instance 订阅支持
+* 添加 folkmq 适配 EventLevel.instance 订阅支持和 broadcast 发送支持
 * 添加 rocketmq5 适配 EventLevel.instance 订阅支持
 * 添加 solon.boot.socketd 对 ssl 配置的支持
-* 添加 ctx.statusPreview() 接口
+* 添加 beetl 适配自定义 Tag 注入支持
+* 添加 StatusException 异常类型
+* 调整 AuthException 改为扩展自 StatusException（之前为 SolonException）
+* 调整 ValidatorException 改为扩展自 StatusException（之前为 SolonException）
+* 调整 Action 参数解析异常类型为 StatusException（之前为 IllegalArgumentException）
+* 调整 CloudClient.event().newTranAndJoin() 增加 inTrans 的判断
+* 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
-* snack3 升为 3.2.98
+* snack3 升为 3.2.99
 * socket.d 升为 2.5.1
 * folkmq 升为 1.5.0
 * wood 升为 1.2.11
@@ -278,7 +290,7 @@
 * socket.d 升为 2.3.4
 
 ### 2.6.4
-* 新增 graphql-solon-plugin 插件（欢迎试用） 
+* 新增 graphql-solon-plugin 插件（欢迎试用）
 * 修复 @Header 与 @Body 同时注入时，@Header 会失效的问题
 * 修复 LocalCacheService 时间过大时会超界的问题
 * 添加 local-solon-cloud-plugin 对描述信息的获取
@@ -296,7 +308,7 @@
 * 发布 Solon FaaS
 * 修复 solon.luffy 插件 JtFunctionLoaderClasspath 可能会出现 null 异常的问题
 * 修复 solon.luffy 插件 XFun.callFile 的执行兼容性（添加 file_id 赋值）
-* 修复 Solon.cfg().stopSafe() 自动配置失效的问题 
+* 修复 Solon.cfg().stopSafe() 自动配置失效的问题
 * 修复 war 部署时 contextPath  自动识别失效的问题
 * 调整 contextPath 配置，支持 '!' 开头（表示强制模式，即不再支持旧的地址请求）
 * 调整 solon.net 把 socketd 包改为 provided
@@ -336,11 +348,11 @@
 * 调整 scheduledPoolSize 默认值多一倍
 * 调整 solon.scheduling.simple 过滤中断异常
 * 调整 solon.logging 注册日志打印，取消不必要的打印
-* 调整 RouterWebSocketListener 更名为 PathWebSocketListener 
+* 调整 RouterWebSocketListener 更名为 PathWebSocketListener
 * 调整 http-server 的 idleTimeout 策略
 * 修复 Snack3 不能反序列化 SaSession 的问题
 * 修复 solon.logging.config 的配置文件不存在时会异常的问题
-* 修复 solon.boot.smarthttp 获取 queryString 会中文乱码的问题 
+* 修复 solon.boot.smarthttp 获取 queryString 会中文乱码的问题
 * 移除 `@Dao`,`@Service`,`@Repository` 三个注解（弃用很久了，容易带来误解）
 * snack3 升为 3.2.84
 * socket.d 升为 2.0.22
@@ -1197,8 +1209,8 @@
 * 1.吸收近期使用需求，增强内核能力（完善 bean 的生命周期；调整 plugin 仅定位为 spi；）
 * 2.兼容的同时增强品牌个性化（增加 @SolonMain，@ProxyComponent 注解）
 * 3.增加 apt 代理实现，增加 apt 生成 native 元信息配置的机制（为 native 简便打包，埋下好的基础 ）
-* 
-* 
+*
+*
 * 新增 solon.proxy 插件
 * 新增 solon.proxy.apt 插件
 * 新增 solon.graalvm 插件
@@ -1280,50 +1292,50 @@
 * 说明：第一个版只删除弃用代码，不加新功能
 *
 * 调整 solon//
-  * 删除 Aop；由 Solon.context() 替代
-  * 删除 Bean:attr，Component:attr
-  * 删除 BeanLoadEndEvent，PluginLoadEndEvent；由 AppBeanLoadEndEvent，AppPluginLoadEndEvent 替代
-  * 删除 Utils.parallel()...等几个弃用接口；由 RunUtil 替代
-  * 删除 Solon.global()；由 Solon.app() 替代
-  * 删除 SolonApp::port()；由 Solon.cfg().serverPort() 替代
-  * 删除 SolonApp::enableSafeStop()；由 Solon.cfg().enableSafeStop() 替代
-  * 删除 AopContext::getProps()；由 ::cfg() 替代
-  * 删除 AopContext::getWrapAsyn()；由 ::getWrapAsync() 替代
-  * 删除 AopContext::subWrap()；由 ::subWrapsOfType() 替代
-  * 删除 AopContext::subBean()；由 ::subBeansOfType() 替代
-  * 删除 AopContext::getBeanAsyn()；由::getBeanAsync() 替代
-  * 删除 Solon.cfg().version()；由 Solon.version() 替代
-  * 删除 EventBus::pushAsyn()；由 pushAsync() 替代
-  * 删除 PrintUtil::debug()，::info() 等...；由 LogUtil 替代
-  * 删除 @Mapping::before,after,index 属性；由 @Before,@After 或 RouterInterceptor 或 Solon.app().before(),after() 替代
-  * 删除 "solon.profiles.active" 应用配置（只在某版临时出现过）；由 "solon.env" 替代
-  * 删除 "solon.extend.config" 应用配置（只在某版临时出现过）；由 "solon.config" 替代
-  * 删除 "solon.encoding.request" 应用配置（只在某版临时出现过）；由 "server.request.encoding" 替代
-  * 删除 "solon.encoding.response" 应用配置（只在某版临时出现过）；由 "server.request.response" 替代
-  *
-  * 调整 DownloadedFile，UploadedFile 字段改为私有；由属性替代
+    * 删除 Aop；由 Solon.context() 替代
+    * 删除 Bean:attr，Component:attr
+    * 删除 BeanLoadEndEvent，PluginLoadEndEvent；由 AppBeanLoadEndEvent，AppPluginLoadEndEvent 替代
+    * 删除 Utils.parallel()...等几个弃用接口；由 RunUtil 替代
+    * 删除 Solon.global()；由 Solon.app() 替代
+    * 删除 SolonApp::port()；由 Solon.cfg().serverPort() 替代
+    * 删除 SolonApp::enableSafeStop()；由 Solon.cfg().enableSafeStop() 替代
+    * 删除 AopContext::getProps()；由 ::cfg() 替代
+    * 删除 AopContext::getWrapAsyn()；由 ::getWrapAsync() 替代
+    * 删除 AopContext::subWrap()；由 ::subWrapsOfType() 替代
+    * 删除 AopContext::subBean()；由 ::subBeansOfType() 替代
+    * 删除 AopContext::getBeanAsyn()；由::getBeanAsync() 替代
+    * 删除 Solon.cfg().version()；由 Solon.version() 替代
+    * 删除 EventBus::pushAsyn()；由 pushAsync() 替代
+    * 删除 PrintUtil::debug()，::info() 等...；由 LogUtil 替代
+    * 删除 @Mapping::before,after,index 属性；由 @Before,@After 或 RouterInterceptor 或 Solon.app().before(),after() 替代
+    * 删除 "solon.profiles.active" 应用配置（只在某版临时出现过）；由 "solon.env" 替代
+    * 删除 "solon.extend.config" 应用配置（只在某版临时出现过）；由 "solon.config" 替代
+    * 删除 "solon.encoding.request" 应用配置（只在某版临时出现过）；由 "server.request.encoding" 替代
+    * 删除 "solon.encoding.response" 应用配置（只在某版临时出现过）；由 "server.request.response" 替代
+    *
+    * 调整 DownloadedFile，UploadedFile 字段改为私有；由属性替代
 * 调整 solon.i18n//
-  * 删除 I18nBundle::toMap()；由 ::toProp() 替代
+    * 删除 I18nBundle::toMap()；由 ::toProp() 替代
 * 调整 solon.web.staticfiles//
-  * 删除 StaticMappings::add(string1,bool2,repository3) 接口；由 StaticMappings::add(string1,repository2) 替代
-  * 说明 string1 ，有'/'结尾表示目录，无'/'结尾表示单文件
+    * 删除 StaticMappings::add(string1,bool2,repository3) 接口；由 StaticMappings::add(string1,repository2) 替代
+    * 说明 string1 ，有'/'结尾表示目录，无'/'结尾表示单文件
 * 调整 solon.web.cors//
-  * 删除 ..extend.cores 包；由 ..web.cors 包替代
+    * 删除 ..extend.cores 包；由 ..web.cors 包替代
 * 调整 solon.cloud//
-  * 删除 Media::bodyAsByts()..；由 ::bodyAsBytes() 替代
+    * 删除 Media::bodyAsByts()..；由 ::bodyAsBytes() 替代
 * 调整 solon.cloud.httputils//
-  * 删除 cloud.HttpUtils::asShortHttp()..；由 ::timeout() 替代
+    * 删除 cloud.HttpUtils::asShortHttp()..；由 ::timeout() 替代
 * 调整 solon.test//
-  * 删除 test.HttpUtils::exec2()..；由 ::execAsCode()..替代
+    * 删除 test.HttpUtils::exec2()..；由 ::execAsCode()..替代
 * 调整 solon.boot//
-  * 删除 SessionStateBase/cookie[SOLONID2]
+    * 删除 SessionStateBase/cookie[SOLONID2]
 * 调整 mybatis-solon-plugin//
-  * 删除 org.apache.ibatis.ext.solon.Db；由 ..solon.annotation.Db 替代
+    * 删除 org.apache.ibatis.ext.solon.Db；由 ..solon.annotation.Db 替代
 * 调整 beetlsql-solon-plugin//
-  * 删除 org.beetl.sql.ext.solon.Db；由 ..solon.annotation.Db 替代
+    * 删除 org.beetl.sql.ext.solon.Db；由 ..solon.annotation.Db 替代
 * 调整 sa-token-solon-plugin//
-  * 删除 SaTokenPathFilter 类，由 SaTokenFilter 替代
-  * 删除 SaTokenPathInterceptor 类，由 SaTokenInterceptor 替代
+    * 删除 SaTokenPathFilter 类，由 SaTokenFilter 替代
+    * 删除 SaTokenPathInterceptor 类，由 SaTokenInterceptor 替代
 * 删除插件 httputils-solon-cloud-plugin；由 solon.cloud.httputils 替代
 * 删除插件 solon.extend.stop；由 solon.web.stop 替代
 * 删除插件 solon.extend.async；由 solon.scheduling 替代

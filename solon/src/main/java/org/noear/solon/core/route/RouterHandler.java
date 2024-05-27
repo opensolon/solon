@@ -2,6 +2,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Constants;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.lang.Nullable;
 
@@ -33,7 +34,13 @@ public class RouterHandler implements Handler, RouterInterceptor {
             h.handle(ctx);
             return ctx.status() != 404;
         } else {
-            return false;
+            int code = ctx.attrOrDefault(Constants.mainStatus, 404);
+            if (code == 405) {
+                throw new StatusException("Method Not Allowed", code);
+            } else {
+                throw new StatusException("Not Found", code);
+            }
+            //return false;
         }
     }
 

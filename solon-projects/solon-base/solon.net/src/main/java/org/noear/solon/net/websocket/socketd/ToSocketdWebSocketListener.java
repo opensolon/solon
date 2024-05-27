@@ -1,10 +1,12 @@
 package org.noear.solon.net.websocket.socketd;
 
+import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.*;
 import org.noear.socketd.transport.core.codec.ByteBufferCodecReader;
 import org.noear.socketd.transport.core.codec.ByteBufferCodecWriter;
 import org.noear.socketd.transport.core.impl.ChannelDefault;
 import org.noear.socketd.transport.core.impl.ProcessorDefault;
+import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -21,7 +23,7 @@ import java.util.Map;
  * @author noear
  * @since 2.6
  */
-public class ToSocketdWebSocketListener implements WebSocketListener {
+public class ToSocketdWebSocketListener implements WebSocketListener, SubProtocolCapable {
     static final String SOCKETD_KEY = "SOCKETD_KEY";
 
     static final Logger log = LoggerFactory.getLogger(ToSocketdWebSocketListener.class);
@@ -73,6 +75,12 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
 
         return channel;
+    }
+
+    @Override
+    public String getSubProtocols() {
+        //子协议验证
+        return SocketD.protocolName();
     }
 
     @Override
@@ -190,8 +198,14 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
 
         @Override
         public void write(WebSocket target, Frame frame, ChannelInternal channel) throws IOException {
-            ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
-            target.send(writer.getBuffer());
+            try {
+                channel.writeAcquire(frame);
+
+                ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
+                target.send(writer.getBuffer());
+            } finally {
+                channel.writeRelease(frame);
+            }
         }
 
         public Frame read(ByteBuffer buffer) throws IOException {

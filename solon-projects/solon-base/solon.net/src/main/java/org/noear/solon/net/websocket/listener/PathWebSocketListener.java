@@ -1,6 +1,7 @@
 package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
@@ -44,8 +45,15 @@ public class PathWebSocketListener implements WebSocketListener {
      */
     public PathWebSocketListener of(String path, int index, WebSocketListener listener) {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
+        Routing<WebSocketListener> routing = new RoutingDefault<>(path, MethodType.SOCKET, index, lh);
 
-        routingTable.add(new RoutingDefault<>(path, MethodType.SOCKET, index, lh));
+        if (path.contains("*") || path.contains("{")) {
+            routingTable.add(routing);
+        } else {
+            //没有*号的，优先
+            routingTable.add(0, routing);
+        }
+
         return this;
     }
 
@@ -72,12 +80,16 @@ public class PathWebSocketListener implements WebSocketListener {
     /**
      * 区配一个目标
      */
-    protected WebSocketListener matching(WebSocket s) {
-        if(s == null){
+    public WebSocketListener matching(WebSocket s) {
+        if (s == null) {
             return null;
         }
         String path = s.path();
 
+        return matching(path);
+    }
+
+    public WebSocketListener matching(String path) {
         if (path == null) {
             return null;
         } else {

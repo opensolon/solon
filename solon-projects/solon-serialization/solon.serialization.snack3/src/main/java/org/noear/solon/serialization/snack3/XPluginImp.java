@@ -1,11 +1,13 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Feature;
+import org.noear.snack.core.exts.ThData;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextRemovedEvent;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
@@ -30,7 +32,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () ->{
+        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
@@ -43,6 +45,11 @@ public class XPluginImp implements Plugin {
         EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
+
+        //上下文移除后，执行 ThData 清理
+        EventBus.subscribe(ContextRemovedEvent.class, e -> {
+            ThData.clear();
+        });
     }
 
     private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {
@@ -67,7 +74,7 @@ public class XPluginImp implements Plugin {
                 factory.addFeatures(Feature.SerializeNulls);
             }
 
-            if(jsonProps.enumAsName){
+            if (jsonProps.enumAsName) {
                 factory.addFeatures(Feature.EnumUsingName);
             }
         }

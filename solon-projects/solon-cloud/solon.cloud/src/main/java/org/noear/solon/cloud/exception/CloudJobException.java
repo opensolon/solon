@@ -1,12 +1,10 @@
 package org.noear.solon.cloud.exception;
 
-import org.noear.solon.exception.SolonException;
-
 /**
  * @author noear
  * @since 1.10
  */
-public class CloudJobException extends SolonException {
+public class CloudJobException extends CloudException {
     public CloudJobException(Throwable cause) {
         super(cause);
     }

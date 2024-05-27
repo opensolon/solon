@@ -5,6 +5,7 @@ import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipart;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipartCollection;
 import org.noear.solon.boot.io.LimitedInputStream;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 
@@ -15,18 +16,22 @@ import java.util.Map;
 
 class MultipartUtil {
     public static void buildParamsAndFiles(SmHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
-        HttpRequest request = (HttpRequest) context.request();
-        HttpMultipartCollection parts = new HttpMultipartCollection(request);
+        try {
+            HttpRequest request = (HttpRequest) context.request();
+            HttpMultipartCollection parts = new HttpMultipartCollection(request);
 
-        while (parts.hasNext()) {
-            HttpMultipart part = parts.next();
-            String name = ServerProps.urlDecode(part.getName());
+            while (parts.hasNext()) {
+                HttpMultipart part = parts.next();
+                String name = ServerProps.urlDecode(part.getName());
 
-            if (isFile(part)) {
-                doBuildFiles(name, filesMap, part);
-            } else {
-                context.paramSet(name, part.getString());
+                if (isFile(part)) {
+                    doBuildFiles(name, filesMap, part);
+                } else {
+                    context.paramSet(name, part.getString());
+                }
             }
+        } catch (Exception e) {
+            throw new StatusException("Bad Request", e, 400);
         }
     }
 

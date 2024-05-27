@@ -1,18 +1,23 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
@@ -59,6 +64,20 @@ public class WsServer extends WebSocketServer {
         }
 
         return session;
+    }
+
+    @Override
+    public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket conn, Draft draft, ClientHandshake request) throws InvalidDataException {
+        ServerHandshakeBuilder tmp = super.onWebsocketHandshakeReceivedAsServer(conn, draft, request);
+
+        //添加子协议支持
+        String path = URI.create(request.getResourceDescriptor()).getPath();
+        SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
+        if (subProtocolCapable != null) {
+            tmp.put("Sec-WebSocket-Protocol", subProtocolCapable.getSubProtocols());
+        }
+
+        return tmp;
     }
 
     @Override

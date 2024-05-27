@@ -14,7 +14,7 @@ import java.util.Map;
 public interface WebSocket {
     /**
      * 会话id
-     * */
+     */
     String id();
 
     /**
@@ -29,7 +29,7 @@ public interface WebSocket {
 
     /**
      * 获取请求地址
-     * */
+     */
     String url();
 
     /**
@@ -117,12 +117,12 @@ public interface WebSocket {
 
     /**
      * 获取闲置超时
-     * */
+     */
     long getIdleTimeout();
 
     /**
      * 设置闲置超时
-     * */
+     */
     void setIdleTimeout(long idleTimeout);
 
     /**

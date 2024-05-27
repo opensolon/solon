@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketdProxy;
+import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.solon.Solon;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
@@ -67,6 +69,18 @@ public class SocketRpcTest {
     public void test_rpc_api_ws1() throws Throwable {
         HelloRpcService rpc = Nami.builder()
                 .upstream(() -> "sd:ws://localhost:" + (Solon.cfg().serverPort() + 20002))
+                .create(HelloRpcService.class);
+
+        String rst = rpc.hello("noear");
+        System.out.println(rst);
+
+        assert "name=noear".equals(rst);
+    }
+
+    @Test
+    public void test_rpc_api_ws1_self() throws Throwable {
+        HelloRpcService rpc = Nami.builder()
+                .upstream(() -> "sd:ws://localhost:" + (Solon.cfg().serverPort()))
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");

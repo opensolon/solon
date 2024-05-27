@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -11,9 +12,11 @@ import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handler.WebSocketDefaultHandler;
 import org.smartboot.http.server.impl.Request;
 import org.smartboot.http.server.impl.WebSocketRequestImpl;
+import org.smartboot.http.server.impl.WebSocketResponseImpl;
 import org.smartboot.socket.util.AttachKey;
 import org.smartboot.socket.util.Attachment;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
@@ -22,15 +25,31 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
+
+    @Override
+    public void willHeaderComplete(WebSocketRequestImpl request, WebSocketResponseImpl response) {
+        super.willHeaderComplete(request, response);
+
+        //添加子协议支持
+        String path = URI.create(request.getRequestURL()).getPath();
+        SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
+        if (subProtocolCapable != null) {
+            response.setHeader("Sec-WebSocket-Protocol",subProtocolCapable.getSubProtocols());
+        }
+    }
+
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
         WebSocketRequestImpl request1 = (WebSocketRequestImpl) request;
 
         WebSocketImpl webSocket = new WebSocketImpl(request1);
+
+        //转移头信息
         request1.getHeaderNames().forEach(name -> {
             webSocket.param(name, request1.getHeader(name));
         });
 
+        //添加附件
         if (request1.getAttachment() == null) {
             request1.setAttachment(new Attachment());
         }
