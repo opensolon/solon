@@ -26,6 +26,7 @@
 
 ### 2.8.1
 * 添加 `@Destroy` 注解（与 `@Init` 呼应）
+* 添加 ContextRemovedEvent 事件，在 web 场景下提供轻量的线程状态清理机制
 * 添加 Serializer 接口，统一多处模块的序列化定义
 * 添加 BytesSerializerRender 类，对应 StringSerializerRender
 * 添加 WebSocket 子协议校验支持（smarthttp,jetty,undertow,java-websocket,netty-websocket）
@@ -42,7 +43,7 @@
 * 调整 CloudClient.event().newTranAndJoin() 增加 inTrans 的判断
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
-* snack3 升为 3.2.98
+* snack3 升为 3.2.99
 * socket.d 升为 2.5.1
 * folkmq 升为 1.5.0
 * wood 升为 1.2.11

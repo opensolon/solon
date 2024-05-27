@@ -4,6 +4,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.event.EventBus;
 
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
@@ -30,6 +31,9 @@ public class ContextUtil {
      * */
     public static void currentRemove(){
         threadLocal.remove();
+
+        //发布事件，方便线程状态清理
+        EventBus.publish(ContextRemovedEvent.instance);
     }
 
     /**
