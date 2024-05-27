@@ -27,9 +27,16 @@ public class ThriftClientProxy implements InvocationHandler {
         Method getInputProtocolMethod = target.getClass().getMethod("getInputProtocol");
         TProtocol inputProtocol = (TProtocol) getInputProtocolMethod.invoke(target);
         TTransport transport = inputProtocol.getTransport();
-        transport.open();
-        Object result = method.invoke(target, args);
-        transport.close();
-        return result;
+        if (!transport.isOpen()) {
+            transport.open();
+        }
+        try {
+            Object result = method.invoke(target, args);
+            return result;
+        } finally {
+            if (transport.isOpen()) {
+                transport.close();
+            }
+        }
     }
 }
