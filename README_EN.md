@@ -63,25 +63,13 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 ## Features:
 
-Better cost performance for computing:
+| Feature      | Description                                                                 | 
+|--------------|-----------------------------------------------------------------------------| 
+| Better cost performance for computing resources   | 2 to 3 times more concurrency 50% memory savings                            |
+| Faster development productivity      | Small kernel, quick to get started Debug restarts are 5-10 times faster     |
+| Better production and deployment experience   | 50% ~ 90% smaller packaging; Fast image blocking, fast start (5 ~ 10 times) |
+| Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java22                   |
 
-* Throughput: 2-3 times higher concurrency per second
-* Resources: 50% memory savings
-
-Better developer productivity, easier coding experience:
-
-* Development: Flexible and simple architecture; Quick to get started
-* Debugging: Restarts are 5-10 times faster. Locating problems faster
-
-Faster production and deployment experience:
-
-* Artifacts: 50% ~ 90% smaller packaging
-* Deploy: images are fast to pull and start up (5-10x)
-
-Wider runtime compatibility:
-
-* Breakthrough: Non-Java-EE architecture, more flexibility
-* Compatibility: Compatible with java8, java11, java17, java21, java22 runtime
 
 ## Ecosystem Architecture Diagram:
 
