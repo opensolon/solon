@@ -10,9 +10,19 @@ package org.noear.solon.core.handle;
 public interface Render {
     /**
      * 获取名称
-     * */
+     */
     default String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    /**
+     * 是否匹配
+     *
+     * @param ctx  上下文
+     * @param accept 接收类型
+     */
+    default boolean matched(Context ctx, String accept) {
+        return false;
     }
 
     /**

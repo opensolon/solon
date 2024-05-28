@@ -36,7 +36,7 @@ public class RenderManager implements Render {
 
     /**
      * 获取渲染器
-     * */
+     */
     public static Render get(String name) {
         Render tmp = _lib.get(name);
         if (tmp == null) {
@@ -52,7 +52,7 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public static void register(Render render) {
-        if(render == null){
+        if (render == null) {
             return;
         }
 
@@ -86,8 +86,8 @@ public class RenderManager implements Render {
     /**
      * 映射后缀和渲染器的关系
      *
-     * @param suffix 后缀（例：.ftl）
-     * @param clzName  渲染器类名
+     * @param suffix  后缀（例：.ftl）
+     * @param clzName 渲染器类名
      */
     public static void mapping(String suffix, String clzName) {
         if (suffix == null || clzName == null) {
@@ -108,7 +108,7 @@ public class RenderManager implements Render {
 
     /**
      * 渲染并返回
-     * */
+     */
     public static String renderAndReturn(ModelAndView modelAndView) {
         try {
             return global.renderAndReturn(modelAndView, Context.current());
@@ -124,7 +124,7 @@ public class RenderManager implements Render {
 
     /**
      * 渲染并返回
-     * */
+     */
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         if (data instanceof ModelAndView) {
@@ -175,11 +175,11 @@ public class RenderManager implements Render {
      * 渲染
      *
      * @param data 数据
-     * @param ctx 上下文
+     * @param ctx  上下文
      */
     @Override
     public void render(Object data, Context ctx) throws Throwable {
-        if(data instanceof DataThrowable){
+        if (data instanceof DataThrowable) {
             return;
         }
 
@@ -218,18 +218,18 @@ public class RenderManager implements Render {
             }
         }
 
-        if(data instanceof File) {
+        if (data instanceof File) {
             ctx.outputAsFile((File) data);
             return;
         }
 
         //如果是文件
-        if(data instanceof DownloadedFile) {
+        if (data instanceof DownloadedFile) {
             ctx.outputAsFile((DownloadedFile) data);
             return;
         }
 
-        if(data instanceof InputStream) {
+        if (data instanceof InputStream) {
             ctx.output((InputStream) data);
             return;
         }
@@ -249,8 +249,8 @@ public class RenderManager implements Render {
      * 分析出渲染器
      *
      * @since 1.6
-     * */
-    private Render resolveRander(Context ctx){
+     */
+    private Render resolveRander(Context ctx) {
         //@json
         //@type_json
         //@xml
@@ -269,6 +269,17 @@ public class RenderManager implements Render {
 
             if (render == null) {
                 ctx.headerSet("Solon.serialization.mode", "Not supported " + mode);
+            }
+        }
+
+        if (render == null) {
+            //根据接收类型匹配
+            String at = ctx.accept();
+            for (Render r : _mapping.values()) {
+                if (r.matched(ctx, at)) {
+                    render = r;
+                    break;
+                }
             }
         }
 
