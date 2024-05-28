@@ -41,7 +41,7 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
         JacksonStringSerializer serializer = new JacksonStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(false, serializer);
+        return new StringSerializerRender(false, JacksonActionExecutor.label, serializer);
     }
 
     @Override

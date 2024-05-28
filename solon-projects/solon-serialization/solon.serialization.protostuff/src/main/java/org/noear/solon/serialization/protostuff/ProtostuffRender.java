@@ -14,6 +14,15 @@ public class ProtostuffRender implements Render {
     private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
 
     @Override
+    public boolean matched(Context ctx, String accept) {
+        if (accept == null) {
+            return false;
+        } else {
+            return accept.contains(ProtostuffActionExecutor.label);
+        }
+    }
+
+    @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         byte[] bytes = serializeDo(data);
         return Base64.getEncoder().encodeToString(bytes);

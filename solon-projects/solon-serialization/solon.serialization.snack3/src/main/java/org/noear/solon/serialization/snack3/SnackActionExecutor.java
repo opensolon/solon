@@ -19,7 +19,7 @@ import java.util.List;
  * @since 1.0
  * */
 public class SnackActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "/json";
+    public static final String label = "/json";
 
     private final Options config = Options.def().add(Feature.DisableClassNameRead);
 

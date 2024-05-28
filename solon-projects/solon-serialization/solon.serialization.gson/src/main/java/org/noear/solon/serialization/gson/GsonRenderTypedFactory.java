@@ -19,7 +19,7 @@ public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, serializer);
+        return new StringSerializerRender(true, GsonActionExecutor.label, serializer);
     }
 
     @Override

@@ -18,6 +18,11 @@ public class StringSerializerRender implements Render {
     private boolean typed;
 
     /**
+     * 内容类型标签
+     */
+    private String mimeLabel;
+
+    /**
      * 序列化器
      *
      * @since 2.8
@@ -25,13 +30,18 @@ public class StringSerializerRender implements Render {
     private Serializer<String> serializer;
 
 
-    public StringSerializerRender(boolean typed,  Serializer<String> serializer) {
+    public StringSerializerRender(boolean typed, String mimeLabel, Serializer<String> serializer) {
         this.typed = typed;
+        this.mimeLabel = mimeLabel;
         this.serializer = serializer;
     }
 
     public boolean isTyped() {
         return typed;
+    }
+
+    public String getMimeLabel() {
+        return mimeLabel;
     }
 
     public Serializer<String> getSerializer() {
@@ -42,6 +52,15 @@ public class StringSerializerRender implements Render {
     @Override
     public String getName() {
         return this.getClass().getSimpleName() + "#" + serializer.name();
+    }
+
+    @Override
+    public boolean matched(Context ctx, String accept) {
+        if (mimeLabel == null || accept == null) {
+            return false;
+        } else {
+            return accept.contains(mimeLabel);
+        }
     }
 
     @Override

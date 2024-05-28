@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2.2
  */
 public class GsonActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "/json";
+    public static final String label = "/json";
 
     private final GsonStringSerializer serializer = new GsonStringSerializer();
 

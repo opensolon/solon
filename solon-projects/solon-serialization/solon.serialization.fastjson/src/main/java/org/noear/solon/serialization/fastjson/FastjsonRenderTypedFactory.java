@@ -24,7 +24,7 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, serializer);
+        return new StringSerializerRender(true, FastjsonActionExecutor.label, serializer);
     }
 
     @Override

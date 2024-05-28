@@ -9,7 +9,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "application/hessian";
+    public static final String label = "application/hessian";
     private HessianBytesSerializer serializer = new HessianBytesSerializer();
 
     public HessianBytesSerializer getSerializer() {

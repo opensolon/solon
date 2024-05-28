@@ -18,7 +18,7 @@ import java.util.List;
  * @since 1.9
  * */
 public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "/json";
+    public static final String label = "/json";
 
     private final  Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 

@@ -19,7 +19,7 @@ import java.util.List;
  * @since 1.5
  */
 public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "/json";
+    public static final String label = "/json";
 
     private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
 

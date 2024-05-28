@@ -29,7 +29,7 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
         SnackStringSerializer serializer = new SnackStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(true,serializer);
+        return new StringSerializerRender(true, SnackActionExecutor.label, serializer);
     }
 
     @Override

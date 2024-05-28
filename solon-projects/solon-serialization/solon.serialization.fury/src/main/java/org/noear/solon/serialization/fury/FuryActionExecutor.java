@@ -12,7 +12,7 @@ import java.util.Map;
  * @since 2.5
  * */
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "application/fury";
+    public static final String label = "application/fury";
     private final FuryBytesSerializer serializer = new FuryBytesSerializer();
 
     public FuryBytesSerializer getSerializer() {

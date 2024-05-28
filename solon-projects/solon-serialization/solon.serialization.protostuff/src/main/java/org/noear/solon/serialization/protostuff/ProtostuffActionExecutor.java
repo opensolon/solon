@@ -12,7 +12,7 @@ import java.util.Map;
  * @since 1.2
  */
 public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "application/protobuf";
+    public static final String label = "application/protobuf";
     private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
 
     public ProtostuffBytesSerializer getSerializer() {

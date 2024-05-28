@@ -10,6 +10,15 @@ import org.noear.solon.serialization.SerializationConfig;
 //
 public class HessianRender implements Render {
     @Override
+    public boolean matched(Context ctx, String accept) {
+        if (accept == null) {
+            return false;
+        } else {
+            return accept.startsWith(HessianActionExecutor.label);
+        }
+    }
+
+    @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (SerializationConfig.isOutputMeta()) {
             ctx.headerAdd("solon.serialization", "HessianRender");

@@ -24,7 +24,7 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
         SnackStringSerializer serializer = new SnackStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(false,serializer);
+        return new StringSerializerRender(false, SnackActionExecutor.label, serializer);
     }
 
     @Override

@@ -17,6 +17,15 @@ public class FuryRender implements Render {
     private final FuryBytesSerializer serializer = new FuryBytesSerializer();
 
     @Override
+    public boolean matched(Context ctx, String accept) {
+        if (accept == null) {
+            return false;
+        } else {
+            return accept.startsWith(FuryActionExecutor.label);
+        }
+    }
+
+    @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         byte[] bytes = null;
         if (data instanceof ModelAndView) {
