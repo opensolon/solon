@@ -13,18 +13,18 @@ public interface ActionExecuteHandler {
     /**
      * 是否匹配
      *
-     * @param ctx 上下文
-     * @param ct 内容类型
-     * */
-    boolean matched(Context ctx, String ct);
+     * @param ctx         上下文
+     * @param contentType 内容类型
+     */
+    boolean matched(Context ctx, String contentType);
 
     /**
      * 执行
      *
-     * @param ctx 上下文
-     * @param obj 控制器
+     * @param ctx   上下文
+     * @param obj   控制器
      * @param mWrap 函数包装器
-     * */
+     */
     Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable;
 
 }
