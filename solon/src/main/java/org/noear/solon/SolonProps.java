@@ -82,14 +82,14 @@ public final class SolonProps extends Props {
         //@Deprecated 2.2
         appUrl = ResourceUtil.getResource("application.properties");
         if (appUrl != null) {
-            loadInit(appUrl, sysPropOrg);
+            //loadInit(appUrl, sysPropOrg);
             profilesWran("application.properties");
         }
 
         //@Deprecated 2.2
         appUrl = ResourceUtil.getResource("application.yml");
         if (appUrl != null) {
-            loadInit(appUrl, sysPropOrg);
+            //loadInit(appUrl, sysPropOrg);
             profilesWran("application.yml");
         }
 
@@ -106,14 +106,14 @@ public final class SolonProps extends Props {
             //@Deprecated 2.2
             appUrl = ResourceUtil.getResource("application-" + env + ".properties");
             if (appUrl != null) {
-                loadInit(appUrl, sysPropOrg);
+                //loadInit(appUrl, sysPropOrg);
                 profilesWran("application-" + env + ".properties");
             }
 
             //@Deprecated 2.2
             appUrl = ResourceUtil.getResource("application-" + env + ".yml");
             if (appUrl != null) {
-                loadInit(appUrl, sysPropOrg);
+                //loadInit(appUrl, sysPropOrg);
                 profilesWran("application-" + env + ".yml");
             }
 
@@ -234,7 +234,7 @@ public final class SolonProps extends Props {
     private void profilesWran(String file) {
         //配置文件提醒
         String sml = file.replace("application", "app");
-        warns.add("'" + file + "' is deprecated, please use '" + sml + "'");
+        warns.add("'" + file + "' is unsupported, please use '" + sml + "'");
     }
 
     private void syncArgsToSys() {
