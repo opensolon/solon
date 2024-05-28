@@ -20,7 +20,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
     XmlMapper config = new XmlMapper();
 
-    public JacksonXmlRenderTypedFactory(){
+    public JacksonXmlRenderTypedFactory() {
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         config.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -37,7 +37,7 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
         JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(true, serializer);
+        return new StringSerializerRender(true, JacksonXmlActionExecutor.label, serializer);
     }
 
     @Override
