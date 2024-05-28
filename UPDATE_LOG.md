@@ -47,6 +47,7 @@
 * socket.d 升为 2.5.1
 * folkmq 升为 1.5.0
 * wood 升为 1.2.11
+* smarthttp 升为 1.4.2
 
 ### 2.8.0
 * 添加 `@Bean::injected`
