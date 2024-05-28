@@ -5,7 +5,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 
 public class AvroStringRender extends StringSerializerRender {
     public AvroStringRender(){
-        super(false, new AvroSerializer());
+        super(false, null, new AvroSerializer());
     }
 
     @Override
