@@ -62,11 +62,14 @@ public class JsonPropsUtil {
             factory.addConvertor(LocalDate.class, e->{
                 DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
 
+                //对该类型格式化为1.抛弃时分秒(拼接00:00:00) 2.格式化为当前时分秒,当前默认采用第一种
+                LocalDateTime forTime = e.atStartOfDay();
+
                 if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
                     df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
                 }
 
-                return e.format(df);
+                return forTime.format(df);
             });
         }
 
