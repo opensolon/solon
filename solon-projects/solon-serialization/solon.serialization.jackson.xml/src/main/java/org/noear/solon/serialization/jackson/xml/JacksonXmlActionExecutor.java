@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2.8
  */
 public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
-    private static final String label = "/xml";
+    public static final String label = "/xml";
 
     private JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
 

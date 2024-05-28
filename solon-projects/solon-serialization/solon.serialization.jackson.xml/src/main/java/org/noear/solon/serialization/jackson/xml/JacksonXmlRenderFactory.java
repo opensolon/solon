@@ -40,7 +40,7 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
         JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(false, serializer);
+        return new StringSerializerRender(false, JacksonXmlActionExecutor.label, serializer);
     }
 
     @Override
