@@ -50,6 +50,7 @@
 * wood 升为 1.2.11
 * smarthttp 升为 1.4.2
 * okhttp 升为 4.12.0
+* xxl-job 升为 2.4.1
 
 ### 2.8.0
 * 添加 `@Bean::injected`
