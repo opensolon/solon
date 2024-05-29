@@ -31,9 +31,6 @@ public class ContextUtil {
      * */
     public static void currentRemove(){
         threadLocal.remove();
-
-        //发布事件，方便线程状态清理
-        EventBus.publish(ContextRemovedEvent.instance);
     }
 
     /**
