@@ -28,7 +28,7 @@
         <solon-admin.version>2.8.0</solon-admin.version>
         <solon-integration.version>2.8.0</solon-integration.version>
 
-        <snack3.version>3.2.99</snack3.version>
+        <snack3.version>3.2.100</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.11</wood.version>
         <water.version>2.13.2</water.version>
@@ -41,7 +41,7 @@
 
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.51-SNAPSHOT</fastjson2.version>
-        <okhttp.version>3.14.9</okhttp.version>
+        <okhttp.version>4.12.0</okhttp.version>
         <hutool.version>5.8.27</hutool.version>
 
         <asm.version>9.6</asm.version>

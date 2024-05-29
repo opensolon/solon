@@ -43,11 +43,12 @@
 * 调整 CloudClient.event().newTranAndJoin() 增加 inTrans 的判断
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
-* snack3 升为 3.2.99
+* snack3 升为 3.2.100
 * socket.d 升为 2.5.1
 * folkmq 升为 1.5.0
 * wood 升为 1.2.11
 * smarthttp 升为 1.4.2
+* okhttp 升为 4.12.0
 
 ### 2.8.0
 * 添加 `@Bean::injected`
