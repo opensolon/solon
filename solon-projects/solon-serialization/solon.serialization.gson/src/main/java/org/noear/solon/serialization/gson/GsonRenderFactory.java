@@ -23,7 +23,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, GsonActionExecutor.label, serializer);
+        return new StringSerializerRender(false, serializer);
     }
 
     @Override

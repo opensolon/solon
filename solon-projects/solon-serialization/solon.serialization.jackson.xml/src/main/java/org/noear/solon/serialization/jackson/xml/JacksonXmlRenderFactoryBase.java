@@ -12,7 +12,6 @@ import java.io.IOException;
 
 /**
  * @author painter
- * @since 1.5
  * @since 2.8
  */
 public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {

@@ -12,57 +12,51 @@ import org.noear.solon.core.serialize.Serializer;
  * @since 2.8
  */
 public class StringSerializerRender implements Render {
-    /**
-     * 类型化
-     */
-    private boolean typed;
-
-    /**
-     * 内容类型标签
-     */
-    private String mimeLabel;
-
-    /**
-     * 序列化器
-     *
-     * @since 2.8
-     */
-    private Serializer<String> serializer;
+    private transient boolean typed;
+    private transient ContextSerializer<String> serializer;
 
 
-    public StringSerializerRender(boolean typed, String mimeLabel, Serializer<String> serializer) {
+    public StringSerializerRender(boolean typed, ContextSerializer<String> serializer) {
         this.typed = typed;
-        this.mimeLabel = mimeLabel;
         this.serializer = serializer;
     }
 
+    /**
+     * 是否类型化的
+     * */
     public boolean isTyped() {
         return typed;
     }
 
-    public String getMimeLabel() {
-        return mimeLabel;
-    }
-
+    /**
+     * 获取序列化器
+     */
     public Serializer<String> getSerializer() {
         return serializer;
     }
 
-
+    /**
+     * 获取渲染器名字
+     */
     @Override
     public String getName() {
         return this.getClass().getSimpleName() + "#" + serializer.name();
     }
 
+    /**
+     * 匹配检测
+     */
     @Override
     public boolean matched(Context ctx, String accept) {
-        if (mimeLabel == null || accept == null) {
-            return false;
-        } else {
-            return accept.contains(mimeLabel);
-        }
+        return serializer.matched(ctx, accept);
     }
 
+    /**
+     * 渲染并返回
+     *
+     * @param data 数据
+     * @param ctx  上下文
+     */
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         return serializer.serialize(data);
@@ -70,47 +64,58 @@ public class StringSerializerRender implements Render {
 
     /**
      * 渲染
+     *
+     * @param data 数据
+     * @param ctx  上下文
      */
     @Override
-    public void render(Object obj, Context ctx) throws Throwable {
+    public void render(Object data, Context ctx) throws Throwable {
         if (SerializationConfig.isOutputMeta()) {
             ctx.headerAdd("solon.serialization", getName());
         }
 
-        String txt = null;
+        String text = null;
 
         if (typed) {
             //序列化处理
             //
-            txt = serializer.serialize(obj);
+            text = serializer.serialize(data);
         } else {
             //非序列化处理
             //
-            if (obj == null) {
+            if (data == null) {
                 return;
             }
 
-            if (obj instanceof Throwable) {
-                throw (Throwable) obj;
+            if (data instanceof Throwable) {
+                throw (Throwable) data;
             }
 
-            if (obj instanceof String) {
-                txt = (String) obj;
+            if (data instanceof String) {
+                text = (String) data;
             } else {
-                txt = serializer.serialize(obj);
+                text = serializer.serialize(data);
             }
         }
 
-        ctx.attrSet("output", txt);
+        ctx.attrSet("output", text);
 
-        output(ctx, obj, txt);
+        output(ctx, data, text);
     }
 
-    protected void output(Context ctx, Object obj, String txt) {
-        if (obj instanceof String && ctx.accept().contains("/json") == false) {
-            ctx.output(txt);
+    /**
+     * 输出
+     *
+     * @param ctx  上下文
+     * @param data 数据（原）
+     * @param text 文源
+     */
+    protected void output(Context ctx, Object data, String text) {
+        if (data instanceof String && isTyped() == false) {
+            ctx.output(text);
         } else {
-            ctx.outputAsJson(txt);
+            ctx.contentType(serializer.getContentType());
+            ctx.output(text);
         }
     }
 }

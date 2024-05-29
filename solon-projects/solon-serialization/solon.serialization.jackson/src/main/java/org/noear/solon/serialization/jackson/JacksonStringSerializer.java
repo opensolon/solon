@@ -3,7 +3,8 @@ package org.noear.solon.serialization.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
@@ -12,7 +13,9 @@ import java.io.IOException;
  * @since 1.5
  * @since 2.8
  */
-public class JacksonStringSerializer implements ActionSerializer<String> {
+public class JacksonStringSerializer implements ContextSerializer<String> {
+    private static final String label = "/json";
+
     private ObjectMapper config;
     public ObjectMapper getConfig() {
         if (config == null) {
@@ -25,6 +28,20 @@ public class JacksonStringSerializer implements ActionSerializer<String> {
     public void setConfig(ObjectMapper config) {
         if (config != null) {
             this.config = config;
+        }
+    }
+
+    @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.contains(label);
         }
     }
 
@@ -48,7 +65,18 @@ public class JacksonStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {

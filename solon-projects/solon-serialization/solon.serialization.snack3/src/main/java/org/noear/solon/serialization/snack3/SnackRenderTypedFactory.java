@@ -10,6 +10,7 @@ import org.noear.solon.serialization.StringSerializerRender;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     private final Options config;
@@ -29,7 +30,7 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
         SnackStringSerializer serializer = new SnackStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(true, SnackActionExecutor.label, serializer);
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override

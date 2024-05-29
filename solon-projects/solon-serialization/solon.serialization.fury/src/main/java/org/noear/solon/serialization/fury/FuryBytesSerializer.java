@@ -6,7 +6,8 @@ import io.fury.ThreadSafeFury;
 import io.fury.config.Language;
 import io.fury.resolver.AllowListChecker;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -17,7 +18,8 @@ import java.util.Collection;
  * @author noear
  * @since 2.8
  */
-public class FuryBytesSerializer implements ActionSerializer<byte[]> {
+public class FuryBytesSerializer implements ContextSerializer<byte[]> {
+    private static final String label = "application/fury";
     private final Collection<String> blackList;
     private final AllowListChecker blackListChecker;
     private final ThreadSafeFury fury;
@@ -51,6 +53,20 @@ public class FuryBytesSerializer implements ActionSerializer<byte[]> {
     }
 
     @Override
+    public String getContentType() {
+        return label;
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.startsWith(label);
+        }
+    }
+
+    @Override
     public String name() {
         return "fury-bytes";
     }
@@ -70,7 +86,18 @@ public class FuryBytesSerializer implements ActionSerializer<byte[]> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         return fury.deserialize(ctx.bodyAsBytes());
     }
 }

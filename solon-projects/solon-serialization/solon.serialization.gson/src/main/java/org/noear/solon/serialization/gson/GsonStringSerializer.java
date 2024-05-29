@@ -6,7 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
@@ -16,7 +17,9 @@ import java.io.IOException;
  * @author noear
  * @since 2.8
  */
-public class GsonStringSerializer implements ActionSerializer<String> {
+public class GsonStringSerializer implements ContextSerializer<String> {
+    private static final String label = "/json";
+
     private GsonBuilder config;
 
     public GsonBuilder getConfig() {
@@ -50,6 +53,20 @@ public class GsonStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.contains(label);
+        }
+    }
+
+    @Override
     public String name() {
         return "gson-json";
     }
@@ -70,7 +87,18 @@ public class GsonStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {

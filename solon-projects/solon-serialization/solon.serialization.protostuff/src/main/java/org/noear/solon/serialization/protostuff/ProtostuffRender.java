@@ -1,44 +1,26 @@
 package org.noear.solon.serialization.protostuff;
 
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.SerializationConfig;
-
-import java.util.Base64;
+import org.noear.solon.serialization.BytesSerializerRender;
+import org.noear.solon.serialization.ContextSerializer;
 
 /**
+ * Protostuff 渲染器
+ *
  * @author noear
  * @since 1.2
+ * @since 2.8
  */
-public class ProtostuffRender implements Render {
+public class ProtostuffRender extends BytesSerializerRender {
     private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
 
+
     @Override
-    public boolean matched(Context ctx, String accept) {
-        if (accept == null) {
-            return false;
-        } else {
-            return accept.contains(ProtostuffActionExecutor.label);
-        }
+    public ContextSerializer<byte[]> getSerializer() {
+        return serializer;
     }
 
     @Override
-    public String renderAndReturn(Object data, Context ctx) throws Throwable {
-        byte[] bytes = serializeDo(data);
-        return Base64.getEncoder().encodeToString(bytes);
-    }
-
-    @Override
-    public void render(Object obj, Context ctx) throws Throwable {
-        if (SerializationConfig.isOutputMeta()) {
-            ctx.headerAdd("solon.serialization", "ProtostuffRender");
-        }
-
-        ctx.contentType("application/protobuf");
-        ctx.output(serializeDo(obj));
-    }
-
-    private byte[] serializeDo(Object obj) throws Throwable {
-        return serializer.serialize(obj);
+    public String getName() {
+        return this.getClass().getSimpleName();
     }
 }

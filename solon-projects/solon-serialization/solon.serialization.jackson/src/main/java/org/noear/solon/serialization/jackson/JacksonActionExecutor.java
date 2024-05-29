@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -20,9 +19,11 @@ import java.util.List;
  * @since 1.2
  * */
 public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "/json";
-
     private JacksonStringSerializer serializer = new JacksonStringSerializer();
+
+    public JacksonStringSerializer getSerializer() {
+        return serializer;
+    }
 
     public ObjectMapper config(){
         return serializer.getConfig();
@@ -49,22 +50,12 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return serializer.deserialize(json, null);
-        } else {
-            return null;
-        }
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

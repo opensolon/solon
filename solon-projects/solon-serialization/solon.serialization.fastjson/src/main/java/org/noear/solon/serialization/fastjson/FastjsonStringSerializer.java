@@ -8,7 +8,8 @@ import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
@@ -19,7 +20,9 @@ import java.io.IOException;
  * @since 1.5
  * @since 2.8
  */
-public class FastjsonStringSerializer implements ActionSerializer<String> {
+public class FastjsonStringSerializer implements ContextSerializer<String> {
+    private static final String label = "/json";
+
     private SerializeConfig serializeConfig;
     private int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
     private ParserConfig deserializeConfig;
@@ -71,6 +74,20 @@ public class FastjsonStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.contains(label);
+        }
+    }
+
+    @Override
     public String name() {
         return "fastjson-json";
     }
@@ -102,7 +119,18 @@ public class FastjsonStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {

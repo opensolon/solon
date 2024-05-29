@@ -20,6 +20,6 @@ public class PropertiesRenderFactory  implements RenderFactory {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, null, serializer);
+        return new StringSerializerRender(false,  serializer);
     }
 }

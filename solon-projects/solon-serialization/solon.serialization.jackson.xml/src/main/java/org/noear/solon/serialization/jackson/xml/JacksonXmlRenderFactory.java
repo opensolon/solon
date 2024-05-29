@@ -11,15 +11,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Json 渲染器工厂
+ * Xml 渲染器工厂
  *
  * @author painter
  * @since 2.8
  */
 public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
-
-    XmlMapper config = new XmlMapper();
-
+    private XmlMapper config = new XmlMapper();
     private Set<SerializationFeature> features;
 
     public JacksonXmlRenderFactory() {
@@ -40,7 +38,7 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
         JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(false, JacksonXmlActionExecutor.label, serializer);
+        return new StringSerializerRender(false, serializer);
     }
 
     @Override

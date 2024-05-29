@@ -5,16 +5,33 @@ import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
 /**
+ * Protostuff 序列化器
+ *
  * @author noear
  * @since 2.8
  */
-public class ProtostuffBytesSerializer implements ActionSerializer<byte[]> {
+public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
+    private static final String label = "application/protobuf";
     private final Schema<DataWrapper> WRAPPER_SCHEMA = RuntimeSchema.createFrom(DataWrapper.class);
+
+    @Override
+    public String getContentType() {
+        return label;
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.startsWith(label);
+        }
+    }
 
     @Override
     public String name() {
@@ -53,7 +70,13 @@ public class ProtostuffBytesSerializer implements ActionSerializer<byte[]> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+        ctx.output(serialize(data));
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         return deserialize(ctx.bodyAsBytes(), null);
     }
 

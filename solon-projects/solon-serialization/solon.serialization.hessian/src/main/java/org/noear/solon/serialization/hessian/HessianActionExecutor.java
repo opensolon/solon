@@ -1,6 +1,5 @@
 package org.noear.solon.serialization.hessian;
 
-import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -9,7 +8,6 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "application/hessian";
     private HessianBytesSerializer serializer = new HessianBytesSerializer();
 
     public HessianBytesSerializer getSerializer() {
@@ -18,16 +16,12 @@ public class HessianActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.startsWith(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-       return serializer.deserializeBody(ctx);
+       return serializer.deserializeFromBody(ctx);
     }
 
     /**

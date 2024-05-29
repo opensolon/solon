@@ -23,8 +23,6 @@ import java.util.List;
  * @since 2.8
  */
 public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "/xml";
-
     private JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
 
     public XmlMapper config() {
@@ -58,22 +56,12 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return serializer.deserialize(json, null);
-        } else {
-            return null;
-        }
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

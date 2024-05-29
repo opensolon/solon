@@ -8,7 +8,8 @@ import com.alibaba.fastjson2.reader.ObjectReaderProvider;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
@@ -19,7 +20,9 @@ import java.io.IOException;
  * @since 1.10
  * @since 2.8
  */
-public class Fastjson2StringSerializer implements ActionSerializer<String> {
+public class Fastjson2StringSerializer implements ContextSerializer<String> {
+    private static final String label = "/json";
+
     private JSONWriter.Context serializeConfig;
     private JSONReader.Context deserializeConfig;
 
@@ -33,7 +36,7 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
 
     public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
         if (isReset) {
-            getSerializeConfig().setFeatures(0);//JSONFactory.getDefaultWriterFeatures());
+            getSerializeConfig().setFeatures(JSONFactory.getDefaultWriterFeatures());
         }
 
         for (JSONWriter.Feature feature : features) {
@@ -50,11 +53,25 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
 
     public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
         if (isReset) {
-            getDeserializeConfig().setFeatures(0);//JSONFactory.getDefaultReaderFeatures());
+            getDeserializeConfig().setFeatures(JSONFactory.getDefaultReaderFeatures());
         }
 
         for (JSONReader.Feature feature : features) {
             getDeserializeConfig().config(feature, isAdd);
+        }
+    }
+
+    @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.contains(label);
         }
     }
 
@@ -78,7 +95,18 @@ public class Fastjson2StringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {

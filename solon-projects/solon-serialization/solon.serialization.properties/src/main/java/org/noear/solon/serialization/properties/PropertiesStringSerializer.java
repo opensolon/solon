@@ -5,7 +5,8 @@ import org.noear.snack.core.NameValues;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Properties;
  * @since 2.7
  * @since 2.8
  */
-public class PropertiesStringSerializer implements ActionSerializer<String> {
+public class PropertiesStringSerializer implements ContextSerializer<String> {
     private Options config;
 
     public Options getConfig() {
@@ -33,6 +34,16 @@ public class PropertiesStringSerializer implements ActionSerializer<String> {
         if (config != null) {
             this.config = config;
         }
+    }
+
+    @Override
+    public String getContentType() {
+        return "application/properties";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        return false;
     }
 
     @Override
@@ -69,7 +80,18 @@ public class PropertiesStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         NameValues nameValues = new NameValues();
         for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
             for (String val : kv.getValue()) {

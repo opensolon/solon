@@ -4,7 +4,8 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.serialization.ActionSerializer;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 
@@ -13,8 +14,11 @@ import java.io.IOException;
  *
  * @author noear
  * @since 1.5
+ * @since 2.8
  */
-public class SnackStringSerializer implements ActionSerializer<String> {
+public class SnackStringSerializer implements ContextSerializer<String> {
+    private static final String label = "/json";
+
     private Options config;
 
     public Options getConfig() {
@@ -28,6 +32,20 @@ public class SnackStringSerializer implements ActionSerializer<String> {
     public void setConfig(Options config) {
         if (config != null) {
             this.config = config;
+        }
+    }
+
+    @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
+            return false;
+        } else {
+            return mime.contains(label);
         }
     }
 
@@ -51,7 +69,18 @@ public class SnackStringSerializer implements ActionSerializer<String> {
     }
 
     @Override
-    public Object deserializeBody(Context ctx) throws IOException {
+    public void serializeToBody(Context ctx, Object data) throws IOException {
+        ctx.contentType(getContentType());
+
+        if (data instanceof ModelAndView) {
+            ctx.output(serialize(((ModelAndView) data).model()));
+        } else {
+            ctx.output(serialize(data));
+        }
+    }
+
+    @Override
+    public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {

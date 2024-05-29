@@ -8,11 +8,13 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.util.Map;
 
 /**
+ * Protostuff 动作执行器
+ *
  * @author noear
  * @since 1.2
+ * @since 2.8
  */
 public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "application/protobuf";
     private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
 
     public ProtostuffBytesSerializer getSerializer() {
@@ -21,16 +23,12 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.startsWith(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeBody(ctx);
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

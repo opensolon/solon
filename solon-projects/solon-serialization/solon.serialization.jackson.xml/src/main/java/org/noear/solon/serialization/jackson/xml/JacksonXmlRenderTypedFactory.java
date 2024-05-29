@@ -11,14 +11,13 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
- * Json 类型化渲染器工厂
+ * Xml 类型化渲染器工厂
  *
  * @author painter
- * @since 1.5
  * @since 2.8
  */
 public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
-    XmlMapper config = new XmlMapper();
+    private XmlMapper config = new XmlMapper();
 
     public JacksonXmlRenderTypedFactory() {
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -37,7 +36,7 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
         JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
         serializer.setConfig(config);
 
-        return new StringSerializerRender(true, JacksonXmlActionExecutor.label, serializer);
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override

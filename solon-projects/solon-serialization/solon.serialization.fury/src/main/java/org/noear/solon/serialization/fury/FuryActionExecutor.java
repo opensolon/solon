@@ -12,7 +12,6 @@ import java.util.Map;
  * @since 2.5
  * */
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "application/fury";
     private final FuryBytesSerializer serializer = new FuryBytesSerializer();
 
     public FuryBytesSerializer getSerializer() {
@@ -21,16 +20,12 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.startsWith(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeBody(ctx);
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

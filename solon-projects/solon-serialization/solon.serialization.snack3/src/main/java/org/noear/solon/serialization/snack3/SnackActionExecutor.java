@@ -3,7 +3,6 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -17,37 +16,30 @@ import java.util.List;
  *
  * @author noear
  * @since 1.0
+ * @since 2.8
  * */
 public class SnackActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "/json";
-
-    private final Options config = Options.def().add(Feature.DisableClassNameRead);
+    private SnackStringSerializer serializer = new SnackStringSerializer();
+    public SnackActionExecutor(){
+        super();
+        serializer.getConfig().add(Feature.DisableClassNameRead);
+    }
 
     /**
      * 反序列化配置
      * */
     public Options config(){
-        return config;
+        return serializer.getConfig();
     }
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        String json = ctx.bodyNew();
-
-        if (Utils.isNotEmpty(json)) {
-            return ONode.loadStr(json, config);
-        } else {
-            return null;
-        }
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

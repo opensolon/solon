@@ -16,8 +16,6 @@ import java.util.List;
  * @since 2.2
  */
 public class GsonActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "/json";
-
     private final GsonStringSerializer serializer = new GsonStringSerializer();
 
     public GsonActionExecutor(){
@@ -35,16 +33,12 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeBody(ctx);
+        return serializer.deserializeFromBody(ctx);
     }
 
     @Override

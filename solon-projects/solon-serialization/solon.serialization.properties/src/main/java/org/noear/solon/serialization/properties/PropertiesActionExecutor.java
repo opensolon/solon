@@ -2,7 +2,6 @@ package org.noear.solon.serialization.properties;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
-import org.noear.snack.core.NameValues;
 import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
@@ -21,9 +20,13 @@ import java.util.Map;
  * @since 2.7
  * */
 public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
-    private final Options config = Options.def().add(Feature.DisableClassNameRead);
+    private PropertiesStringSerializer serializer = new PropertiesStringSerializer();
     private boolean allowGet = true;
     private boolean allowPostForm = false;
+
+    public PropertiesActionExecutor() {
+        serializer.getConfig().add(Feature.DisableClassNameRead);
+    }
 
     /**
      * 允许处理 Get 请求
@@ -41,9 +44,9 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
 
     /**
      * @deprecated 2.8
-     * */
+     */
     @Deprecated
-    public void includeFormUrlencoded(boolean allowPostForm){
+    public void includeFormUrlencoded(boolean allowPostForm) {
         this.allowPostForm(allowPostForm);
     }
 
@@ -51,7 +54,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
      * 反序列化配置
      */
     public Options config() {
-        return config;
+        return serializer.getConfig();
     }
 
     @Override
@@ -70,14 +73,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        NameValues nameValues = new NameValues();
-        for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
-            for (String val : kv.getValue()) {
-                nameValues.add(kv.getKey(), val);
-            }
-        }
-
-        return ONode.loadObj(nameValues);
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**

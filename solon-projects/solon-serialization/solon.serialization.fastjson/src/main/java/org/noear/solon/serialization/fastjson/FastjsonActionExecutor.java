@@ -19,8 +19,6 @@ import java.util.List;
  * @since 1.5
  */
 public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
-    public static final String label = "/json";
-
     private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
 
     /**
@@ -35,22 +33,19 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
      *
      * @deprecated 2.8
      */
+    @Deprecated
     public ParserConfig config() {
         return serializer.getDeserializeConfig();
     }
 
     @Override
     public boolean matched(Context ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
-            return true;
-        } else {
-            return false;
-        }
+        return serializer.matched(ctx, ct);
     }
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeBody(ctx);
+        return serializer.deserializeFromBody(ctx);
     }
 
     @Override
