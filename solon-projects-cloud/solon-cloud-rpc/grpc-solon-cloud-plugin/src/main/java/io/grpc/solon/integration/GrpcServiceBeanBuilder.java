@@ -11,7 +11,7 @@ import java.util.Map;
  * @since 1.9
  */
 public class GrpcServiceBeanBuilder implements BeanBuilder<GrpcService> {
-    Map<Class<?>, Object> serviceMap;
+    private Map<Class<?>, Object> serviceMap;
 
     public GrpcServiceBeanBuilder(Map<Class<?>, Object> serviceMap) {
         this.serviceMap = serviceMap;

@@ -17,7 +17,7 @@ import java.util.Map;
  * @since 1.9
  */
 public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
-    Map<Class<?>, Object> clientMap;
+    private Map<Class<?>, Object> clientMap;
 
     public GrpcClientBeanInjector(Map<Class<?>, Object> clientMap) {
         this.clientMap = clientMap;

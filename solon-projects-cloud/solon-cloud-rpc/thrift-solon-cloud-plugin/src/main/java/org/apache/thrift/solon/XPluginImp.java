@@ -32,10 +32,10 @@ import java.util.Map;
  */
 public class XPluginImp implements Plugin {
 
-    TThreadedSelectorServer server;
+    private TThreadedSelectorServer server;
 
-    Map<Class<?>, Object> serviceMap;
-    Map<Class<?>, Object> clientMap;
+    private Map<Class<?>, Object> serviceMap;
+    private Map<Class<?>, Object> clientMap;
 
     @Override
     public void start(AppContext context) {

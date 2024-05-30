@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class ThriftClientBeanInjector implements BeanInjector<ThriftClient> {
 
-    Map<Class<?>, Object> clientMap;
+    private Map<Class<?>, Object> clientMap;
 
     public ThriftClientBeanInjector(Map<Class<?>, Object> clientMap) {
         this.clientMap = clientMap;

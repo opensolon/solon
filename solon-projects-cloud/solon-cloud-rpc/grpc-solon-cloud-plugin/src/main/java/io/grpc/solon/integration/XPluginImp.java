@@ -32,10 +32,10 @@ public class XPluginImp implements Plugin {
         return "grpc 1.49.0/" + Solon.version();
     }
 
-    Server server;
+    private Server server;
 
-    Map<Class<?>, Object> serviceMap;
-    Map<Class<?>, Object> clientMap;
+    private Map<Class<?>, Object> serviceMap;
+    private Map<Class<?>, Object> clientMap;
 
     @Override
     public void start(AppContext context) {

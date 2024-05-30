@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class ThriftServiceBeanBuilder implements BeanBuilder<ThriftService> {
 
-    Map<Class<?>, Object> serviceMap;
+    private Map<Class<?>, Object> serviceMap;
 
     public ThriftServiceBeanBuilder(Map<Class<?>, Object> serviceMap) {
         this.serviceMap = serviceMap;
