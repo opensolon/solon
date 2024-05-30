@@ -5,11 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 /**
  * @author noear 2021/5/3 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class IdTest {
     @Test
     public void time1(){

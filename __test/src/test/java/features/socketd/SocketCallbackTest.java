@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketCallbackTest {
     @Test

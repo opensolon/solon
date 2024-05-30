@@ -16,7 +16,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HeaderTest extends HttpTester {
     @Test

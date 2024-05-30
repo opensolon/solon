@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * @author noear 2022/3/1 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class BigHeaderTest extends HttpTester {
     @Test

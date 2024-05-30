@@ -7,7 +7,6 @@ import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class CacheTest extends HttpTester {
     @Test

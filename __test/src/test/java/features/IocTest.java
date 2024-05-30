@@ -13,7 +13,6 @@ import webapp.demo6_aop.DaoUser;
 import webapp.demo6_aop.ioc.TestCom1;
 import webapp.dso.AutoConfigTest;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 //@SolonTest(value = webapp.TestApp.class, args = "-server.port=9001")
 public class IocTest {

@@ -11,7 +11,6 @@ import webapp.App;
 /**
  * @author noear 2022/9/24 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class VaultTest {
     @VaultInject("${vault.test.db1}")

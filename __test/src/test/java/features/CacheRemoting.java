@@ -11,7 +11,6 @@ import webapp.demo2_cache.RemotingService;
 /**
  * @author noear 2022/3/22 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class CacheRemoting {
     @NamiClient(url = "tcp://localhost:28080/demo2/rmt/sev")

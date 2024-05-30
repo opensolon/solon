@@ -11,7 +11,6 @@ import webapp.dso.event.TestEvent;
 /**
  * @author noear 2023/5/6 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class EventTest {
     @Test

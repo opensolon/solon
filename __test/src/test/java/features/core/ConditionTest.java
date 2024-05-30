@@ -16,7 +16,6 @@ import webapp.models.BaseRequest;
  * @author noear 2023/2/5 created
  */
 @Configuration
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class ConditionTest {
 

@@ -8,13 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.util.List;
 
 /**
  * @author noear 2021/1/1 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class NamiTest {
     @Test
     public void test() {

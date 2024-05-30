@@ -10,7 +10,6 @@ import webapp.App;
 /**
  * @author noear 2022/12/10 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpPathTest extends HttpTester {
     @Test

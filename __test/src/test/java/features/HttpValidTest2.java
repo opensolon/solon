@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * @author noear 2021/6/15 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpValidTest2 extends HttpTester {
 

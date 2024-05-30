@@ -20,7 +20,6 @@ import java.util.Set;
 /**
  * @author noear 2021/5/28 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class InjectTest {
     @Inject(value = "${username}", autoRefreshed = true)

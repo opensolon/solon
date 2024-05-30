@@ -8,7 +8,6 @@ import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo6_aop.Bean2;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class IocTest_u5 {
     @Inject

@@ -11,7 +11,6 @@ import webapp.App;
 /**
  * @author noear 2024/5/17 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class PropRefTest {
     @Inject("${each.a}")

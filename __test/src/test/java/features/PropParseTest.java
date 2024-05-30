@@ -10,7 +10,6 @@ import webapp.App;
 /**
  * @author noear 2021/6/1 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class PropParseTest {
     @Test

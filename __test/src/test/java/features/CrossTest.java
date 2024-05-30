@@ -18,7 +18,6 @@ import java.util.Collection;
  * @author noear
  * @since 2.6
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class CrossTest {
     @Test

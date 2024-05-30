@@ -13,7 +13,6 @@ import java.io.IOException;
 /**
  * @author noear 2022/2/10 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class BigBodyTest extends HttpTester {
     @Test

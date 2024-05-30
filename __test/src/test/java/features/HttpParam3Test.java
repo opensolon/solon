@@ -14,7 +14,6 @@ import webapp.models.UserModel;
 /**
  * @author noear 2021/1/5 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpParam3Test {
     @Test

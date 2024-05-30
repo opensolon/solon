@@ -11,7 +11,6 @@ import webapp.dso.EntityConfig;
 /**
  * @author noear 2021/9/27 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class EntityConfigTest {
 

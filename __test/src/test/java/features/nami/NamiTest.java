@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author noear 2021/1/1 created
  */
-//@ExtendWith(SolonJUnit5Extension.class)
+//@SolonTest
 public class NamiTest {
 //    @Test
 //    public void test() {

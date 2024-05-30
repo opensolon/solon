@@ -9,7 +9,6 @@ import webapp.App;
 
 import java.io.IOException;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpTest3 extends HttpTester {
 

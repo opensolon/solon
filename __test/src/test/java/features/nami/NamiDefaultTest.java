@@ -10,7 +10,6 @@ import webapp.App;
 /**
  * @author noear 2022/11/7 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class NamiDefaultTest {
 

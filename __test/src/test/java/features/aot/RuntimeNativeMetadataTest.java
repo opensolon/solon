@@ -19,7 +19,6 @@ import java.lang.reflect.Constructor;
  * @author songyinyin
  * @since 2023/4/7 16:43
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class RuntimeNativeMetadataTest {
 

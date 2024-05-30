@@ -15,8 +15,6 @@ import webapp.App;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketTest {
     @Test

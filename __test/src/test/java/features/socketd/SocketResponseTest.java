@@ -21,7 +21,6 @@ import webapp.utils.ContentTypes;
 import java.util.HashMap;
 import java.util.Map;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketResponseTest {
     @Test

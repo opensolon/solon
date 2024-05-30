@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author noear 2022/3/22 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpUploadTest extends HttpTester {
     @Test

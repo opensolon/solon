@@ -12,7 +12,6 @@ import java.util.concurrent.CountDownLatch;
  * @author noear 2021/3/14 created
  */
 @Slf4j
-//@ExtendWith(SolonJUnit5Extension.class)
 //@SolonTest(webapp.TestApp.class)
 public class BreakerTest extends HttpTester {
 

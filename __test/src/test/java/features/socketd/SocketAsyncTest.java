@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author noear 2022/3/11 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketAsyncTest {
     @Test

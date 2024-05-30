@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpTest extends HttpTester {
 

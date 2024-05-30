@@ -12,7 +12,6 @@ import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demoh_socketd.HelloRpcService;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketRpcTest {
 

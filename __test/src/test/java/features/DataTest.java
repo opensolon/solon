@@ -11,7 +11,6 @@ import webapp.demo7_test.DynamicService;
 /**
  * @author noear 2023/9/1 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class DataTest {
 

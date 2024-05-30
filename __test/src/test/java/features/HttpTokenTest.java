@@ -12,7 +12,6 @@ import java.io.IOException;
 /**
  * @author noear 2021/6/4 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class HttpTokenTest extends HttpTester {
 

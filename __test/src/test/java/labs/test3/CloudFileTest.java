@@ -19,7 +19,6 @@ import java.util.Base64;
 /**
  * @author noear 2021/4/7 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class CloudFileTest {
     @Test

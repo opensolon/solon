@@ -10,7 +10,6 @@ import webapp.App;
 /**
  * @author noear 2021/3/27 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class PropDefTest {
     @Inject("${test.name:noear}")

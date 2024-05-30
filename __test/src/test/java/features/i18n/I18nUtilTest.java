@@ -15,7 +15,6 @@ import java.util.Locale;
 /**
  * @author noear 2021/9/19 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class I18nUtilTest {
     @Test

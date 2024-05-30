@@ -17,7 +17,6 @@ import webapp.demo5_rpc.protocol.UserService4;
 import webapp.demo5_rpc.protocol.UserService5;
 import webapp.utils.Datetime;
 
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class NamiAndRpcTest {
     //直接指定服务端地址

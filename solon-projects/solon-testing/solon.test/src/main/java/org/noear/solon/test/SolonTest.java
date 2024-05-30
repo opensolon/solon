@@ -1,9 +1,11 @@
 package org.noear.solon.test;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.annotation.Alias;
 
 import java.lang.annotation.*;
 
+@ExtendWith(SolonJUnit5Extension.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented

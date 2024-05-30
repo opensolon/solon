@@ -16,7 +16,6 @@ import webapp.nami.ComplexModelService3;
 /**
  * @author noear 2022/12/6 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class NamiTest {
     @NamiClient

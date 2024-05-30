@@ -15,7 +15,6 @@ import java.util.Enumeration;
 /**
  * @author noear 2023/3/19 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class ResourceTest {
     @Test

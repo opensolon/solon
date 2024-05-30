@@ -15,7 +15,6 @@ import java.util.Map;
 /**
  * @author noear 2022/6/11 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class PropTest {
 

@@ -12,8 +12,6 @@ import webapp.App;
 /**
  * @author noear 2024/4/10 created
  */
-
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class AppContextTest {
     @Test

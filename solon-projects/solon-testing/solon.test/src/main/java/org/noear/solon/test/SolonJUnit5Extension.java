@@ -1,6 +1,9 @@
 package org.noear.solon.test;
 
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestInstanceFactory;
+import org.junit.jupiter.api.extension.TestInstanceFactoryContext;
+import org.junit.jupiter.api.extension.TestInstantiationException;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.ClassUtil;
 
