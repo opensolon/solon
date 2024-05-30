@@ -31,9 +31,10 @@
 * 添加 Serializer 接口，统一多处模块的序列化定义
 * 添加 BytesSerializerRender 类，对应 StringSerializerRender
 * 添加 WebSocket 子协议校验支持（smarthttp,jetty,undertow,java-websocket,netty-websocket）
-* 添加 Stomp 服务端适配 WebSocket 子协议验证
+* 添加 solon.net.stomp ToStompWebSocketListener 适配 WebSocket 子协议验证
+* 添加 solon.net ToSocketdWebSocketListener 适配 WebSocket 子协议验证
 * 添加 应用配置键名二次引用支持
-* 添加 folkmq 适配 EventLevel.instance 订阅支持和 broadcast 发送支持
+* 添加 folkmq 适配 EventLevel.instance 订阅支持
 * 添加 rocketmq5 适配 EventLevel.instance 订阅支持
 * 添加 solon.boot.socketd 对 ssl 配置的支持
 * 添加 beetl 适配自定义 Tag 注入支持
