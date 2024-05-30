@@ -65,6 +65,11 @@ public class XPluginImp implements Plugin {
 
         if (JsonPropsUtil.apply(factory, jsonProps)) {
 
+            if (jsonProps.longAsString) {
+                factory.addConvertor(Long.class, String::valueOf);
+                factory.addConvertor(long.class, String::valueOf);
+            }
+
             writeNulls = jsonProps.nullAsWriteable ||
                     jsonProps.nullNumberAsZero ||
                     jsonProps.nullArrayAsEmpty ||

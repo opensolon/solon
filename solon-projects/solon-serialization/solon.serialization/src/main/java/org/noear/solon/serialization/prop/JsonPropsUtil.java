@@ -77,11 +77,6 @@ public class JsonPropsUtil {
             factory.addConvertor(Date.class, Date::getTime);
         }
 
-        if (jsonProps.longAsString) {
-            factory.addConvertor(Long.class, String::valueOf);
-            factory.addConvertor(long.class, String::valueOf);
-        }
-
         if (jsonProps.boolAsInt) {
             factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
         }

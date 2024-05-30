@@ -54,6 +54,10 @@ public class XPluginImp implements Plugin {
         boolean writeNulls = false;
 
         if (JsonPropsUtil.apply(factory, jsonProps)) {
+            if (jsonProps.longAsString) {
+                factory.addConvertor(Long.class, String::valueOf);
+                factory.addConvertor(long.class, String::valueOf);
+            }
 
             writeNulls = jsonProps.nullAsWriteable ||
                     jsonProps.nullNumberAsZero ||

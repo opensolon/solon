@@ -47,6 +47,10 @@ public class XPluginImp implements Plugin {
 
     private void applyProps(FastjsonRenderFactory factory, JsonProps jsonProps) {
         if (JsonPropsUtil.apply(factory, jsonProps)) {
+            if (jsonProps.longAsString) {
+                factory.addConvertor(Long.class, String::valueOf);
+                factory.addConvertor(long.class, String::valueOf);
+            }
 
             if (jsonProps.nullStringAsEmpty) {
                 factory.addFeatures(SerializerFeature.WriteNullStringAsEmpty);
