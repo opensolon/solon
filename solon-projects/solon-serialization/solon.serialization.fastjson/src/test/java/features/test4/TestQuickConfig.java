@@ -8,6 +8,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  * 时间进行格式化 + long,int 转为字符串 + 常见类型转为非null + 所有null输出
  */
 @Import(profiles = "classpath:features2_test4.yml")
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class TestQuickConfig {
     @Inject
     FastjsonRenderFactory renderFactory;

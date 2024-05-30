@@ -15,7 +15,6 @@ import java.io.IOException;
 /**
  * @author noear 2021/10/18 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(DemoApp.class)
 public class DemoTest {
     static Logger log = LoggerFactory.getLogger(DemoTest.class);

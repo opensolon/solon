@@ -5,11 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 /**
  * @author noear 2023/2/16 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class CacheTest {
     @Inject
     CacheService cacheService;

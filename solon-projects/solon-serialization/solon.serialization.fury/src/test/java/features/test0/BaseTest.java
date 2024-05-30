@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
 import org.noear.solon.serialization.fury.FuryRender;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * @author noear 2024/5/30 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class BaseTest {
     @Test
     public void hello2() throws Throwable{

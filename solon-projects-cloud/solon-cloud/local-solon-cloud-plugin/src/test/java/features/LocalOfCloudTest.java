@@ -17,7 +17,6 @@ import java.util.Locale;
 /**
  * @author noear 2023/10/10 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class LocalOfCloudTest extends HttpTester {
     @Test

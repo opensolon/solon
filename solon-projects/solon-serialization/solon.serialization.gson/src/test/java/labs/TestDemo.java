@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * @author noear 2021/10/12 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(TestApp.class)
 public class TestDemo extends HttpTester {
     @Test

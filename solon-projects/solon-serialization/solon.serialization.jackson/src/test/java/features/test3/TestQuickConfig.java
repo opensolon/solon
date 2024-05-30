@@ -8,6 +8,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.jackson.JacksonRenderFactory;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author noear 2023/1/16 created
  */
 @Import(profiles = "classpath:features2_test3.yml")
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class TestQuickConfig {
     @Inject
     JacksonRenderFactory renderFactory;

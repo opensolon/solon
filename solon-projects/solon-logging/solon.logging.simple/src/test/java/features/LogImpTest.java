@@ -12,7 +12,6 @@ import org.slf4j.MDC;
 /**
  * @author noear 2022/3/21 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class LogImpTest {
     @Test

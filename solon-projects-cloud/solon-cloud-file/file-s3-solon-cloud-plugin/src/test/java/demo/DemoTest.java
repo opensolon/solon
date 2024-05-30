@@ -18,7 +18,6 @@ import java.io.IOException;
 /**
  * @author 等風來再離開 2022/11/29 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(DemoApp.class)
 public class DemoTest {
     static Logger log = LoggerFactory.getLogger(DemoTest.class);

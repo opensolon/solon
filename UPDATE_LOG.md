@@ -44,6 +44,7 @@
 * 调整 ValidatorException 改为扩展自 StatusException（之前为 SolonException）
 * 调整 Action 参数解析异常类型为 StatusException（之前为 IllegalArgumentException）
 * 调整 CloudClient.event().newTranAndJoin() 增加 inTrans 的判断
+* 调整 solon.test 默认为 junit5 并简化 SolonTest 体验（不用加 ExtendWith 了）
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
 * snack3 升为 3.2.100

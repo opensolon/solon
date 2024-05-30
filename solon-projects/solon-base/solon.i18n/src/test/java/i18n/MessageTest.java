@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.i18n.LocaleUtil;
 import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.util.Locale;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.MissingResourceException;
 /**
  * @author noear 2021/7/7 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class MessageTest {
     @Test
     public void test() {

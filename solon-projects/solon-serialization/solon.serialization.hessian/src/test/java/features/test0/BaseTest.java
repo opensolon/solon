@@ -2,11 +2,10 @@ package features.test0;
 
 import features.model.UserDo;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.hessian.HessianBytesSerializer;
 import org.noear.solon.serialization.hessian.HessianRender;
-import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.test.SolonTest;
 
 import java.io.*;
 import java.util.Date;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * @author noear 2024/5/30 created
  */
-@ExtendWith(SolonJUnit5Extension.class)
+@SolonTest
 public class BaseTest {
     @Test
     public void hello2() throws Throwable{

@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-test-junit5</artifactId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
 

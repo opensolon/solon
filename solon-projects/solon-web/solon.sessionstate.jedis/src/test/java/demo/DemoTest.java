@@ -14,7 +14,6 @@ import java.util.List;
  * @author noear 2022/1/18 created
  * @author liao.chunping 2022/08/22
  */
-@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(DemoApp.class)
 public class DemoTest extends HttpTester {
     @Test
