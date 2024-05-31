@@ -49,7 +49,7 @@
 * 优化 kafka 适配的 ack 处理
 * snack3 升为 3.2.100
 * socket.d 升为 2.5.1
-* folkmq 升为 1.5.0
+* folkmq 升为 1.5.1
 * wood 升为 1.2.11
 * smarthttp 升为 1.4.2
 * okhttp 升为 4.12.0
