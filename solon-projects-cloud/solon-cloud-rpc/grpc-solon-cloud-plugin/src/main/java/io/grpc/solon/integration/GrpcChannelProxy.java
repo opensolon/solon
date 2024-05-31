@@ -1,6 +1,7 @@
 package io.grpc.solon.integration;
 
 import io.grpc.*;
+import io.grpc.solon.annotation.GrpcClient;
 import org.noear.solon.Utils;
 import org.noear.solon.core.LoadBalance;
 
@@ -16,18 +17,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GrpcChannelProxy extends Channel {
     private final Map<String, Channel> channelMap = new ConcurrentHashMap<>();
-
     private LoadBalance upstream;
+    private GrpcClient anno;
 
-    public GrpcChannelProxy(String group, String service) {
-        if (Utils.isEmpty(group)) {
-            upstream = LoadBalance.get(service);
+    public GrpcChannelProxy(GrpcClient anno) {
+        this.anno = anno;
+        String name = Utils.annoAlias(anno.value(), anno.name());
+
+        if (Utils.isEmpty(anno.group())) {
+            upstream = LoadBalance.get(name);
         } else {
-            upstream = LoadBalance.get(group, service);
+            upstream = LoadBalance.get(anno.group(), name);
         }
 
         if (upstream == null) {
-            throw new IllegalStateException("No service upstream found: " + service);
+            throw new IllegalStateException("No service upstream found: " + name);
         }
     }
 
@@ -45,10 +49,12 @@ public class GrpcChannelProxy extends Channel {
         String server = upstream.getServer();
 
         Channel real = channelMap.computeIfAbsent(server, k -> {
-            URI uri = URI.create(server);
-            return ManagedChannelBuilder.forAddress(uri.getHost(), uri.getPort())
-                    .usePlaintext()
-                    .build();
+            URI uri = URI.create(k);
+            ManagedChannelBuilder builder = ManagedChannelBuilder
+                    .forAddress(uri.getHost(), uri.getPort())
+                    .usePlaintext();
+
+            return builder.build();
         });
 
         return real;
