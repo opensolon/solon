@@ -13,9 +13,8 @@ import org.apache.thrift.solon.integration.ThriftServiceBeanBuilder;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TTransportException;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.LifecycleIndex;
-import org.noear.solon.core.Plugin;
+import org.noear.solon.Utils;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 
 import java.lang.reflect.Constructor;
@@ -31,8 +30,18 @@ import java.util.Map;
  * @since 1.10
  */
 public class XPluginImp implements Plugin {
+    private static Signal _signal;
+
+    public static Signal signal() {
+        return _signal;
+    }
+
+    public static String solon_boot_ver() {
+        return "thrift 0.20.0/" + Solon.version();
+    }
 
     private TThreadedSelectorServer server;
+    private Thread serverThread;
 
     private Map<Class<?>, Object> serviceMap;
     private Map<Class<?>, Object> clientMap;
@@ -60,13 +69,32 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        ThriftServerProps props = new ThriftServerProps(9090);
+        ThriftServerProps props = new ThriftServerProps(25000);
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
-        TThreadedSelectorServer.Args serverArgs = new TThreadedSelectorServer.Args(new TNonblockingServerSocket(props.getPort()))
+        long time_start = System.currentTimeMillis();
+
+        TNonblockingServerSocket serverSocket = new TNonblockingServerSocket(props.getPort());
+
+        TThreadedSelectorServer.Args serverArgs = new TThreadedSelectorServer.Args(serverSocket)
                 .protocolFactory(new TBinaryProtocol.Factory())
                 .processor(createMultiplexedProcessor());
         server = new TThreadedSelectorServer(serverArgs);
-        new Thread(() -> server.serve()).start();
+        serverThread = new Thread(server::serve);
+        serverThread.start();
+
+        final String _wrapHost = props.getWrapHost();
+        final int _wrapPort = props.getWrapPort();
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "thrift", SignalType.SOCKET);
+
+        Solon.app().signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        LogUtil.global().info("Connector:main: thrift: Started ServerConnector@{thrift://localhost:" + _port + "}");
+        LogUtil.global().info("Server:main: thrift: Started ("+solon_boot_ver()+") @" + (time_end - time_start) + "ms");
 
         LogUtil.global().info(solon_boot_ver());
         LogUtil.global().info("Server:main: thrift: Started ServerConnector@{localhost:" + props.getPort() + "}(" + solon_boot_ver() + ")");
@@ -84,10 +112,11 @@ public class XPluginImp implements Plugin {
         serviceMap.forEach((k, v) -> {
             try {
                 String serviceName = k.getSimpleName();
-                ThriftService annotation = k.getAnnotation(ThriftService.class);
-                if (annotation.serviceName() != null && annotation.serviceName().length() > 0) {
-                    serviceName = annotation.serviceName();
+                ThriftService anno = k.getAnnotation(ThriftService.class);
+                if (anno != null && Utils.isNotEmpty(anno.serviceName())) {
+                    serviceName = anno.serviceName();
                 }
+
                 multiplexedProcessor.registerProcessor(serviceName, createTProcessor(v));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -121,11 +150,15 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void stop() {
-        server.stop();
-        LogUtil.global().info("Server:main: thrift: Has Stopped (" + solon_boot_ver() + ")");
-    }
+        if(server != null){
+            server.stop();
+            server = null;
 
-    public static String solon_boot_ver() {
-        return "thrift 0.20.0/" + Solon.version();
+            if(serverThread != null) {
+                serverThread.interrupt();
+            }
+
+            LogUtil.global().info("Server:main: thrift: Has Stopped (" + solon_boot_ver() + ")");
+        }
     }
 }

@@ -35,16 +35,6 @@ public class GrpcChannelProxy extends Channel {
         }
     }
 
-    @Override
-    public <RequestT, ResponseT> ClientCall<RequestT, ResponseT> newCall(MethodDescriptor<RequestT, ResponseT> methodDescriptor, CallOptions callOptions) {
-        return getChannel().newCall(methodDescriptor, callOptions);
-    }
-
-    @Override
-    public String authority() {
-        return getChannel().authority();
-    }
-
     private Channel getChannel() {
         String server = upstream.getServer();
 
@@ -58,5 +48,15 @@ public class GrpcChannelProxy extends Channel {
         });
 
         return real;
+    }
+
+    @Override
+    public <RequestT, ResponseT> ClientCall<RequestT, ResponseT> newCall(MethodDescriptor<RequestT, ResponseT> methodDescriptor, CallOptions callOptions) {
+        return getChannel().newCall(methodDescriptor, callOptions);
+    }
+
+    @Override
+    public String authority() {
+        return getChannel().authority();
     }
 }

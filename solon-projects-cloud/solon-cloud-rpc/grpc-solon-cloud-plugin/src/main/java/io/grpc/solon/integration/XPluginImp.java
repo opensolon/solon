@@ -83,7 +83,7 @@ public class XPluginImp implements Plugin {
 
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
-        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "grpc", SignalType.HTTP);
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "grpc", SignalType.SOCKET);
 
         app.signalAdd(_signal);
 

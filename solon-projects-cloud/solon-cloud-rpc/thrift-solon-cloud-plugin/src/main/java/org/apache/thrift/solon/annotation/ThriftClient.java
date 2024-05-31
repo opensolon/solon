@@ -13,15 +13,25 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ThriftClient {
+    /**
+     * 应用名
+     */
     @Alias("name")
     String value() default "";
 
+    /**
+     * 应用名
+     */
     @Alias("value")
     String name() default "";
 
-    String ip() default "127.0.0.1";
+    /**
+     * 应用分组
+     */
+    String group() default "";
 
-    int port() default 9090;
-
+    /**
+     * 服务名
+     */
     String serviceName() default "";
 }
