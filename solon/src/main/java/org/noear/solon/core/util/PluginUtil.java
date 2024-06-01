@@ -15,17 +15,27 @@ import java.util.function.Consumer;
  * @since 1.7
  */
 public class PluginUtil {
-
     /**
      * 扫描插件
      *
      * @param classLoader 类加载器
      * @param limitFile   限制文件
+     * @deprecated 2.8
      */
+    @Deprecated
     public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
+        //由 classloader 自己实现过滤
+        scanPlugins(classLoader, consumer);
+    }
+
+    /**
+     * 扫描插件
+     *
+     * @param classLoader 类加载器
+     */
+    public static void scanPlugins(ClassLoader classLoader, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）
         Collection<String> nameList = ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties"));
-        boolean isLimitFile = Utils.isNotEmpty(limitFile);
 
         for (String name : nameList) {
             URL res = ResourceUtil.getResource(classLoader, name);
@@ -34,10 +44,6 @@ public class PluginUtil {
                 // native 时，扫描出来的resource可能是不存在的（这种情况就是bug），需要给于用户提示，反馈给社区
                 LogUtil.global().warn("Solon plugin: name=" + name + ", resource is null");
             } else {
-                if (isLimitFile && name.indexOf(limitFile) < 0) {
-                    continue;
-                }
-
                 Properties props = Utils.loadProperties(res);
                 findPlugins(classLoader, props, consumer);
             }

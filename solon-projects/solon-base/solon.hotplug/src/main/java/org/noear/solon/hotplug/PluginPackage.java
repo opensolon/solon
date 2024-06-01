@@ -3,11 +3,14 @@ package org.noear.solon.hotplug;
 import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -143,6 +146,51 @@ public class PluginPackage {
             context.clear();
         } finally {
             SYNC_LOCK.unlock();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////
+    // 静态方法 （放 PluginManager 那儿容易让人误用）
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * 加载 jar 插件包
+     *
+     * @param file 文件
+     * */
+    public static PluginPackage loadJar(File file) {
+        try {
+            URL url = file.toURI().toURL();
+            PluginClassLoader classLoader = new PluginClassLoader(AppClassLoader.global());
+            classLoader.addJar(url);
+
+            List<PluginEntity> plugins = new ArrayList<>();
+
+            PluginUtil.scanPlugins(classLoader, plugins::add);
+
+
+            return new PluginPackage(file, classLoader, plugins);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
+     * 卸载 Jar 插件包
+     *
+     * @param pluginPackage 插件包
+     * */
+    public static void unloadJar(PluginPackage pluginPackage) {
+        try {
+            pluginPackage.prestop();
+            pluginPackage.stop();
+
+            PluginClassLoader classLoader = pluginPackage.getClassLoader();
+
+            classLoader.removeJar(pluginPackage.getFile());
+            classLoader.close();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 }

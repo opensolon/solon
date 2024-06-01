@@ -365,7 +365,7 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, null, plugs::add);
+            PluginUtil.scanPlugins(classLoader, plugs::add);
         }
 
         //扫描主配置

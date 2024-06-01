@@ -32,7 +32,7 @@ public class PluginManager {
         }
     }
 
-    public static Collection<PluginInfo> getPlugins(){
+    public static Collection<PluginInfo> getPlugins() {
         return pluginMap.values();
     }
 
@@ -42,7 +42,7 @@ public class PluginManager {
         });
     }
 
-    public static void remove(String name){
+    public static void remove(String name) {
         pluginMap.remove(name);
     }
 
@@ -55,24 +55,24 @@ public class PluginManager {
         }
 
         if (info.getAddinPackage() == null) {
-            info.setAddinPackage(loadJar(info.getFile()));
+            info.setAddinPackage(PluginPackage.loadJar(info.getFile()));
         }
 
         return info.getAddinPackage();
     }
 
-    public static void unload(String name){
+    public static void unload(String name) {
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
         }
 
-        if(info.getAddinPackage() == null){
+        if (info.getAddinPackage() == null) {
             return;
         }
 
-        unloadJar(info.getAddinPackage());
+        PluginPackage.unloadJar(info.getAddinPackage());
         info.setAddinPackage(null);
     }
 
@@ -85,7 +85,7 @@ public class PluginManager {
 
         if (info.getAddinPackage() == null) {
             //如果未加载，则自动加载
-            info.setAddinPackage(loadJar(info.getFile()));
+            info.setAddinPackage(PluginPackage.loadJar(info.getFile()));
         }
 
         if (info.getStarted()) {
@@ -95,62 +95,20 @@ public class PluginManager {
         info.getAddinPackage().start();
     }
 
-    public static void stop(String name){
+    public static void stop(String name) {
         PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
         }
 
-        if(info.getStarted() == false){
+        if (info.getStarted() == false) {
             return;
         }
 
-        if(info.getAddinPackage() != null){
+        if (info.getAddinPackage() != null) {
             info.getAddinPackage().prestop();
             info.getAddinPackage().stop();
-        }
-    }
-
-
-    /**
-     * 加载 jar 插件包
-     *
-     * @param file 文件
-     * */
-    public static PluginPackage loadJar(File file) {
-        try {
-            URL url = file.toURI().toURL();
-            PluginClassLoader classLoader = new PluginClassLoader(AppClassLoader.global());
-            classLoader.addJar(url);
-
-            List<PluginEntity> plugins = new ArrayList<>();
-
-            PluginUtil.scanPlugins(classLoader, url.toString(), plugins::add);
-
-
-            return new PluginPackage(file, classLoader, plugins);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    /**
-     * 卸载 Jar 插件包
-     *
-     * @param pluginPackage 插件包
-     * */
-    public static void unloadJar(PluginPackage pluginPackage) {
-        try {
-            pluginPackage.prestop();
-            pluginPackage.stop();
-
-            PluginClassLoader classLoader = pluginPackage.getClassLoader();
-
-            classLoader.removeJar(pluginPackage.getFile());
-            classLoader.close();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         }
     }
 }
