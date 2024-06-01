@@ -28,10 +28,24 @@ public class FolkmqConsumeHandler implements MqConsumeHandler {
     @Override
     public void consume(MqMessageReceived message) throws IOException {
         try {
-            Event event = new Event(message.getTopic(), message.getContent());
+            String topicNew = message.getTopic();
+            String group = null;
+            String topic = null;
+            if (topicNew.contains(FolkmqProps.GROUP_SPLIT_MARK)) {
+                group = topicNew.split(FolkmqProps.GROUP_SPLIT_MARK)[0];
+                topic = topicNew.split(FolkmqProps.GROUP_SPLIT_MARK)[1];
+            } else {
+                topic = topicNew;
+            }
+
+            Event event = new Event(topic, message.getContent());
             event.key(message.getTid());
             event.times(message.getTimes());
             event.tags(message.getTag());
+
+            if (Utils.isNotEmpty(group)) {
+                event.group(group);
+            }
 
             //已设置自动延时策略
             boolean isOk = onReceive(event);
