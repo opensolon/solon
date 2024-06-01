@@ -41,6 +41,7 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
 
         this.client = FolkMQ.createClient(cloudProps.getEventServer())
                 .nameAs(Solon.cfg().appName())
+                .namespaceAs(cloudProps.getNamespace())
                 .autoAcknowledge(false);
 
         if (publishTimeout > 0) {
@@ -142,8 +143,12 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
                 EventObserver observer = observerManger.getByTopic(topicNew);
 
                 if (observer.getLevel() == EventLevel.instance) {
+                    String instanceName = Instance.local().serviceAndAddress()
+                            .replace("@","-")
+                            .replace(".","_")
+                            .replace(":","_");
                     //实例订阅
-                    client.subscribe(topicNew, instance.serviceAndAddress(), folkmqConsumeHandler);
+                    client.subscribe(topicNew, instanceName, folkmqConsumeHandler);
                 } else {
                     //集群订阅
                     client.subscribe(topicNew, instance.service(), folkmqConsumeHandler);

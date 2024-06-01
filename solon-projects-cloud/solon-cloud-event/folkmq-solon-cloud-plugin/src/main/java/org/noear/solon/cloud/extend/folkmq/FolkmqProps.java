@@ -9,7 +9,7 @@ import org.noear.solon.cloud.model.Event;
  */
 public class FolkmqProps {
 
-    public static final String GROUP_SPLIT_MARK = ":";
+    public static final String GROUP_SPLIT_MARK = "--";
 
     public static String getTopicNew(Event event){
         //new topic
