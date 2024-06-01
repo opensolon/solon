@@ -50,8 +50,13 @@ public class RocketmqConsumer implements Closeable {
                 return;
             }
 
+            String instanceName = Instance.local().serviceAndAddress()
+                    .replace("@","-")
+                    .replace(".","_")
+                    .replace(":","_");
+
             consumerOfCluster = buildConsumer(observerManger, config.getConsumerGroup(), EventLevel.cluster);
-            consumerOfInstance = buildConsumer(observerManger, Instance.local().serviceAndAddress(), EventLevel.instance);
+            consumerOfInstance = buildConsumer(observerManger, instanceName, EventLevel.instance);
 
             log.trace("Rocketmq5 consumer started!");
         } finally {

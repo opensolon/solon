@@ -46,8 +46,13 @@ public class RocketmqConsumer implements Closeable {
                 return;
             }
 
+            String instanceName = Instance.local().serviceAndAddress()
+                    .replace("@","-")
+                    .replace(".","_")
+                    .replace(":","_");
+
             consumerOfCluster = buildConsumer(observerManger, config.getConsumerGroup(), EventLevel.cluster);
-            consumerOfInstance = buildConsumer(observerManger, Instance.local().serviceAndAddress(), EventLevel.instance);
+            consumerOfInstance = buildConsumer(observerManger, instanceName, EventLevel.instance);
 
             log.trace("Rocketmq consumer started!");
         } finally {
@@ -89,15 +94,15 @@ public class RocketmqConsumer implements Closeable {
         }
 
         //一次最大消费的条数
-        consumerOfCluster.setConsumeMessageBatchMaxSize(1); //1是默认值
+        consumer.setConsumeMessageBatchMaxSize(1); //1是默认值
         //一次最大拉取的条数
-        consumerOfCluster.setPullBatchSize(32); //32是默认值
+        consumer.setPullBatchSize(32); //32是默认值
         //无消息时，最大阻塞时间。默认5000 单位ms
 
         //绑定定制属性
         Properties props = config.getCloudProps().getEventConsumerProps();
         if (props.size() > 0) {
-            Utils.injectProperties(consumerOfCluster, props);
+            Utils.injectProperties(consumer, props);
         }
 
         boolean isOk = false;
