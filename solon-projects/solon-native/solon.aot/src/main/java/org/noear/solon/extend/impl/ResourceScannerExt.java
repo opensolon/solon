@@ -25,7 +25,7 @@ public class ResourceScannerExt extends ResourceScanner {
         if (NativeDetector.inNativeImage()) {
             GraalvmUtil.scanResource(path, filter, urls);
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().info("GraalvmUtil scan: " + urls.size() + ", path: " + path);
+                LogUtil.global().info("Native: Resource scan: " + urls.size() + ", path: " + path);
             }
 
             return urls;
