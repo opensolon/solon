@@ -2,8 +2,9 @@ package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.websocket.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 提供 ContextPath 类似的功能（优先级要极高）
@@ -19,6 +20,8 @@ import org.noear.solon.net.websocket.WebSocket;
  * @since 2.5
  */
 public class ContextPathWebSocketListener extends SimpleWebSocketListener {
+    private static final Logger log = LoggerFactory.getLogger(ContextPathWebSocketListener.class);
+
     private final String contextPath0;
     private final String contextPath1;
     private final boolean forced;
@@ -75,7 +78,7 @@ public class ContextPathWebSocketListener extends SimpleWebSocketListener {
                     try {
                         s.close();
                     } catch (Exception e) {
-                        LogUtil.global().warn("ContextPathListener onOpen failed!", e);
+                        log.warn("ContextPathListener onOpen failed!", e);
                     }
                 }
             }

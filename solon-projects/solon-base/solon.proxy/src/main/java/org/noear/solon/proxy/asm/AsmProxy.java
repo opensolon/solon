@@ -2,14 +2,17 @@ package org.noear.solon.proxy.asm;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.objectweb.asm.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 public class AsmProxy {
+    private static final Logger log = LoggerFactory.getLogger(AsmProxy.class);
+
     public static final int ASM_VERSION = Opcodes.ASM9;
     // 动态生成代理类的后缀
     public static final String PROXY_CLASSNAME_SUFFIX = "$$SolonAsmProxy";
@@ -91,7 +94,7 @@ public class AsmProxy {
             // 实例化代理对象
             return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
         } catch (Exception e) {
-            LogUtil.global().warn("Unable to support proxy, targetClass: " + targetClass.getCanonicalName(), e);
+            log.warn("Unable to support proxy, targetClass: " + targetClass.getCanonicalName(), e);
         }
         return null;
     }

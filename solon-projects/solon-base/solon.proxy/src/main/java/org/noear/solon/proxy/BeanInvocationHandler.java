@@ -2,10 +2,11 @@ package org.noear.solon.proxy;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.proxy.asm.AsmProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,6 +18,8 @@ import java.lang.reflect.Method;
  * @since 1.5
  * */
 public class BeanInvocationHandler implements InvocationHandler {
+    private static final Logger log = LoggerFactory.getLogger(BeanInvocationHandler.class);
+
     private Object target;
     private Object proxy;
     private InvocationHandler handler;
@@ -51,7 +54,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         //调试时打印信息
         if (Solon.cfg().isDebugMode()) {
             if (this.proxy != null) {
-                LogUtil.global().trace("proxy class:" + this.proxy.getClass().getName());
+                log.trace("Proxy class:" + this.proxy.getClass().getName());
             }
         }
     }
