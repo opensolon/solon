@@ -48,6 +48,7 @@
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
 * snack3 升为 3.2.100
+* fastjson2 升为 2.0.51
 * socket.d 升为 2.5.1
 * folkmq 升为 1.5.1
 * wood 升为 1.2.11
