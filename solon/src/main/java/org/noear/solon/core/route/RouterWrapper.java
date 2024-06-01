@@ -120,7 +120,12 @@ public abstract class RouterWrapper implements HandlerSlots {
         RenderManager.mapping(name, render);
     }
 
-
+    /**
+     * 获取渲染器
+     * */
+    public Render render(String name) {
+        return RenderManager.get(name);
+    }
 
     /**
      * 添加前置处理
