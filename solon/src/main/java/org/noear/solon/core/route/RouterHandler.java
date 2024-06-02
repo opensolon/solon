@@ -36,9 +36,9 @@ public class RouterHandler implements Handler, RouterInterceptor {
         } else {
             int code = ctx.attrOrDefault(Constants.mainStatus, 404);
             if (code == 405) {
-                throw new StatusException("Method Not Allowed", code);
+                throw new StatusException("Method Not Allowed: " + ctx.method() + " " + ctx.pathNew(), code);
             } else {
-                throw new StatusException("Not Found", code);
+                throw new StatusException("Not Found: " + ctx.pathNew(), code);
             }
             //return false;
         }
