@@ -55,6 +55,7 @@
 * folkmq 升为 1.5.1
 * wood 升为 1.2.11
 * sqltoy 升为 5.6.10.jre8
+* mybatis-flex 升为 1.9.1
 * smarthttp 升为 1.4.2
 * okhttp 升为 4.12.0
 * xxl-job 升为 2.4.1
