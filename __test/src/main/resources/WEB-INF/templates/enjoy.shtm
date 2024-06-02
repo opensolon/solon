@@ -4,6 +4,13 @@
     <title>#(title)</title>
 </head>
 <body>
+<div>
 enjoy::#(msg)；i18n::#(i18n.get("login.title"))
+</div>
+<div>
+    #enjoyTag()
+    enjoyTag
+    #end
+</div>
 </body>
 </html>
