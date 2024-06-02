@@ -103,20 +103,6 @@ public final class SolonProps extends Props {
         env = getArg("env");
 
         if (Utils.isNotEmpty(env)) {
-            //@Deprecated 2.2
-            appUrl = ResourceUtil.getResource("application-" + env + ".properties");
-            if (appUrl != null) {
-                //loadInit(appUrl, sysPropOrg);
-                profilesWran("application-" + env + ".properties");
-            }
-
-            //@Deprecated 2.2
-            appUrl = ResourceUtil.getResource("application-" + env + ".yml");
-            if (appUrl != null) {
-                //loadInit(appUrl, sysPropOrg);
-                profilesWran("application-" + env + ".yml");
-            }
-
             loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
             loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
         }
