@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Directive.class.isAssignableFrom(v.clz())) {
-                        render.putDirective(k.split(":")[1], (Class<? extends Directive>) v.clz());
+                        render.putDirective(k.split(":")[1], new EnjoyDirectiveFactory(v));
                     }
                     return;
                 }

@@ -168,10 +168,25 @@ public class EnjoyRender implements Render {
      */
     public void putDirective(String name, Class<? extends Directive> clz) {
         try {
-            provider.addDirective(name, clz);
+            provider.getEngineConfig().addDirective(name, clz);
 
             if (providerOfDebug != null) {
-                providerOfDebug.addDirective(name, clz);
+                providerOfDebug.getEngineConfig().addDirective(name, clz);
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 添加共享指令（自定义标签）
+     */
+    public void putDirective(String name, EnjoyDirectiveFactory directiveFactory) {
+        try {
+            provider.getEngineConfig().addDirective(name, directiveFactory);
+
+            if (providerOfDebug != null) {
+                providerOfDebug.getEngineConfig().addDirective(name, directiveFactory);
             }
         } catch (Exception e) {
             log.warn(e.getMessage(), e);

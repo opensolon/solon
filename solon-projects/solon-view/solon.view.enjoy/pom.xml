@@ -28,7 +28,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.jfinal</groupId>
+            <groupId>org.noear</groupId>
             <artifactId>enjoy</artifactId>
             <version>${enjoy.version}</version>
         </dependency>
