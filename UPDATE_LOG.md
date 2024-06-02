@@ -44,7 +44,7 @@
 * 调整 AuthException 改为扩展自 StatusException（之前为 SolonException）
 * 调整 ValidatorException 改为扩展自 StatusException（之前为 SolonException）
 * 调整 Action 参数解析异常类型为 StatusException（之前为 IllegalArgumentException）
-* 调整 solon.test 默认为 junit5 并简化 SolonTest 体验（不用加 ExtendWith 了）
+* 调整 solon.test 默认为 junit5 并简化 SolonTest 体验（不用加 ExtendWith 了），需要 junit4 的需引入 solon-test-junit4
 * 优化 CloudClient.event().newTranAndJoin() 增加 inTrans 判断
 * 优化 mybatis-solon-plugin 在有 mapper 配置，但无 mapper 注册时的异常提示（原为 warn 日志提示）
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）

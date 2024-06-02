@@ -19,9 +19,9 @@ import java.util.Map;
  * @since 1.2
  * */
 class MultipartUtil {
-    public static void buildParamsAndFiles(SolonServletContext context, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
+    public static void buildParamsAndFiles(SolonServletContext ctx, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
         try {
-            HttpServletRequest request = (HttpServletRequest) context.request();
+            HttpServletRequest request = (HttpServletRequest) ctx.request();
 
             for (Part part : request.getParts()) {
                 String name = ServerProps.urlDecode(part.getName());
@@ -29,11 +29,11 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    context.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                    ctx.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                 }
             }
         } catch (Exception e) {
-            throw new StatusException("Bad Request", e, 400);
+            throw new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
         }
     }
 

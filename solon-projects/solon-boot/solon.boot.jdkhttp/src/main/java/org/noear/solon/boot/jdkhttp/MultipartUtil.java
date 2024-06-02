@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JdkHttpContext context, Map<String, List<UploadedFile>> filesMap) throws IOException {
+    public static void buildParamsAndFiles(JdkHttpContext ctx, Map<String, List<UploadedFile>> filesMap) throws IOException {
         try {
-            HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) context.request());
+            HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) ctx.request());
 
             while (parts.hasNext()) {
                 HttpMultipart part = parts.next();
@@ -27,11 +27,11 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    context.paramSet(name, part.getString());
+                    ctx.paramSet(name, part.getString());
                 }
             }
         } catch (Exception e) {
-            throw new StatusException("Bad Request", e, 400);
+            throw new StatusException("Bad Request: " + ctx.method() + " " + ctx.pathNew(), e, 400);
         }
     }
 
