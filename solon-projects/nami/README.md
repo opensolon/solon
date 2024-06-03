@@ -134,10 +134,6 @@ public class Demo3{
 | nami.channel.http.okhttp         | 对`okhttp`的通道适配（推荐）              |
 | nami.channel.http.hutool         | 对`hutool`的通道适配                  |
 | nami.channel.socketd             | 对`socketd`的通道基础适配               |
-| nami.channel.socketd.jdksocket   | 对`socketd.jdksocket`的通道适配       |
-| nami.channel.socketd.rsocket     | 对`socketd.rsocket`的通道适配         |
-| nami.channel.socketd.websocket   | 对`socketd.websocket`的通道适配       |
-| nami.channel.socketd.smartsocket | 对`socketd.smartsocket`的通道适配（推荐） |
 
 
 使用合，选一个通道+一个编码器使用
