@@ -25,8 +25,12 @@ public class IndexUtil {
      * 构建变量收集器的检查顺序位
      */
     public static int buildGatherIndex(InjectGather g1, List<InjectGather> gathers) {
-        Set<Class<?>> clazzStack = new HashSet<>();
-        return buildGatherIndex0(g1, gathers, clazzStack);
+        if (g1.isMethod()) {
+            Set<Class<?>> clazzStack = new HashSet<>();
+            return buildGatherIndex0(g1, gathers, clazzStack);
+        } else {
+            return g1.index;
+        }
     }
 
     private static int buildGatherIndex0(InjectGather g1, List<InjectGather> gathers, Set<Class<?>> clazzStack) {
@@ -35,7 +39,7 @@ public class IndexUtil {
         }
 
         for (VarHolder v1 : g1.getVars()) {
-            if (v1.isDone() == false) {
+            if (v1.isDone() == false && v1.getDependencyType() != null) {
                 if (clazzStack.contains(v1.getDependencyType())) {
                     for (InjectGather tmp : gathers) {
                         if (v1.getDependencyType().isAssignableFrom(tmp.getOutType())) {
