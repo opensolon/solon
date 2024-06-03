@@ -14,7 +14,7 @@ import java.util.Map;
  * @author noear 2021/12/3 created
  */
 @Mapping("/demo2/json/")
-@Remoting
+@Controller
 public class JsonController {
     @Produces("text/json")
     @Mapping("/json")
@@ -29,6 +29,17 @@ public class JsonController {
         } else {
             return userMap.get("1").getId();
         }
+    }
+
+    @Mapping("/map_r")
+    public Object map_r(Map<String, UserModel> userMap, ModelAndView mv) {
+        return userMap;
+    }
+
+    @Produces("text/xml")
+    @Mapping("/map_xml")
+    public Object map_xml(Map<String, UserModel> userMap, ModelAndView mv) {
+        return userMap;
     }
 
     @Mapping("/list")

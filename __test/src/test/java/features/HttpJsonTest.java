@@ -58,4 +58,29 @@ public class HttpJsonTest extends HttpTester {
 
         assert path("/demo2/json/list").bodyJson(ONode.stringify(list)).post().equals("12");
     }
+
+    @Test
+    public void json_map_r() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.loadObj(userModel));
+
+        assert path("/demo2/json/map_r")
+                .header("Accept", "application/xml")
+                .bodyJson(oNode.toJson()).post().contains("<id>12</id>");
+    }
+
+    @Test
+    public void json_map_xml() throws Exception {
+        ONode oNode = new ONode();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+        oNode.set("1", ONode.loadObj(userModel));
+
+        assert path("/demo2/json/map_xml")
+                .bodyJson(oNode.toJson()).post().contains("<id>12</id>");
+    }
 }

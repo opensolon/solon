@@ -270,6 +270,7 @@ public class ActionDefault extends HandlerAide implements Action {
 
                 //设定输出产品（放在这个位置正好）
                 if (Utils.isEmpty(mProduces) == false) {
+                    c.accept(mProduces);
                     c.contentType(mProduces);
                 }
 

@@ -359,6 +359,21 @@ public abstract class Context {
         return accept;
     }
 
+    private String acceptNew;
+    public void accept(String acceptNew) {
+        this.acceptNew = acceptNew;
+    }
+    /**
+     * 获取新的 Accept 头信息
+     * */
+    public String acceptNew() {
+        if (acceptNew == null) {
+            return accept();
+        } else {
+            return acceptNew;
+        }
+    }
+
 
     private String body;
 

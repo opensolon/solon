@@ -274,7 +274,7 @@ public class RenderManager implements Render {
 
         if (render == null) {
             //根据接收类型匹配
-            String at = ctx.accept();
+            String at = ctx.acceptNew();
             for (Render r : _mapping.values()) {
                 if (r.matched(ctx, at)) {
                     render = r;
