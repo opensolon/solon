@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.8.1-M6</version>
+    <version>2.8.1</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,9 +24,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>2.8.1-M6</solon.version>
-        <solon-admin.version>2.8.0</solon-admin.version>
-        <solon-integration.version>2.8.1-M6</solon-integration.version>
+        <solon.version>2.8.1</solon.version>
+        <solon-admin.version>2.8.1</solon-admin.version>
+        <solon-integration.version>2.8.1</solon-integration.version>
 
         <snack3.version>3.2.100</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -34,8 +34,8 @@
         <water.version>2.13.2</water.version>
         <luffy.version>1.7.5</luffy.version>
         <redisx.version>1.6.3</redisx.version>
-        <socketd.version>2.5.1</socketd.version>
-        <folkmq.version>1.5.1</folkmq.version>
+        <socketd.version>2.5.3</socketd.version>
+        <folkmq.version>1.5.2</folkmq.version>
         <redisson.version>3.27.2</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 

@@ -48,8 +48,8 @@ public class XPluginImp implements Plugin {
 
 
         context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
-            RenderManager.mapping("@json", renderFactory.create());
-            RenderManager.mapping("@type_json", renderTypedFactory.create());
+            RenderManager.mapping("@xml", renderFactory.create());
+            RenderManager.mapping("@type_xml", renderTypedFactory.create());
         });
 
         //支持 xml 内容类型执行

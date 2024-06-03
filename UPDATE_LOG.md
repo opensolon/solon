@@ -51,8 +51,8 @@
 * 优化 kafka 适配的 ack 处理
 * snack3 升为 3.2.100
 * fastjson2 升为 2.0.51
-* socket.d 升为 2.5.1
-* folkmq 升为 1.5.1
+* socket.d 升为 2.5.3
+* folkmq 升为 1.5.2
 * wood 升为 1.2.11
 * sqltoy 升为 5.6.10.jre8
 * mybatis-flex 升为 1.9.1
