@@ -17,6 +17,6 @@ public class BeetlTagFactory implements TagFactory {
 
     @Override
     public Tag createTag() {
-        return bw.get();
+        return bw.create();
     }
 }

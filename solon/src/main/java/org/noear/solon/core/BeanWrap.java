@@ -261,6 +261,17 @@ public class BeanWrap {
         }
     }
 
+    public <T> T create() {
+        Object tmp = _new(); //如果是 interface ，则返回 _raw
+
+        //3.尝试代理转换
+        if (proxy != null) {
+            tmp = proxy.getProxy(context(), tmp);
+        }
+
+        return (T) tmp;
+    }
+
 
     /**
      * bean 新建对象

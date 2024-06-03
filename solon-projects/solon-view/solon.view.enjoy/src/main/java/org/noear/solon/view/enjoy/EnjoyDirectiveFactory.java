@@ -17,6 +17,6 @@ public class EnjoyDirectiveFactory implements DirectiveFactory {
 
     @Override
     public Directive createDirective() throws Exception {
-        return bw.get();
+        return bw.create();
     }
 }
