@@ -18,13 +18,13 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
-### 2.8.2
+### 2.8.3
 * 新增 solon.cloud.gateway 插件?
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### 2.8.1
+### 2.8.2
 * 新增 thrift-solon-cloud-plugin 插件
 * 新增 solon.serialization.jackson.xml 插件
 * 添加 `@Destroy` 注解（与 `@Init` 呼应）
@@ -49,6 +49,7 @@
 * 优化 mybatis-solon-plugin 在有 mapper 配置，但无 mapper 注册时的异常提示（原为 warn 日志提示）
 * 优化 RouteSelectorExpress 的路由顺序（常量的，优于变量的）
 * 优化 kafka 适配的 ack 处理
+* 修复 IndexUtil:buildGatherIndex 处理字段时，会出错的问题
 * snack3 升为 3.2.100
 * fastjson2 升为 2.0.51
 * socket.d 升为 2.5.3
