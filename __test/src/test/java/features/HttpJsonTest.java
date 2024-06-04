@@ -67,9 +67,12 @@ public class HttpJsonTest extends HttpTester {
         userModel.id = 12;
         oNode.set("1", ONode.loadObj(userModel));
 
-        assert path("/demo2/json/map_r")
+        String rst = path("/demo2/json/map_r")
                 .header("Accept", "application/xml")
-                .bodyJson(oNode.toJson()).post().contains("<id>12</id>");
+                .bodyJson(oNode.toJson()).post();
+
+        assert rst.contains("<id>12</id>");
+        assert rst.contains("@type") == false;
     }
 
     @Test
@@ -80,7 +83,10 @@ public class HttpJsonTest extends HttpTester {
         userModel.id = 12;
         oNode.set("1", ONode.loadObj(userModel));
 
-        assert path("/demo2/json/map_xml")
-                .bodyJson(oNode.toJson()).post().contains("<id>12</id>");
+        String rst = path("/demo2/json/map_xml")
+                .bodyJson(oNode.toJson()).post();
+
+        assert rst.contains("<id>12</id>");
+        assert rst.contains("@type") == false;
     }
 }
