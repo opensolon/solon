@@ -48,7 +48,11 @@ public class StringSerializerRender implements Render {
      */
     @Override
     public boolean matched(Context ctx, String accept) {
-        return serializer.matched(ctx, accept);
+        if (typed) {
+            return false;
+        } else {
+            return serializer.matched(ctx, accept);
+        }
     }
 
     /**
