@@ -273,6 +273,13 @@ public class RenderManager implements Render {
         }
 
         if (render == null) {
+            //rpc 优先处理
+            if (ctx.remoting()) {
+                render = _mapping.get("@type_json");
+            }
+        }
+
+        if (render == null) {
             //根据接收类型匹配
             String at = ctx.acceptNew();
             for (Render r : _mapping.values()) {
@@ -280,12 +287,6 @@ public class RenderManager implements Render {
                     render = r;
                     break;
                 }
-            }
-        }
-
-        if (render == null) {
-            if (ctx.remoting()) {
-                render = _mapping.get("@type_json");
             }
         }
 
