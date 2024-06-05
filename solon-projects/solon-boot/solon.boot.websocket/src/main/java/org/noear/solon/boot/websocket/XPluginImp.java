@@ -52,6 +52,7 @@ public class XPluginImp implements Plugin {
             _server = new WsServer(Inet4Address.getByName(_host), _port);
         }
 
+        _server.setReuseAddr(true);
         _server.start();
 
         final String _wrapHost = props.getWrapHost();
