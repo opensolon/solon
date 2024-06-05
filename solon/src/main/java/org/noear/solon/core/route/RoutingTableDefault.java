@@ -1,5 +1,6 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 
@@ -40,6 +41,19 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     @Override
     public void remove(String pathPrefix) {
         table.removeIf(l -> l.path().startsWith(pathPrefix));
+    }
+
+    @Override
+    public void remove(Class<?> controllerClz) {
+        table.removeIf(l -> {
+            if (l.target() instanceof Action) {
+                Action a = (Action) l.target();
+                if (a.controller().clz().equals(controllerClz)) {
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.Solon;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.PathAnalyzer;
@@ -45,6 +47,24 @@ public class RouterDefault implements Router {
         } else {
             //没有*号的，优先
             routesH[endpoint.code].add(0, routing);
+        }
+    }
+
+    @Override
+    public void add(BeanWrap controllerWrap) {
+        if (controllerWrap != null) {
+            Solon.app().factoryManager().mvcFactory()
+                    .createLoader(controllerWrap)
+                    .load(Solon.app());
+        }
+    }
+
+    @Override
+    public void add(String path, BeanWrap controllerWrap) {
+        if (controllerWrap != null) {
+            Solon.app().factoryManager().mvcFactory()
+                    .createLoader(controllerWrap, path)
+                    .load(Solon.app());
         }
     }
 
@@ -134,6 +154,13 @@ public class RouterDefault implements Router {
         routesH[Endpoint.before.code].remove(pathPrefix);
         routesH[Endpoint.main.code].remove(pathPrefix);
         routesH[Endpoint.after.code].remove(pathPrefix);
+    }
+
+    @Override
+    public void remove(Class<?> controllerClz) {
+        routesH[Endpoint.before.code].remove(controllerClz);
+        routesH[Endpoint.main.code].remove(controllerClz);
+        routesH[Endpoint.after.code].remove(controllerClz);
     }
 
     /**

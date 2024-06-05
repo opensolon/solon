@@ -1,5 +1,6 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 
 import java.util.*;
@@ -76,6 +77,21 @@ public interface Router {
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param controllerWrap 控制器包装
+     */
+    void add(BeanWrap controllerWrap);
+
+    /**
+     * 添加路由关系 for Handler
+     *
+     * @param path           路径
+     * @param controllerWrap 控制器包装
+     */
+    void add(String path, BeanWrap controllerWrap);
+
 
     /**
      * 区配一个处理（根据上下文）
@@ -132,6 +148,13 @@ public interface Router {
      * @param pathPrefix 路径前缀
      */
     void remove(String pathPrefix);
+
+    /**
+     * 移除路由关系
+     *
+     * @param controllerClz 控制器类
+     */
+    void remove(Class<?> controllerClz);
 
     /**
      * 清空路由关系

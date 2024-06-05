@@ -36,6 +36,13 @@ public interface RoutingTable<T> {
     void remove(String pathPrefix);
 
     /**
+     * 移除路由记录
+     *
+     * @param controllerClz 控制器类
+     */
+    void remove(Class<?> controllerClz);
+
+    /**
      * 数量
      */
     int count();

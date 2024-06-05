@@ -231,16 +231,13 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     public void add(String expr, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
-        if (bw != null) {
-            Solon.app().factoryManager().mvcFactory().createLoader(bw, expr).load(this);
-        }
+        _router.add(expr, bw);
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
-        if (bw != null) {
-            Solon.app().factoryManager().mvcFactory().createLoader(bw, expr, remoting).load(this);
-        }
+        bw.remotingSet(remoting);
+        _router.add(expr, bw);
     }
 
 
