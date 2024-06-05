@@ -695,13 +695,7 @@ public abstract class BeanContainer {
 
         //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
-            ActionLoader bww = Solon.app().factoryManager().mvcFactory().createLoader(bw);
-            if (bww.mapping() != null) {
-                //
-                //如果没有xmapping，则不进行web注册
-                //
-                bww.load(Solon.app());
-            }
+            Solon.app().router().add(bw);
         }
     }
 

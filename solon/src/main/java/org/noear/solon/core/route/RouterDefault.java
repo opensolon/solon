@@ -12,7 +12,7 @@ import java.util.*;
  * @author noear
  * @since 1.3
  */
-public class RouterDefault implements Router {
+public class RouterDefault implements Router, HandlerSlots {
     //for handler
     private final RoutingTable<Handler>[] routesH;
 
@@ -53,9 +53,17 @@ public class RouterDefault implements Router {
     @Override
     public void add(BeanWrap controllerWrap) {
         if (controllerWrap != null) {
-            Solon.app().factoryManager().mvcFactory()
-                    .createLoader(controllerWrap)
-                    .load(Solon.app());
+            ActionLoader al = Solon.app().factoryManager().mvcFactory()
+                    .createLoader(controllerWrap);
+
+            if(controllerWrap.remoting()){
+                if(al.mapping() == null){
+                    //如果没有 mapping，则不进行  remoting注册
+                    return;
+                }
+            }
+
+            al.load(this);
         }
     }
 
@@ -64,7 +72,7 @@ public class RouterDefault implements Router {
         if (controllerWrap != null) {
             Solon.app().factoryManager().mvcFactory()
                     .createLoader(controllerWrap, path)
-                    .load(Solon.app());
+                    .load(this);
         }
     }
 
@@ -171,5 +179,24 @@ public class RouterDefault implements Router {
         routesH[0].clear();
         routesH[1].clear();
         routesH[2].clear();
+    }
+
+    //
+    // HandlerSlots 接口实现
+    //
+
+    @Override
+    public void before(String expr, MethodType method, int index, Handler handler) {
+        add(expr, Endpoint.before, method, index, handler);
+    }
+
+    @Override
+    public void after(String expr, MethodType method, int index, Handler handler) {
+        add(expr, Endpoint.after, method, index, handler);
+    }
+
+    @Override
+    public void add(String expr, MethodType method, Handler handler) {
+        add(expr, Endpoint.main, method, handler);
     }
 }

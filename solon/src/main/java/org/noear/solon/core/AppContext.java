@@ -210,7 +210,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            Solon.app().factoryManager().mvcFactory().createLoader(bw).load(Solon.app());
+            Solon.app().router().add(bw);
         });
 
         //注册 @Inject 注入器
