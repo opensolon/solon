@@ -1,10 +1,10 @@
 package org.noear.nami.coder.fury;
 
-import io.fury.Fury;
-import io.fury.ThreadLocalFury;
-import io.fury.ThreadSafeFury;
-import io.fury.config.Language;
-import io.fury.resolver.AllowListChecker;
+import org.apache.fury.Fury;
+import org.apache.fury.ThreadLocalFury;
+import org.apache.fury.ThreadSafeFury;
+import org.apache.fury.config.Language;
+import org.apache.fury.resolver.AllowListChecker;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.BufferedReader;

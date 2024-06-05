@@ -23,6 +23,7 @@
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
+* fury 升为 0.5.1
 
 ### 2.8.2
 * 新增 thrift-solon-cloud-plugin 插件
