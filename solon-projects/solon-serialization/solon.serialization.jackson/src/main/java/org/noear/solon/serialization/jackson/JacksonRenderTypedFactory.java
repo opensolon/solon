@@ -17,7 +17,7 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.8
  */
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
-    ObjectMapper config = new ObjectMapper();
+    private ObjectMapper config = new ObjectMapper();
 
     public JacksonRenderTypedFactory(){
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

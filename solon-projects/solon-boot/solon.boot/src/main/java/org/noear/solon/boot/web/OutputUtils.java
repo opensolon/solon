@@ -55,7 +55,7 @@ public class OutputUtils {
         }
 
         try (InputStream ins = file.getContent()) {
-            OutputUtils.global().outputStream(ctx, ins, file.getContentSize(), file.getContentType());
+            outputStream(ctx, ins, file.getContentSize(), file.getContentType());
         }
     }
 
@@ -80,7 +80,7 @@ public class OutputUtils {
         }
 
         try (InputStream ins = new FileInputStream(file)) {
-            OutputUtils.global().outputStream(ctx, ins, file.length(), contentType);
+            outputStream(ctx, ins, file.length(), contentType);
         }
     }
 

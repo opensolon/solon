@@ -19,8 +19,7 @@ import java.util.Set;
  */
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
 
-    ObjectMapper config = new ObjectMapper();
-
+    private ObjectMapper config = new ObjectMapper();
     private Set<SerializationFeature> features;
 
     public JacksonRenderFactory() {
