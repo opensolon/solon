@@ -1,6 +1,7 @@
 package org.noear.solon.docs;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.docs.models.*;
 
 import java.util.*;
@@ -17,6 +18,7 @@ public class DocDocket {
     private String groupName = "default";
     private String host;
     private String basePath;
+    private transient Serializer<String> serializer;
 
 
     private Map<String, String> basicAuth = new LinkedHashMap<>();
@@ -237,5 +239,16 @@ public class DocDocket {
     public DocDocket securityExtensions(String name, Object value) {
         this.securityExtensions.put(name, value);
         return this;
+    }
+
+    /**
+     * 序列化
+     * */
+    public Serializer<String> serializer() {
+        return serializer;
+    }
+
+    public void serializer(Serializer<String> serializer) {
+        this.serializer = serializer;
     }
 }

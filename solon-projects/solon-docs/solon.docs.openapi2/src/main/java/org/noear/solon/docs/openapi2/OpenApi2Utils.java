@@ -8,7 +8,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
-import org.noear.solon.docs.openapi2.util.JsonUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +43,7 @@ public class OpenApi2Utils {
                 })
                 .collect(Collectors.toList());
 
-        return JsonUtil.toJson(resourceList);
+        return JacksonSerializer.getInstance().serialize(resourceList);
     }
 
     /**
@@ -67,6 +66,11 @@ public class OpenApi2Utils {
         }
 
         Swagger swagger = new OpenApi2Builder(docket).build();
-        return JsonUtil.toJson(swagger);
+
+        if (docket.serializer() == null) {
+            return JacksonSerializer.getInstance().serialize(swagger);
+        } else {
+            return docket.serializer().serialize(swagger);
+        }
     }
 }
