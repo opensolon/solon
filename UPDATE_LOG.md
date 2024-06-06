@@ -18,7 +18,7 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
-### 2.8.3
+### 2.8.4
 * 新增 solon.cloud.gateway 插件?
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
@@ -27,7 +27,7 @@
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
 
-### 2.8.2
+### 2.8.3
 * 新增 thrift-solon-cloud-plugin 插件
 * 新增 solon.serialization.jackson.xml 插件
 * 添加 `@Destroy` 注解（与 `@Init` 呼应）
