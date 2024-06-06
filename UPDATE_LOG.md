@@ -23,6 +23,7 @@
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
+* 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
 

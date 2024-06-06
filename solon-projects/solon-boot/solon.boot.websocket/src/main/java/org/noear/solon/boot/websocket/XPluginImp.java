@@ -52,7 +52,7 @@ public class XPluginImp implements Plugin {
             _server = new WsServer(Inet4Address.getByName(_host), _port);
         }
 
-        _server.setReuseAddr(true);
+        _server.setReuseAddr(true); //重启时，端口可立即复用
         _server.start();
 
         final String _wrapHost = props.getWrapHost();
