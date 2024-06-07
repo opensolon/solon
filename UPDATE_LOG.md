@@ -24,6 +24,8 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
+* 优化 List[Bean] 注入，支持排序
+* 调整 solon-rpc 快捷包去掉 hessian 依赖（如有需要手动引入）
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
 

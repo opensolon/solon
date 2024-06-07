@@ -475,15 +475,7 @@ public abstract class BeanContainer {
     }
 
     public List<BeanWrap> getWrapsOfType(Class<?> baseType) {
-        List<BeanWrap> wraps = new ArrayList<>();
-
-        beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.clz())) {
-                wraps.add(bw);
-            }
-        });
-
-        return wraps;
+        return beanFind(bw -> baseType.isAssignableFrom(bw.clz()));
     }
 
     public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
@@ -544,13 +536,12 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
+        List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.clz()));
         List<T> beans = new ArrayList<>();
 
-        beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.clz())) {
-                beans.add(bw.raw());
-            }
-        });
+        for (BeanWrap bw : beanWraps) {
+            beans.add(bw.raw());
+        }
 
         return beans;
     }
@@ -1001,10 +992,11 @@ public abstract class BeanContainer {
      * 遍历bean包装库
      */
     public void beanForeach(Consumer<BeanWrap> action) {
-        //相关于 beanWraps ，不会出现重复的 // 复制一下，避免 ConcurrentModificationException
-        new ArrayList<>(beanWrapSet).forEach(bw -> {
-            action.accept(bw);
-        });
+        //相关于 beanWraps ，不会出现重复的 // toArray，避免 ConcurrentModificationException
+        Object[] array = beanWrapSet.toArray();
+        for (Object bw : array) {
+            action.accept((BeanWrap) bw);
+        }
     }
 
     /**
@@ -1017,6 +1009,11 @@ public abstract class BeanContainer {
                 list.add(v);
             }
         });
+
+        //支持 @Bean(index), @Component(index) 排序
+        if (list.size() > 0) {
+            list.sort(Comparator.comparingInt(bw -> bw.index()));
+        }
 
         return list;
     }
@@ -1031,6 +1028,11 @@ public abstract class BeanContainer {
                 list.add(v);
             }
         });
+
+        //支持 @Bean(index), @Component(index) 排序
+        if (list.size() > 0) {
+            list.sort(Comparator.comparingInt(bw -> bw.index()));
+        }
 
         return list;
     }
