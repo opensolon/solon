@@ -75,24 +75,7 @@ public final class SolonProps extends Props {
         Properties sysPropOrg = new Properties();
         System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
 
-
-        URL appUrl;
-
         //4.加载文件配置
-        //@Deprecated 2.2
-        appUrl = ResourceUtil.getResource("application.properties");
-        if (appUrl != null) {
-            //loadInit(appUrl, sysPropOrg);
-            profilesWran("application.properties");
-        }
-
-        //@Deprecated 2.2
-        appUrl = ResourceUtil.getResource("application.yml");
-        if (appUrl != null) {
-            //loadInit(appUrl, sysPropOrg);
-            profilesWran("application.yml");
-        }
-
         loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
         loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
@@ -215,12 +198,6 @@ public final class SolonProps extends Props {
                 }
             }
         }
-    }
-
-    private void profilesWran(String file) {
-        //配置文件提醒
-        String sml = file.replace("application", "app");
-        warns.add("'" + file + "' is unsupported, please use '" + sml + "'");
     }
 
     private void syncArgsToSys() {
