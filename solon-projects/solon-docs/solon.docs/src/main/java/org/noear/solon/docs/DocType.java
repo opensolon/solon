@@ -16,6 +16,9 @@ public enum DocType {
         this.version = version;
     }
 
+    /**
+     * 获取版本号
+     * */
     public String getVersion() {
         return version;
     }

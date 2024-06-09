@@ -1,6 +1,8 @@
 package org.noear.solon.docs;
 
 /**
+ * 基础签权
+ *
  * @author noear
  * @since 2.3
  */
