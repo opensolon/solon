@@ -321,8 +321,12 @@ public class AppContext extends BeanContainer {
      * @param annoEl 有注解元素（类 或 方法）
      */
     public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
+        if(bw.raw() == null){
+            return;
+        }
+
         //Plugin
-        if (Plugin.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof Plugin) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
             LogUtil.global().error("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
@@ -330,7 +334,7 @@ public class AppContext extends BeanContainer {
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
-        if (LifecycleBean.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof LifecycleBean) {
             //让注解产生的生命周期，排序晚1个点
             int index = bw.index();
             if (index == 0) {
@@ -341,17 +345,17 @@ public class AppContext extends BeanContainer {
         }
 
         //EventListener
-        if (EventListener.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof EventListener) {
             addEventListener(clz, bw);
         }
 
         //LoadBalance.Factory
-        if (LoadBalance.Factory.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof LoadBalance.Factory) {
             Solon.app().factoryManager().loadBalanceFactory(bw.raw());
         }
 
         //Handler
-        if (Handler.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof Handler) {
             Mapping mapping = annoEl.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
@@ -364,38 +368,38 @@ public class AppContext extends BeanContainer {
         }
 
         //Render
-        if (Render.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof Render) {
             RenderManager.mapping(bw.name(), (Render) bw.raw());
         }
 
         //Filter
-        if (Filter.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof Filter) {
             Solon.app().filter(bw.index(), bw.raw());
         }
 
         //RouterInterceptor
-        if (RouterInterceptor.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof RouterInterceptor) {
             Solon.app().routerInterceptor(bw.index(), bw.raw());
         }
 
         //ActionReturnHandler
-        if (ActionReturnHandler.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof ActionReturnHandler) {
             Solon.app().chainManager().addReturnHandler(bw.raw());
         }
 
         //ActionExecuteHandler
-        if (ActionExecuteHandler.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof ActionExecuteHandler) {
             Solon.app().chainManager().addExecuteHandler(bw.raw());
         }
 
         //Converter
-        if (Converter.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof Converter) {
             Converter c = bw.raw();
             Solon.app().converterManager().register(c);
         }
 
         //ConverterFactory
-        if (ConverterFactory.class.isAssignableFrom(clz)) {
+        if (bw.raw() instanceof ConverterFactory) {
             ConverterFactory cf = bw.raw();
             Solon.app().converterManager().register(cf);
         }
