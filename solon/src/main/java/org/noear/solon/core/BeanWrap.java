@@ -86,6 +86,9 @@ public class BeanWrap {
 
         if (rawUnproxied != null) {
             rawClz = rawUnproxied.getClass();
+            if (rawClz.isAnonymousClass()) {
+                rawClz = rawClz.getSuperclass();
+            }
         }
 
         //尝试初始化

@@ -78,7 +78,7 @@ class BeanWrapLifecycle implements LifecycleBean {
 
         if (isOk) {
             if (bw.raw() instanceof LifecycleBean) {
-                LogUtil.global().warn("LifecycleBean not support @Init & @Destroy, class=" + bw.rawClz());
+                LogUtil.global().warn("LifecycleBean not support @Init & @Destroy, class=" + bw.rawClz().getName());
                 return false;
             }
         }
