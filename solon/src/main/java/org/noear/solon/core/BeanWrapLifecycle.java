@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Destroy;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.IndexUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,10 +35,6 @@ class BeanWrapLifecycle implements LifecycleBean {
 
     public boolean check() {
         if (bw.raw() == null) {
-            return false;
-        }
-
-        if(bw.raw() instanceof LifecycleBean){
             return false;
         }
 
@@ -77,7 +74,16 @@ class BeanWrapLifecycle implements LifecycleBean {
             }
         }
 
-        return initMethod != null || destroyMethod != null;
+        boolean isOk = initMethod != null || destroyMethod != null;
+
+        if (isOk) {
+            if (bw.raw() instanceof LifecycleBean) {
+                LogUtil.global().warn("LifecycleBean not support @Init & @Destroy, class=" + bw.rawClz());
+                return false;
+            }
+        }
+
+        return isOk;
     }
 
     /**
