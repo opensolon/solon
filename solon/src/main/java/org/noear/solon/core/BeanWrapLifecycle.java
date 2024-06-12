@@ -33,15 +33,15 @@ class BeanWrapLifecycle implements LifecycleBean {
     }
 
     public boolean check() {
-        if (bw.clz().isInterface()) {
-            return false;
-        }
-
         if (bw.raw() == null) {
             return false;
         }
 
-        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+        if(bw.raw() instanceof LifecycleBean){
+            return false;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(bw.rawClz());
 
         //找查注解函数
         for (Method m : clzWrap.getDeclaredMethods()) {
@@ -73,7 +73,7 @@ class BeanWrapLifecycle implements LifecycleBean {
         if (initMethod != null) {
             if (initIndex == 0) {
                 //如果为0，则自动识别
-                initIndex = IndexUtil.buildLifecycleIndex(bw.clz());
+                initIndex = IndexUtil.buildLifecycleIndex(bw.rawClz());
             }
         }
 

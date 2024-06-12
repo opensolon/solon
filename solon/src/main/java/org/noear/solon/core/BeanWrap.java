@@ -23,6 +23,8 @@ public class BeanWrap {
     // bean raw（初始实例）
     private Object raw;
     private Object rawUnproxied;
+    private Class<?> rawClz;
+
     // 是否为单例
     private boolean singleton;
     // 是否为远程服务
@@ -79,7 +81,11 @@ public class BeanWrap {
             this.raw = rawUnproxied;
         } else {
             this.rawUnproxied = raw;
-            this.raw = raw;
+            this.raw = rawUnproxied;
+        }
+
+        if (rawUnproxied != null) {
+            rawClz = rawUnproxied.getClass();
         }
 
         //尝试初始化
@@ -169,6 +175,14 @@ public class BeanWrap {
     public void rawSet(Object raw) {
         if (this.raw == null) {
             this.raw = raw;
+        }
+    }
+
+    public Class<?> rawClz() {
+        if (rawClz == null) {
+            return clz;
+        } else {
+            return rawClz;
         }
     }
 

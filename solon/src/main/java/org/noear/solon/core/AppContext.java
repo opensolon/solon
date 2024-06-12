@@ -338,7 +338,7 @@ public class AppContext extends BeanContainer {
             //让注解产生的生命周期，排序晚1个点
             int index = bw.index();
             if (index == 0) {
-                index = IndexUtil.buildLifecycleIndex(clz);
+                index = IndexUtil.buildLifecycleIndex(bw.rawClz());
             }
 
             lifecycle(index + 1, bw.raw());
