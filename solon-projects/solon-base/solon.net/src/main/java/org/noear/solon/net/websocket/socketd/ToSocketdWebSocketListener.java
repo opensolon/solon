@@ -6,6 +6,7 @@ import org.noear.socketd.transport.core.codec.ByteBufferCodecReader;
 import org.noear.socketd.transport.core.codec.ByteBufferCodecWriter;
 import org.noear.socketd.transport.core.impl.ChannelDefault;
 import org.noear.socketd.transport.core.impl.ProcessorDefault;
+import org.noear.socketd.utils.IoCompletionHandler;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -197,14 +198,14 @@ public class ToSocketdWebSocketListener implements WebSocketListener, SubProtoco
         }
 
         @Override
-        public void write(WebSocket target, Frame frame, ChannelInternal channel) throws IOException {
+        public void write(WebSocket target, Frame frame, ChannelInternal channel, IoCompletionHandler completionHandler) {
             try {
-                channel.writeAcquire(frame);
-
                 ByteBufferCodecWriter writer = config.getCodec().write(frame, len -> new ByteBufferCodecWriter(ByteBuffer.allocate(len)));
                 target.send(writer.getBuffer());
-            } finally {
-                channel.writeRelease(frame);
+
+                completionHandler.completed(true, null);
+            } catch (Throwable e) {
+                completionHandler.completed(false, e);
             }
         }
 

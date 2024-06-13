@@ -28,6 +28,8 @@
 * 调整 solon-rpc 快捷包去掉 hessian 依赖（如有需要手动引入）
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
+* socket.d 升为 2.5.4
+* folkmq 升为 1.6.0
 
 ### 2.8.3
 * 新增 thrift-solon-cloud-plugin 插件
