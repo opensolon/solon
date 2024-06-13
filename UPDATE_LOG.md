@@ -26,6 +26,7 @@
 
 ### 2.8.4
 * 添加 BeanWarp::rawClz，优化 BeanWrapLifecycle 的检测方式（避免 LifecycleBean 重复注册）
+* 添加 控制器移除功能
 * 简化 控制器的 Router 注册
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * 优化 List[Bean] 注入，支持排序
