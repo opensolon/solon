@@ -18,13 +18,18 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
-### 2.8.4
+### 2.8.5
 * 新增 solon.cloud.gateway 插件?
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
+
+### 2.8.4
+* 添加 BeanWarp::rawClz，优化 BeanWrapLifecycle 的检测方式（避免 LifecycleBean 重复注册）
+* 简化 控制器的 Router 注册
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * 优化 List[Bean] 注入，支持排序
+* 优化 AppContext::beanShapeRegister 改为实例检测（之前为类型检测）
 * 调整 solon-rpc 快捷包去掉 hessian 依赖（如有需要手动引入）
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
