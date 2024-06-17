@@ -20,6 +20,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -305,9 +306,9 @@ public class OpenApi2Builder {
             operation.setVendorExtension("actionName", actionName);
 
             //添加全局参数
-            for(Object p1 : docket.globalParams()){
-                if(p1 instanceof Parameter){
-                    operation.addParameter((Parameter)p1);
+            for (Object p1 : docket.globalParams()) {
+                if (p1 instanceof Parameter) {
+                    operation.addParameter((Parameter) p1);
                 }
             }
 
@@ -316,9 +317,9 @@ public class OpenApi2Builder {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type
                 } else {
                     //operation.consumes(ApiEnum.CONSUMES_URLENCODED);
-                    if (operation.getParameters().stream().anyMatch(parameter -> parameter instanceof BodyParameter)){
+                    if (operation.getParameters().stream().anyMatch(parameter -> parameter instanceof BodyParameter)) {
                         operation.consumes(ApiEnum.CONSUMES_JSON);
-                    }else {
+                    } else {
                         operation.consumes(ApiEnum.CONSUMES_URLENCODED);
                     }
                 }
@@ -485,10 +486,10 @@ public class OpenApi2Builder {
             paramList.add(parameter);
         }
 
-        return mergeBodyParamList(actionHolder,paramList);
+        return mergeBodyParamList(actionHolder, paramList);
     }
 
-    private List<Parameter> mergeBodyParamList(ActionHolder actionHolder,List<Parameter> paramList){
+    private List<Parameter> mergeBodyParamList(ActionHolder actionHolder, List<Parameter> paramList) {
         ArrayList<Parameter> parameters = new ArrayList<>();
         if (Constants.CONTENT_TYPE_JSON_TYPE.equals(actionHolder.action().consumes()) || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
             BodyParameter finalBodyParameter = new BodyParameter();
@@ -501,17 +502,17 @@ public class OpenApi2Builder {
                 if (parameter instanceof BodyParameter) {
                     BodyParameter bodyParameter = ((BodyParameter) parameter);
                     Model schema = bodyParameter.getSchema();
-                    if (schema instanceof RefModel){
+                    if (schema instanceof RefModel) {
                         RefModel refModel = (RefModel) schema;
                         model.setProperties(this.swagger.getDefinitions().get(refModel.getSimpleRef()).getProperties());
                     } else {
                         if (schema instanceof ModelImpl) {
                             ModelImpl schemaModelImpl = (ModelImpl) schema;
                             ObjectProperty property = new ObjectProperty();
-                            property.setType( schemaModelImpl.getType());
-                            property.setDescription( schemaModelImpl.getDescription());
+                            property.setType(schemaModelImpl.getType());
+                            property.setDescription(schemaModelImpl.getDescription());
                             model.setProperties(Collections.singletonMap(bodyParameter.getName(), property));
-                        }else {
+                        } else {
                             parameters.add(parameter);
                         }
                     }
@@ -522,10 +523,10 @@ public class OpenApi2Builder {
             //String key = "Map[" + actionHolder.action().fullName() + "]";
             // 避免其他平台数据导入错误
             String key = String.format("Map[%s]", actionHolder.action().fullName().replace("/", "_").replace("${", "").replace("}", ""));
-            this.swagger.addDefinition(key,model);
+            this.swagger.addDefinition(key, model);
             finalBodyParameter.setSchema(new RefModel(key));
             parameters.add(finalBodyParameter);
-        }else {
+        } else {
             parameters.addAll(paramList);
         }
         return parameters;
@@ -699,7 +700,7 @@ public class OpenApi2Builder {
             title = modelName;
         }
 
-        Map<String, Property> fieldList = new LinkedHashMap<>();
+        Map<String, Property> propertyList = new LinkedHashMap<>();
 
 
         ModelImpl model = new ModelImpl();
@@ -709,7 +710,7 @@ public class OpenApi2Builder {
 
         swagger.addDefinition(modelName, model);
 
-        if(clazz.isEnum()){
+        if (clazz.isEnum()) {
             model.setType(ApiEnum.RES_STRING);
             return model;
         }
@@ -717,141 +718,186 @@ public class OpenApi2Builder {
 
         // 3.完成模型解析
         ClassWrap classWrap = ClassWrap.get(clazz);
-        for (FieldWrap fw : classWrap.getFieldWraps().values()) {
-            if (Modifier.isStatic(fw.field.getModifiers())) {
-                //静态的跳过
-                continue;
-            }
-
-            Field field = fw.field;
-
-            ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
-
-            // 隐藏的跳过
-            if (apiField != null && apiField.hidden()){
-                continue;
-            }
-
-            Class<?> typeClazz = field.getType();
-            Type typeGenericType = field.getGenericType();
-            if (typeGenericType instanceof TypeVariable) {
-                if (type instanceof ParameterizedType) {
-                    Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                    Type typeClazz2 = genericMap.get(typeGenericType.getTypeName());
-                    if (typeClazz2 instanceof Class) {
-                        typeClazz = (Class<?>) typeClazz2;
+        if (clazz.isInterface()) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getParameterTypes().length == 0
+                        && method.getName().startsWith("get")) {
+                    if (Modifier.isStatic(method.getModifiers())) {
+                        //静态的跳过
+                        continue;
                     }
 
-                    if (typeClazz2 instanceof ParameterizedType) {
-                        ParameterizedType typeGenericType2 = (ParameterizedType) typeClazz2;
-                        typeClazz = (Class<?>) typeGenericType2.getRawType();
-                        typeGenericType = typeClazz2;
-                    }
+                    String propName  = NameUtil.getFieldName(method.getName());
+
+                    ApiModelProperty propAnno = method.getAnnotation(ApiModelProperty.class);
+                    Class<?> propClazz = method.getReturnType();
+                    Type propGenericType = method.getGenericReturnType();
+
+                    parseSwaggerModelProperty(type, modelName, propertyList, propName, propClazz, propGenericType, propAnno);
                 }
             }
 
-            // List<Class> 类型
-            if (Collection.class.isAssignableFrom(typeClazz)) {
-                // 如果是List类型，得到其Generic的类型
-                if (typeGenericType == null) {
+            for (Method method : clazz.getMethods()) {
+                if (method.getParameterTypes().length == 0
+                        && method.getName().startsWith("get")) {
+                    if (Modifier.isStatic(method.getModifiers())) {
+                        //静态的跳过
+                        continue;
+                    }
+                    String propName  = NameUtil.getFieldName(method.getName());
+
+                    if(propertyList.containsKey(propName)){
+                        continue;
+                    }
+
+                    ApiModelProperty propAnno = method.getAnnotation(ApiModelProperty.class);
+                    Class<?> propClazz = method.getReturnType();
+                    Type propGenericType = method.getGenericReturnType();
+
+                    parseSwaggerModelProperty(type, modelName, propertyList, propName, propClazz, propGenericType, propAnno);
+                }
+            }
+        } else {
+            for (FieldWrap fw : classWrap.getFieldWraps().values()) {
+                if (Modifier.isStatic(fw.field.getModifiers())) {
+                    //静态的跳过
                     continue;
                 }
 
-                // 如果是泛型参数的类型
-                if (typeGenericType instanceof ParameterizedType) {
-                    ArrayProperty fieldPr = new ArrayProperty();
-                    if (apiField != null) {
-                        fieldPr.setDescription(apiField.value());
-                        fieldPr.setRequired(apiField.required());
-                        // 如果是泛型参数的类型 加上 示例，在knife4j下将无法正确解析，所以将其注释
-                        // fieldPr.setExample(apiField.example());
-                    }
+                String propName = fw.field.getName();
 
+                ApiModelProperty propAnno = fw.field.getAnnotation(ApiModelProperty.class);
+                Class<?> propClazz = fw.field.getType();
+                Type propGenericType = fw.field.getGenericType();
 
-                    ParameterizedType pt = (ParameterizedType) typeGenericType;
-                    //得到泛型里的class类型对象
-                    Type itemClazz = pt.getActualTypeArguments()[0];
-
-                    if (itemClazz instanceof ParameterizedType) {
-                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
-                    }
-
-                    if (itemClazz instanceof TypeVariable) {
-                        Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
-                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
-                        if (itemClazz2 instanceof Class) {
-                            itemClazz = itemClazz2;
-                        }
-                    }
-
-                    if (itemClazz instanceof Class) {
-                        if (itemClazz.equals(type)) {
-                            //避免出现循环依赖，然后 oom
-                            RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
-                            fieldPr.setItems(itemPr);
-                        } else {
-                            Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
-
-                            if (itemPr != null) {
-                                fieldPr.setItems(itemPr);
-                            } else {
-                                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
-
-                                itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                                fieldPr.setItems(itemPr);
-                            }
-                        }
-                    }
-
-
-                    fieldList.put(field.getName(), fieldPr);
-                }
-                continue;
-            }
-
-
-            if (BuilderHelper.isModel(typeClazz)) {
-                if (typeClazz.equals(type)) {
-                    //避免出现循环依赖，然后 oom
-                    RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
-                    if (apiField != null) {
-                        fieldPr.setDescription(apiField.value());
-                        fieldPr.setRequired(apiField.required());
-                        fieldPr.setExample(apiField.example());
-                    }
-
-                    fieldList.put(field.getName(), fieldPr);
-                } else {
-                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeGenericType);
-
-                    RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                    if (apiField != null) {
-                        fieldPr.setDescription(apiField.value());
-                        fieldPr.setRequired(apiField.required());
-                        fieldPr.setExample(apiField.example());
-                    }
-
-                    fieldList.put(field.getName(), fieldPr);
-                }
-            } else {
-                ObjectProperty fieldPr = new ObjectProperty();
-                fieldPr.setName(field.getName());
-
-                if (apiField != null) {
-                    fieldPr.setDescription(apiField.value());
-                    fieldPr.setRequired(apiField.required());
-                    fieldPr.setExample(apiField.example());
-                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
-                } else {
-                    fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
-                }
-
-                fieldList.put(field.getName(), fieldPr);
+                parseSwaggerModelProperty(type, modelName, propertyList, propName, propClazz, propGenericType, propAnno);
             }
         }
 
-        model.setProperties(fieldList);
+        model.setProperties(propertyList);
         return model;
+    }
+
+    private void parseSwaggerModelProperty(Type type, String modelName, Map<String, Property> propertyList, String propName, Class<?> propClazz, Type propGenericType, ApiModelProperty propAnno) {
+        // 隐藏的跳过
+        if (propAnno != null && propAnno.hidden()) {
+            return;
+        }
+
+        if (propGenericType instanceof TypeVariable) {
+            if (type instanceof ParameterizedType) {
+                Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                Type typeClazz2 = genericMap.get(propGenericType.getTypeName());
+                if (typeClazz2 instanceof Class) {
+                    propClazz = (Class<?>) typeClazz2;
+                }
+
+                if (typeClazz2 instanceof ParameterizedType) {
+                    ParameterizedType typeGenericType2 = (ParameterizedType) typeClazz2;
+                    propClazz = (Class<?>) typeGenericType2.getRawType();
+                    propGenericType = typeClazz2;
+                }
+            }
+        }
+
+        // List<Class> 类型
+        if (Collection.class.isAssignableFrom(propClazz)) {
+            // 如果是List类型，得到其Generic的类型
+            if (propGenericType == null) {
+                return;
+            }
+
+            // 如果是泛型参数的类型
+            if (propGenericType instanceof ParameterizedType) {
+                ArrayProperty fieldPr = new ArrayProperty();
+                if (propAnno != null) {
+                    fieldPr.setDescription(propAnno.value());
+                    fieldPr.setRequired(propAnno.required());
+                    // 如果是泛型参数的类型 加上 示例，在knife4j下将无法正确解析，所以将其注释
+                    // fieldPr.setExample(propAnno.example());
+                }
+
+
+                ParameterizedType pt = (ParameterizedType) propGenericType;
+                //得到泛型里的class类型对象
+                Type itemClazz = pt.getActualTypeArguments()[0];
+
+                if (itemClazz instanceof ParameterizedType) {
+                    itemClazz = ((ParameterizedType) itemClazz).getRawType();
+                }
+
+                if (itemClazz instanceof TypeVariable) {
+                    Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                    Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
+                    if (itemClazz2 instanceof Class) {
+                        itemClazz = itemClazz2;
+                    }
+                }
+
+                if (itemClazz instanceof Class) {
+                    if (itemClazz.equals(type)) {
+                        //避免出现循环依赖，然后 oom
+                        RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                        fieldPr.setItems(itemPr);
+                    } else {
+                        Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
+
+                        if (itemPr != null) {
+                            fieldPr.setItems(itemPr);
+                        } else {
+                            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+
+                            itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                            fieldPr.setItems(itemPr);
+                        }
+                    }
+                }
+
+
+                propertyList.put(propName, fieldPr);
+            }
+            return;
+        }
+
+
+        if (BuilderHelper.isModel(propClazz)) {
+            if (propClazz.equals(type)) {
+                //避免出现循环依赖，然后 oom
+                RefProperty propPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                if (propAnno != null) {
+                    propPr.setDescription(propAnno.value());
+                    propPr.setRequired(propAnno.required());
+                    propPr.setExample(propAnno.example());
+                }
+
+                propertyList.put(propName, propPr);
+            } else {
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(propClazz, propGenericType);
+
+                RefProperty propPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                if (propAnno != null) {
+                    propPr.setDescription(propAnno.value());
+                    propPr.setRequired(propAnno.required());
+                    propPr.setExample(propAnno.example());
+                }
+
+                propertyList.put(propName, propPr);
+            }
+        } else {
+            ObjectProperty propPr = new ObjectProperty();
+            propPr.setName(propName);
+
+            if (propAnno != null) {
+                propPr.setDescription(propAnno.value());
+                propPr.setRequired(propAnno.required());
+                propPr.setExample(propAnno.example());
+                propPr.setType(Utils.isBlank(propAnno.dataType()) ? propClazz.getSimpleName().toLowerCase() : propAnno.dataType());
+            } else {
+                propPr.setType(propClazz.getSimpleName().toLowerCase());
+            }
+
+            propertyList.put(propName, propPr);
+        }
     }
 
     /**
@@ -881,42 +927,42 @@ public class OpenApi2Builder {
                 ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiResponse.dataTypeClass(), apiResponse.dataTypeClass());
 
                 if (apiResponse.allowMultiple()) {
-                    ArrayProperty fieldPr = new ArrayProperty();
-                    fieldPr.setName(swaggerModel.getName());
-                    fieldPr.setDescription(apiResponse.value());
-                    fieldPr.items(new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL));
+                    ArrayProperty propPr = new ArrayProperty();
+                    propPr.setName(swaggerModel.getName());
+                    propPr.setDescription(apiResponse.value());
+                    propPr.items(new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL));
 
-                    propertiesList.put(apiResponse.name(), fieldPr);
+                    propertiesList.put(apiResponse.name(), propPr);
                 } else {
-                    RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                    fieldPr.setDescription(apiResponse.value());
+                    RefProperty propPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                    propPr.setDescription(apiResponse.value());
 
-                    propertiesList.put(apiResponse.name(), fieldPr);
+                    propertiesList.put(apiResponse.name(), propPr);
                 }
             } else {
                 if (apiResponse.allowMultiple()) {
-                    ArrayProperty fieldPr = new ArrayProperty();
+                    ArrayProperty propPr = new ArrayProperty();
 
-                    fieldPr.setName(apiResponse.name());
-                    fieldPr.setDescription(apiResponse.value());
-                    fieldPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
-                    fieldPr.setExample(apiResponse.example());
+                    propPr.setName(apiResponse.name());
+                    propPr.setDescription(apiResponse.value());
+                    propPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
+                    propPr.setExample(apiResponse.example());
 
                     UntypedProperty itemsProperty = new UntypedProperty();
                     itemsProperty.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
-                    fieldPr.items(itemsProperty);
+                    propPr.items(itemsProperty);
 
-                    propertiesList.put(apiResponse.name(), fieldPr);
+                    propertiesList.put(apiResponse.name(), propPr);
                 } else {
-                    UntypedProperty fieldPr = new UntypedProperty();
+                    UntypedProperty propPr = new UntypedProperty();
 
-                    fieldPr.setName(apiResponse.name());
-                    fieldPr.setDescription(apiResponse.value());
-                    fieldPr.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
-                    fieldPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
-                    fieldPr.setExample(apiResponse.example());
+                    propPr.setName(apiResponse.name());
+                    propPr.setDescription(apiResponse.value());
+                    propPr.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
+                    propPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
+                    propPr.setExample(apiResponse.example());
 
-                    propertiesList.put(apiResponse.name(), fieldPr);
+                    propertiesList.put(apiResponse.name(), propPr);
                 }
             }
         }

@@ -28,6 +28,7 @@
 * 添加 BeanWarp::rawClz，优化 BeanWrapLifecycle 的检测方式（避免 LifecycleBean 重复注册）
 * 添加 CloudBreakerException 异常类，用于 CloudBreakerInterceptor
 * 添加 Router 移除控制器的接口
+* 添加 openapi2 支持 action 返回接口类型
 * 简化 Router 注册控制器的方式
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * 优化 List[Bean] 注入，支持排序

@@ -1,5 +1,7 @@
 package com.layjava.test.controller;
 
+import com.layjava.test.domain.Page;
+import com.layjava.test.domain.PageImpl;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
 import org.noear.solon.annotation.*;
@@ -15,8 +17,6 @@ import java.util.List;
 @Controller
 @Mapping("/test/user")
 public class UserController {
-
-
     /**
      * 查询用户列表
      *
@@ -27,6 +27,12 @@ public class UserController {
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
         return null;
+    }
+
+    @Get
+    @Mapping("/page")
+    public Page page() {
+        return new PageImpl(1, 1);
     }
 
     /**
