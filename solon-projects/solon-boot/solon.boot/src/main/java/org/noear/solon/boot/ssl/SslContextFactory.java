@@ -19,17 +19,17 @@ import java.security.cert.CertificateException;
  */
 public class SslContextFactory {
     public static SSLContext create(ServerSslProps serverSslProps) throws IOException {
-        String keyStoreName = serverSslProps.getSslKeyStore();
-        String keyStoreType = serverSslProps.getSslKeyType();
-        String keyStorePassword = serverSslProps.getSslKeyPassword();
+        String sslKeyStore = serverSslProps.getSslKeyStore();
+        String sslKeyType = serverSslProps.getSslKeyType();
+        String sslKeyPassword = serverSslProps.getSslKeyPassword();
 
-        if(Utils.isEmpty(keyStoreType)){
-            keyStoreType = "jks";
+        if(Utils.isEmpty(sslKeyType)){
+            sslKeyType = "jks";
         }
 
-        KeyStore keyStore = loadKeyStore(keyStoreName, keyStoreType, keyStorePassword);
+        KeyStore keyStore = loadKeyStore(sslKeyStore, sslKeyType, sslKeyPassword);
 
-        KeyManager[] keyManagers = buildKeyManagers(keyStore, keyStorePassword.toCharArray());
+        KeyManager[] keyManagers = buildKeyManagers(keyStore, sslKeyPassword.toCharArray());
 
         SSLContext sslContext;
 
