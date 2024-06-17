@@ -79,6 +79,7 @@ public class ActionDefault extends HandlerAide implements Action {
         if (mapping == null) {
             mName = method.getName();
         } else {
+            //of method
             Produces producesAnno = method.getAnnotation(Produces.class);
             Consumes consumesAnno = method.getAnnotation(Consumes.class);
 
@@ -93,6 +94,23 @@ public class ActionDefault extends HandlerAide implements Action {
             } else {
                 mConsumes = consumesAnno.value();
             }
+
+
+            //of class
+            if (Utils.isEmpty(mProduces)) {
+                producesAnno = bWrap.rawClz().getAnnotation(Produces.class);
+                if (producesAnno != null) {
+                    mProduces = producesAnno.value();
+                }
+            }
+
+            if (Utils.isEmpty(mConsumes)) {
+                consumesAnno = bWrap.rawClz().getAnnotation(Consumes.class);
+                if (consumesAnno != null) {
+                    mConsumes = consumesAnno.value();
+                }
+            }
+
 
             mMultipart = mapping.multipart();
             mName = Utils.annoAlias(mapping.value(), mapping.path());

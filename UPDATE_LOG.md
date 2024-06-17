@@ -26,12 +26,16 @@
 
 ### 2.8.4
 * 添加 BeanWarp::rawClz，优化 BeanWrapLifecycle 的检测方式（避免 LifecycleBean 重复注册）
-* 添加 控制器移除功能
-* 简化 控制器的 Router 注册
+* 添加 CloudBreakerException 异常类，用于 CloudBreakerInterceptor
+* 添加 Router 移除控制器的接口
+* 简化 Router 注册控制器的方式
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * 优化 List[Bean] 注入，支持排序
 * 优化 AppContext::beanShapeRegister 改为实例检测（之前为类型检测）
+* 调整 `@Consumes` `@Produces` 作用域，支持加在类上
 * 调整 solon-rpc 快捷包去掉 hessian 依赖（如有需要手动引入）
+* 调整 CloudException 改为 extends StatusException（之前是 SolonException）
+* 调整 CloudBreakerInterceptor 融断时改为 CloudBreakerException（之前为直接设定 429 状态），更方便过滤和拦截
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
 * socket.d 升为 2.5.4

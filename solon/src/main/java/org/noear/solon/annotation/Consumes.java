@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.7
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Consumes {
