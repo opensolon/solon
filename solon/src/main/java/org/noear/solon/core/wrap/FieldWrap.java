@@ -5,6 +5,7 @@ import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.lang.Nullable;
 
@@ -105,7 +106,7 @@ public class FieldWrap {
         }
 
         _setter = doFindSetter(clz, f1);
-        _getter = dofindGetter(clz, f1);
+        _getter = doFindGetter(clz, f1);
     }
 
 
@@ -194,13 +195,11 @@ public class FieldWrap {
         }
     }
 
-    private static Method dofindGetter(Class<?> tCls, Field field) {
-        String fieldName = field.getName();
-        String firstLetter = fieldName.substring(0, 1).toUpperCase();
-        String setMethodName = "get" + firstLetter + fieldName.substring(1);
+    private static Method doFindGetter(Class<?> tCls, Field field) {
+        String getterName = NameUtil.getPropGetterName(field.getName());
 
         try {
-            Method getFun = tCls.getMethod(setMethodName);
+            Method getFun = tCls.getMethod(getterName);
             if (getFun != null) {
                 return getFun;
             }
@@ -218,12 +217,10 @@ public class FieldWrap {
      * 查找设置器
      */
     private static Method doFindSetter(Class<?> tCls, Field field) {
-        String fieldName = field.getName();
-        String firstLetter = fieldName.substring(0, 1).toUpperCase();
-        String setMethodName = "set" + firstLetter + fieldName.substring(1);
+        String setterName = NameUtil.getPropSetterName(field.getName());
 
         try {
-            Method setFun = tCls.getMethod(setMethodName, new Class[]{field.getType()});
+            Method setFun = tCls.getMethod(setterName, new Class[]{field.getType()});
             if (setFun != null) {
                 return setFun;
             }
