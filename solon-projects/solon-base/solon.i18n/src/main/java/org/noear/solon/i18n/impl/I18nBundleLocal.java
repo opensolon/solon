@@ -72,9 +72,9 @@ public class I18nBundleLocal implements I18nBundle {
         String tmp = bundle.getProperty(key);
 
         if (tmp == null) {
-            throw new MissingResourceException("Can't find resource for bundle "
+            throw new MissingResourceException("Can't find resource for bundle '"
                     + bundleName
-                    + ", key " + key,
+                    + "', key=" + key,
                     this.getClass().getName(),
                     key);
         }
