@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
@@ -203,8 +204,7 @@ public class ActionDefault extends HandlerAide implements Action {
     public void handle(Context x) throws Throwable {
         if (Utils.isNotEmpty(mConsumes)) {
             if (x.contentType() == null || x.contentType().contains(mConsumes) == false) {
-                x.status(415);
-                return;
+                throw new StatusException("Unsupported Media Type, path=" + x.path(), 415);
             }
         }
 

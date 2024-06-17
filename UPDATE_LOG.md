@@ -33,6 +33,8 @@
 * 优化 solon.boot.websocket 适配，在重启时端口不能立即复用的问题
 * 优化 List[Bean] 注入，支持排序
 * 优化 AppContext::beanShapeRegister 改为实例检测（之前为类型检测）
+* 调整 429 状态改由 CloudBreakerException 发出（防问量过大）
+* 调整 415 状态改由 StatusException 发出（Consumes 不匹配）
 * 调整 `@Consumes` `@Produces` 作用域，支持加在类上
 * 调整 solon-rpc 快捷包去掉 hessian 依赖（如有需要手动引入）
 * 调整 CloudException 改为 extends StatusException（之前是 SolonException）
