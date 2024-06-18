@@ -559,6 +559,11 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.net.httputils</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
