@@ -88,6 +88,10 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
      */
     @Override
     public boolean publish(Event event) throws CloudEventException {
+        if (event.topic().contains(":")) {
+            throw new IllegalArgumentException("Invalid symbol ':', topic=" + event.topic());
+        }
+
         CloudEventServicePlus tmp = getOrThrow(event.channel());
 
         if (Utils.isEmpty(event.group())) {
@@ -112,6 +116,10 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
      */
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
+        if (topic.contains(":")) {
+            throw new IllegalArgumentException("Invalid symbol ':', topic=" + topic);
+        }
+
         CloudEventServicePlus tmp = getOrThrow(channel);
 
         if (Utils.isEmpty(group)) {
