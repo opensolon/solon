@@ -41,8 +41,8 @@
 * 调整 CloudBreakerInterceptor 融断时改为 CloudBreakerException（之前为直接设定 429 状态），更方便过滤和拦截
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
-* socket.d 升为 2.5.4
-* folkmq 升为 1.6.0
+* socket.d 升为 2.5.5
+* folkmq 升为 1.7.0
 
 ### 2.8.3
 * 新增 thrift-solon-cloud-plugin 插件
