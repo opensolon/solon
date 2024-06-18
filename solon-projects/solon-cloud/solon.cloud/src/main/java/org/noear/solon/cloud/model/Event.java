@@ -185,4 +185,14 @@ public class Event implements Serializable {
         this.channel = channel;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "key='" + key + '\'' +
+                ", topic='" + topic + '\'' +
+                ", tags='" + tags + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

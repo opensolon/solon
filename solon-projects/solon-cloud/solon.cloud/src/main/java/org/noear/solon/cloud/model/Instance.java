@@ -261,4 +261,14 @@ public class Instance implements Serializable {
 
         return appTags;
     }
+
+    @Override
+    public String toString() {
+        return "Instance{" +
+                "service='" + service + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", weight=" + weight +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

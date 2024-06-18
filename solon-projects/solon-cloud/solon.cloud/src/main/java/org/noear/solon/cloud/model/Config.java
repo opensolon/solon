@@ -100,4 +100,13 @@ public class Config implements Serializable {
         Properties props = toProps();
         return PropsConverter.global().convert(props, null, clz, clz);
     }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "key='" + key + '\'' +
+                ", group='" + group + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

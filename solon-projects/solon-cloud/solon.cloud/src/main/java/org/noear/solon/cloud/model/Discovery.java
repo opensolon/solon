@@ -101,4 +101,14 @@ public class Discovery implements Serializable {
         return cluster.get(index % cluster.size());
     }
 
+
+    @Override
+    public String toString() {
+        return "Discovery{" +
+                "service='" + service + '\'' +
+                ", policy='" + policy + '\'' +
+                ", agent='" + agent + '\'' +
+                ", cluster=" + cluster +
+                '}';
+    }
 }
