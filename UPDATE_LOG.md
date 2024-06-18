@@ -25,6 +25,7 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.8.4
+* 新增 solon.net.httputils 插件
 * 添加 BeanWarp::rawClz，优化 BeanWrapLifecycle 的检测方式（避免 LifecycleBean 重复注册）
 * 添加 CloudBreakerException 异常类，用于 CloudBreakerInterceptor
 * 添加 Router 移除控制器的接口
