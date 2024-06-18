@@ -41,8 +41,8 @@
 * 调整 CloudBreakerInterceptor 融断时改为 CloudBreakerException（之前为直接设定 429 状态），更方便过滤和拦截
 * fury 升为 0.5.1
 * liteflow 升为 2.12.1
-* socket.d 升为 2.5.5
-* folkmq 升为 1.7.0
+* socket.d 升为 2.5.6
+* folkmq 升为 1.7.1
 * smartsocket 升为 1.5.44
 * smarthttp 升为 1.4.3
 

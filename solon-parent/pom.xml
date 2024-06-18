@@ -34,8 +34,8 @@
         <water.version>2.13.2</water.version>
         <luffy.version>1.7.5</luffy.version>
         <redisx.version>1.6.3</redisx.version>
-        <socketd.version>2.5.5</socketd.version>
-        <folkmq.version>1.7.0</folkmq.version>
+        <socketd.version>2.5.6</socketd.version>
+        <folkmq.version>1.7.1</folkmq.version>
         <redisson.version>3.27.2</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
