@@ -43,6 +43,8 @@
 * liteflow 升为 2.12.1
 * socket.d 升为 2.5.5
 * folkmq 升为 1.7.0
+* smartsocket 升为 1.5.44
+* smarthttp 升为 1.4.3
 
 ### 2.8.3
 * 新增 thrift-solon-cloud-plugin 插件
