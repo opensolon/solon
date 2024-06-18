@@ -1,11 +1,9 @@
 package demo;
 
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.HttpUtils;
-import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.test.SolonTest;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 public class DemoTest extends HttpTester {
     @Test
     public void test() throws Exception {
-        Response response = path("/put").data("id", "12").data("name", "world").exec("post");
+        HttpResponse response = path("/put").data("id", "12").data("name", "world").exec("post");
         HttpUtils request = path("/get");
         request.header("Cookie", getCookie(response));
         String json = request.get();
@@ -37,8 +35,8 @@ public class DemoTest extends HttpTester {
      * @param response 响应
      * @return cookie
      */
-    private String getCookie(Response response) {
-        List<String> cookies = response.headers().values("Set-Cookie");
+    private String getCookie(HttpResponse response) {
+        List<String> cookies = response.cookies();
         StringBuilder sb = new StringBuilder();
         for (String c1 : cookies) {
             String kv = c1.split(";")[0];

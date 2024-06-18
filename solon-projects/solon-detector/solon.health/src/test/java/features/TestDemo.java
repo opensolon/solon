@@ -1,12 +1,10 @@
 package features;
 
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.health.HealthChecker;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 
 import java.util.LinkedHashMap;
@@ -19,8 +17,8 @@ import java.util.Map;
 public class TestDemo extends HttpTester {
     @Test
     public void test1() throws Exception {
-        Response resp = path("/healthz").exec("GET");
-        System.out.println(resp.body().string());
+        HttpResponse resp = path("/healthz").exec("GET");
+        System.out.println(resp.bodyAsString());
         assert resp.code() == 200;
 
         assert path("/healthz").head() == 200;
@@ -29,8 +27,8 @@ public class TestDemo extends HttpTester {
     @Test
     public void test2() throws Exception {
         HealthChecker.addIndicator("preflight", Result::succeed);
-        Response resp = path("/healthz").exec("GET");
-        System.out.println(resp.body().string());
+        HttpResponse resp = path("/healthz").exec("GET");
+        System.out.println(resp.bodyAsString());
         assert resp.code() == 200;
 
         assert path("/healthz").head() == 200;
@@ -42,8 +40,8 @@ public class TestDemo extends HttpTester {
         HealthChecker.addIndicator("test", Result::failure);
 
 
-        Response resp = path("/healthz").exec("GET");
-        System.out.println(resp.body().string());
+        HttpResponse resp = path("/healthz").exec("GET");
+        System.out.println(resp.bodyAsString());
         assert resp.code() == 503;
 
         assert path("/healthz").head() == 503;
@@ -62,7 +60,6 @@ public class TestDemo extends HttpTester {
             throw new IllegalStateException();
         });
 
-        path("/healthz").get();
         int code = path("/healthz").head();
         assert code == 500;
     }

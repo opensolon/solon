@@ -2,9 +2,8 @@ package features;
 
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
@@ -20,12 +19,12 @@ public class HttpSessionTest extends HttpTester {
     @Test
     public void session() throws IOException {
         //init
-        Response response = path("/demo2/session/id").exec("GET");
-        String session_id = response.body().string();
+        HttpResponse response = path("/demo2/session/id").exec("GET");
+        String session_id = response.bodyAsString();
         List<String> cookies;
         StringBuilder cookiesStr;
 
-        cookies = response.headers().values("Set-Cookie");
+        cookies = response.cookies();
         cookiesStr = new StringBuilder();
         for (String cookie : cookies) {
             String KeyVal = cookie.split(";")[0];
@@ -45,7 +44,7 @@ public class HttpSessionTest extends HttpTester {
                 .header("Cookie", cookiesStr.toString())
                 .exec("POST");
 
-        cookies = response.headers().values("Set-Cookie");
+        cookies = response.headers("Set-Cookie");
         cookiesStr = new StringBuilder();
         for (String cookie : cookies) {
             String KeyVal = cookie.split(";")[0];
@@ -65,12 +64,12 @@ public class HttpSessionTest extends HttpTester {
     @Test
     public void session2() throws IOException {
         //init
-        Response response = path("/demo2/session/id").exec("GET");
-        String session_id = response.body().string();
+        HttpResponse response = path("/demo2/session/id").exec("GET");
+        String session_id = response.bodyAsString();
         List<String> cookies;
         StringBuilder cookiesStr;
 
-        cookies = response.headers().values("Set-Cookie");
+        cookies = response.cookies();
         cookiesStr = new StringBuilder();
         for (String cookie : cookies) {
             String KeyVal = cookie.split(";")[0];

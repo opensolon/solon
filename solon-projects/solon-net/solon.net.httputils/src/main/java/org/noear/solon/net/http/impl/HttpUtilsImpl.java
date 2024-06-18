@@ -1,16 +1,18 @@
-package org.noear.solon.test.http.impl;
+package org.noear.solon.net.http.impl;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-import org.noear.solon.test.HttpCallback;
-import org.noear.solon.test.HttpUtils;
+import org.noear.solon.Solon;
+import org.noear.solon.net.http.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,23 +21,30 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+/**
+ * Http 工具实现
+ *
+ * @author noear
+ * @since 1.5
+ * */
 public class HttpUtilsImpl implements HttpUtils {
-    private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
+    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(3000);
-        temp.setMaxRequestsPerHost(600);
+        temp.setMaxRequests(20000);
+        temp.setMaxRequestsPerHost(10000);
         return temp;
     };
 
     private final static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(60 * 5, TimeUnit.SECONDS)
-            .dispatcher(okhttp_dispatcher.get())
-            .addInterceptor(HttpInterceptor.instance)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .dispatcher(httpClientDispatcher.get())
+            .addInterceptor(HttpInterceptorImpl.instance)
             .build();
 
-
+    private OkHttpClient _client;
+    private String _url;
     private Charset _charset;
     private Map<String, String> _cookies;
     private RequestBody _body;
@@ -43,16 +52,30 @@ public class HttpUtilsImpl implements HttpUtils {
     private boolean _multipart = false;
 
     private MultipartBody.Builder _part_builer;
-    private Request.Builder _builder;
+    private final Request.Builder _builder;
 
-    private HttpCallback<Boolean, Response, Exception> _callback;
+    private HttpCallback _callback;
     private boolean _callAsync;
-    private String _url;
     private boolean _enablePrintln = false;
 
     public HttpUtilsImpl(String url) {
-        _builder = new Request.Builder().url(url);
+        this(url, null);
+    }
+
+    public HttpUtilsImpl(String url, OkHttpClient client) {
+        if (client == null) {
+            _client = httpClient;
+        } else {
+            _client = client;
+        }
+
+        if (url.contains("://") == false) {
+            throw new IllegalArgumentException("No url scheme 'http' or 'https' found: " + url);
+
+        }
+
         _url = url;
+        _builder = new Request.Builder().url(url);
     }
 
     @Override
@@ -65,7 +88,7 @@ public class HttpUtilsImpl implements HttpUtils {
      * 超时设置
      */
     @Override
-    public HttpUtils timeout(int timeoutSeconds) {
+    public HttpUtilsImpl timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
             _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
         }
@@ -77,7 +100,7 @@ public class HttpUtilsImpl implements HttpUtils {
      * 超时设置
      */
     @Override
-    public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
+    public HttpUtilsImpl timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
         if (connectTimeoutSeconds > 0) {
             _builder.tag(HttpTimeout.class, new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
         }
@@ -85,30 +108,38 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
-    //@XNote("设置multipart")
+    /**
+     * 设置 multipart 标识
+     */
     @Override
-    public HttpUtils multipart(boolean multipart) {
+    public HttpUtilsImpl multipart(boolean multipart) {
         _multipart = multipart;
         return this;
     }
 
-    //@XNote("设置UA")
+    /**
+     * 设置 UA
+     */
     @Override
-    public HttpUtils userAgent(String ua) {
+    public HttpUtilsImpl userAgent(String ua) {
         _builder.header("User-Agent", ua);
         return this;
     }
 
-    //@XNote("设置charset")
+    /**
+     * 设置 charset
+     */
     @Override
-    public HttpUtils charset(String charset) {
+    public HttpUtilsImpl charset(String charset) {
         _charset = Charset.forName(charset);
         return this;
     }
 
-    //@XNote("设置请求头")
+    /**
+     * 设置请求头
+     */
     @Override
-    public HttpUtils headers(Map<String, String> headers) {
+    public HttpUtilsImpl headers(Map<String, String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
                 _builder.header(k, v);
@@ -118,8 +149,11 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 设置请求头
+     */
     @Override
-    public HttpUtils header(String name, String value) {
+    public HttpUtilsImpl header(String name, String value) {
         if (name == null || value == null) {
             return this;
         }
@@ -128,8 +162,11 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 添加请求头
+     */
     @Override
-    public HttpUtils headerAdd(String name, String value) {
+    public HttpUtilsImpl headerAdd(String name, String value) {
         if (name == null || value == null) {
             return this;
         }
@@ -138,8 +175,11 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 设置表单数据
+     */
     @Override
-    public HttpUtils data(Map data) {
+    public HttpUtilsImpl data(Map<String, String> data) {
         if (data != null) {
             tryInitForm();
 
@@ -153,8 +193,11 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 设置表单数据
+     */
     @Override
-    public HttpUtils data(String key, String value) {
+    public HttpUtilsImpl data(String key, String value) {
         if (key == null || value == null) {
             return this;
         }
@@ -165,8 +208,11 @@ public class HttpUtilsImpl implements HttpUtils {
     }
 
 
+    /**
+     * 设置表单文件
+     */
     @Override
-    public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
+    public HttpUtilsImpl data(String key, String filename, InputStream inputStream, String contentType) {
         if (key == null || inputStream == null) {
             return this;
         }
@@ -181,13 +227,19 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 设置 BODY txt
+     */
     @Override
-    public HttpUtils bodyTxt(String txt) {
-        return bodyTxt(txt, "text/plain");
+    public HttpUtilsImpl bodyTxt(String txt) {
+        return bodyTxt(txt, null);
     }
 
+    /**
+     * 设置 BODY txt 及内容类型
+     */
     @Override
-    public HttpUtils bodyTxt(String txt, String contentType) {
+    public HttpUtilsImpl bodyTxt(String txt, String contentType) {
         if (txt == null) {
             return this;
         }
@@ -201,28 +253,43 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    /**
+     * 设置 BODY josn
+     */
     @Override
-    public HttpUtils bodyJson(String txt) {
+    public HttpUtilsImpl bodyJson(String txt) {
         return bodyTxt(txt, "application/json");
     }
 
+    /**
+     * 设置 BODY raw
+     */
     @Override
-    public HttpUtils bodyRaw(byte[] bytes) {
+    public HttpUtilsImpl bodyRaw(byte[] bytes) {
         return bodyRaw(bytes, null);
     }
 
+    /**
+     * "设置 BODY raw 及内容类型
+     */
     @Override
-    public HttpUtils bodyRaw(byte[] bytes, String contentType) {
+    public HttpUtilsImpl bodyRaw(byte[] bytes, String contentType) {
         return bodyRaw(new ByteArrayInputStream(bytes), contentType);
     }
 
+    /**
+     * 设置 BODY raw stream
+     */
     @Override
-    public HttpUtils bodyRaw(InputStream raw) {
+    public HttpUtilsImpl bodyRaw(InputStream raw) {
         return bodyRaw(raw, null);
     }
 
+    /**
+     * 设置 BODY raw stream 及内容类型
+     */
     @Override
-    public HttpUtils bodyRaw(InputStream raw, String contentType) {
+    public HttpUtilsImpl bodyRaw(InputStream raw, String contentType) {
         if (raw == null) {
             return this;
         }
@@ -233,8 +300,11 @@ public class HttpUtilsImpl implements HttpUtils {
     }
 
 
+    /**
+     * 设置请求 cookies
+     */
     @Override
-    public HttpUtils cookies(Map cookies) {
+    public HttpUtilsImpl cookies(Map<String, String> cookies) {
         if (cookies != null) {
             tryInitCookies();
 
@@ -254,7 +324,7 @@ public class HttpUtilsImpl implements HttpUtils {
             }
 
             if (resp != null) {
-                _callback.callback(resp.isSuccessful(), resp, err);
+                _callback.callback(resp.isSuccessful(), new HttpResponseImpl(resp), err);
             } else {
                 _callback.callback(false, null, err);
             }
@@ -267,8 +337,8 @@ public class HttpUtilsImpl implements HttpUtils {
         }
     }
 
-    @Override
-    public Response exec(String mothod) throws IOException {
+
+    private HttpResponse execDo(String mothod) throws IOException {
         if (_multipart) {
             tryInitPartBuilder(MultipartBody.FORM);
 
@@ -309,7 +379,7 @@ public class HttpUtilsImpl implements HttpUtils {
                 _builder.method("PUT", _body);
                 break;
             case "DELETE":
-                _builder.method("DELETE", _body); //有些server只支持queryString参数
+                _builder.method("DELETE", _body);
                 break;
             case "PATCH":
                 _builder.method("PATCH", _body);
@@ -324,11 +394,11 @@ public class HttpUtilsImpl implements HttpUtils {
                 _builder.method("TRACE", null);
                 break;
             default:
-                throw new IllegalStateException("This method is not supported");
+                throw new IllegalArgumentException("This method is not supported");
         }
 
         if (_callAsync) {
-            httpClient.newCall(_builder.build()).enqueue(new Callback() {
+            _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -345,24 +415,45 @@ public class HttpUtilsImpl implements HttpUtils {
 
             return null;
         } else {
-            Call call = httpClient.newCall(_builder.build());
-            return call.execute();
+            Call call = _client.newCall(_builder.build());
+            return new HttpResponseImpl(call.execute());
         }
     }
 
+
+    /**
+     * 执行请求，返回响应对象
+     */
     @Override
-    public String execAsBody(String mothod) throws IOException {
-        String rst = exec(mothod).body().string();
+    public HttpResponse exec(String method) throws IOException {
+        try {
+            return execDo(method);
+        } catch (IOException e) {
+            throw new IOException(_url + ", request failed", e);
+        }
+    }
+
+    /**
+     * 执行请求，返回Body字符串
+     */
+    @Override
+    public String execAsBody(String method) throws IOException {
+        String text = exec(method).bodyAsString();
+
         if (_enablePrintln) {
-            System.out.println(_url + ":: " + rst);
+            System.out.println(_url + ":: " + text);
         }
 
-        return rst;
+        return text;
     }
 
+    /**
+     * 执行请求，返回状态码
+     */
     @Override
-    public int execAsCode(String mothod) throws IOException {
-        int code = exec(mothod).code();
+    public int execAsCode(String method) throws IOException {
+        int code = exec(method).code();
+
         if (_enablePrintln) {
             System.out.println(_url + "::code:: " + code);
         }
@@ -370,45 +461,67 @@ public class HttpUtilsImpl implements HttpUtils {
         return code;
     }
 
+    /**
+     * 发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）
+     */
     @Override
     public String get() throws IOException {
         return execAsBody("GET");
     }
 
+    /**
+     * 发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）
+     */
     @Override
     public String post() throws IOException {
         return execAsBody("POST");
     }
 
     @Override
-    public void postAsync() throws IOException {
-        postAsync(null);
+    public void postAsync(HttpCallback callback) {
+        execAsync("POST", callback);
     }
 
     @Override
-    public void postAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
-        _callback = callback;
-        _callAsync = true;
-        exec("POST");
+    public void getAsync(HttpCallback callback) {
+        execAsync("GET", callback);
     }
 
     @Override
-    public void headAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
-        _callback = callback;
-        _callAsync = true;
-        exec("HEAD");
+    public void headAsync(HttpCallback callback) {
+        execAsync("HEAD", callback);
     }
 
+    @Override
+    public void execAsync(String method, HttpCallback callback) {
+        _callback = callback;
+        _callAsync = true;
+        try {
+            execDo(method);
+        } catch (IOException e) {
+            throw new RuntimeException(_url + ", request failed", e);
+        }
+    }
+
+    /**
+     * 发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）
+     */
     @Override
     public String put() throws IOException {
         return execAsBody("PUT");
     }
 
+    /**
+     * 发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）
+     */
     @Override
     public String patch() throws IOException {
         return execAsBody("PATCH");
     }
 
+    /**
+     * 发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）
+     */
     @Override
     public String delete() throws IOException {
         return execAsBody("DELETE");
@@ -458,8 +571,29 @@ public class HttpUtilsImpl implements HttpUtils {
         }
     }
 
+    public static String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, Solon.encoding());
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedOperationException(e);
+        }
+    }
 
-    static class StreamBody extends RequestBody {
+    public static String toQueryString(Map<?, ?> map) throws UnsupportedEncodingException {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            if (sb.length() > 0) {
+                sb.append("&");
+            }
+            sb.append(String.format("%s=%s",
+                    urlEncode(entry.getKey().toString()),
+                    urlEncode(entry.getValue().toString())
+            ));
+        }
+        return sb.toString();
+    }
+
+    public static class StreamBody extends RequestBody {
         private MediaType _contentType = null;
         private InputStream _inputStream = null;
 
@@ -494,7 +628,7 @@ public class HttpUtilsImpl implements HttpUtils {
         }
     }
 
-    static class KeyValue {
+    public static class KeyValue {
         String key;
         String value;
 

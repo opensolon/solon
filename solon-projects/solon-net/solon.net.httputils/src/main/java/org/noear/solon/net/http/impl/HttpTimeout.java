@@ -1,14 +1,23 @@
-package org.noear.solon.test.http.impl;
+package org.noear.solon.net.http.impl;
 
 /**
- * 超时：单位：秒
+ * Http 超时：单位：秒
  *
  * @author noear
  * @since 1.7
  */
 public class HttpTimeout {
+    /**
+     * 连接超时
+     */
     public final int connectTimeout;
+    /**
+     * 写超时
+     */
     public final int writeTimeout;
+    /**
+     * 读超时
+     */
     public final int readTimeout;
 
     public HttpTimeout(int timeout) {

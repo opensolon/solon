@@ -8,7 +8,7 @@ import org.noear.solon.core.util.ConsumerEx;
  * 预热工具
  *
  * @author noear
- * @since 1.5
+ * @since 2.8
  */
 public final class PreheatUtils {
 
@@ -23,7 +23,7 @@ public final class PreheatUtils {
      * 预热本地地址
      */
     public static void preheat(String path, ConsumerEx<HttpUtils> handling) {
-        if(NativeDetector.isAotRuntime()){
+        if (NativeDetector.isAotRuntime()) {
             return;
         }
 

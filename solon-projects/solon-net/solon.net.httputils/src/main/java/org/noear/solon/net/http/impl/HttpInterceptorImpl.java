@@ -1,4 +1,4 @@
-package org.noear.solon.net.http;
+package org.noear.solon.net.http.impl;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Http 请求拦截器
+ * Http 请求拦截器实现
  *
  * @author noear
- * @since 1.7
+ * @since 2.8
  */
-public class HttpInterceptor implements Interceptor {
-    public static final HttpInterceptor instance = new HttpInterceptor();
+public class HttpInterceptorImpl implements Interceptor {
+    public static final HttpInterceptorImpl instance = new HttpInterceptorImpl();
 
     @Override
     public Response intercept(Chain chain) throws IOException {

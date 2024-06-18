@@ -1,6 +1,7 @@
 package org.noear.solon.test;
 
 import org.noear.solon.Solon;
+import org.noear.solon.net.http.HttpUtils;
 
 /**
  * Http 接口测试器

@@ -3,11 +3,10 @@ package features;
 
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
 import org.noear.solon.boot.web.Constants;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
@@ -77,7 +76,7 @@ public class HeaderTest extends HttpTester {
 
     @Test
     public void test3() throws Exception {
-        Response res = path("/demo2/cookie/").exec("GET");
+        HttpResponse res = path("/demo2/cookie/").exec("GET");
 
         List<String> tmp = res.headers("Set-Cookie");
 
@@ -86,13 +85,13 @@ public class HeaderTest extends HttpTester {
 
     @Test
     public void testContentLength() throws Exception {
-        Response res = path("/demo1/header/hello").exec("GET");
+        HttpResponse res = path("/demo1/header/hello").exec("GET");
 
         List<String> tmp = res.headers(Constants.HEADER_CONTENT_LENGTH);
         assert tmp != null;
         assert tmp.size() == 1;
         long size = Long.parseLong(tmp.get(0));
-        byte[] bytes = res.body().bytes();
+        byte[] bytes = res.bodyAsBytes();
         assert size == bytes.length;
         assert "Hello world!".equals(new String(bytes));
     }

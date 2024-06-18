@@ -1,9 +1,11 @@
 package org.noear.solon.net.http;
 
 /**
+ * Http 回调
+ *
  * @author noear
- * @since 1.5
+ * @since 2.8
  * */
-public interface HttpCallback<T1,T2,T3> {
-    void callback(T1 t1, T2 t2, T3 t3) throws Exception;
+public interface HttpCallback {
+    void callback(Boolean isSuccessful, HttpResponse resp, Exception error) throws Exception;
 }
