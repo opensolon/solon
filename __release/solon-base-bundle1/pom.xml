@@ -22,10 +22,11 @@
         <module>../../solon-projects/solon-base/solon.validation</module>
         <module>../../solon-projects/solon-base/solon.i18n</module>
         <module>../../solon-projects/solon-base/solon.mvc</module>
-        <module>../../solon-projects/solon-base/solon.net</module>
-        <module>../../solon-projects/solon-base/solon.net.stomp</module>
-        <module>../../solon-projects/solon-base/solon.net.httputils</module>
         <module>../../solon-projects/solon-base/solon.hotplug</module>
+
+        <module>../../solon-projects/solon-net/solon.net</module>
+        <module>../../solon-projects/solon-net/solon.net.stomp</module>
+        <module>../../solon-projects/solon-net/solon.net.httputils</module>
 
         <module>../../solon-projects/solon-security/solon.auth</module>
         <module>../../solon-projects/solon-security/solon.vault</module>
