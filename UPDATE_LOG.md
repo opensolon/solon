@@ -47,6 +47,7 @@
 * folkmq 升为 1.7.1
 * smartsocket 升为 1.5.44
 * smarthttp 升为 1.4.3
+* mybatis-flex 升为 1.9.3
 
 ### 2.8.3
 * 新增 thrift-solon-cloud-plugin 插件
