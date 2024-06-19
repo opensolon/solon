@@ -19,7 +19,7 @@ public class FuryDecoder implements Decoder {
 
     @Override
     public String enctype() {
-        return ContentTypes.HESSIAN_VALUE;
+        return ContentTypes.FURY_VALUE;
     }
 
 
