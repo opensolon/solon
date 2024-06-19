@@ -296,11 +296,18 @@ public class OpenApi2Builder {
                 }
             }
 
+            String consumes = Utils.annoAlias(apiAction.consumes(), actionHolder.action().consumes());
+            String produces = Utils.annoAlias(apiAction.produces(), actionHolder.action().produces());
+            boolean isRequiredBody = false;
+            if(consumes != null && consumes.contains("json")) {
+                isRequiredBody = true;
+            }
+
 
             String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
 
 
-            operation.setParameters(this.parseActionParameters(actionHolder));
+            operation.setParameters(this.parseActionParameters(actionHolder, isRequiredBody));
             operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
             operation.setVendorExtension("controllerKey", controllerKey);
             operation.setVendorExtension("actionName", actionName);
@@ -312,7 +319,8 @@ public class OpenApi2Builder {
                 }
             }
 
-            if (Utils.isBlank(apiAction.consumes())) {
+
+            if (Utils.isEmpty(consumes)) {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type
                 } else {
@@ -324,10 +332,15 @@ public class OpenApi2Builder {
                     }
                 }
             } else {
-                operation.consumes(apiAction.consumes());
+                operation.consumes(consumes);
             }
 
-            operation.produces(Utils.isBlank(apiAction.produces()) ? ApiEnum.PRODUCES_DEFAULT : apiAction.produces());
+            if (Utils.isEmpty(produces)) {
+                operation.produces(ApiEnum.PRODUCES_DEFAULT);
+            } else {
+                operation.produces(produces);
+            }
+
 
             operation.setOperationId(operationMethod + "_" + pathKey.replace("/", "_"));
 
@@ -338,7 +351,7 @@ public class OpenApi2Builder {
     /**
      * 解析action 参数文档
      */
-    private List<Parameter> parseActionParameters(ActionHolder actionHolder) {
+    private List<Parameter> parseActionParameters(ActionHolder actionHolder, boolean isRequiredBody) {
         Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
         for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
             actionParamMap.put(p1.getName(), new ParamHolder(p1));
@@ -384,7 +397,7 @@ public class OpenApi2Builder {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
-                    if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
+                    if (isRequiredBody == false && paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
                         modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                     }
 
@@ -407,7 +420,7 @@ public class OpenApi2Builder {
                         parameter = new CookieParameter().type(ApiEnum.RES_ARRAY);
                     } else if (paramHolder.isRequiredPath()) {
                         parameter = new PathParameter().type(ApiEnum.RES_ARRAY);
-                    } else if (paramHolder.isRequiredBody()) {
+                    } else if (isRequiredBody  || paramHolder.isRequiredBody()) {
                         BodyParameter bodyParameter = new BodyParameter();
                         if (Utils.isNotEmpty(dataType)) {
                             bodyParameter.setSchema(new ArrayModel().items(objectProperty));
@@ -420,7 +433,7 @@ public class OpenApi2Builder {
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
-                    if (paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
+                    if (isRequiredBody  || paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
 
@@ -454,7 +467,7 @@ public class OpenApi2Builder {
                         parameter = new CookieParameter();
                     } else if (paramHolder.isRequiredPath()) {
                         parameter = new PathParameter();
-                    } else if (paramHolder.isRequiredBody()) {
+                    } else if (isRequiredBody  || paramHolder.isRequiredBody()) {
                         BodyParameter bodyParameter = new BodyParameter();
                         if (Utils.isNotEmpty(dataType)) {
                             bodyParameter.setSchema(new ModelImpl().type(dataType));
