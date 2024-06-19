@@ -296,15 +296,14 @@ public class OpenApi2Builder {
                 }
             }
 
-            String consumes = Utils.annoAlias(apiAction.consumes(), actionHolder.action().consumes());
-            String produces = Utils.annoAlias(apiAction.produces(), actionHolder.action().produces());
+            String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
+
+            String operationConsumes = Utils.annoAlias(apiAction.consumes(), actionHolder.action().consumes());
+            String operationProduces = Utils.annoAlias(apiAction.produces(), actionHolder.action().produces());
             boolean isRequiredBody = false;
-            if(consumes != null && consumes.contains("json")) {
+            if (operationConsumes != null && operationConsumes.contains("json") && operationMethod.equals(ApiEnum.METHOD_GET) == false) {
                 isRequiredBody = true;
             }
-
-
-            String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
 
 
             operation.setParameters(this.parseActionParameters(actionHolder, isRequiredBody));
@@ -319,12 +318,10 @@ public class OpenApi2Builder {
                 }
             }
 
-
-            if (Utils.isEmpty(consumes)) {
+            if (Utils.isEmpty(operationConsumes)) {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
-                    operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type
+                    operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type //ApiEnum.CONSUMES_URLENCODED
                 } else {
-                    //operation.consumes(ApiEnum.CONSUMES_URLENCODED);
                     if (operation.getParameters().stream().anyMatch(parameter -> parameter instanceof BodyParameter)) {
                         operation.consumes(ApiEnum.CONSUMES_JSON);
                     } else {
@@ -332,13 +329,13 @@ public class OpenApi2Builder {
                     }
                 }
             } else {
-                operation.consumes(consumes);
+                operation.consumes(operationConsumes);
             }
 
-            if (Utils.isEmpty(produces)) {
+            if (Utils.isEmpty(operationProduces)) {
                 operation.produces(ApiEnum.PRODUCES_DEFAULT);
             } else {
-                operation.produces(produces);
+                operation.produces(operationProduces);
             }
 
 
@@ -499,18 +496,21 @@ public class OpenApi2Builder {
             paramList.add(parameter);
         }
 
+        //return paramList;
         return mergeBodyParamList(actionHolder, paramList);
     }
 
     private List<Parameter> mergeBodyParamList(ActionHolder actionHolder, List<Parameter> paramList) {
         ArrayList<Parameter> parameters = new ArrayList<>();
-        if (Constants.CONTENT_TYPE_JSON_TYPE.equals(actionHolder.action().consumes()) || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
+        if (Constants.CONTENT_TYPE_JSON_TYPE.equals(actionHolder.action().consumes())
+                || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
             BodyParameter finalBodyParameter = new BodyParameter();
             finalBodyParameter.setIn(Constants.BODY_TYPE);
             finalBodyParameter.name(Constants.DATA);
             ModelImpl model = new ModelImpl();
             model.setDescription(Constants.DEFAULT_BODY_NAME);
             model.setName(Constants.DEFAULT_BODY_NAME);
+
             for (Parameter parameter : paramList) {
                 if (parameter instanceof BodyParameter) {
                     BodyParameter bodyParameter = ((BodyParameter) parameter);
