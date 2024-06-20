@@ -1,21 +1,23 @@
 package org.noear.solon.cloud.exception;
 
-import org.noear.solon.core.exception.StatusException;
+import org.noear.solon.exception.SolonException;
 
 /**
+ * Cloud 异常
+ *
  * @author noear
  * @since 2.8
  */
-public class CloudException extends StatusException {
-    public CloudException(Throwable cause, int code) {
-        super(cause, code);
+public class CloudException extends SolonException {
+    public CloudException(Throwable cause) {
+        super(cause);
     }
 
-    public CloudException(String message, int code) {
-        super(message, code);
+    public CloudException(String message) {
+        super(message);
     }
 
-    public CloudException(String message, Throwable cause, int code) {
-        super(message, cause, code);
+    public CloudException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

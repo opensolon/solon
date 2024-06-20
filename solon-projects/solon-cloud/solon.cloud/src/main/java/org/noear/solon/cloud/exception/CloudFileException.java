@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.exception;
 
 /**
- * 文件异常
+ * Cloud 文件异常
  *
  * @author noear
  * @since 1.3
@@ -11,17 +11,17 @@ public class CloudFileException extends CloudException {
      * @since 1.11
      */
     public CloudFileException(String message) {
-        super(message, 500);
+        super(message);
     }
 
     /**
      * @since 1.12
      */
     public CloudFileException(String message, Throwable cause) {
-        super(message, cause, 500);
+        super(message, cause);
     }
 
     public CloudFileException(Throwable cause) {
-        super(cause, 500);
+        super(cause);
     }
 }

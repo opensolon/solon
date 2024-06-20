@@ -1,17 +1,17 @@
 package org.noear.solon.cloud.exception;
 
 /**
- * 任务异常
+ * Cloud 任务异常
  *
  * @author noear
  * @since 1.10
  */
 public class CloudJobException extends CloudException {
     public CloudJobException(Throwable cause) {
-        super(cause, 500);
+        super(cause);
     }
 
     public CloudJobException(String message, Throwable cause) {
-        super(message, cause, 500);
+        super(message, cause);
     }
 }
