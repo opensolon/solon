@@ -70,6 +70,27 @@ Solon v2.8.5-SNAPSHOT
 | 更好的生产与部署体验 | 打包小 50% ~ 90%；镜像拉取快，启动快（5 ～ 10 倍）     |
 | 更大的兼容范围 | 非 java-ee 架构；同时支持 java8 ～ java22      |
 
+## 主要代码仓库
+
+
+| 代码仓库                                            | 描述                               | 
+|-------------------------------------------------|----------------------------------| 
+| https://gitee.com/opensolon/solon               | Solon ,主代码仓库                     | 
+| https://gitee.com/opensolon/solon-examples      | Solon ,官网配套示例代码仓库                |
+|                                                 |                                  |
+| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,代码仓库                | 
+| https://gitee.com/opensolon/solon-admin         | Solon Admin ,代码仓库                | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java17） | 
+| https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
+|                                                 |                                  |
+| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
+| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,插件代码仓库               | 
+| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,插件代码仓库             | 
+|                                                 |                                  |
+| https://gitee.com/dromara/solon-plugins         | Solon 第三方扩展插件代码仓库                | 
+
+
+
 
 ## 生态架构图：
 

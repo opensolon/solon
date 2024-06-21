@@ -71,6 +71,28 @@ Built from scratch, with more flexible interface specifications and an open ecos
 | Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java22                   |
 
 
+## Main code repository
+
+
+| Code repository                                 | Description                                               | 
+|-------------------------------------------------|-----------------------------------------------------------| 
+| https://gitee.com/opensolon/solon               | Solon ,Main code repository                               | 
+| https://gitee.com/opensolon/solon-examples      | Solon ,Official website supporting sample code repository |
+|                                                 |                                                           |
+| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Code repository                              | 
+| https://gitee.com/opensolon/solon-admin         | Solon Admin ,Code repository                              | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java17）               | 
+| https://gitee.com/opensolon/solon-integration   | Solon Integration ,Code repository                        | 
+|                                                 |                                                           |
+| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 
+| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Plugin code repository                        | 
+| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Plugin code repository                      | 
+|                                                 |                                                           |
+| https://gitee.com/dromara/solon-plugins         | Solon ,Third-party extension code repository              | 
+
+
+
+
 ## Ecosystem Architecture Diagram:
 
 * solon

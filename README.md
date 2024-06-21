@@ -63,25 +63,35 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 ## Features:
 
-Better cost performance for computing:
+| Feature      | Description                                                                 | 
+|--------------|-----------------------------------------------------------------------------| 
+| Better cost performance for computing resources   | 2 to 3 times more concurrency 50% memory savings                            |
+| Faster development productivity      | Small kernel, quick to get started Debug restarts are 5-10 times faster     |
+| Better production and deployment experience   | 50% ~ 90% smaller packaging; Fast image pull and start (5 ~ 10x) |
+| Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java22                   |
 
-* Throughput: 2-3 times higher concurrency per second
-* Resources: 50% memory savings
 
-Better developer productivity, easier coding experience:
+## Main code repository
 
-* Development: Flexible and simple architecture; Quick to get started
-* Debugging: Restarts are 5-10 times faster. Locating problems faster
 
-Faster production and deployment experience:
+| Code repository                                 | Description                                               | 
+|-------------------------------------------------|-----------------------------------------------------------| 
+| https://gitee.com/opensolon/solon               | Solon ,Main code repository                               | 
+| https://gitee.com/opensolon/solon-examples      | Solon ,Official website supporting sample code repository |
+|                                                 |                                                           |
+| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Code repository                              | 
+| https://gitee.com/opensolon/solon-admin         | Solon Admin ,Code repository                              | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java17）               | 
+| https://gitee.com/opensolon/solon-integration   | Solon Integration ,Code repository                        | 
+|                                                 |                                                           |
+| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 
+| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Plugin code repository                        | 
+| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Plugin code repository                      | 
+|                                                 |                                                           |
+| https://gitee.com/dromara/solon-plugins         | Solon ,Third-party extension code repository              | 
 
-* Artifacts: 50% ~ 90% smaller packaging
-* Deploy: images are fast to pull and start up (5-10x)
 
-Wider runtime compatibility:
 
-* Breakthrough: Non-Java-EE architecture, more flexibility
-* Compatibility: Compatible with java8, java11, java17, java21, java22 runtime
 
 ## Ecosystem Architecture Diagram:
 

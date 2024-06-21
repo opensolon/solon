@@ -69,6 +69,25 @@ Solon v2.8.5-SNAPSHOT
 | より良い生産と配備の経験を得ることができます | パッケージは小さい50% ~ 90%です;ミラーリングが速く、起動が速くなります(5 ~ 10倍)     |
 | より広い互換性を持っています | 非java-eeアーキテクチャです;java8 ~ java22にも対応しています。      |
 
+## 主要なコードリポジトリです
+
+
+| コードリポジトリです                                      | 記述します                                  | 
+|-------------------------------------------------|----------------------------------------| 
+| https://gitee.com/opensolon/solon               | Solon ,メインコードのリポジトリです                  | 
+| https://gitee.com/opensolon/solon-examples      | Solon ,公式サイトの例コードリポジトリです               |
+|                                                 |                                        |
+| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,コードリポジトリです                | 
+| https://gitee.com/opensolon/solon-admin         | Solon Admin ,コードリポジトリです                | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java17） | 
+| https://gitee.com/opensolon/solon-integration   | Solon Integration ,コードリポジトリです          | 
+|                                                 |                                        |
+| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,プラグインのリポジトリです            | 
+| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,プラグインのリポジトリです              | 
+| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,プラグインのリポジトリです            | 
+|                                                 |                                        |
+| https://gitee.com/dromara/solon-plugins         | Solon ,サードパーティ拡張プラグイン・コードリポジトリ                                | 
+
 
 
 
