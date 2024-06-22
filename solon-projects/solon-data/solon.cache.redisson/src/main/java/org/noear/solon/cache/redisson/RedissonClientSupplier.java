@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
+ * RedissonClient 提供者（使用简化配置）
+ *
  * @author noear
  * @since 1.11
  */
