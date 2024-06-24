@@ -3,7 +3,6 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * 方法键（一般用于 map、cache key）
@@ -46,7 +45,11 @@ public class MethodKey implements Comparable<MethodKey> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(method, targetClass);
+        if (targetClass == null) {
+            return method.hashCode();
+        } else {
+            return method.hashCode() * 31 + targetClass.hashCode();
+        }
     }
 
     @Override
@@ -54,7 +57,7 @@ public class MethodKey implements Comparable<MethodKey> {
         if (targetClass == null) {
             return method.toString();
         } else {
-            return targetClass + "::" + method.toString();
+            return method.toString() + " on " + targetClass.getName();
         }
     }
 

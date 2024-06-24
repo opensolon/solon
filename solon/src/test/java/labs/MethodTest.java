@@ -14,5 +14,9 @@ public class MethodTest {
 
         System.out.println(methodKey.hashCode());
         System.out.println(methodKey);
+
+        MethodKey methodKey2 = new MethodKey(main0, MethodTest.class);
+        System.out.println(methodKey2.hashCode());
+        System.out.println(methodKey2);
     }
 }
