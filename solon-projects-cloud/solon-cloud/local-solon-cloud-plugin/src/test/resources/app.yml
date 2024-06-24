@@ -1,9 +1,0 @@
-
-solon.app:
-  group: demo
-  name: demoapp
-
-solon.cloud.local:
-  server: "classpath:META-INF/solon-cloud/" #server: "/Users/noear/Downloads/local-solon_cloud"
-  config:
-    load: "demoapp.yml"
