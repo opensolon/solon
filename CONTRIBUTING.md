@@ -73,6 +73,8 @@
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
+| https://gitee.com/opensolon/solon-maven-plugin  | Solon Gradle ,插件代码仓库             | 
+|                                                 |                                  |
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,插件代码仓库               | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,插件代码仓库             | 
 |                                                 |                                  |
