@@ -1,7 +1,0 @@
-
-solon.app:
-  group: demo
-  name: demoapp
-
-solon.cloud.folkmq.event:
-  server: "folkmq://127.0.0.1:18602"
