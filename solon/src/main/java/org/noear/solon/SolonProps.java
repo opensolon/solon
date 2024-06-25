@@ -185,14 +185,24 @@ public final class SolonProps extends Props {
         }
     }
 
-    private void addConfig(String vals, boolean isName, Properties sysPropOrg) {
-        if (Utils.isNotEmpty(vals)) {
-            for (String val : vals.split(",")) {
-                URL propUrl = (isName ? ResourceUtil.getResource(val) : ResourceUtil.findResource(val));
+    private void addConfig(String paths, boolean isName, Properties sysPropOrg) {
+        if (Utils.isNotEmpty(paths)) {
+            for (String p1 : paths.split(",")) {
+                URL propUrl = null;
+                if (isName) {
+                    //支持带 classpath: 开头
+                    if (ResourceUtil.hasClasspath(p1)) {
+                        p1 = ResourceUtil.remClasspath(p1);
+                    }
+
+                    propUrl = ResourceUtil.getResource(p1);
+                } else {
+                    propUrl = ResourceUtil.findResource(p1);
+                }
 
                 if (propUrl == null) {
                     //打印提醒
-                    warns.add("Props: No config file: " + val);
+                    warns.add("Props: No config file: " + p1);
                 } else {
                     loadInit(propUrl, sysPropOrg);
                 }

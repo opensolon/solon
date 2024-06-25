@@ -17,14 +17,16 @@
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
-
-### 2.8.5
+* 
 * 新增 solon.cloud.gateway 插件?
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
+* 优化 拦截体系与 rx 的兼容？
+
+### 2.8.5
 * 添加 RedissonClientOriginalSupplier 类
 * 添加 MethodKey 类
-* 优化 拦截体系与 rx 的兼容？
+* 优化 `solon.config.load` 支持 `classpath:` 前缀
 * redisx 升为 1.6.4
 * snack3 升为 3.2.101
 
