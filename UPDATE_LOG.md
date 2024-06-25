@@ -25,6 +25,7 @@
 * 添加 RedissonClientOriginalSupplier 类
 * 添加 MethodKey 类
 * 优化 拦截体系与 rx 的兼容？
+* redisx 升为 1.6.4
 
 ### 2.8.4
 * 新增 solon.net.httputils 插件
