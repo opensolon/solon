@@ -23,7 +23,6 @@
         <module>../../solon-projects/solon-web/solon.sessionstate.jedis</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.local</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.jwt</module>
-        <module>../../solon-projects/solon-web/solon.sessionstate.redisson</module>
         <module>../../solon-projects/solon-web/solon.web.webdav</module>
         <module>../../solon-projects/solon-web/solon.web.staticfiles</module>
         <module>../../solon-projects/solon-web/solon.web.servlet</module>
