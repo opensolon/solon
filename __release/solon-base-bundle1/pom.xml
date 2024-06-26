@@ -17,7 +17,6 @@
 
     <modules>
         <module>../../solon-projects/solon-base/solon.proxy</module>
-        <module>../../solon-projects/solon-base/solon.config.yaml</module>
         <module>../../solon-projects/solon-base/solon.banner</module>
         <module>../../solon-projects/solon-base/solon.validation</module>
         <module>../../solon-projects/solon-base/solon.i18n</module>

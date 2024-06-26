@@ -21,7 +21,6 @@
         <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
 
         <module>../../solon-projects/solon-scheduling/solon.scheduling</module>
-        <module>../../solon-projects/solon-scheduling/solon.scheduling.simple</module>
         <module>../../solon-projects/solon-scheduling/solon.extend.schedule</module>
 
     </modules>

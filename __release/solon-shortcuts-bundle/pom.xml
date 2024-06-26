@@ -24,8 +24,6 @@
         <module>../../solon-shortcuts/solon-api</module>
 
         <module>../../solon-shortcuts/solon-web</module>
-        <module>../../solon-shortcuts/solon-web-beetl</module>
-        <module>../../solon-shortcuts/solon-web-enjoy</module>
 
         <module>../../solon-shortcuts/solon-rpc</module>
         <module>../../solon-shortcuts/solon-cloud</module>
