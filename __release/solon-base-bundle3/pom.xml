@@ -19,14 +19,12 @@
         <module>../../solon-projects/solon-cloud/solon.cloud</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.eventplus</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.httputils</module>
-        <module>../../solon-projects/solon-cloud/solon.cloud.tracing</module>
+
         <module>../../solon-projects/solon-web/solon.sessionstate.jedis</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.local</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.jwt</module>
         <module>../../solon-projects/solon-web/solon.web.webdav</module>
         <module>../../solon-projects/solon-web/solon.web.staticfiles</module>
-        <module>../../solon-projects/solon-web/solon.web.servlet</module>
-        <module>../../solon-projects/solon-web/solon.web.servlet.jakarta</module>
         <module>../../solon-projects/solon-web/solon.web.cors</module>
         <module>../../solon-projects/solon-web/solon.web.stop</module>
         <module>../../solon-projects/solon-web/solon.web.sdl</module>
