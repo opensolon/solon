@@ -20,13 +20,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>

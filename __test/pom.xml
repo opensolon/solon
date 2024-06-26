@@ -117,10 +117,6 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.fastjson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>nami.coder.fastjson2</artifactId>
         </dependency>
         <dependency>
@@ -373,12 +369,6 @@
             <artifactId>solon.serialization.properties</artifactId>
         </dependency>
 
-
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.serialization.fastjson</artifactId>-->
-<!--            </dependency>-->
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.serialization.fastjson2</artifactId>-->
@@ -446,7 +436,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.31</version>
+            <version>8.0.33</version>
         </dependency>
 
         <dependency>
