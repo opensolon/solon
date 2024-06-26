@@ -19,6 +19,5 @@
 
     <modules>
         <module>__release</module>
-        <module>__test</module>
     </modules>
 </project>
