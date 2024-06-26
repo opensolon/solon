@@ -18,9 +18,7 @@
     <modules>
         <module>../../solon-projects/solon-data/solon.data</module>
         <module>../../solon-projects/solon-data/solon.data.dynamicds</module>
-        <module>../../solon-projects/solon-data/solon.cache.caffeine</module>
         <module>../../solon-projects/solon-data/solon.cache.jedis</module>
-        <module>../../solon-projects/solon-data/solon.cache.redisson</module>
         <module>../../solon-projects/solon-logging/solon.logging</module>
         <module>../../solon-projects/solon-logging/solon.logging.log4j2</module>
         <module>../../solon-projects/solon-logging/solon.logging.logback</module>

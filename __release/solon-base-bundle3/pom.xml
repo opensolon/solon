@@ -20,7 +20,6 @@
         <module>../../solon-projects/solon-cloud/solon.cloud.eventplus</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.httputils</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.tracing</module>
-        <module>../../solon-projects/solon-cloud/solon.cloud.metrics</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.jedis</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.local</module>
         <module>../../solon-projects/solon-web/solon.sessionstate.jwt</module>
