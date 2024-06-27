@@ -33,6 +33,7 @@
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理
 * redisx 升为 1.6.4
 * snack3 升为 3.2.103
+* nacos2 升为 2.3.2
 
 ### 2.8.4
 * 新增 solon.net.httputils 插件
