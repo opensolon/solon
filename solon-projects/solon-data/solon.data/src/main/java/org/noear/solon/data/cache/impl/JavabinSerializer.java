@@ -1,6 +1,7 @@
 package org.noear.solon.data.cache.impl;
 
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.io.*;
 import java.util.Base64;
@@ -35,8 +36,11 @@ public class JavabinSerializer implements Serializer<String> {
             return null;
         }
 
+        //分析类加载器
+        ClassLoader loader = ClassUtil.resolveClassLoader(clz);
+
         byte[] bytes = Base64.getDecoder().decode(dta);
-        return deserializeDo(bytes);
+        return deserializeDo(loader, bytes);
     }
 
 
@@ -61,12 +65,12 @@ public class JavabinSerializer implements Serializer<String> {
     /**
      * 反序列化
      */
-    protected Object deserializeDo(byte[] bytes) {
+    protected Object deserializeDo(ClassLoader loader, byte[] bytes) {
         if (bytes == null) {
             return null;
         } else {
             try {
-                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
+                ObjectInputStream ois = new ObjectInputStreamEx(loader, new ByteArrayInputStream(bytes));
                 return ois.readObject();
             } catch (IOException e) {
                 throw new IllegalArgumentException("Failed to deserialize object", e);

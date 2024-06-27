@@ -180,4 +180,22 @@ public class ClassUtil {
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
         return tryInstance(classLoader, className, prop);
     }
+
+    private static final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+
+    /**
+     * 分析类加载器
+     */
+    public static ClassLoader resolveClassLoader(Class<?> clz) {
+        ClassLoader loader = AppClassLoader.global();
+
+        if (clz != null && clz != Object.class) {
+            ClassLoader cl = clz.getClassLoader();
+            if (cl != systemClassLoader) {
+                loader = cl;
+            }
+        }
+
+        return loader;
+    }
 }

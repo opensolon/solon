@@ -26,7 +26,9 @@
 ### 2.8.5
 * 添加 RedissonClientOriginalSupplier 类
 * 添加 MethodKey 类
+* 添加 ClassUtil:resolveClassLoader 方法
 * 优化 `solon.config.load` 支持 `classpath:` 前缀
+* 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * redisx 升为 1.6.4
 * snack3 升为 3.2.101
 
