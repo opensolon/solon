@@ -75,15 +75,15 @@ public class SolonApp extends RouterWrapper {
     }
 
     protected SolonApp(Class<?> source, NvMap args) throws Exception {
+        //添加启动类检测
+        if (source == null) {
+            throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
+        }
         _startupTime = System.currentTimeMillis();
         _source = source;
         _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         _converterManager = new ConverterManager();
 
-        //添加启动类检测
-        if (source == null) {
-            throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
-        }
 
         //添加启动类包名检测
         if (source.getPackage() == null || Utils.isEmpty(source.getPackage().getName())) {
