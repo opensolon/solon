@@ -74,6 +74,22 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Collection<Routing<T>> getBy(Class<?> controllerClz) {
+        return table.stream()
+                .filter(l -> {
+                    if (l.target() instanceof Action) {
+                        Action a = (Action) l.target();
+                        if (a.controller().clz().equals(controllerClz)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .sorted(Comparator.comparingInt(l -> l.index()))
+                .collect(Collectors.toList());
+    }
+
     /**
      * 区配一个目标
      *

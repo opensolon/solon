@@ -141,6 +141,13 @@ public interface Router {
      */
     Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
 
+    /**
+     * 获取某个控制器的路由记录（管理用）
+     *
+     * @param controllerClz 控制器类
+     */
+    Collection<Routing<Handler>> getBy(Class<?> controllerClz, Endpoint endpoint);
+
 
     /**
      * 移除路由关系

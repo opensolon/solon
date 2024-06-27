@@ -151,6 +151,11 @@ public class RouterDefault implements Router, HandlerSlots {
         return routesH[endpoint.code].getBy(path);
     }
 
+    @Override
+    public Collection<Routing<Handler>> getBy(Class<?> controllerClz, Endpoint endpoint) {
+        return routesH[endpoint.code].getBy(controllerClz);
+    }
+
 
     /**
      * 移除路由关系

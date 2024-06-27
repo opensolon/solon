@@ -61,6 +61,14 @@ public interface RoutingTable<T> {
     Collection<Routing<T>> getBy(String path);
 
     /**
+     * 获取控制器的路由记录
+     *
+     * @param controllerClz 控制器类
+     * @since 2.8
+     */
+    Collection<Routing<T>> getBy(Class<?> controllerClz);
+
+    /**
      * 区配一个目标
      *
      * @param path   路径
