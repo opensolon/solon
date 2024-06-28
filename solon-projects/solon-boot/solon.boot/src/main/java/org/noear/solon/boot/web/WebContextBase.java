@@ -14,12 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Web 上下文
+ *
  * @author noear
  * @since 1.11
  * @since 2.3
  */
 public abstract class WebContextBase extends Context {
 
+    /**
+     * 内存类型
+     */
     @Override
     public String contentType() {
         return header(Constants.HEADER_CONTENT_TYPE);
@@ -28,6 +33,9 @@ public abstract class WebContextBase extends Context {
 
     private String contentCharset;
 
+    /**
+     * 内存字符集
+     */
     @Override
     public String contentCharset() {
         if (contentCharset == null) {
@@ -238,12 +246,13 @@ public abstract class WebContextBase extends Context {
 
 
     protected Map<String, List<UploadedFile>> _filesMap = null;
+
     /**
      * 删除所有临时文件
-     * */
+     */
     @Override
-    public void filesDelete() throws IOException{
-        if(_filesMap != null){
+    public void filesDelete() throws IOException {
+        if (_filesMap != null) {
             //批量删除临时文件
             for (List<UploadedFile> files : _filesMap.values()) {
                 for (UploadedFile file : files) {

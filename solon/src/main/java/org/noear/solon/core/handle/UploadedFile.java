@@ -19,7 +19,7 @@ import java.io.*;
  * @since 1.0
  * @update noear 20210506 添加字段访问控制
  * */
-public class UploadedFile extends DownloadedFile {
+public class UploadedFile extends FileBase {
     /**
      * 删除动作
      */
@@ -37,19 +37,22 @@ public class UploadedFile extends DownloadedFile {
         return extension;
     }
 
+    /**
+     * 上传文件
+     */
     public UploadedFile() {
         super();
     }
 
     /**
-     * 基于下载输出的构建函数
+     * 上传文件
      *
      * @param contentType 内容类型
      * @param content     内容流
      * @param name        文件名
      */
     public UploadedFile(String contentType, InputStream content, String name) {
-        super(contentType, content, name);
+        super(contentType, 0, content, name);
     }
 
     /**
@@ -66,7 +69,7 @@ public class UploadedFile extends DownloadedFile {
     }
 
     /**
-     * 基于上传输入的构建函数
+     * 上传文件
      *
      * @param contentType 内容类型
      * @param contentSize 内容大小

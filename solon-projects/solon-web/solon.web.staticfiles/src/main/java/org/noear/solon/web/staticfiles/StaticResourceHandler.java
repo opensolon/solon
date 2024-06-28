@@ -84,21 +84,21 @@ public class StaticResourceHandler implements Handler {
         if (resUri != null) {
             ctx.setHandled(true);
 
-            String modified_since = ctx.header("If-Modified-Since");
-            String modified_now = modified_time.toString();
+            if(StaticConfig.getCacheMaxAge() > 0) {
+                String modified_since = ctx.header("If-Modified-Since");
+                String modified_now = modified_time.toString();
 
-            if (modified_since != null && StaticConfig.getCacheMaxAge() > 0) {
-                if (modified_since.equals(modified_now)) {
-                    ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
-                    ctx.headerSet(LAST_MODIFIED, modified_now);
-                    ctx.status(304);
-                    return;
+                if (modified_since != null) {
+                    if (modified_since.equals(modified_now)) {
+                        ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
+                        ctx.headerSet(LAST_MODIFIED, modified_now);
+                        ctx.status(304);
+                        return;
+                    }
                 }
-            }
 
-            if (StaticConfig.getCacheMaxAge() > 0) {
                 ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
-                ctx.headerSet(LAST_MODIFIED, modified_time.toString());
+                ctx.headerSet(LAST_MODIFIED, modified_now);
             }
 
 

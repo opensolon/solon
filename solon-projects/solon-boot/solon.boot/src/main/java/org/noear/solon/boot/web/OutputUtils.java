@@ -21,6 +21,9 @@ import java.util.zip.GZIPOutputStream;
  * @since 2.4
  */
 public class OutputUtils {
+    private static final String CACHE_CONTROL = "Cache-Control";
+    private static final String LAST_MODIFIED = "Last-Modified";
+
     private static OutputUtils global = new OutputUtils();
 
     public static OutputUtils global() {
@@ -40,6 +43,28 @@ public class OutputUtils {
      * 输出文件（主要是给动态输出用）
      */
     public void outputFile(Context ctx, DownloadedFile file, boolean asAttachment) throws IOException {
+        if (Utils.isNotEmpty(file.getETag())) {
+            ctx.headerSet("ETag", file.getETag());
+        }
+
+        if (file.getMaxAgeSeconds() > 0) {
+            String modified_since = ctx.header("If-Modified-Since");
+            String modified_now = file.getLastModified().toString();
+
+            if (modified_since != null) {
+                if (modified_since.equals(modified_now)) {
+                    ctx.headerSet(CACHE_CONTROL, "max-age=" + file.getMaxAgeSeconds());//单位秒
+                    ctx.headerSet(LAST_MODIFIED, modified_now);
+                    ctx.status(304);
+                    file.getContent().close();
+                    return;
+                }
+            }
+
+            ctx.headerSet(CACHE_CONTROL, "max-age=" + file.getMaxAgeSeconds());//单位秒
+            ctx.headerSet(LAST_MODIFIED, modified_now);
+        }
+
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             if (asAttachment) {
@@ -87,7 +112,7 @@ public class OutputUtils {
     /**
      * 输出文件（主要是给静态文件用）
      */
-    public void outputFile(Context ctx, URL file , String conentType,boolean useCaches) throws IOException {
+    public void outputFile(Context ctx, URL file, String conentType, boolean useCaches) throws IOException {
         //
         // todo: 有 gzip 需求时，可以再增加 demo.js 由 demo.js.gz 输出的尝试（如果有）
         //
