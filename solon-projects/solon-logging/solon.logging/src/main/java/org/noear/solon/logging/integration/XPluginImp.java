@@ -50,7 +50,11 @@ public class XPluginImp implements Plugin , InitializingBean {
         LogOptions.getLoggerLevelInit();
 
         Solon.app().filter(Integer.MIN_VALUE, (ctx, chain) -> {
-            MDC.clear();
+            if (ctx.path() != null && ctx.path().equals(ctx.pathNew())) {
+                //避免 forward 时清掉 mdc
+                MDC.clear();
+            }
+
             chain.doFilter(ctx);
         });
     }

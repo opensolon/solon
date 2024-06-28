@@ -31,6 +31,7 @@
 * 优化 `solon.config.load` 支持 `classpath:` 前缀
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理
+* 修复 solon.logging forward 时清掉 mdc 的问题
 * redisx 升为 1.6.4
 * snack3 升为 3.2.103
 * nacos2 升为 2.3.2
