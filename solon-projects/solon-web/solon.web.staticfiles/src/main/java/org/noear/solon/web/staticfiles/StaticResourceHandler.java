@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.boot.web.OutputUtils;
+import org.noear.solon.core.util.DateUtil;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -86,7 +87,7 @@ public class StaticResourceHandler implements Handler {
 
             if(StaticConfig.getCacheMaxAge() > 0) {
                 String modified_since = ctx.header("If-Modified-Since");
-                String modified_now = modified_time.toString();
+                String modified_now = DateUtil.toGmtString(modified_time);
 
                 if (modified_since != null) {
                     if (modified_since.equals(modified_now)) {
