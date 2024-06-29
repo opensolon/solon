@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.util.DateUtil;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.RunUtil;
 
 import java.io.*;
 import java.net.URL;
@@ -61,10 +62,10 @@ public class OutputUtils {
 
             if (modified_since != null) {
                 if (modified_since.equals(modified_now)) {
+                    RunUtil.runAndTry(file::close);
                     ctx.headerSet(CACHE_CONTROL, "max-age=" + file.getMaxAgeSeconds());//单位秒
                     ctx.headerSet(LAST_MODIFIED, modified_now);
                     ctx.status(304);
-                    file.close();
                     return;
                 }
             }
