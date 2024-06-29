@@ -11,7 +11,7 @@ import java.util.Date;
  * @author noear
  * @since 1.5
  */
-public class DownloadedFile extends FileBase {
+public class DownloadedFile extends FileBase implements Closeable {
     /**
      * 是否附件（即下载模式）
      */
@@ -19,6 +19,7 @@ public class DownloadedFile extends FileBase {
     private int maxAgeSeconds = 0;
     private String eTag = null;
     private Date lastModified;
+    private File file;
 
     /**
      * 是否附件输出
@@ -84,6 +85,21 @@ public class DownloadedFile extends FileBase {
         return this;
     }
 
+    @Override
+    public InputStream getContent() throws IOException {
+        if (content == null) {
+            content = new FileInputStream(file);
+        }
+
+        return content;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if(content != null){
+            content.close();
+        }
+    }
 
     /**
      * 下载文件
@@ -157,6 +173,10 @@ public class DownloadedFile extends FileBase {
      * @since 2.5
      */
     public DownloadedFile(File file, String name, String contentType) throws FileNotFoundException {
-        super(contentType, file.length(), new FileInputStream(file), name);
+        super(contentType, file.length(), null, name);
+
+        this.file = file;
+        //记录更新时间
+        lastModified(new Date(file.lastModified()));
     }
 }

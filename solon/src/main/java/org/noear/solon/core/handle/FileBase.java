@@ -12,21 +12,28 @@ import java.io.*;
  */
 public abstract class FileBase {
     /**
+     * 内容流
+     */
+    protected InputStream content;
+    /**
      * 内容类型（有些地方会动态构建，所以不能只读）
      */
-    private String contentType;
+    protected String contentType;
     /**
      * 内容大小
      */
-    private long contentSize;
-    /**
-     * 内容流
-     */
-    private InputStream content;
+    protected long contentSize;
     /**
      * 文件名（带扩展名，例：demo.jpg）
      */
-    private String name;
+    protected String name;
+
+    /**
+     * 内容流
+     */
+    public InputStream getContent() throws IOException {
+        return content;
+    }
 
 
     /**
@@ -40,23 +47,12 @@ public abstract class FileBase {
     /**
      * 内容大小
      */
-    public long getContentSize() {
+    public long getContentSize() throws IOException{
         if (contentSize > 0) {
             return contentSize;
         } else {
-            try {
-                return content.available();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            return getContent().available();
         }
-    }
-
-    /**
-     * 内容流
-     */
-    public InputStream getContent() {
-        return content;
     }
 
     /**
@@ -92,7 +88,7 @@ public abstract class FileBase {
      */
     public void transferTo(File file) throws IOException {
         try (FileOutputStream stream = new FileOutputStream(file)) {
-            IoUtil.transferTo(content, stream);
+            IoUtil.transferTo(getContent(), stream);
         }
     }
 
@@ -102,6 +98,6 @@ public abstract class FileBase {
      * @param stream 目标输出流
      */
     public void transferTo(OutputStream stream) throws IOException {
-        IoUtil.transferTo(content, stream);
+        IoUtil.transferTo(getContent(), stream);
     }
 }

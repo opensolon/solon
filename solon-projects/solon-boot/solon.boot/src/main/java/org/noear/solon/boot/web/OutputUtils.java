@@ -56,7 +56,7 @@ public class OutputUtils {
                     ctx.headerSet(CACHE_CONTROL, "max-age=" + file.getMaxAgeSeconds());//单位秒
                     ctx.headerSet(LAST_MODIFIED, modified_now);
                     ctx.status(304);
-                    file.getContent().close();
+                    file.close();
                     return;
                 }
             }
