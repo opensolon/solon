@@ -65,7 +65,7 @@ public class DownloadedFile extends FileBase implements Closeable {
      * 缓存控制
      */
     public DownloadedFile cacheControl(int maxAgeSeconds) {
-        this.maxAgeSeconds = 0;
+        this.maxAgeSeconds = maxAgeSeconds;
         return this;
     }
 

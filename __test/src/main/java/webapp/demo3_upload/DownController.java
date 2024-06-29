@@ -45,7 +45,10 @@ public class DownController {
         String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
-        return new DownloadedFile(file).asAttachment(false);
+        return new DownloadedFile(file)
+                .asAttachment(false)
+                .cacheControl(360)
+                .eTag(String.valueOf(file.lastModified()));
     }
 
 

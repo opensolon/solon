@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.prop.GzipProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
+import org.noear.solon.core.util.DateUtil;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.LogUtil;
 
@@ -43,13 +44,20 @@ public class OutputUtils {
      * 输出文件（主要是给动态输出用）
      */
     public void outputFile(Context ctx, DownloadedFile file, boolean asAttachment) throws IOException {
+        //type
+        if (Utils.isNotEmpty(file.getContentType())) {
+            ctx.contentType(file.getContentType());
+        }
+
+        //etag
         if (Utils.isNotEmpty(file.getETag())) {
             ctx.headerSet("ETag", file.getETag());
         }
 
+        //cache
         if (file.getMaxAgeSeconds() > 0) {
             String modified_since = ctx.header("If-Modified-Since");
-            String modified_now = file.getLastModified().toString();
+            String modified_now = DateUtil.toGmtString(file.getLastModified());
 
             if (modified_since != null) {
                 if (modified_since.equals(modified_now)) {
@@ -65,6 +73,7 @@ public class OutputUtils {
             ctx.headerSet(LAST_MODIFIED, modified_now);
         }
 
+        //attachment
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             if (asAttachment) {
@@ -74,11 +83,7 @@ public class OutputUtils {
             }
         }
 
-        //输出内容类型
-        if (Utils.isNotEmpty(file.getContentType())) {
-            ctx.contentType(file.getContentType());
-        }
-
+        //output
         try (InputStream ins = file.getContent()) {
             outputStream(ctx, ins, file.getContentSize(), file.getContentType());
         }
