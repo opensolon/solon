@@ -85,7 +85,9 @@ public class DownloadedFile extends FileBase implements Closeable {
         return this;
     }
 
-    @Override
+    /**
+     * 内容
+     */
     public InputStream getContent() throws IOException {
         if (content == null) {
             content = new FileInputStream(file);
@@ -94,9 +96,20 @@ public class DownloadedFile extends FileBase implements Closeable {
         return content;
     }
 
+    /**
+     * 内容大小
+     */
+    public long getContentSize() throws IOException {
+        if (contentSize > 0) {
+            return contentSize;
+        } else {
+            return getContent().available();
+        }
+    }
+
     @Override
     public void close() throws IOException {
-        if(content != null){
+        if (content != null) {
             content.close();
         }
     }

@@ -340,10 +340,19 @@ public class ResourceUtil {
         }
 
         //确定没有星号的起始目录
-        int dirIdx = resExpr.indexOf("/");
+        int dirIdx = resExpr.indexOf('/');
 
         if (dirIdx < 1 || dirIdx > xinIdx) {
             throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " + resExpr);
+        }
+
+        while (true) {
+            int tmp = resExpr.indexOf('/', dirIdx + 1);
+            if (tmp > dirIdx && tmp < xinIdx) {
+                dirIdx = tmp;
+            } else {
+                break;
+            }
         }
 
         String dir = resExpr.substring(0, dirIdx);

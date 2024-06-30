@@ -1,5 +1,7 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.IoUtil;
+
 import java.io.*;
 
 /**
@@ -35,6 +37,28 @@ public class UploadedFile extends FileBase {
      */
     public String getExtension() {
         return extension;
+    }
+
+    /**
+     * 内容流
+     */
+    public InputStream getContent() {
+        return content;
+    }
+
+    /**
+     * 内容大小
+     */
+    public long getContentSize() {
+        if (contentSize > 0) {
+            return contentSize;
+        } else {
+            try {
+                return getContent().available();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**
@@ -97,5 +121,27 @@ public class UploadedFile extends FileBase {
      */
     public boolean isEmpty() throws IOException {
         return getContentSize() == 0L;
+    }
+
+
+
+    /**
+     * 将内容流迁移到目标文件
+     *
+     * @param file 目标文件
+     */
+    public void transferTo(File file) throws IOException {
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            IoUtil.transferTo(getContent(), stream);
+        }
+    }
+
+    /**
+     * 将内容流迁移到目标输出流
+     *
+     * @param stream 目标输出流
+     */
+    public void transferTo(OutputStream stream) throws IOException {
+        IoUtil.transferTo(getContent(), stream);
     }
 }
