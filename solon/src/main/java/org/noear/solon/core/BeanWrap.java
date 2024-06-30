@@ -252,6 +252,8 @@ public class BeanWrap {
 
     /**
      * bean 获取对象（未代理的）
+     *
+     * @param unproxied 未代理的
      */
     public <T> T get(boolean unproxied) {
         if (unproxied) {
