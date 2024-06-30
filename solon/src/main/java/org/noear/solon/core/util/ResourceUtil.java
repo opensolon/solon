@@ -355,6 +355,7 @@ public class ResourceUtil {
             }
         }
 
+
         String dir = resExpr.substring(0, dirIdx);
 
         //确定后缀
