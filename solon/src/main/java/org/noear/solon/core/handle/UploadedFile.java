@@ -60,7 +60,18 @@ public class UploadedFile extends FileBase {
             }
         }
     }
-
+    
+    /**
+     * 获取字节
+     * 文件的内容为字节，如果为空，则为空字节数组
+     */
+    public byte[] getBytes() throws IOException {
+        if (content == null) {
+            return new byte[0];
+        }
+        return IoUtil.transferToBytes(content);
+    }
+    
     /**
      * 上传文件
      */
@@ -122,8 +133,6 @@ public class UploadedFile extends FileBase {
     public boolean isEmpty() throws IOException {
         return getContentSize() == 0L;
     }
-
-
 
     /**
      * 将内容流迁移到目标文件
