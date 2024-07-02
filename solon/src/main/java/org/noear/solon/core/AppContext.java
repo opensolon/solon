@@ -445,10 +445,11 @@ public class AppContext extends BeanContainer {
                                 throw new RuntimeException(e);
                             }
                         }
-                    } else {
-                        //是否需要自动代理
-                        enableProxy = enableProxy || requiredProxy(a);
                     }
+
+                    //是否需要自动代理
+                    enableProxy = enableProxy || requiredProxy(a);
+
                 }
             }
         }
