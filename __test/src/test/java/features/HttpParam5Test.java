@@ -61,4 +61,11 @@ public class HttpParam5Test extends HttpTester {
         rst = path("/demo2/param5/test4?a=1").data("b", "2").multipart(true).delete();
         assert test4_rst1.equals(rst) || test4_rst2.equals(rst);
     }
+
+    @Test
+    public void test5() throws Exception {
+        String rst = path("/demo2/param5/test5?name=1").get();
+
+        assert "postArguments".equals(rst);
+    }
 }

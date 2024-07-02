@@ -32,4 +32,9 @@ public class Param5Controller {
     public String test4(Context ctx) {
         return ONode.stringify(ctx.paramsMap());
     }
+
+    @Mapping("test5")
+    public String postArguments(String name) {
+        return name;
+    }
 }
