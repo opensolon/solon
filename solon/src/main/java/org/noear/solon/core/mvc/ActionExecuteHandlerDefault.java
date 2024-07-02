@@ -2,6 +2,7 @@ package org.noear.solon.core.mvc;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -112,6 +113,8 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                     //尝试数据转换
                     try {
                         tv = changeValue(ctx, p, i, pt, bodyObj);
+                    } catch (ConstructionException e) {
+                        throw e;
                     } catch (Exception e) {
                         String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
                         throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);

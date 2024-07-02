@@ -113,7 +113,7 @@ public class ClassWrap {
 
     /**
      * @deprecated 2.5
-     * */
+     */
     @Deprecated
     public Map<String, FieldWrap> getFieldAllWraps() {
         return getFieldWraps();
@@ -177,7 +177,13 @@ public class ClassWrap {
 
 
     public <T> T newBy(Function<String, String> data) {
-        return newBy(data, null);
+        try {
+            return newBy(data, null);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
@@ -187,44 +193,38 @@ public class ClassWrap {
      * @param data 填充数据
      * @param ctx  上下文
      */
-    public <T> T newBy(Function<String, String> data, Context ctx) {
-        try {
-            if (recordable()) {
-                //for record
-                List<ParamWrap> argsP = recordParams();
-                Object[] argsV = new Object[argsP.size()];
+    public <T> T newBy(Function<String, String> data, Context ctx) throws Exception {
+        if (recordable()) {
+            //for record
+            List<ParamWrap> argsP = recordParams();
+            Object[] argsV = new Object[argsP.size()];
 
-                for (int i = 0; i < argsP.size(); i++) {
-                    ParamWrap p = argsP.get(i);
-                    String key = p.getName();
-                    String val0 = data.apply(key);
+            for (int i = 0; i < argsP.size(); i++) {
+                ParamWrap p = argsP.get(i);
+                String key = p.getName();
+                String val0 = data.apply(key);
 
-                    if (val0 != null) {
-                        //将 string 转为目标 type，并为字段赋值
-                        Object val = ConvertUtil.to(p, val0, ctx);
-                        argsV[i] = val;
+                if (val0 != null) {
+                    //将 string 转为目标 type，并为字段赋值
+                    Object val = ConvertUtil.to(p, val0, ctx);
+                    argsV[i] = val;
+                } else {
+                    if (p.getType() == UploadedFile.class) {
+                        argsV[i] = ctx.file(key);//如果是 UploadedFile
                     } else {
-                        if (p.getType() == UploadedFile.class) {
-                            argsV[i] = ctx.file(key);//如果是 UploadedFile
-                        } else {
-                            argsV[i] = null;
-                        }
+                        argsV[i] = null;
                     }
                 }
-
-                Object obj = recordConstructor().newInstance(argsV);
-                return (T) obj;
-            } else {
-                Object obj = ClassUtil.newInstance(clz());
-
-                doFill(obj, data, ctx);
-
-                return (T) obj;
             }
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+
+            Object obj = recordConstructor().newInstance(argsV);
+            return (T) obj;
+        } else {
+            Object obj = ClassUtil.newInstance(clz());
+
+            doFill(obj, data, ctx);
+
+            return (T) obj;
         }
     }
 

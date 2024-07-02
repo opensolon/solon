@@ -1,8 +1,8 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.exception.ConstructionException;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 /**
@@ -124,8 +124,7 @@ public class ClassUtil {
      *
      * @param clz 类
      */
-    public static <T> T newInstance(Class<?> clz) throws InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public static <T> T newInstance(Class<?> clz) throws ConstructionException {
         return newInstance(clz, null);
     }
 
@@ -136,12 +135,15 @@ public class ClassUtil {
      * @param clz  类
      * @param prop 属性
      */
-    public static <T> T newInstance(Class<?> clz, Properties prop) throws InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        if (prop == null) {
-            return (T) clz.getDeclaredConstructor().newInstance();
-        } else {
-            return (T) clz.getConstructor(Properties.class).newInstance(prop);
+    public static <T> T newInstance(Class<?> clz, Properties prop) throws ConstructionException {
+        try {
+            if (prop == null) {
+                return (T) clz.getDeclaredConstructor().newInstance();
+            } else {
+                return (T) clz.getConstructor(Properties.class).newInstance(prop);
+            }
+        } catch (Exception e) {
+            throw new ConstructionException(e);
         }
     }
 

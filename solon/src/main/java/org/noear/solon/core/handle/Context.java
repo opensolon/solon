@@ -543,7 +543,7 @@ public abstract class Context {
     /**
      * 获取参数并转为Bean
      * */
-    public <T> T paramAsBean(Class<T> type) {
+    public <T> T paramAsBean(Class<T> type) throws Exception {
         //不如参数注入的强；不支持 body 转换;
         return ClassWrap.get(type).newBy(this::param, this);
     }
