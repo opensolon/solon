@@ -12,11 +12,10 @@ import java.io.*;
  * @since 2.4
  */
 public class IoUtil {
-    
     /**
      * 默认缓冲区大小
      */
-    public static final int BUFFER_SIZE = 512;
+    private static final int BUFFER_SIZE = 512;
     
     /**
      * 转移到字符串

@@ -30,10 +30,13 @@
 * 添加 Router::getBy(controllerClz) 方法，用于管理需求
 * 添加 ChainManager::addExecuteHandler(e,index) 方法，支持执行器排序
 * 添加 RouterInterceptor::postArguments 提交参数确认
+* 添加 UploadedFile::getContentAsBytes 方法
+* 添加 DownloadedFile 动态 304 的支持
 * 优化 `solon.config.load` 支持 `classpath:` 前缀
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 修复 solon.logging forward 时清掉 mdc 的问题
+* 修复 一个注解同时用 beanInterceptorAdd 和 beanExtractorAdd 时 不能启用动态代理的问题
 * redisx 升为 1.6.4
 * snack3 升为 3.2.103
 * nacos2 升为 2.3.2

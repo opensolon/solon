@@ -47,6 +47,20 @@ public class UploadedFile extends FileBase {
     }
 
     /**
+     * 内容字节形式
+     *
+     * @since 2.8
+     */
+    public byte[] getContentAsBytes() throws IOException {
+        if (content == null) {
+            //如果为空，则为空字节数组
+            return new byte[0];
+        }
+
+        return IoUtil.transferToBytes(content);
+    }
+
+    /**
      * 内容大小
      */
     public long getContentSize() {
@@ -60,18 +74,8 @@ public class UploadedFile extends FileBase {
             }
         }
     }
-    
-    /**
-     * 获取字节
-     * 文件的内容为字节，如果为空，则为空字节数组
-     */
-    public byte[] getBytes() throws IOException {
-        if (content == null) {
-            return new byte[0];
-        }
-        return IoUtil.transferToBytes(content);
-    }
-    
+
+
     /**
      * 上传文件
      */
