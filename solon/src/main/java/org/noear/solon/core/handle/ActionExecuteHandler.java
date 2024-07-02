@@ -19,12 +19,20 @@ public interface ActionExecuteHandler {
     boolean matched(Context ctx, String contentType);
 
     /**
+     * 参数分析
+     *
+     * @param ctx    上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
+     */
+    Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
+
+    /**
      * 执行
      *
-     * @param ctx   上下文
-     * @param obj   控制器
-     * @param mWrap 函数包装器
+     * @param ctx    上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
      */
-    Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable;
-
+    Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
 }

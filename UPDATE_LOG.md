@@ -28,6 +28,8 @@
 * 添加 MethodKey 类
 * 添加 ClassUtil:resolveClassLoader 方法
 * 添加 Router::getBy(controllerClz) 方法，用于管理需求
+* 添加 ChainManager::addExecuteHandler(e,index) 方法，支持执行器排序
+* 添加 RouterInterceptor::postArguments 提交参数确认
 * 优化 `solon.config.load` 支持 `classpath:` 前缀
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理

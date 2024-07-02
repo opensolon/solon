@@ -342,11 +342,19 @@ public class ActionDefault extends HandlerAide implements Action {
         }
     }
 
-    protected Object executeDo(Context c, Object obj) throws Throwable {
+    protected Object executeDo(Context c, Object target) throws Throwable {
         ActionExecuteHandler executeHandler = Solon.app().chainManager()
                 .getExecuteHandler(c, mWrap.getParamWraps().length);
 
-        return executeHandler.executeHandle(c, obj, mWrap);
+
+        //分析参数
+        Object[] args = executeHandler.resolveArguments(c, target, mWrap);
+
+        //参数提交确认
+        Solon.app().chainManager().postArguments(c, mWrap.getParamWraps(), args);
+
+        //质变行
+        return mWrap.invokeByAspect(target, args);
     }
 
     public void render(Object obj, Context c) throws Throwable {

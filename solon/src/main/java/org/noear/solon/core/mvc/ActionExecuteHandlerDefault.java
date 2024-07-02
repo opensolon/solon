@@ -37,16 +37,27 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 执行
      *
-     * @param ctx   上下文
-     * @param obj   控制器
-     * @param mWrap 函数包装器
+     * @param ctx    上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
      */
     @Override
-    public Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        List<Object> args = buildArgs(ctx, obj, mWrap);
-        return mWrap.invokeByAspect(obj, args.toArray());
+    public Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        Object[] args = resolveArguments(ctx, target, mWrap);
+        return mWrap.invokeByAspect(target, args);
     }
 
+    /**
+     * 执行
+     *
+     * @param ctx    上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
+     */
+    @Override
+    public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
+        return buildArgs(ctx, target, mWrap).toArray();
+    }
 
     /**
      * 构建执行参数

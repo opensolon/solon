@@ -6,8 +6,10 @@ import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChainImpl;
 import org.noear.solon.core.route.RouterInterceptorLimiter;
 import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.lang.Nullable;
 
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -175,6 +177,17 @@ public class ChainManager {
     public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
         //先执行的，包住后执行的
         new RouterInterceptorChainImpl(interceptorNodes).doIntercept(x, mainHandler);
+    }
+
+    /**
+     * 提交参数（action / invoke 执行前调用）
+     */
+    public void postArguments(Context x, ParamWrap[] args, Object[] vals) throws Throwable {
+        //后执行的，包住先执行的（与 doIntercept 的顺序反了一下）
+        for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
+            RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
+            e.target.postArguments(x, args, vals);
+        }
     }
 
     /**
