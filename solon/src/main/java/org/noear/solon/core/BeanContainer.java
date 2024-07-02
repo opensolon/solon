@@ -8,7 +8,6 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.exception.InjectionException;
-import org.noear.solon.core.handle.ActionLoader;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;

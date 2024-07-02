@@ -434,6 +434,7 @@ public class AppContext extends BeanContainer {
                 for (Annotation a : m.getAnnotations()) {
                     BeanExtractor be = beanExtractors.get(a.annotationType());
 
+                    //是否需要提取
                     if (be != null) {
                         try {
                             be.doExtract(bw, m, a);
