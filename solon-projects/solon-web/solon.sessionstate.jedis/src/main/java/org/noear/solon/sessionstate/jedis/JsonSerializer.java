@@ -12,7 +12,18 @@ import org.noear.solon.core.util.ClassUtil;
  * @since 2.5
  */
 public class JsonSerializer implements Serializer<String> {
-    public static final JsonSerializer instance = new JsonSerializer();
+    public static final org.noear.solon.data.cache.impl.JsonSerializer instance = new org.noear.solon.data.cache.impl.JsonSerializer(false);
+    public static final org.noear.solon.data.cache.impl.JsonSerializer typedInstance = new org.noear.solon.data.cache.impl.JsonSerializer(true);
+
+    private final boolean typed;
+
+    public JsonSerializer() {
+        this(false);
+    }
+
+    public JsonSerializer(boolean typed) {
+        this.typed = typed;
+    }
 
     @Override
     public String name() {
@@ -21,7 +32,11 @@ public class JsonSerializer implements Serializer<String> {
 
     @Override
     public String serialize(Object fromObj) {
-        return ONode.stringify(fromObj);
+        if (typed) {
+            return ONode.serialize(fromObj);
+        } else {
+            return ONode.stringify(fromObj);
+        }
     }
 
     @Override
