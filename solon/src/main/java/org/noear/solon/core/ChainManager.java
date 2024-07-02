@@ -219,7 +219,7 @@ public class ChainManager {
     /**
      * 动作执行库
      */
-    private Map<Class<?>, ActionExecuteHandler> executeHandlers = new LinkedHashMap<>();
+    private List<RankEntity<ActionExecuteHandler>> executeHandlers = new ArrayList<>();
 
     public void defExecuteHandler(ActionExecuteHandler e) {
         if (e != null) {
@@ -231,8 +231,21 @@ public class ChainManager {
      * 添加Action执行器
      */
     public void addExecuteHandler(ActionExecuteHandler e) {
+        addExecuteHandler(e, 0);
+    }
+
+    /**
+     * 添加Action执行器
+     *
+     * @param index 顺序位
+     */
+    public void addExecuteHandler(ActionExecuteHandler e, int index) {
         if (e != null) {
-            executeHandlers.put(e.getClass(), e);
+            executeHandlers.add(new RankEntity<>(e, index));
+
+            if (index != 0) {
+                executeHandlers.sort(Comparator.comparingInt(f -> f.index));
+            }
         }
     }
 
@@ -250,9 +263,9 @@ public class ChainManager {
             //
             //仅有参数时，才执行执行其它执行器
             //
-            for (ActionExecuteHandler me : executeHandlers.values()) {
-                if (me.matched(c, ct)) {
-                    return me;
+            for (RankEntity<ActionExecuteHandler> me : executeHandlers) {
+                if (me.target.matched(c, ct)) {
+                    return me.target;
                 }
             }
         }
