@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Json 序列化器
@@ -60,11 +61,11 @@ public class SnackStringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(String data, Type toType) throws IOException {
+        if (toType == null) {
             return ONode.loadStr(data, getConfig());
         } else {
-            return ONode.loadStr(data, getConfig()).toObject(clz);
+            return ONode.loadStr(data, getConfig()).toObject(toType);
         }
     }
 

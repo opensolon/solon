@@ -1,6 +1,7 @@
 package org.noear.solon.core.serialize;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * 序列化器
@@ -22,5 +23,5 @@ public interface Serializer<T> {
     /**
      * 反序列化
      */
-    Object deserialize(T data, Class<?> toClz) throws IOException;
+    Object deserialize(T data, Type toType) throws IOException;
 }

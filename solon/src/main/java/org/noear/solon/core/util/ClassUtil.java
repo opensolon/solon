@@ -3,6 +3,8 @@ package org.noear.solon.core.util;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -188,16 +190,35 @@ public class ClassUtil {
     /**
      * 分析类加载器
      */
-    public static ClassLoader resolveClassLoader(Class<?> clz) {
+    public static ClassLoader resolveClassLoader(Type type) {
         ClassLoader loader = AppClassLoader.global();
 
-        if (clz != null && clz != Object.class) {
-            ClassLoader cl = clz.getClassLoader();
-            if (cl != systemClassLoader) {
-                loader = cl;
+        if (type != null) {
+            Class<?> clz = getTypeClass(type);
+
+            if (clz != Object.class) {
+                ClassLoader cl = clz.getClassLoader();
+                if (cl != systemClassLoader) {
+                    loader = cl;
+                }
             }
         }
 
         return loader;
+    }
+
+    /**
+     * 获取类
+     */
+    public static Class<?> getTypeClass(Type type) {
+        if (type instanceof Class) {
+            return (Class<?>) type;
+        } else if (type instanceof ParameterizedType) {
+            //ParameterizedType
+            return getTypeClass(((ParameterizedType) type).getRawType());
+        } else {
+            //TypeVariable
+            return Object.class;
+        }
     }
 }

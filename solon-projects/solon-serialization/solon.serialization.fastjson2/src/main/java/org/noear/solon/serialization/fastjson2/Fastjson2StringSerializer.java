@@ -9,9 +9,11 @@ import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Fastjson2 字符串序列化
@@ -86,10 +88,11 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(String data, Type toType) throws IOException {
+        if (toType == null) {
             return JSON.parse(data, getDeserializeConfig());
         } else {
+            Class<?> clz = ClassUtil.getTypeClass(toType);
             return JSON.parseObject(data, clz, getDeserializeConfig());
         }
     }

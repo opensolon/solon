@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * @author noear
@@ -56,10 +58,11 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(String data, Type toType) throws IOException {
+        if (toType == null) {
             return getConfig().readTree(data);
         } else {
+            Class<?> clz = ClassUtil.getTypeClass(toType);
             return getConfig().readValue(data, clz);
         }
     }

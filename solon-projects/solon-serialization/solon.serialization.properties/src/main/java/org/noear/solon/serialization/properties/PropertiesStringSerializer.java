@@ -6,9 +6,11 @@ import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,14 +70,14 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
+    public Object deserialize(String data, Type toType) throws IOException {
         Properties prop = Utils.buildProperties(data);
 
-        if (clz == null) {
+        if (toType == null) {
             return prop;
         } else {
             ONode oNode = ONode.loadObj(prop, getConfig());
-            return oNode.toObject(clz);
+            return oNode.toObject(toType);
         }
     }
 

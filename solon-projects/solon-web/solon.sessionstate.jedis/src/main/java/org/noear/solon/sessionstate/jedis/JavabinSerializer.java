@@ -4,6 +4,7 @@ import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.Base64;
 
 /**
@@ -31,13 +32,13 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String dta, Class<?> clz) {
+    public Object deserialize(String dta, Type toType) {
         if (dta == null) {
             return null;
         }
 
         //分析类加载器
-        ClassLoader loader = ClassUtil.resolveClassLoader(clz);
+        ClassLoader loader = ClassUtil.resolveClassLoader(toType);
 
         byte[] bytes = Base64.getDecoder().decode(dta);
         return deserializeDo(loader, bytes);

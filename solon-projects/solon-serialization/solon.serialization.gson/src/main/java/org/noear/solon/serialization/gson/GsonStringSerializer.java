@@ -10,6 +10,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Gson 字符串序列化
@@ -77,12 +78,12 @@ public class GsonStringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(String data, Type toType) throws IOException {
+        if (toType == null) {
             return JsonParser.parseString(data);
         } else {
             JsonElement jsonElement = JsonParser.parseString(data);
-            return getGson().fromJson(jsonElement, clz);
+            return getGson().fromJson(jsonElement, toType);
         }
     }
 

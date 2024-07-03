@@ -5,6 +5,8 @@ import org.noear.snack.core.Options;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 
+import java.lang.reflect.Type;
+
 /**
  * Json 序列化实现
  *
@@ -15,7 +17,7 @@ public class JsonSerializer implements Serializer<String> {
     public static final JsonSerializer instance = new JsonSerializer(false);
     /**
      * @since 2.8
-     * */
+     */
     public static final JsonSerializer typedInstance = new JsonSerializer(true);
 
     private final boolean typed;
@@ -43,12 +45,12 @@ public class JsonSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String dta, Class<?> toClz) {
+    public Object deserialize(String dta, Type toType) {
         Options options = Options.serialize();
 
         //分析类加载器
-        options.setClassLoader(ClassUtil.resolveClassLoader(toClz));
+        options.setClassLoader(ClassUtil.resolveClassLoader(toType));
 
-        return ONode.load(dta, options).toObject(toClz);
+        return ONode.load(dta, options).toObject(toType);
     }
 }

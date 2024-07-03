@@ -7,9 +7,11 @@ import org.apache.fury.config.Language;
 import org.apache.fury.resolver.AllowListChecker;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
@@ -77,10 +79,11 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     @Override
-    public Object deserialize(byte[] data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(byte[] data, Type toType) throws IOException {
+        if (toType == null) {
             return fury.deserialize(data);
         } else {
+            Class<?> clz = ClassUtil.getTypeClass(toType);
             return fury.deserializeJavaObject(data, clz);
         }
     }

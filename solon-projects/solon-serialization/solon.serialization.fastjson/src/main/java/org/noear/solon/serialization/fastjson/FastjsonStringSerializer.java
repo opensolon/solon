@@ -12,6 +12,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Fastjson 字符串序列化
@@ -102,8 +103,8 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
-        if (clz == null) {
+    public Object deserialize(String data, Type toType) throws IOException {
+        if (toType == null) {
             if (deserializeConfig == null) {
                 return JSON.parse(data, deserializeFeatures);
             } else {
@@ -111,9 +112,9 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
             }
         } else {
             if (deserializeConfig == null) {
-                return JSON.parseObject(data, clz, deserializeFeatures);
+                return JSON.parseObject(data, toType, deserializeFeatures);
             } else {
-                return JSON.parseObject(data, clz, deserializeConfig, deserializeFeatures);
+                return JSON.parseObject(data, toType, deserializeConfig, deserializeFeatures);
             }
         }
     }

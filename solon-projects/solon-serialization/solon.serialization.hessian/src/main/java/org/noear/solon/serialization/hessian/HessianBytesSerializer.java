@@ -9,6 +9,7 @@ import org.noear.solon.serialization.ContextSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * @author noear
@@ -48,7 +49,7 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     @Override
-    public Object deserialize(byte[] data, Class<?> clz) throws IOException {
+    public Object deserialize(byte[] data, Type toType) throws IOException {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(data));
         return hi.readObject();
     }

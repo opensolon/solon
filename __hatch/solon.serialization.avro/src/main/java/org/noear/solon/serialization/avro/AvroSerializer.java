@@ -4,10 +4,12 @@ import org.apache.avro.io.*;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * @author noear
@@ -31,7 +33,9 @@ public class AvroSerializer implements Serializer<String> {
     }
 
     @Override
-    public Object deserialize(String data, Class<?> clz) throws IOException {
+    public Object deserialize(String data, Type toType) throws IOException {
+        Class<?> clz = ClassUtil.getTypeClass(toType);
+
         DatumReader datumReader = new SpecificDatumReader(clz);
         ByteArrayInputStream in = new ByteArrayInputStream(data.getBytes());
         BinaryDecoder decoder = DecoderFactory.get().binaryDecoder(in, null);

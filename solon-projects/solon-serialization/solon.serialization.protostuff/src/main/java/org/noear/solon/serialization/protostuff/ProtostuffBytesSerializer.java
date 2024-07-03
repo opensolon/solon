@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Protostuff 序列化器
@@ -57,7 +58,7 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     @Override
-    public Object deserialize(byte[] data, Class<?> clz) throws IOException {
+    public Object deserialize(byte[] data, Type toType) throws IOException {
         try {
             DataWrapper wrapper = new DataWrapper();
             ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
