@@ -9,6 +9,7 @@ import org.redisson.client.codec.StringCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -124,7 +125,7 @@ public class RedissonCacheService implements CacheService {
     }
 
     @Override
-    public <T> T get(String key, Class<T> clz) {
+    public <T> T get(String key, Type type) {
         String newKey = newKey(key);
 
 
@@ -137,7 +138,7 @@ public class RedissonCacheService implements CacheService {
                     return null;
                 }
 
-                obj = _serializer.deserialize((String) obj, clz);
+                obj = _serializer.deserialize((String) obj, type);
 
                 return (T) obj;
             }

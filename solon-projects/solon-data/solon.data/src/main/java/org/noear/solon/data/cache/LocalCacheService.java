@@ -3,6 +3,7 @@ package org.noear.solon.data.cache;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.RunUtil;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.*;
@@ -87,7 +88,7 @@ public class LocalCacheService implements CacheService {
      * @param key 缓存键
      */
     @Override
-    public <T> T get(String key, Class<T> clz) {
+    public <T> T get(String key, Type type) {
         Entity ent = _data.get(key);
 
         return ent == null ? null : (T) ent.value;

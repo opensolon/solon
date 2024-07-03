@@ -1,5 +1,7 @@
 package org.noear.solon.data.cache;
 
+import java.lang.reflect.Type;
+
 /**
  * 二级缓存服务
  *
@@ -38,10 +40,10 @@ public class SecondCacheService implements CacheService {
     }
 
     @Override
-    public <T> T get(String key, Class<T> clz) {
-        T temp = cache1.get(key, clz);
+    public <T> T get(String key, Type type) {
+        T temp = cache1.get(key, type);
         if (temp == null) {
-            temp = cache2.get(key, clz);
+            temp = cache2.get(key, type);
             if (bufferSeconds > 0 && temp != null) {
                 cache1.store(key, temp, bufferSeconds);
             }

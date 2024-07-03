@@ -1,5 +1,6 @@
 package org.noear.solon.data.cache;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +55,8 @@ public class CacheTagsServiceImpl implements CacheTagsService {
     }
 
     @Override
-    public <T> T get(String key, Class<T> clz) {
-        return this._cache.get(key, clz);
+    public <T> T get(String key, Type type) {
+        return this._cache.get(key, type);
     }
 
     @Override

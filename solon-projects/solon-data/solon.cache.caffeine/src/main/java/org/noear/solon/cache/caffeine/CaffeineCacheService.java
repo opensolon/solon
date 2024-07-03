@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.data.cache.CacheService;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -82,12 +83,12 @@ public class CaffeineCacheService implements CacheService {
     }
 
     @Override
-    public <T> T get(String key, Class<T> clz) {
+    public <T> T get(String key, Type type) {
         return (T) client.getIfPresent(key);
     }
 
     @Override
-    public <T> T getOrStore(String key, Class<T> clz, int seconds, Supplier<T> supplier) {
+    public <T> T getOrStore(String key, Type type, int seconds, Supplier<T> supplier) {
         return (T) client.get(key, (k) -> supplier.get());
     }
 }

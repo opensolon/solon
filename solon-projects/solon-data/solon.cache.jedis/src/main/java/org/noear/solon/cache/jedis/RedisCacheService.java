@@ -9,6 +9,7 @@ import org.noear.solon.data.cache.impl.JavabinSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -140,7 +141,7 @@ public class RedisCacheService implements CacheService {
     }
 
     @Override
-    public <T> T get(String key, Class<T> clz) {
+    public <T> T get(String key, Type type) {
         String newKey = newKey(key);
         String val = client.openAndGet((ru) -> ru.key(newKey).get());
 
@@ -149,7 +150,7 @@ public class RedisCacheService implements CacheService {
         }
 
         try {
-            return (T) _serializer.deserialize(val, clz);
+            return (T) _serializer.deserialize(val, type);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             return null;

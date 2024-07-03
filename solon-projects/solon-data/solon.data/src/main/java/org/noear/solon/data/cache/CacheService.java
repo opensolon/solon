@@ -1,5 +1,6 @@
 package org.noear.solon.data.cache;
 
+import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 /**
@@ -42,15 +43,24 @@ public interface CacheService {
      *
      * @param key 缓存键
      */
-    <T> T get(String key, Class<T> clz);
+    <T> T get(String key, Type type);
+
+    /**
+     * 获取
+     *
+     * @param key 缓存键
+     */
+    default <T> T get(String key, Class<T> type) {
+        return get(key, (Type) type);
+    }
 
     /**
      * 获取或者存储
      *
      * @since 1.7
      */
-    default <T> T getOrStore(String key, Class<T> clz, int seconds, Supplier<T> supplier) {
-        T obj = get(key, clz);
+    default <T> T getOrStore(String key, Type type, int seconds, Supplier<T> supplier) {
+        T obj = get(key, type);
         if (obj == null) {
             obj = supplier.get();
             store(key, obj, seconds);

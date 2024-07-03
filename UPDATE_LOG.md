@@ -37,6 +37,7 @@
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon Serializer 接口定义，更好支持泛型
+* 优化 solon CacheService 接口定义，更好支持泛型
 * 修复 solon.logging forward 时会清掉 mdc 的问题
 * 修复 一个注解同时用 beanInterceptorAdd 和 beanExtractorAdd 时 不能启用代理的问题
 * redisx 升为 1.6.4
