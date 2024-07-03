@@ -13,6 +13,9 @@ import org.noear.solon.core.util.ClassUtil;
  */
 public class JsonSerializer implements Serializer<String> {
     public static final JsonSerializer instance = new JsonSerializer(false);
+    /**
+     * @since 2.8
+     * */
     public static final JsonSerializer typedInstance = new JsonSerializer(true);
 
     private final boolean typed;
