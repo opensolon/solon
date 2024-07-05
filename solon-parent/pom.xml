@@ -31,10 +31,10 @@
 
         <snack3.version>3.2.104</snack3.version>
         <weed3.version>3.4.33</weed3.version>
-        <wood.version>1.2.11</wood.version>
+        <wood.version>1.2.12</wood.version>
         <water.version>2.13.2</water.version>
         <luffy.version>1.7.5</luffy.version>
-        <redisx.version>1.6.4</redisx.version>
+        <redisx.version>1.6.5</redisx.version>
         <socketd.version>2.5.7</socketd.version>
         <folkmq.version>1.7.2</folkmq.version>
         <redisson.version>3.27.2</redisson.version>

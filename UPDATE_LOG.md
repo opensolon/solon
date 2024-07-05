@@ -41,9 +41,11 @@
 * 优化 solon CacheService 接口定义，更好支持泛型
 * 修复 solon.logging forward 时会清掉 mdc 的问题
 * 修复 一个注解同时用 beanInterceptorAdd 和 beanExtractorAdd 时 不能启用代理的问题
-* redisx 升为 1.6.4
-* snack3 升为 3.2.103
+* redisx 升为 1.6.5
+* snack3 升为 3.2.104
+* wood 升为 1.2.12
 * nacos2 升为 2.3.2
+* 
 
 ### 2.8.4
 * 新增 solon.net.httputils 插件
