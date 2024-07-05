@@ -32,6 +32,7 @@
 * 添加 solon RouterInterceptor::postArguments 提交参数确认（更方便 mvc 参数定制）
 * 添加 solon UploadedFile::getContentAsBytes 方法
 * 添加 solon DownloadedFile 动态 304 的支持
+* 添加 solon Component:registered，控制形态注册
 * 添加 solon.data 序列化新实例 JsonSerializer.typedInstance
 * 优化 solon `solon.config.load` 支持 `classpath:` 前缀
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理

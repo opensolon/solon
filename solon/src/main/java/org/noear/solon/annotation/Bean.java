@@ -45,6 +45,11 @@ public @interface Bean {
     int index() default 0;
 
     /**
+     * 要注册的（能力接口）
+     */
+    boolean registered() default true;
+
+    /**
      * 要注入的
      * */
     boolean injected() default false;

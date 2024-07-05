@@ -29,16 +29,21 @@ public @interface Component {
 
     /**
      * 标签，用于快速查找
-     * */
+     */
     String tag() default "";
 
     /**
      * 同时注册类型，仅当名称非空时有效
-     * */
+     */
     boolean typed() default false;
 
     /**
      * 排序（只对部分类型有效）
-     * */
+     */
     int index() default 0;
+
+    /**
+     * 要注册的（能力接口）
+     */
+    boolean registered() default true;
 }

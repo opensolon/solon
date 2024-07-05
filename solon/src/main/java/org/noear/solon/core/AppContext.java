@@ -180,7 +180,7 @@ public class AppContext extends BeanContainer {
             //确定顺序位
             bw.indexSet(anno.index());
 
-            beanComponentized(bw);
+            beanComponentized(bw, anno.registered());
         });
 
         //注册 @ProxyComponent 构建器 //@deprecated 2.5
@@ -195,7 +195,7 @@ public class AppContext extends BeanContainer {
             bw.indexSet(anno.index());
 
             //组件化处理
-            beanComponentized(bw);
+            beanComponentized(bw, true);
 
             LogUtil.global().error("@ProxyComponent will be discarded, suggested use '@Component'");
         });
@@ -222,12 +222,14 @@ public class AppContext extends BeanContainer {
     /**
      * 组件化处理
      */
-    protected void beanComponentized(BeanWrap bw) {
+    protected void beanComponentized(BeanWrap bw, boolean registered) {
         //尝试提取函数并确定自动代理
         beanExtractOrProxy(bw);
 
         //添加bean形态处理
-        beanShapeRegister(bw.clz(), bw, bw.clz());
+        if (registered) {
+            beanShapeRegister(bw.clz(), bw, bw.clz());
+        }
 
         //注册到容器
         beanRegister(bw, bw.name(), bw.typed());
@@ -810,7 +812,7 @@ public class AppContext extends BeanContainer {
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
             } else {
-                if(anno.injected()){
+                if (anno.injected()) {
                     //执行注入
                     beanInject(raw);
                 }
@@ -832,7 +834,9 @@ public class AppContext extends BeanContainer {
             m_bw.indexSet(anno.index());
 
             //添加bean形态处理
-            beanShapeRegister(m_bw.clz(), m_bw, mWrap.getMethod());
+            if (anno.registered()) {
+                beanShapeRegister(m_bw.clz(), m_bw, mWrap.getMethod());
+            }
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());
