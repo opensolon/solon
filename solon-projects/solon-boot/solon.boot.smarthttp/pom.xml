@@ -26,7 +26,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.smartboot.http</groupId>
+            <groupId>io.github.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
             <version>${smarthttp.version}</version>
             <exclusions>
@@ -38,7 +38,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.smartboot.socket</groupId>
+            <groupId>io.github.smartboot.socket</groupId>
             <artifactId>aio-pro</artifactId>
             <version>${smartsocket.version}</version>
         </dependency>

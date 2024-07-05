@@ -45,7 +45,8 @@
 * snack3 升为 3.2.104
 * wood 升为 1.2.12
 * nacos2 升为 2.3.2
-* 
+* smartsocket 升为 1.5.46
+* smarthttp 升为 1.5.2
 
 ### 2.8.4
 * 新增 solon.net.httputils 插件
