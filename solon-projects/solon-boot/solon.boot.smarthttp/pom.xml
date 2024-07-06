@@ -34,6 +34,10 @@
                     <groupId>org.smartboot.socket</groupId>
                     <artifactId>aio-pro</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -41,6 +45,12 @@
             <groupId>io.github.smartboot.socket</groupId>
             <artifactId>aio-pro</artifactId>
             <version>${smartsocket.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
