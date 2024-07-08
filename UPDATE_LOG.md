@@ -34,13 +34,16 @@
 * 添加 solon DownloadedFile 动态 304 的支持
 * 添加 solon Component:registered，控制形态注册
 * 添加 solon.data 序列化新实例 JsonSerializer.typedInstance
+* 添加 captcha-solon-plugin 图形验证码接口注释,之后使用smart-doc会拥有更完整的文档内容
 * 优化 solon `solon.config.load` 支持 `classpath:` 前缀
 * 优化 solon.data 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon.sessionstate.jedis 的 JsonSerializer,JavabinSerializer 类加载器处理
 * 优化 solon Serializer 接口定义，更好支持泛型
 * 优化 solon CacheService 接口定义，更好支持泛型
+* 优化 mybatis-plus-extension-solon-plugin 增加 `@Db IService` 注入支持
+* 优化 mybatis-solon-plugin 没有 mappers 时的提示
 * 修复 solon.logging forward 时会清掉 mdc 的问题
-* 修复 一个注解同时用 beanInterceptorAdd 和 beanExtractorAdd 时 不能启用代理的问题
+* 修复 solon 一个注解同时用 beanInterceptorAdd 和 beanExtractorAdd 时 代理失效的问题
 * redisx 升为 1.6.5
 * snack3 升为 3.2.104
 * wood 升为 1.2.12
