@@ -48,6 +48,7 @@
 * snack3 升为 3.2.104
 * wood 升为 1.2.12
 * socket.d 升为 2.5.9
+* folkmq 升为 1.7.4
 * nacos2 升为 2.3.2（更好兼容 GraalVM Native）
 * smartsocket 升为 1.5.46
 * smarthttp 升为 1.5.2
