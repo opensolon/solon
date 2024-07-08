@@ -79,7 +79,7 @@ public interface HttpUtils {
     /**
      * 参数配置
      */
-    HttpUtils data(Map<String, String> data);
+    HttpUtils data(Map data);
 
     /**
      * 参数配置

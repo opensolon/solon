@@ -179,7 +179,7 @@ public class HttpUtilsImpl implements HttpUtils {
      * 设置表单数据
      */
     @Override
-    public HttpUtilsImpl data(Map<String, String> data) {
+    public HttpUtilsImpl data(Map data) {
         if (data != null) {
             tryInitForm();
 
