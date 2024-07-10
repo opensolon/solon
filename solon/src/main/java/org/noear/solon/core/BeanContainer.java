@@ -26,11 +26,16 @@ import java.util.function.*;
  * @since 1.0
  * */
 public abstract class BeanContainer {
+    //属性
     private final Props props;
+    //类加载器（热插拨时，会有独立的类加载器）
     private final ClassLoader classLoader;
+    //附件
     private Map<Class<?>, Object> attachments = new HashMap<>();
+    //AOT收集器
     private final AotCollector aot = new AotCollector();
 
+    //同步锁
     protected final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
 
@@ -157,13 +162,17 @@ public abstract class BeanContainer {
 
 
     /**
-     * bean 订阅者
+     * bean name 订阅者
      */
-    protected final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribers = new HashMap<>();
+    private final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribersOfName = new HashMap<>();
+    /**
+     * bean type 订阅者
+     */
+    private final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribersOfType = new HashMap<>();
     /**
      * wrap 外部消费者
      */
-    protected final Set<Consumer<BeanWrap>> wrapExternalConsumers = new LinkedHashSet<>();
+    private final Set<Consumer<BeanWrap>> wrapExternalConsumers = new LinkedHashSet<>();
 
 
     public void clear() {
@@ -306,18 +315,24 @@ public abstract class BeanContainer {
     //
     /////////////////////////
 
+    private Map<Object, Set<Consumer<BeanWrap>>> getBeanSubscribers(Object nameOrType) {
+        if (nameOrType instanceof String) {
+            return beanSubscribersOfName;
+        } else {
+            return beanSubscribersOfType;
+        }
+    }
+
     /**
      * bean 订阅
      */
     protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
             SYNC_LOCK.lock();
+
             try {
-                Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
-                if (tmp == null) {
-                    tmp = new LinkedHashSet<>();
-                    beanSubscribers.put(nameOrType, tmp);
-                }
+                Set<Consumer<BeanWrap>> tmp = getBeanSubscribers(nameOrType)
+                        .computeIfAbsent(nameOrType, k -> new LinkedHashSet<>());
                 tmp.add(callback);
             } finally {
                 SYNC_LOCK.unlock();
@@ -348,7 +363,7 @@ public abstract class BeanContainer {
         SYNC_LOCK.lock();
         try {
             //避免在forEach时，对它进行add
-            Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
+            Set<Consumer<BeanWrap>> tmp = getBeanSubscribers(nameOrType).get(nameOrType);
             if (tmp != null) {
                 for (Consumer<BeanWrap> s1 : tmp) {
                     s1.accept(wrap);
