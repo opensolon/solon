@@ -11,6 +11,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
 import org.noear.solon.validation.annotation.Date;
+import org.noear.solon.validation.util.FormatUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -228,28 +229,30 @@ public class ValidatorManager {
                     rst.setDescription(label);
                 }
 
-                if (rst.getData() instanceof  BeanValidateInfo){
+                if (rst.getData() instanceof BeanValidateInfo) {
                     BeanValidateInfo info = (BeanValidateInfo) rst.getData();
                     anno = info.anno;
                     message = info.message;
                     result.getData().add(info);
-                }else if (rst.getData() instanceof Collection){
+                } else if (rst.getData() instanceof Collection) {
                     List<BeanValidateInfo> list = (List<BeanValidateInfo>) rst.getData();
                     result.getData().addAll(list);
-                }else {
+                } else {
                     BeanValidateInfo beanValidateInfo = new BeanValidateInfo(label, anno, valid.message(anno));
                     message = beanValidateInfo.message;
                     rst.setData(beanValidateInfo);
                     result.getData().add(beanValidateInfo);
                 }
 
-                if (VALIDATE_ALL){
+                if (VALIDATE_ALL) {
                     result.setCode(rst.getCode());
-                }else {
+                } else {
                     if (ValidatorManager.failureDo(Context.current(), anno, rst, message)) {
                         throw new DataThrowable();
                     } else {
-                        throw new IllegalArgumentException(rst.getDescription());
+                        //throw new IllegalArgumentException(rst.getDescription());
+                        String msg = FormatUtils.format(anno, rst, message);
+                        throw new ValidatorException(rst.getCode(), msg, null, rst);
                     }
                 }
             }
