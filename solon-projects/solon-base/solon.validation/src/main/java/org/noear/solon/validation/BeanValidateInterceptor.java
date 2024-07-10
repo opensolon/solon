@@ -18,10 +18,10 @@ public class BeanValidateInterceptor implements Interceptor {
             ValidatorManager.validateOfInvocation(inv);
         } catch (ValidatorException e) {
             String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
-            throw new ValidatorException(e.getCode(), msg, e.getAnnotation(), e.getResult());
+            throw new ValidatorException(e.getCode(), msg, e.getAnnotation(), e.getResult(), inv.method().getMethod());
         } catch (Throwable e) {
             String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
-            throw new ValidatorException(400, msg, null, Result.failure());
+            throw new ValidatorException(400, msg, null, Result.failure(), inv.method().getMethod());
         }
 
         return inv.invoke();
