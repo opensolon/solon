@@ -29,7 +29,7 @@ public interface RouterInterceptor {
                      RouterInterceptorChain chain) throws Throwable;
 
     /**
-     * 提交参数
+     * 提交参数（MethodWrap::invokeByAspect 执行前调用）
      */
     default void postArguments(Context ctx, ParamWrap[] args, Object[] vals) throws Throwable {
 
