@@ -116,13 +116,6 @@ public class DownloadedFile extends FileBase implements Closeable {
 
     /**
      * 下载文件
-     */
-    public DownloadedFile() {
-        super();
-    }
-
-    /**
-     * 下载文件
      *
      * @param contentType 内容类型
      * @param contentSize 内容大小

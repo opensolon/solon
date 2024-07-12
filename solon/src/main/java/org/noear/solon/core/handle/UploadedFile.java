@@ -68,7 +68,11 @@ public class UploadedFile extends FileBase {
             return contentSize;
         } else {
             try {
-                return getContent().available();
+                if (content == null) {
+                    return 0;
+                } else {
+                    return content.available();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
