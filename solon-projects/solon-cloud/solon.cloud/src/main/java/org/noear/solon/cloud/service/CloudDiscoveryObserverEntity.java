@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     static final Logger log = LoggerFactory.getLogger(CloudDiscoveryObserverEntity.class);
 
-    public String group;
-    public String service;
-    public CloudDiscoveryHandler handler;
+    public final String group;
+    public final String service;
+    public final CloudDiscoveryHandler handler;
 
     public CloudDiscoveryObserverEntity(String group, String service, CloudDiscoveryHandler handler) {
         this.group = group;

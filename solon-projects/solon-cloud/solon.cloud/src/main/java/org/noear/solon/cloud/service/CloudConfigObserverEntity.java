@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 public class CloudConfigObserverEntity implements CloudConfigHandler {
     static final Logger log = LoggerFactory.getLogger(CloudConfigObserverEntity.class);
 
-    public String group;
-    public String key;
-    public CloudConfigHandler handler;
+    public final String group;
+    public final String key;
+    public final CloudConfigHandler handler;
 
     public CloudConfigObserverEntity(String group, String key, CloudConfigHandler handler) {
         this.group = group;
