@@ -107,8 +107,7 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
         if (toType == null) {
             return JSON.parse(data, getDeserializeConfig());
         } else {
-            Class<?> clz = ClassUtil.getTypeClass(toType);
-            return JSON.parseObject(data, clz, getDeserializeConfig());
+            return JSON.parseObject(data, toType, getDeserializeConfig());
         }
     }
 
