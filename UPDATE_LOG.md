@@ -26,8 +26,8 @@
 ### 2.8.6
 * 优化 DownloadedFile 取消空构造函数，避免内容为 null 的情况
 * 优化 UploadedFile::getContentSize 避免可能为 null 的情况
-* smartsocket 升为 1.5.49
-* smarthttp 升为 1.5.4
+* smartsocket 升为 1.5.50
+* smarthttp 升为 1.5.5
 
 ### 2.8.5
 * 添加 solon.cache.redisson RedissonClientOriginalSupplier 类
