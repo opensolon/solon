@@ -28,6 +28,7 @@
 * 优化 UploadedFile::getContentSize 避免可能为 null 的情况
 * smartsocket 升为 1.5.50
 * smarthttp 升为 1.5.5
+* fastjson2 升为 2.0.52
 
 ### 2.8.5
 * 添加 solon.cache.redisson RedissonClientOriginalSupplier 类
