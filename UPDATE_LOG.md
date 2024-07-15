@@ -24,6 +24,8 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.8.6
+* 优化 DownloadedFile 取消空构造函数，避免内容为 null 的情况
+* 优化 UploadedFile::getContentSize 避免可能为 null 的情况
 * smartsocket 升为 1.5.49
 * smarthttp 升为 1.5.4
 
