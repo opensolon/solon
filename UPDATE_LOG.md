@@ -23,6 +23,10 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 2.8.6
+* smartsocket 升为 1.5.49
+* smarthttp 升为 1.5.4
+
 ### 2.8.5
 * 添加 solon.cache.redisson RedissonClientOriginalSupplier 类
 * 添加 solon MethodKey 类
