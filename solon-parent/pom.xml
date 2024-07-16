@@ -25,11 +25,11 @@
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
         <solon.version>2.8.6-SNAPSHOT</solon.version>
-        <solon-cloud.version>2.8.5</solon-cloud.version>
+        <solon-cloud.version>2.8.6-M1</solon-cloud.version>
         <solon-admin.version>2.8.5</solon-admin.version>
         <solon-integration.version>2.8.5</solon-integration.version>
 
-        <snack3.version>3.2.104</snack3.version>
+        <snack3.version>3.2.105</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.12</wood.version>
         <water.version>2.13.3</water.version>
