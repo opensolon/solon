@@ -34,6 +34,7 @@ public class DocDocket {
     private String host;
     private String basePath;
     private transient Serializer<String> serializer;
+    private DocUpstream upstream;
 
     //基础鉴权
     private Map<String, String> basicAuth = new LinkedHashMap<>();
@@ -207,6 +208,29 @@ public class DocDocket {
      */
     public DocDocket info(ApiInfo info) {
         this.info = info;
+        return this;
+    }
+
+    /**
+     * 获取上游
+     */
+    public DocUpstream upstream() {
+        return upstream;
+    }
+
+    /**
+     * 配置上游
+     */
+    public DocDocket upstream(DocUpstream upstream) {
+        this.upstream = upstream;
+        return this;
+    }
+
+    /**
+     * 配置上游
+     */
+    public DocDocket upstream(String service, String path) {
+        this.upstream = new DocUpstream(service, path);
         return this;
     }
 

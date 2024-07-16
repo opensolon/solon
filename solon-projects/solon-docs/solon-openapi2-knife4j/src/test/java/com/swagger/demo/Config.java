@@ -84,6 +84,19 @@ public class Config {
 
     }
 
+    /**
+     * 基于代码构建
+     */
+    @Bean("removeApi")
+    public DocDocket removeApi() {
+        return new DocDocket()
+                .groupName("removeApi端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .upstream("user-service", "swagger/v2?group=removeApi");
+        //.securityDefinitionInHeader("token");
+
+    }
+
     //    @Bean("appApi")
     public DocDocket appApi2() {
         return new DocDocket()
