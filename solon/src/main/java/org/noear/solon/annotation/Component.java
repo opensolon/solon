@@ -43,7 +43,7 @@ public @interface Component {
     String name() default "";
 
     /**
-     * 标签，用于快速查找
+     * 标签，用于查找
      */
     String tag() default "";
 
