@@ -26,6 +26,7 @@
 ### 2.8.6
 * 优化 DownloadedFile 取消空构造函数，避免内容为 null 的情况
 * 优化 UploadedFile::getContentSize 避免可能为 null 的情况
+* 修复 LocalSessionState::sessionKeys 数据错误
 * smartsocket 升为 1.5.50
 * smarthttp 升为 1.5.5
 * fastjson2 升为 2.0.52

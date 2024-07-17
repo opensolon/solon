@@ -63,12 +63,12 @@ public class LocalSessionState extends SessionStateBase {
 
     @Override
     public Collection<String> sessionKeys() {
-        return _store.keys();
+        return _store.getKeys(sessionId());
     }
 
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
-        return (T)_store.get(sessionId(), key);
+        return (T) _store.get(sessionId(), key);
     }
 
     @Override

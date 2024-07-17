@@ -36,9 +36,6 @@ class ScheduledStore {
         _defaultSeconds = seconds;
     }
 
-    public Collection<String> keys() {
-        return _data.keySet();
-    }
 
     public void put(String block, String key, Object obj) {
         SYNC_LOCK.lock();
@@ -77,6 +74,15 @@ class ScheduledStore {
         Entity ent = _data.get(block);
         if (ent != null) {
             return ent.map.get(key);
+        }
+
+        return null;
+    }
+
+    public Collection<String> getKeys(String block) {
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            return ent.map.keySet();
         }
 
         return null;
