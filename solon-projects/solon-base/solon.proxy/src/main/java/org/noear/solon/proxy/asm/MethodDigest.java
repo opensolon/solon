@@ -15,16 +15,15 @@
  */
 package org.noear.solon.proxy.asm;
 
-public class MethodBean {
+/**
+ * 方法摘要
+ * */
+public class MethodDigest {
+    public final int access;
+    public final String methodName;
+    public final String methodDesc;
 
-    public int access;
-    public String methodName;
-    public String methodDesc;
-
-    public MethodBean() {
-    }
-
-    public MethodBean(int access, String methodName, String methodDesc) {
+    public MethodDigest(int access, String methodName, String methodDesc) {
         this.access = access;
         this.methodName = methodName;
         this.methodDesc = methodDesc;
@@ -35,10 +34,10 @@ public class MethodBean {
         if (obj == null){
             return false;
         }
-        if (!(obj instanceof MethodBean)){
+        if (!(obj instanceof MethodDigest)){
             return false;
         }
-        MethodBean bean = (MethodBean) obj;
+        MethodDigest bean = (MethodDigest) obj;
 
         //access == bean.access //不管访问性，因为代理需要的只是 public
         //                &&

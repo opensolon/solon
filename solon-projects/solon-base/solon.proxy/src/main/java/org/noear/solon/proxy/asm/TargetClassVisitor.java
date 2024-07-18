@@ -15,7 +15,6 @@
  */
 package org.noear.solon.proxy.asm;
 
-import org.noear.solon.core.event.EventBus;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -33,9 +32,9 @@ public class TargetClassVisitor extends ClassVisitor {
     static final Logger log = LoggerFactory.getLogger(TargetClassVisitor.class);
 
     private boolean isFinal;
-    private List<MethodBean> methods = new ArrayList<>();
-    private List<MethodBean> declaredMethods = new ArrayList<>();
-    private List<MethodBean> constructors = new ArrayList<>();
+    private List<MethodDigest> methods = new ArrayList<>();
+    private List<MethodDigest> declaredMethods = new ArrayList<>();
+    private List<MethodDigest> constructors = new ArrayList<>();
 
     private final ClassLoader classLoader;
 
@@ -53,10 +52,10 @@ public class TargetClassVisitor extends ClassVisitor {
         }
 
         if (superName != null) {
-            List<MethodBean> beans = initMethodBeanByParent(superName);
+            List<MethodDigest> beans = initMethodBeanByParent(superName);
 
             if (beans != null && !beans.isEmpty()) {
-                for (MethodBean bean : beans) {
+                for (MethodDigest bean : beans) {
                     if (!methods.contains(bean)) {
                         methods.add(bean);
                     }
@@ -69,7 +68,7 @@ public class TargetClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         if ("<init>".equals(name)) {
             // 构造方法
-            MethodBean constructor = new MethodBean(access, name, descriptor);
+            MethodDigest constructor = new MethodDigest(access, name, descriptor);
             constructors.add(constructor);
         } else if (!"<clinit>".equals(name)) {
             // 其他方法
@@ -78,18 +77,18 @@ public class TargetClassVisitor extends ClassVisitor {
                 return super.visitMethod(access, name, descriptor, signature, exceptions);
             }
 
-            MethodBean methodBean = new MethodBean(access, name, descriptor);
+            MethodDigest methodDigest = new MethodDigest(access, name, descriptor);
 
             //public 给 declaredMethods + methods
             if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
                     && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
 
-                if (declaredMethods.contains(methodBean) == false) {
-                    declaredMethods.add(methodBean);
+                if (declaredMethods.contains(methodDigest) == false) {
+                    declaredMethods.add(methodDigest);
                 }
 
-                if (methods.contains(methodBean) == false) {
-                    methods.add(methodBean);
+                if (methods.contains(methodDigest) == false) {
+                    methods.add(methodDigest);
                 }
             }
 
@@ -97,8 +96,8 @@ public class TargetClassVisitor extends ClassVisitor {
 //            if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
 //                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
 //
-//                if (declaredMethods.contains(methodBean) == false) {
-//                    declaredMethods.add(methodBean);
+//                if (declaredMethods.contains(methodDigest) == false) {
+//                    declaredMethods.add(methodDigest);
 //                }
 //            }
         }
@@ -110,19 +109,19 @@ public class TargetClassVisitor extends ClassVisitor {
         return isFinal;
     }
 
-    public List<MethodBean> getMethods() {
+    public List<MethodDigest> getMethods() {
         return methods;
     }
 
-    public List<MethodBean> getDeclaredMethods() {
+    public List<MethodDigest> getDeclaredMethods() {
         return declaredMethods;
     }
 
-    public List<MethodBean> getConstructors() {
+    public List<MethodDigest> getConstructors() {
         return constructors;
     }
 
-    private List<MethodBean> initMethodBeanByParent(String superName) {
+    private List<MethodDigest> initMethodBeanByParent(String superName) {
         try {
             if (superName != null && !superName.isEmpty()) {
                 if(superName.equals("java/lang/Object")){
@@ -141,16 +140,16 @@ public class TargetClassVisitor extends ClassVisitor {
 
                 TargetClassVisitor visitor = new TargetClassVisitor(classLoader);
                 reader.accept(visitor, ClassReader.SKIP_DEBUG);
-                List<MethodBean> beans = new ArrayList<>();
-                for (MethodBean methodBean : visitor.methods) {
+                List<MethodDigest> beans = new ArrayList<>();
+                for (MethodDigest methodDigest : visitor.methods) {
                     // 跳过 final 和 static
-                    if ((methodBean.access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
-                            || (methodBean.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
+                    if ((methodDigest.access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
+                            || (methodDigest.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                         continue;
                     }
                     // 只要 public
-                    if ((methodBean.access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-                        beans.add(methodBean);
+                    if ((methodDigest.access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
+                        beans.add(methodDigest);
                     }
                 }
                 return beans;

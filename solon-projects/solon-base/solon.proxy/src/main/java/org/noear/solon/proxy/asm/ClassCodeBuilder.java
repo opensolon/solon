@@ -80,13 +80,13 @@ public class ClassCodeBuilder {
         // 添加 InvocationHandler 的setter
         addSetterMethod(writer, newClassInnerName);
         // 添加构造器，直接调用 super
-        List<MethodBean> constructors = targetClassVisitor.getConstructors();
+        List<MethodDigest> constructors = targetClassVisitor.getConstructors();
         addConstructor(writer, constructors, targetClassInnerName);
         // 添加调用 InvocationHandler 的方法
         addInvokeMethod(writer, newClassInnerName);
         // 添加继承的public方法和目标类的protected、default方法
-        List<MethodBean> methods = targetClassVisitor.getMethods();
-        List<MethodBean> declaredMethods = targetClassVisitor.getDeclaredMethods();
+        List<MethodDigest> methods = targetClassVisitor.getMethods();
+        List<MethodDigest> declaredMethods = targetClassVisitor.getDeclaredMethods();
         Map<Integer, Integer> methodsMap = new HashMap<>();
         Map<Integer, Integer> declaredMethodsMap = new HashMap<>();
         int methodNameIndex = 0;
@@ -160,9 +160,9 @@ public class ClassCodeBuilder {
     /**
      * 添加构造器
      */
-    private static void addConstructor(ClassWriter writer, List<MethodBean> constructors,
+    private static void addConstructor(ClassWriter writer, List<MethodDigest> constructors,
                                        String targetClassInnerName) throws Exception {
-        for (MethodBean constructor : constructors) {
+        for (MethodDigest constructor : constructors) {
             Type[] argumentTypes = Type.getArgumentTypes(constructor.methodDesc);
             MethodVisitor methodVisitor = writer.visitMethod(Opcodes.ACC_PUBLIC, "<init>",
                     constructor.methodDesc, null, null);
@@ -237,14 +237,14 @@ public class ClassCodeBuilder {
      * 添加继承的方法或目标类本身的方法
      */
     private static int addMethod(ClassWriter writer, String newClassInnerName,
-                                 Method[] methods, List<MethodBean> methodBeans,
+                                 Method[] methods, List<MethodDigest> methodDigests,
                                  boolean isPublic, int methodNameIndex,
                                  Map<Integer, Integer> map) throws Exception {
-        for (int i = 0; i < methodBeans.size(); i++) {
-            MethodBean methodBean = methodBeans.get(i);
+        for (int i = 0; i < methodDigests.size(); i++) {
+            MethodDigest methodDigest = methodDigests.get(i);
             // 跳过final 和 static 的方法
-            if ((methodBean.access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
-                    || (methodBean.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
+            if ((methodDigest.access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
+                    || (methodDigest.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 continue;
             }
 
@@ -252,16 +252,16 @@ public class ClassCodeBuilder {
             int access = -1;
             if (isPublic) {
                 // public 方法
-                if ((methodBean.access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
+                if ((methodDigest.access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
                     access = Opcodes.ACC_PUBLIC;
                 }
             } else {
                 // protected 方法
-                if ((methodBean.access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
+                if ((methodDigest.access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
                     access = Opcodes.ACC_PROTECTED;
-                } else if ((methodBean.access & Opcodes.ACC_PUBLIC) == 0
-                        && (methodBean.access & Opcodes.ACC_PROTECTED) == 0
-                        && (methodBean.access & Opcodes.ACC_PRIVATE) == 0) {
+                } else if ((methodDigest.access & Opcodes.ACC_PUBLIC) == 0
+                        && (methodDigest.access & Opcodes.ACC_PROTECTED) == 0
+                        && (methodDigest.access & Opcodes.ACC_PRIVATE) == 0) {
                     access = 0;
                 }
             }
@@ -269,7 +269,7 @@ public class ClassCodeBuilder {
                 continue;
             }
             // 匹配对应的方法
-            int methodIndex = findSomeMethod(methods, methodBean);
+            int methodIndex = findSomeMethod(methods, methodDigest);
             if (methodIndex == -1) {
                 continue;
             }
@@ -281,7 +281,7 @@ public class ClassCodeBuilder {
                     fieldName, Type.getDescriptor(Method.class), null, null);
             fieldVisitor.visitEnd();
             // 添加方法的调用
-            addMethod(writer, newClassInnerName, methodBean, access, methodNameIndex);
+            addMethod(writer, newClassInnerName, methodDigest, access, methodNameIndex);
             methodNameIndex++;
         }
         return methodNameIndex;
@@ -292,13 +292,13 @@ public class ClassCodeBuilder {
      * 实现方法的调用
      */
     private static void addMethod(ClassWriter writer, String newClassInnerName,
-                                  MethodBean methodBean, int access, int methodNameIndex) throws Exception {
-        MethodVisitor methodVisitor = writer.visitMethod(access, methodBean.methodName,
-                methodBean.methodDesc, null, null);
+                                  MethodDigest methodDigest, int access, int methodNameIndex) throws Exception {
+        MethodVisitor methodVisitor = writer.visitMethod(access, methodDigest.methodName,
+                methodDigest.methodDesc, null, null);
         methodVisitor.visitCode();
         methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
         // 区分静态或者是非静态方法调用
-        if ((methodBean.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
+        if ((methodDigest.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
             methodVisitor.visitInsn(Opcodes.ACONST_NULL);
         } else {
             methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
@@ -306,7 +306,7 @@ public class ClassCodeBuilder {
         // 获取新建的方法字段
         methodVisitor.visitFieldInsn(Opcodes.GETSTATIC, newClassInnerName,
                 METHOD_FIELD_PREFIX + methodNameIndex, Type.getDescriptor(Method.class));
-        Type[] argumentTypes = Type.getArgumentTypes(methodBean.methodDesc);
+        Type[] argumentTypes = Type.getArgumentTypes(methodDigest.methodDesc);
         // 实例化数组，容量对应方法的参数个数
         methodVisitor.visitIntInsn(Opcodes.BIPUSH, argumentTypes.length);
         methodVisitor.visitTypeInsn(Opcodes.ANEWARRAY, Type.getInternalName(Object.class));
@@ -411,7 +411,7 @@ public class ClassCodeBuilder {
         methodVisitor.visitMethodInsn(Opcodes.INVOKESPECIAL, newClassInnerName,
                 METHOD_INVOKE, METHOD_INVOKE_DESC, false);
         // 处理返回情况，基本类型需要拆箱
-        Type returnType = Type.getReturnType(methodBean.methodDesc);
+        Type returnType = Type.getReturnType(methodDigest.methodDesc);
         if (returnType.equals(Type.BYTE_TYPE)) {
             methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, Type.getInternalName(Byte.class));
             methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(Byte.class),
@@ -527,9 +527,9 @@ public class ClassCodeBuilder {
     /**
      * 找到相等方法的索引
      */
-    private static int findSomeMethod(Method[] methods, MethodBean methodBean) {
+    private static int findSomeMethod(Method[] methods, MethodDigest methodDigest) {
         for (int i = 0; i < methods.length; i++) {
-            if (equalsMethod(methods[i], methodBean)) {
+            if (equalsMethod(methods[i], methodDigest)) {
                 return i;
             }
         }
@@ -537,24 +537,24 @@ public class ClassCodeBuilder {
     }
 
     /**
-     * 判断 {@link Method} 和 {@link MethodBean} 是否相等
+     * 判断 {@link Method} 和 {@link MethodDigest} 是否相等
      */
-    private static boolean equalsMethod(Method method, MethodBean methodBean) {
-        if (method == null && methodBean == null) {
+    private static boolean equalsMethod(Method method, MethodDigest methodDigest) {
+        if (method == null && methodDigest == null) {
             return true;
         }
-        if (method == null || methodBean == null) {
+        if (method == null || methodDigest == null) {
             return false;
         }
         try {
-            if (!method.getName().equals(methodBean.methodName)) {
+            if (!method.getName().equals(methodDigest.methodName)) {
                 return false;
             }
-            if (!Type.getReturnType(method).equals(Type.getReturnType(methodBean.methodDesc))) {
+            if (!Type.getReturnType(method).equals(Type.getReturnType(methodDigest.methodDesc))) {
                 return false;
             }
             Type[] argumentTypes1 = Type.getArgumentTypes(method);
-            Type[] argumentTypes2 = Type.getArgumentTypes(methodBean.methodDesc);
+            Type[] argumentTypes2 = Type.getArgumentTypes(methodDigest.methodDesc);
             if (argumentTypes1.length != argumentTypes2.length) {
                 return false;
             }
