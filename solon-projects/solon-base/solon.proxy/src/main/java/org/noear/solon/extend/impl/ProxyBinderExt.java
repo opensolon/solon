@@ -52,7 +52,7 @@ public class ProxyBinderExt extends ProxyBinder {
             //如果是 aot 则注册函数
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
             for (Method m : clzWrap.getMethods()) {
-                bw.context().methodGet(m);
+                bw.context().methodGet(bw.rawClz(), m);
             }
         }
 

@@ -38,7 +38,7 @@ public class JobMethodWrap implements JobHandler {
 
     public JobMethodWrap(BeanWrap beanWrap, Method method) {
         this.beanWrap = beanWrap;
-        this.method = beanWrap.context().methodGet(method);
+        this.method = beanWrap.context().methodGet(beanWrap.rawClz(), method);
         this.methodHandler = new MethodHandler(beanWrap, method, true);
     }
 

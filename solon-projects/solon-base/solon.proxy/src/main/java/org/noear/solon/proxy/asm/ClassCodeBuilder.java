@@ -61,8 +61,7 @@ public class ClassCodeBuilder {
             reader = new ClassReader(resourceStream);
         }
 
-        TargetClassVisitor targetClassVisitor = new TargetClassVisitor(classLoader);
-        reader.accept(targetClassVisitor, ClassReader.SKIP_DEBUG);
+        TargetClassVisitor targetClassVisitor = new TargetClassVisitor(classLoader, reader);
         // 判断是否是FINAL的
         if (targetClassVisitor.isFinal()) {
             throw new IllegalArgumentException("class is final");

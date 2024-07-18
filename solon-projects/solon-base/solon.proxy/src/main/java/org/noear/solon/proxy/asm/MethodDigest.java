@@ -31,23 +31,19 @@ public class MethodDigest {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
-        if (!(obj instanceof MethodDigest)){
+        if (!(obj instanceof MethodDigest)) {
             return false;
         }
-        MethodDigest bean = (MethodDigest) obj;
+        MethodDigest digest = (MethodDigest) obj;
 
-        //access == bean.access //不管访问性，因为代理需要的只是 public
-        //                &&
-
-        if (methodName != null
-                && bean.methodName != null
-                && methodName.equals(bean.methodName)
-                && methodDesc != null
-                && bean.methodDesc != null
-                && methodDesc.equals(bean.methodDesc)){
+        if (access == digest.access //可能有 public 或 protected
+                && methodName != null && digest.methodName != null
+                && methodName.equals(digest.methodName)
+                && methodDesc != null && digest.methodDesc != null
+                && methodDesc.equals(digest.methodDesc)) {
             return true;
         }
         return false;

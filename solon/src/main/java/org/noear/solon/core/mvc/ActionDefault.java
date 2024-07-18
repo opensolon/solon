@@ -77,10 +77,10 @@ public class ActionDefault extends HandlerAide implements Action {
         method.setAccessible(true);
 
         if (NativeDetector.isAotRuntime()) {
-            bWrap.context().methodGet(method);
+            bWrap.context().methodGet(bWrap.rawClz(), method);
         }
 
-        mWrap = new MethodWrap(bWrap.context(), method, GenericUtil.getGenericInfo(bWrap.clz()));
+        mWrap = new MethodWrap(bWrap.context(), bWrap.rawClz(), method, GenericUtil.getGenericInfo(bWrap.clz()));
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;

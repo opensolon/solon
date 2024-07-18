@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 public class BeanInvocationHandler implements InvocationHandler {
     private static final Logger log = LoggerFactory.getLogger(BeanInvocationHandler.class);
 
+    private Class<?> clazz;
     private Object target;
     private Object proxy;
     private InvocationHandler handler;
@@ -55,6 +56,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         this.context = context;
         this.target = target;
         this.handler = handler;
+        this.clazz = clazz;
 
         //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
         if (NativeDetector.isNotAotRuntime()) {
@@ -83,7 +85,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         if (handler == null) {
             method.setAccessible(true);
 
-            Object result = context.methodGet(method).invokeByAspect(target, args);
+            Object result = context.methodGet(clazz, method).invokeByAspect(target, args);
 
             return result;
         } else {

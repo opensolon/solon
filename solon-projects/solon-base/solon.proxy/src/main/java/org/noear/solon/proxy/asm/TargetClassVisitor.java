@@ -15,6 +15,7 @@
  */
 package org.noear.solon.proxy.asm;
 
+import org.noear.solon.Utils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -38,9 +39,11 @@ public class TargetClassVisitor extends ClassVisitor {
 
     private final ClassLoader classLoader;
 
-    public TargetClassVisitor(ClassLoader classLoader) {
+    public TargetClassVisitor(ClassLoader classLoader, ClassReader reader) {
         super(AsmProxy.ASM_VERSION);
         this.classLoader = classLoader;
+
+        reader.accept(this, ClassReader.SKIP_DEBUG);
     }
 
     @Override
@@ -62,6 +65,20 @@ public class TargetClassVisitor extends ClassVisitor {
                 }
             }
         }
+
+        if (interfaces != null) {
+            for (String ifType : interfaces) {
+                List<MethodDigest> beans = initMethodBeanByParent(ifType);
+
+                if (beans != null && !beans.isEmpty()) {
+                    for (MethodDigest bean : beans) {
+                        if (!methods.contains(bean)) {
+                            methods.add(bean);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -72,17 +89,10 @@ public class TargetClassVisitor extends ClassVisitor {
             constructors.add(constructor);
         } else if (!"<clinit>".equals(name)) {
             // 其他方法
-            if ((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
-                    || (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
-                return super.visitMethod(access, name, descriptor, signature, exceptions);
-            }
+            if (MethodFinder.allowMethod(access)) {
+                MethodDigest methodDigest = new MethodDigest(access, name, descriptor);
 
-            MethodDigest methodDigest = new MethodDigest(access, name, descriptor);
-
-            //public 给 declaredMethods + methods
-            if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
-                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
-
+                //public 给 declaredMethods + methods
                 if (declaredMethods.contains(methodDigest) == false) {
                     declaredMethods.add(methodDigest);
                 }
@@ -91,15 +101,6 @@ public class TargetClassVisitor extends ClassVisitor {
                     methods.add(methodDigest);
                 }
             }
-
-            //protected 给 declaredMethods
-//            if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
-//                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
-//
-//                if (declaredMethods.contains(methodDigest) == false) {
-//                    declaredMethods.add(methodDigest);
-//                }
-//            }
         }
 
         return super.visitMethod(access, name, descriptor, signature, exceptions);
@@ -123,8 +124,8 @@ public class TargetClassVisitor extends ClassVisitor {
 
     private List<MethodDigest> initMethodBeanByParent(String superName) {
         try {
-            if (superName != null && !superName.isEmpty()) {
-                if(superName.equals("java/lang/Object")){
+            if (Utils.isNotEmpty(superName)) {
+                if (superName.equals("java/lang/Object")) {
                     return null;
                 }
 
@@ -138,21 +139,17 @@ public class TargetClassVisitor extends ClassVisitor {
                     reader = new ClassReader(in);
                 }
 
-                TargetClassVisitor visitor = new TargetClassVisitor(classLoader);
-                reader.accept(visitor, ClassReader.SKIP_DEBUG);
-                List<MethodDigest> beans = new ArrayList<>();
+                TargetClassVisitor visitor = new TargetClassVisitor(classLoader, reader);
+
+                List<MethodDigest> digests = new ArrayList<>();
+
                 for (MethodDigest methodDigest : visitor.methods) {
-                    // 跳过 final 和 static
-                    if ((methodDigest.access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL
-                            || (methodDigest.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
-                        continue;
-                    }
-                    // 只要 public
-                    if ((methodDigest.access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-                        beans.add(methodDigest);
+                    if (MethodFinder.allowMethod(methodDigest.access)) {
+                        digests.add(methodDigest);
                     }
                 }
-                return beans;
+
+                return digests;
             }
         } catch (Exception e) {
             log.warn(e.getMessage(), e);

@@ -39,7 +39,7 @@ public class MethodHandler implements Handler {
      */
     public MethodHandler(BeanWrap beanWrap, Method method, boolean allowResult) {
         this.bw = beanWrap;
-        this.mw = beanWrap.context().methodGet(method);
+        this.mw = beanWrap.context().methodGet(beanWrap.rawClz(), method);
         this.allowResult = allowResult;
     }
 

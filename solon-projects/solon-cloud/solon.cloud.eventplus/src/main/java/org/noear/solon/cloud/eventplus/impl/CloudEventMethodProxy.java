@@ -36,7 +36,7 @@ public class CloudEventMethodProxy implements CloudEventHandler {
 
     public CloudEventMethodProxy(BeanWrap target, Method method, Class<?> entityClz) {
         this.target = target;
-        this.method = target.context().methodGet(method);
+        this.method = target.context().methodGet(target.rawClz(), method);
         this.entityClz = entityClz;
     }
 

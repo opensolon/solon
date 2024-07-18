@@ -40,13 +40,14 @@ import java.util.*;
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
 
-    public MethodWrap(AppContext ctx, Method m) {
-        this(ctx, m, null);
+    public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
+        this(ctx, clz, m, null);
     }
 
-    public MethodWrap(AppContext ctx, Method m, Map<String,Type> genericInfo) {
+    public MethodWrap(AppContext ctx, Class<?> clz, Method m, Map<String, Type> genericInfo) {
         context = ctx;
 
+        tagretClz = clz;
         declaringClz = m.getDeclaringClass();
 
         method = m;
@@ -70,7 +71,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
 
         //scan class @Around
-        for (Annotation anno : declaringClz.getAnnotations()) {
+        for (Annotation anno : tagretClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
@@ -91,7 +92,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Map<String,Type> genericInfo) {
+    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Map<String, Type> genericInfo) {
         ParamWrap[] tmp = new ParamWrap[pAry.length];
         for (int i = 0, len = pAry.length; i < len; i++) {
             tmp[i] = new ParamWrap(pAry[i], method, genericInfo);
@@ -126,6 +127,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private final AppContext context;
 
+    private final Class<?> tagretClz;
     //实体类型
     private final Class<?> declaringClz;
     //函数
@@ -212,7 +214,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
     public <T extends Annotation> T getAnnotation(Class<T> type) {
         return method.getAnnotation(type);
     }
-
 
 
     /**

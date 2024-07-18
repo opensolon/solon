@@ -78,9 +78,8 @@ public class AppContext extends BeanContainer {
 
     private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
 
-    private final Map<Method, MethodWrap> methodCached = new HashMap<>();
+    private final Map<MethodKey, MethodWrap> methodCached = new HashMap<>();
     private final Set<InjectGather> gatherSet = new HashSet<>();
-
 
     /**
      * 获取方法包装（方便 aot 收集）
@@ -88,15 +87,27 @@ public class AppContext extends BeanContainer {
      * @param method 方法
      */
     public MethodWrap methodGet(Method method) {
-        MethodWrap mw = methodCached.get(method);
+        return methodGet(method.getDeclaringClass(), method);
+    }
+
+
+    /**
+     * 获取方法包装（方便 aot 收集）
+     *
+     * @param method 方法
+     */
+    public MethodWrap methodGet(Class<?> clz, Method method) {
+        MethodKey methodKey = new MethodKey(method, clz);
+
+        MethodWrap mw = methodCached.get(methodKey);
         if (mw == null) {
             SYNC_LOCK.lock();
 
             try {
-                mw = methodCached.get(method);
+                mw = methodCached.get(methodKey);
                 if (mw == null) {
-                    mw = new MethodWrap(this, method);
-                    methodCached.put(method, mw);
+                    mw = new MethodWrap(this, clz, method);
+                    methodCached.put(methodKey, mw);
                 }
             } finally {
                 SYNC_LOCK.unlock();
@@ -681,7 +692,7 @@ public class AppContext extends BeanContainer {
     protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Throwable {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
-            methodGet(m);
+            methodGet(bw.rawClz(), m);
         }
 
         Condition mc = m.getAnnotation(Condition.class);
@@ -704,7 +715,7 @@ public class AppContext extends BeanContainer {
             m.setAccessible(true);
         }
 
-        MethodWrap mWrap = methodGet(m);
+        MethodWrap mWrap = methodGet(bw.rawClz(), m);
 
         //有参数的bean，采用线程池处理；所以需要锁等待
         //
