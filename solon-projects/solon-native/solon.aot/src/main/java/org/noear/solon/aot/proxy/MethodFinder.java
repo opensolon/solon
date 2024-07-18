@@ -18,7 +18,6 @@ package org.noear.solon.aot.proxy;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,7 +27,7 @@ import java.util.TreeMap;
  * @author noear
  * @since 2.2
  */
-public class MethodUtil {
+public class MethodFinder {
     /**
      * 是否允许函数处理
      */
@@ -37,6 +36,7 @@ public class MethodUtil {
         int modifiers = element.getModifiers();
         if (Modifier.isStatic(modifiers) ||
                 Modifier.isFinal(modifiers) ||
+                Modifier.isAbstract(modifiers) ||
                 Modifier.isPrivate(modifiers) ||
                 Modifier.isProtected(modifiers)) {
             //静态 或 只读 或 私有；不需要重写
@@ -45,7 +45,6 @@ public class MethodUtil {
             return true;
         }
     }
-
 
     /**
      * 构建函数唯一识别键
@@ -75,31 +74,31 @@ public class MethodUtil {
     public static Map<String, Method> findMethodAll(Class<?> type) {
         Map<String, Method> methodAll = new TreeMap<>(); //new LinkedHashMap<>();
 
+        findMethodDo(type, methodAll);
+
+        return methodAll;
+    }
+
+    /**
+     * 查找函数
+     */
+    private static void findMethodDo(Class<?> type, Map<String, Method> methodAll) {
+        if (type == null || type == Object.class) {
+            return;
+        }
+
         //本级优先
         for (Method method : type.getDeclaredMethods()) {
             if (allowMethod(method)) {
                 String methodKey = buildMethodKey(method);
-                methodAll.put(methodKey, method);
+                methodAll.putIfAbsent(methodKey, method);
             }
         }
 
-        //再取超类的函数
-        Class<?> origin = type.getSuperclass();
-        while (true) {
-            if (origin == Object.class) {
-                break;
-            }
+        findMethodDo(type.getSuperclass(), methodAll);
 
-            for (Method method : origin.getDeclaredMethods()) {
-                if (allowMethod(method)) {
-                    String methodKey = buildMethodKey(method);
-                    methodAll.putIfAbsent(methodKey, method);
-                }
-            }
-
-            origin = origin.getSuperclass();
+        for (Class<?> ifType : type.getInterfaces()) {
+            findMethodDo(ifType, methodAll);
         }
-
-        return methodAll;
     }
 }

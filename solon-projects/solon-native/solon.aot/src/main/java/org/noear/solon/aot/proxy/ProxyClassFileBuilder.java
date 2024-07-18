@@ -44,7 +44,7 @@ public class ProxyClassFileBuilder {
         String proxyClassName = className + PROXY_CLASSNAME_SUFFIX;
 
         //获取所有函数
-        Map<String, Method> methodAll = MethodUtil.findMethodAll(typeElement);
+        Map<String, Method> methodAll = MethodFinder.findMethodAll(typeElement);
 
         //::2.开始
         //生成的类
@@ -103,7 +103,7 @@ public class ProxyClassFileBuilder {
 
         for (Method methodElement : methodAll.values()) {
             //添加函数
-            if (MethodUtil.allowMethod(methodElement) == false) {
+            if (MethodFinder.allowMethod(methodElement) == false) {
                 //静态 或 只读 或 私有；不需要重写
                 continue;
             }
@@ -177,7 +177,7 @@ public class ProxyClassFileBuilder {
      * 添加具本函数
      */
     private int addMethod(TypeSpec.Builder proxyTypeBuilder, Map<String,Type> typeGenericMap, Method methodElement, int methodIndex) {
-        if (MethodUtil.allowMethod(methodElement) == false) {
+        if (MethodFinder.allowMethod(methodElement) == false) {
             //静态 或 只读 或 私有；不需要重写
             return methodIndex;
         }
