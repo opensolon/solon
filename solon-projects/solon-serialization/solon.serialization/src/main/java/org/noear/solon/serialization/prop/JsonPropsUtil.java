@@ -64,7 +64,7 @@ public class JsonPropsUtil {
                 return e.format(df);
             });
 
-            factory.addConvertor(LocalDateTime.class, e -> formatLocalDateTime(e, jsonProps) );
+            factory.addConvertor(LocalDateTime.class, e -> formatLocalDateTime(e, jsonProps));
 
             factory.addConvertor(LocalDate.class, e -> formatLocalDateTime(e.atStartOfDay(), jsonProps));
         }
@@ -81,28 +81,15 @@ public class JsonPropsUtil {
     }
 
     /**
-     * 格式化 LocalDateTime，支持 XXX
-     * */
+     * 格式化 LocalDateTime
+     */
     private static String formatLocalDateTime(LocalDateTime e, JsonProps jsonProps) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
 
-        ZoneId zoneId = null;
         if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-            zoneId = ZoneId.of(jsonProps.dateAsTimeZone);
+            df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
         }
 
-        if (jsonProps.dateAsFormat.contains("XXX")) {
-            if (zoneId == null) {
-                zoneId = ZoneId.systemDefault();
-            }
-
-            return e.atZone(zoneId).format(df);
-        } else {
-            if (zoneId != null) {
-                df.withZone(zoneId);
-            }
-
-            return e.format(df);
-        }
+        return e.format(df);
     }
 }
