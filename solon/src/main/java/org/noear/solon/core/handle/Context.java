@@ -30,6 +30,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * 通用上下文接口（实现：Context + Handler 架构）
@@ -888,6 +889,11 @@ public abstract class Context {
      * 获取输出流
      */
     public abstract OutputStream outputStream() throws IOException;
+
+    /**
+     * 获取输出流 gzip 模式
+     */
+    public abstract GZIPOutputStream outputStreamAsGzip() throws IOException;
 
     /**
      * 输出 字符串

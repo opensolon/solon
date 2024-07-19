@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Web 上下文
@@ -66,6 +67,13 @@ public abstract class WebContextBase extends Context {
         }
 
         return contentCharset;
+    }
+
+    @Override
+    public GZIPOutputStream outputStreamAsGzip() throws IOException {
+        headerSet("Vary", "Accept-Encoding");
+        headerSet("Content-Encoding", "gzip");
+        return new GZIPOutputStream(outputStream(), 4096, true);
     }
 
     /**
@@ -135,7 +143,7 @@ public abstract class WebContextBase extends Context {
 
     /**
      * 获取 session 状态，并以 int 型输出
-     *
+     *output
      * @param name 状态名
      * @since 1.6
      */

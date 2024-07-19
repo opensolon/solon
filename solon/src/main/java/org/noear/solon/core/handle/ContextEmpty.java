@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * 通用上下文，空对象
@@ -274,6 +275,11 @@ public class ContextEmpty extends Context {
 
     @Override
     public OutputStream outputStream() {
+        return null;
+    }
+
+    @Override
+    public GZIPOutputStream outputStreamAsGzip() throws IOException {
         return null;
     }
 

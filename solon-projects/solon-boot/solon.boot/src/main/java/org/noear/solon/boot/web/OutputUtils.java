@@ -172,10 +172,7 @@ public class OutputUtils {
      */
     public void outputStreamAsGzip(Context ctx, InputStream stream) throws IOException {
         //支持 gzip
-        ctx.status(200);
-        ctx.headerSet("Vary", "Accept-Encoding");
-        ctx.headerSet("Content-Encoding", "gzip");
-        GZIPOutputStream gzipOut = new GZIPOutputStream(ctx.outputStream(), 4096, true);
+        GZIPOutputStream gzipOut = ctx.outputStreamAsGzip();
         IoUtil.transferTo(stream, gzipOut);
         gzipOut.flush();
     }
