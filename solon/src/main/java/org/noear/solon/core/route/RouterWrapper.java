@@ -143,6 +143,13 @@ public abstract class RouterWrapper implements HandlerSlots {
     }
 
     /**
+     * 获取 Json 渲染器
+     * */
+    public Render renderOfJson() {
+        return render("@json");
+    }
+
+    /**
      * 添加前置处理
      */
     public void before(Handler handler) {
