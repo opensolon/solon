@@ -27,7 +27,7 @@
 * 添加 Context::outputStreamAsGzip 方法
 * 优化 DownloadedFile 取消空构造函数，避免内容为 null 的情况
 * 优化 UploadedFile::getContentSize 避免可能为 null 的情况
-* 优化 JsonPropsUtil 增加 LocalDate `XXX` 格式符支持
+* 优化 JsonPropsUtil 增加 LocalDateTime,LocalDate `XXX` 格式符支持
 * 优化 AOT 代理增加 接口 default 方法代理支持
 * 优化 ASM 代理增加 接口 default 方法代理支持
 * 修复 LocalSessionState::sessionKeys 数据错误

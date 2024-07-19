@@ -64,41 +64,12 @@ public class JsonPropsUtil {
                 return e.format(df);
             });
 
-            factory.addConvertor(LocalDateTime.class, e -> {
-                DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
+            factory.addConvertor(LocalDateTime.class, e -> formatLocalDateTime(e, jsonProps) );
 
-                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
-                }
-
-                if (jsonProps.dateAsFormat.contains("XXX")) {
-                    ZonedDateTime forTime = e.atZone(ZoneId.systemDefault());
-                    return forTime.format(df);
-                } else {
-                    return e.format(df);
-                }
-            });
-
-            factory.addConvertor(LocalDate.class, e -> {
-                DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
-
-                //对该类型格式化为1.抛弃时分秒(拼接00:00:00) 2.格式化为当前时分秒,当前默认采用第一种
-                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    ZoneId zoneId = ZoneId.of(jsonProps.dateAsTimeZone);
-                    df.withZone(zoneId);
-                }
-
-                if (jsonProps.dateAsFormat.contains("XXX")) {
-                    ZonedDateTime forTime = e.atStartOfDay().atZone(ZoneId.systemDefault());
-                    return forTime.format(df);
-                } else {
-                    LocalDateTime forTime = e.atStartOfDay();
-                    return forTime.format(df);
-                }
-            });
+            factory.addConvertor(LocalDate.class, e -> formatLocalDateTime(e.atStartOfDay(), jsonProps));
         }
 
-        if(jsonProps.dateAsTicks){
+        if (jsonProps.dateAsTicks) {
             factory.addConvertor(Date.class, Date::getTime);
         }
 
@@ -107,5 +78,31 @@ public class JsonPropsUtil {
         }
 
         return true;
+    }
+
+    /**
+     * 格式化 LocalDateTime，支持 XXX
+     * */
+    private static String formatLocalDateTime(LocalDateTime e, JsonProps jsonProps) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
+
+        ZoneId zoneId = null;
+        if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+            zoneId = ZoneId.of(jsonProps.dateAsTimeZone);
+        }
+
+        if (jsonProps.dateAsFormat.contains("XXX")) {
+            if (zoneId == null) {
+                zoneId = ZoneId.systemDefault();
+            }
+
+            return e.atZone(zoneId).format(df);
+        } else {
+            if (zoneId != null) {
+                df.withZone(zoneId);
+            }
+
+            return e.format(df);
+        }
     }
 }
