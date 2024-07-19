@@ -34,7 +34,7 @@
 * smartsocket 升为 1.5.50
 * smarthttp 升为 1.5.5
 * fastjson2 升为 2.0.52
-* snack3 升为 3.2.105
+* snack3 升为 3.2.106
 * wood 升为 1.2.13
 
 ### 2.8.5
