@@ -30,6 +30,8 @@
 * 优化 AOT 代理增加 接口 default 方法代理支持
 * 优化 ASM 代理增加 接口 default 方法代理支持
 * 修复 LocalSessionState::sessionKeys 数据错误
+* 修复 solon.serialization.jackson 的 boolAsInt 配置 对小写 bool 无效的问题
+* 修复 solon.serialization.fastjson2 的 boolAsInt 配置无效的问题
 * smartsocket 升为 1.5.50
 * smarthttp 升为 1.5.5
 * fastjson2 升为 2.0.52
