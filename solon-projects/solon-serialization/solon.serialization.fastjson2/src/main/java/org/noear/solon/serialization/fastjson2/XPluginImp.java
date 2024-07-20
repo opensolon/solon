@@ -83,6 +83,10 @@ public class XPluginImp implements Plugin {
                 factory.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
             }
 
+            if (jsonProps.boolAsInt) {
+                factory.addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
+            }
+
             if (jsonProps.longAsString) {
                 factory.addFeatures(JSONWriter.Feature.WriteLongAsString);
             }
