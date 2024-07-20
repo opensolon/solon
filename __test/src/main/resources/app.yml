@@ -16,6 +16,12 @@ demo8.test:
   username: root
   paasword: 12
 
+demo9:
+  1:
+    a: "a"
+  2:
+    b: "b"
+
 autorefresh:
   username: a
 

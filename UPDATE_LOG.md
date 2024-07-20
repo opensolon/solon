@@ -24,14 +24,15 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.8.6
-* 添加 Context::outputStreamAsGzip 方法
-* 优化 DownloadedFile 取消空构造函数，避免内容为 null 的情况
-* 优化 UploadedFile::getContentSize 避免可能为 null 的情况
-* 优化 AOT 代理增加 接口 default 方法代理支持
-* 优化 ASM 代理增加 接口 default 方法代理支持
-* 修复 LocalSessionState::sessionKeys 数据错误
+* 添加 solon Context::outputStreamAsGzip 方法
+* 优化 solon DownloadedFile 取消空构造函数，避免内容为 null 的情况
+* 优化 solon UploadedFile::getContentSize 避免可能为 null 的情况
+* 优化 solon.proxy AOT 代理增加 接口 default 方法代理支持
+* 优化 solon.proxy ASM 代理增加 接口 default 方法代理支持
+* 修复 solon.sessionstate.local LocalSessionState::sessionKeys 数据获取错误
 * 修复 solon.serialization.jackson 的 boolAsInt 配置 对小写 bool 无效的问题
 * 修复 solon.serialization.fastjson2 的 boolAsInt 配置无效的问题
+* 修复 solon.config.yaml 当配置 key 为数字时会出错的问题
 * smartsocket 升为 1.5.50
 * smarthttp 升为 1.5.5
 * fastjson2 升为 2.0.52

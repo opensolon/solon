@@ -126,7 +126,7 @@ public class PropertiesYaml extends Properties {
 
     private void load0(Map<Object, Object> temProp, String prefix, Object tmp) {
         if (tmp instanceof Map) {
-            ((Map<String, Object>) tmp).forEach((k, v) -> {
+            ((Map) tmp).forEach((k, v) -> {
                 String prefix2 = prefix + "." + k;
                 load0(temProp, prefix2, v);
             });
