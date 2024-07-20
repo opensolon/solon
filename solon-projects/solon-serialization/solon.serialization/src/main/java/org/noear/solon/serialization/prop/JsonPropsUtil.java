@@ -75,6 +75,7 @@ public class JsonPropsUtil {
 
         if (jsonProps.boolAsInt) {
             factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
+            factory.addConvertor(boolean.class, e -> (e ? 1 : 0));
         }
 
         return true;
