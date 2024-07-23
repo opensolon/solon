@@ -86,7 +86,7 @@ public class RouterDefault implements Router, HandlerSlots {
     public void add(String path, BeanWrap controllerWrap) {
         if (controllerWrap != null) {
             Solon.app().factoryManager().mvcFactory()
-                    .createLoader(controllerWrap, path)
+                    .createLoader(controllerWrap, path, controllerWrap.remoting(), null, true)
                     .load(this);
         }
     }

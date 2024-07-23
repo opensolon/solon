@@ -61,15 +61,21 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     }
 
     protected void initDo(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        bw = wrap;
-        bRender = render;
+        if(render == null) {
+            if (wrap.raw() instanceof Render) {
+                render = wrap.raw();
+            }
+        }
+
+        this.bw = wrap;
+        this.bRender = render;
         this.allowMapping = allowMapping;
 
         if (mapping != null) {
-            bPath = mapping;
+            this.bPath = mapping;
         }
 
-        bRemoting = remoting;
+        this.bRemoting = remoting;
     }
 
     /**
@@ -216,7 +222,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
         //如果是service，method 就不需要map
         if (m_map != null || all) {
-            String newPath = PathUtil.mergePath(bPath, m_path);
+            String newPath = postActionPath(bw, bPath, method, m_path);
 
             Action action = createAction(bw, method, m_map, newPath, bRemoting);
 
@@ -231,11 +237,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
             }
 
             for (MethodType m1 : m_limitMethodSet) {
-                if (m_map == null) {
-                    slots.add(newPath, m1, action);
-                } else {
-                    slots.add(newPath, m1, action);
-                }
+                slots.add(newPath, m1, action);
             }
         }
     }
@@ -299,6 +301,13 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
                 }
             }
         }
+    }
+
+    /**
+     * 确认 Action 路径
+     */
+    protected String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
+        return PathUtil.mergePath(bPath, mPath);
     }
 
     /**

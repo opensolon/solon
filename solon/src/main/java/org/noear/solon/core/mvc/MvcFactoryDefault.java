@@ -30,27 +30,33 @@ import java.util.function.Predicate;
  * @since 2.7
  */
 public class MvcFactoryDefault implements MvcFactory {
+    /**
+     * 创建动作加载器
+     */
+    @Override
     public ActionLoader createLoader(BeanWrap wrap) {
         return new ActionLoaderDefault(wrap);
     }
 
-    public ActionLoader createLoader(BeanWrap wrap, String mapping) {
-        return createLoader(wrap, mapping, wrap.remoting(), null, true);
-    }
-
-    public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting) {
-        return createLoader(wrap, mapping, remoting, null, true);
-    }
-
+    /**
+     * 创建动作加载器
+     */
+    @Override
     public ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
         return new ActionLoaderDefault(wrap, mapping, remoting, render, allowMapping);
     }
 
+    /**
+     * 查找动作方式类型
+     */
     @Override
     public Set<MethodType> findMethodTypes(Set<MethodType> list, Predicate<Class> checker) {
         return MethodTypeResolver.findAndFill(list, checker);
     }
 
+    /**
+     * 分析动作参数
+     */
     @Override
     public void resolveParam(ActionParam vo, AnnotatedElement element) {
         ActionParamResolver.resolve(vo, element);
@@ -58,6 +64,9 @@ public class MvcFactoryDefault implements MvcFactory {
 
     private final ActionExecuteHandler executeHandlerDefault = new ActionExecuteHandlerDefault();
 
+    /**
+     * 获取动作默认执行器
+     */
     @Override
     public ActionExecuteHandler getExecuteHandlerDefault() {
         return executeHandlerDefault;

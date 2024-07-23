@@ -36,20 +36,6 @@ public interface MvcFactory {
     /**
      * 创建动作加载器
      */
-    default ActionLoader createLoader(BeanWrap wrap, String mapping) {
-        return createLoader(wrap, mapping, wrap.remoting(), null, true);
-    }
-
-    /**
-     * 创建动作加载器
-     */
-    default ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting) {
-        return createLoader(wrap, mapping, remoting, null, true);
-    }
-
-    /**
-     * 创建动作加载器
-     */
     ActionLoader createLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping);
 
     /**
