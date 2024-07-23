@@ -49,7 +49,7 @@ public class MvcFactoryDefault implements MvcFactory {
     }
 
     /**
-     * 查找动作方式类型
+     * 查找方式类型
      */
     @Override
     public Set<MethodType> findMethodTypes(Set<MethodType> list, Predicate<Class> checker) {
@@ -60,7 +60,7 @@ public class MvcFactoryDefault implements MvcFactory {
      * 分析动作参数
      */
     @Override
-    public void resolveParam(ActionParam vo, AnnotatedElement element) {
+    public void resolveActionParam(ActionParam vo, AnnotatedElement element) {
         ActionParamResolver.resolve(vo, element);
     }
 

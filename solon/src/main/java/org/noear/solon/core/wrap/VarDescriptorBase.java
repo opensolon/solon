@@ -85,7 +85,7 @@ public abstract class VarDescriptorBase implements VarDescriptor {
     protected void init() {
         //没有时，不处理
         if (Solon.app().factoryManager().hasMvcFactory()) {
-            Solon.app().factoryManager().mvcFactory().resolveParam(vo, element);
+            Solon.app().factoryManager().mvcFactory().resolveActionParam(vo, element);
         }
     }
 
