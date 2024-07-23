@@ -27,27 +27,42 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * Bean 包装的生命周期
+ *
  * @author noear
  * @since 2.8
  */
 class BeanWrapLifecycle implements LifecycleBean {
     private BeanWrap bw;
     private Method initMethod;
+    private String initMethodName;
     private int initIndex;
     private Method destroyMethod;
+    private String destroyMethodName;
 
-    public BeanWrapLifecycle(BeanWrap bw) {
+    public BeanWrapLifecycle(BeanWrap bw, String initMethodName, String destroyMethodName) {
         this.bw = bw;
+        this.initMethodName = initMethodName;
+        this.destroyMethodName = destroyMethodName;
     }
 
+    /**
+     * 初始化方法
+     */
     public Method initMethod() {
         return initMethod;
     }
 
+    /**
+     * 注解方法
+     */
     public Method destroyMethod() {
         return destroyMethod;
     }
 
+    /**
+     * 有效性检测
+     */
     public boolean check() {
         if (bw.raw() == null) {
             return false;
@@ -55,29 +70,45 @@ class BeanWrapLifecycle implements LifecycleBean {
 
         ClassWrap clzWrap = ClassWrap.get(bw.rawClz());
 
-        //找查注解函数
-        for (Method m : clzWrap.getDeclaredMethods()) {
-            Init initAnno = m.getAnnotation(Init.class);
-            if (initAnno != null) {
-                if (m.getParameters().length == 0) {
-                    //只接收没有参数的，支持非公有函数
-                    initMethod = m;
-                    initMethod.setAccessible(true);
-                    initIndex = initAnno.index();
-                }
-            } else {
-                Destroy destroyAnno = m.getAnnotation(Destroy.class);
-                if (destroyAnno != null) {
-                    if (m.getParameters().length == 0) {
-                        destroyMethod = m;
-                        destroyMethod.setAccessible(true);
-                    }
-                }
+        //按名字找（优先）
+        try {
+            if (Utils.isNotEmpty(initMethodName)) {
+                initMethod = bw.rawClz().getDeclaredMethod(initMethodName);
             }
 
-            if (initMethod != null && destroyMethod != null) {
-                //如果两个都找到了，就不用找了
-                break;
+            if (Utils.isNotEmpty(destroyMethodName)) {
+                destroyMethod = bw.rawClz().getDeclaredMethod(destroyMethodName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        //如果都没有，则安注解找
+        if(initMethod == null && destroyMethod == null) {
+            //找查注解函数
+            for (Method m : clzWrap.getDeclaredMethods()) {
+                Init initAnno = m.getAnnotation(Init.class);
+                if (initAnno != null) {
+                    if (m.getParameters().length == 0) {
+                        //只接收没有参数的，支持非公有函数
+                        initMethod = m;
+                        initMethod.setAccessible(true);
+                        initIndex = initAnno.index();
+                    }
+                } else {
+                    Destroy destroyAnno = m.getAnnotation(Destroy.class);
+                    if (destroyAnno != null) {
+                        if (m.getParameters().length == 0) {
+                            destroyMethod = m;
+                            destroyMethod.setAccessible(true);
+                        }
+                    }
+                }
+
+                if (initMethod != null && destroyMethod != null) {
+                    //如果两个都找到了，就不用找了
+                    break;
+                }
             }
         }
 

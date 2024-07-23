@@ -46,17 +46,17 @@ public @interface Bean {
 
     /**
      * 标签，用于查找
-     * */
+     */
     String tag() default "";
 
     /**
      * 要类型的（同时注册类型），仅当名称非空时有效
-     * */
+     */
     boolean typed() default false;
 
     /**
      * 排序（只对部分类型有效）
-     * */
+     */
     int index() default 0;
 
     /**
@@ -66,6 +66,16 @@ public @interface Bean {
 
     /**
      * 要注入的
-     * */
+     */
     boolean injected() default false;
+
+    /**
+     * 初始化方法
+     */
+    String initMethod() default "";
+
+    /**
+     * 注销方法
+     */
+    String destroyMethod() default "";
 }

@@ -23,7 +23,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 注销
+ * 注销方法注解
  *
  * @author noear
  * @since 2.8

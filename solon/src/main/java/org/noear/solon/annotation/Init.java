@@ -21,7 +21,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 初始化（相当于 PostConstruct，也不同。可以在任何 Bean 里使用）（未来会弃用，建议改用 LifecycleBean 接口）
+ * 初始化方法注解
  *
  * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化)
  *

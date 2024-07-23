@@ -72,13 +72,13 @@ public class BeanWrap {
      * @since 1.10
      */
     public BeanWrap(AppContext context, Class<?> clz, Object raw, String name) {
-        this(context, clz, raw, name, false);
+        this(context, clz, raw, name, false, null, null);
     }
 
     /**
      * @since 1.10
      */
-    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed) {
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName) {
         this.context = context;
         this.clz = clz;
         this.name = name;
@@ -107,7 +107,7 @@ public class BeanWrap {
         }
 
         //尝试初始化
-        tryInit();
+        tryInit(initMethodName, destroyMethodName);
     }
 
     public AppContext context() {
@@ -336,9 +336,9 @@ public class BeanWrap {
      *
      * @since 2.3
      */
-    protected void tryInit() {
+    protected void tryInit(String initMethodName, String destroyMethodName) {
         if (lifecycle == null) {
-            lifecycle = new BeanWrapLifecycle(this);
+            lifecycle = new BeanWrapLifecycle(this, initMethodName, destroyMethodName);
             if (lifecycle.check()) {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
             }

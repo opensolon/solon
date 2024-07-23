@@ -719,7 +719,7 @@ public class AppContext extends BeanContainer {
 
         //有参数的bean，采用线程池处理；所以需要锁等待
         //
-        tryBuildBean(ma, mWrap, bw);
+        tryBuildBeanOfMethod(ma, mWrap, bw);
     }
 
     /**
@@ -790,17 +790,17 @@ public class AppContext extends BeanContainer {
      * @param mWrap 方法包装器
      * @param bw    bean 包装器
      */
-    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
+    protected void tryBuildBeanOfMethod(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
         int size2 = mWrap.getParamWraps().length;
 
         if (size2 == 0) {
             //0.没有参数
-            tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
+            tryBuildBeanOfMethodDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
             InjectGather gather = new InjectGather(true, mWrap.getReturnType(), true, size2, (args2) -> {
                 //变量收集完成后，会回调此处
-                RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
+                RunUtil.runOrThrow(() -> tryBuildBeanOfMethodDo(anno, mWrap, bw, args2));
             });
 
             //1.1.登录到集合
@@ -822,12 +822,9 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Throwable {
+    protected void tryBuildBeanOfMethodDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Throwable {
         Object raw = mWrap.invoke(bw.raw(), args);
-        tryBuildBean0(mWrap, anno, raw);
-    }
 
-    protected void tryBuildBean0(MethodWrap mWrap, Bean anno, Object raw) {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
             Type beanGtp = mWrap.getGenericReturnType();
@@ -847,7 +844,7 @@ public class AppContext extends BeanContainer {
                 EventBus.publish(raw);//@deprecated
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                m_bw = wrapCreate(beanClz, raw, null);
+                m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
             }
 
             String beanName = Utils.annoAlias(anno.value(), anno.name());
