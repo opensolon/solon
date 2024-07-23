@@ -55,7 +55,7 @@ public class Solon {
      * 框架版本码
      */
     public static int versionCode(){
-        return 20801;
+        return 20806;
     }
 
     /**
@@ -217,7 +217,11 @@ public class Solon {
      * 停止应用
      */
     public static void stop() {
-        stop(app.cfg().stopDelay());
+        if (app.cfg().stopSafe()) {
+            stop(app.cfg().stopDelay());
+        } else {
+            stop(0);
+        }
     }
 
     /**
@@ -307,6 +311,8 @@ public class Solon {
             Solon.context().stop();
             EventBus.publishTry(new AppStopEndEvent(Solon.app()));
         }
+
+        LogUtil.global().info("App: End stop");
 
         app = null;
         appMain = null;
