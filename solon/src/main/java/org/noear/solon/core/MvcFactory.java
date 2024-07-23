@@ -18,6 +18,7 @@ package org.noear.solon.core;
 import org.noear.solon.core.handle.*;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -47,6 +48,11 @@ public interface MvcFactory {
      * 分析动作参数
      */
     void resolveParam(ActionParam vo, AnnotatedElement element);
+
+    /**
+     * 确认动作路径
+     */
+    String postActionPath(BeanWrap bw, String bPath, Method method, String mPath);
 
     /**
      * 获取动作默认执行器

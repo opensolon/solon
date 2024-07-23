@@ -18,8 +18,10 @@ package org.noear.solon.core.mvc;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.MvcFactory;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -60,6 +62,14 @@ public class MvcFactoryDefault implements MvcFactory {
     @Override
     public void resolveParam(ActionParam vo, AnnotatedElement element) {
         ActionParamResolver.resolve(vo, element);
+    }
+
+    /**
+     * 确认动作路径
+     */
+    @Override
+    public String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
+        return PathUtil.mergePath(bPath, mPath);
     }
 
     private final ActionExecuteHandler executeHandlerDefault = new ActionExecuteHandlerDefault();

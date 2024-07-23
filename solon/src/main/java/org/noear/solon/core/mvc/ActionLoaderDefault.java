@@ -22,7 +22,6 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
@@ -307,7 +306,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      * 确认 Action 路径
      */
     protected String postActionPath(BeanWrap bw, String bPath, Method method, String mPath) {
-        return PathUtil.mergePath(bPath, mPath);
+        return Solon.app().factoryManager().mvcFactory().postActionPath(bw, bPath, method, mPath);
     }
 
     /**
