@@ -22,6 +22,7 @@ import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
@@ -34,6 +35,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
@@ -89,7 +91,12 @@ public class WsServer extends WebSocketServer {
         String path = URI.create(request.getResourceDescriptor()).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
-            tmp.put("Sec-WebSocket-Protocol", subProtocolCapable.getSubProtocols());
+            String reqProtocols = Utils.annoAlias(request.getFieldValue(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL), "");
+            String protocols = subProtocolCapable.getSubProtocols(Arrays.asList(reqProtocols.split(",")));
+
+            if (Utils.isNotEmpty(protocols)) {
+                tmp.put(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL, protocols);
+            }
         }
 
         return tmp;

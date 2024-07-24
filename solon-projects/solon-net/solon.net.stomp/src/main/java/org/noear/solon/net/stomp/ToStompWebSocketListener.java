@@ -19,6 +19,7 @@ package org.noear.solon.net.stomp;
 import org.noear.snack.core.utils.StringUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.impl.*;
 import org.noear.solon.net.websocket.SubProtocolCapable;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -76,7 +78,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener, Sub
     }
 
     @Override
-    public String getSubProtocols() {
+    public String getSubProtocols(@Nullable Collection<String> requestProtocols) {
         return "stomp";
     }
 

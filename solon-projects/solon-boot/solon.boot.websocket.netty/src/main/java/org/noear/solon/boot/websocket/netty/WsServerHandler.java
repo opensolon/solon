@@ -25,6 +25,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
@@ -81,14 +82,20 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
         String url = "ws://" + req.headers().get(HttpHeaderNames.HOST) + req.uri();
 
         //构造握手工厂创建握手处理类 WebSocketServerHandshaker，来构造握手响应返回给客户端
-        WebSocketServerHandshakerFactory wsFactory;
+        WebSocketServerHandshakerFactory wsFactory = null;
 
         //添加子协议支持
         String path = URI.create(req.getUri()).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
-            wsFactory = new WebSocketServerHandshakerFactory(url, subProtocolCapable.getSubProtocols(), false);
-        }else{
+            String protocols = subProtocolCapable.getSubProtocols(req.headers().getAll(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL));
+
+            if (Utils.isNotEmpty(protocols)) {
+                wsFactory = new WebSocketServerHandshakerFactory(url, protocols, false);
+            }
+        }
+
+        if (wsFactory == null) {
             wsFactory = new WebSocketServerHandshakerFactory(url, null, false);
         }
 

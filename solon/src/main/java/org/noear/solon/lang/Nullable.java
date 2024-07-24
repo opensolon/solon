@@ -24,7 +24,6 @@ import java.lang.annotation.*;
  * @since 1.10
  */
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Nullable {
 }

@@ -18,6 +18,7 @@ package org.noear.solon.boot.jetty.websocket;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
+import org.noear.solon.Utils;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
 
@@ -36,7 +37,11 @@ public class WebSocketCreatorImpl implements WebSocketCreator {
         String path = servletUpgradeRequest.getRequestURI().getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
-            servletUpgradeResponse.setAcceptedSubProtocol(subProtocolCapable.getSubProtocols());
+            String protocols = subProtocolCapable.getSubProtocols(servletUpgradeRequest.getSubProtocols());
+
+            if (Utils.isNotEmpty(protocols)) {
+                servletUpgradeResponse.setAcceptedSubProtocol(protocols);
+            }
         }
 
         return new WebSocketListenerImpl();

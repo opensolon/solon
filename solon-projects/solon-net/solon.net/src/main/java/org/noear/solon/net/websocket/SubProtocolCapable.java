@@ -15,6 +15,10 @@
  */
 package org.noear.solon.net.websocket;
 
+import org.noear.solon.lang.Nullable;
+
+import java.util.Collection;
+
 /**
  * WebSoskcet 子协议能力申明
  *
@@ -22,5 +26,8 @@ package org.noear.solon.net.websocket;
  * @since 2.8
  */
 public interface SubProtocolCapable {
-    String getSubProtocols();
+    static String SEC_WEBSOCKET_PROTOCOL = "Sec-WebSocket-Protocol";
+
+    @Nullable
+    String getSubProtocols(@Nullable Collection<String> requestProtocols);
 }

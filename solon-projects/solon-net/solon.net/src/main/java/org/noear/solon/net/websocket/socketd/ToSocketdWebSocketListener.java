@@ -22,6 +22,7 @@ import org.noear.socketd.transport.core.codec.ByteBufferCodecWriter;
 import org.noear.socketd.transport.core.impl.ChannelDefault;
 import org.noear.socketd.transport.core.impl.ProcessorDefault;
 import org.noear.socketd.utils.IoCompletionHandler;
+import org.noear.solon.Utils;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -94,9 +96,17 @@ public class ToSocketdWebSocketListener implements WebSocketListener, SubProtoco
     }
 
     @Override
-    public String getSubProtocols() {
+    public String getSubProtocols(Collection<String> requestProtocols) {
         //子协议验证
-        return SocketD.protocolName();
+        if (config.isUseSubprotocols()) {
+            return SocketD.protocolName();
+        } else {
+            if (Utils.isEmpty(requestProtocols)) {
+                return null;
+            } else {
+                return SocketD.protocolName();
+            }
+        }
     }
 
     @Override

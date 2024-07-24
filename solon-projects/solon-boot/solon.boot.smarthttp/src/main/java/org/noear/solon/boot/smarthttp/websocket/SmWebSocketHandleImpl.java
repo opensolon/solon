@@ -15,6 +15,7 @@
  */
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
@@ -49,7 +50,11 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
         String path = URI.create(request.getRequestURL()).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
-            response.setHeader("Sec-WebSocket-Protocol",subProtocolCapable.getSubProtocols());
+            String protocols = subProtocolCapable.getSubProtocols(request.getHeaders(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL));
+
+            if (Utils.isNotEmpty(protocols)) {
+                response.setHeader(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL, protocols);
+            }
         }
     }
 
