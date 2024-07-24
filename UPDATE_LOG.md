@@ -38,6 +38,7 @@
 * fastjson2 升为 2.0.52
 * snack3 升为 3.2.107
 * wood 升为 1.2.13
+* socket.d 升为 2.5.10
 
 ### 2.8.5
 * 添加 solon.cache.redisson RedissonClientOriginalSupplier 类
