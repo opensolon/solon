@@ -1,4 +1,4 @@
-package features;
+package features.test5;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,6 +40,9 @@ public class JacksonFormatTest {
         ContextEmpty ctx = new ContextEmpty();
         renderFactory.create().render(timeModel, ctx);
         String jsonString = ctx.attr("output");
+        System.out.println(jsonString);
+
+        assert "{\"date\":\"2024-07-25\",\"dateWithoutFormat\":\"2024-07-25 12:34:56\"}".equals(jsonString);
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonObject = objectMapper.readTree(jsonString);
