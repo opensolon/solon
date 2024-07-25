@@ -57,7 +57,7 @@ public class TargetClassVisitor extends ClassVisitor {
         if (superName != null) {
             List<MethodDigest> beans = initMethodBeanByParent(superName);
 
-            if (beans != null && !beans.isEmpty()) {
+            if (Utils.isNotEmpty(beans)) {
                 for (MethodDigest bean : beans) {
                     if (!methods.contains(bean)) {
                         methods.add(bean);
@@ -70,7 +70,7 @@ public class TargetClassVisitor extends ClassVisitor {
             for (String ifType : interfaces) {
                 List<MethodDigest> beans = initMethodBeanByParent(ifType);
 
-                if (beans != null && !beans.isEmpty()) {
+                if (Utils.isNotEmpty(beans)) {
                     for (MethodDigest bean : beans) {
                         if (!methods.contains(bean)) {
                             methods.add(bean);
@@ -93,9 +93,9 @@ public class TargetClassVisitor extends ClassVisitor {
                 MethodDigest methodDigest = new MethodDigest(access, name, descriptor);
 
                 //public 给 declaredMethods + methods
-                if (declaredMethods.contains(methodDigest) == false) {
-                    declaredMethods.add(methodDigest);
-                }
+//                if (declaredMethods.contains(methodDigest) == false) {
+//                    declaredMethods.add(methodDigest);
+//                }
 
                 if (methods.contains(methodDigest) == false) {
                     methods.add(methodDigest);

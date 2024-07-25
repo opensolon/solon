@@ -84,19 +84,18 @@ public class ClassCodeBuilder {
         // 添加调用 InvocationHandler 的方法
         addInvokeMethod(writer, newClassInnerName);
         // 添加继承的public方法和目标类的protected、default方法
-        List<MethodDigest> methods = targetClassVisitor.getMethods();
-        List<MethodDigest> declaredMethods = targetClassVisitor.getDeclaredMethods();
         Map<Integer, Integer> methodsMap = new HashMap<>();
         Map<Integer, Integer> declaredMethodsMap = new HashMap<>();
         int methodNameIndex = 0;
 
-        if (methods.size() > 0) {
+        if (targetClassVisitor.getMethods().size() > 0) {
             methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getMethods(),
-                    methods, true, methodNameIndex, methodsMap);
+                    targetClassVisitor.getMethods(), true, methodNameIndex, methodsMap);
         }
-        if (declaredMethods.size() > 0) {
+
+        if (targetClassVisitor.getDeclaredMethods().size() > 0) {
             methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getDeclaredMethods(),
-                    declaredMethods, false, methodNameIndex, declaredMethodsMap);
+                    targetClassVisitor.getDeclaredMethods(), false, methodNameIndex, declaredMethodsMap);
         }
 
         // 添加静态代码块的初始化
@@ -264,25 +263,31 @@ public class ClassCodeBuilder {
                     access = 0;
                 }
             }
+
             if (access == -1) {
                 continue;
             }
+
             // 匹配对应的方法
             int methodIndex = findSomeMethod(methods, methodDigest);
             if (methodIndex == -1) {
                 continue;
             }
+
             // 将新建字段的后缀索引和对应方法数组真实的索引连接起来，方便后面初始化静态代码块时使用
             map.put(methodNameIndex, methodIndex);
+
             // 添加method对应的字段
             String fieldName = METHOD_FIELD_PREFIX + methodNameIndex;
             FieldVisitor fieldVisitor = writer.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC,
                     fieldName, Type.getDescriptor(Method.class), null, null);
             fieldVisitor.visitEnd();
+
             // 添加方法的调用
             addMethod(writer, newClassInnerName, methodDigest, access, methodNameIndex);
             methodNameIndex++;
         }
+
         return methodNameIndex;
     }
 
@@ -477,6 +482,7 @@ public class ClassCodeBuilder {
         Label label2 = new Label();
         methodVisitor.visitTryCatchBlock(label0, label1, label2, exceptionClassName);
         methodVisitor.visitLabel(label0);
+
         // 给继承的方法添加对应的字段初始化
         for (Map.Entry<Integer, Integer> entry : methodsMap.entrySet()) {
             Integer key = entry.getKey();
@@ -491,6 +497,7 @@ public class ClassCodeBuilder {
             methodVisitor.visitFieldInsn(Opcodes.PUTSTATIC, newClassInnerName,
                     METHOD_FIELD_PREFIX + key, Type.getDescriptor(Method.class));
         }
+
         // 给目标类本身的方法添加对应的字段初始化
         for (Map.Entry<Integer, Integer> entry : declaredMethodsMap.entrySet()) {
             Integer key = entry.getKey();

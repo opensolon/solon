@@ -39,13 +39,22 @@ public class MethodDigest {
         }
         MethodDigest digest = (MethodDigest) obj;
 
-        if (access == digest.access //可能有 public 或 protected
-                && methodName != null && digest.methodName != null
+        //access == digest.access //可能有有
+        if (methodName != null && digest.methodName != null
                 && methodName.equals(digest.methodName)
                 && methodDesc != null && digest.methodDesc != null
                 && methodDesc.equals(digest.methodDesc)) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "MethodDigest{" +
+                "access=" + access +
+                ", methodName='" + methodName + '\'' +
+                ", methodDesc='" + methodDesc + '\'' +
+                '}';
     }
 }
