@@ -28,6 +28,8 @@
 * 添加 solon `@Bean(initMethod, destroyMethod)` 配置属性
 * 添加 solon ActionLoaderDefault:postActionPath 方法（方便重写）
 * 添加 solon.boot `server.request.useRawpath` 配置
+* 添加 solon.boot http-server 同端口的 ws 信号注册
+* 优化 solon.boot 当有 `server.?.name` 配置时才注册 ws,sd 信号
 * 优化 solon MvcFactory:resolveParam 更名为 resolveActionParam（旧名，标为弃用）
 * 优化 solon DownloadedFile 取消空构造函数，避免内容为 null 的情况
 * 优化 solon UploadedFile::getContentSize 避免可能为 null 的情况

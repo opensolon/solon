@@ -19,6 +19,7 @@ import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.server.Server;
 import org.noear.socketd.transport.server.ServerConfigHandler;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.SocketServerProps;
@@ -123,10 +124,13 @@ public class XPluginImpl implements Plugin {
 
         server.start();
 
-        final String _wrapHost = serverProps.getWrapHost();
-        final int _wrapPort = serverProps.getWrapPort() + portAdd;
-        Signal _signal = new SignalSim(serverProps.getName(), _wrapHost, _wrapPort, "socketd", SignalType.SOCKET);
-        Solon.app().signalAdd(_signal);
+        if(Utils.isNotEmpty(serverProps.getName())) {
+            final String _wrapHost = serverProps.getWrapHost();
+            final int _wrapPort = serverProps.getWrapPort() + portAdd;
+            Signal _signal = new SignalSim(serverProps.getName(), _wrapHost, _wrapPort, "socketd", SignalType.SOCKET);
+
+            Solon.app().signalAdd(_signal);
+        }
 
         long time_end = System.currentTimeMillis();
 

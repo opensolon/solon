@@ -17,6 +17,7 @@ package org.noear.solon.boot.websocket.netty;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
@@ -60,7 +61,6 @@ public class XPluginImpl implements Plugin {
         WebSocketServerProps props = WebSocketServerProps.getInstance();
         final String _host = props.getHost();
         final int _port = props.getPort();
-        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
@@ -71,12 +71,13 @@ public class XPluginImpl implements Plugin {
 
 
         //==========
+        if (Utils.isNotEmpty(props.getName())) {
+            final String _wrapHost = props.getWrapHost();
+            final int _wrapPort = props.getWrapPort();
+            _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
 
-        final String _wrapHost = props.getWrapHost();
-        final int _wrapPort = props.getWrapPort();
-        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
-
-        app.signalAdd(_signal);
+            app.signalAdd(_signal);
+        }
 
         long time_end = System.currentTimeMillis();
 

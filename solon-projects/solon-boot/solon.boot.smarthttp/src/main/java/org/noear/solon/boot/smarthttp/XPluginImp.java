@@ -21,6 +21,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
@@ -108,6 +109,13 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
+            //有名字定义时，添加信号注册
+            WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
+            if (Utils.isNotEmpty(wsProps.getName())) {
+                SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
+                app.signalAdd(wsSignal);
+            }
+
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
             LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }

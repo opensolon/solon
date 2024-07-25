@@ -57,7 +57,6 @@ public class XPluginImp implements Plugin {
         WebSocketServerProps props = WebSocketServerProps.getInstance();
         final String _host = props.getHost();
         final int _port = props.getPort();
-        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
@@ -70,11 +69,11 @@ public class XPluginImp implements Plugin {
         _server.setReuseAddr(true); //重启时，端口可立即复用
         _server.start();
 
-        final String _wrapHost = props.getWrapHost();
-        final int _wrapPort = props.getWrapPort();
-        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
+        if (Utils.isNotEmpty(props.getName())) {
+            _signal = new SignalSim(props.getName(), props.getWrapHost(), props.getWrapPort(), "ws", SignalType.WEBSOCKET);
 
-        app.signalAdd(_signal);
+            app.signalAdd(_signal);
+        }
 
         long time_end = System.currentTimeMillis();
 
