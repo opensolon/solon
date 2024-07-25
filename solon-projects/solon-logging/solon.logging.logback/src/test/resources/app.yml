@@ -9,6 +9,7 @@ solon.logging.appender:
   console:
     level: DEBUG
   file:
+    enable: false
     level: INFO
     rolling: "logs/demoapp_%d{yyyy-MM-dd}/%i.log"
     maxFileSize: "1 KB"
