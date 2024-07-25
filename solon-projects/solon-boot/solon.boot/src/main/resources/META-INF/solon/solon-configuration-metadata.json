@@ -51,6 +51,12 @@
       "description": "设定使用上传临时文件"
     },
     {
+      "name": "server.request.useRawpath",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "设定使用原始路径"
+    },
+    {
       "name": "server.request.encoding",
       "type": "java.lang.String",
       "defaultValue": "utf-8",

@@ -54,6 +54,13 @@ public class ServerProps {
     public static final boolean request_useTempfile;
 
     /**
+     * 上传使用原始路径
+     *
+     * @since 2.8
+     */
+    public static final boolean request_useRawpath;
+
+    /**
      * 会话超时
      */
     public static final int session_timeout;
@@ -106,6 +113,8 @@ public class ServerProps {
         }
 
         request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
+
+        request_useRawpath = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USERAWPATH, false);
 
         //
         // for session

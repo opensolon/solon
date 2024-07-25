@@ -253,23 +253,7 @@ public abstract class Context {
     public abstract URI uri();
 
 
-    private String path;
-    /**
-     * 获取请求的URI路径
-     */
-    public String path() {
-        if (path == null && url() != null) {
-            path = uri().getPath();
-            if(path == null){
-                this.path = "";
-            }
-            if (path.contains("//")) {
-                path = Utils.trimDuplicates(path, '/');
-            }
-        }
-
-        return path;
-    }
+    public abstract String path();
 
     /**
      * 设置新路径

@@ -37,6 +37,30 @@ import java.util.zip.GZIPOutputStream;
  * @since 2.3
  */
 public abstract class WebContextBase extends Context {
+    private String path;
+
+    /**
+     * 获取请求的URI路径
+     */
+    public String path() {
+        if (path == null && url() != null) {
+            if (ServerProps.request_useRawpath) {
+                path = uri().getRawPath();
+            } else {
+                path = uri().getPath();
+            }
+
+            if (path == null) {
+                this.path = "";
+            }
+
+            if (path.contains("//")) {
+                path = Utils.trimDuplicates(path, '/');
+            }
+        }
+
+        return path;
+    }
 
     /**
      * 内存类型
@@ -143,7 +167,8 @@ public abstract class WebContextBase extends Context {
 
     /**
      * 获取 session 状态，并以 int 型输出
-     *output
+     * output
+     *
      * @param name 状态名
      * @since 1.6
      */

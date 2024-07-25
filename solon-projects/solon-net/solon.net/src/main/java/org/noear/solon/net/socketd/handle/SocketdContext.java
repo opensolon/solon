@@ -126,6 +126,24 @@ public class SocketdContext extends ContextEmpty {
         return _request.event();
     }
 
+    private String path;
+    /**
+     * 获取请求的URI路径
+     */
+    public String path() {
+        if (path == null && url() != null) {
+            path = uri().getPath();
+            if(path == null){
+                this.path = "";
+            }
+            if (path.contains("//")) {
+                path = Utils.trimDuplicates(path, '/');
+            }
+        }
+
+        return path;
+    }
+
     @Override
     public long contentLength() {
         return _request.dataSize();
