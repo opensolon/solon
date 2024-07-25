@@ -24,21 +24,28 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.8.6
-* 添加 solon Context::outputStreamAsGzip 方法
+* 添加 solon Context::outputStreamAsGzip 方法（方便手动 gzip 输出）
+* 添加 solon `@Bean(initMethod, destroyMethod)` 配置属性
+* 添加 solon ActionLoaderDefault:postActionPath 方法（方便重写）
+* 添加 solon.boot `server.request.useRawpath` 配置
+* 优化 solon MvcFactory:resolveParam 更名为 resolveActionParam（旧名，标为弃用）
 * 优化 solon DownloadedFile 取消空构造函数，避免内容为 null 的情况
 * 优化 solon UploadedFile::getContentSize 避免可能为 null 的情况
 * 优化 solon.proxy AOT 代理增加 接口 default 方法代理支持
 * 优化 solon.proxy ASM 代理增加 接口 default 方法代理支持
+* 优化 solon.net SubProtocolCapable:getSubProtocols 设计，增加请求子协义校验的支持
+* 优化 solon 停止结束语打印
 * 修复 solon.sessionstate.local LocalSessionState::sessionKeys 数据获取错误
 * 修复 solon.serialization.jackson 的 boolAsInt 配置 对小写 bool 无效的问题
 * 修复 solon.serialization.fastjson2 的 boolAsInt 配置无效的问题
 * 修复 solon.config.yaml 当配置 key 为数字时会出错的问题
-* smartsocket 升为 1.5.50
-* smarthttp 升为 1.5.5
 * fastjson2 升为 2.0.52
 * snack3 升为 3.2.107
 * wood 升为 1.2.13
 * socket.d 升为 2.5.10
+* folkmq 升为 1.7.6
+* smartsocket 升为 1.5.50
+* smarthttp 升为 1.5.5
 
 ### 2.8.5
 * 添加 solon.cache.redisson RedissonClientOriginalSupplier 类

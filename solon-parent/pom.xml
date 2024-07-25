@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.8.6-M2</version>
+    <version>2.8.6</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,10 +24,12 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>2.8.6-M2</solon.version>
-        <solon-cloud.version>2.8.6-M2</solon-cloud.version>
-        <solon-admin.version>2.8.5</solon-admin.version>
-        <solon-integration.version>2.8.5</solon-integration.version>
+        <solon.version>2.8.6</solon.version>
+        <solon-cloud.version>2.8.6</solon-cloud.version>
+        <solon-admin.version>2.8.6</solon-admin.version>
+        <solon-integration.version>2.8.6</solon-integration.version>
+
+        <solonx.version>1.0.1</solonx.version>
 
         <snack3.version>3.2.107</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -36,7 +38,8 @@
         <luffy.version>1.7.6</luffy.version>
         <redisx.version>1.6.5</redisx.version>
         <socketd.version>2.5.10</socketd.version>
-        <folkmq.version>1.7.4</folkmq.version>
+        <folkmq.version>1.7.6</folkmq.version>
+
         <redisson.version>3.27.2</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
@@ -208,6 +211,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonx-licence</artifactId>
+                <version>${solonx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonx-web-webservices</artifactId>
+                <version>${solonx.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
