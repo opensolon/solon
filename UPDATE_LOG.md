@@ -25,6 +25,7 @@
 
 ### 2.9.0
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
+* smarthttp 升为 1.5.6
 
 ### 2.8.6
 * 添加 solon Context::outputStreamAsGzip 方法（方便手动 gzip 输出）
