@@ -25,6 +25,7 @@
 
 ### 2.9.0
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
+* 优化 Context::body 的兼容性，避免不可读情况
 * smarthttp 升为 1.5.6
 
 ### 2.8.6
