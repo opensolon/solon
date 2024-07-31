@@ -236,4 +236,18 @@ public class ClassUtil {
             return Object.class;
         }
     }
+
+    /**
+     * 比较参数类型
+     */
+    public static boolean equalParamTypes(Class<?>[] params1, Class<?>[] params2) {
+        if (params1.length == params2.length) {
+            for (int i = 0; i < params1.length; i++) {
+                if (params1[i] != params2[i])
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

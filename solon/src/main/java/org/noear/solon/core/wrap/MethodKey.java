@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.reflect.Method;
@@ -44,17 +45,15 @@ public class MethodKey implements Comparable<MethodKey> {
         } else {
             MethodKey other = (MethodKey) o;
 
-            if (this.method.equals(other.method)) {
-                if (this.targetClass == other.targetClass) {
+            if (this.targetClass == other.targetClass) {
+                if (method.getName().equals(other.method.getName())
+                        && method.getReturnType().equals(other.method.getReturnType())
+                        && ClassUtil.equalParamTypes(method.getParameterTypes(), other.method.getParameterTypes())) {
                     return true;
-                } else if (this.targetClass != null && other.targetClass != null) {
-                    return this.targetClass.equals(other.targetClass);
-                } else {
-                    return false;
                 }
-            } else {
-                return false;
             }
+
+            return false;
         }
     }
 
