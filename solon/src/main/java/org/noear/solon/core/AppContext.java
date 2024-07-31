@@ -177,7 +177,7 @@ public class AppContext extends BeanContainer {
             beanInjectProperties(clz, bw.raw());
 
             //构建小饼
-            for (Method m : ClassWrap.get(bw.clz()).getDeclaredMethods()) {
+            for (Method m : ClassUtil.findPublicMethods(bw.clz())) {
                 Bean ma = m.getAnnotation(Bean.class);
 
                 if (ma != null) {

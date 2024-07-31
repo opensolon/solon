@@ -20,9 +20,9 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -125,24 +125,6 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         slots.add(bMapping, v0, handler);
     }
 
-    /**
-     * 查找 method
-     */
-    protected Method[] findMethods(Class<?> clz) {
-        Map<Method, Method> methods = new LinkedHashMap<>();
-
-        //最终会弃用这部分（监时过度）
-        for (Method m1 : ReflectUtil.getDeclaredMethods(clz)) {
-            methods.put(m1, m1);
-        }
-
-        for (Method m1 : ReflectUtil.getMethods(clz)) {
-            methods.put(m1, m1);
-        }
-
-        return methods.values().toArray(new Method[methods.size()]);
-    }
-
 
     /**
      * 加载 Action 处理
@@ -167,7 +149,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         //只支持 public 函数为 Action
-        for (Method method : findMethods(bw.clz())) {
+        for (Method method : ClassUtil.findPublicMethods(bw.clz())) {
             loadActionItem(slots, all, method, b_limitMethodSet, b_addinMethodSet);
         }
     }
