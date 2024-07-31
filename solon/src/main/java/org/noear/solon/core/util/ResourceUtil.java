@@ -50,8 +50,13 @@ import org.noear.solon.core.AppClassLoader;
  * @since 2.0
  */
 public class ResourceUtil {
+    public static final String TAG_file = "file:";
     public static final String TAG_classpath = "classpath:";
     public static final String TAG_classpath_ = "classpath*:"; //为了兼容用户旧的习惯
+
+    public static boolean hasFile(String path) {
+        return path.startsWith(TAG_file);
+    }
 
     public static boolean hasClasspath(String path) {
         return path.startsWith(TAG_classpath) || path.startsWith(TAG_classpath_);
@@ -225,19 +230,47 @@ public class ResourceUtil {
      * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
      */
     public static URL findResource(ClassLoader classLoader, String uri) {
-        if (hasClasspath(uri)) {
-            return getResource(classLoader, remClasspath(uri));
-        } else {
-            try {
-                File file = Utils.getFile(uri);
+        return findResource(classLoader, uri, true);
+    }
 
-                if (file.exists() == false) {
-                    return null;
-                } else {
-                    return file.toURI().toURL();
+    /**
+     * 查找资源
+     *
+     * @param uri 资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx"）
+     * @param defAsFile 没前缀时默认做为 file
+     */
+    public static URL findResource(ClassLoader classLoader, String uri, boolean defAsFile) {
+        if (defAsFile) {
+            if (hasClasspath(uri)) {
+                return getResource(classLoader, remClasspath(uri));
+            } else {
+                try {
+                    File file = Utils.getFile(uri);
+
+                    if (file.exists() == false) {
+                        return null;
+                    } else {
+                        return file.toURI().toURL();
+                    }
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
                 }
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
+            }
+        } else {
+            if (hasFile(uri)) {
+                try {
+                    File file = Utils.getFile(uri);
+
+                    if (file.exists() == false) {
+                        return null;
+                    } else {
+                        return file.toURI().toURL();
+                    }
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
+            } else {
+                return getResource(classLoader, remClasspath(uri));
             }
         }
     }
