@@ -62,7 +62,7 @@ public class MethodKey implements Comparable<MethodKey> {
         if (targetClass == null) {
             return method.hashCode();
         } else {
-            return method.hashCode() * 31 + targetClass.hashCode();
+            return targetClass.getName().hashCode() ^ method.getName().hashCode();
         }
     }
 
