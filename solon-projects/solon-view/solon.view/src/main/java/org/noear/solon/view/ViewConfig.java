@@ -19,6 +19,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+
 /**
  * 视图配置
  *
@@ -54,28 +58,55 @@ public class ViewConfig {
                 viewPrefix = RES_WEBINF_VIEW_LOCATION;
             }
         } else {
-            //自动加 "/"
-            if (viewPrefix.startsWith("/") == false) {
-                viewPrefix = "/" + viewPrefix;
-            }
+            if (ResourceUtil.hasFile(viewPrefix) == false) {
+                //自动加 "/"
+                if (viewPrefix.startsWith("/") == false) {
+                    viewPrefix = "/" + viewPrefix;
+                }
 
-            if (viewPrefix.endsWith("/") == false) {
-                viewPrefix = viewPrefix + "/";
+                if (viewPrefix.endsWith("/") == false) {
+                    viewPrefix = viewPrefix + "/";
+                }
             }
         }
     }
 
     /**
      * 是否输出元信息
-     * */
+     */
     public static boolean isOutputMeta() {
         return outputMeta;
     }
 
     /**
      * 获取视图前缀
-     * */
+     */
     public static String getViewPrefix() {
         return viewPrefix;
+    }
+
+    /**
+     * 获取视图调试位置
+     */
+    public static File getDebugLocation(ClassLoader classLoader) {
+        //添加调试模式
+        URL rooturi = ResourceUtil.getResource(classLoader, "/");
+        if (rooturi == null) {
+            return null;
+        }
+
+        String rootdir = rooturi.toString().replace("target/classes/", "");
+        File dir = null;
+
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + viewPrefix;
+            dir = new File(URI.create(dir_str));
+            if (!dir.exists()) {
+                dir_str = rootdir + "src/main/webapp" + viewPrefix;
+                dir = new File(URI.create(dir_str));
+            }
+        }
+
+        return dir;
     }
 }

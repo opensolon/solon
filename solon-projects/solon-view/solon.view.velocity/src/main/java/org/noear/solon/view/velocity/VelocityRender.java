@@ -148,27 +148,16 @@ public class VelocityRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource(classLoader,"/");
-        if (rooturi == null) {
+        File dir = ViewConfig.getDebugLocation(classLoader);
+
+        if(dir == null){
             return;
         }
 
         providerOfDebug = new RuntimeInstance();
 
-        String rootdir = rooturi.toString().replace("target/classes/", "");
-        File dir = null;
-
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + viewPrefix;
-            dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + viewPrefix;
-                dir = new File(URI.create(dir_str));
-            }
-        }
-
         try {
-            if (dir != null && dir.exists()) {
+            if (dir.exists()) {
                 providerOfDebug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
             } else {
                 //如果没有找到文件，则使用发行模式

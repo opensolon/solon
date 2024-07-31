@@ -125,29 +125,17 @@ public class EnjoyRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource(classLoader,"/");
-        if (rooturi == null) {
+        File dir = ViewConfig.getDebugLocation(classLoader);
+
+        if(dir == null){
             return;
         }
 
         providerOfDebug = Engine.create("debug");
         providerOfDebug.setDevMode(true);
 
-
-        String rootdir = rooturi.toString().replace("target/classes/", "");
-        File dir = null;
-
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + viewPrefix;
-            dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + viewPrefix;
-                dir = new File(URI.create(dir_str));
-            }
-        }
-
         try {
-            if (dir != null && dir.exists()) {
+            if (dir.exists()) {
                 providerOfDebug.setBaseTemplatePath(dir.getPath());
                 providerOfDebug.setSourceFactory(new FileSourceFactory());
             }

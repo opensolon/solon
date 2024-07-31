@@ -114,8 +114,9 @@ public class FreemarkerRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = ResourceUtil.getResource(classLoader,"/");
-        if(rooturi == null){
+        File dir = ViewConfig.getDebugLocation(classLoader);
+
+        if(dir == null){
             return;
         }
 
@@ -123,20 +124,8 @@ public class FreemarkerRender implements Render {
         providerOfDebug.setNumberFormat("#");
         providerOfDebug.setDefaultEncoding("utf-8");
 
-        String rootdir = rooturi.toString().replace("target/classes/", "");
-        File dir = null;
-
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + viewPrefix;
-            dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + viewPrefix;
-                dir = new File(URI.create(dir_str));
-            }
-        }
-
         try {
-            if (dir != null && dir.exists()) {
+            if (dir.exists()) {
                 providerOfDebug.setDirectoryForTemplateLoading(dir);
             }
 
