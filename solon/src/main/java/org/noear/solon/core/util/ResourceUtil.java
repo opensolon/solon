@@ -76,7 +76,7 @@ public class ResourceUtil {
         //在移除之前，面要先做判断是否有
         int idx = path.indexOf(':');
 
-        if (idx == 3 || idx == 9 || idx == 10) {
+        if (idx == 4 || idx == 9 || idx == 10) {
             return path.substring(idx + 1);
         } else {
             return path;

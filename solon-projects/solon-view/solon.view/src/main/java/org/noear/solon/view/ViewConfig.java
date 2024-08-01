@@ -88,7 +88,11 @@ public class ViewConfig {
     /**
      * 获取视图调试位置
      */
-    public static File getDebugLocation(ClassLoader classLoader) {
+    public static File getDebugLocation(ClassLoader classLoader, String viewPrefix) {
+        if(ResourceUtil.hasFile(viewPrefix)){
+            return null;
+        }
+
         //添加调试模式
         URL rooturi = ResourceUtil.getResource(classLoader, "/");
         if (rooturi == null) {

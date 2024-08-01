@@ -195,6 +195,7 @@ strmap:
   id1: 1
   id2: 2
 
+#solon.view.prefix: "file:/Users/noear/Downloads/templates/"
 
 solon.vault:
   password: "liylU9PhDq63tk1C"

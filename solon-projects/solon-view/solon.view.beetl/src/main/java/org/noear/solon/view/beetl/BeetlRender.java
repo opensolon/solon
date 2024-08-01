@@ -143,7 +143,7 @@ public class BeetlRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader);
+        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;
@@ -151,7 +151,7 @@ public class BeetlRender implements Render {
 
         try {
             if (dir.exists()) {
-                FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), Solon.encoding());
+                FileResourceLoader loader = new FileResourceLoader(dir.getPath(), Solon.encoding());
                 loader.setAutoCheck(true);
                 providerOfDebug = new GroupTemplate(loader, config);
 
@@ -169,15 +169,22 @@ public class BeetlRender implements Render {
         }
 
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
-            provider = new GroupTemplate(loader, config);
+            if (ResourceUtil.hasFile(viewPrefix)) {
+                //file:...
+                URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
+                FileResourceLoader loader = new FileResourceLoader(dir.getFile(), Solon.encoding());
+                loader.setAutoCheck(true);
+                providerOfDebug = new GroupTemplate(loader, config);
+            } else {
+                ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
+                provider = new GroupTemplate(loader, config);
+            }
 
             //通过事件扩展
             EventBus.publish(provider);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
-
     }
 
     /**

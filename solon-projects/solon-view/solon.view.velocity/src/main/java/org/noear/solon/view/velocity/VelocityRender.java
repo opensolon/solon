@@ -148,7 +148,7 @@ public class VelocityRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader);
+        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;
@@ -158,7 +158,7 @@ public class VelocityRender implements Render {
 
         try {
             if (dir.exists()) {
-                providerOfDebug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
+                providerOfDebug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getPath() + File.separatorChar);
             } else {
                 //如果没有找到文件，则使用发行模式
                 //
@@ -176,15 +176,21 @@ public class VelocityRender implements Render {
 
         provider = new RuntimeInstance();
 
-        URL resource = ResourceUtil.getResource(classLoader, viewPrefix);
-        if (resource == null) {
-            return;
+        if (ResourceUtil.hasFile(viewPrefix)) {
+            //file:...
+            URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
+            provider.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getFile() + File.separatorChar);
+        } else {
+            URL resource = ResourceUtil.getResource(classLoader, viewPrefix);
+            if (resource == null) {
+                return;
+            }
+
+            String root_path = resource.getPath();
+
+            provider.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
+            provider.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
         }
-
-        String root_path = resource.getPath();
-
-        provider.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
-        provider.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
     /**

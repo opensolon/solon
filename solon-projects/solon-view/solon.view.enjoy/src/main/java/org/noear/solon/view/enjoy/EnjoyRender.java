@@ -125,7 +125,7 @@ public class EnjoyRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader);
+        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;
@@ -156,8 +156,15 @@ public class EnjoyRender implements Render {
         provider.setDevMode(Solon.cfg().isDebugMode());
 
         try {
-            provider.setBaseTemplatePath(viewPrefix);
-            provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
+            if (ResourceUtil.hasFile(viewPrefix)) {
+                //file:...
+                URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
+                provider.setBaseTemplatePath(dir.getFile());
+                provider.setSourceFactory(new FileSourceFactory());
+            }else {
+                provider.setBaseTemplatePath(viewPrefix);
+                provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
+            }
 
             //通过事件扩展
             EventBus.publish(provider);

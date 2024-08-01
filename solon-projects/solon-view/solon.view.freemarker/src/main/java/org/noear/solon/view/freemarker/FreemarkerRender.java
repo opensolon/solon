@@ -114,7 +114,7 @@ public class FreemarkerRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader);
+        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;
@@ -147,7 +147,13 @@ public class FreemarkerRender implements Render {
         provider.setDefaultEncoding("utf-8");
 
         try {
-            provider.setClassLoaderForTemplateLoading(classLoader, viewPrefix);
+            if (ResourceUtil.hasFile(viewPrefix)) {
+                //file:...
+                URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
+                provider.setDirectoryForTemplateLoading(new File(dir.getFile()));
+            } else {
+                provider.setClassLoaderForTemplateLoading(classLoader, viewPrefix);
+            }
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }

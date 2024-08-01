@@ -109,7 +109,7 @@ public class ThymeleafRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader);
+        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;
@@ -135,15 +135,29 @@ public class ThymeleafRender implements Render {
     }
 
     private void forRelease() {
-        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(classLoader);
+        if (ResourceUtil.hasFile(viewPrefix)) {
+            //file:...
+            URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
 
-        _loader.setPrefix(viewPrefix);
-        _loader.setTemplateMode(TemplateMode.HTML);
-        _loader.setCacheable(true);
-        _loader.setCharacterEncoding("utf-8");
-        _loader.setCacheTTLMs(Long.valueOf(3600000L));
+            FileTemplateResolver _loader = new FileTemplateResolver();
+            _loader.setPrefix(dir.getFile() + File.separatorChar);
+            _loader.setTemplateMode(TemplateMode.HTML);
+            _loader.setCacheable(false);//必须为false
+            _loader.setCharacterEncoding("utf-8");
+            _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
-        provider.addTemplateResolver(_loader);
+            provider.addTemplateResolver(_loader);
+        } else {
+            ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(classLoader);
+
+            _loader.setPrefix(viewPrefix);
+            _loader.setTemplateMode(TemplateMode.HTML);
+            _loader.setCacheable(true);
+            _loader.setCharacterEncoding("utf-8");
+            _loader.setCacheTTLMs(Long.valueOf(3600000L));
+
+            provider.addTemplateResolver(_loader);
+        }
 
         //通过事件扩展
         EventBus.publish(provider);
