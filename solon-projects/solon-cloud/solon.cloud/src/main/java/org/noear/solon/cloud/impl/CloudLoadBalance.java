@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.core.event.EventBus;
 
 /**
  * 负载均衡
@@ -60,9 +61,13 @@ public class CloudLoadBalance implements LoadBalance {
 
         if (CloudClient.discovery() != null) {
             discovery = CloudClient.discovery().find(group, service);
+            //推送
+            EventBus.publish(discovery);
 
             CloudClient.discovery().attention(group, service, d1 -> {
                 discovery = d1;
+                //推送
+                EventBus.publish(d1);
             });
         }
     }
