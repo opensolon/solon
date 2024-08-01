@@ -81,7 +81,7 @@ public class XPluginImp implements Plugin {
                 if (repository.startsWith(":")) {
                     StaticMappings.add(path,  new ExtendStaticRepository());
                 } else if (ResourceUtil.hasClasspath(repository)) {
-                    repository = ResourceUtil.remClasspath(repository);
+                    repository = ResourceUtil.remSchema(repository);
                     StaticMappings.add(path,  new ClassPathStaticRepository(repository));
                 } else {
                     StaticMappings.add(path,  new FileStaticRepository(repository));
