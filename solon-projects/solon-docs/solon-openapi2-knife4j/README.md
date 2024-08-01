@@ -15,25 +15,37 @@ public class App {
 #### 1、基于配置进行构建
 
 ```yaml
-swagger.adminApi:
-  groupName: "admin端接口"
-  globalResponseInData: true
-  basicAuth:
-    admin: "123456"
-    user: "654321"
-  apis:
-    - basePackage: "com.swagger.demo.controller.admin"
-  info: #可选
-    title: "在线文档"
-    description: "在线API文档"
-    termsOfService: "https://gitee.com/noear/solon"
-    version: 1.0
-    contact: #可选
-      name: "demo"
-      email: "demo@qq.com"
-    license: #可选
-      name: "demo"
-      url: "https://gitee.com/noear/solon/blob/master/LICENSE"
+solon.docs:
+  discover:
+    pathPrefix: "swagger/v2?group=" #上游地址前缀
+    syncStatus: true                #同步上下线状态
+    excluded:                       #排除服务名
+      - "user-api"
+  routes:
+    adminApi:
+      groupName: "admin端接口"
+      globalResponseInData: true
+      basicAuth:
+        admin: "123456"
+        user: "654321"
+      apis:
+        - basePackage: "com.swagger.demo.controller.admin"
+      info: #可选
+        title: "在线文档"
+        description: "在线API文档"
+        termsOfService: "https://gitee.com/noear/solon"
+        version: 1.0
+        contact: #可选
+          name: "demo"
+          email: "demo@qq.com"
+        license: #可选
+          name: "demo"
+          url: "https://gitee.com/noear/solon/blob/master/LICENSE"
+    appApi:
+      groupName: "app端接口"
+      upstream:
+        service: "app-api"
+        path: "/xxx"
 ```
 
 ```java
