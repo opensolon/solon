@@ -59,12 +59,19 @@ public class OpenApi2Utils {
 
         List<ApiGroupResource> resourceList = list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
                 .map(bw -> {
-                    String group = bw.name();
-                    String groupName = ((DocDocket) bw.raw()).groupName();
-                    String url = resourceUri + "?group=" + group;
+                    DocDocket docDocket = bw.raw();
 
-                    return new ApiGroupResource(groupName, "2.0", url);
+                    if (docDocket.isEnable()) {
+                        String group = bw.name();
+                        String groupName = docDocket.groupName();
+                        String url = resourceUri + "?group=" + group;
+
+                        return new ApiGroupResource(groupName, "2.0", url);
+                    } else {
+                        return null;
+                    }
                 })
+                .filter(r -> r != null)
                 .collect(Collectors.toList());
 
         return JacksonSerializer.getInstance().serialize(resourceList);

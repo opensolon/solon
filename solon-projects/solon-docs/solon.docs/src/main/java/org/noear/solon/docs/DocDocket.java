@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.docs.models.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -27,7 +28,8 @@ import java.util.*;
  * @author noear
  * @since 2.2
  * */
-public class DocDocket {
+public class DocDocket implements Serializable {
+    private boolean enable = true;
     private String version = "2.0";
     private List<ApiScheme> schemes = new ArrayList<>();
     private String groupName = "default";
@@ -60,6 +62,20 @@ public class DocDocket {
     //安全扩展
     private Map<String, Object> securityExtensions = new LinkedHashMap<>();
 
+    /**
+     * 是否启用
+     */
+    public boolean isEnable() {
+        return enable;
+    }
+
+    /**
+     * 配置是否启用
+     */
+    public DocDocket enable(boolean enable) {
+        this.enable = enable;
+        return this;
+    }
 
     /**
      * 版本号
