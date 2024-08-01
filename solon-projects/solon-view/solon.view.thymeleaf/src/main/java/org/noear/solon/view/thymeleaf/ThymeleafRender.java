@@ -118,7 +118,7 @@ public class ThymeleafRender implements Render {
         try {
             if (dir.exists()) {
                 FileTemplateResolver _loader = new FileTemplateResolver();
-                _loader.setPrefix(dir.getAbsolutePath() + File.separatorChar);
+                _loader.setPrefix(dir.getPath() + File.separatorChar);
                 _loader.setTemplateMode(TemplateMode.HTML);
                 _loader.setCacheable(false);//必须为false
                 _loader.setCharacterEncoding("utf-8");

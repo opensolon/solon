@@ -59,14 +59,18 @@ public class ViewConfig {
             }
         } else {
             //自动加 "/"
-            if (ResourceUtil.hasFile(viewPrefix) == false) {
+            if (ResourceUtil.hasFile(viewPrefix)) {
+                if (viewPrefix.endsWith(File.separator) == false) {
+                    viewPrefix = viewPrefix + File.separatorChar;
+                }
+            } else {
                 if (viewPrefix.startsWith("/") == false) {
                     viewPrefix = "/" + viewPrefix;
                 }
-            }
 
-            if (viewPrefix.endsWith("/") == false) {
-                viewPrefix = viewPrefix + "/";
+                if (viewPrefix.endsWith("/") == false) {
+                    viewPrefix = viewPrefix + "/";
+                }
             }
         }
     }
