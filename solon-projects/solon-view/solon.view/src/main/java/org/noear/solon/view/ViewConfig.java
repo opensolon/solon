@@ -58,15 +58,15 @@ public class ViewConfig {
                 viewPrefix = RES_WEBINF_VIEW_LOCATION;
             }
         } else {
+            //自动加 "/"
             if (ResourceUtil.hasFile(viewPrefix) == false) {
-                //自动加 "/"
                 if (viewPrefix.startsWith("/") == false) {
                     viewPrefix = "/" + viewPrefix;
                 }
+            }
 
-                if (viewPrefix.endsWith("/") == false) {
-                    viewPrefix = viewPrefix + "/";
-                }
+            if (viewPrefix.endsWith("/") == false) {
+                viewPrefix = viewPrefix + "/";
             }
         }
     }

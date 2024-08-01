@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "solon.view.prefix",
+      "type": "java.lang.String",
+      "defaultValue": "/templates/",
+      "description": "视图文件路径前缀（示例：'file:./templates/' or '/templates/'）"
+    }
+  ]
+}
