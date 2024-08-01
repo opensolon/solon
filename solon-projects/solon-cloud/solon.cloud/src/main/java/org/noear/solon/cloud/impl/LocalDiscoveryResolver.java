@@ -76,7 +76,7 @@ public class LocalDiscoveryResolver {
     private static void resolveDo(Map<String, Discovery> discoveryMap, Instance instance) {
         Discovery discovery = discoveryMap.get(instance.service());
         if (discovery == null) {
-            discovery = new Discovery(instance.service());
+            discovery = new Discovery(Solon.cfg().appGroup(), instance.service());
             discoveryMap.put(instance.service(), discovery);
         }
 

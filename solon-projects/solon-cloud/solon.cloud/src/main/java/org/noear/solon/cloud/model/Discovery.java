@@ -26,12 +26,14 @@ import java.util.List;
  * @since 1.2
  */
 public class Discovery implements Serializable {
+    private final String group;
     private final String service;
     private final List<Instance> cluster;
     private String agent;
     private String policy;
 
     private transient Object attachment;
+
     /*
      * 附件（一般给策略使用）
      * */
@@ -39,14 +41,22 @@ public class Discovery implements Serializable {
         return (T) attachment;
     }
 
-    public <T> void attachmentSet(T val){
+    public <T> void attachmentSet(T val) {
         attachment = val;
     }
 
 
-    public Discovery(String service) {
+    public Discovery(String group, String service) {
+        this.group = group;
         this.service = service;
         this.cluster = new ArrayList<>();
+    }
+
+    /**
+     * 获取分组
+     */
+    public String group() {
+        return group;
     }
 
 
@@ -81,7 +91,7 @@ public class Discovery implements Serializable {
 
     /**
      * 设置策略
-     * */
+     */
     public Discovery policy(String policy) {
         this.policy = policy;
         return this;
@@ -89,29 +99,29 @@ public class Discovery implements Serializable {
 
     /**
      * 获取集群
-     * */
+     */
     public List<Instance> cluster() {
         return cluster;
     }
 
     /**
      * 获取集群数量
-     * */
+     */
     public int clusterSize() {
         return cluster.size();
     }
 
     /**
      * 添加集群实例节点
-     * */
-    public Discovery instanceAdd(Instance instance){
+     */
+    public Discovery instanceAdd(Instance instance) {
         cluster.add(instance);
         return this;
     }
 
     /**
      * 获取集群实例节点
-     * */
+     */
     public Instance instanceGet(int index) {
         return cluster.get(index % cluster.size());
     }
@@ -120,7 +130,8 @@ public class Discovery implements Serializable {
     @Override
     public String toString() {
         return "Discovery{" +
-                "service='" + service + '\'' +
+                "group='" + group + '\'' +
+                ", service='" + service + '\'' +
                 ", policy='" + policy + '\'' +
                 ", agent='" + agent + '\'' +
                 ", cluster=" + cluster +
