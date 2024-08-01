@@ -142,7 +142,6 @@ public class ThymeleafRender implements Render {
             FileTemplateResolver _loader = new FileTemplateResolver();
             _loader.setPrefix(dir.getFile() + File.separatorChar);
             _loader.setTemplateMode(TemplateMode.HTML);
-            _loader.setCacheable(false);//必须为false
             _loader.setCharacterEncoding("utf-8");
             _loader.setCacheTTLMs(Long.valueOf(3600000L));
 

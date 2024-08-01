@@ -173,7 +173,6 @@ public class BeetlRender implements Render {
                 //file:...
                 URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
                 FileResourceLoader loader = new FileResourceLoader(dir.getFile(), Solon.encoding());
-                loader.setAutoCheck(true);
                 providerOfDebug = new GroupTemplate(loader, config);
             } else {
                 ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
