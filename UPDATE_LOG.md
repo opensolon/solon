@@ -26,6 +26,7 @@
 ### 2.9.0
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 Context::body 的兼容性，避免不可读情况
+* 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * smarthttp 升为 1.5.6
 
 * 插件名调整对应表(旧名标为弃用，仍可用)

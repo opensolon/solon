@@ -27,7 +27,9 @@ import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thymeleaf.IThrottledTemplateProcessor;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateSpec;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -38,6 +40,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Thymeleaf 视图渲染器
@@ -81,9 +84,9 @@ public class ThymeleafRender implements Render {
 
     public ThymeleafRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
-        if(viewPrefix == null){
+        if (viewPrefix == null) {
             this.viewPrefix = ViewConfig.getViewPrefix();
-        }else {
+        } else {
             this.viewPrefix = viewPrefix;
         }
 
@@ -111,7 +114,7 @@ public class ThymeleafRender implements Render {
         //添加调试模式
         File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
 
-        if(dir == null){
+        if (dir == null) {
             return;
         }
 
@@ -230,9 +233,12 @@ public class ThymeleafRender implements Render {
             context.setLocale(ctx.getLocale());
         }
 
+        TemplateSpec templateSpec = new TemplateSpec(mv.view(), TemplateMode.HTML);
+        IThrottledTemplateProcessor templateProcessor = provider.processThrottled(templateSpec, context);
+
         // 输出流
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream.get(), ServerProps.response_encoding));
-        provider.process(mv.view(), context, writer);
+        templateProcessor.processAll(writer);
         writer.flush();
     }
 }
