@@ -54,18 +54,29 @@ public class ResourceUtil {
     public static final String TAG_classpath = "classpath:";
     public static final String TAG_classpath_ = "classpath*:"; //为了兼容用户旧的习惯
 
+    /**
+     * 是否有 "file:" 开头标识
+     */
     public static boolean hasFile(String path) {
         return path.startsWith(TAG_file);
     }
 
+
+    /**
+     * 是否有 "classpath:" 或 "classpath*:" 开头标识
+     */
     public static boolean hasClasspath(String path) {
         return path.startsWith(TAG_classpath) || path.startsWith(TAG_classpath_);
     }
 
-    public static String remClasspath(String path) {
+    /**
+     * 移除架构（开头标识）
+     */
+    public static String remSchema(String path) {
+        //在移除之前，面要先做判断是否有
         int idx = path.indexOf(':');
 
-        if (idx == 9 || idx == 10) {
+        if (idx == 3 || idx == 9 || idx == 10) {
             return path.substring(idx + 1);
         } else {
             return path;
@@ -177,7 +188,7 @@ public class ResourceUtil {
     /**
      * 获取资源并转为 InputStream
      *
-     * @param name        内部资源名称
+     * @param name 内部资源名称
      */
     public static InputStream getResourceAsStream(String name) throws IOException {
         return getResourceAsStream(AppClassLoader.global(), name);
@@ -195,6 +206,25 @@ public class ResourceUtil {
             return url.openStream();
         } else {
             return null;
+        }
+    }
+
+    /**
+     * 获取文件资源地址
+     *
+     * @param uri 资源地址（"./demo.xxx"）
+     */
+    public static URL getResourceByFile(String uri) {
+        try {
+            File file = Utils.getFile(uri);
+
+            if (file.exists() == false) {
+                return null;
+            } else {
+                return file.toURI().toURL();
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
 
@@ -227,7 +257,7 @@ public class ResourceUtil {
     /**
      * 查找资源
      *
-     * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
+     * @param uri 资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx"）
      */
     public static URL findResource(ClassLoader classLoader, String uri) {
         return findResource(classLoader, uri, true);
@@ -236,42 +266,24 @@ public class ResourceUtil {
     /**
      * 查找资源
      *
-     * @param uri 资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx"）
+     * @param uri       资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx" or "demo.xxx"）
      * @param defAsFile 没前缀时默认做为 file
      */
     public static URL findResource(ClassLoader classLoader, String uri, boolean defAsFile) {
+        if (hasClasspath(uri)) {
+            //classpath:..
+            return getResource(classLoader, remSchema(uri));
+        }
+
+        if (hasFile(uri)) {
+            //file:..
+            return getResourceByFile(remSchema(uri));
+        }
+
         if (defAsFile) {
-            if (hasClasspath(uri)) {
-                return getResource(classLoader, remClasspath(uri));
-            } else {
-                try {
-                    File file = Utils.getFile(uri);
-
-                    if (file.exists() == false) {
-                        return null;
-                    } else {
-                        return file.toURI().toURL();
-                    }
-                } catch (Exception e) {
-                    throw new IllegalStateException(e);
-                }
-            }
+            return getResourceByFile(uri);
         } else {
-            if (hasFile(uri)) {
-                try {
-                    File file = Utils.getFile(uri);
-
-                    if (file.exists() == false) {
-                        return null;
-                    } else {
-                        return file.toURI().toURL();
-                    }
-                } catch (Exception e) {
-                    throw new IllegalStateException(e);
-                }
-            } else {
-                return getResource(classLoader, remClasspath(uri));
-            }
+            return getResource(classLoader, uri);
         }
     }
 
@@ -389,10 +401,10 @@ public class ResourceUtil {
         List<String> paths = new ArrayList<>();
 
         if (hasClasspath(resExpr)) {
-            resExpr = remClasspath(resExpr);
+            resExpr = remSchema(resExpr);
         }
 
-        if(resExpr.startsWith("/")){
+        if (resExpr.startsWith("/")) {
             resExpr = resExpr.substring(1);
         }
 
@@ -447,13 +459,13 @@ public class ResourceUtil {
         Pattern pattern = Pattern.compile(expr);
 
         ScanUtil.scan(classLoader, dir, n -> {
-            //进行后缀过滤，相对比较快
-            if (sufIdx2 > 0) {
-                return n.endsWith(suf2);
-            } else {
-                return true;
-            }
-        })
+                    //进行后缀过滤，相对比较快
+                    if (sufIdx2 > 0) {
+                        return n.endsWith(suf2);
+                    } else {
+                        return true;
+                    }
+                })
                 .forEach(uri -> {
                     //再进行表达式过滤
                     if (pattern.matcher(uri).find()) {

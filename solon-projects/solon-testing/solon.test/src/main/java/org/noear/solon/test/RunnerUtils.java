@@ -35,9 +35,9 @@ import org.noear.solon.test.annotation.TestRollback;
 import org.noear.solon.test.aot.SolonAotTestProcessor;
 import org.noear.solon.test.data.RollbackInterceptor;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -78,11 +78,8 @@ public class RunnerUtils {
         }
 
         for (String uri : propertySources) {
-            if (ResourceUtil.hasClasspath(uri)) {
-                context.cfg().loadAdd(ResourceUtil.remClasspath(uri));
-            } else {
-                context.cfg().loadAdd(new File(uri).toURI().toURL());
-            }
+            URL url = ResourceUtil.findResource(uri);
+            context.cfg().loadAdd(url);
         }
     }
 

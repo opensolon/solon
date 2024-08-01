@@ -791,10 +791,6 @@ public class Utils {
             return null;
         }
 
-        if (uri.startsWith("file:")) {
-            uri = uri.substring(5);
-        }
-
         String appDir = Utils.appFolder();
         File file = null;
 

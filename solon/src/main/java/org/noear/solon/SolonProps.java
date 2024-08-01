@@ -207,7 +207,7 @@ public final class SolonProps extends Props {
                 if (isName) {
                     //支持带 classpath: 开头
                     if (ResourceUtil.hasClasspath(p1)) {
-                        p1 = ResourceUtil.remClasspath(p1);
+                        p1 = ResourceUtil.remSchema(p1);
                     }
 
                     propUrl = ResourceUtil.getResource(p1);
