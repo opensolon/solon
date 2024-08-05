@@ -24,5 +24,10 @@ import org.noear.solon.cloud.model.Discovery;
  * @since 2.2
  */
 public interface CloudLoadStrategy {
+    /**
+     * 获取服务地址
+     *
+     * @param discovery 被发现服务
+     */
     String getServer(Discovery discovery);
 }
