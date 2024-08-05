@@ -2,6 +2,7 @@ package demo;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.cloud.impl.CloudLoadStrategy;
+import org.noear.solon.cloud.impl.CloudLoadStrategyDefault;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 
@@ -10,14 +11,18 @@ import org.noear.solon.cloud.model.Instance;
  */
 @Component
 public class CloudLoadStrategyImpl implements CloudLoadStrategy {
+    private static CloudLoadStrategy def = new CloudLoadStrategyDefault();
+
     @Override
     public String getServer(Discovery discovery) {
         for (Instance i1 : discovery.cluster()) {
-            if ("v1".equals(i1.metaGet("ver"))) { //
+            //也可以通过 tags 过滤；
+            //结合 ctx = Context.current()，可根据请求信息进行过滤
+            if ("v1".equals(i1.metaGet("ver"))) {
                 return i1.uri();
             }
         }
 
-        return null;
+        return def.getServer(discovery);
     }
 }
