@@ -15,6 +15,8 @@
  */
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.Solon;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,13 @@ public class Discovery implements Serializable {
         attachment = val;
     }
 
+    /**
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public Discovery(String service) {
+        this(Solon.cfg().appGroup(), service);
+    }
 
     public Discovery(String group, String service) {
         this.group = group;
