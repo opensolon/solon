@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.xiaoymin.knife4j.solon.integration;
+package org.noear.solon.docs.integration;
 
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
@@ -31,11 +31,13 @@ import java.util.Collection;
  */
 public class DiscoveryEventListener implements EventListener<Discovery> {
     private final AppContext appContext;
+    private final String pathPattern;
     private final boolean syncStatus;
     private final Collection<String> excluded;
 
-    public DiscoveryEventListener(AppContext appContext) {
+    public DiscoveryEventListener(AppContext appContext, String pathPattern) {
         this.appContext = appContext;
+        this.pathPattern = pathPattern;
         this.syncStatus = appContext.cfg().getBool(XPluginImpl.SOLON_DOCS_DISCOVER_SYNCSTATUS, false);
         this.excluded = appContext.cfg().getList(XPluginImpl.SOLON_DOCS_DISCOVER_EXCLUDED);
     }
@@ -53,7 +55,7 @@ public class DiscoveryEventListener implements EventListener<Discovery> {
             //自动创建（如果还没有）
             DocDocket docDocket = new DocDocket();
             docDocket.groupName(discovery.service());
-            docDocket.upstream(discovery.service(), "swagger/v2?group=" + discovery.service());
+            docDocket.upstream(discovery.service(), pathPattern.replace("{service}", discovery.service()));
 
             if (syncStatus) {
                 //如果要同步状态

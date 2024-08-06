@@ -17,30 +17,17 @@ package com.github.xiaoymin.knife4j.solon.integration;
 
 import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.docs.DocDocket;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
-
-import java.util.Map;
 
 /**
  * @author noear
  * @since 2.2
  */
 public class XPluginImpl implements Plugin {
-    public static final String SOLON_DOCS_ROUTES = "solon.docs.routes";
-    public static final String SOLON_DOCS_DISCOVER_PATHPREFIX = "solon.docs.discover.pathPrefix"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_SYNCSTATUS = "solon.docs.discover.syncStatus"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_EXCLUDED = "solon.docs.discover.excluded"; //manual, discover
 
 
     @Override
@@ -61,26 +48,6 @@ public class XPluginImpl implements Plugin {
             }
 
             Solon.app().add(uiPath, OpenApi2Controller.class);
-        }
-
-
-        //加载 solon.docs.routes
-        Map<String, Props> docMap = context.cfg().getGroupedProp(SOLON_DOCS_ROUTES);
-        for (Map.Entry<String, Props> kv : docMap.entrySet()) {
-            DocDocket docDocket = kv.getValue().getBean(DocDocket.class);
-
-            BeanWrap docBw = context.wrap(kv.getKey(), docDocket);
-            context.putWrap(kv.getKey(), docBw);
-        }
-
-        //加载 solon.docs.discover.pathPrefix
-        String discover_pathPrefix = Solon.cfg().get(SOLON_DOCS_DISCOVER_PATHPREFIX);
-        if (Utils.isNotEmpty(discover_pathPrefix)) {
-            if (ClassUtil.hasClass(() -> Discovery.class)) {
-                EventBus.subscribe(Discovery.class, new DiscoveryEventListener(context));
-            } else {
-                LogUtil.global().warn("Solon docs discover: missing solon cloud discovery");
-            }
         }
     }
 }
