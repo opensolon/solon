@@ -93,7 +93,7 @@ public class ViewConfig {
      * 获取视图调试位置
      */
     public static File getDebugLocation(ClassLoader classLoader, String viewPrefix) {
-        if(ResourceUtil.hasFile(viewPrefix)){
+        if (ResourceUtil.hasFile(viewPrefix)) {
             return null;
         }
 
@@ -103,7 +103,16 @@ public class ViewConfig {
             return null;
         }
 
-        String rootdir = rooturi.toString().replace("target/classes/", "");
+        String rootdir = rooturi.toString();
+
+        if (rootdir.contains("target/classes/")) {
+            //兼容 maven
+            rootdir = rootdir.replace("target/classes/", "");
+        } else if (rootdir.contains("build/classes/java/main/")) {
+            //兼容 gradle
+            rootdir = rootdir.replace("build/classes/java/main/", "");
+        }
+
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
