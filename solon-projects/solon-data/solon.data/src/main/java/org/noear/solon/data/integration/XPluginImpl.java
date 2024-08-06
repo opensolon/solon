@@ -22,7 +22,11 @@ import org.noear.solon.data.cache.*;
 import org.noear.solon.data.cache.interceptor.CacheInterceptor;
 import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
+import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
+
+import javax.sql.DataSource;
+import java.util.Map;
 
 public class XPluginImpl implements Plugin {
     @Override
@@ -50,6 +54,33 @@ public class XPluginImpl implements Plugin {
             context.beanInterceptorAdd(CachePut.class, new CachePutInterceptor(), 110);
             context.beanInterceptorAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
             context.beanInterceptorAdd(Cache.class, new CacheInterceptor(), 111);
+        }
+
+        //自动构建数据源
+        {
+            Props props = Solon.cfg().getProp("solon.dataSources");
+            if (props.size() > 0) {
+                Map<String, DataSource> dsmap = DsUtils.buildDsMap(props, null, new String[]{"class"});
+                if (dsmap.size() > 0) {
+                    for (Map.Entry<String, DataSource> kv : dsmap.entrySet()) {
+                        boolean typed = false;
+                        String name = kv.getKey();
+                        if (name.endsWith("!")) {
+                            name = name.substring(0, name.length() - 1);
+                            typed = true;
+                        }
+
+                        BeanWrap dsBw = context.wrap(name, kv.getValue());
+
+                        //按名字注册
+                        context.putWrap(name, dsBw);
+                        if (typed) {
+                            //按类型注册
+                            context.putWrap(DataSource.class, dsBw);
+                        }
+                    }
+                }
+            }
         }
     }
 }

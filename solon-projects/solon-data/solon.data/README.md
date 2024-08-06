@@ -1,35 +1,31 @@
 
-动态数据源（或数据源集合）
+基于配置构建数据源
 
 ```yaml
-demo.ds.db_user:
-  type: "com.alibaba.druid.pool.DruidDataSource"
-  default: #动态数据源的默认源
+solon.dataSources:
+  db_order!: #数据源（!结尾表示 typed=true）
+    class: "com.zaxxer.hikari.HikariDataSource"
+    driverClassName: "xx"
     url: "xxx"
     username: "xxx"
     paasword: "xxx"
-    driverClassName: "xx"
-  db_user_2:
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"
-```
-
-也可以把类型放到具体的源上
-
-```yaml
-demo.ds.db_user:
-  default: #动态数据源的默认源
-    type: "com.alibaba.druid.pool.DruidDataSource"
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"
-  db_user_2:
-    type: "com.alibaba.druid.pool.DruidDataSource"
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"
+  db_user: #动态数据源
+    class: "org.noear.solon.data.dynamicds.DynamicDataSource"
+    strict: true #是否严格的
+    default: db_user_1 #默认子数据源
+    db_user_1: #子数据源1
+      dataSourceClassName: "com.zaxxer.hikari.HikariDataSource"
+      driverClassName: "xx"
+      jdbcUrl: "xxx" #属性名要与 type 类的属性对上
+      username: "xxx"
+      paasword: "xxx"
+    db_user_2: #子数据源2
+      dataSourceClassName: "com.zaxxer.hikari.HikariDataSource"
+      driverClassName: "xx"
+      jdbcUrl: "xxx" #属性名要与 type 类的属性对上
+      username: "xxx"
+      paasword: "xxx"
+  db_log: #分版数据源
+    class: "org.noear.solon.data.shardingds.ShardingDataSource"
+    file: "classpath:sharding.yml"
 ```

@@ -43,7 +43,7 @@ import java.util.function.Function;
 public class Utils {
     /**
      * @deprecated 2.7
-     * */
+     */
     @Deprecated
     public static final String TAG_classpath = "classpath:";
 
@@ -129,6 +129,46 @@ public class Utils {
             return v2;
         } else {
             return v1;
+        }
+    }
+
+    /**
+     * 获取值（多可选值）
+     *
+     * @param optionalValues 可选值
+     * @since 2.9
+     */
+    public static String valueOr(String... optionalValues) {
+        for (String v : optionalValues) {
+            if (isNotEmpty(v)) {
+                return v;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 获取属性（多可选名）
+     *
+     * @param props         属性集合
+     * @param optionalNames 可选名
+     * @since 2.9
+     */
+    public static String propertyOr(Properties props, String... optionalNames) {
+        for (String n : optionalNames) {
+            String v = props.getProperty(n);
+            if (isNotEmpty(v)) {
+                return v;
+            }
+        }
+
+        return null;
+    }
+
+    public static void propertyRemove(Properties props, String... optionalNames) {
+        for (String n : optionalNames) {
+            props.remove(n);
         }
     }
 
@@ -274,7 +314,7 @@ public class Utils {
      * 蛇形转驼峰
      *
      * @since 2.8
-     * */
+     */
     public static String snakeToCamel(String name) {
         if (name.indexOf('-') < 0) {
             return name;
@@ -889,6 +929,7 @@ public class Utils {
 
 
     private static String _pid;
+
     /**
      * 获取进程号
      */

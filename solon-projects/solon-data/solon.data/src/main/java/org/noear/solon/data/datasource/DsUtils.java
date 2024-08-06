@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
@@ -30,35 +31,20 @@ import java.util.Properties;
  *
  * @author noear
  * @since 1.11
+ * @since 2.9
  */
 public class DsUtils {
+    private static final String[] DEFAULT_CLASS_PROP_NAMES = {"type", "dataSourceClassName"};
 
     /**
      * 解析类型
-     * */
-    private static Class<?> resolveType(Properties props){
-        //::类型
-        String typeStr = props.getProperty("type");
-        if (Utils.isEmpty(typeStr)) {
-            //缺少类型配置
-            throw new IllegalStateException("Missing type configuration");
-        }
-        props.remove("type");
+     */
+    private static Class<?> resolveTypeOrNull(Properties props, String[] classPropNames) {
+        //@since 2.9 + dataSourceClassName
+        String typeStr = Utils.propertyOr(props, classPropNames);
 
-        Class<?> typeClz = ClassUtil.loadClass(typeStr);
-        if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
-            throw new IllegalStateException("Type configuration not is data source");
-        }
-
-        return typeClz;
-    }
-
-    private static Class<?> resolveTypeOrDefault(Properties props, Class<?> typeDef){
-        String typeStr = props.getProperty("type");
-        if (Utils.isEmpty(typeStr)) {
-            return typeDef;
-        }else {
-            props.remove("type");
+        if (Utils.isNotEmpty(typeStr)) {
+            Utils.propertyRemove(props, classPropNames);
 
             Class<?> typeClz = ClassUtil.loadClass(typeStr);
             if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
@@ -66,33 +52,84 @@ public class DsUtils {
             }
 
             return typeClz;
+        } else {
+            return null;
         }
     }
 
-    public static DataSource buildDs(Properties props) {
-        Class<?> typeClz = resolveType(props);
+    private static Class<?> resolveTypeOrDefault(Properties props, Class<?> typeDef, String[] classPropNames) {
+        //@since 2.9 + dataSourceClassName
+        String typeStr = Utils.propertyOr(props, classPropNames);
 
-        return  buildDs(props, typeClz);
+        Class<?> typeClz = null;
+
+        if (Utils.isEmpty(typeStr)) {
+            //使用默认
+            typeClz = typeDef;
+        } else {
+            //开始构建
+            Utils.propertyRemove(props, classPropNames);
+
+            typeClz = ClassUtil.loadClass(typeStr);
+        }
+
+        if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
+            //如果没有？或类型不对？
+            throw new IllegalStateException("Type configuration not is data source");
+        }
+
+        return typeClz;
     }
 
-    public static DataSource buildDs(Properties props, Class<?> typeClz) {
-        return  (DataSource) PropsConverter.global().convert(props, typeClz);
+    public static DataSource buildDs(Properties props) {
+        return buildDs(props, DEFAULT_CLASS_PROP_NAMES);
+    }
+
+    public static DataSource buildDs(Properties props, String[] classPropNames) {
+        Class<?> typeClz = resolveTypeOrDefault(props, null, classPropNames);
+
+        return buildDs(props, typeClz);
     }
 
     /**
-     * 构建数据源字典
+     * 构建一个数据源
+     */
+    public static DataSource buildDs(Properties props, Class<?> typeClz) {
+        return (DataSource) PropsConverter.global().convert(props, typeClz);
+    }
+
+    /**
+     * 构建数据源集合
      */
     public static Map<String, DataSource> buildDsMap(Properties props) {
-        Class<?> typeClz = resolveType(props);
-
-        return buildDsMap(props, typeClz);
+        return buildDsMap(props, DEFAULT_CLASS_PROP_NAMES);
     }
 
     /**
-     * 构建数据源字典
+     * 构建数据源集合
+     *
+     * @param typeDef 默认数据源类型
      */
     public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeDef) {
-        //::数据源构建
+        return buildDsMap(props, typeDef, DEFAULT_CLASS_PROP_NAMES);
+    }
+
+    /**
+     * 构建数据源集合
+     */
+    public static Map<String, DataSource> buildDsMap(Properties props, String[] classPropNames) {
+        Class<?> typeClz = resolveTypeOrNull(props, classPropNames);
+
+        return buildDsMap(props, typeClz, classPropNames);
+    }
+
+    /**
+     * 构建数据源集合
+     *
+     * @param typeDef 默认数据源类型
+     */
+    public static Map<String, DataSource> buildDsMap(Properties props, @Nullable Class<?> typeDef, String[] classPropNames) {
+        //::检测配置
         Props rootProps;
         if (props instanceof Props) {
             rootProps = ((Props) props);
@@ -108,16 +145,16 @@ public class DsUtils {
             throw new IllegalStateException("Missing data source configuration");
         }
 
-
+        //::数据源构建
         Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
-        groupProps.forEach((key, prop) -> {
-            if (prop.size() > 1) {
-                //超过1个以上的，才可能是数据源属性
-                Class<?> typeClz = resolveTypeOrDefault(prop, typeDef);
-                DataSource source = buildDs(prop, typeClz);
-                dataSourceMap.put(key, source);
+        for (Map.Entry<String, Props> kv : groupProps.entrySet()) {
+            if (kv.getValue().size() > 1) {
+                //超过1个属性以上的，才可能是数据源属性
+                Class<?> typeClz = resolveTypeOrDefault(kv.getValue(), typeDef, classPropNames);
+                DataSource source = buildDs(kv.getValue(), typeClz);
+                dataSourceMap.put(kv.getKey(), source);
             }
-        });
+        }
 
         return dataSourceMap;
     }

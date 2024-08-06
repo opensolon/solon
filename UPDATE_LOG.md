@@ -24,6 +24,7 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.9.0
+* 添加 配置节 solon.dataSources （用于自动构建数据源）
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 Context::body 的兼容性，避免不可读情况
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
