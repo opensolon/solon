@@ -17,9 +17,11 @@ package com.github.xiaoymin.knife4j.solon.integration;
 
 import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.docs.DocDocket;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 
@@ -47,7 +49,18 @@ public class XPluginImpl implements Plugin {
                 StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
             }
 
+            //注册控制器
             Solon.app().add(uiPath, OpenApi2Controller.class);
+
+            //添加 auth
+            context.subBeansOfType(DocDocket.class, bean -> {
+                if (Utils.isEmpty(bean.basicAuth())) {
+                    //如果没有定义，则用全局的配置
+                    bean.basicAuth(openApiExtensionResolver.getSetting().getBasic());
+                }
+
+                bean.vendorExtensions(openApiExtensionResolver.buildExtensions());
+            });
         }
     }
 }
