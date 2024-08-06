@@ -78,6 +78,8 @@ public class XPluginImpl implements Plugin {
                             //按类型注册
                             context.putWrap(DataSource.class, dsBw);
                         }
+                        //对外发布
+                        context.wrapPublish(dsBw);
                     }
                 }
             }
