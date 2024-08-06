@@ -78,8 +78,18 @@ public class SimpleScheduler implements Lifecycle {
         }
     }
 
-    boolean isStarted = false;
+    private boolean isStarted = false;
 
+    /**
+     * 是否已开始
+     */
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    /**
+     * 开始
+     */
     @Override
     public void start() throws Throwable {
         if (isStarted) {
@@ -107,6 +117,9 @@ public class SimpleScheduler implements Lifecycle {
         }
     }
 
+    /**
+     * 停止
+     */
     @Override
     public void stop() throws Throwable {
         if (isStarted = false) {
