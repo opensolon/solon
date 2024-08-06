@@ -24,6 +24,7 @@ import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.beetl.core.tag.TagFactory;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
@@ -143,7 +144,7 @@ public class BeetlRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
+        File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;

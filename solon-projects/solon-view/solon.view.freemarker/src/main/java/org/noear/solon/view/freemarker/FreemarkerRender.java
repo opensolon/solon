@@ -21,6 +21,7 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateNotFoundException;
 import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -114,7 +115,7 @@ public class FreemarkerRender implements Render {
         }
 
         //添加调试模式
-        File dir = ViewConfig.getDebugLocation(classLoader, viewPrefix);
+        File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 
         if(dir == null){
             return;

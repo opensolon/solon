@@ -20,8 +20,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URL;
 
 /**
  * 视图配置
@@ -87,43 +85,5 @@ public class ViewConfig {
      */
     public static String getViewPrefix() {
         return viewPrefix;
-    }
-
-    /**
-     * 获取视图调试位置
-     */
-    public static File getDebugLocation(ClassLoader classLoader, String viewPrefix) {
-        if (ResourceUtil.hasFile(viewPrefix)) {
-            return null;
-        }
-
-        //添加调试模式
-        URL rooturi = ResourceUtil.getResource(classLoader, "/");
-        if (rooturi == null) {
-            return null;
-        }
-
-        String rootdir = rooturi.toString();
-
-        if (rootdir.contains("target/classes/")) {
-            //兼容 maven
-            rootdir = rootdir.replace("target/classes/", "");
-        } else if (rootdir.contains("build/classes/java/main/")) {
-            //兼容 gradle
-            rootdir = rootdir.replace("build/classes/java/main/", "");
-        }
-
-        File dir = null;
-
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + viewPrefix;
-            dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + viewPrefix;
-                dir = new File(URI.create(dir_str));
-            }
-        }
-
-        return dir;
     }
 }
