@@ -14,15 +14,22 @@ public class App {
 
 #### 1、基于配置进行构建
 
+前端打开，跟本地的一样
+
 ```yaml
 solon.docs:
-  discover:
-    pathPrefix: "swagger/v2?group=" #上游地址前缀
-    syncStatus: true                #同步上下线状态
-    excluded:                       #排除服务名
+  discover:  #(发现配置，需要引入 solon cloud 发现服务插件)，可选
+    pathPattern: "swagger/v2?group={service}" #上游路径模式
+    syncStatus: true                          #同步上下线状态
+    excluded:                                 #排除服务名
       - "user-api"
   routes:
-    adminApi:
+    appApi:   #(远程接口文档，即分布式服务或微服务)，配置风格
+      groupName: "app端接口"
+      upstream:
+        service: "app-api"
+        path: "/xxx"
+    adminApi:  #(本地接口文档)，配置风格
       groupName: "admin端接口"
       globalResponseInData: true
       basicAuth:
@@ -41,11 +48,6 @@ solon.docs:
         license: #可选
           name: "demo"
           url: "https://gitee.com/noear/solon/blob/master/LICENSE"
-    appApi:
-      groupName: "app端接口"
-      upstream:
-        service: "app-api"
-        path: "/xxx"
 ```
 
 ```java
