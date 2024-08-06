@@ -49,7 +49,10 @@ public class XPluginImpl implements Plugin {
                 DocDocket docDocket = kv.getValue().getBean(DocDocket.class);
 
                 BeanWrap docBw = context.wrap(kv.getKey(), docDocket);
+                //按名字注册
                 context.putWrap(kv.getKey(), docBw);
+                //对外发布
+                context.wrapPublish(docBw);
             }
         }
 
