@@ -31,6 +31,8 @@
 * 优化 Context::body 的兼容性，避免不可读情况
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * smarthttp 升为 1.5.6
+* wood 升为 1.2.14
+* socket.d 升为 2.5.11
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 
