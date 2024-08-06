@@ -1,18 +1,5 @@
-solon 集成 swagger2 + knife4j , 按UI规范生成相应的 Swagger Json。目前处于试验中
 
-使用方式：
-
-启用示例（启动后打开：`/doc.html`），具体参考 src/test 示例
-
-```java
-public class App {
-    public static void main(String[] args) {
-        Solon.start(App.class, args);
-    }
-}
-```
-
-#### 1、基于配置进行构建
+#### 基于配置进行构建
 
 前端打开，跟本地的一样
 
@@ -50,21 +37,6 @@ solon.docs:
         license: #可选
           name: "demo"
           url: "https://gitee.com/noear/solon/blob/master/LICENSE"
-```
-
-```java
-@Configuration
-public class DocConfig {
-    /**
-     * 基于配置构建
-     */
-    @Bean("adminApi")
-    public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
-        docket.globalResult(Result.class);
-        docket.securityDefinitionInHeader("token");
-        return docket;
-    }
-}
 ```
 
 #### 2、基于代码构建

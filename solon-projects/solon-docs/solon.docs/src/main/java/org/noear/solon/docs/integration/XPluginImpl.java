@@ -38,6 +38,7 @@ public class XPluginImpl implements Plugin {
     public static final String SOLON_DOCS_DISCOVER_PATHPATTERN = "solon.docs.discover.pathPattern"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_SYNCSTATUS = "solon.docs.discover.syncStatus"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_EXCLUDED = "solon.docs.discover.excluded"; //manual, discover
+    public static final String SOLON_DOCS_DISCOVER_INCLUDED = "solon.docs.discover.included"; //manual, discover
 
 
     @Override
@@ -60,7 +61,11 @@ public class XPluginImpl implements Plugin {
         String discover_pathPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_PATHPATTERN);
         if (Utils.isNotEmpty(discover_pathPattern)) {
             if (ClassUtil.hasClass(() -> Discovery.class)) {
-                EventBus.subscribe(Discovery.class, new DiscoveryEventListener(context, discover_pathPattern));
+                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, discover_pathPattern);
+                //订阅
+                EventBus.subscribe(Discovery.class, eventListener);
+                //开始
+                eventListener.start();
             } else {
                 LogUtil.global().warn("Solon docs discover: missing solon cloud discovery");
             }
