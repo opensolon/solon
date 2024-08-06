@@ -24,11 +24,12 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.9.0
-* 添加 配置节 solon.dataSources （用于自动构建数据源）
+* 添加 solon.data 配置节 solon.dataSources （用于自动构建数据源）
 * 添加 solon.view.prefix 配置项支持 "file:" 前缀（支持体外目录）
-* 添加 SimpleScheduler::isStarted 方法
+* 添加 solon.scheduling.simple SimpleScheduler::isStarted 方法
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
-* 优化 Context::body 的兼容性，避免不可读情况
+* 优化 solon Context::body 的兼容性，避免不可读情况
+* 优化 solon 调试模式与 gradle 的兼容性
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * smarthttp 升为 1.5.6
 * wood 升为 1.2.14

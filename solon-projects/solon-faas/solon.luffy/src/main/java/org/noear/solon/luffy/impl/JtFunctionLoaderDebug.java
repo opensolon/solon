@@ -17,8 +17,9 @@ package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.web.DebugUtils;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.IoUtil;
-import org.noear.solon.core.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
 /**
  * 函数加载器 - 资源目录实现(调试模式)
@@ -41,18 +41,7 @@ public class JtFunctionLoaderDebug implements JtFunctionLoader {
     private File _baseDir;
 
     public JtFunctionLoaderDebug() {
-        String rootdir = ResourceUtil.getResource("/").toString()
-                .replace("target/classes/", "")
-                .replace("target/test-classes/", "");
-
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
-            _baseDir = new File(URI.create(dir_str));
-            if (!_baseDir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
-                _baseDir = new File(URI.create(dir_str));
-            }
-        }
+        _baseDir = DebugUtils.getDebugLocation(AppClassLoader.global(), _baseUri);
     }
 
     @Override

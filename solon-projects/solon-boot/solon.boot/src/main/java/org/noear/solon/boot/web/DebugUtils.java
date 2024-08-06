@@ -1,5 +1,6 @@
 package org.noear.solon.boot.web;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -20,6 +21,10 @@ public class DebugUtils {
      * @param pathPrefix  路径前缀
      */
     public static File getDebugLocation(ClassLoader classLoader, String pathPrefix) {
+        if (Utils.isEmpty(pathPrefix)) {
+            return null;
+        }
+
         if (ResourceUtil.hasFile(pathPrefix)) {
             return null;
         }
@@ -43,11 +48,19 @@ public class DebugUtils {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
+            if (pathPrefix.charAt(0) != '/') {
+                pathPrefix = "/" + pathPrefix;
+            }
+
             String dir_str = rootdir + "src/main/resources" + pathPrefix;
             dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
+            if (dir.exists() == false) {
                 dir_str = rootdir + "src/main/webapp" + pathPrefix;
                 dir = new File(URI.create(dir_str));
+            }
+
+            if (dir.exists() == false) {
+                return null;
             }
         }
 

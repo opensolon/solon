@@ -16,6 +16,7 @@
 package org.noear.solon.web.staticfiles.repository;
 
 import org.noear.solon.Solon;
+import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticRepository;
@@ -31,8 +32,8 @@ import java.net.URL;
  * @since 1.5
  */
 public class ClassPathStaticRepository implements StaticRepository {
-    String location;
-    String locationDebug;
+    private String location;
+    private File locationDebug;
     ClassLoader classLoader;
 
 
@@ -72,30 +73,20 @@ public class ClassPathStaticRepository implements StaticRepository {
         this.location = location;
 
         if (Solon.cfg().isDebugMode()) {
-            URL rooturi = ResourceUtil.getResource(classLoader, "/");
-
-            if (rooturi != null) {
-                String rootdir = rooturi.toString()
-                        .replace("target/classes/", "");
-
-                if (rootdir.startsWith("file:")) {
-                    this.locationDebug = rootdir + "src/main/resources/" + location;
-                }
-            }
+            this.locationDebug = DebugUtils.getDebugLocation(classLoader, location);
         }
     }
 
     /**
      * @param relativePath 例：demo/file.htm （没有'/'开头）
-     * */
+     */
     @Override
     public URL find(String relativePath) throws Exception {
         if (locationDebug != null) {
-            URI uri = URI.create(locationDebug + relativePath);
-            File file = new File(uri);
+            File file = new File(locationDebug, relativePath);
 
             if (file.exists()) {
-                return uri.toURL();
+                return file.toURL();
             }
         }
 
