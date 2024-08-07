@@ -36,6 +36,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.NameUtil;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -288,6 +289,9 @@ public class OpenApi2Builder {
 
 
             String pathKey = actionHolder.routing().path(); //PathUtil.mergePath(controllerKey, actionName);
+            //支持 context-path
+            pathKey = PathUtil.mergePath(Solon.cfg().serverContextPath(), pathKey);
+
 
             Path path = swagger.getPath(pathKey);
             if (path == null) {

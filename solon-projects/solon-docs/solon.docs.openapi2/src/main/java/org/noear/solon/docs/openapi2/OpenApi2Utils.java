@@ -32,9 +32,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -66,7 +65,11 @@ public class OpenApi2Utils {
                         String groupName = docDocket.groupName();
                         String url = resourceUri + "?group=" + group;
 
-                        return new ApiGroupResource(groupName, "2.0", url);
+                        if (docDocket.upstream() == null) {
+                            return new ApiGroupResource(groupName, "2.0", url, "");
+                        } else {
+                            return new ApiGroupResource(groupName, "2.0", url, docDocket.upstream().getContextPath());
+                        }
                     } else {
                         return null;
                     }
@@ -112,15 +115,22 @@ public class OpenApi2Utils {
                 host = LoadBalance.get(host).getServer();
             }
 
-            String url = PathUtil.mergePath(host, docket.upstream().getPath()).substring(1);
-            return httpGet(url);
+            String url = PathUtil.mergePath(host, docket.upstream().getUri()).substring(1);
+            return httpGet(url, docket);
         }
     }
 
-    public static String httpGet(String urlStr) throws IOException {
+    public static String httpGet(String urlStr, DocDocket docket) throws IOException {
         // 打开连接
         HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
 
+        if(docket.basicAuth().size() > 0) {
+            for (Map.Entry<String, String> kv : docket.basicAuth().entrySet()) {
+                String auth = BasicAuthUtil.base64EncodeToStr(kv.getKey(), kv.getValue());
+                connection.setRequestProperty("Authorization", "Basic " + auth);
+                break;
+            }
+        }
         // 设置请求方法为GET
         connection.setRequestMethod("GET");
 

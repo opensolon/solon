@@ -15,20 +15,25 @@
  */
 package com.layjava.docs.javadoc.solon;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.layjava.docs.javadoc.solon.util.JsonUtil;
 import io.swagger.models.Swagger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.SocketException;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +43,6 @@ import java.util.stream.Collectors;
  * @since 2.4
  */
 public class OpenApi2Utils {
-
     /**
      * 获取接口分组资源
      */
@@ -54,46 +58,100 @@ public class OpenApi2Utils {
 
         List<ApiGroupResource> resourceList = list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
                 .map(bw -> {
-                    String group = bw.name();
-                    String groupName = ((DocDocket) bw.raw()).groupName();
-                    String url = resourceUri + "?group=" + group;
+                    DocDocket docDocket = bw.raw();
 
-                    return new ApiGroupResource(groupName, "2.0", url);
+                    if (docDocket.isEnable()) {
+                        String group = bw.name();
+                        String groupName = docDocket.groupName();
+                        String url = resourceUri + "?group=" + group;
+
+                        if (docDocket.upstream() == null) {
+                            return new ApiGroupResource(groupName, "2.0", url, "");
+                        } else {
+                            return new ApiGroupResource(groupName, "2.0", url, docDocket.upstream().getContextPath());
+                        }
+                    } else {
+                        return null;
+                    }
                 })
+                .filter(r -> r != null)
                 .collect(Collectors.toList());
 
-        return JsonUtil.toJson(resourceList);
+        return JacksonSerializer.getInstance().serialize(resourceList);
     }
 
     /**
      * 获取接口
      */
     public static String getApiJson(Context ctx, String group) throws IOException {
-        
-        List<DocDocket> docDockets = Solon.context().getBeansOfType(DocDocket.class);
+        DocDocket docket = Solon.context().getBean(group);
 
-        if (CollUtil.isEmpty(docDockets)) {
-            return "";
+        if (docket == null) {
+            return null;
         }
-        // 如果未指定分组，则取第一个分组
-        if (StrUtil.isBlank(group)) {
-            group = docDockets.get(0).groupName();
-        }
-
-        String finalGroup = group;
-        // 找不到则取第一个
-        DocDocket docket = docDockets.stream().filter(d -> d.groupName().equals(finalGroup)).findFirst().orElse(docDockets.get(0));
 
         if (!BasicAuthUtil.basicAuth(ctx, docket)) {
             BasicAuthUtil.response401(ctx);
             return null;
         }
 
-        if (!docket.globalResponseCodes().containsKey(200)) {
+        if (docket.globalResponseCodes().containsKey(200) == false) {
             docket.globalResponseCodes().put(200, "");
         }
 
-        Swagger swagger = new OpenApi2Builder(docket).build();
-        return JsonUtil.toJson(swagger);
+        if (docket.upstream() == null) {
+            //本地模式
+            Swagger swagger = new OpenApi2Builder(docket).build();
+
+            if (docket.serializer() == null) {
+                return JacksonSerializer.getInstance().serialize(swagger);
+            } else {
+                return docket.serializer().serialize(swagger);
+            }
+        } else {
+            //代理模式
+            String host = docket.upstream().getService();
+            if (host.contains("://") == false) {
+                host = LoadBalance.get(host).getServer();
+            }
+
+            String url = PathUtil.mergePath(host, docket.upstream().getUri()).substring(1);
+            return httpGet(url, docket);
+        }
+    }
+
+    public static String httpGet(String urlStr, DocDocket docket) throws IOException {
+        // 打开连接
+        HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
+
+        if(docket.basicAuth().size() > 0) {
+            for (Map.Entry<String, String> kv : docket.basicAuth().entrySet()) {
+                String auth = BasicAuthUtil.base64EncodeToStr(kv.getKey(), kv.getValue());
+                connection.setRequestProperty("Authorization", "Basic " + auth);
+                break;
+            }
+        }
+        // 设置请求方法为GET
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // 接收响应
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                // 读取响应数据
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                // 打印结果
+                return response.toString();
+            }
+        } else {
+            throw new SocketException("HTTP GET failed: " + responseCode);
+        }
     }
 }
