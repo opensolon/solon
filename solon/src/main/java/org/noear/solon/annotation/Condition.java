@@ -49,4 +49,14 @@ public @interface Condition {
      * 缺少 bean name
      * */
     String onMissingBeanName() default "";
+
+    /**
+     * 存在 bean type
+     * */
+    Class<?> onBean() default Void.class;
+
+    /**
+     * 存在 bean name
+     * */
+    String onBeanName() default "";
 }

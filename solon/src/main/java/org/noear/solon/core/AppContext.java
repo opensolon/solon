@@ -697,7 +697,7 @@ public class AppContext extends BeanContainer {
 
         Condition mc = m.getAnnotation(Condition.class);
 
-        if (started == false && ConditionUtil.ifMissing(mc)) {
+        if (started == false && ConditionUtil.ifMissingBean(mc)) {
             lifecycle(LifecycleIndex.METHOD_CONDITION_IF_MISSING, () -> tryCreateBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
@@ -717,9 +717,14 @@ public class AppContext extends BeanContainer {
 
         MethodWrap mWrap = methodGet(bw.rawClz(), m);
 
-        //有参数的bean，采用线程池处理；所以需要锁等待
-        //
-        tryBuildBeanOfMethod(ma, mWrap, bw);
+        //开始执行
+        if (ConditionUtil.ifBean(mc)) {
+            //如果有 onBean 条件
+            ConditionUtil.onBeanRun(mc, this, () -> tryBuildBeanOfMethod(ma, mWrap, bw));
+        } else {
+            //没有 onBean 条件
+            tryBuildBeanOfMethod(ma, mWrap, bw);
+        }
     }
 
     /**
@@ -728,7 +733,7 @@ public class AppContext extends BeanContainer {
     protected void tryCreateBeanOfClass(Class<?> clz) {
         Condition cc = clz.getAnnotation(Condition.class);
 
-        if (started == false && ConditionUtil.ifMissing(cc)) {
+        if (started == false && ConditionUtil.ifMissingBean(cc)) {
             lifecycle(LifecycleIndex.CLASS_CONDITION_IF_MISSING, () -> tryCreateBeanOfClass0(clz, cc));
         } else {
             tryCreateBeanOfClass0(clz, cc);
@@ -740,6 +745,14 @@ public class AppContext extends BeanContainer {
             return;
         }
 
+        if (ConditionUtil.ifBean(cc)) {
+            ConditionUtil.onBeanRun(cc, this, () -> tryCreateBeanOfClass1(clz));
+        } else {
+            tryCreateBeanOfClass1(clz);
+        }
+    }
+
+    private void tryCreateBeanOfClass1(Class<?> clz) {
         tryCreateBean0(clz, (bb, a) -> {
             //包装
             BeanWrap bw = this.wrap(clz);

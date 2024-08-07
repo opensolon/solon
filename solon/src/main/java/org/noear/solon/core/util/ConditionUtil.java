@@ -29,9 +29,19 @@ import java.lang.reflect.AnnotatedElement;
  */
 public class ConditionUtil {
     /**
-     * 是否有 Missing 条件
-     * */
+     * 是否有 onMissingBean 条件
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
     public static boolean ifMissing(Condition anno) {
+        return ifMissingBean(anno);
+    }
+
+    /**
+     * 是否有 onMissingBean 条件
+     */
+    public static boolean ifMissingBean(Condition anno) {
         if (anno == null) {
             return false;
         } else {
@@ -45,8 +55,45 @@ public class ConditionUtil {
     }
 
     /**
+     * 是否有 OnBean 条件
+     */
+    public static boolean ifBean(Condition anno) {
+        if (anno == null) {
+            return false;
+        } else {
+            try {
+                return (anno.onBean() != Void.class) || Utils.isNotEmpty(anno.onBeanName());
+            } catch (Throwable e) {
+                //如果 onBean 的类是不存在的，会出错
+                return true;
+            }
+        }
+    }
+
+    public static void onBeanRun(Condition anno, AppContext context, RunnableEx runnable) {
+        if (anno.onBean() != Void.class) {
+            //onBean
+            context.getBeanAsync(anno.onBean(), bean -> {
+                if (Utils.isNotEmpty(anno.onBeanName())) {
+                    //onBeanName
+                    context.getBeanAsync(anno.onBeanName(), bean2 -> {
+                        RunUtil.runOrThrow(() -> runnable.run());
+                    });
+                } else {
+                    RunUtil.runOrThrow(() -> runnable.run());
+                }
+            });
+        } else {
+            //onBeanName
+            context.getBeanAsync(anno.onBeanName(), bean -> {
+                RunUtil.runOrThrow(() -> runnable.run());
+            });
+        }
+    }
+
+    /**
      * 检测条件
-     * */
+     */
     public static boolean test(AppContext context, AnnotatedElement element) {
         Condition anno = element.getAnnotation(Condition.class);
 
@@ -55,8 +102,8 @@ public class ConditionUtil {
 
     /**
      * 检测条件
-     * */
-    public static boolean test(AppContext context, Condition anno){
+     */
+    public static boolean test(AppContext context, Condition anno) {
         if (anno == null) {
             return true;
         } else {
@@ -103,7 +150,7 @@ public class ConditionUtil {
                     return true;
                 }
             }
-        }catch (Throwable e){
+        } catch (Throwable e) {
             //如果 onMissingBean 的类是不存在的，会异常 //异常跳过，不用管
         }
 
