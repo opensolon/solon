@@ -16,14 +16,21 @@
 package features.core;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.demo0_bean.condition1.ConditionCom11A;
+import webapp.demo0_bean.condition1.ConditionCom11B;
+import webapp.demo0_bean.condition1.ConditionCom12A;
+import webapp.demo0_bean.condition1.ConditionCom12B;
+import webapp.demo0_bean.condition2.ConditionBean11A;
+import webapp.demo0_bean.condition2.ConditionBean11B;
+import webapp.demo0_bean.condition2.ConditionBean12A;
+import webapp.demo0_bean.condition2.ConditionBean12B;
 import webapp.dso.ConditionConfig;
 import webapp.models.BaseRequest;
 
@@ -41,7 +48,7 @@ public class ConditionTest {
     BaseRequest baseRequest;
 
     @Test
-    public void test(){
+    public void test() {
         assert config.getUsername() != null;
         assert config.getUsername2() == null;
         assert "noear".equals(config.getUsername3());
@@ -54,9 +61,27 @@ public class ConditionTest {
         assert "noear".equals(config.getUsername21());
         assert config.getUsername22() == null;
 
-        System.out.println(ONode.load(config, Feature.SerializeNulls ));
+        System.out.println(ONode.load(config, Feature.SerializeNulls));
 
         assert baseRequest != null;
         System.out.println(ONode.stringify(baseRequest));
+    }
+
+    @Test
+    public void test2() {
+        assert Solon.context().getBean(ConditionCom11A.class) == null;
+        assert Solon.context().getBean(ConditionCom12A.class) == null;
+
+        assert Solon.context().getBean(ConditionCom11B.class) != null;
+        assert Solon.context().getBean(ConditionCom12B.class) != null;
+    }
+
+    @Test
+    public void test3() {
+        assert Solon.context().getBean(ConditionBean11A.class) == null;
+        assert Solon.context().getBean(ConditionBean12A.class) == null;
+
+        assert Solon.context().getBean(ConditionBean11B.class) != null;
+        assert Solon.context().getBean(ConditionBean12B.class) != null;
     }
 }
