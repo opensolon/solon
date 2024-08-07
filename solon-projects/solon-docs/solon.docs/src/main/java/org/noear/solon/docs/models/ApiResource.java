@@ -19,6 +19,7 @@ package org.noear.solon.docs.models;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
 
+import java.io.Serializable;
 import java.util.function.Predicate;
 
 /**
@@ -27,13 +28,13 @@ import java.util.function.Predicate;
  * @author noear
  * @since 2.2
  * */
-public class ApiResource implements Predicate<Action> {
+public class ApiResource implements Predicate<Action> , Serializable {
 
     private transient Predicate<Action> condition;
     private String basePackage;
 
     public ApiResource() {
-
+        //用于反序列化
     }
 
     public ApiResource(String basePackage) {

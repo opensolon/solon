@@ -15,6 +15,8 @@
  */
 package org.noear.solon.docs.models;
 
+import org.noear.solon.Utils;
+
 import java.io.Serializable;
 
 /**
@@ -28,12 +30,21 @@ public class ApiGroupResource implements Serializable {
     private String url;
     private String location;
     private String swaggerVersion;
+    private String contextPath;
 
-    public ApiGroupResource(String name, String version, String url) {
+    public ApiGroupResource(String name, String version, String url, String contextPath) {
         this.name = name;
         this.url = url;
         this.location = url;
         this.swaggerVersion = version;
+
+        if (Utils.isNotEmpty(contextPath)) {
+            if (contextPath.startsWith("/")) {
+                this.contextPath = contextPath;
+            } else {
+                this.contextPath = "/" + contextPath;
+            }
+        }
     }
 
     public String getName() {
@@ -50,5 +61,9 @@ public class ApiGroupResource implements Serializable {
 
     public String getSwaggerVersion() {
         return swaggerVersion;
+    }
+
+    public String getContextPath() {
+        return contextPath;
     }
 }

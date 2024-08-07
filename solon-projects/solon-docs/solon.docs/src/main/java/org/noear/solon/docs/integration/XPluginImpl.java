@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class XPluginImpl implements Plugin {
     public static final String SOLON_DOCS_ROUTES = "solon.docs.routes";
-    public static final String SOLON_DOCS_DISCOVER_PATHPATTERN = "solon.docs.discover.pathPattern"; //manual, discover
+    public static final String SOLON_DOCS_DISCOVER_URIPATTERN = "solon.docs.discover.uriPattern"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_SYNCSTATUS = "solon.docs.discover.syncStatus"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_EXCLUDED = "solon.docs.discover.excluded"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_INCLUDED = "solon.docs.discover.included"; //manual, discover
@@ -59,7 +59,7 @@ public class XPluginImpl implements Plugin {
         }
 
         //加载 solon.docs.discover.pathPattern
-        String discover_pathPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_PATHPATTERN);
+        String discover_pathPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_URIPATTERN);
         if (Utils.isNotEmpty(discover_pathPattern)) {
             if (ClassUtil.hasClass(() -> Discovery.class)) {
                 DiscoveryEventListener eventListener = new DiscoveryEventListener(context, discover_pathPattern);

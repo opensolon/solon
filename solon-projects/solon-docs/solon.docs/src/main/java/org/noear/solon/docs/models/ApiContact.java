@@ -15,6 +15,7 @@
  */
 package org.noear.solon.docs.models;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -24,11 +25,15 @@ import java.util.Map;
  * @author noear
  * @since 2.4
  */
-public class ApiContact {
+public class ApiContact implements Serializable {
     private String name;
     private String url;
     private String email;
     private Map<String, Object> vendorExtensions = new LinkedHashMap();
+
+    public ApiContact(){
+        //用于反序列化
+    }
 
     public ApiContact name(String name) {
         this.name = name;

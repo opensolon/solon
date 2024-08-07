@@ -36,6 +36,12 @@ public class BasicAuthUtil {
         return new String(decodedValue, UTF_8);
     }
 
+    public static String base64EncodeToStr(String user, String password) {
+        String value = user + ":" + password;
+        byte[] encodedValue = Base64.getEncoder().encode(value.getBytes(UTF_8));
+        return new String(encodedValue, UTF_8);
+    }
+
     /**
      * WWW-Authenticate 简单认证
      */

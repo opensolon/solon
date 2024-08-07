@@ -15,19 +15,25 @@
  */
 package org.noear.solon.docs.models;
 
+import java.io.Serializable;
+
 /**
  * 接口信息
  *
  * @author noear
  * @since 2.2
  */
-public class ApiInfo {
+public class ApiInfo implements Serializable {
     private String description;
     private String version;
     private String title;
     private String termsOfService;
     private ApiContact contact;
     private ApiLicense license;
+
+    public ApiInfo(){
+        //用于反序列化
+    }
 
     public String description() {
         return description;

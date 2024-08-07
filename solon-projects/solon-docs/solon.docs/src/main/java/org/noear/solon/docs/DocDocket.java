@@ -245,8 +245,8 @@ public class DocDocket implements Serializable {
     /**
      * 配置上游
      */
-    public DocDocket upstream(String service, String path) {
-        this.upstream = new DocUpstream(service, path);
+    public DocDocket upstream(String service, String contextPath, String path) {
+        this.upstream = new DocUpstream(service, contextPath, path);
         return this;
     }
 

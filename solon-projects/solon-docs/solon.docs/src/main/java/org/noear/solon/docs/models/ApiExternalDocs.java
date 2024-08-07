@@ -15,13 +15,15 @@
  */
 package org.noear.solon.docs.models;
 
+import java.io.Serializable;
+
 /**
  * 接口扩展文档
  *
  * @author noear
  * @since 2.2
  */
-public class ApiExternalDocs {
+public class ApiExternalDocs implements Serializable {
     private String description;
     private String url;
 
@@ -34,7 +36,7 @@ public class ApiExternalDocs {
     }
 
     public ApiExternalDocs() {
-
+        //用于反序列化
     }
 
     public ApiExternalDocs(String description, String url) {

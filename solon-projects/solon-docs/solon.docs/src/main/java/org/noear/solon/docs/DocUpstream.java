@@ -15,19 +15,36 @@
  */
 package org.noear.solon.docs;
 
+import org.noear.solon.Utils;
+
+import java.io.Serializable;
+
 /**
  * 文档上游
  *
  * @author noear
  * @since 2.8
  */
-public class DocUpstream {
+public class DocUpstream implements Serializable {
     private String service;
-    private String path;
+    private String contextPath;
+    private String uri;
 
-    public DocUpstream(String service, String path) {
+    public DocUpstream() {
+        //用于反序列化
+    }
+
+    public DocUpstream(String service, String contextPath, String uri) {
         this.service = service;
-        this.path = path;
+        this.uri = uri;
+
+        if (Utils.isEmpty(contextPath)) {
+            if (service.indexOf("://") < 0) {
+                this.contextPath = "/" + service;
+            }
+        } else {
+            this.contextPath = contextPath;
+        }
     }
 
     /**
@@ -37,10 +54,24 @@ public class DocUpstream {
         return service;
     }
 
+
     /**
-     * 获取地址
+     * 获取上下文路径
      */
-    public String getPath() {
-        return path;
+    public String getContextPath() {
+        if (Utils.isEmpty(contextPath)) {
+            if (Utils.isNotEmpty(service) && service.indexOf("://") < 0) {
+                this.contextPath = "/" + service;
+            }
+        }
+
+        return contextPath;
+    }
+
+    /**
+     * 获取路径
+     */
+    public String getUri() {
+        return uri;
     }
 }
