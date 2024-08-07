@@ -372,20 +372,24 @@ public class ActionDefault extends HandlerAide implements Action {
         return mWrap.invokeByAspect(target, args);
     }
 
-    public void render(Object obj, Context c) throws Throwable {
-        renderDo(obj, c);
+    public void render(Object obj, Context c, boolean allowMultiple) throws Throwable {
+        renderDo(obj, c, allowMultiple);
+    }
+
+    protected void renderDo(Object obj, Context c) throws Throwable {
+        renderDo(obj, c, false);
     }
 
     /**
      * 执行渲染（便于重写）
      */
-    protected void renderDo(Object obj, Context c) throws Throwable {
+    protected void renderDo(Object obj, Context c, boolean allowMultiple) throws Throwable {
         //
         //可以通过before关掉render
         //
         obj = Solon.app().chainManager().postResult(c, obj);
 
-        if (c.getRendered() == false) {
+        if (allowMultiple || c.getRendered() == false) {
             c.result = obj;
         }
 
@@ -402,7 +406,7 @@ public class ActionDefault extends HandlerAide implements Action {
                     Throwable objE = (Throwable) obj;
                     LogUtil.global().warn("Action remoting handle failed: " + c.pathNew(), objE);
 
-                    if (c.getRendered() == false) {
+                    if (allowMultiple || c.getRendered() == false) {
                         c.render(obj);
                     }
                 } else {
@@ -410,7 +414,7 @@ public class ActionDefault extends HandlerAide implements Action {
                     throw (Throwable) obj;
                 }
             } else {
-                if (c.getRendered() == false) {
+                if (allowMultiple || c.getRendered() == false) {
                     c.render(obj);
                 }
             }

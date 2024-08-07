@@ -52,7 +52,7 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onNext(Object o) {
         try {
-            action.render(o, ctx);
+            action.render(o, ctx, true);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -61,7 +61,7 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onError(Throwable e) {
         try {
-            action.render(e, ctx);
+            action.render(e, ctx, false);
         } catch (Throwable e2) {
             ctx.status(500);
             log.warn(e.getMessage(), e);
