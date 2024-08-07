@@ -25,6 +25,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.docs.DocDocket;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * 服务发现事件监听器
@@ -38,6 +39,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
     private final boolean syncStatus;
     private final Collection<String> excluded;
     private final Collection<String> included;
+    private final Map<String, String> basicAuth;
 
     public DiscoveryEventListener(AppContext appContext, String pathPattern) {
         this.appContext = appContext;
@@ -45,6 +47,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
         this.syncStatus = appContext.cfg().getBool(XPluginImpl.SOLON_DOCS_DISCOVER_SYNCSTATUS, false);
         this.excluded = appContext.cfg().getList(XPluginImpl.SOLON_DOCS_DISCOVER_EXCLUDED);
         this.included = appContext.cfg().getList(XPluginImpl.SOLON_DOCS_DISCOVER_INCLUDED);
+        this.basicAuth = appContext.cfg().getMap(XPluginImpl.SOLON_DOCS_DISCOVER_BASICAUTH);
     }
 
     /**
@@ -78,6 +81,10 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
             DocDocket docDocket = new DocDocket();
             docDocket.groupName(discovery.service());
             docDocket.upstream(discovery.service(), pathPattern.replace("{service}", discovery.service()));
+
+            if (basicAuth.size() > 0) {
+                docDocket.basicAuth().putAll(basicAuth);
+            }
 
             if (syncStatus) {
                 //如果要同步状态

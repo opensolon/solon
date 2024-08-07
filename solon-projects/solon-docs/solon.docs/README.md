@@ -8,6 +8,9 @@ solon.docs:
   discover:  #(发现配置，需要引入 solon cloud 发现服务插件)，可选
     pathPattern: "swagger/v2?group={service}" #上游路径模式（要么带变量 {service}，要么用统一固定值）
     syncStatus: true                          #同步上下线状态
+    basicAuth:
+      admin: "123456"
+      user: "654321"
     excluded:                                 #排除服务名
       - "user-api"
     included:                                 #包函服务名

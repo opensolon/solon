@@ -39,6 +39,7 @@ public class XPluginImpl implements Plugin {
     public static final String SOLON_DOCS_DISCOVER_SYNCSTATUS = "solon.docs.discover.syncStatus"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_EXCLUDED = "solon.docs.discover.excluded"; //manual, discover
     public static final String SOLON_DOCS_DISCOVER_INCLUDED = "solon.docs.discover.included"; //manual, discover
+    public static final String SOLON_DOCS_DISCOVER_BASICAUTH = "solon.docs.discover.basicAuth"; //manual, discover
 
 
     @Override
