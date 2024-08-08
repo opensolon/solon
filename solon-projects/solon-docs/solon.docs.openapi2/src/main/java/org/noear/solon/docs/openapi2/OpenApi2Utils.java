@@ -66,9 +66,9 @@ public class OpenApi2Utils {
                         String url = resourceUri + "?group=" + group;
 
                         if (docDocket.upstream() == null) {
-                            return new ApiGroupResource(groupName, "2.0", url, "");
+                            return new ApiGroupResource(groupName, docDocket.version(), url, "");
                         } else {
-                            return new ApiGroupResource(groupName, "2.0", url, docDocket.upstream().getContextPath());
+                            return new ApiGroupResource(groupName, docDocket.version(), url, docDocket.upstream().getContextPath());
                         }
                     } else {
                         return null;
