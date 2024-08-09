@@ -23,6 +23,13 @@ package org.noear.solon.core;
  * */
 public interface Plugin {
     /**
+     * 初始化
+     */
+    default void init() throws Throwable{
+
+    }
+
+    /**
      * 启动（保留，为兼容性过度）
      *
      * @param context 应用上下文
