@@ -18,7 +18,6 @@ package org.noear.solon.logging.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
@@ -32,9 +31,8 @@ import java.util.Properties;
  * @author noear
  * @since 1.3
  */
-public class XPluginImp implements Plugin , InitializingBean {
-    @Override
-    public void afterInjection() throws Throwable {
+public class XPluginImp implements Plugin {
+    public XPluginImp() {
         AppenderManager.init();
     }
 

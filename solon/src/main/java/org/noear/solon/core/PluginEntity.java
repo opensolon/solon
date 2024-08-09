@@ -16,7 +16,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
-import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Nullable;
@@ -165,16 +164,6 @@ public class PluginEntity {
 
                 if (plugin == null) {
                     LogUtil.global().warn("The configured plugin cannot load: " + className);
-                } else {
-                    if (plugin instanceof InitializingBean) {
-                        try {
-                            ((InitializingBean) plugin).afterInjection();
-                        } catch (RuntimeException e) {
-                            throw e;
-                        } catch (Throwable e) {
-                            throw new IllegalStateException(e);
-                        }
-                    }
                 }
             }
         }

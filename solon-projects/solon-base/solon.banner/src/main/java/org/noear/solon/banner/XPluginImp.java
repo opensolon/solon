@@ -19,19 +19,19 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
+
+import java.io.IOException;
 
 /**
  * @author pmg1991
  * @since 1.11
  * */
-public class XPluginImp implements Plugin, InitializingBean {
+public class XPluginImp implements Plugin {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
-	@Override
-	public void afterInjection() throws Throwable {
+	public XPluginImp() throws IOException {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {

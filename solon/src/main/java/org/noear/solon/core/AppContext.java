@@ -527,6 +527,8 @@ public class AppContext extends BeanContainer {
         }
 
         if (obj instanceof InitializingBean) {
+            LogUtil.global().error("InitializingBean will be discarded, suggested use '@Init'");
+
             InitializingBean initBean = (InitializingBean) obj;
 
             if (fwList.size() == 0) {

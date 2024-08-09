@@ -22,7 +22,6 @@ import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
-import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -39,9 +38,8 @@ import org.noear.solon.cloud.model.Instance;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin , InitializingBean {
-    @Override
-    public void afterInjection() throws Throwable {
+public class XPluginImp implements Plugin {
+    public XPluginImp() {
         //设置日志添加器（为了早点打印日志）
         AppenderManager.register("cloud", new CloudLogAppender());
     }
