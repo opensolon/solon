@@ -24,7 +24,7 @@ import org.noear.solon.core.Lifecycle;
  * @since 2.2
  */
 @FunctionalInterface
-public interface LifecycleBean extends Lifecycle, InitializingBean {
+public interface LifecycleBean extends Lifecycle {
     /**
      * 预停止
      */
