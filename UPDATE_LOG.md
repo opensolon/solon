@@ -38,6 +38,7 @@
 * wood 升为 1.2.14
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
+* dromara-plugins 升为 0.1.2
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 
