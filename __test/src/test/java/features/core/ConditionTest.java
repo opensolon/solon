@@ -31,6 +31,8 @@ import webapp.demo0_bean.condition2.ConditionBean11A;
 import webapp.demo0_bean.condition2.ConditionBean11B;
 import webapp.demo0_bean.condition2.ConditionBean12A;
 import webapp.demo0_bean.condition2.ConditionBean12B;
+import webapp.demo0_bean.construction1.Construction1Com11B;
+import webapp.demo0_bean.construction1.Construction1Com11B2;
 import webapp.dso.ConditionConfig;
 import webapp.models.BaseRequest;
 
@@ -83,5 +85,11 @@ public class ConditionTest {
 
         assert Solon.context().getBean(ConditionBean11B.class) != null;
         assert Solon.context().getBean(ConditionBean12B.class) != null;
+    }
+
+    @Test
+    public void test4(){
+        assert Solon.context().getBean(Construction1Com11B.class) != null;
+        assert Solon.context().getBean(Construction1Com11B2.class) != null;
     }
 }
