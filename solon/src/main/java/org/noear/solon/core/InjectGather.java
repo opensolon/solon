@@ -42,14 +42,14 @@ public class InjectGather implements Runnable {
     private boolean requireRun;
     //输出类型
     private Class<?> outType;
-    //是否方法
-    private boolean isMethod;
+    //收集类型（0字段；1方法；2构造）
+    private int label;
     //执行顺序位
     public int index;
 
-    public InjectGather(boolean isMethod, Class<?> outType, boolean requireRun, int varSize, ConsumerEx<Object[]> onDone) {
+    public InjectGather(int label, Class<?> outType, boolean requireRun, int varSize, ConsumerEx<Object[]> onDone) {
         this.requireRun = requireRun;
-        this.isMethod = isMethod;
+        this.label = label;
         this.onDone = onDone;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
@@ -61,7 +61,7 @@ public class InjectGather implements Runnable {
     }
 
     public boolean isMethod() {
-        return this.isMethod;
+        return label > 0;
     }
 
     public Class<?> getOutType() {
@@ -134,7 +134,13 @@ public class InjectGather implements Runnable {
 
             for (VarHolder p1 : vars) {
                 if (p1.isDone() == false && p1.required()) {
-                    throw new InjectionException("Required injection failed: " + p1.getFullName());
+                    if (label == 1) {
+                        throw new InjectionException("Method param injection failed: " + p1.getFullName());
+                    } else if (label == 2) {
+                        throw new InjectionException("Constructor param injection failed: " + p1.getFullName());
+                    } else {
+                        throw new InjectionException("Field injection failed: " + p1.getFullName());
+                    }
                 }
             }
 
