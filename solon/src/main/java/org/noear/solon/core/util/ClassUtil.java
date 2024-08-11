@@ -18,10 +18,7 @@ package org.noear.solon.core.util;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.exception.ConstructionException;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -164,6 +161,20 @@ public class ClassUtil {
             } else {
                 return (T) clz.getConstructor(Properties.class).newInstance(prop);
             }
+        } catch (Exception e) {
+            throw new ConstructionException(e);
+        }
+    }
+
+    /**
+     * 根据构造函数实例化一个对象
+     *
+     * @param constructor 构造器
+     * @param args        参数
+     */
+    public static Object newInstance(Constructor constructor, Object[] args) {
+        try {
+            return constructor.newInstance(args);
         } catch (Exception e) {
             throw new ConstructionException(e);
         }

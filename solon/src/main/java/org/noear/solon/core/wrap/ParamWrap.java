@@ -35,7 +35,7 @@ public class ParamWrap extends VarDescriptorBase {
         this(parameter, null, null);
     }
 
-    public ParamWrap(Parameter parameter, Method method, Map<String, Type> genericInfo) {
+    public ParamWrap(Parameter parameter, Executable method, Map<String, Type> genericInfo) {
         super(parameter, parameter.getName());
         this.parameter = parameter;
         this.type = parameter.getType();

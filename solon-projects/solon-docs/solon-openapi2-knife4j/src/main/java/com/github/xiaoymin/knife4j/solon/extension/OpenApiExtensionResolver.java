@@ -18,7 +18,6 @@ package com.github.xiaoymin.knife4j.solon.extension;
 import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
 import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.docs.models.ApiVendorExtension;
 import org.noear.solon.docs.DocDocket;
 
@@ -29,7 +28,6 @@ import java.util.List;
  * @author noear
  * @since 2.3
  */
-@Component
 public class OpenApiExtensionResolver {
     private final OpenApiSetting setting;
     private final OpenApiExtendSetting extendSetting;

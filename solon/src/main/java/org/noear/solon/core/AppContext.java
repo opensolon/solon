@@ -579,11 +579,11 @@ public class AppContext extends BeanContainer {
         if (anno != null) {
             //导入类（beanMake）
             for (Class<?> clz : anno.value()) {
-                beanMake(clz);
+                tryCreateBeanOfClass(clz);
             }
 
             for (Class<?> clz : anno.classes()) {
-                beanMake(clz);
+                tryCreateBeanOfClass(clz);
             }
 
             //扫描包（beanScan）
@@ -647,23 +647,8 @@ public class AppContext extends BeanContainer {
     /**
      * ::制造 bean 及对应处理
      */
-    public BeanWrap beanMake(Class<?> clz) {
-        //增加条件检测
-        if (ConditionUtil.test(this, clz) == false) {
-            return null;
-        }
-
-        //包装
-        BeanWrap bw = wrap(clz, null);
-
-        tryCreateBean0(bw.clz(), (bb, a) -> {
-            bb.doBuild(bw.clz(), bw, a);
-        });
-
-        //必然入库
-        putWrap(clz, bw);
-
-        return bw;
+    public void beanMake(Class<?> clz) {
+        tryCreateBeanOfClass(clz);
     }
 
 
@@ -756,13 +741,36 @@ public class AppContext extends BeanContainer {
 
     private void tryCreateBeanOfClass1(Class<?> clz) {
         tryCreateBean0(clz, (bb, a) -> {
-            //包装
-            BeanWrap bw = this.wrap(clz);
-            //执行构建
-            bb.doBuild(clz, bw, a);
-            //尝试入库
-            this.putWrap(clz, bw);
+            tryCreateBeanOfClass2(clz, bb, a);
         });
+    }
+
+    private void tryCreateBeanOfClass2(Class<?> clz, BeanBuilder builder, Annotation anno) throws Throwable {
+        final Constructor c1;
+        if (clz.isInterface() == false) {
+            c1 = clz.getDeclaredConstructors()[0]; //组件只允许有一个构造函数
+        } else {
+            c1 = null;
+        }
+
+        if (c1 == null || c1.getParameterCount() == 0) {
+            tryCreateBeanOfClass3(clz, builder, anno, null);
+        } else {
+            tryMethodParamsGather(this, clz, c1.getParameters(), (args2) -> {
+                Object raw = ClassUtil.newInstance(c1, args2);
+                tryCreateBeanOfClass3(clz, builder, anno, raw);
+            });
+        }
+    }
+
+
+    private void tryCreateBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Object raw) throws Throwable{
+        //包装
+        BeanWrap bw = this.wrap(clz, raw);
+        //执行构建
+        builder.doBuild(clz, bw, anno);
+        //尝试入库
+        this.putWrap(clz, bw);
     }
 
 
@@ -806,33 +814,40 @@ public class AppContext extends BeanContainer {
      * @param bw    bean 包装器
      */
     protected void tryBuildBeanOfMethod(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
-        int size2 = mWrap.getParamWraps().length;
-
-        if (size2 == 0) {
+        if (mWrap.getParamWraps().length == 0) {
             //0.没有参数
             tryBuildBeanOfMethodDo(anno, mWrap, bw, new Object[]{});
         } else {
-            //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
-            InjectGather gather = new InjectGather(true, mWrap.getReturnType(), true, size2, (args2) -> {
-                //变量收集完成后，会回调此处
+            tryMethodParamsGather(bw.context(), mWrap.getReturnType(), mWrap.getRawParameters(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethodDo(anno, mWrap, bw, args2));
             });
+        }
+    }
 
-            //1.1.登录到集合
-            gatherSet.add(gather);
+    /**
+     * 尝试方法参数收集
+     * */
+    protected void tryMethodParamsGather(AppContext context, Class<?> outType,Parameter[] paramAry, ConsumerEx<Object[]> completionConsumer) {
+        //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
+        InjectGather gather = new InjectGather(true, outType, true, paramAry.length, (args2) -> {
+            //变量收集完成后，会回调此处
+            completionConsumer.accept(args2);
+        });
 
-            //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-            for (ParamWrap pw : mWrap.getParamWraps()) {
-                VarHolder varH = new VarHolderOfParam(bw.context(), pw.getParameter(), gather);
-                gather.add(varH);
+        //1.1.登录到集合
+        gatherSet.add(gather);
 
-                Annotation[] annoS = pw.getParameter().getAnnotations();
-                if (annoS.length == 0) {
-                    //没带注解的，算必须
-                    beanInject(varH, null, true, false);
-                } else {
-                    tryInject(varH, annoS);
-                }
+        //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
+        for (Parameter p1 : paramAry) {
+            VarHolder varH = new VarHolderOfParam(context, p1, gather);
+            gather.add(varH);
+
+            Annotation[] annoS = p1.getAnnotations();
+            if (annoS.length == 0) {
+                //没带注解的，算必须
+                beanInject(varH, null, true, false);
+            } else {
+                tryInject(varH, annoS);
             }
         }
     }

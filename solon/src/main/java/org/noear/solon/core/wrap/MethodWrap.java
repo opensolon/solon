@@ -51,7 +51,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
         declaringClz = m.getDeclaringClass();
 
         method = m;
-        parameters = buildParamsWrap(m.getParameters(), genericInfo);
+        rawParameters = m.getParameters();
+        parameters = buildParamsWrap(rawParameters, genericInfo);
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
         interceptorsIdx = new HashSet<>();
@@ -134,6 +135,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final Method method;
     //函数参数
     private final ParamWrap[] parameters;
+    private final Parameter[] rawParameters;
     //函数Body参数(用于 web)
     private ParamWrap bodyParameter;
     //函数注解
@@ -192,6 +194,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public ParamWrap[] getParamWraps() {
         return parameters;
+    }
+
+    /**
+     * 获取函数原始参数
+     */
+    public Parameter[] getRawParameters() {
+        return rawParameters;
     }
 
     /**

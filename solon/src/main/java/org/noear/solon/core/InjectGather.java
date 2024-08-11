@@ -17,10 +17,10 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.exception.InjectionException;
+import org.noear.solon.core.util.ConsumerEx;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * 注入收集器，收集完成后会进行回调（主要为 Configuration 构建 method bean 时服务）
@@ -37,7 +37,7 @@ public class InjectGather implements Runnable {
     //完成的
     private boolean done;
     //完成时
-    private Consumer<Object[]> onDone;
+    private ConsumerEx<Object[]> onDone;
     //必须运行
     private boolean requireRun;
     //输出类型
@@ -47,7 +47,7 @@ public class InjectGather implements Runnable {
     //执行顺序位
     public int index;
 
-    public InjectGather(boolean isMethod, Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
+    public InjectGather(boolean isMethod, Class<?> outType, boolean requireRun, int varSize, ConsumerEx<Object[]> onDone) {
         this.requireRun = requireRun;
         this.isMethod = isMethod;
         this.onDone = onDone;
@@ -106,7 +106,11 @@ public class InjectGather implements Runnable {
                     args.add(p1.getValue());
                 }
 
-                onDone.accept(args.toArray());
+                try {
+                    onDone.accept(args.toArray());
+                } catch (Throwable ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         } finally {
             Utils.locker().unlock();
@@ -116,7 +120,7 @@ public class InjectGather implements Runnable {
     /**
      * 检测
      */
-    public void check() throws Exception {
+    public void check() throws Throwable {
         Utils.locker().lock();
 
         try {

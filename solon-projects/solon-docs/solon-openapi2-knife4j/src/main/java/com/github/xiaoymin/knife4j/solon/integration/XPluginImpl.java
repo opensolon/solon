@@ -19,7 +19,6 @@ import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.web.staticfiles.StaticMappings;
@@ -31,11 +30,9 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
  */
 public class XPluginImpl implements Plugin {
 
-
     @Override
     public void start(AppContext context) throws Throwable {
-        BeanWrap beanWrap = context.beanMake(OpenApiExtensionResolver.class);
-        OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
+        OpenApiExtensionResolver openApiExtensionResolver = context.wrapAndPut(OpenApiExtensionResolver.class).get();
 
         if (openApiExtensionResolver.getSetting().isEnable()) {
             String uiPath = "/";
