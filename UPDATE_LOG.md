@@ -34,7 +34,7 @@
 * 优化 solon 调试模式与 gradle 的兼容性
 * 优化 solon.web.rx 允许多次渲染输出
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
-* smarthttp 升为 1.5.6
+* smarthttp 升为 1.5.7
 * wood 升为 1.2.14
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
