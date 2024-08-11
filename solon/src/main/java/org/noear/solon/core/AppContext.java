@@ -29,6 +29,7 @@ import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -647,8 +648,9 @@ public class AppContext extends BeanContainer {
     /**
      * ::制造 bean 及对应处理
      */
-    public void beanMake(Class<?> clz) {
+    public @Nullable BeanWrap beanMake(Class<?> clz) {
         tryCreateBeanOfClass(clz);
+        return null;
     }
 
 
