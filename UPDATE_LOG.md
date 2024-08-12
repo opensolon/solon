@@ -36,6 +36,7 @@
 * 优化 solon 调试模式与 gradle 的兼容性
 * 优化 solon.boot FormUrlencodedUtils 预处理把 post 排外
 * 优化 solon.web.rx 允许多次渲染输出
+* 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * smarthttp 升为 1.5.8
@@ -43,6 +44,7 @@
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
 * dromara-plugins 升为 0.1.2
+* kafka_2.13 升为 3.8.0
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 
