@@ -34,6 +34,7 @@
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 solon Context::body 的兼容性，避免不可读情况
 * 优化 solon 调试模式与 gradle 的兼容性
+* 优化 solon.boot FormUrlencodedUtils 预处理把 post 排外
 * 优化 solon.web.rx 允许多次渲染输出
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题

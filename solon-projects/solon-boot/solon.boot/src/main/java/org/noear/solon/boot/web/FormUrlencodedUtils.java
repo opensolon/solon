@@ -18,6 +18,7 @@ package org.noear.solon.boot.web;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 
@@ -32,6 +33,11 @@ public class FormUrlencodedUtils {
      * 预处理
      */
     public static void pretreatment(Context ctx) throws IOException {
+        if (MethodType.POST.name.equals(ctx.method())) {
+            // post 除外
+            return;
+        }
+
         if (ctx.isFormUrlencoded() == false) {
             return;
         }
