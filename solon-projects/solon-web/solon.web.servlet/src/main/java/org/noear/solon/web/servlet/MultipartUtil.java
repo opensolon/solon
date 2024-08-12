@@ -17,10 +17,10 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.exception.StatusException;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -48,7 +48,19 @@ class MultipartUtil {
                 }
             }
         } catch (Exception e) {
-            throw new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
+            throw status4xx(ctx, e);
+        }
+    }
+
+    public static StatusException status4xx(Context ctx, Exception e) {
+        if (e instanceof StatusException) {
+            return  (StatusException) e;
+        } else {
+            if (isBodyLargerEx(e)) {
+                return new StatusException("Request Entity Too Large: " + ctx.method() + " " + ctx.pathNew(), e, 413);
+            } else {
+                return new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
+            }
         }
     }
 
@@ -80,5 +92,20 @@ class MultipartUtil {
 
     private static boolean isFile(Part filePart) {
         return !isField(filePart);
+    }
+
+    /**
+     * 是否为 body larger ex?
+     */
+    public static boolean isBodyLargerEx(Throwable e) {
+        return hasLargerStr(e) || hasLargerStr(e.getCause());
+    }
+
+    private static boolean hasLargerStr(Throwable e) {
+        if (e == null || e.getMessage() == null) {
+            return false;
+        } else {
+            return e.getMessage().contains("larger than");
+        }
     }
 }

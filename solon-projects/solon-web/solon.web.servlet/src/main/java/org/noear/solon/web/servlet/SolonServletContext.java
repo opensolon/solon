@@ -21,7 +21,6 @@ import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
@@ -63,6 +62,7 @@ public class SolonServletContext extends WebContextBase {
     }
 
     private boolean _loadMultipartFormData = false;
+
     private void loadMultipartFormData() {
         if (_loadMultipartFormData) {
             return;
@@ -157,6 +157,14 @@ public class SolonServletContext extends WebContextBase {
         return _request.getQueryString();
     }
 
+    @Override
+    public String body(String charset) throws IOException {
+        try {
+            return super.body(charset);
+        } catch (Exception e) {
+            throw MultipartUtil.status4xx(this, e);
+        }
+    }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
@@ -199,11 +207,7 @@ public class SolonServletContext extends WebContextBase {
                     _paramMap.put(name, kv.getValue()[0]);
                 }
             } catch (Exception e) {
-                if (e instanceof StatusException) {
-                    throw (StatusException) e;
-                } else {
-                    throw new StatusException(e, 400);
-                }
+                throw MultipartUtil.status4xx(this, e);
             }
         }
 
@@ -273,6 +277,7 @@ public class SolonServletContext extends WebContextBase {
         }
         return _headersMap;
     }
+
     private Map<String, List<String>> _headersMap;
 
 
@@ -346,7 +351,7 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
-    public Collection<String> headerNamesOfResponse(){
+    public Collection<String> headerNamesOfResponse() {
         return _response.getHeaderNames();
     }
 
