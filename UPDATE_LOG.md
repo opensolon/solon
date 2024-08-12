@@ -38,7 +38,7 @@
 * 优化 solon.web.rx 允许多次渲染输出
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
-* smarthttp 升为 1.5.7
+* smarthttp 升为 1.5.8
 * wood 升为 1.2.14
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2

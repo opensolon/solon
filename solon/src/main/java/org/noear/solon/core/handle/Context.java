@@ -390,13 +390,7 @@ public abstract class Context {
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
-                if (ins.available() < 0) {
-                    //不可读的
-                    body = "";
-                } else {
-                    //是可读的
-                    body = IoUtil.transferToString(ins, charset);
-                }
+                body = IoUtil.transferToString(ins, charset);
             }
         }
 
