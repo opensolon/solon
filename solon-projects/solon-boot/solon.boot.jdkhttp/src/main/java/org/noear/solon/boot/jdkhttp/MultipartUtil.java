@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JdkHttpContext ctx, Map<String, List<UploadedFile>> filesMap) throws IOException {
+    public static void buildParamsAndFiles(JdkHttpContext ctx, Map<String, List<UploadedFile>> filesMap) {
         try {
             HttpMultipartCollection parts = new HttpMultipartCollection((HttpExchange) ctx.request());
 

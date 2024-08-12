@@ -21,13 +21,13 @@ import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
 
 import javax.servlet.AsyncContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +63,7 @@ public class SolonServletContext extends WebContextBase {
     }
 
     private boolean _loadMultipartFormData = false;
-    private void loadMultipartFormData() throws IOException, ServletException {
+    private void loadMultipartFormData() {
         if (_loadMultipartFormData) {
             return;
         } else {
@@ -198,8 +198,12 @@ public class SolonServletContext extends WebContextBase {
                     _paramsMap.put(name, Utils.asList(kv.getValue()));
                     _paramMap.put(name, kv.getValue()[0]);
                 }
-            } catch (IOException | ServletException e) {
-                throw new IllegalStateException(e);
+            } catch (Exception e) {
+                if (e instanceof StatusException) {
+                    throw (StatusException) e;
+                } else {
+                    throw new StatusException(e, 400);
+                }
             }
         }
 
@@ -209,11 +213,7 @@ public class SolonServletContext extends WebContextBase {
     @Override
     public Map<String, List<UploadedFile>> filesMap() throws IOException {
         if (isMultipartFormData()) {
-            try {
-                loadMultipartFormData();
-            } catch (ServletException e) {
-                throw new IOException(e);
-            }
+            loadMultipartFormData();
 
             return _filesMap;
         } else {

@@ -34,7 +34,7 @@ import java.util.Map;
  * @since 1.2
  * */
 class MultipartUtil {
-    public static void buildParamsAndFiles(SolonServletContext ctx, Map<String, List<UploadedFile>> filesMap) throws IOException, ServletException {
+    public static void buildParamsAndFiles(SolonServletContext ctx, Map<String, List<UploadedFile>> filesMap) {
         try {
             HttpServletRequest request = (HttpServletRequest) ctx.request();
 

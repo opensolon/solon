@@ -22,6 +22,7 @@ import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
@@ -58,7 +59,7 @@ public class JlHttpContext extends WebContextBase {
 
     private boolean _loadMultipartFormData = false;
 
-    private void loadMultipartFormData() throws IOException {
+    private void loadMultipartFormData() {
         if (_loadMultipartFormData) {
             return;
         } else {
@@ -205,8 +206,12 @@ public class JlHttpContext extends WebContextBase {
 
                     list.add(kv[1]);
                 }
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
+            } catch (Exception e) {
+                if (e instanceof StatusException) {
+                    throw (StatusException) e;
+                } else {
+                    throw new StatusException(e, 400);
+                }
             }
         }
 

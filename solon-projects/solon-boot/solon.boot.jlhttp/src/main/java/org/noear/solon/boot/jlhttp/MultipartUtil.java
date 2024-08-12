@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JlHttpContext ctx, Map<String, List<UploadedFile>> filesMap) throws IOException {
+    public static void buildParamsAndFiles(JlHttpContext ctx, Map<String, List<UploadedFile>> filesMap) {
         try {
             HTTPServer.Request request = (HTTPServer.Request) ctx.request();
             HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
