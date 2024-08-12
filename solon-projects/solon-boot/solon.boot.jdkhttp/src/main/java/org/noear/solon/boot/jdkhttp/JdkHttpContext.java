@@ -18,11 +18,12 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
-import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
@@ -41,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 
 public class JdkHttpContext extends WebContextBase {
     private HttpExchange _exchange;
-    private Map<String, Object> _parameters;
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L; //默认30秒
@@ -55,7 +55,6 @@ public class JdkHttpContext extends WebContextBase {
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
-        _parameters = (Map<String, Object>) _exchange.getAttribute("parameters");
         _filesMap = new HashMap<>();
     }
 
@@ -166,9 +165,24 @@ public class JdkHttpContext extends WebContextBase {
         return _exchange.getRequestURI().getQuery();
     }
 
+
+    private InputStream bodyAsStream ;
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _exchange.getRequestBody();
+        if (bodyAsStream == null) {
+            bodyAsStream = new LimitedInputStream(_exchange.getRequestBody(), ServerProps.request_maxBodySize);
+        }
+
+        return bodyAsStream;
+    }
+
+    @Override
+    public String body(String charset) throws IOException {
+        try {
+            return super.body(charset);
+        } catch (Exception e) {
+            throw MultipartUtil.status4xx(this, e);
+        }
     }
 
     private NvMap _paramMap;
@@ -199,6 +213,8 @@ public class JdkHttpContext extends WebContextBase {
                     loadMultipartFormData();
                 }
 
+                Map<String, Object> _parameters = ParameterUtil.doFilter(_exchange);
+
                 for (Map.Entry<String, Object> kv : _parameters.entrySet()) {
                     String k = kv.getKey(); //内部已 urlDecode
                     Object v = kv.getValue();
@@ -215,11 +231,7 @@ public class JdkHttpContext extends WebContextBase {
                     }
                 }
             } catch (Exception e) {
-                if (e instanceof StatusException) {
-                    throw (StatusException) e;
-                } else {
-                    throw new StatusException(e, 400);
-                }
+                throw MultipartUtil.status4xx(this, e);
             }
         }
     }

@@ -84,9 +84,7 @@ public class JdkHttpServer implements ServerLifecycle {
             }
         }
 
-        HttpContext httpContext = server.createContext("/", new JdkHttpContextHandler(handler));
-        httpContext.getFilters().add(new ParameterFilter());
-
+        server.createContext("/", new JdkHttpContextHandler(handler));
         server.setExecutor(executor);
         server.start();
     }

@@ -17,6 +17,8 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
@@ -162,9 +164,23 @@ public class JlHttpContext extends WebContextBase {
         return _request.getURI().getQuery();
     }
 
+    private InputStream bodyAsStream ;
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.getBody();
+        if (bodyAsStream == null) {
+            bodyAsStream = new LimitedInputStream(_request.getBody(), ServerProps.request_maxBodySize);
+        }
+
+        return bodyAsStream;
+    }
+
+    @Override
+    public String body(String charset) throws IOException {
+        try {
+            return super.body(charset);
+        } catch (Exception e) {
+            throw MultipartUtil.status4xx(this, e);
+        }
     }
 
     private NvMap _paramMap;
@@ -207,11 +223,7 @@ public class JlHttpContext extends WebContextBase {
                     list.add(kv[1]);
                 }
             } catch (Exception e) {
-                if (e instanceof StatusException) {
-                    throw (StatusException) e;
-                } else {
-                    throw new StatusException(e, 400);
-                }
+                throw MultipartUtil.status4xx(this, e);
             }
         }
 

@@ -1,23 +1,8 @@
-/*
- * Copyright 2017-2024 noear.org and authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.noear.solon.boot.jdkhttp;
 
-import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.io.LimitedInputStream;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,30 +13,28 @@ import java.net.URLDecoder;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class ParameterFilter extends Filter {
-    @Override
-    public String description() {
-        return "Parses the requested URI for parameters";
-    }
+/**
+ * @author noear
+ * @since 2.9
+ */
+public class ParameterUtil {
 
-
-    @Override
-    public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
+    public static Map<String, Object> doFilter(HttpExchange exchange ) throws IOException {
         Map<String, Object> parameters = new HashMap<>();
-        exchange.setAttribute("parameters", parameters);
 
         parseGetParameters(exchange, parameters);
         parsePostParameters(exchange, parameters);
-        chain.doFilter(exchange);
+
+        return parameters;
     }
 
-    private void parseGetParameters(HttpExchange exchange, Map<String, Object> parameters) throws UnsupportedEncodingException {
+    private static void parseGetParameters(HttpExchange exchange, Map<String, Object> parameters) throws UnsupportedEncodingException {
         URI requestedUri = exchange.getRequestURI();
         String query = requestedUri.getRawQuery();
         parseQuery(query, parameters);
     }
 
-    private void parsePostParameters(HttpExchange exchange, Map<String, Object> parameters) throws IOException {
+    private static void parsePostParameters(HttpExchange exchange, Map<String, Object> parameters) throws IOException {
         String method = exchange.getRequestMethod();
 
         if ("POST".equalsIgnoreCase(method)
@@ -69,7 +52,7 @@ public class ParameterFilter extends Filter {
                 return;
             }
 
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), ServerProps.request_encoding);
+            InputStreamReader isr = new InputStreamReader(new LimitedInputStream(exchange.getRequestBody(), ServerProps.request_maxBodySize), ServerProps.request_encoding);
             BufferedReader br = new BufferedReader(isr);
             String query = br.readLine();
             parseQuery(query, parameters);
@@ -79,7 +62,7 @@ public class ParameterFilter extends Filter {
     private static final Pattern pattern_and =  Pattern.compile("&");
     private static final Pattern pattern_eq =  Pattern.compile("=");
 
-    private void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
+    private static void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
 
         if (query != null && query.length() > 0) {
             String pairs[] = pattern_and.split(query); //query.split("&");

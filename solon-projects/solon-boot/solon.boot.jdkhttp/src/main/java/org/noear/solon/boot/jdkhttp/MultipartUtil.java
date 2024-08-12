@@ -19,10 +19,12 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
+import org.noear.solon.boot.io.LimitedInputException;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipart;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipartCollection;
 import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.exception.StatusException;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.IOException;
@@ -46,7 +48,19 @@ class MultipartUtil {
                 }
             }
         } catch (Exception e) {
-            throw new StatusException("Bad Request: " + ctx.method() + " " + ctx.pathNew(), e, 400);
+            throw status4xx(ctx, e);
+        }
+    }
+
+    public static StatusException status4xx(Context ctx, Exception e) {
+        if (e instanceof StatusException) {
+            return (StatusException) e;
+        } else {
+            if (isBodyLargerEx(e)) {
+                return new StatusException("Request Entity Too Large: " + ctx.method() + " " + ctx.pathNew(), e, 413);
+            } else {
+                return new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
+            }
         }
     }
 
@@ -77,5 +91,24 @@ class MultipartUtil {
 
     private static boolean isFile(HttpMultipart filePart) {
         return !isField(filePart);
+    }
+
+    /**
+     * 是否为 body larger ex?
+     */
+    public static boolean isBodyLargerEx(Throwable e) {
+        return hasLargerStr(e) || hasLargerStr(e.getCause());
+    }
+
+    private static boolean hasLargerStr(Throwable e) {
+        if (e instanceof LimitedInputException) {
+            return true;
+        }
+
+        if (e == null || e.getMessage() == null) {
+            return false;
+        } else {
+            return e.getMessage().contains("too large");
+        }
     }
 }

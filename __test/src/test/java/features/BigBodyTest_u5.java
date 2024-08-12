@@ -18,6 +18,7 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
@@ -71,19 +72,20 @@ public class BigBodyTest_u5 extends HttpTester {
         String len = String.valueOf(json.length());
         System.out.println(json.length());
 
-        try {
-            String rst = path("/demo2/json/body").bodyJson(json).post();
 
-            if (rst.contains("IOException")) {
-                assert true;
-                return;
-            }
+        HttpResponse resp = path("/demo2/json/body").bodyJson(json).exec("POST");
+        System.out.println("code: " + resp.code());
+        System.out.println("body: " + resp.bodyAsString());
 
-            assert false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            assert true;
-        }
+        assert resp.code() == 413;
+
+//        String resp_body = resp.bodyAsString();
+//        if (resp_body.contains("IOException")) {
+//            assert true;
+//            return;
+//        }
+//
+//        assert false;
     }
 
     @Test
@@ -127,18 +129,19 @@ public class BigBodyTest_u5 extends HttpTester {
         String len = String.valueOf(json.length());
         System.out.println(json.length());
 
-        try {
-            String rst = path("/demo2/json/form").data("p", json).post();
 
-            if (rst.contains("IOException") || rst.contains("HTTP ERROR 400 Unable to parse form content")) {
-                assert true;
-                return;
-            }
+        HttpResponse resp = path("/demo2/json/form").data("p", json).exec("POST");
+        System.out.println("code: " + resp.code());
+        System.out.println("body: " + resp.bodyAsString());
 
-            assert false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            assert true;
-        }
+        assert  resp.code() == 413;
+
+//        String resp_body = resp.bodyAsString();
+//        if (resp_body.contains("IOException") || resp_body.contains("HTTP ERROR 400 Unable to parse form content")) {
+//            assert true;
+//            return;
+//        }
+//
+//        assert false;
     }
 }

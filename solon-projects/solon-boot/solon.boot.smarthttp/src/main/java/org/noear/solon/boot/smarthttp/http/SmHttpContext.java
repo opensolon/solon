@@ -167,6 +167,15 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
+    public String body(String charset) throws IOException {
+        try {
+            return super.body(charset);
+        } catch (Exception e) {
+            throw MultipartUtil.status4xx(this, e);
+        }
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return _request.getInputStream();
     }
@@ -205,11 +214,7 @@ public class SmHttpContext extends WebContextBase {
                     _paramMap.put(key, entry.getValue()[0]);
                 }
             } catch (Exception e) {
-                if (e instanceof StatusException) {
-                    throw (StatusException) e;
-                } else {
-                    throw new StatusException(e, 400);
-                }
+                throw MultipartUtil.status4xx(this, e);
             }
         }
     }
