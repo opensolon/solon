@@ -20,7 +20,7 @@ package com.github.xiaoymin.knife4j.solon.settings;
  * @since 2.3
  */
 public class OpenApiSetting {
-    private boolean enable = true;
+    private boolean enable = false;
     private boolean production = false;
     private OpenApiBasicAuth basic = new OpenApiBasicAuth();
 
