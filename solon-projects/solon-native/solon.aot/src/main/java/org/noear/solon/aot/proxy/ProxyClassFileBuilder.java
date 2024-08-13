@@ -84,6 +84,18 @@ public class ProxyClassFileBuilder {
 
 
         methodBuilder.addParameter(InvocationHandler.class, "handler");
+        Constructor constructor = typeElement.getDeclaredConstructors()[0];
+        if (constructor.getParameterCount() > 0) {
+            //支持"有参"构造函数
+            StringBuilder buf = new StringBuilder("super(");
+            for (int i = 0; i < constructor.getParameterCount(); i++) {
+                buf.append("null,");
+            }
+            buf.setLength(buf.length() - 1);
+            buf.append(")");
+            methodBuilder.addStatement(buf.toString());
+        }
+
         methodBuilder.addStatement("this.handler = handler");
 
         proxyTypeBuilder.addMethod(methodBuilder.build());
