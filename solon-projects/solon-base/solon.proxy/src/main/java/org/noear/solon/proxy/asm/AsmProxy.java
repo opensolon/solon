@@ -70,6 +70,7 @@ public class AsmProxy {
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
         try {
+            //支持“带参”构造函数
             Constructor constructor = targetClass.getDeclaredConstructors()[0];
             Object[] constructorParam = new Object[constructor.getParameterCount()];
             for (int i = 0; i < constructorParam.length; i++) {
