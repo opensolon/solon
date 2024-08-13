@@ -70,8 +70,11 @@ public class AsmProxy {
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
         try {
-            Constructor constructor = targetClass.getConstructor(new Class[]{});
-            Object[] constructorParam = new Object[]{};
+            Constructor constructor = targetClass.getDeclaredConstructors()[0];
+            Object[] constructorParam = new Object[constructor.getParameterCount()];
+            for (int i = 0; i < constructorParam.length; i++) {
+                constructorParam[i] = null;
+            }
 
             return newProxyInstance(context, invocationHandler, targetClass, constructor, constructorParam);
         } catch (RuntimeException e) {
