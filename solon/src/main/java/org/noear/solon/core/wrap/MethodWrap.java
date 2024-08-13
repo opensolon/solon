@@ -18,8 +18,8 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.MethodInterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.lang.Nullable;
 
@@ -38,7 +38,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements Interceptor, MethodHolder {
+public class MethodWrap implements MethodInterceptor, MethodHolder {
 
     public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
         this(ctx, clz, m, null);
@@ -62,7 +62,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
-                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
+                MethodInterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
                 if (ie != null) {
                     doInterceptorAdd(ie);
                 } else {
@@ -76,7 +76,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
-                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
+                MethodInterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
                 if (ie != null) {
                     doInterceptorAdd(ie);
                 } else {
@@ -90,7 +90,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             interceptors.sort(Comparator.comparing(x -> x.getIndex()));
         }
 
-        interceptors.add(new InterceptorEntity(0, this));
+        interceptors.add(new MethodInterceptorEntity(0, this));
     }
 
     private ParamWrap[] buildParamsWrap(Parameter[] pAry, Map<String, Type> genericInfo) {
@@ -110,11 +110,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doInterceptorAdd(Around a) {
         if (a != null) {
-            doInterceptorAdd(new InterceptorEntity(a.index(), context.getBeanOrNew(a.value())));
+            doInterceptorAdd(new MethodInterceptorEntity(a.index(), context.getBeanOrNew(a.value())));
         }
     }
 
-    private void doInterceptorAdd(InterceptorEntity i) {
+    private void doInterceptorAdd(MethodInterceptorEntity i) {
         if (i != null) {
             if (interceptorsIdx.contains(i.getReal())) {
                 //去重处理
@@ -141,8 +141,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
     //函数注解
     private final Annotation[] annotations;
     //函数拦截器列表（扩展切点）
-    private final List<InterceptorEntity> interceptors;
-    private final Set<Interceptor> interceptorsIdx;
+    private final List<MethodInterceptorEntity> interceptors;
+    private final Set<MethodInterceptor> interceptorsIdx;
     private boolean isRequiredBody;
 
     /**
@@ -238,14 +238,14 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * @deprecated 2.4
      */
     @Deprecated
-    public List<InterceptorEntity> getArounds() {
+    public List<MethodInterceptorEntity> getArounds() {
         return getInterceptors();
     }
 
     /**
      * 获取拦截器
      */
-    public List<InterceptorEntity> getInterceptors() {
+    public List<MethodInterceptorEntity> getInterceptors() {
         return Collections.unmodifiableList(interceptors);
     }
 

@@ -19,7 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.cache.CacheExecutorImp;
 import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.MethodInterceptor;
 
 /**
  * 缓存拦截器
@@ -27,7 +27,7 @@ import org.noear.solon.core.aspect.Interceptor;
  * @author noear
  * @since 1.0
  * */
-public class CacheInterceptor implements Interceptor {
+public class CacheInterceptor implements MethodInterceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         //支持动态开关缓存

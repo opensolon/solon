@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.aspect.MethodInterceptorEntity;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -53,14 +53,14 @@ public interface MethodHolder {
      * @deprecated 2.4
      */
     @Deprecated
-    default List<InterceptorEntity> getArounds(){
+    default List<MethodInterceptorEntity> getArounds(){
         return getInterceptors();
     }
 
     /**
      * 获取拦截器
      */
-    List<InterceptorEntity> getInterceptors();
+    List<MethodInterceptorEntity> getInterceptors();
 
     /**
      * 获取函数某种注解

@@ -19,8 +19,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.MethodInterceptorEntity;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
@@ -173,7 +173,7 @@ public abstract class BeanContainer {
     /**
      * bean 拦截器
      */
-    protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
+    protected final Map<Class<?>, MethodInterceptorEntity> beanInterceptors = new HashMap<>();
 
 
     /**
@@ -271,21 +271,21 @@ public abstract class BeanContainer {
      *
      * @param index 执行顺序
      */
-    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor, int index) {
-        beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, MethodInterceptor interceptor, int index) {
+        beanInterceptors.put(annoClz, new MethodInterceptorEntity(index, interceptor));
     }
 
     /**
      * 添加拦截处理
      */
-    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor) {
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, MethodInterceptor interceptor) {
         beanInterceptorAdd(annoClz, interceptor, 0);
     }
 
     /**
      * 获取拦截处理
      */
-    public <T extends Annotation> InterceptorEntity beanInterceptorGet(Class<T> annoClz) {
+    public <T extends Annotation> MethodInterceptorEntity beanInterceptorGet(Class<T> annoClz) {
         return beanInterceptors.get(annoClz);
     }
 
@@ -293,22 +293,22 @@ public abstract class BeanContainer {
      * 添加环绕处理
      *
      * @param index 执行顺序
-     * @see #beanInterceptorAdd(Class, Interceptor, int)
+     * @see #beanInterceptorAdd(Class, MethodInterceptor, int)
      * @deprecated 2.4
      */
     @Deprecated
-    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, MethodInterceptor interceptor, int index) {
         beanInterceptorAdd(annoClz, interceptor, index);
     }
 
     /**
      * 添加环绕处理
      *
-     * @see #beanInterceptorAdd(Class, Interceptor)
+     * @see #beanInterceptorAdd(Class, MethodInterceptor)
      * @deprecated 2.4
      */
     @Deprecated
-    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, MethodInterceptor interceptor) {
         beanInterceptorAdd(annoClz, interceptor);
     }
 
@@ -319,7 +319,7 @@ public abstract class BeanContainer {
      * @deprecated 2.4
      */
     @Deprecated
-    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
+    public <T extends Annotation> MethodInterceptorEntity beanAroundGet(Class<T> annoClz) {
         return beanInterceptorGet(annoClz);
     }
 

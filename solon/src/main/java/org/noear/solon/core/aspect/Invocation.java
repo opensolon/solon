@@ -35,10 +35,10 @@ public class Invocation {
     private final Object[] args;
     private Map<String, Object> argsMap;
     private final MethodHolder method;
-    private final List<InterceptorEntity> interceptors;
+    private final List<MethodInterceptorEntity> interceptors;
     private int interceptorIndex = 0;
 
-    public Invocation(Object target, Object[] args, MethodHolder method, List<InterceptorEntity> interceptors) {
+    public Invocation(Object target, Object[] args, MethodHolder method, List<MethodInterceptorEntity> interceptors) {
         this.target = target;
         this.args = args;
         this.method = method;
