@@ -30,19 +30,21 @@ public class FormatUtils {
      */
     public static String format(Annotation anno, Result rst, String msg) {
         if (Utils.isEmpty(msg)) {
-            if (Utils.isEmpty(rst.getDescription())) {
-                msg = new StringBuilder(100)
-                        .append("@")
-                        .append(anno.annotationType().getSimpleName())
-                        .append(" verification failed")
-                        .toString();
-            } else {
-                msg = new StringBuilder(100)
-                        .append("@")
-                        .append(anno.annotationType().getSimpleName())
-                        .append(" verification failed: ")
-                        .append(rst.getDescription())
-                        .toString();
+            if (anno != null) {
+                if (Utils.isEmpty(rst.getDescription())) {
+                    msg = new StringBuilder(100)
+                            .append("@")
+                            .append(anno.annotationType().getSimpleName())
+                            .append(" verification failed")
+                            .toString();
+                } else {
+                    msg = new StringBuilder(100)
+                            .append("@")
+                            .append(anno.annotationType().getSimpleName())
+                            .append(" verification failed: ")
+                            .append(rst.getDescription())
+                            .toString();
+                }
             }
         }
 

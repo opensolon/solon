@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test1;
+package labs.test1;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.validation.util.StringUtils;

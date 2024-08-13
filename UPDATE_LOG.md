@@ -29,6 +29,7 @@
 * 添加 solon.view.prefix 配置项支持 "file:" 前缀（支持体外目录）
 * 添加 solon.scheduling.simple SimpleScheduler::isStarted 方法
 * 添加 solon `@Condition(onBean, onBeanName)` 条件属性
+* 添加 solon.validation ValidUtils 工具类
 * 添加 托管类构造参数注入支持 
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
