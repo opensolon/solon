@@ -41,6 +41,7 @@
 * 优化 solon.boot 413 状态处理
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
+* 修复 solon-openapi2-knife4j 没有配置时不能启动的问题
 * smarthttp 升为 1.5.8
 * wood 升为 1.2.14
 * socket.d 升为 2.5.11

@@ -18,6 +18,7 @@ package com.github.xiaoymin.knife4j.solon.extension;
 import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
 import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.docs.models.ApiVendorExtension;
 import org.noear.solon.docs.DocDocket;
 
@@ -29,13 +30,21 @@ import java.util.List;
  * @since 2.3
  */
 public class OpenApiExtensionResolver {
-    private final OpenApiSetting setting;
-    private final OpenApiExtendSetting extendSetting;
-    private final OpenApiExtension extension = new OpenApiExtension();
+    private OpenApiSetting setting;
+    private OpenApiExtendSetting extendSetting;
+    private OpenApiExtension extension = new OpenApiExtension();
 
-    public OpenApiExtensionResolver(){
+    public OpenApiExtensionResolver() {
         setting = Solon.cfg().getBean("knife4j", OpenApiSetting.class);
         extendSetting = Solon.cfg().getBean("knife4j.setting", OpenApiExtendSetting.class);
+
+        if (setting == null) {
+            setting = new OpenApiSetting();
+        }
+
+        if (extendSetting == null) {
+            extendSetting = new OpenApiExtendSetting();
+        }
 
         extension.addProperty(new OpenApiSettingExtension(extendSetting));
     }
@@ -54,7 +63,7 @@ public class OpenApiExtensionResolver {
     }
 
     public void buildExtensions(DocDocket docket) {
-        if (setting.getBasic().isEnable()) {
+        if (setting.getBasic().isEnable() && Utils.isNotEmpty(setting.getBasic().getUsername())) {
             docket.basicAuth(setting.getBasic().getUsername(),
                     setting.getBasic().getPassword());
         }
