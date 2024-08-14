@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Action 响应式订阅者
@@ -35,10 +37,14 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
+    private boolean isFlux;
+    private List<Object> list;
 
-    public ActionReactiveSubscriber(Context ctx, Action action) {
+    public ActionReactiveSubscriber(Context ctx, Action action, boolean isFlux) {
         this.ctx = ctx;
         this.action = action;
+        this.isFlux = isFlux;
+        this.list = new ArrayList<>();
     }
 
     @Override
@@ -51,11 +57,7 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onNext(Object o) {
-        try {
-            action.render(o, ctx, true);
-        } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
-        }
+        list.add(o);
     }
 
     @Override
@@ -74,9 +76,21 @@ public class ActionReactiveSubscriber implements Subscriber {
     public void onComplete() {
         if (ctx.asyncSupported()) {
             try {
-                ctx.asyncComplete();
-            } catch (IOException e) {
+                if (isFlux) {
+                    action.render(list, ctx, false);
+                } else {
+                    if (list.size() > 0) {
+                        action.render(list.get(0), ctx, false);
+                    }
+                }
+            } catch (Throwable e) {
                 log.warn(e.getMessage(), e);
+            } finally {
+                try {
+                    ctx.asyncComplete();
+                } catch (IOException e) {
+                    log.warn(e.getMessage(), e);
+                }
             }
         }
     }

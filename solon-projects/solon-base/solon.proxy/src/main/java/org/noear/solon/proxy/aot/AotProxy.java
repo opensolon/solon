@@ -49,7 +49,7 @@ public class AotProxy {
         } else {
             try {
                 if (args == null) {
-                    args = new Object[]{};
+                    args = new Object[0];
                 }
 
                 Constructor constructor = proxyClass.getConstructor(InvocationHandler.class, Object[].class);

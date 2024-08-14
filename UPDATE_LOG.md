@@ -31,7 +31,8 @@
 * 添加 solon `@Condition(onBean, onBeanName)` 条件属性
 * 添加 solon.validation ValidUtils 工具类
 * 添加 solon LifecycleBean:postStart 方法
-* 添加 托管类构造参数注入支持 
+* 添加 solon MethodInterceptor 接口，替代 Interceptor（旧接口保留）
+* 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 solon Context::body 的兼容性，避免不可读情况
@@ -41,6 +42,7 @@
 * 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持
 * 优化 solon.boot 413 状态处理
 * 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
+* 优化 solon.mvc kotlin data class 带默认值的注入支持（表单模式下）
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题
@@ -50,6 +52,9 @@
 * zookeeper 升为 3.9.2
 * dromara-plugins 升为 0.1.2
 * kafka_2.13 升为 3.8.0
+* beetlsql 升为 3.30.10-RELEASE
+* beetl 升为 3.17.0.RELEASE
+* mybatis-flex 升为 1.9.5
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 

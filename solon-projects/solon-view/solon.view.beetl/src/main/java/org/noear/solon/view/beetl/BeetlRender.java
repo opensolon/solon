@@ -114,6 +114,8 @@ public class BeetlRender implements Render {
         try {
             config = Configuration.defaultConfiguration();
             config.setCharset(ServerProps.response_encoding);
+            config.setNativeCall(true);
+            config.setNativeSecurity("org.beetl.core.DefaultNativeSecurityManager");
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
