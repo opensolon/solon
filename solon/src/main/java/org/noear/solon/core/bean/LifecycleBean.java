@@ -26,8 +26,28 @@ import org.noear.solon.core.Lifecycle;
 @FunctionalInterface
 public interface LifecycleBean extends Lifecycle {
     /**
-     * 预停止
+     * 开始后
+     *
+     * @since 2.9
      */
+    default void postStart() throws Throwable {
+    }
+
+    /**
+     * 预停止
+     *
+     * @since 2.9
+     */
+    default void preStop() throws Throwable {
+        prestop();
+    }
+
+    /**
+     * 预停止
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
     default void prestop() throws Throwable {
     }
 }

@@ -1009,6 +1009,9 @@ public class AppContext extends BeanContainer {
 
             //开始注入审查 //支持自动排序
             startInjectReview(false);
+
+            //开始之后
+            postStartBeanLifecycle();
         } catch (Throwable e) {
             throw new IllegalStateException("AppContext start failed", e);
         }
@@ -1025,6 +1028,20 @@ public class AppContext extends BeanContainer {
         //start
         for (RankEntity<LifecycleBean> b : beans) {
             b.target.start();
+        }
+    }
+
+    /**
+     * 开始Bean生命周期（支持排序）
+     */
+    private void postStartBeanLifecycle() throws Throwable {
+        //执行生命周期bean //支持排序
+        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+        beans.sort(Comparator.comparingInt(f -> f.index));
+
+        //postStart
+        for (RankEntity<LifecycleBean> b : beans) {
+            b.target.postStart();
         }
     }
 
@@ -1069,7 +1086,7 @@ public class AppContext extends BeanContainer {
 
             for (RankEntity<LifecycleBean> b : beans) {
                 try {
-                    b.target.prestop();
+                    b.target.preStop();
                 } catch (Throwable e) {
                     //e.printStackTrace();
                 }
