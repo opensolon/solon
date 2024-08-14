@@ -66,7 +66,7 @@ public class BeanInvocationHandler implements InvocationHandler {
 
         //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
         if (NativeDetector.isNotAotRuntime()) {
-            this.proxy = AotProxy.newProxyInstance(context, this, clazz);
+            this.proxy = AotProxy.newProxyInstance(context, this, clazz, rawConArgs);
         }
 
         if (this.proxy == null) {
