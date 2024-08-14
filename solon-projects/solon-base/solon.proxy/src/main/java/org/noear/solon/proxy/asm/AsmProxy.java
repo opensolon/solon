@@ -16,18 +16,15 @@
 package org.noear.solon.proxy.asm;
 
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
 import org.objectweb.asm.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 public class AsmProxy {
-    private static final Logger log = LoggerFactory.getLogger(AsmProxy.class);
-
     public static final int ASM_VERSION = Opcodes.ASM9;
     // 动态生成代理类的后缀
     public static final String PROXY_CLASSNAME_SUFFIX = "$$SolonAsmProxy";
@@ -78,10 +75,8 @@ public class AsmProxy {
             }
 
             return newProxyInstance(context, invocationHandler, targetClass, constructor, constructorParam);
-        } catch (RuntimeException e) {
-            throw e;
         } catch (Throwable e) {
-            throw new IllegalStateException("Failed to generate the proxy instance: " + targetClass.getName(), e);
+            throw new ConstructionException("New proxy instance failed: " + targetClass.getName(), e);
         }
     }
 
@@ -98,7 +93,7 @@ public class AsmProxy {
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
-                                          Object... targetParam) {
+                                          Object... targetParam) throws Exception {
         if (targetClass == null) {
             throw new IllegalArgumentException("The targetClass is null");
         }
@@ -107,15 +102,10 @@ public class AsmProxy {
             throw new IllegalArgumentException("The invocationHandler is null");
         }
 
-        try {
-            Class<?> proxyClass = getProxyClass(context, targetClass);
+        Class<?> proxyClass = getProxyClass(context, targetClass);
 
-            // 实例化代理对象
-            return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
-        } catch (Exception e) {
-            log.warn("Unable to support proxy, targetClass: " + targetClass.getCanonicalName(), e);
-        }
-        return null;
+        // 实例化代理对象
+        return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
     }
 
     /**
