@@ -226,7 +226,7 @@ public class AppContext extends BeanContainer {
             //组件化处理
             beanComponentized(bw, true);
 
-            LogUtil.global().error("@ProxyComponent will be discarded, suggested use '@Component'");
+            LogUtil.global().error("@ProxyComponent will be discarded, suggested use '@Component': " + clz.getName());
         });
 
         //注册 @Remoting 构建器
@@ -360,7 +360,7 @@ public class AppContext extends BeanContainer {
         if (bw.raw() instanceof Plugin) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().error("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
+            LogUtil.global().error("'Plugin' will be deprecated as a component, please use 'LifecycleBean': " + clz.getName());
             return;
         }
 
@@ -530,7 +530,7 @@ public class AppContext extends BeanContainer {
         }
 
         if (obj instanceof InitializingBean) {
-            LogUtil.global().error("InitializingBean will be discarded, suggested use '@Init'");
+            LogUtil.global().error("InitializingBean will be discarded, suggested use '@Init': " + clzWrap.clz().getName());
 
             InitializingBean initBean = (InitializingBean) obj;
 

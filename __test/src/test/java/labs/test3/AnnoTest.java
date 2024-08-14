@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Around;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.aspect.MethodInterceptorEntity;
+import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.validation.annotation.Valid;
 
 import java.lang.annotation.Annotation;
@@ -67,7 +67,7 @@ public class AnnoTest {
             if (anno2 instanceof Around) {
                 doInterceptorAdd((Around) anno2);
             } else {
-                MethodInterceptorEntity ie2 = context.beanInterceptorGet(anno2.annotationType());
+                InterceptorEntity ie2 = context.beanInterceptorGet(anno2.annotationType());
                 if (ie2 != null) {
                     doInterceptorAdd(ie2);
                 }
@@ -79,7 +79,7 @@ public class AnnoTest {
 
     }
 
-    private void doInterceptorAdd(MethodInterceptorEntity anno){
+    private void doInterceptorAdd(InterceptorEntity anno){
 
     }
 }

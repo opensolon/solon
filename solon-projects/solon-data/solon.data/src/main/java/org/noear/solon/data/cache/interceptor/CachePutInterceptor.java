@@ -18,7 +18,7 @@ package org.noear.solon.data.cache.interceptor;
 import org.noear.solon.Solon;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.CachePut;
-import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.data.cache.CacheExecutorImp;
 
 /**
@@ -27,7 +27,7 @@ import org.noear.solon.data.cache.CacheExecutorImp;
  * @author noear
  * @since 1.0
  * */
-public class CachePutInterceptor implements MethodInterceptor {
+public class CachePutInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {

@@ -16,7 +16,7 @@
 package org.noear.solon.scheduling.retry;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.scheduling.annotation.Retry;
 
@@ -26,7 +26,7 @@ import org.noear.solon.scheduling.annotation.Retry;
  * @author kongweiguang
  * @since 2.3
  */
-public class RetryInterceptor implements MethodInterceptor {
+public class RetryInterceptor implements Interceptor {
     AppContext appContext;
 
     public RetryInterceptor(AppContext aopContext) {

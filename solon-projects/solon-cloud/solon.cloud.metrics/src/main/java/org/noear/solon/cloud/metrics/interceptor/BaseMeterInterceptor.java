@@ -18,7 +18,7 @@ package org.noear.solon.cloud.metrics.interceptor;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import org.noear.solon.Utils;
-import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  * @author bai
  * @since 2.4
  */
-public abstract class BaseMeterInterceptor<T,M> implements MethodInterceptor {
+public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
     private final Map<String, M> meterCached = new ConcurrentHashMap<>();
 
     /**

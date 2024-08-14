@@ -17,7 +17,7 @@ package org.noear.solon.core.aspect;
 
 
 /**
- * 方法拦截器（更名为 MethodInterceptor）
+ * 方法拦截器
  *
  * <pre><code>
  * @Target({ElementType.METHOD})
@@ -32,10 +32,13 @@ package org.noear.solon.core.aspect;
  *
  * @author noear
  * @since 1.0
- * @deprecated 2.9
  * */
-@Deprecated
 @FunctionalInterface
-public interface Interceptor extends MethodInterceptor{
-
+public interface Interceptor {
+    /**
+     * 拦截
+     *
+     * @param inv 调用者
+     * */
+    Object doIntercept(Invocation inv) throws Throwable;
 }

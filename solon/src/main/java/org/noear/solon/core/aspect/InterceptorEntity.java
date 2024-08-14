@@ -21,14 +21,14 @@ package org.noear.solon.core.aspect;
  * @author noear
  * @since 1.3
  */
-public class MethodInterceptorEntity implements MethodInterceptor {
+public class InterceptorEntity implements Interceptor {
     /**
      * 顺排序位（排完后，按先进后出策略执行）
      */
     private final int index;
-    private final MethodInterceptor real;
+    private final Interceptor real;
 
-    public MethodInterceptorEntity(int index, MethodInterceptor real) {
+    public InterceptorEntity(int index, Interceptor real) {
         this.index = index;
         this.real = real;
     }
@@ -43,7 +43,7 @@ public class MethodInterceptorEntity implements MethodInterceptor {
     /**
      * 获取原拦截器
      */
-    public MethodInterceptor getReal() {
+    public Interceptor getReal() {
         return real;
     }
 

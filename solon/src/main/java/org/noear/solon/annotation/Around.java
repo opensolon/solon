@@ -15,7 +15,7 @@
  */
 package org.noear.solon.annotation;
 
-import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.Interceptor;
 
 import java.lang.annotation.*;
 
@@ -61,7 +61,7 @@ public @interface Around { //intercept
     /**
      * 调用处理程序
      * */
-    Class<? extends MethodInterceptor> value();
+    Class<? extends Interceptor> value();
     /**
      * 调用顺位
      * */

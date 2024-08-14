@@ -22,14 +22,14 @@ import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.exception.CloudBreakerException;
 import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.aspect.MethodInterceptor;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class CloudBreakerInterceptor implements MethodInterceptor {
+public class CloudBreakerInterceptor implements Interceptor {
     public static final CloudBreakerInterceptor instance = new CloudBreakerInterceptor();
 
     @Override
