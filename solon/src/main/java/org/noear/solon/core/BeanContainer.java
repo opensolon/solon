@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.MethodInterceptor;
 import org.noear.solon.core.aspect.MethodInterceptorEntity;
 import org.noear.solon.core.bean.LifecycleBean;
@@ -265,6 +266,25 @@ public abstract class BeanContainer {
         return beanExtractors.containsKey(annoClz);
     }
 
+    /**
+     * 添加拦截处理
+     *
+     * @param index 执行顺序
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+        beanInterceptors.put(annoClz, new MethodInterceptorEntity(index, interceptor));
+    }
+
+    /**
+     * 添加拦截处理
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor) {
+        beanInterceptorAdd(annoClz, interceptor, 0);
+    }
 
     /**
      * 添加拦截处理
