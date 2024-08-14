@@ -18,6 +18,7 @@ package org.noear.solon.proxy;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
 /**
@@ -44,7 +45,7 @@ public class BeanProxy implements BeanWrap.Proxy {
      * 获取代理
      */
     @Override
-    public Object getProxy(AppContext context, Object bean) {
-        return new BeanInvocationHandler(context, bean, handler).getProxy();
+    public Object getProxy(AppContext context, Object raw, Constructor rawCon, Object[] rawConArgs) {
+        return new BeanInvocationHandler(context, handler, raw, rawCon, rawConArgs).getProxy();
     }
 }

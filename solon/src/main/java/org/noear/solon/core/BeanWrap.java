@@ -16,9 +16,11 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
 
 /**
@@ -36,6 +38,8 @@ public class BeanWrap {
     // bean lifecycle
     private BeanWrapLifecycle lifecycle;
     // bean raw（初始实例）
+    private Constructor rawCon;
+    private Object[] rawConArgs;
     private Object raw;
     private Object rawUnproxied;
     private Class<?> rawClz;
@@ -75,14 +79,25 @@ public class BeanWrap {
         this(context, clz, raw, name, false, null, null);
     }
 
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName) {
+        this(context, clz, raw, name, typed, initMethodName, destroyMethodName, null, null);
+    }
+
+    public BeanWrap(AppContext context, Class<?> clz, Constructor rawCon, Object[] rawConArgs) {
+        this(context, clz, null, null, false, null, null, rawCon, rawConArgs);
+    }
+
     /**
      * @since 1.10
      */
-    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName) {
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName, Constructor rawCon, Object[] rawConArgs) {
         this.context = context;
         this.clz = clz;
         this.name = name;
         this.typed = typed;
+
+        this.rawCon = rawCon;
+        this.rawConArgs = rawConArgs;
 
         //不否为单例
         Singleton anoS = clz.getAnnotation(Singleton.class);
@@ -124,7 +139,7 @@ public class BeanWrap {
 
         if (raw != null) {
             //如果_raw存在，则进行代理转换
-            raw = proxy.getProxy(context(), raw);
+            raw = proxy.getProxy(context(), raw, rawCon, rawConArgs);
         }
     }
 
@@ -287,7 +302,7 @@ public class BeanWrap {
 
                 //3.尝试代理转换
                 if (proxy != null) {
-                    tmp = proxy.getProxy(context(), tmp);
+                    tmp = proxy.getProxy(context(), tmp, rawCon, rawConArgs);
                 }
 
                 return (T) tmp;
@@ -300,7 +315,7 @@ public class BeanWrap {
 
         //3.尝试代理转换
         if (proxy != null) {
-            tmp = proxy.getProxy(context(), tmp);
+            tmp = proxy.getProxy(context(), tmp, rawCon, rawConArgs);
         }
 
         return (T) tmp;
@@ -310,24 +325,31 @@ public class BeanWrap {
     /**
      * bean 新建对象
      */
-    protected Object _new() {
+    protected Object _new() throws ConstructionException{
         if (clz.isInterface()) {
             return raw;
         }
 
         try {
             //1.构造
-            Object bean = ClassUtil.newInstance(clz);
+            if (rawCon == null) {
+                rawCon = clz.getDeclaredConstructor();
+                rawConArgs = new Object[]{};
+            }
+
+            Object bean = ClassUtil.newInstance(rawCon, rawConArgs);
 
             //2.完成注入动作
             context.beanInject(bean);
 
             //4.返回
             return bean;
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new IllegalArgumentException("Instantiation failure: " + clz.getTypeName(), ex);
+        } catch (Throwable e) {
+            if (e instanceof ConstructionException) {
+                throw (ConstructionException) e;
+            } else {
+                throw new ConstructionException("Instantiation failure: " + clz.getTypeName(), e);
+            }
         }
     }
 
@@ -356,6 +378,6 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AppContext ctx, Object bean);
+        Object getProxy(AppContext ctx, Object raw, Constructor rawCon, Object[] rawConArgs);
     }
 }

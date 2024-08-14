@@ -904,19 +904,18 @@ public class AppContext extends BeanContainer {
         }
 
         if (c1 == null || c1.getParameterCount() == 0) {
-            tryBuildBeanOfClass3(clz, builder, anno, null);
+            tryBuildBeanOfClass3(clz, builder, anno, null, null);
         } else {
             tryMethodParamsGather(this, 2, clz, c1.getParameters(), (args2) -> {
-                Object raw = ClassUtil.newInstance(c1, args2);
-                tryBuildBeanOfClass3(clz, builder, anno, raw);
+                tryBuildBeanOfClass3(clz, builder, anno, c1, args2);
             });
         }
     }
 
 
-    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Object raw) throws Throwable{
+    private void tryBuildBeanOfClass3(Class<?> clz, BeanBuilder builder, Annotation anno, Constructor rawCon, Object[] rawConArgs) throws Throwable {
         //包装
-        BeanWrap bw = this.wrap(clz, raw);
+        BeanWrap bw = new BeanWrap(this, clz, rawCon, rawConArgs);
         //执行构建
         builder.doBuild(clz, bw, anno);
         //尝试入库

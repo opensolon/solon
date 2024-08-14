@@ -65,19 +65,10 @@ public class AsmProxy {
      */
     public static Object newProxyInstance(AppContext context,
                                           InvocationHandler invocationHandler,
-                                          Class<?> targetClass) {
-        try {
-            //支持“带参”构造函数
-            Constructor constructor = targetClass.getDeclaredConstructors()[0];
-            Object[] constructorParam = new Object[constructor.getParameterCount()];
-            for (int i = 0; i < constructorParam.length; i++) {
-                constructorParam[i] = null;
-            }
+                                          Class<?> targetClass) throws ConstructionException {
 
-            return newProxyInstance(context, invocationHandler, targetClass, constructor, constructorParam);
-        } catch (Throwable e) {
-            throw new ConstructionException("New proxy instance failed: " + targetClass.getName(), e);
-        }
+        return newProxyInstance(context, invocationHandler, targetClass, null, null);
+
     }
 
     /**
@@ -93,7 +84,7 @@ public class AsmProxy {
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
-                                          Object... targetParam) throws Exception {
+                                          Object[] targetParam) throws ConstructionException {
         if (targetClass == null) {
             throw new IllegalArgumentException("The targetClass is null");
         }
@@ -102,10 +93,20 @@ public class AsmProxy {
             throw new IllegalArgumentException("The invocationHandler is null");
         }
 
-        Class<?> proxyClass = getProxyClass(context, targetClass);
+        try {
+            //支持“带参”构造函数
+            if (targetConstructor == null) {
+                targetConstructor = targetClass.getDeclaredConstructor();
+                targetParam = new Object[]{};
+            }
 
-        // 实例化代理对象
-        return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
+            Class<?> proxyClass = getProxyClass(context, targetClass);
+
+            // 实例化代理对象
+            return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
+        } catch (Throwable e) {
+            throw new ConstructionException("New proxy instance failed: " + targetClass.getName(), e);
+        }
     }
 
     /**
@@ -114,13 +115,14 @@ public class AsmProxy {
     private static Object newInstance(Class<?> proxyClass,
                                       InvocationHandler invocationHandler,
                                       Constructor<?> targetConstructor,
-                                      Object... targetParam) throws Exception {
+                                      Object[] targetParam) throws Exception {
         Class<?>[] parameterTypes = targetConstructor.getParameterTypes();
         Constructor<?> constructor = proxyClass.getConstructor(parameterTypes);
         Object instance = constructor.newInstance(targetParam);
         Method setterMethod = proxyClass.getDeclaredMethod(METHOD_SETTER, InvocationHandler.class);
         setterMethod.setAccessible(true);
         setterMethod.invoke(instance, invocationHandler);
+
         return instance;
     }
 }

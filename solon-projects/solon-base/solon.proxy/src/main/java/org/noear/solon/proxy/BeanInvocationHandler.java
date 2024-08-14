@@ -23,6 +23,7 @@ import org.noear.solon.proxy.asm.AsmProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -36,7 +37,10 @@ public class BeanInvocationHandler implements InvocationHandler {
     private static final Logger log = LoggerFactory.getLogger(BeanInvocationHandler.class);
 
     private Class<?> clazz;
-    private Object target;
+    private Object raw;
+    private Constructor rawCon;
+    private Object[] rawConArgs;
+
     private Object proxy;
     private InvocationHandler handler;
     private final AppContext context;
@@ -44,19 +48,21 @@ public class BeanInvocationHandler implements InvocationHandler {
     /**
      * @since 1.6
      */
-    public BeanInvocationHandler(AppContext context, Object target, InvocationHandler handler) {
-        this(context, target.getClass(), target, handler);
+    public BeanInvocationHandler(AppContext context, InvocationHandler handler, Object raw, Constructor rawCon, Object[] rawConArgs) {
+        this(context, handler,  raw.getClass(), raw, rawCon, rawConArgs);
     }
 
     /**
      * @since 1.6
      * @since 2.1
      */
-    public BeanInvocationHandler(AppContext context, Class<?> clazz, Object target, InvocationHandler handler) {
+    public BeanInvocationHandler(AppContext context, InvocationHandler handler, Class<?> clazz, Object raw, Constructor rawCon, Object[] rawConArgs) {
         this.context = context;
-        this.target = target;
         this.handler = handler;
         this.clazz = clazz;
+        this.raw = raw;
+        this.rawCon = rawCon;
+        this.rawConArgs = rawConArgs;
 
         //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
         if (NativeDetector.isNotAotRuntime()) {
@@ -65,7 +71,7 @@ public class BeanInvocationHandler implements InvocationHandler {
 
         if (this.proxy == null) {
             //支持 ASM（兼容旧的包，不支持 Graalvm Native  打包）
-            this.proxy = AsmProxy.newProxyInstance(context, this, clazz);
+            this.proxy = AsmProxy.newProxyInstance(context, this, clazz, rawCon, rawConArgs);
         }
 
         //调试时打印信息
@@ -85,11 +91,11 @@ public class BeanInvocationHandler implements InvocationHandler {
         if (handler == null) {
             method.setAccessible(true);
 
-            Object result = context.methodGet(clazz, method).invokeByAspect(target, args);
+            Object result = context.methodGet(clazz, method).invokeByAspect(raw, args);
 
             return result;
         } else {
-            return handler.invoke(target, method, args);
+            return handler.invoke(raw, method, args);
         }
     }
 }
