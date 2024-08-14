@@ -107,7 +107,8 @@ public class ClassWrap {
 
         if (_recordable) {
             //如果合字段只读
-            _recordConstructor = clz.getDeclaredConstructors()[0];
+            Constructor<?>[] tmp = clz.getDeclaredConstructors();
+            _recordConstructor = tmp[tmp.length - 1];
             _recordParams = new ArrayList<>();
             for (Parameter p : _recordConstructor.getParameters()) {
                 _recordParams.add(new ParamWrap(p));
