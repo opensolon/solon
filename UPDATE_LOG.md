@@ -39,7 +39,8 @@
 * 优化 solon.web.rx 允许多次渲染输出
 * 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持
 * 优化 solon.boot 413 状态处理
-* 优化 Interceptor 更名为 MethodInterceptor（原接口保留，并标为弃用）
+* 优化 solon Interceptor 更名为 MethodInterceptor（原接口保留，并标为弃用）
+* 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题
