@@ -504,7 +504,7 @@ public abstract class BeanContainer {
     }
 
     public List<BeanWrap> getWrapsOfType(Class<?> baseType) {
-        return beanFind(bw -> baseType.isAssignableFrom(bw.clz()));
+        return beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
     }
 
     public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
@@ -525,14 +525,14 @@ public abstract class BeanContainer {
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
         //获取现有的
         beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.clz())) {
+            if (baseType.isAssignableFrom(bw.rawClz())) {
                 callback.accept(bw);
             }
         });
 
         //获取未来的
         wrapExternalSubscribe((bw) -> {
-            if (baseType.isAssignableFrom(bw.clz())) {
+            if (baseType.isAssignableFrom(bw.rawClz())) {
                 callback.accept(bw);
             }
         });
@@ -565,7 +565,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
-        List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.clz()));
+        List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
@@ -584,7 +584,7 @@ public abstract class BeanContainer {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.clz())) {
+            if (baseType.isAssignableFrom(bw.rawClz())) {
                 beanMap.put(bw.name(), bw.raw());
             }
         });
