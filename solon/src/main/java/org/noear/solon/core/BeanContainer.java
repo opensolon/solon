@@ -707,8 +707,12 @@ public abstract class BeanContainer {
         }
 
         //按类型注册
-        putWrap(bw.clz(), bw);
-        putWrap(bw.clz().getName(), bw);
+        putWrap(bw.rawClz(), bw);
+        putWrap(bw.rawClz().getName(), bw);
+        if(bw.rawClz().equals(bw.clz()) == false) {
+            putWrap(bw.clz(), bw);
+            putWrap(bw.clz().getName(), bw);
+        }
 
         //尝试Bean的基类注册
         beanRegisterSup0(bw);
@@ -724,14 +728,14 @@ public abstract class BeanContainer {
      */
     protected void beanRegisterSup0(BeanWrap bw) {
         //如果有父级接口，则建立关系映射
-        Class<?>[] list = bw.clz().getInterfaces();
+        Class<?>[] list = bw.rawClz().getInterfaces();
         for (Class<?> c : list) {
             if (c.getName().startsWith("java.") == false) {
                 putWrap(c, bw);
             }
         }
 
-        Type[] list2 = bw.clz().getGenericInterfaces(); //有可能跟 getInterfaces() 一样
+        Type[] list2 = bw.rawClz().getGenericInterfaces(); //有可能跟 getInterfaces() 一样
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 putWrap(t.getTypeName(), bw);
