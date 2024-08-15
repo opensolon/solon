@@ -91,19 +91,29 @@ public final class SolonProps extends Props {
         System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
 
         //4.加载文件配置
-        loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
-        loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
+        String config = args.get("cfg"); //？限定属性文件，且不再加应用属性文件（一般用于内嵌场景）
+        if(Utils.isEmpty(config)) {
+            loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
+            loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
-        //4.1.加载环境变量（支持弹性容器设置的环境变量）
-        loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
+            //4.1.加载环境变量（支持弹性容器设置的环境变量）
+            loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
 
-        //4.2.加载环境配置(例：env=pro 或 env=debug)
-        env = getArg("env");
+            //4.2.加载环境配置(例：env=pro 或 env=debug)
+            env = getArg("env");
 
-        if (Utils.isNotEmpty(env)) {
-            loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
-            loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
+            if (Utils.isNotEmpty(env)) {
+                loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
+                loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
+            }
+        } else{
+            loadInit(ResourceUtil.getResource(config), sysPropOrg);
+
+            //4.1.加载环境变量（支持弹性容器设置的环境变量）
+            loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
         }
+
+
 
 
         //4.3.加载注解配置（优于固定配置）/v1.12
