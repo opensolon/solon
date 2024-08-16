@@ -32,7 +32,7 @@
 * 添加 solon.validation ValidUtils 工具类
 * 添加 solon LifecycleBean:postStart 方法
 * 添加 solon MethodInterceptor 接口，替代 Interceptor（旧接口保留）
-* 添加 solon --cfg 启动参数支持
+* 添加 solon --cfg 启动参数支持（便于内嵌场景开发）
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
@@ -48,7 +48,7 @@
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题（默认改为不启用）
 * smarthttp 升为 1.5.8
-* wood 升为 1.2.15
+* wood 升为 1.3.0
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
 * dromara-plugins 升为 0.1.2
