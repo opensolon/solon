@@ -1171,7 +1171,7 @@ public abstract class Context {
     /**
      * 异步完成
      * */
-    public abstract void asyncComplete() throws IOException;
+    public abstract void asyncComplete();
 
 
 

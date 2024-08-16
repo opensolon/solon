@@ -86,11 +86,7 @@ public class ActionReactiveSubscriber implements Subscriber {
             } catch (Throwable e) {
                 log.warn(e.getMessage(), e);
             } finally {
-                try {
-                    ctx.asyncComplete();
-                } catch (IOException e) {
-                    log.warn(e.getMessage(), e);
-                }
+                ctx.asyncComplete();
             }
         }
     }

@@ -15,8 +15,6 @@
  */
 package org.noear.solon.boot.vertx;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
@@ -425,10 +423,12 @@ public class VxHttpContext extends WebContextBase {
 
 
     @Override
-    public void asyncComplete() throws IOException {
+    public void asyncComplete() {
         if (_isAsync) {
             try {
                 innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
             } finally {
                 _asyncFuture.complete(this);
             }

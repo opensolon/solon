@@ -29,6 +29,8 @@ import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,6 +43,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class JdkHttpContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(JdkHttpContext.class);
+
     private HttpExchange _exchange;
 
     private boolean _isAsync;
@@ -475,10 +479,12 @@ public class JdkHttpContext extends WebContextBase {
 
 
     @Override
-    public void asyncComplete() throws IOException {
+    public void asyncComplete() {
         if (_isAsync) {
             try {
                 innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
             } finally {
                 _asyncFuture.complete(this);
             }

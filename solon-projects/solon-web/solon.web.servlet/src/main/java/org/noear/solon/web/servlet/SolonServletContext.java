@@ -25,6 +25,8 @@ import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.Cookie;
@@ -44,6 +46,8 @@ import java.util.*;
  * @since 1.2
  * */
 public class SolonServletContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(SolonServletContext.class);
+
     private HttpServletRequest _request;
     private HttpServletResponse _response;
 
@@ -417,10 +421,12 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
-    public void asyncComplete() throws IOException {
+    public void asyncComplete() {
         if (asyncContext != null) {
             try {
                 innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
             } finally {
                 asyncContext.complete();
             }

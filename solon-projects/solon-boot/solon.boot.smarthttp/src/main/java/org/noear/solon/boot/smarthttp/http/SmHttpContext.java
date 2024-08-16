@@ -471,10 +471,12 @@ public class SmHttpContext extends WebContextBase {
 
 
     @Override
-    public void asyncComplete() throws IOException {
+    public void asyncComplete() {
         if (_isAsync) {
             try {
                 innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
             } finally {
                 _asyncFuture.complete(this);
             }

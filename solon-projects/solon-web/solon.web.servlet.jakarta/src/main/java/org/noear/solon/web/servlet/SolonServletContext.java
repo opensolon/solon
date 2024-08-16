@@ -31,6 +31,9 @@ import jakarta.servlet.AsyncContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,6 +48,8 @@ import java.util.*;
  * @since 1.2
  * */
 public class SolonServletContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(SolonServletContext.class);
+
     private HttpServletRequest _request;
     private HttpServletResponse _response;
 
@@ -416,10 +421,12 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
-    public void asyncComplete() throws IOException {
+    public void asyncComplete() {
         if (asyncContext != null) {
             try {
                 innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
             } finally {
                 asyncContext.complete();
             }
