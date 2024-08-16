@@ -55,6 +55,7 @@
 * kafka_2.13 升为 3.8.0
 * beetlsql 升为 3.30.10-RELEASE
 * beetl 升为 3.17.0.RELEASE
+* mybatis 升为 3.5.16
 * mybatis-flex 升为 1.9.5
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
