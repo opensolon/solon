@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,6 +27,11 @@ import java.util.List;
  * @since 2.8
  */
 public interface HttpResponse {
+    /**
+     * 获取头名
+     */
+    Collection<String> headerNames();
+
     /**
      * 获取头值
      */

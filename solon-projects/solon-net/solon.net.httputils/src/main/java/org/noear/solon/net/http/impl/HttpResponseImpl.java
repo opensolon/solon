@@ -20,6 +20,7 @@ import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,6 +34,11 @@ public class HttpResponseImpl implements HttpResponse {
 
     public HttpResponseImpl(Response response) {
         this.response = response;
+    }
+
+    @Override
+    public Collection<String> headerNames() {
+        return response.headers().names();
     }
 
     @Override
