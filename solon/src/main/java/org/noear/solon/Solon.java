@@ -62,7 +62,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.9.0-M8";
+        return "2.9.0-RC";
     }
 
     /**
