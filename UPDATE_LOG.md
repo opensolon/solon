@@ -24,6 +24,7 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.9.0
+* 新增 solon.cloud.gateway 插件
 * 添加 solon.data 配置节 `solon.dataSources`（用于自动构建数据源）
 * 添加 solon.docs 配置节 `solon.docs`（用于自动构建文档摘要）
 * 添加 solon.view.prefix 配置项支持 "file:" 前缀（支持体外目录）
@@ -33,6 +34,8 @@
 * 添加 solon LifecycleBean:postStart 方法
 * 添加 solon MethodInterceptor 接口，替代 Interceptor（旧接口保留）
 * 添加 solon.net.httputils 扩展机制，并与 solon.cloud 自动整合
+* 添加 solon.net.httputils HttpResponse::headerNames 方法
+* 添加 solo.web.rx 响应式过滤器、处理器定义（为分布式网关开发提供支持）
 * 添加 solon --cfg 启动参数支持（便于内嵌场景开发）
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 调整 solon.cloud.httputils 标为弃用，由 solon.net.httputils 替代
