@@ -26,6 +26,20 @@ public class CloudRouteHandlerDefault implements RxHandler {
     }
 
     /**
+     * 获取目标路径
+     * */
+    public String getTargetPath(Context ctx){
+        //目标路径重组
+        List<String> fromPathFragments = Arrays.asList(ctx.pathNew().split("/", -1));
+        String targetPath = "/" + String.join("/", fromPathFragments.subList(route.getStripPrefix() + 1, fromPathFragments.size()));
+        if (Utils.isNotEmpty(ctx.queryString())) {
+            targetPath += "?" + ctx.queryString();
+        }
+
+        return targetPath;
+    }
+
+    /**
      * 处理
      */
     @Override
@@ -33,11 +47,7 @@ public class CloudRouteHandlerDefault implements RxHandler {
         URI uri = route.getUri();
 
         //目标路径重组
-        List<String> fromPathFragments = Arrays.asList(ctx.pathNew().split("/", -1));
-        String targetPath = "/" + String.join("/", fromPathFragments.subList(route.getStripPrefix() + 1, fromPathFragments.size()));
-        if (Utils.isNotEmpty(ctx.queryString())) {
-            targetPath += "?" + ctx.queryString();
-        }
+        String targetPath = getTargetPath(ctx);
 
         //构建请求工具
         HttpUtils httpUtils;
