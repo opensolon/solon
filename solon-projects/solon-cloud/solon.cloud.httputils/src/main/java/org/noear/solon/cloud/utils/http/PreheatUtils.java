@@ -24,7 +24,9 @@ import org.noear.solon.core.util.ConsumerEx;
  *
  * @author noear
  * @since 1.5
+ * @deprecated 2.9
  */
+@Deprecated
 public final class PreheatUtils {
 
     /**

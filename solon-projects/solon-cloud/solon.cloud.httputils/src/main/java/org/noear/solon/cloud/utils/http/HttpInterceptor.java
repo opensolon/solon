@@ -26,7 +26,9 @@ import java.util.concurrent.TimeUnit;
  *
  * @author noear
  * @since 1.7
+ * @deprecated 2.9
  */
+@Deprecated
 public class HttpInterceptor implements Interceptor {
     public static final HttpInterceptor instance = new HttpInterceptor();
 

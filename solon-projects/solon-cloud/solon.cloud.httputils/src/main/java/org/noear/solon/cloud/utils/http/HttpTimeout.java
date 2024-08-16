@@ -20,7 +20,9 @@ package org.noear.solon.cloud.utils.http;
  *
  * @author noear
  * @since 1.7
+ * @deprecated 2.9
  */
+@Deprecated
 public class HttpTimeout {
     public final int connectTimeout;
     public final int writeTimeout;

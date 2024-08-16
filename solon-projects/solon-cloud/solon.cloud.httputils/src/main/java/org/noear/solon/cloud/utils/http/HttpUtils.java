@@ -43,7 +43,9 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 1.5
+ * @deprecated 2.9
  * */
+@Deprecated
 public class HttpUtils {
     private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();

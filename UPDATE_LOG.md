@@ -35,6 +35,7 @@
 * 添加 solon.net.httputils 扩展机制，并与 solon.cloud 自动整合
 * 添加 solon --cfg 启动参数支持（便于内嵌场景开发）
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
+* 调整 solon.cloud.httputils 标为弃用，由 solon.net.httputils 替代
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 solon Context::body 的兼容性，避免不可读情况
