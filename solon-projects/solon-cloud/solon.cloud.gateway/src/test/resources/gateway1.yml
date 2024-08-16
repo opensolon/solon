@@ -8,4 +8,4 @@ solon.cloud.gateway:
   routes:
     - uri: "http://localhost:8080"
       predicates:
-        - "PATH=/order/**"
+        - "PATH=/demo/**"
