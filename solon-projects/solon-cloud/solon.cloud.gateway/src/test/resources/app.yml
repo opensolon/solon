@@ -1,0 +1,11 @@
+server.port: 8901
+
+solon.app:
+  name: demo-gateway
+  group: gateway
+
+solon.cloud.gateway:
+  routes:
+    - uri: "http://localhost:8080"
+      predicates:
+        - "PATH=/order/**"

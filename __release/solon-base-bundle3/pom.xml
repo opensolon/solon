@@ -18,6 +18,7 @@
     <modules>
         <module>../../solon-projects/solon-cloud/solon.cloud</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.eventplus</module>
+        <module>../../solon-projects/solon-cloud/solon.cloud.gateway</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.httputils</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.tracing</module>
         <module>../../solon-projects/solon-cloud/solon.cloud.metrics</module>
