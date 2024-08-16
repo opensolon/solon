@@ -40,7 +40,7 @@
 * 优化 solon 调试模式与 gradle 的兼容性
 * 优化 solon.boot FormUrlencodedUtils 预处理把 post 排外
 * 优化 solon.web.rx 允许多次渲染输出
-* 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持
+* 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持（简化有账号的连接体验）
 * 优化 solon.boot 413 状态处理
 * 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
 * 优化 solon.mvc kotlin data class 带默认值的注入支持（表单模式下）
