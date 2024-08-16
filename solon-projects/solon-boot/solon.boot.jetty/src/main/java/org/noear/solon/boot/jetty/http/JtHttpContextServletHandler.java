@@ -18,7 +18,6 @@ package org.noear.solon.boot.jetty.http;
 import org.eclipse.jetty.http.MultiPartFormInputStream;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.XPluginImp;
-import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.core.handle.Context;
 
@@ -56,9 +55,6 @@ public class JtHttpContextServletHandler extends SolonServletHandler {
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
-
-        //编码窗体预处理
-        FormUrlencodedUtils.pretreatment(ctx);
     }
 
     @Override

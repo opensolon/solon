@@ -17,7 +17,6 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
-import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
@@ -123,8 +122,6 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
-            //编码窗体预处理
-            FormUrlencodedUtils.pretreatment(ctx);
             handler.handle(ctx);
 
             if (ctx.innerIsAsync() == false) {

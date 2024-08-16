@@ -16,6 +16,7 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -204,6 +205,10 @@ public class SmHttpContext extends WebContextBase {
             _paramMap = new NvMap();
 
             try {
+                //编码窗体预处理
+                FormUrlencodedUtils.pretreatment(this);
+
+                //多分段处理
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
