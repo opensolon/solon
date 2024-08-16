@@ -47,7 +47,6 @@
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题（默认改为不启用）
-* smarthttp 升为 1.5.8
 * wood 升为 1.3.0
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
@@ -57,6 +56,11 @@
 * beetl 升为 3.17.0.RELEASE
 * mybatis 升为 3.5.16
 * mybatis-flex 升为 1.9.5
+* fastmybatis 升为 3.0.10
+* sqltoy 升为 5.6.19
+* dbvisitor 升为 5.4.3
+* bean-searcher 升为 4.3.0
+* smarthttp 升为 1.5.8
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 
