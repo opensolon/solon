@@ -32,6 +32,7 @@
 * 添加 solon.validation ValidUtils 工具类
 * 添加 solon LifecycleBean:postStart 方法
 * 添加 solon MethodInterceptor 接口，替代 Interceptor（旧接口保留）
+* 添加 solon.net.httputils 扩展机制，并与 solon.cloud 自动整合
 * 添加 solon --cfg 启动参数支持（便于内嵌场景开发）
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理

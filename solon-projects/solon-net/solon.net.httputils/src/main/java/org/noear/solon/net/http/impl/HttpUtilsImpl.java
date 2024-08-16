@@ -91,6 +91,10 @@ public class HttpUtilsImpl implements HttpUtils {
 
         _url = url;
         _builder = new Request.Builder().url(url);
+
+        for (HttpExtension ext : HttpExtensionManager.getExtensions()) {
+            ext.onInit(this, url);
+        }
     }
 
     @Override

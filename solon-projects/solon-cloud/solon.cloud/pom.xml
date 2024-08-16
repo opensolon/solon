@@ -37,6 +37,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.net.httputils</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.i18n</artifactId>
             <scope>provided</scope>
         </dependency>

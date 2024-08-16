@@ -15,11 +15,13 @@
  */
 package org.noear.solon.cloud.integration;
 
+import org.noear.nami.NamiManager;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
+import org.noear.solon.cloud.trace.HttpTraceExtension;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -27,6 +29,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
+import org.noear.solon.net.http.HttpExtensionManager;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
@@ -61,7 +64,7 @@ public class XPluginImp implements Plugin {
 
         if (CloudClient.discovery() != null) {
             //服务注册
-            if(NativeDetector.isNotAotRuntime()) {
+            if (NativeDetector.isNotAotRuntime()) {
                 CloudClient.discoveryPush();
             }
 
@@ -91,9 +94,15 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudTraceServiceImpl());
         }
 
-        //有些场景会排除掉nami
-        if (ClassUtil.loadClass("org.noear.nami.NamiManager") != null) {
-            //注册Nami跟踪过滤器
+        //有些场景会排除掉 httpUtils
+        if (ClassUtil.hasClass(() -> HttpExtensionManager.class)) {
+            //注册 http 跟踪扩展
+            HttpTraceExtension.register();
+        }
+
+        //有些场景会排除掉 nami
+        if (ClassUtil.hasClass(() -> NamiManager.class)) {
+            //注册 Nami 跟踪过滤器
             NamiTraceFilter.register();
         }
 
@@ -108,7 +117,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if(NativeDetector.isAotRuntime()){
+        if (NativeDetector.isAotRuntime()) {
             return;
         }
 
