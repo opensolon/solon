@@ -11,8 +11,8 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class CloudGatewayConfigModel {
-    private List<CloudRouteConfigModel> routes = new ArrayList<>();
+public class GatewayConfigModel {
+    private List<RouteConfigModel> routes = new ArrayList<>();
     private List<RxFilter> filters = new ArrayList<>();
 
     /**
@@ -25,7 +25,7 @@ public class CloudGatewayConfigModel {
     /**
      * 路由记录
      */
-    public List<CloudRouteConfigModel> getRoutes() {
+    public List<RouteConfigModel> getRoutes() {
         return routes;
     }
 }

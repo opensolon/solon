@@ -11,7 +11,7 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class CloudRouteConfigModel implements Serializable {
+public class RouteConfigModel implements Serializable {
     private String id;
     private String uri;
     private int stripPrefix = 1;

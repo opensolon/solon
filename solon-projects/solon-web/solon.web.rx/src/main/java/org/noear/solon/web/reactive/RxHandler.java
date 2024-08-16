@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
  * @author noear
  * @since 2.9
  */
+@FunctionalInterface
 public interface RxHandler {
     Mono<Void> handle(Context ctx);
 }

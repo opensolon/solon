@@ -1,14 +1,11 @@
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.web.reactive.RxHandler;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,36 +15,17 @@ import java.util.Map;
  * @author noear
  * @since 2.9
  */
-public class CloudRouteHandlerDefault implements RxHandler {
-    private CloudRoute route;
-
-    public CloudRouteHandlerDefault(CloudRoute route) {
-        this.route = route;
-    }
-
-    /**
-     * 获取目标路径
-     * */
-    public String getTargetPath(Context ctx){
-        //目标路径重组
-        List<String> fromPathFragments = Arrays.asList(ctx.pathNew().split("/", -1));
-        String targetPath = "/" + String.join("/", fromPathFragments.subList(route.getStripPrefix() + 1, fromPathFragments.size()));
-        if (Utils.isNotEmpty(ctx.queryString())) {
-            targetPath += "?" + ctx.queryString();
-        }
-
-        return targetPath;
-    }
-
+public class CloudRouteHandlerDefault implements CloudRouteHandler {
     /**
      * 处理
      */
     @Override
     public Mono<Void> handle(Context ctx) {
-        URI uri = route.getUri();
+        CloudRoute route = CloudRoute.get(ctx);
 
+        URI uri = route.getUri();
         //目标路径重组
-        String targetPath = getTargetPath(ctx);
+        String targetPath = route.getTargetPath(ctx);
 
         //构建请求工具
         HttpUtils httpUtils;
