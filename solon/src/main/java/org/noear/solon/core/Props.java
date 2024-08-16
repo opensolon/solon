@@ -264,6 +264,31 @@ public class Props extends Properties {
     }
 
     /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的列表的配置集
+     *
+     * @param keyStarts key 的开始字符
+     */
+    public Collection<Props> getListedProp(String keyStarts) {
+        Props rootProps = getProp(keyStarts);
+
+        Set<String> groups = new HashSet<>();
+        for (Object key : rootProps.keySet()) {
+            if (key instanceof String) {
+                groups.add(((String) key).split("\\.")[0]);
+            }
+        }
+
+        Map<String, Props> groupProps = new LinkedHashMap<>();
+
+        for (String group : groups) {
+            Props tmp = rootProps.getProp(group);
+            groupProps.put(group, tmp);
+        }
+
+        return groupProps.values();
+    }
+
+    /**
      * @param expr 兼容 ${key} or key
      */
     public Props getPropByExpr(String expr) {
