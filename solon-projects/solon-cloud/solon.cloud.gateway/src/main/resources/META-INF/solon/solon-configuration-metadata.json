@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "solon.cloud.gateway",
+      "type": "org.noear.solon.cloud.gateway.integration.GatewayProperties",
+      "description": "分布式网关"
+    }
+  ]
+}

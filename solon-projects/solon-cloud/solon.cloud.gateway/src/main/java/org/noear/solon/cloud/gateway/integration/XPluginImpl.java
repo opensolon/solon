@@ -49,10 +49,10 @@ public class XPluginImpl implements Plugin {
             return;
         }
 
-        GatewayConfigModel configModel = props.getBean(GatewayConfigModel.class);
+        GatewayProperties configModel = props.getBean(GatewayProperties.class);
 
         //routes
-        for (RouteConfigModel rm : configModel.getRoutes()) {
+        for (RouteProperties rm : configModel.getRoutes()) {
             CloudRoute route = new CloudRoute();
 
             route.id(rm.getId());
@@ -76,13 +76,18 @@ public class XPluginImpl implements Plugin {
             configuration.route(route);
         }
 
+        //routeHandler
+        if (configModel.getRouteHandler() != null) {
+            configuration.routeHandler(configModel.getRouteHandler());
+        }
+
         //filters
         for (RxFilter rf : configModel.getFilters()) {
             configuration.filter(rf);
         }
     }
 
-    private Predicate<Context> buildPredicate(String predicate){
+    private Predicate<Context> buildPredicate(String predicate) {
         int idx = predicate.indexOf('=');
         if (idx > 0) {
             String label = predicate.substring(0, idx);
