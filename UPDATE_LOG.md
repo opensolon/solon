@@ -60,6 +60,7 @@
 * sqltoy 升为 5.6.19
 * dbvisitor 升为 5.4.3
 * bean-searcher 升为 4.3.0
+* liteflow 升为 2.12.2
 * smarthttp 升为 1.5.8
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
