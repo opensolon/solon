@@ -132,7 +132,7 @@
         <jetcd.version>0.7.7</jetcd.version>
         <polaris.version>1.14.1</polaris.version>
 
-        <feign.version>13.3.0</feign.version>
+        <feign.version>8.18.0</feign.version>
         <aws.s3.version>1.12.769</aws.s3.version>
         <quartz.version>2.3.2</quartz.version>
         <powerjob.version>5.1.0</powerjob.version>
@@ -154,7 +154,7 @@
         <beetlsql.version>3.30.10-RELEASE</beetlsql.version>
         <sqltoy.version>5.6.19.jre8</sqltoy.version>
         <mybatis-flex.version>1.9.5</mybatis-flex.version>
-        <fastmybatis.version>3.0.10</fastmybatis.version>
+        <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.3</dbvisitor.version>
         <bean-searcher.version>4.3.0</bean-searcher.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
