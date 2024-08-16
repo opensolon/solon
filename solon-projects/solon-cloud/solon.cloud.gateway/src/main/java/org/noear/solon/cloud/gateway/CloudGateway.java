@@ -28,8 +28,8 @@ public class CloudGateway implements Handler {
      */
     @Override
     public void handle(Context ctx) throws Throwable {
-        //设为异步
-        ctx.asyncStart();
+        //启动异步模式（-1 表示不超时）
+        ctx.asyncStart(-1L, null);
 
         //开始执行
         new RxFilterChainImpl(filters, this::doHandle)

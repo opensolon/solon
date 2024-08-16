@@ -703,10 +703,17 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.gateway</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.eventplus</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- @deprecated 2.9 -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.httputils</artifactId>
