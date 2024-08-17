@@ -13,12 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package libs.app1;
+package org.noear.solon.util;
 
-import org.noear.solon.Solon;
+/**
+ * 键值
+ * */
+public class KeyValue<T> {
+    private String key;
+    private T value;
 
-public class App1Main {
-    public static void main(String[] args) {
-        Solon.start(App1Main.class, new String[]{"--cfg=app1.yml"});
+    public KeyValue(String key, T value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    /**
+     * 获取键
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * 获取值
+     */
+    public T getValue() {
+        return value;
     }
 }
