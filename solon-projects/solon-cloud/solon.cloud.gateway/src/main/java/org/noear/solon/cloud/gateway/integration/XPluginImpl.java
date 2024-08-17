@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
 import org.noear.solon.cloud.gateway.route.RouteFilter;
+import org.noear.solon.cloud.gateway.route.RouteHandler;
 import org.noear.solon.cloud.gateway.route.RoutePredicate;
 import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilter;
 import org.noear.solon.cloud.gateway.route.Route;
@@ -49,6 +50,11 @@ public class XPluginImpl implements Plugin {
         //添加过注解滤器
         context.subWrapsOfType(RxFilter.class, bw -> {
             cloudGateway.getConfiguration().filter(bw.raw(), bw.index());
+        });
+
+        //添加过注解处理器
+        context.getBeanAsync(RouteHandler.class,b->{
+            cloudGateway.getConfiguration().routeHandler(b);
         });
 
         //启动完成后注册
