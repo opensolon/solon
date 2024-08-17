@@ -15,7 +15,6 @@
  */
 package org.noear.solon.docs.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
@@ -35,15 +34,16 @@ import java.util.Map;
  */
 public class DiscoveryEventListener implements EventListener<Discovery>, Lifecycle {
     private final AppContext appContext;
-    private final String pathPattern;
+    private final String uriPattern;
     private final boolean syncStatus;
     private final Collection<String> excluded;
     private final Collection<String> included;
     private final Map<String, String> basicAuth;
 
-    public DiscoveryEventListener(AppContext appContext, String pathPattern) {
+    public DiscoveryEventListener(AppContext appContext, String uriPattern) {
         this.appContext = appContext;
-        this.pathPattern = pathPattern;
+        this.uriPattern = uriPattern;
+
         this.syncStatus = appContext.cfg().getBool(XPluginImpl.SOLON_DOCS_DISCOVER_SYNCSTATUS, false);
         this.excluded = appContext.cfg().getList(XPluginImpl.SOLON_DOCS_DISCOVER_EXCLUDED);
         this.included = appContext.cfg().getList(XPluginImpl.SOLON_DOCS_DISCOVER_INCLUDED);
@@ -80,7 +80,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
             //自动创建（如果还没有）
             DocDocket docDocket = new DocDocket();
             docDocket.groupName(discovery.service());
-            docDocket.upstream(discovery.service(), discovery.service(), pathPattern.replace("{service}", discovery.service()));
+            docDocket.upstream("lb://" + discovery.service(), discovery.service(), uriPattern.replace("{service}", discovery.service()));
 
             if (basicAuth.size() > 0) {
                 docDocket.basicAuth().putAll(basicAuth);

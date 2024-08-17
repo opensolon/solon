@@ -59,10 +59,10 @@ public class XPluginImpl implements Plugin {
         }
 
         //加载 solon.docs.discover.pathPattern
-        String discover_pathPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_URIPATTERN);
-        if (Utils.isNotEmpty(discover_pathPattern)) {
+        String discover_uriPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_URIPATTERN);
+        if (Utils.isNotEmpty(discover_uriPattern)) {
             if (ClassUtil.hasClass(() -> Discovery.class)) {
-                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, discover_pathPattern);
+                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, discover_uriPattern);
                 //订阅
                 EventBus.subscribe(Discovery.class, eventListener);
                 //开始
