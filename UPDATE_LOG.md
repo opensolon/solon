@@ -54,6 +54,7 @@
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题（默认改为不启用）
 * wood 升为 1.3.0
+* snack3 升为 3.2.109
 * socket.d 升为 2.5.11
 * zookeeper 升为 3.9.2
 * dromara-plugins 升为 0.1.2
