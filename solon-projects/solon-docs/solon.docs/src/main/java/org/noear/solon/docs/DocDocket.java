@@ -247,6 +247,10 @@ public class DocDocket implements Serializable {
      * 配置上游
      */
     public DocDocket upstream(String target, String contextPath, String path) {
+        if (target.indexOf("://") < 0) {
+            target = "lb://" + target; //支持："http://...", "lb://service-name", "service-name"
+        }
+
         this.upstream = new DocUpstream(URI.create(target), contextPath, path);
         return this;
     }

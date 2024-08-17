@@ -80,7 +80,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
             //自动创建（如果还没有）
             DocDocket docDocket = new DocDocket();
             docDocket.groupName(discovery.service());
-            docDocket.upstream("lb://" + discovery.service(), discovery.service(), uriPattern.replace("{service}", discovery.service()));
+            docDocket.upstream(discovery.service(), discovery.service(), uriPattern.replace("{service}", discovery.service()));
 
             if (basicAuth.size() > 0) {
                 docDocket.basicAuth().putAll(basicAuth);

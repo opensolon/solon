@@ -92,7 +92,7 @@ public class Config {
         return new DocDocket()
                 .groupName("removeApi端接口")
                 .schemes(ApiEnum.SCHEMES_HTTP)
-                .upstream("user-service", "/user-service", "swagger/v2?group=removeApi");
+                .upstream("lb://user-service", "/user-service", "swagger/v2?group=removeApi");
         //.securityDefinitionInHeader("token");
 
     }
