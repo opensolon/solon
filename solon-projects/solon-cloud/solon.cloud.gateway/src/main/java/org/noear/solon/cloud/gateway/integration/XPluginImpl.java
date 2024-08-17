@@ -18,8 +18,9 @@ package org.noear.solon.cloud.gateway.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
+import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.route.RouteFilter;
-import org.noear.solon.cloud.gateway.route.RouteHandler;
+import org.noear.solon.cloud.gateway.CloudRouteHandler;
 import org.noear.solon.cloud.gateway.route.RoutePredicate;
 import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilter;
 import org.noear.solon.cloud.gateway.route.Route;
@@ -48,12 +49,12 @@ public class XPluginImpl implements Plugin {
         loadConfiguration(cloudGateway.getConfiguration(), "solon.cloud.gateway");
 
         //添加过注解滤器
-        context.subWrapsOfType(RxFilter.class, bw -> {
+        context.subWrapsOfType(CloudGatewayFilter.class, bw -> {
             cloudGateway.getConfiguration().filter(bw.raw(), bw.index());
         });
 
         //添加过注解处理器
-        context.getBeanAsync(RouteHandler.class,b->{
+        context.getBeanAsync(CloudRouteHandler.class, b->{
             cloudGateway.getConfiguration().routeHandler(b);
         });
 

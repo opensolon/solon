@@ -16,8 +16,6 @@
 package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.route.RouteHandler;
-import org.noear.solon.cloud.gateway.route.SimpleRouteHandler;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.web.reactive.RxFilter;
 
@@ -36,7 +34,7 @@ public class CloudGatewayConfiguration {
     //路由记录
     protected List<Route> routes = new ArrayList<>();
     //路由处理
-    protected RouteHandler routeHandler = new SimpleRouteHandler();
+    protected CloudRouteHandler routeHandler = new SimpleCloudRouteHandler();
     //过滤器
     protected List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
@@ -96,7 +94,7 @@ public class CloudGatewayConfiguration {
      *
      * @param routeHandler 路由处理器
      */
-    public CloudGatewayConfiguration routeHandler(RouteHandler routeHandler) {
+    public CloudGatewayConfiguration routeHandler(CloudRouteHandler routeHandler) {
         this.routeHandler = routeHandler;
         return this;
     }

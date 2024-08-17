@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route;
+package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.gateway.route.RouteRequest;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
@@ -30,7 +32,7 @@ import java.net.URI;
  * @author noear
  * @since 2.9
  */
-public class SimpleRouteHandler implements RouteHandler {
+public class SimpleCloudRouteHandler implements CloudRouteHandler {
     /**
      * 处理
      */

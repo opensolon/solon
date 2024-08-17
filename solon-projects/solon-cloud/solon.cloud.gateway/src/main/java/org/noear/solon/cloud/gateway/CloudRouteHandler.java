@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route;
+package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.web.reactive.RxHandler;
 
@@ -24,6 +24,6 @@ import org.noear.solon.web.reactive.RxHandler;
  * @since 2.9
  */
 @FunctionalInterface
-public interface RouteHandler extends RxHandler {
+public interface CloudRouteHandler extends RxHandler {
 
 }
