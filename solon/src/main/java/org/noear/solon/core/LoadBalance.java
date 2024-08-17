@@ -49,6 +49,8 @@ import org.noear.solon.Solon;
  * */
 @FunctionalInterface
 public interface LoadBalance {
+    static String URI_SCHEME = "lb";
+
     /**
      * 获取负载均衡器
      *

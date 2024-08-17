@@ -16,8 +16,10 @@
 package org.noear.solon.docs;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.LoadBalance;
 
 import java.io.Serializable;
+import java.net.URI;
 
 /**
  * 文档上游
@@ -26,7 +28,7 @@ import java.io.Serializable;
  * @since 2.8
  */
 public class DocUpstream implements Serializable {
-    private String service;
+    private URI target;
     private String contextPath;
     private String uri;
 
@@ -34,37 +36,28 @@ public class DocUpstream implements Serializable {
         //用于反序列化
     }
 
-    public DocUpstream(String service, String contextPath, String uri) {
-        this.service = service;
+    public DocUpstream(URI target, String contextPath, String uri) {
+        this.target = target;
         this.uri = uri;
-
-        if (Utils.isEmpty(contextPath)) {
-            if (service.indexOf("://") < 0) {
-                this.contextPath = "/" + service;
-            }
-        } else {
-            this.contextPath = contextPath;
-        }
+        this.contextPath = contextPath;
     }
 
     /**
      * 获取服务（addr or name）
      */
-    public String getService() {
-        return service;
+    public URI getTarget() {
+        return target;
     }
-
 
     /**
      * 获取上下文路径
      */
     public String getContextPath() {
         if (Utils.isEmpty(contextPath)) {
-            if (Utils.isNotEmpty(service) && service.indexOf("://") < 0) {
-                this.contextPath = "/" + service;
+            if (LoadBalance.URI_SCHEME.equals(target.getScheme())) {
+                this.contextPath = "/" + target.getHost();
             }
         }
-
         return contextPath;
     }
 

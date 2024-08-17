@@ -20,6 +20,7 @@ import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.docs.models.*;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.*;
 
 /**
@@ -245,8 +246,8 @@ public class DocDocket implements Serializable {
     /**
      * 配置上游
      */
-    public DocDocket upstream(String service, String contextPath, String path) {
-        this.upstream = new DocUpstream(service, contextPath, path);
+    public DocDocket upstream(String target, String contextPath, String path) {
+        this.upstream = new DocUpstream(URI.create(target), contextPath, path);
         return this;
     }
 

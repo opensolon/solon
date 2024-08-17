@@ -19,7 +19,8 @@ solon.docs:
     appApi:   #(远程接口文档，即分布式服务或微服务)，配置风格
       groupName: "app端接口"
       upstream:
-        service: "app-api"
+        target: "lb://app-api"
+        contextPath: "/app"
         uri: "/xxx"
     adminApi:  #(本地接口文档)，配置风格
       groupName: "admin端接口"

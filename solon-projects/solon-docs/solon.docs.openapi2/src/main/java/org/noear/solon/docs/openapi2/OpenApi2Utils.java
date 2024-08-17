@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -110,12 +111,14 @@ public class OpenApi2Utils {
             }
         } else {
             //代理模式
-            String host = docket.upstream().getService();
-            if (host.contains("://") == false) {
-                host = LoadBalance.get(host).getServer();
+            String targetAddr;
+            if (LoadBalance.URI_SCHEME.equals(docket.upstream().getTarget().getScheme())) {
+                targetAddr = LoadBalance.get(docket.upstream().getTarget().getHost()).getServer();
+            } else {
+                targetAddr = docket.upstream().getTarget().toString();
             }
 
-            String url = PathUtil.mergePath(host, docket.upstream().getUri()).substring(1);
+            String url = PathUtil.mergePath(targetAddr, docket.upstream().getUri()).substring(1);
             return httpGet(url, docket);
         }
     }

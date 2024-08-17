@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
+import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.util.KeyValues;
@@ -42,7 +43,7 @@ public class SimpleRouteHandler implements RouteHandler {
 
         //构建请求工具
         HttpUtils httpUtils;
-        if ("lb".equals(uri.getScheme())) {
+        if (LoadBalance.URI_SCHEME.equals(uri.getScheme())) {
             httpUtils = HttpUtils.http(uri.getHost(), request.getPathAndQueryString());
         } else {
             String url = uri + request.getPathAndQueryString();
