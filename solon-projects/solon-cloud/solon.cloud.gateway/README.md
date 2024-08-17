@@ -7,9 +7,11 @@ solon.cloud.gateway:
   routes:
     - target: "http://localhost:8080" # 或 "lb://user-service"
       predicates:
-        - "PATH=/demo/**"
+        - "Path=/demo/**"
+        - "xxx.xxx.demo1=ccc" #全类名 base:RoutePredicate
       filters:
         - "StripPrefix=1"
+        - "xxx.xxx.demo2=test" #全类名 base:RouteFilter
 ```
 
 
