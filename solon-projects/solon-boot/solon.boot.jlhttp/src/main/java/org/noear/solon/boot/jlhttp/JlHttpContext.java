@@ -215,9 +215,11 @@ public class JlHttpContext extends WebContextBase {
                     loadMultipartFormData();
                 }
 
-                _paramMap.putAll(_request.getParams());
-
                 for (String[] kv : _request.getParamsList()) {
+                    if (!_paramMap.containsKey(kv[0])) {
+                        _paramMap.put(kv[0], kv[1]);
+                    }
+
                     List<String> list = _paramsMap.get(kv[0]);
                     if (list == null) {
                         list = new ArrayList<>();
