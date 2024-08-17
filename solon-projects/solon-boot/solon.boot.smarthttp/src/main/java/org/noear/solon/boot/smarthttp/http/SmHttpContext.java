@@ -448,11 +448,11 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         if (_isAsync == false) {
             _isAsync = true;
 
-            if(listener != null) {
+            if (listener != null) {
                 _asyncListeners.add(listener);
             }
 
@@ -470,6 +470,10 @@ public class SmHttpContext extends WebContextBase {
                         }
                     }
                 }, _asyncTimeout);
+            }
+
+            if (runnable != null) {
+                runnable.run();
             }
         }
     }

@@ -395,7 +395,7 @@ public class VxHttpContext extends WebContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         if (_isAsync == false) {
             _isAsync = true;
 
@@ -417,6 +417,10 @@ public class VxHttpContext extends WebContextBase {
                         }
                     }
                 }, _asyncTimeout);
+            }
+
+            if(runnable != null) {
+                runnable.run();
             }
         }
     }

@@ -49,9 +49,9 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onSubscribe(Subscription subscription) {
         //启动异步模式（-1 表示不超时）
-        ctx.asyncStart(-1L, null);
-
-        subscription.request(Long.MAX_VALUE);
+        ctx.asyncStart(-1L, null, () -> {
+            subscription.request(Long.MAX_VALUE);
+        });
     }
 
     @Override

@@ -44,7 +44,7 @@ public class SseEmitterHandler {
     public void start() throws Throwable {
         ctx.contentType("text/event-stream;charset=utf-8");
 
-        ctx.asyncStart(emitter.timeout, new AsyncListenerImpl(this));
+        ctx.asyncStart(emitter.timeout, new AsyncListenerImpl(this), null);
         emitter.initialize(this);
     }
 

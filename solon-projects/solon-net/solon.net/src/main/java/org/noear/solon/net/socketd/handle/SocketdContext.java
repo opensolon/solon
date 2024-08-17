@@ -272,8 +272,12 @@ public class SocketdContext extends ContextEmpty {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         //本身就是异步机制，不用启动
+
+        if (runnable != null) {
+            runnable.run();
+        }
     }
 
     @Override

@@ -1159,13 +1159,13 @@ public abstract class Context {
     /**
      * 异步开始
      * */
-    public abstract void asyncStart(long timeout, ContextAsyncListener listener);
+    public abstract void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable);
 
     /**
      * 异步开始
      * */
     public void asyncStart(){
-        asyncStart(0L, null);
+        asyncStart(0L, null, null);
     }
 
     /**

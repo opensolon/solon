@@ -41,12 +41,12 @@ public class CloudGateway implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         //启动异步模式（-1 表示不超时）
-        ctx.asyncStart(-1L, null);
-
-        //开始执行
-        new RxFilterChainImpl(configuration.filters, this::doHandle)
-                .doFilter(ctx)
-                .subscribe(new RxCompletion(ctx));
+        ctx.asyncStart(-1L, null, () -> {
+            //开始执行
+            new RxFilterChainImpl(configuration.filters, this::doHandle)
+                    .doFilter(ctx)
+                    .subscribe(new RxCompletion(ctx));
+        });
     }
 
     /**

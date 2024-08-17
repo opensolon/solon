@@ -410,7 +410,7 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         if (asyncContext == null) {
             asyncContext = _request.startAsync();
 
@@ -421,6 +421,10 @@ public class SolonServletContext extends WebContextBase {
             if (timeout != 0) {
                 //内部默认30秒
                 asyncContext.setTimeout(timeout);
+            }
+
+            if (runnable != null) {
+                asyncContext.start(runnable);
             }
         }
     }

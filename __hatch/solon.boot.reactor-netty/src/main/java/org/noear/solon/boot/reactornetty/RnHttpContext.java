@@ -341,7 +341,7 @@ public class RnHttpContext extends WebContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         throw new UnsupportedOperationException();
     }
 
