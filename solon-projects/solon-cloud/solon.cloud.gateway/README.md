@@ -11,3 +11,11 @@ solon.cloud.gateway:
       filters:
         - "StripPrefix=1"
 ```
+
+
+目前支持：
+
+* jdkhttp
+* jlhttp
+* jetty
+* undertow
