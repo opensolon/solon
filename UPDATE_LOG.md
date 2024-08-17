@@ -68,6 +68,8 @@
 * liteflow 升为 2.12.2
 * aws.s3 升为 1.12.769
 * powerjob 升为 5.1.0
+* undertow 升为 2.2.34.Final
+* jetty 升为 9.4.55.v20240627
 * smarthttp 升为 1.5.8
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
