@@ -20,7 +20,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.route.PathRule;
 
 /**
- * 路径断言
+ * 路径检测器
  *
  * @author noear
  * @since 2.9

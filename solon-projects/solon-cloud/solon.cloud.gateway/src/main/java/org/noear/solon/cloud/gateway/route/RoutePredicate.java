@@ -20,7 +20,7 @@ import org.noear.solon.core.handle.Context;
 import java.util.function.Predicate;
 
 /**
- * 路由断定器
+ * 路由检测器
  *
  * @author noear
  * @since 2.9

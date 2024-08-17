@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 /**
- * 简单的分布式路由处理
+ * 分布式路由处理器默认实现
  *
  * @author noear
  * @since 2.9
