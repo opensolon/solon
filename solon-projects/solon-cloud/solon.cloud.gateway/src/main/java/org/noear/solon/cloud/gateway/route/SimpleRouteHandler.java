@@ -51,14 +51,17 @@ public class SimpleRouteHandler implements RouteHandler {
                 httpUtils.execAsync(request.getMethod(), (isSuccessful, resp, error) -> {
                     try {
                         if (resp != null) {
+                            //code
                             ctx.status(resp.code());
+                            //contentType
                             ctx.contentType(resp.contentType());
+                            //header
                             for (String name : resp.headerNames()) {
                                 for (String v : resp.headers(name)) {
                                     ctx.headerAdd(name, v);
                                 }
                             }
-                            //输出（流复制）
+                            //body 输出（流复制）
                             ctx.output(resp.body());
                             monoSink.success();
                         } else {
