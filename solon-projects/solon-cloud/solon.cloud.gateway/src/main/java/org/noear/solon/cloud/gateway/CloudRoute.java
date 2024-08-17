@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public class CloudRoute {
     public static final String ATTR_NAME = "cloud-route";
 
-    public static CloudRoute get(Context ctx) {
+    public static CloudRoute of(Context ctx) {
         return ctx.attr(ATTR_NAME);
     }
 

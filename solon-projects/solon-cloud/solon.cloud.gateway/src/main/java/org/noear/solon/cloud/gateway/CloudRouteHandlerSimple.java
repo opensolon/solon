@@ -15,13 +15,13 @@ import java.util.Map;
  * @author noear
  * @since 2.9
  */
-public class CloudRouteHandlerDefault implements CloudRouteHandler {
+public class CloudRouteHandlerSimple implements CloudRouteHandler {
     /**
      * 处理
      */
     @Override
     public Mono<Void> handle(Context ctx) {
-        CloudRoute route = CloudRoute.get(ctx);
+        CloudRoute route = CloudRoute.of(ctx);
 
         URI uri = route.getUri();
         //目标路径重组

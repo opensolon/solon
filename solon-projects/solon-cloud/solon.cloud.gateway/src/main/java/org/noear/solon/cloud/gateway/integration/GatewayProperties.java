@@ -3,6 +3,7 @@ package org.noear.solon.cloud.gateway.integration;
 import org.noear.solon.cloud.gateway.CloudRouteHandler;
 import org.noear.solon.web.reactive.RxFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class GatewayProperties {
     /**
      * 路由记录
      */
-    private List<RouteProperties> routes;
+    private List<RouteProperties> routes = new ArrayList<>();
     /**
      * 路由处理
      */
@@ -23,7 +24,7 @@ public class GatewayProperties {
     /**
      * 过滤器
      */
-    private List<RxFilter> filters;
+    private List<RxFilter> filters = new ArrayList<>();
 
     /**
      * 路由记录
