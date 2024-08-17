@@ -167,6 +167,22 @@ public class ClassUtil {
     }
 
     /**
+     * 根据类名和参数类型实例化一个对象
+     *
+     * @param clz   类
+     * @param types 构建参数类型
+     * @param args  参数
+     */
+    public static Object newInstance(Class<?> clz, Class<?>[] types, Object[] args) {
+        try {
+            Constructor<?> constructor = clz.getDeclaredConstructor(types);
+            return constructor.newInstance(args);
+        } catch (Exception e) {
+            throw new ConstructionException(e);
+        }
+    }
+
+    /**
      * 根据构造函数实例化一个对象
      *
      * @param constructor 构造器

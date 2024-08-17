@@ -1,9 +1,14 @@
 package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.gateway.route.UpstreamRequest;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.web.reactive.*;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 分布式网关
@@ -39,12 +44,37 @@ public class CloudGateway implements Handler {
             ctx.status(404);
             return Mono.empty();
         } else {
-            //记录路由
-            ctx.attrSet(Route.ATTR_NAME, route);
+            try {
+                buildUpstreamRequest(ctx);
 
-            return new RxFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
-                    .doFilter(ctx);
+                return new RxFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
+                        .doFilter(ctx);
+            } catch (Throwable ex) {
+                //如果 buildUpstreamRequest 出错，说明请求体有问题
+                if (ex instanceof StatusException) {
+                    return Mono.error(ex);
+                } else {
+                    return Mono.error(new StatusException(ex, 400));
+                }
+            }
         }
+    }
+
+    private UpstreamRequest buildUpstreamRequest(Context ctx) throws Throwable {
+        UpstreamRequest request = new UpstreamRequest();
+
+        request.method(ctx.method());
+        request.queryString(ctx.queryString());
+        request.path(ctx.pathNew());
+        for (Map.Entry<String, List<String>> kv : ctx.headersMap().entrySet()) {
+            request.header(kv.getKey(), kv.getValue());
+        }
+        request.body(ctx.bodyAsStream(), ctx.contentType());
+
+        //attr +
+        ctx.attrSet(UpstreamRequest.ATTR_NAME, request);
+
+        return request;
     }
 
     /**
@@ -55,6 +85,8 @@ public class CloudGateway implements Handler {
     private Route findRoute(Context ctx) {
         for (Route r : configuration.routes) {
             if (r.matched(ctx)) {
+                //attr +
+                ctx.attrSet(Route.ATTR_NAME, r);
                 return r;
             }
         }

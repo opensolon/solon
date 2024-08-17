@@ -18,7 +18,7 @@ public class RouteProperties {
     /**
      * 地址
      */
-    private String uri;
+    private String upstream;
     /**
      * 去除前缀段数
      */
@@ -30,7 +30,7 @@ public class RouteProperties {
     /**
      * 过滤器
      */
-    private List<RxFilter> filters;
+    private List<String> filters;
 
     /**
      * 标识
@@ -42,8 +42,8 @@ public class RouteProperties {
     /**
      * 地址
      */
-    public String getUri() {
-        return uri;
+    public String getUpstream() {
+        return upstream;
     }
 
     /**
@@ -63,7 +63,7 @@ public class RouteProperties {
     /**
      * 过滤器
      */
-    public List<RxFilter> getFilters() {
+    public List<String> getFilters() {
         return filters;
     }
 }

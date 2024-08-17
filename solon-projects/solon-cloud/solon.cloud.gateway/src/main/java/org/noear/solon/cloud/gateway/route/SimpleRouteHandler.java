@@ -2,12 +2,11 @@ package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.HttpUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 简单的分布式路由处理
@@ -22,34 +21,34 @@ public class SimpleRouteHandler implements RouteHandler {
     @Override
     public Mono<Void> handle(Context ctx) {
         Route route = Route.of(ctx);
+        UpstreamRequest request = UpstreamRequest.of(ctx);
 
         URI uri = route.getUri();
-        //目标路径重组
-        String targetPath = route.getTargetPath(ctx);
 
         //构建请求工具
         HttpUtils httpUtils;
         if ("lb".equals(uri.getScheme())) {
-            httpUtils = HttpUtils.http(uri.getHost(), targetPath);
+            httpUtils = HttpUtils.http(uri.getHost(), request.getPathAndQueryString());
         } else {
-            String url = uri + targetPath;
+            String url = uri + request.getPathAndQueryString();
             httpUtils = HttpUtils.http(url);
         }
 
+
         try {
             //同步 header
-            for (Map.Entry<String, List<String>> kv : ctx.headersMap().entrySet()) {
-                for (String val : kv.getValue()) {
+            for (KeyValues<String> kv : request.getHeaders().values()) {
+                for (String val : kv.getValues()) {
                     httpUtils.headerAdd(kv.getKey(), val);
                 }
             }
 
             //同步 body（流复制）
-            httpUtils.bodyRaw(ctx.bodyAsStream(), ctx.contentType());
+            httpUtils.bodyRaw(request.getBody(), request.getContentType());
 
             return Mono.create(monoSink -> {
                 //异步 执行
-                httpUtils.execAsync(ctx.method(), (isSuccessful, resp, error) -> {
+                httpUtils.execAsync(request.getMethod(), (isSuccessful, resp, error) -> {
                     try {
                         if (resp != null) {
                             ctx.status(resp.code());

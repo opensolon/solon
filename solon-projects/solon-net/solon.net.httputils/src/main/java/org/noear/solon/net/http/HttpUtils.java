@@ -82,12 +82,12 @@ public interface HttpUtils {
     HttpUtils headers(Map<String, String> headers);
 
     /**
-     * 头配置
+     * 头配置（替换）
      */
     HttpUtils header(String name, String value);
 
     /**
-     * 头配置
+     * 头配置（添加）
      */
     HttpUtils headerAdd(String name, String value);
 

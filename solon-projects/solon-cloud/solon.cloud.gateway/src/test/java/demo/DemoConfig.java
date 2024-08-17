@@ -9,7 +9,7 @@ public class DemoConfig {
     @Bean
     public void init(CloudGatewayConfiguration configuration) {
         configuration
-                .route("user-service", r -> r.uri("lb://user-service").path("/user/**"))
-                .route("order-service", r -> r.uri("lb://order-service").path("/order/**"));
+                .route("user-service", r -> r.path("/user/**").upstream("lb://user-service"))
+                .route("order-service", r -> r.path("/order/**").upstream("lb://order-service"));
     }
 }

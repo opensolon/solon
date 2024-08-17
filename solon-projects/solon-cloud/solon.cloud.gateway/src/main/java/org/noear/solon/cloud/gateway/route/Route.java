@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.redicate.PathPredicate;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RankEntity;
@@ -8,7 +7,6 @@ import org.noear.solon.web.reactive.RxFilter;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,8 +24,10 @@ public class Route {
         return ctx.attr(ATTR_NAME);
     }
 
+    //----------------
+
     private String id;
-    private URI uri;
+    private URI upstream;
     private int stripPrefix;
     private List<Predicate<Context>> predicates = new ArrayList<>();
     private List<RankEntity<RxFilter>> filters = new ArrayList<>();
@@ -37,13 +37,13 @@ public class Route {
         return this;
     }
 
-    public Route uri(URI uri) {
-        this.uri = uri;
+    public Route upstream(URI uri) {
+        this.upstream = uri;
         return this;
     }
 
-    public Route uri(String uri) {
-        return uri(URI.create(uri));
+    public Route upstream(String uri) {
+        return upstream(URI.create(uri));
     }
 
     public Route stripPrefix(int stripPrefix) {
@@ -56,8 +56,11 @@ public class Route {
     }
 
     public Route filter(RxFilter filter, int index) {
-        this.filters.add(new RankEntity<>(filter, index));
-        this.filters.sort(Comparator.comparingInt(e -> e.index));
+        if (filter != null) {
+            this.filters.add(new RankEntity<>(filter, index));
+            this.filters.sort(Comparator.comparingInt(e -> e.index));
+        }
+
         return this;
     }
 
@@ -101,7 +104,7 @@ public class Route {
      * 地址
      */
     public URI getUri() {
-        return uri;
+        return upstream;
     }
 
     /**
@@ -123,19 +126,5 @@ public class Route {
      */
     public List<RankEntity<RxFilter>> getFilters() {
         return filters;
-    }
-
-    /**
-     * 获取目标路径
-     */
-    public String getTargetPath(Context ctx) {
-        //目标路径重组
-        List<String> fromPathFragments = Arrays.asList(ctx.pathNew().split("/", -1));
-        String targetPath = "/" + String.join("/", fromPathFragments.subList(getStripPrefix() + 1, fromPathFragments.size()));
-        if (Utils.isNotEmpty(ctx.queryString())) {
-            targetPath += "?" + ctx.queryString();
-        }
-
-        return targetPath;
     }
 }

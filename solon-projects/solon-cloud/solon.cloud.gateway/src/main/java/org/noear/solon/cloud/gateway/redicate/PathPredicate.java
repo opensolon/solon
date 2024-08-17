@@ -14,9 +14,9 @@ import java.util.function.Predicate;
 public class PathPredicate implements Predicate<Context> {
     private final PathRule rule;
 
-    public PathPredicate(String expr) {
+    public PathPredicate(String config) {
         rule = new PathRule();
-        rule.include(expr);
+        rule.include(config);
     }
 
     @Override
