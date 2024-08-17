@@ -52,6 +52,12 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
             httpUtils = HttpUtils.http(url);
         }
 
+        //构建超时
+        if(route.getTimeout() != null) {
+            httpUtils.timeout(route.getTimeout().getConnectTimeout(),
+                    route.getTimeout().getRequestTimeout(),
+                    route.getTimeout().getResponseTimeout());
+        }
 
         try {
             //同步 header
@@ -79,7 +85,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                                     ctx.headerAdd(name, v);
                                 }
                             }
-                            //body 输出（流复制）
+                            //body 输出（流复制） //有可能网络已关闭
                             ctx.output(resp.body());
                             monoSink.success();
                         } else {

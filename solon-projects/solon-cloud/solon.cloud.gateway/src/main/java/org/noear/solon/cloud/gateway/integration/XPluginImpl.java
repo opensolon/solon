@@ -54,7 +54,7 @@ public class XPluginImpl implements Plugin {
         });
 
         //添加过注解处理器
-        context.getBeanAsync(CloudRouteHandler.class, b->{
+        context.getBeanAsync(CloudRouteHandler.class, b -> {
             cloudGateway.getConfiguration().routeHandler(b);
         });
 
@@ -94,6 +94,12 @@ public class XPluginImpl implements Plugin {
                 for (String filterStr : rm.getFilters()) {
                     route.filter(buildFilter(filterStr));
                 }
+            }
+
+            if (rm.getTimeout() != null) {
+                route.timeout(rm.getTimeout());
+            } else {
+                route.timeout(configModel.getHttpClient());
             }
 
             configuration.route(route);

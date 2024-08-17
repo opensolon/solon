@@ -41,6 +41,13 @@ public class GatewayProperties {
      */
     private List<RxFilter> filters = new ArrayList<>();
 
+
+    /**
+     * Http 客户端超时
+     */
+    private TimeoutProperties httpClient = new TimeoutProperties();
+
+
     /**
      * 路由记录
      */
@@ -60,5 +67,12 @@ public class GatewayProperties {
      */
     public List<RxFilter> getFilters() {
         return filters;
+    }
+
+    /**
+     * Http 客户端超时
+     */
+    public TimeoutProperties getHttpClient() {
+        return httpClient;
     }
 }

@@ -42,6 +42,12 @@ public class RouteProperties {
     private List<String> filters;
 
     /**
+     * 客户端
+     */
+    private TimeoutProperties timeout;
+
+
+    /**
      * 标识
      */
     public String getId() {
@@ -67,5 +73,12 @@ public class RouteProperties {
      */
     public List<String> getFilters() {
         return filters;
+    }
+
+    /**
+     * 超时
+     */
+    public TimeoutProperties getTimeout() {
+        return timeout;
     }
 }

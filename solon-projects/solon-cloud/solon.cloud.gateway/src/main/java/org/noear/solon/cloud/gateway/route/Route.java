@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
+import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RankEntity;
@@ -45,6 +46,7 @@ public class Route {
     private URI target;
     private List<RoutePredicate> predicates = new ArrayList<>();
     private List<RankEntity<RxFilter>> filters = new ArrayList<>();
+    private TimeoutProperties timeout;
 
     public Route id(String id) {
         this.id = id;
@@ -58,6 +60,11 @@ public class Route {
 
     public Route target(String uri) {
         return target(URI.create(uri));
+    }
+
+    public Route timeout(TimeoutProperties timeout) {
+        this.timeout = timeout;
+        return this;
     }
 
     public Route filter(RxFilter filter) {
@@ -131,5 +138,12 @@ public class Route {
      */
     public List<RankEntity<RxFilter>> getFilters() {
         return filters;
+    }
+
+    /**
+     * 超时
+     */
+    public TimeoutProperties getTimeout() {
+        return timeout;
     }
 }

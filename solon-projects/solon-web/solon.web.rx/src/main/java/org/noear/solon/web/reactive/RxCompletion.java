@@ -42,6 +42,8 @@ public class RxCompletion implements Subscriber {
                 if (status.getCode() == 404) {
                     return;
                 }
+            } else {
+                ctx.status(500);
             }
 
             log.error(throwable.getMessage(), throwable);
