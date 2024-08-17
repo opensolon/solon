@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 上游请求包装器
+ * 路游请求包装器
  *
  * @author noear
  * @since 2.9
  */
-public class UpstreamRequest {
+public class RouteRequest {
     public static final String ATTR_NAME = "cloud-upstream-request";
 
-    public static UpstreamRequest of(Context ctx) {
+    public static RouteRequest of(Context ctx) {
         return ctx.attr(ATTR_NAME);
     }
 
@@ -49,7 +49,7 @@ public class UpstreamRequest {
     /**
      * 配置方法
      */
-    public UpstreamRequest method(String method) {
+    public RouteRequest method(String method) {
         this.method = method;
         return this;
     }
@@ -57,7 +57,7 @@ public class UpstreamRequest {
     /**
      * 配置路径
      */
-    public UpstreamRequest path(String path) {
+    public RouteRequest path(String path) {
         this.path = path;
         return this;
     }
@@ -65,7 +65,7 @@ public class UpstreamRequest {
     /**
      * 配置查询字符串
      */
-    public UpstreamRequest queryString(String queryString) {
+    public RouteRequest queryString(String queryString) {
         this.queryString = queryString;
         return this;
     }
@@ -77,7 +77,7 @@ public class UpstreamRequest {
     /**
      * 配置头
      */
-    public UpstreamRequest header(String key, String... values) {
+    public RouteRequest header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
         return this;
     }
@@ -85,7 +85,7 @@ public class UpstreamRequest {
     /**
      * 配置头
      */
-    public UpstreamRequest header(String key, List<String> values) {
+    public RouteRequest header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
@@ -93,7 +93,7 @@ public class UpstreamRequest {
     /**
      * 添加头
      */
-    public UpstreamRequest headerAdd(String key, String value) {
+    public RouteRequest headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
         return this;
     }
@@ -101,7 +101,7 @@ public class UpstreamRequest {
     /**
      * 配置主体
      */
-    public UpstreamRequest body(InputStream body, String contentType) {
+    public RouteRequest body(InputStream body, String contentType) {
         this.body = body;
         this.contentType = contentType;
         return this;

@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.route.UpstreamRequest;
+import org.noear.solon.cloud.gateway.route.RouteRequest;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.web.reactive.*;
@@ -75,8 +75,8 @@ public class CloudGateway implements Handler {
         }
     }
 
-    private UpstreamRequest buildUpstreamRequest(Context ctx) throws Throwable {
-        UpstreamRequest request = new UpstreamRequest();
+    private RouteRequest buildUpstreamRequest(Context ctx) throws Throwable {
+        RouteRequest request = new RouteRequest();
 
         request.method(ctx.method());
         request.queryString(ctx.queryString());
@@ -87,7 +87,7 @@ public class CloudGateway implements Handler {
         request.body(ctx.bodyAsStream(), ctx.contentType());
 
         //attr +
-        ctx.attrSet(UpstreamRequest.ATTR_NAME, request);
+        ctx.attrSet(RouteRequest.ATTR_NAME, request);
 
         return request;
     }

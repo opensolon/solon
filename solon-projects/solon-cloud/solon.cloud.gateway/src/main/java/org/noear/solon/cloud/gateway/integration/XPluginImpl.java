@@ -73,7 +73,7 @@ public class XPluginImpl implements Plugin {
             Route route = new Route();
 
             route.id(rm.getId());
-            route.upstream(URI.create(rm.getUpstream()));
+            route.target(URI.create(rm.getTarget()));
 
             if (rm.getPredicates() != null) {
                 //route.predicates

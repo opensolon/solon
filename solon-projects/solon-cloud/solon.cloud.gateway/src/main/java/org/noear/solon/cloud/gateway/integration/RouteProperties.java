@@ -31,7 +31,7 @@ public class RouteProperties {
     /**
      * 地址
      */
-    private String upstream;
+    private String target;
     /**
      * 匹配断言
      */
@@ -49,10 +49,10 @@ public class RouteProperties {
     }
 
     /**
-     * 地址
+     * 目标
      */
-    public String getUpstream() {
-        return upstream;
+    public String getTarget() {
+        return target;
     }
 
     /**

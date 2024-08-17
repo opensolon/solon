@@ -42,7 +42,7 @@ public class Route {
     //----------------
 
     private String id;
-    private URI upstream;
+    private URI target;
     private List<RoutePredicate> predicates = new ArrayList<>();
     private List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
@@ -51,13 +51,13 @@ public class Route {
         return this;
     }
 
-    public Route upstream(URI uri) {
-        this.upstream = uri;
+    public Route target(URI uri) {
+        this.target = uri;
         return this;
     }
 
-    public Route upstream(String uri) {
-        return upstream(URI.create(uri));
+    public Route target(String uri) {
+        return target(URI.create(uri));
     }
 
     public Route filter(RxFilter filter) {
@@ -113,10 +113,10 @@ public class Route {
     }
 
     /**
-     * 地址
+     * 目标
      */
-    public URI getUri() {
-        return upstream;
+    public URI getTarget() {
+        return target;
     }
 
     /**

@@ -24,7 +24,7 @@ public class DemoConfig {
     @Bean
     public void init(CloudGatewayConfiguration configuration) {
         configuration
-                .route("user-service", r -> r.path("/user/**").upstream("lb://user-service"))
-                .route("order-service", r -> r.path("/order/**").upstream("lb://order-service"));
+                .route("user-service", r -> r.path("/user/**").target("lb://user-service"))
+                .route("order-service", r -> r.path("/order/**").target("lb://order-service"));
     }
 }

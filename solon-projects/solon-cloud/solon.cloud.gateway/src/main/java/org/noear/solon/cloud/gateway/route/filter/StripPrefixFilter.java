@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.route.filter;
 
 import org.noear.solon.cloud.gateway.route.RouteFilter;
-import org.noear.solon.cloud.gateway.route.UpstreamRequest;
+import org.noear.solon.cloud.gateway.route.RouteRequest;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.reactive.RxFilterChain;
 import reactor.core.publisher.Mono;
@@ -41,7 +41,7 @@ public class StripPrefixFilter implements RouteFilter {
 
     @Override
     public Mono<Void> doFilter(Context ctx, RxFilterChain chain) {
-        UpstreamRequest request = UpstreamRequest.of(ctx);
+        RouteRequest request = RouteRequest.of(ctx);
 
         //目标路径重组
         List<String> pathFragments = Arrays.asList(request.getPath().split("/", -1));

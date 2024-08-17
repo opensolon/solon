@@ -6,7 +6,7 @@ solon.app:
 
 solon.cloud.gateway:
   routes:
-    - upstream: "http://localhost:8080"
+    - target: "http://localhost:8080"
       predicates:
         - "Path=/demo/**"
       filters:

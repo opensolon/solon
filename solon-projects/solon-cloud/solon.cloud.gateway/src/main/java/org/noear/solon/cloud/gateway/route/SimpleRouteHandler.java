@@ -37,9 +37,9 @@ public class SimpleRouteHandler implements RouteHandler {
     @Override
     public Mono<Void> handle(Context ctx) {
         Route route = Route.of(ctx);
-        UpstreamRequest request = UpstreamRequest.of(ctx);
+        RouteRequest request = RouteRequest.of(ctx);
 
-        URI uri = route.getUri();
+        URI uri = route.getTarget();
 
         //构建请求工具
         HttpUtils httpUtils;
