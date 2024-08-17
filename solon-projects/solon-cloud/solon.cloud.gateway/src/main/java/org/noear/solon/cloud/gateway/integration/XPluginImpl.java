@@ -3,7 +3,7 @@ package org.noear.solon.cloud.gateway.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
-import org.noear.solon.cloud.gateway.CloudRoute;
+import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.redicate.PathPredicate;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -53,7 +53,7 @@ public class XPluginImpl implements Plugin {
 
         //routes
         for (RouteProperties rm : configModel.getRoutes()) {
-            CloudRoute route = new CloudRoute();
+            Route route = new Route();
 
             route.id(rm.getId());
             route.uri(URI.create(rm.getUri()));

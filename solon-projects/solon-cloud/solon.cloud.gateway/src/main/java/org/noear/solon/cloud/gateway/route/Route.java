@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.gateway;
+package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.redicate.PathPredicate;
@@ -19,10 +19,10 @@ import java.util.function.Predicate;
  * @author noear
  * @since 2.9
  */
-public class CloudRoute {
+public class Route {
     public static final String ATTR_NAME = "cloud-route";
 
-    public static CloudRoute of(Context ctx) {
+    public static Route of(Context ctx) {
         return ctx.attr(ATTR_NAME);
     }
 
@@ -32,36 +32,36 @@ public class CloudRoute {
     private List<Predicate<Context>> predicates = new ArrayList<>();
     private List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
-    public CloudRoute id(String id) {
+    public Route id(String id) {
         this.id = id;
         return this;
     }
 
-    public CloudRoute uri(URI uri) {
+    public Route uri(URI uri) {
         this.uri = uri;
         return this;
     }
 
-    public CloudRoute uri(String uri) {
+    public Route uri(String uri) {
         return uri(URI.create(uri));
     }
 
-    public CloudRoute stripPrefix(int stripPrefix) {
+    public Route stripPrefix(int stripPrefix) {
         this.stripPrefix = stripPrefix;
         return this;
     }
 
-    public CloudRoute filter(RxFilter filter) {
+    public Route filter(RxFilter filter) {
         return filter(filter, 0);
     }
 
-    public CloudRoute filter(RxFilter filter, int index) {
+    public Route filter(RxFilter filter, int index) {
         this.filters.add(new RankEntity<>(filter, index));
         this.filters.sort(Comparator.comparingInt(e -> e.index));
         return this;
     }
 
-    public CloudRoute predicate(Predicate<Context> predicate) {
+    public Route predicate(Predicate<Context> predicate) {
         if (predicate != null) {
             this.predicates.add(predicate);
         }
@@ -69,7 +69,7 @@ public class CloudRoute {
         return this;
     }
 
-    public CloudRoute path(String path) {
+    public Route path(String path) {
         return predicate(new PathPredicate(path));
     }
 

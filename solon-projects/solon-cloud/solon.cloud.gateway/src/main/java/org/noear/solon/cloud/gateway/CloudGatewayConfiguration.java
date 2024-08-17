@@ -1,5 +1,8 @@
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.gateway.route.RouteHandler;
+import org.noear.solon.cloud.gateway.route.SimpleRouteHandler;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.web.reactive.RxFilter;
 
@@ -16,9 +19,9 @@ import java.util.function.Consumer;
  */
 public class CloudGatewayConfiguration {
     //路由记录
-    protected List<CloudRoute> routes = new ArrayList<>();
+    protected List<Route> routes = new ArrayList<>();
     //路由处理
-    protected CloudRouteHandler routeHandler = new CloudRouteHandlerSimple();
+    protected RouteHandler routeHandler = new SimpleRouteHandler();
     //过滤器
     protected List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
@@ -52,8 +55,8 @@ public class CloudGatewayConfiguration {
      * @param id      标识
      * @param builder 路由构建器
      */
-    public CloudGatewayConfiguration route(String id, Consumer<CloudRoute> builder) {
-        CloudRoute route = new CloudRoute();
+    public CloudGatewayConfiguration route(String id, Consumer<Route> builder) {
+        Route route = new Route();
         route.id(id);
         builder.accept(route);
 
@@ -65,7 +68,7 @@ public class CloudGatewayConfiguration {
      *
      * @param route 路由
      */
-    public CloudGatewayConfiguration route(CloudRoute route) {
+    public CloudGatewayConfiguration route(Route route) {
         if (route != null) {
             routes.add(route);
         }
@@ -78,7 +81,7 @@ public class CloudGatewayConfiguration {
      *
      * @param routeHandler 路由处理器
      */
-    public CloudGatewayConfiguration routeHandler(CloudRouteHandler routeHandler) {
+    public CloudGatewayConfiguration routeHandler(RouteHandler routeHandler) {
         this.routeHandler = routeHandler;
         return this;
     }

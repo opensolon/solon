@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.gateway;
+package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.web.reactive.RxHandler;
 
@@ -9,6 +9,6 @@ import org.noear.solon.web.reactive.RxHandler;
  * @since 2.9
  */
 @FunctionalInterface
-public interface CloudRouteHandler extends RxHandler {
+public interface RouteHandler extends RxHandler {
 
 }

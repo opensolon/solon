@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.gateway;
+package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
@@ -10,18 +10,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分布式路由默认处理
+ * 简单的分布式路由处理
  *
  * @author noear
  * @since 2.9
  */
-public class CloudRouteHandlerSimple implements CloudRouteHandler {
+public class SimpleRouteHandler implements RouteHandler {
     /**
      * 处理
      */
     @Override
     public Mono<Void> handle(Context ctx) {
-        CloudRoute route = CloudRoute.of(ctx);
+        Route route = Route.of(ctx);
 
         URI uri = route.getUri();
         //目标路径重组

@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.web.reactive.*;
 import reactor.core.publisher.Mono;
@@ -32,14 +33,14 @@ public class CloudGateway implements Handler {
      * 执行处理
      */
     private Mono<Void> doHandle(Context ctx) {
-        CloudRoute route = findRoute(ctx);
+        Route route = findRoute(ctx);
 
         if (route == null) {
             ctx.status(404);
             return Mono.empty();
         } else {
             //记录路由
-            ctx.attrSet(CloudRoute.ATTR_NAME, route);
+            ctx.attrSet(Route.ATTR_NAME, route);
 
             return new RxFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
                     .doFilter(ctx);
@@ -51,8 +52,8 @@ public class CloudGateway implements Handler {
      *
      * @param ctx 上下文
      */
-    private CloudRoute findRoute(Context ctx) {
-        for (CloudRoute r : configuration.routes) {
+    private Route findRoute(Context ctx) {
+        for (Route r : configuration.routes) {
             if (r.matched(ctx)) {
                 return r;
             }
