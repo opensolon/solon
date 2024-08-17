@@ -15,7 +15,11 @@ solon.cloud.gateway:
 
 目前支持：
 
-* jdkhttp
-* jlhttp
-* jetty
-* undertow
+| 框架         | 支持情况                         | 备注                         |
+|------------|------------------------------|----------------------------|
+| jetty      | 推荐                           |                            |
+| undertow   | 推荐                           |                            |
+| jdkhttp    | 支持                           |                            |
+| jlhttp     | 支持                           |                            |
+| smart-http | 不支持（表单提前解析后，不能做 stream copy） | 换掉 SimpleRouteHandler 后可支持 |
+
