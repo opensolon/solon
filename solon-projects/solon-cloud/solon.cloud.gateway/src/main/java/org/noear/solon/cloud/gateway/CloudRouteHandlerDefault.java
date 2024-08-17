@@ -32,7 +32,7 @@ import java.net.URI;
  * @author noear
  * @since 2.9
  */
-public class SimpleCloudRouteHandler implements CloudRouteHandler {
+public class CloudRouteHandlerDefault implements CloudRouteHandler {
     /**
      * 处理
      */

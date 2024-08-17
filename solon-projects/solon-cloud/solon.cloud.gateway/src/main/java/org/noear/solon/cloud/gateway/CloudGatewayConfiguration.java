@@ -34,7 +34,7 @@ public class CloudGatewayConfiguration {
     //路由记录
     protected List<Route> routes = new ArrayList<>();
     //路由处理
-    protected CloudRouteHandler routeHandler = new SimpleCloudRouteHandler();
+    protected CloudRouteHandler routeHandler = new CloudRouteHandlerDefault();
     //过滤器
     protected List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
