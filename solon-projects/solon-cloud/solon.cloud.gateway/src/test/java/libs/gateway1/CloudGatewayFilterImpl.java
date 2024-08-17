@@ -16,16 +16,20 @@
 package libs.gateway1;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.web.reactive.RxFilter;
 import org.noear.solon.web.reactive.RxFilterChain;
 import reactor.core.publisher.Mono;
 
 @Component
-public class RxFilterImpl implements RxFilter {
+public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
     public Mono<Void> doFilter(Context ctx, RxFilterChain chain) {
-        System.out.println("RxFilterImpl.doFilter...............");
+        String token = ctx.header("TOKEN");
+        if (token == null) {
+            ctx.status(401);
+            return Mono.empty();
+        }
 
         return chain.doFilter(ctx);
     }
