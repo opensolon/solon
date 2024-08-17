@@ -1,8 +1,8 @@
-package org.noear.solon.cloud.gateway.filter;
+package org.noear.solon.cloud.gateway.route.filter;
 
+import org.noear.solon.cloud.gateway.route.RouteFilter;
 import org.noear.solon.cloud.gateway.route.UpstreamRequest;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.web.reactive.RxFilter;
 import org.noear.solon.web.reactive.RxFilterChain;
 import reactor.core.publisher.Mono;
 
@@ -13,10 +13,11 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class StripPrefixFilter implements RxFilter {
+public class StripPrefixFilter implements RouteFilter {
     private int parts;
 
-    public StripPrefixFilter(String config) {
+    @Override
+    public void init(String config) {
         this.parts = Integer.parseInt(config);
     }
 

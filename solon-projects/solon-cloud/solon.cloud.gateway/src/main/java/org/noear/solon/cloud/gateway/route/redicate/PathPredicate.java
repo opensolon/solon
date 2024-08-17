@@ -1,9 +1,8 @@
-package org.noear.solon.cloud.gateway.redicate;
+package org.noear.solon.cloud.gateway.route.redicate;
 
+import org.noear.solon.cloud.gateway.route.RoutePredicate;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.route.PathRule;
-
-import java.util.function.Predicate;
 
 /**
  * 路径断言
@@ -11,10 +10,11 @@ import java.util.function.Predicate;
  * @author noear
  * @since 2.9
  */
-public class PathPredicate implements Predicate<Context> {
-    private final PathRule rule;
+public class PathPredicate implements RoutePredicate {
+    private PathRule rule;
 
-    public PathPredicate(String config) {
+    @Override
+    public void init(String config) {
         rule = new PathRule();
         rule.include(config);
     }

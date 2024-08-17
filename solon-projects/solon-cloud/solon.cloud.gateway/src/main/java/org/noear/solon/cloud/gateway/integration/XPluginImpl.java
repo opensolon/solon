@@ -3,19 +3,19 @@ package org.noear.solon.cloud.gateway.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
-import org.noear.solon.cloud.gateway.filter.StripPrefixFilter;
+import org.noear.solon.cloud.gateway.route.RouteFilter;
+import org.noear.solon.cloud.gateway.route.RoutePredicate;
+import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilter;
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.redicate.PathPredicate;
+import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.web.reactive.RxFilter;
 
 import java.net.URI;
-import java.util.function.Predicate;
 
 /**
  * @author noear
@@ -89,49 +89,52 @@ public class XPluginImpl implements Plugin {
         }
     }
 
-    private Predicate<Context> buildPredicate(String predicate) {
+    private RoutePredicate buildPredicate(String predicate) {
+        RoutePredicate routePredicate = null;
         int idx = predicate.indexOf('=');
+
         if (idx > 0) {
             String label = predicate.substring(0, idx);
             String config = predicate.substring(idx + 1, predicate.length());
 
             if ("Path".equals(label)) {
-                return new PathPredicate(config);
+                routePredicate = new PathPredicate();
             } else {
                 if (label.indexOf('.') > 0) {
-                    return (Predicate<Context>) tryInstance(label, config);
+                    routePredicate = ClassUtil.tryInstance(label);
                 }
+            }
+
+            if (routePredicate != null) {
+                routePredicate.init(config);
             }
         }
 
-        return null;
+        return routePredicate;
     }
 
-    private RxFilter buildFilter(String filter) {
+    private RouteFilter buildFilter(String filter) {
+        RouteFilter routeFilter = null;
         int idx = filter.indexOf('=');
+
         if (idx > 0) {
             String label = filter.substring(0, idx);
             String config = filter.substring(idx + 1, filter.length());
 
+
             if ("StripPrefix".equals(label)) {
-                return new StripPrefixFilter(config);
+                routeFilter = new StripPrefixFilter();
             } else {
                 if (label.indexOf('.') > 0) {
-                    return (RxFilter) tryInstance(label, config);
+                    routeFilter = ClassUtil.tryInstance(label);
                 }
+            }
+
+            if (routeFilter != null) {
+                routeFilter.init(config);
             }
         }
 
-        return null;
-    }
-
-    private Object tryInstance(String className, String config) {
-        Class<?> clz = ClassUtil.loadClass(className);
-
-        if (clz != null) {
-            return ClassUtil.newInstance(clz, new Class[]{String.class}, new String[]{config});
-        }
-
-        return null;
+        return routeFilter;
     }
 }

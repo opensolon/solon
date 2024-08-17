@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.redicate.PathPredicate;
+import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.web.reactive.RxFilter;
@@ -29,7 +29,7 @@ public class Route {
     private String id;
     private URI upstream;
     private int stripPrefix;
-    private List<Predicate<Context>> predicates = new ArrayList<>();
+    private List<RoutePredicate> predicates = new ArrayList<>();
     private List<RankEntity<RxFilter>> filters = new ArrayList<>();
 
     public Route id(String id) {
@@ -64,7 +64,7 @@ public class Route {
         return this;
     }
 
-    public Route predicate(Predicate<Context> predicate) {
+    public Route predicate(RoutePredicate predicate) {
         if (predicate != null) {
             this.predicates.add(predicate);
         }
@@ -73,7 +73,10 @@ public class Route {
     }
 
     public Route path(String path) {
-        return predicate(new PathPredicate(path));
+        PathPredicate predicate = new PathPredicate();
+        predicate.init(path);
+
+        return predicate(predicate);
     }
 
     /**
@@ -117,7 +120,7 @@ public class Route {
     /**
      * 断言
      */
-    public List<Predicate<Context>> getPredicates() {
+    public List<RoutePredicate> getPredicates() {
         return predicates;
     }
 
