@@ -27,15 +27,31 @@ import java.util.List;
  * */
 public class FilterChainImpl implements FilterChain {
     private final List<RankEntity<Filter>> filterList;
+    private final Handler lastHandler;
     private int index;
 
     public FilterChainImpl(List<RankEntity<Filter>> filterList) {
         this.filterList = filterList;
         this.index = 0;
+        this.lastHandler = null;
+    }
+
+    public FilterChainImpl(List<RankEntity<Filter>> filterList, Handler lastHandler) {
+        this.filterList = filterList;
+        this.index = 0;
+        this.lastHandler = lastHandler;
     }
 
     @Override
     public void doFilter(Context ctx) throws Throwable {
-        filterList.get(index++).target.doFilter(ctx, this);
+        if (lastHandler == null) {
+            filterList.get(index++).target.doFilter(ctx, this);
+        } else {
+            if (index < filterList.size()) {
+                filterList.get(index++).target.doFilter(ctx, this);
+            } else {
+                lastHandler.handle(ctx);
+            }
+        }
     }
 }
