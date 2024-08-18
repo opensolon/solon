@@ -51,7 +51,7 @@ public class PluginUtil {
      * @param classLoader 类加载器
      * @param excludeList 排除列表
      */
-    public static void scanPlugins(ClassLoader classLoader, List<String> excludeList, Consumer<PluginEntity> consumer) {
+    public static void scanPlugins(ClassLoader classLoader, Collection<String> excludeList, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）
         Collection<String> nameList = ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties"));
 
@@ -71,7 +71,7 @@ public class PluginUtil {
     /**
      * 查找插件
      */
-    public static void findPlugins(ClassLoader classLoader, Properties props, List<String> excludeList,Consumer<PluginEntity> consumer) {
+    public static void findPlugins(ClassLoader classLoader, Properties props, Collection<String> excludeList,Consumer<PluginEntity> consumer) {
         String pluginStr = props.getProperty("solon.plugin");
 
         if (Utils.isNotEmpty(pluginStr)) {

@@ -26,7 +26,7 @@ public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     public Mono<Void> doFilter(ExContext ctx, RxFilterChain chain) {
         String token = ctx.rawHeader("TOKEN");
         if (token == null) {
-            ctx.exchange().response().status(401);
+            ctx.newResponse().status(401);
             return Mono.empty();
         }
 
