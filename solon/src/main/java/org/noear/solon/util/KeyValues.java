@@ -15,6 +15,7 @@
  */
 package org.noear.solon.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class KeyValues<T> {
      * 添加值
      */
     public void addValue(T value) {
+        if (values == null) {
+            values = new ArrayList<>();
+        }
         values.add(value);
     }
 
@@ -68,6 +72,10 @@ public class KeyValues<T> {
      * 获取第一个值
      */
     public T getFirstValue() {
+        if (values == null) {
+            return null;
+        }
+
         return values.get(0);
     }
 }
