@@ -101,6 +101,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         }
     }
 
+    /**
+     * 构建 http 请求对象
+     */
     private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
         URI targetUri;
         if (LoadBalance.URI_SCHEME.equals(ctx.target().getScheme())) {
@@ -121,6 +124,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         }
     }
 
+    /**
+     * 请求回调处理
+     */
     private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, MonoSink<Void> monoSink) {
         if (ar.succeeded()) {
             HttpResponse<Buffer> resp1 = ar.result();

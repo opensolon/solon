@@ -42,7 +42,7 @@ public class ExNewResponse {
     }
 
     /**
-     * 配置头
+     * 配置头（替换）
      */
     public ExNewResponse header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
@@ -50,7 +50,7 @@ public class ExNewResponse {
     }
 
     /**
-     * 配置头
+     * 配置头（替换）
      */
     public ExNewResponse header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
@@ -58,7 +58,7 @@ public class ExNewResponse {
     }
 
     /**
-     * 添加头
+     * 添加头（添加）
      */
     public ExNewResponse headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
@@ -73,14 +73,23 @@ public class ExNewResponse {
         return this;
     }
 
+    /**
+     * 获取状态
+     */
     public int getStatus() {
         return status;
     }
 
+    /**
+     * 获取头集合
+     */
     public Map<String, KeyValues<String>> getHeaders() {
         return headers;
     }
 
+    /**
+     * 获取主体
+     */
     public Buffer getBody() {
         return body;
     }

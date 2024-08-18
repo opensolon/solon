@@ -25,5 +25,10 @@ import reactor.core.publisher.Mono;
  */
 @FunctionalInterface
 public interface ExHandler {
+    /**
+     * 处理
+     *
+     * @param ctx 交换上下文
+     */
     Mono<Void> handle(ExContext ctx);
 }

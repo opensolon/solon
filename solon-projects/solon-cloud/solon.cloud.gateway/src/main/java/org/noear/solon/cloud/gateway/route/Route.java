@@ -39,29 +39,47 @@ public class Route {
     private List<RankEntity<ExFilter>> filters = new ArrayList<>();
     private TimeoutProperties timeout;
 
+    /**
+     * 配置标识
+     */
     public Route id(String id) {
         this.id = id;
         return this;
     }
 
+    /**
+     * 配置目标
+     */
     public Route target(URI uri) {
         this.target = uri;
         return this;
     }
 
+    /**
+     * 配置目标
+     */
     public Route target(String uri) {
         return target(URI.create(uri));
     }
 
+    /**
+     * 配置超时
+     */
     public Route timeout(TimeoutProperties timeout) {
         this.timeout = timeout;
         return this;
     }
 
+    /**
+     * 添加过滤器
+     */
     public Route filter(ExFilter filter) {
         return filter(filter, 0);
     }
 
+    /**
+     * 添加过滤器
+     */
     public Route filter(ExFilter filter, int index) {
         if (filter != null) {
             this.filters.add(new RankEntity<>(filter, index));
@@ -71,6 +89,9 @@ public class Route {
         return this;
     }
 
+    /**
+     * 添加匹配检测器
+     */
     public Route predicate(ExPredicate predicate) {
         if (predicate != null) {
             this.predicates.add(predicate);
@@ -79,6 +100,9 @@ public class Route {
         return this;
     }
 
+    /**
+     * 添加路径匹配检测器
+     */
     public Route path(String path) {
         ExPredicate predicate = RouteFactoryManager.global()
                 .getPredicate("Path", path);
@@ -118,7 +142,7 @@ public class Route {
     }
 
     /**
-     * 断言
+     * 匹配检测器
      */
     public List<ExPredicate> getPredicates() {
         return predicates;

@@ -63,15 +63,26 @@ public class ExContext {
 
     ////////////////////////////////////////////////////
 
+    /**
+     * 绑定路由信息
+     */
     public void bind(Route route) {
-        this.target = route.getTarget();
-        this.timeout = route.getTimeout();
+        if (route != null) {
+            this.target = route.getTarget();
+            this.timeout = route.getTimeout();
+        }
     }
 
+    /**
+     * 路由目标
+     */
     public URI target() {
         return target;
     }
 
+    /**
+     * 路由超时
+     */
     public TimeoutProperties timeout() {
         return timeout;
     }
@@ -137,7 +148,7 @@ public class ExContext {
     /**
      * 获取原始查询字符串
      */
-    public String rawQueryString(){
+    public String rawQueryString() {
         return rawRequest.query();
     }
 

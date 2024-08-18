@@ -43,6 +43,11 @@ public class ExFilterChainImpl implements ExFilterChain {
         this.lastHandler = lastHandler;
     }
 
+    /**
+     * 过滤
+     *
+     * @param ctx 交换上下文
+     */
     @Override
     public Mono<Void> doFilter(ExContext ctx) {
         if (lastHandler == null) {

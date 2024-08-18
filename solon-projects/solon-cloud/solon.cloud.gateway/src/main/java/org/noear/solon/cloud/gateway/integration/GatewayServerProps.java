@@ -19,8 +19,10 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.prop.impl.BaseServerProps;
 
 /**
+ * 分布式网关服务属性
+ *
  * @author noear
- * @since 1.8
+ * @since 2.9
  */
 public class GatewayServerProps extends BaseServerProps {
     public GatewayServerProps() {

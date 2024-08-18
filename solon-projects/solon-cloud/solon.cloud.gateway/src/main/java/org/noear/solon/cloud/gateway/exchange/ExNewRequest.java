@@ -67,7 +67,7 @@ public class ExNewRequest {
     }
 
     /**
-     * 配置头
+     * 配置头（替换）
      */
     public ExNewRequest header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
@@ -75,7 +75,7 @@ public class ExNewRequest {
     }
 
     /**
-     * 配置头
+     * 配置头（替换）
      */
     public ExNewRequest header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
@@ -83,7 +83,7 @@ public class ExNewRequest {
     }
 
     /**
-     * 添加头
+     * 添加头（添加）
      */
     public ExNewRequest headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
@@ -92,6 +92,8 @@ public class ExNewRequest {
 
     /**
      * 配置主体
+     *
+     * @param body 主体数据
      */
     public ExNewRequest body(Future<Buffer> body) {
         this.body = body;

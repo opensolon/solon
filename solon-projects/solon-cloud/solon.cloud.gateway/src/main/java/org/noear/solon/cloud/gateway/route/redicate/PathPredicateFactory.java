@@ -21,7 +21,7 @@ import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 import org.noear.solon.core.route.PathRule;
 
 /**
- * 路径检测器
+ * 路由路径匹配检测器
  *
  * @author noear
  * @since 2.9

@@ -28,21 +28,24 @@ public class RouteProperties {
      * 标识
      */
     private String id;
+
     /**
-     * 地址
+     * 目标
      */
     private String target;
+
     /**
-     * 匹配断言
+     * 匹配检测器
      */
     private List<String> predicates;
+
     /**
      * 过滤器
      */
     private List<String> filters;
 
     /**
-     * 客户端
+     * 超时
      */
     private TimeoutProperties timeout;
 
@@ -62,7 +65,7 @@ public class RouteProperties {
     }
 
     /**
-     * 匹配断言
+     * 匹配检测器
      */
     public List<String> getPredicates() {
         return predicates;

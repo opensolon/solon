@@ -28,7 +28,7 @@ public interface ExFilterChain {
     /**
      * 过滤
      *
-     * @param ctx 上下文
+     * @param ctx 交换上下文
      */
     Mono<Void> doFilter(ExContext ctx);
 }

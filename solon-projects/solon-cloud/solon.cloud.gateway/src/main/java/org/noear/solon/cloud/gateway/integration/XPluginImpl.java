@@ -21,7 +21,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.cloud.gateway.*;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
 import org.noear.solon.cloud.gateway.properties.RouteProperties;
