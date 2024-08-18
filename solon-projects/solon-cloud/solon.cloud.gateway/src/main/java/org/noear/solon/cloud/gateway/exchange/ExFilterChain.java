@@ -1,15 +1,15 @@
-package org.noear.solon.cloud.gateway.rx;
+package org.noear.solon.cloud.gateway.exchange;
 
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式过滤器链
+ * 交换过滤器链
  *
  * @author noear
  * @since 2.9
  */
 @FunctionalInterface
-public interface RxFilterChain {
+public interface ExFilterChain {
     /**
      * 过滤
      *

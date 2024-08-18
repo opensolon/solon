@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.rx.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 
 import java.util.function.Predicate;
 

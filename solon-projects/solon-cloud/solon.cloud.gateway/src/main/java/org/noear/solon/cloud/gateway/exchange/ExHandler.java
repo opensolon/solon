@@ -1,14 +1,14 @@
-package org.noear.solon.cloud.gateway.rx;
+package org.noear.solon.cloud.gateway.exchange;
 
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式处理器
+ * 交换处理器
  *
  * @author noear
  * @since 2.9
  */
 @FunctionalInterface
-public interface RxHandler {
+public interface ExHandler {
     Mono<Void> handle(ExContext ctx);
 }

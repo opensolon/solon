@@ -22,9 +22,9 @@ package org.noear.solon.cloud.gateway.integration;
  * @since 2.9
  */
 public class TimeoutProperties {
-    private int connectTimeout = 100;
-    private int requestTimeout = 100;
-    private int responseTimeout = 100;
+    private int connectTimeout = 10;
+    private int requestTimeout = 10;
+    private int responseTimeout = 60 * 30;
 
     public TimeoutProperties() {
 

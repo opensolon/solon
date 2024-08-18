@@ -24,7 +24,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
-import org.noear.solon.cloud.gateway.rx.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.util.KeyValues;
@@ -33,7 +33,6 @@ import reactor.core.publisher.MonoSink;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式路由处理器默认实现
@@ -48,11 +47,10 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         Solon.context().getBeanAsync(Vertx.class, b -> {
             WebClientOptions options = new WebClientOptions()
                     .setMaxPoolSize(250)
-                    .setConnectTimeout(1000) // milliseconds
-                    .setIdleTimeout(3600) // seconds
-                    .setIdleTimeoutUnit(TimeUnit.SECONDS)
+                    .setConnectTimeout(1000 * 3) // milliseconds: 5s
+                    .setIdleTimeout(60) // seconds: 60s
                     .setKeepAlive(true)
-                    .setKeepAliveTimeout(60); // seconds
+                    .setKeepAliveTimeout(60); // seconds: 60s
 
             this.httpClient = WebClient.create(b, options);
         });

@@ -16,14 +16,14 @@
 package libs.gateway1;
 
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
-import org.noear.solon.cloud.gateway.rx.ExContext;
-import org.noear.solon.cloud.gateway.rx.RxFilterChain;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import reactor.core.publisher.Mono;
 
 //@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
-    public Mono<Void> doFilter(ExContext ctx, RxFilterChain chain) {
+    public Mono<Void> doFilter(ExContext ctx, ExFilterChain chain) {
         String token = ctx.rawHeader("TOKEN");
         if (token == null) {
             ctx.newResponse().status(401);

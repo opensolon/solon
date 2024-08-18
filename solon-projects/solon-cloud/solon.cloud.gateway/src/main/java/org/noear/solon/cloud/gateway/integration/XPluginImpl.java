@@ -33,7 +33,7 @@ import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.core.util.LogUtil;
 
 import java.net.URI;
@@ -165,7 +165,7 @@ public class XPluginImpl implements Plugin {
         }
 
         //filters
-        for (RxFilter rf : configModel.getFilters()) {
+        for (ExFilter rf : configModel.getFilters()) {
             configuration.filter(rf);
         }
     }

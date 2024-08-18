@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.rx.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.exception.StatusException;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;

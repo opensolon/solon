@@ -18,8 +18,8 @@ package org.noear.solon.cloud.gateway;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.rx.ExContext;
-import org.noear.solon.cloud.gateway.rx.RxFilterChainImpl;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.core.exception.StatusException;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +40,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
         ExContext ctx = new ExContext(request);
 
         //开始执行
-        new RxFilterChainImpl(configuration.filters, this::doHandle)
+        new ExFilterChainImpl(configuration.filters, this::doHandle)
                 .doFilter(ctx)
                 .subscribe(new CloudGatewayCompletion(ctx));
     }
@@ -57,7 +57,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
             return Mono.empty();
         } else {
             try {
-                return new RxFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
+                return new ExFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
                         .doFilter(ctx);
             } catch (Throwable ex) {
                 //如果 buildUpstreamRequest 出错，说明请求体有问题

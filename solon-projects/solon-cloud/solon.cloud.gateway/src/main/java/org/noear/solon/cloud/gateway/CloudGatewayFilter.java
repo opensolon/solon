@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 /**
  * 分布式网关过滤器
@@ -9,5 +9,5 @@ import org.noear.solon.cloud.gateway.rx.RxFilter;
  * @since 2.9
  */
 @FunctionalInterface
-public interface CloudGatewayFilter extends RxFilter {
+public interface CloudGatewayFilter extends ExFilter {
 }

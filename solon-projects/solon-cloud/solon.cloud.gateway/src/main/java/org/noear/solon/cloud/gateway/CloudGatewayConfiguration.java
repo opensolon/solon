@@ -17,7 +17,7 @@ package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,14 +36,14 @@ public class CloudGatewayConfiguration {
     //路由处理
     protected CloudRouteHandler routeHandler = new CloudRouteHandlerDefault();
     //过滤器
-    protected List<RankEntity<RxFilter>> filters = new ArrayList<>();
+    protected List<RankEntity<ExFilter>> filters = new ArrayList<>();
 
     /**
      * 配置过滤器
      *
      * @param filter 过滤器
      */
-    public CloudGatewayConfiguration filter(RxFilter filter) {
+    public CloudGatewayConfiguration filter(ExFilter filter) {
         return filter(filter, 0);
     }
 
@@ -53,7 +53,7 @@ public class CloudGatewayConfiguration {
      * @param filter 过滤器
      * @param index  顺序位
      */
-    public CloudGatewayConfiguration filter(RxFilter filter, int index) {
+    public CloudGatewayConfiguration filter(ExFilter filter, int index) {
         if (filter != null) {
             this.filters.add(new RankEntity<>(filter::doFilter, index));
             this.filters.sort(Comparator.comparingInt(e -> e.index));

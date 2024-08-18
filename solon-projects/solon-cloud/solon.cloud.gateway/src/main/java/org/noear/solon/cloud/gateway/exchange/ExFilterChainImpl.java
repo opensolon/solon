@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.gateway.rx;
+package org.noear.solon.cloud.gateway.exchange;
 
 import org.noear.solon.core.util.RankEntity;
 import reactor.core.publisher.Mono;
@@ -6,23 +6,23 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * 响应式过滤器链实现
+ * 交换过滤器链实现
  *
  * @author noear
  * @since 2.9
  */
-public class RxFilterChainImpl implements RxFilterChain {
-    private final List<RankEntity<RxFilter>> filterList;
-    private final RxHandler lastHandler;
+public class ExFilterChainImpl implements ExFilterChain {
+    private final List<RankEntity<ExFilter>> filterList;
+    private final ExHandler lastHandler;
     private int index;
 
-    public RxFilterChainImpl(List<RankEntity<RxFilter>> filterList) {
+    public ExFilterChainImpl(List<RankEntity<ExFilter>> filterList) {
         this.filterList = filterList;
         this.index = 0;
         this.lastHandler = null;
     }
 
-    public RxFilterChainImpl(List<RankEntity<RxFilter>> filterList, RxHandler lastHandler) {
+    public ExFilterChainImpl(List<RankEntity<ExFilter>> filterList, ExHandler lastHandler) {
         this.filterList = filterList;
         this.index = 0;
         this.lastHandler = lastHandler;

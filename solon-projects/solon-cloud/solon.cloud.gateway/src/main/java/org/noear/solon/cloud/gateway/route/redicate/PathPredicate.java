@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.route.redicate;
 
 import org.noear.solon.cloud.gateway.route.RoutePredicate;
-import org.noear.solon.cloud.gateway.rx.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.route.PathRule;
 
 /**

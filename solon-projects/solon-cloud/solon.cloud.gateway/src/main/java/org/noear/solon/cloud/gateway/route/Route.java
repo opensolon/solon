@@ -17,9 +17,9 @@ package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
-import org.noear.solon.cloud.gateway.rx.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class Route {
     private String id;
     private URI target;
     private List<RoutePredicate> predicates = new ArrayList<>();
-    private List<RankEntity<RxFilter>> filters = new ArrayList<>();
+    private List<RankEntity<ExFilter>> filters = new ArrayList<>();
     private TimeoutProperties timeout;
 
     public Route id(String id) {
@@ -58,11 +58,11 @@ public class Route {
         return this;
     }
 
-    public Route filter(RxFilter filter) {
+    public Route filter(ExFilter filter) {
         return filter(filter, 0);
     }
 
-    public Route filter(RxFilter filter, int index) {
+    public Route filter(ExFilter filter, int index) {
         if (filter != null) {
             this.filters.add(new RankEntity<>(filter, index));
             this.filters.sort(Comparator.comparingInt(e -> e.index));
@@ -127,7 +127,7 @@ public class Route {
     /**
      * 过滤器
      */
-    public List<RankEntity<RxFilter>> getFilters() {
+    public List<RankEntity<ExFilter>> getFilters() {
         return filters;
     }
 

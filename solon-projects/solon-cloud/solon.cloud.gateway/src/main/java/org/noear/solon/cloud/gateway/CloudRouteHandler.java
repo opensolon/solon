@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.rx.RxHandler;
+import org.noear.solon.cloud.gateway.exchange.ExHandler;
 
 /**
  * 分布式路由处理器
@@ -24,6 +24,6 @@ import org.noear.solon.cloud.gateway.rx.RxHandler;
  * @since 2.9
  */
 @FunctionalInterface
-public interface CloudRouteHandler extends RxHandler {
+public interface CloudRouteHandler extends ExHandler {
 
 }

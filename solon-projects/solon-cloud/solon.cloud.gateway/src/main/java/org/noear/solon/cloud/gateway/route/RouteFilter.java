@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 /**
  * 路由过滤器
@@ -24,7 +24,7 @@ import org.noear.solon.cloud.gateway.rx.RxFilter;
  * @since 2.9
  */
 @FunctionalInterface
-public interface RouteFilter extends RxFilter {
+public interface RouteFilter extends ExFilter {
     /**
      * 初始化
      *
