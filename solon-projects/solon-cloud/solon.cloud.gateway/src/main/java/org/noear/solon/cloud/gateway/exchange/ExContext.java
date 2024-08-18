@@ -135,7 +135,14 @@ public class ExContext {
     }
 
     /**
-     * 获取原始 url 查询参数
+     * 获取原始查询字符串
+     */
+    public String rawQueryString(){
+        return rawRequest.query();
+    }
+
+    /**
+     * 获取原始查询参数
      */
     public String rawQueryParam(String key) {
         return rawRequest.getParam(key);
