@@ -14,3 +14,7 @@ solon.cloud.gateway:
 
 solon.plugin.exclude:
   - "org.noear.solon.boot.smarthttp.XPluginImp"
+
+solon.logging.logger:
+  root:
+    level: "INFO"
