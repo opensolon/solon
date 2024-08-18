@@ -40,7 +40,7 @@ public class Gateway1Test extends HttpTester {
 
     @Test
     public void GatewayPostTest() throws Exception {
-        String rst = path(8901, "/demo/test").data("name", "noear").post();
+        String rst = path(8901, "/demo/test?p1=1").data("name", "noear").post();
         assert rst != null;
         assert rst.equals("noear");
     }

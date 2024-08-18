@@ -17,6 +17,7 @@ package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.net.SocketAddress;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.Route;
 
@@ -60,6 +61,46 @@ public class ExContext {
         attrMap.put(key, value);
     }
 
+    ////////////////////////////////////////////////////
+
+    public void bind(Route route) {
+        this.target = route.getTarget();
+        this.timeout = route.getTimeout();
+    }
+
+    public URI target() {
+        return target;
+    }
+
+    public TimeoutProperties timeout() {
+        return timeout;
+    }
+
+    ////////////////////////////////////////////////////
+
+    /**
+     * 远程地址
+     */
+    public SocketAddress remoteAddress() {
+        return rawRequest.remoteAddress();
+    }
+
+    /**
+     * 本地地址
+     */
+    public SocketAddress localAddress() {
+        return rawRequest.localAddress();
+    }
+
+    /**
+     * 是否安全
+     */
+    public boolean isSecure() {
+        return rawRequest.isSSL();
+    }
+
+    ////////////////////////////////////////////////////
+
     /**
      * 获取原始请求方法
      */
@@ -100,18 +141,7 @@ public class ExContext {
         return rawRequest.getParam(key);
     }
 
-    public void bind(Route route) {
-        this.target = route.getTarget();
-        this.timeout = route.getTimeout();
-    }
-
-    public URI target() {
-        return target;
-    }
-
-    public TimeoutProperties timeout() {
-        return timeout;
-    }
+    ////////////////////////////////////////////////////
 
     /**
      * 新的请求构建器
