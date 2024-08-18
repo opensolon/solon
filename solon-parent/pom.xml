@@ -105,7 +105,7 @@
 
         <netty.version>4.1.117.Final</netty.version>
         <reactor-core.version>3.6.9</reactor-core.version>
-        <reactor-netty-http.version>1.1.15</reactor-netty-http.version>
+        <reactor-netty-http.version>1.1.22</reactor-netty-http.version>
 
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <spring.version>5.0.8.RELEASE</spring.version>
