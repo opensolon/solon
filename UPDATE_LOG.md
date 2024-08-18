@@ -71,6 +71,7 @@
 * aws.s3 升为 1.12.769
 * powerjob 升为 5.1.0
 * netty 升为 4.1.117.Final
+* reactor-core 升为 3.6.9
 * undertow 升为 2.2.34.Final
 * jetty 升为 9.4.55.v20240627
 * smarthttp 升为 1.5.8
