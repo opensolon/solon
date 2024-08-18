@@ -37,12 +37,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <version>${netty.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-lib</artifactId>
             <scope>test</scope>

@@ -13,39 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.properties;
+package org.noear.solon.cloud.gateway.route;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 /**
- * 分布式网关配置属性
+ * 路由过滤器工厂
  *
  * @author noear
  * @since 2.9
  */
-public class GatewayProperties {
+public interface RouteFilterFactory {
     /**
-     * 路由记录
+     * 配置前缀
      */
-    private List<RouteProperties> routes = new ArrayList<>();
+    String prefix();
 
     /**
-     * Http 客户端超时
+     * 创建
      */
-    private TimeoutProperties httpClient = new TimeoutProperties();
-
-    /**
-     * 路由记录
-     */
-    public List<RouteProperties> getRoutes() {
-        return routes;
-    }
-
-    /**
-     * Http 客户端超时
-     */
-    public TimeoutProperties getHttpClient() {
-        return httpClient;
-    }
+    ExFilter create(String config);
 }

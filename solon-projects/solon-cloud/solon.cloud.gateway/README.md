@@ -5,20 +5,15 @@ solon.cloud.gateway 为“半”响应式架构
 ```yaml
 solon.cloud.gateway:
   httpClient: #?可选
-    connectTimeout: 1000 #?可选
-    requestTimeout: 1000 #?可选
-    responseTimeout: 1000 #?可选
-  routeHandler: "xxx.xxx.DemoRouteHandler1" #?可选
-  filters: #?可选
-    - "xxx.xxx.DemoCloudGateway1"
+    connectTimeout: 10 #?可选
+    requestTimeout: 10 #?可选
+    responseTimeout: 1800 #?可选
   routes: #!必选
     - target: "http://localhost:8080" # 或 "lb://user-service"
-      predicates:
+      predicates: #?可选
         - "Path=/demo/**"
-        - "xxx.xxx.DemoRoutePredicate1=ccc" #全类名 base:RoutePredicate
-      filters:
+      filters: #?可选
         - "StripPrefix=1"
-        - "xxx.xxx.DemoRouteFilter1=test" #全类名 base:RouteFilter
       timeout: #?可选
         connectTimeout: 1000 #?可选
         requestTimeout: 1000 #?可选

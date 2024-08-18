@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route.redicate;
+package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.route.RoutePredicate;
-import org.noear.solon.cloud.gateway.exchange.ExContext;
-import org.noear.solon.core.route.PathRule;
+import org.noear.solon.cloud.gateway.route.Route;
+
+import java.util.function.Consumer;
 
 /**
- * 路径检测器
+ * 分布式路由注册表
  *
  * @author noear
  * @since 2.9
  */
-public class PathPredicate implements RoutePredicate {
-    private PathRule rule;
+public interface CloudRouteRegister {
+    /**
+     * 配置路由
+     *
+     * @param id      标识
+     * @param builder 路由构建器
+     */
+    CloudRouteRegister route(String id, Consumer<Route> builder);
 
-    @Override
-    public RoutePredicate init(String config) {
-        rule = new PathRule();
-        rule.include(config);
-        return this;
-    }
-
-    @Override
-    public boolean test(ExContext ctx) {
-        return rule.test(ctx.rawPath());
-    }
+    /**
+     * 配置路由
+     *
+     * @param route 路由
+     */
+    CloudRouteRegister route(Route route);
 }

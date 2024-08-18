@@ -1,7 +1,10 @@
 package org.noear.solon.cloud.gateway;
 
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.exception.StatusException;
+import org.noear.solon.util.KeyValues;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -16,10 +19,12 @@ import org.slf4j.LoggerFactory;
 public class CloudGatewayCompletion implements Subscriber {
     static final Logger log = LoggerFactory.getLogger(CloudGatewayCompletion.class);
 
-    private ExContext ctx;
+    private final ExContext ctx;
+    private final HttpServerRequest rawRequest;
 
-    public CloudGatewayCompletion(ExContext ctx) {
+    public CloudGatewayCompletion(ExContext ctx, HttpServerRequest rawRequest) {
         this.ctx = ctx;
+        this.rawRequest = rawRequest;
     }
 
     @Override
@@ -48,13 +53,32 @@ public class CloudGatewayCompletion implements Subscriber {
 
             log.error(throwable.getMessage(), throwable);
         } finally {
-            this.ctx.complete();
+            postComplete();
         }
 
     }
 
     @Override
     public void onComplete() {
-        this.ctx.complete();
+        postComplete();
+    }
+
+    /**
+     * 提交异步完成
+     */
+    protected void postComplete() {
+        HttpServerResponse rawResponse = rawRequest.response();
+
+        rawResponse.setStatusCode(ctx.newResponse().getStatus());
+
+        for (KeyValues<String> kv : ctx.newResponse().getHeaders().values()) {
+            rawResponse.putHeader(kv.getKey(), kv.getValues());
+        }
+
+        if (ctx.newResponse().getBody() != null) {
+            rawResponse.end(ctx.newResponse().getBody());
+        } else {
+            rawResponse.end();
+        }
     }
 }

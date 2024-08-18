@@ -25,12 +25,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 分布式网关配置
+ * 分布式路由配置
  *
  * @author noear
  * @since 2.9
  */
-public class CloudGatewayConfiguration {
+public class CloudGatewayConfiguration implements CloudRouteRegister {
     //路由记录
     protected List<Route> routes = new ArrayList<>();
     //路由处理
@@ -43,8 +43,8 @@ public class CloudGatewayConfiguration {
      *
      * @param filter 过滤器
      */
-    public CloudGatewayConfiguration filter(ExFilter filter) {
-        return filter(filter, 0);
+    public void filter(ExFilter filter) {
+        filter(filter, 0);
     }
 
     /**
@@ -53,13 +53,20 @@ public class CloudGatewayConfiguration {
      * @param filter 过滤器
      * @param index  顺序位
      */
-    public CloudGatewayConfiguration filter(ExFilter filter, int index) {
+    public void filter(ExFilter filter, int index) {
         if (filter != null) {
             this.filters.add(new RankEntity<>(filter::doFilter, index));
             this.filters.sort(Comparator.comparingInt(e -> e.index));
         }
+    }
 
-        return this;
+    /**
+     * 配置路由处理
+     *
+     * @param routeHandler 路由处理器
+     */
+    public void routeHandler(CloudRouteHandler routeHandler) {
+        this.routeHandler = routeHandler;
     }
 
     /**
@@ -68,7 +75,7 @@ public class CloudGatewayConfiguration {
      * @param id      标识
      * @param builder 路由构建器
      */
-    public CloudGatewayConfiguration route(String id, Consumer<Route> builder) {
+    public CloudRouteRegister route(String id, Consumer<Route> builder) {
         Route route = new Route();
         route.id(id);
         builder.accept(route);
@@ -81,21 +88,11 @@ public class CloudGatewayConfiguration {
      *
      * @param route 路由
      */
-    public CloudGatewayConfiguration route(Route route) {
+    public CloudRouteRegister route(Route route) {
         if (route != null) {
             routes.add(route);
         }
 
-        return this;
-    }
-
-    /**
-     * 配置路由处理
-     *
-     * @param routeHandler 路由处理器
-     */
-    public CloudGatewayConfiguration routeHandler(CloudRouteHandler routeHandler) {
-        this.routeHandler = routeHandler;
         return this;
     }
 }

@@ -15,8 +15,8 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
+import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
-import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
@@ -35,7 +35,7 @@ import java.util.List;
 public class Route {
     private String id;
     private URI target;
-    private List<RoutePredicate> predicates = new ArrayList<>();
+    private List<ExPredicate> predicates = new ArrayList<>();
     private List<RankEntity<ExFilter>> filters = new ArrayList<>();
     private TimeoutProperties timeout;
 
@@ -71,7 +71,7 @@ public class Route {
         return this;
     }
 
-    public Route predicate(RoutePredicate predicate) {
+    public Route predicate(ExPredicate predicate) {
         if (predicate != null) {
             this.predicates.add(predicate);
         }
@@ -80,8 +80,8 @@ public class Route {
     }
 
     public Route path(String path) {
-        PathPredicate predicate = new PathPredicate();
-        predicate.init(path);
+        ExPredicate predicate = RouteFactoryManager.global()
+                .getPredicate("Path", path);
 
         return predicate(predicate);
     }
@@ -93,7 +93,7 @@ public class Route {
         if (predicates.size() == 0) {
             return false;
         } else {
-            for (RoutePredicate p : predicates) {
+            for (ExPredicate p : predicates) {
                 if (p.test(ctx) == false) {
                     return false;
                 }
@@ -120,7 +120,7 @@ public class Route {
     /**
      * 断言
      */
-    public List<RoutePredicate> getPredicates() {
+    public List<ExPredicate> getPredicates() {
         return predicates;
     }
 

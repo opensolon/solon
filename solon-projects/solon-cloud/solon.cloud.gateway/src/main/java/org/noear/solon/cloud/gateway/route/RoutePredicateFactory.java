@@ -15,22 +15,23 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.exchange.ExFilter;
+
+import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 
 /**
- * 路由过滤器
+ * 路由检测器工厂
  *
  * @author noear
  * @since 2.9
  */
-@FunctionalInterface
-public interface RouteFilter extends ExFilter {
+public interface RoutePredicateFactory {
     /**
-     * 初始化
-     *
-     * @param config 配置
+     * 配置前缀
      */
-    default RouteFilter init(String config) {
-        return this;
-    }
+    String prefix();
+
+    /**
+     * 创建
+     */
+    ExPredicate create(String config);
 }

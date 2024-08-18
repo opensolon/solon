@@ -42,7 +42,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
         //开始执行
         new ExFilterChainImpl(configuration.filters, this::doHandle)
                 .doFilter(ctx)
-                .subscribe(new CloudGatewayCompletion(ctx));
+                .subscribe(new CloudGatewayCompletion(ctx, request));
     }
 
 

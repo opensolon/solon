@@ -22,20 +22,14 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.cloud.gateway.CloudGateway;
-import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
-import org.noear.solon.cloud.gateway.CloudGatewayFilter;
+import org.noear.solon.cloud.gateway.*;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
 import org.noear.solon.cloud.gateway.properties.RouteProperties;
-import org.noear.solon.cloud.gateway.route.RouteFilter;
-import org.noear.solon.cloud.gateway.CloudRouteHandler;
-import org.noear.solon.cloud.gateway.route.RoutePredicate;
-import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilter;
+import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
+import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.core.util.LogUtil;
 
 import java.net.URI;
@@ -66,21 +60,34 @@ public class XPluginImpl implements Plugin {
 
         CloudGateway cloudGateway = new CloudGateway();
 
-        context.wrapAndPut(CloudGatewayConfiguration.class, cloudGateway.getConfiguration());
+        //注册 CloudRouteConfiguration
+        context.wrapAndPut(CloudRouteRegister.class, cloudGateway.getConfiguration());
 
-        //加载配置
-        loadConfiguration(cloudGateway.getConfiguration(), "solon.cloud.gateway");
-
-        //添加过注解滤器
+        //添加过注解滤器（可多个）
         context.subWrapsOfType(CloudGatewayFilter.class, bw -> {
             cloudGateway.getConfiguration().filter(bw.raw(), bw.index());
         });
 
-        //添加过注解处理器
+        //添加过注解处理器（只能一个）
         context.getBeanAsync(CloudRouteHandler.class, b -> {
             cloudGateway.getConfiguration().routeHandler(b);
         });
 
+        //添加路由过滤器工厂（可多个）
+        context.subBeansOfType(RouteFilterFactory.class, b -> {
+            RouteFactoryManager.global().addFactory(b);
+        });
+
+        //添加kkht由检测器工厂（可多个）
+        context.subBeansOfType(RoutePredicateFactory.class, b -> {
+            RouteFactoryManager.global().addFactory(b);
+        });
+
+        //加载配置
+        context.lifecycle(() -> {
+            //之前需要先收集注解组件
+            loadConfiguration(cloudGateway.getConfiguration(), "solon.cloud.gateway");
+        });
 
         //启动完成后注册
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
@@ -88,7 +95,7 @@ public class XPluginImpl implements Plugin {
         });
     }
 
-    private void start0(CloudGateway cloudGateway){
+    private void start0(CloudGateway cloudGateway) {
         //初始化属性
         ServerProps.init();
 
@@ -141,14 +148,14 @@ public class XPluginImpl implements Plugin {
             if (rm.getPredicates() != null) {
                 //route.predicates
                 for (String predicateStr : rm.getPredicates()) {
-                    route.predicate(buildPredicate(predicateStr));
+                    route.predicate(RouteFactoryManager.global().buildPredicate(predicateStr));
                 }
             }
 
             if (rm.getFilters() != null) {
                 //route.filters
                 for (String filterStr : rm.getFilters()) {
-                    route.filter(buildFilter(filterStr));
+                    route.filter(RouteFactoryManager.global().buildFilter(filterStr));
                 }
             }
 
@@ -160,64 +167,5 @@ public class XPluginImpl implements Plugin {
 
             configuration.route(route);
         }
-
-        //routeHandler
-        if (configModel.getRouteHandler() != null) {
-            configuration.routeHandler(configModel.getRouteHandler());
-        }
-
-        //filters
-        for (ExFilter rf : configModel.getFilters()) {
-            configuration.filter(rf);
-        }
-    }
-
-    private RoutePredicate buildPredicate(String predicate) {
-        RoutePredicate routePredicate = null;
-        int idx = predicate.indexOf('=');
-
-        if (idx > 0) {
-            String label = predicate.substring(0, idx);
-            String config = predicate.substring(idx + 1, predicate.length());
-
-            if ("Path".equals(label)) {
-                routePredicate = new PathPredicate();
-            } else {
-                if (label.indexOf('.') > 0) {
-                    routePredicate = ClassUtil.tryInstance(label);
-                }
-            }
-
-            if (routePredicate != null) {
-                routePredicate.init(config);
-            }
-        }
-
-        return routePredicate;
-    }
-
-    private RouteFilter buildFilter(String filter) {
-        RouteFilter routeFilter = null;
-        int idx = filter.indexOf('=');
-
-        if (idx > 0) {
-            String label = filter.substring(0, idx);
-            String config = filter.substring(idx + 1, filter.length());
-
-
-            if ("StripPrefix".equals(label)) {
-                routeFilter = new StripPrefixFilter();
-            } else {
-                if (label.indexOf('.') > 0) {
-                    routeFilter = ClassUtil.tryInstance(label);
-                }
-            }
-
-            if (routeFilter != null) {
-                routeFilter.init(config);
-            }
-        }
-
-        return routeFilter;
     }
 }

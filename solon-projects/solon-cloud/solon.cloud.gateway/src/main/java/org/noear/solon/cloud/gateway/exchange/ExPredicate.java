@@ -13,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route;
-
-import org.noear.solon.cloud.gateway.exchange.ExContext;
+package org.noear.solon.cloud.gateway.exchange;
 
 import java.util.function.Predicate;
 
 /**
- * 路由检测器
+ * 交换检测器
  *
  * @author noear
  * @since 2.9
  */
-@FunctionalInterface
-public interface RoutePredicate extends Predicate<ExContext> {
-    /**
-     * 初始化
-     *
-     * @param config 配置
-     */
-    default RoutePredicate init(String config) {
-        return this;
-    }
+public interface ExPredicate extends Predicate<ExContext> {
 }

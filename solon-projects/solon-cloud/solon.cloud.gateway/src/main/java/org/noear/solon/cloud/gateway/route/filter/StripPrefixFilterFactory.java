@@ -15,9 +15,10 @@
  */
 package org.noear.solon.cloud.gateway.route.filter;
 
-import org.noear.solon.cloud.gateway.route.RouteFilter;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
+import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -29,22 +30,33 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class StripPrefixFilter implements RouteFilter {
-    private int parts;
+public class StripPrefixFilterFactory implements RouteFilterFactory {
 
     @Override
-    public RouteFilter init(String config) {
-        this.parts = Integer.parseInt(config);
-        return this;
+    public String prefix() {
+        return "StripPrefix";
     }
 
     @Override
-    public Mono<Void> doFilter(ExContext ctx, ExFilterChain chain) {
-        //目标路径重组
-        List<String> pathFragments = Arrays.asList(ctx.newRequest().getPath().split("/", -1));
-        String newPath = "/" + String.join("/", pathFragments.subList(parts + 1, pathFragments.size()));
-        ctx.newRequest().path(newPath);
+    public ExFilter create(String config) {
+        return new StripPrefixFilter(config);
+    }
 
-        return chain.doFilter(ctx);
+    public static class StripPrefixFilter implements ExFilter {
+        private int parts;
+
+        public StripPrefixFilter(String config) {
+            this.parts = Integer.parseInt(config);
+        }
+
+        @Override
+        public Mono<Void> doFilter(ExContext ctx, ExFilterChain chain) {
+            //目标路径重组
+            List<String> pathFragments = Arrays.asList(ctx.newRequest().getPath().split("/", -1));
+            String newPath = "/" + String.join("/", pathFragments.subList(parts + 1, pathFragments.size()));
+            ctx.newRequest().path(newPath);
+
+            return chain.doFilter(ctx);
+        }
     }
 }
