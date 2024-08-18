@@ -121,44 +121,25 @@ public class ExContext {
         return rawRequest.method().name();
     }
 
+    private URI rawURI;
+
+    /**
+     * 获取原始完整请求地址 uri
+     */
+    public URI rawURI() {
+        if (rawURI == null) {
+            rawURI = URI.create(rawRequest.absoluteURI());
+        }
+
+        return rawURI;
+    }
+
+
     /**
      * 获取原始路径
      */
     public String rawPath() {
         return rawRequest.path();
-    }
-
-    /**
-     * 获取原始 header
-     */
-    public String rawHeader(String key) {
-        return rawRequest.getHeader(key);
-    }
-
-    /**
-     * 获取原始所有 header
-     */
-    public MultiMap rawHeadersAll(){
-        return rawRequest.headers();
-    }
-
-    /**
-     * 获取原始 cookie
-     */
-    public String rawCookie(String key) {
-        Cookie cookie = rawRequest.getCookie(key);
-        if (cookie == null) {
-            return null;
-        } else {
-            return cookie.getValue();
-        }
-    }
-
-    /**
-     * 获取原始所有 cookie
-     */
-    public Set<Cookie> rawCookiesAll(){
-        return rawRequest.cookies();
     }
 
     /**
@@ -181,6 +162,40 @@ public class ExContext {
     public MultiMap rawQueryParamsAll() {
         return rawRequest.params();
     }
+
+    /**
+     * 获取原始 header
+     */
+    public String rawHeader(String key) {
+        return rawRequest.getHeader(key);
+    }
+
+    /**
+     * 获取原始所有 header
+     */
+    public MultiMap rawHeadersAll() {
+        return rawRequest.headers();
+    }
+
+    /**
+     * 获取原始 cookie
+     */
+    public String rawCookie(String key) {
+        Cookie cookie = rawRequest.getCookie(key);
+        if (cookie == null) {
+            return null;
+        } else {
+            return cookie.getValue();
+        }
+    }
+
+    /**
+     * 获取原始所有 cookie
+     */
+    public Set<Cookie> rawCookiesAll() {
+        return rawRequest.cookies();
+    }
+
 
     ////////////////////////////////////////////////////
 
