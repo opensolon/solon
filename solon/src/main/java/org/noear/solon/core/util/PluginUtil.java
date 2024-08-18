@@ -20,6 +20,8 @@ import org.noear.solon.core.PluginEntity;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.function.Consumer;
 
@@ -40,15 +42,16 @@ public class PluginUtil {
     @Deprecated
     public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
         //由 classloader 自己实现过滤
-        scanPlugins(classLoader, consumer);
+        scanPlugins(classLoader, Collections.emptyList(), consumer);
     }
 
     /**
      * 扫描插件
      *
      * @param classLoader 类加载器
+     * @param excludeList 排除列表
      */
-    public static void scanPlugins(ClassLoader classLoader, Consumer<PluginEntity> consumer) {
+    public static void scanPlugins(ClassLoader classLoader, List<String> excludeList, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）
         Collection<String> nameList = ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties"));
 
@@ -60,7 +63,7 @@ public class PluginUtil {
                 LogUtil.global().warn("Solon plugin: name=" + name + ", resource is null");
             } else {
                 Properties props = Utils.loadProperties(res);
-                findPlugins(classLoader, props, consumer);
+                findPlugins(classLoader, props, excludeList, consumer);
             }
         }
     }
@@ -68,7 +71,7 @@ public class PluginUtil {
     /**
      * 查找插件
      */
-    public static void findPlugins(ClassLoader classLoader, Properties props, Consumer<PluginEntity> consumer) {
+    public static void findPlugins(ClassLoader classLoader, Properties props, List<String> excludeList,Consumer<PluginEntity> consumer) {
         String pluginStr = props.getProperty("solon.plugin");
 
         if (Utils.isNotEmpty(pluginStr)) {
@@ -82,6 +85,10 @@ public class PluginUtil {
 
             for (String clzName : plugins) {
                 if (clzName.length() > 0) {
+                    if(excludeList.contains(clzName)) {
+                        continue;
+                    }
+
                     PluginEntity ent = new PluginEntity(classLoader, clzName.trim(), props);
                     ent.setPriority(priority);
                     consumer.accept(ent);

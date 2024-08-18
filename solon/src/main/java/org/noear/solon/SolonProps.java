@@ -361,13 +361,15 @@ public final class SolonProps extends Props {
      * 插件扫描
      */
     protected void plugsScan(List<ClassLoader> classLoaders) {
+        List<String> excludeList = getList("solon.plugin.exclude");
+
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, plugs::add);
+            PluginUtil.scanPlugins(classLoader, excludeList, plugs::add);
         }
 
         //扫描主配置
-        PluginUtil.findPlugins(AppClassLoader.global(), this, plugs::add);
+        PluginUtil.findPlugins(AppClassLoader.global(), this, excludeList, plugs::add);
 
         //插件排序
         plugsSort();

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -181,7 +182,7 @@ public class PluginPackage {
 
             List<PluginEntity> plugins = new ArrayList<>();
 
-            PluginUtil.scanPlugins(classLoader, plugins::add);
+            PluginUtil.scanPlugins(classLoader, Collections.emptyList(), plugins::add);
 
 
             return new PluginPackage(file, classLoader, plugins);

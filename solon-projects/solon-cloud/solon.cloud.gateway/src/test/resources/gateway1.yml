@@ -11,3 +11,6 @@ solon.cloud.gateway:
         - "Path=/demo/**"
       filters:
         - "StripPrefix=1"
+
+solon.plugin.exclude:
+  - "org.noear.solon.boot.jdkhttp.XPluginImp"
