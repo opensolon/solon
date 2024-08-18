@@ -61,6 +61,13 @@ public class ExContext {
     }
 
     /**
+     * 获取原始请求方法
+     */
+    public String rawMethod() {
+        return rawRequest.method().name();
+    }
+
+    /**
      * 获取原始路径
      */
     public String rawPath() {
@@ -86,6 +93,13 @@ public class ExContext {
         }
     }
 
+    /**
+     * 获取原始 url 查询参数
+     */
+    public String rawQueryParam(String key) {
+        return rawRequest.getParam(key);
+    }
+
     public void bind(Route route) {
         this.target = route.getTarget();
         this.timeout = route.getTimeout();
@@ -101,7 +115,7 @@ public class ExContext {
 
     /**
      * 新的请求构建器
-     * */
+     */
     public ExNewRequest newRequest() {
         if (newRequest == null) {
             newRequest = new ExNewRequest();
@@ -122,7 +136,7 @@ public class ExContext {
 
     /**
      * 新的响应构建器
-     * */
+     */
     public ExNewResponse newResponse() {
         if (newResponse == null) {
             newResponse = new ExNewResponse();
