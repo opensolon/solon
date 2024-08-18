@@ -1,6 +1,5 @@
-package org.noear.solon.web.reactive;
+package org.noear.solon.cloud.gateway.rx;
 
-import org.noear.solon.core.handle.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -11,5 +10,5 @@ import reactor.core.publisher.Mono;
  */
 @FunctionalInterface
 public interface RxHandler {
-    Mono<Void> handle(Context ctx);
+    Mono<Void> handle(RxContext ctx);
 }

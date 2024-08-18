@@ -17,15 +17,14 @@ package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
-import org.noear.solon.core.handle.Context;
+import org.noear.solon.cloud.gateway.rx.RxContext;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.web.reactive.RxFilter;
+import org.noear.solon.cloud.gateway.rx.RxFilter;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * 分布式路由记录
@@ -34,14 +33,6 @@ import java.util.function.Predicate;
  * @since 2.9
  */
 public class Route {
-    public static final String ATTR_NAME = "cloud-route";
-
-    public static Route of(Context ctx) {
-        return ctx.attr(ATTR_NAME);
-    }
-
-    //----------------
-
     private String id;
     private URI target;
     private List<RoutePredicate> predicates = new ArrayList<>();
@@ -98,11 +89,11 @@ public class Route {
     /**
      * 匹配
      */
-    public boolean matched(Context ctx) {
+    public boolean matched(RxContext ctx) {
         if (predicates.size() == 0) {
             return false;
         } else {
-            for (Predicate<Context> p : predicates) {
+            for (RoutePredicate p : predicates) {
                 if (p.test(ctx) == false) {
                     return false;
                 }

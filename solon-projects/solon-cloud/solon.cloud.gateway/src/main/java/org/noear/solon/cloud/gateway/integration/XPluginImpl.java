@@ -15,7 +15,13 @@
  */
 package org.noear.solon.cloud.gateway.integration;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServer;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
@@ -25,12 +31,10 @@ import org.noear.solon.cloud.gateway.route.RoutePredicate;
 import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilter;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.web.reactive.RxFilter;
+import org.noear.solon.cloud.gateway.rx.RxFilter;
+import org.noear.solon.core.util.LogUtil;
 
 import java.net.URI;
 
@@ -39,8 +43,25 @@ import java.net.URI;
  * @since 2.9
  */
 public class XPluginImpl implements Plugin {
+    private static Signal _signal;
+
+    public static Signal signal() {
+        return _signal;
+    }
+
+
+    public static String solon_boot_ver() {
+        return "cloud.gateway v1/ " + Solon.version();
+    }
+
+    private Vertx _vertx;
+    private HttpServer _server;
+
     @Override
     public void start(AppContext context) throws Throwable {
+        _vertx = Vertx.vertx();
+        context.wrapAndPut(Vertx.class, _vertx);
+
         CloudGateway cloudGateway = new CloudGateway();
 
         context.wrapAndPut(CloudGatewayConfiguration.class, cloudGateway.getConfiguration());
@@ -58,10 +79,43 @@ public class XPluginImpl implements Plugin {
             cloudGateway.getConfiguration().routeHandler(b);
         });
 
+
         //启动完成后注册
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
-            e.app().http("/**", cloudGateway);
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
+            start0(cloudGateway);
         });
+    }
+
+    private void start0(CloudGateway cloudGateway){
+        //初始化属性
+        ServerProps.init();
+
+
+        HttpServerProps props = HttpServerProps.getInstance();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
+
+        long time_start = System.currentTimeMillis();
+
+        _server = _vertx.createHttpServer();
+        _server.requestHandler(cloudGateway);
+        if (Utils.isNotEmpty(_host)) {
+            _server.listen(_port, _host);
+        } else {
+            _server.listen(_port);
+        }
+
+        final String _wrapHost = props.getWrapHost();
+        final int _wrapPort = props.getWrapPort();
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
+        Solon.app().signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        String httpServerUrl = props.buildHttpServerUrl(false);
+        LogUtil.global().info("Connector:main: cloud.gateway: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
+        LogUtil.global().info("Server:main: cloud.gateway: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     /**

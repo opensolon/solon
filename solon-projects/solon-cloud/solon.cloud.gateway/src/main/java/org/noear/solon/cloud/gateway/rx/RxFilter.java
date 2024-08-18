@@ -1,6 +1,5 @@
-package org.noear.solon.web.reactive;
+package org.noear.solon.cloud.gateway.rx;
 
-import org.noear.solon.core.handle.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,5 +15,5 @@ public interface RxFilter {
      *
      * @param ctx 上下文
      */
-    Mono<Void> doFilter(Context ctx, RxFilterChain chain);
+    Mono<Void> doFilter(RxContext ctx, RxFilterChain chain);
 }

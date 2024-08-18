@@ -17,7 +17,7 @@ package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.web.reactive.RxFilter;
+import org.noear.solon.cloud.gateway.rx.RxFilter;
 
 import java.util.ArrayList;
 import java.util.Comparator;

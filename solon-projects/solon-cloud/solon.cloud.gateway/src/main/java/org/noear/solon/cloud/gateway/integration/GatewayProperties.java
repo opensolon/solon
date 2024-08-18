@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.integration;
 
 import org.noear.solon.cloud.gateway.CloudRouteHandler;
-import org.noear.solon.web.reactive.RxFilter;
+import org.noear.solon.cloud.gateway.rx.RxFilter;
 
 import java.util.ArrayList;
 import java.util.List;

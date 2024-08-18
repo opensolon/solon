@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.web.reactive.RxHandler;
+import org.noear.solon.cloud.gateway.rx.RxHandler;
 
 /**
  * 分布式路由处理器

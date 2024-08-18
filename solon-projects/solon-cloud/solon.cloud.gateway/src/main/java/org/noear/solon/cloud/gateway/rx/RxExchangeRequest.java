@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route;
+package org.noear.solon.cloud.gateway.rx;
 
+import io.vertx.core.buffer.Buffer;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.util.KeyValues;
 
-import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,26 +29,18 @@ import java.util.Map;
  * @author noear
  * @since 2.9
  */
-public class RouteRequest {
-    public static final String ATTR_NAME = "cloud-upstream-request";
-
-    public static RouteRequest of(Context ctx) {
-        return ctx.attr(ATTR_NAME);
-    }
-
+public class RxExchangeRequest {
     //----------------
-
     private String method;
     private String queryString;
     private String path;
     private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
-    private String contentType;
-    private InputStream body;
+    private Buffer body;
 
     /**
      * 配置方法
      */
-    public RouteRequest method(String method) {
+    public RxExchangeRequest method(String method) {
         this.method = method;
         return this;
     }
@@ -57,7 +48,7 @@ public class RouteRequest {
     /**
      * 配置路径
      */
-    public RouteRequest path(String path) {
+    public RxExchangeRequest path(String path) {
         this.path = path;
         return this;
     }
@@ -65,7 +56,7 @@ public class RouteRequest {
     /**
      * 配置查询字符串
      */
-    public RouteRequest queryString(String queryString) {
+    public RxExchangeRequest queryString(String queryString) {
         this.queryString = queryString;
         return this;
     }
@@ -77,7 +68,7 @@ public class RouteRequest {
     /**
      * 配置头
      */
-    public RouteRequest header(String key, String... values) {
+    public RxExchangeRequest header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
         return this;
     }
@@ -85,7 +76,7 @@ public class RouteRequest {
     /**
      * 配置头
      */
-    public RouteRequest header(String key, List<String> values) {
+    public RxExchangeRequest header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
@@ -93,7 +84,7 @@ public class RouteRequest {
     /**
      * 添加头
      */
-    public RouteRequest headerAdd(String key, String value) {
+    public RxExchangeRequest headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
         return this;
     }
@@ -101,9 +92,8 @@ public class RouteRequest {
     /**
      * 配置主体
      */
-    public RouteRequest body(InputStream body, String contentType) {
+    public RxExchangeRequest body(Buffer body) {
         this.body = body;
-        this.contentType = contentType;
         return this;
     }
 
@@ -149,16 +139,9 @@ public class RouteRequest {
     }
 
     /**
-     * 获取内容类型
-     */
-    public String getContentType() {
-        return contentType;
-    }
-
-    /**
      * 获取主体
      */
-    public InputStream getBody() {
+    public Buffer getBody() {
         return body;
     }
 }

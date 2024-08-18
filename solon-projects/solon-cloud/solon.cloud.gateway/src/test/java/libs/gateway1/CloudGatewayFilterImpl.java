@@ -17,17 +17,18 @@ package libs.gateway1;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
+import org.noear.solon.cloud.gateway.rx.RxContext;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.web.reactive.RxFilterChain;
+import org.noear.solon.cloud.gateway.rx.RxFilterChain;
 import reactor.core.publisher.Mono;
 
 @Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
-    public Mono<Void> doFilter(Context ctx, RxFilterChain chain) {
+    public Mono<Void> doFilter(RxContext ctx, RxFilterChain chain) {
         String token = ctx.header("TOKEN");
         if (token == null) {
-            ctx.status(401);
+            ctx.exchange().response().status(401);
             return Mono.empty();
         }
 
