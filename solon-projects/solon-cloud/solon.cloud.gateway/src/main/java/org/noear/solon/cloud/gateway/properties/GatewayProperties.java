@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.integration;
+package org.noear.solon.cloud.gateway.properties;
 
 import org.noear.solon.cloud.gateway.CloudRouteHandler;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;

@@ -25,6 +25,8 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.cloud.gateway.CloudGateway;
 import org.noear.solon.cloud.gateway.CloudGatewayConfiguration;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
+import org.noear.solon.cloud.gateway.properties.GatewayProperties;
+import org.noear.solon.cloud.gateway.properties.RouteProperties;
 import org.noear.solon.cloud.gateway.route.RouteFilter;
 import org.noear.solon.cloud.gateway.CloudRouteHandler;
 import org.noear.solon.cloud.gateway.route.RoutePredicate;

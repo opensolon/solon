@@ -3,7 +3,7 @@ package org.noear.solon.cloud.gateway.exchange;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
+import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.util.KeyValues;
 

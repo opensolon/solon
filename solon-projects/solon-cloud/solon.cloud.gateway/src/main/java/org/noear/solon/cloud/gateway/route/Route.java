@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
+import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.util.RankEntity;
