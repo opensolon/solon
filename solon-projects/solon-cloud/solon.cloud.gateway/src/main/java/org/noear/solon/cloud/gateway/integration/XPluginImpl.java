@@ -47,7 +47,7 @@ public class XPluginImpl implements Plugin {
 
 
     public static String solon_boot_ver() {
-        return "cloud.gateway v1/ " + Solon.version();
+        return "vert.x 4.5/ " + Solon.version();
     }
 
     private Vertx _vertx;
@@ -100,7 +100,7 @@ public class XPluginImpl implements Plugin {
         ServerProps.init();
 
 
-        HttpServerProps props = HttpServerProps.getInstance();
+        GatewayServerProps props = new GatewayServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();

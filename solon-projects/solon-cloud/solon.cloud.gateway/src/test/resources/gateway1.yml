@@ -1,4 +1,5 @@
-server.port: 8901
+server.port: 8900
+server.gateway.port: 8901
 
 solon.app:
   name: demo-gateway
@@ -11,9 +12,6 @@ solon.cloud.gateway:
         - "Path=/demo/**"
       filters:
         - "StripPrefix=1"
-
-solon.plugin.exclude:
-  - "org.noear.solon.boot.smarthttp.XPluginImp"
 
 solon.logging.logger:
   root:
