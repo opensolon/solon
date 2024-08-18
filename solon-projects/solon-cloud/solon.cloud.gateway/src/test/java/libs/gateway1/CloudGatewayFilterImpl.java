@@ -22,7 +22,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.cloud.gateway.rx.RxFilterChain;
 import reactor.core.publisher.Mono;
 
-@Component
+//@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
     public Mono<Void> doFilter(RxContext ctx, RxFilterChain chain) {

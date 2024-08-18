@@ -22,6 +22,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.rx.RxContext;
 import org.noear.solon.cloud.gateway.rx.RxExchange;
@@ -33,6 +34,7 @@ import reactor.core.publisher.MonoSink;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式路由处理器默认实现
@@ -45,7 +47,15 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
     public CloudRouteHandlerDefault() {
         Solon.context().getBeanAsync(Vertx.class, b -> {
-            this.httpClient = WebClient.create(b);
+            WebClientOptions options =  new WebClientOptions()
+                    .setMaxPoolSize(250)
+                    .setConnectTimeout(1000) // milliseconds
+                    .setIdleTimeout(3600) // seconds
+                    .setIdleTimeoutUnit(TimeUnit.SECONDS)
+                    .setKeepAlive(true)
+                    .setKeepAliveTimeout(60); // seconds
+
+            this.httpClient = WebClient.create(b, options);
         });
     }
 
@@ -61,8 +71,8 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
         //构建超时
         if (ctx.exchange().timeout() != null) {
-            req1.connectTimeout(ctx.exchange().timeout().getConnectTimeout());
-            req1.timeout(ctx.exchange().timeout().getResponseTimeout());
+            req1.connectTimeout(ctx.exchange().timeout().getConnectTimeout() * 1000);
+            req1.timeout(ctx.exchange().timeout().getResponseTimeout() * 1000);
         }
 
         try {

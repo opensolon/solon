@@ -17,11 +17,9 @@ package features.test0;
 
 import features.model.UserDo;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fury.FuryBytesSerializer;
 import org.noear.solon.serialization.fury.FuryRender;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
