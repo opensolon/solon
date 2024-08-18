@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
+import io.vertx.core.MultiMap;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SocketAddress;
@@ -24,6 +25,7 @@ import org.noear.solon.cloud.gateway.route.Route;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 交换上下文
@@ -134,6 +136,13 @@ public class ExContext {
     }
 
     /**
+     * 获取原始所有 header
+     */
+    public MultiMap rawHeadersAll(){
+        return rawRequest.headers();
+    }
+
+    /**
      * 获取原始 cookie
      */
     public String rawCookie(String key) {
@@ -143,6 +152,13 @@ public class ExContext {
         } else {
             return cookie.getValue();
         }
+    }
+
+    /**
+     * 获取原始所有 cookie
+     */
+    public Set<Cookie> rawCookiesAll(){
+        return rawRequest.cookies();
     }
 
     /**
@@ -157,6 +173,13 @@ public class ExContext {
      */
     public String rawQueryParam(String key) {
         return rawRequest.getParam(key);
+    }
+
+    /**
+     * 获取原始所有查询参数
+     */
+    public MultiMap rawQueryParamsAll() {
+        return rawRequest.params();
     }
 
     ////////////////////////////////////////////////////
