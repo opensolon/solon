@@ -15,5 +15,5 @@ public interface RxFilterChain {
      *
      * @param ctx 上下文
      */
-    Mono<Void> doFilter(RxContext ctx);
+    Mono<Void> doFilter(ExContext ctx);
 }

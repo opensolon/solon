@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.rx.RxContext;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 import org.noear.solon.core.exception.StatusException;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public class CloudGatewayCompletion implements Subscriber {
     static final Logger log = LoggerFactory.getLogger(CloudGatewayCompletion.class);
 
-    private RxContext ctx;
+    private ExContext ctx;
 
-    public CloudGatewayCompletion(RxContext ctx) {
+    public CloudGatewayCompletion(ExContext ctx) {
         this.ctx = ctx;
     }
 
@@ -37,24 +37,24 @@ public class CloudGatewayCompletion implements Subscriber {
         try {
             if (throwable instanceof StatusException) {
                 StatusException status = (StatusException) throwable;
-                ctx.exchange().response().status(status.getCode());
+                ctx.newResponse().status(status.getCode());
 
                 if (status.getCode() == 404) {
                     return;
                 }
             } else {
-                ctx.exchange().response().status(500);
+                ctx.newResponse().status(500);
             }
 
             log.error(throwable.getMessage(), throwable);
         } finally {
-            this.ctx.exchange().complete();
+            this.ctx.complete();
         }
 
     }
 
     @Override
     public void onComplete() {
-        this.ctx.exchange().complete();
+        this.ctx.complete();
     }
 }

@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.gateway.rx;
 
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RankEntity;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +29,7 @@ public class RxFilterChainImpl implements RxFilterChain {
     }
 
     @Override
-    public Mono<Void> doFilter(RxContext ctx) {
+    public Mono<Void> doFilter(ExContext ctx) {
         if (lastHandler == null) {
             return filterList.get(index++).target.doFilter(ctx, this);
         } else {

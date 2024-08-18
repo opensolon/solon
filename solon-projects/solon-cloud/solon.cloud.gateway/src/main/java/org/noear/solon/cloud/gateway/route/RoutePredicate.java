@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
-import org.noear.solon.cloud.gateway.rx.RxContext;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 
 import java.util.function.Predicate;
 
@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  * @since 2.9
  */
 @FunctionalInterface
-public interface RoutePredicate extends Predicate<RxContext> {
+public interface RoutePredicate extends Predicate<ExContext> {
     /**
      * 初始化
      *

@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 交换新响应
+ *
  * @author noear
  * @since 2.9
  */
-public class RxExchangeResponse {
+public class ExNewResponse {
     private int status = 200;
     private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
     private Buffer body;
@@ -27,7 +29,7 @@ public class RxExchangeResponse {
     /**
      * 配置头
      */
-    public RxExchangeResponse header(String key, String... values) {
+    public ExNewResponse header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
         return this;
     }
@@ -35,7 +37,7 @@ public class RxExchangeResponse {
     /**
      * 配置头
      */
-    public RxExchangeResponse header(String key, List<String> values) {
+    public ExNewResponse header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
@@ -43,7 +45,7 @@ public class RxExchangeResponse {
     /**
      * 添加头
      */
-    public RxExchangeResponse headerAdd(String key, String value) {
+    public ExNewResponse headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
         return this;
     }
@@ -51,7 +53,7 @@ public class RxExchangeResponse {
     /**
      * 配置主体
      */
-    public RxExchangeResponse body(Buffer body) {
+    public ExNewResponse body(Buffer body) {
         this.body = body;
         return this;
     }

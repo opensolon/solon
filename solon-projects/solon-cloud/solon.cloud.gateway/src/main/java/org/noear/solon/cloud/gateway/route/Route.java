@@ -17,7 +17,7 @@ package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.cloud.gateway.integration.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicate;
-import org.noear.solon.cloud.gateway.rx.RxContext;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.rx.RxFilter;
 
@@ -89,7 +89,7 @@ public class Route {
     /**
      * 匹配
      */
-    public boolean matched(RxContext ctx) {
+    public boolean matched(ExContext ctx) {
         if (predicates.size() == 0) {
             return false;
         } else {

@@ -24,8 +24,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
-import org.noear.solon.cloud.gateway.rx.RxContext;
-import org.noear.solon.cloud.gateway.rx.RxExchange;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.util.KeyValues;
@@ -47,7 +46,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
     public CloudRouteHandlerDefault() {
         Solon.context().getBeanAsync(Vertx.class, b -> {
-            WebClientOptions options =  new WebClientOptions()
+            WebClientOptions options = new WebClientOptions()
                     .setMaxPoolSize(250)
                     .setConnectTimeout(1000) // milliseconds
                     .setIdleTimeout(3600) // seconds
@@ -63,34 +62,38 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
      * 处理
      */
     @Override
-    public Mono<Void> handle(RxContext ctx) {
-        RxExchange exc = ctx.exchange();
-
+    public Mono<Void> handle(ExContext ctx) {
         //构建请求
-        HttpRequest<Buffer> req1 = buildHttpRequest(exc);
+        HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
 
         //构建超时
-        if (ctx.exchange().timeout() != null) {
-            req1.connectTimeout(ctx.exchange().timeout().getConnectTimeout() * 1000);
-            req1.timeout(ctx.exchange().timeout().getResponseTimeout() * 1000);
+        if (ctx.timeout() != null) {
+            req1.connectTimeout(ctx.timeout().getConnectTimeout() * 1000);
+            req1.timeout(ctx.timeout().getResponseTimeout() * 1000);
         }
 
         try {
             //同步 header
-            for (KeyValues<String> kv : exc.request().getHeaders().values()) {
+            for (KeyValues<String> kv : ctx.newRequest().getHeaders().values()) {
                 req1.putHeader(kv.getKey(), kv.getValues());
             }
 
             return Mono.create(monoSink -> {
                 //异步 执行
                 //同步 body（流复制）
-                if ("GET".equals(exc.request().getMethod())) {
+                if ("GET".equals(ctx.newRequest().getMethod())) {
                     req1.send(ar -> {
                         callbackHandle(ctx, ar, monoSink);
                     });
                 } else {
-                    req1.sendBuffer(exc.request().getBody(), ar -> {
-                        callbackHandle(ctx, ar, monoSink);
+                    ctx.newRequest().getBody().onComplete(ar1 -> {
+                        if (ar1.succeeded()) {
+                            req1.sendBuffer(ar1.result(), ar2 -> {
+                                callbackHandle(ctx, ar2, monoSink);
+                            });
+                        } else {
+                            monoSink.error(new StatusException(ar1.cause(), 400));
+                        }
                     });
                 }
             });
@@ -100,39 +103,38 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         }
     }
 
-    private HttpRequest<Buffer> buildHttpRequest(RxExchange exc) {
+    private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
         URI targetUri;
-        if (LoadBalance.URI_SCHEME.equals(exc.target().getScheme())) {
-            targetUri = URI.create(LoadBalance.get(exc.target().getHost()).getServer());
+        if (LoadBalance.URI_SCHEME.equals(ctx.target().getScheme())) {
+            targetUri = URI.create(LoadBalance.get(ctx.target().getHost()).getServer());
         } else {
-            targetUri = exc.target();
+            targetUri = ctx.target();
         }
 
         if (targetUri.getPort() > 0) {
-            return httpClient.request(HttpMethod.valueOf(exc.request().getMethod()),
+            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
                     targetUri.getPort(),
                     targetUri.getHost(),
-                    exc.request().getPathAndQueryString());
+                    ctx.newRequest().getPathAndQueryString());
         } else {
-            return httpClient.request(HttpMethod.valueOf(exc.request().getMethod()),
+            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
                     targetUri.getHost(),
-                    exc.request().getPathAndQueryString());
+                    ctx.newRequest().getPathAndQueryString());
         }
     }
 
-    private void callbackHandle(RxContext ctx, AsyncResult<HttpResponse<Buffer>> ar, MonoSink<Void> monoSink) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, MonoSink<Void> monoSink) {
         if (ar.succeeded()) {
-            RxExchange ex = ctx.exchange();
             HttpResponse<Buffer> resp1 = ar.result();
 
             //code
-            ex.response().status(resp1.statusCode());
+            ctx.newResponse().status(resp1.statusCode());
             //header
             for (Map.Entry<String, String> kv : resp1.headers()) {
-                ex.response().headerAdd(kv.getKey(), kv.getValue());
+                ctx.newResponse().headerAdd(kv.getKey(), kv.getValue());
             }
             //body 输出（流复制） //有可能网络已关闭
-            ex.response().body(resp1.body());
+            ctx.newResponse().body(resp1.body());
 
             monoSink.success();
         } else {

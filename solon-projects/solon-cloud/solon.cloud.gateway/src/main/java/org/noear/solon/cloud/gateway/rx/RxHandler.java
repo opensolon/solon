@@ -10,5 +10,5 @@ import reactor.core.publisher.Mono;
  */
 @FunctionalInterface
 public interface RxHandler {
-    Mono<Void> handle(RxContext ctx);
+    Mono<Void> handle(ExContext ctx);
 }

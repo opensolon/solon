@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jdkhttp</artifactId>
+            <artifactId>solon.boot.smarthttp</artifactId>
             <scope>test</scope>
         </dependency>
 

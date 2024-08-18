@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.rx;
 
+import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import org.noear.solon.Utils;
 import org.noear.solon.util.KeyValues;
@@ -24,23 +25,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 路游请求包装器
+ * 交换新请求
  *
  * @author noear
  * @since 2.9
  */
-public class RxExchangeRequest {
+public class ExNewRequest {
     //----------------
     private String method;
     private String queryString;
     private String path;
     private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
-    private Buffer body;
+    private Future<Buffer> body;
 
     /**
      * 配置方法
      */
-    public RxExchangeRequest method(String method) {
+    public ExNewRequest method(String method) {
         this.method = method;
         return this;
     }
@@ -48,7 +49,7 @@ public class RxExchangeRequest {
     /**
      * 配置路径
      */
-    public RxExchangeRequest path(String path) {
+    public ExNewRequest path(String path) {
         this.path = path;
         return this;
     }
@@ -56,7 +57,7 @@ public class RxExchangeRequest {
     /**
      * 配置查询字符串
      */
-    public RxExchangeRequest queryString(String queryString) {
+    public ExNewRequest queryString(String queryString) {
         this.queryString = queryString;
         return this;
     }
@@ -68,7 +69,7 @@ public class RxExchangeRequest {
     /**
      * 配置头
      */
-    public RxExchangeRequest header(String key, String... values) {
+    public ExNewRequest header(String key, String... values) {
         getHeaderHolder(key).setValues(values);
         return this;
     }
@@ -76,7 +77,7 @@ public class RxExchangeRequest {
     /**
      * 配置头
      */
-    public RxExchangeRequest header(String key, List<String> values) {
+    public ExNewRequest header(String key, List<String> values) {
         getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
@@ -84,7 +85,7 @@ public class RxExchangeRequest {
     /**
      * 添加头
      */
-    public RxExchangeRequest headerAdd(String key, String value) {
+    public ExNewRequest headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
         return this;
     }
@@ -92,7 +93,7 @@ public class RxExchangeRequest {
     /**
      * 配置主体
      */
-    public RxExchangeRequest body(Buffer body) {
+    public ExNewRequest body(Future<Buffer> body) {
         this.body = body;
         return this;
     }
@@ -141,7 +142,7 @@ public class RxExchangeRequest {
     /**
      * 获取主体
      */
-    public Buffer getBody() {
+    public Future<Buffer> getBody() {
         return body;
     }
 }

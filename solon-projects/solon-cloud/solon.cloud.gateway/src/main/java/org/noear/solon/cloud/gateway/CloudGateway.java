@@ -18,7 +18,7 @@ package org.noear.solon.cloud.gateway;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.gateway.rx.RxContext;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 import org.noear.solon.cloud.gateway.rx.RxFilterChainImpl;
 import org.noear.solon.core.exception.StatusException;
 import reactor.core.publisher.Mono;
@@ -37,7 +37,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
      */
     @Override
     public void handle(HttpServerRequest request) {
-        RxContext ctx = new RxContext(request);
+        ExContext ctx = new ExContext(request);
 
         //开始执行
         new RxFilterChainImpl(configuration.filters, this::doHandle)
@@ -49,11 +49,11 @@ public class CloudGateway implements Handler<HttpServerRequest> {
     /**
      * 执行处理
      */
-    private Mono<Void> doHandle(RxContext ctx) {
+    private Mono<Void> doHandle(ExContext ctx) {
         Route route = findRoute(ctx);
 
         if (route == null) {
-            ctx.exchange().response().status(404);
+            ctx.newResponse().status(404);
             return Mono.empty();
         } else {
             try {
@@ -75,11 +75,11 @@ public class CloudGateway implements Handler<HttpServerRequest> {
      *
      * @param ctx 上下文
      */
-    private Route findRoute(RxContext ctx) {
+    private Route findRoute(ExContext ctx) {
         for (Route r : configuration.routes) {
             if (r.matched(ctx)) {
                 //attr +
-                ctx.exchange().bind(r);
+                ctx.bind(r);
                 return r;
             }
         }

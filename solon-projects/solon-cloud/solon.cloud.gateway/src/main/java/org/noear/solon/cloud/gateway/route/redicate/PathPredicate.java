@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.route.redicate;
 
 import org.noear.solon.cloud.gateway.route.RoutePredicate;
-import org.noear.solon.cloud.gateway.rx.RxContext;
+import org.noear.solon.cloud.gateway.rx.ExContext;
 import org.noear.solon.core.route.PathRule;
 
 /**
@@ -36,7 +36,7 @@ public class PathPredicate implements RoutePredicate {
     }
 
     @Override
-    public boolean test(RxContext ctx) {
-        return rule.test(ctx.path());
+    public boolean test(ExContext ctx) {
+        return rule.test(ctx.rawPath());
     }
 }

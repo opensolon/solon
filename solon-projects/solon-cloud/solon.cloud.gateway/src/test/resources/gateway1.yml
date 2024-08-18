@@ -13,4 +13,4 @@ solon.cloud.gateway:
         - "StripPrefix=1"
 
 solon.plugin.exclude:
-  - "org.noear.solon.boot.jdkhttp.XPluginImp"
+  - "org.noear.solon.boot.smarthttp.XPluginImp"
