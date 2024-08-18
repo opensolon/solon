@@ -17,6 +17,7 @@ package org.noear.solon.data.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.AppPluginLoadEndEvent;
 import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.*;
 import org.noear.solon.data.cache.interceptor.CacheInterceptor;
@@ -57,31 +58,35 @@ public class XPluginImpl implements Plugin {
         }
 
         //自动构建数据源
-        {
-            Props props = Solon.cfg().getProp("solon.dataSources");
-            if (props.size() > 0) {
-                Map<String, DataSource> dsmap = DsUtils.buildDsMap(props, null, new String[]{"class"});
-                if (dsmap.size() > 0) {
-                    for (Map.Entry<String, DataSource> kv : dsmap.entrySet()) {
-                        boolean typed = false;
-                        String name = kv.getKey();
-                        if (name.endsWith("!")) {
-                            name = name.substring(0, name.length() - 1);
-                            typed = true;
-                        }
+        Props props = Solon.cfg().getProp("solon.dataSources");
+        if (props.size() > 0) {
+            Solon.app().onEvent(AppPluginLoadEndEvent.class, e -> {
+                buildDataSource(context, props);
+            });
+        }
+    }
 
-                        BeanWrap dsBw = context.wrap(name, kv.getValue());
-
-                        //按名字注册
-                        context.putWrap(name, dsBw);
-                        if (typed) {
-                            //按类型注册
-                            context.putWrap(DataSource.class, dsBw);
-                        }
-                        //对外发布
-                        context.wrapPublish(dsBw);
-                    }
+    private void buildDataSource(AppContext context, Props props) {
+        Map<String, DataSource> dsmap = DsUtils.buildDsMap(props, null, new String[]{"class"});
+        if (dsmap.size() > 0) {
+            for (Map.Entry<String, DataSource> kv : dsmap.entrySet()) {
+                boolean typed = false;
+                String name = kv.getKey();
+                if (name.endsWith("!")) {
+                    name = name.substring(0, name.length() - 1);
+                    typed = true;
                 }
+
+                BeanWrap dsBw = context.wrap(name, kv.getValue());
+
+                //按名字注册
+                context.putWrap(name, dsBw);
+                if (typed) {
+                    //按类型注册
+                    context.putWrap(DataSource.class, dsBw);
+                }
+                //对外发布
+                context.wrapPublish(dsBw);
             }
         }
     }
