@@ -79,6 +79,13 @@ public class BeanWrap {
         this(context, clz, raw, name, false, null, null);
     }
 
+    /**
+     * @since 2.9
+     */
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed) {
+        this(context, clz, raw, name, typed, null, null);
+    }
+
     public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName) {
         this(context, clz, raw, name, typed, initMethodName, destroyMethodName, null, null);
     }
@@ -325,7 +332,7 @@ public class BeanWrap {
     /**
      * bean 新建对象
      */
-    protected Object _new() throws ConstructionException{
+    protected Object _new() throws ConstructionException {
         if (clz.isInterface()) {
             return raw;
         }

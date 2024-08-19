@@ -641,10 +641,20 @@ public abstract class BeanContainer {
         return wrap(type, null);
     }
 
+    /**
+     * 包装
+     */
     public BeanWrap wrap(Class<?> type, Object bean) {
+        return wrap(type, bean, false);
+    }
+
+    /**
+     * 包装
+     */
+    public BeanWrap wrap(Class<?> type, Object bean, boolean typed) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = wrapCreate(type, bean, null);
+            wrap = wrapCreate(type, bean, null, typed);
         }
 
         return wrap;
@@ -654,9 +664,16 @@ public abstract class BeanContainer {
      * 包装
      */
     public BeanWrap wrap(String name, Object bean) {
+        return wrap(name, bean, false);
+    }
+
+    /**
+     * 包装
+     */
+    public BeanWrap wrap(String name, Object bean, boolean typed) {
         BeanWrap wrap = getWrap(name);
         if (wrap == null) {
-            wrap = wrapCreate(bean.getClass(), bean, name);
+            wrap = wrapCreate(bean.getClass(), bean, name, typed);
         }
 
         return wrap;
@@ -673,16 +690,23 @@ public abstract class BeanContainer {
      * 包装并推入
      */
     public BeanWrap wrapAndPut(Class<?> type, Object bean) {
+        return wrapAndPut(type, bean, false);
+    }
+
+    /**
+     * 包装并推入
+     */
+    public BeanWrap wrapAndPut(Class<?> type, Object bean, boolean typed) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = wrapCreate(type, bean, null);
+            wrap = wrapCreate(type, bean, null, typed);
             putWrap(type, wrap);
         }
 
         return wrap;
     }
 
-    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean, String name);
+    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean, String name, boolean typed);
 
     //////////////////////////
     //
@@ -708,7 +732,7 @@ public abstract class BeanContainer {
         //按类型注册
         putWrap(bw.rawClz(), bw);
         putWrap(bw.rawClz().getName(), bw);
-        if(bw.rawClz().equals(bw.clz()) == false) {
+        if (bw.rawClz().equals(bw.clz()) == false) {
             putWrap(bw.clz(), bw);
             putWrap(bw.clz().getName(), bw);
         }

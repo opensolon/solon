@@ -147,8 +147,8 @@ public class AppContext extends BeanContainer {
      * 生成 bean 包装
      */
     @Override
-    protected BeanWrap wrapCreate(Class<?> type, Object bean, String name) {
-        return new BeanWrap(this, type, bean, name);
+    protected BeanWrap wrapCreate(Class<?> type, Object bean, String name, boolean typed) {
+        return new BeanWrap(this, type, bean, name, typed);
     }
 
     /**
@@ -283,7 +283,7 @@ public class AppContext extends BeanContainer {
             if (List.class == varH.getType()) {
                 //支持 List<Bean> 注入
                 Type type0 = varH.getGenericType().getActualTypeArguments()[0];
-                if(type0 instanceof ParameterizedType) {
+                if (type0 instanceof ParameterizedType) {
                     type0 = ((ParameterizedType) type0).getRawType();
                 }
 
@@ -315,7 +315,7 @@ public class AppContext extends BeanContainer {
                 Type keyType = varH.getGenericType().getActualTypeArguments()[0];
                 Type valType0 = varH.getGenericType().getActualTypeArguments()[1];
 
-                if(valType0 instanceof ParameterizedType) {
+                if (valType0 instanceof ParameterizedType) {
                     valType0 = ((ParameterizedType) valType0).getRawType();
                 }
 
@@ -352,7 +352,7 @@ public class AppContext extends BeanContainer {
      * @param annoEl 有注解元素（类 或 方法）
      */
     public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
-        if(bw.raw() == null){
+        if (bw.raw() == null) {
             return;
         }
 
@@ -748,8 +748,8 @@ public class AppContext extends BeanContainer {
 
     /**
      * 尝试方法参数收集
-     * */
-    protected void tryMethodParamsGather(AppContext context, int label, Class<?> outType,Parameter[] paramAry, ConsumerEx<Object[]> completionConsumer) {
+     */
+    protected void tryMethodParamsGather(AppContext context, int label, Class<?> outType, Parameter[] paramAry, ConsumerEx<Object[]> completionConsumer) {
         //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
         InjectGather gather = new InjectGather(label, outType, true, paramAry.length, (args2) -> {
             //变量收集完成后，会回调此处
@@ -827,9 +827,9 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    private static final int  build_bean_ofclass_state0 = 0; //没有处理
-    private static final int  build_bean_ofclass_state1 = 1; //异步处理，或条件未达（可以返回 null）
-    private static final int  build_bean_ofclass_state2 = 2; //有处理了（可以返回 warp）
+    private static final int build_bean_ofclass_state0 = 0; //没有处理
+    private static final int build_bean_ofclass_state1 = 1; //异步处理，或条件未达（可以返回 null）
+    private static final int build_bean_ofclass_state2 = 2; //有处理了（可以返回 warp）
 
     /**
      * 根据类尝试生成 bean（用 protected，方便扩展时复用）
