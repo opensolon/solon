@@ -40,7 +40,7 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
             String[] configs = config.split(",", 2);
             headerKey = configs[0].trim();
             String regex = configs[1].trim();
-            pattern = cached.computeIfAbsent(headerKey, k -> Pattern.compile(regex));
+            pattern = cached.computeIfAbsent(regex, k -> Pattern.compile(regex));
         }
 
         @Override
