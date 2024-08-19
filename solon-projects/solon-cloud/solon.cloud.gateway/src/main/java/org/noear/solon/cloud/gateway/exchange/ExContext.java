@@ -142,16 +142,6 @@ public class ExContext {
         return rawRequest.path();
     }
 
-    public Map<String, String> rawHeaders(){
-        Map<String, String> map = new HashMap<>();
-        MultiMap headers = rawRequest.headers();
-        if (headers != null) {
-            for (String key : headers.names()) {
-                map.put(key, headers.get(key));
-            }
-        }
-        return map;
-    }
 
     /**
      * 获取原始查询字符串
