@@ -35,7 +35,6 @@
 * 添加 solon MethodInterceptor 接口，替代 Interceptor（旧接口保留）
 * 添加 solon.net.httputils 扩展机制，并与 solon.cloud 自动整合
 * 添加 solon.net.httputils HttpResponse::headerNames 方法
-* 添加 solo.web.rx 响应式过滤器、处理器定义（为分布式网关开发提供支持）
 * 添加 solon `solon.plugin.exclude` 应用属性配置
 * 添加 solon `${.url}` 应用属性配置本级引用
 * 添加 solon `--cfg` 启动参数支持（便于内嵌场景开发）
