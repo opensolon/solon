@@ -23,6 +23,8 @@ import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
+import java.util.Properties;
+
 /**
  * @author noear 2024/5/17 created
  */
@@ -63,5 +65,21 @@ public class PropRefTest {
         assert "each_test_e_d".equals(eachD);
         assert "each_test_e".equals(eachE);
         assert "each_test".equals(globalEach);
+    }
+
+    @Test
+    public void test2() {
+        String test_aaa = Solon.cfg().get("demo6.test.aaa");
+        int test_bbb = Solon.cfg().getInt("demo6.test.bbb", 0);
+
+        assert "121212".equals(test_aaa);
+        assert 12 == test_bbb;
+    }
+
+    @Test
+    public void test3() {
+        String test_ccc = Solon.cfg().get("demo6.test.ccc");//${.bbb}
+
+        assert "12".equals(test_ccc);
     }
 }

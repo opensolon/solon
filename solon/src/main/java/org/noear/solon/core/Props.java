@@ -98,14 +98,14 @@ public class Props extends Properties {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     public String getByExpr(String expr) {
-        return getByExpr(expr, null);
+        return getByExpr(expr, null, null);
     }
 
     /**
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
-    protected String getByExpr(String expr, Properties props) {
-        return PropUtil.getByExp(this, props, expr);
+    protected String getByExpr(String expr, Properties props, String refKey) {
+        return PropUtil.getByExp(this, props, expr, refKey);
     }
 
     /**
@@ -121,22 +121,22 @@ public class Props extends Properties {
      * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     public String getByTmpl(String tmpl) {
-        return getByTmpl(tmpl, null);
+        return getByTmpl(tmpl, null, null);
     }
 
     /**
      * @param tmpl 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
-    protected String getByTmpl(String tmpl, Properties props) {
-        return PropUtil.getByTml(this, props, tmpl);
+    protected String getByTmpl(String tmpl, Properties props, String refKey) {
+        return PropUtil.getByTml(this, props, tmpl, refKey);
     }
 
     /**
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      * @param  useDef 是否使用默认值
      */
-    protected String getByTmpl(String tml, Properties props, boolean useDef) {
-        return PropUtil.getByTml(this, props, tml, useDef);
+    protected String getByTmpl(String tml, Properties props, String refKey, boolean useDef) {
+        return PropUtil.getByTml(this, props, tml, refKey, useDef);
     }
 
     /**
@@ -555,7 +555,7 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
                         String valExp = (String) v1;
-                        v1 = getByTmpl(valExp, props, isEnd);
+                        v1 = getByTmpl(valExp, props, key, isEnd);
 
                         if (v1 == null) {
                             if (!isEnd) {

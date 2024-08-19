@@ -10,6 +10,7 @@ demo6:
   test:
     aaa: 121212
     bbb: 12
+    ccc: "${.bbb}"
 
 demo8.test:
   url: jdbc:mysql://127.0.0.1/user

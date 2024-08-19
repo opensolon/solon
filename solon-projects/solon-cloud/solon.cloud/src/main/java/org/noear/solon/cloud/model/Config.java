@@ -94,7 +94,7 @@ public class Config implements Serializable {
 
             for (Map.Entry<Object, Object> kv : _props.entrySet()) {
                 if (kv.getValue() instanceof String) {
-                    String tmpV = PropUtil.getByTml(Solon.cfg(), _props, (String) kv.getValue());
+                    String tmpV = PropUtil.getByTml(Solon.cfg(), _props, (String) kv.getValue(), kv.getKey().toString());
 
                     if (tmpV == null) {
                         tmpV = (String) kv.getValue();

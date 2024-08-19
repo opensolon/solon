@@ -37,10 +37,6 @@ public class TestController extends TestControllerBase{
     @Inject
     public Rockapi  rockapi132;
 
-    public String   test_aaa = Solon.cfg().get("demo6.test.aaa");
-    public int      test_bbb = Solon.cfg().getInt("demo6.test.bbb",0);
-    public Properties prop   = Solon.cfg().getProp("mytbae.bcf");
-
     @Mapping("/demo6/aop")
     public Object test() throws Exception {
         Map<String, Object> map = new HashMap<>();

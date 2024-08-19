@@ -58,8 +58,8 @@ public class PropUtil {
      *
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
-    public static String getByExp(Properties main, Properties target, String expr) {
-        return getByExp(main, target, expr, true);
+    public static String getByExp(Properties main, Properties target, String expr, String refKey) {
+        return getByExp(main, target, expr, refKey, true);
     }
 
     /**
@@ -68,12 +68,20 @@ public class PropUtil {
      * @param expr   兼容 ${key} or key or ${key:def} or key:def
      * @param useDef 是否使用默认值
      */
-    public static String getByExp(Properties main, Properties target, String expr, boolean useDef) {
+    public static String getByExp(Properties main, Properties target, String expr, String refKey, boolean useDef) {
         String[] nameAndDef = expSplit(expr);
 
         String name = nameAndDef[0];
         if (Utils.isEmpty(name)) {
             return nameAndDef[1];
+        }
+
+        if (name.indexOf('.') == 0 && refKey != null) {
+            //本级引用
+            int refIdx = refKey.lastIndexOf('.');
+            if (refIdx > 0) {
+                name = refKey.substring(0, refIdx) + name;
+            }
         }
 
         String val = null;
@@ -114,8 +122,8 @@ public class PropUtil {
      *
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
-    public static String getByTml(Properties main, Properties target, String tml) {
-        return getByTml(main, target, tml, true);
+    public static String getByTml(Properties main, Properties target, String tml, String refKey) {
+        return getByTml(main, target, tml, refKey, true);
     }
 
     /**
@@ -124,7 +132,7 @@ public class PropUtil {
      * @param tml    模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      * @param useDef 是否使用默认值
      */
-    public static String getByTml(Properties main, Properties target, String tml, boolean useDef) {
+    public static String getByTml(Properties main, Properties target, String tml, String refKey, boolean useDef) {
         if (Utils.isEmpty(tml)) {
             return tml;
         }
@@ -144,7 +152,7 @@ public class PropUtil {
 
                 String valueExp = tml.substring(start + 2, end); //key:def
                 //支持默认值表达式 ${key:def}
-                String value = getByExp(main, target, valueExp, useDef);
+                String value = getByExp(main, target, valueExp, refKey, useDef);
 
                 if (value == null) {
                     return null;
