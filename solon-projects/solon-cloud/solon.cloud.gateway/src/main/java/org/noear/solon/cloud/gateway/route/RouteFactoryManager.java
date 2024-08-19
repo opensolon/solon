@@ -40,6 +40,7 @@ public class RouteFactoryManager {
         global = new RouteFactoryManager();
         global.addFactory(new PathPredicateFactory());
         global.addFactory(new StripPrefixFilterFactory());
+        global.addFactory(new MethodPredicateFactory());
     }
 
 
