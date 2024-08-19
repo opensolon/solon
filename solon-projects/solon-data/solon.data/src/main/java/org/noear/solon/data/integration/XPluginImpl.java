@@ -77,7 +77,7 @@ public class XPluginImpl implements Plugin {
                     typed = true;
                 }
 
-                BeanWrap dsBw = context.wrap(name, kv.getValue());
+                BeanWrap dsBw = context.wrap(name, kv.getValue(), typed);
 
                 //按名字注册
                 context.putWrap(name, dsBw);
