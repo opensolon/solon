@@ -19,6 +19,7 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SocketAddress;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.Route;
 
@@ -104,6 +105,33 @@ public class ExContext {
     public SocketAddress localAddress() {
         return rawRequest.localAddress();
     }
+
+    private String realIp;
+
+    /**
+     * 客户端真实IP
+     * */
+    public String realIp() {
+        if (realIp == null) {
+            //客户端ip
+            realIp = rawHeader("X-Real-IP");
+
+            if (Utils.isEmpty(realIp) || "unknown".equalsIgnoreCase(realIp)) {
+                //包含了客户端和各级代理ip的完整ip链路
+                realIp = rawHeader("X-Forwarded-For");
+                if (realIp != null && realIp.contains(",")) {
+                    realIp = realIp.split(",")[0];
+                }
+            }
+
+            if (Utils.isEmpty(realIp) || "unknown".equalsIgnoreCase(realIp)) {
+                realIp = remoteAddress().host();
+            }
+        }
+
+        return realIp;
+    }
+
 
     /**
      * 是否安全
