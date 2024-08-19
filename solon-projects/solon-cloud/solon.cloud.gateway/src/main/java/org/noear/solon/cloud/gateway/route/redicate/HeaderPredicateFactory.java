@@ -3,9 +3,10 @@ package org.noear.solon.cloud.gateway.route.redicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-import org.noear.solon.core.route.HeaderRule;
 
-import java.util.Map;
+
+import java.util.regex.Pattern;
+
 
 /**
  * @author wjc28
@@ -27,30 +28,22 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
     }
 
     private static class HeaderPredicate implements ExPredicate {
-        private HeaderRule rule;
+        private String headerKey;
+        private Pattern pattern;
 
 
         public HeaderPredicate(String config) {
             String[] configs = config.split(",");
-            String headerKey = configs[0].trim();
+            headerKey = configs[0].trim();
             String regex = configs[1].trim();
-            rule = new HeaderRule(headerKey, regex);
+            pattern = Pattern.compile(regex);
         }
 
         @Override
         public boolean test(ExContext exContext) {
-            Map<String, String> headers = exContext.rawHeaders();
-            String correspondingKey = rule.getCorrespondingKey();
-            for (String key : headers.keySet()) {
-                // 如果是对应的key
-                if (correspondingKey.equals(key)){
-                    // 校验其值是否符合
-                    String value = headers.get(key);
-                    assert value != null;
-                    return rule.test(value);
-                }
-            }
-            return false;
+            String value = exContext.rawHeader(headerKey);
+            assert value != null;
+            return  pattern.matcher(value).find();
         }
     }
 }
