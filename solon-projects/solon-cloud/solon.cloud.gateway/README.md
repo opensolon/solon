@@ -1,6 +1,11 @@
-solon.cloud.gateway 为“半”响应式架构
+### 单测说明：
 
-配置风格：
+* 启动 App1Main（作为功能服务）
+* 启动 Gateway1Test 单测（如果有需要，修改 gateway1.yml 配置）
+
+
+
+### 配置风格：
 
 ```yaml
 solon.cloud.gateway:
@@ -19,15 +24,4 @@ solon.cloud.gateway:
         requestTimeout: 1000 #?可选
         responseTimeout: 1000 #?可选
 ```
-
-
-目前支持：
-
-| 框架         | 支持情况                         | 备注                         |
-|------------|------------------------------|----------------------------|
-| jetty      | 推荐                           |                            |
-| undertow   | 推荐                           |                            |
-| jdkhttp    | 支持                           |                            |
-| jlhttp     | 支持                           |                            |
-| smart-http | 不支持（表单提前解析后，不能做 stream copy） | 换掉 SimpleRouteHandler 后可支持 |
 
