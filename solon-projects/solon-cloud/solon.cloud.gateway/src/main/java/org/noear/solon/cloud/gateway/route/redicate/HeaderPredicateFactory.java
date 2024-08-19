@@ -5,6 +5,9 @@ import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 
@@ -28,21 +31,22 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
     }
 
     private static class HeaderPredicate implements ExPredicate {
+        private static final Map<String, Pattern> cached = new ConcurrentHashMap<>();
         private String headerKey;
         private Pattern pattern;
 
 
         public HeaderPredicate(String config) {
-            String[] configs = config.split(",");
+            String[] configs = config.split(",", 2);
             headerKey = configs[0].trim();
             String regex = configs[1].trim();
-            pattern = Pattern.compile(regex);
+            pattern = cached.computeIfAbsent(headerKey, k -> Pattern.compile(regex));
         }
 
         @Override
         public boolean test(ExContext exContext) {
             String value = exContext.rawHeader(headerKey);
-            return  pattern.matcher(value).find();
+            return pattern.matcher(value).find();
         }
     }
 }
