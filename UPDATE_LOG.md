@@ -74,99 +74,10 @@
 * netty 升为 4.1.112.Final
 * reactor-core 升为 3.6.9
 * reactor-netty-http 升为 1.1.22
+* vertx 升为 4.5.9
 * undertow 升为 2.2.34.Final
 * jetty 升为 9.4.55.v20240627
 * smarthttp 升为 1.5.9
-
-* 插件名调整对应表(旧名标为弃用，仍可用)
-
-| 新名                          | 旧名                          | 备注                           |
-|-----------------------------|-----------------------------|------------------------------|
-| nami-channel-http-hutool    | nami.channel.http.hutool    |                              |
-| nami-channel-http-okhttp    | nami.channel.http.okhttp    |                              |
-| nami-channel-socketd        | nami.channel.socketd        |                              |
-| nami-coder-fastjson         | nami.coder.fastjson         |                              |
-| nami-coder-fastjson2        | nami.coder.fastjson2        |                              |
-| nami-coder-fury             | nami.coder.fury             |                              |
-| nami-coder-hessian          | nami.coder.hessian          |                              |
-| nami-coder-jackson          | nami.coder.jackson          |                              |
-| nami-coder-protostuff       | nami.coder.protostuff       |                              |
-| nami-coder-snack3           | nami.coder.snack3           |                              |
-| :: base                     |                             |                              |
-| solon-banner                | solon.banner                |                              |
-| solon-config-yaml           | solon.config.yaml           |                              |
-| solon-config-plus           |                             | 从原 solon.config.yaml 里拆出来    |
-| solon-hotplug               | solon.hotplug               |                              |
-| solon-i18n                  | solon.i18n                  |                              |
-| solon-mvc                   | solon.mvc                   |                              |
-| solon-proxy                 | solon.proxy                 |                              |
-| solon-validation            | solon.validation            |                              |
-| :: boot                     |                             |                              |
-| solon-boot-jdkhttp          | solon.boot.jdkhttp          |                              |
-| solon-boot-jetty-add-jsp    | solon.boot.jetty.add.jsp    |                              |
-| solon-boot-jetty            | solon.boot.jetty            |                              |
-| solon-boot-jlhttp           | solon.boot.jlhttp           |                              |
-| solon-boot-smarthttp        | solon.boot.smarthttp        |                              |
-| solon-boot-socketd          | solon.boot.socketd          |                              |
-| solon-boot-undertow-add-jsp | solon.boot.undertow.add.jsp |                              |
-| solon-boot-undertow         | solon.boot.undertow         |                              |
-| solon-boot-vertx            | solon.boot.vertx            |                              |
-| solon-boot-websocket-netty  | solon.boot.websocket.netty  |                              |
-| solon-boot-websocket        | solon.boot.websocket        |                              |
-| solon-boot                  | solon.boot                  |                              |
-| :: cloud                    |                             |                              |
-| solon-cloud-eventplus       | solon.cloud.eventplus       |                              |
-| solon-cloud-httputils       | solon.cloud.httputils       | 想办法基于 solon.net.httputils 统一 |
-| solon-cloud-metrics         | solon.cloud.metrics         |                              |
-| solon-cloud-tracing         | solon.cloud.tracing         |                              |
-| solon-cloud                 | solon.cloud                 |                              |
-| :: data                     |                             |                              |
-| solon-cache-caffeine        | solon.cache.caffeine        |                              |
-| solon-cache-jedis           | solon.cache.jedis           |                              |
-| solon-cache-redisson        | solon.cache.redisson        |                              |
-| solon-cache-spymemcached    | solon.cache.spymemcached    |                              |
-| solon-data-dynamicds        | solon.data.dynamicds        |                              |
-| solon-data-shardingds       | solon.data.shardingds       |                              |
-| solon-data                  | solon.data                  |                              |
-| :: detector                 |                             |                              |
-| solon-health-detector       | solon.health.detector       |                              |
-| solon-health                | solon.health                |                              |
-| :: docs                     |                             |                              |
-| solon-docs-openapi2         | solon.docs.openapi2         |                              |
-| solon-docs-openapi3         | solon.docs.openapi3         |                              |
-| solon-docs                  | solon.docs                  |                              |
-| :: faas                     |                             |                              |
-| solon-luffy                 | solon.luffy                 |                              |
-| :: logging                  |                             |                              |
-| solon-logging-log4j2        | solon.logging.log4j2        |                              |
-| solon-logging-logback       | solon.logging.logback       |                              |
-| solon-logging-simple        | solon.logging.simple        |                              |
-| solon-logging               | solon.logging               |                              |
-| :: native                   |                             |                              |
-| solon.aot                   | solon-aot                   |                              |
-| ::net                       |                             |                              |
-| solon-net-httputils         | solon.net.httputils         |                              |
-| solon-net-stomp             | solon.net.stomp             |                              |
-| solon-net                   | solon.net                   |                              |
-| :: scheduling               |                             |                              |
-|                             | solon.extend.schedule       | 弃用                           |
-| solon-scheduling-quartz     | solon.scheduling.quartz     |                           |
-| solon-scheduling-simple     | solon.scheduling.simple     |                              |
-| solon-scheduling            | solon.scheduling            |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              ||                             |                             |                                   |
-|                             |                             |                              |
-
-
 
 
 ### 2.8.6
