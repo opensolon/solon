@@ -75,7 +75,7 @@
 * reactor-netty-http 升为 1.1.22
 * undertow 升为 2.2.34.Final
 * jetty 升为 9.4.55.v20240627
-* smarthttp 升为 1.5.8
+* smarthttp 升为 1.5.9
 
 * 插件名调整对应表(旧名标为弃用，仍可用)
 
