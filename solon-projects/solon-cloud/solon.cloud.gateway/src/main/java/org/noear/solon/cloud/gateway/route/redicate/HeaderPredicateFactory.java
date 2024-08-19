@@ -42,7 +42,6 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
         @Override
         public boolean test(ExContext exContext) {
             String value = exContext.rawHeader(headerKey);
-            assert value != null;
             return  pattern.matcher(value).find();
         }
     }
