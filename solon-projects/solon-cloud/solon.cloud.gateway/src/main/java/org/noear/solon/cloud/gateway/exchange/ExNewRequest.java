@@ -62,7 +62,7 @@ public class ExNewRequest {
         return this;
     }
 
-    private KeyValues<String> getHeaderHolder(String key) {
+    private KeyValues<String> headerHolder(String key) {
         return headers.computeIfAbsent(key, k -> new KeyValues<>(key));
     }
 
@@ -70,7 +70,7 @@ public class ExNewRequest {
      * 配置头（替换）
      */
     public ExNewRequest header(String key, String... values) {
-        getHeaderHolder(key).setValues(values);
+        headerHolder(key).setValues(values);
         return this;
     }
 
@@ -78,7 +78,7 @@ public class ExNewRequest {
      * 配置头（替换）
      */
     public ExNewRequest header(String key, List<String> values) {
-        getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
+        headerHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
 
@@ -86,7 +86,17 @@ public class ExNewRequest {
      * 添加头（添加）
      */
     public ExNewRequest headerAdd(String key, String value) {
-        getHeaderHolder(key).addValue(value);
+        headerHolder(key).addValue(value);
+        return this;
+    }
+
+    /**
+     * 移除头
+     */
+    public ExNewRequest headerRemove(String... keys) {
+        for (String key : keys) {
+            headers.remove(key);
+        }
         return this;
     }
 
@@ -127,10 +137,10 @@ public class ExNewRequest {
      * 获取路径和查询字符串
      */
     public String getPathAndQueryString() {
-        if (Utils.isEmpty(queryString)) {
-            return path;
+        if (Utils.isEmpty(getQueryString())) {
+            return getPath();
         } else {
-            return path + "?" + queryString;
+            return getPath() + "?" + getQueryString();
         }
     }
 

@@ -21,46 +21,60 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.CompletableSubscriber;
 
 /**
- * 移除请求头过滤器
+ * 移除响应头过滤器
  *
  * @author noear
  * @since 2.9
  */
-public class RemoveRequestHeaderFilterFactory implements RouteFilterFactory {
+public class RemoveResponseHeaderFilterFactory implements RouteFilterFactory {
     @Override
     public String prefix() {
-        return "RemoveRequestHeader";
+        return "RemoveResponseHeader";
     }
 
     @Override
     public ExFilter create(String config) {
-        return new RemoveRequestHeaderFilter(config);
+        return new RemoveResponseHeaderFilter(config);
     }
 
-    public static class RemoveRequestHeaderFilter implements ExFilter {
+    public static class RemoveResponseHeaderFilter implements ExFilter {
         private final String[] names;
 
         /**
-         * @param config (RemoveRequestHeader=name name2 name3)
+         * @param config (RemoveResponseHeader=name name2 name3)
          */
-        public RemoveRequestHeaderFilter(String config) {
+        public RemoveResponseHeaderFilter(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("RemoveRequestHeaderFilter config cannot be blank");
+                throw new IllegalArgumentException("RemoveResponseHeaderFilter config cannot be blank");
             }
 
             names = config.split(",");
 
             if (names.length == 0) {
-                throw new IllegalArgumentException("RemoveRequestHeaderFilter config format is wrong");
+                throw new IllegalArgumentException("RemoveResponseHeaderFilter config format is wrong");
             }
         }
 
         @Override
         public Completable doFilter(ExContext ctx, ExFilterChain chain) {
-            ctx.newRequest().headerRemove(names);
-            return chain.doFilter(ctx);
+            return Completable.create(emitter -> {
+                chain.doFilter(ctx).subscribe(new CompletableSubscriber() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        ctx.newResponse().headerRemove(names);
+                        emitter.onError(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ctx.newResponse().headerRemove(names);
+                        emitter.onComplete();
+                    }
+                });
+            });
         }
     }
 }
