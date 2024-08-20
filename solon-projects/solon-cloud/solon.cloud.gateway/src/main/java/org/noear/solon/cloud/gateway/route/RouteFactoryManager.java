@@ -20,6 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilterFactory;
 import org.noear.solon.cloud.gateway.route.redicate.HeaderPredicateFactory;
 import org.noear.solon.cloud.gateway.route.redicate.PathPredicateFactory;
+import org.noear.solon.cloud.gateway.route.predicate.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,13 @@ public class RouteFactoryManager {
 
     static {
         global = new RouteFactoryManager();
+        global.addFactory(new AfterPredicateFactory());
+        global.addFactory(new BeforePredicateFactory());
+
+        global.addFactory(new CookiePredicateFactory());
+        global.addFactory(new MethodPredicateFactory());
         global.addFactory(new PathPredicateFactory());
+
         global.addFactory(new StripPrefixFilterFactory());
         global.addFactory(new HeaderPredicateFactory());
     }

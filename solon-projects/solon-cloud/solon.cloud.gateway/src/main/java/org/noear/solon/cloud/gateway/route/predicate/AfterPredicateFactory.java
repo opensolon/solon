@@ -13,41 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route.redicate;
+package org.noear.solon.cloud.gateway.route.predicate;
 
-import org.noear.solon.cloud.gateway.exchange.ExPredicate;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-import org.noear.solon.core.route.PathRule;
+
+import java.time.ZonedDateTime;
 
 /**
- * 路由路径匹配检测器
- *
- * @author noear
+ * 路由时间 After 匹配检测器
+ * 
+ * @author poppoppuppylove
  * @since 2.9
  */
-public class PathPredicateFactory implements RoutePredicateFactory {
+public class AfterPredicateFactory implements RoutePredicateFactory {
     @Override
     public String prefix() {
-        return "Path";
+        return "After";
     }
 
     @Override
     public ExPredicate create(String config) {
-        return new PathPredicate(config);
+        return new AfterPredicate(config);
     }
 
-    public static class PathPredicate implements ExPredicate {
-        private PathRule rule;
+    public static class AfterPredicate implements ExPredicate {
+        private final ZonedDateTime dateTime;
 
-        public PathPredicate(String config) {
-            rule = new PathRule();
-            rule.include(config);
+        /**
+         * @param config (After=2017-01-20T17:42:47.789-07:00[America/Denver])
+         */
+        public AfterPredicate(String config) {
+            if (Utils.isBlank(config)) {
+                throw new IllegalArgumentException("AfterPredicate config cannot be blank");
+            }
+
+            this.dateTime = ZonedDateTime.parse(config);
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return rule.test(ctx.rawPath());
+            return ZonedDateTime.now().isAfter(dateTime);
         }
     }
 }
