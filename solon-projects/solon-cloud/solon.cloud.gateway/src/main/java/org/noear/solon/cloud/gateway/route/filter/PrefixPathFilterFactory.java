@@ -16,49 +16,49 @@
 package org.noear.solon.cloud.gateway.route.filter;
 
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import org.noear.solon.rx.Completable;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
- * 路径去除前缀过滤器
+ * 添加前缀路径过滤器
  *
  * @author noear
  * @since 2.9
  */
-public class StripPrefixFilterFactory implements RouteFilterFactory {
+public class PrefixPathFilterFactory implements RouteFilterFactory {
 
     @Override
     public String prefix() {
-        return "StripPrefix";
+        return "PrefixPath";
     }
 
     @Override
     public ExFilter create(String config) {
-        return new StripPrefixFilter(config);
+        return new PrefixPathFilter(config);
     }
 
-    public static class StripPrefixFilter implements ExFilter {
-        private int parts;
+    public static class PrefixPathFilter implements ExFilter {
+        private String part;
 
-        public StripPrefixFilter(String config) {
+        public PrefixPathFilter(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("StripPrefixFilter config cannot be blank");
+                throw new IllegalArgumentException("PrefixPathFilter config cannot be blank");
             }
 
-            this.parts = Integer.parseInt(config);
+            if (config.startsWith("/")) {
+                this.part = config;
+            } else {
+                this.part = "/" + config;
+            }
         }
 
         @Override
         public Completable doFilter(ExContext ctx, ExFilterChain chain) {
             //目标路径重组
-            List<String> pathFragments = Arrays.asList(ctx.newRequest().getPath().split("/", -1));
-            String newPath = "/" + String.join("/", pathFragments.subList(parts + 1, pathFragments.size()));
+            String newPath = part + ctx.newRequest().getPath();
             ctx.newRequest().path(newPath);
 
             return chain.doFilter(ctx);
