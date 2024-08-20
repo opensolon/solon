@@ -378,6 +378,15 @@ public class Utils {
         return !isEmpty(s);
     }
 
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
+    public static boolean isNotEmpty(Map s) {
+        return !isEmpty(s);
+    }
+
 
     /**
      * 检查字符串是否为空白

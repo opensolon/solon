@@ -40,6 +40,7 @@ import java.net.URI;
  * @since 2.9
  */
 public class XPluginImpl implements Plugin {
+    private static final String SOLON_CLOUD_GATEWAY = "solon.cloud.gateway";
     private static Signal _signal;
 
     public static Signal signal() {
@@ -56,6 +57,15 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
+        final Props gatewayProps = context.cfg().getProp(SOLON_CLOUD_GATEWAY);
+        final GatewayProperties gatewayProperties;
+        if (gatewayProps.size() > 0) {
+            gatewayProperties = gatewayProps.getBean(GatewayProperties.class);
+        } else {
+            gatewayProperties = new GatewayProperties();
+        }
+
+
         _vertx = Vertx.vertx();
         context.wrapAndPut(Vertx.class, _vertx);
 
@@ -83,8 +93,6 @@ public class XPluginImpl implements Plugin {
         context.subBeansOfType(RoutePredicateFactory.class, b -> {
             RouteFactoryManager.global().addFactory(b);
         });
-
-        GatewayProperties gatewayProperties = context.cfg().getBean("solon.cloud.gateway", GatewayProperties.class);
 
         //加载配置
         context.lifecycle(1, () -> {

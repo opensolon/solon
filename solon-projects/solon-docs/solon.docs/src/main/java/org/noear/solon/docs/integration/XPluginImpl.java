@@ -15,7 +15,6 @@
  */
 package org.noear.solon.docs.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
@@ -26,6 +25,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.docs.DocDocket;
+import org.noear.solon.docs.integration.properties.DocsProperties;
 
 import java.util.Map;
 
@@ -34,21 +34,22 @@ import java.util.Map;
  * @since 2.2
  */
 public class XPluginImpl implements Plugin {
-    public static final String SOLON_DOCS_ROUTES = "solon.docs.routes";
-    public static final String SOLON_DOCS_DISCOVER_URIPATTERN = "solon.docs.discover.uriPattern"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_SYNCSTATUS = "solon.docs.discover.syncStatus"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_EXCLUDED = "solon.docs.discover.excluded"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_INCLUDED = "solon.docs.discover.included"; //manual, discover
-    public static final String SOLON_DOCS_DISCOVER_BASICAUTH = "solon.docs.discover.basicAuth"; //manual, discover
-
+    public static final String SOLON_DOCS = "solon.docs";
 
     @Override
     public void start(AppContext context) throws Throwable {
+        final Props docsProps = context.cfg().getProp(SOLON_DOCS);
+        final DocsProperties docsProperties;
+        if (docsProps.size() > 0) {
+            docsProperties = docsProps.getBean(DocsProperties.class);
+        } else {
+            docsProperties = new DocsProperties();
+        }
+
         //加载 solon.docs.routes
-        Map<String, Props> docMap = context.cfg().getGroupedProp(SOLON_DOCS_ROUTES);
-        if (docMap.size() > 0) {
-            for (Map.Entry<String, Props> kv : docMap.entrySet()) {
-                DocDocket docDocket = kv.getValue().getBean(DocDocket.class);
+        if (Utils.isNotEmpty(docsProperties.getRoutes())) {
+            for (Map.Entry<String, DocDocket> kv : docsProperties.getRoutes().entrySet()) {
+                DocDocket docDocket = kv.getValue();
 
                 BeanWrap docBw = context.wrap(kv.getKey(), docDocket);
                 //按名字注册
@@ -59,10 +60,9 @@ public class XPluginImpl implements Plugin {
         }
 
         //加载 solon.docs.discover.pathPattern
-        String discover_uriPattern = Solon.cfg().get(SOLON_DOCS_DISCOVER_URIPATTERN);
-        if (Utils.isNotEmpty(discover_uriPattern)) {
+        if (docsProperties.getDiscover().isEnabled()) {
             if (ClassUtil.hasClass(() -> Discovery.class)) {
-                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, discover_uriPattern);
+                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, docsProperties.getDiscover());
                 //订阅
                 EventBus.subscribe(Discovery.class, eventListener);
                 //开始
