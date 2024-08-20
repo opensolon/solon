@@ -612,8 +612,8 @@ public final class SolonProps extends Props {
     /**
      * 应用健康状况
      * */
-    public boolean appHealth() {
-        return getBool("solon.app.health", true);
+    public boolean appEnabled() {
+        return getBool("solon.app.enabled", true);
     }
 
     /**

@@ -124,7 +124,7 @@ public class CloudClient {
         }
 
         Solon.app().onEvent(AppLoadEndEvent.class, (event) -> {
-            if (Solon.cfg().appHealth()) {
+            if (Solon.cfg().appEnabled()) {
                 for (Signal signal : Solon.app().signals()) {
                     Instance instance = Instance.localNew(signal);
                     CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
@@ -134,7 +134,7 @@ public class CloudClient {
         });
 
         Solon.app().onEvent(Signal.class, signal -> {
-            if (Solon.cfg().appHealth()) {
+            if (Solon.cfg().appEnabled()) {
                 Instance instance = Instance.localNew(signal);
                 CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
                 LogUtil.global().info("Cloud: Service registered " + instance.service() + "@" + instance.uri());
