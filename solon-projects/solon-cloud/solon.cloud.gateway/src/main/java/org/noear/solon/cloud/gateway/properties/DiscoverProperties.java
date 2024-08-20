@@ -19,45 +19,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 分布式网关配置属性
+ * 分布式发现配置属性
  *
  * @author noear
  * @since 2.9
  */
-public class GatewayProperties {
-    /**
-     * 发现配置
-     */
-    private DiscoverProperties discover = new DiscoverProperties();
+public class DiscoverProperties {
+    private boolean enabled;
+
+    private List<String> excludedServices = new ArrayList<>();
+
+    private List<String> includedServices = new ArrayList<>();
 
     /**
-     * 路由记录
+     * 是否启用
      */
-    private List<RouteProperties> routes = new ArrayList<>();
-
-    /**
-     * Http 客户端超时
-     */
-    private TimeoutProperties httpClient = new TimeoutProperties();
-
-    /**
-     * 发现配置
-     */
-    public DiscoverProperties getDiscover() {
-        return discover;
+    public boolean isEnabled() {
+        return enabled;
     }
 
     /**
-     * 路由记录
+     * 排除服务
      */
-    public List<RouteProperties> getRoutes() {
-        return routes;
+    public List<String> getExcludedServices() {
+        return excludedServices;
     }
 
     /**
-     * Http 客户端超时
+     * 包括服务
      */
-    public TimeoutProperties getHttpClient() {
-        return httpClient;
+    public List<String> getIncludedServices() {
+        return includedServices;
     }
 }

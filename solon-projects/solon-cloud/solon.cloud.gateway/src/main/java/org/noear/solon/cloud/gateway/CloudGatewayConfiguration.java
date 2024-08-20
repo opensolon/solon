@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
@@ -22,6 +23,8 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +35,7 @@ import java.util.function.Consumer;
  */
 public class CloudGatewayConfiguration implements CloudRouteRegister {
     //路由记录
-    protected List<Route> routes = new ArrayList<>();
+    protected Map<String, Route> routes = new ConcurrentHashMap<>();
     //路由处理
     protected CloudRouteHandler routeHandler = new CloudRouteHandlerDefault();
     //过滤器
@@ -90,7 +93,11 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
      */
     public CloudRouteRegister route(Route route) {
         if (route != null) {
-            routes.add(route);
+            if (Utils.isEmpty(route.getId())) {
+                route.id(route.getTarget().toString());
+            }
+
+            routes.put(route.getId(), route);
         }
 
         return this;

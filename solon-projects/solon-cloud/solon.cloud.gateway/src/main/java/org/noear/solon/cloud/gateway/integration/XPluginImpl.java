@@ -16,9 +16,7 @@
 package org.noear.solon.cloud.gateway.integration;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
@@ -30,7 +28,9 @@ import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 
 import java.net.URI;
@@ -84,16 +84,25 @@ public class XPluginImpl implements Plugin {
             RouteFactoryManager.global().addFactory(b);
         });
 
+        GatewayProperties gatewayProperties = context.cfg().getBean("solon.cloud.gateway", GatewayProperties.class);
+
         //加载配置
-        context.lifecycle(() -> {
+        context.lifecycle(1, () -> {
             //之前需要先收集注解组件
-            loadConfiguration(cloudGateway.getConfiguration(), "solon.cloud.gateway");
+            loadConfiguration(cloudGateway.getConfiguration(), gatewayProperties);
         });
 
         //启动完成后注册
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(cloudGateway);
         });
+
+        //订阅 Discovery（同步服务发现）
+        if (gatewayProperties.getDiscover().isEnabled()) {
+            DiscoveryEventListener eventListener = new DiscoveryEventListener(context, cloudGateway.getConfiguration());
+            EventBus.subscribe(Discovery.class, eventListener);
+            context.lifecycle(-1, eventListener);
+        }
     }
 
     private void start0(CloudGateway cloudGateway) {
@@ -131,16 +140,13 @@ public class XPluginImpl implements Plugin {
     /**
      * 构建分布式网关
      */
-    public void loadConfiguration(CloudGatewayConfiguration configuration, String keyStarts) {
-        Props props = Solon.cfg().getProp(keyStarts);
-        if (props.size() == 0) {
+    public void loadConfiguration(CloudGatewayConfiguration configuration, GatewayProperties gatewayProperties) {
+        if (gatewayProperties == null || Utils.isEmpty(gatewayProperties.getRoutes())) {
             return;
         }
 
-        GatewayProperties configModel = props.getBean(GatewayProperties.class);
-
         //routes
-        for (RouteProperties rm : configModel.getRoutes()) {
+        for (RouteProperties rm : gatewayProperties.getRoutes()) {
             Route route = new Route();
 
             route.id(rm.getId());
@@ -163,7 +169,7 @@ public class XPluginImpl implements Plugin {
             if (rm.getTimeout() != null) {
                 route.timeout(rm.getTimeout());
             } else {
-                route.timeout(configModel.getHttpClient());
+                route.timeout(gatewayProperties.getHttpClient());
             }
 
             configuration.route(route);

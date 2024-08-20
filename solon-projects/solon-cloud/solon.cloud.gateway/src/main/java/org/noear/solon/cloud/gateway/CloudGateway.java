@@ -24,6 +24,8 @@ import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
 
+import java.util.Map;
+
 /**
  * 分布式网关
  *
@@ -93,11 +95,11 @@ public class CloudGateway implements Handler<HttpServerRequest> {
      * @param ctx 上下文
      */
     private Route findRoute(ExContext ctx) {
-        for (Route r : configuration.routes) {
-            if (r.matched(ctx)) {
+        for (Map.Entry<String, Route> kv : configuration.routes.entrySet()) {
+            if (kv.getValue().matched(ctx)) {
                 //attr +
-                ((ExContextImpl) ctx).bind(r);
-                return r;
+                ((ExContextImpl) ctx).bind(kv.getValue());
+                return kv.getValue();
             }
         }
 

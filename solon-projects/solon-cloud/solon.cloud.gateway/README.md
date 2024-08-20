@@ -13,6 +13,10 @@ solon.cloud.gateway:
     connectTimeout: 10 #?可选
     requestTimeout: 10 #?可选
     responseTimeout: 1800 #?可选
+  discover:
+    enabled: true
+    excludedServices:
+      - "user-service"
   routes: #!必选
     - target: "http://localhost:8080" # 或 "lb://user-service"
       predicates: #?可选
@@ -20,8 +24,8 @@ solon.cloud.gateway:
       filters: #?可选
         - "StripPrefix=1"
       timeout: #?可选
-        connectTimeout: 1000 #?可选
-        requestTimeout: 1000 #?可选
-        responseTimeout: 1000 #?可选
+        connectTimeout: 10 #?可选
+        requestTimeout: 10 #?可选
+        responseTimeout: 1800 #?可选
 ```
 
