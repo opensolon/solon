@@ -45,6 +45,7 @@ public class RouteFactoryManager {
         global.addFactory(new CookiePredicateFactory());
         global.addFactory(new MethodPredicateFactory());
         global.addFactory(new PathPredicateFactory());
+        global.addFactory(new RemoteAddrPredicateFactory());
 
         global.addFactory(new StripPrefixFilterFactory());
         global.addFactory(new HeaderPredicateFactory());
