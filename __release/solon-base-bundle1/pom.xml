@@ -19,6 +19,7 @@
         <module>../../solon-projects/solon-native/solon.aot</module>
 
         <module>../../solon-projects/solon-base/solon.proxy</module>
+        <module>../../solon-projects/solon-base/solon.rx</module>
         <module>../../solon-projects/solon-base/solon.config.yaml</module>
         <module>../../solon-projects/solon-base/solon.banner</module>
         <module>../../solon-projects/solon-base/solon.validation</module>

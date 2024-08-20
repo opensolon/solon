@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.web.reactive.integration;
+package org.noear.solon.web.rx.integration;
 
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;

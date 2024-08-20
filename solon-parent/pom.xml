@@ -61,7 +61,8 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
-        <vertx.version>4.5.7</vertx.version>
+        <vertx.version>4.5.9</vertx.version>
+        <rxjava.version>3.1.9</rxjava.version>
 
 
         <micrometer.version>1.11.1</micrometer.version>
@@ -386,6 +387,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.proxy</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.rx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
