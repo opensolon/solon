@@ -15,14 +15,19 @@
  */
 package org.noear.solon.rx;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 /**
- * 可完成的发射器
+ * 可完成的订阅者
  *
  * @author noear
  * @since 2.9
  */
-public interface CompletableEmitter {
-    void onError(Throwable cause);
+public interface CompletableSubscriber extends Subscriber<Void> {
+    default void onSubscribe(Subscription var1) {
+    }
 
-    void onComplete();
+    default void onNext(Void var1) {
+    }
 }

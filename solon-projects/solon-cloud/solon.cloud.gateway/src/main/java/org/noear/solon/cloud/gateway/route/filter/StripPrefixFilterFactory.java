@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 路由去除前缀过滤器
+ * 路径去除前缀过滤器
  *
  * @author noear
  * @since 2.9
