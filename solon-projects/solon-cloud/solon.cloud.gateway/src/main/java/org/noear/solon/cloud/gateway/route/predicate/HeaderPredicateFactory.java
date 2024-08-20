@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.gateway.route.redicate;
+package org.noear.solon.cloud.gateway.route.predicate;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
@@ -32,39 +32,40 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
     }
 
     private static class HeaderPredicate implements ExPredicate {
-        private static final Map<String, Pattern> cached = new HashMap<>();
         private String headerKey;
         private Pattern pattern;
 
-        public static Pattern get(String regex) {
-            Pattern rst = cached.get(regex);
-            if (rst == null) {
-                Utils.locker().lock();
-                try {
-                    rst = cached.get(regex);
-                    if (rst == null) {
-                        rst = Pattern.compile(regex);
-                        cached.put(regex, rst);
-                    }
-                }finally {
-                    Utils.locker().unlock();
-                }
-            }
-            return rst;
-        }
 
 
         public HeaderPredicate(String config) {
+            if (Utils.isEmpty(config)) {
+                throw new IllegalArgumentException("Header config is null or empty");
+            }
             String[] configs = config.split(",", 2);
             headerKey = configs[0].trim();
-            String regex = configs[1].trim();
 
-            pattern = cached.get(regex);
+            if (Utils.isEmpty(headerKey)){
+                throw new IllegalArgumentException("header Key is null or empty");
+            }
+            if (configs.length > 1) {
+                String regex = configs[1].trim();
+                if (Utils.isEmpty(regex)){
+                    throw new IllegalArgumentException("Header regex is null or empty");
+                }
+                pattern = Pattern.compile(regex);
+            }
+
         }
 
         @Override
         public boolean test(ExContext exContext) {
             String value = exContext.rawHeader(headerKey);
+            if (Utils.isEmpty(value)) {
+                return false;
+            }
+            if (pattern == null){
+                return true;
+            }
             return pattern.matcher(value).find();
         }
     }

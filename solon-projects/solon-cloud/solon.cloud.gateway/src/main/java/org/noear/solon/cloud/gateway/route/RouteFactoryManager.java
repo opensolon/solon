@@ -18,8 +18,7 @@ package org.noear.solon.cloud.gateway.route;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilterFactory;
-import org.noear.solon.cloud.gateway.route.redicate.HeaderPredicateFactory;
-import org.noear.solon.cloud.gateway.route.redicate.PathPredicateFactory;
+import org.noear.solon.cloud.gateway.route.predicate.HeaderPredicateFactory;
 import org.noear.solon.cloud.gateway.route.predicate.*;
 
 import java.util.HashMap;
