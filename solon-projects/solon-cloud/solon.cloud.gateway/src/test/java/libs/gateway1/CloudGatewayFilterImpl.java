@@ -18,7 +18,9 @@ package libs.gateway1;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.CompletableSubscriber;
 
 //@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
@@ -30,6 +32,26 @@ public class CloudGatewayFilterImpl implements CloudGatewayFilter {
             return Completable.complete();
         }
 
-        return chain.doFilter(ctx);
+        return Completable.create(emitter -> {
+            chain.doFilter(ctx).subscribe(new CompletableSubscriber() {
+                @Override
+                public void onError(Throwable e) {
+                    if (e instanceof StatusException) {
+                        StatusException se = (StatusException) e;
+
+                        ctx.newResponse().status(se.getCode());
+                        emitter.onComplete();
+                    } else {
+                        ctx.newResponse().status(500);
+                        emitter.onComplete();
+                    }
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.onComplete();
+                }
+            });
+        });
     }
 }
