@@ -54,18 +54,22 @@ public class RemoteAddrPredicateFactory implements RoutePredicateFactory {
             if (Utils.isBlank(config)) {
                 throw new IllegalArgumentException("RemoteAddr config cannot be blank");
             }
-            String[] split = config.split("/");
-            String ip = split[0];
+
+            String[] parts = config.split("/");
+            String ip = parts[0];
+
             try {
                 InetAddress address = InetAddress.getByName(ip);
+
                 // 获取掩码
                 int mask;
-                if(split.length > 1){
-                    mask = Integer.parseInt(split[1]);
+                if (parts.length > 1) {
+                    mask = Integer.parseInt(parts[1]);
                 } else {
                     mask = address instanceof Inet4Address ? 32 : 128;
                 }
-                rule = new IpSubnetFilterRule(address,mask,IpFilterRuleType.ACCEPT);
+
+                rule = new IpSubnetFilterRule(address, mask, IpFilterRuleType.ACCEPT);
             } catch (UnknownHostException e) {
                 throw new IllegalArgumentException("The IP format is incorrect");
             }
@@ -74,9 +78,10 @@ public class RemoteAddrPredicateFactory implements RoutePredicateFactory {
         @Override
         public boolean test(ExContext ctx) {
             String ip = ctx.realIp();
-            if(Utils.isBlank(ip)){
+            if(Utils.isEmpty(ip)){
                 return false;
             }
+
             // 只匹配ip，所以这里的端口无效
             return rule.matches(new InetSocketAddress(ip,1));
         }

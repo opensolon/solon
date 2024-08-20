@@ -21,6 +21,7 @@ public class RemoteAddrPredicateTest {
         assert !predicate.test(buildContext(""));
         assert !predicate.test(buildContext(null));
     }
+
     @Test
     public void test2() {
         ExPredicate predicate = RouteFactoryManager.global()
@@ -53,9 +54,6 @@ public class RemoteAddrPredicateTest {
         assert predicate.test(buildContext("2001:0db8:85a3:0000:0000:8a2e:0370:7335"));
         assert !predicate.test(buildContext("2001:0db8:85a3:0000:0000:8a2e:0371:7334"));
     }
-
-
-
 
     private ExContextEmpty buildContext(String ip){
         return new ExContextEmpty() {
