@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @since 2.9
  */
 public class CookiePredicateTest {
-
     @Test
     public void testValidCookieWithPattern() {
         ExPredicate predicate = RouteFactoryManager.global()
@@ -73,6 +72,9 @@ public class CookiePredicateTest {
         assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Cookie", ",^pattern");
         });
-    }
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            RouteFactoryManager.global().getPredicate("Cookie", ",");
+        });
+    }
 }

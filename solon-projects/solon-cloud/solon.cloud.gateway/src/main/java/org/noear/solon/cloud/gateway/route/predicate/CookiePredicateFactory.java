@@ -53,6 +53,10 @@ public class CookiePredicateFactory implements RoutePredicateFactory {
 
             String[] parts = config.split(",");
 
+            if (parts.length == 0) {
+                throw new IllegalArgumentException("CookiePredicate config format is wrong");
+            }
+
             //cookieName
             cookieName = parts[0].trim();
             if (Utils.isEmpty(cookieName)) {
@@ -63,7 +67,7 @@ public class CookiePredicateFactory implements RoutePredicateFactory {
             if (parts.length > 1) {
                 String regex = parts[1].trim();
                 if (Utils.isEmpty(regex)) {
-                    throw new IllegalArgumentException("Regex cannot be empty.");
+                    throw new IllegalArgumentException("Cookie regex cannot be empty.");
                 } else {
                     pattern = Pattern.compile(regex);  // 编译正则表达式
                 }
@@ -80,7 +84,7 @@ public class CookiePredicateFactory implements RoutePredicateFactory {
             }
 
             if (pattern == null) {
-                //不需要匹配（找到值就行）
+                //不需要匹配（找到就行）
                 return true;
             } else {
                 //需要匹配检测

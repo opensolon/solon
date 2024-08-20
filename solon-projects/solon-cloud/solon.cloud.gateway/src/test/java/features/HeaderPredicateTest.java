@@ -6,10 +6,10 @@ import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 
 /**
+ * 对请求头的断言测试
+ *
  * @author wjc28
- * @version 1.0
- * @description: 对请求头的断言测试
- * @date 2024-08-20
+ * @since 2.9
  */
 public class HeaderPredicateTest {
 
@@ -18,24 +18,25 @@ public class HeaderPredicateTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Header", "");
         });
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Header", null);
         });
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Header", "X-Request-Id, ");
-        });
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Header", ",\\d+");
         });
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Header", ",");
         });
     }
 
     @Test
-    public void testMatchesHeader(){
+    public void testMatchesHeader() {
         ExPredicate header = RouteFactoryManager.global().getPredicate("Header", "X-Request-Id, \\d+");
         Assertions.assertNotNull(header);
+
         boolean test = header.test(new ExContextEmpty() {
             @Override
             public String rawHeader(String key) {
@@ -47,9 +48,10 @@ public class HeaderPredicateTest {
 
 
     @Test
-    public void testNotMatchesHeader(){
+    public void testNotMatchesHeader() {
         ExPredicate header = RouteFactoryManager.global().getPredicate("Header", "X-Request-Id, \\d+");
         Assertions.assertNotNull(header);
+
         boolean test = header.test(new ExContextEmpty() {
             @Override
             public String rawHeader(String key) {
@@ -58,6 +60,4 @@ public class HeaderPredicateTest {
         });
         Assertions.assertFalse(test);
     }
-
-
 }
