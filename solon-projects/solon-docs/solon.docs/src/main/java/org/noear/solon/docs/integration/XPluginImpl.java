@@ -66,7 +66,7 @@ public class XPluginImpl implements Plugin {
                 //订阅
                 EventBus.subscribe(Discovery.class, eventListener);
                 //开始
-                eventListener.start();
+                context.lifecycle(eventListener);
             } else {
                 LogUtil.global().warn("Solon docs discover: missing solon cloud discovery");
             }

@@ -15,11 +15,13 @@
  */
 package org.noear.solon.docs.integration;
 
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Lifecycle;
 import org.noear.solon.core.LoadBalance;
+import org.noear.solon.core.bean.LifecycleSimpleBean;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.docs.DocDocket;
 
@@ -32,7 +34,7 @@ import java.util.Map;
  * @author noear
  * @since 2.9
  */
-public class DiscoveryEventListener implements EventListener<Discovery>, Lifecycle {
+public class DiscoveryEventListener implements EventListener<Discovery>, LifecycleSimpleBean {
     private final AppContext appContext;
     private final String uriPattern;
     private final boolean syncStatus;
@@ -62,6 +64,23 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
                     LoadBalance.get(ss[0], ss[1]);
                 } else {
                     LoadBalance.get(ss[0]);
+                }
+            }
+        }
+    }
+
+    /**
+     * 开始之后
+     */
+    @Override
+    public void postStart() throws Throwable {
+        if (CloudClient.loadBalance().count() < included.size()) {
+            //条件档一下，避免与网关重复加载
+            Collection<String> serviceNames = CloudClient.discovery().findServices("");
+
+            if (Utils.isNotEmpty(serviceNames)) {
+                for (String name : serviceNames) {
+                    LoadBalance.get(name);
                 }
             }
         }
