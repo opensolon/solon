@@ -44,6 +44,9 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
         private String headerName;
         private Pattern pattern;
 
+        /**
+         * @param config (Header=token)(Header=token, ^user.)
+         * */
         public HeaderPredicate(String config) {
             if (Utils.isBlank(config)) {
                 throw new IllegalArgumentException("HeaderPredicate config cannot be blank");
