@@ -32,9 +32,10 @@ import java.util.Map;
  */
 public class RouteFactoryManager {
     private static final RouteFactoryManager global;
+    private Map<String, RouteFilterFactory> filterFactoryMap = new HashMap<>();
+    private Map<String, RoutePredicateFactory> predicateFactoryMap = new HashMap<>();
+    private RouteFactoryManager(){
 
-    public static RouteFactoryManager global() {
-        return global;
     }
 
     static {
@@ -52,15 +53,12 @@ public class RouteFactoryManager {
     }
 
 
-    private Map<String, RouteFilterFactory> filterFactoryMap = new HashMap<>();
-    private Map<String, RoutePredicateFactory> predicateFactoryMap = new HashMap<>();
-
-    public void addFactory(RouteFilterFactory factory) {
-        filterFactoryMap.put(factory.prefix(), factory);
+    public static void addFactory(RouteFilterFactory factory) {
+        global.filterFactoryMap.put(factory.prefix(), factory);
     }
 
-    public void addFactory(RoutePredicateFactory factory) {
-        predicateFactoryMap.put(factory.prefix(), factory);
+    public static void addFactory(RoutePredicateFactory factory) {
+        global.predicateFactoryMap.put(factory.prefix(), factory);
     }
 
     /**
@@ -69,8 +67,8 @@ public class RouteFactoryManager {
      * @param prefix 配置前缀
      * @param config 配置
      */
-    public ExFilter getFilter(String prefix, String config) {
-        RouteFilterFactory factory = filterFactoryMap.get(prefix);
+    public static ExFilter getFilter(String prefix, String config) {
+        RouteFilterFactory factory = global.filterFactoryMap.get(prefix);
         if (factory == null) {
             return null;
         } else {
@@ -84,8 +82,8 @@ public class RouteFactoryManager {
      * @param prefix 配置前缀
      * @param config 配置
      */
-    public ExPredicate getPredicate(String prefix, String config) {
-        RoutePredicateFactory factory = predicateFactoryMap.get(prefix);
+    public static ExPredicate getPredicate(String prefix, String config) {
+        RoutePredicateFactory factory = global.predicateFactoryMap.get(prefix);
         if (factory == null) {
             return null;
         } else {
@@ -96,14 +94,14 @@ public class RouteFactoryManager {
     /**
      * 构建检测器
      */
-    public ExPredicate buildPredicate(String predicateStr) {
+    public static ExPredicate buildPredicate(String predicateStr) {
         int idx = predicateStr.indexOf('=');
 
         if (idx > 0) {
             String prefix = predicateStr.substring(0, idx);
             String config = predicateStr.substring(idx + 1, predicateStr.length());
 
-            return RouteFactoryManager.global().getPredicate(prefix, config);
+            return getPredicate(prefix, config);
         } else {
             return null;
         }
@@ -112,14 +110,14 @@ public class RouteFactoryManager {
     /**
      * 构建过滤器
      */
-    public ExFilter buildFilter(String filterStr) {
+    public static ExFilter buildFilter(String filterStr) {
         int idx = filterStr.indexOf('=');
 
         if (idx > 0) {
             String prefix = filterStr.substring(0, idx);
             String config = filterStr.substring(idx + 1, filterStr.length());
 
-            return RouteFactoryManager.global().getFilter(prefix, config);
+            return getFilter(prefix, config);
         } else {
             return null;
         }

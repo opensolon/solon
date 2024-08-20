@@ -21,7 +21,7 @@ public class AfterPredicateTest {
         // 使用一个较早的时间来确保测试时条件满足
         String validDateTime = ZonedDateTime.now().minusDays(1).toString();
         
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("After", validDateTime);
 
         assert predicate != null;
@@ -34,7 +34,7 @@ public class AfterPredicateTest {
     public void testAfterPredicateInvalidConfig() {
         // 测试无效的时间配置
         assertThrows(DateTimeParseException.class, () -> {
-            RouteFactoryManager.global().getPredicate("After", "invalid-date-time");
+            RouteFactoryManager.getPredicate("After", "invalid-date-time");
         });
     }
 
@@ -42,7 +42,7 @@ public class AfterPredicateTest {
     public void testAfterPredicateEmptyConfig() {
         // 测试配置为空
         assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("After", "");
+            RouteFactoryManager.getPredicate("After", "");
         });
     }
 
@@ -53,7 +53,7 @@ public class AfterPredicateTest {
 
         System.out.println(boundaryDateTime);
 
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("After", boundaryDateTime);
 
         assert predicate != null;

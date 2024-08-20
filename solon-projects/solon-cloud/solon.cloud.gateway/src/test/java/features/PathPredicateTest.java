@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PathPredicateTest {
     @Test
     public void testValidConfig() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("Path", "/demo/**");
 
         assert predicate != null;
@@ -40,7 +40,7 @@ public class PathPredicateTest {
     @Test
     public void testEmptyConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Path", "");
+            RouteFactoryManager.getPredicate("Path", "");
         });
     }
 }

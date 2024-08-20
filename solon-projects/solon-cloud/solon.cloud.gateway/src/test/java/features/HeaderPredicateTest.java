@@ -16,25 +16,25 @@ public class HeaderPredicateTest {
     @Test
     public void testEmptyConfig() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Header", "");
+            RouteFactoryManager.getPredicate("Header", "");
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Header", null);
+            RouteFactoryManager.getPredicate("Header", null);
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Header", ",\\d+");
+            RouteFactoryManager.getPredicate("Header", ",\\d+");
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Header", ",");
+            RouteFactoryManager.getPredicate("Header", ",");
         });
     }
 
     @Test
     public void testMatchesHeader() {
-        ExPredicate header = RouteFactoryManager.global().getPredicate("Header", "X-Request-Id, \\d+");
+        ExPredicate header = RouteFactoryManager.getPredicate("Header", "X-Request-Id, \\d+");
         Assertions.assertNotNull(header);
 
         boolean test = header.test(new ExContextEmpty() {
@@ -49,7 +49,7 @@ public class HeaderPredicateTest {
 
     @Test
     public void testNotMatchesHeader() {
-        ExPredicate header = RouteFactoryManager.global().getPredicate("Header", "X-Request-Id, \\d+");
+        ExPredicate header = RouteFactoryManager.getPredicate("Header", "X-Request-Id, \\d+");
         Assertions.assertNotNull(header);
 
         boolean test = header.test(new ExContextEmpty() {

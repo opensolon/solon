@@ -11,7 +11,7 @@ import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 public class RemoteAddrPredicateTest {
     @Test
     public void test1() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("RemoteAddr", "192.168.1.1");
 
         assert predicate != null;
@@ -24,7 +24,7 @@ public class RemoteAddrPredicateTest {
 
     @Test
     public void test2() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("RemoteAddr", "192.168.1.1/24");
 
         assert predicate != null;
@@ -35,7 +35,7 @@ public class RemoteAddrPredicateTest {
 
     @Test
     public void test3() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("RemoteAddr", "2001:0db8:85a3:0000:0000:8a2e:0370:7334");
 
         assert predicate != null;
@@ -46,7 +46,7 @@ public class RemoteAddrPredicateTest {
 
     @Test
     public void test4() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("RemoteAddr", "2001:0db8:85a3:0000:0000:8a2e:0370:7334/112");
 
         assert predicate != null;

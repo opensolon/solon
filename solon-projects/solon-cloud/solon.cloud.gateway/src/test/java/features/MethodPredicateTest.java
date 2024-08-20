@@ -13,7 +13,7 @@ public class MethodPredicateTest {
 
     @Test
     public void testValidMethods() {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("Method", "GET,POST");
 
         assert predicate != null;
@@ -54,21 +54,21 @@ public class MethodPredicateTest {
     @Test
     public void testInvalidMethodConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Method", "INVALID_METHOD");
+            RouteFactoryManager.getPredicate("Method", "INVALID_METHOD");
         });
     }
 
     @Test
     public void testEmptyConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Method", "");
+            RouteFactoryManager.getPredicate("Method", "");
         });
     }
 
     @Test
     public void testNoValidMethods() {
         assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Method", "UNKNOWN_METHOD");
+            RouteFactoryManager.getPredicate("Method", "UNKNOWN_METHOD");
         });
     }
 }
