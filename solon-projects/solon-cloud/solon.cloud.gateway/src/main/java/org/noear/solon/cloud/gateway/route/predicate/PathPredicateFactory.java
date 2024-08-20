@@ -13,49 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route.redicate;
+package org.noear.solon.cloud.gateway.route.predicate;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-
-import java.time.ZonedDateTime;
+import org.noear.solon.core.route.PathRule;
 
 /**
- * 路由时间 Before 匹配检测器
+ * 路由 Path 匹配检测器
  *
- * @author poppoppuppylove
+ * @author noear
  * @since 2.9
  */
-public class BeforePredicateFactory implements RoutePredicateFactory {
+public class PathPredicateFactory implements RoutePredicateFactory {
     @Override
     public String prefix() {
-        return "Before";
+        return "Path";
     }
 
     @Override
     public ExPredicate create(String config) {
-        return new BeforePredicate(config);
+        return new PathPredicate(config);
     }
 
-    public static class BeforePredicate implements ExPredicate {
-        private final ZonedDateTime dateTime;
+    public static class PathPredicate implements ExPredicate {
+        private PathRule rule;
 
         /**
-         * @param config (Before=2017-01-20T17:42:47.789-07:00[America/Denver])
-         */
-        public BeforePredicate(String config) {
+         * @param config (Path=/demo/**)
+         * */
+        public PathPredicate(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("BeforePredicate config cannot be blank");
+                throw new IllegalArgumentException("PathPredicate config cannot be blank");
             }
 
-            this.dateTime = ZonedDateTime.parse(config);
+            rule = new PathRule();
+            rule.include(config);
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return ZonedDateTime.now().isBefore(dateTime);
+            return rule.test(ctx.rawPath());
         }
     }
 }

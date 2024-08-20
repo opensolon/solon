@@ -13,41 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route.redicate;
+package org.noear.solon.cloud.gateway.route.predicate;
 
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 
 import java.time.ZonedDateTime;
 
 /**
- * 路由时间 After 匹配检测器
- * 
+ * 路由时间 Before 匹配检测器
+ *
  * @author poppoppuppylove
  * @since 2.9
  */
-public class AfterPredicateFactory implements RoutePredicateFactory {
+public class BeforePredicateFactory implements RoutePredicateFactory {
     @Override
     public String prefix() {
-        return "After";
+        return "Before";
     }
 
     @Override
     public ExPredicate create(String config) {
-        return new AfterPredicate(config);
+        return new BeforePredicate(config);
     }
 
-    public static class AfterPredicate implements ExPredicate {
+    public static class BeforePredicate implements ExPredicate {
         private final ZonedDateTime dateTime;
 
         /**
-         * @param config (After=2017-01-20T17:42:47.789-07:00[America/Denver])
+         * @param config (Before=2017-01-20T17:42:47.789-07:00[America/Denver])
          */
-        public AfterPredicate(String config) {
+        public BeforePredicate(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("AfterPredicate config cannot be blank");
+                throw new IllegalArgumentException("BeforePredicate config cannot be blank");
             }
 
             this.dateTime = ZonedDateTime.parse(config);
@@ -55,7 +55,7 @@ public class AfterPredicateFactory implements RoutePredicateFactory {
 
         @Override
         public boolean test(ExContext ctx) {
-            return ZonedDateTime.now().isAfter(dateTime);
+            return ZonedDateTime.now().isBefore(dateTime);
         }
     }
 }
