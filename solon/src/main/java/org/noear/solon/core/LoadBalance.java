@@ -67,7 +67,18 @@ public interface LoadBalance {
      * @param group   服务分组
      */
     static LoadBalance get(String group, String service) {
-        return Solon.app().factoryManager().newLoadBalance(group, service);
+        return get(group, service, 0);
+    }
+
+    /**
+     * 获取负载均衡器
+     *
+     * @param service 服务名
+     * @param group   服务分组
+     * @param port    服务端口
+     */
+    static LoadBalance get(String group, String service, int port) {
+        return Solon.app().factoryManager().newLoadBalance(group, service, port);
     }
 
 
@@ -80,6 +91,6 @@ public interface LoadBalance {
      * 负载器工厂
      */
     interface Factory {
-        LoadBalance create(String group, String service);
+        LoadBalance create(String group, String service, int port);
     }
 }
