@@ -15,22 +15,32 @@
  */
 package org.noear.solon.cloud.gateway.route.redicate;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
+import org.noear.solon.core.handle.MethodType;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 路由方法匹配检测器
- * @author poppoppuppylove
+ * 路由 Method 匹配检测器
  *
+ * @author poppoppuppylove
+ * @since 2.9
  */
 public class MethodPredicateFactory implements RoutePredicateFactory {
     // 定义允许的HTTP方法
-    private static final Set<String> VALID_METHODS = new HashSet<>(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"));
+    private static final Set<String> VALID_METHODS = new HashSet<>(Arrays.asList(
+            MethodType.GET.name(),
+            MethodType.POST.name(),
+            MethodType.PUT.name(),
+            MethodType.DELETE.name(),
+            MethodType.PATCH.name(),
+            MethodType.OPTIONS.name(),
+            MethodType.HEAD.name()));
 
     @Override
     public String prefix() {
@@ -45,16 +55,21 @@ public class MethodPredicateFactory implements RoutePredicateFactory {
     public static class MethodPredicate implements ExPredicate {
         private final Set<String> methods;
 
+        /**
+         * @param config (Method=GET,POST)
+         * */
         public MethodPredicate(String config) {
-            if (config == null || config.trim().isEmpty()) {
-                throw new IllegalArgumentException("MethodPredicate configuration cannot be null or empty");
+            if (Utils.isBlank(config)) {
+                throw new IllegalArgumentException("MethodPredicate config cannot be blank");
             }
 
-            // 将配置的请求方法字符串拆分为数组，转换为大写，并过滤掉无效的HTTP方法
             methods = new HashSet<>();
             for (String method : config.split(",")) {
+                //转换为大写
                 String trimmedMethod = method.trim().toUpperCase();
+
                 if (VALID_METHODS.contains(trimmedMethod)) {
+                    //过滤掉无效的HTTP方法
                     methods.add(trimmedMethod);
                 } else {
                     throw new IllegalArgumentException("Invalid HTTP method: " + trimmedMethod);

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.route.predicate;
+package org.noear.solon.cloud.gateway.route.redicate;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
@@ -23,8 +24,9 @@ import java.util.regex.Pattern;
 
 /**
  * 路由 Cookie 匹配检测器
- * @author poppoppuppylove
  *
+ * @author poppoppuppylove
+ * @since 2.9
  */
 public class CookiePredicateFactory implements RoutePredicateFactory {
     @Override
@@ -34,43 +36,56 @@ public class CookiePredicateFactory implements RoutePredicateFactory {
 
     @Override
     public ExPredicate create(String config) {
-        String[] parts = config.split(",", 2);
-        // 如果 parts 长度不为 2，则表示配置格式有误。
-        if (parts.length != 2) {
-            throw new IllegalArgumentException("Cookie predicate requires both cookie name and regex.");
-        }
-
-        String cookieName = parts[0].trim();
-        if (cookieName.isEmpty()) {
-            throw new IllegalArgumentException("Cookie name cannot be empty.");
-        }
-
-        String regex = parts[1].trim();
-        if (regex.isEmpty()) {
-            throw new IllegalArgumentException("Regex cannot be empty.");
-        }
-
-        try {
-            return new CookiePredicate(cookieName, regex);
-        } catch (PatternSyntaxException e) {
-            throw new IllegalArgumentException("Invalid regex pattern: " + regex, e);
-        }
+        return new CookiePredicate(config);
     }
 
     public static class CookiePredicate implements ExPredicate {
         private final String cookieName;
-        private final Pattern pattern;
+        private Pattern pattern;
 
-        public CookiePredicate(String cookieName, String regex) {
-            this.cookieName = cookieName;
-            this.pattern = Pattern.compile(regex);  // 编译正则表达式
+        /**
+         * @param config (Cookie=token)(Cookie=token, ^user.)
+         * */
+        public CookiePredicate(String config) {
+            if (Utils.isBlank(config)) {
+                throw new IllegalArgumentException("CookiePredicate config cannot be blank");
+            }
+
+            String[] parts = config.split(",");
+
+            //cookieName
+            cookieName = parts[0].trim();
+            if (Utils.isEmpty(cookieName)) {
+                throw new IllegalArgumentException("Cookie name cannot be empty.");
+            }
+
+            //pattern
+            if (parts.length > 1) {
+                String regex = parts[1].trim();
+                if (Utils.isEmpty(regex)) {
+                    throw new IllegalArgumentException("Regex cannot be empty.");
+                } else {
+                    pattern = Pattern.compile(regex);  // 编译正则表达式
+                }
+            }
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            String cookieValue = ctx.rawCookie(cookieName);
-            // 如果 cookie 存在且值匹配正则表达式，则返回 true；否则返回 false。
-            return cookieValue != null && pattern.matcher(cookieValue).matches();
+            String value = ctx.rawCookie(cookieName);
+
+            if (value == null) {
+                //没找到
+                return false;
+            }
+
+            if (pattern == null) {
+                //不需要匹配（找到值就行）
+                return true;
+            } else {
+                //需要匹配检测
+                return pattern.matcher(value).find();
+            }
         }
     }
 }

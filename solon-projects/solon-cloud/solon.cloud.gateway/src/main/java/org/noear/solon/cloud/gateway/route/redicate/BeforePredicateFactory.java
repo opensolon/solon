@@ -19,43 +19,43 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-import org.noear.solon.core.route.PathRule;
+
+import java.time.ZonedDateTime;
 
 /**
- * 路由 Path 匹配检测器
+ * 路由时间 Before 匹配检测器
  *
- * @author noear
+ * @author poppoppuppylove
  * @since 2.9
  */
-public class PathPredicateFactory implements RoutePredicateFactory {
+public class BeforePredicateFactory implements RoutePredicateFactory {
     @Override
     public String prefix() {
-        return "Path";
+        return "Before";
     }
 
     @Override
     public ExPredicate create(String config) {
-        return new PathPredicate(config);
+        return new BeforePredicate(config);
     }
 
-    public static class PathPredicate implements ExPredicate {
-        private PathRule rule;
+    public static class BeforePredicate implements ExPredicate {
+        private final ZonedDateTime dateTime;
 
         /**
-         * @param config (Path=/demo/**)
-         * */
-        public PathPredicate(String config) {
+         * @param config (Before=2017-01-20T17:42:47.789-07:00[America/Denver])
+         */
+        public BeforePredicate(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("PathPredicate config cannot be blank");
+                throw new IllegalArgumentException("BeforePredicate config cannot be blank");
             }
 
-            rule = new PathRule();
-            rule.include(config);
+            this.dateTime = ZonedDateTime.parse(config);
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return rule.test(ctx.rawPath());
+            return ZonedDateTime.now().isBefore(dateTime);
         }
     }
 }
