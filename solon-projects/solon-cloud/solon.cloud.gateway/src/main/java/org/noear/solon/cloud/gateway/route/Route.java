@@ -45,7 +45,7 @@ public class Route {
         this.id = id;
 
         if (Utils.isEmpty(id)) {
-            throw new IllegalArgumentException("Route id is empty");
+            throw new IllegalArgumentException("Gateway route id is empty");
         }
     }
 

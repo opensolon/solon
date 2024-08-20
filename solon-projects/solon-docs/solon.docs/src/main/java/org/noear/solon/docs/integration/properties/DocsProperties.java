@@ -15,10 +15,9 @@
  */
 package org.noear.solon.docs.integration.properties;
 
-import org.noear.solon.docs.DocDocket;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文档配置属性
@@ -28,19 +27,19 @@ import java.util.Map;
  */
 public class DocsProperties {
     private DiscoverProperties discover = new DiscoverProperties();
-    private Map<String, DocDocket> routes = new HashMap<>();
+    private List<DocDocketProperties> routes = new ArrayList<>();
 
     /**
-     * 获取发现配置
+     * 发现配置
      */
     public DiscoverProperties getDiscover() {
         return discover;
     }
 
     /**
-     * 获取路由配置
+     * 路由配置
      */
-    public Map<String, DocDocket> getRoutes() {
+    public List<DocDocketProperties> getRoutes() {
         return routes;
     }
 }

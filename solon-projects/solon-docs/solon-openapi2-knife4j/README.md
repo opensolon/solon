@@ -19,19 +19,24 @@ public class App {
 ```yaml
 solon.docs:
   discover:  #(发现配置，需要引入 solon cloud 发现服务插件)，可选
-    pathPattern: "swagger/v2?group={service}" #上游路径模式（要么带变量 {service}，要么用统一固定值）
+    enabled: true
     syncStatus: true                          #同步上下线状态
-    excluded:                                 #排除服务名
+    uriPattern: "swagger/v2?group={service}" #上游路径模式（要么带变量 {service}，要么用统一固定值）
+    basicAuth:
+      admin: "123456"
+      user: "654321"
+    excludedServices:                                 #排除服务名
       - "user-api"
-    included:                                 #包函服务名
+    includedServices:                                 #包函服务名
       - "order-api"
   routes:
-    appApi:   #(远程接口文档，即分布式服务或微服务)，配置风格
+    - id: appApi   #(远程接口文档，即分布式服务或微服务)，配置风格
       groupName: "app端接口"
       upstream:
-        service: "lb://app-api"
-        path: "/xxx"
-    adminApi:  #(本地接口文档)，配置风格
+        target: "lb://app-api"
+        contextPath: "/app"
+        uri: "/xxx"
+    - id: adminApi  #(本地接口文档)，配置风格
       groupName: "admin端接口"
       globalResponseInData: true
       basicAuth:

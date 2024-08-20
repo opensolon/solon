@@ -2,24 +2,8 @@
   "properties": [
     {
       "name": "solon.docs.discover.pathPattern",
-      "type": "java.lang.String",
-      "description": "文档发现 - 服务的路径模式"
-    },
-    {
-      "name": "solon.docs.discover.syncStatus",
-      "type": "java.lang.Boolean",
-      "defaultValue": false,
-      "description": "文档发现 - 同步服务上下线状态"
-    },
-    {
-      "name": "solon.docs.discover.excluded",
-      "type": "java.lang.String[]",
-      "description": "文档发现 - 排除服务名"
-    },
-    {
-      "name": "solon.docs.discover.included",
-      "type": "java.lang.String[]",
-      "description": "文档发现 - 包括服务器"
+      "type": "org.noear.solon.docs.integration.properties.DocsProperties",
+      "description": "文档配置"
     }
   ]
 }

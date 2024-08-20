@@ -25,6 +25,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.docs.DocDocket;
+import org.noear.solon.docs.integration.properties.DocDocketProperties;
 import org.noear.solon.docs.integration.properties.DocsProperties;
 
 import java.util.Map;
@@ -48,12 +49,14 @@ public class XPluginImpl implements Plugin {
 
         //加载 solon.docs.routes
         if (Utils.isNotEmpty(docsProperties.getRoutes())) {
-            for (Map.Entry<String, DocDocket> kv : docsProperties.getRoutes().entrySet()) {
-                DocDocket docDocket = kv.getValue();
+            for (DocDocketProperties docDocket : docsProperties.getRoutes()) {
+                if (Utils.isEmpty(docDocket.getId())) {
+                    throw new IllegalArgumentException("Docs route id is empty");
+                }
 
-                BeanWrap docBw = context.wrap(kv.getKey(), docDocket);
+                BeanWrap docBw = context.wrap(docDocket.getId(), docDocket);
                 //按名字注册
-                context.putWrap(kv.getKey(), docBw);
+                context.putWrap(docDocket.getId(), docBw);
                 //对外发布
                 context.wrapPublish(docBw);
             }
