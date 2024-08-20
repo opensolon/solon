@@ -67,7 +67,7 @@ public final class FactoryManager {
     //
     // loadBalanceFactory 对接
     //
-    protected LoadBalance.Factory loadBalanceFactory = (g, s, p) -> null;
+    protected LoadBalance.Factory loadBalanceFactory = (g, s) -> null;
 
     /**
      * 配置负载工厂
@@ -81,8 +81,8 @@ public final class FactoryManager {
     /**
      * 创建负载
      */
-    public LoadBalance newLoadBalance(String group, String service, int port) {
-        return loadBalanceFactory.create(group, service, port);
+    public LoadBalance newLoadBalance(String group, String service) {
+        return loadBalanceFactory.create(group, service);
     }
 
 
