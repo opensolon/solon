@@ -99,8 +99,9 @@ public class XPluginImpl implements Plugin {
 
         //订阅 Discovery（同步服务发现）
         if (gatewayProperties.getDiscover().isEnabled()) {
-            DiscoveryEventListener eventListener = new DiscoveryEventListener(context, cloudGateway.getConfiguration());
+            DiscoveryEventListener eventListener = new DiscoveryEventListener(gatewayProperties.getDiscover(), cloudGateway.getConfiguration());
             EventBus.subscribe(Discovery.class, eventListener);
+            //要在 loadConfiguration 之前
             context.lifecycle(-1, eventListener);
         }
     }

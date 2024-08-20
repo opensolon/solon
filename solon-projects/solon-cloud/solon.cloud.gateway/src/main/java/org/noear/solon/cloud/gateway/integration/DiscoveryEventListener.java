@@ -57,13 +57,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
                 }
             }
         }
-    }
 
-    /**
-     * 开始之后
-     */
-    @Override
-    public void postStart() throws Throwable {
         if (CloudClient.loadBalance().count() < discoverProperties.getIncludedServices().size()) {
             //条件档一下，避免与网关重复加载
             Collection<String> serviceNames = CloudClient.discovery().findServices("");
