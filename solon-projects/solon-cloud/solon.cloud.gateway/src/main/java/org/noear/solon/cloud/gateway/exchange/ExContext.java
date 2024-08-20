@@ -17,15 +17,10 @@ package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.MultiMap;
 import io.vertx.core.http.Cookie;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SocketAddress;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
-import org.noear.solon.cloud.gateway.route.Route;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,195 +29,100 @@ import java.util.Set;
  * @author noear
  * @since 2.9
  */
-public class ExContext {
-    private final Map<String, Object> attrMap;
-    private final HttpServerRequest rawRequest;
-
-    private ExNewRequest newRequest;
-    private ExNewResponse newResponse;
-
-    private URI target;
-    private TimeoutProperties timeout;
-
-    public ExContext(HttpServerRequest rawRequest) {
-        this.rawRequest = rawRequest;
-        this.attrMap = new HashMap<>();
-    }
-
-
+public interface ExContext {
     /**
      * 属性获取
      */
-    public <T> T attr(String key) {
-        return (T) attrMap.get(key);
-    }
+    <T> T attr(String key);
 
     /**
      * 属性设置
      */
-    public void attrSet(String key, Object value) {
-        attrMap.put(key, value);
-    }
-
-    ////////////////////////////////////////////////////
-
-    /**
-     * 绑定路由信息
-     */
-    public void bind(Route route) {
-        if (route != null) {
-            this.target = route.getTarget();
-            this.timeout = route.getTimeout();
-        }
-    }
+    void attrSet(String key, Object value);
 
     /**
      * 路由目标
      */
-    public URI target() {
-        return target;
-    }
+    URI target();
 
     /**
      * 路由超时
      */
-    public TimeoutProperties timeout() {
-        return timeout;
-    }
+    TimeoutProperties timeout();
 
     ////////////////////////////////////////////////////
 
     /**
      * 远程地址
      */
-    public SocketAddress remoteAddress() {
-        return rawRequest.remoteAddress();
-    }
+    SocketAddress remoteAddress();
 
     /**
      * 本地地址
      */
-    public SocketAddress localAddress() {
-        return rawRequest.localAddress();
-    }
-
-    private String realIp;
+    SocketAddress localAddress();
 
     /**
      * 客户端真实IP
-     * */
-    public String realIp() {
-        if (realIp == null) {
-            //客户端ip
-            realIp = rawHeader("X-Real-IP");
-
-            if (Utils.isEmpty(realIp) || "unknown".equalsIgnoreCase(realIp)) {
-                //包含了客户端和各级代理ip的完整ip链路
-                realIp = rawHeader("X-Forwarded-For");
-                if (realIp != null && realIp.contains(",")) {
-                    realIp = realIp.split(",")[0];
-                }
-            }
-
-            if (Utils.isEmpty(realIp) || "unknown".equalsIgnoreCase(realIp)) {
-                realIp = remoteAddress().host();
-            }
-        }
-
-        return realIp;
-    }
-
+     */
+    String realIp();
 
     /**
      * 是否安全
      */
-    public boolean isSecure() {
-        return rawRequest.isSSL();
-    }
+    boolean isSecure();
 
     ////////////////////////////////////////////////////
 
     /**
      * 获取原始请求方法
      */
-    public String rawMethod() {
-        return rawRequest.method().name();
-    }
-
-    private URI rawURI;
+    String rawMethod();
 
     /**
      * 获取原始完整请求地址 uri
      */
-    public URI rawURI() {
-        if (rawURI == null) {
-            rawURI = URI.create(rawRequest.absoluteURI());
-        }
-
-        return rawURI;
-    }
-
+    URI rawURI();
 
     /**
      * 获取原始路径
      */
-    public String rawPath() {
-        return rawRequest.path();
-    }
+    String rawPath();
 
     /**
      * 获取原始查询字符串
      */
-    public String rawQueryString() {
-        return rawRequest.query();
-    }
+    String rawQueryString();
 
     /**
      * 获取原始查询参数
      */
-    public String rawQueryParam(String key) {
-        return rawRequest.getParam(key);
-    }
+    String rawQueryParam(String key);
 
     /**
      * 获取原始所有查询参数
      */
-    public MultiMap rawQueryParamsAll() {
-        return rawRequest.params();
-    }
+    MultiMap rawQueryParams();
 
     /**
      * 获取原始 header
      */
-    public String rawHeader(String key) {
-        return rawRequest.getHeader(key);
-    }
+    String rawHeader(String key);
 
     /**
      * 获取原始所有 header
      */
-    public MultiMap rawHeadersAll() {
-        return rawRequest.headers();
-    }
+    MultiMap rawHeaders();
 
     /**
      * 获取原始 cookie
      */
-    public String rawCookie(String key) {
-        Cookie cookie = rawRequest.getCookie(key);
-        if (cookie == null) {
-            return null;
-        } else {
-            return cookie.getValue();
-        }
-    }
+    String rawCookie(String key);
 
     /**
      * 获取原始所有 cookie
      */
-    public Set<Cookie> rawCookiesAll() {
-        return rawRequest.cookies();
-    }
+    Set<Cookie> rawCookies();
 
 
     ////////////////////////////////////////////////////
@@ -230,32 +130,10 @@ public class ExContext {
     /**
      * 新的请求构建器
      */
-    public ExNewRequest newRequest() {
-        if (newRequest == null) {
-            newRequest = new ExNewRequest();
-
-            newRequest.method(rawRequest.method().name());
-            newRequest.queryString(rawRequest.query());
-            newRequest.path(rawRequest.path());
-
-            for (Map.Entry<String, String> kv : rawRequest.headers().entries()) {
-                newRequest.headerAdd(kv.getKey(), kv.getValue());
-            }
-
-            newRequest.body(rawRequest.body());
-        }
-
-        return newRequest;
-    }
+    ExNewRequest newRequest();
 
     /**
      * 新的响应构建器
      */
-    public ExNewResponse newResponse() {
-        if (newResponse == null) {
-            newResponse = new ExNewResponse();
-        }
-
-        return newResponse;
-    }
+    ExNewResponse newResponse();
 }
