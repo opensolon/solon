@@ -15,14 +15,13 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
+import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
 
 /**

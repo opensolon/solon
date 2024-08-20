@@ -15,8 +15,6 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.CompletableEmitter;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -27,6 +25,8 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.CompletableEmitter;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.util.KeyValues;
@@ -136,7 +136,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
     /**
      * 请求回调处理
      */
-    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, CompletableEmitter emitter) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, CompletableEmitter subscriber) {
         try {
             if (ar.succeeded()) {
                 HttpResponse<Buffer> resp1 = ar.result();
@@ -150,12 +150,12 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                 //body 输出（流复制） //有可能网络已关闭
                 ctx.newResponse().body(resp1.body());
 
-                emitter.onComplete();
+                subscriber.onComplete();
             } else {
-                emitter.onError(ar.cause());
+                subscriber.onError(ar.cause());
             }
         } catch (Throwable ex) {
-            emitter.onError(ex);
+            subscriber.onError(ex);
         }
     }
 }

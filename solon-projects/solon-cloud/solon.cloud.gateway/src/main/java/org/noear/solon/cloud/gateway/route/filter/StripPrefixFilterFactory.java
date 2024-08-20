@@ -15,11 +15,11 @@
  */
 package org.noear.solon.cloud.gateway.route.filter;
 
-import io.reactivex.rxjava3.core.Completable;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
+import org.noear.solon.rx.Completable;
 
 import java.util.Arrays;
 import java.util.List;

@@ -15,7 +15,8 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
-import io.reactivex.rxjava3.core.Completable;
+
+import org.noear.solon.rx.Completable;
 
 /**
  * 交换过滤器链

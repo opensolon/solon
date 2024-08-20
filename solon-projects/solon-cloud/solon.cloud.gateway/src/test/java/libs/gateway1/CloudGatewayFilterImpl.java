@@ -15,10 +15,10 @@
  */
 package libs.gateway1;
 
-import io.reactivex.rxjava3.core.Completable;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
+import org.noear.solon.rx.Completable;
 
 //@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
