@@ -16,6 +16,7 @@
 package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.buffer.Buffer;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.util.KeyValues;
 
 import java.util.LinkedHashMap;
@@ -62,6 +63,15 @@ public class ExNewResponse {
      */
     public ExNewResponse headerAdd(String key, String value) {
         getHeaderHolder(key).addValue(value);
+        return this;
+    }
+
+    /**
+     * 跳转
+     */
+    public ExNewResponse redirect(int code, String url) {
+        status(code);
+        header(Constants.HEADER_LOCATION, url);
         return this;
     }
 
