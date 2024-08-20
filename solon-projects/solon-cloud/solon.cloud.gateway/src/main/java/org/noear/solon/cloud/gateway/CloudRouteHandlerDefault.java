@@ -61,16 +61,16 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
      */
     @Override
     public Mono<Void> handle(ExContext ctx) {
-        //构建请求
-        HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
-
-        //构建超时
-        if (ctx.timeout() != null) {
-            req1.connectTimeout(ctx.timeout().getConnectTimeout() * 1000);
-            req1.timeout(ctx.timeout().getResponseTimeout() * 1000);
-        }
-
         try {
+            //构建请求
+            HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
+
+            //构建超时
+            if (ctx.timeout() != null) {
+                req1.connectTimeout(ctx.timeout().getConnectTimeout() * 1000);
+                req1.timeout(ctx.timeout().getResponseTimeout() * 1000);
+            }
+
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders().values()) {
                 req1.putHeader(kv.getKey(), kv.getValues());
@@ -97,7 +97,11 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
             });
         } catch (Throwable ex) {
             //如查出错，说明客户端发的数据有问题
-            return Mono.error(new StatusException(ex, 400));
+            if (ex instanceof StatusException) {
+                return Mono.error(ex);
+            } else {
+                return Mono.error(new StatusException(ex, 400));
+            }
         }
     }
 
@@ -107,7 +111,12 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
     private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
         URI targetUri;
         if (LoadBalance.URI_SCHEME.equals(ctx.target().getScheme())) {
-            targetUri = URI.create(LoadBalance.get(ctx.target().getHost()).getServer());
+            String tmp = LoadBalance.get(ctx.target().getHost()).getServer(ctx.target().getPort());
+            if (tmp == null) {
+                throw new StatusException("The target service does not exist", 404);
+            }
+
+            targetUri = URI.create(tmp);
         } else {
             targetUri = ctx.target();
         }
@@ -128,21 +137,25 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
      * 请求回调处理
      */
     private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, MonoSink<Void> monoSink) {
-        if (ar.succeeded()) {
-            HttpResponse<Buffer> resp1 = ar.result();
+        try {
+            if (ar.succeeded()) {
+                HttpResponse<Buffer> resp1 = ar.result();
 
-            //code
-            ctx.newResponse().status(resp1.statusCode());
-            //header
-            for (Map.Entry<String, String> kv : resp1.headers()) {
-                ctx.newResponse().headerAdd(kv.getKey(), kv.getValue());
+                //code
+                ctx.newResponse().status(resp1.statusCode());
+                //header
+                for (Map.Entry<String, String> kv : resp1.headers()) {
+                    ctx.newResponse().headerAdd(kv.getKey(), kv.getValue());
+                }
+                //body 输出（流复制） //有可能网络已关闭
+                ctx.newResponse().body(resp1.body());
+
+                monoSink.success();
+            } else {
+                monoSink.error(ar.cause());
             }
-            //body 输出（流复制） //有可能网络已关闭
-            ctx.newResponse().body(resp1.body());
-
-            monoSink.success();
-        } else {
-            monoSink.error(ar.cause());
+        } catch (Throwable ex) {
+            monoSink.error(ex);
         }
     }
 }

@@ -40,11 +40,25 @@ public class CloudGateway implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
         ExContext ctx = new ExContextImpl(request);
+        CloudGatewayCompletion completion = new CloudGatewayCompletion(ctx, request);
 
         //开始执行
-        new ExFilterChainImpl(configuration.filters, this::doHandle)
-                .doFilter(ctx)
-                .subscribe(new CloudGatewayCompletion(ctx, request));
+        try {
+            new ExFilterChainImpl(configuration.filters, this::doHandle)
+                    .doFilter(ctx)
+                    .subscribe(completion);
+        } catch (Throwable ex) {
+            //避免用户的 filter 出现异常
+            //
+            if (ex instanceof StatusException) {
+                StatusException se = (StatusException) ex;
+                ctx.newResponse().status(se.getCode());
+            } else {
+                ctx.newResponse().status(502);
+            }
+
+            completion.postComplete();
+        }
     }
 
 

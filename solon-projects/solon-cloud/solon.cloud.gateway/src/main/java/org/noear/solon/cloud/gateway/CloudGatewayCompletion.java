@@ -66,7 +66,7 @@ public class CloudGatewayCompletion implements Subscriber {
     /**
      * 提交异步完成
      */
-    protected void postComplete() {
+    public void postComplete() {
         HttpServerResponse rawResponse = rawRequest.response();
 
         rawResponse.setStatusCode(ctx.newResponse().getStatus());
