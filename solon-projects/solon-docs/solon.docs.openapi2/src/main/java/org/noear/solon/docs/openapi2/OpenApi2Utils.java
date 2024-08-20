@@ -25,6 +25,7 @@ import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
+import org.noear.solon.exception.SolonException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -111,9 +112,14 @@ public class OpenApi2Utils {
             }
         } else {
             //代理模式
+            URI upstreamTarget = docket.upstream().getTarget();
             String targetAddr;
-            if (LoadBalance.URI_SCHEME.equals(docket.upstream().getTarget().getScheme())) {
-                targetAddr = LoadBalance.get(docket.upstream().getTarget().getHost()).getServer();
+            if (LoadBalance.URI_SCHEME.equals(upstreamTarget.getScheme())) {
+                targetAddr = LoadBalance.get(upstreamTarget.getHost()).getServer(upstreamTarget.getPort());
+
+                if (targetAddr == null) {
+                    throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
+                }
             } else {
                 targetAddr = docket.upstream().getTarget().toString();
             }
