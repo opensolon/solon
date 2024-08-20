@@ -17,6 +17,7 @@ package org.noear.solon.cloud.gateway;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
+import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
@@ -32,12 +33,13 @@ import reactor.core.publisher.Mono;
 public class CloudGateway implements Handler<HttpServerRequest> {
     //网关摘要
     private CloudGatewayConfiguration configuration = new CloudGatewayConfiguration();
+
     /**
      * 处理
      */
     @Override
     public void handle(HttpServerRequest request) {
-        ExContext ctx = new ExContext(request);
+        ExContext ctx = new ExContextImpl(request);
 
         //开始执行
         new ExFilterChainImpl(configuration.filters, this::doHandle)
@@ -79,7 +81,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
         for (Route r : configuration.routes) {
             if (r.matched(ctx)) {
                 //attr +
-                ctx.bind(r);
+                ((ExContextImpl) ctx).bind(r);
                 return r;
             }
         }
