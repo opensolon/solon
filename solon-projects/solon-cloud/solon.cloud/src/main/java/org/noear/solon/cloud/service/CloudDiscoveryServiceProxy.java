@@ -20,6 +20,8 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.utils.DiscoveryUtils;
 
+import java.util.Collection;
+
 /**
  * 云端注册与发现服务代理
  *
@@ -56,6 +58,11 @@ public class CloudDiscoveryServiceProxy implements  CloudDiscoveryService {
         DiscoveryUtils.tryLoadAgent(discovery, group, service);
 
         return discovery;
+    }
+
+    @Override
+    public Collection<String> findServices(String group) {
+        return real.findServices(group);
     }
 
     @Override
