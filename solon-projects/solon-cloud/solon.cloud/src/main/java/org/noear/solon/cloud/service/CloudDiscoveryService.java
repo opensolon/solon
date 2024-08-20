@@ -37,13 +37,14 @@ public interface CloudDiscoveryService {
     void register(String group, Instance instance);
 
     /**
-     * 注册服务实例健康状态
+     * 注册服务实例
      *
      * @param group    分组
      * @param instance 服务实例
      * @param health   是否健康
      */
     void registerState(String group, Instance instance, boolean health);
+
 
     /**
      * 注销服务实例
