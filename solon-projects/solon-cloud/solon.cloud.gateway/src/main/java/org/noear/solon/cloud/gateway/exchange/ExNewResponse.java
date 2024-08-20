@@ -67,6 +67,16 @@ public class ExNewResponse {
     }
 
     /**
+     * 移除头
+     */
+    public ExNewResponse headerRemove(String... keys) {
+        for (String key : keys) {
+            headers.remove(key);
+        }
+        return this;
+    }
+
+    /**
      * 跳转
      */
     public ExNewResponse redirect(int code, String url) {

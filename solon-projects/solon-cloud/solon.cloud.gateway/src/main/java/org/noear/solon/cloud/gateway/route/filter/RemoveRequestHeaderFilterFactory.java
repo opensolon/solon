@@ -24,45 +24,37 @@ import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableSubscriber;
 
 /**
- * 添加响应头过滤器
+ * 移除请求头过滤器
  *
  * @author noear
  * @since 2.9
  */
-public class AddResponseHeaderFilterFactory implements RouteFilterFactory {
+public class RemoveRequestHeaderFilterFactory implements RouteFilterFactory {
     @Override
     public String prefix() {
-        return "AddResponseHeader";
+        return "RemoveRequestHeader";
     }
 
     @Override
     public ExFilter create(String config) {
-        return null;
+        return new RemoveRequestHeaderFilter(config);
     }
 
-    public static class AddResponseHeaderFilter implements ExFilter {
-        private final String name;
-        private final String value;
+    public static class RemoveRequestHeaderFilter implements ExFilter {
+        private final String[] names;
 
         /**
-         * @param config (AddResponseHeader=name,value)
+         * @param config (RemoveRequestHeader=name name2 name3)
          */
-        public AddResponseHeaderFilter(String config) {
+        public RemoveRequestHeaderFilter(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("AddResponseHeaderFilter config cannot be blank");
+                throw new IllegalArgumentException("RemoveRequestHeaderFilter config cannot be blank");
             }
 
-            String[] parts = config.split(",");
+            names = config.split(",");
 
-            if (parts.length != 2) {
-                throw new IllegalArgumentException("AddResponseHeaderFilter config format is wrong");
-            }
-
-            this.name = parts[0];
-            this.value = parts[1];
-
-            if (Utils.isEmpty(name) || Utils.isEmpty(value)) {
-                throw new IllegalArgumentException("AddResponseHeaderFilter config format is wrong");
+            if (names.length == 0) {
+                throw new IllegalArgumentException("RemoveRequestHeaderFilter config format is wrong");
             }
         }
 
@@ -72,13 +64,13 @@ public class AddResponseHeaderFilterFactory implements RouteFilterFactory {
                 chain.doFilter(ctx).subscribe(new CompletableSubscriber() {
                     @Override
                     public void onError(Throwable throwable) {
-                        ctx.newResponse().headerAdd(name, value);
+                        ctx.newResponse().headerRemove(names);
                         emitter.onError(throwable);
                     }
 
                     @Override
                     public void onComplete() {
-                        ctx.newResponse().headerAdd(name, value);
+                        ctx.newResponse().headerRemove(names);
                         emitter.onComplete();
                     }
                 });
