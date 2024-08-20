@@ -610,6 +610,13 @@ public final class SolonProps extends Props {
     }
 
     /**
+     * 应用健康状况
+     * */
+    public boolean appHealth() {
+        return getBool("solon.app.health", true);
+    }
+
+    /**
      * 是否为调试模式
      */
     public boolean isDebugMode() {
