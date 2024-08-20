@@ -86,12 +86,12 @@ public class XPluginImpl implements Plugin {
 
         //添加路由过滤器工厂（可多个）
         context.subBeansOfType(RouteFilterFactory.class, b -> {
-            RouteFactoryManager.global().addFactory(b);
+            RouteFactoryManager.addFactory(b);
         });
 
         //添加kkht由检测器工厂（可多个）
         context.subBeansOfType(RoutePredicateFactory.class, b -> {
-            RouteFactoryManager.global().addFactory(b);
+            RouteFactoryManager.addFactory(b);
         });
 
         //加载配置
@@ -156,22 +156,20 @@ public class XPluginImpl implements Plugin {
 
         //routes
         for (RouteProperties rm : gatewayProperties.getRoutes()) {
-            Route route = new Route();
-
-            route.id(rm.getId());
+            Route route = new Route(rm.getId());
             route.target(URI.create(rm.getTarget()));
 
             if (rm.getPredicates() != null) {
                 //route.predicates
                 for (String predicateStr : rm.getPredicates()) {
-                    route.predicate(RouteFactoryManager.global().buildPredicate(predicateStr));
+                    route.predicate(RouteFactoryManager.buildPredicate(predicateStr));
                 }
             }
 
             if (rm.getFilters() != null) {
                 //route.filters
                 for (String filterStr : rm.getFilters()) {
-                    route.filter(RouteFactoryManager.global().buildFilter(filterStr));
+                    route.filter(RouteFactoryManager.buildFilter(filterStr));
                 }
             }
 

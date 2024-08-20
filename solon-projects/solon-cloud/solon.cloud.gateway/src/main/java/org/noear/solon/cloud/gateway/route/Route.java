@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
@@ -34,18 +35,18 @@ import java.util.List;
  * @since 2.9
  */
 public class Route {
-    private String id;
+    private final String id;
     private URI target;
     private List<ExPredicate> predicates = new ArrayList<>();
     private List<RankEntity<ExFilter>> filters = new ArrayList<>();
     private TimeoutProperties timeout;
 
-    /**
-     * 配置标识
-     */
-    public Route id(String id) {
+    public Route(String id){
         this.id = id;
-        return this;
+
+        if (Utils.isEmpty(id)) {
+            throw new IllegalArgumentException("Route id is empty");
+        }
     }
 
     /**
@@ -111,7 +112,7 @@ public class Route {
      * 添加路径匹配检测器
      */
     public Route path(String path) {
-        ExPredicate predicate = RouteFactoryManager.global()
+        ExPredicate predicate = RouteFactoryManager
                 .getPredicate("Path", path);
 
         return predicate(predicate);

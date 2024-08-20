@@ -37,19 +37,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
+            <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -58,7 +46,6 @@
             <artifactId>solon.logging.simple</artifactId>
             <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.noear</groupId>

@@ -73,30 +73,24 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
     }
 
     /**
-     * 配置路由
+     * 配置路由（构建或更新）
      *
      * @param id      标识
      * @param builder 路由构建器
      */
     public CloudRouteRegister route(String id, Consumer<Route> builder) {
-        Route route = new Route();
-        route.id(id);
+        Route route = routes.computeIfAbsent(id, k -> new Route(id));
         builder.accept(route);
-
-        return route(route);
+        return this;
     }
 
     /**
-     * 配置路由
+     * 配置路由（替换）
      *
      * @param route 路由
      */
     public CloudRouteRegister route(Route route) {
         if (route != null) {
-            if (Utils.isEmpty(route.getId())) {
-                route.id(route.getTarget().toString());
-            }
-
             routes.put(route.getId(), route);
         }
 
