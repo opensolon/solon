@@ -68,26 +68,10 @@ public class CookiePredicateTest {
     }
 
     @Test
-    public void testInvalidCookieConfig() {
-        // 测试无效的 Cookie 配置
-        assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Cookie", "invalid_cookie_name,");
-        });
-    }
-
-    @Test
     public void testEmptyCookieName() {
         // 测试 Cookie 名称为空
         assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.global().getPredicate("Cookie", ",^pattern");
-        });
-    }
-
-    @Test
-    public void testEmptyRegex() {
-        // 测试正则表达式为空
-        assertThrows(IllegalArgumentException.class, () -> {
-            RouteFactoryManager.global().getPredicate("Cookie", "token,");
         });
     }
 

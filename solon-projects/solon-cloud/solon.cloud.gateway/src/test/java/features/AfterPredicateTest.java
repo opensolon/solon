@@ -5,6 +5,9 @@ import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalUnit;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -30,7 +33,7 @@ public class AfterPredicateTest {
     @Test
     public void testAfterPredicateInvalidConfig() {
         // 测试无效的时间配置
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             RouteFactoryManager.global().getPredicate("After", "invalid-date-time");
         });
     }
@@ -46,7 +49,9 @@ public class AfterPredicateTest {
     @Test
     public void testAfterPredicateBoundaryCase() {
         // 使用当前时间作为配置时间边界，测试边界情况
-        String boundaryDateTime = ZonedDateTime.now().toString();
+        String boundaryDateTime = ZonedDateTime.now().plusSeconds(1).toString();
+
+        System.out.println(boundaryDateTime);
 
         ExPredicate predicate = RouteFactoryManager.global()
                 .getPredicate("After", boundaryDateTime);

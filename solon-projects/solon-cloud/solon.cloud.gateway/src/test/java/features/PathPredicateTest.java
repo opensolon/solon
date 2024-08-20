@@ -4,13 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author noear
  * @since 2.9
  */
 public class PathPredicateTest {
     @Test
-    public void test1() {
+    public void testValidConfig() {
         ExPredicate predicate = RouteFactoryManager.global()
                 .getPredicate("Path", "/demo/**");
 
@@ -32,6 +34,13 @@ public class PathPredicateTest {
             public String rawPath() {
                 return "/user/get/one";
             }
+        });
+    }
+
+    @Test
+    public void testEmptyConfig() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            RouteFactoryManager.global().getPredicate("Path", "");
         });
     }
 }
