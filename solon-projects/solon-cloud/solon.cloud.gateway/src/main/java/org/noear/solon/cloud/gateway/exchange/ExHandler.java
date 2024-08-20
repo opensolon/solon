@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
-import reactor.core.publisher.Mono;
+import io.reactivex.rxjava3.core.Completable;
 
 /**
  * 交换处理器
@@ -30,5 +30,5 @@ public interface ExHandler {
      *
      * @param ctx 交换上下文
      */
-    Mono<Void> handle(ExContext ctx);
+    Completable handle(ExContext ctx);
 }

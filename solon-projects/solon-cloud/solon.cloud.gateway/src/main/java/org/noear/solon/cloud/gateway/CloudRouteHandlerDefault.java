@@ -15,6 +15,8 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableEmitter;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -28,8 +30,6 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.util.KeyValues;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
 
 import java.net.URI;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
      * 处理
      */
     @Override
-    public Mono<Void> handle(ExContext ctx) {
+    public Completable handle(ExContext ctx) {
         try {
             //构建请求
             HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
@@ -76,21 +76,21 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                 req1.putHeader(kv.getKey(), kv.getValues());
             }
 
-            return Mono.create(monoSink -> {
+            return Completable.create(emitter -> {
                 //异步 执行
                 //同步 body（流复制）
                 if ("GET".equals(ctx.newRequest().getMethod())) {
                     req1.send(ar -> {
-                        callbackHandle(ctx, ar, monoSink);
+                        callbackHandle(ctx, ar, emitter);
                     });
                 } else {
                     ctx.newRequest().getBody().onComplete(ar1 -> {
                         if (ar1.succeeded()) {
                             req1.sendBuffer(ar1.result(), ar2 -> {
-                                callbackHandle(ctx, ar2, monoSink);
+                                callbackHandle(ctx, ar2, emitter);
                             });
                         } else {
-                            monoSink.error(new StatusException(ar1.cause(), 400));
+                            emitter.onError(new StatusException(ar1.cause(), 400));
                         }
                     });
                 }
@@ -98,9 +98,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         } catch (Throwable ex) {
             //如查出错，说明客户端发的数据有问题
             if (ex instanceof StatusException) {
-                return Mono.error(ex);
+                return Completable.error(ex);
             } else {
-                return Mono.error(new StatusException(ex, 400));
+                return Completable.error(new StatusException(ex, 400));
             }
         }
     }
@@ -136,7 +136,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
     /**
      * 请求回调处理
      */
-    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, MonoSink<Void> monoSink) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, CompletableEmitter emitter) {
         try {
             if (ar.succeeded()) {
                 HttpResponse<Buffer> resp1 = ar.result();
@@ -150,12 +150,12 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                 //body 输出（流复制） //有可能网络已关闭
                 ctx.newResponse().body(resp1.body());
 
-                monoSink.success();
+                emitter.onComplete();
             } else {
-                monoSink.error(ar.cause());
+                emitter.onError(ar.cause());
             }
         } catch (Throwable ex) {
-            monoSink.error(ex);
+            emitter.onError(ex);
         }
     }
 }

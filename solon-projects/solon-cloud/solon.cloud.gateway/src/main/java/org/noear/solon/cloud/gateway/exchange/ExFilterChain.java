@@ -15,7 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
-import reactor.core.publisher.Mono;
+import io.reactivex.rxjava3.core.Completable;
 
 /**
  * 交换过滤器链
@@ -30,5 +30,5 @@ public interface ExFilterChain {
      *
      * @param ctx 交换上下文
      */
-    Mono<Void> doFilter(ExContext ctx);
+    Completable doFilter(ExContext ctx);
 }

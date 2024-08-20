@@ -15,8 +15,8 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
+import io.reactivex.rxjava3.core.Completable;
 import org.noear.solon.core.util.RankEntity;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class ExFilterChainImpl implements ExFilterChain {
      * @param ctx 交换上下文
      */
     @Override
-    public Mono<Void> doFilter(ExContext ctx) {
+    public Completable doFilter(ExContext ctx) {
         if (lastHandler == null) {
             return filterList.get(index++).target.doFilter(ctx, this);
         } else {

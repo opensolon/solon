@@ -15,6 +15,8 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
@@ -22,7 +24,6 @@ import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.core.exception.StatusException;
-import reactor.core.publisher.Mono;
 
 /**
  * 分布式网关
@@ -47,6 +48,7 @@ public class CloudGateway implements Handler<HttpServerRequest> {
             new ExFilterChainImpl(configuration.filters, this::doHandle)
                     .doFilter(ctx)
                     .subscribe(completion);
+
         } catch (Throwable ex) {
             //避免用户的 filter 出现异常
             //
@@ -65,12 +67,12 @@ public class CloudGateway implements Handler<HttpServerRequest> {
     /**
      * 执行处理
      */
-    private Mono<Void> doHandle(ExContext ctx) {
+    private Completable doHandle(ExContext ctx) {
         Route route = findRoute(ctx);
 
         if (route == null) {
             ctx.newResponse().status(404);
-            return Mono.empty();
+            return Completable.complete();
         } else {
             try {
                 return new ExFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
@@ -78,9 +80,9 @@ public class CloudGateway implements Handler<HttpServerRequest> {
             } catch (Throwable ex) {
                 //如果 buildUpstreamRequest 出错，说明请求体有问题
                 if (ex instanceof StatusException) {
-                    return Mono.error(ex);
+                    return Completable.error(ex);
                 } else {
-                    return Mono.error(new StatusException(ex, 400));
+                    return Completable.error(new StatusException(ex, 400));
                 }
             }
         }
