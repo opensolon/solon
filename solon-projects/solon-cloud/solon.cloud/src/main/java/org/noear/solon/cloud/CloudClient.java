@@ -124,13 +124,12 @@ public class CloudClient {
         }
 
         Solon.app().onEvent(AppLoadEndEvent.class, (event) -> {
-            //如果当前应用健康，则注册
-            if (Solon.cfg().appHealth()) {
-                for (Signal signal : Solon.app().signals()) {
-                    Instance instance = Instance.localNew(signal);
-                    CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-                    LogUtil.global().info("Cloud: Service registered " + instance.service() + "@" + instance.uri());
-                }
+            boolean health = Solon.cfg().appHealth();
+
+            for (Signal signal : Solon.app().signals()) {
+                Instance instance = Instance.localNew(signal);
+                CloudClient.discovery().registerState(Solon.cfg().appGroup(), instance, health);
+                LogUtil.global().info("Cloud: Service registered " + instance.service() + "@" + instance.uri());
             }
         });
 

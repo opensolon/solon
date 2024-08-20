@@ -20,15 +20,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.config.yaml</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikaricp.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
