@@ -65,7 +65,7 @@ public class LocalDiscoveryResolver {
                 if (k instanceof String && v instanceof String) {
                     String service = ((String) k).split("\\[")[0];
                     URI url = URI.create((String) v);
-                    resolveDo(discoveryMap, new Instance(service, url.getAuthority()).protocol(url.getScheme()));
+                    resolveDo(discoveryMap, new Instance(service, url.getHost(), url.getPort()).protocol(url.getScheme()));
                 }
             });
         }

@@ -18,6 +18,7 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.lang.Nullable;
 
 /**
  * IP_Hash 负载策略
@@ -25,12 +26,17 @@ import org.noear.solon.core.handle.Context;
  * @author noear
  * @since 2.2
  */
-public class CloudLoadStrategyIpHash implements CloudLoadStrategy{
+public class CloudLoadStrategyIpHash implements CloudLoadStrategy {
+    @Nullable
     @Override
-    public String getServer(Discovery discovery) {
+    public String getServer(Discovery discovery, int port) {
         String ip = Context.current().realIp();
-        Instance instance = discovery.instanceGet(ip.hashCode());
+        Instance instance = discovery.instanceGet(ip.hashCode(), port);
 
-        return instance.uri();
+        if (instance == null) {
+            return null;
+        } else {
+            return instance.uri();
+        }
     }
 }

@@ -54,7 +54,7 @@ public class CloudLoadBalance implements LoadBalance {
 
     /**
      * 一般用于发现服务
-     * */
+     */
     public CloudLoadBalance(String group, String service) {
         this.service = service;
         this.group = group;
@@ -74,10 +74,11 @@ public class CloudLoadBalance implements LoadBalance {
 
     /**
      * 一般用于本地配置
-     * */
+     */
     public CloudLoadBalance(String group, String service, Discovery discovery) {
         this.service = service;
         this.group = group;
+
         this.discovery = discovery;
     }
 
@@ -103,7 +104,7 @@ public class CloudLoadBalance implements LoadBalance {
     }
 
     @Override
-    public String getServer() {
+    public String getServer(int port) {
         if (discovery == null) {
             return null;
         } else {
@@ -113,7 +114,7 @@ public class CloudLoadBalance implements LoadBalance {
                 if (discovery.clusterSize() == 0) {
                     return null;
                 } else {
-                    return getStrategy().getServer(discovery);
+                    return getStrategy().getServer(discovery, port);
                 }
             }
         }

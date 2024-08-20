@@ -44,12 +44,34 @@ public class Instance implements Serializable {
     }
 
 
+    private String host;
+
+    /**
+     * 服务主机
+     */
+    public String host() {
+        return host;
+    }
+
+    private int port;
+
+    /**
+     * 服务端口
+     */
+    public int port() {
+        return port;
+    }
+
     private String address;
 
     /**
-     * 地址；实例化后不能修改（ip:port）
-     */
+     * 服务地址（host:port）
+     * */
     public String address() {
+        if (address == null) {
+            address = host + ":" + port;
+        }
+
         return address;
     }
 
@@ -89,9 +111,9 @@ public class Instance implements Serializable {
     public String uri() {
         if (_uri == null) {
             if (Utils.isEmpty(protocol)) {
-                _uri = "http://" + address;
+                _uri = "http://" + address();
             } else {
-                _uri = protocol + "://" + address;
+                _uri = protocol + "://" + address();
             }
         }
 
@@ -184,14 +206,18 @@ public class Instance implements Serializable {
 
     }
 
-    public Instance(String service, String address) {
+    public Instance(String service, String host, int port) {
         if (Utils.isEmpty(service)) {
-            this.service = Solon.cfg().appName();
-        } else {
-            this.service = service;
+            service = Solon.cfg().appName();
         }
 
-        this.address = address;
+        if (port < 0) {
+            port = 0;
+        }
+
+        this.service = service;
+        this.host = host;
+        this.port = port;
     }
 
 
@@ -212,9 +238,9 @@ public class Instance implements Serializable {
 
         Instance n1 = null;
         if (Utils.isEmpty(signal.host())) {
-            n1 = new Instance(signal.name(), LocalUtils.getLocalAddress() + ":" + signal.port());
+            n1 = new Instance(signal.name(), LocalUtils.getLocalAddress(), signal.port());
         } else {
-            n1 = new Instance(signal.name(), signal.host() + ":" + signal.port());
+            n1 = new Instance(signal.name(), signal.host(), signal.port());
         }
 
         n1.protocol(signal.protocol());
@@ -283,7 +309,7 @@ public class Instance implements Serializable {
                 "service='" + service + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", weight=" + weight +
-                ", address='" + address + '\'' +
+                ", address='" + address() + '\'' +
                 '}';
     }
 }

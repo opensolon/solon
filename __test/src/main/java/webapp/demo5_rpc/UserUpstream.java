@@ -24,7 +24,7 @@ import org.noear.solon.core.LoadBalance;
 @Component("local")
 public class UserUpstream implements LoadBalance {
     @Override
-    public String getServer() {
+    public String getServer(int port) {
         return "http://localhost:8080";
     }
 }

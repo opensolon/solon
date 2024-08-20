@@ -17,6 +17,7 @@ package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.lang.Nullable;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -30,8 +31,9 @@ public class CloudLoadStrategyDefault implements CloudLoadStrategy {
     private static final int indexMax = 9999_9999;
     private static final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
+    @Nullable
     @Override
-    public String getServer(Discovery discovery) {
+    public String getServer(Discovery discovery, int port) {
         Instance instance;
 
         SYNC_LOCK.lock();
@@ -41,12 +43,16 @@ public class CloudLoadStrategyDefault implements CloudLoadStrategy {
                 index = 0;
             }
 
-            instance = discovery.instanceGet(index++);
+            instance = discovery.instanceGet(index++, port);
             discovery.attachmentSet(index);
         } finally {
             SYNC_LOCK.unlock();
         }
 
-        return instance.uri();
+        if (instance == null) {
+            return null;
+        } else {
+            return instance.uri();
+        }
     }
 }

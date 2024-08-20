@@ -14,7 +14,7 @@ public class CloudLoadStrategyImpl implements CloudLoadStrategy {
     private static CloudLoadStrategy def = new CloudLoadStrategyDefault();
 
     @Override
-    public String getServer(Discovery discovery) {
+    public String getServer(Discovery discovery, int port) {
         for (Instance i1 : discovery.cluster()) {
             //也可以通过 tags 过滤；
             //结合 ctx = Context.current()，可根据请求信息进行过滤
@@ -23,6 +23,6 @@ public class CloudLoadStrategyImpl implements CloudLoadStrategy {
             }
         }
 
-        return def.getServer(discovery);
+        return def.getServer(discovery, port);
     }
 }

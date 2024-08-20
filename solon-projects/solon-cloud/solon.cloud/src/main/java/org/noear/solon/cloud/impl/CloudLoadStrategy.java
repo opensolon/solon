@@ -16,6 +16,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.lang.Nullable;
 
 /**
  * 负载策略
@@ -29,5 +30,6 @@ public interface CloudLoadStrategy {
      *
      * @param discovery 被发现服务
      */
-    String getServer(Discovery discovery);
+    @Nullable
+    String getServer(Discovery discovery, int port);
 }

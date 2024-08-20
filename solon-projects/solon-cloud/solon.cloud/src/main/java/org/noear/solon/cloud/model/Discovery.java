@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -110,7 +111,25 @@ public class Discovery implements Serializable {
      * 获取集群
      */
     public List<Instance> cluster() {
-        return cluster;
+        return Collections.unmodifiableList(cluster);
+    }
+
+    /**
+     * 获取某端口的集群
+     */
+    public List<Instance> clusterOf(int port) {
+        if (port < 1) {
+            return Collections.unmodifiableList(cluster);
+        } else {
+            List<Instance> tmp = new ArrayList<>();
+            for (Instance instance : cluster) {
+                if (instance.port() == port) {
+                    tmp.add(instance);
+                }
+            }
+
+            return tmp;
+        }
     }
 
     /**
@@ -131,8 +150,13 @@ public class Discovery implements Serializable {
     /**
      * 获取集群实例节点
      */
-    public Instance instanceGet(int index) {
-        return cluster.get(index % cluster.size());
+    public Instance instanceGet(int index, int port) {
+        List<Instance> instances = clusterOf(port);
+        if (instances.size() == 0) {
+            return null;
+        }
+
+        return instances.get(index % instances.size());
     }
 
 
