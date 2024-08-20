@@ -26,7 +26,7 @@
 ### 2.9.0
 * 新增 solon.cloud.gateway 插件
 * 新增 solon.rx 插件
-* 添加 solon.data 配置节 `solon.dataSources`（用于自动构建数据源）
+* 添加 solon.data 配置节 `solon.dataSources`（用于自动构建数据源），支持 ENC 加密符
 * 添加 solon.docs 配置节 `solon.docs`（用于自动构建文档摘要）
 * 添加 solon.view.prefix 配置项支持 "file:" 前缀（支持体外目录）
 * 添加 solon.scheduling.simple SimpleScheduler::isStarted 方法

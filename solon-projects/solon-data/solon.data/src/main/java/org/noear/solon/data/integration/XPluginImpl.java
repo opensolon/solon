@@ -25,6 +25,7 @@ import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
+import org.noear.solon.vault.VaultUtils;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -61,6 +62,8 @@ public class XPluginImpl implements Plugin {
         Props props = Solon.cfg().getProp("solon.dataSources");
         if (props.size() > 0) {
             Solon.app().onEvent(AppPluginLoadEndEvent.class, e -> {
+                //支持 ENC() 加密符
+                VaultUtils.guard(props);
                 buildDataSource(context, props);
             });
         }
