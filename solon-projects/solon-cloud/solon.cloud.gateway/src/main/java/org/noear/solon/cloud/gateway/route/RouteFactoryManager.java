@@ -15,13 +15,18 @@
  */
 package org.noear.solon.cloud.gateway.route;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
-import org.noear.solon.cloud.gateway.route.filter.StripPrefixFilterFactory;
+import org.noear.solon.cloud.gateway.route.filter.*;
 import org.noear.solon.cloud.gateway.route.predicate.HeaderPredicateFactory;
 import org.noear.solon.cloud.gateway.route.predicate.*;
+import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.lang.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,22 +39,31 @@ public class RouteFactoryManager {
     private static final RouteFactoryManager global;
     private Map<String, RouteFilterFactory> filterFactoryMap = new HashMap<>();
     private Map<String, RoutePredicateFactory> predicateFactoryMap = new HashMap<>();
-    private RouteFactoryManager(){
+
+    private RouteFactoryManager() {
 
     }
 
     static {
         global = new RouteFactoryManager();
-        global.addFactory(new AfterPredicateFactory());
-        global.addFactory(new BeforePredicateFactory());
+        addFactory(new AfterPredicateFactory());
+        addFactory(new BeforePredicateFactory());
 
-        global.addFactory(new CookiePredicateFactory());
-        global.addFactory(new MethodPredicateFactory());
-        global.addFactory(new PathPredicateFactory());
-        global.addFactory(new RemoteAddrPredicateFactory());
+        addFactory(new CookiePredicateFactory());
+        addFactory(new HeaderPredicateFactory());
+        addFactory(new MethodPredicateFactory());
+        addFactory(new PathPredicateFactory());
+        addFactory(new RemoteAddrPredicateFactory());
 
-        global.addFactory(new StripPrefixFilterFactory());
-        global.addFactory(new HeaderPredicateFactory());
+        //----------
+        addFactory(new AddRequestHeaderFilterFactory());
+        addFactory(new AddResponseHeaderFilterFactory());
+        addFactory(new PrefixPathFilterFactory());
+        addFactory(new RedirectToFilterFactory());
+
+        addFactory(new RemoveRequestHeaderFilterFactory());
+        addFactory(new RemoveResponseHeaderFilterFactory());
+        addFactory(new StripPrefixFilterFactory());
     }
 
 
@@ -94,12 +108,16 @@ public class RouteFactoryManager {
     /**
      * 构建检测器
      */
-    public static ExPredicate buildPredicate(String predicateStr) {
-        int idx = predicateStr.indexOf('=');
+    public static @Nullable ExPredicate buildPredicate(String predicateConfig) {
+        if (Utils.isEmpty(predicateConfig)) {
+            return null;
+        }
+
+        int idx = predicateConfig.indexOf('=');
 
         if (idx > 0) {
-            String prefix = predicateStr.substring(0, idx);
-            String config = predicateStr.substring(idx + 1, predicateStr.length());
+            String prefix = predicateConfig.substring(0, idx);
+            String config = predicateConfig.substring(idx + 1, predicateConfig.length());
 
             return getPredicate(prefix, config);
         } else {
@@ -110,16 +128,42 @@ public class RouteFactoryManager {
     /**
      * 构建过滤器
      */
-    public static ExFilter buildFilter(String filterStr) {
-        int idx = filterStr.indexOf('=');
+    public static @Nullable ExFilter buildFilter(String filterConfig) {
+        if (Utils.isEmpty(filterConfig)) {
+            return null;
+        }
+
+        int idx = filterConfig.indexOf('=');
 
         if (idx > 0) {
-            String prefix = filterStr.substring(0, idx);
-            String config = filterStr.substring(idx + 1, filterStr.length());
+            String prefix = filterConfig.substring(0, idx);
+            String config = filterConfig.substring(idx + 1, filterConfig.length());
 
             return getFilter(prefix, config);
         } else {
             return null;
         }
+    }
+
+    /**
+     * 构建过滤器链
+     */
+    public static List<RankEntity<ExFilter>> buildFilterList(String... filterConfigs) throws IllegalArgumentException {
+        if (filterConfigs.length == 0) {
+            throw new IllegalArgumentException("ExFilter configs is empty");
+        }
+
+        List<RankEntity<ExFilter>> filters = new ArrayList<>();
+        int filterIdx = 0;
+        for (String c1 : filterConfigs) {
+            ExFilter filter = buildFilter(c1);
+            if (filter != null) {
+                filters.add(new RankEntity<>(filter, filterIdx++));
+            } else {
+                throw new IllegalArgumentException("ExFilter config wrong: " + c1);
+            }
+        }
+
+        return filters;
     }
 }
