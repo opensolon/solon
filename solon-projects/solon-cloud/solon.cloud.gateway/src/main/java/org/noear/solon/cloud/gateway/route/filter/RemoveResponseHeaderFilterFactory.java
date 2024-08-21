@@ -54,7 +54,7 @@ public class RemoveResponseHeaderFilterFactory implements RouteFilterFactory {
             names = config.split(",");
 
             if (names.length == 0) {
-                throw new IllegalArgumentException("RemoveResponseHeaderFilter config format is wrong");
+                throw new IllegalArgumentException("RemoveResponseHeaderFilter config is wrong: " + config);
             }
         }
 

@@ -54,14 +54,14 @@ public class AddRequestHeaderFilterFactory implements RouteFilterFactory {
             String[] parts = config.split(",");
 
             if (parts.length != 2) {
-                throw new IllegalArgumentException("AddRequestHeaderFilter config format is wrong");
+                throw new IllegalArgumentException("AddRequestHeaderFilter config is wrong: " + config);
             }
 
             this.name = parts[0];
             this.value = parts[1];
 
             if (Utils.isEmpty(name) || Utils.isEmpty(value)) {
-                throw new IllegalArgumentException("AddRequestHeaderFilter config format is wrong");
+                throw new IllegalArgumentException("AddRequestHeaderFilter config is wrong: " + config);
             }
         }
 

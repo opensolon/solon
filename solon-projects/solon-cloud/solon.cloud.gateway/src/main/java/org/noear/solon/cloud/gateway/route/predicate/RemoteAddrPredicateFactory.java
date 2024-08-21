@@ -49,7 +49,7 @@ public class RemoteAddrPredicateFactory implements RoutePredicateFactory {
 
         /**
          * @param config (RemoteAddr=192.168.1.1/24)
-         * */
+         */
         public RemoteAddrPredicate(String config) {
             if (Utils.isBlank(config)) {
                 throw new IllegalArgumentException("RemoteAddr config cannot be blank");
@@ -71,19 +71,19 @@ public class RemoteAddrPredicateFactory implements RoutePredicateFactory {
 
                 rule = new IpSubnetFilterRule(address, mask, IpFilterRuleType.ACCEPT);
             } catch (UnknownHostException e) {
-                throw new IllegalArgumentException("The IP format is incorrect");
+                throw new IllegalArgumentException("RemoteAddr config is wrong: " + config, e);
             }
         }
 
         @Override
         public boolean test(ExContext ctx) {
             String ip = ctx.realIp();
-            if(Utils.isEmpty(ip)){
+            if (Utils.isEmpty(ip)) {
                 return false;
             }
 
             // 只匹配ip，所以这里的端口无效
-            return rule.matches(new InetSocketAddress(ip,1));
+            return rule.matches(new InetSocketAddress(ip, 1));
         }
     }
 }

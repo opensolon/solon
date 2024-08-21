@@ -55,7 +55,7 @@ public class RedirectToFilterFactory implements RouteFilterFactory {
             String[] parts = config.split(",");
 
             if (parts.length < 2) {
-                throw new IllegalArgumentException("RedirectToFilter config format is wrong");
+                throw new IllegalArgumentException("RedirectToFilter config is wrong: " + config);
             }
 
             code = Integer.parseInt(parts[0]);

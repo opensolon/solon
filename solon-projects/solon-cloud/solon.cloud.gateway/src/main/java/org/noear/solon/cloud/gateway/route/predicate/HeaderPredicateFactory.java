@@ -55,7 +55,7 @@ public class HeaderPredicateFactory implements RoutePredicateFactory {
             String[] parts = config.split(",");
 
             if (parts.length == 0) {
-                throw new IllegalArgumentException("HeaderPredicate config format is wrong");
+                throw new IllegalArgumentException("HeaderPredicate config is wrong: " + config);
             }
 
             //headerName
