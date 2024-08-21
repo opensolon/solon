@@ -38,7 +38,7 @@ public class ExNewResponse {
         this.status = code;
     }
 
-    private KeyValues<String> getHeaderHolder(String key) {
+    private KeyValues<String> headerHolder(String key) {
         return headers.computeIfAbsent(key, k -> new KeyValues<>(key));
     }
 
@@ -46,7 +46,7 @@ public class ExNewResponse {
      * 配置头（替换）
      */
     public ExNewResponse header(String key, String... values) {
-        getHeaderHolder(key).setValues(values);
+        headerHolder(key).setValues(values);
         return this;
     }
 
@@ -54,7 +54,7 @@ public class ExNewResponse {
      * 配置头（替换）
      */
     public ExNewResponse header(String key, List<String> values) {
-        getHeaderHolder(key).setValues(values.toArray(new String[values.size()]));
+        headerHolder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
 
@@ -62,7 +62,7 @@ public class ExNewResponse {
      * 添加头（添加）
      */
     public ExNewResponse headerAdd(String key, String value) {
-        getHeaderHolder(key).addValue(value);
+        headerHolder(key).addValue(value);
         return this;
     }
 

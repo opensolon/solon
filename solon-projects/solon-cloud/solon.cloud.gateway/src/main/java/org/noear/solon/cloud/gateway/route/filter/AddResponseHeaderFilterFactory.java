@@ -37,7 +37,7 @@ public class AddResponseHeaderFilterFactory implements RouteFilterFactory {
 
     @Override
     public ExFilter create(String config) {
-        return null;
+        return new AddResponseHeaderFilter(config);
     }
 
     public static class AddResponseHeaderFilter implements ExFilter {

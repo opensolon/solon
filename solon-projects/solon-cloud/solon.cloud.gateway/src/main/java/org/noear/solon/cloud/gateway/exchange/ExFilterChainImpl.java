@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.util.RankEntity;
 
@@ -31,10 +32,13 @@ public class ExFilterChainImpl implements ExFilterChain {
     private final ExHandler lastHandler;
     private int index;
 
-    public ExFilterChainImpl(List<RankEntity<ExFilter>> filterList) {
-        this.filterList = filterList;
-        this.index = 0;
-        this.lastHandler = null;
+    public ExFilterChainImpl() {
+        //一般用于测试
+        this(null, null);
+    }
+
+    public ExFilterChainImpl(@Nullable List<RankEntity<ExFilter>> filterList) {
+        this(filterList, null);
     }
 
     public ExFilterChainImpl(List<RankEntity<ExFilter>> filterList, ExHandler lastHandler) {
@@ -50,6 +54,11 @@ public class ExFilterChainImpl implements ExFilterChain {
      */
     @Override
     public Completable doFilter(ExContext ctx) {
+        if (filterList == null) {
+            //一般用于测试
+            return Completable.complete();
+        }
+
         if (lastHandler == null) {
             return filterList.get(index++).target.doFilter(ctx, this);
         } else {
