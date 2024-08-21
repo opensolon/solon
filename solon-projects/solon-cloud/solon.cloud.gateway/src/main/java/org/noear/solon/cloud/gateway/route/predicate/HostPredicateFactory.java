@@ -16,45 +16,48 @@
 package org.noear.solon.cloud.gateway.route.predicate;
 
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
+import org.noear.solon.core.route.PathRule;
 import org.noear.solon.core.util.PathAnalyzer;
 
+import java.util.regex.Pattern;
+
 /**
- * 路由 Path 匹配检测器
+ * 路由 Host 匹配检测器
  *
  * @author noear
  * @since 2.9
  */
-public class PathPredicateFactory implements RoutePredicateFactory {
+public class HostPredicateFactory implements RoutePredicateFactory {
     @Override
     public String prefix() {
-        return "Path";
+        return "Host";
     }
 
     @Override
     public ExPredicate create(String config) {
-        return new PathPredicate(config);
+        return new HostPredicate(config);
     }
 
-    public static class PathPredicate implements ExPredicate {
+    public static class HostPredicate implements ExPredicate {
         private PathAnalyzer rule;
 
         /**
-         * @param config (Path=/demo/**)
+         * @param config (Host=*.demo.com)
          */
-        public PathPredicate(String config) {
+        public HostPredicate(String config) {
             if (Utils.isBlank(config)) {
-                throw new IllegalArgumentException("PathPredicate config cannot be blank");
+                throw new IllegalArgumentException("HostPredicate config cannot be blank");
             }
 
-            rule = PathAnalyzer.get(config);
+            rule = PathAnalyzer.get(config); //借用路径规则
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return rule.matches(ctx.rawPath());
+            return rule.matches("/" + ctx.rawURI().getHost());
         }
     }
 }

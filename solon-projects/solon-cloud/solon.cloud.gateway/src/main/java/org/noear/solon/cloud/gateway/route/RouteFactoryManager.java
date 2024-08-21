@@ -51,6 +51,7 @@ public class RouteFactoryManager {
 
         addFactory(new CookiePredicateFactory());
         addFactory(new HeaderPredicateFactory());
+        addFactory(new HostPredicateFactory());
         addFactory(new MethodPredicateFactory());
         addFactory(new PathPredicateFactory());
         addFactory(new RemoteAddrPredicateFactory());
