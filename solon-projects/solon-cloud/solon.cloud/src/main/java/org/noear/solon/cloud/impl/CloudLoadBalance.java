@@ -60,15 +60,8 @@ public class CloudLoadBalance implements LoadBalance {
         this.group = group;
 
         if (CloudClient.discovery() != null) {
-            discovery = CloudClient.discovery().find(group, service);
-            //推送
-            EventBus.publish(discovery);
-
-            CloudClient.discovery().attention(group, service, d1 -> {
-                discovery = d1;
-                //推送
-                EventBus.publish(d1);
-            });
+            setDiscovery(CloudClient.discovery().find(group, service));
+            CloudClient.discovery().attention(group, service, this::setDiscovery);
         }
     }
 
@@ -79,7 +72,15 @@ public class CloudLoadBalance implements LoadBalance {
         this.service = service;
         this.group = group;
 
-        this.discovery = discovery;
+        setDiscovery(discovery);
+    }
+
+    private void setDiscovery(Discovery discovery) {
+        if (discovery != null) {
+            this.discovery = discovery;
+            //推送
+            EventBus.publish(discovery);
+        }
     }
 
     /**
