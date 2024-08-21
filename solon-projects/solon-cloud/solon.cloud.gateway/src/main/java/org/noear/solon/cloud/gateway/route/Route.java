@@ -25,6 +25,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -83,6 +84,17 @@ public class Route {
      */
     public Route filter(ExFilter filter) {
         return filter(filter, 0);
+    }
+
+    /**
+     * 添加过滤器
+     */
+    public Route filters(Collection<ExFilter> filters) {
+        for (ExFilter filter : filters) {
+            filter(filter, 0);
+        }
+
+        return this;
     }
 
     /**

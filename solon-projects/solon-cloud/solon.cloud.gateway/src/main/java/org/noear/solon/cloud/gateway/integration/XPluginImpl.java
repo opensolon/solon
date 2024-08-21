@@ -71,6 +71,13 @@ public class XPluginImpl implements Plugin {
 
         CloudGateway cloudGateway = new CloudGateway();
 
+        //添加默认过滤器
+        if(Utils.isNotEmpty(gatewayProperties.getDefaultFilters())) {
+            for (String defaultFilter : gatewayProperties.getDefaultFilters()) {
+                cloudGateway.getConfiguration().routeDefaultFilter(RouteFactoryManager.buildFilter(defaultFilter));
+            }
+        }
+
         //注册 CloudRouteConfiguration
         context.wrapAndPut(CloudRouteRegister.class, cloudGateway.getConfiguration());
 

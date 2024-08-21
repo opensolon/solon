@@ -15,7 +15,6 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
@@ -35,7 +34,9 @@ import java.util.function.Consumer;
  */
 public class CloudGatewayConfiguration implements CloudRouteRegister {
     //路由记录
-    protected Map<String, Route> routes = new ConcurrentHashMap<>();
+    protected final Map<String, Route> routes = new ConcurrentHashMap<>();
+    //路由默认过滤器
+    protected final List<ExFilter> routeDefaultFilters = new ArrayList<>();
     //路由处理
     protected CloudRouteHandler routeHandler = new CloudRouteHandlerDefault();
     //过滤器
@@ -73,13 +74,22 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
     }
 
     /**
+     * 路由默认过滤器
+     */
+    public void routeDefaultFilter(ExFilter filter) {
+        if (filter != null) {
+            routeDefaultFilters.add(filter);
+        }
+    }
+
+    /**
      * 配置路由（构建或更新）
      *
      * @param id      标识
      * @param builder 路由构建器
      */
     public CloudRouteRegister route(String id, Consumer<Route> builder) {
-        Route route = routes.computeIfAbsent(id, k -> new Route(id));
+        Route route = routes.computeIfAbsent(id, k -> new Route(id).filters(routeDefaultFilters));
         builder.accept(route);
         return this;
     }
@@ -91,7 +101,7 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
      */
     public CloudRouteRegister route(Route route) {
         if (route != null) {
-            routes.put(route.getId(), route);
+            routes.put(route.getId(), route.filters(routeDefaultFilters));
         }
 
         return this;

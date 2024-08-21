@@ -41,6 +41,11 @@ public class GatewayProperties {
     private TimeoutProperties httpClient = new TimeoutProperties();
 
     /**
+     * 默认路由过滤器（每个路由器加上）
+     */
+    private List<String> defaultFilters;
+
+    /**
      * 发现配置
      */
     public DiscoverProperties getDiscover() {
@@ -52,6 +57,13 @@ public class GatewayProperties {
      */
     public List<RouteProperties> getRoutes() {
         return routes;
+    }
+
+    /**
+     * 路由默认过滤器
+     */
+    public List<String> getDefaultFilters() {
+        return defaultFilters;
     }
 
     /**
