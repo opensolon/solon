@@ -15,12 +15,11 @@
  */
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.utils.DiscoveryUtils;
+import org.noear.solon.data.cache.LocalCacheService;
 
 import java.util.Collection;
 
@@ -62,24 +61,15 @@ public class CloudDiscoveryServiceProxy implements  CloudDiscoveryService {
         return discovery;
     }
 
-    private Collection<String> findServicesCached;
 
     @Override
     public Collection<String> findServices(String group) {
-        if (Utils.isEmpty(group)) {
-            group = Solon.cfg().appGroup();
-        }
-
-        if (group != null && group.equals(Solon.cfg().appGroup())) {
-            //如果是当前应用分组，则缓存下
-            if (findServicesCached == null) {
-                findServicesCached = real.findServices(group);
-            }
-
-            return findServicesCached;
-        }
-
-        return real.findServices(group);
+        //使用缓存 - 15秒
+        return LocalCacheService.instance.getOrStore(
+                "CloudDiscoveryServiceProxy:findServices:" + group,
+                Collection.class,
+                15,
+                () -> real.findServices(group));
     }
 
     @Override
