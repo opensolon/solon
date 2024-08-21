@@ -28,10 +28,10 @@ public class TypeReferenceImpl<T> extends TypeReference<T> {
     protected final Type _type2;
 
     public TypeReferenceImpl(ParamWrap p) {
-        if (p.getGenericType() == null) {
-            this._type2 = p.getType();
-        } else {
+        if (p.isGenericType()) {
             this._type2 = p.getGenericType();
+        } else {
+            this._type2 = p.getType();
         }
     }
 

@@ -58,6 +58,7 @@
 * 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
 * 优化 solon.mvc kotlin data class 带默认值的注入支持（表单模式下）
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
+* 修复 solon.serialization.jackson 泛型注入失效的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题
 * 修复 solon-openapi2-knife4j 没有配置时不能启动的问题（默认改为不启用）
 * wood 升为 1.3.0
