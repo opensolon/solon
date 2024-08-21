@@ -118,11 +118,12 @@ public class SmHttpServer implements ServerLifecycle {
             _config.readBufferSize(ServerProps.request_maxHeaderSize);
         }
 
-        if (ServerProps.request_maxBodySize > 0) {
-            if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
+        long maxRequestSize = Math.max(ServerProps.request_maxBodySize, ServerProps.request_maxFileSize);
+        if (maxRequestSize > 0) {
+            if (maxRequestSize > Integer.MAX_VALUE) {
                 _config.setMaxRequestSize(Integer.MAX_VALUE);
             } else {
-                _config.setMaxRequestSize((int) ServerProps.request_maxBodySize);
+                _config.setMaxRequestSize((int) maxRequestSize);
             }
         }
 
