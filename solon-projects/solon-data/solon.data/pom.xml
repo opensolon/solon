@@ -36,5 +36,11 @@
             <artifactId>snack3</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.config.yaml</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

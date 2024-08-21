@@ -1,0 +1,9 @@
+solon.vault:
+  password: "liylU9PhDq63tk1C"
+
+solon.dataSources:
+  db1:
+    class: libs.DataSourceTmp
+    url: "..."
+    username: "ENC(xo1zJjGXUouQ/CZac55HZA==)"
+    password: "ENC(XgRqh3C00JmkjsPi4mPySA==)"
