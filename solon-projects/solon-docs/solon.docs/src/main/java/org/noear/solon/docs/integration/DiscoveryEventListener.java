@@ -48,7 +48,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
      */
     @Override
     public void start() {
-        if (discover.getIncludedServices().size() > 0) {
+        if (Utils.isNotEmpty(discover.getIncludedServices())) {
             for (String tmp : discover.getIncludedServices()) {
                 String[] ss = tmp.split(":");
                 if (ss.length > 1) {
@@ -65,7 +65,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
      */
     @Override
     public void postStart() throws Throwable {
-        if (CloudClient.loadBalance().count() < discover.getIncludedServices().size()) {
+        if (CloudClient.loadBalance().count() <= discover.getIncludedServices().size()) {
             //条件档一下，避免与网关重复加载
             Collection<String> serviceNames = CloudClient.discovery().findServices("");
 

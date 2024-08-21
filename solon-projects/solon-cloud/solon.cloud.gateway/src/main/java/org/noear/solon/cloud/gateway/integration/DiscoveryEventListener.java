@@ -34,12 +34,12 @@ import java.util.Collection;
  */
 public class DiscoveryEventListener implements EventListener<Discovery>, LifecycleSimpleBean {
     private final CloudRouteRegister routeRegister;
-    private final DiscoverProperties discoverProperties;
+    private final DiscoverProperties discover;
 
-    public DiscoveryEventListener(DiscoverProperties discoverProperties, CloudRouteRegister routeRegister) {
+    public DiscoveryEventListener(DiscoverProperties discover, CloudRouteRegister routeRegister) {
         this.routeRegister = routeRegister;
 
-        this.discoverProperties = discoverProperties;
+        this.discover = discover;
     }
 
     /**
@@ -47,8 +47,8 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
      */
     @Override
     public void start() {
-        if (Utils.isNotEmpty(discoverProperties.getIncludedServices())) {
-            for (String tmp : discoverProperties.getIncludedServices()) {
+        if (Utils.isNotEmpty(discover.getIncludedServices())) {
+            for (String tmp : discover.getIncludedServices()) {
                 String[] ss = tmp.split(":");
                 if (ss.length > 1) {
                     LoadBalance.get(ss[0], ss[1]);
@@ -58,7 +58,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
             }
         }
 
-        if (CloudClient.loadBalance().count() < discoverProperties.getIncludedServices().size()) {
+        if (CloudClient.loadBalance().count() <= discover.getIncludedServices().size()) {
             //条件档一下，避免与网关重复加载
             Collection<String> serviceNames = CloudClient.discovery().findServices("");
 
@@ -72,7 +72,7 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
 
     @Override
     public void onEvent(Discovery discovery) throws Throwable {
-        if (discoverProperties.getExcludedServices().contains(discovery.service())) {
+        if (discover.getExcludedServices().contains(discovery.service())) {
             //排除
             return;
         }
