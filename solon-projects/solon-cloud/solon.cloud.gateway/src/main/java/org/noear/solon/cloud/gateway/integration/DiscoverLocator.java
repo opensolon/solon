@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.gateway.CloudRouteRegister;
 import org.noear.solon.cloud.gateway.properties.DiscoverProperties;
+import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.bean.LifecycleBean;
 
 import java.util.Collection;
@@ -58,6 +59,9 @@ public class DiscoverLocator implements LifecycleBean {
         }
     }
 
+    /**
+     * 注册
+     */
     private void register(String serviceName) {
         if (discover.getExcludedServices().contains(serviceName)) {
             //排除
@@ -67,5 +71,8 @@ public class DiscoverLocator implements LifecycleBean {
         routeRegister.route(serviceName, r -> r
                 .path("/" + serviceName + "/**")
                 .target("lb://" + serviceName));
+
+        //预热获取
+        LoadBalance.get(serviceName);
     }
 }

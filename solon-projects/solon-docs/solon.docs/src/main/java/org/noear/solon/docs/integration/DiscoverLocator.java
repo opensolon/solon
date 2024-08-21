@@ -67,6 +67,9 @@ public class DiscoverLocator implements LifecycleBean, EventListener<Discovery> 
         syncStatus(discovery);
     }
 
+    /**
+     * 注册
+     */
     protected void register(String serviceName) {
         if (discover.getExcludedServices().contains(serviceName)) {
             //排除
