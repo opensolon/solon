@@ -55,6 +55,7 @@
 * 优化 solon.web.rx 允许多次渲染输出
 * 优化 kafka-solon-cloud-plugin 添加 username, password 简化配置支持（简化有账号的连接体验）
 * 优化 solon.boot 413 状态处理
+* 优化 solon.boot.smarthttp 适配的 maxRequestSize 设置（取 fileSize 和 bodySize 的大值）
 * 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
 * 优化 solon.mvc kotlin data class 带默认值的注入支持（表单模式下）
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
