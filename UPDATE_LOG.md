@@ -38,12 +38,15 @@
 * 添加 solon.net.httputils HttpResponse::headerNames 方法
 * 添加 solon.cloud CloudDiscoveryService:findServices 方法
 * 添加 solon `solon.plugin.exclude` 应用属性配置
-* 添加 solon `solon.app.health` 应用属性配置（`Solon.cfg().appHealth()` 可获取）
+* 添加 solon `solon.app.enabled` 应用属性配置（`Solon.cfg().appEnabled()` 可获取）
 * 添加 solon `${.url}` 应用属性配置本级引用
 * 添加 solon `--cfg` 启动参数支持（便于内嵌场景开发）
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 调整 solon.cloud.httputils 标为弃用，由 solon.net.httputils 替代
 * 调整 smarthttp,jetty,undertow 的非标准方法的 FormUrlencoded 预处理时机
+* 调整 solon.auth 更名为 solon.security.auth (原模块保留)
+* 调整 solon.validation 更名为 solon.security.validation (原模块保留)
+* 调整 solon.vault 更名为 solon.security.vault (原模块保留)
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 solon Context::body 的兼容性，避免不可读情况
@@ -67,7 +70,7 @@
 * beetl 升为 3.17.0.RELEASE
 * mybatis 升为 3.5.16
 * mybatis-flex 升为 1.9.6
-* sqltoy 升为 5.6.19
+* sqltoy 升为 5.6.20
 * dbvisitor 升为 5.4.3
 * bean-searcher 升为 4.3.0
 * liteflow 升为 2.12.2
