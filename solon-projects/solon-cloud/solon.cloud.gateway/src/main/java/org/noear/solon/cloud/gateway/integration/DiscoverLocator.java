@@ -19,10 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.gateway.CloudRouteRegister;
 import org.noear.solon.cloud.gateway.properties.DiscoverProperties;
-import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.core.LoadBalance;
-import org.noear.solon.core.bean.LifecycleSimpleBean;
-import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.bean.LifecycleBean;
 
 import java.util.Collection;
 
@@ -32,13 +29,12 @@ import java.util.Collection;
  * @author noear
  * @since 2.9
  */
-public class DiscoveryEventListener implements EventListener<Discovery>, LifecycleSimpleBean {
+public class DiscoverLocator implements LifecycleBean {
     private final CloudRouteRegister routeRegister;
     private final DiscoverProperties discover;
 
-    public DiscoveryEventListener(DiscoverProperties discover, CloudRouteRegister routeRegister) {
+    public DiscoverLocator(DiscoverProperties discover, CloudRouteRegister routeRegister) {
         this.routeRegister = routeRegister;
-
         this.discover = discover;
     }
 
@@ -49,35 +45,24 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
     public void start() {
         if (Utils.isNotEmpty(discover.getIncludedServices())) {
             for (String tmp : discover.getIncludedServices()) {
-                String[] ss = tmp.split(":");
-                if (ss.length > 1) {
-                    LoadBalance.get(ss[0], ss[1]);
-                } else {
-                    LoadBalance.get(ss[0]);
-                }
+                register(tmp);
             }
         }
 
-        if (CloudClient.loadBalance().count() <= discover.getIncludedServices().size()) {
-            //条件档一下，避免与网关重复加载
-            Collection<String> serviceNames = CloudClient.discovery().findServices("");
-
-            if (Utils.isNotEmpty(serviceNames)) {
-                for (String name : serviceNames) {
-                    LoadBalance.get(name);
-                }
+        //条件档一下，避免与网关重复加载
+        Collection<String> serviceNames = CloudClient.discovery().findServices("");
+        if (Utils.isNotEmpty(serviceNames)) {
+            for (String name : serviceNames) {
+                register(name);
             }
         }
     }
 
-    @Override
-    public void onEvent(Discovery discovery) throws Throwable {
-        if (discover.getExcludedServices().contains(discovery.service())) {
+    private void register(String serviceName) {
+        if (discover.getExcludedServices().contains(serviceName)) {
             //排除
             return;
         }
-
-        String serviceName = discovery.service().toLowerCase();
 
         routeRegister.route(serviceName, r -> r
                 .path("/" + serviceName + "/**")

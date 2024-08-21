@@ -24,11 +24,8 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.integration.properties.DocDocketProperties;
 import org.noear.solon.docs.integration.properties.DocsProperties;
-
-import java.util.Map;
 
 /**
  * @author noear
@@ -65,11 +62,15 @@ public class XPluginImpl implements Plugin {
         //加载 solon.docs.discover.pathPattern
         if (docsProperties.getDiscover().isEnabled()) {
             if (ClassUtil.hasClass(() -> Discovery.class)) {
-                DiscoveryEventListener eventListener = new DiscoveryEventListener(context, docsProperties.getDiscover());
-                //订阅
-                EventBus.subscribe(Discovery.class, eventListener);
-                //开始
-                context.lifecycle(eventListener);
+                DiscoverLocator discoverLocator = new DiscoverLocator(context, docsProperties.getDiscover());
+
+                if (docsProperties.getDiscover().isSyncStatus()) {
+                    //同步状态
+                    EventBus.subscribe(Discovery.class, discoverLocator);
+                }
+
+                //加入生命周期
+                context.lifecycle(discoverLocator);
             } else {
                 LogUtil.global().warn("Solon docs discover: missing solon cloud discovery");
             }

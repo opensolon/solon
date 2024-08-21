@@ -15,6 +15,8 @@
  */
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
@@ -60,8 +62,23 @@ public class CloudDiscoveryServiceProxy implements  CloudDiscoveryService {
         return discovery;
     }
 
+    private Collection<String> findServicesCached;
+
     @Override
     public Collection<String> findServices(String group) {
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
+        if (group != null && group.equals(Solon.cfg().appGroup())) {
+            //如果是当前应用分组，则缓存下
+            if (findServicesCached == null) {
+                findServicesCached = real.findServices(group);
+            }
+
+            return findServicesCached;
+        }
+
         return real.findServices(group);
     }
 

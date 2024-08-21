@@ -21,7 +21,7 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.LoadBalance;
-import org.noear.solon.core.bean.LifecycleSimpleBean;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.integration.properties.DiscoverProperties;
@@ -34,11 +34,11 @@ import java.util.Collection;
  * @author noear
  * @since 2.9
  */
-public class DiscoveryEventListener implements EventListener<Discovery>, LifecycleSimpleBean {
+public class DiscoverLocator implements LifecycleBean, EventListener<Discovery> {
     private final AppContext appContext;
     private final DiscoverProperties discover;
 
-    public DiscoveryEventListener(AppContext appContext, DiscoverProperties discover) {
+    public DiscoverLocator(AppContext appContext, DiscoverProperties discover) {
         this.appContext = appContext;
         this.discover = discover;
     }
@@ -49,66 +49,65 @@ public class DiscoveryEventListener implements EventListener<Discovery>, Lifecyc
     @Override
     public void start() {
         if (Utils.isNotEmpty(discover.getIncludedServices())) {
-            for (String tmp : discover.getIncludedServices()) {
-                String[] ss = tmp.split(":");
-                if (ss.length > 1) {
-                    LoadBalance.get(ss[0], ss[1]);
-                } else {
-                    LoadBalance.get(ss[0]);
-                }
+            for (String name : discover.getIncludedServices()) {
+                register(name);
             }
         }
-    }
 
-    /**
-     * 开始之后
-     */
-    @Override
-    public void postStart() throws Throwable {
-        if (CloudClient.loadBalance().count() <= discover.getIncludedServices().size()) {
-            //条件档一下，避免与网关重复加载
-            Collection<String> serviceNames = CloudClient.discovery().findServices("");
-
-            if (Utils.isNotEmpty(serviceNames)) {
-                for (String name : serviceNames) {
-                    LoadBalance.get(name);
-                }
+        Collection<String> serviceNames = CloudClient.discovery().findServices("");
+        if (Utils.isNotEmpty(serviceNames)) {
+            for (String name : serviceNames) {
+                register(name);
             }
         }
     }
 
     @Override
     public void onEvent(Discovery discovery) throws Throwable {
-        if (discover.getExcludedServices().contains(discovery.service())) {
+        syncStatus(discovery);
+    }
+
+    protected void register(String serviceName) {
+        if (discover.getExcludedServices().contains(serviceName)) {
             //排除
             return;
         }
 
-        Object tmp = appContext.getBean(discovery.service());
+        Object tmp = appContext.getBean(serviceName);
 
         if (tmp == null) {
             //自动创建（如果还没有）
             DocDocket docDocket = new DocDocket();
-            docDocket.groupName(discovery.service());
-            docDocket.upstream(discovery.service(), discovery.service(), discover.getUriPattern().replace("{service}", discovery.service()));
+            docDocket.groupName(serviceName);
+            docDocket.upstream(serviceName, serviceName, discover.getUriPattern().replace("{service}", serviceName));
 
             if (Utils.isNotEmpty(discover.getBasicAuth())) {
                 docDocket.basicAuth().putAll(discover.getBasicAuth());
             }
 
-            if (discover.isSyncStatus()) {
-                //如果要同步状态
-                docDocket.enable(discovery.clusterSize() > 0);
-            }
 
-            BeanWrap beanWrap = appContext.wrap(discovery.service(), docDocket);
-            appContext.putWrap(discovery.service(), beanWrap);
-        } else if (discover.isSyncStatus()) {
-            //如果要同步状态
-            if (tmp instanceof DocDocket) {
-                DocDocket docDocket = (DocDocket) tmp;
-                docDocket.enable(discovery.clusterSize() > 0);
-            }
+            BeanWrap beanWrap = appContext.wrap(serviceName, docDocket);
+            appContext.putWrap(serviceName, beanWrap);
+
+            //预热获取
+            LoadBalance.get(serviceName);
+        }
+    }
+
+    /**
+     * 同步状态
+     */
+    protected void syncStatus(Discovery discovery) throws Throwable {
+        if (discover.isSyncStatus() == false) {
+            return;
+        }
+
+        Object tmp = appContext.getBean(discovery.service());
+
+        //如果要同步状态
+        if (tmp instanceof DocDocket) {
+            DocDocket docDocket = (DocDocket) tmp;
+            docDocket.enable(discovery.clusterSize() > 0);
         }
     }
 }

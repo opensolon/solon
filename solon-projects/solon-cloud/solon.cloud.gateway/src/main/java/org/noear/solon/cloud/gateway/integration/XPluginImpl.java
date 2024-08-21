@@ -28,9 +28,7 @@ import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 import org.noear.solon.cloud.gateway.route.Route;
-import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 
 import java.net.URI;
@@ -114,8 +112,7 @@ public class XPluginImpl implements Plugin {
 
         //订阅 Discovery（同步服务发现）
         if (gatewayProperties.getDiscover().isEnabled()) {
-            DiscoveryEventListener eventListener = new DiscoveryEventListener(gatewayProperties.getDiscover(), cloudGateway.getConfiguration());
-            EventBus.subscribe(Discovery.class, eventListener);
+            DiscoverLocator eventListener = new DiscoverLocator(gatewayProperties.getDiscover(), cloudGateway.getConfiguration());
             //要在 loadConfiguration 之前
             context.lifecycle(-1, eventListener);
         }
