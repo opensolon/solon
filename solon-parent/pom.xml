@@ -454,6 +454,27 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- @deprecated 2.9 -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.auth</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- @deprecated 2.9 -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.validation</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- @deprecated 2.9 -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.vault</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>

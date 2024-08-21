@@ -34,6 +34,10 @@
         <module>../../solon-projects/solon-security/solon.security.vault</module>
         <module>../../solon-projects/solon-security/solon.security.validation</module>
 
+        <module>../../solon-projects/solon-security/solon.auth</module>
+        <module>../../solon-projects/solon-security/solon.vault</module>
+        <module>../../solon-projects/solon-security/solon.validation</module>
+
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-springboot-starter</module>
     </modules>
