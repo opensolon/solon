@@ -19,7 +19,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
-import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
@@ -55,11 +54,6 @@ public class Route {
      */
     public Route target(URI uri) {
         this.target = uri;
-
-        if (LoadBalance.URI_SCHEME.equals(uri.getScheme())) {
-            //起到预热加载作用
-            LoadBalance.get(uri.getHost());
-        }
 
         return this;
     }

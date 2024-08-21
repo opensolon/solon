@@ -166,6 +166,11 @@ public class XPluginImpl implements Plugin {
             Route route = new Route(rm.getId());
             route.target(URI.create(rm.getTarget()));
 
+            if (LoadBalance.URI_SCHEME.equals(route.getTarget().getScheme())) {
+                //起到预热加载作用
+                LoadBalance.get(route.getTarget().getHost());
+            }
+
             if (rm.getPredicates() != null) {
                 //route.predicates
                 for (String predicateStr : rm.getPredicates()) {
