@@ -26,15 +26,20 @@ import org.noear.solon.rx.impl.CompletableSubscriberSimple;
 /**
  * @author noear 2024/8/21 created
  */
-public class AddResponseHeaderFilterTest {
+public class RemoveResponseHeaderFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "AddResponseHeader=app.ver,1");
+                "RemoveResponseHeader=app.ver,1");
 
         assert filter != null;
 
         ExNewResponse newResponse = new ExNewResponse();
+        newResponse.headerAdd("a", "1");
+        newResponse.headerAdd("app.ver", "1");
+
+        assert newResponse.getHeaders().size() == 2;
+
         filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewResponse newResponse() {
@@ -43,6 +48,5 @@ public class AddResponseHeaderFilterTest {
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
         assert newResponse.getHeaders().size() == 1;
-        assert "1".equals(newResponse.getHeaders().get("app.ver").getFirstValue());
     }
 }

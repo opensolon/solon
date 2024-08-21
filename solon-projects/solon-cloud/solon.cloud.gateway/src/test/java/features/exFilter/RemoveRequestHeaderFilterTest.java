@@ -18,7 +18,7 @@ package features.exFilter;
 import features.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
-import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
+import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.impl.CompletableSubscriberSimple;
@@ -26,23 +26,27 @@ import org.noear.solon.rx.impl.CompletableSubscriberSimple;
 /**
  * @author noear 2024/8/21 created
  */
-public class AddResponseHeaderFilterTest {
+public class RemoveRequestHeaderFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "AddResponseHeader=app.ver,1");
+                "RemoveRequestHeader=app.ver,1");
 
         assert filter != null;
 
-        ExNewResponse newResponse = new ExNewResponse();
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.headerAdd("a", "1");
+        newRequest.headerAdd("app.ver", "1");
+
+        assert newRequest.getHeaders().size() == 2;
+
         filter.doFilter(new ExContextEmpty() {
             @Override
-            public ExNewResponse newResponse() {
-                return newResponse;
+            public ExNewRequest newRequest() {
+                return newRequest;
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert newResponse.getHeaders().size() == 1;
-        assert "1".equals(newResponse.getHeaders().get("app.ver").getFirstValue());
+        assert newRequest.getHeaders().size() == 1;
     }
 }

@@ -21,6 +21,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.impl.CompletableSubscriberSimple;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class AddRequestHeaderFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete());
+        }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
         assert newRequest.getHeaders().size() == 1;
         assert "1".equals(newRequest.getHeaders().get("app.ver").getFirstValue());
