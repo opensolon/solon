@@ -11,19 +11,13 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon.auth</artifactId>
+    <artifactId>solon.security.validation</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-            <scope>test</scope>
+            <artifactId>solon.mvc</artifactId>
         </dependency>
 
         <dependency>

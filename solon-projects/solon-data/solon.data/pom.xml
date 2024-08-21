@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.vault</artifactId>
+            <artifactId>solon.security.vault</artifactId>
         </dependency>
 
         <dependency>
