@@ -43,7 +43,7 @@ public class ValidUtils {
         try {
             ValidatorManager.validateOfInvocation(inv);
         } catch (ValidatorException e) {
-            //不要转 message
+            //不要转 message（有可能是 anno 的 message，转了会不兼容）
             throw new ValidatorException(e.getCode(), e.getMessage(), e.getAnnotation(), e.getResult(), inv.method().getMethod());
         } catch (Throwable e) {
             throw new ValidatorException(400, e.getMessage(), null, Result.failure(), inv.method().getMethod());
