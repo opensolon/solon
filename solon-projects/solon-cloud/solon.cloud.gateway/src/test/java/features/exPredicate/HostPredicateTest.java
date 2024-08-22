@@ -41,6 +41,38 @@ public class HostPredicateTest {
     }
 
     @Test
+    public void testValidConfig2() {
+        ExPredicate predicate = RouteFactoryManager
+                .getPredicate("Host", "a*.demo.com");
+
+        assert predicate != null;
+        assert predicate.test(new ExContextEmpty() {
+            @Override
+            public URI rawURI() {
+                return URI.create("https://aa.demo.com");
+            }
+        });
+        assert predicate.test(new ExContextEmpty() {
+            @Override
+            public URI rawURI() {
+                return URI.create("https://ab.demo.com");
+            }
+        });
+        assert false == predicate.test(new ExContextEmpty() {
+            @Override
+            public URI rawURI() {
+                return URI.create("https://bb.demo.com");
+            }
+        });
+        assert false == predicate.test(new ExContextEmpty() {
+            @Override
+            public URI rawURI() {
+                return URI.create("https://c.test.com");
+            }
+        });
+    }
+
+    @Test
     public void testEmptyConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
             RouteFactoryManager.getPredicate("Host", "");
