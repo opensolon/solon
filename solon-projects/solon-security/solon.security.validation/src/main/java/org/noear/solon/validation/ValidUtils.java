@@ -43,6 +43,7 @@ public class ValidUtils {
         try {
             ValidatorManager.validateOfInvocation(inv);
         } catch (ValidatorException e) {
+            //不要转 message
             throw new ValidatorException(e.getCode(), e.getMessage(), e.getAnnotation(), e.getResult(), inv.method().getMethod());
         } catch (Throwable e) {
             throw new ValidatorException(400, e.getMessage(), null, Result.failure(), inv.method().getMethod());
