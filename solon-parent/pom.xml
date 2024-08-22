@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.9.0</version>
+    <version>2.9.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,7 +24,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>2.9.0</solon.version>
+        <solon.version>2.9.1-SNAPSHOT</solon.version>
         <solon-cloud.version>2.9.0</solon-cloud.version>
         <solon-admin.version>2.9.0</solon-admin.version>
         <solon-integration.version>2.9.0</solon-integration.version>
