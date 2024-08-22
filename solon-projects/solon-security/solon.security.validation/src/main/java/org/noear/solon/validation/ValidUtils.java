@@ -43,8 +43,12 @@ public class ValidUtils {
         try {
             ValidatorManager.validateOfInvocation(inv);
         } catch (ValidatorException e) {
-            String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
-            throw new ValidatorException(e.getCode(), msg, e.getAnnotation(), e.getResult(), inv.method().getMethod());
+            if (Context.current() == null) {
+                String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
+                throw new ValidatorException(e.getCode(), msg, e.getAnnotation(), e.getResult(), inv.method().getMethod());
+            } else {
+                throw e;
+            }
         } catch (Throwable e) {
             String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
             throw new ValidatorException(400, msg, null, Result.failure(), inv.method().getMethod());

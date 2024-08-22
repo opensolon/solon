@@ -27,7 +27,7 @@ import org.noear.solon.core.aspect.Invocation;
 public class BeanValidateInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        //内部会出示异常
+        //内部会出示异常（mvc 也可能进来）
         ValidUtils.validateInvocation(inv);
 
         return inv.invoke();
