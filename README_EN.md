@@ -4,7 +4,7 @@
 Solon v2.9.0
 </h1>
 <p align="center">
-	<strong>Java's new application development framework. Faster, smaller, and easier!</strong>
+	<strong>Java "new" application development framework, restraint, concise, efficient, open, ecological!</strong>
     <br/>
     <strong>[OpenAtom foundation, incubation project]</strong>
 </p>
@@ -54,7 +54,7 @@ Solon v2.9.0
 <hr />
 
 <p align="center">
-2 to 3 times more concurrency 50% memory savings Startup is 5-10 times faster. 50% ~ 90% smaller packaging; Compatible with java8 ~ java22
+300% higher concurrency 50% memory savings Startup is 10 times faster. Packing 90% smaller; It also supports java8 ~ java22, native runtime.
 <br/>
 Built from scratch, with more flexible interface specifications and an open ecosystem
 </p>
@@ -65,9 +65,9 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 | Feature      | Description                                                                 | 
 |--------------|-----------------------------------------------------------------------------| 
-| Better cost performance for computing resources   | 2 to 3 times more concurrency 50% memory savings                            |
-| Faster development productivity      | Small kernel, quick to get started Debug restarts are 10x faster     |
-| Better production and deployment experience   | Bundles are reduced by up to 90% |
+| Better cost performance for computing resources   | 300% higher concurrency 50% memory savings                            |
+| Faster development productivity      | Small kernel is fast to get started. Debug restarts are 10x faster     |
+| Better production and deployment experience   | Pack 90% smaller |
 | Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java22, graalvm native image                   |
 
 
