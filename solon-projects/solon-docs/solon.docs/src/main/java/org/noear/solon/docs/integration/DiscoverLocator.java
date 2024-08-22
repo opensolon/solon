@@ -80,9 +80,12 @@ public class DiscoverLocator implements LifecycleBean, EventListener<Discovery> 
 
         if (tmp == null) {
             //自动创建（如果还没有）
+            String uri = discover.getUriPattern().replace("{service}", serviceName);
+            String contextPath = discover.getContextPathPattern().replace("{service}", serviceName);
+
             DocDocket docDocket = new DocDocket();
             docDocket.groupName(serviceName);
-            docDocket.upstream(serviceName, serviceName, discover.getUriPattern().replace("{service}", serviceName));
+            docDocket.upstream(serviceName, contextPath, uri);
 
             if (Utils.isNotEmpty(discover.getBasicAuth())) {
                 docDocket.basicAuth().putAll(discover.getBasicAuth());

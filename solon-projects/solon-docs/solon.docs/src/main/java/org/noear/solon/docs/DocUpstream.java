@@ -50,14 +50,9 @@ public class DocUpstream implements Serializable {
     }
 
     /**
-     * 获取上下文路径
+     * 获取资源组上下文路径
      */
     public String getContextPath() {
-        if (Utils.isEmpty(contextPath)) {
-            if (LoadBalance.URI_SCHEME.equals(target.getScheme())) {
-                this.contextPath = "/" + target.getHost();
-            }
-        }
         return contextPath;
     }
 

@@ -28,8 +28,11 @@ import java.util.Map;
 public class DiscoverProperties {
     private boolean enabled;
     private boolean syncStatus;
-    private String uriPattern;
-    private Map<String,String> basicAuth;
+
+    private String uriPattern = "";
+    private String contextPathPattern = "";
+
+    private Map<String, String> basicAuth;
 
     private List<String> excludedServices = new ArrayList<>();
 
@@ -42,14 +45,30 @@ public class DiscoverProperties {
         return enabled;
     }
 
+    /**
+     * 同步服务上下线状态
+     */
     public boolean isSyncStatus() {
         return syncStatus;
     }
 
+    /**
+     * uri 构建模式
+     */
     public String getUriPattern() {
         return uriPattern;
     }
 
+    /**
+     * contextPath 构建模式
+     */
+    public String getContextPathPattern() {
+        return contextPathPattern;
+    }
+
+    /**
+     * 基础鉴权配置
+     */
     public Map<String, String> getBasicAuth() {
         return basicAuth;
     }

@@ -9,6 +9,7 @@ solon.docs:
     enabled: true
     syncStatus: true                          #同步上下线状态
     uriPattern: "swagger/v2?group={service}" #上游路径模式（要么带变量 {service}，要么用统一固定值）
+    contextPathPattern: "/{service}"
     basicAuth:
       admin: "123456"
       user: "654321"
