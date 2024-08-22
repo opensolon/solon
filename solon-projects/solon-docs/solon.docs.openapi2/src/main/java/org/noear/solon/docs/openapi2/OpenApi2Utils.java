@@ -100,13 +100,7 @@ public class OpenApi2Utils {
 
         if (docket.upstream() == null) {
             //本地模式
-            Swagger swagger = new OpenApi2Builder(docket).build();
-
-            if (docket.serializer() == null) {
-                return JacksonSerializer.getInstance().serialize(swagger);
-            } else {
-                return docket.serializer().serialize(swagger);
-            }
+            return getSwaggerJson(docket, null);
         } else {
             //代理模式
             URI upstreamTarget = docket.upstream().getTarget();
@@ -123,6 +117,17 @@ public class OpenApi2Utils {
 
             String url = PathUtil.mergePath(targetAddr, docket.upstream().getUri()).substring(1);
             return httpGet(url, docket);
+        }
+    }
+
+    public static String getSwaggerJson(DocDocket docket, String description) throws IOException {
+        //本地模式
+        Swagger swagger = new OpenApi2Builder(docket).build(description);
+
+        if (docket.serializer() == null) {
+            return JacksonSerializer.getInstance().serialize(swagger);
+        } else {
+            return docket.serializer().serialize(swagger);
         }
     }
 
@@ -143,7 +148,7 @@ public class OpenApi2Utils {
             connection.setRequestMethod("GET");
             responseCode = connection.getResponseCode();
         } catch (Exception e) {
-            throw new ConnectException("HTTP GET connection fail, " + urlStr);
+            return getSwaggerJson(docket, "ERROR: HTTP connection failed: " + urlStr);
         }
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -158,10 +163,17 @@ public class OpenApi2Utils {
                 }
 
                 // 打印结果
-                return response.toString();
+                String apiJson = response.toString();
+
+                if (Utils.isEmpty(apiJson)) {
+                    return getSwaggerJson(docket, "ERROR: HTTP GET blank content: " + urlStr);
+                } else {
+                    return apiJson;
+                }
             }
         } else {
-            throw new SocketException("HTTP GET failed: " + responseCode + ", " + urlStr);
+            return getSwaggerJson(docket, "ERROR: HTTP GET failed: " + responseCode + ", " + urlStr);
+            //throw new SocketException("HTTP GET failed: " + responseCode + ", " + urlStr);
         }
     }
 }

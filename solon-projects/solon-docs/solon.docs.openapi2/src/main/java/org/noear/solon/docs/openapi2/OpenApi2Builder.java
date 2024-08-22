@@ -76,7 +76,7 @@ public class OpenApi2Builder {
         this.docket = docket;
     }
 
-    public Swagger build() {
+    public Swagger build(String description) {
         // 解析通用返回
         if (docket.globalResult() != null) {
             this.globalResultModel = (ModelImpl) this.parseSwaggerModel(docket.globalResult(), docket.globalResult());
@@ -88,10 +88,14 @@ public class OpenApi2Builder {
         ApiLicense apiLicense = docket.info().license();
         ApiContact apiContact = docket.info().contact();
 
+        if(Utils.isEmpty(description)){
+            description = docket.info().description();
+        }
+
         swagger.setSwagger(docket.version());
         swagger.info(new Info()
                 .title(docket.info().title())
-                .description(docket.info().description())
+                .description(description)
                 .termsOfService(docket.info().termsOfService())
                 .version(docket.info().version()));
 
