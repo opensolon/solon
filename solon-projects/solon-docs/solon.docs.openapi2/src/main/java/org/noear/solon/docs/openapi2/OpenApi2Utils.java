@@ -30,10 +30,7 @@ import org.noear.solon.exception.SolonException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -133,7 +130,7 @@ public class OpenApi2Utils {
         // 打开连接
         HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
 
-        if(docket.basicAuth().size() > 0) {
+        if (Utils.isNotEmpty(docket.basicAuth())) {
             for (Map.Entry<String, String> kv : docket.basicAuth().entrySet()) {
                 String auth = BasicAuthUtil.base64EncodeToStr(kv.getKey(), kv.getValue());
                 connection.setRequestProperty("Authorization", "Basic " + auth);
@@ -141,9 +138,13 @@ public class OpenApi2Utils {
             }
         }
         // 设置请求方法为GET
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
+        int responseCode;
+        try {
+            connection.setRequestMethod("GET");
+            responseCode = connection.getResponseCode();
+        } catch (Exception e) {
+            throw new ConnectException("HTTP GET connection fail, " + urlStr);
+        }
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             // 接收响应
@@ -160,7 +161,7 @@ public class OpenApi2Utils {
                 return response.toString();
             }
         } else {
-            throw new SocketException("HTTP GET failed: " + responseCode);
+            throw new SocketException("HTTP GET failed: " + responseCode + ", " + urlStr);
         }
     }
 }
