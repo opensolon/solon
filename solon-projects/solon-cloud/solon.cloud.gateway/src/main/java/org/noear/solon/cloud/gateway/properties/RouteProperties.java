@@ -30,6 +30,11 @@ public class RouteProperties {
     private String id;
 
     /**
+     * 顺序
+     */
+    private int index;
+
+    /**
      * 目标
      */
     private String target;
@@ -55,6 +60,13 @@ public class RouteProperties {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * 顺序
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**

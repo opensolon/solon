@@ -36,17 +36,26 @@ import java.util.List;
  */
 public class Route {
     private final String id;
+    private int index;
     private URI target;
     private List<ExPredicate> predicates = new ArrayList<>();
     private List<RankEntity<ExFilter>> filters = new ArrayList<>();
     private TimeoutProperties timeout;
 
-    public Route(String id){
+    public Route(String id) {
         this.id = id;
 
         if (Utils.isEmpty(id)) {
             throw new IllegalArgumentException("Gateway route id is empty");
         }
+    }
+
+    /**
+     * 配置顺序
+     */
+    public Route index(int index) {
+        this.index = index;
+        return this;
     }
 
     /**
@@ -146,6 +155,13 @@ public class Route {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * 顺序位
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**

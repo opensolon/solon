@@ -52,12 +52,12 @@ public class HostPredicateFactory implements RoutePredicateFactory {
                 throw new IllegalArgumentException("HostPredicate config cannot be blank");
             }
 
-            rule = PathAnalyzer.get(config); //借用路径规则
+            rule = PathAnalyzer.get(config, false); //借用路径规则
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return rule.matches("/" + ctx.rawURI().getHost());
+            return rule.matches(ctx.rawURI().getHost());
         }
     }
 }
