@@ -120,7 +120,10 @@ public class OpenApi2Utils {
         }
     }
 
-    public static String getSwaggerJson(DocDocket docket, String description) throws IOException {
+    /**
+     * @since 2.9
+     */
+    private static String getSwaggerJson(DocDocket docket, String description) throws IOException {
         //本地模式
         Swagger swagger = new OpenApi2Builder(docket).build(description);
 
@@ -131,7 +134,10 @@ public class OpenApi2Utils {
         }
     }
 
-    public static String httpGet(String urlStr, DocDocket docket) throws IOException {
+    /**
+     * @since 2.9
+     */
+    private static String httpGet(String urlStr, DocDocket docket) throws IOException {
         // 打开连接
         HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
 

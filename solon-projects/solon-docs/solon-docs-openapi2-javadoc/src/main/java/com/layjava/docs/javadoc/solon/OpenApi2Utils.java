@@ -101,13 +101,7 @@ public class OpenApi2Utils {
 
         if (docket.upstream() == null) {
             //本地模式
-            Swagger swagger = new OpenApi2Builder(docket).build();
-
-            if (docket.serializer() == null) {
-                return JacksonSerializer.getInstance().serialize(swagger);
-            } else {
-                return docket.serializer().serialize(swagger);
-            }
+            return getSwaggerJson(docket, null);
         } else {
             //代理模式
             String targetAddr;
@@ -122,11 +116,28 @@ public class OpenApi2Utils {
         }
     }
 
-    public static String httpGet(String urlStr, DocDocket docket) throws IOException {
+    /**
+     * @since 2.9
+     */
+    private static String getSwaggerJson(DocDocket docket, String description) throws IOException {
+        //本地模式
+        Swagger swagger = new OpenApi2Builder(docket).build(description);
+
+        if (docket.serializer() == null) {
+            return JacksonSerializer.getInstance().serialize(swagger);
+        } else {
+            return docket.serializer().serialize(swagger);
+        }
+    }
+
+    /**
+     * @since 2.9
+     */
+    private static String httpGet(String urlStr, DocDocket docket) throws IOException {
         // 打开连接
         HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
 
-        if(docket.basicAuth().size() > 0) {
+        if (Utils.isNotEmpty(docket.basicAuth())) {
             for (Map.Entry<String, String> kv : docket.basicAuth().entrySet()) {
                 String auth = BasicAuthUtil.base64EncodeToStr(kv.getKey(), kv.getValue());
                 connection.setRequestProperty("Authorization", "Basic " + auth);
@@ -134,9 +145,13 @@ public class OpenApi2Utils {
             }
         }
         // 设置请求方法为GET
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
+        int responseCode;
+        try {
+            connection.setRequestMethod("GET");
+            responseCode = connection.getResponseCode();
+        } catch (Exception e) {
+            return getSwaggerJson(docket, "ERROR: HTTP connection failed: " + urlStr);
+        }
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             // 接收响应
@@ -150,10 +165,17 @@ public class OpenApi2Utils {
                 }
 
                 // 打印结果
-                return response.toString();
+                String apiJson = response.toString();
+
+                if (Utils.isEmpty(apiJson)) {
+                    return getSwaggerJson(docket, "ERROR: HTTP GET blank content: " + urlStr);
+                } else {
+                    return apiJson;
+                }
             }
         } else {
-            throw new SocketException("HTTP GET failed: " + responseCode);
+            return getSwaggerJson(docket, "ERROR: HTTP GET failed: " + responseCode + ", " + urlStr);
+            //throw new SocketException("HTTP GET failed: " + responseCode + ", " + urlStr);
         }
     }
 }
