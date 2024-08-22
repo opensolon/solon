@@ -39,19 +39,13 @@ public class ValidUtils {
      * @param inv 调用连
      */
     public static void validateInvocation(Invocation inv) throws ValidatorException {
-        //内部会出示异常
+        //可能是 web 或 com
         try {
             ValidatorManager.validateOfInvocation(inv);
         } catch (ValidatorException e) {
-            if (Context.current() == null) {
-                String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
-                throw new ValidatorException(e.getCode(), msg, e.getAnnotation(), e.getResult(), inv.method().getMethod());
-            } else {
-                throw e;
-            }
+            throw new ValidatorException(e.getCode(), e.getMessage(), e.getAnnotation(), e.getResult(), inv.method().getMethod());
         } catch (Throwable e) {
-            String msg = inv.method().getMethod() + " valid failed: " + e.getMessage();
-            throw new ValidatorException(400, msg, null, Result.failure(), inv.method().getMethod());
+            throw new ValidatorException(400, e.getMessage(), null, Result.failure(), inv.method().getMethod());
         }
     }
 
