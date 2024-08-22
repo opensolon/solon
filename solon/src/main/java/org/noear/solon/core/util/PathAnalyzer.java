@@ -46,6 +46,16 @@ public class PathAnalyzer {
     }
 
     public static PathAnalyzer get(String expr) {
+        return get(expr, true);
+    }
+
+    public static PathAnalyzer get(String expr, boolean addStarts) {
+        if (addStarts) {
+            if (expr.startsWith("/") == false) {
+                expr = "/" + expr;
+            }
+        }
+
         PathAnalyzer pa = cached.get(expr);
         if (pa == null) {
             Utils.locker().lock();
@@ -73,13 +83,13 @@ public class PathAnalyzer {
         if (caseSensitive) {
             pattern = Pattern.compile(exprCompile(expr, true));
 
-            if(expr.contains("{")){
+            if (expr.contains("{")) {
                 patternNoStart = Pattern.compile(exprCompile(expr, false));
             }
         } else {
             pattern = Pattern.compile(exprCompile(expr, true), Pattern.CASE_INSENSITIVE);
 
-            if(expr.contains("{")){
+            if (expr.contains("{")) {
                 patternNoStart = Pattern.compile(exprCompile(expr, false), Pattern.CASE_INSENSITIVE);
             }
         }
@@ -105,6 +115,9 @@ public class PathAnalyzer {
 
     /**
      * 将路径表达式编译为正则表达式
+     *
+     * @param expr       表达式
+     * @param fixedStart 固定起始符
      */
     private static String exprCompile(String expr, boolean fixedStart) {
         //替换特殊符号
@@ -125,10 +138,6 @@ public class PathAnalyzer {
                 p = p.replaceAll("\\{[^\\}]+?\\_\\}", "(.+)");
             }
             p = p.replaceAll("\\{[^\\}]+?\\}", "([^/]+)");//不采用group name,可解决_的问题
-        }
-
-        if (p.startsWith("/") == false) {
-            p = "/" + p;
         }
 
         p = p.replace(".[]", ".*");
