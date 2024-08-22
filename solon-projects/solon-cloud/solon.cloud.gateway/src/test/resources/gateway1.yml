@@ -13,6 +13,14 @@ solon.cloud.gateway:
         - "Path=/demo/**"
       filters:
         - "StripPrefix=1"
+    - id: "demo2"
+      index: -1
+      target: "http://localhost:8080"
+      predicates:
+        - "Path=/demo/**"
+      filters:
+        - "StripPrefix=1"
+        - "AddResponseHeader=Test-V,1"
 
 solon.logging.logger:
   root:

@@ -16,6 +16,7 @@
 package libs.gateway1;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 
@@ -33,7 +34,11 @@ public class Gateway1Test extends HttpTester {
 
     @Test
     public void GatewayGetTest() throws Exception {
-        String rst = path(8901, "/demo/test?name=noear").get();
+        HttpResponse resp = path(8901, "/demo/test?name=noear").exec("GET");
+
+        assert "1".equals(resp.header("Test-V"));
+
+        String rst = resp.bodyAsString();
         assert rst != null;
         assert rst.equals("noear");
     }
