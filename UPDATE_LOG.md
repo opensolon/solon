@@ -44,9 +44,9 @@
 * 添加 托管类构造参数注入支持（对 kotlin 更友好） 
 * 调整 solon.cloud.httputils 标为弃用，由 solon.net.httputils 替代
 * 调整 smarthttp,jetty,undertow 的非标准方法的 FormUrlencoded 预处理时机
-* 调整 solon.auth 更名为 solon.security.auth (原模块保留)
-* 调整 solon.validation 更名为 solon.security.validation (原模块保留)
-* 调整 solon.vault 更名为 solon.security.vault (原模块保留)
+* 调整 solon.auth maven 包更名为 solon.security.auth (原 maven 包保留)
+* 调整 solon.validation maven 包更名为 solon.security.validation (原 maven 包保留)
+* 调整 solon.vault maven 包更名为 solon.security.vault (原 maven 包保留)
 * 优化 AppContext::beanMake 保持与 beanSacn 相同的类处理
 * 优化 solon.serialization.jackson 兼容 @JsonFormat 注解时间格式和时间格式配置并存
 * 优化 solon Context::body 的兼容性，避免不可读情况
@@ -58,6 +58,7 @@
 * 优化 solon.boot.smarthttp 适配的 maxRequestSize 设置（取 fileSize 和 bodySize 的大值）
 * 优化 solon AppContext 注册和查找时以 rawClz 为主（避免以接口注册时，实例类型查不到）
 * 优化 solon.mvc kotlin data class 带默认值的注入支持（表单模式下）
+* 优化 solon PathAnalyzer 添加 addStarts 参数选择，支持域名匹配
 * 修复 solon.view.thymeleaf 模板不存在时没有输出 500 的问题
 * 修复 solon.serialization.jackson 泛型注入失效的问题
 * 修复 solon.boot.smarthttp 适配在 chunked 下不能读取 body string 的问题

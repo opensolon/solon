@@ -23,5 +23,6 @@ import java.util.function.Predicate;
  * @author noear
  * @since 2.9
  */
+@FunctionalInterface
 public interface ExPredicate extends Predicate<ExContext> {
 }

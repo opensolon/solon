@@ -23,15 +23,11 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.cloud.gateway.*;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
-import org.noear.solon.cloud.gateway.properties.RouteProperties;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
-
-import java.net.URI;
 
 /**
  * @author noear
@@ -70,7 +66,7 @@ public class XPluginImpl implements Plugin {
         CloudGateway cloudGateway = new CloudGateway();
 
         //添加默认过滤器
-        if(Utils.isNotEmpty(gatewayProperties.getDefaultFilters())) {
+        if (Utils.isNotEmpty(gatewayProperties.getDefaultFilters())) {
             for (String defaultFilter : gatewayProperties.getDefaultFilters()) {
                 cloudGateway.getConfiguration().routeDefaultFilter(RouteFactoryManager.buildFilter(defaultFilter));
             }
@@ -99,23 +95,14 @@ public class XPluginImpl implements Plugin {
             RouteFactoryManager.addFactory(b);
         });
 
-        //加载配置
-        context.lifecycle(1, () -> {
-            //之前需要先收集注解组件
-            loadConfiguration(cloudGateway.getConfiguration(), gatewayProperties);
-        });
+        //加载配置（同步服务发现）
+        GatewayLocator gatewayLocator = new GatewayLocator(gatewayProperties, cloudGateway.getConfiguration());
+        context.lifecycle(-1, gatewayLocator);
 
         //启动完成后注册
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(cloudGateway);
         });
-
-        //订阅 Discovery（同步服务发现）
-        if (gatewayProperties.getDiscover().isEnabled()) {
-            DiscoverLocator eventListener = new DiscoverLocator(gatewayProperties.getDiscover(), cloudGateway.getConfiguration());
-            //要在 loadConfiguration 之前
-            context.lifecycle(-1, eventListener);
-        }
     }
 
     private void start0(CloudGateway cloudGateway) {
@@ -148,47 +135,5 @@ public class XPluginImpl implements Plugin {
         String httpServerUrl = props.buildHttpServerUrl(false);
         LogUtil.global().info("Connector:main: cloud.gateway: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: cloud.gateway: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
-    }
-
-    /**
-     * 构建分布式网关
-     */
-    public void loadConfiguration(CloudGatewayConfiguration configuration, GatewayProperties gatewayProperties) {
-        if (gatewayProperties == null || Utils.isEmpty(gatewayProperties.getRoutes())) {
-            return;
-        }
-
-        //routes
-        for (RouteProperties rm : gatewayProperties.getRoutes()) {
-            Route route = new Route(rm.getId());
-            route.target(URI.create(rm.getTarget()));
-
-            if (LoadBalance.URI_SCHEME.equals(route.getTarget().getScheme())) {
-                //起到预热加载作用
-                LoadBalance.get(route.getTarget().getHost());
-            }
-
-            if (rm.getPredicates() != null) {
-                //route.predicates
-                for (String predicateStr : rm.getPredicates()) {
-                    route.predicate(RouteFactoryManager.buildPredicate(predicateStr));
-                }
-            }
-
-            if (rm.getFilters() != null) {
-                //route.filters
-                for (String filterStr : rm.getFilters()) {
-                    route.filter(RouteFactoryManager.buildFilter(filterStr));
-                }
-            }
-
-            if (rm.getTimeout() != null) {
-                route.timeout(rm.getTimeout());
-            } else {
-                route.timeout(gatewayProperties.getHttpClient());
-            }
-
-            configuration.route(route);
-        }
     }
 }
