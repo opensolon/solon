@@ -1,0 +1,16 @@
+server.port: 8900
+
+solon.app:
+  name: demo-gateway
+  group: gateway
+
+solon.cloud.gateway:
+  routes:
+    - id: "test"
+      target: "http://localhost:8080"
+      predicates:
+        - "Path=/**"
+
+solon.logging.logger:
+  root:
+    level: "INFO"
