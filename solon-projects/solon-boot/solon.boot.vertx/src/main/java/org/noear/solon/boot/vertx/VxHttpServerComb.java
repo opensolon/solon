@@ -20,6 +20,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private boolean enableWebSocket;
     private Handler handler;
     protected boolean enableSsl = true;
+    protected boolean enableHttp2 = false;
     protected SSLContext sslContext;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<VxHttpServer> servers = new ArrayList<>();
@@ -28,6 +29,11 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     public void enableSsl(boolean enable, SSLContext sslContext) {
         this.enableSsl = enable;
         this.sslContext = sslContext;
+    }
+
+    @Override
+    public void enableHttp2(boolean enable) {
+        this.enableHttp2 = enable;
     }
 
     /**
@@ -67,6 +73,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
             s1.enableSsl(enableSsl, sslContext);
+            s1.enableHttp2(enableHttp2);
             s1.start(host, port);
 
             servers.add(s1);

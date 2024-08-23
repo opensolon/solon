@@ -28,6 +28,7 @@ public class VxHttpServer implements ServerLifecycle {
     private Handler handler;
     private Executor workExecutor;
     private boolean enableWebSocket;
+    private boolean enableHttp2;
     private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
 
@@ -37,6 +38,10 @@ public class VxHttpServer implements ServerLifecycle {
 
     public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
         sslConfig.set(enable, sslContext);
+    }
+
+    public void enableHttp2(boolean enable) {
+        this.enableHttp2 = enable;
     }
 
     public void enableWebSocket(boolean enableWebSocket) {
@@ -73,6 +78,12 @@ public class VxHttpServer implements ServerLifecycle {
                     .setKeyCertOptions(new JksOptions()
                             .setPath(sslConfig.getProps().getSslKeyStore())
                             .setPassword(sslConfig.getProps().getSslKeyPassword()));
+
+
+            if (enableHttp2) {
+                _serverOptions.setUseAlpn(true);
+            }
+
             isSecure = _serverOptions.isSsl();
         }
 
