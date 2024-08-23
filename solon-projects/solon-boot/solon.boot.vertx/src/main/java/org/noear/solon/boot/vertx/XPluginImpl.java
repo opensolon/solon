@@ -26,7 +26,6 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * @author noear
@@ -71,22 +70,18 @@ public class XPluginImpl implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        VxHttpHandler handler = new VxHttpHandler(Solon.app()::tryHandle);
 
-        if (props.isIoBound()) {
-            //如果是io密集型的，加二段线程池
-            if(Solon.cfg().isEnabledVirtualThreads()){
-                handler.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            }else{
-                handler.setExecutor(props.getBioExecutor("vertxhttp-"));
-            }
+        VxHandlerSupplier handlerFactory = app.context().getBean(VxHandlerSupplier.class);
+        if(handlerFactory == null){
+            handlerFactory = new VxHandlerSupplierDefault();
         }
+
 
         HttpServerOptions _serverOptions = new HttpServerOptions();
         _serverOptions.setMaxHeaderSize(ServerProps.request_maxHeaderSize);
 
         _server = _vertx.createHttpServer(_serverOptions);
-        _server.requestHandler(handler);
+        _server.requestHandler(handlerFactory.get());
         if (Utils.isNotEmpty(_host)) {
             _server.listen(_port, _host);
         } else {

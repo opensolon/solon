@@ -27,14 +27,14 @@ import org.noear.solon.test.SolonTest;
 public class Gateway1Test extends HttpTester {
     @Test
     public void WebTest() throws Exception {
-        String rst = path(8900, "/hello?name=noear").get();
+        String rst = path("/hello?name=noear").get();
         assert rst != null;
         assert rst.equals("noear");
     }
 
     @Test
     public void GatewayGetTest() throws Exception {
-        HttpResponse resp = path(8901, "/demo/test?name=noear").exec("GET");
+        HttpResponse resp = path("/demo/test?name=noear").exec("GET");
 
         assert "1".equals(resp.header("Test-V"));
 
@@ -45,14 +45,14 @@ public class Gateway1Test extends HttpTester {
 
     @Test
     public void GatewayPostTest() throws Exception {
-        String rst = path(8901, "/demo/test?p1=1").data("name", "noear").post();
+        String rst = path("/demo/test?p1=1").data("name", "noear").post();
         assert rst != null;
         assert rst.equals("noear");
     }
 
     @Test
     public void GatewayPostBodyTest() throws Exception {
-        String rst = path(8901, "/demo/test").bodyJson("{\"name\":\"noear\"}").post();
+        String rst = path("/demo/test").bodyJson("{\"name\":\"noear\"}").post();
         assert rst != null;
         assert rst.equals("noear");
     }

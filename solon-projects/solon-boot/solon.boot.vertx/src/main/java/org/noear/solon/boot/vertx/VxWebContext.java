@@ -43,8 +43,8 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 2.9
  */
-public class VxHttpContext extends WebContextBase {
-    static final Logger log = LoggerFactory.getLogger(VxHttpContext.class);
+public class VxWebContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(VxWebContext.class);
 
     private HttpServerRequest _request;
     private HttpServerResponse _response;
@@ -71,7 +71,7 @@ public class VxHttpContext extends WebContextBase {
         return _asyncListeners;
     }
 
-    public VxHttpContext(HttpServerRequest request, Buffer requestBody) {
+    public VxWebContext(HttpServerRequest request, Buffer requestBody) {
         this._request = request;
         this._requestBody = requestBody;
         this._response = request.response();
@@ -171,23 +171,6 @@ public class VxHttpContext extends WebContextBase {
         if (bodyAsStream != null) {
             return bodyAsStream;
         } else {
-//            CompletableFuture<Buffer> future = new CompletableFuture<>();
-//
-//            try {
-//                _request.body().onComplete(ac -> {
-//                    if (ac.succeeded()) {
-//                        future.complete(ac.result());
-//                    } else {
-//                        future.completeExceptionally(ac.cause());
-//                    }
-//                });
-//
-//                Buffer buffer = future.get();
-//                bodyAsStream = new LimitedInputStream(new ByteBufInputStream(buffer.getByteBuf()), ServerProps.request_maxBodySize);
-//            } catch (Exception ex) {
-//                bodyAsStream = new ByteArrayInputStream(new byte[0]);
-//                log.warn(ex.getMessage(), ex);
-//            }
             if (_requestBody == null) {
                 bodyAsStream = new ByteArrayInputStream(new byte[0]);
             } else {

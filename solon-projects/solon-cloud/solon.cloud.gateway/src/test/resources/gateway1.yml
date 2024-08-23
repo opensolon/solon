@@ -1,5 +1,4 @@
 server.port: 8900
-server.gateway.port: 8901
 
 solon.app:
   name: demo-gateway

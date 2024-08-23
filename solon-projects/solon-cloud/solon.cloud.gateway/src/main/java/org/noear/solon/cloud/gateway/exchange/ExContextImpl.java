@@ -34,15 +34,14 @@ import java.util.Set;
  * @author noear
  * @since 2.9
  */
-public class ExContextImpl implements ExContext{
+public class ExContextImpl implements ExContext {
     private final Map<String, Object> attrMap;
     private final HttpServerRequest rawRequest;
 
     private ExNewRequest newRequest;
     private ExNewResponse newResponse;
 
-    private URI target;
-    private TimeoutProperties timeout;
+    private Route route;
 
     public ExContextImpl(HttpServerRequest rawRequest) {
         this.rawRequest = rawRequest;
@@ -71,23 +70,39 @@ public class ExContextImpl implements ExContext{
      */
     public void bind(Route route) {
         if (route != null) {
-            this.target = route.getTarget();
-            this.timeout = route.getTimeout();
+            this.route = route;
         }
+    }
+
+    /**
+     * 路由
+     */
+    public Route route() {
+        return route;
     }
 
     /**
      * 路由目标
      */
+    @Override
     public URI target() {
-        return target;
+        if (route == null) {
+            return null;
+        } else {
+            return route.getTarget();
+        }
     }
 
     /**
      * 路由超时
      */
+    @Override
     public TimeoutProperties timeout() {
-        return timeout;
+        if (route == null) {
+            return null;
+        } else {
+            return route.getTimeout();
+        }
     }
 
     ////////////////////////////////////////////////////
@@ -110,7 +125,7 @@ public class ExContextImpl implements ExContext{
 
     /**
      * 客户端真实IP
-     * */
+     */
     public String realIp() {
         if (realIp == null) {
             //客户端ip

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
@@ -105,5 +106,23 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
         }
 
         return this;
+    }
+
+    /**
+     * 查找路由记录
+     *
+     * @param ctx 上下文
+     */
+    public Route routeFind(ExContext ctx) {
+        List<Route> routeList = new ArrayList<>(routes.values());
+        routeList.sort(Comparator.comparingInt(r -> r.getIndex()));
+
+        for (Route route : routeList) {
+            if (route.matched(ctx)) {
+                return route;
+            }
+        }
+
+        return null;
     }
 }

@@ -18,15 +18,10 @@ package org.noear.solon.cloud.gateway;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
-import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * 分布式网关
@@ -34,35 +29,46 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class CloudGateway implements Handler<HttpServerRequest> {
+public class CloudGatewayHandler implements Handler<HttpServerRequest> {
     //网关摘要
     private CloudGatewayConfiguration configuration = new CloudGatewayConfiguration();
+    private Handler<HttpServerRequest> webHandler;
+
+    public CloudGatewayHandler(Handler<HttpServerRequest> webHandler) {
+        this.webHandler = webHandler;
+    }
 
     /**
      * 处理
      */
     @Override
     public void handle(HttpServerRequest request) {
-        ExContext ctx = new ExContextImpl(request);
-        CloudGatewayCompletion completion = new CloudGatewayCompletion(ctx, request);
+        ExContextImpl ctx = new ExContextImpl(request);
+        ctx.bind(configuration.routeFind(ctx));
 
-        //开始执行
-        try {
-            new ExFilterChainImpl(configuration.filters, this::doHandle)
-                    .doFilter(ctx)
-                    .subscribe(completion);
+        if (ctx.route() == null) {
+            webHandler.handle(request);
+        } else {
+            CloudGatewayCompletion completion = new CloudGatewayCompletion(ctx, request);
 
-        } catch (Throwable ex) {
-            //避免用户的 filter 出现异常
-            //
-            if (ex instanceof StatusException) {
-                StatusException se = (StatusException) ex;
-                ctx.newResponse().status(se.getCode());
-            } else {
-                ctx.newResponse().status(502);
+            //开始执行
+            try {
+                new ExFilterChainImpl(configuration.filters, this::doHandle)
+                        .doFilter(ctx)
+                        .subscribe(completion);
+
+            } catch (Throwable ex) {
+                //避免用户的 filter 出现异常
+                //
+                if (ex instanceof StatusException) {
+                    StatusException se = (StatusException) ex;
+                    ctx.newResponse().status(se.getCode());
+                } else {
+                    ctx.newResponse().status(502);
+                }
+
+                completion.postComplete();
             }
-
-            completion.postComplete();
         }
     }
 
@@ -71,14 +77,14 @@ public class CloudGateway implements Handler<HttpServerRequest> {
      * 执行处理
      */
     private Completable doHandle(ExContext ctx) {
-        Route route = findRoute(ctx);
+        ExContextImpl ctx2 = (ExContextImpl) ctx;
 
-        if (route == null) {
+        if (ctx2.route() == null) {
             ctx.newResponse().status(404);
             return Completable.complete();
         } else {
             try {
-                return new ExFilterChainImpl(route.getFilters(), configuration.routeHandler::handle)
+                return new ExFilterChainImpl(ctx2.route().getFilters(), configuration.routeHandler::handle)
                         .doFilter(ctx);
             } catch (Throwable ex) {
                 //如果 buildUpstreamRequest 出错，说明请求体有问题
@@ -89,26 +95,6 @@ public class CloudGateway implements Handler<HttpServerRequest> {
                 }
             }
         }
-    }
-
-    /**
-     * 查找路由记录
-     *
-     * @param ctx 上下文
-     */
-    private Route findRoute(ExContext ctx) {
-        List<Route> routeList = new ArrayList<>(configuration.routes.values());
-        routeList.sort(Comparator.comparingInt(r->r.getIndex()));
-
-        for (Route route : routeList) {
-            if (route.matched(ctx)) {
-                //attr +
-                ((ExContextImpl) ctx).bind(route);
-                return route;
-            }
-        }
-
-        return null;
     }
 
     /**

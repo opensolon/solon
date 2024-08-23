@@ -15,36 +15,24 @@
  */
 package org.noear.solon.cloud.gateway.integration;
 
-import org.noear.solon.Utils;
-import org.noear.solon.boot.prop.impl.BaseServerProps;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
+import org.noear.solon.boot.vertx.VxHandlerSupplier;
+import org.noear.solon.cloud.gateway.CloudGatewayHandler;
 
 /**
- * 分布式网关服务属性
- *
  * @author noear
  * @since 2.9
  */
-public class GatewayServerProps extends BaseServerProps {
-    public GatewayServerProps() {
-        super("gateway", 0);
+public class GatewayHandlerSupplier implements VxHandlerSupplier {
+    private final CloudGatewayHandler handler;
+
+    public GatewayHandlerSupplier(CloudGatewayHandler handler) {
+        this.handler = handler;
     }
 
-    /**
-     * 构建 server url
-     */
-    public String buildHttpServerUrl(boolean isSecure) {
-        StringBuilder buf = new StringBuilder();
-        buf.append((isSecure ? "https" : "http"));
-        buf.append("://");
-
-        if (Utils.isEmpty(getHost())) {
-            buf.append("localhost");
-        } else {
-            buf.append(getHost());
-        }
-        buf.append(":");
-        buf.append(getPort());
-
-        return buf.toString();
+    @Override
+    public Handler<HttpServerRequest> get() {
+        return handler;
     }
 }

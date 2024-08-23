@@ -30,13 +30,13 @@ import java.util.concurrent.RejectedExecutionException;
  * @author noear
  * @since 2.9
  */
-public class VxHttpHandler implements Handler<HttpServerRequest> {
-    static final Logger log = LoggerFactory.getLogger(VxHttpHandler.class);
+public class VxWebHandler implements Handler<HttpServerRequest> {
+    static final Logger log = LoggerFactory.getLogger(VxWebHandler.class);
 
     protected Executor executor;
     private final org.noear.solon.core.handle.Handler handler;
 
-    public VxHttpHandler(org.noear.solon.core.handle.Handler handler) {
+    public VxWebHandler(org.noear.solon.core.handle.Handler handler) {
         this.handler = handler;
     }
 
@@ -46,7 +46,6 @@ public class VxHttpHandler implements Handler<HttpServerRequest> {
 
     @Override
     public void handle(HttpServerRequest request) {
-
         HttpServerResponse response = request.response();
 
         try {
@@ -64,7 +63,7 @@ public class VxHttpHandler implements Handler<HttpServerRequest> {
     }
 
     private void handleDo(HttpServerRequest request, Buffer requestBody, boolean disPool) {
-        VxHttpContext ctx = new VxHttpContext(request, requestBody);
+        VxWebContext ctx = new VxWebContext(request, requestBody);
 
         if (executor == null || disPool) {
             handle0(ctx);
@@ -79,7 +78,7 @@ public class VxHttpHandler implements Handler<HttpServerRequest> {
         }
     }
 
-    private void handle0(VxHttpContext ctx) {
+    private void handle0(VxWebContext ctx) {
         try {
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {

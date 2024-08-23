@@ -1,0 +1,50 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.noear.solon.boot.vertx;
+
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
+import org.noear.solon.Solon;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.core.util.ThreadsUtil;
+
+/**
+ * @author noear
+ * @since 2.9
+ */
+public class VxHandlerSupplierDefault implements VxHandlerSupplier {
+    private final VxWebHandler handler;
+
+    public VxHandlerSupplierDefault() {
+        HttpServerProps props = HttpServerProps.getInstance();
+
+        handler = new VxWebHandler(Solon.app()::tryHandle);
+
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            if (Solon.cfg().isEnabledVirtualThreads()) {
+                handler.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+            } else {
+                handler.setExecutor(props.getBioExecutor("vertxhttp-"));
+            }
+        }
+    }
+
+    @Override
+    public Handler<HttpServerRequest> get() {
+        return handler;
+    }
+}
