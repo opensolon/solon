@@ -24,10 +24,7 @@ import io.vertx.core.http.impl.CookieImpl;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.FormUrlencodedUtils;
-import org.noear.solon.boot.web.RedirectUtils;
-import org.noear.solon.boot.web.WebContextBase;
+import org.noear.solon.boot.web.*;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -44,13 +41,14 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * @author noear
- * @since 2.7
+ * @since 2.9
  */
 public class VxHttpContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(VxHttpContext.class);
 
     private HttpServerRequest _request;
     private HttpServerResponse _response;
+    private Buffer _requestBody;
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L;//默认30秒
@@ -73,9 +71,10 @@ public class VxHttpContext extends WebContextBase {
         return _asyncListeners;
     }
 
-    public VxHttpContext(HttpServerRequest request, HttpServerResponse response) {
+    public VxHttpContext(HttpServerRequest request, Buffer requestBody) {
         this._request = request;
-        this._response = response;
+        this._requestBody = requestBody;
+        this._response = request.response();
 
         _filesMap = new HashMap<>();
     }
@@ -91,7 +90,7 @@ public class VxHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this, _filesMap);
+            BodyUtils.decodeMultipart(this, _filesMap);
         }
     }
 
@@ -172,27 +171,29 @@ public class VxHttpContext extends WebContextBase {
         if (bodyAsStream != null) {
             return bodyAsStream;
         } else {
-            CompletableFuture<Buffer> future = new CompletableFuture<>();
-            _request.body(r -> {
-                if (r.succeeded()) {
-                    future.complete(r.result());
-                } else {
-                    future.completeExceptionally(r.cause());
-                }
-            });
-
-            Buffer buffer;
-            try {
-                buffer = future.get();
-            } catch (Throwable e) {
-                if (e instanceof IOException) {
-                    throw (IOException) e;
-                } else {
-                    throw new IOException(e);
-                }
+//            CompletableFuture<Buffer> future = new CompletableFuture<>();
+//
+//            try {
+//                _request.body().onComplete(ac -> {
+//                    if (ac.succeeded()) {
+//                        future.complete(ac.result());
+//                    } else {
+//                        future.completeExceptionally(ac.cause());
+//                    }
+//                });
+//
+//                Buffer buffer = future.get();
+//                bodyAsStream = new LimitedInputStream(new ByteBufInputStream(buffer.getByteBuf()), ServerProps.request_maxBodySize);
+//            } catch (Exception ex) {
+//                bodyAsStream = new ByteArrayInputStream(new byte[0]);
+//                log.warn(ex.getMessage(), ex);
+//            }
+            if (_requestBody == null) {
+                bodyAsStream = new ByteArrayInputStream(new byte[0]);
+            } else {
+                bodyAsStream = new LimitedInputStream(new ByteBufInputStream(_requestBody.getByteBuf()), ServerProps.request_maxBodySize);
             }
 
-            bodyAsStream = new LimitedInputStream(new ByteBufInputStream(buffer.getByteBuf()), ServerProps.request_maxBodySize);
             return bodyAsStream;
         }
     }
@@ -202,7 +203,7 @@ public class VxHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw MultipartUtil.status4xx(this, e);
+            throw BodyUtils.status4xx(this, e);
         }
     }
 
@@ -231,7 +232,7 @@ public class VxHttpContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                FormUrlencodedUtils.pretreatment(this);
+                FormUrlencodedUtils.pretreatment(this, false);
 
                 //多分段处理
                 if (autoMultipart()) {
@@ -248,7 +249,7 @@ public class VxHttpContext extends WebContextBase {
                     _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.formAttributes().getAll(name));
                 }
             } catch (Exception e) {
-                throw MultipartUtil.status4xx(this, e);
+                throw BodyUtils.status4xx(this, e);
             }
         }
     }

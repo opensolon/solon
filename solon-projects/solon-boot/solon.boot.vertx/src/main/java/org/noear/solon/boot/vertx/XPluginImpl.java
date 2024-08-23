@@ -30,7 +30,7 @@ import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * @author noear
- * @since 2.3
+ * @since 2.9
  */
 public class XPluginImpl implements Plugin {
     private static Signal _signal;

@@ -33,9 +33,20 @@ public class FormUrlencodedUtils {
      * 预处理
      */
     public static void pretreatment(Context ctx) throws IOException {
-        if (MethodType.POST.name.equals(ctx.method())) {
-            // post 除外
-            return;
+        pretreatment(ctx, true);
+    }
+
+    /**
+     * 预处理
+     *
+     * @param excludePost 排除 post
+     */
+    public static void pretreatment(Context ctx, boolean excludePost) throws IOException {
+        if (excludePost) {
+            if (MethodType.POST.name.equals(ctx.method())) {
+                // post 除外
+                return;
+            }
         }
 
         if (ctx.isFormUrlencoded() == false) {

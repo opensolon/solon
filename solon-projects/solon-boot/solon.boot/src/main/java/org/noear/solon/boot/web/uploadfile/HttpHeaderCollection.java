@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx.uploadfile;
+package org.noear.solon.boot.web.uploadfile;
 
 import java.util.Arrays;
 import java.util.Iterator;

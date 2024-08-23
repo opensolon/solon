@@ -1,27 +1,31 @@
-package org.noear.solon.boot.vertx;
+package org.noear.solon.boot.web;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.io.LimitedInputException;
 import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.boot.vertx.uploadfile.HttpMultipart;
-import org.noear.solon.boot.vertx.uploadfile.HttpMultipartCollection;
+import org.noear.solon.boot.web.uploadfile.HttpMultipart;
+import org.noear.solon.boot.web.uploadfile.HttpMultipartCollection;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 主体工具类
+ *
  * @author noear
  * @since 2.9
  */
-public class MultipartUtil {
-    public static void buildParamsAndFiles(Context ctx, Map<String, List<UploadedFile>> filesMap) {
+public class BodyUtils {
+    /**
+     * 解码多部分主体
+     */
+    public static void decodeMultipart(Context ctx, Map<String, List<UploadedFile>> filesMap) {
         try {
             HttpMultipartCollection parts = new HttpMultipartCollection(ctx.contentType(), ctx.bodyAsStream());
 
@@ -72,6 +76,9 @@ public class MultipartUtil {
 
     //////////////////////
 
+    /**
+     * 构建关状态异常
+     */
     public static StatusException status4xx(Context ctx, Exception e) {
         if (e instanceof StatusException) {
             return (StatusException) e;

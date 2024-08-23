@@ -16,6 +16,7 @@
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.boot.ServerProps;
@@ -27,7 +28,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 /**
  * @author noear
- * @since 2.7
+ * @since 2.9
  */
 public class VxHttpHandler implements Handler<HttpServerRequest> {
     static final Logger log = LoggerFactory.getLogger(VxHttpHandler.class);
@@ -45,25 +46,36 @@ public class VxHttpHandler implements Handler<HttpServerRequest> {
 
     @Override
     public void handle(HttpServerRequest request) {
-        HttpServerResponse response = request.response();
-        VxHttpContext ctx = new VxHttpContext(request, response);
 
+        HttpServerResponse response = request.response();
 
         try {
-            if (executor == null) {
-                handle0(ctx);
+            if ("GET".equals(request.method().name())) {
+                handleDo(request, null, false);
             } else {
-                try {
-                    executor.execute(() -> {
-                        handle0(ctx);
-                    });
-                } catch (RejectedExecutionException e) {
-                    handle0(ctx);
-                }
+                request.bodyHandler(body -> {
+                    handleDo(request, body, true);
+                });
             }
         } catch (Throwable ex) {
             response.setStatusCode(500);
             response.end();
+        }
+    }
+
+    private void handleDo(HttpServerRequest request, Buffer requestBody, boolean disPool) {
+        VxHttpContext ctx = new VxHttpContext(request, requestBody);
+
+        if (executor == null || disPool) {
+            handle0(ctx);
+        } else {
+            try {
+                executor.execute(() -> {
+                    handle0(ctx);
+                });
+            } catch (RejectedExecutionException e) {
+                handle0(ctx);
+            }
         }
     }
 
