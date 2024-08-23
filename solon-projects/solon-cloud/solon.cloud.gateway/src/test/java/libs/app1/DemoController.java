@@ -17,11 +17,17 @@ package libs.app1;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.UploadedFile;
 
 @Controller
 public class DemoController {
     @Mapping("test")
     public String test(String name) {
         return name;
+    }
+
+    @Mapping("upload")
+    public String upload(UploadedFile file) {
+        return file.getName();
     }
 }

@@ -84,14 +84,8 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                         callbackHandle(ctx, ar, emitter);
                     });
                 } else {
-                    ctx.newRequest().getBody().onComplete(ar1 -> {
-                        if (ar1.succeeded()) {
-                            req1.sendBuffer(ar1.result(), ar2 -> {
-                                callbackHandle(ctx, ar2, emitter);
-                            });
-                        } else {
-                            emitter.onError(new StatusException(ar1.cause(), 400));
-                        }
+                    req1.sendStream(ctx.newRequest().getBody(), ar1 -> {
+                        callbackHandle(ctx, ar1, emitter);
                     });
                 }
             });

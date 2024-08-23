@@ -15,8 +15,8 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
-import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.streams.ReadStream;
 import org.noear.solon.Utils;
 import org.noear.solon.util.KeyValues;
 
@@ -36,7 +36,7 @@ public class ExNewRequest {
     private String queryString;
     private String path;
     private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
-    private Future<Buffer> body;
+    private ReadStream<Buffer> body;
 
     /**
      * 配置方法
@@ -105,7 +105,7 @@ public class ExNewRequest {
      *
      * @param body 主体数据
      */
-    public ExNewRequest body(Future<Buffer> body) {
+    public ExNewRequest body(ReadStream<Buffer> body) {
         this.body = body;
         return this;
     }
@@ -154,7 +154,7 @@ public class ExNewRequest {
     /**
      * 获取主体
      */
-    public Future<Buffer> getBody() {
+    public ReadStream<Buffer> getBody() {
         return body;
     }
 }

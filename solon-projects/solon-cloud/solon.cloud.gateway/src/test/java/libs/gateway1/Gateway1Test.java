@@ -20,6 +20,8 @@ import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 
+import java.io.ByteArrayInputStream;
+
 /**
  * @author noear 2024/8/16 created
  */
@@ -45,15 +47,50 @@ public class Gateway1Test extends HttpTester {
 
     @Test
     public void GatewayPostTest() throws Exception {
-        String rst = path("/demo/test?p1=1").data("name", "noear").post();
+        StringBuilder buf = new StringBuilder();
+        while (buf.length() < 1024 * 1024) { //1m
+            buf.append("noear0123456789abcdef");
+        }
+
+
+        String rst = path("/demo/test?p1=1").data("name", buf.toString()).post();
         assert rst != null;
-        assert rst.equals("noear");
+        assert rst.contains("noear");
     }
 
     @Test
     public void GatewayPostBodyTest() throws Exception {
-        String rst = path("/demo/test").bodyJson("{\"name\":\"noear\"}").post();
+        StringBuilder buf = new StringBuilder();
+        while (buf.length() < 1024 * 1024 * 1) { //1m
+            buf.append("noear0123456789abcdef");
+        }
+
+        String rst = path("/demo/test").bodyJson("{\"name\":\"" + buf + "\"}").post();
         assert rst != null;
-        assert rst.equals("noear");
+        assert rst.contains("noear");
+    }
+
+    @Test
+    public void GatewayPostBigBodyTest() throws Exception {
+        StringBuilder buf = new StringBuilder();
+        while (buf.length() < 1024 * 1024 * 8) { //8m
+            buf.append("noear0123456789abcdef");
+        }
+
+        int code = path("/demo/test").bodyJson("{\"name\":\"" + buf + "\"}").execAsCode("POST");
+        assert code == 413;
+    }
+
+    @Test
+    public void GatewayUploadFileTest() throws Exception {
+        StringBuilder fileBuf = new StringBuilder();
+        while (fileBuf.length() < 1024 * 1024 * 1) { //8m
+            fileBuf.append("noear0123456789abcdef");
+        }
+        ByteArrayInputStream fileData = new ByteArrayInputStream(fileBuf.toString().getBytes());
+
+        String rst = path("/demo/upload").data("file", "test.md", fileData, "text/md").post();
+        assert rst != null;
+        assert "test.md".equals(rst);
     }
 }
