@@ -68,7 +68,8 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     @Override
     public void start(String host, int port) throws Throwable {
         {
-            VxHttpServer s1 = new VxHttpServer();
+            //主端口，支持外部扩展处理器（例，网关）
+            VxHttpServer s1 = new VxHttpServer(true);
             s1.setWorkExecutor(workExecutor);
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
@@ -79,8 +80,9 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             servers.add(s1);
         }
 
+        //增量端口，不支持外部扩展处理器
         for (Integer portAdd : addHttpPorts) {
-            VxHttpServer s2 = new VxHttpServer();
+            VxHttpServer s2 = new VxHttpServer(false);
             s2.setWorkExecutor(workExecutor);
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);

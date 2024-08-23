@@ -31,6 +31,11 @@ public class VxHttpServer implements ServerLifecycle {
     private boolean enableHttp2;
     private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
+    private boolean allowExternalHandler;
+
+    public VxHttpServer(boolean allowExternalHandler) {
+        this.allowExternalHandler = allowExternalHandler;
+    }
 
     public boolean isSecure() {
         return isSecure;
@@ -60,7 +65,11 @@ public class VxHttpServer implements ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         Vertx _vertx = Solon.context().getBean(Vertx.class);
 
-        VxHandlerSupplier handlerFactory = Solon.context().getBean(VxHandlerSupplier.class);
+        VxHandlerSupplier handlerFactory = null;
+        if (allowExternalHandler) {
+            handlerFactory = Solon.context().getBean(VxHandlerSupplier.class);
+        }
+
         if (handlerFactory == null) {
             handlerFactory = new VxHandlerSupplierDefault();
         }
