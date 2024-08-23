@@ -168,4 +168,12 @@ public class PluginEntity {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "PluginEntity{" +
+                "priority=" + priority +
+                ", className='" + className + '\'' +
+                '}';
+    }
 }
