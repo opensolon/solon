@@ -16,16 +16,15 @@
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * @author noear
@@ -43,7 +42,7 @@ public class XPluginImpl implements Plugin {
     }
 
     private Vertx _vertx;
-    private HttpServer _server;
+    private VxHttpServerComb _server;
 
     @Override
     public void start(AppContext context) throws Throwable {
@@ -70,23 +69,23 @@ public class XPluginImpl implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-
-        VxHandlerSupplier handlerFactory = app.context().getBean(VxHandlerSupplier.class);
-        if(handlerFactory == null){
-            handlerFactory = new VxHandlerSupplierDefault();
+        _server = new VxHttpServerComb();
+        _server.enableWebSocket(app.enableWebSocket());
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            if(Solon.cfg().isEnabledVirtualThreads()){
+                _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+            }else{
+                _server.setExecutor(props.getBioExecutor("smarthttp-"));
+            }
         }
 
+        _server.setHandler(Solon.app()::tryHandle);
 
-        HttpServerOptions _serverOptions = new HttpServerOptions();
-        _serverOptions.setMaxHeaderSize(ServerProps.request_maxHeaderSize);
+        //尝试事件扩展
+        EventBus.publish(_server);
+        _server.start(_host, _port);
 
-        _server = _vertx.createHttpServer(_serverOptions);
-        _server.requestHandler(handlerFactory.get());
-        if (Utils.isNotEmpty(_host)) {
-            _server.listen(_port, _host);
-        } else {
-            _server.listen(_port);
-        }
 
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
@@ -103,7 +102,7 @@ public class XPluginImpl implements Plugin {
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
-            _server.close();
+            _server.stop();
         }
 
         if (_vertx != null) {
