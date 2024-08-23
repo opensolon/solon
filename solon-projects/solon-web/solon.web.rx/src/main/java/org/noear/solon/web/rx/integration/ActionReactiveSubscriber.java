@@ -36,13 +36,13 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
-    private boolean isFlux;
+    private boolean isSingle;
     private List<Object> list;
 
-    public ActionReactiveSubscriber(Context ctx, Action action, boolean isFlux) {
+    public ActionReactiveSubscriber(Context ctx, Action action, boolean isSingle) {
         this.ctx = ctx;
         this.action = action;
-        this.isFlux = isFlux;
+        this.isSingle = isSingle;
         this.list = new ArrayList<>();
     }
 
@@ -50,7 +50,11 @@ public class ActionReactiveSubscriber implements Subscriber {
     public void onSubscribe(Subscription subscription) {
         //启动异步模式（-1 表示不超时）
         ctx.asyncStart(-1L, null, () -> {
-            subscription.request(Long.MAX_VALUE);
+            if (isSingle) {
+                subscription.request(1);
+            } else {
+                subscription.request(Long.MAX_VALUE);
+            }
         });
     }
 
@@ -75,12 +79,12 @@ public class ActionReactiveSubscriber implements Subscriber {
     public void onComplete() {
         if (ctx.asyncSupported()) {
             try {
-                if (isFlux) {
-                    action.render(list, ctx, false);
-                } else {
+                if (isSingle) {
                     if (list.size() > 0) {
                         action.render(list.get(0), ctx, false);
                     }
+                } else {
+                    action.render(list, ctx, false);
                 }
             } catch (Throwable e) {
                 log.warn(e.getMessage(), e);
