@@ -25,6 +25,12 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
             <version>${vertx.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

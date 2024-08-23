@@ -33,6 +33,12 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web-client</artifactId>
             <version>${vertx.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

@@ -17,6 +17,7 @@ package org.noear.solon.cloud.gateway.integration;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
@@ -117,7 +118,10 @@ public class XPluginImpl implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        _server = _vertx.createHttpServer();
+        HttpServerOptions _serverOptions = new HttpServerOptions();
+        _serverOptions.setMaxHeaderSize(ServerProps.request_maxHeaderSize);
+
+        _server = _vertx.createHttpServer(_serverOptions);
         _server.requestHandler(cloudGateway);
         if (Utils.isNotEmpty(_host)) {
             _server.listen(_port, _host);

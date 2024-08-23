@@ -26,16 +26,26 @@ public class ResponseOutputStream extends OutputStream {
 
         if (buf.hasRemaining() == false) {
             //没空间了，刷一次
-            response.write(Buffer.buffer(buf.array()));
+            byte[] bytes = new byte[buf.position()];
+
+            buf.flip();
+            buf.get(bytes);
+
+            response.write(Buffer.buffer(bytes));
             buf.clear();
         }
     }
 
     @Override
     public void flush() throws IOException {
-        if (buf.hasRemaining()) {
+        if (buf.position() > 0) {
             //有内容，刷一次
-            response.write(Buffer.buffer(buf.array()));
+            byte[] bytes = new byte[buf.position()];
+
+            buf.flip();
+            buf.get(bytes);
+
+            response.write(Buffer.buffer(bytes));
             buf.clear();
         }
     }

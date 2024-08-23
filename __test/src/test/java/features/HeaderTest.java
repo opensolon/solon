@@ -112,18 +112,26 @@ public class HeaderTest extends HttpTester {
     }
 
     @Test
-    public void testContentType() throws Exception {
+    public void testContentType_post_form() throws Exception {
         String rst = path("/demo2/header/ct").data("name", "solon").post();
         assert rst.equals("POST::application/x-www-form-urlencoded::solon");
+    }
 
-
-        rst = path("/demo2/header/ct").data("name", "solon").multipart(true).post();
+    @Test
+    public void testContentType_post_multipart() throws Exception {
+        String rst = path("/demo2/header/ct").data("name", "solon").multipart(true).post();
         assert rst.startsWith("POST::multipart/form-data");
         assert rst.endsWith("::solon");
         assert rst.equals("POST::multipart/form-data::solon") == false;
 
 
         rst = path("/demo2/header/ct?name=solon").get();
+        assert rst.equals("GET::null::solon");
+    }
+
+    @Test
+    public void testContentType_get() throws Exception {
+        String rst = path("/demo2/header/ct?name=solon").get();
         assert rst.equals("GET::null::solon");
     }
 }

@@ -22,6 +22,8 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.impl.CookieImpl;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -163,7 +165,7 @@ public class VxHttpContext extends WebContextBase {
         return _request.query();
     }
 
-    private ByteBufInputStream bodyAsStream;
+    private InputStream bodyAsStream;
 
     @Override
     public InputStream bodyAsStream() throws IOException {
@@ -190,8 +192,17 @@ public class VxHttpContext extends WebContextBase {
                 }
             }
 
-            bodyAsStream = new ByteBufInputStream(buffer.getByteBuf());
+            bodyAsStream = new LimitedInputStream(new ByteBufInputStream(buffer.getByteBuf()), ServerProps.request_maxBodySize);
             return bodyAsStream;
+        }
+    }
+
+    @Override
+    public String body(String charset) throws IOException {
+        try {
+            return super.body(charset);
+        } catch (Exception e) {
+            throw MultipartUtil.status4xx(this, e);
         }
     }
 
@@ -213,7 +224,7 @@ public class VxHttpContext extends WebContextBase {
         return _paramsMap;
     }
 
-    private void paramsMapInit(){
+    private void paramsMapInit() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
             _paramMap = new NvMap();
@@ -228,15 +239,15 @@ public class VxHttpContext extends WebContextBase {
                 }
 
                 for (String name : _request.params().names()) {
-                    _paramMap.computeIfAbsent(name, k->_request.params().get(k));
+                    _paramMap.computeIfAbsent(name, k -> _request.params().get(k));
                     _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.params().getAll(name));
                 }
 
                 for (String name : _request.formAttributes().names()) {
-                    _paramMap.computeIfAbsent(name, k->_request.formAttributes().get(k));
+                    _paramMap.computeIfAbsent(name, k -> _request.formAttributes().get(k));
                     _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.formAttributes().getAll(name));
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 throw MultipartUtil.status4xx(this, e);
             }
         }
@@ -316,6 +327,7 @@ public class VxHttpContext extends WebContextBase {
     }
 
     private ResponseOutputStream responseOutputStream;
+
     private ResponseOutputStream responseOutputStream() {
         if (responseOutputStream == null) {
             responseOutputStream = new ResponseOutputStream(_response, 512);
@@ -323,7 +335,9 @@ public class VxHttpContext extends WebContextBase {
 
         return responseOutputStream;
     }
+
     private ByteArrayOutputStream _outputStreamTmp;
+
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
@@ -477,7 +491,7 @@ public class VxHttpContext extends WebContextBase {
                 }, _asyncTimeout);
             }
 
-            if(runnable != null) {
+            if (runnable != null) {
                 runnable.run();
             }
         }
@@ -501,9 +515,13 @@ public class VxHttpContext extends WebContextBase {
     protected void innerCommit() throws IOException {
         if (getHandled() || status() >= 200) {
             sendHeaders(true);
+            flush();
+            _response.send();
         } else {
             status(404);
             sendHeaders(true);
+            flush();
+            _response.send();
         }
     }
 
@@ -526,6 +544,8 @@ public class VxHttpContext extends WebContextBase {
 
             if (isCommit || _allows_write == false) {
                 _response.putHeader("Content-Length", "0");
+            } else {
+                _response.setChunked(true);
             }
         }
     }

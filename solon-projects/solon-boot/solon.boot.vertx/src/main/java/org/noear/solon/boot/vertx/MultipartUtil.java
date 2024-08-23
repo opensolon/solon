@@ -2,6 +2,7 @@ package org.noear.solon.boot.vertx;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
+import org.noear.solon.boot.io.LimitedInputException;
 import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.vertx.uploadfile.HttpMultipart;
 import org.noear.solon.boot.vertx.uploadfile.HttpMultipartCollection;
@@ -91,10 +92,10 @@ public class MultipartUtil {
     }
 
     private static boolean hasLargerStr(Throwable e) {
-        if (e == null || e.getMessage() == null) {
-            return false;
-        } else {
-            return e.getMessage().contains("Too Large");
+        if (e instanceof LimitedInputException) {
+            return true;
         }
+
+        return false;
     }
 }

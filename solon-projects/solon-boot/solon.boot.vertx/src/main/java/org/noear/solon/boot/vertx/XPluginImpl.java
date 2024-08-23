@@ -17,6 +17,7 @@ package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -25,6 +26,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * @author noear
@@ -69,9 +71,22 @@ public class XPluginImpl implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
+        VxHttpHandler handler = new VxHttpHandler(Solon.app()::tryHandle);
 
-        _server = _vertx.createHttpServer();
-        _server.requestHandler(new VxHttpHandler());
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            if(Solon.cfg().isEnabledVirtualThreads()){
+                handler.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+            }else{
+                handler.setExecutor(props.getBioExecutor("vertxhttp-"));
+            }
+        }
+
+        HttpServerOptions _serverOptions = new HttpServerOptions();
+        _serverOptions.setMaxHeaderSize(ServerProps.request_maxHeaderSize);
+
+        _server = _vertx.createHttpServer(_serverOptions);
+        _server.requestHandler(handler);
         if (Utils.isNotEmpty(_host)) {
             _server.listen(_port, _host);
         } else {

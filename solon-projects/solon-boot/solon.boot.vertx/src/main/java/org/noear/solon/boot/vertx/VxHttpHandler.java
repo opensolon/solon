@@ -18,18 +18,72 @@ package org.noear.solon.boot.vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * @author noear
  * @since 2.7
  */
 public class VxHttpHandler implements Handler<HttpServerRequest> {
+    static final Logger log = LoggerFactory.getLogger(VxHttpHandler.class);
+
+    protected Executor executor;
+    private final org.noear.solon.core.handle.Handler handler;
+
+    public VxHttpHandler(org.noear.solon.core.handle.Handler handler) {
+        this.handler = handler;
+    }
+
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
+    }
+
     @Override
     public void handle(HttpServerRequest request) {
         HttpServerResponse response = request.response();
-        VxHttpContext context = new VxHttpContext(request, response);
+        VxHttpContext ctx = new VxHttpContext(request, response);
 
-        Solon.app().tryHandle(context);
+
+        try {
+            if (executor == null) {
+                handle0(ctx);
+            } else {
+                try {
+                    executor.execute(() -> {
+                        handle0(ctx);
+                    });
+                } catch (RejectedExecutionException e) {
+                    handle0(ctx);
+                }
+            }
+        } catch (Throwable ex) {
+            response.setStatusCode(500);
+            response.end();
+        }
+    }
+
+    private void handle0(VxHttpContext ctx) {
+        try {
+            ctx.contentType("text/plain;charset=UTF-8");
+            if (ServerProps.output_meta) {
+                ctx.headerSet("Solon-Boot", XPluginImpl.solon_boot_ver());
+            }
+
+            handler.handle(ctx);
+
+            if (ctx.innerIsAsync() == false) {
+                ctx.innerCommit();
+            }
+        } catch (Throwable e) {
+            log.warn(e.getMessage(), e);
+
+            ctx.innerGetResponse().setStatusCode(500);
+            ctx.innerGetResponse().end();
+        }
     }
 }
