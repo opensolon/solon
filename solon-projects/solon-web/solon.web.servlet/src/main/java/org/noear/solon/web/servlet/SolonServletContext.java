@@ -18,7 +18,7 @@ package org.noear.solon.web.servlet;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.FormUrlencodedUtils;
+import org.noear.solon.boot.web.BodyUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
@@ -202,7 +202,7 @@ public class SolonServletContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                FormUrlencodedUtils.pretreatment(this);
+                BodyUtils.decodeFormUrlencoded(this);
 
                 //多分段处理
                 if (autoMultipart()) {

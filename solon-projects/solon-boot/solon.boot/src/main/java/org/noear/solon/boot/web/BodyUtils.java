@@ -1,5 +1,6 @@
 package org.noear.solon.boot.web;
 
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.http.HttpPartFile;
 import org.noear.solon.boot.io.LimitedInputException;
@@ -8,6 +9,7 @@ import org.noear.solon.boot.web.uploadfile.HttpMultipart;
 import org.noear.solon.boot.web.uploadfile.HttpMultipartCollection;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.IOException;
@@ -71,6 +73,48 @@ public class BodyUtils {
 
     private static boolean isFile(HttpMultipart filePart) {
         return !isField(filePart);
+    }
+
+    //////////////////////
+
+    /**
+     * 解码 FormUrlencoded
+     */
+    public static void decodeFormUrlencoded(Context ctx) throws IOException {
+        decodeFormUrlencoded(ctx, true);
+    }
+
+    /**
+     * 解码 FormUrlencoded
+     *
+     * @param excludePost 排除 post
+     */
+    public static void decodeFormUrlencoded(Context ctx, boolean excludePost) throws IOException {
+        if (excludePost) {
+            if (MethodType.POST.name.equals(ctx.method())) {
+                // post 除外
+                return;
+            }
+        }
+
+        if (ctx.isFormUrlencoded() == false) {
+            return;
+        }
+
+        if (Utils.isEmpty(ctx.bodyNew())) {
+            return;
+        }
+
+        String[] ss = ctx.bodyNew().split("&");
+
+        for (String s1 : ss) {
+            int idx = s1.indexOf('=');
+            if (idx > 0) {
+                String name = ServerProps.urlDecode(s1.substring(0, idx));
+                String value = ServerProps.urlDecode(s1.substring(idx + 1));
+                ctx.paramSet(name, value);
+            }
+        }
     }
 
 

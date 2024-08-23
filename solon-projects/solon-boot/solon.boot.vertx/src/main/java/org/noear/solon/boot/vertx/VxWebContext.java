@@ -215,7 +215,7 @@ public class VxWebContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                FormUrlencodedUtils.pretreatment(this, false);
+                BodyUtils.decodeFormUrlencoded(this, false);
 
                 //多分段处理
                 if (autoMultipart()) {

@@ -16,13 +16,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.web.FormUrlencodedUtils;
-import org.noear.solon.boot.web.WebContextBase;
-import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.RedirectUtils;
+import org.noear.solon.boot.web.*;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
-import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
@@ -87,7 +83,7 @@ public class SmHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this, _filesMap);
+            BodyUtils.decodeMultipart(this, _filesMap);
         }
     }
 
@@ -172,7 +168,7 @@ public class SmHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw MultipartUtil.status4xx(this, e);
+            throw BodyUtils.status4xx(this, e);
         }
     }
 
@@ -206,7 +202,7 @@ public class SmHttpContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                FormUrlencodedUtils.pretreatment(this);
+                BodyUtils.decodeFormUrlencoded(this);
 
                 //多分段处理
                 if (autoMultipart()) {
@@ -219,7 +215,7 @@ public class SmHttpContext extends WebContextBase {
                     _paramMap.put(key, entry.getValue()[0]);
                 }
             } catch (Exception e) {
-                throw MultipartUtil.status4xx(this, e);
+                throw BodyUtils.status4xx(this, e);
             }
         }
     }
