@@ -90,7 +90,7 @@ public class VxWebHandler implements VxHandler {
         try {
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {
-                ctx.headerSet("Solon-Boot", XPluginImpl.solon_boot_ver());
+                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
             handler.handle(ctx);

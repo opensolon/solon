@@ -48,13 +48,18 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        //如果有jetty插件，就不启动了
+        //如果有 jetty 插件，就不启动了
         if (ClassUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
             return;
         }
 
-        //如果有undrtow插件，就不启动了
+        //如果有 undrtow 插件，就不启动了
         if (ClassUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
+            return;
+        }
+
+        //如果有 vertx 插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.boot.vertx.XPluginImp") != null) {
             return;
         }
 
