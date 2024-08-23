@@ -67,6 +67,7 @@ public class XPluginImpl implements Plugin {
         final int _port = props.getPort();
         final String _name = props.getName();
 
+
         long time_start = System.currentTimeMillis();
 
         _server = new VxHttpServerComb();
@@ -77,6 +78,15 @@ public class XPluginImpl implements Plugin {
                 _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
             }else{
                 _server.setExecutor(props.getBioExecutor("smarthttp-"));
+            }
+        }
+
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            if (Solon.cfg().isEnabledVirtualThreads()) {
+                _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
+            } else {
+                _server.setExecutor(props.getBioExecutor("vertxhttp-"));
             }
         }
 
@@ -94,7 +104,7 @@ public class XPluginImpl implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        String httpServerUrl = props.buildHttpServerUrl(false);
+        String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info("Connector:main: vertx-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: vertx-http: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }

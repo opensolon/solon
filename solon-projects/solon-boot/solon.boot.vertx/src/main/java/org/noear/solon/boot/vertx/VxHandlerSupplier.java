@@ -15,15 +15,12 @@
  */
 package org.noear.solon.boot.vertx;
 
-import io.vertx.core.Handler;
-import io.vertx.core.http.HttpServerRequest;
-
 import java.util.function.Supplier;
 
 /**
  * @author noear
  * @since 2.9
  */
-public interface VxHandlerSupplier extends Supplier<Handler<HttpServerRequest>> {
+public interface VxHandlerSupplier extends Supplier<VxHandler> {
 
 }

@@ -26,11 +26,9 @@ public class VxHttpServer implements ServerLifecycle {
     protected HttpServerProps props = HttpServerProps.getInstance();
     private HttpServer server = null;
     private Handler handler;
-    private int coreThreads;
     private Executor workExecutor;
     private boolean enableWebSocket;
     private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
-    private boolean enableDebug = false;
     private boolean isSecure;
 
     public boolean isSecure() {
@@ -39,10 +37,6 @@ public class VxHttpServer implements ServerLifecycle {
 
     public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
         sslConfig.set(enable, sslContext);
-    }
-
-    public void enableDebug(boolean enable) {
-        enableDebug = enable;
     }
 
     public void enableWebSocket(boolean enableWebSocket) {
@@ -57,10 +51,6 @@ public class VxHttpServer implements ServerLifecycle {
         this.workExecutor = executor;
     }
 
-    public void setCoreThreads(int coreThreads) {
-        this.coreThreads = coreThreads;
-    }
-
     @Override
     public void start(String host, int port) throws Throwable {
         Vertx _vertx = Solon.context().getBean(Vertx.class);
@@ -71,9 +61,12 @@ public class VxHttpServer implements ServerLifecycle {
         }
 
         HttpServerOptions _serverOptions = new HttpServerOptions();
+
+        //配置 maxHeaderSize
         _serverOptions.setMaxHeaderSize(ServerProps.request_maxHeaderSize);
 
 
+        //配置 ssl
         if (sslConfig.isSslEnable()) {
             _serverOptions
                     .setSsl(true)
@@ -83,12 +76,18 @@ public class VxHttpServer implements ServerLifecycle {
             isSecure = _serverOptions.isSsl();
         }
 
+        //配置 idleTimeout
         _serverOptions.setIdleTimeout((int) props.getIdleTimeoutOrDefault());
         _serverOptions.setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
 
+        //配置 vxHandler
+        VxHandler vxHandler = handlerFactory.get();
+        vxHandler.setExecutor(workExecutor);
+        vxHandler.setHandler(handler);
 
+        //启动 server
         server = _vertx.createHttpServer(_serverOptions);
-        server.requestHandler(handlerFactory.get());
+        server.requestHandler(vxHandler);
         if (Utils.isNotEmpty(host)) {
             server.listen(port, host);
         } else {

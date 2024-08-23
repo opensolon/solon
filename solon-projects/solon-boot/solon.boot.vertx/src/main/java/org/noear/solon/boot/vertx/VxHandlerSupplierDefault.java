@@ -15,12 +15,6 @@
  */
 package org.noear.solon.boot.vertx;
 
-import io.vertx.core.Handler;
-import io.vertx.core.http.HttpServerRequest;
-import org.noear.solon.Solon;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.core.util.ThreadsUtil;
-
 /**
  * @author noear
  * @since 2.9
@@ -29,22 +23,11 @@ public class VxHandlerSupplierDefault implements VxHandlerSupplier {
     private final VxWebHandler handler;
 
     public VxHandlerSupplierDefault() {
-        HttpServerProps props = HttpServerProps.getInstance();
-
-        handler = new VxWebHandler(Solon.app()::tryHandle);
-
-        if (props.isIoBound()) {
-            //如果是io密集型的，加二段线程池
-            if (Solon.cfg().isEnabledVirtualThreads()) {
-                handler.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            } else {
-                handler.setExecutor(props.getBioExecutor("vertxhttp-"));
-            }
-        }
+        handler = new VxWebHandler();
     }
 
     @Override
-    public Handler<HttpServerRequest> get() {
+    public VxHandler get() {
         return handler;
     }
 }

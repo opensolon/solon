@@ -16,13 +16,11 @@ import java.util.concurrent.Executor;
  * @since 2.9
  */
 public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
-    private int coreThreads;
     private Executor workExecutor;
     private boolean enableWebSocket;
     private Handler handler;
     protected boolean enableSsl = true;
     protected SSLContext sslContext;
-    protected boolean enableDebug = false;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<VxHttpServer> servers = new ArrayList<>();
 
@@ -66,11 +64,9 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         {
             VxHttpServer s1 = new VxHttpServer();
             s1.setWorkExecutor(workExecutor);
-            s1.setCoreThreads(coreThreads);
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
             s1.enableSsl(enableSsl, sslContext);
-            s1.enableDebug(enableDebug);
             s1.start(host, port);
 
             servers.add(s1);
@@ -79,11 +75,9 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         for (Integer portAdd : addHttpPorts) {
             VxHttpServer s2 = new VxHttpServer();
             s2.setWorkExecutor(workExecutor);
-            s2.setCoreThreads(coreThreads);
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);
             s2.enableSsl(false, null); //只支持http
-            s2.enableDebug(enableDebug);
             s2.start(host, portAdd);
 
             servers.add(s2);

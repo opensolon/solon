@@ -15,13 +15,16 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
+import org.noear.solon.boot.vertx.VxHandler;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
+
+import java.util.concurrent.Executor;
 
 /**
  * 分布式网关
@@ -29,13 +32,23 @@ import org.noear.solon.core.exception.StatusException;
  * @author noear
  * @since 2.9
  */
-public class CloudGatewayHandler implements Handler<HttpServerRequest> {
+public class CloudGatewayHandler implements VxHandler {
     //网关摘要
     private CloudGatewayConfiguration configuration = new CloudGatewayConfiguration();
-    private Handler<HttpServerRequest> webHandler;
+    private VxHandler webHandler;
 
-    public CloudGatewayHandler(Handler<HttpServerRequest> webHandler) {
+    public CloudGatewayHandler(VxHandler webHandler) {
         this.webHandler = webHandler;
+    }
+
+    @Override
+    public void setHandler(Handler handler) {
+        webHandler.setHandler(handler);
+    }
+
+    @Override
+    public void setExecutor(Executor executor) {
+        webHandler.setExecutor(executor);
     }
 
     /**

@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.integration;
+package org.noear.solon.boot.vertx;
 
-import org.noear.solon.boot.vertx.VxHandler;
-import org.noear.solon.boot.vertx.VxHandlerSupplier;
-import org.noear.solon.cloud.gateway.CloudGatewayHandler;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
+
+import java.util.concurrent.Executor;
 
 /**
+ * Vert.X 处理器
+ *
  * @author noear
  * @since 2.9
  */
-public class GatewayHandlerSupplier implements VxHandlerSupplier {
-    private final CloudGatewayHandler handler;
+public interface VxHandler extends Handler<HttpServerRequest> {
+    /**
+     * 设置处理器
+     */
+    void setHandler(org.noear.solon.core.handle.Handler handler);
 
-    public GatewayHandlerSupplier(CloudGatewayHandler handler) {
-        this.handler = handler;
-    }
-
-    @Override
-    public VxHandler get() {
-        return handler;
-    }
+    /**
+     * 设置执行器
+     */
+    void setExecutor(Executor executor);
 }

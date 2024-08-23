@@ -15,11 +15,11 @@
  */
 package org.noear.solon.boot.vertx;
 
-import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,16 +30,19 @@ import java.util.concurrent.RejectedExecutionException;
  * @author noear
  * @since 2.9
  */
-public class VxWebHandler implements Handler<HttpServerRequest> {
+public class VxWebHandler implements VxHandler {
     static final Logger log = LoggerFactory.getLogger(VxWebHandler.class);
 
-    protected Executor executor;
-    private final org.noear.solon.core.handle.Handler handler;
+    private Executor executor;
+    private org.noear.solon.core.handle.Handler handler;
 
-    public VxWebHandler(org.noear.solon.core.handle.Handler handler) {
+
+    @Override
+    public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
+    @Override
     public void setExecutor(Executor executor) {
         this.executor = executor;
     }
