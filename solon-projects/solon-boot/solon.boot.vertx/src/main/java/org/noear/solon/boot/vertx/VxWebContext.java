@@ -37,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author noear
@@ -52,7 +51,6 @@ public class VxWebContext extends WebContextBase {
 
     private boolean _isAsync;
     private long _asyncTimeout = 30000L;//默认30秒
-    private CompletableFuture<Object> _asyncFuture;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
     protected HttpServerRequest innerGetRequest() {
@@ -434,6 +432,13 @@ public class VxWebContext extends WebContextBase {
     }
 
     @Override
+    public void contentLength(long size) {
+        if (_headers_sent == false) {
+            _response.putHeader("Content-Length", String.valueOf(size));
+        }
+    }
+
+    @Override
     public void flush() throws IOException {
         if (_allows_write) {
             outputStream().flush();
@@ -490,7 +495,9 @@ public class VxWebContext extends WebContextBase {
             } catch (Throwable e) {
                 log.warn("Async completion failed", e);
             } finally {
-                _asyncFuture.complete(this);
+                if (_response.ended() == false) {
+                    _response.end();
+                }
             }
         }
     }
@@ -527,9 +534,11 @@ public class VxWebContext extends WebContextBase {
             _response.setStatusCode(status());
 
             if (isCommit || _allows_write == false) {
-                _response.putHeader("Content-Length", "0");
-            } else {
                 _response.setChunked(true);
+            } else {
+                if (_response.headers().contains("Content-Length") == false) {
+                    _response.setChunked(true);
+                }
             }
         }
     }
