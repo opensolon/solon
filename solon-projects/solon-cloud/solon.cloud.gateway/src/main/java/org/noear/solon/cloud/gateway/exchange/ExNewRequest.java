@@ -18,7 +18,7 @@ package org.noear.solon.cloud.gateway.exchange;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.streams.ReadStream;
 import org.noear.solon.Utils;
-import org.noear.solon.util.KeyValues;
+import org.noear.solon.core.util.KeyValues;
 
 import java.util.LinkedHashMap;
 import java.util.List;

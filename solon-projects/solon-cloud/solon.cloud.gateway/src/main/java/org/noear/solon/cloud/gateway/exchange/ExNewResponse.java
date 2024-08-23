@@ -17,7 +17,7 @@ package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.buffer.Buffer;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.util.KeyValues;
+import org.noear.solon.core.util.KeyValues;
 
 import java.util.LinkedHashMap;
 import java.util.List;

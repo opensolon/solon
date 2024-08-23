@@ -29,7 +29,7 @@ import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableEmitter;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.util.KeyValues;
+import org.noear.solon.core.util.KeyValues;
 
 import java.net.URI;
 import java.util.Map;
