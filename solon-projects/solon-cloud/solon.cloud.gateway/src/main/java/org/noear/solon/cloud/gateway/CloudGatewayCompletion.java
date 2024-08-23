@@ -68,18 +68,24 @@ public class CloudGatewayCompletion implements Subscriber<Void> {
      * 提交异步完成
      */
     public void postComplete() {
-        HttpServerResponse rawResponse = rawRequest.response();
+        try {
+            HttpServerResponse rawResponse = rawRequest.response();
 
-        rawResponse.setStatusCode(ctx.newResponse().getStatus());
+            rawResponse.setStatusCode(ctx.newResponse().getStatus());
 
-        for (KeyValues<String> kv : ctx.newResponse().getHeaders().values()) {
-            rawResponse.putHeader(kv.getKey(), kv.getValues());
-        }
+            for (KeyValues<String> kv : ctx.newResponse().getHeaders().values()) {
+                rawResponse.putHeader(kv.getKey(), kv.getValues());
+            }
 
-        if (ctx.newResponse().getBody() != null) {
-            rawResponse.end(ctx.newResponse().getBody());
-        } else {
-            rawResponse.end();
+            if (rawResponse.ended() == false) {
+                if (ctx.newResponse().getBody() != null) {
+                    rawResponse.end(ctx.newResponse().getBody());
+                } else {
+                    rawResponse.end();
+                }
+            }
+        } catch (Throwable ex) {
+            log.error(ex.getMessage(), ex);
         }
     }
 }
