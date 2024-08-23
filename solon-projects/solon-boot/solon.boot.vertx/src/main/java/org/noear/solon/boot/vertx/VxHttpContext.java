@@ -15,25 +15,27 @@
  */
 package org.noear.solon.boot.vertx;
 
+import io.netty.buffer.ByteBufInputStream;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.http.impl.CookieImpl;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.Constants;
+import org.noear.solon.boot.web.FormUrlencodedUtils;
+import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -87,7 +89,7 @@ public class VxHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            //MultipartUtil.buildParamsAndFiles(this, _filesMap);
+            MultipartUtil.buildParamsAndFiles(this, _filesMap);
         }
     }
 
@@ -161,7 +163,7 @@ public class VxHttpContext extends WebContextBase {
         return _request.query();
     }
 
-    private InputStream bodyAsStream;
+    private ByteBufInputStream bodyAsStream;
 
     @Override
     public InputStream bodyAsStream() throws IOException {
@@ -176,14 +178,19 @@ public class VxHttpContext extends WebContextBase {
                     future.completeExceptionally(r.cause());
                 }
             });
+
             Buffer buffer;
             try {
                 buffer = future.get();
             } catch (Throwable e) {
-                throw new IOException(e);
+                if (e instanceof IOException) {
+                    throw (IOException) e;
+                } else {
+                    throw new IOException(e);
+                }
             }
 
-            bodyAsStream = new ByteArrayInputStream(buffer.getBytes());
+            bodyAsStream = new ByteBufInputStream(buffer.getByteBuf());
             return bodyAsStream;
         }
     }
@@ -192,27 +199,7 @@ public class VxHttpContext extends WebContextBase {
 
     @Override
     public NvMap paramMap() {
-        if (_paramMap == null) {
-            _paramMap = new NvMap();
-
-            try {
-                if (autoMultipart()) {
-                    loadMultipartFormData();
-                }
-
-                for (Map.Entry<String, String> entry : _request.params()) {
-                    _paramMap.put(entry.getKey(), entry.getValue());
-                }
-
-                for (Map.Entry<String, String> entry : _request.formAttributes()) {
-                    _paramMap.put(entry.getKey(), entry.getValue());
-                }
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-        }
+        paramsMapInit();
 
         return _paramMap;
     }
@@ -221,26 +208,38 @@ public class VxHttpContext extends WebContextBase {
 
     @Override
     public Map<String, List<String>> paramsMap() {
+        paramsMapInit();
+
+        return _paramsMap;
+    }
+
+    private void paramsMapInit(){
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
+            _paramMap = new NvMap();
 
             try {
+                //编码窗体预处理
+                FormUrlencodedUtils.pretreatment(this);
+
+                //多分段处理
                 if (autoMultipart()) {
                     loadMultipartFormData();
                 }
+
                 for (String name : _request.params().names()) {
+                    _paramMap.computeIfAbsent(name, k->_request.params().get(k));
                     _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.params().getAll(name));
                 }
 
                 for (String name : _request.formAttributes().names()) {
+                    _paramMap.computeIfAbsent(name, k->_request.formAttributes().get(k));
                     _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.formAttributes().getAll(name));
                 }
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
+            }catch (Exception e) {
+                throw MultipartUtil.status4xx(this, e);
             }
         }
-
-        return _paramsMap;
     }
 
     @Override
@@ -316,65 +315,124 @@ public class VxHttpContext extends WebContextBase {
         headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
     }
 
+    private ResponseOutputStream responseOutputStream;
+    private ResponseOutputStream responseOutputStream() {
+        if (responseOutputStream == null) {
+            responseOutputStream = new ResponseOutputStream(_response, 512);
+        }
+
+        return responseOutputStream;
+    }
+    private ByteArrayOutputStream _outputStreamTmp;
+    @Override
+    public OutputStream outputStream() throws IOException {
+        sendHeaders(false);
+
+        if (_allows_write) {
+            return responseOutputStream();
+        } else {
+            if (_outputStreamTmp == null) {
+                _outputStreamTmp = new ByteArrayOutputStream();
+            } else {
+                _outputStreamTmp.reset();
+            }
+
+            return _outputStreamTmp;
+        }
+    }
+
     @Override
     public void output(byte[] bytes) {
+        try {
+            OutputStream out = outputStream();
 
+            if (!_allows_write) {
+                return;
+            }
+
+            out.write(bytes);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public void output(InputStream stream) {
+        try {
+            OutputStream out = outputStream();
 
-    }
+            if (!_allows_write) {
+                return;
+            }
 
-    @Override
-    public OutputStream outputStream() throws IOException {
-        _response.send();
-        return null;
+            IoUtil.transferTo(stream, out);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public void headerSet(String name, String val) {
-
+        _response.headers().set(name, val);
     }
 
     @Override
     public void headerAdd(String name, String val) {
-
+        _response.headers().add(name, val);
     }
 
     @Override
     public String headerOfResponse(String name) {
-        return null;
+        return _response.headers().get(name);
     }
 
     @Override
     public Collection<String> headerValuesOfResponse(String name) {
-        return Collections.emptyList();
+        return _response.headers().getAll(name);
     }
 
     @Override
     public Collection<String> headerNamesOfResponse() {
-        return Collections.emptyList();
+        return _response.headers().names();
     }
 
     @Override
     public void cookieSet(String name, String val, String domain, String path, int maxAge) {
+        CookieImpl cookie = new CookieImpl(name, val);
 
+        if (Utils.isNotEmpty(path)) {
+            cookie.setPath(path);
+        }
+
+        if (maxAge >= 0) {
+            cookie.setMaxAge(maxAge);
+        }
+
+        if (Utils.isNotEmpty(domain)) {
+            cookie.setDomain(domain);
+        }
+
+        _response.addCookie(cookie);
     }
 
     @Override
     public void redirect(String url, int code) {
+        url = RedirectUtils.getRedirectPath(url);
 
+        headerSet(Constants.HEADER_LOCATION, url);
+        statusDoSet(code);
     }
 
     @Override
     public int status() {
-        return 0;
+        return _status;
     }
+
+    private int _status = 200;
 
     @Override
     protected void statusDoSet(int status) {
-
+        _status = status;
     }
 
     @Override
