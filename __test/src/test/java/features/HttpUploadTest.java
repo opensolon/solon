@@ -34,7 +34,12 @@ import java.nio.charset.StandardCharsets;
 public class HttpUploadTest extends HttpTester {
     @Test
     public void upload() throws IOException {
-        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        StringBuilder buf = new StringBuilder();
+        while (buf.length() < 1024 *1024){
+            buf.append("test:1234567890abcdefg;");
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(buf.toString().getBytes(StandardCharsets.UTF_8));
 
         assert path("/demo3/upload/f1")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
@@ -43,8 +48,13 @@ public class HttpUploadTest extends HttpTester {
 
     @Test
     public void upload2() throws IOException {
-        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
-        InputStream inputStream2 = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        StringBuilder buf = new StringBuilder();
+        while (buf.length() < 1024 *1024){
+            buf.append("test:1234567890abcdefg;");
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(buf.toString().getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream2 = new ByteArrayInputStream(buf.toString().getBytes(StandardCharsets.UTF_8));
 
         String rst = path("/demo3/upload/f1")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
