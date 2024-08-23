@@ -51,18 +51,6 @@ class MultipartUtil {
         }
     }
 
-    public static StatusException status4xx(Context ctx, Exception e) {
-        if (e instanceof StatusException) {
-            return  (StatusException) e;
-        } else {
-            if (isBodyLargerEx(e)) {
-                return new StatusException("Request Entity Too Large: " + ctx.method() + " " + ctx.pathNew(), e, 413);
-            } else {
-                return new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
-            }
-        }
-    }
-
     private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
         List<UploadedFile> list = filesMap.get(name);
         if (list == null) {
@@ -90,6 +78,21 @@ class MultipartUtil {
 
     private static boolean isFile(HttpMultipart filePart) {
         return !isField(filePart);
+    }
+
+
+    //////////////////////
+
+    public static StatusException status4xx(Context ctx, Exception e) {
+        if (e instanceof StatusException) {
+            return  (StatusException) e;
+        } else {
+            if (isBodyLargerEx(e)) {
+                return new StatusException("Request Entity Too Large: " + ctx.method() + " " + ctx.pathNew(), e, 413);
+            } else {
+                return new StatusException("Bad Request:" + ctx.method() + " " + ctx.pathNew(), e, 400);
+            }
+        }
     }
 
     /**

@@ -240,17 +240,8 @@ public class SmHttpContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new NvMap();
 
-            String _cookieMapStr = header(Constants.HEADER_COOKIE);
-            if (_cookieMapStr != null) {
-                String[] cookies = _cookieMapStr.split(";");
-
-                for (String c1 : cookies) {
-                    String[] ss = c1.trim().split("=");
-                    if (ss.length == 2) {
-                        _cookieMap.put(ss[0].trim(), ss[1].trim());
-                    }
-
-                }
+            for (Cookie c1 : _request.getCookies()) {
+                _cookieMap.put(c1.getName(), c1.getValue());
             }
         }
 
