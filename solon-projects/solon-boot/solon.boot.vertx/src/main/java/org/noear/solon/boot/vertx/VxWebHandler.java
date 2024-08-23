@@ -60,8 +60,13 @@ public class VxWebHandler implements VxHandler {
                 });
             }
         } catch (Throwable ex) {
-            response.setStatusCode(500);
-            response.end();
+            //异外情况
+            log.warn(ex.getMessage(), ex);
+
+            if (response.ended() == false) {
+                response.setStatusCode(500);
+                response.end();
+            }
         }
     }
 
