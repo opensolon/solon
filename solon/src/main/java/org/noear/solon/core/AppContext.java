@@ -966,6 +966,26 @@ public class AppContext extends BeanContainer {
 
     /**
      * 添加生命周期 bean
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public void lifecycle(LifecycleBean lifecycle) {
+        lifecycle(0, (Lifecycle)lifecycle);
+    }
+
+    /**
+     * 添加生命周期 bean
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public void lifecycle(int index, LifecycleBean lifecycle) {
+        lifecycle(index, (Lifecycle)lifecycle);
+    }
+
+    /**
+     * 添加生命周期 bean
      */
     @Override
     public void lifecycle(Lifecycle lifecycle) {
