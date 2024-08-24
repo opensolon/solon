@@ -36,7 +36,7 @@ import org.noear.solon.annotation.Mapping;
 public class CustomController {
 
 
-    @ApiOperation(value = "2.9.1新增实验性质的自定义返回值格式", notes = "对接强势第三方,需要按对方约定格式返回数据")
+    @ApiOperation(value = "新增实验性质的自定义返回值格式", notes = "对接强势第三方,需要按对方约定格式返回数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "paramA", value = "参数a", defaultValue = "1111"),
             @ApiImplicitParam(name = "paramB", value = "参数b", defaultValue = "222"),

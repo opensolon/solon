@@ -694,7 +694,7 @@ public class OpenApi2Builder {
             responses.addAll(Arrays.asList(paramArray));
         }
 
-        // 2.9.1 实验性质 自定义返回值
+        // 实验性质 自定义返回值
         Class<?> apiResClz = method.getReturnType();
         if (apiResClz != Void.class) {
             if (BuilderHelper.isModel(apiResClz)) {
