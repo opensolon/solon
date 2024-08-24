@@ -11,7 +11,6 @@
 
 
 ### 待议
-* 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
