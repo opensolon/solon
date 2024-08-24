@@ -1023,12 +1023,12 @@ public abstract class BeanContainer {
     /**
      * 添加生命周期 bean
      */
-    public abstract void lifecycle(LifecycleBean lifecycle);
+    public abstract void lifecycle(Lifecycle lifecycle);
 
     /**
      * 添加生命周期 bean
      */
-    public abstract void lifecycle(int index, LifecycleBean lifecycle);
+    public abstract void lifecycle(int index, Lifecycle lifecycle);
 
     //////////////////////////
     //

@@ -28,6 +28,7 @@
 * 优化 solon.cloud.gateway 改由 solon.boot.vertx 驱动（可与 web 开发复用）
 * 优化 solon.cloud.gateway 改为流式分块代理转发（chunk）
 * 优化 solon.security.validation 执行拉截时的异常消息（保持与旧版兼容）
+* 优化 solon LifecycleBean 和 Lifecycle 设计
 
 ### 2.9.0
 * 新增 solon.cloud.gateway 插件

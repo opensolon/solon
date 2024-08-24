@@ -29,6 +29,23 @@ public interface Lifecycle {
     void start() throws Throwable;
 
     /**
+     * 开始后
+     *
+     * @since 2.9
+     */
+    default void postStart() throws Throwable {
+    }
+
+    /**
+     * 预停止
+     *
+     * @since 2.9
+     */
+    default void preStop() throws Throwable {
+
+    }
+
+    /**
      * 停止
      */
     default void stop() throws Throwable {

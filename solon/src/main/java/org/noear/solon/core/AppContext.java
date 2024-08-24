@@ -77,7 +77,7 @@ public class AppContext extends BeanContainer {
     }
 
 
-    private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
+    private final Set<RankEntity<Lifecycle>> lifecycleBeans = new HashSet<>();
 
     private final Map<MethodKey, MethodWrap> methodCached = new HashMap<>();
     private final Set<Class<?>> beanBuildedCached = new HashSet<>();
@@ -968,7 +968,7 @@ public class AppContext extends BeanContainer {
      * 添加生命周期 bean
      */
     @Override
-    public void lifecycle(LifecycleBean lifecycle) {
+    public void lifecycle(Lifecycle lifecycle) {
         lifecycle(0, lifecycle);
     }
 
@@ -976,7 +976,7 @@ public class AppContext extends BeanContainer {
      * 添加生命周期 bean
      */
     @Override
-    public void lifecycle(int index, LifecycleBean lifecycle) {
+    public void lifecycle(int index, Lifecycle lifecycle) {
         lifecycleBeans.add(new RankEntity<>(lifecycle, index));
 
         if (started) {
@@ -1021,11 +1021,11 @@ public class AppContext extends BeanContainer {
      */
     private void startBeanLifecycle() throws Throwable {
         //执行生命周期bean //支持排序
-        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+        List<RankEntity<Lifecycle>> beans = new ArrayList<>(lifecycleBeans);
         beans.sort(Comparator.comparingInt(f -> f.index));
 
         //start
-        for (RankEntity<LifecycleBean> b : beans) {
+        for (RankEntity<Lifecycle> b : beans) {
             b.target.start();
         }
     }
@@ -1035,11 +1035,11 @@ public class AppContext extends BeanContainer {
      */
     private void postStartBeanLifecycle() throws Throwable {
         //执行生命周期bean //支持排序
-        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+        List<RankEntity<Lifecycle>> beans = new ArrayList<>(lifecycleBeans);
         beans.sort(Comparator.comparingInt(f -> f.index));
 
         //postStart
-        for (RankEntity<LifecycleBean> b : beans) {
+        for (RankEntity<Lifecycle> b : beans) {
             b.target.postStart();
         }
     }
@@ -1080,10 +1080,10 @@ public class AppContext extends BeanContainer {
 
         try {
             //执行生命周期bean //支持排序
-            List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+            List<RankEntity<Lifecycle>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));
 
-            for (RankEntity<LifecycleBean> b : beans) {
+            for (RankEntity<Lifecycle> b : beans) {
                 try {
                     b.target.preStop();
                 } catch (Throwable e) {
@@ -1103,10 +1103,10 @@ public class AppContext extends BeanContainer {
 
         try {
             //执行生命周期bean //支持排序
-            List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+            List<RankEntity<Lifecycle>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));
 
-            for (RankEntity<LifecycleBean> b : beans) {
+            for (RankEntity<Lifecycle> b : beans) {
                 try {
                     b.target.stop();
                 } catch (Throwable e) {
