@@ -359,9 +359,7 @@ public class AppContext extends BeanContainer {
         //Plugin
         if (bw.raw() instanceof Plugin) {
             //如果是插件，则插入
-            Solon.app().plug(bw.raw());
-            LogUtil.global().error("'Plugin' will be deprecated as a component, please use 'LifecycleBean': " + clz.getName());
-            return;
+            throw new IllegalStateException("'Plugin' cannot be component, please use 'LifecycleBean': " + clz.getName());
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
