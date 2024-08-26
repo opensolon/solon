@@ -58,11 +58,6 @@ public @interface Component {
     int index() default 0;
 
     /**
-     * 优先（产生之前的运行优先级）
-     */
-    int priority() default 0;
-
-    /**
      * 要注册的（能力接口）
      */
     boolean registered() default true;

@@ -60,7 +60,7 @@ public @interface Bean {
     int index() default 0;
 
     /**
-     * 优先（产生之前的运行优先级）
+     * 优先（产生之前的运行优先级；越大越优）
      */
     int priority() default 0;
 
