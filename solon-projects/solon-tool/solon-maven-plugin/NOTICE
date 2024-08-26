@@ -1,0 +1,55 @@
+Copyright 2017-2024 noear.org and authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes:
+  AOP alliance under Public Domain
+  Apache Commons IO under Apache-2.0
+  Apache Commons Lang under Apache License, Version 2.0
+  Apache Maven Archiver under Apache-2.0
+  Apache Maven Common Artifact Filters under Apache License, Version 2.0
+  Apache Maven Shared Utils under Apache License, Version 2.0
+  Google Guice - Core Library under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  Javassist under MPL 1.1 or LGPL 2.1 or Apache License 2.0
+  javax.annotation API under CDDL + GPLv2 with classpath exception
+  javax.inject under The Apache Software License, Version 2.0
+  Maven Artifact under Apache-2.0
+  Maven Artifact Resolver API under Apache-2.0
+  Maven Artifact Resolver Implementation under Apache-2.0
+  Maven Artifact Resolver Named Locks under Apache-2.0
+  Maven Artifact Resolver Provider under Apache-2.0
+  Maven Artifact Resolver SPI under Apache-2.0
+  Maven Artifact Resolver Utilities under Apache-2.0
+  Maven Builder Support under Apache-2.0
+  Maven Core under Apache-2.0
+  Maven Model under Apache-2.0
+  Maven Model Builder under Apache-2.0
+  Maven Plugin API under Apache-2.0
+  Maven Plugin Tools Java Annotations under Apache-2.0
+  Maven Repository Metadata Model under Apache-2.0
+  Maven Settings under Apache-2.0
+  Maven Settings Builder under Apache-2.0
+  org.eclipse.sisu.inject under Eclipse Public License, Version 1.0
+  org.eclipse.sisu.plexus under Eclipse Public License, Version 1.0
+  Plexus :: Component Annotations under Apache License, Version 2.0
+  Plexus Cipher: encryption/decryption Component under Apache License, Version 2.0
+  Plexus Classworlds under Apache License, Version 2.0
+  Plexus Common Utilities under Apache License, Version 2.0
+  Plexus Interpolation API under Apache License, Version 2.0
+  Plexus Security Dispatcher Component under Apache License, Version 2.0
+  SLF4J API Module under MIT License
+  solon-loader under The Apache Software License, Version 2.0
+  solon-maven-plugin under The Apache Software License, Version 2.0
+

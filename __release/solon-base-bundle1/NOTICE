@@ -1,0 +1,137 @@
+Copyright 2017-2024 noear.org and authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes:
+  aio-core under The Apache License, Version 2.0
+  aio-pro under The Apache License, Version 2.0
+  AOP alliance under Public Domain
+  Apache Commons IO under Apache-2.0
+  Apache Commons Lang under Apache License, Version 2.0
+  Apache Maven Archiver under Apache-2.0
+  Apache Maven Common Artifact Filters under Apache License, Version 2.0
+  Apache Maven Shared Utils under Apache License, Version 2.0
+  asm under BSD-3-Clause
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Byte Buddy agent under Apache License, Version 2.0
+  Data Core under The Apache License, Version 2.0
+  Google Guice - Core Library under The Apache Software License, Version 2.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  HikariCP under The Apache Software License, Version 2.0
+  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
+  jansi under The Apache Software License, Version 2.0
+  Java Servlet API under CDDL + GPLv2 with classpath exception
+  JavaPoet under Apache 2.0
+  Javassist under MPL 1.1 or LGPL 2.1 or Apache License 2.0
+  javax.annotation API under CDDL + GPLv2 with classpath exception
+  javax.inject under The Apache Software License, Version 2.0
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  Kotlin Stdlib under The Apache License, Version 2.0
+  Kotlin Stdlib Common under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
+  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
+  Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  Maven Artifact under Apache-2.0
+  Maven Artifact Resolver API under Apache-2.0
+  Maven Artifact Resolver Implementation under Apache-2.0
+  Maven Artifact Resolver Named Locks under Apache-2.0
+  Maven Artifact Resolver Provider under Apache-2.0
+  Maven Artifact Resolver SPI under Apache-2.0
+  Maven Artifact Resolver Utilities under Apache-2.0
+  Maven Builder Support under Apache-2.0
+  Maven Core under Apache-2.0
+  Maven Model under Apache-2.0
+  Maven Model Builder under Apache-2.0
+  Maven Plugin API under Apache-2.0
+  Maven Plugin Tools Java Annotations under Apache-2.0
+  Maven Repository Metadata Model under Apache-2.0
+  Maven Settings under Apache-2.0
+  Maven Settings Builder under Apache-2.0
+  mockito-core under The MIT License
+  mockito-junit-jupiter under The MIT License
+  Objenesis under Apache License, Version 2.0
+  okhttp under The Apache Software License, Version 2.0
+  OkHttps under The Apache License, Version 2.0
+  OkHttps Stomp under The Apache License, Version 2.0
+  okio under The Apache Software License, Version 2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.eclipse.sisu.inject under Eclipse Public License, Version 1.0
+  org.eclipse.sisu.plexus under Eclipse Public License, Version 1.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
+  Plexus :: Component Annotations under Apache License, Version 2.0
+  Plexus Cipher: encryption/decryption Component under Apache License, Version 2.0
+  Plexus Classworlds under Apache License, Version 2.0
+  Plexus Common Utilities under Apache License, Version 2.0
+  Plexus Interpolation API under Apache License, Version 2.0
+  Plexus Security Dispatcher Component under Apache License, Version 2.0
+  reactive-streams under MIT-0
+  SLF4J API Module under MIT License
+  smart-http-common under The Apache License, Version 2.0
+  smart-http-server under The Apache License, Version 2.0
+  snack3 under The Apache Software License, Version 2.0
+  SnakeYAML under Apache License, Version 2.0
+  socketd under The Apache Software License, Version 2.0
+  solon under The Apache Software License, Version 2.0
+  solon-api under The Apache Software License, Version 2.0
+  solon-base-bundle1 under The Apache Software License, Version 2.0
+  solon-lib under The Apache Software License, Version 2.0
+  solon-loader under The Apache Software License, Version 2.0
+  solon-maven-plugin under The Apache Software License, Version 2.0
+  solon-springboot-starter under The Apache Software License, Version 2.0
+  solon-test under The Apache Software License, Version 2.0
+  solon.aot under The Apache Software License, Version 2.0
+  solon.auth under The Apache Software License, Version 2.0
+  solon.banner under The Apache Software License, Version 2.0
+  solon.boot under The Apache Software License, Version 2.0
+  solon.boot.smarthttp under The Apache Software License, Version 2.0
+  solon.config.yaml under The Apache Software License, Version 2.0
+  solon.data under The Apache Software License, Version 2.0
+  solon.hotplug under The Apache Software License, Version 2.0
+  solon.i18n under The Apache Software License, Version 2.0
+  solon.logging under The Apache Software License, Version 2.0
+  solon.logging.logback under The Apache Software License, Version 2.0
+  solon.mvc under The Apache Software License, Version 2.0
+  solon.net under The Apache Software License, Version 2.0
+  solon.net.httputils under The Apache Software License, Version 2.0
+  solon.net.stomp under The Apache Software License, Version 2.0
+  solon.proxy under The Apache Software License, Version 2.0
+  solon.rx under The Apache Software License, Version 2.0
+  solon.security.auth under The Apache Software License, Version 2.0
+  solon.security.validation under The Apache Software License, Version 2.0
+  solon.security.vault under The Apache Software License, Version 2.0
+  solon.serialization under The Apache Software License, Version 2.0
+  solon.serialization.snack3 under The Apache Software License, Version 2.0
+  solon.test under The Apache Software License, Version 2.0
+  solon.validation under The Apache Software License, Version 2.0
+  solon.vault under The Apache Software License, Version 2.0
+  solon.web.cors under The Apache Software License, Version 2.0
+  solon.web.servlet under The Apache Software License, Version 2.0
+  solon.web.staticfiles under The Apache Software License, Version 2.0
+  Spring AOP under Apache License, Version 2.0
+  Spring Beans under Apache License, Version 2.0
+  Spring Boot under Apache License, Version 2.0
+  Spring Boot AutoConfigure under Apache License, Version 2.0
+  Spring Commons Logging Bridge under Apache License, Version 2.0
+  Spring Context under Apache License, Version 2.0
+  Spring Core under Apache License, Version 2.0
+  Spring Expression Language (SpEL) under Apache License, Version 2.0
+  Spring Web under Apache License, Version 2.0
+  Spring Web MVC under Apache License, Version 2.0
+
