@@ -729,16 +729,18 @@ public abstract class BeanContainer {
             }
         }
 
-        //按类型注册
+        //按实例类型注册
         putWrap(bw.rawClz(), bw);
         putWrap(bw.rawClz().getName(), bw);
+        beanRegisterSup0(bw.rawClz(), bw);
+
         if (bw.rawClz().equals(bw.clz()) == false) {
+            //按返回类型注册
             putWrap(bw.clz(), bw);
             putWrap(bw.clz().getName(), bw);
+            beanRegisterSup0(bw.clz(), bw);
         }
 
-        //尝试Bean的基类注册
-        beanRegisterSup0(bw);
 
         //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
@@ -749,16 +751,16 @@ public abstract class BeanContainer {
     /**
      * 尝试Bean的基类注册
      */
-    protected void beanRegisterSup0(BeanWrap bw) {
+    protected void beanRegisterSup0(Class<?> clz, BeanWrap bw) {
         //如果有父级接口，则建立关系映射
-        Class<?>[] list = bw.rawClz().getInterfaces();
+        Class<?>[] list = clz.getInterfaces();
         for (Class<?> c : list) {
             if (c.getName().startsWith("java.") == false) {
                 putWrap(c, bw);
             }
         }
 
-        Type[] list2 = bw.rawClz().getGenericInterfaces(); //有可能跟 getInterfaces() 一样
+        Type[] list2 = clz.getGenericInterfaces(); //有可能跟 getInterfaces() 一样
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 putWrap(t.getTypeName(), bw);
