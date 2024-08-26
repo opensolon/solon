@@ -58,13 +58,6 @@
             <artifactId>solon.logging.simple</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>luffy.executor.s.ruby</artifactId>
-            <version>${luffy.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>
