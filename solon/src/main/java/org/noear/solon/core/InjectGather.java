@@ -29,7 +29,7 @@ import java.util.List;
  * @author noear
  * @since 1.0
  * */
-public class InjectGather implements Runnable {
+public class InjectGather implements Runnable, Comparable<InjectGather> {
     //变量
     private List<VarHolder> vars;
     //变量数量
@@ -156,6 +156,17 @@ public class InjectGather implements Runnable {
             }
         } finally {
             Utils.locker().unlock();
+        }
+    }
+
+    @Override
+    public int compareTo(InjectGather o) {
+        if (this.index == o.index) {
+            return 0;
+        } else if (this.index < o.index) { //越小越前
+            return -1;
+        } else {
+            return 1;
         }
     }
 }

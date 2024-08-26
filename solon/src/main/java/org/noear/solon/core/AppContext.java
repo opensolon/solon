@@ -1096,7 +1096,7 @@ public class AppContext extends BeanContainer {
                 IndexUtil.buildGatherIndex(gather, gatherList);
             }
 
-            gatherList.sort(Comparator.comparingInt(g1 -> g1.index));
+            Collections.sort(gatherList);
             for (InjectGather g1 : gatherList) {
                 g1.check();
             }
