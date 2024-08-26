@@ -53,9 +53,14 @@ public @interface Component {
     boolean typed() default false;
 
     /**
-     * 排序（只对部分类型有效）
+     * 排序（产生之后的同类组件顺序）
      */
     int index() default 0;
+
+    /**
+     * 优先（产生之前的运行优先级）
+     */
+    int priority() default 0;
 
     /**
      * 要注册的（能力接口）

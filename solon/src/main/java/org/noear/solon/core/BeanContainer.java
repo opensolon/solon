@@ -1027,8 +1027,18 @@ public abstract class BeanContainer {
 
     /**
      * 添加生命周期 bean
+     *
+     * @param index 顺序
      */
     public abstract void lifecycle(int index, Lifecycle lifecycle);
+
+    /**
+     * 添加生命周期 bean
+     *
+     * @param index    顺序
+     * @param priority 优先级（此处，相当于二级顺序）
+     */
+    public abstract void lifecycle(int index, int priority, Lifecycle lifecycle);
 
     //////////////////////////
     //

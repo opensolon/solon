@@ -697,7 +697,7 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(mc)) {
-            lifecycle(LifecycleIndex.METHOD_CONDITION_IF_MISSING, () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
+            lifecycle(LifecycleIndex.METHOD_CONDITION_IF_MISSING, ma.priority(), () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryBuildBeanOfMethod0(bw, m, ma, mc);
         }
@@ -969,7 +969,7 @@ public class AppContext extends BeanContainer {
      */
     @Deprecated
     public void lifecycle(LifecycleBean lifecycle) {
-        lifecycle(0, (Lifecycle)lifecycle);
+        lifecycle(0, (Lifecycle) lifecycle);
     }
 
     /**
@@ -979,7 +979,7 @@ public class AppContext extends BeanContainer {
      */
     @Deprecated
     public void lifecycle(int index, LifecycleBean lifecycle) {
-        lifecycle(index, (Lifecycle)lifecycle);
+        lifecycle(index, (Lifecycle) lifecycle);
     }
 
     /**
@@ -992,10 +992,23 @@ public class AppContext extends BeanContainer {
 
     /**
      * 添加生命周期 bean
+     *
+     * @param index 顺序
      */
     @Override
     public void lifecycle(int index, Lifecycle lifecycle) {
-        lifecycleBeans.add(new RankEntity<>(lifecycle, index));
+        lifecycle(index, 0, lifecycle);
+    }
+
+    /**
+     * 添加生命周期 bean
+     *
+     * @param index    顺序
+     * @param priority 优先级（此处，相当于二级顺序）
+     */
+    @Override
+    public void lifecycle(int index, int priority, Lifecycle lifecycle) {
+        lifecycleBeans.add(new RankEntity<>(lifecycle, index, priority));
 
         if (started) {
             //如果已启动，则执行启动函数

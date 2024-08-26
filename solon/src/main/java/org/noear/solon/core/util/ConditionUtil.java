@@ -40,6 +40,8 @@ public class ConditionUtil {
 
     /**
      * 是否有 onMissingBean 条件
+     *
+     * @since 2.9
      */
     public static boolean ifMissingBean(Condition anno) {
         if (anno == null) {
@@ -56,6 +58,8 @@ public class ConditionUtil {
 
     /**
      * 是否有 OnBean 条件
+     *
+     * @since 2.9
      */
     public static boolean ifBean(Condition anno) {
         if (anno == null) {

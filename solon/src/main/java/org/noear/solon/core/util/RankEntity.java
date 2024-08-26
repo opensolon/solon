@@ -23,13 +23,28 @@ import java.util.Objects;
  * @author noear
  * @since 1.6
  */
-public class RankEntity<T> {
+public class RankEntity<T> implements Comparable<RankEntity<T>> {
+    /**
+     * 目标
+     */
     public final T target;
+    /**
+     * 顺序
+     */
     public final int index;
+    /**
+     * 优先级
+     */
+    public final int priority;
 
     public RankEntity(T t, int i) {
+        this(t, i, 0);
+    }
+
+    public RankEntity(T t, int i, int p) {
         target = t;
         index = i;
+        priority = p;
     }
 
     @Override
@@ -43,5 +58,25 @@ public class RankEntity<T> {
     @Override
     public int hashCode() {
         return Objects.hash(target);
+    }
+
+    /**
+     * @since 2.9
+     */
+    @Override
+    public int compareTo(RankEntity<T> o) {
+        if (this.index == o.index) {
+            if (this.priority == o.priority) {
+                return 0;
+            } else if (this.priority < o.priority) {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else if (this.index < o.index) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }
