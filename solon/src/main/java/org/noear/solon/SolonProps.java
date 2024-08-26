@@ -417,7 +417,7 @@ public final class SolonProps extends Props {
         if (plugs.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
-            plugs.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
+            Collections.sort(plugs);
         }
     }
 

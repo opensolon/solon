@@ -30,7 +30,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.0
  * */
-public class PluginEntity {
+public class PluginEntity implements Comparable<PluginEntity> {
     /**
      * 类名（全路径）
      */
@@ -175,5 +175,16 @@ public class PluginEntity {
                 "priority=" + priority +
                 ", className='" + className + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(PluginEntity o) {
+        if (this.priority == o.priority) {
+            return 0;
+        } else if (this.priority > o.priority) { //越大越优
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }
