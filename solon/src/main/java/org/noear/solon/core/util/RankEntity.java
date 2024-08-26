@@ -29,11 +29,11 @@ public class RankEntity<T> implements Comparable<RankEntity<T>> {
      */
     public final T target;
     /**
-     * 顺序
+     * 顺序（越小越前）
      */
     public final int index;
     /**
-     * 优先级
+     * 优先级（越大越优）
      */
     public final int priority;
 
@@ -68,12 +68,12 @@ public class RankEntity<T> implements Comparable<RankEntity<T>> {
         if (this.index == o.index) {
             if (this.priority == o.priority) {
                 return 0;
-            } else if (this.priority < o.priority) {
+            } else if (this.priority > o.priority) { //越大越优
                 return -1;
             } else {
                 return 1;
             }
-        } else if (this.index < o.index) {
+        } else if (this.index < o.index) { //越小越前
             return -1;
         } else {
             return 1;
