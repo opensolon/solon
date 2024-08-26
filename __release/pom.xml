@@ -30,10 +30,6 @@
         <module>solon-base-bundle5</module>
         <module>solon-base-bundle6</module>
 
-<!--        <module>solon-cloud-bundle1</module>-->
-<!--        <module>solon-cloud-bundle2</module>-->
-<!--        <module>solon-cloud-bundle3</module>-->
-
         <module>solon-shortcuts-bundle</module>
     </modules>
 </project>

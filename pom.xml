@@ -23,14 +23,6 @@
         <module>__hatch</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -41,7 +33,6 @@
                     <generateChildNotices>false</generateChildNotices>
                     <noticeTemplate>${project.basedir}/NOTICE.template</noticeTemplate>
                     <licenseMapping>
-                        <param>${project.basedir}/NOTICE-license-mappings.xml</param>
                         <param>https://source.jasig.org/licenses/license-mappings.xml</param>
                     </licenseMapping>
                 </configuration>
