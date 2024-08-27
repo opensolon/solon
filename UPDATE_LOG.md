@@ -23,8 +23,9 @@
 
 ### 2.9.2
 * 添加 NOTICE
-* 添加 @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
-* 优化 beanRegister 注册处理（2.9.0 出现了点不兼容）
+* 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
+* 添加 solon.cloud 的分布式注解开关
+* 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
 
 ### 2.9.1
 * 新增 solon.boot.vertx 插件，支持 cloud gateway 开发与 web 开发
