@@ -1,6 +1,8 @@
 package features;
 
+import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.net.SocketAddress;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
@@ -107,6 +109,11 @@ public class ExContextEmpty implements ExContext {
     @Override
     public Set<Cookie> rawCookies() {
         return Collections.emptySet();
+    }
+
+    @Override
+    public Future<Buffer> rawBody() {
+        return null;
     }
 
     @Override

@@ -15,7 +15,9 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
+import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SocketAddress;
@@ -237,6 +239,14 @@ public class ExContextImpl implements ExContext {
      */
     public Set<Cookie> rawCookies() {
         return rawRequest.cookies();
+    }
+
+    /**
+     * 获取原始主体
+     */
+    @Override
+    public Future<Buffer> rawBody() {
+        return rawRequest.body();
     }
 
 

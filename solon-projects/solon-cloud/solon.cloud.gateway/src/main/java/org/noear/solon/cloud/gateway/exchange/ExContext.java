@@ -15,7 +15,9 @@
  */
 package org.noear.solon.cloud.gateway.exchange;
 
+import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.net.SocketAddress;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
@@ -123,6 +125,11 @@ public interface ExContext {
      * 获取原始所有 cookie
      */
     Set<Cookie> rawCookies();
+
+    /**
+     * 获取原始主体
+     */
+    Future<Buffer> rawBody();
 
 
     ////////////////////////////////////////////////////

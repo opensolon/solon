@@ -1,4 +1,1 @@
 server.port: 8080
-
-solon.plugin.exclude:
-  - "org.noear.solon.cloud.gateway.integration.XPluginImpl"

@@ -24,7 +24,10 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
+import org.noear.solon.cloud.gateway.exchange.ExBody;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableEmitter;
 import org.noear.solon.core.LoadBalance;
@@ -76,15 +79,16 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
                 req1.putHeader(kv.getKey(), kv.getValues());
             }
 
+            ExBody exBody = ctx.newRequest().getBody();
+
             return Completable.create(emitter -> {
-                //异步 执行
                 //同步 body（流复制）
-                if ("GET".equals(ctx.newRequest().getMethod())) {
-                    req1.send(ar -> {
-                        callbackHandle(ctx, ar, emitter);
+                if (exBody instanceof ExBodyOfBuffer) {
+                    req1.sendBuffer(((ExBodyOfBuffer) exBody).getBuffer(), ar1 -> {
+                        callbackHandle(ctx, ar1, emitter);
                     });
                 } else {
-                    req1.sendStream(ctx.newRequest().getBody(), ar1 -> {
+                    req1.sendStream(((ExBodyOfStream) exBody).getStream(), ar1 -> {
                         callbackHandle(ctx, ar1, emitter);
                     });
                 }

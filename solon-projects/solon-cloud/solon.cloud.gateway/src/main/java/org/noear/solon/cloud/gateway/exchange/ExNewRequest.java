@@ -18,6 +18,8 @@ package org.noear.solon.cloud.gateway.exchange;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.streams.ReadStream;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.core.util.KeyValues;
 
 import java.util.LinkedHashMap;
@@ -36,7 +38,7 @@ public class ExNewRequest {
     private String queryString;
     private String path;
     private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
-    private ReadStream<Buffer> body;
+    private ExBody body;
 
     /**
      * 配置方法
@@ -101,12 +103,22 @@ public class ExNewRequest {
     }
 
     /**
-     * 配置主体
+     * 配置主体（方便用户修改）
+     *
+     * @param body 主体数据
+     */
+    public ExNewRequest body(Buffer body) {
+        this.body = new ExBodyOfBuffer(body);
+        return this;
+    }
+
+    /**
+     * 配置主体（实现流式转发）
      *
      * @param body 主体数据
      */
     public ExNewRequest body(ReadStream<Buffer> body) {
-        this.body = body;
+        this.body = new ExBodyOfStream(body);
         return this;
     }
 
@@ -154,7 +166,7 @@ public class ExNewRequest {
     /**
      * 获取主体
      */
-    public ReadStream<Buffer> getBody() {
+    public ExBody getBody() {
         return body;
     }
 }
