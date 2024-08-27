@@ -25,6 +25,7 @@
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
 * 添加 solon.cloud 的分布式注解开关
+* 优化 solon.cloud.gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
 
 ### 2.9.1
