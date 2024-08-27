@@ -34,14 +34,79 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudClient {
-    public static CloudLoadBalanceFactory loadBalance(){
+    private static boolean enableConfig = true;
+    private static boolean enableEvent = true;
+    private static boolean enableBreaker = true;
+    private static boolean enableJob = true;
+
+    /**
+     * 是否启用 @CloudConfig 注解
+     */
+    public static boolean enableConfig() {
+        return enableConfig;
+    }
+
+    /**
+     * 是否启用 @CloudEvent 注解
+     */
+    public static boolean enableEvent() {
+        return enableEvent;
+    }
+
+    /**
+     * 是否启用 @CloudBreaker 注解
+     */
+    public static boolean enableBreaker() {
+        return enableBreaker;
+    }
+
+    /**
+     * 是否启用 @CloudJob 注解
+     */
+    public static boolean enableJob() {
+        return enableJob;
+    }
+
+    /**
+     * 配置：是否启用 @CloudConfig 注解
+     */
+    public static void enableConfig(boolean enable) {
+        enableConfig = enable;
+    }
+
+    /**
+     * 配置：是否启用 @CloudEvent 注解
+     */
+    public static void enableEvent(boolean enable) {
+        enableEvent = enable;
+    }
+
+    /**
+     * 配置：是否启用 @CloudBreaker 注解
+     */
+    public static void enableBreaker(boolean enable) {
+        enableBreaker = enable;
+    }
+
+    /**
+     * 配置：是否启用 @CloudJob 注解
+     */
+    public static void enableJob(boolean enable) {
+        enableJob = enable;
+    }
+
+
+    /**
+     * 获取 负载均衡工厂
+     */
+    public static CloudLoadBalanceFactory loadBalance() {
         return CloudManager.loadBalance();
     }
 
     /**
      * 获取 云端断路器服务
-     * */
-    public static CloudBreakerService breaker(){
+     */
+    public static CloudBreakerService breaker() {
         return CloudManager.breakerService();
     }
 
@@ -79,7 +144,7 @@ public class CloudClient {
 
     /**
      * 云端配置服务，加载默认配置
-     * */
+     */
     public static void configLoad(String groupKeySet) {
         if (CloudClient.config() == null) {
             return;
@@ -147,67 +212,71 @@ public class CloudClient {
 
     /**
      * 获取 云端锁服务
-     * */
-    public static CloudLockService lock(){
+     */
+    public static CloudLockService lock() {
         return CloudManager.lockService();
     }
 
     /**
      * 获取 云端日志服务
-     * */
-    public static CloudLogService log(){
+     */
+    public static CloudLogService log() {
         return CloudManager.logService();
     }
 
     /**
      * 获取 云端链路跟踪服务
-     * */
-    public static CloudTraceService trace() { return CloudManager.traceService();}
+     */
+    public static CloudTraceService trace() {
+        return CloudManager.traceService();
+    }
 
     /**
      * 获取 云端度量服务
-     * */
-    public static CloudMetricService metric() { return CloudManager.metricService();}
+     */
+    public static CloudMetricService metric() {
+        return CloudManager.metricService();
+    }
 
     /**
      * 获取 云端名单列表服务
-     * */
-    public static CloudListService list(){
+     */
+    public static CloudListService list() {
         return CloudManager.listService();
     }
 
     /**
      * 获取 云端文件服务
-     * */
-    public static CloudFileService file(){
+     */
+    public static CloudFileService file() {
         return CloudManager.fileService();
     }
 
     /**
      * 获取 云端国际化服务
-     * */
-    public static CloudI18nService i18n(){
+     */
+    public static CloudI18nService i18n() {
         return CloudManager.i18nService();
     }
 
     /**
      * 获取 云端ID服务
-     * */
-    public static CloudIdService idService(String group, String service){
+     */
+    public static CloudIdService idService(String group, String service) {
         return CloudManager.idServiceFactory().create(group, service);
     }
 
     /**
      * 获取 云端ID服务
-     * */
-    public static CloudIdService id(){
+     */
+    public static CloudIdService id() {
         return CloudManager.idServiceDef();
     }
 
     /**
      * 获取 云端Job服务
-     * */
-    public static CloudJobService job(){
+     */
+    public static CloudJobService job() {
         return CloudManager.jobService();
     }
 }

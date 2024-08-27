@@ -49,15 +49,23 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
-        context.beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+        if(CloudClient.enableConfig()) {
+            context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
+            context.beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+        }
 
-        context.beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+        if(CloudClient.enableEvent()) {
+            context.beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+        }
 
-        context.beanInterceptorAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+        if(CloudClient.enableBreaker()) {
+            context.beanInterceptorAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+        }
 
-        context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
-        context.beanBuilderAdd(CloudJob.class, CloudJobBeanBuilder.getInstance());
+        if(CloudClient.enableJob()) {
+            context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
+            context.beanBuilderAdd(CloudJob.class, CloudJobBeanBuilder.getInstance());
+        }
 
         //尝试注册本地发现服务
         LocalDiscoveryResolver.register("");
