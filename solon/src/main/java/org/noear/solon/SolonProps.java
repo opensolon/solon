@@ -238,9 +238,9 @@ public final class SolonProps extends Props {
 
     private void syncArgsToSys() {
         //1.同步所有属性
-        for(KeyValues<String> kv: this.args) {
+        for(Map.Entry<String,String> kv: this.args.entrySet()) {
             if (kv.getKey().contains(".")) {
-                System.setProperty(kv.getKey(), kv.getFirstValue());
+                System.setProperty(kv.getKey(), kv.getValue());
             }
         }
 
