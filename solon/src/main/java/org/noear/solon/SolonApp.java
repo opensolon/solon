@@ -392,10 +392,10 @@ public class SolonApp extends RouterWrapper {
         return _sourceLocation;
     }
 
-    /**
-     * 插入插件
-     * @deprecated 2.0
-     */
+//    /**
+//     * 插入插件
+//     * @deprecated 2.0
+//     */
 //    @Deprecated
 //    public void plug(Plugin plugin) {
 //        PluginEntity p = new PluginEntity(plugin);

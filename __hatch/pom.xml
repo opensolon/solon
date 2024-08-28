@@ -21,9 +21,7 @@
         <module>solon.serialization.thrift</module>
         <module>solon.serialization.avro</module>
 
-        <module>solon.boot.reactor-netty</module>
-
-
+<!--        <module>solon.boot.reactor-netty</module>-->
 <!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
 <!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
     </modules>

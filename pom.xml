@@ -35,10 +35,6 @@
                     <licenseMapping>
                         <param>https://source.jasig.org/licenses/license-mappings.xml</param>
                     </licenseMapping>
-                    <excludedModules>
-                        <excludedModule>__release</excludedModule>
-                        <excludedModule>solon-framework</excludedModule>
-                    </excludedModules>
                 </configuration>
             </plugin>
         </plugins>

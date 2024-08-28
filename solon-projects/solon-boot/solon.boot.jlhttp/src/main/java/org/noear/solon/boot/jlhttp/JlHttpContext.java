@@ -24,11 +24,10 @@ import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +59,6 @@ public class JlHttpContext extends WebContextBase {
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
         _response = response;
-        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -196,18 +194,12 @@ public class JlHttpContext extends WebContextBase {
         return _paramMap;
     }
 
-    private Map<String, List<String>> _paramsMap;
-
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        paramsMapInit();
-
-        return _paramsMap;
-    }
-
-    private Map<String, List<String>> paramsMapInit() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
+    /**
+     * @since 2.7
+     * @since 2.9
+     */
+    private void paramsMapInit() {
+        if (_paramMap == null) {
             _paramMap = new NvMap();
 
             try {
@@ -216,41 +208,38 @@ public class JlHttpContext extends WebContextBase {
                 }
 
                 for (String[] kv : _request.getParamsList()) {
-                    if (!_paramMap.containsKey(kv[0])) {
-                        _paramMap.put(kv[0], kv[1]);
-                    }
-
-                    List<String> list = _paramsMap.get(kv[0]);
-                    if (list == null) {
-                        list = new ArrayList<>();
-                        _paramsMap.put(kv[0], list);
-                    }
-
-                    list.add(kv[1]);
+                    _paramMap.add(kv[0], kv[1]);
                 }
             } catch (Exception e) {
                 throw MultipartUtil.status4xx(this, e);
             }
         }
-
-        return _paramsMap;
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
-
-            return _filesMap;
-        } else {
-            return Collections.emptyMap();
         }
+
+        return _filesMap;
     }
 
     @Override
     public NvMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new NvMap(_request.getHeaders().getParams("Cookie"));
+            _cookieMap = new NvMap();
+
+            String tmp = headerOrDefault(Constants.HEADER_COOKIE, "");
+            String[] ss = tmp.split(";");
+            for (String s : ss) {
+                String[] kv = s.split("=");
+                if (kv.length > 1) {
+                    _cookieMap.add(kv[0].trim(), kv[1].trim());
+                } else {
+                    _cookieMap.add(kv[0].trim(), "");
+                }
+            }
         }
 
         return _cookieMap;
@@ -268,7 +257,7 @@ public class JlHttpContext extends WebContextBase {
 
             if (headers != null) {
                 for (HTTPServer.Header h : headers) {
-                    _headerMap.put(h.getName(), h.getValue());
+                    _headerMap.add(h.getName(), h.getValue());
                 }
             }
         }
@@ -278,31 +267,6 @@ public class JlHttpContext extends WebContextBase {
 
     private NvMap _headerMap;
 
-
-
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (_headersMap == null) {
-            _headersMap = new IgnoreCaseMap<>();
-
-            HTTPServer.Headers headers = _request.getHeaders();
-
-            if (headers != null) {
-                for (HTTPServer.Header h : headers) {
-                    List<String> values = _headersMap.get(h.getName());
-                    if (values == null) {
-                        values = new ArrayList<>();
-                        _headersMap.put(h.getName(), values);
-                    }
-
-                    values.add(h.getValue());
-                }
-            }
-
-        }
-        return _headersMap;
-    }
-    private Map<String, List<String>> _headersMap;
 
     //=================================
 

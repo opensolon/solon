@@ -21,6 +21,18 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 3.0
+
+
+|                  | 操作 |                  |
+|------------------|----|------------------|
+| ctx.filesMap()   | 修改 | ctx.fileMap()    |
+| ctx.files(name)  | 修改 | ctx.fileValues() |
+| ctx.paramsMap()  | 删除 |                  |
+| ctx.headersMap() | 删除   |                  |
+| NvMap:Map        | | :Iterable<KeyValues<T>>                |
+
+
 ### 2.9.2
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）

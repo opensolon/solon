@@ -119,7 +119,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                         } else if (InputStream.class.equals(pt)) {
                             tv = ctx.bodyAsStream();
                         } else if (Map.class.equals(pt) && bodyObj instanceof NvMap) {
-                            tv = bodyObj;
+                            tv = ((NvMap)bodyObj).toValueMap();
                         }
                     }
                 }
@@ -205,7 +205,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 tv = ctx.file(pn);
             } else if (UploadedFile[].class == pt) {
                 //2.如果是 UploadedFile[] 类型
-                tv = Utils.toArray(ctx.files(pn), new UploadedFile[]{});
+                tv = ctx.fileValues(pn);
             } else {
                 //$name 的变量，从attr里找
                 if (pn.startsWith("$")) {
@@ -241,7 +241,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      */
     protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
         ClassWrap clzW = ClassWrap.get(type);
-        Map<String, String> map = ctx.paramMap();
+        NvMap map = ctx.paramMap();
 
         return clzW.newBy(map::get, ctx);
     }

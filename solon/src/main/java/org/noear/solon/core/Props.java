@@ -19,6 +19,7 @@ import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.PropertySource;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -59,6 +60,13 @@ public class Props extends Properties {
     public Props(Map<String, String> data) {
         super();
         super.putAll(data);
+    }
+
+    public Props(Iterable<KeyValues<String>> data) {
+        super();
+        for (KeyValues<String> kv : data) {
+            super.put(kv.getKey(), kv.getFirstValue());
+        }
     }
 
     @Override
@@ -308,7 +316,7 @@ public class Props extends Properties {
     @Deprecated
     public NvMap getXmap(String keyStarts) {
         NvMap map = new NvMap();
-        doFind(keyStarts + ".", map::put);
+        doFind(keyStarts + ".", map::set);
         return map;
     }
 

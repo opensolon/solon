@@ -11,11 +11,10 @@ import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 主体工具类
@@ -27,7 +26,7 @@ public class BodyUtils {
     /**
      * 解码多部分主体
      */
-    public static void decodeMultipart(Context ctx, Map<String, List<UploadedFile>> filesMap) {
+    public static void decodeMultipart(Context ctx, MultiMap<UploadedFile> filesMap) {
         try {
             HttpMultipartCollection parts = new HttpMultipartCollection(ctx.contentType(), ctx.bodyAsStream());
 
@@ -38,7 +37,7 @@ public class BodyUtils {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramSet(name, part.getString());
+                    ctx.paramAdd(name, part.getString());
                 }
             }
         } catch (Exception e) {
@@ -46,12 +45,8 @@ public class BodyUtils {
         }
     }
 
-    private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, HttpMultipart part) throws IOException {
-        List<UploadedFile> list = filesMap.get(name);
-        if (list == null) {
-            list = new ArrayList<>();
-            filesMap.put(name, list);
-        }
+    private static void doBuildFiles(String name, MultiMap<UploadedFile> filesMap, HttpMultipart part) throws IOException {
+        KeyValues<UploadedFile> list = filesMap.holder(name);
 
         String contentType = part.getHeaders().get("Content-Type");
         String filename = part.getFilename();
@@ -64,7 +59,7 @@ public class BodyUtils {
         HttpPartFile partFile = new HttpPartFile(filename, new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
         UploadedFile f1 = new UploadedFile(partFile::delete, contentType, partFile.getSize(), partFile.getContent(), filename, extension);
 
-        list.add(f1);
+        list.addValue(f1);
     }
 
     private static boolean isField(HttpMultipart filePart) {
@@ -112,7 +107,7 @@ public class BodyUtils {
             if (idx > 0) {
                 String name = ServerProps.urlDecode(s1.substring(0, idx));
                 String value = ServerProps.urlDecode(s1.substring(idx + 1));
-                ctx.paramSet(name, value);
+                ctx.paramAdd(name, value);
             }
         }
     }

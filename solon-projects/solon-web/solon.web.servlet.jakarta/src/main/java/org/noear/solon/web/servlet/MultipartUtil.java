@@ -23,19 +23,19 @@ import org.noear.solon.core.handle.UploadedFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author noear
  * @since 1.2
+ * @since 2.9
  * */
 class MultipartUtil {
-    public static void buildParamsAndFiles(SolonServletContext ctx, Map<String, List<UploadedFile>> filesMap) {
+    public static void buildParamsAndFiles(SolonServletContext ctx, MultiMap<UploadedFile> filesMap) {
         try {
             HttpServletRequest request = (HttpServletRequest) ctx.request();
 
@@ -45,7 +45,7 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramSet(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                    ctx.paramAdd(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                 }
             }
         } catch (Exception e) {
@@ -65,12 +65,8 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, Part part) throws IOException {
-        List<UploadedFile> list = filesMap.get(name);
-        if (list == null) {
-            list = new ArrayList<>();
-            filesMap.put(name, list);
-        }
+    private static void doBuildFiles(String name, MultiMap<UploadedFile> filesMap, Part part) throws IOException {
+        KeyValues<UploadedFile> list = filesMap.holder(name);
 
         String contentType = part.getContentType();
         long contentSize = part.getSize();
@@ -84,7 +80,7 @@ class MultipartUtil {
 
         UploadedFile f1 = new UploadedFile(part::delete, contentType, contentSize, content, fileName, extension);
 
-        list.add(f1);
+        list.addValue(f1);
     }
 
     private static boolean isField(Part filePart) {

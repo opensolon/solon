@@ -18,6 +18,7 @@ package org.noear.solon.validation.annotation;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.validation.Validator;
 
 import java.io.IOException;
@@ -69,16 +70,16 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                 }
                 case headers: {
                     tmp.append("headers:");
-                    ctx.headerMap().forEach((k, v) -> {
-                        tmp.append(k).append("=").append(v).append(";");
-                    });
+                    for (KeyValues<String> kv : ctx.headerMap()) {
+                        tmp.append(kv.getKey()).append("=").append(kv.getValues()).append(";");
+                    }
                     break;
                 }
                 default: {
                     tmp.append("params:");
-                    ctx.paramMap().forEach((k, v) -> {
-                        tmp.append(k).append("=").append(v).append(";");
-                    });
+                    for (KeyValues<String> kv : ctx.paramMap()) {
+                        tmp.append(kv.getKey()).append("=").append(kv.getValues()).append(";");
+                    }
                     break;
                 }
             }

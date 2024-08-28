@@ -28,8 +28,8 @@ import org.noear.solon.boot.web.*;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,8 +73,6 @@ public class VxWebContext extends WebContextBase {
         this._request = request;
         this._requestBody = requestBody;
         this._response = request.response();
-
-        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -197,18 +195,12 @@ public class VxWebContext extends WebContextBase {
         return _paramMap;
     }
 
-    private Map<String, List<String>> _paramsMap;
-
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        paramsMapInit();
-
-        return _paramsMap;
-    }
-
+    /**
+     * @since 2.7
+     * @since 2.9
+     */
     private void paramsMapInit() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
+        if (_paramMap == null) {
             _paramMap = new NvMap();
 
             try {
@@ -220,14 +212,12 @@ public class VxWebContext extends WebContextBase {
                     loadMultipartFormData();
                 }
 
-                for (String name : _request.params().names()) {
-                    _paramMap.computeIfAbsent(name, k -> _request.params().get(k));
-                    _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.params().getAll(name));
+                for (Map.Entry<String, String> kv : _request.params()) {
+                    _paramMap.add(kv.getKey(), kv.getValue());
                 }
 
-                for (String name : _request.formAttributes().names()) {
-                    _paramMap.computeIfAbsent(name, k -> _request.formAttributes().get(k));
-                    _paramsMap.computeIfAbsent(name, k -> new ArrayList<>()).addAll(_request.formAttributes().getAll(name));
+                for (Map.Entry<String, String> kv : _request.formAttributes()) {
+                    _paramMap.add(kv.getKey(), kv.getValue());
                 }
             } catch (Exception e) {
                 throw BodyUtils.status4xx(this, e);
@@ -236,14 +226,12 @@ public class VxWebContext extends WebContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
-
-            return _filesMap;
-        } else {
-            return Collections.emptyMap();
         }
+
+        return _filesMap;
     }
 
     @Override
@@ -252,7 +240,7 @@ public class VxWebContext extends WebContextBase {
             _cookieMap = new NvMap();
 
             for (Cookie c1 : _request.cookies()) {
-                _cookieMap.put(c1.getName(), c1.getValue());
+                _cookieMap.add(c1.getName(), c1.getValue());
             }
         }
 
@@ -267,7 +255,7 @@ public class VxWebContext extends WebContextBase {
             _headerMap = new NvMap();
 
             for (Map.Entry<String, String> kv : _request.headers()) {
-                _headerMap.put(kv.getKey(), kv.getValue());
+                _headerMap.add(kv.getKey(), kv.getValue());
             }
         }
 
@@ -275,21 +263,6 @@ public class VxWebContext extends WebContextBase {
     }
 
     private NvMap _headerMap;
-
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (_headersMap == null) {
-            _headersMap = new IgnoreCaseMap<>();
-
-            for (String name : _request.headers().names()) {
-                _headersMap.put(name, new ArrayList<>(_request.headers().getAll(name)));
-            }
-        }
-
-        return _headersMap;
-    }
-
-    private Map<String, List<String>> _headersMap;
 
     @Override
     public Object response() {

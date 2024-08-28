@@ -21,12 +21,12 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -293,19 +293,17 @@ public abstract class WebContextBase extends Context {
     }
 
 
-    protected Map<String, List<UploadedFile>> _filesMap = null;
+    protected final MultiMap<UploadedFile> _filesMap = new MultiMap<>();
 
     /**
      * 删除所有临时文件
      */
     @Override
     public void filesDelete() throws IOException {
-        if (_filesMap != null) {
-            //批量删除临时文件
-            for (List<UploadedFile> files : _filesMap.values()) {
-                for (UploadedFile file : files) {
-                    file.delete();
-                }
+        //批量删除临时文件
+        for (KeyValues<UploadedFile> kv : _filesMap) {
+            for (UploadedFile file : kv.getValues()) {
+                file.delete();
             }
         }
     }

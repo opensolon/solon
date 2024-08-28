@@ -30,6 +30,16 @@ public class KeyValues<T> {
         this.key = key;
     }
 
+    private void initValues(boolean reset) {
+        if (values == null) {
+            values = new ArrayList<>();
+        } else {
+            if (reset) {
+                values.clear();
+            }
+        }
+    }
+
     /**
      * 获取键
      */
@@ -41,9 +51,7 @@ public class KeyValues<T> {
      * 添加值
      */
     public void addValue(T value) {
-        if (values == null) {
-            values = new ArrayList<>();
-        }
+        initValues(false);
         values.add(value);
     }
 
@@ -58,7 +66,11 @@ public class KeyValues<T> {
      * 替换值
      */
     public void setValues(T... values) {
-        this.values = Arrays.asList(values);
+        initValues(true);
+
+        for (int i = 0; i < values.length; i++) {
+            this.values.add(values[i]);
+        }
     }
 
     /**
@@ -77,5 +89,20 @@ public class KeyValues<T> {
         }
 
         return values.get(0);
+    }
+
+    /**
+     * 获取最后值
+     */
+    public T getLastValue() {
+        if (values == null) {
+            return null;
+        }
+
+        if (values.size() > 0) {
+            return values.get(values.size() - 1);
+        } else {
+            return null;
+        }
     }
 }

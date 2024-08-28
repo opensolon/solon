@@ -21,7 +21,7 @@ import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
-import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
@@ -110,8 +110,8 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
         NameValues nameValues = new NameValues();
-        for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
-            for (String val : kv.getValue()) {
+        for (KeyValues<String> kv : ctx.paramMap()) {
+            for (String val : kv.getValues()) {
                 nameValues.add(kv.getKey(), val);
             }
         }

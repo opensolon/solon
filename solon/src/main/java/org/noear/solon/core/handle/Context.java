@@ -133,7 +133,6 @@ public abstract class Context {
         return remoteIp();
     }
 
-
     /**
      * 获取远程IP
      */
@@ -446,19 +445,14 @@ public abstract class Context {
     /**
      * 获取参数数组
      */
-    public String[] paramValues(String name) {
-        List<String> list = paramsMap().get(name);
-        if (list == null) {
-            return null;
-        }
-
-        return list.toArray(new String[list.size()]);
+    public @Nullable String[] paramValues(String name) {
+        return paramMap().getArray(name);
     }
 
     /**
      * 获取参数
      * */
-    public String param(String name){
+    public @Nullable String param(String name){
         return paramMap().get(name);
     }
 
@@ -542,45 +536,59 @@ public abstract class Context {
 
     /**
      * 获取参数并转为Bean
+     *
+     * @deprecated 2.9
      * */
+    @Deprecated
     public <T> T paramAsBean(Class<T> type) throws Exception {
+        return paramsAsClass(type);
+    }
+
+    /**
+     * 获取参数并转为类
+     *
+     * @since 2.9
+     * */
+    public <T> T paramsAsClass(Class<T> type) throws Exception {
         //不如参数注入的强；不支持 body 转换;
         return ClassWrap.get(type).newBy(this::param, this);
     }
 
     /**
-     * 获取所有参数并转为map
+     * 设置参数（替换）
+     * */
+    public void paramSet(String name, String val) {
+        paramMap().set(name, val);
+    }
+
+    /**
+     * 添加参数（增加）
+     * */
+    public void paramAdd(String name, String val) {
+        paramMap().add(name, val);
+    }
+
+    /**
+     * 获取参数字典集合
      * */
     public abstract NvMap paramMap();
 
+
     /**
-     * 设置参数
+     * 获取所有参数并转为map
+     *
+     * @deprecated 2.9
      * */
-    public void paramSet(String name, String val) {
-        paramMap().put(name, val);
-        paramsAdd(name, val);
+    @Deprecated
+    public Map<String,List<String>> paramsMap(){
+        return paramMap().toValuesMap();
     }
 
-    /**
-     * 获取所有参数并转为Map
-     * */
-    public abstract Map<String, List<String>> paramsMap();
 
     /**
-     * 添加参数
+     * 获取上传文件字典集合
      * */
-    public void paramsAdd(String name, String val) {
-        if (paramsMap() != null) {
-            List<String> ary = paramsMap().get(name);
-            if (ary == null) {
-                ary = new ArrayList<>();
-                paramsMap().put(name, ary);
-            }
-            ary.add(val);
-        }
-    }
-
-    public abstract Map<String,List<UploadedFile>> filesMap() throws IOException;
+    public abstract MultiMap<UploadedFile> fileMap() throws IOException;
 
     /**
      * 删除所有上传文件
@@ -591,9 +599,20 @@ public abstract class Context {
      * 获取上传文件数组
      *
      * @param name 文件名
+     * @deprecated 2.9
      */
+    @Deprecated
     public List<UploadedFile> files(String name) throws IOException {
-        return filesMap().get(name);
+        return fileMap().getValues(name);
+    }
+
+    /**
+     * 获取上传文件数组
+     *
+     * @param name 文件名
+     */
+    public @Nullable UploadedFile[] fileValues(String name) throws IOException {
+        return fileMap().getArray(name, size -> new UploadedFile[size]);
     }
 
     /**
@@ -601,8 +620,8 @@ public abstract class Context {
      *
      * @param name 文件名
      */
-    public UploadedFile file(String name) throws IOException {
-        return Utils.firstOrNull(files(name));
+    public @Nullable UploadedFile file(String name) throws IOException {
+        return fileMap().get(name);
     }
 
     /**
@@ -610,7 +629,7 @@ public abstract class Context {
      *
      * @param name cookie名
      */
-    public String cookie(String name) {
+    public @Nullable String cookie(String name) {
         return cookieMap().get(name);
     }
 
@@ -637,7 +656,14 @@ public abstract class Context {
     }
 
     /**
-     * 获取 cookieMap
+     * 获取 cookie (多值)
+     * */
+    public @Nullable String[] cookieValues(String name) {
+        return cookieMap().getArray(name);
+    }
+
+    /**
+     * 获取小饼字典集合
      */
     public abstract NvMap cookieMap();
 
@@ -646,7 +672,7 @@ public abstract class Context {
      *
      * @param name header名
      */
-    public String header(String name) {
+    public @Nullable String header(String name) {
         return headerMap().get(name);
     }
 
@@ -672,28 +698,29 @@ public abstract class Context {
     }
 
     /**
-     * 获取 headerMap
-     */
-    public abstract NvMap headerMap();
-
-    /**
      * 获取 header (多值)
      *
      * @param name header名
      */
-    public String[] headerValues(String name) {
-        List<String> list = headersMap().get(name);
-        if(list == null){
-            return null;
-        }
-
-        return list.toArray(new String[list.size()]);
+    public @Nullable String[] headerValues(String name) {
+        return headerMap().getArray(name);
     }
 
     /**
-     * 获取 headersMap
+     * 获取头字典集合
      */
-    public abstract Map<String, List<String>> headersMap();
+    public abstract NvMap headerMap();
+
+    /**
+     * 获取所有头并转为map
+     *
+     * @deprecated 2.9
+     * */
+    @Deprecated
+    public Map<String,List<String>> headersMap(){
+        return headerMap().toValuesMap();
+    }
+
 
     protected SessionState sessionState;
 
@@ -731,7 +758,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Deprecated
-    public  <T> T session(String name, @NonNull T def) {
+    public @Nullable <T> T session(String name, @NonNull T def) {
         return sessionOrDefault(name, def);
     }
 
@@ -1069,6 +1096,8 @@ public abstract class Context {
 
     /**
      * 获取上下文特性
+     *
+     * @deprecated 2.5
      */
     @Deprecated
     public <T> T attr(String name, T def) {
@@ -1078,7 +1107,7 @@ public abstract class Context {
     /**
      * 获取上下文特性
      */
-    public <T> T attr(String name) {
+    public @Nullable <T> T attr(String name) {
         return (T) attrMap().get(name);
     }
 
@@ -1097,9 +1126,21 @@ public abstract class Context {
     }
 
     /**
-     * 清除上下文特性
+     * 清除所有上下文特性
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void attrClear() {
+        attrsClear();
+    }
+
+    /**
+     * 清除所有上下文特性
+     *
+     * @since 2.9
+     */
+    public void attrsClear() {
         attrMap().clear();
     }
 

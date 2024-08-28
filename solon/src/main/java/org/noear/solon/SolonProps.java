@@ -20,6 +20,7 @@ import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.JavaUtil;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -237,11 +238,11 @@ public final class SolonProps extends Props {
 
     private void syncArgsToSys() {
         //1.同步所有属性
-        this.args.forEach((k, v) -> {
-            if (k.contains(".")) {
-                System.setProperty(k, v);
+        for(KeyValues<String> kv: this.args) {
+            if (kv.getKey().contains(".")) {
+                System.setProperty(kv.getKey(), kv.getFirstValue());
             }
-        });
+        }
 
         //2.同步特定参数
         syncArgToSys("env");

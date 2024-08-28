@@ -23,14 +23,13 @@ import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JlHttpContext ctx, Map<String, List<UploadedFile>> filesMap) {
+    public static void buildParamsAndFiles(JlHttpContext ctx, MultiMap<UploadedFile> filesMap) {
         try {
             HTTPServer.Request request = (HTTPServer.Request) ctx.request();
             HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
@@ -42,7 +41,7 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramSet(name, part.getString());
+                    ctx.paramAdd(name, part.getString());
                 }
             }
         } catch (Exception e) {
@@ -62,13 +61,8 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(String name, Map<String, List<UploadedFile>> filesMap, HTTPServer.MultipartIterator.Part part) throws IOException {
-        List<UploadedFile> list = filesMap.get(name);
-        if (list == null) {
-            list = new ArrayList<>();
-            filesMap.put(name, list);
-        }
-
+    private static void doBuildFiles(String name, MultiMap<UploadedFile> filesMap, HTTPServer.MultipartIterator.Part part) throws IOException {
+        KeyValues<UploadedFile> list = filesMap.holder(name);
 
         String contentType = part.getHeaders().get("Content-Type");
         String filename = part.getFilename();
@@ -81,7 +75,7 @@ class MultipartUtil {
         HttpPartFile partFile = new HttpPartFile(filename, new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
         UploadedFile f1 = new UploadedFile(partFile::delete, contentType, partFile.getSize(), partFile.getContent(), filename, extension);
 
-        list.add(f1);
+        list.addValue(f1);
     }
 
     private static boolean isField(HTTPServer.MultipartIterator.Part filePart) {

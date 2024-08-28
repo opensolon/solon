@@ -36,7 +36,7 @@ import java.util.Map;
 public class AuthRolesTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
-        NvMap mapExt = new NvMap(map);
+        NvMap mapExt = NvMap.from(map);
 
         String nameStr = mapExt.get(AuthConstants.ATTR_name);
         String logicalStr = mapExt.get(AuthConstants.ATTR_logical);

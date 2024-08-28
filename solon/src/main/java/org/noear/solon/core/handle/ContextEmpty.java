@@ -16,7 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.NonNull;
 
 import java.io.File;
@@ -34,11 +34,11 @@ import java.util.zip.GZIPOutputStream;
  * @since 1.0
  * */
 public class ContextEmpty extends Context {
-    public static Context create(){
+    public static Context create() {
         return new ContextEmpty();
     }
 
-    public ContextEmpty(){
+    public ContextEmpty() {
         sessionState = new SessionStateEmpty();
     }
 
@@ -49,7 +49,7 @@ public class ContextEmpty extends Context {
         return request;
     }
 
-    public ContextEmpty request(Object request){
+    public ContextEmpty request(Object request) {
         this.request = request;
         return this;
     }
@@ -81,7 +81,9 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public String path() { return null;}
+    public String path() {
+        return null;
+    }
 
     @Override
     public boolean isSecure() {
@@ -119,74 +121,51 @@ public class ContextEmpty extends Context {
     }
 
     private NvMap paramMap = null;
+
     @Override
     public NvMap paramMap() {
-        if(paramMap == null){
+        if (paramMap == null) {
             paramMap = new NvMap();
         }
         return paramMap;
     }
 
-    Map<String, List<String>> paramsMap = null;
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        if(paramsMap == null){
-            paramsMap = new IgnoreCaseMap<>();
-        }
-        return paramsMap;
-    }
 
-    Map<String, List<UploadedFile>> filesMap = null;
+    MultiMap<UploadedFile> filesMap = null;
+
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (filesMap == null) {
-            filesMap = new LinkedHashMap<>();
+            filesMap = new MultiMap<>();
         }
 
         return filesMap;
     }
 
     @Override
-    public void filesDelete() throws IOException{
+    public void filesDelete() throws IOException {
 
     }
 
-
-    @Override
-    public String cookie(String key) {
-        return cookieMap().get(key);
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        return cookieMap().getOrDefault(key,def);
-    }
 
     NvMap cookieMap = null;
+
     @Override
     public NvMap cookieMap() {
-        if(cookieMap == null){
+        if (cookieMap == null) {
             cookieMap = new NvMap();
         }
         return cookieMap;
     }
 
     private NvMap headerMap = null;
+
     @Override
     public NvMap headerMap() {
-        if(headerMap == null){
+        if (headerMap == null) {
             headerMap = new NvMap();
         }
         return headerMap;
-    }
-
-    private Map<String, List<String>> headersMap;
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (headersMap == null) {
-            headersMap = new LinkedHashMap<>();
-        }
-        return headersMap;
     }
 
     @Override
@@ -298,12 +277,12 @@ public class ContextEmpty extends Context {
 
     @Override
     public void headerSet(String key, String val) {
-        headerMap().put(key,val);
+        headerMap().set(key, val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        headerMap().put(key,val);
+        headerMap().add(key, val);
     }
 
     @Override
@@ -323,7 +302,7 @@ public class ContextEmpty extends Context {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        cookieMap().put(key,val);
+        cookieMap().set(key, val);
     }
 
     @Override
@@ -332,6 +311,7 @@ public class ContextEmpty extends Context {
     }
 
     private int status = 200;
+
     @Override
     public int status() {
         return status;
@@ -343,7 +323,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void flush() throws IOException{
+    public void flush() throws IOException {
 
     }
 
@@ -358,7 +338,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable)  {
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
         throw new UnsupportedOperationException();
     }
 

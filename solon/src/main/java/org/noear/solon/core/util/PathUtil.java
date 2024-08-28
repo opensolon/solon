@@ -114,7 +114,7 @@ public class PathUtil {
                 pm = _pr.matcher(path2);
                 if (pm.find()) {
                     for (int i = 0, len = _pks.size(); i < len; i++) {
-                        _map.put(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                        _map.set(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                     }
                 }
             }

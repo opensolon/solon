@@ -107,7 +107,7 @@ public interface VarDescriptor {
         if (isRequiredHeader()) {
             return ctx.headerValues(getName());
         } else if (isRequiredCookie()) {
-            return new String[]{ctx.cookie(getName())};
+            return ctx.cookieValues(getName());
         } else {
             return ctx.paramValues(getName());
         }

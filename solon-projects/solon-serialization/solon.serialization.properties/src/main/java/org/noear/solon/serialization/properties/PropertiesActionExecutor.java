@@ -76,8 +76,8 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     public boolean matched(Context ctx, String ct) {
         if (allowGet && MethodType.GET.name.equals(ctx.method()) ||
                 (allowPostForm && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
-            for (Map.Entry<String, List<String>> kv : ctx.paramsMap().entrySet()) {
-                if (kv.getKey().indexOf('.') > 0 || kv.getKey().indexOf('[') > 0) {
+            for (String key : ctx.paramMap().keySet()) {
+                if (key.indexOf('.') > 0 || key.indexOf('[') > 0) {
                     return true;
                 }
             }

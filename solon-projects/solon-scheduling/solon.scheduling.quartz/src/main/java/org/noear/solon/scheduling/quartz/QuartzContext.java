@@ -44,7 +44,7 @@ public class QuartzContext {
 
         for (Map.Entry<String, Object> kv : jc.getJobDetail().getJobDataMap().entrySet()) {
             if (kv.getValue() != null) {
-                ctx.paramMap().put(kv.getKey(), kv.getValue().toString());
+                ctx.paramMap().add(kv.getKey(), kv.getValue().toString());
             }
         }
 

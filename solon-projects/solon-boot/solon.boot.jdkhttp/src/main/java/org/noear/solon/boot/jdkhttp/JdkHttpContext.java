@@ -24,8 +24,8 @@ import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +56,6 @@ public class JdkHttpContext extends WebContextBase {
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
-        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -195,18 +194,12 @@ public class JdkHttpContext extends WebContextBase {
         return _paramMap;
     }
 
-    private Map<String, List<String>> _paramsMap;
-
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        paramsMapInit();
-
-        return _paramsMap;
-    }
-
+    /**
+     * @since 2.7
+     * @since 2.9
+     */
     private void paramsMapInit() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
+        if (_paramMap == null) {
             _paramMap = new NvMap();
 
             try {
@@ -221,14 +214,12 @@ public class JdkHttpContext extends WebContextBase {
                     Object v = kv.getValue();
 
                     if (v instanceof List) {
-                        _paramsMap.put(k, (List<String>) v);
-                        _paramMap.put(k, ((List<String>) v).get(0));
+                        _paramMap.holder(k).setValues((List<String>) v);
                     } else {
                         List<String> list = new ArrayList<>();
                         list.add((String) v);
 
-                        _paramsMap.put(k, list);
-                        _paramMap.put(k, (String) v);
+                        _paramMap.holder(k).setValues(list);
                     }
                 }
             } catch (Exception e) {
@@ -238,14 +229,12 @@ public class JdkHttpContext extends WebContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
-
-            return _filesMap;
-        } else {
-            return Collections.emptyMap();
         }
+
+        return _filesMap;
     }
 
     @Override
@@ -258,9 +247,9 @@ public class JdkHttpContext extends WebContextBase {
             for (String s : ss) {
                 String[] kv = s.split("=");
                 if (kv.length > 1) {
-                    _cookieMap.put(kv[0].trim(), kv[1].trim());
+                    _cookieMap.add(kv[0].trim(), kv[1].trim());
                 } else {
-                    _cookieMap.put(kv[0].trim(), null);
+                    _cookieMap.add(kv[0].trim(), "");
                 }
             }
         }
@@ -273,38 +262,21 @@ public class JdkHttpContext extends WebContextBase {
     @Override
     public NvMap headerMap() {
         if (_headerMap == null) {
-            resolveHeaders();
+            _headerMap = new NvMap();
+
+            Headers headers = _exchange.getRequestHeaders();
+
+            if (headers != null) {
+                for (Map.Entry<String, List<String>> kv : headers.entrySet()) {
+                    _headerMap.holder(kv.getKey()).setValues(kv.getValue());
+                }
+            }
         }
 
         return _headerMap;
     }
 
     private NvMap _headerMap;
-
-    private void resolveHeaders(){
-        _headerMap = new NvMap();
-        _headersMap = new IgnoreCaseMap<>();
-
-        Headers headers = _exchange.getRequestHeaders();
-
-        if (headers != null) {
-            headers.forEach((k, l) -> {
-                if (l.size() > 0) {
-                    _headerMap.put(k, l.get(0));
-                }
-                _headersMap.put(k,l);
-            });
-        }
-    }
-
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (_headersMap == null) {
-            resolveHeaders();
-        }
-        return _headersMap;
-    }
-    private Map<String, List<String>> _headersMap;
 
     @Override
     public Object response() {

@@ -24,8 +24,8 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +45,7 @@ import java.util.*;
  *
  * @author noear
  * @since 1.2
+ * @since 2.9
  * */
 public class SolonServletContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(SolonServletContext.class);
@@ -59,7 +60,6 @@ public class SolonServletContext extends WebContextBase {
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
-        _filesMap = new HashMap<>();
 
         if (sessionState().replaceable()) {
             sessionState = new SolonServletSessionState(request);
@@ -186,18 +186,12 @@ public class SolonServletContext extends WebContextBase {
         return _paramMap;
     }
 
-    private Map<String, List<String>> _paramsMap;
-
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        paramsMapInit();
-
-        return _paramsMap;
-    }
-
-    private Map<String, List<String>> paramsMapInit() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
+    /**
+     * @since 2.7
+     * @since 2.9
+     */
+    private void paramsMapInit() {
+        if (_paramMap == null) {
             _paramMap = new NvMap();
 
             try {
@@ -212,26 +206,21 @@ public class SolonServletContext extends WebContextBase {
                 for (Map.Entry<String, String[]> kv : _request.getParameterMap().entrySet()) {
                     String name = ServerProps.urlDecode(kv.getKey());
 
-                    _paramsMap.put(name, Utils.asList(kv.getValue()));
-                    _paramMap.put(name, kv.getValue()[0]);
+                    _paramMap.holder(name).setValues(kv.getValue());
                 }
             } catch (Exception e) {
                 throw MultipartUtil.status4xx(this, e);
             }
         }
-
-        return _paramsMap;
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
-
-            return _filesMap;
-        } else {
-            return Collections.emptyMap();
         }
+
+        return _filesMap;
     }
 
     private NvMap _cookieMap;
@@ -245,7 +234,7 @@ public class SolonServletContext extends WebContextBase {
 
             if (_cookies != null) {
                 for (Cookie c : _cookies) {
-                    _cookieMap.put(c.getName(), c.getValue());
+                    _cookieMap.add(c.getName(), c.getValue());
                 }
             }
         }
@@ -261,8 +250,7 @@ public class SolonServletContext extends WebContextBase {
 
             while (headers.hasMoreElements()) {
                 String key = headers.nextElement();
-                String value = _request.getHeader(key);
-                _headerMap.put(key, value);
+                _headerMap.holder(key).setValues(Collections.list(_request.getHeaders(key)));
             }
         }
 
@@ -270,25 +258,6 @@ public class SolonServletContext extends WebContextBase {
     }
 
     private NvMap _headerMap;
-
-
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (_headersMap == null) {
-            _headersMap = new IgnoreCaseMap<>();
-
-            Enumeration<String> headers = _request.getHeaderNames();
-
-            while (headers.hasMoreElements()) {
-                String key = headers.nextElement();
-                _headersMap.put(key, Collections.list(_request.getHeaders(key)));
-            }
-        }
-        return _headersMap;
-    }
-
-    private Map<String, List<String>> _headersMap;
-
 
     //====================================
 

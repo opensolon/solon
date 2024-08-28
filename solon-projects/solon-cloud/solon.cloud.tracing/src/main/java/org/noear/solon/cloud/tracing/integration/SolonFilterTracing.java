@@ -30,6 +30,7 @@ import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -98,7 +99,9 @@ public class SolonFilterTracing implements Filter {
         spanBuilder.withTag("req.url", ctx.url());
 
         //获取上下文
-        SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
+        TextMapAdapter headerMapAdapter = new TextMapAdapter(ctx.headerMap().toValueMap());
+
+        SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, headerMapAdapter);
         if (spanContext != null) {
             //如果有，说明是从上传传导过来的
             spanBuilder = spanBuilder.asChildOf(spanContext);
@@ -107,7 +110,7 @@ public class SolonFilterTracing implements Filter {
         Span span = spanBuilder.start();
 
         //尝试注入
-        tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
+        tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, headerMapAdapter);
 
         //开始
         return span;

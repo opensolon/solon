@@ -21,8 +21,8 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +68,6 @@ public class SmHttpContext extends WebContextBase {
         _request = request;
         _response = response;
         _asyncFuture = future;
-
-        _filesMap = new HashMap<>();
     }
 
     private boolean _loadMultipartFormData = false;
@@ -186,18 +184,12 @@ public class SmHttpContext extends WebContextBase {
         return _paramMap;
     }
 
-    private Map<String, List<String>> _paramsMap;
-
-    @Override
-    public Map<String, List<String>> paramsMap() {
-        paramsMapInit();
-
-        return _paramsMap;
-    }
-
+    /**
+     * @since 2.7
+     * @since 2.9
+     */
     private void paramsMapInit() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
+        if (_paramMap == null) {
             _paramMap = new NvMap();
 
             try {
@@ -211,8 +203,7 @@ public class SmHttpContext extends WebContextBase {
 
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
                     String key = ServerProps.urlDecode(entry.getKey());
-                    _paramsMap.put(key, Utils.asList(entry.getValue()));
-                    _paramMap.put(key, entry.getValue()[0]);
+                    _paramMap.holder(key).setValues(entry.getValue());
                 }
             } catch (Exception e) {
                 throw BodyUtils.status4xx(this, e);
@@ -221,14 +212,12 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
-
-            return _filesMap;
-        } else {
-            return Collections.emptyMap();
         }
+
+        return _filesMap;
     }
 
     @Override
@@ -237,7 +226,7 @@ public class SmHttpContext extends WebContextBase {
             _cookieMap = new NvMap();
 
             for (Cookie c1 : _request.getCookies()) {
-                _cookieMap.put(c1.getName(), c1.getValue());
+                _cookieMap.add(c1.getName(), c1.getValue());
             }
         }
 
@@ -253,7 +242,7 @@ public class SmHttpContext extends WebContextBase {
             _headerMap = new NvMap();
 
             for (String k : _request.getHeaderNames()) {
-                _headerMap.put(k, _request.getHeader(k));
+                _headerMap.holder(k).setValues(new ArrayList<>(_request.getHeaders(k)));
             }
         }
 
@@ -261,20 +250,6 @@ public class SmHttpContext extends WebContextBase {
     }
 
     private NvMap _headerMap;
-
-    @Override
-    public Map<String, List<String>> headersMap() {
-        if (_headersMap == null) {
-            _headersMap = new IgnoreCaseMap<>();
-
-            for (String k : _request.getHeaderNames()) {
-                _headersMap.put(k, new ArrayList<>(_request.getHeaders(k)));
-            }
-        }
-
-        return _headersMap;
-    }
-    private Map<String, List<String>> _headersMap;
 
     //=================================
 

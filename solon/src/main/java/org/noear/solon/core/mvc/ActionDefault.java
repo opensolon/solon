@@ -351,7 +351,7 @@ public class ActionDefault extends HandlerAide implements Action {
             Matcher pm = pathKeysAnalyzer.matcher(c.pathNew());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                    c.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    c.paramAdd(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                 }
             }
         }

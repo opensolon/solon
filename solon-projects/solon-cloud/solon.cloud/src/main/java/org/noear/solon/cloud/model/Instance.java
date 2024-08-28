@@ -22,6 +22,7 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.util.KeyValues;
 
 import java.io.Serializable;
 import java.util.*;
@@ -155,11 +156,23 @@ public class Instance implements Serializable {
         return meta.get(name);
     }
 
-    public Instance metaPutAll(Map<String, String> map) {
-        if (map != null) {
-            meta.putAll(map);
+    public Instance metaPutAll(Map<String, String> data) {
+        if (data != null) {
+            meta.putAll(data);
 
-            protocol(map.get("protocol"));
+            protocol(meta.get("protocol"));
+        }
+
+        return this;
+    }
+
+    public Instance metaPutAll(Iterable<KeyValues<String>> data) {
+        if (data != null) {
+            for (KeyValues<String> kv : data) {
+                meta.put(kv.getKey(), kv.getFirstValue());
+            }
+
+            protocol(meta.get("protocol"));
         }
 
         return this;

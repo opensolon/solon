@@ -31,7 +31,7 @@ public class GatewayController {
 
         String rst = new Nami()
                 .url(url, fun)
-                .call(context.headerMap(), context.paramMap())
+                .call(context.headerMap().toValueMap(), context.paramMap().toValuesMap())
                 .getString();
 
         context.output(rst);
