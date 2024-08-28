@@ -59,7 +59,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
 
             if (Utils.isEmpty(traceId)) {
                 traceId = Utils.guid();
-                ctx.headerMap().set(HEADER_TRACE_ID_NAME(), traceId);
+                ctx.headerMap().put(HEADER_TRACE_ID_NAME(), traceId);
             }
 
             return traceId;
@@ -76,7 +76,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
             String fromId = ctx.header(HEADER_FROM_ID_NAME());
             if (Utils.isEmpty(fromId)) {
                 fromId = ctx.realIp();
-                ctx.headerMap().set(HEADER_FROM_ID_NAME(), fromId);
+                ctx.headerMap().put(HEADER_FROM_ID_NAME(), fromId);
             }
 
             return fromId;

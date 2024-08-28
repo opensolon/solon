@@ -293,7 +293,7 @@ public abstract class WebContextBase extends Context {
     }
 
 
-    protected final MultiMap<UploadedFile> _filesMap = new MultiMap<>();
+    protected final MultiMap<UploadedFile> _fileMap = new MultiMap<>();
 
     /**
      * 删除所有临时文件
@@ -301,7 +301,7 @@ public abstract class WebContextBase extends Context {
     @Override
     public void filesDelete() throws IOException {
         //批量删除临时文件
-        for (KeyValues<UploadedFile> kv : _filesMap) {
+        for (KeyValues<UploadedFile> kv : _fileMap) {
             for (UploadedFile file : kv.getValues()) {
                 file.delete();
             }

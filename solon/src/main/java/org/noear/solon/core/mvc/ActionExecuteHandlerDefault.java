@@ -15,15 +15,14 @@
  */
 package org.noear.solon.core.mvc;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.MultiMap;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -118,8 +117,8 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                             tv = ctx.bodyNew();
                         } else if (InputStream.class.equals(pt)) {
                             tv = ctx.bodyAsStream();
-                        } else if (Map.class.equals(pt) && bodyObj instanceof NvMap) {
-                            tv = ((NvMap)bodyObj).toValueMap();
+                        } else if (Map.class.equals(pt) && bodyObj instanceof MultiMap) {
+                            tv = ((MultiMap) bodyObj).toValueMap();
                         }
                     }
                 }
@@ -241,7 +240,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      */
     protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
         ClassWrap clzW = ClassWrap.get(type);
-        NvMap map = ctx.paramMap();
+        MultiMap<String> map = ctx.paramMap();
 
         return clzW.newBy(map::get, ctx);
     }

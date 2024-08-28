@@ -23,7 +23,6 @@ import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
 import org.slf4j.Logger;
@@ -69,7 +68,7 @@ public class JdkHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _filesMap);
+            BodyUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -185,10 +184,10 @@ public class JdkHttpContext extends WebContextBase {
         }
     }
 
-    private NvMap _paramMap;
+    private MultiMap<String> _paramMap;
 
     @Override
-    public NvMap paramMap() {
+    public MultiMap<String> paramMap() {
         paramsMapInit();
 
         return _paramMap;
@@ -200,7 +199,7 @@ public class JdkHttpContext extends WebContextBase {
      */
     private void paramsMapInit() {
         if (_paramMap == null) {
-            _paramMap = new NvMap();
+            _paramMap = new MultiMap<>();
 
             try {
                 if (autoMultipart()) {
@@ -234,13 +233,13 @@ public class JdkHttpContext extends WebContextBase {
             loadMultipartFormData();
         }
 
-        return _filesMap;
+        return _fileMap;
     }
 
     @Override
-    public NvMap cookieMap() {
+    public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new NvMap();
+            _cookieMap = new MultiMap<>();
 
             String tmp = headerOrDefault(Constants.HEADER_COOKIE, "");
             String[] ss = tmp.split(";");
@@ -257,12 +256,12 @@ public class JdkHttpContext extends WebContextBase {
         return _cookieMap;
     }
 
-    private NvMap _cookieMap;
+    private MultiMap<String> _cookieMap;
 
     @Override
-    public NvMap headerMap() {
+    public MultiMap<String> headerMap() {
         if (_headerMap == null) {
-            _headerMap = new NvMap();
+            _headerMap = new MultiMap<>();
 
             Headers headers = _exchange.getRequestHeaders();
 
@@ -276,7 +275,7 @@ public class JdkHttpContext extends WebContextBase {
         return _headerMap;
     }
 
-    private NvMap _headerMap;
+    private MultiMap<String> _headerMap;
 
     @Override
     public Object response() {

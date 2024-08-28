@@ -160,7 +160,7 @@ public class Param4Controller {
     @Get
     @Mapping("test2")
     public Map test2(Context ctx) throws IOException {
-        UserModel user = ctx.paramMap().getBean(UserModel.class);
+        UserModel user = ctx.paramsAsClass(UserModel.class);
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", user.getId());

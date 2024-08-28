@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.handle;
 
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.NonNull;
 
@@ -120,12 +119,12 @@ public class ContextEmpty extends Context {
         return null;
     }
 
-    private NvMap paramMap = null;
+    private MultiMap<String> paramMap = null;
 
     @Override
-    public NvMap paramMap() {
+    public MultiMap<String> paramMap() {
         if (paramMap == null) {
-            paramMap = new NvMap();
+            paramMap = new MultiMap<>();
         }
         return paramMap;
     }
@@ -148,22 +147,22 @@ public class ContextEmpty extends Context {
     }
 
 
-    NvMap cookieMap = null;
+    private MultiMap<String> cookieMap = null;
 
     @Override
-    public NvMap cookieMap() {
+    public MultiMap<String> cookieMap() {
         if (cookieMap == null) {
-            cookieMap = new NvMap();
+            cookieMap = new MultiMap<>();
         }
         return cookieMap;
     }
 
-    private NvMap headerMap = null;
+    private MultiMap<String> headerMap = null;
 
     @Override
-    public NvMap headerMap() {
+    public MultiMap<String> headerMap() {
         if (headerMap == null) {
-            headerMap = new NvMap();
+            headerMap = new MultiMap<>();
         }
         return headerMap;
     }
@@ -277,7 +276,7 @@ public class ContextEmpty extends Context {
 
     @Override
     public void headerSet(String key, String val) {
-        headerMap().set(key, val);
+        headerMap().put(key, val);
     }
 
     @Override
@@ -302,7 +301,7 @@ public class ContextEmpty extends Context {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        cookieMap().set(key, val);
+        cookieMap().put(key, val);
     }
 
     @Override

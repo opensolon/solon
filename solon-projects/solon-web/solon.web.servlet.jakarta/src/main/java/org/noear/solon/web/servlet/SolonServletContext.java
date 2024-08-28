@@ -21,7 +21,6 @@ import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.BodyUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
@@ -78,7 +77,7 @@ public class SolonServletContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            MultipartUtil.buildParamsAndFiles(this, _filesMap);
+            MultipartUtil.buildParamsAndFiles(this, _fileMap);
         }
     }
 
@@ -178,10 +177,10 @@ public class SolonServletContext extends WebContextBase {
     }
 
 
-    private NvMap _paramMap;
+    private MultiMap<String> _paramMap;
 
     @Override
-    public NvMap paramMap() {
+    public MultiMap<String> paramMap() {
         paramsMapInit();
 
         return _paramMap;
@@ -193,7 +192,7 @@ public class SolonServletContext extends WebContextBase {
      */
     private void paramsMapInit() {
         if (_paramMap == null) {
-            _paramMap = new NvMap();
+            _paramMap = new MultiMap<String>();
 
             try {
                 //编码窗体预处理
@@ -221,15 +220,15 @@ public class SolonServletContext extends WebContextBase {
             loadMultipartFormData();
         }
 
-        return _filesMap;
+        return _fileMap;
     }
 
-    private NvMap _cookieMap;
+    private MultiMap<String> _cookieMap;
 
     @Override
-    public NvMap cookieMap() {
+    public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new NvMap();
+            _cookieMap = new MultiMap<String>();
 
             Cookie[] _cookies = _request.getCookies();
 
@@ -244,9 +243,9 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
-    public NvMap headerMap() {
+    public MultiMap<String> headerMap() {
         if (_headerMap == null) {
-            _headerMap = new NvMap();
+            _headerMap = new MultiMap<String>();
             Enumeration<String> headers = _request.getHeaderNames();
 
             while (headers.hasMoreElements()) {
@@ -258,7 +257,7 @@ public class SolonServletContext extends WebContextBase {
         return _headerMap;
     }
 
-    private NvMap _headerMap;
+    private MultiMap<String> _headerMap;
 
     //====================================
 

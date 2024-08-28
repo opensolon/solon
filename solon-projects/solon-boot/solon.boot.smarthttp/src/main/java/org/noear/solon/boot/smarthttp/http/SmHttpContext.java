@@ -17,7 +17,6 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.*;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -81,7 +80,7 @@ public class SmHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _filesMap);
+            BodyUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -175,10 +174,10 @@ public class SmHttpContext extends WebContextBase {
         return _request.getInputStream();
     }
 
-    private NvMap _paramMap;
+    private MultiMap<String> _paramMap;
 
     @Override
-    public NvMap paramMap() {
+    public MultiMap<String> paramMap() {
         paramsMapInit();
 
         return _paramMap;
@@ -190,7 +189,7 @@ public class SmHttpContext extends WebContextBase {
      */
     private void paramsMapInit() {
         if (_paramMap == null) {
-            _paramMap = new NvMap();
+            _paramMap = new MultiMap<String>();
 
             try {
                 //编码窗体预处理
@@ -217,13 +216,13 @@ public class SmHttpContext extends WebContextBase {
             loadMultipartFormData();
         }
 
-        return _filesMap;
+        return _fileMap;
     }
 
     @Override
-    public NvMap cookieMap() {
+    public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new NvMap();
+            _cookieMap = new MultiMap<String>();
 
             for (Cookie c1 : _request.getCookies()) {
                 _cookieMap.add(c1.getName(), c1.getValue());
@@ -233,13 +232,13 @@ public class SmHttpContext extends WebContextBase {
         return _cookieMap;
     }
 
-    private NvMap _cookieMap;
+    private MultiMap<String> _cookieMap;
 
 
     @Override
-    public NvMap headerMap() {
+    public MultiMap<String> headerMap() {
         if (_headerMap == null) {
-            _headerMap = new NvMap();
+            _headerMap = new MultiMap<String>();
 
             for (String k : _request.getHeaderNames()) {
                 _headerMap.holder(k).setValues(new ArrayList<>(_request.getHeaders(k)));
@@ -249,7 +248,7 @@ public class SmHttpContext extends WebContextBase {
         return _headerMap;
     }
 
-    private NvMap _headerMap;
+    private MultiMap<String> _headerMap;
 
     //=================================
 

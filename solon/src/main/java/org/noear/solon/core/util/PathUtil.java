@@ -17,11 +17,11 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.NvMap;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,7 +57,7 @@ public class PathUtil {
                 } else {
                     return path1.substring(0, idx) + path2;
                 }
-            }else {
+            } else {
                 return path1;
             }
         }
@@ -87,9 +87,9 @@ public class PathUtil {
 
     /**
      * 将路径根据表达式转成map
-     * */
-    public static NvMap pathVarMap(String path, String expr) {
-        NvMap _map = new NvMap();
+     */
+    public static Map<String, String> pathVarMap(String path, String expr) {
+        IgnoreCaseMap<String> _map = new IgnoreCaseMap<>();
 
         //支持path变量
         if (expr.indexOf("{") >= 0) {
@@ -114,7 +114,7 @@ public class PathUtil {
                 pm = _pr.matcher(path2);
                 if (pm.find()) {
                     for (int i = 0, len = _pks.size(); i < len; i++) {
-                        _map.set(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                        _map.put(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                     }
                 }
             }
