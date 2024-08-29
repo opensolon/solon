@@ -11,13 +11,13 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.health.detector</artifactId>
+    <artifactId>solon-health-detector</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.health</artifactId>
+            <artifactId>solon-health</artifactId>
         </dependency>
 
         <dependency>
