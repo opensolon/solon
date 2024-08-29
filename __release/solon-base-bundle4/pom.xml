@@ -39,5 +39,9 @@
         <module>../../solon-projects/solon-detector_old/solon.health.detector</module>
 
         <module>../../solon-projects/solon-faas_old/solon.luffy</module>
+
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling</module>
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.simple</module>
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.quartz</module>
     </modules>
 </project>

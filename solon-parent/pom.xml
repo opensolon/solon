@@ -1821,6 +1821,23 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::scheduling -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling.quartz</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling.simple</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>
