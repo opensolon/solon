@@ -37,5 +37,7 @@
 
         <module>../../solon-projects/solon-detector_old/solon.health</module>
         <module>../../solon-projects/solon-detector_old/solon.health.detector</module>
+
+        <module>../../solon-projects/solon-faas_old/solon.luffy</module>
     </modules>
 </project>
