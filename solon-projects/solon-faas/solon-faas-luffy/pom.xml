@@ -44,7 +44,8 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>wood-solon-plugin</artifactId>
+            <artifactId>wood</artifactId>
+            <version>${wood.version}</version>
         </dependency>
 
         <dependency>
