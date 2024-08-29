@@ -405,6 +405,19 @@ public class SolonApp extends RouterWrapper {
 //    }
 
     /**
+     * 插入插件（一般用于动态加载，比如 faas）
+     *
+     * @deprecated 2.0
+     */
+    @Deprecated
+    public void plug(Plugin plugin) {
+        PluginEntity p = new PluginEntity(plugin);
+        p.init(context());
+        p.start(context());
+        cfg().plugs().add(p);
+    }
+
+    /**
      * 添加插件（只有执行前添加才有效）
      *
      * @param priority 优先级（越大越优化）
