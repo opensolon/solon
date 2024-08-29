@@ -49,5 +49,7 @@
         <module>../../solon-projects/solon-base_old/solon.i18n</module>
         <module>../../solon-projects/solon-base_old/solon.hotplug</module>
         <module>../../solon-projects/solon-base_old/solon.mvc</module>
+
+        <module>../../solon-projects/solon-native_old/solon.aot</module>
     </modules>
 </project>

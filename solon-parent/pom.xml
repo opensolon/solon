@@ -1774,7 +1774,7 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <!-- old::docs -->
+            <!-- old::logging -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.logging.log4j2</artifactId>
@@ -1793,6 +1793,13 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.logging</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- old::native -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.aot</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
