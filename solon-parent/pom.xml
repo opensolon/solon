@@ -1803,6 +1803,23 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::net -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.net.httputils</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.net.stomp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.net</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>
