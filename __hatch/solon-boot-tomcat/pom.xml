@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.nettyhttp</artifactId>
+    <artifactId>solon-boot-tomcat</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,17 +21,27 @@
         </dependency>
 
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.servlet</artifactId>
         </dependency>
 
-
+        <!-- server core begin -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
+        <!-- server core end -->
+
+        <!--jsp started-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--jsp ended -->
     </dependencies>
+
 
 </project>

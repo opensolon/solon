@@ -12,20 +12,14 @@
     </parent>
 
     <groupId>org.noear.hatch</groupId>
-    <artifactId>nami.coder.thrift</artifactId>
+    <artifactId>solon-serialization-thrift</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-            <version>2.9.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
-            <version>2.9.2-SNAPSHOT</version>
+            <artifactId>solon-serialization</artifactId>
         </dependency>
     </dependencies>
 
