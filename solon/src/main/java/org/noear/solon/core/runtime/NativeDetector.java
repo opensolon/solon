@@ -29,12 +29,15 @@ public abstract class NativeDetector {
     private static final boolean aotRuntime = (System.getProperty(AOT_PROCESSING) != null);
 
     /**
-     * 是否原生镜像上执行
+     * 是否在原生镜像上执行
      */
     public static boolean inNativeImage() {
         return imageCode;
     }
 
+    /**
+     * 是否不在原生镜像上执行
+     * */
     public static boolean notInNativeImage() {
         return !imageCode;
     }
