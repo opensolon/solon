@@ -37,16 +37,24 @@
 * 移除 solon.test
 
 
-|                       | 操作    |                        |
-|-----------------------|-------|------------------------|
-| ctx.paramsMap()       | 弃用    |                        |
-| ctx.headersMap()      | 弃用    |                        |
-| ctx.filesMap()        | 弃用    |          |
-| ctx.files(name)       | 弃用，新增 | ctx.fileValues()       |
-| ctx.paramMap():NvMap  | 调整    | ctx.paramMap():MultiMap |
-| ctx.headerMap():NvMap | 调整    | ctx.headerMap():MultiMap |
-| ctx.cookieMap():NvMap | 调整    | ctx.cookieMap():MultiMap |
-| ctx.fileMap():NvMap   | 调整    | ctx.fileMap():MultiMap |
+|                          | 操作     |                          |
+|--------------------------|--------|--------------------------|
+| ctx.paramsMap()          | 弃用     |                          |
+| ctx.paramSet(name,value) | 弃用     |                          |
+| ctx.headersMap()         | 弃用     |                          |
+| ctx.filesMap()           | 弃用     |                          |
+| ctx.files(name)          | 弃用     |                          |
+| | | |
+| ctx.paramMap():NvMap     | 调整     | ctx.paramMap():MultiMap  |
+| ctx.headerMap():NvMap    | 调整     | ctx.headerMap():MultiMap |
+| ctx.cookieMap():NvMap    | 调整     | ctx.cookieMap():MultiMap |
+| ctx.fileMap():NvMap      | 调整     | ctx.fileMap():MultiMap   |
+| | | |
+| ctx.paramNames()         | 新增     |                          |
+| ctx.headerNames()        | 新增     |                          |
+| ctx.cookieNames()        | 新增     |                          |
+| ctx.fileNames()          | 新增     |                          |
+| ctx.fileValues(name)     | 新增     |                          |
 
 
 ### 2.9.1
