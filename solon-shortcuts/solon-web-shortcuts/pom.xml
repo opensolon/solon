@@ -8,41 +8,47 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>2.9.2-SNAPSHOT</version>
-        <relativePath>../../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon-net-stomp</artifactId>
+
+    <artifactId>solon-web-shortcuts</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web-shortcuts</artifactId>
+            <artifactId>solon-lib-shortcuts</artifactId>
         </dependency>
 
+        <!-- Http 启动器 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-boot-smarthttp</artifactId>
         </dependency>
 
+        <!-- Json序列化支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-logging-logback</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-serialization-snack3</artifactId>
         </dependency>
 
+        <!-- 本地SessionSate支持组件 -->
         <dependency>
-            <groupId>com.ejlchina</groupId>
-            <artifactId>okhttps-stomp</artifactId>
-            <version>3.5.3</version>
-            <scope>test</scope>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-sessionstate-local</artifactId>
+        </dependency>
+
+        <!-- 静态文件支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-web-staticfiles</artifactId>
+        </dependency>
+
+        <!-- 跨域处理组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-web-cors</artifactId>
         </dependency>
     </dependencies>
+
 </project>

@@ -8,33 +8,41 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>2.9.2-SNAPSHOT</version>
-        <relativePath>../../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-health-detector</artifactId>
+    <artifactId>solon-lib-shortcuts</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-health</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.wujiuye</groupId>
-            <artifactId>qps-helper</artifactId>
-            <version>1.1.1-RELEASE</version>
-        </dependency>
-
+        <!-- 提供事务、缓存支持 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web-shortcuts</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-data</artifactId>
+        </dependency>
+
+        <!-- 加强的动态代理支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-proxy</artifactId>
+        </dependency>
+
+        <!-- 验证扩展组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-security-validation</artifactId>
+        </dependency>
+
+        <!-- yml配置支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-config-yaml</artifactId>
         </dependency>
     </dependencies>
 

@@ -18,13 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-        </dependency>
-
-        <!-- 本地SessionSate支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-sessionstate-local</artifactId>
+            <artifactId>solon-web-shortcuts</artifactId>
         </dependency>
 
         <!-- enjoy 模板支持组件 -->

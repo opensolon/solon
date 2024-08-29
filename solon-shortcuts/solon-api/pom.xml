@@ -17,31 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
-        </dependency>
-
-        <!-- Http 启动器 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-boot-smarthttp</artifactId>
-        </dependency>
-
-        <!-- Json序列化支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-serialization-snack3</artifactId>
-        </dependency>
-
-        <!-- 静态文件支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web-staticfiles</artifactId>
-        </dependency>
-
-        <!-- 跨域处理组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web-cors</artifactId>
+            <artifactId>solon-web-shortcuts</artifactId>
         </dependency>
     </dependencies>
 

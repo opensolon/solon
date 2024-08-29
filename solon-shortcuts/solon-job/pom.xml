@@ -17,12 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-scheduling-simple</artifactId>
+            <artifactId>solon-job-shortcuts</artifactId>
         </dependency>
     </dependencies>
 

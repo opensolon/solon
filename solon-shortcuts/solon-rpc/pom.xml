@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
+            <artifactId>solon-web-shortcuts</artifactId>
         </dependency>
 
         <!-- rpc client -->
@@ -25,6 +25,7 @@
             <groupId>org.noear</groupId>
             <artifactId>nami-channel-http-okhttp</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami-coder-snack3</artifactId>

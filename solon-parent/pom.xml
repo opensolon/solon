@@ -836,6 +836,24 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-lib-shortcuts</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-job-shortcuts</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-shortcuts</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-lib</artifactId>
                 <version>${solon.version}</version>
             </dependency>

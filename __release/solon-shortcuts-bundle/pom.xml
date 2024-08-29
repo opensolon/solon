@@ -32,5 +32,10 @@
         <module>../../solon-shortcuts/solon-cloud-alibaba</module>
         <module>../../solon-shortcuts/solon-cloud-water</module>
 
+
+        <module>../../solon-shortcuts/solon-lib-shortcuts</module>
+        <module>../../solon-shortcuts/solon-job-shortcuts</module>
+        <module>../../solon-shortcuts/solon-web-shortcuts</module>
+
     </modules>
 </project>
