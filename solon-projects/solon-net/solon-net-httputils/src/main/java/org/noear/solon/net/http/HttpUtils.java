@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.impl.HttpUtilsImpl;
 
 import java.io.IOException;
@@ -82,6 +83,11 @@ public interface HttpUtils {
     HttpUtils headers(Map<String, String> headers);
 
     /**
+     * 头配置
+     */
+    HttpUtils headers(Iterable<KeyValues<String>> headers);
+
+    /**
      * 头配置（替换）
      */
     HttpUtils header(String name, String value);
@@ -95,6 +101,11 @@ public interface HttpUtils {
      * 参数配置
      */
     HttpUtils data(Map data);
+
+    /**
+     * 参数配置
+     */
+    HttpUtils data(Iterable<KeyValues<String>> data);
 
     /**
      * 参数配置

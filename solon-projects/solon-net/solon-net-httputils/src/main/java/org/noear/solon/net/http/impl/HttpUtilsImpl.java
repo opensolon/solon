@@ -21,6 +21,8 @@ import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.KeyValue;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 
 import java.io.ByteArrayInputStream;
@@ -63,7 +65,7 @@ public class HttpUtilsImpl implements HttpUtils {
     private Charset _charset;
     private Map<String, String> _cookies;
     private RequestBody _body;
-    private List<KeyValue> _form;
+    private List<KeyValue<String>> _form;
     private boolean _multipart = false;
 
     private MultipartBody.Builder _part_builer;
@@ -168,6 +170,19 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
+    @Override
+    public HttpUtils headers(Iterable<KeyValues<String>> headers) {
+        if (headers != null) {
+            headers.forEach((kv) -> {
+                for (String val : kv.getValues()) {
+                    _builder.header(kv.getKey(), val);
+                }
+            });
+        }
+
+        return this;
+    }
+
     /**
      * 设置请求头
      */
@@ -205,6 +220,21 @@ public class HttpUtilsImpl implements HttpUtils {
             data.forEach((k, v) -> {
                 if (k != null && v != null) {
                     _form.add(new KeyValue(k.toString(), v.toString()));
+                }
+            });
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils data(Iterable<KeyValues<String>> data) {
+        if (data != null) {
+            tryInitForm();
+
+            data.forEach((kv) -> {
+                for (String val : kv.getValues()) {
+                    _form.add(new KeyValue(kv.getKey(), val));
                 }
             });
         }
@@ -363,7 +393,7 @@ public class HttpUtilsImpl implements HttpUtils {
 
             if (_form != null) {
                 _form.forEach((kv) -> {
-                    _part_builer.addFormDataPart(kv.key, kv.value);
+                    _part_builer.addFormDataPart(kv.getKey(), kv.getValue());
                 });
             }
 
@@ -377,7 +407,7 @@ public class HttpUtilsImpl implements HttpUtils {
                 FormBody.Builder fb = new FormBody.Builder(_charset);
 
                 _form.forEach((kv) -> {
-                    fb.add(kv.key, kv.value);
+                    fb.add(kv.getKey(), kv.getValue());
                 });
                 _body = fb.build();
             }
@@ -644,16 +674,6 @@ public class HttpUtilsImpl implements HttpUtils {
             } finally {
                 Util.closeQuietly(source);
             }
-        }
-    }
-
-    public static class KeyValue {
-        String key;
-        String value;
-
-        public KeyValue(String key, String value) {
-            this.key = key;
-            this.value = value;
         }
     }
 }
