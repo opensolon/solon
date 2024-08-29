@@ -121,7 +121,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>> {
      *
      * @param key 键
      */
-    public @Nullable List<T> getValues(String key) {
+    public @Nullable List<T> getAll(String key) {
         KeyValues<T> tmp = innerMap.get(key);
         if (tmp == null) {
             return null;
@@ -135,7 +135,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>> {
      *
      * @param key 键
      */
-    public @Nullable T[] getArray(String key, Function<Integer, T[]> initFunction) {
+    public @Nullable T[] getAllToArray(String key, Function<Integer, T[]> initFunction) {
         KeyValues<T> tmp = innerMap.get(key);
         if (tmp == null) {
             return null;
