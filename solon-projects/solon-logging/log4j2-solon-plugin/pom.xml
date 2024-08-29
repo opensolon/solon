@@ -36,7 +36,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.log4j2</artifactId>
+            <artifactId>solon-logging-log4j2</artifactId>
         </dependency>
     </dependencies>
 </project>

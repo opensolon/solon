@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/solon-faas/solon.luffy</module>
+        <module>../../solon-projects/solon-faas/solon-faas-luffy</module>
 
         <module>../../solon-projects/solon-detector/solon-health</module>
         <module>../../solon-projects/solon-detector/solon-health-detector</module>

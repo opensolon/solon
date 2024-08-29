@@ -618,22 +618,22 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.logging</artifactId>
+                <artifactId>solon-logging</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.logging.log4j2</artifactId>
+                <artifactId>solon-logging-log4j2</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.logging.logback</artifactId>
+                <artifactId>solon-logging-logback</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.logging.simple</artifactId>
+                <artifactId>solon-logging-simple</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

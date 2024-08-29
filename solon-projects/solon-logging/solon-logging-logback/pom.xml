@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.logging.logback</artifactId>
+    <artifactId>solon-logging-logback</artifactId>
     <packaging>jar</packaging>
 
 
@@ -25,7 +25,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging</artifactId>
+            <artifactId>solon-logging</artifactId>
         </dependency>
 
         <dependency>
