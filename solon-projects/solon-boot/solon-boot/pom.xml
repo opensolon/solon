@@ -10,8 +10,8 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-
-    <artifactId>solon-cloud-core</artifactId>
+    
+    <artifactId>solon-boot</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -22,36 +22,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-health</artifactId>
+            <artifactId>solon-mvc</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.logging</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-data</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.net.httputils</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-i18n</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
-            <scope>provided</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
+
 
 </project>

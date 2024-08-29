@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.docs.openapi2</artifactId>
+            <artifactId>solon-docs-openapi2</artifactId>
         </dependency>
 
         <dependency>

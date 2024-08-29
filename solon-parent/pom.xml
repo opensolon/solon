@@ -304,7 +304,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-core</artifactId>
+                <artifactId>solon-boot</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -402,7 +402,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-data-core</artifactId>
+                <artifactId>solon-data</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
@@ -417,12 +417,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.docs</artifactId>
+                <artifactId>solon-docs</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.docs.openapi2</artifactId>
+                <artifactId>solon-docs-openapi2</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

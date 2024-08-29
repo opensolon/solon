@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/solon-boot/solon-boot-core</module>
+        <module>../../solon-projects/solon-boot/solon-boot</module>
         <module>../../solon-projects/solon-boot/solon-boot-jdkhttp</module>
         <module>../../solon-projects/solon-boot/solon-boot-jlhttp</module>
         <module>../../solon-projects/solon-boot/solon-boot-smarthttp</module>

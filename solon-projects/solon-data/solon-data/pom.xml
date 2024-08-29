@@ -11,7 +11,8 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-cloud-core</artifactId>
+    <!-- 添加事务支持和缓存支持 -->
+    <artifactId>solon-data</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -22,36 +23,24 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-health</artifactId>
+            <artifactId>solon.security.vault</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-data</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.net.httputils</artifactId>
+            <artifactId>snack3</artifactId>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-i18n</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
-            <scope>provided</scope>
+            <artifactId>solon-config-yaml</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

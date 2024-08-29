@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/solon-data/solon-data-core</module>
+        <module>../../solon-projects/solon-data/solon-data</module>
         <module>../../solon-projects/solon-data/solon-data-dynamicds</module>
         <module>../../solon-projects/solon-data/solon-data-shardingds</module>
         <module>../../solon-projects/solon-data/solon-cache-caffeine</module>
