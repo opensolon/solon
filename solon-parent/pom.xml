@@ -1771,6 +1771,18 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::docs -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.docs</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.docs.openapi2</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>

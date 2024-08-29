@@ -47,5 +47,9 @@
         <module>../../solon-projects/solon-data_old/solon.cache.jedis</module>
         <module>../../solon-projects/solon-data_old/solon.cache.spymemcached</module>
         <module>../../solon-projects/solon-data_old/solon.cache.redisson</module>
+
+
+        <module>../../solon-projects/solon-docs_old/solon.docs</module>
+        <module>../../solon-projects/solon-docs_old/solon.docs.openapi2</module>
     </modules>
 </project>
