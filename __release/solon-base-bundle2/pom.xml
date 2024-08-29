@@ -49,5 +49,10 @@
 
         <module>../../solon-projects/solon-docs_old/solon.docs</module>
         <module>../../solon-projects/solon-docs_old/solon.docs.openapi2</module>
+
+        <module>../../solon-projects/solon-logging_old/solon.logging</module>
+        <module>../../solon-projects/solon-logging_old/solon.logging.log4j2</module>
+        <module>../../solon-projects/solon-logging_old/solon.logging.logback</module>
+        <module>../../solon-projects/solon-logging_old/solon.logging.simple</module>
     </modules>
 </project>

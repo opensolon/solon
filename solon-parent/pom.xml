@@ -1774,6 +1774,28 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::docs -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.logging.log4j2</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.logging.logback</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.logging.simple</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.logging</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>
