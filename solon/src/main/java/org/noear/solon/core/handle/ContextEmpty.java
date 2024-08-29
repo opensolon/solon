@@ -133,7 +133,7 @@ public class ContextEmpty extends Context {
     MultiMap<UploadedFile> filesMap = null;
 
     @Override
-    public MultiMap<UploadedFile> fileMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() {
         if (filesMap == null) {
             filesMap = new MultiMap<>();
         }

@@ -563,17 +563,10 @@ public abstract class Context {
     }
 
     /**
-     * 设置参数（替换）
-     */
-    public void paramSet(String name, String val) {
-        paramMap().put(name, val);
-    }
-
-    /**
-     * 添加参数（增加）
-     */
-    public void paramAdd(String name, String val) {
-        paramMap().add(name, val);
+     * 获取所有参数的名字集合
+     * */
+    public Set<String> paramNames() {
+        return paramMap().keySet();
     }
 
     /**
@@ -592,26 +585,6 @@ public abstract class Context {
         return paramMap().toValuesMap();
     }
 
-
-    /**
-     * 获取上传文件字典集合
-     */
-    public abstract MultiMap<UploadedFile> fileMap() throws IOException;
-
-    /**
-     * 获取所有上传文件并转为map
-     *
-     * @deprecated 2.9
-     * */
-    @Deprecated
-    public Map<String,List<UploadedFile>> filesMap() throws IOException{
-        return fileMap().toValuesMap();
-    }
-
-    /**
-     * 删除所有上传文件
-     */
-    public abstract void filesDelete() throws IOException;
 
     /**
      * 获取上传文件数组
@@ -640,6 +613,34 @@ public abstract class Context {
      */
     public @Nullable UploadedFile file(String name) throws IOException {
         return fileMap().get(name);
+    }
+
+    /**
+     * 删除所有上传文件
+     */
+    public abstract void filesDelete() throws IOException;
+
+    /**
+     * 获取所有文件的名字集合
+     * */
+    public Set<String> fileNames() {
+        return fileMap().keySet();
+    }
+
+    /**
+     * 获取上传文件字典集合
+     */
+    public abstract MultiMap<UploadedFile> fileMap();
+
+
+    /**
+     * 获取所有上传文件并转为map
+     *
+     * @deprecated 2.9
+     * */
+    @Deprecated
+    public Map<String,List<UploadedFile>> filesMap() {
+        return fileMap().toValuesMap();
     }
 
     /**
@@ -678,6 +679,14 @@ public abstract class Context {
      */
     public @Nullable String[] cookieValues(String name) {
         return cookieMap().getArray(name, i -> new String[i]);
+    }
+
+
+    /**
+     * 获取所有小饼的名字集合
+     * */
+    public Set<String> cookieNames() {
+        return cookieMap().keySet();
     }
 
     /**
@@ -722,6 +731,13 @@ public abstract class Context {
      */
     public @Nullable String[] headerValues(String name) {
         return headerMap().getArray(name, i -> new String[i]);
+    }
+
+    /**
+     * 获取所有头的名字集合
+     * */
+    public Set<String> headerNames() {
+        return headerMap().keySet();
     }
 
     /**

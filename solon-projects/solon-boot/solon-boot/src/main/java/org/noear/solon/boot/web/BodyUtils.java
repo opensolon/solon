@@ -37,7 +37,7 @@ public class BodyUtils {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramAdd(name, part.getString());
+                    ctx.paramMap().add(name, part.getString());
                 }
             }
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class BodyUtils {
             if (idx > 0) {
                 String name = ServerProps.urlDecode(s1.substring(0, idx));
                 String value = ServerProps.urlDecode(s1.substring(idx + 1));
-                ctx.paramAdd(name, value);
+                ctx.paramMap().add(name, value);
             }
         }
     }

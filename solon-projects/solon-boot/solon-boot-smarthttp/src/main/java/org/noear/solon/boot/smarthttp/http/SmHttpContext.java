@@ -211,7 +211,7 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
-    public MultiMap<UploadedFile> fileMap() throws IOException {
+    public MultiMap<UploadedFile> fileMap() {
         if (isMultipartFormData()) {
             loadMultipartFormData();
         }

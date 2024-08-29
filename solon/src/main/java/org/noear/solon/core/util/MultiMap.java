@@ -103,6 +103,20 @@ public class MultiMap<T> implements Iterable<KeyValues<T>> {
     }
 
     /**
+     * 移除键
+     */
+    public void remove(String key) {
+        innerMap.remove(key);
+    }
+
+    /**
+     * 清理
+     */
+    public void clear() {
+        innerMap.clear();
+    }
+
+    /**
      * 获取多值
      *
      * @param key 键

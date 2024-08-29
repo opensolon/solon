@@ -44,7 +44,7 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramAdd(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
+                    ctx.paramMap().add(name, IoUtil.transferToString(part.getInputStream(), ServerProps.request_encoding));
                 }
             }
         } catch (Exception e) {

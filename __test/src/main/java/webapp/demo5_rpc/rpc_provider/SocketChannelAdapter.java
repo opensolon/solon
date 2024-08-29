@@ -31,7 +31,7 @@ public class SocketChannelAdapter implements Handler {
 
             for (Map.Entry<String, Object> kv : tmp.entrySet()) {
                 if (kv.getValue() != null) {
-                    ctx.paramAdd(kv.getKey(), kv.getValue().toString());
+                    ctx.paramMap().add(kv.getKey(), kv.getValue().toString());
                 }
             }
         }

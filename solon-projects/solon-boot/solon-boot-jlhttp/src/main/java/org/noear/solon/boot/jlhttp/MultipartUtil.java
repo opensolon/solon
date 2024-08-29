@@ -41,7 +41,7 @@ class MultipartUtil {
                 if (isFile(part)) {
                     doBuildFiles(name, filesMap, part);
                 } else {
-                    ctx.paramAdd(name, part.getString());
+                    ctx.paramMap().add(name, part.getString());
                 }
             }
         } catch (Exception e) {

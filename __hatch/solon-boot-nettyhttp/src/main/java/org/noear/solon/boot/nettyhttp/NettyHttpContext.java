@@ -76,7 +76,7 @@ public class NettyHttpContext extends WebContextBase {
 
     private boolean _loadMultipartFormData = false;
 
-    private void loadMultipartFormData() throws IOException {
+    private void loadMultipartFormData() {
         if (_loadMultipartFormData) {
             return;
         } else {
