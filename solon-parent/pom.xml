@@ -298,7 +298,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.mvc</artifactId>
+                <artifactId>solon-mvc</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -392,12 +392,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.proxy</artifactId>
+                <artifactId>solon-proxy</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.rx</artifactId>
+                <artifactId>solon-rx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
@@ -432,13 +432,13 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.banner</artifactId>
+                <artifactId>solon-banner</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.hotplug</artifactId>
+                <artifactId>solon-hotplug</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -549,7 +549,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.config.yaml</artifactId>
+                <artifactId>solon-config-yaml</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -600,7 +600,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.i18n</artifactId>
+                <artifactId>solon-i18n</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

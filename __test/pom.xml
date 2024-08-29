@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.banner</artifactId>
+            <artifactId>solon-banner</artifactId>
         </dependency>
 
         <dependency>
@@ -64,7 +64,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.hotplug</artifactId>
+            <artifactId>solon-hotplug</artifactId>
         </dependency>
 
         <dependency>
@@ -164,7 +164,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.i18n</artifactId>
+            <artifactId>solon-i18n</artifactId>
         </dependency>
 
         <dependency>
@@ -198,7 +198,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.config.yaml</artifactId>
+            <artifactId>solon-config-yaml</artifactId>
         </dependency>
 
         <dependency>
@@ -213,7 +213,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.proxy</artifactId>
+            <artifactId>solon-proxy</artifactId>
         </dependency>
 
 

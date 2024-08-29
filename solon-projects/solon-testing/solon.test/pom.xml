@@ -32,7 +32,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.proxy</artifactId>
+            <artifactId>solon-proxy</artifactId>
         </dependency>
 
         <dependency>
@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.config.yaml</artifactId>
+            <artifactId>solon-config-yaml</artifactId>
         </dependency>
 
         <dependency>

@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.config.yaml</artifactId>
+            <artifactId>solon-config-yaml</artifactId>
             <scope>test</scope>
         </dependency>
 

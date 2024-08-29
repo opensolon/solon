@@ -10,8 +10,8 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.banner</artifactId>
+
+    <artifactId>solon-config-yaml</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -19,7 +19,18 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+        </dependency>
     </dependencies>
 
 
 </project>
+
