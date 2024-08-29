@@ -208,7 +208,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.aot</artifactId>
+            <artifactId>solon-aot</artifactId>
         </dependency>
 
         <dependency>
