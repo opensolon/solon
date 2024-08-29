@@ -455,7 +455,8 @@ public abstract class Context {
      * 获取参数数组
      */
     public @Nullable String[] paramValues(String name) {
-        return paramMap().getAllToArray(name, i -> new String[i]);
+        List<String> tmp = paramMap().getAll(name);
+        return tmp == null ? null : tmp.toArray(new String[tmp.size()]);
     }
 
     /**
@@ -611,8 +612,9 @@ public abstract class Context {
      *
      * @param name 文件名
      */
-    public @Nullable UploadedFile[] fileValues(String name) throws IOException {
-        return fileMap().getAllToArray(name, size -> new UploadedFile[size]);
+    public @Nullable UploadedFile[] fileValues(String name) {
+        List<UploadedFile> tmp = fileMap().getAll(name);
+        return tmp == null ? null : tmp.toArray(new UploadedFile[tmp.size()]);
     }
 
     /**
@@ -687,7 +689,8 @@ public abstract class Context {
      * 获取 cookie (多值)
      */
     public @Nullable String[] cookieValues(String name) {
-        return cookieMap().getAllToArray(name, i -> new String[i]);
+        List<String> tmp = cookieMap().getAll(name);
+        return tmp == null ? null : tmp.toArray(new String[tmp.size()]);
     }
 
 
@@ -739,7 +742,8 @@ public abstract class Context {
      * @param name header名
      */
     public @Nullable String[] headerValues(String name) {
-        return headerMap().getAllToArray(name, i -> new String[i]);
+        List<String> tmp = headerMap().getAll(name);
+        return tmp == null ? null : tmp.toArray(new String[tmp.size()]);
     }
 
     /**
