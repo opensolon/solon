@@ -11,23 +11,32 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.serialization.kryo</artifactId>
+    <artifactId>solon-serialization-snack3</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <sbe.tool.version>1.31.1</sbe.tool.version>
-    </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization</artifactId>
+            <artifactId>solon-serialization</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.esotericsoftware.kryo</groupId>
-            <artifactId>kryo5</artifactId>
-            <version>5.3.0</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

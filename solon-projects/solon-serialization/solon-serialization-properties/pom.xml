@@ -11,33 +11,24 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.serialization.protostuff</artifactId>
+    <artifactId>solon-serialization-properties</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization</artifactId>
+            <artifactId>solon-mvc</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-api</artifactId>
-            <version>${protostuff.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-serialization</artifactId>
         </dependency>
-
+        
         <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
-            <version>${protostuff.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-core</artifactId>
-            <version>${protostuff.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
         </dependency>
     </dependencies>
 

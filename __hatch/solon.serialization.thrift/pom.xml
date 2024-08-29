@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization</artifactId>
+            <artifactId>solon-serialization</artifactId>
         </dependency>
     </dependencies>
 

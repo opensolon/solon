@@ -638,57 +638,57 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization</artifactId>
+                <artifactId>solon-serialization</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.fastjson</artifactId>
+                <artifactId>solon-serialization-fastjson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.fastjson2</artifactId>
+                <artifactId>solon-serialization-fastjson2</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.gson</artifactId>
+                <artifactId>solon-serialization-gson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.jackson</artifactId>
+                <artifactId>solon-serialization-jackson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.jackson.xml</artifactId>
+                <artifactId>solon-serialization-jackson-xml</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.snack3</artifactId>
+                <artifactId>solon-serialization-snack3</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.properties</artifactId>
+                <artifactId>solon-serialization-properties</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.hessian</artifactId>
+                <artifactId>solon-serialization-hessian</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.fury</artifactId>
+                <artifactId>solon-serialization-fury</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.protostuff</artifactId>
+                <artifactId>solon-serialization-protostuff</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

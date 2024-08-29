@@ -358,24 +358,24 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.hessian</artifactId>
+            <artifactId>solon-serialization-hessian</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.fury</artifactId>
+            <artifactId>solon-serialization-fury</artifactId>
         </dependency>
 
 
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
+            <artifactId>solon-serialization-snack3</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.properties</artifactId>
+            <artifactId>solon-serialization-properties</artifactId>
         </dependency>
 
 
@@ -401,7 +401,7 @@
 
                 <dependency>
                     <groupId>org.noear</groupId>
-                    <artifactId>solon.serialization.jackson.xml</artifactId>
+                    <artifactId>solon-serialization-jackson-xml</artifactId>
                 </dependency>
 
 
