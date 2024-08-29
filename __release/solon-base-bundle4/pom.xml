@@ -20,7 +20,6 @@
 
         <module>../../solon-projects/solon-detector/solon-health</module>
         <module>../../solon-projects/solon-detector/solon-health-detector</module>
-        <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
 
         <module>../../solon-projects/solon-scheduling/solon-scheduling</module>
         <module>../../solon-projects/solon-scheduling/solon-scheduling-simple</module>
