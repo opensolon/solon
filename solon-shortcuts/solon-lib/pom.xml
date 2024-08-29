@@ -36,7 +36,7 @@
         <!-- 验证扩展组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.security.validation</artifactId>
+            <artifactId>solon-security-validation</artifactId>
         </dependency>
 
         <!-- yml配置支持组件 -->

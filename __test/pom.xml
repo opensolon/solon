@@ -224,17 +224,17 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.security.vault</artifactId>
+            <artifactId>solon-security-vault</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.security.auth</artifactId>
+            <artifactId>solon-security-auth</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.security.validation</artifactId>
+            <artifactId>solon-security-validation</artifactId>
         </dependency>
 
         <dependency>
