@@ -382,7 +382,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.luffy</artifactId>
+                <artifactId>solon-faas-luffy</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
