@@ -38,12 +38,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.scheduling</artifactId>
+            <artifactId>solon-scheduling</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.scheduling.simple</artifactId>
+            <artifactId>solon-scheduling-simple</artifactId>
             <scope>provided</scope>
         </dependency>
 

@@ -11,13 +11,13 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.scheduling.quartz</artifactId>
+    <artifactId>solon-scheduling-quartz</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.scheduling</artifactId>
+            <artifactId>solon-scheduling</artifactId>
         </dependency>
 
         <dependency>
