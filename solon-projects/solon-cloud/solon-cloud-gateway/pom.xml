@@ -43,7 +43,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-lib-shortcuts</artifactId>
+            <artifactId>solon-lib</artifactId>
             <scope>test</scope>
         </dependency>
 

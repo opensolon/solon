@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web-shortcuts</artifactId>
+            <artifactId>solon-web</artifactId>
             <scope>test</scope>
         </dependency>
 
