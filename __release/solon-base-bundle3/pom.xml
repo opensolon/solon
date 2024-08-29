@@ -22,6 +22,7 @@
         <module>../../solon-projects/solon-cloud/solon-cloud-httputils</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-tracing</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-metrics</module>
+
         <module>../../solon-projects/solon-web/solon-sessionstate-jedis</module>
         <module>../../solon-projects/solon-web/solon-sessionstate-local</module>
         <module>../../solon-projects/solon-web/solon-sessionstate-jwt</module>
@@ -37,6 +38,11 @@
         <module>../../solon-projects/solon-web/solon-web-rx</module>
         <module>../../solon-projects/solon-web/solon-web-mvc</module>
 
-        <module>../../solon-projects/solon-web/solon.web.flux</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud.eventplus</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud.gateway</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud.httputils</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud.tracing</module>
+        <module>../../solon-projects/solon-cloud_old/solon.cloud.metrics</module>
     </modules>
 </project>

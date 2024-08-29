@@ -10,14 +10,15 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.web.flux</artifactId>
+
+    <artifactId>solon.cloud</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web-rx</artifactId>
+            <artifactId>solon-cloud-core</artifactId>
         </dependency>
     </dependencies>
+
 </project>

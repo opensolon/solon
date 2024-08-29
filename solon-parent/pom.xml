@@ -487,13 +487,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <!-- @deprecated 2.9 -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.web.flux</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web-rx</artifactId>
@@ -1783,6 +1776,38 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- old::cloud -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.eventplus</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.gateway</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.httputils</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.metrics</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.tracing</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
