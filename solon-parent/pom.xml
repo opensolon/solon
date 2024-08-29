@@ -855,7 +855,7 @@
                 <artifactId>solon-test-junit5</artifactId>
                 <version>${solon.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-springboot-starter</artifactId>
@@ -1759,6 +1759,17 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::detector -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.health.detector</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.health</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
 
             <!-- old plugins:: end -->
         </dependencies>

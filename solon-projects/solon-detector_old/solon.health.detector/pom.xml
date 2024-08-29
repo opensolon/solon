@@ -8,31 +8,17 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>2.9.2-SNAPSHOT</version>
-        <relativePath>../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
-    <artifactId>solon-web-enjoy</artifactId>
+    <artifactId>solon.health.detector</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web</artifactId>
+            <artifactId>solon-health-detector</artifactId>
         </dependency>
-
-        <!-- enjoy 模板支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-view-enjoy</artifactId>
-        </dependency>
-
-        <!-- activerecord 支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>activerecord-solon-plugin</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

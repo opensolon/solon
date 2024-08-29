@@ -33,5 +33,9 @@
         <module>../../solon-projects/solon-view/solon-view-thymeleaf</module>
         <module>../../solon-projects/solon-view/solon-view-enjoy</module>
         <module>../../solon-projects/solon-view/solon-view-beetl</module>
+
+
+        <module>../../solon-projects/solon-detector_old/solon.health</module>
+        <module>../../solon-projects/solon-detector_old/solon.health.detector</module>
     </modules>
 </project>
