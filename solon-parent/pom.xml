@@ -906,7 +906,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.test</artifactId>
+                <artifactId>solon-test</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

@@ -30,7 +30,6 @@
         <module>../../solon-projects/solon-boot/solon-boot-jetty-add-websocket</module>
         <module>../../solon-projects/solon-boot/solon-boot-socketd</module>
 
-        <module>../../solon-projects/solon-testing/solon.test</module>
         <module>../../solon-projects/solon-testing/solon-test</module>
         <module>../../solon-projects/solon-testing/solon-test-junit4</module>
         <module>../../solon-projects/solon-testing/solon-test-junit5</module>
