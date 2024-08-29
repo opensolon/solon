@@ -18,17 +18,17 @@
     <modules>
         <module>../../solon-projects/nami/nami</module>
 
-        <module>../../solon-projects/nami/nami.channel.http.okhttp</module>
-        <module>../../solon-projects/nami/nami.channel.http.hutool</module>
+        <module>../../solon-projects/nami/nami-channel-http-okhttp</module>
+        <module>../../solon-projects/nami/nami-channel-http-hutool</module>
 
-        <module>../../solon-projects/nami/nami.channel.socketd</module>
+        <module>../../solon-projects/nami/nami-channel-socketd</module>
 
-        <module>../../solon-projects/nami/nami.coder.snack3</module>
-        <module>../../solon-projects/nami/nami.coder.fastjson</module>
-        <module>../../solon-projects/nami/nami.coder.fastjson2</module>
-        <module>../../solon-projects/nami/nami.coder.jackson</module>
-        <module>../../solon-projects/nami/nami.coder.fury</module>
-        <module>../../solon-projects/nami/nami.coder.hessian</module>
-        <module>../../solon-projects/nami/nami.coder.protostuff</module>
+        <module>../../solon-projects/nami/nami-coder-snack3</module>
+        <module>../../solon-projects/nami/nami-coder-fastjson</module>
+        <module>../../solon-projects/nami/nami-coder-fastjson2</module>
+        <module>../../solon-projects/nami/nami-coder-jackson</module>
+        <module>../../solon-projects/nami/nami-coder-fury</module>
+        <module>../../solon-projects/nami/nami-coder-hessian</module>
+        <module>../../solon-projects/nami/nami-coder-protostuff</module>
     </modules>
 </project>

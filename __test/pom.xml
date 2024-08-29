@@ -113,39 +113,39 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
+            <artifactId>nami-coder-snack3</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.fastjson</artifactId>
+            <artifactId>nami-coder-fastjson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.fastjson2</artifactId>
+            <artifactId>nami-coder-fastjson2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.jackson</artifactId>
+            <artifactId>nami-coder-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.hessian</artifactId>
+            <artifactId>nami-coder-hessian</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.fury</artifactId>
+            <artifactId>nami-coder-fury</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.protostuff</artifactId>
+            <artifactId>nami-coder-protostuff</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.okhttp</artifactId>
+            <artifactId>nami-channel-http-okhttp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.socketd</artifactId>
+            <artifactId>nami-channel-socketd</artifactId>
         </dependency>
 
         <dependency>

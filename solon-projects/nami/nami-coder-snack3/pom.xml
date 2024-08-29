@@ -11,10 +11,15 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nami.channel.socketd</artifactId>
+    <artifactId>nami-coder-snack3</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
@@ -22,13 +27,8 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.net</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>socketd</artifactId>
-            <version>${socketd.version}</version>
+            <artifactId>snack3</artifactId>
+            <version>${snack3.version}</version>
         </dependency>
     </dependencies>
 

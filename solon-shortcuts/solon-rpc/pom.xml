@@ -23,11 +23,11 @@
         <!-- rpc client -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.okhttp</artifactId>
+            <artifactId>nami-channel-http-okhttp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
+            <artifactId>nami-coder-snack3</artifactId>
         </dependency>
     </dependencies>
 
