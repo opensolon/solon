@@ -10,9 +10,10 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.net</artifactId>
+
+    <artifactId>solon-net-httputils</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
@@ -21,12 +22,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>socketd</artifactId>
-            <version>${socketd.version}</version>
-            <scope>provided</scope>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
     </dependencies>
-
 
 </project>

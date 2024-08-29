@@ -26,9 +26,9 @@
         <module>../../solon-projects/solon-base/solon-mvc</module>
         <module>../../solon-projects/solon-base/solon-hotplug</module>
 
-        <module>../../solon-projects/solon-net/solon.net</module>
-        <module>../../solon-projects/solon-net/solon.net.stomp</module>
-        <module>../../solon-projects/solon-net/solon.net.httputils</module>
+        <module>../../solon-projects/solon-net/solon-net</module>
+        <module>../../solon-projects/solon-net/solon-net-stomp</module>
+        <module>../../solon-projects/solon-net/solon-net-httputils</module>
 
         <module>../../solon-projects/solon-security/solon.security.auth</module>
         <module>../../solon-projects/solon-security/solon.security.vault</module>
