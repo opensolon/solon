@@ -574,6 +574,15 @@ public abstract class Context {
      */
     public abstract MultiMap<String> paramMap();
 
+    /**
+     * 添加参数
+     *
+     * @deprecated 2.9
+     * */
+    @Deprecated
+    public void paramSet(String name, String value) {
+        paramMap().add(name, value);
+    }
 
     /**
      * 获取所有参数并转为map
