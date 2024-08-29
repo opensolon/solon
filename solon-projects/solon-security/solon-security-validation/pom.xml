@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-mvc</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>

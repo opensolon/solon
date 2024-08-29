@@ -298,7 +298,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-mvc</artifactId>
+                <artifactId>solon-web-mvc</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -1635,6 +1635,7 @@
 
             <!-- old plugins:: start -->
 
+            <!-- old::nami -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.http.hutool</artifactId>
@@ -1683,6 +1684,38 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.snack3</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- old::base -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.banner</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.config.yaml</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.hotplug</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.i18n</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.mvc</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.proxy</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

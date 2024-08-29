@@ -10,19 +10,14 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon-boot</artifactId>
+
+    <artifactId>solon.i18n</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <artifactId>solon-i18n</artifactId>
         </dependency>
     </dependencies>
 
