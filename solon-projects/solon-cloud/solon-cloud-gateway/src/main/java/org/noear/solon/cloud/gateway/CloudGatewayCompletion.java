@@ -73,7 +73,7 @@ public class CloudGatewayCompletion implements Subscriber<Void> {
 
             rawResponse.setStatusCode(ctx.newResponse().getStatus());
 
-            for (KeyValues<String> kv : ctx.newResponse().getHeaders().values()) {
+            for (KeyValues<String> kv : ctx.newResponse().getHeaders()) {
                 rawResponse.putHeader(kv.getKey(), kv.getValues());
             }
 

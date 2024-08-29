@@ -43,6 +43,6 @@ public class AddResponseHeaderFilterTest {
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
         assert newResponse.getHeaders().size() == 1;
-        assert "1".equals(newResponse.getHeaders().get("app.ver").getFirstValue());
+        assert "1".equals(newResponse.getHeaders().get("app.ver"));
     }
 }

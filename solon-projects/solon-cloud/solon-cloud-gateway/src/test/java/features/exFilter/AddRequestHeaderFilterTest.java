@@ -45,6 +45,6 @@ public class AddRequestHeaderFilterTest {
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
         assert newRequest.getHeaders().size() == 1;
-        assert "1".equals(newRequest.getHeaders().get("app.ver").getFirstValue());
+        assert "1".equals(newRequest.getHeaders().get("app.ver"));
     }
 }

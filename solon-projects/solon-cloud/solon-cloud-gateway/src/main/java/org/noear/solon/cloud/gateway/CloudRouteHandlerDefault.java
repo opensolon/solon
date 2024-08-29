@@ -75,7 +75,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
             }
 
             //同步 header
-            for (KeyValues<String> kv : ctx.newRequest().getHeaders().values()) {
+            for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
                 req1.putHeader(kv.getKey(), kv.getValues());
             }
 

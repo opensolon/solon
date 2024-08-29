@@ -20,11 +20,9 @@ import io.vertx.core.streams.ReadStream;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
-import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 交换新请求
@@ -37,7 +35,7 @@ public class ExNewRequest {
     private String method;
     private String queryString;
     private String path;
-    private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
+    private MultiMap<String> headers = new MultiMap<>();
     private ExBody body;
 
     /**
@@ -64,15 +62,11 @@ public class ExNewRequest {
         return this;
     }
 
-    private KeyValues<String> headerHolder(String key) {
-        return headers.computeIfAbsent(key, k -> new KeyValues<>(key));
-    }
-
     /**
      * 配置头（替换）
      */
     public ExNewRequest header(String key, String... values) {
-        headerHolder(key).setValues(values);
+        headers.holder(key).setValues(values);
         return this;
     }
 
@@ -80,7 +74,7 @@ public class ExNewRequest {
      * 配置头（替换）
      */
     public ExNewRequest header(String key, List<String> values) {
-        headerHolder(key).setValues(values.toArray(new String[values.size()]));
+        headers.holder(key).setValues(values.toArray(new String[values.size()]));
         return this;
     }
 
@@ -88,7 +82,7 @@ public class ExNewRequest {
      * 添加头（添加）
      */
     public ExNewRequest headerAdd(String key, String value) {
-        headerHolder(key).addValue(value);
+        headers.holder(key).addValue(value);
         return this;
     }
 
@@ -159,7 +153,7 @@ public class ExNewRequest {
     /**
      * 获取头集合
      */
-    public Map<String, KeyValues<String>> getHeaders() {
+    public MultiMap<String> getHeaders() {
         return headers;
     }
 

@@ -43,6 +43,6 @@ public class RedirectToFilterTest {
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
         assert newResponse.getStatus() == 301;
-        assert "/app".equals(newResponse.getHeaders().get("Location").getFirstValue());
+        assert "/app".equals(newResponse.getHeaders().get("Location"));
     }
 }

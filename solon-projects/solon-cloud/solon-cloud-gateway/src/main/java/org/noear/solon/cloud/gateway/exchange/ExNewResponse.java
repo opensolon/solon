@@ -17,11 +17,9 @@ package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.buffer.Buffer;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 交换新响应
@@ -31,22 +29,18 @@ import java.util.Map;
  */
 public class ExNewResponse {
     private int status = 200;
-    private Map<String, KeyValues<String>> headers = new LinkedHashMap<>();
+    private MultiMap<String> headers = new MultiMap<>();
     private Buffer body;
 
     public void status(int code) {
         this.status = code;
     }
 
-    private KeyValues<String> headerHolder(String key) {
-        return headers.computeIfAbsent(key, k -> new KeyValues<>(key));
-    }
-
     /**
      * 配置头（替换）
      */
     public ExNewResponse header(String key, String... values) {
-        headerHolder(key).setValues(values);
+        headers.holder(key).setValues(values);
         return this;
     }
 
@@ -54,7 +48,7 @@ public class ExNewResponse {
      * 配置头（替换）
      */
     public ExNewResponse header(String key, List<String> values) {
-        headerHolder(key).setValues(values.toArray(new String[values.size()]));
+        headers.holder(key).setValues(values);
         return this;
     }
 
@@ -62,7 +56,7 @@ public class ExNewResponse {
      * 添加头（添加）
      */
     public ExNewResponse headerAdd(String key, String value) {
-        headerHolder(key).addValue(value);
+        headers.holder(key).addValue(value);
         return this;
     }
 
@@ -103,7 +97,7 @@ public class ExNewResponse {
     /**
      * 获取头集合
      */
-    public Map<String, KeyValues<String>> getHeaders() {
+    public MultiMap<String> getHeaders() {
         return headers;
     }
 
