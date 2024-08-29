@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.docs.openapi3</artifactId>
+    <artifactId>solon-docs-openapi3</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

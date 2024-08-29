@@ -1,7 +1,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>solon.banner</artifactId>
+    <artifactId>solon-banner</artifactId>
 </dependency>
 ```
 

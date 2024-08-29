@@ -11,7 +11,7 @@ import java.util.function.Function;
  * @author noear
  * @since 2.9
  */
-public class MultiMap<T> implements Iterable<KeyValues<T>>{
+public class MultiMap<T> implements Iterable<KeyValues<T>> {
     protected final IgnoreCaseMap<KeyValues<T>> innerMap = new IgnoreCaseMap<>();
 
     @Override
@@ -121,7 +121,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>{
      *
      * @param key 键
      */
-    public @Nullable T[] getArray(String key, Function<Integer,T[]> initFunction) {
+    public @Nullable T[] getArray(String key, Function<Integer, T[]> initFunction) {
         KeyValues<T> tmp = innerMap.get(key);
         if (tmp == null) {
             return null;
@@ -159,7 +159,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>{
      * 转为单值 Map
      */
     public Map<String, T> toValueMap() {
-        Map<String, T> tmp = new LinkedHashMap<>(size());
+        Map<String, T> tmp = new IgnoreCaseMap<>(size());
         for (KeyValues<T> kv : innerMap.values()) {
             tmp.put(kv.getKey(), kv.getFirstValue());
         }
@@ -171,7 +171,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>{
      * 转为多值 Map
      */
     public Map<String, List<T>> toValuesMap() {
-        Map<String, List<T>> tmp = new LinkedHashMap<>(size());
+        Map<String, List<T>> tmp = new IgnoreCaseMap<>(size());
         for (KeyValues<T> kv : innerMap.values()) {
             tmp.put(kv.getKey(), kv.getValues());
         }

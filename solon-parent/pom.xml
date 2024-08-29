@@ -25,9 +25,9 @@
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
         <solon.version>2.9.2-SNAPSHOT</solon.version>
-        <solon-cloud.version>2.9.1</solon-cloud.version>
-        <solon-admin.version>2.9.1</solon-admin.version>
-        <solon-integration.version>2.9.1</solon-integration.version>
+        <solon-cloud.version>2.9.2-SNAPSHOT</solon-cloud.version>
+        <solon-admin.version>2.9.2-SNAPSHOT</solon-admin.version>
+        <solon-integration.version>2.9.2-SNAPSHOT</solon-integration.version>
 
         <solonx.version>1.0.1</solonx.version>
 
@@ -487,6 +487,7 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- @deprecated 2.9 -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.web.flux</artifactId>
@@ -553,6 +554,7 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- @deprecated 2.5 -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.schedule</artifactId>
@@ -1739,7 +1741,7 @@
             <dependencies>
                 <dependency>
                     <groupId>org.noear</groupId>
-                    <artifactId>solon.aot</artifactId>
+                    <artifactId>solon-aot</artifactId>
                 </dependency>
             </dependencies>
         </profile>

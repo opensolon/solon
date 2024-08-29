@@ -14,7 +14,7 @@ Author noear，iYarnFog
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>solon.health</artifactId>
+    <artifactId>solon-health</artifactId>
 </dependency>
 ```
 

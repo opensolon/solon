@@ -268,7 +268,7 @@
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.websocket</artifactId>-->
+<!--            <artifactId>solon-boot-websocket</artifactId>-->
 <!--        </dependency>-->
 
 
@@ -280,12 +280,12 @@
 
 <!--                    <dependency>-->
 <!--                        <groupId>org.noear</groupId>-->
-<!--                        <artifactId>solon.boot.jdkhttp</artifactId>-->
+<!--                        <artifactId>solon-boot-jdkhttp</artifactId>-->
 <!--                    </dependency>-->
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
+<!--                    <artifactId>solon-boot-jlhttp</artifactId>-->
 <!--                </dependency>-->
 
         <dependency>
@@ -295,35 +295,35 @@
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.vertx</artifactId>-->
+<!--            <artifactId>solon-boot-vertx</artifactId>-->
 <!--        </dependency>-->
 
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.undertow</artifactId>-->
+<!--                    <artifactId>solon-boot-undertow</artifactId>-->
 <!--                </dependency>-->
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.undertow.add.jsp</artifactId>-->
+<!--                    <artifactId>solon-boot-undertow-add-jsp</artifactId>-->
 <!--                </dependency>-->
 
 
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty</artifactId>-->
+<!--                    <artifactId>solon-boot-jetty</artifactId>-->
 <!--                </dependency>-->
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty.add.websocket</artifactId>-->
+<!--                    <artifactId>solon-boot-jetty-add-websocket</artifactId>-->
 <!--                </dependency>-->
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty.add.jsp</artifactId>-->
+<!--                    <artifactId>solon-boot-jetty-add-jsp</artifactId>-->
 <!--                </dependency>-->
 
 
@@ -335,19 +335,14 @@
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.sessionstate.jwt</artifactId>-->
+        <!--            <artifactId>solon-sessionstate-jwt</artifactId>-->
         <!--        </dependency>-->
 
 
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.sessionstate.jedis</artifactId>-->
+<!--            <artifactId>solon-sessionstate-jedis</artifactId>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>org.noear</groupId>
@@ -381,22 +376,22 @@
 
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.serialization.fastjson</artifactId>-->
+<!--                <artifactId>solon-serialization-fastjson</artifactId>-->
 <!--            </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.serialization.fastjson2</artifactId>-->
+<!--            <artifactId>solon-serialization-fastjson2</artifactId>-->
 <!--        </dependency>-->
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.serialization.gson</artifactId>-->
+        <!--            <artifactId>solon-serialization-gson</artifactId>-->
         <!--        </dependency>-->
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.serialization.jackson</artifactId>-->
+        <!--            <artifactId>solon-serialization-jackson</artifactId>-->
         <!--        </dependency>-->
 
                 <dependency>
@@ -407,7 +402,7 @@
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.serialization.xstream</artifactId>-->
+        <!--            <artifactId>solon-serialization-xstream</artifactId>-->
         <!--        </dependency>-->
 
         <dependency>

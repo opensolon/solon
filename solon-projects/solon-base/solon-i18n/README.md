@@ -7,7 +7,7 @@
 <dependencies>
     <dependency>
         <groupId>org.noear</groupId>
-        <artifactId>solon.i18n</artifactId>
+        <artifactId>solon-i18n</artifactId>
     </dependency>
 </dependencies>
 ```

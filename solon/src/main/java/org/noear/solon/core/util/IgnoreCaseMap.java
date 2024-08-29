@@ -38,6 +38,10 @@ public class IgnoreCaseMap<V> implements Map<String, V>, Serializable, Cloneable
         this(16, null);
     }
 
+    public IgnoreCaseMap(int initialCapacity) {
+        this(initialCapacity, null);
+    }
+
     public IgnoreCaseMap(int initialCapacity, Locale locale) {
         this._m = new LinkedHashMap<String, V>(initialCapacity) {
             @Override

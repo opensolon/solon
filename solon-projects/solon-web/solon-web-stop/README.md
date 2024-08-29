@@ -1,7 +1,7 @@
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>solon.web.stop</artifactId>
+    <artifactId>solon-web-stop</artifactId>
 </dependency>
 ```
 
