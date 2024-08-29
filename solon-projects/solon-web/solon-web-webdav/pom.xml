@@ -11,35 +11,20 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.sessionstate.jwt</artifactId>
+    <artifactId>solon-web-webdav</artifactId>
     <packaging>jar</packaging>
-
-    <properties>
-        <jjwt.version>0.11.5</jjwt.version>
-    </properties>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>${jjwt.version}</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -47,6 +32,7 @@
             <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>

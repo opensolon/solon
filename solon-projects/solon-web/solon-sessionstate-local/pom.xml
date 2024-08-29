@@ -11,26 +11,14 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.web.staticfiles</artifactId>
+    <artifactId>solon-sessionstate-local</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-boot-jlhttp</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

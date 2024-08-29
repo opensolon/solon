@@ -11,11 +11,10 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.sessionstate.jedis</artifactId>
+    <artifactId>solon-web-servlet</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-boot</artifactId>
@@ -23,32 +22,22 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-data</artifactId>
+            <artifactId>solon-net</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>redisx</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
+
 
 </project>

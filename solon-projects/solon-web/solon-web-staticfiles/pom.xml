@@ -11,10 +11,11 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.web.servlet</artifactId>
+    <artifactId>solon-web-staticfiles</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-boot</artifactId>
@@ -22,22 +23,16 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-net</artifactId>
+            <artifactId>solon-boot-jlhttp</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
-
 
 </project>

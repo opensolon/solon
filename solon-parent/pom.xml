@@ -483,7 +483,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.cors</artifactId>
+                <artifactId>solon-web-cors</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -495,25 +495,25 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.rx</artifactId>
+                <artifactId>solon-web-rx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.sdl</artifactId>
+                <artifactId>solon-web-sdl</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.sse</artifactId>
+                <artifactId>solon-web-sse</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.stop</artifactId>
+                <artifactId>solon-web-stop</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -531,19 +531,19 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.servlet</artifactId>
+                <artifactId>solon-web-servlet</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.servlet.jakarta</artifactId>
+                <artifactId>solon-web-servlet-jakarta</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.staticfiles</artifactId>
+                <artifactId>solon-web-staticfiles</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -579,22 +579,22 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.sessionstate.redisson</artifactId>
+                <artifactId>solon-sessionstate-redisson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.sessionstate.jedis</artifactId>
+                <artifactId>solon-sessionstate-jedis</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.sessionstate.local</artifactId>
+                <artifactId>solon-sessionstate-local</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.sessionstate.jwt</artifactId>
+                <artifactId>solon-sessionstate-jwt</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

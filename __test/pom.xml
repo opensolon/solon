@@ -99,12 +99,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.cors</artifactId>
+            <artifactId>solon-web-cors</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.rx</artifactId>
+            <artifactId>solon-web-rx</artifactId>
         </dependency>
 
         <dependency>
@@ -188,7 +188,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.staticfiles</artifactId>
+            <artifactId>solon-web-staticfiles</artifactId>
         </dependency>
 
         <dependency>
@@ -203,7 +203,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.stop</artifactId>
+            <artifactId>solon-web-stop</artifactId>
         </dependency>
 
         <dependency>
@@ -351,7 +351,7 @@
 <!--        </dependency>-->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.sessionstate.local</artifactId>
+            <artifactId>solon-sessionstate-local</artifactId>
         </dependency>
 
 

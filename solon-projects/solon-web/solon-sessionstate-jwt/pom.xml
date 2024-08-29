@@ -11,28 +11,42 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.sessionstate.redisson</artifactId>
+    <artifactId>solon-sessionstate-jwt</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
+    <properties>
+        <jjwt.version>0.11.5</jjwt.version>
+    </properties>
 
+
+    <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-boot</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>${redisson.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web</artifactId>
+            <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
