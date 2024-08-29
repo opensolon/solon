@@ -550,6 +550,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-config-plus</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-config-yaml</artifactId>
                 <version>${solon.version}</version>
             </dependency>

@@ -26,12 +26,13 @@
 
 
 ### 2.9.2
+* 新增 solon-config-plus
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
-* 添加 solon.cloud 的分布式注解开关
+* 添加 solon-cloud 的分布式注解开关
 * 添加 solon Context::cookieValues(name) 方法
 * 添加 solon MultiMap 类，用于 Context 能力优化
-* 优化 solon.cloud.gateway body 修改支持
+* 优化 solon-cloud-gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
 
 

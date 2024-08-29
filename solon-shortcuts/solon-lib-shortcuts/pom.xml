@@ -44,6 +44,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon-config-yaml</artifactId>
         </dependency>
+
+        <!-- 配置注入增强组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-config-plus</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

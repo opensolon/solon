@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-config-yaml</artifactId>
+    <artifactId>solon-config-plus</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -22,20 +22,8 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-config-plus</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>snack3</artifactId>
         </dependency>
-
-
     </dependencies>
 
 
