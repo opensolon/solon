@@ -304,7 +304,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot</artifactId>
+                <artifactId>solon-boot-core</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -732,38 +732,38 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud</artifactId>
+                <artifactId>solon-cloud-core</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud.gateway</artifactId>
+                <artifactId>solon-cloud-gateway</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud.eventplus</artifactId>
+                <artifactId>solon-cloud-eventplus</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <!-- @deprecated 2.9 -->
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud.httputils</artifactId>
+                <artifactId>solon-cloud-httputils</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud.tracing</artifactId>
+                <artifactId>solon-cloud-tracing</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cloud.metrics</artifactId>
+                <artifactId>solon-cloud-metrics</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

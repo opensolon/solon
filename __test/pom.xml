@@ -79,12 +79,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud.httputils</artifactId>
+            <artifactId>solon-cloud-httputils</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud.eventplus</artifactId>
+            <artifactId>solon-cloud-eventplus</artifactId>
         </dependency>
 
         <dependency>
