@@ -16,26 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-shortcuts/solon-beetl-web</module>
-        <module>../../solon-shortcuts/solon-enjoy-web</module>
-
         <module>../../solon-shortcuts/solon-lib</module>
-        <module>../../solon-shortcuts/solon-job</module>
-        <module>../../solon-shortcuts/solon-api</module>
-
         <module>../../solon-shortcuts/solon-web</module>
-        <module>../../solon-shortcuts/solon-web-beetl</module>
-        <module>../../solon-shortcuts/solon-web-enjoy</module>
-
-        <module>../../solon-shortcuts/solon-rpc</module>
-        <module>../../solon-shortcuts/solon-cloud</module>
-        <module>../../solon-shortcuts/solon-cloud-alibaba</module>
-        <module>../../solon-shortcuts/solon-cloud-water</module>
-
-
-        <module>../../solon-shortcuts/solon-lib-shortcuts</module>
-        <module>../../solon-shortcuts/solon-job-shortcuts</module>
-        <module>../../solon-shortcuts/solon-web-shortcuts</module>
-
     </modules>
 </project>

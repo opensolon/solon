@@ -34,6 +34,7 @@
 * 添加 solon MultiMap 类，用于 Context 能力优化
 * 优化 solon-cloud-gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
+* 调整 快捷方式只保留：solon-lib 和 solon-web（原 solon-web 去掉 view，方便自选）
 * 移除 solon.test
 * 移除 solon.web.flux
 
