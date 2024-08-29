@@ -11,14 +11,14 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.undertow</artifactId>
+    <artifactId>solon-boot-undertow</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
+            <artifactId>solon-boot</artifactId>
         </dependency>
 
         <dependency>

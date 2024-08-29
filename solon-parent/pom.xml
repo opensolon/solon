@@ -304,79 +304,79 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot</artifactId>
+                <artifactId>solon-boot</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jdkhttp</artifactId>
+                <artifactId>solon-boot-jdkhttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jlhttp</artifactId>
+                <artifactId>solon-boot-jlhttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.smarthttp</artifactId>
+                <artifactId>solon-boot-smarthttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.vertx</artifactId>
+                <artifactId>solon-boot-vertx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jetty</artifactId>
+                <artifactId>solon-boot-jetty</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jetty.add.jsp</artifactId>
+                <artifactId>solon-boot-jetty-add-jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jetty.add.websocket</artifactId>
+                <artifactId>solon-boot-jetty-add-websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.undertow</artifactId>
+                <artifactId>solon-boot-undertow</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.undertow.add.jsp</artifactId>
+                <artifactId>solon-boot-undertow-add-jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.websocket</artifactId>
+                <artifactId>solon-boot-websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.websocket.netty</artifactId>
+                <artifactId>solon-boot-websocket-netty</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd</artifactId>
+                <artifactId>solon-boot-socketd</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

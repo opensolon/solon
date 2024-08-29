@@ -11,14 +11,24 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
-    <artifactId>solon.boot.jdkhttp</artifactId>
+    <artifactId>solon-boot-socketd</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
+            <artifactId>solon-boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.net</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>socketd</artifactId>
+            <version>${socketd.version}</version>
         </dependency>
     </dependencies>
 

@@ -263,7 +263,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.socketd</artifactId>
+            <artifactId>solon-boot-socketd</artifactId>
         </dependency>
 
 <!--        <dependency>-->
@@ -274,7 +274,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket.netty</artifactId>
+            <artifactId>solon-boot-websocket-netty</artifactId>
         </dependency>
 
 
@@ -290,7 +290,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
+            <artifactId>solon-boot-smarthttp</artifactId>
         </dependency>
 
 <!--        <dependency>-->

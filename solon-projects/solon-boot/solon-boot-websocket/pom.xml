@@ -11,13 +11,14 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.smarthttp</artifactId>
+    <artifactId>solon-boot-websocket</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
+            <artifactId>solon-boot</artifactId>
         </dependency>
 
         <dependency>
@@ -25,38 +26,18 @@
             <artifactId>solon.net</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.github.smartboot.http</groupId>
-            <artifactId>smart-http-server</artifactId>
-            <version>${smarthttp.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.smartboot.socket</groupId>
-                    <artifactId>aio-pro</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
-            <groupId>io.github.smartboot.socket</groupId>
-            <artifactId>aio-pro</artifactId>
-            <version>${smartsocket.version}</version>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>${java-websocket.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
