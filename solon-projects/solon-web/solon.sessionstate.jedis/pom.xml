@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.data</artifactId>
+            <artifactId>solon-data-core</artifactId>
         </dependency>
 
         <dependency>

@@ -268,25 +268,25 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.caffeine</artifactId>
+                <artifactId>solon-cache-caffeine</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.redisson</artifactId>
+                <artifactId>solon-cache-redisson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.jedis</artifactId>
+                <artifactId>solon-cache-jedis</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.spymemcached</artifactId>
+                <artifactId>solon-cache-spymemcached</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -402,17 +402,17 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.data</artifactId>
+                <artifactId>solon-data-core</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.data.dynamicds</artifactId>
+                <artifactId>solon-data-dynamicds</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.data.shardingds</artifactId>
+                <artifactId>solon-data-shardingds</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

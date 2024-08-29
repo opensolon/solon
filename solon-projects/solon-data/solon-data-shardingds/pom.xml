@@ -11,13 +11,13 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.data.shardingds</artifactId>
+    <artifactId>solon-data-shardingds</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.data</artifactId>
+            <artifactId>solon-data-core</artifactId>
         </dependency>
 
         <dependency>

@@ -24,7 +24,7 @@
         <!-- 提供事务、缓存支持 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.data</artifactId>
+            <artifactId>solon-data-core</artifactId>
         </dependency>
 
         <!-- 加强的动态代理支持组件 -->
