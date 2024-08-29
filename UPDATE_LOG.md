@@ -24,21 +24,28 @@
 ### 3.0
 
 
-|                  | 操作 |                  |
-|------------------|----|------------------|
-| ctx.filesMap()   | 修改 | ctx.fileMap()    |
-| ctx.files(name)  | 修改 | ctx.fileValues() |
-| ctx.paramsMap()  | 删除 |                  |
-| ctx.headersMap() | 删除   |                  |
-| NvMap:Map        | | :Iterable<KeyValues<T>>                |
-
 
 ### 2.9.2
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
 * 添加 solon.cloud 的分布式注解开关
+* 添加 solon Context::cookieValues(name) 方法
+* 添加 solon MultiMap 类，用于 Context 能力优化
 * 优化 solon.cloud.gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
+
+
+|                       | 操作    |                        |
+|-----------------------|-------|------------------------|
+| ctx.paramsMap()       | 弃用    |                        |
+| ctx.headersMap()      | 弃用    |                        |
+| ctx.filesMap()        | 弃用    |          |
+| ctx.files(name)       | 弃用，新增 | ctx.fileValues()       |
+| ctx.paramMap():NvMap  | 调整    | ctx.paramMap():MultiMap |
+| ctx.headerMap():NvMap | 调整    | ctx.headerMap():MultiMap |
+| ctx.cookieMap():NvMap | 调整    | ctx.cookieMap():MultiMap |
+| ctx.fileMap():NvMap   | 调整    | ctx.fileMap():MultiMap |
+
 
 ### 2.9.1
 * 新增 solon.boot.vertx 插件，支持 cloud gateway 开发与 web 开发

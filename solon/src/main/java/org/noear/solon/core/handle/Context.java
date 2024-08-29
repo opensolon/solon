@@ -599,6 +599,16 @@ public abstract class Context {
     public abstract MultiMap<UploadedFile> fileMap() throws IOException;
 
     /**
+     * 获取所有上传文件并转为map
+     *
+     * @deprecated 2.9
+     * */
+    @Deprecated
+    public Map<String,List<UploadedFile>> filesMap() throws IOException{
+        return fileMap().toValuesMap();
+    }
+
+    /**
      * 删除所有上传文件
      */
     public abstract void filesDelete() throws IOException;
