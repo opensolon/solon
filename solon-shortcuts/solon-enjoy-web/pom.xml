@@ -30,7 +30,7 @@
         <!-- enjoy 模板支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.enjoy</artifactId>
+            <artifactId>solon-view-enjoy</artifactId>
         </dependency>
 
         <!-- activerecord 支持组件 -->

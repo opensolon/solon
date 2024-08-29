@@ -11,15 +11,14 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.view.freemarker</artifactId>
+    <artifactId>solon-view-enjoy</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view</artifactId>
+            <artifactId>solon-view</artifactId>
         </dependency>
 
         <dependency>
@@ -29,9 +28,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>enjoy</artifactId>
+            <version>${enjoy.version}</version>
         </dependency>
 
     </dependencies>

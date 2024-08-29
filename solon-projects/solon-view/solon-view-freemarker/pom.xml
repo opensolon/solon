@@ -11,14 +11,15 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.view.velocity</artifactId>
+    <artifactId>solon-view-freemarker</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view</artifactId>
+            <artifactId>solon-view</artifactId>
         </dependency>
 
         <dependency>
@@ -28,22 +29,11 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <version>${velocity.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
 </project>

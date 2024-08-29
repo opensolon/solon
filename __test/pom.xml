@@ -329,7 +329,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.jsp</artifactId>
+            <artifactId>solon-view-jsp</artifactId>
         </dependency>
 
 
@@ -412,23 +412,23 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.freemarker</artifactId>
+            <artifactId>solon-view-freemarker</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.thymeleaf</artifactId>
+            <artifactId>solon-view-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.enjoy</artifactId>
+            <artifactId>solon-view-enjoy</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.beetl</artifactId>
+            <artifactId>solon-view-beetl</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.velocity</artifactId>
+            <artifactId>solon-view-velocity</artifactId>
         </dependency>
 
         <dependency>

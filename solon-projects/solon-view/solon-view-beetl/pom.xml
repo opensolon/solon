@@ -11,14 +11,15 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.view.enjoy</artifactId>
+    <artifactId>solon-view-beetl</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view</artifactId>
+            <artifactId>solon-view</artifactId>
         </dependency>
 
         <dependency>
@@ -28,9 +29,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>enjoy</artifactId>
-            <version>${enjoy.version}</version>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl</artifactId>
+            <version>${beetl.version}</version>
         </dependency>
 
     </dependencies>

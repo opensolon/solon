@@ -30,7 +30,7 @@
         <!-- beetl模板支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.beetl</artifactId>
+            <artifactId>solon-view-beetl</artifactId>
         </dependency>
 
         <!-- beetlsql支持组件 -->
