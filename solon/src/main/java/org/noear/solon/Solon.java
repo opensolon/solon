@@ -55,7 +55,7 @@ public class Solon {
      * 框架版本码
      */
     public static int versionCode(){
-        return 20806;
+        return 20902;
     }
 
     /**

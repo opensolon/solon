@@ -10,16 +10,15 @@
         <version>2.9.2-SNAPSHOT</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.banner</artifactId>
+
+    <!-- 添加事务支持和缓存支持 -->
+    <artifactId>solon.data</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-config-banner</artifactId>
+            <artifactId>solon-data</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>
