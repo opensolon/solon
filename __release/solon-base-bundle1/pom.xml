@@ -53,7 +53,6 @@
         <module>../../solon-projects/solon-native_old/solon.aot</module>
 
         <module>../../solon-projects/solon-net_old/solon.net</module>
-        <module>../../solon-projects/solon-net_old/solon.net.stomp</module>
         <module>../../solon-projects/solon-net_old/solon.net.httputils</module>
     </modules>
 </project>

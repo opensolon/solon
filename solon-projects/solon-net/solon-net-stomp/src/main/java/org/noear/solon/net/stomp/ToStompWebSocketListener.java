@@ -16,8 +16,8 @@
 package org.noear.solon.net.stomp;
 
 
-import org.noear.snack.core.utils.StringUtil;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.annotation.ServerEndpoint;
@@ -55,7 +55,7 @@ public abstract class ToStompWebSocketListener implements WebSocketListener, Sub
 
     public ToStompWebSocketListener(StompListener listener) {
         ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
-        if(serverEndpoint == null || StringUtil.isEmpty(serverEndpoint.value())){
+        if(serverEndpoint == null || Utils.isEmpty(serverEndpoint.value())){
             throw new RuntimeException("Path is not null");
         }
         this.stompMessageOperations = new StompMessageOperations();
