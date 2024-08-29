@@ -1412,22 +1412,6 @@
 
             <!-- solon-cloud:: end -->
 
-
-            <!-- for logging -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>log4j2-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>logback-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-swagger2-knife4j</artifactId>

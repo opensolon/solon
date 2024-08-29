@@ -38,6 +38,8 @@
 * 移除 旧包 solon.test（改用 solon-test）
 * 移除 旧包 solon.web.flux（改用 solon-web-rx）
 * 移除 旧包 detector-solon-plugin（改用 solon-health-detector）
+* 移除 旧包 log4j2-solon-plugin（改用 solon.logging.log4j2）
+* 移除 旧包 logback-solon-plugin（改用 solon.logging.logback）
 * 移除 旧包 solon.extend.schedule
 
 
