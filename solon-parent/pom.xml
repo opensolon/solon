@@ -1629,9 +1629,65 @@
                 <artifactId>mapstruct-plus-solon-plugin</artifactId>
                 <version>${dromara-plugins.version}</version>
             </dependency>
-        </dependencies>
 
-        <!-- dromara plugins:: end -->
+            <!-- dromara plugins:: end -->
+
+
+            <!-- old plugins:: start -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.http.hutool</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.http.okhttp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fastjson</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fastjson2</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fury</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.hessian</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.jackson</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.protostuff</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.snack3</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <!-- old plugins:: end -->
+        </dependencies>
     </dependencyManagement>
 
 
