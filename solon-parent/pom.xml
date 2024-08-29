@@ -1838,6 +1838,23 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::security -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.security.auth</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.security.validation</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.security.vault</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>
