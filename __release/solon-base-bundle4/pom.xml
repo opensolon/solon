@@ -25,7 +25,6 @@
         <module>../../solon-projects/solon-scheduling/solon-scheduling</module>
         <module>../../solon-projects/solon-scheduling/solon-scheduling-simple</module>
         <module>../../solon-projects/solon-scheduling/solon-scheduling-quartz</module>
-        <module>../../solon-projects/solon-scheduling/solon.extend.schedule</module>
 
         <module>../../solon-projects/solon-view/solon-view</module>
         <module>../../solon-projects/solon-view/solon-view-freemarker</module>
