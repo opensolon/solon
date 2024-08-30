@@ -708,6 +708,7 @@
                 <artifactId>solon-view-jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-view-velocity</artifactId>
@@ -1912,6 +1913,42 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::view -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.beetl</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.enjoy</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.freemarker</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.jsp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.thymeleaf</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.velocity</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
 
             <!-- old plugins:: end -->
         </dependencies>
