@@ -55,14 +55,14 @@ public class Solon {
      * 框架版本码
      */
     public static int versionCode(){
-        return 20902;
+        return 30000;
     }
 
     /**
      * 框架版本号
      */
     public static String version() {
-        return "2.9.2";
+        return "3.0.0";
     }
 
     /**
