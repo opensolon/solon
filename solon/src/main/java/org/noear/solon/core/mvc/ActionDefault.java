@@ -302,7 +302,13 @@ public class ActionDefault extends HandlerAide implements Action {
                 c.result = executeDo(c, obj);
 
                 //设定输出产品（放在这个位置正好）
-                if (Utils.isEmpty(mProduces) == false) {
+                if (Utils.isEmpty(mProduces)) {
+                    String tmp = c.accept();
+                    if (Utils.isNotEmpty(tmp) && tmp.indexOf(',') < 0) {
+                        //如果是单个
+                        c.contentType(tmp);
+                    }
+                } else {
                     c.accept(mProduces);
                     c.contentType(mProduces);
                 }
