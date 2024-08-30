@@ -49,6 +49,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon-web-cors</artifactId>
         </dependency>
+
+        <!-- 参数与实体验证扩展组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-security-validation</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

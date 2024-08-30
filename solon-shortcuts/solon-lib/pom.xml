@@ -21,7 +21,7 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-        <!-- 提供事务、缓存支持 -->
+        <!-- 提供事务、缓存、数据源构建支持 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-data</artifactId>
@@ -33,13 +33,7 @@
             <artifactId>solon-proxy</artifactId>
         </dependency>
 
-        <!-- 验证扩展组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-security-validation</artifactId>
-        </dependency>
-
-        <!-- yml配置支持组件 -->
+        <!-- yml配置解析支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-config-yaml</artifactId>
