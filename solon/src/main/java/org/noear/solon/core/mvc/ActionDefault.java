@@ -304,8 +304,8 @@ public class ActionDefault extends HandlerAide implements Action {
                 //设定输出产品（放在这个位置正好）
                 if (Utils.isEmpty(mProduces)) {
                     String tmp = c.accept();
-                    if (Utils.isNotEmpty(tmp) && tmp.indexOf(',') < 0) {
-                        //如果是单个
+                    if (c.contentTypeNew() == null && tmp != null && tmp.indexOf(',') < 0) {
+                        //如果未设过；且是单个内容类型
                         c.contentType(tmp);
                     }
                 } else {
