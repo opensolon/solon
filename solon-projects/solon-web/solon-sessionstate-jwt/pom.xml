@@ -18,7 +18,6 @@
         <jjwt.version>0.11.5</jjwt.version>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -41,18 +40,6 @@
             <artifactId>jjwt-impl</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>
