@@ -100,11 +100,32 @@ This project includes:
   SnakeYAML under Apache License, Version 2.0
   socketd under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle6 under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-jdkhttp under The Apache Software License, Version 2.0
+  solon-boot-jetty under The Apache Software License, Version 2.0
+  solon-boot-jetty-add-jsp under The Apache Software License, Version 2.0
+  solon-boot-jetty-add-websocket under The Apache Software License, Version 2.0
+  solon-boot-jlhttp under The Apache Software License, Version 2.0
+  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-boot-socketd under The Apache Software License, Version 2.0
+  solon-boot-undertow under The Apache Software License, Version 2.0
+  solon-boot-undertow-add-jsp under The Apache Software License, Version 2.0
+  solon-boot-vertx under The Apache Software License, Version 2.0
+  solon-boot-websocket under The Apache Software License, Version 2.0
+  solon-boot-websocket-netty under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
   solon-test-junit4 under The Apache Software License, Version 2.0
   solon-test-junit5 under The Apache Software License, Version 2.0
-  solon.aot under The Apache Software License, Version 2.0
+  solon-web-servlet under The Apache Software License, Version 2.0
   solon.boot under The Apache Software License, Version 2.0
   solon.boot.jdkhttp under The Apache Software License, Version 2.0
   solon.boot.jetty under The Apache Software License, Version 2.0
@@ -118,15 +139,6 @@ This project includes:
   solon.boot.vertx under The Apache Software License, Version 2.0
   solon.boot.websocket under The Apache Software License, Version 2.0
   solon.boot.websocket.netty under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.net.httputils under The Apache Software License, Version 2.0
-  solon.proxy under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
-  solon.test under The Apache Software License, Version 2.0
-  solon.web.servlet under The Apache Software License, Version 2.0
   Undertow Core under Apache License Version 2.0
   Undertow Servlet under Apache License Version 2.0
   Vert.x Core under The Apache Software License, Version 2.0 or Eclipse Public License - v 2.0

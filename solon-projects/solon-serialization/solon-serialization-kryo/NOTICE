@@ -16,7 +16,6 @@ This project includes:
   Kryo 5 under 3-Clause BSD License
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.serialization under The Apache Software License, Version 2.0
-  solon.serialization.kryo under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-kryo under The Apache Software License, Version 2.0
 

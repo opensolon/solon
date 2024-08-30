@@ -111,10 +111,8 @@ This project includes:
   Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
   Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   Kryo under 3-Clause BSD License
-  log4j2-solon-plugin under The Apache Software License, Version 2.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
-  logback-solon-plugin under The Apache Software License, Version 2.0
   mchange-commons-java under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
   MinLog under 3-Clause BSD License
   mockito-core under The MIT License
@@ -230,43 +228,56 @@ This project includes:
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-api under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle2 under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-cache-caffeine under The Apache Software License, Version 2.0
+  solon-cache-jedis under The Apache Software License, Version 2.0
+  solon-cache-redisson under The Apache Software License, Version 2.0
+  solon-cache-spymemcached under The Apache Software License, Version 2.0
+  solon-cloud-core under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-data-dynamicds under The Apache Software License, Version 2.0
+  solon-data-shardingds under The Apache Software License, Version 2.0
+  solon-docs under The Apache Software License, Version 2.0
+  solon-docs-openapi2 under The Apache Software License, Version 2.0
   solon-docs-openapi2-javadoc under The Apache Software License, Version 2.0
+  solon-health under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
+  solon-logging under The Apache Software License, Version 2.0
+  solon-logging-log4j2 under The Apache Software License, Version 2.0
+  solon-logging-logback under The Apache Software License, Version 2.0
+  solon-logging-simple under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
   solon-openapi2-knife4j under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-security-validation under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-sessionstate-local under The Apache Software License, Version 2.0
   solon-swagger2-knife4j under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
-  solon.aot under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.smarthttp under The Apache Software License, Version 2.0
+  solon-web under The Apache Software License, Version 2.0
+  solon-web-cors under The Apache Software License, Version 2.0
+  solon-web-staticfiles under The Apache Software License, Version 2.0
   solon.cache.caffeine under The Apache Software License, Version 2.0
   solon.cache.jedis under The Apache Software License, Version 2.0
   solon.cache.redisson under The Apache Software License, Version 2.0
   solon.cache.spymemcached under The Apache Software License, Version 2.0
-  solon.cloud under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
   solon.data under The Apache Software License, Version 2.0
   solon.data.dynamicds under The Apache Software License, Version 2.0
   solon.data.shardingds under The Apache Software License, Version 2.0
   solon.docs under The Apache Software License, Version 2.0
   solon.docs.openapi2 under The Apache Software License, Version 2.0
-  solon.health under The Apache Software License, Version 2.0
   solon.logging under The Apache Software License, Version 2.0
   solon.logging.log4j2 under The Apache Software License, Version 2.0
   solon.logging.logback under The Apache Software License, Version 2.0
   solon.logging.simple under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.net.httputils under The Apache Software License, Version 2.0
-  solon.proxy under The Apache Software License, Version 2.0
-  solon.security.validation under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
-  solon.serialization under The Apache Software License, Version 2.0
-  solon.serialization.snack3 under The Apache Software License, Version 2.0
-  solon.test under The Apache Software License, Version 2.0
-  solon.web.cors under The Apache Software License, Version 2.0
-  solon.web.staticfiles under The Apache Software License, Version 2.0
   Spymemcached under The Apache Software License, Version 2.0
   swagger-annotations under Apache License 2.0
   swagger-models under Apache License 2.0

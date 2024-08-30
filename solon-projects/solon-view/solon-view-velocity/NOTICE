@@ -17,9 +17,8 @@ This project includes:
   Apache Velocity - Engine under Apache License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.security.auth under The Apache Software License, Version 2.0
-  solon.view under The Apache Software License, Version 2.0
-  solon.view.velocity under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-security-auth under The Apache Software License, Version 2.0
+  solon-view under The Apache Software License, Version 2.0
+  solon-view-velocity under The Apache Software License, Version 2.0
 

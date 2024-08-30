@@ -13,8 +13,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  aio-core under The Apache License, Version 2.0
-  aio-pro under The Apache License, Version 2.0
   AOP alliance under Public Domain
   Apache Commons IO under Apache-2.0
   Apache Commons Lang under Apache License, Version 2.0
@@ -83,47 +81,50 @@ This project includes:
   Plexus Security Dispatcher Component under Apache License, Version 2.0
   reactive-streams under MIT-0
   SLF4J API Module under MIT License
-  smart-http-common under The Apache License, Version 2.0
-  smart-http-server under The Apache License, Version 2.0
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   socketd under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-api under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle1 under The Apache Software License, Version 2.0
-  solon-lib under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-config-banner under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-hotplug under The Apache Software License, Version 2.0
+  solon-i18n under The Apache Software License, Version 2.0
   solon-loader under The Apache Software License, Version 2.0
+  solon-logging under The Apache Software License, Version 2.0
+  solon-logging-logback under The Apache Software License, Version 2.0
   solon-maven-plugin under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-net-stomp under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-security-auth under The Apache Software License, Version 2.0
+  solon-security-validation under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
   solon-springboot-starter under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
+  solon-web-mvc under The Apache Software License, Version 2.0
+  solon-web-servlet under The Apache Software License, Version 2.0
   solon.aot under The Apache Software License, Version 2.0
   solon.auth under The Apache Software License, Version 2.0
   solon.banner under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.smarthttp under The Apache Software License, Version 2.0
   solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
   solon.hotplug under The Apache Software License, Version 2.0
   solon.i18n under The Apache Software License, Version 2.0
-  solon.logging under The Apache Software License, Version 2.0
-  solon.logging.logback under The Apache Software License, Version 2.0
   solon.mvc under The Apache Software License, Version 2.0
   solon.net under The Apache Software License, Version 2.0
   solon.net.httputils under The Apache Software License, Version 2.0
-  solon.net.stomp under The Apache Software License, Version 2.0
   solon.proxy under The Apache Software License, Version 2.0
-  solon.rx under The Apache Software License, Version 2.0
   solon.security.auth under The Apache Software License, Version 2.0
   solon.security.validation under The Apache Software License, Version 2.0
   solon.security.vault under The Apache Software License, Version 2.0
-  solon.serialization under The Apache Software License, Version 2.0
-  solon.serialization.snack3 under The Apache Software License, Version 2.0
-  solon.test under The Apache Software License, Version 2.0
   solon.validation under The Apache Software License, Version 2.0
   solon.vault under The Apache Software License, Version 2.0
-  solon.web.cors under The Apache Software License, Version 2.0
-  solon.web.servlet under The Apache Software License, Version 2.0
-  solon.web.staticfiles under The Apache Software License, Version 2.0
   Spring AOP under Apache License, Version 2.0
   Spring Beans under Apache License, Version 2.0
   Spring Boot under Apache License, Version 2.0

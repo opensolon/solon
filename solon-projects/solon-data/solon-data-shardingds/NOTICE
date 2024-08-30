@@ -177,10 +177,11 @@ This project includes:
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.data.shardingds under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-data-shardingds under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
   TransmittableThreadLocal(TTL) under Apache 2
   Truffle API under Universal Permissive License, Version 1.0
   Uzaygezen-core under The Apache Software License, Version 2.0

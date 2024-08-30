@@ -25,11 +25,10 @@ This project includes:
   JBoss Threads under Apache License 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.undertow under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.web.servlet under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-undertow under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-web-servlet under The Apache Software License, Version 2.0
   Undertow Core under Apache License Version 2.0
   Undertow Servlet under Apache License Version 2.0
   WildFly Client Configuration under Apache License 2.0

@@ -17,8 +17,7 @@ This project includes:
   Jakarta WebSocket - Server API under Eclipse Public License v. 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.web.servlet.jakarta under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-web-servlet-jakarta under The Apache Software License, Version 2.0
 

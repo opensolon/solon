@@ -15,5 +15,5 @@ limitations under the License.
 This project includes:
   reactive-streams under MIT-0
   solon under The Apache Software License, Version 2.0
-  solon.rx under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
 

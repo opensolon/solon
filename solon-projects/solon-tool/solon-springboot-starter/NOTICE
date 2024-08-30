@@ -16,11 +16,10 @@ This project includes:
   Java Servlet API under CDDL + GPLv2 with classpath exception
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
   solon-springboot-starter under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.web.servlet under The Apache Software License, Version 2.0
+  solon-web-servlet under The Apache Software License, Version 2.0
   Spring AOP under Apache License, Version 2.0
   Spring Beans under Apache License, Version 2.0
   Spring Boot under Apache License, Version 2.0

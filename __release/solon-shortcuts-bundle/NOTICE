@@ -13,123 +13,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  activerecord under The Apache Software License, Version 2.0
-  activerecord-solon-plugin under The Apache Software License, Version 2.0
   aio-core under The Apache License, Version 2.0
   aio-pro under The Apache License, Version 2.0
-  annotations-api under Apache License, Version 2.0
-  ANTLR 4 Runtime under The BSD License
-  Apache Commons Codec under Apache License, Version 2.0
-  Apache Commons Logging under The Apache Software License, Version 2.0
-  Apache Commons Pool under Apache License, Version 2.0
-  Apache FreeMarker under Apache License, Version 2.0
-  Apache HttpAsyncClient under Apache License, Version 2.0
-  Apache HttpClient under Apache License, Version 2.0
-  Apache HttpCore under Apache License, Version 2.0
-  Apache HttpCore NIO under Apache License, Version 2.0
   asm under BSD-3-Clause
-  beetl under BSD License
-  beetl-core under BSD License
-  beetl-default-antlr4.9-support under BSD License
-  beetl-ext under BSD License
-  beetlsql under The "BSD license
-  beetlsql-solon-plugin under The Apache Software License, Version 2.0
-  Byte Buddy (without dependencies) under Apache License, Version 2.0
-  consul-solon-cloud-plugin under The Apache Software License, Version 2.0
-  Ecwid Consul API under The Apache License, Version 2.0
-  enjoy under The Apache Software License, Version 2.0
-  Gson under Apache-2.0
-  HdrHistogram under Public Domain, per Creative Commons CC0 or BSD-2-Clause
-  HikariCP under The Apache Software License, Version 2.0
-  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
-  Jackson-annotations under The Apache Software License, Version 2.0
-  Jackson-core under The Apache Software License, Version 2.0
-  jackson-databind under The Apache Software License, Version 2.0
-  java-cron under GNU General Public License v2.0
-  Jedis under MIT
-  JSON in Java under Public Domain
-  JSQLParser library under GNU Library or Lesser General Public License (LGPL) V2.1 or The Apache Software License, Version 2.0
-  Kotlin Stdlib under The Apache License, Version 2.0
-  Kotlin Stdlib Common under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
-  LatencyUtils under Public Domain, per Creative Commons CC0
-  Log4j Implemented Over SLF4J under Apache Software Licenses
-  micrometer-core under The Apache Software License, Version 2.0
-  MongoDB Java Driver (unmaintained) under The Apache License, Version 2.0
-  mongox under The Apache Software License, Version 2.0
-  nacos-auth-plugin 2.3.2 under Apache License, Version 2.0
-  nacos-client 2.3.2 under Apache License, Version 2.0
-  nacos-encryption-plugin 2.3.2 under Apache License, Version 2.0
-  nacos2-solon-cloud-plugin under The Apache Software License, Version 2.0
-  nami under The Apache Software License, Version 2.0
-  nami.channel.http.okhttp under The Apache Software License, Version 2.0
-  nami.coder.snack3 under The Apache Software License, Version 2.0
-  okhttp under The Apache Software License, Version 2.0
-  okio under The Apache Software License, Version 2.0
-  Prometheus Java Simpleclient under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - Common under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - OpenTelemetry under The Apache Software License, Version 2.0
-  Prometheus Java Span Context Supplier - OpenTelemetry Agent under The Apache Software License, Version 2.0
-  redisx under The Apache Software License, Version 2.0
-  rocketmq-client-java under Apache License, Version 2.0
-  rocketmq5-solon-cloud-plugin under The Apache Software License, Version 2.0
-  sentinel-core under Apache License, Version 2.0
-  sentinel-solon-cloud-plugin under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-api under The Apache Software License, Version 2.0
-  solon-beetl-web under The Apache Software License, Version 2.0
-  solon-cloud under The Apache Software License, Version 2.0
-  solon-cloud-alibaba under The Apache Software License, Version 2.0
-  solon-cloud-water under The Apache Software License, Version 2.0
-  solon-enjoy-web under The Apache Software License, Version 2.0
-  solon-job under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
-  solon-rpc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-security-validation under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-sessionstate-local under The Apache Software License, Version 2.0
   solon-shortcuts-bundle under The Apache Software License, Version 2.0
   solon-web under The Apache Software License, Version 2.0
-  solon-web-beetl under The Apache Software License, Version 2.0
-  solon-web-enjoy under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.smarthttp under The Apache Software License, Version 2.0
-  solon.cloud under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.health under The Apache Software License, Version 2.0
-  solon.logging under The Apache Software License, Version 2.0
-  solon.logging.simple under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.proxy under The Apache Software License, Version 2.0
-  solon.scheduling under The Apache Software License, Version 2.0
-  solon.scheduling.simple under The Apache Software License, Version 2.0
-  solon.security.validation under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
-  solon.serialization under The Apache Software License, Version 2.0
-  solon.serialization.snack3 under The Apache Software License, Version 2.0
-  solon.sessionstate.local under The Apache Software License, Version 2.0
-  solon.view under The Apache Software License, Version 2.0
-  solon.view.beetl under The Apache Software License, Version 2.0
-  solon.view.enjoy under The Apache Software License, Version 2.0
-  solon.view.freemarker under The Apache Software License, Version 2.0
-  solon.web.cors under The Apache Software License, Version 2.0
-  solon.web.staticfiles under The Apache Software License, Version 2.0
-  Spymemcached under The Apache Software License, Version 2.0
-  sql-core under The "BSD license
-  sql-fetch under The "BSD license
-  sql-gen under The "BSD license
-  sql-mapper under The "BSD license
-  sql-solon-plugin under The "BSD license
-  sql-util under The "BSD license
-  water-solon-cloud-plugin under The Apache Software License, Version 2.0
-  water.client under The Apache Software License, Version 2.0
-  water.utils under The Apache Software License, Version 2.0
-  wood under The Apache Software License, Version 2.0
-  wood.cache.memcached under The Apache Software License, Version 2.0
-  wood.cache.redis under The Apache Software License, Version 2.0
+  solon-web-cors under The Apache Software License, Version 2.0
+  solon-web-staticfiles under The Apache Software License, Version 2.0
 

@@ -28,8 +28,7 @@ This project includes:
   Netty/Transport/Native/Unix/Common under Apache License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.vertx under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-vertx under The Apache Software License, Version 2.0
   Vert.x Core under The Apache Software License, Version 2.0 or Eclipse Public License - v 2.0
 

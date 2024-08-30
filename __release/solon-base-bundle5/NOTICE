@@ -62,15 +62,27 @@ This project includes:
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
   solon-base-bundle5 under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-fastjson under The Apache Software License, Version 2.0
+  solon-serialization-fastjson2 under The Apache Software License, Version 2.0
+  solon-serialization-fury under The Apache Software License, Version 2.0
+  solon-serialization-gson under The Apache Software License, Version 2.0
+  solon-serialization-hessian under The Apache Software License, Version 2.0
+  solon-serialization-jackson under The Apache Software License, Version 2.0
+  solon-serialization-jackson-xml under The Apache Software License, Version 2.0
+  solon-serialization-kryo under The Apache Software License, Version 2.0
+  solon-serialization-properties under The Apache Software License, Version 2.0
+  solon-serialization-protostuff under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
-  solon.aot under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net.httputils under The Apache Software License, Version 2.0
-  solon.proxy under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
   solon.serialization under The Apache Software License, Version 2.0
   solon.serialization.fastjson under The Apache Software License, Version 2.0
   solon.serialization.fastjson2 under The Apache Software License, Version 2.0
@@ -79,11 +91,9 @@ This project includes:
   solon.serialization.hessian under The Apache Software License, Version 2.0
   solon.serialization.jackson under The Apache Software License, Version 2.0
   solon.serialization.jackson.xml under The Apache Software License, Version 2.0
-  solon.serialization.kryo under The Apache Software License, Version 2.0
   solon.serialization.properties under The Apache Software License, Version 2.0
   solon.serialization.protostuff under The Apache Software License, Version 2.0
   solon.serialization.snack3 under The Apache Software License, Version 2.0
-  solon.test under The Apache Software License, Version 2.0
   Stax2 API under The BSD 2-Clause License
   Woodstox under The Apache License, Version 2.0
 
