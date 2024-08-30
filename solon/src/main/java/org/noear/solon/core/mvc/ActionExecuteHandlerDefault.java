@@ -211,7 +211,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 if (pn.startsWith("$")) {
                     tv = ctx.attr(pn);
                 } else {
-                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive() || pt.isEnum()) {
                         //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
                         //
                         tv = null;
