@@ -2012,11 +2012,6 @@
                 <artifactId>solon.web.stop</artifactId>
                 <version>${solon.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.web.webdav</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
 
             <!-- old plugins:: end -->
         </dependencies>
