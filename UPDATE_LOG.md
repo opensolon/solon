@@ -29,18 +29,21 @@
 * 新增 solon-config-plus
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
-* 添加 solon-cloud 的分布式注解开关
+* 添加 solon-cloud-core 的分布式注解开关
 * 添加 solon Context::cookieValues(name) 方法
 * 添加 solon MultiMap 类，用于 Context 能力优化
+* 添加 solon-web-rx 对 ndjson 支持 
 * 优化 solon-cloud-gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
 * 调整 快捷方式只保留：solon-lib 和 solon-web（原 solon-web 去掉 view，方便自选）
 * 移除 旧包 solon.test（改用 solon-test）
 * 移除 旧包 solon.web.flux（改用 solon-web-rx）
 * 移除 旧包 detector-solon-plugin（改用 solon-health-detector）
-* 移除 旧包 log4j2-solon-plugin（改用 solon.logging.log4j2）
-* 移除 旧包 logback-solon-plugin（改用 solon.logging.logback）
+* 移除 旧包 log4j2-solon-plugin（改用 solon-logging-log4j2）
+* 移除 旧包 logback-solon-plugin（改用 solon-logging-logback）
 * 移除 旧包 solon.extend.schedule
+* wood 升为 1.3.1
+* redisson 升为 3.34.1
 
 
 |                          | 操作     |                          |
@@ -59,6 +62,7 @@
 | ctx.paramNames()         | 新增     |                          |
 | ctx.headerNames()        | 新增     |                          |
 | ctx.cookieNames()        | 新增     |                          |
+| ctx.cookieValues(name)     | 新增     |                          |
 | ctx.fileNames()          | 新增     |                          |
 | ctx.fileValues(name)     | 新增     |                          |
 
