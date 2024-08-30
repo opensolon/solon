@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.9.2-M2
+Solon v2.9.2
 </h1>
 <p align="center">
 	<strong>Javaの「新しい」アプリケーション開発フレームワーク、抑制、簡潔、高効率、開放、生態系です!</strong>
