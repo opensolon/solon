@@ -70,15 +70,15 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 转换管理器
-     * */
+     */
     public ConverterManager converterManager() {
         return _converterManager;
     }
 
     /**
      * 工厂管理器
-     * */
-    public FactoryManager factoryManager(){
+     */
+    public FactoryManager factoryManager() {
         return FactoryManager.getGlobal();
     }
 
@@ -121,7 +121,7 @@ public class SolonApp extends RouterWrapper {
      */
     protected void start(ConsumerEx<SolonApp> initialize) throws Throwable {
         //1.0.打印构造时的告警
-        if(_cfg.warns.size() > 0) {
+        if (_cfg.warns.size() > 0) {
             for (String warn : _cfg.warns) {
                 LogUtil.global().warn(warn);
             }
@@ -388,7 +388,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 启动入口类所在位置
      */
-    public URL sourceLocation(){
+    public URL sourceLocation() {
         return _sourceLocation;
     }
 
@@ -438,14 +438,14 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 处理器获取
-     * */
+     */
     public Handler handlerGet() {
         return _handler;
     }
 
     /**
      * 处理器设置
-     * */
+     */
     public void handlerSet(Handler handler) {
         if (handler != null) {
             _handler = handler;
@@ -486,9 +486,14 @@ public class SolonApp extends RouterWrapper {
             ex = Utils.throwableUnwrap(ex);
 
             //如果未处理，尝试处理
-            if(ex instanceof StatusException){
-                x.status(((StatusException) ex).getCode());
-            }else {
+            if (ex instanceof StatusException) {
+                StatusException se = (StatusException) ex;
+                x.status(se.getCode());
+
+                if (se.getCode() != 404 && se.getCode() != 405) {
+                    LogUtil.global().warn("SolonApp tryHandle failed, code=" + se.getCode(), ex);
+                }
+            } else {
                 //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
                 LogUtil.global().warn("SolonApp tryHandle failed!", ex);
 
