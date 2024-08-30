@@ -1950,6 +1950,28 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- old::web -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.jedis</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.jwt</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.local</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.redisson</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
             <!-- old plugins:: end -->
         </dependencies>
     </dependencyManagement>

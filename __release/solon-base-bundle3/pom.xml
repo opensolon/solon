@@ -45,5 +45,10 @@
         <module>../../solon-projects/solon-cloud_old/solon.cloud.httputils</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.tracing</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.metrics</module>
+
+        <module>../../solon-projects/solon-web_old/solon.sessionstate.jedis</module>
+        <module>../../solon-projects/solon-web_old/solon.sessionstate.local</module>
+        <module>../../solon-projects/solon-web_old/solon.sessionstate.jwt</module>
+        <module>../../solon-projects/solon-web_old/solon.sessionstate.redisson</module>
     </modules>
 </project>
