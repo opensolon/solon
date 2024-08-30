@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.reactivestreams.Subscriber;
@@ -36,31 +37,51 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
-    private boolean isSingle;
+    private boolean isMultiple;
+    private boolean isStreamX;
     private List<Object> list;
+    private boolean isFirst;
 
-    public ActionReactiveSubscriber(Context ctx, Action action, boolean isSingle) {
+    public ActionReactiveSubscriber(Context ctx, Action action, boolean isMultiple) {
         this.ctx = ctx;
         this.action = action;
-        this.isSingle = isSingle;
+        this.isMultiple = isMultiple;
+        this.isStreamX = MimeType.APPLICATION_X_NDJSON_VALUE.equals(ctx.contentTypeNew());
         this.list = new ArrayList<>();
     }
 
     @Override
     public void onSubscribe(Subscription subscription) {
+        isFirst = true;
+
         //启动异步模式（-1 表示不超时）
         ctx.asyncStart(-1L, null, () -> {
-            if (isSingle) {
-                subscription.request(1);
-            } else {
+            if (isMultiple) {
                 subscription.request(Long.MAX_VALUE);
+            } else {
+                subscription.request(1);
             }
         });
     }
 
     @Override
     public void onNext(Object o) {
-        list.add(o);
+        try {
+            if (isStreamX) {
+                try {
+                    if (isFirst == false) {
+                        ctx.output("\n");
+                    }
+                    action.render(o, ctx, true);
+                } catch (Throwable e) {
+                    log.warn(e.getMessage(), e);
+                }
+            } else {
+                list.add(o);
+            }
+        } finally {
+            isFirst = false;
+        }
     }
 
     @Override
@@ -79,12 +100,14 @@ public class ActionReactiveSubscriber implements Subscriber {
     public void onComplete() {
         if (ctx.asyncSupported()) {
             try {
-                if (isSingle) {
-                    if (list.size() > 0) {
-                        action.render(list.get(0), ctx, false);
+                if (isStreamX == false) {
+                    if (isMultiple) {
+                        action.render(list, ctx, false);
+                    } else {
+                        if (list.size() > 0) {
+                            action.render(list.get(0), ctx, false);
+                        }
                     }
-                } else {
-                    action.render(list, ctx, false);
                 }
             } catch (Throwable e) {
                 log.warn(e.getMessage(), e);

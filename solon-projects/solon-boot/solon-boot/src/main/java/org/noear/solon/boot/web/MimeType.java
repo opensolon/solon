@@ -36,6 +36,7 @@ public final class MimeType {
     public static final String APPLICATION_STREAM_JSON_VALUE = "application/stream+json";
     public static final String APPLICATION_XHTML_XML_VALUE = "application/xhtml+xml";
     public static final String APPLICATION_XML_VALUE = "application/xml";
+    public static final String APPLICATION_X_NDJSON_VALUE = "application/x-ndjson";
     public static final String IMAGE_GIF_VALUE = "image/gif";
     public static final String IMAGE_JPEG_VALUE = "image/jpeg";
     public static final String IMAGE_PNG_VALUE = "image/png";

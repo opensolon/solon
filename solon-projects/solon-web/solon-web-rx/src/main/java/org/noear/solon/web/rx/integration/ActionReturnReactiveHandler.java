@@ -19,7 +19,7 @@ import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 /**
  * Action 响应式返回处理
@@ -40,7 +40,7 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
-            if (result instanceof Mono) {
+            if (result instanceof Flux) {
                 ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action, true));
             } else {
                 ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action, false));

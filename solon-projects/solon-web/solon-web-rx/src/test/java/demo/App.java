@@ -18,6 +18,9 @@ package demo;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Produces;
+import org.noear.solon.boot.web.MimeType;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,8 +32,19 @@ public class App {
         Solon.start(App.class, args);
     }
 
-    @Mapping("/")
-    public Mono hello(String name) {
+    @Mapping("t1")
+    public Mono<String> t1(String name) {
         return Mono.just("Hello " + name);
+    }
+
+    @Mapping("t2")
+    public Flux<String> t2(String name) {
+        return Flux.just("Hello " + name, "hello2 " + name);
+    }
+
+    @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
+    @Mapping("t3")
+    public Flux<String> t3(String name) {
+        return Flux.just("Hello " + name, "hello2 " + name);
     }
 }
