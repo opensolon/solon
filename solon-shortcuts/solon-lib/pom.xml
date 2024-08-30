@@ -21,25 +21,25 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-        <!-- 提供事务、缓存、数据源构建支持 -->
+        <!-- 提供事务、缓存、数据源构建支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-data</artifactId>
         </dependency>
 
-        <!-- 加强的动态代理支持组件 -->
+        <!-- 加强的动态代理支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-proxy</artifactId>
         </dependency>
 
-        <!-- yml配置解析支持组件 -->
+        <!-- yml配置解析支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-config-yaml</artifactId>
         </dependency>
 
-        <!-- 配置注入增强组件 -->
+        <!-- 配置注入增强插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-config-plus</artifactId>

@@ -26,31 +26,31 @@
             <artifactId>solon-boot-smarthttp</artifactId>
         </dependency>
 
-        <!-- Json序列化支持组件 -->
+        <!-- Json序列化支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-serialization-snack3</artifactId>
         </dependency>
 
-        <!-- 本地SessionSate支持组件 -->
+        <!-- 本地SessionSate支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-sessionstate-local</artifactId>
         </dependency>
 
-        <!-- 静态文件支持组件 -->
+        <!-- 静态文件支持插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-web-staticfiles</artifactId>
         </dependency>
 
-        <!-- 跨域处理组件 -->
+        <!-- 跨域处理插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-web-cors</artifactId>
         </dependency>
 
-        <!-- 参数与实体验证扩展组件 -->
+        <!-- 参数与实体验证扩展插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-security-validation</artifactId>
