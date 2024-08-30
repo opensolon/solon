@@ -46,8 +46,16 @@ public class ActionReactiveSubscriber implements Subscriber {
         this.ctx = ctx;
         this.action = action;
         this.isMultiple = isMultiple;
-        this.isStreamX = MimeType.APPLICATION_X_NDJSON_VALUE.equals(ctx.contentTypeNew());
-        this.list = new ArrayList<>();
+
+        if (ctx.contentTypeNew() != null) {
+            this.isStreamX = ctx.contentTypeNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE);
+        } else {
+            this.isStreamX = false;
+        }
+
+        if (isStreamX == false) {
+            this.list = new ArrayList<>();
+        }
     }
 
     @Override
