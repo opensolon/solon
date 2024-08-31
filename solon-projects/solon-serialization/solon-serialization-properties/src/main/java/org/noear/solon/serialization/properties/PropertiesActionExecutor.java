@@ -58,14 +58,6 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
     }
 
     /**
-     * @deprecated 2.8
-     */
-    @Deprecated
-    public void includeFormUrlencoded(boolean allowPostForm) {
-        this.allowPostForm(allowPostForm);
-    }
-
-    /**
      * 反序列化配置
      */
     public Options config() {

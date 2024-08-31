@@ -44,14 +44,6 @@ public abstract class AbstractJobManager implements IJobManager {
     }
 
     /**
-     * 设置拦截器
-     */
-    @Deprecated
-    public void setJobInterceptor(JobInterceptor jobInterceptor) {
-        addJobInterceptor(0, jobInterceptor);
-    }
-
-    /**
      * 添加拦截器
      */
     @Override

@@ -88,15 +88,6 @@ public class CloudProps {
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
     private String EVENT_CLIENT = "solon.cloud.@@.event.client"; //配置组
 
-    //@deprecated 2.2
-    private String EVENT_USERNAME = "solon.cloud.@@.event.username";
-    //@deprecated 2.2
-    private String EVENT_PASSWORD = "solon.cloud.@@.event.password";
-    //@deprecated 2.2
-    private String EVENT_ACCESS_KEY = "solon.cloud.@@.event.accessKey";
-    //@deprecated 2.2
-    private String EVENT_SECRET_KEY = "solon.cloud.@@.event.secretKey";
-
 
     //锁服务相关
     private String LOCK_ENABLE = "solon.cloud.@@.lock.enable";
@@ -120,15 +111,6 @@ public class CloudProps {
     private String FILE_BUCKET = "solon.cloud.@@.file.bucket";
     private String FILE_ENDPOINT = "solon.cloud.@@.file.endpoint";
     private String FILE_REGION_ID = "solon.cloud.@@.file.regionId";
-
-    //@deprecated 2.2
-    private String FILE_USERNAME = "solon.cloud.@@.file.username";
-    //@deprecated 2.2
-    private String FILE_PASSWORD = "solon.cloud.@@.file.password";
-    //@deprecated 2.2
-    private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
-    //@deprecated 2.2
-    private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
 
     //国际化服务相关
     private String I18N_ENABLE = "solon.cloud.@@.i18n.enable";
@@ -188,14 +170,6 @@ public class CloudProps {
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@", frame);
         EVENT_CLIENT = EVENT_CLIENT.replace("@@", frame);
 
-        //@deprecated 2.2
-        EVENT_USERNAME = EVENT_USERNAME.replace("@@", frame);
-        //@deprecated 2.2
-        EVENT_PASSWORD = EVENT_PASSWORD.replace("@@", frame);
-        //@deprecated 2.2
-        EVENT_ACCESS_KEY = EVENT_ACCESS_KEY.replace("@@", frame);
-        //@deprecated 2.2
-        EVENT_SECRET_KEY = EVENT_SECRET_KEY.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
         LOCK_SERVER = LOCK_SERVER.replace("@@", frame);
@@ -213,15 +187,6 @@ public class CloudProps {
         FILE_ENDPOINT = FILE_ENDPOINT.replace("@@", frame);
         FILE_REGION_ID = FILE_REGION_ID.replace("@@", frame);
         FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
-
-        //@deprecated 2.2
-        FILE_USERNAME = FILE_USERNAME.replace("@@", frame);
-        //@deprecated 2.2
-        FILE_PASSWORD = FILE_PASSWORD.replace("@@", frame);
-        //@deprecated 2.2
-        FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
-        //@deprecated 2.2
-        FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
 
         I18N_ENABLE = I18N_ENABLE.replace("@@", frame);
         I18N_DEFAULT = I18N_DEFAULT.replace("@@", frame);
@@ -353,20 +318,9 @@ public class CloudProps {
     }
 
 
-    @Deprecated
-    public String getDiscoveryTags() {
-        return "";
-    }
-
     public String getDiscoveryClusterName() {
         return appContext.cfg().get(DISCOVERY_CLUSTER_NAME);
     }
-
-
-    //    @Deprecated
-//    public boolean getDiscoveryUnstable() {
-//        return Solon.cfg().isDriftMode(); //appContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
-//    }
 
     public String getDiscoveryHealthCheckInterval(String def) {
         return appContext.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
@@ -433,49 +387,6 @@ public class CloudProps {
         return appContext.cfg().getProp(EVENT_CLIENT);
     }
 
-    private String eventUsername;
-
-    public String getEventUsername() {
-        if (eventUsername == null) {
-            eventUsername = appContext.cfg().get(EVENT_USERNAME);
-
-            if (eventUsername == null) {
-                eventUsername = appContext.cfg().get(EVENT_ACCESS_KEY);
-            }
-
-            if (eventUsername == null) {
-                eventUsername = getUsername();
-            }
-        }
-
-        return eventUsername;
-    }
-
-    private String eventPassword;
-
-    public String getEventPassword() {
-        if (eventPassword == null) {
-            eventPassword = appContext.cfg().get(EVENT_PASSWORD);
-
-            if (eventPassword == null) {
-                eventPassword = appContext.cfg().get(EVENT_SECRET_KEY);
-            }
-
-            if (eventPassword == null) {
-                eventPassword = getPassword();
-            }
-        }
-
-        return eventPassword;
-    }
-
-    public String getEventAccessKey() {
-        return getEventUsername();
-    }
-
-    public String getEventSecretKey() {
-        return getEventPassword();
-    }
 
     //
     //锁服务相关
@@ -554,52 +465,6 @@ public class CloudProps {
         return appContext.cfg().get(FILE_BUCKET);
     }
 
-    private String fileUsername;
-
-    public String getFileUsername() {
-        if (fileUsername == null) {
-            fileUsername = appContext.cfg().get(FILE_USERNAME);
-
-            if (fileUsername == null) {
-                fileUsername = appContext.cfg().get(FILE_ACCESS_KEY);
-            }
-
-            if (fileUsername == null) {
-                fileUsername = getUsername();
-            }
-        }
-
-        return fileUsername;
-    }
-
-    private String filePassword;
-
-
-    public String getFilePassword() {
-        if (filePassword == null) {
-            filePassword = appContext.cfg().get(FILE_PASSWORD);
-
-            if (filePassword == null) {
-                filePassword = appContext.cfg().get(FILE_SECRET_KEY);
-            }
-
-            if (filePassword == null) {
-                filePassword = getPassword();
-            }
-        }
-
-        return filePassword;
-    }
-
-
-    public String getFileAccessKey() {
-        return getFileUsername();
-    }
-
-
-    public String getFileSecretKey() {
-        return getFilePassword();
-    }
 
     //
     //国际化服务相关

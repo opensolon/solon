@@ -47,15 +47,6 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
         return serializer;
     }
 
-    /**
-     * 反序列化配置
-     *
-     * @deprecated 2.8
-     */
-    public JSONReader.Context config(){
-        return serializer.getDeserializeConfig();
-    }
-
     @Override
     public boolean matched(Context ctx, String ct) {
         return serializer.matched(ctx, ct);

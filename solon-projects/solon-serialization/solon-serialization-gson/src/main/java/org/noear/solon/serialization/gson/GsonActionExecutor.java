@@ -41,11 +41,6 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
         return serializer;
     }
 
-    @Deprecated
-    public GsonBuilder config() {
-        return serializer.getConfig();
-    }
-
     @Override
     public boolean matched(Context ctx, String ct) {
         return serializer.matched(ctx, ct);

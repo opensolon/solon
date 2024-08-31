@@ -32,16 +32,6 @@ import java.util.Map;
  */
 public interface IJobManager extends Lifecycle {
     /**
-     * 设置任务拦截器
-     *
-     * @deprecated 2.7
-     */
-    @Deprecated
-    default void setJobInterceptor(JobInterceptor jobInterceptor) {
-        addJobInterceptor(0, jobInterceptor);
-    }
-
-    /**
      * 添加任务拦截器
      */
     void addJobInterceptor(int index, JobInterceptor jobInterceptor);
