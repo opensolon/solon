@@ -392,24 +392,10 @@ public class SolonApp extends RouterWrapper {
         return _sourceLocation;
     }
 
-//    /**
-//     * 插入插件
-//     * @deprecated 2.0
-//     */
-//    @Deprecated
-//    public void plug(Plugin plugin) {
-//        PluginEntity p = new PluginEntity(plugin);
-//        p.init(context());
-//        p.start(context());
-//        cfg().plugs().add(p);
-//    }
 
     /**
      * 插入插件（一般用于动态加载，比如 faas）
-     *
-     * @deprecated 2.0
      */
-    @Deprecated
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
         p.init(context());
@@ -422,9 +408,7 @@ public class SolonApp extends RouterWrapper {
      *
      * @param priority 优先级（越大越优化）
      * @param plugin   插件
-     * @deprecated 2.2
      */
-    @Deprecated
     public void pluginAdd(int priority, Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugs().add(p);

@@ -46,14 +46,6 @@ public class ContextPathWebSocketListener extends SimpleWebSocketListener {
     }
 
     /**
-     * @deprecated 2.6
-     * */
-    @Deprecated
-    public ContextPathWebSocketListener(boolean forced) {
-        this(Solon.cfg().serverContextPath(), forced);
-    }
-
-    /**
      * @param contextPath '/demo/'
      */
     public ContextPathWebSocketListener(String contextPath, boolean forced) {

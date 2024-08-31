@@ -44,7 +44,7 @@ public class JwtSessionState extends SessionStateBase {
             return "";
         }
 
-        String _sessionId = ctx.attr("sessionId", null);
+        String _sessionId = ctx.attrOrDefault("sessionId", null);
 
         if (_sessionId == null) {
             _sessionId = sessionIdGet(false);

@@ -41,12 +41,6 @@ import java.util.function.Function;
  * @since 1.0
  * */
 public class Utils {
-    /**
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public static final String TAG_classpath = "classpath:";
-
     private static ReentrantLock comLocker = new ReentrantLock();
 
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
@@ -212,21 +206,6 @@ public class Utils {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    /**
-     * 例：
-     * a/?.xml
-     * a/??/?.xml
-     * a/??/b/?.xml
-     *
-     * @param pathExpr 路径表达式
-     * @removal true
-     * @deprecated 2.0
-     */
-    @Deprecated
-    public static Collection<String> resolvePaths(String pathExpr) {
-        return ResourceUtil.scanResources(pathExpr);
     }
 
     /**
@@ -472,238 +451,6 @@ public class Utils {
 
 
     /**
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static boolean hasClass(SupplierEx<Class<?>> test) {
-        return ClassUtil.hasClass(test);
-    }
-
-    /**
-     * 根据字符串加载为一个类
-     *
-     * @param className 类名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static Class<?> loadClass(String className) {
-        return ClassUtil.loadClass(className);
-    }
-
-    /**
-     * 根据字符串加载为一个类
-     *
-     * @param classLoader 类加载器
-     * @param className   类名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static Class<?> loadClass(ClassLoader classLoader, String className) {
-        return ClassUtil.loadClass(classLoader, className);
-    }
-
-    /**
-     * 根据类名实例化一个对象
-     *
-     * @param className 类名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(String className) {
-        return ClassUtil.tryInstance(className);
-    }
-
-    /**
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(String className, Properties prop) {
-        return ClassUtil.tryInstance(className, prop);
-    }
-
-    /**
-     * 根据类名实例化一个对象
-     *
-     * @param classLoader 类加载器
-     * @param className   类名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(ClassLoader classLoader, String className) {
-        return ClassUtil.tryInstance(classLoader, className);
-    }
-
-    /**
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
-        return ClassUtil.tryInstance(classLoader, className, prop);
-    }
-
-    /**
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(Class<?> clz) throws Exception {
-        return ClassUtil.newInstance(clz);
-    }
-
-    /**
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
-        return ClassUtil.newInstance(clz, prop);
-    }
-
-    /**
-     * 获取资源URL集
-     *
-     * @param name 资源名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static Enumeration<URL> getResources(String name) throws IOException {
-        return ResourceUtil.getResources(name);
-    }
-
-    /**
-     * 获取资源URL集
-     *
-     * @param classLoader 类加载器
-     * @param name        资源名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
-        return ResourceUtil.getResources(classLoader, name);
-    }
-
-    /**
-     * 获取资源URL
-     *
-     * @param name 资源名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static URL getResource(String name) {
-        return ResourceUtil.getResource(name);
-    }
-
-    /**
-     * 获取资源URL
-     *
-     * @param classLoader 类加载器
-     * @param name        资源名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static URL getResource(ClassLoader classLoader, String name) {
-        return ResourceUtil.getResource(classLoader, name);
-    }
-
-    /**
-     * 获取资源并转为String
-     *
-     * @param name 资源名称
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static String getResourceAsString(String name) throws IOException {
-        return ResourceUtil.getResourceAsString(name);
-    }
-
-    /**
-     * 获取资源并转为String
-     *
-     * @param name    资源名称
-     * @param charset 编码
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static String getResourceAsString(String name, String charset) throws IOException {
-        return ResourceUtil.getResourceAsString(name, charset);
-    }
-
-    /**
-     * 获取资源并转为String
-     *
-     * @param classLoader 类加载器
-     * @param name        资源名称
-     * @param charset     编码
-     * @removal true
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
-        return ResourceUtil.getResourceAsString(classLoader, name, charset);
-    }
-
-    /**
-     * @removal true
-     * @deprecated 2.4
-     */
-    @Deprecated
-    public static String transferToString(InputStream ins) throws IOException {
-        return IoUtil.transferToString(ins);
-    }
-
-    /**
-     * 将输入流转换为字符串
-     *
-     * @param ins     输入流
-     * @param charset 字符集
-     * @removal true
-     * @deprecated 2.4
-     */
-    @Deprecated
-    public static String transferToString(InputStream ins, String charset) throws IOException {
-        return IoUtil.transferToString(ins, charset);
-    }
-
-    /**
-     * 将输入流转换为byte数组
-     *
-     * @param ins 输入流
-     * @removal true
-     * @deprecated 2.4
-     */
-    @Deprecated
-    public static byte[] transferToBytes(InputStream ins) throws IOException {
-        return IoUtil.transferToBytes(ins);
-    }
-
-    /**
-     * 将输入流转换为输出流
-     *
-     * @param ins 输入流
-     * @param out 输出流
-     * @removal true
-     * @deprecated 2.4
-     */
-    @Deprecated
-    public static <T extends OutputStream> T transferTo(InputStream ins, T out) throws IOException {
-        return IoUtil.transferTo(ins, out);
-    }
-
-
-    /**
      * 根据url加载配置集
      *
      * @param url 资源地址
@@ -728,7 +475,7 @@ public class Utils {
      * @param url 资源地址
      */
     public static Properties loadProperties(String url) {
-        return loadProperties(getResource(url));
+        return loadProperties(ResourceUtil.getResource(url));
     }
 
     /**
@@ -877,17 +624,6 @@ public class Utils {
         return extDir;
     }
 
-    /**
-     * 构建应用扩展目录
-     *
-     * @param extend   扩展目录
-     * @param autoMake 是否自动创建
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public static File buildExt(String extend, boolean autoMake) {
-        return getFolderAndMake(extend, autoMake);
-    }
 
     /**
      * 将 source:Map 数据，绑定到 target:bean

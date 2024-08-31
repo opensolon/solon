@@ -84,16 +84,6 @@ public class ResourceUtil {
     }
 
     /**
-     * 移除架构（开头标识）
-     *
-     * @deprecated 2.9
-     * */
-    @Deprecated
-    public static String remClasspath(String path) {
-        return remSchema(path);
-    }
-
-    /**
      * 获取资源URL集
      *
      * @param name 内部资源名称

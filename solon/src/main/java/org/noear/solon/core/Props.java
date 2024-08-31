@@ -18,7 +18,6 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -114,15 +113,6 @@ public class Props extends Properties {
      */
     protected String getByExpr(String expr, Properties props, String refKey) {
         return PropUtil.getByExp(this, props, expr, refKey);
-    }
-
-    /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
-     * @deprecated 2.8
-     */
-    @Deprecated
-    public String getByParse(String tml) {
-        return getByTmpl(tml);
     }
 
     /**
@@ -309,18 +299,6 @@ public class Props extends Properties {
     }
 
     /**
-     * 兼容旧的
-     *
-     * @deprecated 2.2
-     * */
-    @Deprecated
-    public NvMap getXmap(String keyStarts) {
-        NvMap map = new NvMap();
-        doFind(keyStarts + ".", map::set);
-        return map;
-    }
-
-    /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 Map
      *
      * @param keyStarts key 的开始字符
@@ -456,21 +434,6 @@ public class Props extends Properties {
         for (String uri : anno.profilesIfAbsent()) {
             uri = getByTmpl(uri);
             loadAddIfAbsent(ResourceUtil.findResource(classLoader, uri));
-        }
-    }
-
-    /**
-     * @deprecated 2.5
-     * */
-    @Deprecated
-    public void loadAdd(PropertySource anno) {
-        if (anno == null) {
-            return;
-        }
-
-        for (String uri : anno.value()) {
-            uri = getByTmpl(uri);
-            loadAdd(ResourceUtil.findResource(classLoader, uri));
         }
     }
 

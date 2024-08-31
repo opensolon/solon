@@ -127,13 +127,6 @@ public class ClassWrap {
         return Collections.unmodifiableMap(fieldWrapsMap);
     }
 
-    /**
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public Map<String, FieldWrap> getFieldAllWraps() {
-        return getFieldWraps();
-    }
 
     public FieldWrap getFieldWrap(String field) {
         return fieldWrapsMap.get(field);

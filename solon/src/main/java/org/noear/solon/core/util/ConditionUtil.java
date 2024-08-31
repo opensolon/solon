@@ -31,16 +31,6 @@ public class ConditionUtil {
     /**
      * 是否有 onMissingBean 条件
      *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public static boolean ifMissing(Condition anno) {
-        return ifMissingBean(anno);
-    }
-
-    /**
-     * 是否有 onMissingBean 条件
-     *
      * @since 2.9
      */
     public static boolean ifMissingBean(Condition anno) {

@@ -33,26 +33,6 @@ import java.util.Map;
  * @since 1.0
  * */
 public class NvMap extends IgnoreCaseMap<String> {
-    public NvMap() {
-        super();
-    }
-
-    /**
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public NvMap(Map map) {
-        super();
-        if (map != null) {
-            map.forEach((k, v) -> {
-                if (k != null && v != null) {
-                    put(k.toString(), v.toString());
-                }
-            });
-        }
-    }
-
-
     public static NvMap from(Map map) {
         NvMap d = new NvMap();
 

@@ -45,7 +45,7 @@ public class Param5Controller {
 
     @Mapping("test4")
     public String test4(Context ctx) {
-        return ONode.stringify(ctx.paramsMap());
+        return ONode.stringify(ctx.paramMap().toValuesMap());
     }
 
     @Mapping("test5")

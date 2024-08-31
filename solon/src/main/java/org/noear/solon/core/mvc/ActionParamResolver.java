@@ -42,10 +42,6 @@ public class ActionParamResolver {
         if (resolveParam(vo, element)) {
             return;
         }
-        // 分析 PathVar 注解
-        if (resolvePathVar(vo, element)) {
-            return;
-        }
         // 分析 Path 注解
         if (resolvePath(vo, element)) {
             return;
@@ -93,24 +89,6 @@ public class ActionParamResolver {
 
         vo.isRequiredInput = paramAnno.required();
 
-        return true;
-    }
-
-    @Deprecated
-    private static boolean resolvePathVar(ActionParam vo, AnnotatedElement element) {
-        PathVar paramAnno = element.getAnnotation(PathVar.class);
-
-        if (paramAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            vo.name = name2;
-        }
-
-        vo.isRequiredPath = true;
-        vo.isRequiredInput = true;
         return true;
     }
 

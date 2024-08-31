@@ -48,13 +48,6 @@ public class Discovery implements Serializable {
         attachment = val;
     }
 
-    /**
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public Discovery(String service) {
-        this(Solon.cfg().appGroup(), service);
-    }
 
     public Discovery(String group, String service) {
         this.group = group;

@@ -48,16 +48,6 @@ public interface MethodHolder {
     Annotation[] getAnnotations();
 
     /**
-     * 获取包围拦截处理
-     *
-     * @deprecated 2.4
-     */
-    @Deprecated
-    default List<InterceptorEntity> getArounds(){
-        return getInterceptors();
-    }
-
-    /**
      * 获取拦截器
      */
     List<InterceptorEntity> getInterceptors();

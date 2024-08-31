@@ -39,22 +39,10 @@ public class MethodWrap {
 
     protected void resolveMappingAnno(Method m) {
         mappingAnno = m.getAnnotation(NamiMapping.class);
-        if (mappingAnno == null) {
-            Mapping anno = m.getAnnotation(Mapping.class);
-            if (anno != null) {
-                mappingAnno = new NamiMappingAnno(anno);
-            }
-        }
     }
 
     protected void resolveBodyAnno(Parameter p1) {
         bodyAnno = p1.getAnnotation(NamiBody.class);
-        if (bodyAnno == null) {
-            Body anno = p1.getAnnotation(Body.class);
-            if (anno != null) {
-                bodyAnno = new NamiBodyAnno(anno);
-            }
-        }
     }
 
 

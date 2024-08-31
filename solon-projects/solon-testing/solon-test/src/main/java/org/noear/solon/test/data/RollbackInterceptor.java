@@ -23,7 +23,6 @@ import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranUtils;
 import org.noear.solon.test.annotation.Rollback;
-import org.noear.solon.test.annotation.TestRollback;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -44,12 +43,6 @@ public class RollbackInterceptor implements Interceptor {
 
             //尝试找函数上的
             Rollback anno = inv.getMethodAnnotation(Rollback.class);
-            if (anno == null) {
-                TestRollback annoTmp = inv.getMethodAnnotation(TestRollback.class);
-                if (annoTmp != null) {
-                    anno = new RollbackAnno(annoTmp);
-                }
-            }
 
             //尝试找类上的
             if (anno == null) {

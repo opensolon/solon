@@ -91,22 +91,6 @@ public class RouterDefault implements Router, HandlerSlots {
         }
     }
 
-    /**
-     * 区配一个处理（根据上下文）
-     *
-     * @param ctx      上下文
-     * @param endpoint 处理点
-     * @return 一个匹配的处理
-     * @deprecated 2.8
-     */
-    @Deprecated
-    @Override
-    public Handler matchOne(Context ctx, Endpoint endpoint) {
-        String pathNew = ctx.pathNew();
-        MethodType method = MethodTypeUtil.valueOf(ctx.method());
-
-        return routesH[endpoint.code].matchOne(pathNew, method);
-    }
 
     @Override
     public Handler matchMain(Context ctx) {

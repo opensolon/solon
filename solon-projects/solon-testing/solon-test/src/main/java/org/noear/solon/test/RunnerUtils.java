@@ -30,8 +30,6 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.annotation.Rollback;
-import org.noear.solon.test.annotation.TestPropertySource;
-import org.noear.solon.test.annotation.TestRollback;
 import org.noear.solon.test.aot.SolonAotTestProcessor;
 import org.noear.solon.test.data.RollbackInterceptor;
 
@@ -216,12 +214,6 @@ public class RunnerUtils {
 
     private static void initDo(Class<?> klass, SolonApp app) throws Throwable {
         List<String> propertySources = new ArrayList<>();
-        TestPropertySource anno1 = klass.getAnnotation(TestPropertySource.class);
-        if(anno1 != null){
-            for(String s1 : anno1.value()) {
-                propertySources.add(s1);
-            }
-        }
 
         Import anno2 = klass.getAnnotation(Import.class);
         if(anno2 != null){
@@ -245,7 +237,6 @@ public class RunnerUtils {
         RunnerUtils.addPropertySource(context, propertySources);
 
         //添加 TestRollback 注解支持
-        context.beanInterceptorAdd(TestRollback.class, new RollbackInterceptor(), 120);
         context.beanInterceptorAdd(Rollback.class, new RollbackInterceptor(), 120);//v2.5
 
         //添加 Mock 注解支持

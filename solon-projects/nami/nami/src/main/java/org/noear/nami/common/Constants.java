@@ -22,17 +22,6 @@ package org.noear.nami.common;
  * @since 1.0
  * */
 public class Constants {
-    @Deprecated
-    public static final String CONTENT_TYPE_HESSIAN = "application/hessian";
-    @Deprecated
-    public static final String CONTENT_TYPE_PROTOBUF = "application/protobuf";
-    @Deprecated
-    public static final String CONTENT_TYPE_JSON = "application/json";
-    @Deprecated
-    public static final String CONTENT_TYPE_JSON_TYPE = "application/json-type";
-    @Deprecated
-    public static final String CONTENT_TYPE_FORM_URLENCODED = "application/x-www-form-urlencoded";
-
     public static final String AT_TYPE_JSON = "@type_json";
     public static final String AT_JSON = "@json";
     public static final String AT_PROTOBUF = "@protobuf";

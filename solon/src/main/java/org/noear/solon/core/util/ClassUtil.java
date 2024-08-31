@@ -199,39 +199,6 @@ public class ClassUtil {
 
     /////////////////
 
-
-    /**
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public static <T> T newInstance(String className) {
-        return tryInstance(className);
-    }
-
-    /**
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public static <T> T newInstance(String className, Properties prop) {
-        return tryInstance(className, prop);
-    }
-
-    /**
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public static <T> T newInstance(ClassLoader classLoader, String className) {
-        return tryInstance(classLoader, className);
-    }
-
-    /**
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
-        return tryInstance(classLoader, className, prop);
-    }
-
     private static final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
 
     /**

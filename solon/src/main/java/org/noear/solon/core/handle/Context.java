@@ -126,16 +126,6 @@ public abstract class Context {
 
     /**
      * 获取远程IP
-     *
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public String ip() {
-        return remoteIp();
-    }
-
-    /**
-     * 获取远程IP
      */
     public abstract String remoteIp();
 
@@ -467,16 +457,6 @@ public abstract class Context {
     }
 
     /**
-     * 获取参数
-     *
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public String param(String key, String def) {
-        return paramOrDefault(key, def);
-    }
-
-    /**
      * 获取参数或默认
      */
     public String paramOrDefault(String key, String def) {
@@ -545,16 +525,6 @@ public abstract class Context {
     }
 
     /**
-     * 获取参数并转为Bean
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public <T> T paramAsBean(Class<T> type) {
-        return paramsAsClass(type);
-    }
-
-    /**
      * 获取参数并转为类
      *
      * @since 2.9
@@ -575,37 +545,6 @@ public abstract class Context {
      */
     public abstract MultiMap<String> paramMap();
 
-    /**
-     * 添加参数
-     *
-     * @deprecated 2.9
-     * */
-    @Deprecated
-    public void paramSet(String name, String value) {
-        paramMap().add(name, value);
-    }
-
-    /**
-     * 获取所有参数并转为map
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public Map<String, List<String>> paramsMap() {
-        return paramMap().toValuesMap();
-    }
-
-
-    /**
-     * 获取上传文件数组
-     *
-     * @param name 文件名
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public List<UploadedFile> files(String name) throws IOException {
-        return fileMap().getAll(name);
-    }
 
     /**
      * 获取上传文件数组
@@ -643,17 +582,6 @@ public abstract class Context {
      */
     public abstract MultiMap<UploadedFile> fileMap();
 
-
-    /**
-     * 获取所有上传文件并转为map
-     *
-     * @deprecated 2.9
-     * */
-    @Deprecated
-    public Map<String,List<UploadedFile>> filesMap() {
-        return fileMap().toValuesMap();
-    }
-
     /**
      * 获取 cookie
      *
@@ -661,18 +589,6 @@ public abstract class Context {
      */
     public @Nullable String cookie(String name) {
         return cookieMap().get(name);
-    }
-
-    /**
-     * 获取 cookie
-     *
-     * @param name cookie名
-     * @param def  默认值
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public String cookie(String name, String def) {
-        return cookieOrDefault(name, def);
     }
 
     /**
@@ -719,18 +635,6 @@ public abstract class Context {
      * 获取 header
      *
      * @param name header名
-     * @param def  默认值
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public String header(String name, String def) {
-        return headerOrDefault(name, def);
-    }
-
-    /**
-     * 获取 header
-     *
-     * @param name header名
      */
     public String headerOrDefault(String name, String def) {
         return headerMap().getOrDefault(name, def);
@@ -757,16 +661,6 @@ public abstract class Context {
      * 获取头字典集合
      */
     public abstract MultiMap<String> headerMap();
-
-    /**
-     * 获取所有头并转为map
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public Map<String, List<String>> headersMap() {
-        return headerMap().toValuesMap();
-    }
 
 
     protected SessionState sessionState;
@@ -798,16 +692,6 @@ public abstract class Context {
      */
     public abstract <T> T session(String name, Class<T> clz);
 
-    /**
-     * 获取 session 状态（类型转换，存在风险）
-     *
-     * @param name 状态名
-     * @deprecated 2.3
-     */
-    @Deprecated
-    public @Nullable <T> T session(String name, @NonNull T def) {
-        return sessionOrDefault(name, def);
-    }
 
     /**
      * 获取 session 状态（类型转换，存在风险）
@@ -1103,13 +987,6 @@ public abstract class Context {
         statusDoSet(status);
     }
 
-    /**
-     * @deprecated 1.8
-     */
-    @Deprecated
-    public void statusSet(int status) {
-        statusDoSet(status);
-    }
 
     protected abstract void statusDoSet(int status);
 
@@ -1143,16 +1020,6 @@ public abstract class Context {
 
     /**
      * 获取上下文特性
-     *
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public <T> T attr(String name, T def) {
-        return attrOrDefault(name, def);
-    }
-
-    /**
-     * 获取上下文特性
      */
     public @Nullable <T> T attr(String name) {
         return (T) attrMap().get(name);
@@ -1172,15 +1039,6 @@ public abstract class Context {
         attrMap().putAll(map);
     }
 
-    /**
-     * 清除所有上下文特性
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void attrClear() {
-        attrsClear();
-    }
 
     /**
      * 清除所有上下文特性

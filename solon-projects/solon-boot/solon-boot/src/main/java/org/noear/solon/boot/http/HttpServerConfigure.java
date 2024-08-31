@@ -26,17 +26,6 @@ import java.util.concurrent.Executor;
  */
 public interface HttpServerConfigure {
     /**
-     * 是否允许Ssl
-     *
-     * @deprecated 2.3
-     * @removal true
-     */
-    @Deprecated
-    default void allowSsl(boolean enable) {
-        enableSsl(enable);
-    }
-
-    /**
      * 是否支持 http2
      */
     default boolean isSupportedHttp2() {

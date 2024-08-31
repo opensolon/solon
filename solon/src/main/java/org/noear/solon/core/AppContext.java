@@ -18,7 +18,6 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.convert.ConverterFactory;
@@ -158,9 +157,6 @@ public class AppContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
-            //尝试导入注解配置（先导）//v1.12
-            cfg().loadAdd(clz.getAnnotation(PropertySource.class));//v1.12 //@deprecated 2.5
-
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
@@ -210,23 +206,6 @@ public class AppContext extends BeanContainer {
             bw.indexSet(anno.index());
 
             beanComponentized(bw, anno.registered());
-        });
-
-        //注册 @ProxyComponent 构建器 //@deprecated 2.5
-        beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-            bw.nameSet(beanName);
-            bw.tagSet(anno.tag());
-            bw.typedSet(anno.typed());
-
-            //确定顺序位
-            bw.indexSet(anno.index());
-
-            //组件化处理
-            beanComponentized(bw, true);
-
-            LogUtil.global().error("@ProxyComponent will be discarded, suggested use '@Component': " + clz.getName());
         });
 
         //注册 @Remoting 构建器
@@ -527,46 +506,20 @@ public class AppContext extends BeanContainer {
             }
         }
 
-        if (obj instanceof InitializingBean) {
-            LogUtil.global().error("InitializingBean will be discarded, suggested use '@Init': " + clzWrap.clz().getName());
-
-            InitializingBean initBean = (InitializingBean) obj;
-
-            if (fwList.size() == 0) {
-                //不需要注入
-                RunUtil.runOrThrow(initBean::afterInjection);
-            } else {
-                //需要注入（可能）
-                InjectGather gather = new InjectGather(0, clzWrap.clz(), true, fwList.size(), (args2) -> {
-                    RunUtil.runOrThrow(initBean::afterInjection);
-                });
-
-                //添加到集合
-                gatherSet.add(gather);
-
-                //添加要收集的字段
-                for (FieldWrap fw : fwList) {
-                    VarHolder varH = fw.holder(this, obj, gather);
-                    gather.add(varH);
-                    tryInject(varH, fw.annoS);
-                }
-            }
+        if (fwList.size() == 0) {
+            //略过
         } else {
-            if (fwList.size() == 0) {
+            //需要注入（可能）
+            InjectGather gather = new InjectGather(0, clzWrap.clz(), true, fwList.size(), null);
 
-            } else {
-                //需要注入（可能）
-                InjectGather gather = new InjectGather(0, clzWrap.clz(), true, fwList.size(), null);
+            //添加到集合
+            gatherSet.add(gather);
 
-                //添加到集合
-                gatherSet.add(gather);
-
-                //添加要收集的字段
-                for (FieldWrap fw : fwList) {
-                    VarHolder varH = fw.holder(this, obj, gather);
-                    gather.add(varH);
-                    tryInject(varH, fw.annoS);
-                }
+            //添加要收集的字段
+            for (FieldWrap fw : fwList) {
+                VarHolder varH = fw.holder(this, obj, gather);
+                gather.add(varH);
+                tryInject(varH, fw.annoS);
             }
         }
     }
@@ -790,7 +743,7 @@ public class AppContext extends BeanContainer {
                     beanInject(raw);
                 }
 
-                //@Bean 动态构建的bean, 可通过事件广播进行扩展
+                //@Bean 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
                 EventBus.publish(raw);//@deprecated
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
@@ -820,7 +773,6 @@ public class AppContext extends BeanContainer {
             }
 
             //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-            //EventBus.push(m_bw); //@deprecated
             wrapPublish(m_bw);
         }
     }
@@ -925,43 +877,6 @@ public class AppContext extends BeanContainer {
 
 
     //::bean事件处理
-
-    /**
-     * 添加bean加载完成事件
-     *
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public void beanOnloaded(Consumer<AppContext> fun) {
-        beanOnloaded(-1, fun::accept);
-    }
-
-    /**
-     * 添加bean加载完成事件
-     *
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public void beanOnloaded(int index, Consumer<AppContext> fun) {
-        try {
-            lifecycle(index, () -> fun.accept(this));
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * 完成加载时调用，会进行事件通知
-     *
-     * @deprecated 2.2
-     */
-    @Deprecated
-    public void beanLoaded() {
-        start();
-    }
-
     /**
      * 添加生命周期 bean
      *

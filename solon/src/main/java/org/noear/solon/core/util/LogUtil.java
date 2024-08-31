@@ -50,29 +50,9 @@ public class LogUtil {
         PrintUtil.purpleln(content);
     }
 
-    /**
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public void debugAsync(String content) {
-        RunUtil.async(() -> {
-            debug(content);
-        });
-    }
-
     public void debug(String content) {
         System.out.print(title());
         PrintUtil.blueln(content);
-    }
-
-    /**
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public void infoAsync(String content) {
-        RunUtil.async(() -> {
-            info(content);
-        });
     }
 
     public void info(String content) {

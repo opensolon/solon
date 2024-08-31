@@ -49,17 +49,6 @@ public interface MvcFactory {
      */
     void resolveActionParam(ActionParam vo, AnnotatedElement element);
 
-
-    /**
-     * 分析动作参数
-     *
-     * @deprecated 2.8
-     */
-    @Deprecated
-    default void resolveParam(ActionParam vo, AnnotatedElement element) {
-        resolveActionParam(vo, element);
-    }
-
     /**
      * 确认动作路径
      */

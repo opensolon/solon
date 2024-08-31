@@ -16,11 +16,9 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Import;
-import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.JavaUtil;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -118,8 +116,6 @@ public final class SolonProps extends Props {
 
 
         //4.3.加载注解配置（优于固定配置）/v1.12
-        loadAdd(app.source().getAnnotation(PropertySource.class)); //v1.12 //@deprecated 2.5
-
         //导入自己的，同时导入注解的 Import 注解
         importPropsTry(app.source());
 
@@ -143,7 +139,6 @@ public final class SolonProps extends Props {
         }
 
         //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
-        addConfig(getArg("config"), false, sysPropOrg); //@Deprecated 2.2
         addConfig(getArg("config.add"), false, sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 
@@ -374,27 +369,6 @@ public final class SolonProps extends Props {
 
         //插件排序
         plugsSort();
-    }
-
-
-    /**
-     * 应用源（即启动主类）
-     *
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public Class<?> source() {
-        return app.source();
-    }
-
-    /**
-     * 应用源位置
-     *
-     * @deprecated 2.7
-     */
-    @Deprecated
-    public URL sourceLocation() {
-        return app.sourceLocation();
     }
 
     /**

@@ -71,14 +71,6 @@ public class RunUtil {
         }
     }
 
-    /**
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public static void setExecutor(ExecutorService executor) {
-        setParallelExecutor(executor);
-    }
-
     public static void setParallelExecutor(ExecutorService parallelExecutor) {
         if (parallelExecutor != null) {
             ExecutorService old = RunUtil.parallelExecutor;

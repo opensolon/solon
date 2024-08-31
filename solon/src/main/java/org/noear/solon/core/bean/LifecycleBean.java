@@ -31,24 +31,4 @@ public interface LifecycleBean extends Lifecycle {
     default void start() throws Throwable {
 
     }
-
-    /**
-     * 预停止
-     *
-     * @since 2.9
-     */
-    @Override
-    default void preStop() throws Throwable {
-        prestop();
-    }
-
-    /**
-     * 预停止
-     *
-     * @since 2.7
-     * @deprecated 2.9
-     */
-    @Deprecated
-    default void prestop() throws Throwable {
-    }
 }

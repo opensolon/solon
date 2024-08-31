@@ -34,22 +34,6 @@ public class ContextPathFilter implements Filter {
     }
 
     /**
-     * @deprecated 2.6
-     * */
-    @Deprecated
-    public ContextPathFilter(boolean forced) {
-        this(Solon.cfg().serverContextPath(), forced);
-    }
-
-    /**
-     * @deprecated 2.6
-     * */
-    @Deprecated
-    public ContextPathFilter(String contextPath) {
-        this(contextPath, false);
-    }
-
-    /**
      * @param contextPath '/demo/'
      */
     public ContextPathFilter(String contextPath, boolean forced) {

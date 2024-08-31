@@ -233,16 +233,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
-     * 获取包围处理
-     *
-     * @deprecated 2.4
-     */
-    @Deprecated
-    public List<InterceptorEntity> getArounds() {
-        return getInterceptors();
-    }
-
-    /**
      * 获取拦截器
      */
     public List<InterceptorEntity> getInterceptors() {

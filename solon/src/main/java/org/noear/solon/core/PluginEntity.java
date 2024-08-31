@@ -59,18 +59,10 @@ public class PluginEntity implements Comparable<PluginEntity> {
         this.props = props;
     }
 
-    /**
-     * @deprecated 2.2
-     */
-    @Deprecated
     public PluginEntity(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * @deprecated 2.2
-     */
-    @Deprecated
     public PluginEntity(Plugin plugin, int priority) {
         this.plugin = plugin;
         this.priority = priority;

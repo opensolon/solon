@@ -46,17 +46,6 @@ public interface CacheService {
      * 获取
      *
      * @param key 缓存键
-     * @deprecated 2.5
-     */
-    @Deprecated
-    default Object get(String key){
-        return get(key, Object.class);
-    }
-
-    /**
-     * 获取
-     *
-     * @param key 缓存键
      */
     <T> T get(String key, Type type);
 

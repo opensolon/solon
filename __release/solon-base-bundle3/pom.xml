@@ -19,7 +19,6 @@
         <module>../../solon-projects/solon-cloud/solon-cloud-core</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-eventplus</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-gateway</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-httputils</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-tracing</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-metrics</module>
 
@@ -42,7 +41,6 @@
         <module>../../solon-projects/solon-cloud_old/solon.cloud</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.eventplus</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.gateway</module>
-        <module>../../solon-projects/solon-cloud_old/solon.cloud.httputils</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.tracing</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.metrics</module>
 

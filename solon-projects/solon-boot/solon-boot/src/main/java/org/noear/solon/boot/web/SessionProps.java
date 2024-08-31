@@ -42,10 +42,7 @@ public class SessionProps {
         // cookieDomain
         //
         String tmp = Solon.cfg().get("server.session.cookieDomain");
-        if (Utils.isEmpty(tmp)) {
-            //@Deprecated(2.0)
-            tmp = Solon.cfg().get("server.session.state.domain");
-        }
+
         session_cookieDomain = tmp;
 
 
@@ -53,10 +50,6 @@ public class SessionProps {
         // cookieDomainAuto
         //
         tmp = Solon.cfg().get("server.session.cookieDomainAuto");
-        if (Utils.isEmpty(tmp)) {
-            //@Deprecated(2.0)
-            tmp = Solon.cfg().get("server.session.state.domain.auto");
-        }
 
         if (Utils.isEmpty(tmp)) {
             session_cookieDomainAuto = true;

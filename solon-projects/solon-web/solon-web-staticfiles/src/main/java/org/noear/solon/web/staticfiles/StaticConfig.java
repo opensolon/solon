@@ -24,8 +24,6 @@ import org.noear.solon.Utils;
  */
 public class StaticConfig {
     public static final String PROP_ENABLE = "solon.staticfiles.enable";
-    @Deprecated
-    private static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
     public static final String PROP_CACHE_MAX_AGE = "solon.staticfiles.cacheMaxAge";
     public static final String PROP_MAPPINGS = "solon.staticfiles.mappings";
 
@@ -39,10 +37,6 @@ public class StaticConfig {
             cacheMaxAge = -1;
         } else {
             String tmp = Solon.cfg().get(PROP_CACHE_MAX_AGE);
-            if (Utils.isEmpty(tmp)) {
-                //@Deprecated
-                tmp = Solon.cfg().get(PROP_MAX_AGE);
-            }
 
             if (Utils.isEmpty(tmp)) {
                 tmp = "600";//10m;

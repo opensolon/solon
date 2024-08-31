@@ -107,18 +107,6 @@ public interface Router {
      */
     void add(String path, BeanWrap controllerWrap);
 
-
-    /**
-     * 区配一个处理（根据上下文）
-     *
-     * @param ctx      上下文
-     * @param endpoint 处理点
-     * @return 一个匹配的处理
-     * @deprecated 2.8
-     */
-    @Deprecated
-    Handler matchOne(Context ctx, Endpoint endpoint);
-
     /**
      * 区配一个主处理（根据上下文）
      *

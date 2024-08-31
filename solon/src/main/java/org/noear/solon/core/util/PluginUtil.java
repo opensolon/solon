@@ -36,19 +36,6 @@ public class PluginUtil {
      * 扫描插件
      *
      * @param classLoader 类加载器
-     * @param limitFile   限制文件
-     * @deprecated 2.8
-     */
-    @Deprecated
-    public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
-        //由 classloader 自己实现过滤
-        scanPlugins(classLoader, Collections.emptyList(), consumer);
-    }
-
-    /**
-     * 扫描插件
-     *
-     * @param classLoader 类加载器
      * @param excludeList 排除列表
      */
     public static void scanPlugins(ClassLoader classLoader, Collection<String> excludeList, Consumer<PluginEntity> consumer) {

@@ -54,17 +54,6 @@ public final class EventBus {
         }
     }
 
-    /**
-     * 异步推送事件（一般不推荐）；
-     *
-     * @param event 事件（可以是任何对象）
-     * @deprecated 2.4
-     * @see #publishAsync(Object)
-     */
-    @Deprecated
-    public static void pushAsync(Object event){
-        publishAsync(event);
-    }
 
     /**
      * 同步推送事件（不抛异常，不具有事务回滚传导性）
@@ -82,17 +71,6 @@ public final class EventBus {
         }
     }
 
-    /**
-     * 同步推送事件（不抛异常，不具有事务回滚传导性）
-     *
-     * @param event 事件（可以是任何对象）
-     * @deprecated 2.4
-     * @see #publishTry(Object)
-     */
-    @Deprecated
-    public static void pushTry(Object event){
-        publishTry(event);
-    }
 
     /**
      * 同步推送事件（会抛异常，可传导事务回滚）
@@ -112,19 +90,6 @@ public final class EventBus {
             }
         }
     }
-
-    /**
-     * 同步推送事件（会抛异常，可传导事务回滚）
-     *
-     * @param event 事件（可以是任何对象）
-     * @deprecated 2.4
-     * @see #publish(Object)
-     */
-    @Deprecated
-    public static void push(Object event) throws RuntimeException {
-        publish(event);
-    }
-
 
     private static void publish0(Object event) throws Throwable {
         if (event instanceof Throwable) {
