@@ -87,13 +87,10 @@ This project includes:
   janino under BSD-3-Clause
   jansi under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
-  JBoss Marshalling API under Apache License 2.0
-  JBoss Marshalling River under Apache License 2.0
   JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
   Jedis under MIT
   JNanoId under The MIT License
-  Jodd BeanUtil under BSD-2-Clause
-  Jodd Core under BSD-2-Clause
+  Jodd Util under BSD-2-Clause
   JSON in Java under Public Domain
   JSON Small and Fast Parser under The Apache Software License, Version 2.0
   JSON.simple under The Apache Software License, Version 2.0
@@ -236,7 +233,7 @@ This project includes:
   solon-cache-jedis under The Apache Software License, Version 2.0
   solon-cache-redisson under The Apache Software License, Version 2.0
   solon-cache-spymemcached under The Apache Software License, Version 2.0
-  solon-cloud-core under The Apache Software License, Version 2.0
+  solon-cloud under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0

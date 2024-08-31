@@ -13,15 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  asm under BSD-3-Clause
+  JJWT :: API under Apache License, Version 2.0
+  JJWT :: Impl under Apache License, Version 2.0
   SLF4J API Module under MIT License
   snack3 under The Apache Software License, Version 2.0
-  SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-config-plus under The Apache Software License, Version 2.0
-  solon-config-yaml under The Apache Software License, Version 2.0
-  solon-data under The Apache Software License, Version 2.0
-  solon-lib under The Apache Software License, Version 2.0
-  solon-proxy under The Apache Software License, Version 2.0
-  solon-security-vault under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-sessionstate-jwt under The Apache Software License, Version 2.0
+  solon.sessionstate.jwt under The Apache Software License, Version 2.0
 

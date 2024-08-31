@@ -33,7 +33,8 @@
                     <generateChildNotices>false</generateChildNotices>
                     <noticeTemplate>${project.basedir}/NOTICE.template</noticeTemplate>
                     <licenseMapping>
-                        <param>https://source.jasig.org/licenses/license-mappings.xml</param>
+                        <param>${project.basedir}/NOTICE-license-mappings.xml</param>
+<!--                        <param>https://source.jasig.org/licenses/license-mappings.xml</param>-->
                     </licenseMapping>
                 </configuration>
             </plugin>

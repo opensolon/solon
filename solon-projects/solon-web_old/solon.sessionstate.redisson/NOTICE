@@ -42,4 +42,5 @@ This project includes:
   solon under The Apache Software License, Version 2.0
   solon-boot under The Apache Software License, Version 2.0
   solon-sessionstate-redisson under The Apache Software License, Version 2.0
+  solon.sessionstate.redisson under The Apache Software License, Version 2.0
 

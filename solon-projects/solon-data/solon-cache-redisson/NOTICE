@@ -22,10 +22,7 @@ This project includes:
   jackson-databind under The Apache Software License, Version 2.0
   Jackson-dataformat-YAML under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
-  JBoss Marshalling API under Apache License 2.0
-  JBoss Marshalling River under Apache License 2.0
-  Jodd BeanUtil under BSD-2-Clause
-  Jodd Core under BSD-2-Clause
+  Jodd Util under BSD-2-Clause
   JSR107 API and SPI under Apache License, Version 2.0
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0
