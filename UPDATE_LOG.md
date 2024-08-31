@@ -29,7 +29,7 @@
 * 新增 solon-config-plus
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
-* 添加 solon-cloud-core 的分布式注解开关
+* 添加 solon-cloud 的分布式注解开关
 * 添加 solon Context::cookieValues(name) 方法
 * 添加 solon MultiMap 类，用于 Context 能力优化
 * 添加 solon-web-rx 对 ndjson 支持 
