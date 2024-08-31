@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-cloud-core</artifactId>
+    <artifactId>solon-cloud</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
