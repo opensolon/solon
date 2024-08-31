@@ -42,5 +42,7 @@
         <module>../../solon-projects/solon-serialization_old/solon.serialization.protostuff</module>
         <module>../../solon-projects/solon-serialization_old/solon.serialization.properties</module>
 
+        <module>../../solon-projects/solon-net_old/solon.net</module>
+        <module>../../solon-projects/solon-net_old/solon.net.httputils</module>
     </modules>
 </project>

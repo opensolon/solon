@@ -34,7 +34,6 @@
         <module>../../solon-projects/solon-testing/solon-test-junit4</module>
         <module>../../solon-projects/solon-testing/solon-test-junit5</module>
 
-
         <module>../../solon-projects/solon-boot_old/solon.boot</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.jdkhttp</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.jlhttp</module>

@@ -37,7 +37,6 @@
         <module>../../solon-projects/solon-docs/solon-swagger2-knife4j</module>
 
 
-
         <module>../../solon-projects/solon-data_old/solon.data</module>
         <module>../../solon-projects/solon-data_old/solon.data.dynamicds</module>
         <module>../../solon-projects/solon-data_old/solon.data.shardingds</module>
@@ -46,13 +45,7 @@
         <module>../../solon-projects/solon-data_old/solon.cache.spymemcached</module>
         <module>../../solon-projects/solon-data_old/solon.cache.redisson</module>
 
-
         <module>../../solon-projects/solon-docs_old/solon.docs</module>
         <module>../../solon-projects/solon-docs_old/solon.docs.openapi2</module>
-
-        <module>../../solon-projects/solon-logging_old/solon.logging</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.log4j2</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.logback</module>
-        <module>../../solon-projects/solon-logging_old/solon.logging.simple</module>
     </modules>
 </project>
