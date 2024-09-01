@@ -19,7 +19,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.filter.*;
-import org.noear.solon.cloud.gateway.route.predicate.HeaderPredicateFactory;
 import org.noear.solon.cloud.gateway.route.predicate.*;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
@@ -61,6 +60,7 @@ public class RouteFactoryManager {
         addFactory(new AddResponseHeaderFilterFactory());
         addFactory(new PrefixPathFilterFactory());
         addFactory(new RedirectToFilterFactory());
+        addFactory(new RewritePathFilterFactory ());
 
         addFactory(new RemoveRequestHeaderFilterFactory());
         addFactory(new RemoveResponseHeaderFilterFactory());
