@@ -61,16 +61,6 @@ public class ServerProps {
     public static final boolean request_useRawpath;
 
     /**
-     * 会话超时
-     */
-    public static final int session_timeout;
-    /**
-     * 会话状态域
-     */
-    public static final String session_state_domain;
-
-
-    /**
      * 响应编码
      */
     public static final String response_encoding;
@@ -115,12 +105,6 @@ public class ServerProps {
         request_useTempfile = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USETEMPFILE, false);
 
         request_useRawpath = Solon.cfg().getBool(ServerConstants.SERVER_REQUEST_USERAWPATH, false);
-
-        //
-        // for session
-        //
-        session_timeout = Solon.cfg().getInt("server.session.timeout", 0);
-        session_state_domain = Solon.cfg().get("server.session.state.domain");
 
 
         //
