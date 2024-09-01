@@ -25,6 +25,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.boot.web.SessionProps;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -96,8 +97,8 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
         builder.addServletContainerInitializer(UtContainerInitializer.info());
         builder.setEagerFilterInit(true);
 
-        if (ServerProps.session_timeout > 0) {
-            builder.setDefaultSessionTimeout(ServerProps.session_timeout);
+        if (SessionProps.session_timeout > 0) {
+            builder.setDefaultSessionTimeout(SessionProps.session_timeout);
         }
 
         return builder;

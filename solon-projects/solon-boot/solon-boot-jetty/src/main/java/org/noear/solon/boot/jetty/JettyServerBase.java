@@ -30,6 +30,7 @@ import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.boot.ssl.SslConfig;
+import org.noear.solon.boot.web.SessionProps;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.SSLContext;
@@ -148,8 +149,8 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         if (Solon.app().enableSessionState()) {
             handler.setSessionHandler(new SessionHandler());
 
-            if (ServerProps.session_timeout > 0) {
-                handler.getSessionHandler().setMaxInactiveInterval(ServerProps.session_timeout);
+            if (SessionProps.session_timeout > 0) {
+                handler.getSessionHandler().setMaxInactiveInterval(SessionProps.session_timeout);
             }
         }
 
