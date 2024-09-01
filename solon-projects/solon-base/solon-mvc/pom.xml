@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon-web-mvc</artifactId>
+    <artifactId>solon-mvc</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

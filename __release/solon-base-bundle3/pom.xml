@@ -36,7 +36,6 @@
         <module>../../solon-projects/solon-web/solon-web-sdl</module>
         <module>../../solon-projects/solon-web/solon-web-sse</module>
         <module>../../solon-projects/solon-web/solon-web-rx</module>
-        <module>../../solon-projects/solon-web/solon-web-mvc</module>
 
         <module>../../solon-projects/solon-cloud_old/solon.cloud</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.eventplus</module>
