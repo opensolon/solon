@@ -40,6 +40,16 @@ import java.util.List;
 public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
     private JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
 
+    /**
+     * 获取序列化接口
+     */
+    public JacksonXmlStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 反序列化配置
+     */
     public XmlMapper config() {
         return serializer.getConfig();
     }

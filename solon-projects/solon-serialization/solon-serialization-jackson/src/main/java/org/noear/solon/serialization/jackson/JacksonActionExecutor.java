@@ -36,10 +36,16 @@ import java.util.List;
 public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     private JacksonStringSerializer serializer = new JacksonStringSerializer();
 
+    /**
+     * 获取序列化接口
+     */
     public JacksonStringSerializer getSerializer() {
         return serializer;
     }
 
+    /**
+     * 反序列化配置
+     */
     public ObjectMapper config(){
         return serializer.getConfig();
     }

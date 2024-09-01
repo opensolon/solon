@@ -37,8 +37,18 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
         serializer.getConfig().registerTypeAdapter(Date.class, new DateReadAdapter());
     }
 
+    /**
+     * 获取序列化接口
+     */
     public GsonStringSerializer getSerializer() {
         return serializer;
+    }
+
+    /**
+     * 反序列化配置
+     */
+    public GsonBuilder config() {
+        return getSerializer().getConfig();
     }
 
     @Override

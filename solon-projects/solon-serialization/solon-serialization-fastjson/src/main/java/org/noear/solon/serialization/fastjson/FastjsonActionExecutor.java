@@ -43,6 +43,13 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
         return serializer;
     }
 
+    /**
+     * 反序列化配置
+     */
+    public ParserConfig config() {
+        return getSerializer().getDeserializeConfig();
+    }
+
     @Override
     public boolean matched(Context ctx, String ct) {
         return serializer.matched(ctx, ct);

@@ -41,6 +41,13 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
     }
 
     /**
+     * 获取序列化接口
+     */
+    public SnackStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
      * 反序列化配置
      * */
     public Options config(){
