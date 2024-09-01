@@ -39,6 +39,11 @@ public class StaticConfig {
             String tmp = Solon.cfg().get(PROP_CACHE_MAX_AGE);
 
             if (Utils.isEmpty(tmp)) {
+                //@Deprecated //但不删
+                tmp = Solon.cfg().get("solon.staticfiles.maxAge");
+            }
+
+            if (Utils.isEmpty(tmp)) {
                 tmp = "600";//10m;
             }
 
