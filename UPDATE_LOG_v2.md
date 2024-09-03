@@ -42,13 +42,17 @@
 * redisson 升为 3.34.1
 
 
+
 |                          | 操作     |                          |
 |--------------------------|--------|--------------------------|
-| ctx.paramsMap()          | 弃用     |                          |
-| ctx.paramSet(name,value) | 弃用     |                          |
-| ctx.headersMap()         | 弃用     |                          |
-| ctx.filesMap()           | 弃用     |                          |
-| ctx.files(name)          | 弃用     |                          |
+| ctx.paramsMap()          | 弃用     |  ctx.paramMap()                        |
+| ctx.paramsAdd(name,value) | 弃用     | 由 ctx.paramMap().add() 替代                         |
+| ctx.paramSet(name,value) | 弃用     | 由 ctx.paramMap().add() 或 .put() 替代                         |
+| | | |
+| ctx.headersMap()         | 弃用     |   ctx.headerMap()                       |
+| | | |
+| ctx.filesMap()           | 弃用     |   ctx.fileMap()                       |
+| ctx.files(name)          | 弃用     | 由 ctx.fileValues(name)	 替代                         |
 | | | |
 | ctx.paramMap():NvMap     | 调整     | ctx.paramMap():MultiMap  |
 | ctx.headerMap():NvMap    | 调整     | ctx.headerMap():MultiMap |
@@ -61,6 +65,8 @@
 | ctx.cookieValues(name)     | 新增     |                          |
 | ctx.fileNames()          | 新增     |                          |
 | ctx.fileValues(name)     | 新增     |                          |
+
+
 
 
 ### 2.9.1
