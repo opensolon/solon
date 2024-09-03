@@ -25,6 +25,7 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
+import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
@@ -49,7 +50,6 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
     public CloudRouteHandlerDefault() {
         Solon.context().getBeanAsync(Vertx.class, b -> {
             WebClientOptions options = new WebClientOptions()
-                    .setTrustAll(true)
                     .setMaxPoolSize(250)
                     .setConnectTimeout(1000 * 3) // milliseconds: 3s
                     .setIdleTimeout(60) // seconds: 60s
@@ -77,7 +77,16 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
-                req1.putHeader(kv.getKey(), kv.getValues());
+                if (ExConstants.Host.equals(kv.getKey())) {
+                    req1.putHeader(ExConstants.X_Forwarded_Host, kv.getValues());
+                } else {
+                    req1.putHeader(kv.getKey(), kv.getValues());
+                }
+            }
+
+            if (ctx.rawHeader(ExConstants.X_Real_IP) == null) {
+                //如果上层代理没有构建 real-ip ？
+                req1.putHeader(ExConstants.X_Real_IP, ctx.realIp());
             }
 
             ExBody exBody = ctx.newRequest().getBody();

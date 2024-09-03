@@ -20,6 +20,12 @@ solon.cloud.gateway:
       filters:
         - "StripPrefix=1"
         - "AddResponseHeader=Test-V,1"
+    - id: "demo3"
+      target: "https://h5.noear.org"
+      predicates:
+        - "Path=/h5/**"
+      filters:
+        - "StripPrefix=1"
 
 solon.logging.logger:
   root:

@@ -131,11 +131,11 @@ public class ExContextImpl implements ExContext {
     public String realIp() {
         if (realIp == null) {
             //客户端ip
-            realIp = rawHeader("X-Real-IP");
+            realIp = rawHeader(ExConstants.X_Real_IP);
 
             if (Utils.isEmpty(realIp) || "unknown".equalsIgnoreCase(realIp)) {
                 //包含了客户端和各级代理ip的完整ip链路
-                realIp = rawHeader("X-Forwarded-For");
+                realIp = rawHeader(ExConstants.X_Forwarded_For);
                 if (realIp != null && realIp.contains(",")) {
                     realIp = realIp.split(",")[0];
                 }

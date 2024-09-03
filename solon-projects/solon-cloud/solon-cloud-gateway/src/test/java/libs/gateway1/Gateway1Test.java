@@ -35,6 +35,16 @@ public class Gateway1Test extends HttpTester {
     }
 
     @Test
+    public void GatewayGetSslTest() throws Exception {
+        HttpResponse resp = path("/h5/more.htm").exec("GET");
+
+        String rst = resp.bodyAsString();
+        System.out.println(rst);
+        assert rst != null;
+        assert rst.contains("设置");
+    }
+
+    @Test
     public void GatewayGetTest() throws Exception {
         HttpResponse resp = path("/demo/test?name=noear").exec("GET");
 
