@@ -37,7 +37,7 @@ public class XPluginImpl implements Plugin {
         final Props gatewayProps = context.cfg().getProp(SOLON_CLOUD_GATEWAY);
         final GatewayProperties gatewayProperties;
         if (gatewayProps.size() > 0) {
-            gatewayProperties = gatewayProps.getBean(GatewayProperties.class);
+            gatewayProperties = gatewayProps.toBean(GatewayProperties.class);
         } else {
             gatewayProperties = new GatewayProperties();
         }

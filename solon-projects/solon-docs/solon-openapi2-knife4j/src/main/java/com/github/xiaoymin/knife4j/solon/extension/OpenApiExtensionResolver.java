@@ -35,8 +35,8 @@ public class OpenApiExtensionResolver {
     private OpenApiExtension extension = new OpenApiExtension();
 
     public OpenApiExtensionResolver() {
-        setting = Solon.cfg().getBean("knife4j", OpenApiSetting.class);
-        extendSetting = Solon.cfg().getBean("knife4j.setting", OpenApiExtendSetting.class);
+        setting = Solon.cfg().toBean("knife4j", OpenApiSetting.class);
+        extendSetting = Solon.cfg().toBean("knife4j.setting", OpenApiExtendSetting.class);
 
         if (setting == null) {
             setting = new OpenApiSetting();

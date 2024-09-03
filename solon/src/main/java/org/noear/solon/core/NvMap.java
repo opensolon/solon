@@ -122,7 +122,18 @@ public class NvMap extends IgnoreCaseMap<String> {
         }
     }
 
+    /**
+     * @deprecated 2.9
+     * */
+    @Deprecated
     public <T> T getBean(Class<T> clz) {
+        return toBean(clz);
+    }
+
+    /**
+     * @since 2.9
+     * */
+    public <T> T toBean(Class<T> clz) {
         return PropsConverter.global().convert(new Props(this), clz);
     }
 }
