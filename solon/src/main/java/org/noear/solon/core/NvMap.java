@@ -123,6 +123,8 @@ public class NvMap extends IgnoreCaseMap<String> {
     }
 
     /**
+     * 转为换一个类实例
+     *
      * @deprecated 2.9
      * */
     @Deprecated
@@ -131,6 +133,8 @@ public class NvMap extends IgnoreCaseMap<String> {
     }
 
     /**
+     * 转为换一个类实例
+     *
      * @since 2.9
      * */
     public <T> T toBean(Class<T> clz) {

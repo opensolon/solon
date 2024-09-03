@@ -196,7 +196,7 @@ public class Props extends Properties {
 
 
     /**
-     * 查找 keyStarts 开头的所有配置；并生成一个新的 Bean
+     * 查找 keyStarts 开头的所有配置；转为换一个类实例
      *
      * @param keyStarts key 的开始字符
      * @deprecated 2.9

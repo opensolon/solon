@@ -552,17 +552,6 @@ public abstract class Context {
     }
 
     /**
-     * 获取参数并转为类
-     *
-     * @since 2.9
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public <T> T paramsAsClass(Class<T> type) {
-        return paramAsBean(type);
-    }
-
-    /**
      * 获取所有参数的名字集合
      * */
     public Set<String> paramNames() {
