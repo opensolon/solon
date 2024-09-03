@@ -16,10 +16,8 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.models.CfgItem;
@@ -80,7 +78,7 @@ public class PropTest {
 
     @Test
     public void test2() {
-        List<String> list1 = Solon.cfg().getBean("stritems", List.class);
+        List<String> list1 = Solon.cfg().toBean("stritems", List.class);
         List<String> list2 = Solon.cfg().getList("stritems");
 
         assert list1 != null;

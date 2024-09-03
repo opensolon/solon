@@ -39,7 +39,7 @@ public class XPluginImpl implements Plugin {
         final Props docsProps = context.cfg().getProp(SOLON_DOCS);
         final DocsProperties docsProperties;
         if (docsProps.size() > 0) {
-            docsProperties = docsProps.getBean(DocsProperties.class);
+            docsProperties = docsProps.toBean(DocsProperties.class);
         } else {
             docsProperties = new DocsProperties();
         }

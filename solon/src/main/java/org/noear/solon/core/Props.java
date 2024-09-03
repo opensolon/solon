@@ -209,16 +209,46 @@ public class Props extends Properties {
      * 查找 keyStarts 开头的所有配置；并生成一个新的 Bean
      *
      * @param keyStarts key 的开始字符
+     * @deprecated 2.9
      */
+    @Deprecated
     public <T> T getBean(String keyStarts, Class<T> clz) {
+        return toBean(keyStarts, clz);
+    }
+
+    /**
+     * 转为换一个类实例
+     *
+     * @deprecated 2.9
+     * */
+    @Deprecated
+    public <T> T getBean(Class<T> clz) {
+        return toBean(clz);
+    }
+
+    /**
+     * 查找 keyStarts 开头的所有配置；并转为换一个类实例
+     *
+     * @param keyStarts key 的开始字符
+     * @since 2.9
+     */
+    public <T> T toBean(String keyStarts, Class<T> clz) {
         Properties props = getProp(keyStarts);
         return PropsConverter.global().convert(props, clz);
     }
 
-    public <T> T getBean(Class<T> clz) {
+    /**
+     * 转为换一个类实例
+     *
+     * @since 2.9
+     * */
+    public <T> T toBean(Class<T> clz) {
         return PropsConverter.global().convert(this, clz);
     }
 
+    /**
+     * 绑定到一个类实例上
+     * */
     public <T> T bindTo(T obj) {
         PropsConverter.global().convert(this, obj, null, null);
         return obj;

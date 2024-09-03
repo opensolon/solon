@@ -16,11 +16,9 @@
 package features.i18n;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.i18n.I18nBundle;
 import org.noear.solon.i18n.I18nService;
 import org.noear.solon.i18n.I18nUtil;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
@@ -60,7 +58,7 @@ public class I18nUtilTest {
 
     @Test
     public void test4(){
-         List list = service.toProps(Locale.CHINA).getBean("site.urls", List.class);
+         List list = service.toProps(Locale.CHINA).toBean("site.urls", List.class);
 
          assert list!=null;
          assert list.size() == 2;
