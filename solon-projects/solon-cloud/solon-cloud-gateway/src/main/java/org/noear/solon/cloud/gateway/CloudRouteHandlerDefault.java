@@ -49,8 +49,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
     public CloudRouteHandlerDefault() {
         Solon.context().getBeanAsync(Vertx.class, b -> {
             WebClientOptions options = new WebClientOptions()
+                    .setTrustAll(true)
                     .setMaxPoolSize(250)
-                    .setConnectTimeout(1000 * 3) // milliseconds: 5s
+                    .setConnectTimeout(1000 * 3) // milliseconds: 3s
                     .setIdleTimeout(60) // seconds: 60s
                     .setKeepAlive(true)
                     .setKeepAliveTimeout(60); // seconds: 60s
@@ -119,16 +120,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
             targetUri = ctx.target();
         }
 
-        if (targetUri.getPort() > 0) {
-            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
-                    targetUri.getPort(),
-                    targetUri.getHost(),
-                    ctx.newRequest().getPathAndQueryString());
-        } else {
-            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
-                    targetUri.getHost(),
-                    ctx.newRequest().getPathAndQueryString());
-        }
+        String absUrl = targetUri + ctx.newRequest().getPathAndQueryString();
+
+        return httpClient.requestAbs(HttpMethod.valueOf(ctx.newRequest().getMethod()), absUrl);
     }
 
     /**
