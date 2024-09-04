@@ -680,6 +680,25 @@ public abstract class BeanContainer {
     }
 
     /**
+     * 包装
+     */
+    public BeanWrap wrap(String name, Class<?> clz) {
+        return wrap(name, clz, false);
+    }
+
+    /**
+     * 包装
+     */
+    public BeanWrap wrap(String name, Class<?> clz, boolean typed) {
+        BeanWrap wrap = getWrap(name);
+        if (wrap == null) {
+            wrap = wrapCreate(clz, null, name, typed);
+        }
+
+        return wrap;
+    }
+
+    /**
      * 包装并推入
      */
     public BeanWrap wrapAndPut(Class<?> type) {
