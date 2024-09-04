@@ -25,6 +25,7 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
+import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
@@ -50,7 +51,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
         Solon.context().getBeanAsync(Vertx.class, b -> {
             WebClientOptions options = new WebClientOptions()
                     .setMaxPoolSize(250)
-                    .setConnectTimeout(1000 * 3) // milliseconds: 5s
+                    .setConnectTimeout(1000 * 3) // milliseconds: 3s
                     .setIdleTimeout(60) // seconds: 60s
                     .setKeepAlive(true)
                     .setKeepAliveTimeout(60); // seconds: 60s
@@ -76,7 +77,16 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
-                req1.putHeader(kv.getKey(), kv.getValues());
+                if (ExConstants.Host.equals(kv.getKey())) {
+                    req1.putHeader(ExConstants.X_Forwarded_Host, kv.getValues());
+                } else {
+                    req1.putHeader(kv.getKey(), kv.getValues());
+                }
+            }
+
+            if (ctx.rawHeader(ExConstants.X_Real_IP) == null) {
+                //如果上层代理没有构建 real-ip ？
+                req1.putHeader(ExConstants.X_Real_IP, ctx.realIp());
             }
 
             ExBody exBody = ctx.newRequest().getBody();
@@ -119,16 +129,9 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
             targetUri = ctx.target();
         }
 
-        if (targetUri.getPort() > 0) {
-            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
-                    targetUri.getPort(),
-                    targetUri.getHost(),
-                    ctx.newRequest().getPathAndQueryString());
-        } else {
-            return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()),
-                    targetUri.getHost(),
-                    ctx.newRequest().getPathAndQueryString());
-        }
+        String absUrl = targetUri + ctx.newRequest().getPathAndQueryString();
+
+        return httpClient.requestAbs(HttpMethod.valueOf(ctx.newRequest().getMethod()), absUrl);
     }
 
     /**
