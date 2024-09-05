@@ -23,9 +23,14 @@ import java.lang.annotation.*;
  * @author noear
  * @since 2.6
  */
+@Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Addition {
-    Class<? extends Annotation>[] value();
+    Class<?>[] value();
+    /**
+     * 调用顺位
+     * */
+    int index() default 0;
 }

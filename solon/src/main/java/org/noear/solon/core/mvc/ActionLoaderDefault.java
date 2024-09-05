@@ -205,7 +205,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         if (m_map != null || all) {
             String newPath = postActionPath(bw, bPath, method, m_path);
 
-            Action action = createAction(bw, method, m_map, newPath, bRemoting);
+            ActionAide action = createAction(bw, method, m_map, newPath, bRemoting);
 
             //m_method 必须之前已准备好，不再动  //用于支持 Cors
             loadActionAide(method, action, m_addinMethodSet);
@@ -229,59 +229,79 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      */
     protected void loadControllerAide(Set<MethodType> addinMethodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
-            if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> this.before(bw.context().getBeanOrNew(b)));
-            } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> this.after(bw.context().getBeanOrNew(f)));
-            } else {
-                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
-                    if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> this.before(bw.context().getBeanOrNew(b)));
-                    } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> this.after(bw.context().getBeanOrNew(f)));
-                    } else if (anno2 instanceof Addition) {
-                        //用于支持 Cors
-                        Addition additionAnno = (Addition) anno2;
-                        for (Class<?> annoClz : additionAnno.value()) {
-                            MethodType methodType = MethodTypeUtil.valueOf(annoClz.getSimpleName().toUpperCase());
-                            if (methodType != MethodType.UNKNOWN) {
-                                addinMethodSet.add(methodType);
-                            }
-                        }
+            if (loadControllerAideAdd(anno, addinMethodSet)) {
+                continue;
+            }
+
+            for (Annotation anno2 : anno.annotationType().getAnnotations()) {
+                loadControllerAideAdd(anno2, addinMethodSet);
+            }
+        }
+    }
+
+    protected boolean loadControllerAideAdd(Annotation anno, Set<MethodType> addinMethodSet) {
+        if (anno instanceof Before) {
+            addDo(((Before) anno).value(), (b) -> this.before(bw.context().getBeanOrNew(b)));
+        } else if (anno instanceof After) {
+            addDo(((After) anno).value(), (f) -> this.after(bw.context().getBeanOrNew(f)));
+        } else if (anno instanceof Addition) {
+            //用于支持 Cors
+            Addition additionAnno = (Addition) anno;
+            for (Class<?> clz : additionAnno.value()) {
+                if (Filter.class.isAssignableFrom(clz)) {
+                    filter(additionAnno.index(), (Filter) bw.context().getBeanOrNew(clz));
+                } else {
+                    MethodType methodType = MethodTypeUtil.valueOf(clz.getSimpleName().toUpperCase());
+                    if (methodType != MethodType.UNKNOWN) {
+                        addinMethodSet.add(methodType);
                     }
                 }
             }
+        } else {
+            return false;
         }
+
+        return true;
     }
 
     /**
      * 加载动作助理（Before、After）
      */
-    protected void loadActionAide(Method method, Action action, Set<MethodType> addinMethodSet) {
+    protected void loadActionAide(Method method, ActionAide action, Set<MethodType> addinMethodSet) {
         for (Annotation anno : method.getAnnotations()) {
-            if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> action.before(bw.context().getBeanOrNew(b)));
-            } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> action.after(bw.context().getBeanOrNew(f)));
-            } else {
-                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
-                    if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> action.before(bw.context().getBeanOrNew(b)));
-                    } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> action.after(bw.context().getBeanOrNew(f)));
-                    } else if (anno2 instanceof Addition) {
-                        //用于支持 Cors
-                        Addition additionAnno = (Addition) anno2;
-                        for (Class<?> annoClz : additionAnno.value()) {
-                            MethodType methodType = MethodTypeUtil.valueOf(annoClz.getSimpleName().toUpperCase());
-                            if (methodType != MethodType.UNKNOWN) {
-                                addinMethodSet.add(methodType);
-                            }
-                        }
+            if (loadActionAideAdd(anno, action, addinMethodSet)) {
+                continue;
+            }
+
+            for (Annotation anno2 : anno.annotationType().getAnnotations()) {
+                loadActionAideAdd(anno2, action, addinMethodSet);
+            }
+        }
+    }
+
+    protected boolean loadActionAideAdd(Annotation anno, ActionAide action, Set<MethodType> addinMethodSet) {
+        if (anno instanceof Before) {
+            addDo(((Before) anno).value(), (b) -> action.before(bw.context().getBeanOrNew(b)));
+        } else if (anno instanceof After) {
+            addDo(((After) anno).value(), (f) -> action.after(bw.context().getBeanOrNew(f)));
+        } else if (anno instanceof Addition) {
+            //用于支持 Cors
+            Addition additionAnno = (Addition) anno;
+            for (Class<?> clz : additionAnno.value()) {
+                if (Filter.class.isAssignableFrom(clz)) {
+                    action.filter(additionAnno.index(), (Filter) bw.context().getBeanOrNew(clz));
+                }else {
+                    MethodType methodType = MethodTypeUtil.valueOf(clz.getSimpleName().toUpperCase());
+                    if (methodType != MethodType.UNKNOWN) {
+                        addinMethodSet.add(methodType);
                     }
                 }
             }
+        } else{
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -294,7 +314,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     /**
      * 构建 Action
      */
-    protected Action createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
+    protected ActionAide createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
             return new ActionDefault(bw, this, method, mp, path, remoting, bRender);
         } else {

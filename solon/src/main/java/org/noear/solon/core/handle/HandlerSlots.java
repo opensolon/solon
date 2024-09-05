@@ -29,13 +29,19 @@ import java.util.Set;
 public interface HandlerSlots {
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     default void before(String expr, MethodType method, int index, Handler handler) {
     }
 
     /**
      * 添加后置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     default void after(String expr, MethodType method, int index, Handler handler) {
     }
 

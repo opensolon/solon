@@ -36,7 +36,9 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 2.9
  * */
+@Deprecated
 @Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

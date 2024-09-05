@@ -21,6 +21,10 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 2.9.3
+* 添加 solon Props:toBean 方法
+* 添加 solon-cloud-gateway X_Forwarded_Host 和 https 转发支持
+
 ### 2.9.2（2024-09-01）
 * 新增 solon-config-plus
 * 添加 NOTICE
@@ -42,17 +46,8 @@
 * redisson 升为 3.34.1
 
 
-
 |                          | 操作     |                          |
 |--------------------------|--------|--------------------------|
-| ctx.paramsMap()          | 弃用     |  ctx.paramMap()                        |
-| ctx.paramsAdd(name,value) | 弃用     | 由 ctx.paramMap().add() 替代                         |
-| ctx.paramSet(name,value) | 弃用     | 由 ctx.paramMap().add() 或 .put() 替代                         |
-| | | |
-| ctx.headersMap()         | 弃用     |   ctx.headerMap()                       |
-| | | |
-| ctx.filesMap()           | 弃用     |   ctx.fileMap()                       |
-| ctx.files(name)          | 弃用     | 由 ctx.fileValues(name)	 替代                         |
 | | | |
 | ctx.paramMap():NvMap     | 调整     | ctx.paramMap():MultiMap  |
 | ctx.headerMap():NvMap    | 调整     | ctx.headerMap():MultiMap |
@@ -65,8 +60,6 @@
 | ctx.cookieValues(name)     | 新增     |                          |
 | ctx.fileNames()          | 新增     |                          |
 | ctx.fileValues(name)     | 新增     |                          |
-
-
 
 
 ### 2.9.1

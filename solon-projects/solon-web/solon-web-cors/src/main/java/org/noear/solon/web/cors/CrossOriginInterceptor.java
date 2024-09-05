@@ -15,9 +15,7 @@
  */
 package org.noear.solon.web.cors;
 
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 import java.util.HashMap;
@@ -28,12 +26,12 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 1.3
  */
-public class CrossOriginInterceptor implements Handler {
+public class CrossOriginInterceptor implements Filter {
     private Map<CrossOrigin, CrossHandler> handlerMap = new HashMap<>();
     private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     @Override
-    public void handle(Context ctx) throws Throwable {
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         if (ctx.getHandled()) {
             return;
         }
@@ -52,6 +50,8 @@ public class CrossOriginInterceptor implements Handler {
 
             handleDo(ctx, anno);
         }
+
+        chain.doFilter(ctx);
     }
 
     protected void handleDo(Context ctx, CrossOrigin anno) throws Throwable {

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
@@ -151,14 +150,20 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(Handler handler) {
         before("**", MethodType.ALL, handler);
     }
 
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(int index, Handler handler) {
         before("**", MethodType.ALL, index, handler);
     }
@@ -167,7 +172,9 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加前置处理
      *
      * @since 1.6
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(MethodType method, Handler handler) {
         before("**", method, handler);
     }
@@ -176,28 +183,39 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加前置处理
      *
      * @since 1.6
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(MethodType method, int index, Handler handler) {
         before("**", method, index, handler);
     }
 
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(String expr, Handler handler) {
         before(expr, MethodType.ALL, handler);
     }
 
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void before(String expr, MethodType method, Handler handler) {
         _router.add(expr, Endpoint.before, method, handler);
     }
 
     /**
      * 添加前置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     @Override
     public void before(String expr, MethodType method, int index, Handler handler) {
         _router.add(expr, Endpoint.before, method, index, handler);
@@ -205,7 +223,10 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     /**
      * 添加后置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void after(Handler handler) {
         after("**", MethodType.ALL, handler);
     }
@@ -214,7 +235,9 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加后置处理
      *
      * @since 1.6
+     * @deprecated 2.9
      */
+    @Deprecated
     public void after(MethodType method, Handler handler) {
         after("**", method, handler);
     }
@@ -223,21 +246,28 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加后置处理
      *
      * @since 1.6
+     * @deprecated 2.9
      */
+    @Deprecated
     public void after(String expr, Handler handler) {
         after(expr, MethodType.ALL, handler);
     }
 
     /**
      * 添加后置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void after(String expr, MethodType method, Handler handler) {
         _router.add(expr, Endpoint.after, method, handler);
     }
 
     /**
      * 添加后置处理
+     * @deprecated 2.9
      */
+    @Deprecated
     @Override
     public void after(String expr, MethodType method, int index, Handler handler) {
         _router.add(expr, Endpoint.after, method, index, handler);

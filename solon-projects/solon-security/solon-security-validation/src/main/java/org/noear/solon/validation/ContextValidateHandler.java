@@ -16,7 +16,8 @@
 package org.noear.solon.validation;
 
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.Filter;
+import org.noear.solon.core.handle.FilterChain;
 
 /**
  * 上下文验证拦截器
@@ -24,10 +25,12 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.0
  * */
-public class ContextValidateHandler implements Handler {
+public class ContextValidateHandler implements Filter {
 
     @Override
-    public void handle(Context ctx) throws Throwable {
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         ValidUtils.validateContext(ctx);
+
+        chain.doFilter(ctx);
     }
 }

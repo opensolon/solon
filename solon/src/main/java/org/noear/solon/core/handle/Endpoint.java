@@ -23,7 +23,9 @@ import org.noear.solon.core.route.Router;
  * @see Router#add(String, Endpoint, MethodType, int, Handler)
  * @author noear
  * @since 1.0
+ * @deprecated 2.9
  * */
+@Deprecated
 public enum Endpoint {
     /**前置处理*/
     before(0),

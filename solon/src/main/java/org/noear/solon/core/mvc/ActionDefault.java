@@ -38,7 +38,7 @@ import java.util.regex.Matcher;
  * @author noear
  * @since 1.0
  * */
-public class ActionDefault extends HandlerAide implements Action {
+public class ActionDefault extends HandlerAide implements ActionAide {
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -227,6 +227,15 @@ public class ActionDefault extends HandlerAide implements Action {
             x.autoMultipart(true);
         }
 
+        //controllerFilterDo
+        new FilterChainImpl(bAide.filters(), this::actionFilterDo).doFilter(x);
+    }
+
+    protected void actionFilterDo(Context x) throws Throwable {
+        new FilterChainImpl(filters(), this::actionHandleDo).doFilter(x);
+    }
+
+    protected void actionHandleDo(Context x) throws Throwable{
         invoke(x, null);
     }
 
