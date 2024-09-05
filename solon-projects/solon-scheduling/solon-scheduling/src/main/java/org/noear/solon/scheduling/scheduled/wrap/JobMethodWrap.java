@@ -32,9 +32,9 @@ import java.lang.reflect.Method;
  * @since 2.2
  */
 public class JobMethodWrap implements JobHandler {
-    BeanWrap beanWrap;
-    MethodWrap method;
-    MethodHandler methodHandler;
+    private BeanWrap beanWrap;
+    private MethodWrap method;
+    private MethodHandler methodHandler;
 
     public JobMethodWrap(BeanWrap beanWrap, Method method) {
         this.beanWrap = beanWrap;
