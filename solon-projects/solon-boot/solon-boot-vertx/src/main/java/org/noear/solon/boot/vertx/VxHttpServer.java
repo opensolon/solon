@@ -13,6 +13,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.web.vertx.VxHandler;
 
 import javax.net.ssl.SSLContext;
 import java.util.concurrent.Executor;

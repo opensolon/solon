@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-boot-vertx</artifactId>
+    <artifactId>solon-web-vertx</artifactId>
     <packaging>jar</packaging>
 
 
@@ -22,9 +22,17 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web-vertx</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${vertx.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
     </dependencies>
 
 </project>

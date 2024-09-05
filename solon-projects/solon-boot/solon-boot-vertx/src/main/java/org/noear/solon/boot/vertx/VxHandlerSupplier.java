@@ -15,6 +15,8 @@
  */
 package org.noear.solon.boot.vertx;
 
+import org.noear.solon.web.vertx.VxHandler;
+
 import java.util.function.Supplier;
 
 /**

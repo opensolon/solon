@@ -1,6 +1,7 @@
 package labs;
 
-import org.noear.solon.boot.vertx.ResponseOutputStream;
+
+import org.noear.solon.web.vertx.ResponseOutputStream;
 
 /**
  * @author noear 2024/8/23 created

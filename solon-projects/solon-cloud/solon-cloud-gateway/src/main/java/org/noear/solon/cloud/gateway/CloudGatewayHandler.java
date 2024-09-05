@@ -16,11 +16,11 @@
 package org.noear.solon.cloud.gateway;
 
 import io.vertx.core.http.HttpServerRequest;
-import org.noear.solon.boot.vertx.VxHandler;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.web.vertx.VxHandler;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
 
