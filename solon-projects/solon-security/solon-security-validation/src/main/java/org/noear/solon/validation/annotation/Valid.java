@@ -15,7 +15,7 @@
  */
 package org.noear.solon.validation.annotation;
 
-import org.noear.solon.annotation.Before;
+import org.noear.solon.annotation.Addition;
 import org.noear.solon.validation.ContextValidateHandler;
 
 import java.lang.annotation.*;
@@ -27,7 +27,7 @@ import java.lang.annotation.*;
  * @since 1.0
  * */
 @Inherited
-@Before({ContextValidateHandler.class})
+@Addition({ContextValidateHandler.class})
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Valid {
