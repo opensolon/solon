@@ -71,8 +71,8 @@ public class RouterDefault implements Router, HandlerSlots {
             ActionLoader al = Solon.app().factoryManager().mvcFactory()
                     .createLoader(controllerWrap);
 
-            if(controllerWrap.remoting()){
-                if(al.mapping() == null){
+            if (controllerWrap.remoting()) {
+                if (al.mapping() == null) {
                     //如果没有 mapping，则不进行  remoting注册
                     return;
                 }
@@ -205,16 +205,28 @@ public class RouterDefault implements Router, HandlerSlots {
     // HandlerSlots 接口实现
     //
 
+    /**
+     * @deprecated 2.9
+     */
+    @Deprecated
     @Override
     public void before(String expr, MethodType method, int index, Handler handler) {
         add(expr, Endpoint.before, method, index, handler);
     }
 
+    /**
+     * @deprecated 2.9
+     */
+    @Deprecated
     @Override
     public void after(String expr, MethodType method, int index, Handler handler) {
         add(expr, Endpoint.after, method, index, handler);
     }
 
+    /**
+     * @deprecated 2.9
+     */
+    @Deprecated
     @Override
     public void add(String expr, MethodType method, Handler handler) {
         add(expr, Endpoint.main, method, handler);

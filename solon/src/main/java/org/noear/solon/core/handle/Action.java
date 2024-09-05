@@ -72,14 +72,4 @@ public interface Action extends Handler {
      * 渲染
      * */
     void render(Object obj, Context c, boolean allowMultiple) throws Throwable;
-
-    /**
-     * 添加前置处理
-     */
-    void before(Handler handler);
-
-    /**
-     * 添加后置处理
-     */
-    void after(Handler handler);
 }

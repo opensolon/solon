@@ -15,8 +15,11 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.RankEntity;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,30 +41,78 @@ public class HandlerAide {
     private List<Handler> afters = new ArrayList<>();
 
     /**
-     * 添加前置处理
+     * 过滤列表
      */
+    private List<RankEntity<Filter>> filters = new ArrayList<>();
+
+    /**
+     * 添加前置处理
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
     public void before(Handler handler) {
         befores.add(handler);
     }
 
     /**
      * 添加后置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public void after(Handler handler) {
         afters.add(handler);
     }
 
     /**
-     * 前置处理
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param filter 过滤器
+     * @since 2.9
      */
+    public void filter(Filter filter) {
+        filter(0, filter);
+    }
+
+    /**
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param filter 过滤器
+     * @param index  顺序
+     * @since 2.9
+     */
+    public void filter(int index, Filter filter) {
+        filters.add(new RankEntity<>(filter, index));
+        filters.sort(Comparator.comparingInt(f -> f.index));
+    }
+
+    /**
+     * 前置处理
+     *
+     * @deprecated 2.9
+     */
+    @Deprecated
     public Collection<Handler> befores() {
         return befores;
     }
 
     /**
      * 后置处理
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public Collection<Handler> afters() {
         return afters;
+    }
+
+    /**
+     * 过滤列表
+     *
+     * @since 2.9
+     */
+    public List<RankEntity<Filter>> filters() {
+        return filters;
     }
 }

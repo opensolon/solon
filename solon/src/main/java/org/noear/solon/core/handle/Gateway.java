@@ -63,8 +63,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     private final String mapping;
     //映射注解
     private Mapping mappingAnno;
-    //过滤列表
-    private List<RankEntity<Filter>> filterList = new ArrayList<>();
 
     /**
      * 获取内部主路由（方便文档生成）
@@ -90,8 +88,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         //默认为404错误输出
         mainDef = (c) -> c.status(404);
-
-        filterList.add(new RankEntity<>(this::doFilter, Integer.MAX_VALUE));
 
         Solon.context().lifecycle(()->{
             //通过生命周期触发注册，可以在注册时使用注入字段
@@ -160,26 +156,12 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * 添加过滤器（按先进后出策略执行）
-     *
-     * @param filter 过滤器
-     */
-    public void filter(Filter filter) {
-        filter(0, filter);
-    }
-
-    public void filter(int index, Filter filter) {
-        filterList.add(new RankEntity<>(filter, index));
-        filterList.sort(Comparator.comparingInt(f -> f.index));
-    }
-
-    /**
      * for Handler
      */
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            new FilterChainImpl(filterList).doFilter(c);
+            new FilterChainImpl(filters(), this::handleDo).doFilter(c);
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
@@ -200,7 +182,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected void doFilter(Context c, FilterChain chain) throws Throwable {
+    protected void handleDo(Context c) throws Throwable {
         Handler m = find(c);
         Object obj = null;
 
@@ -268,7 +250,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加前置处理器
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public <T extends Handler> void before(Class<T> interceptorClz) {
         super.before(Solon.context().getBeanOrNew(interceptorClz));
     }
@@ -276,7 +261,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加后置处理器
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     public <T extends Handler> void after(Class<T> interceptorClz) {
         super.after(Solon.context().getBeanOrNew(interceptorClz));
     }
