@@ -41,7 +41,7 @@
         <water.version>2.14.2</water.version>
         <luffy.version>1.8.0</luffy.version>
 
-        <redisson.version>3.34.1</redisson.version>
+        <redisson.version>3.35.0</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
