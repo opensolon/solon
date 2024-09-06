@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.web.vertx;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.Solon;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -33,9 +36,15 @@ import java.util.concurrent.RejectedExecutionException;
 public class VxWebHandler implements VxHandler {
     static final Logger log = LoggerFactory.getLogger(VxWebHandler.class);
 
-    private Executor executor;
-    private org.noear.solon.core.handle.Handler handler;
+    private @Nullable Executor executor;
+    private @Nullable Handler handler;
 
+    /**
+     * 预处理
+     * */
+    protected void preHandle(Context ctx) throws IOException {
+
+    }
 
     @Override
     public void setHandler(Handler handler) {
@@ -89,11 +98,14 @@ public class VxWebHandler implements VxHandler {
     private void handle0(VxWebContext ctx) {
         try {
             ctx.contentType("text/plain;charset=UTF-8");
-            if (ServerProps.output_meta) {
-                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
-            }
 
-            handler.handle(ctx);
+            preHandle(ctx);
+
+            if (handler == null) {
+                Solon.app().tryHandle(ctx);
+            } else {
+                handler.handle(ctx);
+            }
 
             if (ctx.innerIsAsync() == false) {
                 ctx.innerCommit();

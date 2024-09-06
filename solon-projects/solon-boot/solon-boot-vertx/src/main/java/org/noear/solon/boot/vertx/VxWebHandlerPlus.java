@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.integration;
+package org.noear.solon.boot.vertx;
 
-import org.noear.solon.web.vertx.VxHandler;
-import org.noear.solon.boot.vertx.VxHandlerSupplier;
-import org.noear.solon.cloud.gateway.CloudGatewayHandler;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.web.vertx.VxWebHandler;
+
+import java.io.IOException;
 
 /**
  * @author noear
  * @since 2.9
  */
-public class GatewayHandlerSupplier implements VxHandlerSupplier {
-    private final CloudGatewayHandler handler;
-
-    public GatewayHandlerSupplier(CloudGatewayHandler handler) {
-        this.handler = handler;
-    }
-
+public class VxWebHandlerPlus extends VxWebHandler {
     @Override
-    public VxHandler get() {
-        return handler;
+    protected void preHandle(Context ctx) throws IOException {
+        super.preHandle(ctx);
     }
 }

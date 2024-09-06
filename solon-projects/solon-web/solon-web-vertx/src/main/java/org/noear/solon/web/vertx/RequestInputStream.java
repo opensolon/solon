@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway.integration;
+package org.noear.solon.web.vertx;
 
-import org.noear.solon.web.vertx.VxHandler;
-import org.noear.solon.boot.vertx.VxHandlerSupplier;
-import org.noear.solon.cloud.gateway.CloudGatewayHandler;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import org.noear.solon.boot.io.LimitedInputStream;
 
 /**
+ * 请求输流
+ *
  * @author noear
  * @since 2.9
  */
-public class GatewayHandlerSupplier implements VxHandlerSupplier {
-    private final CloudGatewayHandler handler;
-
-    public GatewayHandlerSupplier(CloudGatewayHandler handler) {
-        this.handler = handler;
-    }
-
-    @Override
-    public VxHandler get() {
-        return handler;
+public class RequestInputStream extends LimitedInputStream {
+    public RequestInputStream(ByteBuf byteBuf, long limitSize) {
+        super(new ByteBufInputStream(byteBuf), limitSize);
     }
 }

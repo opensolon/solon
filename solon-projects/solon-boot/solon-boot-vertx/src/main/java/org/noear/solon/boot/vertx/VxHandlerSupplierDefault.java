@@ -15,6 +15,9 @@
  */
 package org.noear.solon.boot.vertx;
 
+import org.noear.solon.web.vertx.VxHandler;
+import org.noear.solon.web.vertx.VxWebHandler;
+
 /**
  * @author noear
  * @since 2.9
@@ -23,7 +26,7 @@ public class VxHandlerSupplierDefault implements VxHandlerSupplier {
     private final VxWebHandler handler;
 
     public VxHandlerSupplierDefault() {
-        handler = new VxWebHandler();
+        handler = new VxWebHandlerPlus();
     }
 
     @Override

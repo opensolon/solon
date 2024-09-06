@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.web.vertx;
 
-import io.netty.buffer.ByteBufInputStream;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
@@ -23,7 +22,6 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.impl.CookieImpl;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -169,7 +167,7 @@ public class VxWebContext extends WebContextBase {
             if (_requestBody == null) {
                 bodyAsStream = new ByteArrayInputStream(new byte[0]);
             } else {
-                bodyAsStream = new LimitedInputStream(new ByteBufInputStream(_requestBody.getByteBuf()), ServerProps.request_maxBodySize);
+                bodyAsStream = new RequestInputStream(_requestBody.getByteBuf(), ServerProps.request_maxBodySize);
             }
 
             return bodyAsStream;

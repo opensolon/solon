@@ -10,14 +10,14 @@
         <version>2.9.2</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.mvc</artifactId>
+
+    <artifactId>solon-mvc</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-mvc</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
     </dependencies>
 
