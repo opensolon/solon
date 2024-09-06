@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway;
+package org.noear.solon.cloud.gateway.route.handler;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
@@ -29,9 +29,9 @@ import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
+import org.noear.solon.cloud.gateway.route.RouteHandler;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableEmitter;
-import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.KeyValues;
 
@@ -39,15 +39,15 @@ import java.net.URI;
 import java.util.Map;
 
 /**
- * 分布式路由处理器默认实现
+ * Http 路由处理器
  *
  * @author noear
  * @since 2.9
  */
-public class CloudRouteHandlerDefault implements CloudRouteHandler {
+public class HttpRouteHandler implements RouteHandler {
     private WebClient httpClient;
 
-    public CloudRouteHandlerDefault() {
+    public HttpRouteHandler() {
         Solon.context().getBeanAsync(Vertx.class, b -> {
             WebClientOptions options = new WebClientOptions()
                     .setMaxPoolSize(250)
@@ -58,6 +58,11 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
 
             this.httpClient = WebClient.create(b, options);
         });
+    }
+
+    @Override
+    public String[] schemas() {
+        return new String[]{"http", "https"};
     }
 
     /**
@@ -117,17 +122,7 @@ public class CloudRouteHandlerDefault implements CloudRouteHandler {
      * 构建 http 请求对象
      */
     private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
-        URI targetUri;
-        if (LoadBalance.URI_SCHEME.equals(ctx.target().getScheme())) {
-            String tmp = LoadBalance.get(ctx.target().getHost()).getServer(ctx.target().getPort());
-            if (tmp == null) {
-                throw new StatusException("The target service does not exist", 404);
-            }
-
-            targetUri = URI.create(tmp);
-        } else {
-            targetUri = ctx.target();
-        }
+        URI targetUri = ctx.targetNew();
 
         String absUrl = targetUri + ctx.newRequest().getPathAndQueryString();
 

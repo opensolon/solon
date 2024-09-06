@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.filter.*;
+import org.noear.solon.cloud.gateway.route.handler.*;
 import org.noear.solon.cloud.gateway.route.predicate.*;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
@@ -36,8 +37,10 @@ import java.util.Map;
  */
 public class RouteFactoryManager {
     private static final RouteFactoryManager global;
+
     private Map<String, RouteFilterFactory> filterFactoryMap = new HashMap<>();
     private Map<String, RoutePredicateFactory> predicateFactoryMap = new HashMap<>();
+    private Map<String, RouteHandler> handlerMap = new HashMap<>();
 
     private RouteFactoryManager() {
 
@@ -45,6 +48,7 @@ public class RouteFactoryManager {
 
     static {
         global = new RouteFactoryManager();
+
         addFactory(new AfterPredicateFactory());
         addFactory(new BeforePredicateFactory());
 
@@ -53,6 +57,7 @@ public class RouteFactoryManager {
         addFactory(new HostPredicateFactory());
         addFactory(new MethodPredicateFactory());
         addFactory(new PathPredicateFactory());
+        addFactory(new QueryPredicateFactory());
         addFactory(new RemoteAddrPredicateFactory());
 
         //----------
@@ -65,6 +70,10 @@ public class RouteFactoryManager {
         addFactory(new RemoveRequestHeaderFilterFactory());
         addFactory(new RemoveResponseHeaderFilterFactory());
         addFactory(new StripPrefixFilterFactory());
+
+        //----------
+        addHandler(new HttpRouteHandler());
+        addHandler(new LbRouteHandler());
     }
 
 
@@ -74,6 +83,19 @@ public class RouteFactoryManager {
 
     public static void addFactory(RoutePredicateFactory factory) {
         global.predicateFactoryMap.put(factory.prefix(), factory);
+    }
+
+    public static void addHandler(RouteHandler handler) {
+        for (String s1 : handler.schemas()) {
+            global.handlerMap.put(s1, handler);
+        }
+    }
+
+    /**
+     * 获取处理器
+     */
+    public static RouteHandler getHandler(String schema) {
+        return global.handlerMap.get(schema);
     }
 
     /**

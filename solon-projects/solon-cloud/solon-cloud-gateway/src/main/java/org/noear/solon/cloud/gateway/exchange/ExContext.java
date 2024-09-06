@@ -48,6 +48,16 @@ public interface ExContext {
     URI target();
 
     /**
+     * 配置路由新目标
+     */
+    void targetNew(URI target);
+
+    /**
+     * 路由新目标
+     */
+    URI targetNew();
+
+    /**
      * 路由超时
      */
     TimeoutProperties timeout();

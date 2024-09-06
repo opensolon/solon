@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.gateway;
+package org.noear.solon.cloud.gateway.route;
 
 import org.noear.solon.cloud.gateway.exchange.ExHandler;
 
 /**
- * 分布式路由处理器
+ * 路由处理器
  *
  * @author noear
  * @since 2.9
  */
-@FunctionalInterface
-public interface CloudRouteHandler extends ExHandler {
-
+public interface RouteHandler extends ExHandler {
+    /**
+     * 架构支持
+     */
+    String[] schemas();
 }

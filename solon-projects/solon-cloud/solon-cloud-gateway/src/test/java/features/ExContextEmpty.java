@@ -37,6 +37,16 @@ public class ExContextEmpty implements ExContext {
     }
 
     @Override
+    public void targetNew(URI target) {
+
+    }
+
+    @Override
+    public URI targetNew() {
+        return null;
+    }
+
+    @Override
     public TimeoutProperties timeout() {
         return null;
     }

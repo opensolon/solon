@@ -17,6 +17,7 @@ package org.noear.solon.cloud.gateway;
 
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.gateway.route.RouteSpec;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
@@ -35,11 +36,9 @@ import java.util.function.Consumer;
  */
 public class CloudGatewayConfiguration implements CloudRouteRegister {
     //路由记录
-    protected final Map<String, Route> routes = new ConcurrentHashMap<>();
+    protected final Map<String, RouteSpec> routes = new ConcurrentHashMap<>();
     //路由默认过滤器
     protected final List<ExFilter> routeDefaultFilters = new ArrayList<>();
-    //路由处理
-    protected CloudRouteHandler routeHandler = new CloudRouteHandlerDefault();
     //过滤器
     protected List<RankEntity<ExFilter>> filters = new ArrayList<>();
 
@@ -66,15 +65,6 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
     }
 
     /**
-     * 配置路由处理
-     *
-     * @param routeHandler 路由处理器
-     */
-    public void routeHandler(CloudRouteHandler routeHandler) {
-        this.routeHandler = routeHandler;
-    }
-
-    /**
      * 路由默认过滤器
      */
     public void routeDefaultFilter(ExFilter filter) {
@@ -89,8 +79,8 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
      * @param id      标识
      * @param builder 路由构建器
      */
-    public CloudRouteRegister route(String id, Consumer<Route> builder) {
-        Route route = routes.computeIfAbsent(id, k -> new Route(id).filters(routeDefaultFilters));
+    public CloudRouteRegister route(String id, Consumer<RouteSpec> builder) {
+        RouteSpec route = routes.computeIfAbsent(id, k -> new RouteSpec(id).filters(routeDefaultFilters));
         builder.accept(route);
         return this;
     }
@@ -100,7 +90,7 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
      *
      * @param route 路由
      */
-    public CloudRouteRegister route(Route route) {
+    public CloudRouteRegister route(RouteSpec route) {
         if (route != null) {
             routes.put(route.getId(), route.filters(routeDefaultFilters));
         }

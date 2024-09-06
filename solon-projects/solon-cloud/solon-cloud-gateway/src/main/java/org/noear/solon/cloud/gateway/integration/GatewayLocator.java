@@ -21,8 +21,8 @@ import org.noear.solon.cloud.gateway.CloudRouteRegister;
 import org.noear.solon.cloud.gateway.properties.DiscoverProperties;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
 import org.noear.solon.cloud.gateway.properties.RouteProperties;
-import org.noear.solon.cloud.gateway.route.Route;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.cloud.gateway.route.RouteSpec;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.bean.LifecycleBean;
 
@@ -103,7 +103,7 @@ public class GatewayLocator implements LifecycleBean {
 
         //routes
         for (RouteProperties rm : gatewayProperties.getRoutes()) {
-            Route route = new Route(rm.getId());
+            RouteSpec route = new RouteSpec(rm.getId());
 
             route.index(rm.getIndex());
             route.target(URI.create(rm.getTarget()));

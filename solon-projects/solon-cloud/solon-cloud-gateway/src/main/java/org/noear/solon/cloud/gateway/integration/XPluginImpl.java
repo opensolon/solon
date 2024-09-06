@@ -20,9 +20,7 @@ import org.noear.solon.boot.vertx.VxHandlerSupplier;
 import org.noear.solon.boot.vertx.VxHandlerSupplierDefault;
 import org.noear.solon.cloud.gateway.*;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
-import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
+import org.noear.solon.cloud.gateway.route.*;
 import org.noear.solon.core.*;
 
 /**
@@ -64,9 +62,9 @@ public class XPluginImpl implements Plugin {
             cloudGateway.getConfiguration().filter(bw.raw(), bw.index());
         });
 
-        //添加过注解处理器（只能一个）
-        context.getBeanAsync(CloudRouteHandler.class, b -> {
-            cloudGateway.getConfiguration().routeHandler(b);
+        //添加路由处理器（可多个）
+        context.subBeansOfType(RouteHandler.class, b -> {
+            RouteFactoryManager.addHandler(b);
         });
 
         //添加路由过滤器工厂（可多个）
@@ -74,7 +72,7 @@ public class XPluginImpl implements Plugin {
             RouteFactoryManager.addFactory(b);
         });
 
-        //添加kkht由检测器工厂（可多个）
+        //添加路由检测器工厂（可多个）
         context.subBeansOfType(RoutePredicateFactory.class, b -> {
             RouteFactoryManager.addFactory(b);
         });
