@@ -23,6 +23,7 @@ import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.convert.ConverterFactory;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.event.EventListenerWrap;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -419,7 +420,8 @@ public class AppContext extends BeanContainer {
     private void addEventListener(Class<?> clz, BeanWrap bw) {
         Class<?>[] ets = GenericUtil.resolveTypeArguments(clz, EventListener.class);
         if (ets != null && ets.length > 0) {
-            EventBus.subscribe(ets[0], bw.index(), bw.raw());
+            EventListenerWrap listenerWrap = new EventListenerWrap(bw);
+            EventBus.subscribe(ets[0], bw.index(), listenerWrap);
         }
     }
 
