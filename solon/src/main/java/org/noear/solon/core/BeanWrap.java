@@ -125,6 +125,10 @@ public class BeanWrap {
             rawClz = rawUnproxied.getClass();
             if (rawClz.isAnonymousClass()) {
                 rawClz = rawClz.getSuperclass();
+
+                if(rawClz == Object.class){
+                    rawClz = clz;
+                }
             }
         }
 
