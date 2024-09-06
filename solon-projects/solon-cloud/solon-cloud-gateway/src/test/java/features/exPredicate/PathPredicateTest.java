@@ -4,6 +4,7 @@ import features.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.test.SolonTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author noear
  * @since 2.9
  */
+@SolonTest
 public class PathPredicateTest {
     @Test
     public void testValidConfig() {

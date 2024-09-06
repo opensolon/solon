@@ -4,11 +4,13 @@ import features.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.test.SolonTest;
 
 /**
  * @author wfm
  * @since 2.9
  */
+@SolonTest
 public class RemoteAddrPredicateTest {
     @Test
     public void test1() {

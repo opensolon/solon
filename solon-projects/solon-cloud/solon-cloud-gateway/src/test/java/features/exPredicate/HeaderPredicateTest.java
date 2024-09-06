@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.test.SolonTest;
 
 /**
  * 对请求头的断言测试
@@ -12,6 +13,7 @@ import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
  * @author wjc28
  * @since 2.9
  */
+@SolonTest
 public class HeaderPredicateTest {
 
     @Test
