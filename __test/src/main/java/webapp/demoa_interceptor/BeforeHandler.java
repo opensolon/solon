@@ -16,11 +16,14 @@
 package webapp.demoa_interceptor;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Filter;
+import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.core.handle.Handler;
 
-public class BeforeHandler implements Handler {
+public class BeforeHandler implements Filter {
     @Override
-    public void handle(Context c) throws Throwable {
-        c.attrSet("_start",System.currentTimeMillis());
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        ctx.attrSet("_start",System.currentTimeMillis());
+        chain.doFilter(ctx);
     }
 }

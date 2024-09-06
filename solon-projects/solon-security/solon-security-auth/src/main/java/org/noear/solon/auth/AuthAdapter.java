@@ -93,7 +93,8 @@ public class AuthAdapter {
                 authRuleHandler = new AuthRuleHandler();
                 authRuleHandler.setPathPrefix(authRulePathPrefix);
 
-                Solon.app().before(authRuleHandler);
+                //@since 3.0
+                Solon.app().filter(authRuleHandler);
             }
 
             authRuleHandler.addRule(rule);

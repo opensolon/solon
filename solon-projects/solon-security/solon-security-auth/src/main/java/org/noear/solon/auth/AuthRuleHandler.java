@@ -17,7 +17,8 @@ package org.noear.solon.auth;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.Filter;
+import org.noear.solon.core.handle.FilterChain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +28,14 @@ import java.util.List;
  *
  * @author noear
  * @since 1.4
+ * @since 3.0
  */
-public class AuthRuleHandler implements Handler {
+public class AuthRuleHandler implements Filter {
     private String pathPrefix;
 
     /**
      * 设置规则路径前缀（用于支持 AuthAdapterSupplier 的前缀特性）
-     * */
+     */
     public void setPathPrefix(String pathPrefix) {
         this.pathPrefix = pathPrefix;
     }
@@ -46,7 +48,13 @@ public class AuthRuleHandler implements Handler {
 
 
     @Override
-    public void handle(Context ctx) throws Throwable {
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        //@since 3.0
+        handle(ctx);
+        chain.doFilter(ctx);
+    }
+
+    protected void handle(Context ctx) throws Throwable {
         //尝试前缀过滤
         if (Utils.isNotEmpty(pathPrefix)) {
             if (ctx.pathNew().startsWith(pathPrefix) == false) {

@@ -25,6 +25,7 @@ import org.noear.solon.core.handle.*;
  *
  * @author noear
  * @since 1.8
+ * @since 3.0
  */
 public abstract class RouterWrapper implements HandlerSlots {
     private Router _router;
@@ -33,14 +34,11 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     public abstract AppContext context();
 
-    protected void initRouter(Filter appFilter) {
+    protected void initRouter() {
         //顺序不能换
         _chainManager = new ChainManager();
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router);
-
-        _chainManager.addInterceptor(_routerHandler, Integer.MAX_VALUE);
-        _chainManager.addFilter(appFilter, Integer.MAX_VALUE);
     }
 
 
@@ -149,149 +147,29 @@ public abstract class RouterWrapper implements HandlerSlots {
     }
 
     /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
+     * 添加主体处理
      */
-    @Deprecated
-    public void before(Handler handler) {
-        before("**", MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void before(int index, Handler handler) {
-        before("**", MethodType.ALL, index, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @since 1.6
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void before(MethodType method, Handler handler) {
-        before("**", method, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @since 1.6
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void before(MethodType method, int index, Handler handler) {
-        before("**", method, index, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void before(String expr, Handler handler) {
-        before(expr, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void before(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.before, method, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
     @Override
-    public void before(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.before, method, index, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void after(Handler handler) {
-        after("**", MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @since 1.6
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void after(MethodType method, Handler handler) {
-        after("**", method, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @since 1.6
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void after(String expr, Handler handler) {
-        after(expr, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public void after(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.after, method, handler);
-    }
-
-    /**
-     * 添加后置处理
-     * @deprecated 2.9
-     */
-    @Deprecated
-    @Override
-    public void after(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.after, method, index, handler);
+    public void add(String expr, MethodType method, Handler handler) {
+        _router.add(expr, method, handler);
     }
 
     /**
      * 添加主体处理
      */
-    @Override
-    public void add(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.main, method, handler);
-    }
-
     public void add(String expr, Class<?> clz) {
         BeanWrap bw = context().wrapAndPut(clz);
         _router.add(expr, bw);
     }
 
+    /**
+     * 添加主体处理
+     */
     public void add(String expr, Class<?> clz, boolean remoting) {
         BeanWrap bw = context().wrapAndPut(clz);
         bw.remotingSet(remoting);
         _router.add(expr, bw);
     }
-
 
     /**
      * 添加所有方法处理

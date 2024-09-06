@@ -25,32 +25,17 @@ import java.util.Set;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public interface HandlerSlots {
-    /**
-     * 添加前置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    default void before(String expr, MethodType method, int index, Handler handler) {
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    default void after(String expr, MethodType method, int index, Handler handler) {
-    }
-
-
     /**
      * 添加主体处理
      */
     void add(String expr, MethodType method, Handler handler);
 
+    /**
+     * 添加主体处理
+     */
     default void add(Mapping mapping, Set<MethodType> methodTypes, Handler handler) {
         String path = Utils.annoAlias(mapping.value(), mapping.path());
 

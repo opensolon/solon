@@ -190,7 +190,8 @@ public class OpenApi2Builder {
     private Map<Class<?>, List<ActionHolder>> getApiAction() {
         Map<Class<?>, List<ActionHolder>> apiMap = new HashMap<>(16);
 
-        Collection<Routing<Handler>> routingCollection = Solon.app().router().getAll(Endpoint.main);
+        //@since 3.0
+        Collection<Routing<Handler>> routingCollection = Solon.app().router().getAll();
         for (Routing<Handler> routing : routingCollection) {
             if (routing.target() instanceof Action) {
                 //如果是 Action

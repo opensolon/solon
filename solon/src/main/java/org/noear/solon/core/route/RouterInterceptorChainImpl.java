@@ -30,15 +30,29 @@ import java.util.List;
  * */
 public class RouterInterceptorChainImpl implements RouterInterceptorChain {
     private final List<RankEntity<RouterInterceptor>> interceptorList;
+    private final Handler lastHandler;
     private int index;
 
     public RouterInterceptorChainImpl(List<RankEntity<RouterInterceptor>> interceptorList) {
+        this(interceptorList, null);
+    }
+
+    public RouterInterceptorChainImpl(List<RankEntity<RouterInterceptor>> interceptorList, Handler lastHandler) {
         this.interceptorList = interceptorList;
         this.index = 0;
+        this.lastHandler = lastHandler;
     }
 
     @Override
     public void doIntercept(Context ctx, @Nullable Handler mainHandler) throws Throwable {
-        interceptorList.get(index++).target.doIntercept(ctx, mainHandler, this);
+        if (lastHandler == null) {
+            interceptorList.get(index++).target.doIntercept(ctx, mainHandler, this);
+        } else {
+            if (index < interceptorList.size()) {
+                interceptorList.get(index++).target.doIntercept(ctx, mainHandler, this);
+            } else {
+                lastHandler.handle(ctx);
+            }
+        }
     }
 }

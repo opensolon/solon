@@ -37,8 +37,9 @@ import java.util.regex.Matcher;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
-public class ActionDefault extends HandlerAide implements ActionAide {
+public class ActionDefault extends HandlerAide implements Action {
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -289,18 +290,6 @@ public class ActionDefault extends HandlerAide implements ActionAide {
          * */
 
         try {
-            //前置处理（最多一次渲染）
-            if (bAide != null) {
-                for (Handler h : bAide.befores()) {
-                    h.handle(c);
-                }
-            }
-
-            for (Handler h : befores()) {
-                h.handle(c);
-            }
-
-
             //主体处理（最多一次渲染）//非主体处理 或 未处理
             if (c.getHandled() == false) {
 
@@ -346,17 +335,6 @@ public class ActionDefault extends HandlerAide implements ActionAide {
             } else {
                 c.errors = e; //为 afters，留个参考
                 throw e;
-            }
-        } finally {
-            //后置处理
-            if (bAide != null) {
-                for (Handler h : bAide.afters()) {
-                    h.handle(c);
-                }
-            }
-
-            for (Handler h : afters()) {
-                h.handle(c);
             }
         }
     }

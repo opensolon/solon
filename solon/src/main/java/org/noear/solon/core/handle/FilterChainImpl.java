@@ -31,9 +31,7 @@ public class FilterChainImpl implements FilterChain {
     private int index;
 
     public FilterChainImpl(List<RankEntity<Filter>> filterList) {
-        this.filterList = filterList;
-        this.index = 0;
-        this.lastHandler = null;
+        this(filterList, null);
     }
 
     public FilterChainImpl(List<RankEntity<Filter>> filterList, Handler lastHandler) {

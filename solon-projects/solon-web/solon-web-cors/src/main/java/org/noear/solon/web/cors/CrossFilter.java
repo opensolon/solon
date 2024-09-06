@@ -16,6 +16,7 @@
 package org.noear.solon.web.cors;
 
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.route.PathRule;
 
 /**
  * 跨域处理
@@ -24,10 +25,23 @@ import org.noear.solon.core.handle.*;
  * @since 1.9
  */
 public class CrossFilter extends AbstractCross<CrossFilter> implements Filter {
+    private PathRule pathRule;
+
+    /**
+     * 设置路径匹配模式
+     *
+     * @since 3.0
+     */
+    public CrossFilter pathPatterns(String... patterns) {
+        this.pathRule = new PathRule().include(patterns);
+        return this;
+    }
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        doHandle(ctx);
+        if (pathRule == null || pathRule.test(ctx.pathNew())) {
+            doHandle(ctx);
+        }
 
         if (ctx.getHandled() == false) {
             chain.doFilter(ctx);

@@ -110,7 +110,7 @@ public class SolonApp extends RouterWrapper {
         _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
-        initRouter(this::doFilter);
+        initRouter();
 
         _handler = routerHandler();
     }
@@ -448,7 +448,7 @@ public class SolonApp extends RouterWrapper {
             if (stopped) {
                 x.status(503);
             } else {
-                chainManager().doFilter(x);
+                chainManager().doFilter(x, _handler);
 
                 //todo: 改由 HttpException 处理（不会到这里来了）
 //                if (x.getHandled() == false) { //@since: 1.9
@@ -508,10 +508,6 @@ public class SolonApp extends RouterWrapper {
             //移除当前线程上下文
             ContextUtil.currentRemove();
         }
-    }
-
-    protected void doFilter(Context x, FilterChain chain) throws Throwable {
-        _handler.handle(x);
     }
 
     protected boolean doStatus(Context x) throws Throwable {

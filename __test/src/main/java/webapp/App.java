@@ -204,20 +204,20 @@ public class App {
         SolonApp app = Solon.start(App.class, null);
 
         //开始之前把上下文置为已泻染
-        app.before("/user/**", MethodType.HTTP, c -> c.setRendered(true));
-
-        app.after("/user/**", MethodType.HTTP, c -> {
-            //可对 c.result 进行处理 //并输出
-        });
-
-        app.after(c -> {
-            if (c.getHandled() == false || c.status() == 404) {
-                //处理404问题
-            }
-        });
-
-        //全局添加跨域处理
-        app.before(new CrossHandler().allowedOrigins("*"));
+//        app.before("/user/**", MethodType.HTTP, c -> c.setRendered(true));
+//
+//        app.after("/user/**", MethodType.HTTP, c -> {
+//            //可对 c.result 进行处理 //并输出
+//        });
+//
+//        app.after(c -> {
+//            if (c.getHandled() == false || c.status() == 404) {
+//                //处理404问题
+//            }
+//        });
+//
+//        //全局添加跨域处理
+//        app.before(new CrossHandler().allowedOrigins("*"));
     }
 
     private static String getDefaultCharSet() {

@@ -16,32 +16,37 @@
 package webapp.demoa_interceptor;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Filter;
+import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.core.handle.Handler;
 
 
 //@Controller
 public class BeforeHandlerBean {
-    public static class Before1 implements Handler{
+    public static class Before1 implements Filter {
 
         @Override
-        public void handle(Context ctx) throws Throwable {
+        public void doFilter(Context ctx, FilterChain chain) throws Throwable {
             ctx.output("XInterceptor1::你被我拦截了(/demoa/**)!!!\n");
+            chain.doFilter(ctx);
         }
     }
 
-    public static class Before2 implements Handler{
+    public static class Before2 implements Filter{
 
         @Override
-        public void handle(Context ctx) throws Throwable {
+        public void doFilter(Context ctx, FilterChain chain) throws Throwable {
             ctx.output("XInterceptor2::你被我拦截了(/demoa/**)!!!\n");
+            chain.doFilter(ctx);
         }
     }
 
-    public static class Before3 implements Handler{
+    public static class Before3 implements Filter{
 
         @Override
-        public void handle(Context ctx) throws Throwable {
+        public void doFilter(Context ctx, FilterChain chain) throws Throwable {
             ctx.output("XInterceptor3::你被我拦截了(/demoa/**)!!!\n");
+            chain.doFilter(ctx);
         }
     }
 

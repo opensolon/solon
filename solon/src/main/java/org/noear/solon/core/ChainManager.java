@@ -97,8 +97,8 @@ public class ChainManager {
     /**
      * 执行过滤
      */
-    public void doFilter(Context x) throws Throwable {
-        new FilterChainImpl(filterNodes).doFilter(x);
+    public void doFilter(Context x, Handler lastHandler) throws Throwable {
+        new FilterChainImpl(filterNodes, lastHandler).doFilter(x);
     }
 
     //=======================
@@ -189,9 +189,9 @@ public class ChainManager {
     /**
      * 执行路由拦截
      */
-    public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
+    public void doIntercept(Context x, Handler lastHandler, Handler mainHandler) throws Throwable {
         //先执行的，包住后执行的
-        new RouterInterceptorChainImpl(interceptorNodes).doIntercept(x, mainHandler);
+        new RouterInterceptorChainImpl(interceptorNodes, lastHandler).doIntercept(x, mainHandler);
     }
 
     /**
@@ -313,34 +313,42 @@ public class ChainManager {
     //
     // SessionState 对接 //与函数同名，_开头
     //
-    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
-    private static boolean _sessionStateUpdated;
+    private SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
+    private boolean _sessionStateUpdated;
 
-    public static SessionStateFactory getSessionStateFactory() {
+    public SessionStateFactory getSessionStateFactory() {
         return _sessionStateFactory;
     }
 
     /**
      * 设置Session状态管理器
+     *
+     * @since 1.12
+     * @since 3.0
      */
-    public static void setSessionStateFactory(SessionStateFactory ssf) {
+    public void setSessionStateFactory(SessionStateFactory ssf) {
         if (ssf != null) {
             _sessionStateFactory = ssf;
-
-            if (_sessionStateUpdated == false) {
-                _sessionStateUpdated = true;
-
-                Solon.app().before("**", MethodType.HTTP, (c) -> {
-                    c.sessionState().sessionRefresh();
-                });
-            }
+            _sessionStateUpdated = true;
         }
     }
 
     /**
-     * 获取Session状态管理器
+     * 刷新Session状态
+     *
+     * @since 3.0
+     * */
+    public void refreshSessionState(Context c) {
+        if (_sessionStateUpdated) {
+            //替代 before("**", MethodType.HTTP, ...)
+            c.sessionState().sessionRefresh();
+        }
+    }
+
+    /**
+     * 获取Session状态
      */
-    public static SessionState getSessionState(Context ctx) {
+    public SessionState getSessionState(Context ctx) {
         return _sessionStateFactory.create(ctx);
     }
 }

@@ -49,6 +49,7 @@ import java.util.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public interface Router {
 
@@ -66,31 +67,29 @@ public interface Router {
      * @param handler 处理接口
      */
     default void add(String path, Handler handler) {
-        add(path, Endpoint.main, MethodType.HTTP, handler);
+        add(path, MethodType.HTTP, handler);
     }
 
     /**
      * 添加路由关系 for Handler
      *
      * @param path     路径
-     * @param endpoint 处理点
      * @param method   方法
      * @param handler  处理接口
      */
-    default void add(String path, Endpoint endpoint, MethodType method, Handler handler) {
-        add(path, endpoint, method, 0, handler);
+    default void add(String path, MethodType method, Handler handler) {
+        add(path, method, 0, handler);
     }
 
     /**
      * 添加路由关系 for Handler
      *
      * @param path     路径
-     * @param endpoint 处理点
      * @param method   方法
      * @param index    顺序位
      * @param handler  处理接口
      */
-    void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
+    void add(String path, MethodType method, int index, Handler handler);
 
     /**
      * 添加路由关系 for Handler
@@ -116,40 +115,25 @@ public interface Router {
     Handler matchMain(Context ctx);
 
     /**
-     * 区配多个处理（根据上下文）
-     *
-     * @param ctx      上下文
-     * @param endpoint 处理点
-     * @return 一批匹配的处理
-     * @since 2.5
-     */
-    List<Handler> matchMore(Context ctx, Endpoint endpoint);
-
-
-    /**
      * 获取某个处理点的所有路由记录（管理用）
      *
-     * @param endpoint 处理点
      * @return 处理点的所有路由记录
      */
-    Collection<Routing<Handler>> getAll(Endpoint endpoint);
+    Collection<Routing<Handler>> getAll();
 
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
      *
      * @param path     路径
-     * @param endpoint 处理点
      * @return 路径处理点的路由记录
      * @since 2.6
      */
-    Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
+    Collection<Routing<Handler>> getBy(String path);
 
     /**
      * 获取某个控制器的路由记录（管理用）
-     *
-     * @param controllerClz 控制器类
      */
-    Collection<Routing<Handler>> getBy(Class<?> controllerClz, Endpoint endpoint);
+    Collection<Routing<Handler>> getBy(Class<?> controllerClz);
 
 
     /**

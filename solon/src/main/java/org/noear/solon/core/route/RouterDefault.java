@@ -24,20 +24,20 @@ import org.noear.solon.core.util.PathAnalyzer;
 import java.util.*;
 
 /**
+ * 通用路由器默认实现
+ *
  * @author noear
  * @since 1.3
+ * @since 3.0
  */
 public class RouterDefault implements Router, HandlerSlots {
-    //for handler
-    private final RoutingTable<Handler>[] routesH;
-
-    public RouterDefault() {
-        routesH = new RoutingTableDefault[3];
-
-        routesH[0] = new RoutingTableDefault<>();//before:0
-        routesH[1] = new RoutingTableDefault<>();//main
-        routesH[2] = new RoutingTableDefault<>();//after:2
-    }
+    /**
+     * 路由表
+     *
+     * @since 1.3
+     * @since 3.0
+     */
+    private final RoutingTable<Handler> table = new RoutingTableDefault<>();
 
     @Override
     public void caseSensitive(boolean caseSensitive) {
@@ -47,21 +47,20 @@ public class RouterDefault implements Router, HandlerSlots {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path     路径
-     * @param endpoint 处理点
-     * @param method   方法
-     * @param index    顺序位
-     * @param handler  处理接口
+     * @param path    路径
+     * @param method  方法
+     * @param index   顺序位
+     * @param handler 处理接口
      */
     @Override
-    public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
+    public void add(String path, MethodType method, int index, Handler handler) {
         RoutingDefault routing = new RoutingDefault<>(path, method, index, handler);
 
         if (path.contains("*") || path.contains("{")) {
-            routesH[endpoint.code].add(routing);
+            table.add(routing);
         } else {
             //没有*号的，优先
-            routesH[endpoint.code].add(0, routing);
+            table.add(0, routing);
         }
     }
 
@@ -98,7 +97,7 @@ public class RouterDefault implements Router, HandlerSlots {
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
-        Result<Handler> result = routesH[Endpoint.main.code].matchOneAndStatus(pathNew, method);
+        Result<Handler> result = table.matchOneAndStatus(pathNew, method);
 
         if (result.getData() != null) {
             ctx.attrSet(Constants.mainHandler, result.getData());
@@ -110,49 +109,32 @@ public class RouterDefault implements Router, HandlerSlots {
         return result.getData();
     }
 
-    /**
-     * 区配多个处理（根据上下文）
-     *
-     * @param ctx      上下文
-     * @param endpoint 处理点
-     * @return 一批匹配的处理
-     */
-    @Override
-    public List<Handler> matchMore(Context ctx, Endpoint endpoint) {
-        String pathNew = ctx.pathNew();
-        MethodType method = MethodTypeUtil.valueOf(ctx.method());
-
-        return routesH[endpoint.code].matchMore(pathNew, method);
-    }
-
 
     /**
      * 获取某个处理点的所有路由记录（管理用）
      *
-     * @param endpoint 处理点
      * @return 处理点的所有路由记录
      */
     @Override
-    public Collection<Routing<Handler>> getAll(Endpoint endpoint) {
-        return routesH[endpoint.code].getAll();
+    public Collection<Routing<Handler>> getAll() {
+        return table.getAll();
     }
 
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
      *
-     * @param path     路径
-     * @param endpoint 处理点
+     * @param path 路径
      * @return 路径处理点的路由记录
      * @since 2.6
      */
     @Override
-    public Collection<Routing<Handler>> getBy(String path, Endpoint endpoint) {
-        return routesH[endpoint.code].getBy(path);
+    public Collection<Routing<Handler>> getBy(String path) {
+        return table.getBy(path);
     }
 
     @Override
-    public Collection<Routing<Handler>> getBy(Class<?> controllerClz, Endpoint endpoint) {
-        return routesH[endpoint.code].getBy(controllerClz);
+    public Collection<Routing<Handler>> getBy(Class<?> controllerClz) {
+        return table.getBy(controllerClz);
     }
 
 
@@ -163,16 +145,12 @@ public class RouterDefault implements Router, HandlerSlots {
      */
     @Override
     public void remove(String pathPrefix) {
-        routesH[Endpoint.before.code].remove(pathPrefix);
-        routesH[Endpoint.main.code].remove(pathPrefix);
-        routesH[Endpoint.after.code].remove(pathPrefix);
+        table.remove(pathPrefix);
     }
 
     @Override
     public void remove(Class<?> controllerClz) {
-        routesH[Endpoint.before.code].remove(controllerClz);
-        routesH[Endpoint.main.code].remove(controllerClz);
-        routesH[Endpoint.after.code].remove(controllerClz);
+        table.remove(controllerClz);
     }
 
     /**
@@ -180,39 +158,15 @@ public class RouterDefault implements Router, HandlerSlots {
      */
     @Override
     public void clear() {
-        routesH[0].clear();
-        routesH[1].clear();
-        routesH[2].clear();
+        table.clear();
     }
 
     //
     // HandlerSlots 接口实现
     //
 
-    /**
-     * @deprecated 2.9
-     */
-    @Deprecated
-    @Override
-    public void before(String expr, MethodType method, int index, Handler handler) {
-        add(expr, Endpoint.before, method, index, handler);
-    }
-
-    /**
-     * @deprecated 2.9
-     */
-    @Deprecated
-    @Override
-    public void after(String expr, MethodType method, int index, Handler handler) {
-        add(expr, Endpoint.after, method, index, handler);
-    }
-
-    /**
-     * @deprecated 2.9
-     */
-    @Deprecated
     @Override
     public void add(String expr, MethodType method, Handler handler) {
-        add(expr, Endpoint.main, method, handler);
+        add(expr, method, 0, handler);
     }
 }

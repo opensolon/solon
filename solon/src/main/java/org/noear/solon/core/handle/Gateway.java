@@ -25,9 +25,7 @@ import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.DataThrowable;
-import org.noear.solon.core.util.RankEntity;
 
-import java.util.*;
 import java.util.function.Predicate;
 
 
@@ -52,6 +50,7 @@ import java.util.function.Predicate;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
 
@@ -206,16 +205,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     private void handle0(Context c, Handler m, Object obj, Boolean is_action) throws Throwable {
         /**
-         * 1.保持与XAction相同的逻辑
+         * 1.保持与Action相同的逻辑
          * */
 
-        //前置处理（最多一次渲染）
         try {
-            for (Handler h : befores()) {
-                h.handle(c);
-            }
-
-            //主处理（最多一次尝染）
+            //主处理（最多一次渲染）
             if (c.getHandled() == false) {
                 if (is_action) {
                     ((Action) m).invoke(c, obj);
@@ -238,35 +232,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 c.errors = e; //为 afters，留个参考
                 throw e;
             }
-        } finally {
-
-            //后置处理（确保不受前面的异常影响）
-            for (Handler h : afters()) {
-                h.handle(c);
-            }
         }
-    }
-
-
-    /**
-     * 添加前置处理器
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public <T extends Handler> void before(Class<T> interceptorClz) {
-        super.before(Solon.context().getBeanOrNew(interceptorClz));
-    }
-
-
-    /**
-     * 添加后置处理器
-     *
-     * @deprecated 2.9
-     */
-    @Deprecated
-    public <T extends Handler> void after(Class<T> interceptorClz) {
-        super.after(Solon.context().getBeanOrNew(interceptorClz));
     }
 
     /**
