@@ -22,10 +22,12 @@ import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.impl.CompletableSubscriberSimple;
+import org.noear.solon.test.SolonTest;
 
 /**
  * @author noear 2024/8/21 created
  */
+@SolonTest
 public class RedirectToFilterTest {
     @Test
     public void testValidConfig() {

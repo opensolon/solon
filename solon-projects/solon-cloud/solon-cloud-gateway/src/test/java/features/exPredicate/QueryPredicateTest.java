@@ -5,13 +5,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
+import org.noear.solon.test.SolonTest;
 
 /**
- * 对请求头的断言测试
+ * 对请求查询参数的断言测试
  *
- * @author wjc28
+ * @author noear
  * @since 2.9
  */
+@SolonTest
 public class QueryPredicateTest {
 
     @Test
