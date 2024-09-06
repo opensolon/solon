@@ -123,13 +123,6 @@ public class BeanWrap {
 
         if (rawUnproxied != null) {
             rawClz = rawUnproxied.getClass();
-            if (rawClz.isAnonymousClass()) {
-                rawClz = rawClz.getSuperclass();
-
-                if(rawClz == Object.class){
-                    rawClz = clz;
-                }
-            }
         }
 
         //尝试初始化
@@ -337,7 +330,7 @@ public class BeanWrap {
      * bean 新建对象
      */
     protected Object _new() throws ConstructionException {
-        if (clz.isInterface()) {
+        if (clz.isInterface() || clz.isAnonymousClass()) {
             return raw;
         }
 
