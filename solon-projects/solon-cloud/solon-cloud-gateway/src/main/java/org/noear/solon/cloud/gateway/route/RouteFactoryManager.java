@@ -54,6 +54,7 @@ public class RouteFactoryManager {
         addFactory(new HostPredicateFactory());
         addFactory(new MethodPredicateFactory());
         addFactory(new PathPredicateFactory());
+        addFactory(new QueryPredicateFactory());
         addFactory(new RemoteAddrPredicateFactory());
 
         //----------
