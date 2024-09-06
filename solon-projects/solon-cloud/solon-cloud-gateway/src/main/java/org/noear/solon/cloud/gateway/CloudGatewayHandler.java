@@ -20,6 +20,8 @@ import org.noear.solon.boot.vertx.VxHandler;
 import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
+import org.noear.solon.cloud.gateway.exchange.ExHandler;
+import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.core.exception.StatusException;
@@ -96,8 +98,15 @@ public class CloudGatewayHandler implements VxHandler {
             ctx.newResponse().status(404);
             return Completable.complete();
         } else {
+            //根据架构查找路由处理器
+            ExHandler handler = RouteFactoryManager.getHandler(ctx.targetNew().getScheme());
+
+            if(handler == null) {
+                throw new StatusException("The target handler does not exist", 404);
+            }
+
             try {
-                return new ExFilterChainImpl(ctx2.route().getFilters(), configuration.routeHandler::handle)
+                return new ExFilterChainImpl(ctx2.route().getFilters(), handler::handle)
                         .doFilter(ctx);
             } catch (Throwable ex) {
                 //如果 buildUpstreamRequest 出错，说明请求体有问题

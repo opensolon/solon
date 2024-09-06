@@ -24,8 +24,6 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,12 +33,12 @@ import java.util.List;
  * @since 2.9
  */
 public class Route {
-    private final String id;
-    private int index;
-    private URI target;
-    private List<ExPredicate> predicates = new ArrayList<>();
-    private List<RankEntity<ExFilter>> filters = new ArrayList<>();
-    private TimeoutProperties timeout;
+    protected final String id;
+    protected int index;
+    protected URI target;
+    protected List<ExPredicate> predicates = new ArrayList<>();
+    protected List<RankEntity<ExFilter>> filters = new ArrayList<>();
+    protected TimeoutProperties timeout;
 
     public Route(String id) {
         this.id = id;
@@ -48,89 +46,6 @@ public class Route {
         if (Utils.isEmpty(id)) {
             throw new IllegalArgumentException("Gateway route id is empty");
         }
-    }
-
-    /**
-     * 配置顺序
-     */
-    public Route index(int index) {
-        this.index = index;
-        return this;
-    }
-
-    /**
-     * 配置目标
-     */
-    public Route target(URI uri) {
-        this.target = uri;
-
-        return this;
-    }
-
-    /**
-     * 配置目标
-     */
-    public Route target(String uri) {
-        return target(URI.create(uri));
-    }
-
-    /**
-     * 配置超时
-     */
-    public Route timeout(TimeoutProperties timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * 添加过滤器
-     */
-    public Route filter(ExFilter filter) {
-        return filter(filter, 0);
-    }
-
-    /**
-     * 添加过滤器
-     */
-    public Route filters(Collection<ExFilter> filters) {
-        for (ExFilter filter : filters) {
-            filter(filter, 0);
-        }
-
-        return this;
-    }
-
-    /**
-     * 添加过滤器
-     */
-    public Route filter(ExFilter filter, int index) {
-        if (filter != null) {
-            this.filters.add(new RankEntity<>(filter, index));
-            this.filters.sort(Comparator.comparingInt(e -> e.index));
-        }
-
-        return this;
-    }
-
-    /**
-     * 添加匹配检测器
-     */
-    public Route predicate(ExPredicate predicate) {
-        if (predicate != null) {
-            this.predicates.add(predicate);
-        }
-
-        return this;
-    }
-
-    /**
-     * 添加路径匹配检测器
-     */
-    public Route path(String path) {
-        ExPredicate predicate = RouteFactoryManager
-                .getPredicate("Path", path);
-
-        return predicate(predicate);
     }
 
     /**

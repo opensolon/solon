@@ -44,6 +44,7 @@ public class ExContextImpl implements ExContext {
     private ExNewResponse newResponse;
 
     private Route route;
+    private URI targetNew;
 
     public ExContextImpl(HttpServerRequest rawRequest) {
         this.rawRequest = rawRequest;
@@ -92,6 +93,26 @@ public class ExContextImpl implements ExContext {
             return null;
         } else {
             return route.getTarget();
+        }
+    }
+
+    /**
+     * 配置路由新目标
+     */
+    @Override
+    public void targetNew(URI target) {
+        this.targetNew = target;
+    }
+
+    /**
+     * 路由新目标
+     */
+    @Override
+    public URI targetNew() {
+        if (targetNew == null) {
+            return target();
+        } else {
+            return targetNew;
         }
     }
 
