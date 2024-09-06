@@ -24,3 +24,7 @@
 ### v3.0.0
 
 * 新增 solon-web-vertx 插件
+* 移除 Before、After 体系，（统一为 Filter 体系） // ok（化敏为简）
+* 移除 `@ProxyComponent` (统一为 @Component) //ok（化敏为简）
+* 移除 无关配置的弃用代码
+* redisson 升为 3.35.0

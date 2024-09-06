@@ -257,6 +257,27 @@ public abstract class BeanContainer {
     }
 
     /**
+     * 添加环绕处理
+     *
+     * @param index 执行顺序
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+        beanInterceptorAdd(annoClz, interceptor, index);
+    }
+
+    /**
+     * 添加环绕处理
+     *
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
+        beanInterceptorAdd(annoClz, interceptor, 0);
+    }
+
+    /**
      * 添加拦截处理
      *
      * @param index 执行顺序
