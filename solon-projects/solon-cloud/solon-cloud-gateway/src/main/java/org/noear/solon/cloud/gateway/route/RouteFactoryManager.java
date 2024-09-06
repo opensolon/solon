@@ -67,6 +67,7 @@ public class RouteFactoryManager {
         addFactory(new AddResponseHeaderFilterFactory());
         addFactory(new PrefixPathFilterFactory());
         addFactory(new RedirectToFilterFactory());
+        addFactory(new RewritePathFilterFactory ());
 
         addFactory(new RemoveRequestHeaderFilterFactory());
         addFactory(new RemoveResponseHeaderFilterFactory());
