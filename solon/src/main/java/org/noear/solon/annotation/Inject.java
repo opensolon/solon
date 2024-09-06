@@ -22,7 +22,7 @@ import java.lang.annotation.*;
  *
  * 可注入到字段或参数或类型（类型和参数只在@Configuration有效）
  *
- * 禁止注入在类型上；可避免让非单例bean的注入变复杂，进而避免影有响性能
+ * 禁止注入在类型上；可避免让非单例bean的注入变复杂，进而避免影响性能
  *
  * <pre><code>
  * //注解在bean的字段上
