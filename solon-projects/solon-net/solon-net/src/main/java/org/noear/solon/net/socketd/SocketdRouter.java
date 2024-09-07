@@ -42,7 +42,7 @@ public class SocketdRouter {
 
     public static SocketdRouter getInstance() {
         //方便在单测环境下切换 SolonApp，可以相互独立
-        return Solon.context().attachmentOf(SocketdRouter.class, SocketdRouter::new);
+        return Solon.context().attachOf(SocketdRouter.class, SocketdRouter::new);
     }
 
 

@@ -33,7 +33,7 @@ public class CommandManager {
 
     public static CommandManager getInstance() {
         //方便在单测环境下切换 SolonApp，可以相互独立
-        return Solon.context().attachmentOf(CommandManager.class, CommandManager::new);
+        return Solon.context().attachOf(CommandManager.class, CommandManager::new);
     }
 
 

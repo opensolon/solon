@@ -21,7 +21,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
-import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
@@ -46,7 +45,7 @@ public abstract class BeanContainer {
     //类加载器（热插拨时，会有独立的类加载器）
     private final ClassLoader classLoader;
     //附件
-    private Map<Class<?>, Object> attachments = new HashMap<>();
+    private Map<Class<?>, Object> attachs = new HashMap<>();
     //AOT收集器
     private final AotCollector aot = new AotCollector();
 
@@ -81,43 +80,43 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public Map<Class<?>, Object> getAttrs() {
-        return attachments;
+        return attachs;
     }
 
     /**
      * 附件获取
      *
-     * @since 2.5
+     * @since 2.9
      */
-    public <T> T attachmentGet(Class<T> clz) {
-        return (T) attachments.get(clz);
+    public <T> T attachGet(Class<T> clz) {
+        return (T) attachs.get(clz);
     }
 
     /**
      * 附件设置
      *
-     * @since 2.5
+     * @since 2.9
      */
-    public <T> void attachmentSet(Class<T> clz, T val) {
-        attachments.put(clz, val);
+    public <T> void attachSet(Class<T> clz, T val) {
+        attachs.put(clz, val);
     }
 
     /**
      * 附件
      *
-     * @since 2.5
+     * @since 2.9
      */
-    public <T> T attachmentOf(Class<T> clz, Supplier<T> supplier) {
-        T tmp = (T) attachments.get(clz);
+    public <T> T attachOf(Class<T> clz, Supplier<T> supplier) {
+        T tmp = (T) attachs.get(clz);
         if (tmp == null) {
             SYNC_LOCK.lock();
 
             try {
-                tmp = (T) attachments.get(clz);
+                tmp = (T) attachs.get(clz);
                 if (tmp == null) {
                     tmp = supplier.get();
                     //加到附件
-                    attachments.put(clz, tmp);
+                    attachs.put(clz, tmp);
                     //同时注册到容器
                     wrapAndPut(clz, tmp);
                 }
@@ -128,6 +127,42 @@ public abstract class BeanContainer {
 
         return tmp;
     }
+
+
+    /**
+     * 附件获取
+     *
+     * @since 2.5
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public <T> T attachmentGet(Class<T> clz) {
+        return attachGet(clz);
+    }
+
+    /**
+     * 附件设置
+     *
+     * @since 2.5
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public <T> void attachmentSet(Class<T> clz, T val) {
+        attachSet(clz, val);
+    }
+
+    /**
+     * 附件
+     *
+     * @since 2.5
+     * @deprecated 2.9
+     */
+    @Deprecated
+    public <T> T attachmentOf(Class<T> clz, Supplier<T> supplier) {
+        return attachOf(clz, supplier);
+    }
+
+
 
     /**
      * 获取类加载器
@@ -195,7 +230,7 @@ public abstract class BeanContainer {
         beanWrapsOfName.clear();
         beanWrapSet.clear();
 
-        attachments.clear();
+        attachs.clear();
         aot.clear();
 
         wrapExternalConsumers.clear();
