@@ -23,11 +23,12 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class SessionStateEmpty implements SessionState{
+public class SessionStateEmpty implements SessionState {
 
-    private Map<String,Object> sessionMap = null;
-    public Map<String,Object> sessionMap(){
-        if(sessionMap == null){
+    private Map<String, Object> sessionMap = null;
+
+    public Map<String, Object> sessionMap() {
+        if (sessionMap == null) {
             sessionMap = new HashMap<>();
         }
 
@@ -51,7 +52,7 @@ public class SessionStateEmpty implements SessionState{
 
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
-        return (T)sessionMap().get(key);
+        return (T) sessionMap().get(key);
     }
 
     @Override
@@ -65,16 +66,20 @@ public class SessionStateEmpty implements SessionState{
 
     @Override
     public void sessionRemove(String key) {
-        sessionMap().remove(key);
+        if (sessionMap != null) {
+            sessionMap.remove(key);
+        }
     }
 
     @Override
     public void sessionClear() {
-        sessionMap().clear();
+        if (sessionMap != null) {
+            sessionMap.clear();
+        }
     }
 
     @Override
     public void sessionReset() {
-        sessionMap().clear();
+        sessionClear();
     }
 }
