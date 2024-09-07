@@ -19,6 +19,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.RequestOptions;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
@@ -35,7 +36,6 @@ import org.noear.solon.rx.CompletableEmitter;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.KeyValues;
 
-import java.net.URI;
 import java.util.Map;
 
 /**
@@ -73,12 +73,6 @@ public class HttpRouteHandler implements RouteHandler {
         try {
             //构建请求
             HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
-
-            //构建超时
-            if (ctx.timeout() != null) {
-                req1.connectTimeout(ctx.timeout().getConnectTimeout() * 1000);
-                req1.timeout(ctx.timeout().getResponseTimeout() * 1000);
-            }
 
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
@@ -122,11 +116,18 @@ public class HttpRouteHandler implements RouteHandler {
      * 构建 http 请求对象
      */
     private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
-        URI targetUri = ctx.targetNew();
+        RequestOptions requestOptions = new RequestOptions();
 
-        String absUrl = targetUri + ctx.newRequest().getPathAndQueryString();
+        //配置超时
+        if (ctx.timeout() != null) {
+            requestOptions.setConnectTimeout(ctx.timeout().getConnectTimeout() * 1000);
+            requestOptions.setTimeout(ctx.timeout().getResponseTimeout() * 1000);
+        }
 
-        return httpClient.requestAbs(HttpMethod.valueOf(ctx.newRequest().getMethod()), absUrl);
+        //配置绝对地址
+        requestOptions.setAbsoluteURI(ctx.targetNew() + ctx.newRequest().getPathAndQueryString());
+
+        return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()), requestOptions);
     }
 
     /**
