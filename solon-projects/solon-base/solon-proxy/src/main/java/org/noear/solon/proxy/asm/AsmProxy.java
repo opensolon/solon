@@ -39,10 +39,10 @@ public class AsmProxy {
         Class<?> proxyClass = null;
 
         //确定代理类加载器
-        AsmProxyClassLoader classLoader = context.attachmentGet(AsmProxyClassLoader.class);
+        AsmProxyClassLoader classLoader = context.attachGet(AsmProxyClassLoader.class);
         if (classLoader == null) {
             classLoader = new AsmProxyClassLoader(context.getClassLoader());
-            context.attachmentSet(AsmProxyClassLoader.class, classLoader);
+            context.attachSet(AsmProxyClassLoader.class, classLoader);
         } else {
             //尝试获取类
             proxyClass = ClassUtil.loadClass(classLoader, proxyClassName);
