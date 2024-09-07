@@ -24,6 +24,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.Closeable;
@@ -344,6 +345,9 @@ public abstract class BeanContainer {
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
         beanInterceptorAdd(annoClz, interceptor);
+
+        //添加弃用提醒日志
+        LogUtil.global().error("AppContext:beanAroundAdd(.) will be discarded, suggested use 'beanInterceptorAdd(.)': " + annoClz.getName());
     }
 
     /**
