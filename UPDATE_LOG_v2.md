@@ -24,7 +24,10 @@
 ### 2.9.3
 * 新增 solon-web-vertx 插件
 * 调整 solon Before,After Handler 体系标为弃用
+* 调整 solon Props:getBean 标为弃用
+* 调整 solon NvMap:getBean 标为弃用
 * 添加 solon Action 过滤器体系
+* 添加 Context::sessionReset 方法
 * 添加 solon Props:toBean 方法（替代 Props:getBean）
 * 添加 solon-cloud-gateway X_Forwarded_Host 和 https 转发支持
 * 添加 solon-cloud-gateway RewritePathFilterFactory

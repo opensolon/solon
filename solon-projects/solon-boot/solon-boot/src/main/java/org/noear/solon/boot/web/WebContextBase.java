@@ -292,6 +292,10 @@ public abstract class WebContextBase extends Context {
         sessionState().sessionClear();
     }
 
+    @Override
+    public void sessionReset() {
+        sessionState().sessionReset();
+    }
 
     protected final MultiMap<UploadedFile> _fileMap = new MultiMap<>();
 

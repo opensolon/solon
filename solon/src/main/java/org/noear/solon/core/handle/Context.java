@@ -873,6 +873,11 @@ public abstract class Context {
      */
     public abstract void sessionClear();
 
+    /**
+     * 重置 session 状态
+     */
+    public abstract void sessionReset();
+
     //======================
 
     /**

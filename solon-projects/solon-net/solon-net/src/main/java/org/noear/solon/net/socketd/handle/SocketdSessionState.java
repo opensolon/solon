@@ -79,6 +79,7 @@ public class SocketdSessionState implements SessionState {
 
     @Override
     public void sessionReset() {
-        //no sup reset
+        sessionClear();
+        //no sup reset id
     }
 }

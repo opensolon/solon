@@ -227,6 +227,11 @@ public class ContextEmpty extends Context {
 
     }
 
+    @Override
+    public void sessionReset() {
+
+    }
+
     private Object response = null;
 
     @Override
