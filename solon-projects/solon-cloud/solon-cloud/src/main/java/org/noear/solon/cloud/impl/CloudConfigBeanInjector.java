@@ -35,8 +35,6 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
-    public static final CloudConfigBeanInjector instance = new CloudConfigBeanInjector();
-
     @Override
     public void doInject(VarHolder varH, CloudConfig anno) {
         if (CloudClient.config() == null) {

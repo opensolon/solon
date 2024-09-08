@@ -51,21 +51,31 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
         if(CloudClient.enableConfig()) {
-            context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
-            context.beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+            CloudConfigBeanInjector injector = new CloudConfigBeanInjector();
+            CloudConfigBeanBuilder builder = new CloudConfigBeanBuilder();
+
+            context.beanInjectorAdd(CloudConfig.class, injector);
+            context.beanBuilderAdd(CloudConfig.class, builder);
         }
 
         if(CloudClient.enableEvent()) {
-            context.beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+            CloudEventBeanBuilder builder = new CloudEventBeanBuilder();
+
+            context.beanBuilderAdd(CloudEvent.class, builder);
         }
 
         if(CloudClient.enableBreaker()) {
-            context.beanInterceptorAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+            CloudBreakerInterceptor interceptor = new CloudBreakerInterceptor();
+
+            context.beanInterceptorAdd(CloudBreaker.class, interceptor);
         }
 
         if(CloudClient.enableJob()) {
-            context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
-            context.beanBuilderAdd(CloudJob.class, CloudJobHandler.class, CloudJobBeanBuilder.getInstance());
+            CloudJobBeanExtractor extractor = new CloudJobBeanExtractor();
+            CloudJobBeanBuilder builder = new CloudJobBeanBuilder();
+
+            context.beanExtractorAdd(CloudJob.class, extractor);
+            context.beanBuilderAdd(CloudJob.class, CloudJobHandler.class, builder);
         }
 
         //尝试注册本地发现服务
@@ -116,7 +126,7 @@ public class XPluginImp implements Plugin {
         }
 
         context.getBeanAsync(CloudLoadStrategy.class, bean -> {
-            CloudLoadBalance.setStrategy(bean);
+            CloudManager.register(bean);
         });
     }
 

@@ -30,8 +30,6 @@ import org.noear.solon.core.aspect.Invocation;
  * @since 1.3
  */
 public class CloudBreakerInterceptor implements Interceptor {
-    public static final CloudBreakerInterceptor instance = new CloudBreakerInterceptor();
-
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         if (CloudClient.breaker() == null) {

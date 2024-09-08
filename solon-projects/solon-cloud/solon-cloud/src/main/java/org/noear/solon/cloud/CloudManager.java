@@ -35,10 +35,34 @@ import java.util.Map;
  */
 public class CloudManager {
     private static CloudLoadBalanceFactory loadBalance = new CloudLoadBalanceFactory();
+    private static CloudLoadStrategy loadStrategy = new CloudLoadStrategyDefault();
 
+    /**
+     * 获取负载均衡
+     * */
     protected static CloudLoadBalanceFactory loadBalance() {
         return loadBalance;
     }
+
+
+    /**
+     * 获取负载策略
+     */
+    protected static CloudLoadStrategy loadStrategy() {
+        return loadStrategy;
+    }
+
+    /**
+     * 设置负载策略
+     */
+    public static void register(CloudLoadStrategy loadStrategy) {
+        if (loadStrategy != null) {
+            CloudManager.loadStrategy = loadStrategy;
+        }
+    }
+
+    //////////////////////
+
 
     /**
      * 云端发现服务

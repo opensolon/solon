@@ -30,8 +30,6 @@ import org.noear.solon.core.BeanWrap;
  * @since 1.4
  */
 public class CloudEventBeanBuilder implements BeanBuilder<CloudEvent> {
-    public static final CloudEventBeanBuilder instance = new CloudEventBeanBuilder();
-
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudEvent anno) throws Exception {
         if (CloudClient.event() == null) {

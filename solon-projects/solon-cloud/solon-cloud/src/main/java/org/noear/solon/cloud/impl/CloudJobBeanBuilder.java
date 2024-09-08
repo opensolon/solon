@@ -30,12 +30,6 @@ import org.noear.solon.core.BeanWrap;
  * @since 2.9
  */
 public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
-    private static final CloudJobBeanBuilder instance = new CloudJobBeanBuilder();
-
-    public static CloudJobBeanBuilder getInstance() {
-        return instance;
-    }
-
     /**
      * @since 2.9
      */

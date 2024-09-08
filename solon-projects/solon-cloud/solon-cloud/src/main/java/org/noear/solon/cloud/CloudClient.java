@@ -18,6 +18,7 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
+import org.noear.solon.cloud.impl.CloudLoadStrategy;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
@@ -101,6 +102,13 @@ public class CloudClient {
      */
     public static CloudLoadBalanceFactory loadBalance() {
         return CloudManager.loadBalance();
+    }
+
+    /**
+     * 获取 负载策略
+     */
+    public static CloudLoadStrategy loadStrategy() {
+        return CloudManager.loadStrategy();
     }
 
     /**

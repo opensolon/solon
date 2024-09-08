@@ -31,8 +31,6 @@ import org.noear.solon.core.BeanWrap;
  * @since 1.4
  */
 public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
-    public static final CloudConfigBeanBuilder instance = new CloudConfigBeanBuilder();
-
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudConfig anno) throws Exception {
         if (CloudClient.config() == null) {

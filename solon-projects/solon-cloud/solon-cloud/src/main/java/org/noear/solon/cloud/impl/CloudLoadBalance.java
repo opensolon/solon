@@ -17,6 +17,7 @@ package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.event.EventBus;
@@ -28,22 +29,12 @@ import org.noear.solon.core.event.EventBus;
  * @since 1.2
  */
 public class CloudLoadBalance implements LoadBalance {
-    private static CloudLoadStrategy strategy = new CloudLoadStrategyDefault();
-
     /**
-     * 获取负载策略
+     * @deprecated 2.9
      */
-    public static CloudLoadStrategy getStrategy() {
-        return strategy;
-    }
-
-    /**
-     * 设置负载策略
-     */
+    @Deprecated
     public static void setStrategy(CloudLoadStrategy strategy) {
-        if (strategy != null) {
-            CloudLoadBalance.strategy = strategy;
-        }
+        CloudManager.register(strategy);
     }
 
     ////////////////
@@ -115,7 +106,7 @@ public class CloudLoadBalance implements LoadBalance {
                 if (discovery.clusterSize() == 0) {
                     return null;
                 } else {
-                    return getStrategy().getServer(discovery, port);
+                    return CloudClient.loadStrategy().getServer(discovery, port);
                 }
             }
         }
