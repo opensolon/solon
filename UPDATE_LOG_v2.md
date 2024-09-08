@@ -29,11 +29,18 @@
 * 添加 solon Action 过滤器体系（替代 Before,After 体系）
 * 添加 Context::sessionReset 方法
 * 添加 solon Props:toBean 方法（替代 Props:getBean）
+* 添加 solon-scheduling CommandExecutorProxy 原型代理支持
+* 添加 solon-cloud CloudEventHandlerPlus 原型代理支持
+* 添加 solon-cloud CloudConfigHandler 原型代理支持
+* 添加 solon-cloud CloudEventHandler 原型代理支持
 * 添加 solon-cloud-gateway X_Forwarded_Host 和 https 转发支持
 * 添加 solon-cloud-gateway RewritePathFilterFactory
 * 添加 solon-cloud-gateway QueryPredicateFactory
-* 优化 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
-* 提醒 AppContext::beanAroundAdd 添加弃用打印日志
+* 凋整 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
+* 凋整 solon-cloud CloudJobBeanBuilder 取消多构建处理（已经有 CloudJobInterceptor 配合）
+* 调整 solon-scheduling scheduled 内部实现类（强调原型代理概念
+* 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
+* 提醒 solon 添加不支持单例的打印日志 
 * 修复 solon BeanWrap::rawClz 处理 anonymousClass 失误的问题
 * wood 升为 1.3.4
 * redisson 升为 3.35.0
