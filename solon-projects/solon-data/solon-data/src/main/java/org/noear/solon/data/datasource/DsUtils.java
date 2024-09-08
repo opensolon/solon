@@ -16,8 +16,7 @@
 package org.noear.solon.data.datasource;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.PropsConverter;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 
@@ -25,6 +24,7 @@ import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Consumer;
 
 /**
  * 数据源工具
@@ -157,5 +157,26 @@ public class DsUtils {
         }
 
         return dataSourceMap;
+    }
+
+    /**
+     * 观查数据源
+     *
+     * @param context  上下文
+     * @param dsName   数据源名
+     * @param consumer 消费者
+     */
+    public static void observeDs(AppContext context, String dsName, Consumer<BeanWrap> consumer) {
+        if (Utils.isEmpty(dsName)) {
+            context.getWrapAsync(DataSource.class, (dsBw) -> {
+                consumer.accept(dsBw);
+            });
+        } else {
+            context.getWrapAsync(dsName, (dsBw) -> {
+                if (dsBw.raw() instanceof DataSource) {
+                    consumer.accept(dsBw);
+                }
+            });
+        }
     }
 }
