@@ -22,7 +22,7 @@ import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 
 /**
- * Job 类原型代理
+ * 任务处理器类原型代理
  *
  * @author noear
  * @since 2.2
@@ -46,7 +46,12 @@ public class JobHandlerBeanProxy implements JobHandler {
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            throw new ScheduledException(e);
+
+            if (e instanceof ScheduledException) {
+                throw e;
+            } else {
+                throw new ScheduledException(e);
+            }
         }
     }
 }

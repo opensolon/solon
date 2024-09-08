@@ -25,7 +25,7 @@ import org.noear.solon.scheduling.scheduled.JobHandler;
 import java.lang.reflect.Method;
 
 /**
- * Job 方法原型代理
+ * 任务处理器方法原型代理
  *
  * @author noear
  * @since 2.2
@@ -41,7 +41,12 @@ public class JobHandlerMethodProxy extends MethodHandler implements JobHandler {
             super.handle(ctx);
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            throw new ScheduledException(e);
+
+            if (e instanceof ScheduledException) {
+                throw e;
+            } else {
+                throw new ScheduledException(e);
+            }
         }
     }
 }
