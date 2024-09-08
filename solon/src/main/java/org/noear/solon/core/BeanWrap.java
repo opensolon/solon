@@ -384,4 +384,15 @@ public class BeanWrap {
          */
         Object getProxy(AppContext ctx, Object raw, Constructor rawCon, Object[] rawConArgs);
     }
+
+    /**
+     * Bean 提供者
+     *
+     * @author noear
+     * @since 2.7
+     */
+    @FunctionalInterface
+    public interface Supplier {
+        Object get();
+    }
 }
