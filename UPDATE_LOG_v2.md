@@ -23,6 +23,8 @@
 
 ### 2.9.3
 * 新增 solon-web-vertx 插件
+* 新增 solon 分类注入支持体系
+* 新增 solon 分类构建支持体系
 * 调整 solon Before,After Handler 体系标为弃用
 * 调整 solon Props:getBean 标为弃用
 * 调整 solon NvMap:getBean 标为弃用
@@ -37,7 +39,6 @@
 * 添加 solon-cloud-gateway RewritePathFilterFactory
 * 添加 solon-cloud-gateway QueryPredicateFactory
 * 凋整 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
-* 凋整 solon-cloud CloudJobBeanBuilder 取消多构建处理（已经有 CloudJobInterceptor 配合）
 * 调整 solon-scheduling scheduled 内部实现类（强调原型代理概念
 * 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
 * 提醒 solon 添加不支持单例的打印日志 
