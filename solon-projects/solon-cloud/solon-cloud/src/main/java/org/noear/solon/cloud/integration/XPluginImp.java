@@ -17,6 +17,7 @@ package org.noear.solon.cloud.integration;
 
 import org.noear.nami.NamiManager;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
@@ -64,7 +65,7 @@ public class XPluginImp implements Plugin {
 
         if(CloudClient.enableJob()) {
             context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
-            context.beanBuilderAdd(CloudJob.class, CloudJobBeanBuilder.getInstance());
+            context.beanBuilderAdd(CloudJob.class, CloudJobHandler.class, CloudJobBeanBuilder.getInstance());
         }
 
         //尝试注册本地发现服务

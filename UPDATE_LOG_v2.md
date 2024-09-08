@@ -47,6 +47,8 @@
 
 ### 2.9.2（2024-09-01）
 * 新增 solon-config-plus
+* 新增 BeanInjectorTyped 分类注入器机制
+* 新增 BeanBuilderTyped 分类构建器机制
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
 * 添加 solon-cloud 的分布式注解开关

@@ -24,6 +24,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.Closeable;
@@ -151,11 +152,11 @@ public abstract class BeanContainer {
     /**
      * bean 构建器
      */
-    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
+    protected final Map<Class<?>, BeanBuilderTyped<?>> beanBuilders = new HashMap<>();
     /**
      * bean 注入器
      */
-    protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
+    protected final Map<Class<?>, BeanInjectorTyped<?>> beanInjectors = new HashMap<>();
     /**
      * bean 提取器
      */
@@ -229,16 +230,45 @@ public abstract class BeanContainer {
 
     /**
      * 添加构建处理
+     *
+     * @param annoClz 注解类型
+     * @param builder 构建器
      */
     public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
-        beanBuilders.put(annoClz, builder);
+        BeanBuilderTyped tmp = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        tmp.defBuilder(builder);
+    }
+
+    /**
+     * 添加分类构建处理
+     *
+     * @param annoClz   注解类型
+     * @param targetClz 构建目标类型
+     * @param builder   构建器
+     */
+    public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, Class<?> targetClz, BeanBuilder<T> builder) {
+        BeanBuilderTyped tmp = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        tmp.putBuilder(targetClz, builder);
     }
 
     /**
      * 添加注入处理
      */
     public <T extends Annotation> void beanInjectorAdd(Class<T> annoClz, BeanInjector<T> injector) {
-        beanInjectors.put(annoClz, injector);
+        BeanInjectorTyped tmp = beanInjectors.computeIfAbsent(annoClz, k -> new BeanInjectorTyped());
+        tmp.defInjector(injector);
+    }
+
+    /**
+     * 添加分类注入处理
+     *
+     * @param annoClz   注解类型
+     * @param targetClz 注入目标类型
+     * @param injector  注入器
+     */
+    public <T extends Annotation> void beanInjectorAdd(Class<T> annoClz, Class<?> targetClz, BeanInjector<T> injector) {
+        BeanInjectorTyped tmp = beanInjectors.computeIfAbsent(annoClz, k -> new BeanInjectorTyped());
+        tmp.putInjector(targetClz, injector);
     }
 
     /**

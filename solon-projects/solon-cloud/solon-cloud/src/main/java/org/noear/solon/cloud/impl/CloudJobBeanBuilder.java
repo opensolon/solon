@@ -45,13 +45,15 @@ public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
             throw new IllegalArgumentException("Missing CloudJobService component");
         }
 
-        CloudJobHandler handler = new CloudJobHandlerBeanProxy(bw);
+        if (bw.raw() instanceof CloudJobHandler) {
+            CloudJobHandler handler = new CloudJobHandlerBeanProxy(bw);
 
-        //支持${xxx}配置
-        String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
-        //支持${xxx}配置
-        String description = Solon.cfg().getByTmpl(anno.description());
+            //支持${xxx}配置
+            String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
+            //支持${xxx}配置
+            String description = Solon.cfg().getByTmpl(anno.description());
 
-        CloudClient.job().register(name, anno.cron7x(), description, handler);
+            CloudClient.job().register(name, anno.cron7x(), description, handler);
+        }
     }
 }
