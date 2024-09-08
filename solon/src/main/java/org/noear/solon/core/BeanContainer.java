@@ -164,7 +164,6 @@ public abstract class BeanContainer {
     }
 
 
-
     /**
      * 获取类加载器
      */
@@ -197,7 +196,7 @@ public abstract class BeanContainer {
     /**
      * bean 构建器
      */
-    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
+    protected final Map<Class<?>, BeanBuilderTyped<?>> beanBuilders = new HashMap<>();
     /**
      * bean 注入器
      */
@@ -275,9 +274,25 @@ public abstract class BeanContainer {
 
     /**
      * 添加构建处理
+     *
+     * @param annoClz 注解类型
+     * @param builder 构建器
      */
     public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
-        beanBuilders.put(annoClz, builder);
+        BeanBuilderTyped builderTyped = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        builderTyped.defBuilder(builder);
+    }
+
+    /**
+     * 添加分类构建处理
+     *
+     * @param annoClz 注解类型
+     * @param beanClz 组件类型
+     * @param builder 构建器
+     */
+    public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, Class<?> beanClz, BeanBuilder<T> builder) {
+        BeanBuilderTyped builderTyped = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        builderTyped.putBuilder(beanClz, builder);
     }
 
     /**
