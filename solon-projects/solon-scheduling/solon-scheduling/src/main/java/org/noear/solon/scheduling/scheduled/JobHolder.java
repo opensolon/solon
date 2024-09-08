@@ -19,7 +19,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.manager.IJobManager;
-import org.noear.solon.scheduling.scheduled.wrap.JobImpl;
+import org.noear.solon.scheduling.scheduled.impl.JobImpl;
 
 import java.util.Map;
 

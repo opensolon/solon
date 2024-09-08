@@ -22,6 +22,8 @@ import org.noear.solon.core.util.RankEntity;
 import java.util.List;
 
 /**
+ * 云任务处理处理链
+ *
  * @author noear
  * @since 2.7
  */

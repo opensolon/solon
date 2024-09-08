@@ -13,16 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud;
+package org.noear.solon.cloud.proxy;
 
-import org.noear.solon.cloud.model.Job;
+import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.model.Event;
+import org.noear.solon.core.BeanWrap;
 
 /**
- * 云任务拦截器
+ * 云事件处理类原型代理
  *
  * @author noear
- * @since 1.6
+ * @since 2.9
  */
-public interface CloudJobInterceptor {
-    void doIntercept(Job job, CloudJobHandler handler) throws Throwable;
+public class CloudEventHandlerProxy implements CloudEventHandler {
+    private BeanWrap target;
+
+    public CloudEventHandlerProxy(BeanWrap target) {
+        this.target = target;
+    }
+
+    @Override
+    public boolean handle(Event event) throws Throwable {
+        return ((CloudEventHandler) target.get()).handle(event);
+    }
 }

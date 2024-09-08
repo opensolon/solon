@@ -46,7 +46,7 @@ public class XPluginImpl implements Plugin {
         //提取任务
         JobExtractor jobExtractor = new JobExtractor(JobManager.getInstance());
         context.beanBuilderAdd(Scheduled.class, ((clz, bw, anno) -> {
-            if (bw.raw() instanceof Job) {
+            if (bw.raw() instanceof Job) { //quartz 的注解
                 Method method = Job.class.getDeclaredMethods()[0];
                 jobExtractor.doExtract(bw, method, anno);
             } else {

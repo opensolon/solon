@@ -22,8 +22,8 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
-import org.noear.solon.scheduling.scheduled.wrap.JobBeanWrap;
-import org.noear.solon.scheduling.scheduled.wrap.JobMethodWrap;
+import org.noear.solon.scheduling.scheduled.proxy.JobHandlerBeanProxy;
+import org.noear.solon.scheduling.scheduled.proxy.JobHandlerMethodProxy;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
 
 import java.lang.reflect.Method;
@@ -49,7 +49,7 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
 
             ScheduledHelper.configScheduled(warpper);
 
-            JobHandler handler = new JobBeanWrap(bw);
+            JobHandler handler = new JobHandlerBeanProxy(bw);
             String name = warpper.name();
             if (Utils.isEmpty(name)) {
                 name = bw.clz().getName();
@@ -67,7 +67,7 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
 
         ScheduledHelper.configScheduled(warpper);
 
-        JobHandler handler = new JobMethodWrap(bw, method);
+        JobHandler handler = new JobHandlerMethodProxy(bw, method);
         String name = warpper.name();
         if (Utils.isEmpty(name)) {
             name = bw.clz().getName() + "::" + method.getName();

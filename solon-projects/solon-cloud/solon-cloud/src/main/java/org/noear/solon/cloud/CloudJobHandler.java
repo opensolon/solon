@@ -18,6 +18,8 @@ package org.noear.solon.cloud;
 import org.noear.solon.core.handle.Context;
 
 /**
+ * 云任务处理
+ *
  * @author noear
  * @since 1.4
  */

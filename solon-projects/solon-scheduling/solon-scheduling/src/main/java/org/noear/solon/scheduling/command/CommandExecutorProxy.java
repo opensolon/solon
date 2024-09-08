@@ -13,16 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud;
+package org.noear.solon.scheduling.command;
 
-import org.noear.solon.cloud.model.Job;
+import org.noear.solon.core.BeanWrap;
 
 /**
- * 云任务拦截器
+ * 命令执行器类原型代理（支持非单例运行）
  *
  * @author noear
- * @since 1.6
+ * @since 2.9
  */
-public interface CloudJobInterceptor {
-    void doIntercept(Job job, CloudJobHandler handler) throws Throwable;
+public class CommandExecutorProxy implements CommandExecutor {
+    private BeanWrap target;
+
+    public CommandExecutorProxy(BeanWrap target) {
+        this.target = target;
+    }
+
+    @Override
+    public void execute(String command) throws Throwable {
+        ((CommandExecutor) target.get()).execute(command);
+    }
 }

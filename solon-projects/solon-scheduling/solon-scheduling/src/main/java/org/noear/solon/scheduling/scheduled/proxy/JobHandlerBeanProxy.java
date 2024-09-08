@@ -13,39 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.scheduling.scheduled.wrap;
+package org.noear.solon.scheduling.scheduled.proxy;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MethodHandler;
-import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 
-import java.lang.reflect.Method;
-
 /**
- * Job 函数模式实现（支持注入）
+ * Job 类原型代理
  *
  * @author noear
  * @since 2.2
  */
-public class JobMethodWrap implements JobHandler {
-    private BeanWrap beanWrap;
-    private MethodWrap method;
-    private MethodHandler methodHandler;
+public class JobHandlerBeanProxy implements JobHandler {
+    private BeanWrap target;
 
-    public JobMethodWrap(BeanWrap beanWrap, Method method) {
-        this.beanWrap = beanWrap;
-        this.method = beanWrap.context().methodGet(beanWrap.rawClz(), method);
-        this.methodHandler = new MethodHandler(beanWrap, method, true);
+    public JobHandlerBeanProxy(BeanWrap target) {
+        this.target = target;
     }
 
     @Override
     public void handle(Context ctx) throws Throwable {
         try {
-            methodHandler.handle(ctx);
+            Object tagert = target.get();
+
+            if (tagert instanceof Runnable) {
+                ((Runnable) tagert).run();
+            } else {
+                ((JobHandler) tagert).handle(ctx);
+            }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             throw new ScheduledException(e);
