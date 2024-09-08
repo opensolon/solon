@@ -18,15 +18,18 @@ package org.noear.solon.data.dynamicds;
 import java.lang.annotation.*;
 
 /**
- * 切换动态数据源
+ * 动态数据源注解
  *
  * @author noear
  * @since 1.11
  */
 @Inherited
-@Target({ElementType.METHOD,ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DynamicDs {
+    /**
+     * internal ds name
+     * */
     String value() default "";
 }
