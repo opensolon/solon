@@ -20,61 +20,61 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Bean 分类构建器
+ * Bean 分类注入器
  *
  * @author noear
  * @since 2.9
  */
-public class BeanBuilderTyped<T extends Annotation> implements BeanBuilder<T> {
-    //分类构建器字典
-    private Map<Class<?>, BeanBuilder<T>> map;
-    //默认构建器
-    private BeanBuilder<T> def;
+public class BeanInjectorTyped<T extends Annotation> implements BeanInjector<T> {
+    //分类注入器字典
+    private Map<Class<?>, BeanInjector<T>> map;
+    //默认注入器
+    private BeanInjector<T> def;
 
     /**
-     * 配置默认构建器
+     * 配置默认注入器
      */
-    public BeanBuilderTyped defBuilder(BeanBuilder<T> builder) {
-        this.def = builder;
+    public BeanInjectorTyped defInjector(BeanInjector<T> injector) {
+        this.def = injector;
         return this;
     }
 
     /**
-     * 配置分类构建器
+     * 配置分类注入器
      */
-    public BeanBuilderTyped putBuilder(Class<?> type, BeanBuilder<T> builder) {
+    public BeanInjectorTyped putInjector(Class<?> type, BeanInjector<T> injector) {
         if (map == null) {
             //要使用有顺序的 LinkedHashMap
             map = new LinkedHashMap<>();
         }
 
-        map.putIfAbsent(type, builder);
+        map.putIfAbsent(type, injector);
         return this;
     }
 
     /**
-     * 构建
+     * 注入
      */
     @Override
-    public void doBuild(Class<?> clz, BeanWrap bw, T anno) throws Throwable {
-        doBuildTyped(clz, bw, anno);
+    public void doInject(VarHolder varH, T anno) {
+        doInjectTyped(varH, anno);
     }
 
     /**
-     * 分类构建
+     * 分类注入
      */
-    protected boolean doBuildTyped(Class<?> clz, BeanWrap bw, T anno) throws Throwable {
+    protected boolean doInjectTyped(VarHolder varH, T anno) {
         if (map != null) {
-            for (Map.Entry<Class<?>, BeanBuilder<T>> kv : map.entrySet()) {
-                if (kv.getKey().isAssignableFrom(clz)) {
-                    kv.getValue().doBuild(clz, bw, anno);
+            for (Map.Entry<Class<?>, BeanInjector<T>> kv : map.entrySet()) {
+                if (kv.getKey().isAssignableFrom(varH.getType())) {
+                    kv.getValue().doInject(varH, anno);
                     return true;
                 }
             }
         }
 
         if (def != null) {
-            def.doBuild(clz, bw, anno);
+            def.doInject(varH, anno);
             return true;
         } else {
             return false;

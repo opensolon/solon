@@ -200,7 +200,7 @@ public abstract class BeanContainer {
     /**
      * bean 注入器
      */
-    protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
+    protected final Map<Class<?>, BeanInjectorTyped<?>> beanInjectors = new HashMap<>();
     /**
      * bean 提取器
      */
@@ -279,27 +279,40 @@ public abstract class BeanContainer {
      * @param builder 构建器
      */
     public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
-        BeanBuilderTyped builderTyped = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
-        builderTyped.defBuilder(builder);
+        BeanBuilderTyped tmp = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        tmp.defBuilder(builder);
     }
 
     /**
      * 添加分类构建处理
      *
-     * @param annoClz 注解类型
-     * @param beanClz 组件类型
-     * @param builder 构建器
+     * @param annoClz   注解类型
+     * @param targetClz 构建目标类型
+     * @param builder   构建器
      */
-    public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, Class<?> beanClz, BeanBuilder<T> builder) {
-        BeanBuilderTyped builderTyped = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
-        builderTyped.putBuilder(beanClz, builder);
+    public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, Class<?> targetClz, BeanBuilder<T> builder) {
+        BeanBuilderTyped tmp = beanBuilders.computeIfAbsent(annoClz, k -> new BeanBuilderTyped());
+        tmp.putBuilder(targetClz, builder);
     }
 
     /**
      * 添加注入处理
      */
     public <T extends Annotation> void beanInjectorAdd(Class<T> annoClz, BeanInjector<T> injector) {
-        beanInjectors.put(annoClz, injector);
+        BeanInjectorTyped tmp = beanInjectors.computeIfAbsent(annoClz, k -> new BeanInjectorTyped());
+        tmp.defInjector(injector);
+    }
+
+    /**
+     * 添加分类注入处理
+     *
+     * @param annoClz   注解类型
+     * @param targetClz 注入目标类型
+     * @param injector  注入器
+     */
+    public <T extends Annotation> void beanInjectorAdd(Class<T> annoClz, Class<?> targetClz, BeanInjector<T> injector) {
+        BeanInjectorTyped tmp = beanInjectors.computeIfAbsent(annoClz, k -> new BeanInjectorTyped());
+        tmp.putInjector(targetClz, injector);
     }
 
     /**
