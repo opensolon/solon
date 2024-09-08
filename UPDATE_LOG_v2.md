@@ -32,6 +32,7 @@
 * 添加 Context::sessionReset 方法
 * 添加 solon Props:toBean 方法（替代 Props:getBean）
 * 添加 solon-scheduling CommandExecutorProxy 原型代理支持
+* 添加 solon-data `@Ds` 注解（未来用于替代分散的 `@Db`）
 * 添加 solon-cloud CloudEventHandlerPlus 原型代理支持
 * 添加 solon-cloud CloudConfigHandler 原型代理支持
 * 添加 solon-cloud CloudEventHandler 原型代理支持
