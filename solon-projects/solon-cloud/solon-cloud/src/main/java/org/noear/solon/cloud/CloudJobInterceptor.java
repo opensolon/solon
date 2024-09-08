@@ -18,7 +18,7 @@ package org.noear.solon.cloud;
 import org.noear.solon.cloud.model.Job;
 
 /**
- * 云工作拦截器
+ * 云任务拦截器
  *
  * @author noear
  * @since 1.6
