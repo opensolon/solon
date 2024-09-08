@@ -38,6 +38,7 @@
 * 添加 solon-cloud-gateway X_Forwarded_Host 和 https 转发支持
 * 添加 solon-cloud-gateway RewritePathFilterFactory
 * 添加 solon-cloud-gateway QueryPredicateFactory
+* 调整 solon Constants 内部类改为接口类型
 * 凋整 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
 * 调整 solon-scheduling scheduled 内部实现类（强调原型代理概念
 * 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
