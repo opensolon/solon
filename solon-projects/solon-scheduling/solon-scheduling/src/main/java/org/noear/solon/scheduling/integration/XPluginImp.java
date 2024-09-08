@@ -58,7 +58,8 @@ public class XPluginImp implements Plugin {
             context.beanBuilderAdd(Command.class, (clz, bw, anno) -> {
                 //构建时，收集命令
                 if (bw.raw() instanceof CommandExecutor) {
-                    commandManager.register(anno.value(), new CommandExecutorProxy(bw));
+                    CommandExecutor executor = new CommandExecutorProxy(bw);
+                    commandManager.register(anno.value(), executor);
                 }
             });
 
