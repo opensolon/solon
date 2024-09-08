@@ -18,15 +18,15 @@ package org.noear.solon.core.handle;
 import org.noear.solon.core.BeanWrap;
 
 /**
- * 通用处理接口包装（支持非单例）
+ * 通用处理接口原型代理（支持非单例运行）
  *
  * @author noear
  * @since 2.9
  */
-public class HandlerWrap implements Handler {
+public class HandlerProxy implements Handler {
     private BeanWrap bw;
 
-    public HandlerWrap(BeanWrap bw) {
+    public HandlerProxy(BeanWrap bw) {
         this.bw = bw;
     }
 

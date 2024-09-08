@@ -23,6 +23,7 @@ import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.*;
 import org.noear.solon.scheduling.async.AsyncInterceptor;
 import org.noear.solon.scheduling.command.CommandExecutor;
+import org.noear.solon.scheduling.command.CommandExecutorProxy;
 import org.noear.solon.scheduling.command.CommandManager;
 import org.noear.solon.scheduling.retry.RetryInterceptor;
 
@@ -57,7 +58,7 @@ public class XPluginImp implements Plugin {
             context.beanBuilderAdd(Command.class, (clz, bw, anno) -> {
                 //构建时，收集命令
                 if (bw.raw() instanceof CommandExecutor) {
-                    commandManager.register(anno.value(), bw.get());
+                    commandManager.register(anno.value(), new CommandExecutorProxy(bw));
                 }
             });
 
