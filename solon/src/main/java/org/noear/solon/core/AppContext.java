@@ -276,13 +276,13 @@ public class AppContext extends BeanContainer {
                                 return;
                             }
 
-                            BeanSupplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                            BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
                             varH.setValue(beanListSupplier);
                         });
                     } else {
                         varH.required(false);
                         varH.setDependencyType((Class<?>) type);
-                        BeanSupplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                        BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
                         varH.setValueOnly(beanListSupplier);
                     }
                     return;
@@ -308,13 +308,13 @@ public class AppContext extends BeanContainer {
                                 return;
                             }
 
-                            BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                            BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
                             varH.setValue(beanMapSupplier);
                         });
                     } else {
                         varH.required(false);
                         varH.setDependencyType((Class<?>) valType);
-                        BeanSupplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                        BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
                         varH.setValueOnly(beanMapSupplier);
                     }
                     return;

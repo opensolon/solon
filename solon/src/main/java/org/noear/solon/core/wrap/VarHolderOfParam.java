@@ -16,7 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanSupplier;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
@@ -146,8 +146,8 @@ public class VarHolderOfParam implements VarHolder {
      * 获取值
      */
     public Object getValue() {
-        if (val instanceof BeanSupplier) {
-            return ((BeanSupplier) val).get();
+        if (val instanceof BeanWrap.Supplier) {
+            return ((BeanWrap.Supplier) val).get();
         } else {
             return val;
         }

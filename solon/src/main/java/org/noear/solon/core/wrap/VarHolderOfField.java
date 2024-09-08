@@ -16,7 +16,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanSupplier;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
@@ -121,8 +121,8 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public void setValue(Object val) {
         if (val != null) {
-            if (val instanceof BeanSupplier) {
-                val = ((BeanSupplier) val).get();
+            if (val instanceof BeanWrap.Supplier) {
+                val = ((BeanWrap.Supplier) val).get();
             }
 
             fw.setValue(obj, val, true);
