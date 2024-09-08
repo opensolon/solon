@@ -18,20 +18,20 @@ package org.noear.solon.scheduling.command;
 import org.noear.solon.core.BeanWrap;
 
 /**
- * 命令执行器原型代理（支持非单例运行）
+ * 命令执行器类原型代理（支持非单例运行）
  *
  * @author noear
  * @since 2.9
  */
 public class CommandExecutorProxy implements CommandExecutor {
-    private BeanWrap bw;
+    private BeanWrap target;
 
-    public CommandExecutorProxy(BeanWrap bw) {
-        this.bw = bw;
+    public CommandExecutorProxy(BeanWrap target) {
+        this.target = target;
     }
 
     @Override
     public void execute(String command) throws Throwable {
-        ((CommandExecutor) bw.get()).execute(command);
+        ((CommandExecutor) target.get()).execute(command);
     }
 }

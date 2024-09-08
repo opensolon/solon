@@ -23,24 +23,24 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.BeanWrap;
 
 /**
- * 云事件处理原型代理
+ * 云事件处理类原型代理
  *
  * @author noear
  * @author 颖
  * @since 1.5
  */
 public class CloudEventHandlerProxy implements CloudEventHandler {
-    private BeanWrap bw;
+    private BeanWrap target;
     private Class<?> entityClz;
 
-    public CloudEventHandlerProxy(BeanWrap bw, Class<?> entityClz) {
-        this.bw = bw;
+    public CloudEventHandlerProxy(BeanWrap target, Class<?> entityClz) {
+        this.target = target;
         this.entityClz = entityClz;
     }
 
     @Override
     public boolean handle(Event event) throws Throwable {
         CloudEventEntity eventEntity = ONode.deserialize(event.content(), entityClz);
-        return ((CloudEventHandlerPlus) bw.get()).handle(eventEntity);
+        return ((CloudEventHandlerPlus) target.get()).handle(eventEntity);
     }
 }

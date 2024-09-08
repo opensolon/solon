@@ -25,6 +25,8 @@ import org.noear.solon.core.wrap.MethodWrap;
 import java.lang.reflect.Method;
 
 /**
+ * 云事件处理方法原型代理（也支持拦截）
+ *
  * @author noear
  * @author 颖
  * @since 1.5
