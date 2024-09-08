@@ -26,8 +26,8 @@ import java.util.Locale;
  * @since 1.6
  */
 public class CloudI18nBundle implements I18nBundle {
-    Pack pack;
-    Locale locale;
+    private Pack pack;
+    private Locale locale;
 
     public CloudI18nBundle(Pack pack, Locale locale) {
         this.pack = pack;
