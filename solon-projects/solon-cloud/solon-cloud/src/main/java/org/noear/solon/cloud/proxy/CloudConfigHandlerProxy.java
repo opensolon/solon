@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.impl;
+package org.noear.solon.cloud.proxy;
 
-import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.CloudConfigHandler;
+import org.noear.solon.cloud.model.Config;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.handle.MethodHandler;
-
-import java.lang.reflect.Method;
 
 /**
- * CloubJob 方法运行器（支持非单例）
+ * 云配置处理类原型代理
  *
  * @author noear
- * @since 2.2
+ * @since 2.9
  */
-public class CloudJobMethod extends MethodHandler implements CloudJobHandler {
-    /**
-     * @param beanWrap Bean包装器
-     * @param method   函数（外部要控制访问权限）
-     */
-    public CloudJobMethod(BeanWrap beanWrap, Method method) {
-        super(beanWrap, method, true);
+public class CloudConfigHandlerProxy implements CloudConfigHandler {
+    private BeanWrap target;
+
+    public CloudConfigHandlerProxy(BeanWrap target) {
+        this.target = target;
+    }
+
+    @Override
+    public void handle(Config config) {
+        ((CloudConfigHandler) target.get()).handle(config);
     }
 }

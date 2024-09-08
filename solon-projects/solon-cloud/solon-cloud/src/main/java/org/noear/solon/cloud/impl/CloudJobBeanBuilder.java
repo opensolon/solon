@@ -20,6 +20,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.annotation.CloudJob;
+import org.noear.solon.cloud.proxy.CloudJobHandlerBeanProxy;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
 
@@ -52,12 +53,18 @@ public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
     public CloudJobBeanBuilder() {
         //默认添加 CloudJobHandler 构建器
         addBuilder(CloudJobHandler.class, (clz, bw, anno) -> {
+            if(CloudClient.job() == null){
+                throw new IllegalArgumentException("Missing CloudJobService component");
+            }
+
+            CloudJobHandler handler = new CloudJobHandlerBeanProxy(bw);
+
             //支持${xxx}配置
             String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
             //支持${xxx}配置
             String description = Solon.cfg().getByTmpl(anno.description());
 
-            CloudClient.job().register(name, anno.cron7x(), description, new CloudJobBean(bw));
+            CloudClient.job().register(name, anno.cron7x(), description, handler);
         });
     }
 

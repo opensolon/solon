@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud;
+package org.noear.solon.cloud.proxy;
 
-import org.noear.solon.core.handle.Context;
+import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.handle.MethodHandler;
+
+import java.lang.reflect.Method;
 
 /**
- * 云任务处理
+ * 云任务处理方法原型代理
  *
  * @author noear
- * @since 1.4
+ * @since 2.2
  */
-@FunctionalInterface
-public interface CloudJobHandler {
-    void handle(Context ctx) throws Throwable;
+public class CloudJobHandlerMethodProxy extends MethodHandler implements CloudJobHandler {
+    /**
+     * @param target 目标
+     * @param method 方法（外部要控制访问权限）
+     */
+    public CloudJobHandlerMethodProxy(BeanWrap target, Method method) {
+        super(target, method, true);
+    }
 }

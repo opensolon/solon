@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cloud.impl;
+package org.noear.solon.cloud.proxy;
 
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.Context;
 
 /**
- * CloubJob 类运行器（支持非单例）
+ * 云任务处理类原型代理
  *
  * @author noear
  * @since 2.2
  */
-public class CloudJobBean implements CloudJobHandler {
-    BeanWrap target;
+public class CloudJobHandlerBeanProxy implements CloudJobHandler {
+    private BeanWrap target;
 
-    public CloudJobBean(BeanWrap target) {
+    public CloudJobHandlerBeanProxy(BeanWrap target) {
         this.target = target;
     }
 

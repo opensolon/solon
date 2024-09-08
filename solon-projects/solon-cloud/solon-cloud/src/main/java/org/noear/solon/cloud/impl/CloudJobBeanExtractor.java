@@ -18,7 +18,9 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.annotation.CloudJob;
+import org.noear.solon.cloud.proxy.CloudJobHandlerMethodProxy;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 
@@ -56,9 +58,11 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
             throw new IllegalStateException("CloudJob[" + name + "] naming conflicts.");
         }
 
-        //method 可以有返回结果
+        CloudJobHandler handler = new CloudJobHandlerMethodProxy(bw, method);
+
+                //method 可以有返回结果
         method.setAccessible(true);
 
-        CloudClient.job().register(name, anno.cron7x(), description, new CloudJobMethod(bw, method));
+        CloudClient.job().register(name, anno.cron7x(), description, handler);
     }
 }

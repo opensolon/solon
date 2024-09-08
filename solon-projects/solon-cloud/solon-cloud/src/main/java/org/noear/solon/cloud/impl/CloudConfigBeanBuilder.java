@@ -22,10 +22,9 @@ import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.model.Config;
+import org.noear.solon.cloud.proxy.CloudConfigHandlerProxy;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
-
-import java.util.Properties;
 
 /**
  * @author noear
@@ -40,19 +39,11 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
             throw new IllegalArgumentException("Missing CloudConfigService component");
         }
 
-        CloudConfigHandler handler;
         if (bw.raw() instanceof CloudConfigHandler) {
-            handler = bw.raw();
-        } else {
-            handler = (Config cfg) -> {
-                Properties val0 = cfg.toProps();
-                Utils.injectProperties(bw.raw(),val0);
-            };
-        }
+            CloudConfigHandler handler = new CloudConfigHandlerProxy(bw); //原型代理
 
-        CloudManager.register(anno, handler);
+            CloudManager.register(anno, handler);
 
-        if (CloudClient.config() != null) {
             //支持${xxx}配置
             String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
             //支持${xxx}配置

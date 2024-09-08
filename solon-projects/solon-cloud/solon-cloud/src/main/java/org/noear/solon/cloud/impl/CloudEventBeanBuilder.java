@@ -21,6 +21,7 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudEvent;
+import org.noear.solon.cloud.proxy.CloudEventHandlerProxy;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
 
@@ -38,17 +39,17 @@ public class CloudEventBeanBuilder implements BeanBuilder<CloudEvent> {
         }
 
         if (bw.raw() instanceof CloudEventHandler) {
-            CloudManager.register(anno, bw.raw());
+            CloudEventHandler handler = new CloudEventHandlerProxy(bw);
 
-            if (CloudClient.event() != null) {
-                //支持${xxx}配置
-                String topic = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.topic()));
-                //支持${xxx}配置
-                String group = Solon.cfg().getByTmpl(anno.group());
+            CloudManager.register(anno, handler);//原型代理
 
-                //关注事件
-                CloudClient.event().attention(anno.level(), anno.channel(), group, topic, anno.tag(), anno.qos(), bw.raw());
-            }
+            //支持${xxx}配置
+            String topic = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.topic()));
+            //支持${xxx}配置
+            String group = Solon.cfg().getByTmpl(anno.group());
+
+            //关注事件
+            CloudClient.event().attention(anno.level(), anno.channel(), group, topic, anno.tag(), anno.qos(), handler);
         }
     }
 }
