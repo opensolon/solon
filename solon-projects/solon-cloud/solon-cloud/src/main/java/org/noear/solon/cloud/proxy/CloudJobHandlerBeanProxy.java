@@ -15,7 +15,9 @@
  */
 package org.noear.solon.cloud.proxy;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.Context;
 
@@ -34,6 +36,16 @@ public class CloudJobHandlerBeanProxy implements CloudJobHandler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        ((CloudJobHandler) target.get()).handle(ctx);
+        try {
+            ((CloudJobHandler) target.get()).handle(ctx);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+
+            if (e instanceof CloudJobException) {
+                throw e;
+            } else {
+                throw new CloudJobException(e);
+            }
+        }
     }
 }

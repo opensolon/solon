@@ -15,8 +15,11 @@
  */
 package org.noear.solon.cloud.proxy;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodHandler;
 
 import java.lang.reflect.Method;
@@ -34,5 +37,20 @@ public class CloudJobHandlerMethodProxy extends MethodHandler implements CloudJo
      */
     public CloudJobHandlerMethodProxy(BeanWrap target, Method method) {
         super(target, method, true);
+    }
+
+    @Override
+    public void handle(Context c) throws Throwable {
+        try {
+            super.handle(c);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+
+            if (e instanceof CloudJobException) {
+                throw e;
+            } else {
+                throw new CloudJobException(e);
+            }
+        }
     }
 }
