@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 2.9
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Ds {
