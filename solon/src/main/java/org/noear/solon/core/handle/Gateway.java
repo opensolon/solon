@@ -210,7 +210,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         try {
             //主处理（最多一次渲染）
-            if (c.getHandled() == false) {
+            if (c.getHandled() == false) { //保留这个，过滤器可以有两种控制方式（软控，硬控）
                 if (is_action) {
                     ((Action) m).invoke(c, obj);
                 } else {

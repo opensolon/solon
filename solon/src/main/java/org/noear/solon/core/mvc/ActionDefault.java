@@ -291,7 +291,7 @@ public class ActionDefault extends HandlerAide implements Action {
 
         try {
             //主体处理（最多一次渲染）//非主体处理 或 未处理
-            if (c.getHandled() == false) {
+            if (c.getHandled() == false) { //保留这个，过滤器可以有两种控制方式（软控，硬控）
 
                 //获取path var
                 bindPathVarDo(c);
