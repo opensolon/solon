@@ -32,7 +32,7 @@
 * 添加 Context::sessionReset 方法
 * 添加 solon Props:toBean 方法（替代 Props:getBean）
 * 添加 solon-scheduling CommandExecutorProxy 原型代理支持
-* 添加 solon-data `@Ds` 注解（未来用于替代分散的 `@Db`）
+* 添加 solon-data `@Ds` 注解（未来用于替代分散的 `@Db`），将在 v3.0 启用
 * 添加 solon-data DsUtils.observeDs 方法
 * 添加 solon-cloud CloudEventHandlerPlus 原型代理支持
 * 添加 solon-cloud CloudConfigHandler 原型代理支持
@@ -70,6 +70,7 @@
 * 移除 旧包 solon.extend.schedule
 * wood 升为 1.3.1
 * redisson 升为 3.34.1
+* bean-searcher 升为 4.3.2
 
 
 |                          | 操作     |                          |
