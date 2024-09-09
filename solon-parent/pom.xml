@@ -158,7 +158,7 @@
         <mybatis-flex.version>1.9.6</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.3</dbvisitor.version>
-        <bean-searcher.version>4.3.0</bean-searcher.version>
+        <bean-searcher.version>4.3.2</bean-searcher.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
 
         <liteflow.version>2.12.2</liteflow.version>
@@ -1048,12 +1048,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>dbvisitor-solon-plugin</artifactId>
-                <version>${solon-integration.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>hasordb-solon-plugin</artifactId>
                 <version>${solon-integration.version}</version>
             </dependency>
 
