@@ -27,7 +27,7 @@ public class App {
     public static void main(String[] args) {
         Solon.start(App.class, args, app -> {
             //例：增加全局处理（用过滤器模式）
-            app.filter(-1, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
+            app.filter(-970, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
 
             //例：增加全局处理（用处理链模式）
             app.before(new CrossHandler().allowedOrigins("*"));

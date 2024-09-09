@@ -43,6 +43,8 @@
 * 调整 solon Constants 内部类改为接口类型
 * 凋整 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
 * 调整 solon-scheduling scheduled 内部实现类（强调原型代理概念
+* 调整 solon ContextPathFilter index 改为 -990
+* 调整 solon-i18n I18nFilter index 改为 -980
 * 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
 * 提醒 solon 添加不支持单例的打印日志 
 * 修复 solon BeanWrap::rawClz 处理 anonymousClass 失误的问题

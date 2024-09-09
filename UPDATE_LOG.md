@@ -16,23 +16,52 @@
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
-* 
+*
 * 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### 3.0
-
-
+### 2.9.3
+* 新增 solon-web-vertx 插件
+* 新增 solon 分类注入支持体系
+* 新增 solon 分类构建支持体系
+* 调整 solon Before,After Handler 体系标为弃用
+* 调整 solon Props:getBean 标为弃用
+* 调整 solon NvMap:getBean 标为弃用
+* 添加 solon Action 过滤器体系（替代 Before,After 体系）
+* 添加 Context::sessionReset 方法
+* 添加 solon Props:toBean 方法（替代 Props:getBean）
+* 添加 solon-scheduling CommandExecutorProxy 原型代理支持
+* 添加 solon-data `@Ds` 注解（未来用于替代分散的 `@Db`），将在 v3.0 启用
+* 添加 solon-data DsUtils.observeDs 方法
+* 添加 solon-cloud CloudEventHandlerPlus 原型代理支持
+* 添加 solon-cloud CloudConfigHandler 原型代理支持
+* 添加 solon-cloud CloudEventHandler 原型代理支持
+* 添加 solon-cloud-gateway X_Forwarded_Host 和 https 转发支持
+* 添加 solon-cloud-gateway RewritePathFilterFactory
+* 添加 solon-cloud-gateway QueryPredicateFactory
+* 调整 solon Constants 内部类改为接口类型
+* 凋整 solon-cloud-gateway 路由处理体系，支持路由多协议头扩展
+* 调整 solon-scheduling scheduled 内部实现类（强调原型代理概念
+* 调整 solon ContextPathFilter index 改为 -990
+* 调整 solon-i18n I18nFilter index 改为 -980
+* 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
+* 提醒 solon 添加不支持单例的打印日志
+* 修复 solon BeanWrap::rawClz 处理 anonymousClass 失误的问题
+* wood 升为 1.3.4
+* redisson 升为 3.35.0
+* bean-searcher 升为 4.3.2
 
 ### 2.9.2
 * 新增 solon-config-plus
+* 新增 BeanInjectorTyped 分类注入器机制
+* 新增 BeanBuilderTyped 分类构建器机制
 * 添加 NOTICE
 * 添加 solon @Bean::priority 属性（用于 onMissing 条件时的运行优先级）
 * 添加 solon-cloud 的分布式注解开关
 * 添加 solon Context::cookieValues(name) 方法
 * 添加 solon MultiMap 类，用于 Context 能力优化
-* 添加 solon-web-rx 对 ndjson 支持 
+* 添加 solon-web-rx 对 ndjson 支持
 * 优化 solon-cloud-gateway body 修改支持
 * 修复 solon beanRegister 处理的兼容性（2.9.0 出现了一点不兼容）
 * 调整 快捷方式只保留：solon-lib 和 solon-web（原 solon-web 去掉 view，方便自选）
@@ -92,7 +121,7 @@
 * 添加 solon `solon.app.enabled` 应用属性配置（`Solon.cfg().appEnabled()` 可获取）
 * 添加 solon `${.url}` 应用属性配置本级引用
 * 添加 solon `--cfg` 启动参数支持（便于内嵌场景开发）
-* 添加 托管类构造参数注入支持（对 kotlin 更友好） 
+* 添加 托管类构造参数注入支持（对 kotlin 更友好）
 * 调整 solon.cloud.httputils 标为弃用，由 solon.net.httputils 替代
 * 调整 smarthttp,jetty,undertow 的非标准方法的 FormUrlencoded 预处理时机
 * 调整 solon.auth maven 包更名为 solon.security.auth (原 maven 包保留)
