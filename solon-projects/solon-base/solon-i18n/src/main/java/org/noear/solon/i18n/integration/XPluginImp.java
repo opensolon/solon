@@ -29,7 +29,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         context.beanInterceptorAdd(I18n.class, I18nInterceptor.instance);
 
-        Solon.app().filter(-9, (ctx, chain) -> {
+        Solon.app().filter(-980, (ctx, chain) -> {
             //尝试自动完成地区解析
             I18nUtil.getLocaleResolver().getLocale(ctx);
             chain.doFilter(ctx);
