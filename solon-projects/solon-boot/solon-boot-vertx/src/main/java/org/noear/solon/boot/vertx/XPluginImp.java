@@ -16,6 +16,7 @@
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
@@ -50,7 +51,12 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        _vertx = Vertx.vertx();
+        VertxOptions vertxOptions = new VertxOptions();
+        //vertxOptions.setWorkerPoolSize(20); //暂时默认
+        //vertxOptions.setEventLoopPoolSize(2 * Runtime.getRuntime().availableProcessors());
+        //vertxOptions.setInternalBlockingPoolSize(20);
+
+        _vertx = Vertx.vertx(vertxOptions);
         context.wrapAndPut(Vertx.class, _vertx);
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
