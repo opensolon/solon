@@ -49,7 +49,7 @@ public class RouterHandler implements Handler {
             h.handle(ctx);
             return ctx.status() != 404;
         } else {
-            int code = ctx.attrOrDefault(Constants.mainStatus, 404);
+            int code = ctx.attrOrDefault(Constants.ATTR_MAIN_STATUS, 404);
             if (code == 405) {
                 throw new StatusException("Method Not Allowed: " + ctx.method() + " " + ctx.pathNew(), code);
             } else {
@@ -97,7 +97,7 @@ public class RouterHandler implements Handler {
 
         //预处理 action
         if (mainHandler instanceof Action) {
-            x.attrSet(Constants.action, mainHandler);
+            x.attrSet(Constants.ATTR_ACTION, mainHandler);
         }
 
         //执行

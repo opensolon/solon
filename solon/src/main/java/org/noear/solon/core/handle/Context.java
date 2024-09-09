@@ -1270,20 +1270,20 @@ public abstract class Context {
      * 获取当前控制器
      */
     public @Nullable Object controller() {
-        return attr(Constants.controller);
+        return attr(Constants.ATTR_CONTROLLER);
     }
 
     /**
      * 获取当前动作
      */
     public @Nullable Action action() {
-        return attr(Constants.action);
+        return attr(Constants.ATTR_ACTION);
     }
 
     /**
      * 获取当前主处理器
      */
     public @Nullable Handler mainHandler() {
-        return attr(Constants.mainHandler);
+        return attr(Constants.ATTR_MAIN_HANDLER);
     }
 }

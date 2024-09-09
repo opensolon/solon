@@ -20,6 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
@@ -52,7 +53,7 @@ public class SolonServletContextListener implements ServletContextListener {
             //设定 contextPath
             String contextPath = sce.getServletContext().getContextPath();
             if (contextPath.length() > 1) {
-                Solon.app().filterIfAbsent(-99, new ContextPathFilter(contextPath, false));
+                Solon.app().filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter(contextPath, false));
             }
         });
 

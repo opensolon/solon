@@ -100,9 +100,9 @@ public class RouterDefault implements Router, HandlerSlots {
         Result<Handler> result = table.matchOneAndStatus(pathNew, method);
 
         if (result.getData() != null) {
-            ctx.attrSet(Constants.mainHandler, result.getData());
+            ctx.attrSet(Constants.ATTR_MAIN_HANDLER, result.getData());
         } else {
-            ctx.attrSet(Constants.mainStatus, result.getCode());
+            ctx.attrSet(Constants.ATTR_MAIN_STATUS, result.getCode());
 
         }
 

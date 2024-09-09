@@ -16,6 +16,8 @@
 package org.noear.solon.core;
 
 /**
+ * 内部常量（禁止外部引用）
+ *
  * @author noear
  * @since 1.2
  */
@@ -23,8 +25,13 @@ public interface Constants {
     String PARM_UNDEFINED_VALUE = "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
     //@since: 2.5
-    String controller = "controller";
-    String mainHandler = "mainHandler";
-    String mainStatus = "mainStatus";
-    String action = "action";
+    String ATTR_CONTROLLER = "controller";
+    String ATTR_MAIN_HANDLER = "mainHandler";
+    String ATTR_MAIN_STATUS = "mainStatus";
+    String ATTR_ACTION = "action";
+
+    //@since: 3.0
+    int FT_IDX_CONTEXT_PATH = -990;
+    int FT_IDX_I18N = -980;
+    int FT_IDX_CROSS = -970;
 }
