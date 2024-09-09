@@ -200,7 +200,8 @@ public class Solon {
         if (NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
+                int stopDelay = app.cfg().stopDelay();
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
             } else {
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
             }
