@@ -253,7 +253,7 @@ public class SolonApp extends RouterWrapper {
 
         //3.1.尝试设置 context-path
         if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
-            Solon.app().filterIfAbsent(-99, new ContextPathFilter());
+            this.filterIfAbsent(-990, new ContextPathFilter());
         }
 
         //3.2.标识上下文加载完成
