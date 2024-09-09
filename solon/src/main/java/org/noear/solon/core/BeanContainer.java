@@ -375,7 +375,7 @@ public abstract class BeanContainer {
         beanInterceptorAdd(annoClz, interceptor);
 
         //添加弃用提醒日志
-        LogUtil.global().error("AppContext:beanAroundAdd(.) will be discarded, suggested use 'beanInterceptorAdd(.)': " + annoClz.getName());
+        LogUtil.global().error("AppContext:beanAroundAdd(.) will be discarded, suggested use 'beanInterceptorAdd(.)': " + interceptor.getClass().getName());
     }
 
     /**
