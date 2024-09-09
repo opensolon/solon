@@ -48,6 +48,7 @@
 * 修复 solon BeanWrap::rawClz 处理 anonymousClass 失误的问题
 * wood 升为 1.3.4
 * redisson 升为 3.35.0
+* bean-searcher 升为 4.3.2
 
 ### 2.9.2
 * 新增 solon-config-plus
@@ -70,7 +71,6 @@
 * 移除 旧包 solon.extend.schedule
 * wood 升为 1.3.1
 * redisson 升为 3.34.1
-* bean-searcher 升为 4.3.2
 
 
 |                          | 操作     |                          |
