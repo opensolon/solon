@@ -21,12 +21,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import org.noear.solon.core.Constants;
 import org.noear.solon.serialization.jackson.xml.impl.NullBeanSerializerModifierImpl;
-import org.noear.solon.serialization.jackson.xml.impl.NullValueSerializerImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.LifecycleIndex;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -62,7 +60,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(JacksonXmlRenderTypedFactory.class, renderTypedFactory);
 
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+        context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             RenderManager.mapping("@xml", renderFactory.create());
             RenderManager.mapping("@type_xml", renderTypedFactory.create());
         });

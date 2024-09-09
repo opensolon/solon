@@ -20,7 +20,9 @@ package org.noear.solon.core;
  *
  * @author noear
  * @since 2.7
+ * @deprecated 3.0
  */
+@Deprecated
 public interface LifecycleIndex {
     int CLASS_CONDITION_IF_MISSING = -99;
     int METHOD_CONDITION_IF_MISSING = -98;

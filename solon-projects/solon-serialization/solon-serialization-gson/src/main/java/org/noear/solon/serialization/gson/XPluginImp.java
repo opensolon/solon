@@ -17,7 +17,7 @@ package org.noear.solon.serialization.gson;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.LifecycleIndex;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -48,7 +48,7 @@ public class XPluginImp implements Plugin {
         GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();
         context.wrapAndPut(GsonRenderTypedFactory.class, renderTypedFactory);
 
-        context.lifecycle(LifecycleIndex.PLUGIN_BEAN_USES, () -> {
+        context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

@@ -54,7 +54,7 @@ public class AppContext extends BeanContainer {
     public AppContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
         initialize();
-        lifecycle(LifecycleIndex.PARAM_COLLECTION_INJECT, () -> {
+        lifecycle(Constants.LF_IDX_PARAM_COLLECTION_INJECT, () -> {
             this.startInjectReview(true);
         });
     }
@@ -271,7 +271,7 @@ public class AppContext extends BeanContainer {
                 if (type instanceof Class) {
                     if (varH.isField()) {
                         varH.required(required);
-                        lifecycle(LifecycleIndex.FIELD_COLLECTION_INJECT, () -> {
+                        lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
                             if (varH.isDone()) {
                                 return;
                             }
@@ -303,7 +303,7 @@ public class AppContext extends BeanContainer {
                 if (String.class == keyType && valType instanceof Class) {
                     if (varH.isField()) {
                         varH.required(required);
-                        lifecycle(LifecycleIndex.FIELD_COLLECTION_INJECT, () -> {
+                        lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
                             if (varH.isDone()) {
                                 return;
                             }
@@ -667,7 +667,7 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(mc)) {
-            lifecycle(LifecycleIndex.METHOD_CONDITION_IF_MISSING, ma.priority(), () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
+            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, ma.priority(), () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryBuildBeanOfMethod0(bw, m, ma, mc);
         }
@@ -806,7 +806,7 @@ public class AppContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(cc)) {
-            lifecycle(LifecycleIndex.CLASS_CONDITION_IF_MISSING, () -> tryBuildBeanOfClass0(clz, cc));
+            lifecycle(Constants.LF_IDX_CLASS_CONDITION_IF_MISSING, () -> tryBuildBeanOfClass0(clz, cc));
             return build_bean_ofclass_state1;
         } else {
             return tryBuildBeanOfClass0(clz, cc);
