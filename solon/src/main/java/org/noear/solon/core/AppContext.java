@@ -895,21 +895,15 @@ public class AppContext extends BeanContainer {
 
     //::bean事件处理
     /**
-     * 添加生命周期 bean
-     *
-     * @deprecated 2.9
+     * 添加生命周期 bean（保持向下兼容）
      */
-    @Deprecated
     public void lifecycle(LifecycleBean lifecycle) {
         lifecycle(0, (Lifecycle) lifecycle);
     }
 
     /**
-     * 添加生命周期 bean
-     *
-     * @deprecated 2.9
+     * 添加生命周期 bean（保持向下兼容）
      */
-    @Deprecated
     public void lifecycle(int index, LifecycleBean lifecycle) {
         lifecycle(index, (Lifecycle) lifecycle);
     }

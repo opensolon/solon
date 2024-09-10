@@ -52,17 +52,10 @@ public class Solon {
     private static String encoding = "utf-8";
 
     /**
-     * 框架版本码
-     */
-    public static int versionCode(){
-        return 30000;
-    }
-
-    /**
      * 框架版本号
      */
     public static String version() {
-        return "3.0.0-SNAPSHOT";
+        return "3.0.0-M1";
     }
 
     /**
