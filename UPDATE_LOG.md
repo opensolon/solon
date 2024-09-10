@@ -27,4 +27,6 @@
 * 移除 Before、After 体系，（统一为 Filter 体系） // ok（化敏为简）
 * 移除 `@ProxyComponent` (统一为 @Component) //ok（化敏为简）
 * 移除 无关配置的弃用代码
-* redisson 升为 3.35.0
+* 启用 solon 分类注入支持体系
+* 启用 solon 分类构建支持体系
+* 启用 solon-data `@Ds` 新注解，替代各插件分散的`@Db`注解（更统一，更方便扩展） 

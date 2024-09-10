@@ -38,7 +38,7 @@ public abstract class RouterWrapper implements HandlerSlots {
         //顺序不能换
         _chainManager = new ChainManager();
         _router = new RouterDefault();
-        _routerHandler = new RouterHandler(_router);
+        _routerHandler = new RouterHandler(_router, _chainManager);
     }
 
 

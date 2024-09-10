@@ -189,7 +189,7 @@ public class ChainManager {
     /**
      * 执行路由拦截
      */
-    public void doIntercept(Context x, Handler lastHandler, Handler mainHandler) throws Throwable {
+    public void doIntercept(Context x, Handler mainHandler, Handler lastHandler) throws Throwable {
         //先执行的，包住后执行的
         new RouterInterceptorChainImpl(interceptorNodes, lastHandler).doIntercept(x, mainHandler);
     }

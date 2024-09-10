@@ -16,6 +16,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
@@ -29,9 +30,11 @@ import org.noear.solon.core.handle.*;
  * */
 public class RouterHandler implements Handler {
     private Router router;
+    private ChainManager chainManager;
 
-    public RouterHandler(Router router) {
+    public RouterHandler(Router router, ChainManager chainManager) {
         this.router = router;
+        this.chainManager = chainManager;
     }
 
     /**
@@ -59,17 +62,13 @@ public class RouterHandler implements Handler {
         }
     }
 
-    private void handle1(Context x, Handler mainHandler) throws Throwable {
-        //可能上级链已完成处理
-        if (x.getHandled()) {
-            return;
-        }
-
+    private void handle1(Context x) throws Throwable {
         try {
             //主体处理
-            if (x.getHandled() == false) {
+            if (x.getHandled() == false) { //保留这个，过滤器可以有两种控制方式（软控，硬控）
                 //（仅支持唯一代理）
                 //（设定处理状态，便于 after 获取状态）
+                Handler mainHandler = x.mainHandler();
                 x.setHandled(handleMain(mainHandler, x));
             }
         } catch (Throwable e) {
@@ -78,11 +77,6 @@ public class RouterHandler implements Handler {
             }
             throw e;
         }
-    }
-
-    private void handle0(Context x) throws Throwable {
-        Handler mainHandler = x.mainHandler();
-        handle1(x,mainHandler);
     }
 
     @Override
@@ -101,6 +95,6 @@ public class RouterHandler implements Handler {
         }
 
         //执行
-        Solon.app().chainManager().doIntercept(x, this::handle0, mainHandler);
+        chainManager.doIntercept(x, mainHandler, this::handle1);
     }
 }
