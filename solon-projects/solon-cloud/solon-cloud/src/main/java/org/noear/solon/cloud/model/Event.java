@@ -35,6 +35,7 @@ public class Event implements Serializable {
     private transient String channel;
     private transient int qos = 1;
     private transient boolean retained = false;
+    private transient boolean broadcast = false;
     private transient EventTran tran;
 
     public Event() {
@@ -157,7 +158,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * 获取保留的：是否保留最后一条（兼容mqtt）
+     * 是否保留的：是否保留最后一条（兼容mqtt）
      */
     public boolean retained() {
         return retained;
@@ -168,6 +169,22 @@ public class Event implements Serializable {
      */
     public Event retained(boolean retained) {
         this.retained = retained;
+        return this;
+    }
+
+
+    /**
+     * 是否广播的
+     */
+    public boolean broadcast() {
+        return broadcast;
+    }
+
+    /**
+     * 设置广播的
+     */
+    public Event broadcast(boolean broadcast) {
+        this.broadcast = broadcast;
         return this;
     }
 
