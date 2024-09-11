@@ -308,6 +308,40 @@ public abstract class BeanContainer {
         return beanInterceptors.get(annoClz);
     }
 
+    /**
+     * 添加环绕处理
+     *
+     * @param index 执行顺序
+     * @see #beanInterceptorAdd(Class, Interceptor, int)
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+        beanInterceptorAdd(annoClz, interceptor, index);
+    }
+
+    /**
+     * 添加环绕处理
+     *
+     * @see #beanInterceptorAdd(Class, Interceptor)
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
+        beanInterceptorAdd(annoClz, interceptor);
+    }
+
+    /**
+     * 获取环绕处理
+     *
+     * @see #beanInterceptorGet(Class)
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
+        return beanInterceptorGet(annoClz);
+    }
+
 
     //////////////////////////
     //
