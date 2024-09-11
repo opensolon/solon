@@ -54,8 +54,8 @@
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
 
-        <smartsocket.version>1.5.50</smartsocket.version>
-        <smarthttp.version>1.5.9</smarthttp.version>
+        <smartsocket.version>1.5.52</smartsocket.version>
+        <smarthttp.version>1.6.0</smarthttp.version>
         <jetty.version>9.4.55.v20240627</jetty.version>
         <undertow.version>2.2.34.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
