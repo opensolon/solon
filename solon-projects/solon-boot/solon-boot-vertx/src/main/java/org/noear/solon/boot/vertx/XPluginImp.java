@@ -56,6 +56,9 @@ public class XPluginImp implements Plugin {
         //vertxOptions.setEventLoopPoolSize(2 * Runtime.getRuntime().availableProcessors());
         //vertxOptions.setInternalBlockingPoolSize(20);
 
+        //添加总线扩展
+        EventBus.publish(vertxOptions);
+
         _vertx = Vertx.vertx(vertxOptions);
         context.wrapAndPut(Vertx.class, _vertx);
 
