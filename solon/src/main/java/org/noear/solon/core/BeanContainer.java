@@ -318,6 +318,9 @@ public abstract class BeanContainer {
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
         beanInterceptorAdd(annoClz, interceptor, index);
+
+        //添加弃用提醒日志
+        LogUtil.global().error("AppContext:beanAroundAdd(.) will be discarded, suggested use 'beanInterceptorAdd(.)': " + interceptor.getClass().getName());
     }
 
     /**
@@ -328,7 +331,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
-        beanInterceptorAdd(annoClz, interceptor);
+        beanAroundAdd(annoClz, interceptor, 0);
     }
 
     /**
