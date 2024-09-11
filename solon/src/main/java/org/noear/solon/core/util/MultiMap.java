@@ -34,6 +34,9 @@ public class MultiMap<T> implements Iterable<KeyValues<T>> {
         return innerMap.values().iterator();
     }
 
+    /**
+     * 持有
+     */
     public KeyValues<T> holder(String key) {
         return innerMap.computeIfAbsent(key, k -> new KeyValues<>(key));
     }
