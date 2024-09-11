@@ -30,3 +30,5 @@
 * 启用 solon 分类注入支持体系
 * 启用 solon 分类构建支持体系
 * 启用 solon-data `@Ds` 新注解，替代各插件分散的`@Db`注解（更统一，更方便扩展） 
+* 添加 solon Duration 类型配置注入
+* snack3 升为 3.2.110
