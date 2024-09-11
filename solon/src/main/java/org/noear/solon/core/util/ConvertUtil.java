@@ -348,6 +348,19 @@ public class ConvertUtil {
             return Charset.forName(val);
         }
 
+        if(Duration.class == type){
+            String tmp = val.toUpperCase();
+            if (tmp.indexOf('P') != 0) {
+                if (tmp.indexOf('D') > 0) {
+                    tmp = "P" + tmp;
+                } else {
+                    tmp = "PT" + tmp;
+                }
+            }
+
+            return Duration.parse(tmp);
+        }
+
         if (String.class == type) {
             return val;
         }
