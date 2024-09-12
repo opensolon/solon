@@ -340,7 +340,7 @@ public class ChainManager {
      * */
     public void refreshSessionState(Context c) {
         if (_sessionStateUpdated) {
-            //替代 before("**", MethodType.HTTP, ...)
+            //替代 bef("**", MethodType.HTTP, ...)
             c.sessionState().sessionRefresh();
         }
     }

@@ -28,13 +28,13 @@ import org.noear.solon.annotation.Controller;
 public class Run2Handler extends Gateway {
     @Override
     protected void register() {
-        //before(c->{if(false){}});
+        //filter((x,c)->{...;o.doFilter(x)});
 
         add("send", (c)->{c.output(c.url());});
         add("test", (c)->{c.output(c.url());});
         add("dock", (c)->{c.output(c.url());});
         add("ip", (c)->{c.output(c.remoteIp());});
 
-        //after(c->{});
+        //filter((x,c)->{o.doFilter(x);...});
     }
 }

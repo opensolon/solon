@@ -43,7 +43,7 @@ public class RouterHandler implements Handler {
     protected boolean handleMain(Handler h, Context ctx) throws Throwable {
         if (h != null) {
             /**
-             * 从原 before("**", MethodType.HTTP) 迁过来
+             * 从原 bef("**", MethodType.HTTP) 迁过来
              *
              * @since 3.0
              * */
