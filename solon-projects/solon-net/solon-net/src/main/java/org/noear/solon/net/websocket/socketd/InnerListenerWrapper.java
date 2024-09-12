@@ -17,9 +17,10 @@ package org.noear.solon.net.websocket.socketd;
 
 import org.noear.socketd.transport.core.ListenerWrapper;
 import org.noear.socketd.transport.core.Session;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author noear
@@ -30,9 +31,12 @@ public class InnerListenerWrapper extends ListenerWrapper {
 
     @Override
     public void onOpen(Session s) throws IOException {
-        Map<String, String> headerMap = s.attr(WS_HANDSHAKE_HEADER);
+        MultiMap<String> headerMap = s.attr(WS_HANDSHAKE_HEADER);
         if (headerMap != null) {
-            s.handshake().paramMap().putAll(headerMap);
+            for (KeyValues<String> kv : headerMap) {
+                s.handshake().paramMap().put(kv.getKey(), kv.getFirstValue());
+            }
+
             s.attrDel(WS_HANDSHAKE_HEADER);
         }
 

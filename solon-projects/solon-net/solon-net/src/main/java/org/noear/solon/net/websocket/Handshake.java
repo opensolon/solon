@@ -15,8 +15,9 @@
  */
 package org.noear.solon.net.websocket;
 
+import org.noear.solon.core.util.MultiMap;
+
 import java.net.URI;
-import java.util.Map;
 
 /**
  * 握手信息
@@ -38,5 +39,5 @@ public interface Handshake {
     /**
      * 获取参数字典
      */
-    Map<String, String> getParamMap();
+    MultiMap<String> getParamMap();
 }

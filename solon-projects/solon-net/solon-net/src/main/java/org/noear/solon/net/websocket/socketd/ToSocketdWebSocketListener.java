@@ -23,6 +23,7 @@ import org.noear.socketd.transport.core.impl.ChannelDefault;
 import org.noear.socketd.transport.core.impl.ProcessorDefault;
 import org.noear.socketd.utils.IoCompletionHandler;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -114,7 +115,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener, SubProtoco
         ChannelInternal channel = getChannel(socket);
 
         //头信息
-        Map<String, String> headerMap = socket.paramMap();
+        MultiMap<String> headerMap = socket.paramMap();
         channel.getSession().attrPut(InnerListenerWrapper.WS_HANDSHAKE_HEADER, headerMap);
     }
 

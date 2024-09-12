@@ -15,6 +15,8 @@
  */
 package org.noear.solon.net.websocket;
 
+import org.noear.solon.core.util.MultiMap;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -60,7 +62,7 @@ public interface WebSocket {
     /**
      * 获取参数字典
      */
-    Map<String, String> paramMap();
+    MultiMap<String> paramMap();
 
     /**
      * 获取参数

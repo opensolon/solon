@@ -16,6 +16,7 @@
 package org.noear.solon.net.websocket;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
     @Override
-    public Map<String, String> paramMap() {
+    public MultiMap<String> paramMap() {
         return handshake.getParamMap();
     }
 
@@ -97,7 +98,7 @@ public abstract class WebSocketBase implements WebSocket {
 
     @Override
     public void param(String name, String value) {
-        handshake.getParamMap().put(name, value);
+        handshake.getParamMap().add(name, value);
     }
 
     @Override
