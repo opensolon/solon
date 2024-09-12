@@ -32,14 +32,22 @@ import java.lang.reflect.Method;
  * @since 1.5
  */
 public class CloudEventMethodProxy implements CloudEventHandler {
-    BeanWrap target;
-    MethodWrap method;
-    Class<?> entityClz;
+    private BeanWrap target;
+    private MethodWrap method;
+    private Class<?> entityClz;
 
     public CloudEventMethodProxy(BeanWrap target, Method method, Class<?> entityClz) {
         this.target = target;
         this.method = target.context().methodGet(target.rawClz(), method);
         this.entityClz = entityClz;
+    }
+
+    public BeanWrap getTarget() {
+        return target;
+    }
+
+    public MethodWrap getMethod() {
+        return method;
     }
 
     @Override

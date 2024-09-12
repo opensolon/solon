@@ -34,6 +34,10 @@ public class JobHandlerBeanProxy implements JobHandler {
         this.target = target;
     }
 
+    public BeanWrap getTarget() {
+        return target;
+    }
+
     @Override
     public void handle(Context ctx) throws Throwable {
         try {

@@ -30,6 +30,10 @@ public class CommandExecutorProxy implements CommandExecutor {
         this.target = target;
     }
 
+    public BeanWrap getTarget() {
+        return target;
+    }
+
     @Override
     public void execute(String command) throws Throwable {
         ((CommandExecutor) target.get()).execute(command);

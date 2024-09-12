@@ -32,6 +32,10 @@ public class CloudConfigHandlerProxy implements CloudConfigHandler {
         this.target = target;
     }
 
+    public BeanWrap getTarget() {
+        return target;
+    }
+
     @Override
     public void handle(Config config) {
         ((CloudConfigHandler) target.get()).handle(config);

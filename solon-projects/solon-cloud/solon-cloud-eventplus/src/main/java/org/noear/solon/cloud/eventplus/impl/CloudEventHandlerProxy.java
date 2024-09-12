@@ -38,6 +38,10 @@ public class CloudEventHandlerProxy implements CloudEventHandler {
         this.entityClz = entityClz;
     }
 
+    public BeanWrap getTarget() {
+        return target;
+    }
+
     @Override
     public boolean handle(Event event) throws Throwable {
         CloudEventEntity eventEntity = ONode.deserialize(event.content(), entityClz);

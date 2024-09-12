@@ -32,7 +32,7 @@ import java.util.TimeZone;
  * @since 2.2
  */
 public class QuartzSchedulerProxy implements Lifecycle {
-    Scheduler _scheduler = null;
+    private Scheduler _scheduler = null;
 
     @Override
     public void start() throws Throwable {

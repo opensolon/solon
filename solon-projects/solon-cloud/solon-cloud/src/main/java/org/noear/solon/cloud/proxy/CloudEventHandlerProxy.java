@@ -32,6 +32,10 @@ public class CloudEventHandlerProxy implements CloudEventHandler {
         this.target = target;
     }
 
+    public BeanWrap getTarget() {
+        return target;
+    }
+
     @Override
     public boolean handle(Event event) throws Throwable {
         return ((CloudEventHandler) target.get()).handle(event);
