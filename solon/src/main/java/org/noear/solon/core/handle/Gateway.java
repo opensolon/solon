@@ -160,9 +160,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            Handler mainHandler = find(c);
-
-            new FilterChainImpl(filters(), ctx -> handleDo(ctx, mainHandler)).doFilter(c);
+            new FilterChainImpl(filters(), this::handleDo).doFilter(c);
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
@@ -183,7 +181,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected void handleDo(Context c, Handler m) throws Throwable {
+    protected void handleDo(Context c) throws Throwable {
+        Handler m = find(c);
         Object obj = null;
 
         //m 不可能为 null；有 _def 打底
@@ -390,7 +389,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 查找接口
      */
-    protected Handler find(Context c) throws Throwable {
+    public Handler find(Context c) throws Throwable {
         if (mainRouting.count() == 0) {
             //如果没有记录，说明只有一个默认； 则默认是唯一主处理
             return findDo(c, null);
@@ -409,8 +408,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
 
         if (h == null) {
-            mainDef.handle(c);
-            c.setHandled(true);
+            //mainDef.handle(c); //不能执行（会破坏规则统一）
+            //c.setHandled(true);
             return mainDef;
         } else {
             if (h instanceof Action) {
