@@ -15,15 +15,21 @@
  */
 package features;
 
-import org.junit.Test;
-import org.noear.solon.auth.impl.AuthRuleImpl;
+import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
+import org.noear.solon.core.handle.ContextEmpty;
+import org.noear.solon.core.handle.Gateway;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.PathRule;
 import org.noear.solon.core.route.RoutingDefault;
+import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 /**
  * @author noear 2024/1/2 created
  */
+@SolonTest(App.class)
 public class RouteTest {
     @Test
     public void routingDefault() {
@@ -59,5 +65,28 @@ public class RouteTest {
         pathRule.include("/captchaimage");
         assert pathRule.test("/captchaImage") == false;
         assert pathRule.test("/captchaimage");
+    }
+
+    @Test
+    public void gatewayTest() {
+        String path = "/demo1/run2/send";
+        Handler mainHandler = Solon.app().router().matchMain(new ContextEmpty() {
+            @Override
+            public String path() {
+                return path;
+            }
+
+            @Override
+            public String method() {
+                return "GET";
+            }
+        });
+
+        assert (mainHandler instanceof Gateway);
+
+        Gateway gateway = (Gateway) mainHandler;
+        Handler handler = gateway.getMainRouting().matchOne(path, MethodType.GET);
+
+        assert handler instanceof Handler;
     }
 }

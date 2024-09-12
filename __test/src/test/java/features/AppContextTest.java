@@ -15,12 +15,10 @@
  */
 package features;
 
-import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Props;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
