@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.integration;
 
 import org.noear.solon.web.vertx.VxHandler;
-import org.noear.solon.boot.vertx.VxHandlerSupplier;
+import org.noear.solon.boot.vertx.http.VxHandlerSupplier;
 import org.noear.solon.cloud.gateway.CloudGatewayHandler;
 
 /**

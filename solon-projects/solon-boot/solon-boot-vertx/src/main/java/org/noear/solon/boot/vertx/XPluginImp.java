@@ -19,9 +19,11 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
@@ -101,6 +103,7 @@ public class XPluginImp implements Plugin {
 
         _server.setHandler(Solon.app()::tryHandle);
 
+
         //尝试事件扩展
         EventBus.publish(_server);
         _server.start(_host, _port);
@@ -113,8 +116,22 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
+        String connectorInfo = "solon.connector:main: vertx-http: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+
+        if (app.enableWebSocket()) {
+            //有名字定义时，添加信号注册
+            WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
+            if (Utils.isNotEmpty(wsProps.getName())) {
+                SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
+                app.signalAdd(wsSignal);
+            }
+
+            String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
+            LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
+        }
+
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info("Connector:main: vertx-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
+        LogUtil.global().info(connectorInfo + "}{"+ httpServerUrl +"}");
         LogUtil.global().info("Server:main: vertx-http: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 

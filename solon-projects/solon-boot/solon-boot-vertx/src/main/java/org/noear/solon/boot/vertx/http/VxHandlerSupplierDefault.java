@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.boot.vertx.http;
 
 import org.noear.solon.web.vertx.VxHandler;
 import org.noear.solon.web.vertx.VxWebHandler;

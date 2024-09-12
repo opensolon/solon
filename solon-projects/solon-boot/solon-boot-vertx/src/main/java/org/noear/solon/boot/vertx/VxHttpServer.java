@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
@@ -11,6 +26,9 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslConfig;
+import org.noear.solon.boot.vertx.http.VxHandlerSupplier;
+import org.noear.solon.boot.vertx.http.VxHandlerSupplierDefault;
+import org.noear.solon.boot.vertx.websocket.VxWebSocketHandlerImpl;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.web.vertx.VxHandler;
@@ -97,6 +115,10 @@ public class VxHttpServer implements ServerLifecycle {
             isSecure = _serverOptions.isSsl();
         }
 
+        if(enableWebSocket){
+            _serverOptions.addWebSocketSubProtocol("*");
+        }
+
         //配置 idleTimeout
         _serverOptions.setIdleTimeout((int) props.getIdleTimeoutOrDefault());
         _serverOptions.setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
@@ -106,9 +128,28 @@ public class VxHttpServer implements ServerLifecycle {
         vxHandler.setExecutor(workExecutor);
         vxHandler.setHandler(handler);
 
+        VxWebSocketHandlerImpl vxWebSocketHandlerImpl = new VxWebSocketHandlerImpl();
+
         //启动 server
         server = _vertx.createHttpServer(_serverOptions);
-        server.requestHandler(vxHandler);
+        server.requestHandler(req -> {
+            if (enableWebSocket) {
+                String upgradeStr = req.getHeader("Upgrade");
+                if (Utils.isNotEmpty(upgradeStr)) {
+                    if (upgradeStr.contains("websocket")) {
+                        vxWebSocketHandlerImpl.subProtocolCapable(req);
+
+                        req.toWebSocket().onSuccess(ws -> {
+                            vxWebSocketHandlerImpl.handle(ws);
+                        });
+                        return;
+                    }
+                }
+
+                vxHandler.handle(req);
+            }
+        });
+
         if (Utils.isNotEmpty(host)) {
             server.listen(port, host);
         } else {
