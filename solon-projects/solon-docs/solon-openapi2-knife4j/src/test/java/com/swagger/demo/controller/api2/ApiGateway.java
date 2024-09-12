@@ -15,7 +15,6 @@
  */
 package com.swagger.demo.controller.api2;
 
-import com.swagger.demo.controller.api2.UserApi;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Gateway;

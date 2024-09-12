@@ -65,7 +65,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 获取内部主路由（方便文档生成）
-     * */
+     */
     public RoutingTable<Handler> getMainRouting() {
         return mainRouting;
     }
@@ -88,7 +88,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //默认为404错误输出
         mainDef = (c) -> c.status(404);
 
-        Solon.context().lifecycle(()->{
+        Solon.context().lifecycle(() -> {
             //通过生命周期触发注册，可以在注册时使用注入字段
             register();
         });
@@ -137,7 +137,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         if (obj instanceof Throwable) {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
-                Throwable objE = (Throwable)obj;
+                Throwable objE = (Throwable) obj;
                 LogUtil.global().warn("Gateway remoting handle failed!", objE);
 
                 if (c.getRendered() == false) {
@@ -160,7 +160,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            new FilterChainImpl(filters(), this::handleDo).doFilter(c);
+            Handler mainHandler = find(c);
+
+            new FilterChainImpl(filters(), ctx -> handleDo(ctx, mainHandler)).doFilter(c);
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
@@ -181,8 +183,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected void handleDo(Context c) throws Throwable {
-        Handler m = find(c);
+    protected void handleDo(Context c, Handler m) throws Throwable {
         Object obj = null;
 
         //m 不可能为 null；有 _def 打底
@@ -193,10 +194,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 if (allowReadyController()) {
                     //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
                     obj = ((Action) m).controller().get(true);
-                    c.attrSet("controller", obj);
+                    c.attrSet(Constants.ATTR_CONTROLLER, obj);
                 }
 
-                c.attrSet("action", m);
+                c.attrSet(Constants.ATTR_ACTION, m);
             }
 
             handle0(c, m, obj, is_action);
@@ -237,7 +238,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加接口
-     * */
+     */
     public void addBeans(Predicate<BeanWrap> where) {
         addBeans(where, false);
     }
@@ -301,14 +302,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加接口
-     * */
+     */
     public void add(BeanWrap beanWp) {
         add(beanWp, beanWp.remoting());
     }
 
     /**
      * 添加接口
-     * */
+     */
     public void add(String path, BeanWrap beanWp) {
         add(path, beanWp, beanWp.remoting());
     }
@@ -322,7 +323,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加接口
-     * */
+     */
     public void add(String path, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
@@ -348,7 +349,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加默认接口处理
-     * */
+     */
     public void add(Handler handler) {
         addDo("", MethodType.ALL, handler);
     }
@@ -413,12 +414,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return mainDef;
         } else {
             if (h instanceof Action) {
-                c.attrSet("handler_name", ((Action) h).fullName());
+                c.attrSet(Constants.ATTR_HANDLER_NAME, ((Action) h).fullName());
             }
             return h;
         }
     }
-
 
 
     /**
