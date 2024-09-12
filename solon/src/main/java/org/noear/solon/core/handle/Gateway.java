@@ -389,7 +389,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 查找接口
      */
-    public Handler find(Context c) throws Throwable {
+    public Handler find(Context c) {
         if (mainRouting.count() == 0) {
             //如果没有记录，说明只有一个默认； 则默认是唯一主处理
             return findDo(c, null);
@@ -398,7 +398,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected Handler findDo(Context c, String path) throws Throwable {
+    protected Handler findDo(Context c, String path) {
         Handler h;
 
         if (path == null) { //null 表示直接使用默认处理器，且不跳过
