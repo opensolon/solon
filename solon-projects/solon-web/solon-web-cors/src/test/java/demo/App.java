@@ -17,6 +17,7 @@ package demo;
 
 import org.noear.solon.Solon;
 import org.noear.solon.web.cors.CrossFilter;
+import org.noear.solon.web.cors.CrossInterceptor;
 
 /**
  * @author noear 2022/4/28 created
@@ -29,6 +30,9 @@ public class App {
 
             //例：或者增某段路径的处理
             app.filter(new CrossFilter().pathPatterns("/user/**").allowedOrigins("*"));
+
+            //例：或者增某段路径的处理
+            app.routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
         });
 
         Solon.app().router().getAll().forEach(e -> {

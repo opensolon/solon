@@ -16,6 +16,7 @@
 package org.noear.solon.web.cors;
 
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.route.PathRule;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
 
@@ -26,6 +27,22 @@ import org.noear.solon.core.route.RouterInterceptorChain;
  * @since 1.12
  */
 public class CrossInterceptor extends AbstractCross<CrossInterceptor> implements RouterInterceptor {
+    private PathRule pathRule;
+
+    /**
+     * 设置路径匹配模式
+     *
+     * @since 3.0
+     */
+    public CrossInterceptor pathPatterns(String... patterns) {
+        this.pathRule = new PathRule().include(patterns);
+        return this;
+    }
+
+    @Override
+    public PathRule pathPatterns() {
+        return pathRule;
+    }
 
     @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {

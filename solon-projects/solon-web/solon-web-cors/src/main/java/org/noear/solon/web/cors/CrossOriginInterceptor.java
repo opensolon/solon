@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * CrossOrigin 注解过滤处理
+ *
  * @author noear
  * @since 1.3
  */
