@@ -545,6 +545,14 @@ public class AppContext extends BeanContainer {
     ////////////
 
     /**
+     * 排除扫描类（需要在扫描之前排除）
+     * */
+    public void beanExclude(Class<?> clz) {
+        //相当于提前构建了
+        beanBuildedCached.add(clz);
+    }
+
+    /**
      * 根据注解配置导入bean
      */
     public void beanImport(Import anno) {

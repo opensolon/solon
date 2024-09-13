@@ -32,6 +32,7 @@
 * 调整 solon-net WebSocket:paramMap 改为 MultiMap 类型
 * 添加 solon Duration 类型配置注入
 * 添加 solon-boot-vertx websocket 支持
+* 添加 solon AppContext::beanExclude 方法
 * snack3 升为 3.2.110
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
