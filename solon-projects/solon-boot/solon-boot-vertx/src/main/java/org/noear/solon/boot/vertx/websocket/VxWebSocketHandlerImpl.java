@@ -18,9 +18,6 @@ package org.noear.solon.boot.vertx.websocket;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.http.WebSocket;
-import io.vertx.core.http.impl.ServerWebSocketImpl;
-import io.vertx.core.http.impl.WebSocketImplBase;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
@@ -30,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 

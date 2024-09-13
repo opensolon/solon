@@ -35,3 +35,5 @@
 * snack3 升为 3.2.110
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
+* beetlsql 升为 3.30.13-RELEASE
+* easy-trans 升为 1.3.1
