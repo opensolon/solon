@@ -160,7 +160,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            new FilterChainImpl(filters(), this::handleDo).doFilter(c);
+            handleDo(c);
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
@@ -181,7 +181,17 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
+    /**
+     * 执行处理
+     * */
     protected void handleDo(Context c) throws Throwable {
+        new FilterChainImpl(filters(), this::mainDo).doFilter(c);
+    }
+
+    /**
+     * 执行主处理
+     * */
+    protected void mainDo(Context c) throws Throwable {
         Handler m = find(c);
         Object obj = null;
 
@@ -199,11 +209,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 c.attrSet(Constants.ATTR_ACTION, m);
             }
 
-            handle0(c, m, obj, is_action);
+            mainDo0(c, m, obj, is_action);
         }
     }
 
-    private void handle0(Context c, Handler m, Object obj, Boolean is_action) throws Throwable {
+    private void mainDo0(Context c, Handler m, Object obj, Boolean is_action) throws Throwable {
         /**
          * 1.保持与Action相同的逻辑
          * */
