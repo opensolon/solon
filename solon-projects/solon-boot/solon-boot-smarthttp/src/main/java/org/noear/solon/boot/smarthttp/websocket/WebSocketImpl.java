@@ -25,6 +25,7 @@ import org.smartboot.http.server.impl.WebSocketRequestImpl;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.*;
 
 /**
  * @author noear
@@ -33,6 +34,7 @@ import java.nio.ByteBuffer;
 public class WebSocketImpl extends WebSocketTimeoutBase {
     private final WebSocketRequestImpl request;
     private final WebSocketResponse real;
+
     public WebSocketImpl(WebSocketRequest request) {
         this.request = ((WebSocketRequestImpl) request);
         this.real = this.request.getResponse();
@@ -72,19 +74,37 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
-    public void send(String text) {
-        real.sendTextMessage(text);
-        real.flush();
+    public Future<Void> send(String text) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
 
-        onSend();
+        try {
+            real.sendTextMessage(text);
+            real.flush();
+            onSend();
+
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        real.sendBinaryMessage(binary.array());
-        real.flush();
+    public Future<Void> send(ByteBuffer binary) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
 
-        onSend();
+        try {
+            real.sendBinaryMessage(binary.array());
+            real.flush();
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
     }
 
     @Override

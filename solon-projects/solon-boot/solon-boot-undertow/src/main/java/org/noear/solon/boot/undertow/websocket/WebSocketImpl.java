@@ -23,6 +23,7 @@ import org.noear.solon.net.websocket.WebSocketBase;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -68,13 +69,19 @@ public class WebSocketImpl extends WebSocketBase {
 
 
     @Override
-    public void send(String text) {
-        WebSockets.sendText(text, real, CallbackImpl.instance);
+    public Future<Void> send(String text) {
+        CallbackFuture future = new CallbackFuture();
+        WebSockets.sendText(text, real, future);
+
+        return future;
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        WebSockets.sendBinary(binary, real, CallbackImpl.instance);
+    public Future<Void> send(ByteBuffer binary) {
+        CallbackFuture future = new CallbackFuture();
+        WebSockets.sendBinary(binary, real, future);
+
+        return future;
     }
 
     @Override

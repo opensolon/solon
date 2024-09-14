@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * WebSocket 会话接口
@@ -147,14 +148,14 @@ public interface WebSocket {
      *
      * @param text 文本
      */
-    void send(String text);
+    Future<Void> send(String text);
 
     /**
      * 发送字节
      *
      * @param binary 二进制
      */
-    void send(ByteBuffer binary);
+    Future<Void> send(ByteBuffer binary);
 
     /**
      * 关闭

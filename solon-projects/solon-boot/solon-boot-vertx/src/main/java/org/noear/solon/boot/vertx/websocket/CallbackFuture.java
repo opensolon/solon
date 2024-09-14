@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.jetty.websocket;
+package org.noear.solon.boot.vertx.websocket;
 
-import org.eclipse.jetty.websocket.api.WriteCallback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
+ * 回调未来特性
+ *
  * @author noear
- * @since 1.6
- */
-class CallbackImpl implements WriteCallback {
-    static final Logger log = LoggerFactory.getLogger(CallbackImpl.class);
-
-    public static final WriteCallback instance = new CallbackImpl();
-
+ * @since 3.0
+ * */
+public class CallbackFuture extends CompletableFuture<Void> implements Handler<AsyncResult<Void>> {
     @Override
-    public void writeFailed(Throwable e) {
-        log.warn(e.getMessage(), e);
-    }
-
-    @Override
-    public void writeSuccess() {
-
+    public void handle(AsyncResult<Void> ar) {
+        if (ar.succeeded()) {
+            this.complete(null);
+        } else {
+            this.completeExceptionally(ar.cause());
+        }
     }
 }

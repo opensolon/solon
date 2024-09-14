@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -45,7 +46,7 @@ public class SolonWebSocketEndpoint extends Endpoint {
 
         try {
             for (String path : paths) {
-                if(path.startsWith("/")) {
+                if (path.startsWith("/")) {
                     ServerEndpointConfig endpointConfig = ServerEndpointConfig.Builder
                             .create(SolonWebSocketEndpoint.class, path)
                             .build();
@@ -158,22 +159,13 @@ public class SolonWebSocketEndpoint extends Endpoint {
 
 
         @Override
-        public void send(String text) {
-            try {
-                real.getBasicRemote().sendText(text);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
+        public Future<Void> send(String text) {
+            return real.getAsyncRemote().sendText(text);
         }
 
         @Override
-        public void send(ByteBuffer binary) {
-            try {
-                real.getBasicRemote().sendBinary(binary);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-
+        public Future<Void> send(ByteBuffer binary) {
+            return real.getAsyncRemote().sendBinary(binary);
         }
 
         @Override

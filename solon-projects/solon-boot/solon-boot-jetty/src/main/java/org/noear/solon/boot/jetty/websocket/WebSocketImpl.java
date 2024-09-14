@@ -22,6 +22,7 @@ import org.noear.solon.net.websocket.WebSocketBase;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -29,14 +30,15 @@ import java.nio.ByteBuffer;
  */
 public class WebSocketImpl extends WebSocketBase {
     private final Session real;
-    public WebSocketImpl(Session real){
+
+    public WebSocketImpl(Session real) {
         this.real = real;
         this.init(real.getUpgradeRequest().getRequestURI());
     }
 
     @Override
     public boolean isValid() {
-        return isClosed()== false && real.isOpen();
+        return isClosed() == false && real.isOpen();
     }
 
     @Override
@@ -65,15 +67,14 @@ public class WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public void send(String text) {
-        real.getRemote().sendString(text, CallbackImpl.instance);
+    public Future<Void> send(String text) {
+        return real.getRemote().sendStringByFuture(text);
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        real.getRemote().sendBytes(binary, CallbackImpl.instance);
+    public Future<Void> send(ByteBuffer binary) {
+        return real.getRemote().sendBytesByFuture(binary);
     }
-
 
     @Override
     public void close() {

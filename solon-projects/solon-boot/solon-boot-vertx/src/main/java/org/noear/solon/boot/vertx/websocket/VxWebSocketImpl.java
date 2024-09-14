@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -71,15 +72,21 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
     }
 
     @Override
-    public void send(String text) {
-        real.writeFinalTextFrame(text);
+    public Future<Void> send(String text) {
+        CallbackFuture future = new CallbackFuture();
+        real.writeFinalTextFrame(text, future);
         onSend();
+
+        return future;
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        real.writeBinaryMessage(Buffer.buffer(binary.array()));
+    public Future<Void> send(ByteBuffer binary) {
+        CallbackFuture future = new CallbackFuture();
+        real.writeBinaryMessage(Buffer.buffer(binary.array()), future);
         onSend();
+
+        return future;
     }
 
     @Override

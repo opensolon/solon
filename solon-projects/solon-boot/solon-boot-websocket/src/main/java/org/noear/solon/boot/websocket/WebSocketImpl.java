@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -56,17 +58,36 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     }
 
 
-
     @Override
-    public void send(String text) {
-        real.send(text);
-        onSend();
+    public Future<Void> send(String text) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.send(text);
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        real.send(binary);
-        onSend();
+    public Future<Void> send(ByteBuffer binary) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        try {
+            real.send(binary);
+
+            onSend();
+            future.complete(null);
+        } catch (Throwable ex) {
+            future.completeExceptionally(ex);
+        }
+
+        return future;
     }
 
     @Override

@@ -17,25 +17,23 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.WebSocketCallback;
 import io.undertow.websockets.core.WebSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
+ * 回调未来特性
+ *
  * @author noear
- * @since 1.6
+ * @since 3.0
  */
-class CallbackImpl implements WebSocketCallback<Void> {
-    static final Logger log = LoggerFactory.getLogger(CallbackImpl.class);
-
-    public static final WebSocketCallback<Void> instance = new CallbackImpl();
-
+public class CallbackFuture extends CompletableFuture<Void> implements WebSocketCallback<Void> {
     @Override
     public void complete(WebSocketChannel webSocketChannel, Void unused) {
-
+        this.complete(null);
     }
 
     @Override
-    public void onError(WebSocketChannel webSocketChannel, Void unused, Throwable e) {
-        log.warn(e.getMessage() ,e);
+    public void onError(WebSocketChannel webSocketChannel, Void unused, Throwable throwable) {
+        this.completeExceptionally(throwable);
     }
 }

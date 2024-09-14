@@ -25,6 +25,7 @@ import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -32,6 +33,7 @@ import java.nio.ByteBuffer;
  */
 public class WebSocketImpl extends WebSocketTimeoutBase {
     private ChannelHandlerContext real;
+
     public WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
         this.init(URI.create(real.attr(WsServerHandler.ResourceDescriptorKey).get()));
@@ -39,7 +41,7 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     @Override
     public boolean isValid() {
-         return isClosed() == false && real.channel().isOpen();
+        return isClosed() == false && real.channel().isOpen();
     }
 
     @Override
@@ -49,25 +51,31 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     @Override
     public InetSocketAddress remoteAddress() {
-        return (InetSocketAddress)real.channel().remoteAddress();
+        return (InetSocketAddress) real.channel().remoteAddress();
     }
 
     @Override
     public InetSocketAddress localAddress() {
-        return (InetSocketAddress)real.channel().localAddress();
+        return (InetSocketAddress) real.channel().localAddress();
     }
 
 
     @Override
-    public void send(String text) {
-        real.writeAndFlush(new TextWebSocketFrame(text));
-        onSend();
+    public Future<Void> send(String text) {
+        try {
+            return real.writeAndFlush(new TextWebSocketFrame(text));
+        } finally {
+            onSend();
+        }
     }
 
     @Override
-    public void send(ByteBuffer binary) {
-        real.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(binary)));
-        onSend();
+    public Future<Void> send(ByteBuffer binary) {
+        try {
+            return real.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(binary)));
+        } finally {
+            onSend();
+        }
     }
 
     @Override
