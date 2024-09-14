@@ -839,7 +839,7 @@ public class AppContext extends BeanContainer {
     private int tryBuildBeanOfClass1(Class<?> clz) {
         //return state?
         Annotation[] annS = clz.getAnnotations();
-        int state = 0;
+        int state = build_bean_ofclass_state0;
 
         if (annS.length > 0) {
             //去重处理
