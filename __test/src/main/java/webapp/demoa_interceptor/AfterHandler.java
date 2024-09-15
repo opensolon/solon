@@ -18,7 +18,6 @@ package webapp.demoa_interceptor;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
-import org.noear.solon.core.handle.Handler;
 
 
 //@Controller
