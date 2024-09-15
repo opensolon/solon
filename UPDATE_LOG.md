@@ -24,11 +24,12 @@
 ### v3.0.0
 
 * 新增 solon-web-vertx 插件
-* 移除 Before、After 体系，（统一为 Filter 体系） // ok（化敏为简）
-* 移除 `@ProxyComponent` (统一为 @Component) //ok（化敏为简）
-* 移除 无关配置的弃用代码
-* 启用 solon 分类注入支持体系
-* 启用 solon 分类构建支持体系
+* 新增 solon 分类注入支持体系
+* 新增 solon 分类构建支持体系
+* 移除 `Before`、`After` 体系，（统一为 `Filter` 体系） // ok（化敏为简）
+* 移除 `@ProxyComponent` (统一为 `@Component`) //ok（化敏为简）
+* 移除 无关配置的弃用代码（具体参考对应表）
+* 移除 部分事件扩展（具体参考对应表）
 * 调整 solon-net WebSocket:paramMap 改为 MultiMap 类型
 * 添加 solon Duration 类型配置注入
 * 添加 solon-boot-vertx websocket 支持
