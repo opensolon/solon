@@ -103,11 +103,6 @@ public class VelocityRender implements Render {
         engineInit(provider);
         engineInit(providerOfDebug);
 
-        //通过事件扩展
-        EventBus.publish(providerOfDebug);
-        //通过事件扩展
-        EventBus.publish(provider);
-
         Solon.app().shared().forEach((k, v) -> {
             putVariable(k, v);
         });

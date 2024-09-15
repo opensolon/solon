@@ -157,9 +157,6 @@ public class BeetlRender implements Render {
                 FileResourceLoader loader = new FileResourceLoader(dir.getPath(), Solon.encoding());
                 loader.setAutoCheck(true);
                 providerOfDebug = new GroupTemplate(loader, config);
-
-                //通过事件扩展
-                EventBus.publish(providerOfDebug);
             }
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
@@ -181,9 +178,6 @@ public class BeetlRender implements Render {
                 ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
                 provider = new GroupTemplate(loader, config);
             }
-
-            //通过事件扩展
-            EventBus.publish(provider);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }

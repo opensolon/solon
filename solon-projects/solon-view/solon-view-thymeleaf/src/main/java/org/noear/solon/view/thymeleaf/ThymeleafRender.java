@@ -130,9 +130,6 @@ public class ThymeleafRender implements Render {
 
                 provider.addTemplateResolver(_loader);
             }
-
-            //通过事件扩展
-            EventBus.publish(provider);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
@@ -161,9 +158,6 @@ public class ThymeleafRender implements Render {
 
             provider.addTemplateResolver(_loader);
         }
-
-        //通过事件扩展
-        EventBus.publish(provider);
     }
 
 

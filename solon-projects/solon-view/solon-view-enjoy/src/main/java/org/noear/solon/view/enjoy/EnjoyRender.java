@@ -140,9 +140,6 @@ public class EnjoyRender implements Render {
                 providerOfDebug.setBaseTemplatePath(dir.getPath());
                 providerOfDebug.setSourceFactory(new FileSourceFactory());
             }
-
-            //通过事件扩展
-            EventBus.publish(providerOfDebug);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
@@ -166,9 +163,6 @@ public class EnjoyRender implements Render {
                 provider.setBaseTemplatePath(viewPrefix);
                 provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
             }
-
-            //通过事件扩展
-            EventBus.publish(provider);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
         }
