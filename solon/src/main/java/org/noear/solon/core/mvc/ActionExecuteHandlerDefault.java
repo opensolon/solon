@@ -41,18 +41,18 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 是否匹配
      *
-     * @param ctx 上下文
-     * @param ct  内容类型
+     * @param ctx  请求上下文
+     * @param mime 内容类型
      */
     @Override
-    public boolean matched(Context ctx, String ct) {
+    public boolean matched(Context ctx, String mime) {
         return true;
     }
 
     /**
      * 执行
      *
-     * @param ctx    上下文
+     * @param ctx    请求上下文
      * @param target 控制器
      * @param mWrap  函数包装器
      */
@@ -65,7 +65,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 执行
      *
-     * @param ctx    上下文
+     * @param ctx    请求上下文
      * @param target 控制器
      * @param mWrap  函数包装器
      */
@@ -77,7 +77,9 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 构建执行参数
      *
-     * @param ctx 上下文
+     * @param ctx    请求上下文
+     * @param target 控制器
+     * @param mWrap  函数包装器
      */
     protected List<Object> buildArgs(Context ctx, Object target, MethodWrap mWrap) throws Exception {
         ParamWrap[] pSet = mWrap.getParamWraps();
@@ -178,6 +180,9 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
 
     /**
      * 尝试将body转换为特定对象
+     *
+     * @param ctx   请求上下文
+     * @param mWrap 函数包装器
      */
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return ctx.paramMap();
@@ -185,6 +190,12 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
 
     /**
      * 尝试将值按类型转换
+     *
+     * @param ctx     请求上下文
+     * @param p       参数包装
+     * @param pi      参数序位
+     * @param pt      参数类型
+     * @param bodyObj 主体对象
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();        //参数名
@@ -230,6 +241,11 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
 
     /**
      * 尝试将值转换为目标值
+     *
+     * @param ctx  请求上下文
+     * @param p    参数包装
+     * @param name 数据名字
+     * @param type 数据类型
      */
     protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
         return ConvertUtil.to(p, value, ctx);
@@ -237,6 +253,11 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
 
     /**
      * 尝试将值转换为目标实体
+     *
+     * @param ctx  请求上下文
+     * @param p    参数包装
+     * @param name 数据名字
+     * @param type 数据类型
      */
     protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
         ClassWrap clzW = ClassWrap.get(type);

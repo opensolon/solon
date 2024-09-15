@@ -32,12 +32,24 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
 
     public abstract ObjectWriterProvider config();
 
+    /**
+     * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
+     */
     public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
         config().register(clz, encoder);
     }
 
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
     @Override
-    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
         addEncoder(clz, (out, obj, fieldName, fieldType, features) -> {
             Object val = converter.convert((T) obj);
             if (val == null) {

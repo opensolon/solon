@@ -42,19 +42,19 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     }
 
     /**
-     * 创建
-     */
-    @Override
-    public Render create() {
-        return new StringSerializerRender(false, serializer);
-    }
-
-    /**
      * 序列化配置
      */
     @Override
     public ObjectWriterProvider config() {
         return serializer.getSerializeConfig().getProvider();
+    }
+
+    /**
+     * 创建
+     */
+    @Override
+    public Render create() {
+        return new StringSerializerRender(false, serializer);
     }
 
     /**

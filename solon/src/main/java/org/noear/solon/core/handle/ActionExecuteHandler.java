@@ -28,15 +28,15 @@ public interface ActionExecuteHandler {
     /**
      * 是否匹配
      *
-     * @param ctx         上下文
-     * @param contentType 内容类型
+     * @param ctx  请求上下文
+     * @param mime 内容类型
      */
-    boolean matched(Context ctx, String contentType);
+    boolean matched(Context ctx, String mime);
 
     /**
      * 参数分析
      *
-     * @param ctx    上下文
+     * @param ctx    请求上下文
      * @param target 控制器
      * @param mWrap  函数包装器
      */
@@ -45,7 +45,7 @@ public interface ActionExecuteHandler {
     /**
      * 执行
      *
-     * @param ctx    上下文
+     * @param ctx    请求上下文
      * @param target 控制器
      * @param mWrap  函数包装器
      */
