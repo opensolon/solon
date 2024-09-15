@@ -245,7 +245,7 @@ public class AppContext extends BeanContainer {
 
         //单例，进行事件通知
         if (bw.singleton()) {
-            EventBus.publish(bw.raw()); //@deprecated
+            //EventBus.publish(bw.raw()); //@deprecated
             wrapPublish(bw);
         }
     }
@@ -772,7 +772,7 @@ public class AppContext extends BeanContainer {
                 }
 
                 //@Bean 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
-                EventBus.publish(raw);//@deprecated
+                //EventBus.publish(raw);//@deprecated
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
                 m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
