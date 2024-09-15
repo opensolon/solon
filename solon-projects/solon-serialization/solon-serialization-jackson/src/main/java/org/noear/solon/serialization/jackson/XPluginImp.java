@@ -45,7 +45,6 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory);
-        EventBus.publish(renderFactory);
 
         //::renderTypedFactory
         JacksonRenderTypedFactory renderTypedFactory = new JacksonRenderTypedFactory();
@@ -60,7 +59,6 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         JacksonActionExecutor actionExecutor = new JacksonActionExecutor();
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor);
-        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

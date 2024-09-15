@@ -38,8 +38,6 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(FastjsonRenderFactory.class, renderFactory);
-        EventBus.publish(renderFactory);
-
 
         //::renderTypedFactory
         FastjsonRenderTypedFactory renderTypedFactory = new FastjsonRenderTypedFactory();
@@ -55,7 +53,6 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         FastjsonActionExecutor actionExecutor = new FastjsonActionExecutor();
         context.wrapAndPut(FastjsonActionExecutor.class, actionExecutor);
-        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

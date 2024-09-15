@@ -32,7 +32,7 @@ public class XPluginImpl implements Plugin {
 
         //支持 hessian 内容类型执行
         FuryActionExecutor executor = new FuryActionExecutor();
-        EventBus.publish(executor);
+        context.wrapAndPut(FuryActionExecutor.class, executor);
 
         Solon.app().chainManager().addExecuteHandler(executor);
     }

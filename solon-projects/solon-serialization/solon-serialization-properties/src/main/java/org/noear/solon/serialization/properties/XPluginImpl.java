@@ -31,7 +31,6 @@ public class XPluginImpl implements Plugin {
 
         //事件扩展
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory);
-        EventBus.publish(renderFactory);
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
@@ -42,7 +41,6 @@ public class XPluginImpl implements Plugin {
         //支持 props 内容类型执行
         PropertiesActionExecutor actionExecutor = new PropertiesActionExecutor();
         context.wrapAndPut(PropertiesActionExecutor.class, actionExecutor);
-        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

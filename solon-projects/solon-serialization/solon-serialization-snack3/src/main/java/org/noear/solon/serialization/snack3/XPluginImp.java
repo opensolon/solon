@@ -37,8 +37,6 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(SnackRenderFactory.class, renderFactory);
-        EventBus.publish(renderFactory);
-
 
         //::renderTypedFactory
         SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
@@ -55,7 +53,6 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         SnackActionExecutor actionExecutor = new SnackActionExecutor();
         context.wrapAndPut(SnackActionExecutor.class, actionExecutor);
-        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

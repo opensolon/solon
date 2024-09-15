@@ -18,7 +18,6 @@ package org.noear.solon.serialization.hessian;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImpl implements Plugin {
@@ -32,7 +31,7 @@ public class XPluginImpl implements Plugin {
 
         //支持 hessian 内容类型执行
         HessianActionExecutor executor = new HessianActionExecutor();
-        EventBus.publish(executor);
+        context.wrapAndPut(HessianActionExecutor.class, executor);
 
         Solon.app().chainManager().addExecuteHandler(executor);
     }
