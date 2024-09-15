@@ -38,15 +38,17 @@ public class XPluginImp implements Plugin {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon(context);
         }
 
-        context.beanInjectorAdd(NamiClient.class, (varH, anno) -> {
-            if (varH.getType().isInterface() == false) {
+        context.beanInjectorAdd(NamiClient.class, (vh, anno) -> {
+            vh.required(true);
+
+            if (vh.getType().isInterface() == false) {
                 return;
             }
 
             boolean localFirst = anno.localFirst();
 
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name())) {
-                NamiClient anno2 = varH.getType().getAnnotation(NamiClient.class);
+                NamiClient anno2 = vh.getType().getAnnotation(NamiClient.class);
                 if (anno2 != null) {
                     anno = anno2;
                 }
@@ -56,11 +58,11 @@ public class XPluginImp implements Plugin {
 
             if (localFirst) {
                 //如果本地优化，开始找 Bean；如果找到就替换注入目标
-                context.getBeanAsync(varH.getType(), bean -> {
-                    varH.setValue(bean);
+                context.getBeanAsync(vh.getType(), bean -> {
+                    vh.setValue(bean);
                 });
 
-                if (varH.isDone()) {
+                if (vh.isDone()) {
                     //如果已注入完成
                     return;
                 }
@@ -71,16 +73,16 @@ public class XPluginImp implements Plugin {
             anno = new NamiClientAnno(anno);
 
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length == 0) {
-                throw new NamiException("@NamiClient configuration error: " + varH.getFullName());
+                throw new NamiException("@NamiClient configuration error: " + vh.getFullName());
             } else {
-                InfoUtils.print(varH.getType(), anno);
+                InfoUtils.print(vh.getType(), anno);
             }
 
             Object obj = cached.computeIfAbsent(anno, k -> {
-                return Nami.builder().create(varH.getType(), k);
+                return Nami.builder().create(vh.getType(), k);
             });
 
-            varH.setValue(obj);
+            vh.setValue(obj);
         });
     }
 }

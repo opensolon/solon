@@ -56,25 +56,25 @@ public class BeanInjectorTyped<T extends Annotation> implements BeanInjector<T> 
      * 注入
      */
     @Override
-    public void doInject(VarHolder varH, T anno) {
-        doInjectTyped(varH, anno);
+    public void doInject(VarHolder vh, T anno) {
+        doInjectTyped(vh, anno);
     }
 
     /**
      * 分类注入
      */
-    protected boolean doInjectTyped(VarHolder varH, T anno) {
+    protected boolean doInjectTyped(VarHolder vh, T anno) {
         if (map != null) {
             for (Map.Entry<Class<?>, BeanInjector<T>> kv : map.entrySet()) {
-                if (kv.getKey().isAssignableFrom(varH.getType())) {
-                    kv.getValue().doInject(varH, anno);
+                if (kv.getKey().isAssignableFrom(vh.getType())) {
+                    kv.getValue().doInject(vh, anno);
                     return true;
                 }
             }
         }
 
         if (def != null) {
-            def.doInject(varH, anno);
+            def.doInject(vh, anno);
             return true;
         } else {
             return false;

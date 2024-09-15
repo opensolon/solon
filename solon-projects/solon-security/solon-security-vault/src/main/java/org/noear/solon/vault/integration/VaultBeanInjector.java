@@ -31,12 +31,12 @@ import java.util.Properties;
  */
 public class VaultBeanInjector implements BeanInjector<VaultInject> {
     @Override
-    public void doInject(VarHolder varH, VaultInject anno) {
-        beanInject(varH, anno.value(), anno.required(), anno.autoRefreshed());
+    public void doInject(VarHolder vh, VaultInject anno) {
+        beanInject(vh, anno.value(), anno.required(), anno.autoRefreshed());
     }
 
-    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
-        varH.required(required);
+    protected void beanInject(VarHolder vh, String name, boolean required, boolean autoRefreshed) {
+        vh.required(required);
 
         if (name.startsWith("${")) {
             //
@@ -44,27 +44,27 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             //
             String name2 = name.substring(2, name.length() - 1).trim();
 
-            beanInjectConfig(varH, name2);
+            beanInjectConfig(vh, name2);
 
-            if (autoRefreshed && varH.isField()) {
-                varH.context().cfg().onChange((key, val) -> {
+            if (autoRefreshed && vh.isField()) {
+                vh.context().cfg().onChange((key, val) -> {
                     if (key.startsWith(name2)) {
-                        beanInjectConfig(varH, name2);
+                        beanInjectConfig(vh, name2);
                     }
                 });
             }
         }
     }
 
-    private void beanInjectConfig(VarHolder varH, String name) {
-        if (Properties.class == varH.getType()) {
+    private void beanInjectConfig(VarHolder vh, String name) {
+        if (Properties.class == vh.getType()) {
             //如果是 Properties
-            Properties val = varH.context().cfg().getProp(name);
+            Properties val = vh.context().cfg().getProp(name);
 
             //脱敏处理
             val = VaultUtils.guard(val);
 
-            varH.setValue(val);
+            vh.setValue(val);
         } else {
             //2.然后尝试获取配置
             String def = null;
@@ -78,7 +78,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                 name = name.substring(0, defIdx).trim();
             }
 
-            String val = varH.context().cfg().get(name);
+            String val = vh.context().cfg().get(name);
 
             if (def != null) {
                 if (Utils.isEmpty(val)) {
@@ -90,26 +90,26 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             val = VaultUtils.guard(val);
 
             if (val == null) {
-                Class<?> pt = varH.getType();
+                Class<?> pt = vh.getType();
 
                 if (pt.getName().startsWith("java.lang.") || pt.isPrimitive()) {
                     //如果是java基础类型，则不注入配置值
                 } else {
                     //尝试转为实体
-                    Properties val0 = varH.context().cfg().getProp(name);
+                    Properties val0 = vh.context().cfg().getProp(name);
                     if (val0.size() > 0) {
                         //脱敏处理
                         val0 = VaultUtils.guard(val0);
 
                         //如果找到配置了
-                        Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
-                        varH.setValue(val2);
+                        Object val2 = PropsConverter.global().convert(val0, null, pt, vh.getGenericType());
+                        vh.setValue(val2);
                     }
                 }
             } else {
-                Object val2 = ConvertUtil.to(varH.getType(), varH.getGenericType(), val);
+                Object val2 = ConvertUtil.to(vh.getType(), vh.getGenericType(), val);
 
-                varH.setValue(val2);
+                vh.setValue(val2);
             }
         }
     }

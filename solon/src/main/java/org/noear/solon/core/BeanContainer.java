@@ -777,69 +777,69 @@ public abstract class BeanContainer {
     /**
      * 尝试变量注入 字段或参数
      *
-     * @param varH 变量包装器
+     * @param vh   变量包装器
      * @param name 名字（bean name || config ${name}）
      */
-    public void beanInject(VarHolder varH, String name) {
-        beanInject(varH, name, false, false);
+    public void beanInject(VarHolder vh, String name) {
+        beanInject(vh, name, false, false);
     }
 
-    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
+    protected void beanInject(VarHolder vh, String name, boolean required, boolean autoRefreshed) {
         try {
-            varH.required(required);
-            beanInjectDo(varH, name, required, autoRefreshed);
+            vh.required(required);
+            beanInjectDo(vh, name, required, autoRefreshed);
         } catch (InjectionException e) {
             throw e;
         } catch (Throwable e) {
-            throw new InjectionException("Injection failed: " + varH.getFullName(), e);
+            throw new InjectionException("Injection failed: " + vh.getFullName(), e);
         }
     }
 
-    private void beanInjectDo(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
+    private void beanInjectDo(VarHolder vh, String name, boolean required, boolean autoRefreshed) {
         if (Utils.isEmpty(name)) {
             //
             // @Inject //使用 type, 注入BEAN
             //
-            if (varH.getType() == null) { //检查类型问题
+            if (vh.getType() == null) { //检查类型问题
                 if (required) {
-                    throw new InjectionException("Unrecognized type，injection failed: " + varH.getFullName());
+                    throw new InjectionException("Unrecognized type，injection failed: " + vh.getFullName());
                 } else {
                     return;
                 }
             }
 
-            if (AppContext.class.isAssignableFrom(varH.getType())) {
-                varH.setValue(this);
+            if (AppContext.class.isAssignableFrom(vh.getType())) {
+                vh.setValue(this);
                 return;
             }
 
-            if (SolonApp.class.isAssignableFrom(varH.getType())) {
-                varH.setValue(Solon.app());
+            if (SolonApp.class.isAssignableFrom(vh.getType())) {
+                vh.setValue(Solon.app());
                 return;
             }
 
-            if (varH.getGenericType() != null) {
+            if (vh.getGenericType() != null) {
                 //如果是泛型
-                getWrapAsync(varH.getGenericType().getTypeName(), (bw) -> {
-                    varH.setValue(bw.get());
+                getWrapAsync(vh.getGenericType().getTypeName(), (bw) -> {
+                    vh.setValue(bw.get());
                 });
 
                 //补尝处理
-                if (Iterable.class.isAssignableFrom(varH.getType()) == false
-                        && Map.class.isAssignableFrom(varH.getType()) == false) {
+                if (Iterable.class.isAssignableFrom(vh.getType()) == false
+                        && Map.class.isAssignableFrom(vh.getType()) == false) {
 
                     lifecycle(() -> {
-                        if (varH.isDone() == false) {
-                            BeanWrap bw = getWrap(varH.getType());
+                        if (vh.isDone() == false) {
+                            BeanWrap bw = getWrap(vh.getType());
                             if (bw != null) {
-                                varH.setValue(bw.get());
+                                vh.setValue(bw.get());
                             }
                         }
                     });
                 }
             } else {
-                getWrapAsync(varH.getType(), (bw) -> {
-                    varH.setValue(bw.get());
+                getWrapAsync(vh.getType(), (bw) -> {
+                    vh.setValue(bw.get());
                 });
             }
         } else if (name.startsWith("${classpath:")) {
@@ -854,20 +854,20 @@ public abstract class BeanContainer {
                     throw new IllegalStateException(name + "  failed to load!");
                 }
             } else {
-                if (Properties.class == varH.getType()) {
-                    varH.setValue(val);
-                } else if (Map.class == varH.getType()) {
+                if (Properties.class == vh.getType()) {
+                    vh.setValue(val);
+                } else if (Map.class == vh.getType()) {
                     Map<String, String> val2 = new HashMap<>();
                     val.forEach((k, v) -> {
                         if (k instanceof String && v instanceof String) {
                             val2.put((String) k, (String) v);
                         }
                     });
-                    varH.setValue(val2);
+                    vh.setValue(val2);
                 } else {
-                    Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
-                    varH.setValue(val2);
-                    aot().registerEntityType(varH.getType(), varH.getGenericType());
+                    Object val2 = PropsConverter.global().convert(val, null, vh.getType(), vh.getGenericType());
+                    vh.setValue(val2);
+                    aot().registerEntityType(vh.getType(), vh.getGenericType());
                 }
             }
         } else if (name.startsWith("${")) {
@@ -876,9 +876,9 @@ public abstract class BeanContainer {
             //
             String name2 = findConfigKey(name);
 
-            beanInjectConfig(varH, name2, required);
+            beanInjectConfig(vh, name2, required);
 
-            if (autoRefreshed && varH.isField()) {
+            if (autoRefreshed && vh.isField()) {
                 int defIdx = name2.indexOf(":");
                 if (defIdx > 0) {
                     name2 = name2.substring(0, defIdx).trim();
@@ -887,7 +887,7 @@ public abstract class BeanContainer {
 
                 cfg().onChange((key, val) -> {
                     if (key.startsWith(name3)) {
-                        beanInjectConfig(varH, name3, required);
+                        beanInjectConfig(vh, name3, required);
                     }
                 });
             }
@@ -896,10 +896,10 @@ public abstract class BeanContainer {
             // @Inject("xxx") //使用 name, 注入BEAN
             //
             getWrapAsync(name, (bw) -> {
-                if (BeanWrap.class.isAssignableFrom(varH.getType())) {
-                    varH.setValue(bw);
+                if (BeanWrap.class.isAssignableFrom(vh.getType())) {
+                    vh.setValue(bw);
                 } else {
-                    varH.setValue(bw.get());
+                    vh.setValue(bw.get());
                 }
             });
         }
@@ -974,16 +974,16 @@ public abstract class BeanContainer {
     }
 
 
-    private void beanInjectConfig(VarHolder varH, String name, boolean required) {
-        if (Properties.class == varH.getType() || Props.class == varH.getType()) {
+    private void beanInjectConfig(VarHolder vh, String name, boolean required) {
+        if (Properties.class == vh.getType() || Props.class == vh.getType()) {
             //如果是 Properties
             Props val = cfg().getProp(name);
 
             if (required && val.size() == 0) {
-                throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + varH.getFullName());
+                throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + vh.getFullName());
             }
 
-            varH.setValue(val);
+            vh.setValue(val);
         } else {
             //2.然后尝试获取配置（支持默认值获取）
             String val = cfg().getByExpr(name);
@@ -994,35 +994,35 @@ public abstract class BeanContainer {
             }
 
             if (val == null) {
-                Class<?> pt = varH.getType();
+                Class<?> pt = vh.getType();
 
                 if (pt.getName().startsWith("java.lang.") || pt.isPrimitive()) {
                     //如果是java基础类型，则不注入配置值
                     if (required) {
-                        throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + varH.getFullName());
+                        throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + vh.getFullName());
                     }
 
-                    varH.setValue(null); //用于触发事件
+                    vh.setValue(null); //用于触发事件
                 } else {
                     //尝试转为实体
                     Properties val0 = cfg().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
-                        Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
-                        varH.setValue(val2);
-                        aot().registerEntityType(varH.getType(), varH.getGenericType());
+                        Object val2 = PropsConverter.global().convert(val0, null, pt, vh.getGenericType());
+                        vh.setValue(val2);
+                        aot().registerEntityType(vh.getType(), vh.getGenericType());
                     } else {
                         if (required) {
-                            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + varH.getFullName());
+                            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + vh.getFullName());
                         }
 
-                        varH.setValue(null); //用于触发事件
+                        vh.setValue(null); //用于触发事件
                     }
                 }
             } else {
-                Object val2 = ConvertUtil.to(varH.getType(), varH.getGenericType(), val);
-                varH.setValue(val2);
-                aot().registerEntityType(varH.getType(), varH.getGenericType());
+                Object val2 = ConvertUtil.to(vh.getType(), vh.getGenericType(), val);
+                vh.setValue(val2);
+                aot().registerEntityType(vh.getType(), vh.getGenericType());
             }
         }
     }

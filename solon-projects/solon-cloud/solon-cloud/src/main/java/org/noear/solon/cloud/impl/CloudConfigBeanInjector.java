@@ -36,12 +36,12 @@ import java.util.Properties;
  */
 public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
     @Override
-    public void doInject(VarHolder varH, CloudConfig anno) {
+    public void doInject(VarHolder vh, CloudConfig anno) {
         if (CloudClient.config() == null) {
             throw new IllegalArgumentException("Missing CloudConfigService component");
         }
 
-        varH.required(anno.required());
+        vh.required(anno.required());
 
         //支持${xxx}配置
         String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
@@ -52,16 +52,16 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
             throw new CloudConfigException("@CloudConfig missing value or name");
         }
 
-        Object tmp1 = build(varH.getType(), group, name);
+        Object tmp1 = build(vh.getType(), group, name);
         if (tmp1 != null) {
-            varH.setValue(tmp1);
+            vh.setValue(tmp1);
         }
 
-        if (varH.isField() && anno.autoRefreshed()) {
+        if (vh.isField() && anno.autoRefreshed()) {
             CloudClient.config().attention(group, name, (cfg) -> {
-                Object tmp2 = build0(varH.getType(), cfg);
+                Object tmp2 = build0(vh.getType(), cfg);
                 if (tmp2 != null) {
-                    varH.setValue(tmp2);
+                    vh.setValue(tmp2);
                 }
             });
         }

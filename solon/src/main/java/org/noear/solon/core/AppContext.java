@@ -222,8 +222,8 @@ public class AppContext extends BeanContainer {
         });
 
         //注册 @Inject 注入器
-        beanInjectorAdd(Inject.class, ((varH, anno) -> {
-            beanInject(varH, anno.value(), anno.required(), anno.autoRefreshed());
+        beanInjectorAdd(Inject.class, ((vh, anno) -> {
+            beanInject(vh, anno.value(), anno.required(), anno.autoRefreshed());
         }));
     }
 
@@ -251,17 +251,17 @@ public class AppContext extends BeanContainer {
     }
 
     @Override
-    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
-        super.beanInject(varH, name, required, autoRefreshed);
+    protected void beanInject(VarHolder vh, String name, boolean required, boolean autoRefreshed) {
+        super.beanInject(vh, name, required, autoRefreshed);
 
-        if (varH.isDone()) {
+        if (vh.isDone()) {
             return;
         }
 
-        if (Utils.isEmpty(name) && varH.getGenericType() != null) {
-            if (List.class == varH.getType()) {
+        if (Utils.isEmpty(name) && vh.getGenericType() != null) {
+            if (List.class == vh.getType()) {
                 //支持 List<Bean> 注入
-                Type type0 = varH.getGenericType().getActualTypeArguments()[0];
+                Type type0 = vh.getGenericType().getActualTypeArguments()[0];
                 if (type0 instanceof ParameterizedType) {
                     type0 = ((ParameterizedType) type0).getRawType();
                 }
@@ -269,30 +269,30 @@ public class AppContext extends BeanContainer {
                 Type type = type0;
 
                 if (type instanceof Class) {
-                    if (varH.isField()) {
-                        varH.required(required);
+                    if (vh.isField()) {
+                        vh.required(required);
                         lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            if (varH.isDone()) {
+                            if (vh.isDone()) {
                                 return;
                             }
 
                             BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
-                            varH.setValue(beanListSupplier);
+                            vh.setValue(beanListSupplier);
                         });
                     } else {
-                        varH.required(false);
-                        varH.setDependencyType((Class<?>) type);
+                        vh.required(false);
+                        vh.setDependencyType((Class<?>) type);
                         BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
-                        varH.setValueOnly(beanListSupplier);
+                        vh.setValueOnly(beanListSupplier);
                     }
                     return;
                 }
             }
 
-            if (Map.class == varH.getType()) {
+            if (Map.class == vh.getType()) {
                 //支持 Map<String,Bean> 注入
-                Type keyType = varH.getGenericType().getActualTypeArguments()[0];
-                Type valType0 = varH.getGenericType().getActualTypeArguments()[1];
+                Type keyType = vh.getGenericType().getActualTypeArguments()[0];
+                Type valType0 = vh.getGenericType().getActualTypeArguments()[1];
 
                 if (valType0 instanceof ParameterizedType) {
                     valType0 = ((ParameterizedType) valType0).getRawType();
@@ -301,21 +301,21 @@ public class AppContext extends BeanContainer {
                 Type valType = valType0;
 
                 if (String.class == keyType && valType instanceof Class) {
-                    if (varH.isField()) {
-                        varH.required(required);
+                    if (vh.isField()) {
+                        vh.required(required);
                         lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            if (varH.isDone()) {
+                            if (vh.isDone()) {
                                 return;
                             }
 
                             BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
-                            varH.setValue(beanMapSupplier);
+                            vh.setValue(beanMapSupplier);
                         });
                     } else {
-                        varH.required(false);
-                        varH.setDependencyType((Class<?>) valType);
+                        vh.required(false);
+                        vh.setDependencyType((Class<?>) valType);
                         BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
-                        varH.setValueOnly(beanMapSupplier);
+                        vh.setValueOnly(beanMapSupplier);
                     }
                     return;
                 }
@@ -535,9 +535,9 @@ public class AppContext extends BeanContainer {
 
             //添加要收集的字段
             for (FieldWrap fw : fwList) {
-                VarHolder varH = fw.holder(this, obj, gather);
-                gather.add(varH);
-                tryInject(varH, fw.annoS);
+                VarHolder vh = fw.holder(this, obj, gather);
+                gather.add(vh);
+                tryInject(vh, fw.annoS);
             }
         }
     }
@@ -652,18 +652,18 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试为bean注入
      */
-    protected void tryInject(VarHolder varH, Annotation[] annS) {
+    protected void tryInject(VarHolder vh, Annotation[] annS) {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
                 //只允许一个注入器有效 //如果有多个略过
-                bi.doInject(varH, a);
+                bi.doInject(vh, a);
                 return;
             }
         }
 
         //如果没有注入器，则为null。用于触发事件
-        varH.setValue(null);
+        vh.setValue(null);
     }
 
     /**
@@ -740,15 +740,15 @@ public class AppContext extends BeanContainer {
 
         //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
         for (Parameter p1 : paramAry) {
-            VarHolder varH = new VarHolderOfParam(context, p1, gather);
-            gather.add(varH);
+            VarHolder vh = new VarHolderOfParam(context, p1, gather);
+            gather.add(vh);
 
             Annotation[] annoS = p1.getAnnotations();
             if (annoS.length == 0) {
                 //没带注解的，算必须
-                beanInject(varH, null, true, false);
+                beanInject(vh, null, true, false);
             } else {
-                tryInject(varH, annoS);
+                tryInject(vh, annoS);
             }
         }
     }
