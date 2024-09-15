@@ -23,6 +23,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 /**
  * Json 类型化渲染器工厂
  *
+ * @author noear
  * @author 暮城留风
  * @since 1.10
  */
@@ -37,6 +38,9 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
         );
     }
 
+    /**
+     * 获取序列化器
+     */
     public Fastjson2StringSerializer getSerializer() {
         return serializer;
     }

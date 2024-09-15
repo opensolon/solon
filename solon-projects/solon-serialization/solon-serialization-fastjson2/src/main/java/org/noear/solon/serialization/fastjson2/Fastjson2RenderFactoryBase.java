@@ -24,6 +24,7 @@ import org.noear.solon.serialization.JsonRenderFactory;
 /**
  * Json 渲染器工厂基类
  *
+ * @author noear
  * @author 暮城留风
  * @since 1.10
  */
@@ -34,7 +35,6 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
     public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
         config().register(clz, encoder);
     }
-
 
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {

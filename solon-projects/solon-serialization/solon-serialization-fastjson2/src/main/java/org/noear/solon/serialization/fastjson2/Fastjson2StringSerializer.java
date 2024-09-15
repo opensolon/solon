@@ -33,6 +33,7 @@ import java.lang.reflect.Type;
 /**
  * Fastjson2 字符串序列化
  *
+ * @author noear
  * @author 暮城留风
  * @since 1.10
  * @since 2.8
@@ -51,6 +52,9 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
         return serializeConfig;
     }
 
+    /**
+     * 配置序列化特性
+     * */
     public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
         if (isReset) {
             getSerializeConfig().setFeatures(JSONFactory.getDefaultWriterFeatures());

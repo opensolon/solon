@@ -25,6 +25,8 @@ import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
+import java.math.BigDecimal;
+
 public class XPluginImp implements Plugin {
 
     @Override
@@ -60,6 +62,12 @@ public class XPluginImp implements Plugin {
     }
 
     private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps) {
+        if(jsonProps != null && jsonProps.dateAsTicks){
+            jsonProps.dateAsTicks = false;
+            factory.getSerializer().getSerializeConfig()
+                    .setDateFormat("millis");
+        }
+
         if (JsonPropsUtil.apply(factory, jsonProps)) {
             if (jsonProps.longAsString) {
                 factory.addFeatures(JSONWriter.Feature.WriteLongAsString);

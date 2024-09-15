@@ -33,9 +33,9 @@ import java.util.List;
  * @since 1.9
  * */
 public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
-    private final  Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+    private final Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
-    public Fastjson2ActionExecutor(){
+    public Fastjson2ActionExecutor() {
         serializer.getDeserializeConfig().config();
         serializer.getDeserializeConfig().config(JSONReader.Feature.ErrorOnEnumNotMatch);
     }
@@ -54,25 +54,37 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
         return getSerializer().getDeserializeConfig();
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx 请求上下文
+     * @param ct  内容类型
+     */
     @Override
     public boolean matched(Context ctx, String ct) {
         return serializer.matched(ctx, ct);
     }
 
+    /**
+     * 转换 body
+     */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return serializer.deserializeFromBody(ctx);
     }
 
+    /**
+     * 转换 value
+     */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
-            //如果是 path、cookie, header
+        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
+            //如果是 path、cookie, header 变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
         if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
-            //有可能是path、queryString变量
+            //可能是 path、queryString 变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 

@@ -15,10 +15,6 @@
  */
 package features.test1_2;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONWriter;
-import com.alibaba.fastjson2.writer.ObjectWriter;
-import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import features.model.CustomDateDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Import;
@@ -27,7 +23,6 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
 import org.noear.solon.test.SolonTest;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
