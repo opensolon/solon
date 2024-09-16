@@ -546,7 +546,7 @@ public class AppContext extends BeanContainer {
 
     /**
      * 排除扫描类（需要在扫描之前排除）
-     * */
+     */
     public void beanExclude(Class<?>... clzs) {
         //相当于提前构建了
         for (Class<?> clz : clzs) {
@@ -654,11 +654,14 @@ public class AppContext extends BeanContainer {
      */
     protected void tryInject(VarHolder vh, Annotation[] annS) {
         for (Annotation a : annS) {
-            BeanInjector bi = beanInjectors.get(a.annotationType());
-            if (bi != null) {
+            TypeMap<BeanInjector<?>> biMap = beanInjectors.get(a.annotationType());
+            if (biMap != null) {
                 //只允许一个注入器有效 //如果有多个略过
-                bi.doInject(vh, a);
-                return;
+                BeanInjector injector = biMap.get(vh.getType());
+                if (injector != null) {
+                    injector.doInject(vh, a);
+                    return;
+                }
             }
         }
 
@@ -852,18 +855,21 @@ public class AppContext extends BeanContainer {
             }
 
             for (Annotation a : annS) {
-                BeanBuilder builder = beanBuilders.get(a.annotationType());
+                TypeMap<BeanBuilder<?>> bbMap = beanBuilders.get(a.annotationType());
 
-                if (builder != null) {
-                    try {
-                        state = build_bean_ofclass_state2;
-                        tryBuildBeanOfClass2(clz, builder, a);
-                    } catch (Throwable e) {
-                        e = Utils.throwableUnwrap(e);
-                        if (e instanceof RuntimeException) {
-                            throw (RuntimeException) e;
-                        } else {
-                            throw new IllegalStateException(e);
+                if (bbMap != null) {
+                    BeanBuilder builder = bbMap.get(clz);
+                    if (builder != null) {
+                        try {
+                            state = build_bean_ofclass_state2;
+                            tryBuildBeanOfClass2(clz, builder, a);
+                        } catch (Throwable e) {
+                            e = Utils.throwableUnwrap(e);
+                            if (e instanceof RuntimeException) {
+                                throw (RuntimeException) e;
+                            } else {
+                                throw new IllegalStateException(e);
+                            }
                         }
                     }
                 }
@@ -905,6 +911,7 @@ public class AppContext extends BeanContainer {
 
 
     //::bean事件处理
+
     /**
      * 添加生命周期 bean（保持向下兼容）
      */
