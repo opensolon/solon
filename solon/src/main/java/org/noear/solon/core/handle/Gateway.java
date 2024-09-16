@@ -183,23 +183,28 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 执行处理
-     * */
+     */
     protected void handleDo(Context c) throws Throwable {
+        //预备
+        prepareDo(c);
+
+        //执行过滤与主处理
         new FilterChainImpl(filters(), this::mainDo).doFilter(c);
     }
 
     /**
-     * 执行主处理
-     * */
-    protected void mainDo(Context c) throws Throwable {
+     * 执行预备
+     */
+    protected void prepareDo(Context c) {
         Handler m = find(c);
         Object obj = null;
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
-            Boolean is_action = m instanceof Action;
+            c.attrSet(Constants.ATTR_HANDLER, m);
+
             //预加载控制器，确保所有的'处理器'可以都可以获取控制器
-            if (is_action) {
+            if (m instanceof Action) {
                 if (allowReadyController()) {
                     //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
                     obj = ((Action) m).controller().get(true);
@@ -208,12 +213,25 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
                 c.attrSet(Constants.ATTR_ACTION, m);
             }
+        }
+    }
+
+    /**
+     * 执行主处理
+     */
+    protected void mainDo(Context c) throws Throwable {
+        Handler m = c.attr(Constants.ATTR_HANDLER);
+
+        //m 不可能为 null；有 _def 打底
+        if (m != null) {
+            Object obj = c.attr(Constants.ATTR_CONTROLLER);
+            boolean is_action = m instanceof Action;
 
             mainDo0(c, m, obj, is_action);
         }
     }
 
-    private void mainDo0(Context c, Handler m, Object obj, Boolean is_action) throws Throwable {
+    private void mainDo0(Context c, Handler m, Object obj, boolean is_action) throws Throwable {
         /**
          * 1.保持与Action相同的逻辑
          * */
