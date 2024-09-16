@@ -29,11 +29,11 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.event.AppInitEndEvent;
-import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.serialization.properties.PropertiesActionExecutor;
-import org.noear.solon.web.cors.CrossHandler;
+import org.noear.solon.view.freemarker.FreemarkerRender;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
@@ -52,10 +52,8 @@ import java.util.Properties;
 @Component
 @EnableAsync
 @EnableRetry
-@Import(value = TestImport.class, scanPackages = "webapp")
-//@EnableCron4j
-//@EnableQuartz
 //@EnableScheduling
+@Import(classes = TestImport.class, scanPackages = "webapp")
 @SolonMain
 public class App {
 
@@ -78,7 +76,7 @@ public class App {
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 
-        if(Solon.app() != null){
+        if (Solon.app() != null) {
             return;
         }
 
@@ -94,38 +92,38 @@ public class App {
 
             //x.onStatus(404, c->c.render("404了"));
 
-            x.factoryManager().threadLocalFactory((applyFor, inheritance0)->{
-                if(inheritance0) {
+            x.factoryManager().threadLocalFactory((applyFor, inheritance0) -> {
+                if (inheritance0) {
                     return new InheritableThreadLocal();
-                }else {
+                } else {
                     return new ThreadLocal();
                 }
             });
 
-            x.onEvent(JsonRenderFactory.class, e->{
-               System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
+            x.context().getBeanAsync(JsonRenderFactory.class, e -> {
+                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
 
-            x.onEvent(PropertiesActionExecutor.class, e->{
+            x.context().getBeanAsync(PropertiesActionExecutor.class, e -> {
                 e.allowPostForm(true);
             });
 
-            x.onEvent(HttpServerConfigure.class, e->{
+            x.context().getBeanAsync(HttpServerConfigure.class, e -> {
                 //e.enableDebug(true);
             });
 
-            x.onEvent(AppInitEndEvent.class, e->{
-                StaticMappings.add("/", new ExtendStaticRepository());
+            x.context().getBeanAsync(FreemarkerRender.class, e -> {
+                System.out.println("%%%%%%%%%%%%%%%%%%");
+                RunUtil.runOrThrow(() -> e.getProvider().setSetting("classic_compatible", "true"));
             });
 
-            x.onEvent(Configuration.class, e -> {
-                System.out.println("%%%%%%%%%%%%%%%%%%");
-                e.setSetting("classic_compatible", "true");
+            x.onEvent(AppInitEndEvent.class, e -> {
+                StaticMappings.add("/", new ExtendStaticRepository());
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
             StaticMappings.add("/ext/", new ExtendStaticRepository());
-            StaticMappings.add("/sa-token/",new FileStaticRepository("/Users/noear/Downloads/"));
+            StaticMappings.add("/sa-token/", new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
         initApp(Solon.app());
