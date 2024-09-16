@@ -201,7 +201,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
-            c.attrSet(Constants.ATTR_HANDLER, m);
+            c.attrSet(Constants.ATTR_MAIN_HANDLER, m);
 
             //预加载控制器，确保所有的'处理器'可以都可以获取控制器
             if (m instanceof Action) {
@@ -210,8 +210,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                     obj = ((Action) m).controller().get(true);
                     c.attrSet(Constants.ATTR_CONTROLLER, obj);
                 }
-
-                c.attrSet(Constants.ATTR_ACTION, m);
             }
         }
     }
@@ -220,7 +218,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 执行主处理
      */
     protected void mainDo(Context c) throws Throwable {
-        Handler m = c.attr(Constants.ATTR_HANDLER);
+        Handler m = c.attr(Constants.ATTR_MAIN_HANDLER);
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
@@ -440,9 +438,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             //c.setHandled(true);
             return mainDef;
         } else {
-            if (h instanceof Action) {
-                c.attrSet(Constants.ATTR_HANDLER_NAME, ((Action) h).fullName());
-            }
             return h;
         }
     }

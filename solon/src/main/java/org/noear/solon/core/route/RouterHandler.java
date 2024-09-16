@@ -89,11 +89,6 @@ public class RouterHandler implements Handler {
         //提前获取主处理
         Handler mainHandler = router.matchMain(x);
 
-        //预处理 action
-        if (mainHandler instanceof Action) {
-            x.attrSet(Constants.ATTR_ACTION, mainHandler);
-        }
-
         //执行
         chainManager.doIntercept(x, mainHandler, this::handle1);
     }

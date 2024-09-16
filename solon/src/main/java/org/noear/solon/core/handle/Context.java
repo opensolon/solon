@@ -534,7 +534,7 @@ public abstract class Context {
 
     /**
      * 获取所有参数的名字集合
-     * */
+     */
     public Set<String> paramNames() {
         return paramMap().keySet();
     }
@@ -570,7 +570,7 @@ public abstract class Context {
 
     /**
      * 获取所有文件的名字集合
-     * */
+     */
     public Set<String> fileNames() {
         return fileMap().keySet();
     }
@@ -611,7 +611,7 @@ public abstract class Context {
 
     /**
      * 获取所有小饼的名字集合
-     * */
+     */
     public Set<String> cookieNames() {
         return cookieMap().keySet();
     }
@@ -651,7 +651,7 @@ public abstract class Context {
 
     /**
      * 获取所有头的名字集合
-     * */
+     */
     public Set<String> headerNames() {
         return headerMap().keySet();
     }
@@ -1146,7 +1146,12 @@ public abstract class Context {
      * 获取当前动作
      */
     public @Nullable Action action() {
-        return attr(Constants.ATTR_ACTION);
+        Handler tmp = mainHandler();
+        if (tmp instanceof Action) {
+            return (Action) tmp;
+        } else {
+            return null;
+        }
     }
 
     /**
