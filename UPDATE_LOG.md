@@ -39,3 +39,4 @@
 * smartsocket 升为 1.5.52
 * beetlsql 升为 3.30.13-RELEASE
 * easy-trans 升为 1.3.1
+* wood 升为 1.3.5
