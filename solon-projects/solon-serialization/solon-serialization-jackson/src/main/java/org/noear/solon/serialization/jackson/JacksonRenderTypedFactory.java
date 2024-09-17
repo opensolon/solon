@@ -32,16 +32,14 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.8
  */
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
-    private ObjectMapper config = new ObjectMapper();
-
     public JacksonRenderTypedFactory() {
-        config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        config.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        config.activateDefaultTypingAsProperty(
-                config.getPolymorphicTypeValidator(),
+        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getConfig().activateDefaultTypingAsProperty(
+                serializer.getConfig().getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        config.registerModule(new JavaTimeModule());
+        serializer.getConfig().registerModule(new JavaTimeModule());
     }
 
     /**
@@ -57,19 +55,6 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
      */
     @Override
     public Render create() {
-        registerModule();
-
-        JacksonStringSerializer serializer = new JacksonStringSerializer();
-        serializer.setConfig(config);
-
         return new StringSerializerRender(true, serializer);
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public ObjectMapper config() {
-        return config;
     }
 }

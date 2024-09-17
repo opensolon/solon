@@ -28,17 +28,15 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.8
  */
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
-    private final Options config;
-
     public SnackRenderTypedFactory() {
-        config = Options.serialize();
+        serializer.setConfig(Options.serialize());
     }
 
     /**
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
-        config.addEncoder(clz, encoder);
+        config().addEncoder(clz, encoder);
     }
 
     /**
@@ -54,17 +52,6 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
      */
     @Override
     public Render create() {
-        SnackStringSerializer serializer = new SnackStringSerializer();
-        serializer.setConfig(config);
-
         return new StringSerializerRender(true, serializer);
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public Options config() {
-        return config;
     }
 }

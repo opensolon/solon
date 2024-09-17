@@ -27,10 +27,21 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.5
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
+    protected final SnackStringSerializer serializer = new SnackStringSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    public SnackStringSerializer getSerializer() {
+        return serializer;
+    }
+
     /**
      * 序列化配置
      */
-    public abstract Options config();
+    public Options config() {
+        return serializer.getConfig();
+    }
 
     /**
      * 添加编码器
@@ -49,7 +60,7 @@ public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
      * @param converter 转换器
      */
     @Override
-    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
         addEncoder(clz, (source, target) -> {
             Object val = converter.convert((T) source);
 

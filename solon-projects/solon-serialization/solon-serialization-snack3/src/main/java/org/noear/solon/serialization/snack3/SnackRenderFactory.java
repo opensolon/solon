@@ -30,10 +30,8 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class SnackRenderFactory extends SnackRenderFactoryBase {
-    private final Options config;
-
     public SnackRenderFactory(JsonProps jsonProps) {
-        config = Options.def();
+        serializer.setConfig(Options.def());
         applyProps(jsonProps);
     }
 
@@ -50,39 +48,28 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
      */
     @Override
     public Render create() {
-        SnackStringSerializer serializer = new SnackStringSerializer();
-        serializer.setConfig(config);
-
         return new StringSerializerRender(false, serializer);
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public Options config() {
-        return config;
     }
 
     /**
      * 重新设置特性
      */
     public void setFeatures(Feature... features) {
-        config.setFeatures(features);
+        config().setFeatures(features);
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(Feature... features) {
-        config.add(features);
+        config().add(features);
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(Feature... features) {
-        config.remove(features);
+        config().remove(features);
     }
 
     protected void applyProps(JsonProps jsonProps) {

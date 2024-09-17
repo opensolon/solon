@@ -29,11 +29,21 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.10
  */
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
+    protected Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    public Fastjson2StringSerializer getSerializer() {
+        return serializer;
+    }
 
     /**
      * 序列化配置
      */
-    public abstract ObjectWriterProvider config();
+    public ObjectWriterProvider config(){
+        return serializer.getSerializeConfig().getProvider();
+    }
 
     /**
      * 添加编码器

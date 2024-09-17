@@ -24,11 +24,21 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.5
  */
 public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
+    protected final GsonStringSerializer serializer = new GsonStringSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    public GsonStringSerializer getSerializer() {
+        return serializer;
+    }
 
     /**
      * 序列化配置
      */
-    public abstract GsonBuilder config();
+    public GsonBuilder config() {
+        return serializer.getConfig();
+    }
 
     /**
      * 添加编码器

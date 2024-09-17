@@ -16,7 +16,6 @@
 package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.JSONWriter;
-import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -30,26 +29,9 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 1.10
  */
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
-    private Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
-
     public Fastjson2RenderFactory(JsonProps jsonProps) {
         serializer.cfgSerializeFeatures(false, true, JSONWriter.Feature.BrowserCompatible);
         applyProps(jsonProps);
-    }
-
-    /**
-     * 获取序列化器
-     */
-    public Fastjson2StringSerializer getSerializer() {
-        return serializer;
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public ObjectWriterProvider config() {
-        return serializer.getSerializeConfig().getProvider();
     }
 
     /**

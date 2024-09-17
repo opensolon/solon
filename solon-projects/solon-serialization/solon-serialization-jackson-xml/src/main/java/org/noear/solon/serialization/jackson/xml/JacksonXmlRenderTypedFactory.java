@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
@@ -32,16 +31,14 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 2.8
  */
 public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
-    private XmlMapper config = new XmlMapper();
-
     public JacksonXmlRenderTypedFactory() {
-        config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        config.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        config.activateDefaultTypingAsProperty(
-                config.getPolymorphicTypeValidator(),
+        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        serializer.getConfig().activateDefaultTypingAsProperty(
+                serializer.getConfig().getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        config.registerModule(new JavaTimeModule());
+        serializer.getConfig().registerModule(new JavaTimeModule());
     }
 
     /**
@@ -57,19 +54,6 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
      */
     @Override
     public Render create() {
-        registerModule();
-
-        JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
-        serializer.setConfig(config);
-
         return new StringSerializerRender(true, serializer);
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public XmlMapper config() {
-        return config;
     }
 }

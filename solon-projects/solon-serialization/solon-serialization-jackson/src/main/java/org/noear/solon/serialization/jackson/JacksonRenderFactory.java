@@ -18,7 +18,6 @@ package org.noear.solon.serialization.jackson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.handle.Render;
@@ -28,8 +27,6 @@ import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.fasterxml.jackson.databind.MapperFeature.PROPAGATE_TRANSIENT_MARKER;
 import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
@@ -42,14 +39,9 @@ import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHA
  * @since 2.8
  */
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
-
-    private ObjectMapper config = new ObjectMapper();
-    private Set<SerializationFeature> features;
-
     public JacksonRenderFactory(JsonProps jsonProps) {
-        features = new HashSet<>();
-        features.add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        config.registerModule(new JavaTimeModule());
+        serializer.getCustomFeatures().add(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        serializer.getConfig().registerModule(new JavaTimeModule());
         applyProps(jsonProps);
     }
 
@@ -66,47 +58,29 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
      */
     @Override
     public Render create() {
-        registerModule();
-
-        for (SerializationFeature f1 : features) {
-            config.enable(f1);
-        }
-
-        JacksonStringSerializer serializer = new JacksonStringSerializer();
-        serializer.setConfig(config);
-
         return new StringSerializerRender(false, serializer);
     }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public ObjectMapper config() {
-        return config;
-    }
-
 
     /**
      * 重新设置特性
      */
     public void setFeatures(SerializationFeature... features) {
-        this.features.clear();
-        this.features.addAll(Arrays.asList(features));
+        serializer.getCustomFeatures().clear();
+        serializer.getCustomFeatures().addAll(Arrays.asList(features));
     }
 
     /**
      * 添加特性
      */
     public void addFeatures(SerializationFeature... features) {
-        this.features.addAll(Arrays.asList(features));
+        serializer.getCustomFeatures().addAll(Arrays.asList(features));
     }
 
     /**
      * 移除特性
      */
     public void removeFeatures(SerializationFeature... features) {
-        this.features.removeAll(Arrays.asList(features));
+        serializer.getCustomFeatures().removeAll(Arrays.asList(features));
     }
 
     protected void applyProps(JsonProps jsonProps) {
@@ -130,8 +104,8 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
                         .setNullValueSerializer(new NullValueSerializerImpl(jsonProps));
             }
 
-            if(jsonProps.enumAsName){
-                this.config().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING,true);
+            if (jsonProps.enumAsName) {
+                this.config().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
             }
         }
 
@@ -140,7 +114,7 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
         }
 
         //启用 transient 关键字
-        this.config().configure(PROPAGATE_TRANSIENT_MARKER,true);
+        this.config().configure(PROPAGATE_TRANSIENT_MARKER, true);
         //启用排序（即使用 LinkedHashMap）
         this.config().configure(SORT_PROPERTIES_ALPHABETICALLY, true);
         //是否识别不带引号的key

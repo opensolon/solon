@@ -15,7 +15,6 @@
  */
 package org.noear.solon.serialization.fastjson;
 
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
@@ -30,8 +29,6 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
-    private final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
-
     public FastjsonRenderFactory(JsonProps jsonProps) {
         serializer.cfgSerializerFeatures(false, true, SerializerFeature.BrowserCompatible);
         applyProps(jsonProps);
@@ -51,14 +48,6 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     @Override
     public Render create() {
         return new StringSerializerRender(false, serializer);
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public SerializeConfig config() {
-        return serializer.getSerializeConfig();
     }
 
     /**
@@ -105,11 +94,11 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
                 this.addFeatures(SerializerFeature.WriteNullListAsEmpty);
             }
 
-            if(jsonProps.nullAsWriteable){
+            if (jsonProps.nullAsWriteable) {
                 this.addFeatures(SerializerFeature.WriteMapNullValue);
             }
 
-            if(jsonProps.enumAsName){
+            if (jsonProps.enumAsName) {
                 this.addFeatures(SerializerFeature.WriteEnumUsingName);
             }
         }

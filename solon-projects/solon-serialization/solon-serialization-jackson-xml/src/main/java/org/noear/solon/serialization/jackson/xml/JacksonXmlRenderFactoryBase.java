@@ -18,7 +18,6 @@ package org.noear.solon.serialization.jackson.xml;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.noear.solon.core.convert.Converter;
@@ -32,17 +31,21 @@ import java.util.Date;
  * @since 2.8
  */
 public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
-    protected SimpleModule module;
-    protected void registerModule() {
-        if (module != null) {
-            config().registerModule(module);
-        }
+    protected final JacksonXmlStringSerializer serializer = new JacksonXmlStringSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    public JacksonXmlStringSerializer getSerializer(){
+        return serializer;
     }
 
     /**
      * 序列化配置
      */
-    public abstract XmlMapper config();
+    public XmlMapper config() {
+        return getSerializer().getConfig();
+    }
 
     /**
      * 添加编码器
@@ -51,11 +54,7 @@ public abstract class JacksonXmlRenderFactoryBase implements JsonRenderFactory {
      * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
-        if (module == null) {
-            module = new SimpleModule();
-        }
-
-        module.addSerializer(clz, encoder);
+        serializer.getCustomModule().addSerializer(clz, encoder);
     }
 
     /**

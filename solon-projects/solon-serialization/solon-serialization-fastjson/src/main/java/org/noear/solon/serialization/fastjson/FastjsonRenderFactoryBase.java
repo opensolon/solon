@@ -31,10 +31,21 @@ import java.lang.reflect.Type;
  * @since 1.5
  */
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
+    protected final FastjsonStringSerializer serializer = new FastjsonStringSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    public FastjsonStringSerializer getSerializer() {
+        return serializer;
+    }
+
     /**
      * 序列化配置
      */
-    public abstract SerializeConfig config();
+    public SerializeConfig config() {
+        return serializer.getSerializeConfig();
+    }
 
     /**
      * 添加编码器
@@ -59,7 +70,7 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
      * @param converter 转换器
      */
     @Override
-    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T, Object> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
             Object val = converter.convert((T) obj);
 

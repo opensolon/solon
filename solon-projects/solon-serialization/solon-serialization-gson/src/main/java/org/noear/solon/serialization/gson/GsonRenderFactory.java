@@ -15,7 +15,6 @@
  */
 package org.noear.solon.serialization.gson;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
@@ -34,25 +33,8 @@ import java.util.Date;
  * @since 1.5
  */
 public class GsonRenderFactory extends GsonRenderFactoryBase {
-    private final GsonStringSerializer serializer = new GsonStringSerializer();
-
     public GsonRenderFactory(JsonProps jsonProps) {
         applyProps(jsonProps);
-    }
-
-    /**
-     * 获取序列化器
-     */
-    public GsonStringSerializer getSerializer() {
-        return serializer;
-    }
-
-    /**
-     * 序列化配置
-     */
-    @Override
-    public GsonBuilder config() {
-        return serializer.getConfig();
     }
 
     /**
@@ -77,7 +59,6 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
     public Render create() {
         return new StringSerializerRender(false, serializer);
     }
-
 
     protected void applyProps(JsonProps jsonProps) {
         boolean writeNulls = false;

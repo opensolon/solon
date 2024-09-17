@@ -15,6 +15,8 @@
  */
 package org.noear.solon.serialization.jackson.xml;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
@@ -24,16 +26,45 @@ import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Jackson xml序列化
+ * Jackson xml 序列化
+ *
  * @author painter
- * @since 1.5
  * @since 2.8
  */
 public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     public static final String label = "/xml";
     private XmlMapper config;
+    private Set<SerializationFeature> configFeatures;
+    private SimpleModule configModule;
+
+    private AtomicBoolean initStatus = new AtomicBoolean(false);
+
+    /**
+     * 获取定制特性
+     */
+    public Set<SerializationFeature> getCustomFeatures() {
+        if (configFeatures == null) {
+            configFeatures = new HashSet<>();
+        }
+
+        return configFeatures;
+    }
+
+    /**
+     * 获取模块特性
+     */
+    public SimpleModule getCustomModule() {
+        if (configModule == null) {
+            configModule = new SimpleModule();
+        }
+
+        return configModule;
+    }
 
     /**
      * 获取配置
@@ -52,6 +83,23 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     public void setConfig(XmlMapper config) {
         if (config != null) {
             this.config = config;
+        }
+    }
+
+    /**
+     * 初始化
+     */
+    protected void init() {
+        if (initStatus.compareAndSet(false, true)) {
+            if (configFeatures != null) {
+                for (SerializationFeature f1 : configFeatures) {
+                    getConfig().enable(f1);
+                }
+            }
+
+            if (configModule != null) {
+                getConfig().registerModule(configModule);
+            }
         }
     }
 
@@ -93,6 +141,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public String serialize(Object obj) throws IOException {
+        init();
+
         return getConfig().writeValueAsString(obj);
     }
 
@@ -104,6 +154,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
+        init();
+
         if (toType == null) {
             return getConfig().readTree(data);
         } else {
@@ -120,6 +172,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
+        init();
+
         ctx.contentType(getContentType());
 
         if (data instanceof ModelAndView) {
@@ -136,6 +190,8 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
+        init();
+
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
