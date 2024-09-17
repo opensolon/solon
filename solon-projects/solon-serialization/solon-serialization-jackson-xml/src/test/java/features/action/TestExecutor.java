@@ -16,21 +16,35 @@ public class TestExecutor {
     public void test() throws Throwable {
         ContextEmpty ctx = new ContextEmpty();
         ctx.headerMap().add("Content-Type", "text/xml");
-        ctx.pathNew("/");
+        ctx.pathNew("/a1");
         ctx.bodyNew("<xml><name>noear</name><label>A</label></xml>");
 
         Solon.app().tryHandle(ctx);
-
+        ctx.result = ctx.attr("output");
         System.out.println(ctx.result);
-
         assert "Hello noear A".equals(ctx.result);
+
+        ctx = new ContextEmpty();
+        ctx.headerMap().add("Content-Type", "text/xml");
+        ctx.pathNew("/a2");
+        ctx.bodyNew("<xml><name>noear</name><label>A</label></xml>");
+
+        Solon.app().tryHandle(ctx);
+        ctx.result = ctx.attr("output");
+        System.out.println(ctx.result);
+        assert "A".equals(ctx.result);
     }
 
     @Controller
     public static class Demo {
-        @Mapping
-        public String hello(String name, Label label) {
+        @Mapping("/a1")
+        public String a1(String name, Label label) {
             return "Hello " + name + " " + label;
+        }
+
+        @Mapping("/a2")
+        public Label a2(String name, Label label) {
+            return label;
         }
     }
 

@@ -173,7 +173,7 @@ public class HttpParam4Test extends HttpTester {
 
         ONode oNode2 = ONode.loadStr(json2);
 
-        assert oNode2.getInt() == 1;
+        assert "vip".equals(oNode2.getString());
     }
 
     @Test
