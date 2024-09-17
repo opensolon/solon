@@ -37,16 +37,25 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
                 SerializerFeature.DisableCircularReferenceDetect);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         return new StringSerializerRender(true, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public SerializeConfig config() {
         return serializer.getSerializeConfig();

@@ -30,6 +30,9 @@ import org.noear.solon.serialization.JsonRenderFactory;
  */
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
 
+    /**
+     * 序列化配置
+     */
     public abstract ObjectWriterProvider config();
 
     /**

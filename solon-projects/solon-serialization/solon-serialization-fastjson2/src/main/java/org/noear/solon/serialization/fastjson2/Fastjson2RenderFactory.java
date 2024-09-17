@@ -52,6 +52,9 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
         return serializer.getSerializeConfig().getProvider();
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@json"};
@@ -87,7 +90,7 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     }
 
     protected void applyProps(JsonProps jsonProps) {
-        if(jsonProps != null && jsonProps.dateAsTicks){
+        if (jsonProps != null && jsonProps.dateAsTicks) {
             jsonProps.dateAsTicks = false;
             this.getSerializer().getSerializeConfig()
                     .setDateFormat("millis");

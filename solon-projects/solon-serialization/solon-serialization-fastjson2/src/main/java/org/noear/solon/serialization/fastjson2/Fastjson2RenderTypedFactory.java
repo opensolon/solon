@@ -53,6 +53,9 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
         return serializer.getSerializeConfig().getProvider();
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_json"};

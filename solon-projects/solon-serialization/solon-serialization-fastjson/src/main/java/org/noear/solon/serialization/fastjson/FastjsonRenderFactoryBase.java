@@ -31,8 +31,17 @@ import java.lang.reflect.Type;
  * @since 1.5
  */
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
+    /**
+     * 序列化配置
+     */
     public abstract SerializeConfig config();
 
+    /**
+     * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
+     */
     public void addEncoder(Type clz, ObjectSerializer encoder) {
         config().put(clz, encoder);
 
@@ -43,6 +52,12 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
         }
     }
 
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {

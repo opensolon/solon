@@ -56,6 +56,10 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
 
     /**
      * 配置序列化特性
+     *
+     * @param isReset  是否重置
+     * @param isAdd    是否添加
+     * @param features 特性
      */
     public void cfgSerializeFeatures(boolean isReset, boolean isAdd, JSONWriter.Feature... features) {
         if (isReset) {
@@ -79,6 +83,10 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
 
     /**
      * 配置反序列化特性
+     *
+     * @param isReset  是否重置
+     * @param isAdd    是否添加
+     * @param features 特性
      */
     public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, JSONReader.Feature... features) {
         if (isReset) {
@@ -100,6 +108,9 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
 
     /**
      * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
      */
     @Override
     public boolean matched(Context ctx, String mime) {
@@ -132,7 +143,7 @@ public class Fastjson2StringSerializer implements ContextSerializer<String> {
      * 反序列化
      *
      * @param data   数据
-     * @param toType 类型
+     * @param toType 目标类型
      */
     @Override
     public Object deserialize(String data, Type toType) throws IOException {

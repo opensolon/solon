@@ -44,6 +44,9 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
     private ParserConfig deserializeConfig;
     private int deserializeFeatures = JSON.DEFAULT_PARSER_FEATURE;
 
+    /**
+     * 获取序列化配置
+     */
     public SerializeConfig getSerializeConfig() {
         if (serializeConfig == null) {
             serializeConfig = new SerializeConfig();
@@ -52,6 +55,13 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         return serializeConfig;
     }
 
+    /**
+     * 配置序列化特性
+     *
+     * @param isReset  是否重置
+     * @param isAdd    是否添加
+     * @param features 特性
+     */
     public void cfgSerializerFeatures(boolean isReset, boolean isAdd, SerializerFeature... features) {
         if (isReset) {
             serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE;
@@ -66,6 +76,9 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 获取反序列化配置
+     */
     public ParserConfig getDeserializeConfig() {
         if (deserializeConfig == null) {
             deserializeConfig = new ParserConfig();
@@ -74,6 +87,13 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         return deserializeConfig;
     }
 
+    /**
+     * 配置反序列化特性
+     *
+     * @param isReset  是否重置
+     * @param isAdd    是否添加
+     * @param features 特性
+     */
     public void cfgDeserializeFeatures(boolean isReset, boolean isAdd, Feature... features) {
         if (isReset) {
             deserializeFeatures = JSON.DEFAULT_GENERATE_FEATURE;
@@ -89,11 +109,20 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
 
     }
 
+    /**
+     * 获取内容类型
+     */
     @Override
     public String getContentType() {
         return "application/json";
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
     public boolean matched(Context ctx, String mime) {
         if (mime == null) {
@@ -103,11 +132,19 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 序列化器名字
+     */
     @Override
     public String name() {
         return "fastjson-json";
     }
 
+    /**
+     * 序列化
+     *
+     * @param obj 对象
+     */
     @Override
     public String serialize(Object obj) throws IOException {
         if (serializeConfig == null) {
@@ -117,6 +154,12 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 反序列化
+     *
+     * @param data   数据
+     * @param toType 目标类型
+     */
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
@@ -134,6 +177,12 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 序列化主体
+     *
+     * @param ctx  请求上下文
+     * @param data 数据
+     */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
         ctx.contentType(getContentType());
@@ -145,6 +194,11 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 反序列化主体
+     *
+     * @param ctx 请求上下文
+     */
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();
