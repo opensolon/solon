@@ -23,15 +23,15 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) {
+        //::render
         HessianRender render = new HessianRender();
-
-        //Solon.app().renderManager().register(render);
+        context.wrapAndPut(HessianRender.class, render); //用于扩展
         Solon.app().renderManager().register("@hessian",render);
 
+        //::actionExecutor
         //支持 hessian 内容类型执行
         HessianActionExecutor executor = new HessianActionExecutor();
-        context.wrapAndPut(HessianActionExecutor.class, executor);
-
+        context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
         Solon.app().chainManager().addExecuteHandler(executor);
     }
 }

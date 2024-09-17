@@ -15,13 +15,10 @@
  */
 package org.noear.solon.serialization.snack3;
 
-import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -30,61 +27,19 @@ public class XPluginImp implements Plugin {
 
         //::renderFactory
         //绑定属性
-        SnackRenderFactory renderFactory = new SnackRenderFactory();
-        applyProps(renderFactory, jsonProps);
-
-        //事件扩展
-        context.wrapAndPut(SnackRenderFactory.class, renderFactory);
+        SnackRenderFactory renderFactory = new SnackRenderFactory(jsonProps);
+        context.wrapAndPut(SnackRenderFactory.class, renderFactory); //用于扩展
+        Solon.app().renderManager().register(renderFactory);
 
         //::renderTypedFactory
         SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
-        context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory);
-
-
-        context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-            //晚点加载，给定制更多时机
-            Solon.app().renderManager().register("@json", renderFactory.create());
-            Solon.app().renderManager().register("@type_json", renderTypedFactory.create());
-        });
+        context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory); //用于扩展
+        Solon.app().renderManager().register(renderTypedFactory);
 
         //::actionExecutor
         //支持 json 内容类型执行
         SnackActionExecutor actionExecutor = new SnackActionExecutor();
-        context.wrapAndPut(SnackActionExecutor.class, actionExecutor);
-
+        context.wrapAndPut(SnackActionExecutor.class, actionExecutor); //用于扩展
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
-    }
-
-    private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {
-        if (JsonPropsUtil.apply(factory, jsonProps)) {
-            if (jsonProps.longAsString) {
-                factory.addConvertor(Long.class, String::valueOf);
-                factory.addConvertor(long.class, String::valueOf);
-            }
-
-            if (jsonProps.nullStringAsEmpty) {
-                factory.addFeatures(Feature.StringNullAsEmpty);
-            }
-
-            if (jsonProps.nullBoolAsFalse) {
-                factory.addFeatures(Feature.BooleanNullAsFalse);
-            }
-
-            if (jsonProps.nullNumberAsZero) {
-                factory.addFeatures(Feature.NumberNullAsZero);
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                factory.addFeatures(Feature.ArrayNullAsEmpty);
-            }
-
-            if (jsonProps.nullAsWriteable) {
-                factory.addFeatures(Feature.SerializeNulls);
-            }
-
-            if (jsonProps.enumAsName) {
-                factory.addFeatures(Feature.EnumUsingName);
-            }
-        }
     }
 }

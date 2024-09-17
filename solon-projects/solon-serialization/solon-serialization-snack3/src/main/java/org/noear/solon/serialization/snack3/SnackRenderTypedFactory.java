@@ -41,6 +41,11 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{"@type_json"};
+    }
+
+    @Override
     public Render create() {
         SnackStringSerializer serializer = new SnackStringSerializer();
         serializer.setConfig(config);

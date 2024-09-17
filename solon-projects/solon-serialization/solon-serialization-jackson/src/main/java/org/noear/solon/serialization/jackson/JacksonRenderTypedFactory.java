@@ -34,7 +34,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     private ObjectMapper config = new ObjectMapper();
 
-    public JacksonRenderTypedFactory(){
+    public JacksonRenderTypedFactory() {
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         config.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -42,6 +42,11 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
                 config.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         config.registerModule(new JavaTimeModule());
+    }
+
+    @Override
+    public String[] mappings() {
+        return new String[]{"@type_json"};
     }
 
     @Override

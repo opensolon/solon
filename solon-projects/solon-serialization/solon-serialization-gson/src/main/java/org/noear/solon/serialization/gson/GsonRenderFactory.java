@@ -19,6 +19,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
+import org.noear.solon.serialization.gson.impl.*;
+import org.noear.solon.serialization.prop.JsonProps;
+import org.noear.solon.serialization.prop.JsonPropsUtil;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * Json 渲染器工厂
@@ -29,11 +36,20 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class GsonRenderFactory extends GsonRenderFactoryBase {
     private final GsonStringSerializer serializer = new GsonStringSerializer();
 
+    public GsonRenderFactory(JsonProps jsonProps) {
+        applyProps(jsonProps);
+    }
+
     /**
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
         serializer.getConfig().registerTypeAdapter(clz, encoder);
+    }
+
+    @Override
+    public String[] mappings() {
+        return new String[]{"@json"};
     }
 
     @Override
@@ -44,5 +60,58 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
     @Override
     public GsonBuilder config() {
         return serializer.getConfig();
+    }
+
+    protected void applyProps(JsonProps jsonProps) {
+        boolean writeNulls = false;
+
+        if (JsonPropsUtil.apply(this, jsonProps)) {
+            if (jsonProps.longAsString) {
+                this.addConvertor(Long.class, String::valueOf);
+                this.addConvertor(long.class, String::valueOf);
+            }
+
+            writeNulls = jsonProps.nullAsWriteable ||
+                    jsonProps.nullNumberAsZero ||
+                    jsonProps.nullArrayAsEmpty ||
+                    jsonProps.nullBoolAsFalse ||
+                    jsonProps.nullStringAsEmpty;
+
+
+            if (writeNulls) {
+                this.config().serializeNulls();
+            }
+
+            if (jsonProps.nullNumberAsZero) {
+                this.config().registerTypeAdapter(Short.class, new NullNumberSerialize<Short>());
+                this.config().registerTypeAdapter(Integer.class, new NullNumberSerialize<Integer>());
+
+                this.config().registerTypeAdapter(Long.class, new NullLongAdapter(jsonProps));
+
+                this.config().registerTypeAdapter(Float.class, new NullNumberSerialize<Float>());
+                this.config().registerTypeAdapter(Double.class, new NullNumberSerialize<Double>());
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                this.config().registerTypeAdapter(Collection.class, new NullCollectionSerialize());
+                this.config().registerTypeAdapter(Arrays.class, new NullArraySerialize());
+            }
+
+            if (jsonProps.nullBoolAsFalse) {
+                this.config().registerTypeAdapter(Boolean.class, new NullBooleanAdapter(jsonProps));
+            }
+
+            if (jsonProps.nullStringAsEmpty) {
+                this.config().registerTypeAdapter(String.class, new NullStringSerialize());
+            }
+
+            if (jsonProps.enumAsName) {
+                this.config().registerTypeAdapter(Enum.class, new EnumAdapter());
+            }
+
+        } else {
+            //默认为时间截
+            this.config().registerTypeAdapter(Date.class, new GsonDateSerialize());
+        }
     }
 }

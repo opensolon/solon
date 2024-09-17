@@ -27,13 +27,12 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
         ProtostuffRender render = new ProtostuffRender();
-
+        context.wrapAndPut(ProtostuffRender.class, render); //用于扩展
         Solon.app().renderManager().register("@protobuf",render);
 
         //支持 protostuff 内容类型执行
         ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
-        context.wrapAndPut(ProtostuffActionExecutor.class, executor);
-
+        context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
         Solon.app().chainManager().addExecuteHandler(executor);
     }
 }

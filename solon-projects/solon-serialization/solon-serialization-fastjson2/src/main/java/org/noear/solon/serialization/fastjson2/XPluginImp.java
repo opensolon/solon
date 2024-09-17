@@ -15,13 +15,10 @@
  */
 package org.noear.solon.serialization.fastjson2;
 
-import com.alibaba.fastjson2.JSONWriter;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.prop.JsonProps;
-import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 public class XPluginImp implements Plugin {
 
@@ -31,79 +28,19 @@ public class XPluginImp implements Plugin {
 
         //::renderFactory
         //绑定属性
-        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory();
-        applyProps(renderFactory, jsonProps);
-
-        //事件扩展
-        context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory);
+        Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(jsonProps);
+        context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
+        Solon.app().renderManager().register(renderFactory);
 
         //::renderTypedFactory
         Fastjson2RenderTypedFactory renderTypedFactory = new Fastjson2RenderTypedFactory();
-        context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory);
-
-
-        context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-            Solon.app().renderManager().register("@json", renderFactory.create());
-            Solon.app().renderManager().register("@type_json", renderTypedFactory.create());
-        });
+        context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory); //用于扩展
+        Solon.app().renderManager().register(renderTypedFactory);
 
         //::actionExecutor
         //支持 json 内容类型执行
         Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor();
-        context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor);
-
+        context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor); //用于扩展
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
-    }
-
-    private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps) {
-        if(jsonProps != null && jsonProps.dateAsTicks){
-            jsonProps.dateAsTicks = false;
-            factory.getSerializer().getSerializeConfig()
-                    .setDateFormat("millis");
-        }
-
-        if (JsonPropsUtil.apply(factory, jsonProps)) {
-            if (jsonProps.longAsString) {
-                factory.addFeatures(JSONWriter.Feature.WriteLongAsString);
-            }
-
-            boolean writeNulls = jsonProps.nullAsWriteable ||
-                    jsonProps.nullNumberAsZero ||
-                    jsonProps.nullArrayAsEmpty ||
-                    jsonProps.nullBoolAsFalse ||
-                    jsonProps.nullStringAsEmpty;
-
-            if (jsonProps.nullStringAsEmpty) {
-                factory.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
-            }
-
-            if (jsonProps.nullBoolAsFalse) {
-                factory.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
-            }
-
-            if (jsonProps.nullNumberAsZero) {
-                factory.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
-            }
-
-            if (jsonProps.boolAsInt) {
-                factory.addFeatures(JSONWriter.Feature.WriteBooleanAsNumber);
-            }
-
-            if (jsonProps.longAsString) {
-                factory.addFeatures(JSONWriter.Feature.WriteLongAsString);
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                factory.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
-            }
-
-            if (jsonProps.enumAsName) {
-                factory.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
-            }
-
-            if (writeNulls) {
-                factory.addFeatures(JSONWriter.Feature.WriteNulls);
-            }
-        }
     }
 }

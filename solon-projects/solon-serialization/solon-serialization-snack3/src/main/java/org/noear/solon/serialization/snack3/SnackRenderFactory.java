@@ -19,6 +19,8 @@ import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
+import org.noear.solon.serialization.prop.JsonProps;
+import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 /**
  * Json 渲染器工厂
@@ -31,8 +33,14 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
 
     private final Options config;
 
-    public SnackRenderFactory() {
+    public SnackRenderFactory(JsonProps jsonProps) {
         config = Options.def();
+        applyProps(jsonProps);
+    }
+
+    @Override
+    public String[] mappings() {
+        return new String[]{"@json"};
     }
 
     @Override
@@ -67,5 +75,38 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
      * */
     public void removeFeatures(Feature... features) {
         config.remove(features);
+    }
+
+    protected void applyProps(JsonProps jsonProps) {
+        if (JsonPropsUtil.apply(this, jsonProps)) {
+            if (jsonProps.longAsString) {
+                this.addConvertor(Long.class, String::valueOf);
+                this.addConvertor(long.class, String::valueOf);
+            }
+
+            if (jsonProps.nullStringAsEmpty) {
+                this.addFeatures(Feature.StringNullAsEmpty);
+            }
+
+            if (jsonProps.nullBoolAsFalse) {
+                this.addFeatures(Feature.BooleanNullAsFalse);
+            }
+
+            if (jsonProps.nullNumberAsZero) {
+                this.addFeatures(Feature.NumberNullAsZero);
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                this.addFeatures(Feature.ArrayNullAsEmpty);
+            }
+
+            if (jsonProps.nullAsWriteable) {
+                this.addFeatures(Feature.SerializeNulls);
+            }
+
+            if (jsonProps.enumAsName) {
+                this.addFeatures(Feature.EnumUsingName);
+            }
+        }
     }
 }

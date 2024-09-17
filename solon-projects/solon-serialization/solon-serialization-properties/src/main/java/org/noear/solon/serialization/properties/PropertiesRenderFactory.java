@@ -34,7 +34,12 @@ public class PropertiesRenderFactory  implements RenderFactory {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{"@properties"};
+    }
+
+    @Override
     public Render create() {
-        return new StringSerializerRender(false,  serializer);
+        return new StringSerializerRender(false, serializer);
     }
 }

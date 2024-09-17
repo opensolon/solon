@@ -38,8 +38,13 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{"@type_json"};
+    }
+
+    @Override
     public Render create() {
-        return new StringSerializerRender(true,  serializer);
+        return new StringSerializerRender(true, serializer);
     }
 
     @Override

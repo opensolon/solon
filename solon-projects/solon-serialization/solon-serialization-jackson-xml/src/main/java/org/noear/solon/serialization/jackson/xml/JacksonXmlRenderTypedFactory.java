@@ -45,6 +45,11 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
     }
 
     @Override
+    public String[] mappings() {
+        return new String[]{"@type_xml"};
+    }
+
+    @Override
     public Render create() {
         registerModule();
 
