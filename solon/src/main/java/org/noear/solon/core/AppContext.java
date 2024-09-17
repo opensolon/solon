@@ -185,7 +185,7 @@ public class AppContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            beanShapeRegister(clz, bw, clz);
+            beanShapeRegister(bw);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -236,7 +236,7 @@ public class AppContext extends BeanContainer {
 
         //添加bean形态处理
         if (registered) {
-            beanShapeRegister(bw.clz(), bw, bw.clz());
+            beanShapeRegister(bw);
         }
 
         //注册到容器
@@ -326,11 +326,9 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试 bean 形态注册
      *
-     * @param clz    类
      * @param bw     Bean 包装
-     * @param annoEl 有注解元素（类 或 方法）
      */
-    public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
+    public void beanShapeRegister(BeanWrap bw) {
         if (bw.raw() == null) {
             return;
         }
@@ -338,7 +336,7 @@ public class AppContext extends BeanContainer {
         //Plugin
         if (bw.raw() instanceof Plugin) {
             //如果是插件，则插入
-            throw new IllegalStateException("'Plugin' cannot be component, please use 'LifecycleBean': " + clz.getName());
+            throw new IllegalStateException("'Plugin' cannot be component, please use 'LifecycleBean': " + bw.clz().getName());
         }
 
         String singletonHint = null;
@@ -357,7 +355,7 @@ public class AppContext extends BeanContainer {
 
         //EventListener
         if (bw.raw() instanceof EventListener) {
-            addEventListener(clz, bw);
+            addEventListener(bw.clz(), bw);
             singletonHint = "EventListener";
         }
 
@@ -369,10 +367,11 @@ public class AppContext extends BeanContainer {
 
         //Handler
         if (bw.raw() instanceof Handler) {
-            Mapping mapping = annoEl.getAnnotation(Mapping.class);
+            //不再支持 @Bean @Mapping fun() //v3.0
+            Mapping mapping = bw.clz().getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Set<MethodType> v0 = FactoryManager.getGlobal().mvcFactory().findMethodTypes(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
+                Set<MethodType> v0 = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
@@ -427,7 +426,7 @@ public class AppContext extends BeanContainer {
 
 
         if (bw.singleton() == false && singletonHint != null) {
-            LogUtil.global().warn(singletonHint + " does not support @Singleton(false), class=" + clz.getName());
+            LogUtil.global().warn(singletonHint + " does not support @Singleton(false), class=" + bw.clz().getName());
         }
     }
 
@@ -792,7 +791,7 @@ public class AppContext extends BeanContainer {
 
             //添加bean形态处理
             if (anno.registered()) {
-                beanShapeRegister(m_bw.clz(), m_bw, mWrap.getMethod());
+                beanShapeRegister(m_bw);
             }
 
             //注册到容器
