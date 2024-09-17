@@ -184,8 +184,8 @@ public class AppContext extends BeanContainer {
                 }
             }
 
-            //添加bean形态处理
-            beanShapeRegister(bw);
+            //特定能力接口交付
+            beanDeliver(bw);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -205,7 +205,7 @@ public class AppContext extends BeanContainer {
             //确定顺序位
             bw.indexSet(anno.index());
 
-            beanComponentized(bw, anno.registered());
+            beanComponentized(bw, anno.delivered());
         });
 
         //注册 @Remoting 构建器
@@ -229,14 +229,17 @@ public class AppContext extends BeanContainer {
 
     /**
      * 组件化处理
+     *
+     * @param bw        bean 包装器
+     * @param delivered 要交付的（特定能力接口交付）
      */
-    protected void beanComponentized(BeanWrap bw, boolean registered) {
+    protected void beanComponentized(BeanWrap bw, boolean delivered) {
         //尝试提取函数并确定自动代理
         beanExtractOrProxy(bw);
 
-        //添加bean形态处理
-        if (registered) {
-            beanShapeRegister(bw);
+        //特定能力接口交付
+        if (delivered) {
+            beanDeliver(bw);
         }
 
         //注册到容器
@@ -324,11 +327,11 @@ public class AppContext extends BeanContainer {
     }
 
     /**
-     * 尝试 bean 形态注册
+     * 尝试 bean 交付（特定能力接口交付）
      *
-     * @param bw     Bean 包装
+     * @param bw Bean 包装
      */
-    public void beanShapeRegister(BeanWrap bw) {
+    public void beanDeliver(BeanWrap bw) {
         if (bw.raw() == null) {
             return;
         }
@@ -789,9 +792,9 @@ public class AppContext extends BeanContainer {
             //确定顺序位
             m_bw.indexSet(anno.index());
 
-            //添加bean形态处理
-            if (anno.registered()) {
-                beanShapeRegister(m_bw);
+            //特定能力接口交付
+            if (anno.delivered()) {
+                beanDeliver(m_bw);
             }
 
             //注册到容器
