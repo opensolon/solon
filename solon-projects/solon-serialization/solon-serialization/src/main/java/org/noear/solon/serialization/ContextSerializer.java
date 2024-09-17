@@ -42,13 +42,16 @@ public interface ContextSerializer<T> extends Serializer<T> {
 
     /**
      * 序列化到
+     *
+     * @param ctx  请求上下文
+     * @param data 数据
      */
     void serializeToBody(Context ctx, Object data) throws IOException;
 
     /**
      * 反序列化从
      *
-     * @param ctx 上下文
+     * @param ctx 请求上下文
      */
     Object deserializeFromBody(Context ctx) throws IOException;
 }
