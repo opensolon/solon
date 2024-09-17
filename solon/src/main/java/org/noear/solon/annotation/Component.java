@@ -58,7 +58,7 @@ public @interface Component {
     int index() default 0;
 
     /**
-     * 要注册的（能力接口）
+     * 要交付的（特定能力接口交付）
      */
-    boolean registered() default true;
+    boolean delivered() default true;
 }
