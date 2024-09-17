@@ -16,10 +16,10 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -51,16 +51,6 @@ import java.util.Set;
  * */
 public class ThymeleafRender implements Render {
     static final Logger log = LoggerFactory.getLogger(ThymeleafRender.class);
-
-    private static ThymeleafRender _global;
-
-    public static ThymeleafRender global() {
-        if (_global == null) {
-            _global = new ThymeleafRender();
-        }
-
-        return _global;
-    }
 
     private final ClassLoader classLoader;
     private final String viewPrefix;
@@ -158,6 +148,21 @@ public class ThymeleafRender implements Render {
 
             provider.addTemplateResolver(_loader);
         }
+
+
+        //添加 StandardLinkBuilder
+        String baseUrl = Solon.cfg().serverContextPath();
+        if (Utils.isEmpty(baseUrl)) {
+            baseUrl = "";
+        } else {
+            if (baseUrl.endsWith("/")) {
+                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+            }
+        }
+
+        BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
+        baseUrlLinkBuilder.setBaseUrl(baseUrl);
+        provider.setLinkBuilder(baseUrlLinkBuilder);
     }
 
 

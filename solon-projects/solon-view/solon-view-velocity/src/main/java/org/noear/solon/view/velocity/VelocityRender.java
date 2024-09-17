@@ -25,7 +25,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.Context;
@@ -49,16 +48,6 @@ import java.util.Map;
  * */
 public class VelocityRender implements Render {
     static final Logger log = LoggerFactory.getLogger(VelocityRender.class);
-
-    private static VelocityRender _global;
-
-    public static VelocityRender global() {
-        if (_global == null) {
-            _global = new VelocityRender();
-        }
-
-        return _global;
-    }
 
     private final ClassLoader classLoader;
     private final String viewPrefix;

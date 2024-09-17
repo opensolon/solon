@@ -29,7 +29,7 @@ import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-        EnjoyRender render = EnjoyRender.global();
+        EnjoyRender render = new EnjoyRender();
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
@@ -47,9 +47,9 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().register( null, render);
         Solon.app().renderManager().register(".shtm", render);
-        context.wrapAndPut(EnjoyRender.class, render);
+        context.wrapAndPut(EnjoyRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);

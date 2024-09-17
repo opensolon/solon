@@ -29,7 +29,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        VelocityRender render = VelocityRender.global();
+        VelocityRender render = new VelocityRender();
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
@@ -47,9 +47,9 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().register(null, render);
         Solon.app().renderManager().register(".vm", render);
-        context.wrapAndPut(VelocityRender.class, render);
+        context.wrapAndPut(VelocityRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(new AuthPermissionsTag());

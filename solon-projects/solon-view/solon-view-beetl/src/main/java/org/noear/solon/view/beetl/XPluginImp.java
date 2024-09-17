@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
 
-        BeetlRender render = BeetlRender.global();
+        BeetlRender render = new BeetlRender();
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, bw) -> {
@@ -48,10 +48,10 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().register(null, render); //def
         Solon.app().renderManager().register(".htm", render);
         Solon.app().renderManager().register(".btl", render);
-        context.wrapAndPut(BeetlRender.class, render);
+        context.wrapAndPut(BeetlRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);

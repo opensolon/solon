@@ -26,7 +26,6 @@ import org.beetl.core.tag.TagFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
@@ -51,18 +50,6 @@ import java.net.URL;
  * */
 public class BeetlRender implements Render {
     static final Logger log = LoggerFactory.getLogger(BeetlRender.class);
-
-    private static BeetlRender _global;
-
-    public static BeetlRender global() {
-        if (_global == null) {
-            _global = new BeetlRender();
-        }
-
-        return _global;
-    }
-
-
 
     private final ClassLoader classLoader;
     private final String viewPrefix;

@@ -30,9 +30,9 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        JspRender render = JspRender.global();
+        JspRender render = new JspRender();
 
-        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().register(null, render);
         Solon.app().renderManager().register(".jsp", render);
     }
 }

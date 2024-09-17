@@ -23,7 +23,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -34,21 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URL;
 
 public class FreemarkerRender implements Render {
     static final Logger log = LoggerFactory.getLogger(FreemarkerRender.class);
-
-    private static FreemarkerRender _global;
-
-    public static FreemarkerRender global() {
-        if (_global == null) {
-            _global = new FreemarkerRender();
-        }
-
-        return _global;
-    }
 
     private final ClassLoader classLoader;
     private final String viewPrefix;

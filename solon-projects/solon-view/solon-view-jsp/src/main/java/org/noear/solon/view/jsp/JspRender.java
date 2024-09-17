@@ -24,21 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JspRender implements Render {
-    private static JspRender _global;
-    public static JspRender global(){
-        if(_global==null){
-            _global = new JspRender();
-        }
-
-        return _global;
-    }
-
-    //不要入参，方便后面多视图混用
-    //
-    public JspRender(){
-
-    }
-
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if(obj == null){

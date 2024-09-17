@@ -23,7 +23,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -45,18 +44,6 @@ import java.net.URL;
  * */
 public class EnjoyRender implements Render {
     static final Logger log = LoggerFactory.getLogger(EnjoyRender.class);
-
-    private static EnjoyRender _global;
-
-    public static EnjoyRender global() {
-        if (_global == null) {
-            _global = new EnjoyRender();
-        }
-
-        return _global;
-    }
-
-
 
     private final ClassLoader classLoader;
     private final String viewPrefix;

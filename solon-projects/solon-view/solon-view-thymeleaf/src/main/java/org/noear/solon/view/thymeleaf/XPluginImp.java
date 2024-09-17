@@ -30,7 +30,7 @@ import org.thymeleaf.dialect.IDialect;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-        ThymeleafRender render = ThymeleafRender.global();
+        ThymeleafRender render = new ThymeleafRender();
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
@@ -48,9 +48,9 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().register(null, render);
         Solon.app().renderManager().register(".html", render);
-        context.wrapAndPut(ThymeleafRender.class, render);
+        context.wrapAndPut(ThymeleafRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             AuthDialect authDialect = new AuthDialect();
@@ -58,19 +58,5 @@ public class XPluginImp implements Plugin {
             authDialect.addProcessor(new AuthRolesTag(authDialect.getPrefix()));
             render.putDirective(authDialect);
         }
-
-        //添加 StandardLinkBuilder
-        String baseUrl = Solon.cfg().serverContextPath();
-        if (Utils.isEmpty(baseUrl)) {
-            baseUrl = "";
-        } else {
-            if (baseUrl.endsWith("/")) {
-                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-            }
-        }
-
-        BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
-        baseUrlLinkBuilder.setBaseUrl(baseUrl);
-        render.getProvider().setLinkBuilder(baseUrlLinkBuilder);
     }
 }

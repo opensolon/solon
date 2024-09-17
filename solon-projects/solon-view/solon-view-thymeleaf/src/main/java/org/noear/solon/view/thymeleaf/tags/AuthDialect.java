@@ -33,7 +33,7 @@ public class AuthDialect extends AbstractProcessorDialect {
         super("AuthDialect", AuthConstants.PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
     }
 
-    Set<IProcessor> processorSet = new LinkedHashSet<>();
+    private Set<IProcessor> processorSet = new LinkedHashSet<>();
 
     public void addProcessor(IProcessor processor) {
         processorSet.add(processor);
