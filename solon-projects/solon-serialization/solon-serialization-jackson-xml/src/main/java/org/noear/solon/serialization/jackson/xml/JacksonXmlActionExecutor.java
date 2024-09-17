@@ -23,7 +23,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.noear.solon.Utils;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -54,6 +53,9 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
         return serializer.getConfig();
     }
 
+    /**
+     * 配置
+     */
     public void config(XmlMapper xmlMapper) {
         serializer.setConfig(xmlMapper);
     }
@@ -79,17 +81,36 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
         serializer.getConfig().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
-    public boolean matched(Context ctx, String ct) {
-        return serializer.matched(ctx, ct);
+    public boolean matched(Context ctx, String mime) {
+        return serializer.matched(ctx, mime);
     }
 
+    /**
+     * 转换 body
+     *
+     * @param ctx   请求上下文
+     * @param mWrap 函数包装器
+     */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return serializer.deserializeFromBody(ctx);
     }
 
     /**
+     * 转换 value
+     *
+     * @param ctx     请求上下文
+     * @param p       参数包装器
+     * @param pi      参数序位
+     * @param pt      参数类型
+     * @param bodyObj 主体对象
      * @since 1.11 增加 requireBody 支持
      */
     @Override

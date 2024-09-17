@@ -44,11 +44,17 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
         config.registerModule(new JavaTimeModule());
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_xml"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         registerModule();
@@ -59,6 +65,9 @@ public class JacksonXmlRenderTypedFactory extends JacksonXmlRenderFactoryBase {
         return new StringSerializerRender(true, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public XmlMapper config() {
         return config;

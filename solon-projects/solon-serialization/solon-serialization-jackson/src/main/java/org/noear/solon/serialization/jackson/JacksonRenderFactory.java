@@ -53,11 +53,17 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
         applyProps(jsonProps);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         registerModule();
@@ -72,6 +78,9 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
         return new StringSerializerRender(false, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public ObjectMapper config() {
         return config;

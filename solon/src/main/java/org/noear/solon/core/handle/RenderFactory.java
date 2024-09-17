@@ -24,6 +24,8 @@ package org.noear.solon.core.handle;
 public interface RenderFactory {
     /**
      * 映射
+     *
+     * @since 3.0
      */
     String[] mappings();
 

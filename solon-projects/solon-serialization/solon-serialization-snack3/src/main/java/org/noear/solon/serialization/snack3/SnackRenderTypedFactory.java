@@ -29,22 +29,29 @@ import org.noear.solon.serialization.StringSerializerRender;
  */
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     private final Options config;
-    public SnackRenderTypedFactory(){
+
+    public SnackRenderTypedFactory() {
         config = Options.serialize();
     }
 
     /**
      * 添加编码器
-     * */
+     */
     public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
         config.addEncoder(clz, encoder);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         SnackStringSerializer serializer = new SnackStringSerializer();
@@ -53,6 +60,9 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
         return new StringSerializerRender(true, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public Options config() {
         return config;

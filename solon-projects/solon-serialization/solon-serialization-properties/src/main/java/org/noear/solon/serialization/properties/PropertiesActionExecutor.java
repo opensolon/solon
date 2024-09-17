@@ -64,8 +64,14 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
         return serializer.getConfig();
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
-    public boolean matched(Context ctx, String ct) {
+    public boolean matched(Context ctx, String mime) {
         if (allowGet && MethodType.GET.name.equals(ctx.method()) ||
                 (allowPostForm && (ctx.isFormUrlencoded() || ctx.isMultipartFormData()))) {
             for (String key : ctx.paramMap().keySet()) {
@@ -78,12 +84,25 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
         return false;
     }
 
+    /**
+     * 转换 body
+     *
+     * @param ctx   请求上下文
+     * @param mWrap 函数包装器
+     */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return serializer.deserializeFromBody(ctx);
     }
 
     /**
+     * 转换 value
+     *
+     * @param ctx     请求上下文
+     * @param p       参数包装器
+     * @param pi      参数序位
+     * @param pt      参数类型
+     * @param bodyObj 主体对象
      * @since 1.11 增加 requireBody 支持
      */
     @Override

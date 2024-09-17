@@ -32,18 +32,34 @@ public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
         serializer.getConfig().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
     }
 
+    /**
+     * 获取序列化器
+     */
+    public GsonStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 序列化配置
+     */
+    @Override
+    public GsonBuilder config() {
+        return serializer.getConfig();
+    }
+
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         return new StringSerializerRender(true, serializer);
-    }
-
-    @Override
-    public GsonBuilder config() {
-        return serializer.getConfig();
     }
 }

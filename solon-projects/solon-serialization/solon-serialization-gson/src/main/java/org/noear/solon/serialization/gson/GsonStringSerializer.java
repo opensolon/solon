@@ -35,9 +35,11 @@ import java.lang.reflect.Type;
  */
 public class GsonStringSerializer implements ContextSerializer<String> {
     private static final String label = "/json";
-
     private GsonBuilder config;
 
+    /**
+     * 获取配置
+     */
     public GsonBuilder getConfig() {
         if (config == null) {
             config = new GsonBuilder();
@@ -46,6 +48,9 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         return config;
     }
 
+    /**
+     * 刷新
+     */
     public void refresh() {
         _gson = getConfig().create();
     }
@@ -68,11 +73,20 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         return _gson;
     }
 
+    /**
+     * 获取内容类型
+     */
     @Override
     public String getContentType() {
         return "application/json";
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
     public boolean matched(Context ctx, String mime) {
         if (mime == null) {
@@ -82,16 +96,30 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 序列化器名字
+     */
     @Override
     public String name() {
         return "gson-json";
     }
 
+    /**
+     * 序列化
+     *
+     * @param obj 对象
+     */
     @Override
     public String serialize(Object obj) throws IOException {
         return getGson().toJson(obj);
     }
 
+    /**
+     * 反序列化
+     *
+     * @param data   数据
+     * @param toType 目标类型
+     */
     @Override
     public Object deserialize(String data, Type toType) throws IOException {
         if (toType == null) {
@@ -102,6 +130,12 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 序列化主体
+     *
+     * @param ctx  请求上下文
+     * @param data 数据
+     */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
         ctx.contentType(getContentType());
@@ -113,6 +147,11 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         }
     }
 
+    /**
+     * 反序列化主体
+     *
+     * @param ctx 请求上下文
+     */
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
         String data = ctx.bodyNew();

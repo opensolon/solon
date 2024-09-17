@@ -35,11 +35,20 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/protobuf";
     private final Schema<DataWrapper> WRAPPER_SCHEMA = RuntimeSchema.createFrom(DataWrapper.class);
 
+    /**
+     * 获取内容类型
+     */
     @Override
     public String getContentType() {
         return label;
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
     public boolean matched(Context ctx, String mime) {
         if (mime == null) {
@@ -49,11 +58,19 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
         }
     }
 
+    /**
+     * 序列化器名字
+     */
     @Override
     public String name() {
         return "protostuff-bytes";
     }
 
+    /**
+     * 序列化
+     *
+     * @param obj 对象
+     */
     @Override
     public byte[] serialize(Object obj) throws IOException {
         LinkedBuffer buffer = LinkedBuffer.allocate();
@@ -72,6 +89,12 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
         }
     }
 
+    /**
+     * 反序列化
+     *
+     * @param data   数据
+     * @param toType 目标类型
+     */
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         try {
@@ -85,12 +108,23 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
         }
     }
 
+    /**
+     * 序列化主体
+     *
+     * @param ctx  请求上下文
+     * @param data 数据
+     */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
         ctx.contentType(getContentType());
         ctx.output(serialize(data));
     }
 
+    /**
+     * 反序列化主体
+     *
+     * @param ctx 请求上下文
+     */
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
         return deserialize(ctx.bodyAsBytes(), null);

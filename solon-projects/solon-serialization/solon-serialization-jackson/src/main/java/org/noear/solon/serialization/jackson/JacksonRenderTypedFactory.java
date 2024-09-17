@@ -44,11 +44,17 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
         config.registerModule(new JavaTimeModule());
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@type_json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         registerModule();
@@ -59,6 +65,9 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
         return new StringSerializerRender(true, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public ObjectMapper config() {
         return config;

@@ -29,15 +29,24 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class PropertiesRenderFactory  implements RenderFactory {
     private final PropertiesStringSerializer serializer = new PropertiesStringSerializer();
 
+    /**
+     * 序列化配置
+     */
     public Options config() {
         return serializer.getConfig();
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@properties"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         return new StringSerializerRender(false, serializer);

@@ -33,11 +33,20 @@ import java.lang.reflect.Type;
 public class HessianBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/hessian";
 
+    /**
+     * 获取内容类型
+     */
     @Override
     public String getContentType() {
         return label;
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
     public boolean matched(Context ctx, String mime) {
         if (mime == null) {
@@ -47,11 +56,19 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
         }
     }
 
+    /**
+     * 序列化器名字
+     */
     @Override
     public String name() {
         return "hessian-bytes";
     }
 
+    /**
+     * 序列化
+     *
+     * @param obj 对象
+     */
     @Override
     public byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -63,12 +80,24 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
         return out.toByteArray();
     }
 
+    /**
+     * 反序列化
+     *
+     * @param data   数据
+     * @param toType 目标类型
+     */
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(data));
         return hi.readObject();
     }
 
+    /**
+     * 序列化主体
+     *
+     * @param ctx  请求上下文
+     * @param data 数据
+     */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
         ctx.contentType(getContentType());
@@ -82,6 +111,11 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
         ho.flush();
     }
 
+    /**
+     * 反序列化主体
+     *
+     * @param ctx 请求上下文
+     */
     @Override
     public Object deserializeFromBody(Context ctx) throws IOException {
         Hessian2Input hi = new Hessian2Input(ctx.bodyAsStream());

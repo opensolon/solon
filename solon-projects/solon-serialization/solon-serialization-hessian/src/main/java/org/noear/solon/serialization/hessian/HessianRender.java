@@ -23,11 +23,17 @@ import org.noear.solon.serialization.ContextSerializer;
 public class HessianRender extends BytesSerializerRender {
     private HessianBytesSerializer serializer = new HessianBytesSerializer();
 
+    /**
+     * 获取序列化器
+     */
     @Override
     public ContextSerializer<byte[]> getSerializer() {
         return serializer;
     }
 
+    /**
+     * 获取渲染器名字
+     */
     @Override
     public String getName() {
         return this.getClass().getSimpleName();

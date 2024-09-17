@@ -30,7 +30,6 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
  * @since 2.8
  */
 public class SnackRenderFactory extends SnackRenderFactoryBase {
-
     private final Options config;
 
     public SnackRenderFactory(JsonProps jsonProps) {
@@ -38,11 +37,17 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
         applyProps(jsonProps);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         SnackStringSerializer serializer = new SnackStringSerializer();
@@ -51,6 +56,9 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
         return new StringSerializerRender(false, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public Options config() {
         return config;
@@ -65,14 +73,14 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
 
     /**
      * 添加特性
-     * */
+     */
     public void addFeatures(Feature... features) {
         config.add(features);
     }
 
     /**
      * 移除特性
-     * */
+     */
     public void removeFeatures(Feature... features) {
         config.remove(features);
     }

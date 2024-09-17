@@ -27,16 +27,27 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * @since 1.5
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
-
+    /**
+     * 序列化配置
+     */
     public abstract Options config();
 
     /**
      * 添加编码器
+     *
+     * @param clz     类型
+     * @param encoder 编码器
      */
     public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
         config().addEncoder(clz, encoder);
     }
 
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (source, target) -> {

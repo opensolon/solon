@@ -20,10 +20,14 @@ import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
 
 /**
- * @author noear 2021/10/11 created
+ * @author noear
+ * @since 1.5
  */
 public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
 
+    /**
+     * 序列化配置
+     */
     public abstract GsonBuilder config();
 
     /**
@@ -34,6 +38,12 @@ public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
     }
 
 
+    /**
+     * 添加转换器（编码器的简化版）
+     *
+     * @param clz       类型
+     * @param converter 转换器
+     */
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (source, type, jsc) -> {

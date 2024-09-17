@@ -35,7 +35,8 @@ import java.util.List;
  * */
 public class SnackActionExecutor extends ActionExecuteHandlerDefault {
     private SnackStringSerializer serializer = new SnackStringSerializer();
-    public SnackActionExecutor(){
+
+    public SnackActionExecutor() {
         super();
         serializer.getConfig().add(Feature.DisableClassNameRead);
     }
@@ -49,27 +50,46 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
 
     /**
      * 反序列化配置
-     * */
-    public Options config(){
+     */
+    public Options config() {
         return serializer.getConfig();
     }
 
+    /**
+     * 是否匹配
+     *
+     * @param ctx  请求上下文
+     * @param mime 内容类型
+     */
     @Override
-    public boolean matched(Context ctx, String ct) {
-        return serializer.matched(ctx, ct);
+    public boolean matched(Context ctx, String mime) {
+        return serializer.matched(ctx, mime);
     }
 
+    /**
+     * 转换 body
+     *
+     * @param ctx   请求上下文
+     * @param mWrap 函数包装器
+     */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return serializer.deserializeFromBody(ctx);
     }
 
     /**
+     * 转换 value
+     *
+     * @param ctx     请求上下文
+     * @param p       参数包装器
+     * @param pi      参数序位
+     * @param pt      参数类型
+     * @param bodyObj 主体对象
      * @since 1.11 增加 requireBody 支持
-     * */
+     */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
+        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -94,7 +114,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
                     //支持泛型的转换
                     if (p.isGenericType()) {
                         return tmp.get(p.getName()).toObject(p.getGenericType());
-                    }else{
+                    } else {
                         return tmp.get(p.getName()).toObject(pt);
                     }
                 }
@@ -116,7 +136,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
                 //支持泛型的转换 如：Map<T>
                 if (p.isGenericType()) {
                     return tmp.toObject(p.getGenericType());
-                }else{
+                } else {
                     return tmp.toObject(pt);
                 }
             }
@@ -132,7 +152,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
             if (p.isGenericType()) {
                 //转换带泛型的集合
                 return tmp.toObject(p.getGenericType());
-            }else{
+            } else {
                 //不仅可以转换为List 还可以转换成Set
                 return tmp.toObject(pt);
             }

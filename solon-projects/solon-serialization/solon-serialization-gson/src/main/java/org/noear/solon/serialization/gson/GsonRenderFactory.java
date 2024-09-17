@@ -41,26 +41,43 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
     }
 
     /**
+     * 获取序列化器
+     */
+    public GsonStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 序列化配置
+     */
+    @Override
+    public GsonBuilder config() {
+        return serializer.getConfig();
+    }
+
+    /**
      * 添加编码器
      */
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
         serializer.getConfig().registerTypeAdapter(clz, encoder);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@json"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         return new StringSerializerRender(false, serializer);
     }
 
-    @Override
-    public GsonBuilder config() {
-        return serializer.getConfig();
-    }
 
     protected void applyProps(JsonProps jsonProps) {
         boolean writeNulls = false;

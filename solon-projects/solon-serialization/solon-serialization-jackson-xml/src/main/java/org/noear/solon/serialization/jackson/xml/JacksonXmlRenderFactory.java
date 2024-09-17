@@ -53,11 +53,17 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
         applyProps(jsonProps);
     }
 
+    /**
+     * 后缀或名字映射
+     */
     @Override
     public String[] mappings() {
         return new String[]{"@xml"};
     }
 
+    /**
+     * 创建
+     */
     @Override
     public Render create() {
         registerModule();
@@ -72,6 +78,9 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
         return new StringSerializerRender(false, serializer);
     }
 
+    /**
+     * 序列化配置
+     */
     @Override
     public XmlMapper config() {
         return config;
