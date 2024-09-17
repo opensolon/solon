@@ -31,28 +31,22 @@ import java.util.Map;
  * @since 1.0
  * */
 public class RenderManager implements Render {
-
-    private static final Map<String, Render> _mapping = new HashMap<>();
-    private static final Map<String, Render> _lib = new HashMap<>();
+    private final Map<String, Render> _mapping = new HashMap<>();
+    private final Map<String, Render> _lib = new HashMap<>();
 
 
     //默认渲染器
-    private static Render _def = (d, c) -> {
+    private Render _def = (d, c) -> {
         if (d != null) {
             c.output(d.toString());
         }
     };
 
-    private RenderManager() {
-    }
-
-    //不能放上面
-    public static Render global = new RenderManager();
 
     /**
      * 获取渲染器
      */
-    public static Render get(String name) {
+    public Render get(String name) {
         Render tmp = _lib.get(name);
         if (tmp == null) {
             tmp = _mapping.get(name);
@@ -66,7 +60,7 @@ public class RenderManager implements Render {
      *
      * @param render 渲染器
      */
-    public static void register(Render render) {
+    public void register(Render render) {
         if (render == null) {
             return;
         }
@@ -85,7 +79,7 @@ public class RenderManager implements Render {
      * @param suffix 后缀（例：.ftl）
      * @param render 渲染器
      */
-    public static void mapping(String suffix, Render render) {
+    public void mapping(String suffix, Render render) {
         if (render == null) {
             return;
         }
@@ -104,7 +98,7 @@ public class RenderManager implements Render {
      * @param suffix  后缀（例：.ftl）
      * @param clzName 渲染器类名
      */
-    public static void mapping(String suffix, String clzName) {
+    public void mapping(String suffix, String clzName) {
         if (suffix == null || clzName == null) {
             return;
         }
@@ -124,9 +118,9 @@ public class RenderManager implements Render {
     /**
      * 渲染并返回
      */
-    public static String renderAndReturn(ModelAndView modelAndView) {
+    public String renderAndReturn(ModelAndView modelAndView) {
         try {
-            return global.renderAndReturn(modelAndView, Context.current());
+            return renderAndReturn(modelAndView, Context.current());
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
             if (ex instanceof RuntimeException) {

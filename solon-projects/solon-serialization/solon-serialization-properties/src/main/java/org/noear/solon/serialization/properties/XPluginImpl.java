@@ -34,7 +34,7 @@ public class XPluginImpl implements Plugin {
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
-            RenderManager.mapping("@properties", renderFactory.create());
+            Solon.app().renderManager().mapping("@properties", renderFactory.create());
         });
 
         //::actionExecutor

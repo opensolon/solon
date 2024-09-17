@@ -383,7 +383,7 @@ public class AppContext extends BeanContainer {
 
         //Render
         if (bw.raw() instanceof Render) {
-            RenderManager.mapping(bw.name(), (Render) bw.raw());
+            Solon.app().renderManager().mapping(bw.name(), (Render) bw.raw());
             singletonHint = "Render";
         }
 

@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
-        //RenderManager.register(render);
-        //RenderManager.mapping("@avro", new AvroStringRender());
+        //Solon.app().renderManager().register(render);
+        //Solon.app().renderManager().mapping("@avro", new AvroStringRender());
     }
 }

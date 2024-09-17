@@ -17,6 +17,7 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.TemplateDirectiveModel;
 
+import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;
@@ -51,8 +52,8 @@ public class XPluginImp implements Plugin {
         });
 
 
-        RenderManager.register(render);
-        RenderManager.mapping(".ftl", render);
+        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping(".ftl", render);
         context.wrapAndPut(FreemarkerRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

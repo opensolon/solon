@@ -49,8 +49,8 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        RenderManager.register(render);
-        RenderManager.mapping(".html", render);
+        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping(".html", render);
         context.wrapAndPut(ThymeleafRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

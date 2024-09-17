@@ -53,6 +53,7 @@ public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
     private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
+    private final RenderManager _renderManager; //渲染管理器
 
     private final Class<?> _source; //应用加载源
     private final URL _sourceLocation;
@@ -73,6 +74,13 @@ public class SolonApp extends RouterWrapper {
      */
     public ConverterManager converterManager() {
         return _converterManager;
+    }
+
+    /**
+     * 渲染管理器
+     * */
+    public RenderManager renderManager() {
+        return _renderManager;
     }
 
     /**
@@ -98,6 +106,7 @@ public class SolonApp extends RouterWrapper {
         _source = source;
         _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         _converterManager = new ConverterManager();
+        _renderManager = new RenderManager();
 
 
         //添加启动类包名检测
@@ -248,12 +257,12 @@ public class SolonApp extends RouterWrapper {
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
-            RenderManager.mapping("." + k, v);
+            renderManager().mapping("." + k, v);
         });
 
         //3.1.尝试设置 context-path
         if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
-            Solon.app().filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
+            filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
         }
 
         //3.2.标识上下文加载完成

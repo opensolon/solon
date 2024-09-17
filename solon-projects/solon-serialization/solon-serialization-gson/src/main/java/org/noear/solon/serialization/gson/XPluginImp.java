@@ -48,8 +48,8 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(GsonRenderTypedFactory.class, renderTypedFactory);
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-            RenderManager.mapping("@json", renderFactory.create());
-            RenderManager.mapping("@type_json", renderTypedFactory.create());
+            Solon.app().renderManager().mapping("@json", renderFactory.create());
+            Solon.app().renderManager().mapping("@type_json", renderTypedFactory.create());
         });
 
         //::actionExecutor

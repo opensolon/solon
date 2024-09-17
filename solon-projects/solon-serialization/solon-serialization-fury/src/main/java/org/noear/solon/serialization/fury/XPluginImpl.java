@@ -27,8 +27,8 @@ public class XPluginImpl implements Plugin {
     public void start(AppContext context) {
         FuryRender render = new FuryRender();
 
-        //RenderManager.register(render);
-        RenderManager.mapping("@fury",render);
+        //Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping("@fury",render);
 
         //支持 hessian 内容类型执行
         FuryActionExecutor executor = new FuryActionExecutor();

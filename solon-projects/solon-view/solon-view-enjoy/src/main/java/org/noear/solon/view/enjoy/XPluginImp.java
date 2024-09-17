@@ -16,6 +16,7 @@
 package org.noear.solon.view.enjoy;
 
 import com.jfinal.template.Directive;
+import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;
@@ -47,8 +48,8 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        RenderManager.register(render);
-        RenderManager.mapping(".shtm", render);
+        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping(".shtm", render);
         context.wrapAndPut(EnjoyRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

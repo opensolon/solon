@@ -26,8 +26,8 @@ public class XPluginImpl implements Plugin {
     public void start(AppContext context) {
         HessianRender render = new HessianRender();
 
-        //RenderManager.register(render);
-        RenderManager.mapping("@hessian",render);
+        //Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping("@hessian",render);
 
         //支持 hessian 内容类型执行
         HessianActionExecutor executor = new HessianActionExecutor();

@@ -16,6 +16,7 @@
 package org.noear.solon.view.beetl;
 
 import org.beetl.core.tag.Tag;
+import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;
@@ -48,9 +49,9 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        RenderManager.register(render);
-        RenderManager.mapping(".htm", render);
-        RenderManager.mapping(".btl", render);
+        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping(".htm", render);
+        Solon.app().renderManager().mapping(".btl", render);
         context.wrapAndPut(BeetlRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

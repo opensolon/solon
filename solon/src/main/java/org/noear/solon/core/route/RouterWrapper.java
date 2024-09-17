@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.route;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
@@ -129,14 +130,14 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加渲染器
      * */
     public void render(String name, Render render) {
-        RenderManager.mapping(name, render);
+        Solon.app().renderManager().mapping(name, render);
     }
 
     /**
      * 获取渲染器
      * */
     public Render render(String name) {
-        return RenderManager.get(name);
+        return Solon.app().renderManager().get(name);
     }
 
     /**

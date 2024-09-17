@@ -15,6 +15,7 @@
  */
 package org.noear.solon.view.jsp;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
@@ -32,7 +33,7 @@ public class XPluginImp implements Plugin {
 
         JspRender render = JspRender.global();
 
-        RenderManager.register(render);
-        RenderManager.mapping(".jsp", render);
+        Solon.app().renderManager().register(render);
+        Solon.app().renderManager().mapping(".jsp", render);
     }
 }

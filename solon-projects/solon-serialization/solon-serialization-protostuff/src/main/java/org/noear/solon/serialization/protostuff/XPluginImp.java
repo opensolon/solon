@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         ProtostuffRender render = new ProtostuffRender();
 
-        RenderManager.mapping("@protobuf",render);
+        Solon.app().renderManager().mapping("@protobuf",render);
 
         //支持 protostuff 内容类型执行
         ProtostuffActionExecutor executor = new ProtostuffActionExecutor();

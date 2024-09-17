@@ -1059,7 +1059,7 @@ public abstract class Context {
     public final void render(Object obj) throws Throwable {
         //ModelAndView or Data
         setRendered(true); //用于后续做最多一次渲染的控制
-        RenderManager.global.render(obj, this);
+        Solon.app().renderManager().render(obj, this);
     }
 
     /**
@@ -1073,7 +1073,7 @@ public abstract class Context {
      * 渲染数据并返回
      */
     public final String renderAndReturn(Object obj) throws Throwable {
-        return RenderManager.global.renderAndReturn(obj, this);
+        return Solon.app().renderManager().renderAndReturn(obj, this);
     }
 
     private boolean _remoting;

@@ -45,8 +45,8 @@ public class XPluginImp implements Plugin {
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
-            RenderManager.mapping("@json", renderFactory.create());
-            RenderManager.mapping("@type_json", renderTypedFactory.create());
+            Solon.app().renderManager().mapping("@json", renderFactory.create());
+            Solon.app().renderManager().mapping("@type_json", renderTypedFactory.create());
         });
 
         //::actionExecutor
