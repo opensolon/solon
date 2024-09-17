@@ -58,10 +58,13 @@ public class RenderManager implements Render {
     /**
      * 登记渲染器
      *
-     * @param render 渲染器
+     * @param renderFactory 渲染器工厂
      */
-    public void register(Render render) {
-        register(null, render);
+    public void register(RenderFactory renderFactory) {
+        Render render = renderFactory.create();
+        for (String mapping : renderFactory.mappings()) {
+            register(mapping, render);
+        }
     }
 
     /**

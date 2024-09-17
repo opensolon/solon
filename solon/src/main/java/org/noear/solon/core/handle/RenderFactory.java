@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization;
-
-import org.noear.solon.core.handle.Render;
+package org.noear.solon.core.handle;
 
 /**
  * 渲染器工厂
@@ -24,6 +22,11 @@ import org.noear.solon.core.handle.Render;
  * @since 2.7
  */
 public interface RenderFactory {
+    /**
+     * 映射
+     */
+    String[] mappings();
+
     /**
      * 创建渲染器
      */

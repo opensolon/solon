@@ -389,6 +389,12 @@ public class AppContext extends BeanContainer {
             singletonHint = "Render";
         }
 
+        //RenderFactory
+        if (bw.raw() instanceof RenderFactory) {
+            Solon.app().renderManager().register(bw.raw());
+            singletonHint = "Render";
+        }
+
         //Filter
         if (bw.raw() instanceof Filter) {
             Solon.app().filter(bw.index(), bw.raw());
