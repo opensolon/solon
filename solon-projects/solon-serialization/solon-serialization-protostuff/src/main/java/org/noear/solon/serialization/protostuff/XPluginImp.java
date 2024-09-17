@@ -18,8 +18,6 @@ package org.noear.solon.serialization.protostuff;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.RenderManager;
 
 /**
  * @author noear
@@ -30,7 +28,7 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         ProtostuffRender render = new ProtostuffRender();
 
-        Solon.app().renderManager().mapping("@protobuf",render);
+        Solon.app().renderManager().register("@protobuf",render);
 
         //支持 protostuff 内容类型执行
         ProtostuffActionExecutor executor = new ProtostuffActionExecutor();

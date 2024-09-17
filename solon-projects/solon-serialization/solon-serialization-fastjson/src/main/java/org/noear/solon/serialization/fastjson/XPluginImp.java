@@ -20,8 +20,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
@@ -45,8 +43,8 @@ public class XPluginImp implements Plugin {
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () ->{
             //晚点加载，给定制更多时机
-            Solon.app().renderManager().mapping("@json", renderFactory.create());
-            Solon.app().renderManager().mapping("@type_json", renderTypedFactory.create());
+            Solon.app().renderManager().register("@json", renderFactory.create());
+            Solon.app().renderManager().register("@type_json", renderTypedFactory.create());
         });
 
         //::actionExecutor

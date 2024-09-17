@@ -21,7 +21,6 @@ import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.view.thymeleaf.tags.AuthDialect;
 import org.noear.solon.view.thymeleaf.tags.AuthPermissionsTag;
@@ -50,7 +49,7 @@ public class XPluginImp implements Plugin {
         });
 
         Solon.app().renderManager().register(render);
-        Solon.app().renderManager().mapping(".html", render);
+        Solon.app().renderManager().register(".html", render);
         context.wrapAndPut(ThymeleafRender.class, render);
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

@@ -19,8 +19,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImpl implements Plugin {
     @Override
@@ -34,7 +32,7 @@ public class XPluginImpl implements Plugin {
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             //晚点加载，给定制更多时机
-            Solon.app().renderManager().mapping("@properties", renderFactory.create());
+            Solon.app().renderManager().register("@properties", renderFactory.create());
         });
 
         //::actionExecutor

@@ -61,45 +61,44 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public void register(Render render) {
-        if (render == null) {
-            return;
-        }
-
-        _def = render;
-        _lib.put(render.getClass().getSimpleName(), render);
-        _lib.put(render.getClass().getName(), render);
-
-        LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
-        LogUtil.global().info("View: load: " + render.getClass().getName());
+        register(null, render);
     }
 
     /**
-     * 映射后缀和渲染器的关系
+     * 登记渲染器（并映射关系）
      *
-     * @param suffix 后缀（例：.ftl）
-     * @param render 渲染器
+     * @param mapping 映射（例：.ftl, @json）
+     * @param render  渲染器
      */
-    public void mapping(String suffix, Render render) {
+    public void register(String mapping, Render render) {
         if (render == null) {
             return;
         }
 
-        if (Utils.isNotEmpty(suffix)) {
-            //suffix=.ftl
-            _mapping.put(suffix, render);
+        if (Utils.isEmpty(mapping)) {
+            //def | class
+            _def = render;
+            _lib.put(render.getClass().getSimpleName(), render);
+            _lib.put(render.getClass().getName(), render);
 
-            LogUtil.global().info("Render mapping: " + suffix + "=" + render.getName());
+            LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
+            LogUtil.global().info("View: load: " + render.getClass().getName());
+        } else {
+            //mapping=.ftl | @json
+            _mapping.put(mapping, render);
+
+            LogUtil.global().info("Render mapping: " + mapping + "=" + render.getName());
         }
     }
 
     /**
-     * 映射后缀和渲染器的关系
+     * 登记渲染器（并映射关系）
      *
-     * @param suffix  后缀（例：.ftl）
+     * @param mapping 映射（例：.ftl, @json）
      * @param clzName 渲染器类名
      */
-    public void mapping(String suffix, String clzName) {
-        if (suffix == null || clzName == null) {
+    public void register(String mapping, String clzName) {
+        if (mapping == null || clzName == null) {
             return;
         }
 
@@ -110,9 +109,9 @@ public class RenderManager implements Render {
             //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
-        _mapping.put(suffix, render);
+        _mapping.put(mapping, render);
 
-        LogUtil.global().info("Render mapping: " + suffix + "=" + clzName);
+        LogUtil.global().info("Render mapping: " + mapping + "=" + clzName);
     }
 
     /**

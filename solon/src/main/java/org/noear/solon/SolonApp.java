@@ -257,7 +257,7 @@ public class SolonApp extends RouterWrapper {
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
-            renderManager().mapping("." + k, v);
+            renderManager().register("." + k, v);
         });
 
         //3.1.尝试设置 context-path

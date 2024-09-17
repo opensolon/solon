@@ -26,8 +26,6 @@ import org.noear.solon.serialization.jackson.xml.impl.NullBeanSerializerModifier
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
@@ -60,8 +58,8 @@ public class XPluginImp implements Plugin {
 
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-            Solon.app().renderManager().mapping("@xml", renderFactory.create());
-            Solon.app().renderManager().mapping("@type_xml", renderTypedFactory.create());
+            Solon.app().renderManager().register("@xml", renderFactory.create());
+            Solon.app().renderManager().register("@type_xml", renderTypedFactory.create());
         });
 
         //支持 xml 内容类型执行

@@ -130,7 +130,7 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加渲染器
      * */
     public void render(String name, Render render) {
-        Solon.app().renderManager().mapping(name, render);
+        Solon.app().renderManager().register(name, render);
     }
 
     /**
