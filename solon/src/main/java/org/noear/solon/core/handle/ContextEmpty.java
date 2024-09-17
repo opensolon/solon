@@ -96,12 +96,12 @@ public class ContextEmpty extends Context {
 
     @Override
     public long contentLength() {
-        return 0;
+        return 0L;
     }
 
     @Override
     public String contentType() {
-        return null;
+        return headerMap().get("Content-Type");
     }
 
     @Override
