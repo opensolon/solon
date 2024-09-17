@@ -229,7 +229,11 @@ public class ActionDefault extends HandlerAide implements Action {
         }
 
         //controllerFilterDo
-        new FilterChainImpl(bAide.filters(), this::actionFilterDo).doFilter(x);
+        if (bAide == null) {
+            actionFilterDo(x);
+        } else {
+            new FilterChainImpl(bAide.filters(), this::actionFilterDo).doFilter(x);
+        }
     }
 
     protected void actionFilterDo(Context x) throws Throwable {
