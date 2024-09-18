@@ -140,12 +140,16 @@ public class SimpleScheduler implements Lifecycle {
 
         try {
             runAsCron();
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            //过滤中断异常
-            if (e instanceof InterruptedException == false) {
-                log.warn(e.getMessage(), e);
+            if(e instanceof InterruptedException){
+                //任务中止
+                isStarted = false;
+                return;
             }
+
+            log.warn(e.getMessage(), e);
         }
 
         if (sleepMillis < 0) {
