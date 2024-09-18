@@ -15,7 +15,6 @@
  */
 package org.noear.solon.logging.appender;
 
-import java.io.Console;
 import java.io.PrintWriter;
 
 /**
@@ -26,12 +25,6 @@ import java.io.PrintWriter;
  */
 public class ConsoleAppender extends OutputStreamAppender {
     public ConsoleAppender() {
-        Console console = System.console();
-
-        if (console != null && console.writer() != null) {
-            setOutput(console.writer());
-        } else {
-            setOutput(new PrintWriter(System.out, true));
-        }
+        setOutput(new PrintWriter(System.out, true));
     }
 }
