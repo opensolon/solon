@@ -26,6 +26,7 @@
 * 取消 Ds 注解（刚加还没用）
 * 取消 HandlerProxy ，不太合理（尤其是对本地网关）
 * 调整 solon Gateway:find 改为 public
+* 添加 solon Duration 类型配置注入
 * 添加 solon AppContext::beanExclude 方法
 * 添加 solon AppContext::beanDeliver 方法
 * snack3 升为 3.2.111
