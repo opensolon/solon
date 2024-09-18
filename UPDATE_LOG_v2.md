@@ -35,6 +35,7 @@
 * 添加 solon-web-cross CrossInterceptor::pathPatterns(..) 方法
 * snack3 升为 3.2.111
 * beetlsql 升为 3.30.13-RELEASE
+* asm 升为 9.7
 
 ### 2.9.3
 * 新增 solon-web-vertx 插件
