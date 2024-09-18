@@ -40,9 +40,14 @@
 * 添加 solon AppContext::beanExclude 方法
 * 添加 solon-cloud Event:broadcast 属性
 * 添加 solon-web-cross CrossInterceptor::pathPatterns(..) 方法
-* snack3 升为 3.2.110
+* snack3 升为 3.2.111
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
 * beetlsql 升为 3.30.13-RELEASE
 * easy-trans 升为 1.3.1
 * wood 升为 1.3.5
+* asm 升为 9.7
+* lombok 升为 1.18.34
+* native-tool 升为 0.10.3
+* maven-compiler 升为 3.13.0
+* maven-assembly 升为 3.7.1
