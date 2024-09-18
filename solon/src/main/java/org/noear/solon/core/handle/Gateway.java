@@ -182,7 +182,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected void handleDo(Context c) throws Throwable {
+    public void handleDo(Context c) throws Throwable {
         Handler m = find(c);
         Object obj = null;
 
