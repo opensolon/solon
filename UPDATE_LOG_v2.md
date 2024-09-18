@@ -27,6 +27,9 @@
 * 取消 HandlerProxy ，不太合理（尤其是对本地网关）
 * 调整 solon Gateway:find 改为 public
 * 添加 solon AppContext::beanExclude 方法
+* 添加 solon AppContext::beanDeliver 方法
+* snack3 升为 3.2.111
+* beetlsql 升为 3.30.13-RELEASE
 
 ### 2.9.3
 * 新增 solon-web-vertx 插件

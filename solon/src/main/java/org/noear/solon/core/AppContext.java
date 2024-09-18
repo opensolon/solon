@@ -345,12 +345,24 @@ public class AppContext extends BeanContainer {
     }
 
     /**
+     * bean 交付
+     *
+     * @param bw Bean 包装
+     * @since 2.9
+     */
+    public void beanDeliver(BeanWrap bw) {
+        beanShapeRegister(bw.clz(), bw, bw.clz());
+    }
+
+    /**
      * 尝试 bean 形态注册
      *
      * @param clz    类
      * @param bw     Bean 包装
      * @param annoEl 有注解元素（类 或 方法）
+     * @deprecated 2.9
      */
+    @Deprecated
     public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
         if (bw.raw() == null) {
             return;
