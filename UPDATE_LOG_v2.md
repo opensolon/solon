@@ -21,6 +21,13 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 2.9.4
+
+* 取消 Ds 注解（刚加还没用）
+* 取消 HandlerProxy ，不太合理（尤其是对本地网关）
+* 调整 solon Gateway:find 改为 public
+* 添加 solon AppContext::beanExclude 方法
+
 ### 2.9.3
 * 新增 solon-web-vertx 插件
 * 新增 solon 分类注入支持体系
