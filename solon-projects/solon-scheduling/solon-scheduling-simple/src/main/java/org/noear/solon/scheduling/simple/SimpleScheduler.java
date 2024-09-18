@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -60,6 +61,7 @@ public class SimpleScheduler implements Lifecycle {
      * 执行任务
      */
     private ScheduledFuture<?> jobFutureOfFixed;
+    private Future<?> jobFutureOfCron;
 
     public SimpleScheduler(JobHolder jobHolder) {
         this.jobHolder = jobHolder;
@@ -120,6 +122,10 @@ public class SimpleScheduler implements Lifecycle {
         if (jobFutureOfFixed != null) {
             jobFutureOfFixed.cancel(false);
         }
+
+        if (jobFutureOfCron != null) {
+            jobFutureOfCron.cancel(false);
+        }
     }
 
 
@@ -161,7 +167,7 @@ public class SimpleScheduler implements Lifecycle {
 
             if (sleepMillis >= 0) {
                 if (sleepMillis <= 1000) {
-                    RunUtil.parallel(this::exec0);
+                    jobFutureOfCron = RunUtil.parallel(this::exec0);
                 }
 
                 baseTime = nextTime;
