@@ -66,8 +66,16 @@ public @interface Bean {
 
     /**
      * 要注册的（能力接口）
+     *
+     * @deprecated 2.9
      */
+    @Deprecated
     boolean registered() default true;
+
+    /**
+     * 要交付的（特定能力接口交付）
+     */
+    boolean delivered() default true;
 
     /**
      * 要注入的

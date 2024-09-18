@@ -209,7 +209,7 @@ public class AppContext extends BeanContainer {
             //确定顺序位
             bw.indexSet(anno.index());
 
-            beanComponentized(bw, anno.registered());
+            beanComponentized(bw, anno.registered() && anno.delivered());
         });
 
         //注册 @ProxyComponent 构建器 //@deprecated 2.5
@@ -846,7 +846,7 @@ public class AppContext extends BeanContainer {
             m_bw.indexSet(anno.index());
 
             //添加bean形态处理
-            if (anno.registered()) {
+            if (anno.registered() && anno.delivered()) {
                 beanShapeRegister(m_bw.clz(), m_bw, mWrap.getMethod());
             }
 
