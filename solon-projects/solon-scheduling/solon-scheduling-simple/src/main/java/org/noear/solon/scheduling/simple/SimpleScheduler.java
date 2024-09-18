@@ -56,11 +56,6 @@ public class SimpleScheduler implements Lifecycle {
      * 下次执行时间
      */
     private Date nextTime;
-
-    /**
-     * 执行线程
-     */
-    private Thread jobThreadOfCron;
     /**
      * 执行任务
      */
@@ -107,13 +102,7 @@ public class SimpleScheduler implements Lifecycle {
                     jobHolder.getScheduled().initialDelay(),
                     jobHolder.getScheduled().fixedRate());
         } else {
-            jobThreadOfCron = new Thread(this::run);
-
-            if (Utils.isNotEmpty(jobHolder.getName())) {
-                jobThreadOfCron.setName("Job:" + jobHolder.getName());
-            }
-
-            jobThreadOfCron.start();
+            RunUtil.parallel(this::run);
         }
     }
 
@@ -128,10 +117,6 @@ public class SimpleScheduler implements Lifecycle {
             isStarted = false;
         }
 
-        if (jobThreadOfCron != null) {
-            jobThreadOfCron.interrupt();
-        }
-
         if (jobFutureOfFixed != null) {
             jobFutureOfFixed.cancel(false);
         }
@@ -143,21 +128,25 @@ public class SimpleScheduler implements Lifecycle {
             baseTime = new Date();
         }
 
-        while (true) {
-            if (isStarted == false) {
-                break;
-            }
+        if (isStarted == false) {
+            return;
+        }
 
-            try {
-                runAsCron();
-            } catch (Throwable e) {
-                e = Utils.throwableUnwrap(e);
-                //过滤中断异常
-                if (e instanceof InterruptedException == false) {
-                    log.warn(e.getMessage(), e);
-                }
+        try {
+            runAsCron();
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            //过滤中断异常
+            if (e instanceof InterruptedException == false) {
+                log.warn(e.getMessage(), e);
             }
         }
+
+        if (sleepMillis < 0) {
+            sleepMillis = 100;
+        }
+
+        RunUtil.delay(this::run, sleepMillis);
     }
 
     /**
@@ -189,8 +178,6 @@ public class SimpleScheduler implements Lifecycle {
         if (nextTime == null) {
             isStarted = false;
             log.warn("The cron expression has expired, and the job is complete!");
-        } else {
-            sleep0(sleepMillis);
         }
     }
 
@@ -202,18 +189,6 @@ public class SimpleScheduler implements Lifecycle {
             jobHolder.handle(null);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
-        }
-    }
-
-    private void sleep0(long millis) {
-        if (millis < 0) {
-            millis = 100;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (Throwable e) {
-            //过滤异常
         }
     }
 }
