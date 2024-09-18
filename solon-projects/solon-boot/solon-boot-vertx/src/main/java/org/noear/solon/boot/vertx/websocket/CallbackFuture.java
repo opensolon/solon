@@ -13,20 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.boot.vertx.websocket;
 
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.web.vertx.VxWebHandler;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
 
-import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
+ * 回调未来特性
+ *
  * @author noear
- * @since 2.9
- */
-public class VxWebHandlerPlus extends VxWebHandler {
+ * @since 3.0
+ * */
+public class CallbackFuture extends CompletableFuture<Void> implements Handler<AsyncResult<Void>> {
     @Override
-    protected void preHandle(Context ctx) throws IOException {
-        super.preHandle(ctx);
+    public void handle(AsyncResult<Void> ar) {
+        if (ar.succeeded()) {
+            this.complete(null);
+        } else {
+            this.completeExceptionally(ar.cause());
+        }
     }
 }

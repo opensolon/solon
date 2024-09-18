@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.boot.vertx.http;
 
-import org.noear.solon.web.vertx.VxHandler;
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.vertx.XPluginImp;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.vertx.VxWebHandler;
+
+import java.io.IOException;
 
 /**
  * @author noear
  * @since 2.9
  */
-public class VxHandlerSupplierDefault implements VxHandlerSupplier {
-    private final VxWebHandler handler;
-
-    public VxHandlerSupplierDefault() {
-        handler = new VxWebHandlerPlus();
-    }
-
+public class VxWebHandlerPlus extends VxWebHandler {
     @Override
-    public VxHandler get() {
-        return handler;
+    protected void preHandle(Context ctx) throws IOException {
+        if (ServerProps.output_meta) {
+            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+        }
     }
 }
