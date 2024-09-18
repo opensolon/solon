@@ -32,6 +32,7 @@
 * 添加 solon Bean:delivered 替代 registered
 * 添加 solon Component:delivered 替代 registered
 * 添加 solon-boot-vertx websocket 支持
+* 添加 solon-web-cross CrossInterceptor::pathPatterns(..) 方法
 * snack3 升为 3.2.111
 * beetlsql 升为 3.30.13-RELEASE
 
