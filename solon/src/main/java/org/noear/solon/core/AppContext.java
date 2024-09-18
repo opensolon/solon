@@ -392,7 +392,7 @@ public class AppContext extends BeanContainer {
         if (bw.raw() instanceof Handler) {
             Mapping mapping = annoEl.getAnnotation(Mapping.class);
             if (mapping != null) {
-                Handler handler = new HandlerProxy(bw); //支持原型
+                Handler handler = bw.raw(); //支持原型
                 Set<MethodType> v0 = FactoryManager.getGlobal().mvcFactory().findMethodTypes(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
@@ -589,6 +589,16 @@ public class AppContext extends BeanContainer {
     }
 
     ////////////
+
+    /**
+     * 排除扫描类（需要在扫描之前排除）
+     */
+    public void beanExclude(Class<?>... clzs) {
+        //相当于提前构建了
+        for (Class<?> clz : clzs) {
+            beanBuildedCached.add(clz);
+        }
+    }
 
     /**
      * 根据注解配置导入bean
