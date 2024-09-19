@@ -42,7 +42,8 @@
 * 添加 solon-boot-vertx websocket 支持
 * 添加 solon AppContext::beanExclude 方法
 * 添加 solon-cloud Event:broadcast 属性
-* 添加 solon-web-cross CrossInterceptor::pathPatterns(..) 方法
+* 添加 solon-web-cross CrossInterceptor::pathPatterns(.) 方法
+* 修复 jdk21 + win10 + solon.logging.simple 打包后无法输出日志
 * snack3 升为 3.2.111
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
