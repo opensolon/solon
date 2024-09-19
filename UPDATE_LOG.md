@@ -39,6 +39,8 @@
 * 优化 solon Bean:delivered 替代 registered
 * 优化 solon Component:delivered 替代 registered
 * 优化 kafka-solon-cloud-plugin 添加自动延时重试模拟实现
+* 优化 grpc-solon-cloud-plugin GrpcClient 注解处理添加必须
+* 优化 thrift-solon-cloud-plugin ThriftClient 注解处理添加必须
 * 添加 solon Duration 类型配置注入
 * 添加 solon-boot-vertx websocket 支持
 * 添加 solon AppContext::beanExclude 方法
