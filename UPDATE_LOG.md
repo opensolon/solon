@@ -31,10 +31,13 @@
 * 移除 无关配置的弃用代码（具体参考对应表）
 * 移除 部分事件扩展（具体参考对应表）
 * 取消 HandlerProxy ，不太合理（尤其是对本地网关）
+* 调整 solon-logging OutputStreamAppender 彩色打印
 * 调整 solon-net WebSocket:paramMap 改为 MultiMap 类型
 * 调整 solon-net WebSocket:send 改为 Future<Void>
 * 调整 solon Gateway:find 改为 public
 * 优化 solon Gateway 在过滤之前构建 ctx.action()
+* 优化 solon Bean:delivered 替代 registered
+* 优化 solon Component:delivered 替代 registered
 * 添加 solon Duration 类型配置注入
 * 添加 solon-boot-vertx websocket 支持
 * 添加 solon AppContext::beanExclude 方法
