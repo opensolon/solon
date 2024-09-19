@@ -16,6 +16,7 @@
 package org.noear.solon.logging.appender;
 
 import org.noear.snack.ONode;
+import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
@@ -33,6 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class OutputStreamAppender extends AppenderSimple {
     protected PrintWriter out = null;
     protected final ReentrantLock SYNC_LOCK = new ReentrantLock(true);
+
     protected void setOutput(PrintWriter writer) {
         if (writer == null) {
             return;
@@ -68,19 +70,19 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             //
             switch (level) {
                 case ERROR:
-                    PrintUtil.redln(title);
+                    redln(title);
                     break;
                 case WARN:
-                    PrintUtil.yellowln(title);
+                    yellowln(title);
                     break;
                 case DEBUG:
-                    PrintUtil.blueln(title);
+                    blueln(title);
                     break;
                 case TRACE:
-                    PrintUtil.purpleln(title);
+                    purpleln(title);
                     break;
                 default:
-                    PrintUtil.greenln(title);
+                    greenln(title);
                     break;
             }
 
@@ -93,6 +95,36 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             }
         } finally {
             SYNC_LOCK.unlock();
+        }
+    }
+
+
+    protected void redln(Object txt) {
+        colorln(PrintUtil.ANSI_RED, txt);
+    }
+
+    protected void blueln(Object txt) {
+        colorln(PrintUtil.ANSI_BLUE, txt);
+    }
+
+    protected void greenln(Object txt) {
+        colorln(PrintUtil.ANSI_GREEN, txt);
+    }
+
+    protected void purpleln(Object txt) {
+        colorln(PrintUtil.ANSI_PURPLE, txt);
+    }
+
+    protected void yellowln(Object txt) {
+        colorln(PrintUtil.ANSI_YELLOW, txt);
+    }
+
+    protected void colorln(String color, Object s) {
+        if (JavaUtil.IS_WINDOWS) {
+            out.println(s);
+        } else {
+            out.println(color + s);
+            out.print(PrintUtil.ANSI_RESET);
         }
     }
 }
