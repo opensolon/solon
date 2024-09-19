@@ -29,7 +29,7 @@ public class ConsoleAppender extends OutputStreamAppender {
         Console console = System.console();
 
         if (console != null && console.writer() != null) {
-            setOutput(console.writer());
+            setOutput(new PrintWriter(console.writer(), true));
         } else {
             setOutput(new PrintWriter(System.out, true));
         }
