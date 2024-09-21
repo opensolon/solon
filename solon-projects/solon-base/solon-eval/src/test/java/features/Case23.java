@@ -2,11 +2,15 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.eval.CodeSpec;
-import org.noear.solon.eval.Evaluator;
+import org.noear.solon.eval.Soal;
+import org.noear.solon.test.SolonTest;
+
 
 /**
- * @author noear 2024/9/20 created
+ * @author noear
+ * @since 3.0
  */
+@SolonTest
 public class Case23 {
     @Test
     public void test() throws Exception {
@@ -24,6 +28,6 @@ public class Case23 {
                 "    }") //name 为外部参数
                 .returnType(Object.class);
 
-        System.out.println(Evaluator.eval(code1));
+        System.out.println(Soal.eval(code1));
     }
 }

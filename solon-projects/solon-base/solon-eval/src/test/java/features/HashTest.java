@@ -3,10 +3,14 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.eval.CodeSpec;
 import org.noear.solon.eval.ParamSpec;
+import org.noear.solon.test.SolonTest;
+
 
 /**
- * @author noear 2024/9/20 created
+ * @author noear
+ * @since 3.0
  */
+@SolonTest
 public class HashTest {
     @Test
     public void test() throws Exception {

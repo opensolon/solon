@@ -19,12 +19,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
- * 评估器工具
+ * 评估器工具（Solon Evaluator）
  *
  * @author noear
  * @since 3.0
  */
-public interface Evaluator {
+public interface Soal {
     /**
      * 获取实例
      */

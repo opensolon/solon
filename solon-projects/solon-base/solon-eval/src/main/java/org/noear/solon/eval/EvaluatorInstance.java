@@ -16,12 +16,17 @@
 package org.noear.solon.eval;
 
 import org.noear.liquor.DynamicCompiler;
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppClassLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,7 +39,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 3.0
  */
 public class EvaluatorInstance {
-    private static final EvaluatorInstance instance = new EvaluatorInstance();
+    private static final Logger log = LoggerFactory.getLogger(EvaluatorInstance.class);
+    private static final EvaluatorInstance instance;
+    static {
+        instance = new EvaluatorInstance();
+        //添加全局导入
+        instance.addImport(Solon.class);
+    }
 
     /**
      * 获取快捷实例
@@ -48,6 +59,8 @@ public class EvaluatorInstance {
 
     private DynamicCompiler compiler;
 
+
+    private final List<Class<?>> importList = new ArrayList<>();
     private final Map<CodeSpec, Execable> cachedMap = new ConcurrentHashMap<>();
     private final Map<CodeSpec, String> nameMap = new ConcurrentHashMap<>();
     private final AtomicLong nameCounter = new AtomicLong(0L);
@@ -76,6 +89,10 @@ public class EvaluatorInstance {
 
         StringBuilder importBuilder = new StringBuilder();
         StringBuilder codeBuilder = new StringBuilder();
+
+        for (Class<?> clz : importList) {
+            importBuilder.append("import ").append(clz.getCanonicalName()).append(";\n");
+        }
 
         if (codeSpec.getImports() != null && codeSpec.getImports().length > 0) {
             for (Class<?> clz : codeSpec.getImports()) {
@@ -149,10 +166,6 @@ public class EvaluatorInstance {
         }
         code.append("}");
 
-        if (printable) {
-            System.out.println(code);
-        }
-
         //添加编译锁
         lock.tryLock();
 
@@ -162,6 +175,10 @@ public class EvaluatorInstance {
 
             return compiler.getClassLoader().loadClass(clazzName);
         } catch (Exception e) {
+            if (printable || Solon.cfg().isDebugMode()) {
+                log.debug(code.toString());
+            }
+
             throw new IllegalStateException(e);
         } finally {
             lock.unlock();
@@ -173,6 +190,15 @@ public class EvaluatorInstance {
      */
     public void setPrintable(boolean printable) {
         this.printable = printable;
+    }
+
+    /**
+     * 添加导入
+     */
+    public void addImport(Class<?>... classes) {
+        for (int i = 0; i < classes.length; i++) {
+            importList.add(classes[i]);
+        }
     }
 
     /**
