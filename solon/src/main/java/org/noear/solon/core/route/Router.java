@@ -141,10 +141,32 @@ public interface Router {
     /**
      * 获取某个处理点的所有路由记录（管理用）
      *
+     * @return 处理点的所有路由记录
+     * @since 2.9
+     */
+    default Collection<Routing<Handler>> getAll() {
+        return getAll(Endpoint.main);
+    }
+
+
+    /**
+     * 获取某个处理点的所有路由记录（管理用）
+     *
      * @param endpoint 处理点
      * @return 处理点的所有路由记录
      */
     Collection<Routing<Handler>> getAll(Endpoint endpoint);
+
+    /**
+     * 获取某个路径的某个处理点的路由记录（管理用）
+     *
+     * @param path 路径
+     * @return 路径处理点的路由记录
+     * @since 2.9
+     */
+    default Collection<Routing<Handler>> getBy(String path) {
+        return getBy(path, Endpoint.main);
+    }
 
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
@@ -155,6 +177,17 @@ public interface Router {
      * @since 2.6
      */
     Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
+
+
+    /**
+     * 获取某个控制器的路由记录（管理用）
+     *
+     * @param controllerClz 控制器类
+     * @since 2.9
+     */
+    default Collection<Routing<Handler>> getBy(Class<?> controllerClz) {
+        return getBy(controllerClz, Endpoint.main);
+    }
 
     /**
      * 获取某个控制器的路由记录（管理用）

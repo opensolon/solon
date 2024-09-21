@@ -23,10 +23,6 @@
 
 ### 2.9.4
 
-* 取消 Ds 注解（刚加还没用）
-* 取消 HandlerProxy ，不太合理（尤其是对本地网关）
-* 调整 solon Gateway:find 改为 public
-* 调整 solon-logging OutputStreamAppender 彩色打印
 * 添加 solon Duration 类型配置注入
 * 添加 solon AppContext::beanExclude 方法
 * 添加 solon AppContext::beanDeliver 方法
@@ -38,6 +34,10 @@
 * 优化 grpc-solon-cloud-plugin GrpcClient 注解处理添加必须
 * 优化 thrift-solon-cloud-plugin ThriftClient 注解处理添加必须
 * 修复 jdk21 + win10 + solon-logging-simple 打包后无法输出日志的问题
+* 调整 solon Gateway:find 改为 public
+* 调整 solon-logging OutputStreamAppender 彩色打印
+* 取消 Ds 注解（未启用）
+* 取消 HandlerProxy ，不太合理（尤其是对本地网关）
 * snack3 升为 3.2.111
 * beetlsql 升为 3.30.13-RELEASE
 * asm 升为 9.7
