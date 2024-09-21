@@ -67,16 +67,7 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public static void register(Render render) {
-        if (render == null) {
-            return;
-        }
-
-        _def = render;
-        _lib.put(render.getClass().getSimpleName(), render);
-        _lib.put(render.getClass().getName(), render);
-
-        LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
-        LogUtil.global().info("View: load: " + render.getClass().getName());
+        mapping(null, render);
     }
 
     /**
@@ -90,7 +81,14 @@ public class RenderManager implements Render {
             return;
         }
 
-        if (Utils.isNotEmpty(suffix)) {
+        if (Utils.isEmpty(suffix)) {
+            _def = render;
+            _lib.put(render.getClass().getSimpleName(), render);
+            _lib.put(render.getClass().getName(), render);
+
+            LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
+            LogUtil.global().info("View: load: " + render.getClass().getName());
+        } else {
             //suffix=.ftl
             _mapping.put(suffix, render);
 
