@@ -44,7 +44,7 @@ public class EvaluatorInstance {
     static {
         instance = new EvaluatorInstance();
         //添加全局导入
-        instance.addImport(Solon.class);
+        instance.addImports(Solon.class);
     }
 
     /**
@@ -60,10 +60,10 @@ public class EvaluatorInstance {
     private DynamicCompiler compiler;
 
 
-    private final List<Class<?>> importList = new ArrayList<>();
+    private final List<Class<?>> importAry = new ArrayList<>();
     private final Map<CodeSpec, Execable> cachedMap = new ConcurrentHashMap<>();
     private final Map<CodeSpec, String> nameMap = new ConcurrentHashMap<>();
-    private final AtomicLong nameCounter = new AtomicLong(0L);
+    private final AtomicLong nameIdx = new AtomicLong(0L);
     private final ReentrantLock lock = new ReentrantLock();
 
     /**
@@ -90,7 +90,7 @@ public class EvaluatorInstance {
         StringBuilder importBuilder = new StringBuilder();
         StringBuilder codeBuilder = new StringBuilder();
 
-        for (Class<?> clz : importList) {
+        for (Class<?> clz : importAry) {
             importBuilder.append("import ").append(clz.getCanonicalName()).append(";\n");
         }
 
@@ -195,9 +195,9 @@ public class EvaluatorInstance {
     /**
      * 添加导入
      */
-    public void addImport(Class<?>... classes) {
+    public void addImports(Class<?>... classes) {
         for (int i = 0; i < classes.length; i++) {
-            importList.add(classes[i]);
+            importAry.add(classes[i]);
         }
     }
 
@@ -206,7 +206,7 @@ public class EvaluatorInstance {
      */
     protected String getKey(CodeSpec codeSpec) {
         //中转一下，可避免有相同 hash 的情况
-        return nameMap.computeIfAbsent(codeSpec, k -> String.valueOf(nameCounter.incrementAndGet()));
+        return nameMap.computeIfAbsent(codeSpec, k -> String.valueOf(nameIdx.incrementAndGet()));
     }
 
     /**
