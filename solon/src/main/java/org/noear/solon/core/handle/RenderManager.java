@@ -62,20 +62,24 @@ public class RenderManager implements Render {
     }
 
     /**
-     * 登记渲染器
+     * 登记渲染器（改用 Solon.app().render(null, render)）
      *
      * @param render 渲染器
+     * @deprecated 2.9
      */
+    @Deprecated
     public static void register(Render render) {
         mapping(null, render);
     }
 
     /**
-     * 映射后缀和渲染器的关系
+     * 映射后缀和渲染器的关系（改用 Solon.app().render(suffix, render)）
      *
      * @param suffix 后缀（例：.ftl）
      * @param render 渲染器
+     * @deprecated 2.9
      */
+    @Deprecated
     public static void mapping(String suffix, Render render) {
         if (render == null) {
             return;

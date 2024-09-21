@@ -30,6 +30,7 @@
 * 添加 solon Component:delivered 替代 registered
 * 添加 solon-boot-vertx websocket 支持
 * 添加 solon-web-cross CrossInterceptor::pathPatterns() 方法
+* 添加 solon Router:getAll(), getBy(path) 方法
 * 优化 kafka-solon-cloud-plugin 添加自动延时重试模拟实现
 * 优化 grpc-solon-cloud-plugin GrpcClient 注解处理添加必须
 * 优化 thrift-solon-cloud-plugin ThriftClient 注解处理添加必须
@@ -38,6 +39,7 @@
 * 调整 solon-logging OutputStreamAppender 彩色打印
 * 取消 Ds 注解（未启用）
 * 取消 HandlerProxy ，不太合理（尤其是对本地网关）
+* 取消 Solon:versionCode
 * snack3 升为 3.2.111
 * beetlsql 升为 3.30.13-RELEASE
 * asm 升为 9.7
