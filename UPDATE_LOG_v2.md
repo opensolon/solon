@@ -69,7 +69,7 @@
 * 提醒 solon AppContext::beanAroundAdd 添加弃用打印日志
 * 提醒 solon 添加不支持单例的打印日志 
 * 修复 solon BeanWrap::rawClz 处理 anonymousClass 失误的问题
-* wood 升为 1.3.4
+* wood 升为 1.3.6
 * redisson 升为 3.35.0
 * bean-searcher 升为 4.3.2
 
