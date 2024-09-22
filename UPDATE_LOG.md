@@ -37,6 +37,7 @@
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
 * easy-trans 升为 1.3.1
+* dromara-plugins 升为 0.1.3
 * lombok 升为 1.18.34
 * native-tool 升为 0.10.3
 * maven-compiler 升为 3.13.0
