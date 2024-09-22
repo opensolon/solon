@@ -406,11 +406,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-eval</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-rx</artifactId>
                 <version>${solon.version}</version>
             </dependency>

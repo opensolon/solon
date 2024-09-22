@@ -23,7 +23,6 @@
         <module>../../solon-projects/solon-base/solon-i18n</module>
         <module>../../solon-projects/solon-base/solon-mvc</module>
         <module>../../solon-projects/solon-base/solon-hotplug</module>
-        <module>../../solon-projects/solon-base/solon-eval</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
         <module>../../solon-projects/solon-config/solon-config-plus</module>

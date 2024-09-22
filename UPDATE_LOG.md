@@ -23,7 +23,6 @@
 
 ### v3.0.0
 
-* 新增 solon-eval 插件
 * 移除 solon `Before`、`After` 体系，（统一为 `Filter` 体系） // ok（化敏为简）
 * 移除 solon `@ProxyComponent` (统一为 `@Component`) //ok（化敏为简）
 * 移除 solon `Bean:registered` 由 `:delivered` 替代
