@@ -61,6 +61,9 @@ public class CloudEventSubscribeBeanExtractor implements BeanExtractor<CloudEven
         CloudEventMethodProxy hadnler2 = new CloudEventMethodProxy(bw, method, entityClz);
 
         CloudManager.register(anno2, hadnler2);
-        CloudClient.event().attention(anno2.level(), anno2.channel(), group2, topic2, anno2.tag(), anno2.qos(), hadnler2);
+
+        if (CloudClient.enableEvent()) {
+            CloudClient.event().attention(anno2.level(), anno2.channel(), group2, topic2, anno2.tag(), anno2.qos(), hadnler2);
+        }
     }
 }
