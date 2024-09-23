@@ -41,6 +41,9 @@ Solon v2.9.4
     <a target="_blank" href='https://github.com/noear/solon/stargazers'>
 		<img src="https://img.shields.io/github/stars/noear/solon.svg?style=flat&logo=github" alt="github star"/>
 	</a>
+    <a target="_blank" href='https://gitcode.com/noear/solon/star'>
+		<img src='https://gitcode.com/noear/solon/star/badge.svg' alt='gitee star'/>
+	</a>
 </p>
 
 <br/>
