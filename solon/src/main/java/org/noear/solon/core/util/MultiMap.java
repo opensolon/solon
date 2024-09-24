@@ -17,8 +17,8 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.lang.Nullable;
 
+import java.io.Serializable;
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * 多值，忽略大小写的LinkedMap
@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @author noear
  * @since 2.9
  */
-public class MultiMap<T> implements Iterable<KeyValues<T>> {
+public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
     protected final IgnoreCaseMap<KeyValues<T>> innerMap = new IgnoreCaseMap<>();
 
     @Override

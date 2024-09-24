@@ -15,10 +15,12 @@
  */
 package org.noear.solon.core.util;
 
+import java.io.Serializable;
+
 /**
  * 键值
  * */
-public class KeyValue<T> {
+public class KeyValue<T> implements Serializable {
     private String key;
     private T value;
 

@@ -15,13 +15,14 @@
  */
 package org.noear.solon.core.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 键值组
  * */
-public class KeyValues<T> {
+public class KeyValues<T> implements Serializable {
     private String key;
     private List<T> values;
 
