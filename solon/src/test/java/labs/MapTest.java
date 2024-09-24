@@ -15,6 +15,8 @@
  */
 package labs;
 
+import org.noear.solon.core.util.MultiMap;
+
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -33,5 +35,15 @@ public class MapTest {
         for (String v : loadKeyMap.values()) {
             System.out.println(v);
         }
+
+        /////////
+
+
+        MultiMap<String> map = new MultiMap<>();
+        map.add("a", "a");
+        map.add("b", "b1");
+        map.add("b", "b2");
+
+        System.out.println(map);
     }
 }

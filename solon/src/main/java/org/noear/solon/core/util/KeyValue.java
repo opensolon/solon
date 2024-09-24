@@ -40,4 +40,12 @@ public class KeyValue<T> {
     public T getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "key='" + key + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

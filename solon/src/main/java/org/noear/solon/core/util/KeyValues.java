@@ -16,7 +16,6 @@
 package org.noear.solon.core.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -104,5 +103,13 @@ public class KeyValues<T> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "key='" + key + '\'' +
+                ", values=" + values +
+                '}';
     }
 }

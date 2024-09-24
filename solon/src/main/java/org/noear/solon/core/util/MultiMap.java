@@ -196,4 +196,9 @@ public class MultiMap<T> implements Iterable<KeyValues<T>> {
 
         return tmp;
     }
+
+    @Override
+    public String toString() {
+        return innerMap.values().toString();
+    }
 }
