@@ -40,6 +40,7 @@ public class TestQuickConfig {
 
         dateDo.setDate(new Date(1673861993477L));
         dateDo.setDate2(new Date(1673861993477L));
+        dateDo.setDate3(new Date(1673861993477L));
 
         ContextEmpty ctx = new ContextEmpty();
         renderFactory.create().render(dateDo, ctx);

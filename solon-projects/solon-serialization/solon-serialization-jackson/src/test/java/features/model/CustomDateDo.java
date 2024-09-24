@@ -16,6 +16,7 @@
 package features.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,4 +32,7 @@ public class CustomDateDo {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date date2;
+
+    @JsonIgnore
+    private Date date3;
 }
