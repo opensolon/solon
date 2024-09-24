@@ -836,7 +836,8 @@ public class AppContext extends BeanContainer {
                 m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
             }
 
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
+            //允许@Bean注解采用函数名，即支持匿名@Bean
+            String beanName = Utils.valueOr(anno.value(), anno.name(), mWrap.getName());
 
             m_bw.nameSet(beanName);
             m_bw.tagSet(anno.tag());
