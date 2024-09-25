@@ -35,14 +35,14 @@ Solon v3.0.0-RC
 		<img src="https://img.shields.io/badge/JDK-22-green.svg" alt="jdk-22" />
 	</a>
     <br />
-    <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
-		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
+    <a target="_blank" href='https://gitee.com/opensolon/solon/stargazers'>
+		<img src='https://gitee.com/opensolon/solon/badge/star.svg' alt='gitee star'/>
 	</a>
-    <a target="_blank" href='https://github.com/noear/solon/stargazers'>
-		<img src="https://img.shields.io/github/stars/noear/solon.svg?style=flat&logo=github" alt="github star"/>
+    <a target="_blank" href='https://github.com/opensolon/solon/stargazers'>
+		<img src="https://img.shields.io/github/stars/opensolon/solon.svg?style=flat&logo=github" alt="github star"/>
 	</a>
-    <a target="_blank" href='https://gitcode.com/noear/solon/star'>
-		<img src='https://gitcode.com/noear/solon/star/badge.svg' alt='gitee star'/>
+    <a target="_blank" href='https://gitcode.com/opensolon/solon/star'>
+		<img src='https://gitcode.com/opensolon/solon/star/badge.svg' alt='gitee star'/>
 	</a>
 </p>
 
@@ -109,7 +109,7 @@ Built from scratch, with more flexible interface specifications and an open ecos
 ## Official website and related examples, cases：
 
 * Official website address：[https://solon.noear.org](https://solon.noear.org)
-* Official website supporting demos：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
+* Official website supporting demos：[https://gitee.com/opensolon/solon-examples](https://gitee.com/opensolon/solon-examples)
 * Project unit test：[__test](./__test/)
 * User case：[User open source project](https://solon.noear.org/article/555)、[User business project](https://solon.noear.org/article/cases)
 
