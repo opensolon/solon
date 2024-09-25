@@ -22,8 +22,9 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.util.DateUtil;
 import org.noear.solon.core.util.IoUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -38,6 +39,8 @@ import java.util.zip.GZIPOutputStream;
  * @since 2.4
  */
 public class OutputUtils {
+    static final Logger log = LoggerFactory.getLogger(OutputUtils.class);
+
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
@@ -269,7 +272,7 @@ public class OutputUtils {
             IoUtil.transferTo(stream, ctx.outputStream(), start, size);
         } catch (IOException e) {
             //会很常见，没必要异常
-            LogUtil.global().warn("The http range output is abnormal: " + e.getMessage());
+            log.debug("The http range output is abnormal: " + e.getMessage());
         }
     }
 

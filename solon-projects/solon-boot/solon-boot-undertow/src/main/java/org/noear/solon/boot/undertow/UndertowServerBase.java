@@ -27,9 +27,10 @@ import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.boot.web.SessionProps;
 import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
@@ -41,6 +42,8 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
+    static final Logger log = LoggerFactory.getLogger(UndertowServerBase.class);
+
     protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     protected boolean enableHttp2 = false;
@@ -75,7 +78,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
 
     @Override
     public void setExecutor(Executor executor) {
-        LogUtil.global().warn("Undertow does not support user-defined executor");
+        log.warn("Undertow does not support user-defined executor");
     }
 
     public HttpServerProps getProps() {
