@@ -225,16 +225,27 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             Object obj = c.attr(Constants.ATTR_CONTROLLER);
             boolean is_action = m instanceof Action;
 
-            mainDo0(c, m, obj, is_action);
+            mainExec(c, m, obj, is_action);
         }
     }
 
-    private void mainDo0(Context c, Handler m, Object obj, boolean is_action) throws Throwable {
+    protected void mainBefores(Context c) throws Throwable {
+        //预留（为兼容提供余地）
+    }
+
+    protected void mainAfters(Context c) throws Throwable {
+        //预留（为兼容提供余地）
+    }
+
+    private void mainExec(Context c, Handler m, Object obj, boolean is_action) throws Throwable {
         /**
          * 1.保持与Action相同的逻辑
          * */
 
         try {
+            //之前
+            mainBefores(c);
+
             //主处理（最多一次渲染）
             if (c.getHandled() == false) { //保留这个，过滤器可以有两种控制方式（软控，硬控）
                 if (is_action) {
@@ -258,6 +269,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 c.errors = e; //为 afters，留个参考
                 throw e;
             }
+        } finally {
+            //之后
+            mainAfters(c);
         }
     }
 
