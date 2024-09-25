@@ -122,7 +122,7 @@ public class DecodeUtils {
 
     private static  void decodeCookiesDo(Context ctx, String cookies, int offset) {
         //去掉头部空隔
-        while (offset < cookies.length() && cookies.charAt(offset + 1) == ' ') {
+        while (offset < cookies.length() && cookies.charAt(offset) == ' ') {
             offset++;
         }
 
@@ -132,15 +132,19 @@ public class DecodeUtils {
         }
         String name = cookies.substring(offset, idx1);
 
-        int idx2 = cookies.indexOf(";", idx1 + 1);
-        if ((offset = idx2) > 0) {
-            //去掉尾部空隔
-            while (offset > idx1 && cookies.charAt(offset - 1) == ' ') {
-                offset--;
-            }
+        int idx2 = cookies.indexOf(";", idx1);
+        if (idx2 < 0) {
+            //如果没有找到，则后面全是
+            idx2 = cookies.length();
         }
 
-        String value = offset > 0 ? cookies.substring(idx1 + 1, offset) : "";
+        //去掉尾部空隔
+        offset = idx2;
+        while (offset > idx1 && cookies.charAt(offset - 1) == ' ') {
+            offset--;
+        }
+
+        String value = cookies.substring(idx1 + 1, offset);
 
         ctx.cookieMap().add(name, value.trim());
 
