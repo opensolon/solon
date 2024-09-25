@@ -19,7 +19,7 @@ import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.boot.web.HeaderUtils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -158,7 +158,7 @@ public class JlHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        return HeaderUtils.getContentLengthLong(this);
+        return DecodeUtils.decodeContentLengthLong(this);
     }
     @Override
     public String queryString() {

@@ -20,7 +20,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 
 /**
- * 会话状态基类
+ * Web 会话状态基类
  *
  * @author noear
  * @since 1.7

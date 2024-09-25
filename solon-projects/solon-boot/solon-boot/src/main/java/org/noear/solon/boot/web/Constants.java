@@ -16,6 +16,8 @@
 package org.noear.solon.boot.web;
 
 /**
+ * Web 常量
+ *
  * @author noear
  * @since 2.1
  */

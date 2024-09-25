@@ -68,7 +68,7 @@ public class JdkHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -156,7 +156,7 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        return HeaderUtils.getContentLengthLong(this);
+        return DecodeUtils.decodeContentLengthLong(this);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class JdkHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw BodyUtils.status4xx(this, e);
+            throw DecodeUtils.status4xx(this, e);
         }
     }
 
@@ -222,7 +222,7 @@ public class JdkHttpContext extends WebContextBase {
                     }
                 }
             } catch (Exception e) {
-                throw BodyUtils.status4xx(this, e);
+                throw DecodeUtils.status4xx(this, e);
             }
         }
     }

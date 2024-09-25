@@ -19,7 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 /**
- * 会话状态基本属性
+ * Web 会话状态基本属性
  *
  * @author noear
  * @since 1.10

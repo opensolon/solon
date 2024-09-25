@@ -19,7 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 /**
- * 跳转工具
+ * Web 跳转工具
  *
  * @author noear
  * @since 1.11

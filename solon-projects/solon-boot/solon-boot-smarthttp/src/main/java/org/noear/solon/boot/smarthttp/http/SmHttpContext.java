@@ -80,7 +80,7 @@ public class SmHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -165,7 +165,7 @@ public class SmHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw BodyUtils.status4xx(this, e);
+            throw DecodeUtils.status4xx(this, e);
         }
     }
 
@@ -193,7 +193,7 @@ public class SmHttpContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                BodyUtils.decodeFormUrlencoded(this);
+                DecodeUtils.decodeFormUrlencoded(this);
 
                 //多分段处理
                 if (autoMultipart()) {
@@ -205,7 +205,7 @@ public class SmHttpContext extends WebContextBase {
                     _paramMap.holder(key).setValues(entry.getValue());
                 }
             } catch (Exception e) {
-                throw BodyUtils.status4xx(this, e);
+                throw DecodeUtils.status4xx(this, e);
             }
         }
     }

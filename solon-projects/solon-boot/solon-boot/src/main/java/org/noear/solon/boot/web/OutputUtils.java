@@ -32,7 +32,7 @@ import java.net.URLEncoder;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * 文件输出工具类
+ * Web 文件输出工具类
  *
  * @author noear
  * @since 2.4
