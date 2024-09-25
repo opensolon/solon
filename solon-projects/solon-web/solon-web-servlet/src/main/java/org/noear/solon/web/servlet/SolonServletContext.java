@@ -229,13 +229,8 @@ public class SolonServletContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            Cookie[] _cookies = _request.getCookies();
-
-            if (_cookies != null) {
-                for (Cookie c : _cookies) {
-                    _cookieMap.add(c.getName(), c.getValue());
-                }
-            }
+            //_request.cookies() 可能不支持多个同名 cookie
+            BodyUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }
 
         return _cookieMap;

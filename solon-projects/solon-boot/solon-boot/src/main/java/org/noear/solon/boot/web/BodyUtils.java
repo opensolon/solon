@@ -112,6 +112,23 @@ public class BodyUtils {
         }
     }
 
+    public static void decodeCookies(Context ctx, String cookies) {
+        if (Utils.isEmpty(cookies)) {
+            return;
+        }
+
+        String[] ss = cookies.split(";");
+
+        for (String s1 : ss) {
+            int idx = s1.indexOf('=');
+            if (idx > 0) {
+                String name = s1.substring(0, idx);
+                String value = s1.substring(idx + 1);
+                ctx.cookieMap().add(name.trim(), value.trim());
+            }
+        }
+    }
+
 
     //////////////////////
 
