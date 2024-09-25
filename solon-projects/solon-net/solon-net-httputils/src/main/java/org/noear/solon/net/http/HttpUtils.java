@@ -80,7 +80,7 @@ public interface HttpUtils {
     /**
      * 头配置
      */
-    HttpUtils headers(Map<String, String> headers);
+    HttpUtils headers(Map headers);
 
     /**
      * 头配置
@@ -98,6 +98,26 @@ public interface HttpUtils {
     HttpUtils headerAdd(String name, String value);
 
     /**
+     * 小饼配置
+     */
+    HttpUtils cookies(Map cookies);
+
+    /**
+     * 小饼配置
+     */
+    HttpUtils cookies(Iterable<KeyValues<String>> cookies);
+
+    /**
+     * 小饼配置（替换）
+     */
+    HttpUtils cookie(String name, String value);
+
+    /**
+     * 小饼配置（添加）
+     */
+    HttpUtils cookieAdd(String name, String value);
+
+    /**
      * 参数配置
      */
     HttpUtils data(Map data);
@@ -108,14 +128,14 @@ public interface HttpUtils {
     HttpUtils data(Iterable<KeyValues<String>> data);
 
     /**
-     * 参数配置
+     * 参数配置（替换）
      */
-    HttpUtils data(String key, String value);
+    HttpUtils data(String name, String value);
 
     /**
      * 参数配置
      */
-    HttpUtils data(String key, String filename, InputStream inputStream, String contentType);
+    HttpUtils data(String name, String filename, InputStream inputStream, String contentType);
 
     /**
      * 主体配置
@@ -151,11 +171,6 @@ public interface HttpUtils {
      * 主体配置
      */
     HttpUtils bodyRaw(InputStream raw, String contentType);
-
-    /**
-     * 主体配置
-     */
-    HttpUtils cookies(Map<String, String> cookies);
 
 
     /**

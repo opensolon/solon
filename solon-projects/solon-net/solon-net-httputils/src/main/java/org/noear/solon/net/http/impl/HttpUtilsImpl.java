@@ -20,20 +20,14 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-import org.noear.solon.Solon;
-import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.http.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -63,9 +57,10 @@ public class HttpUtilsImpl implements HttpUtils {
     private OkHttpClient _client;
     private String _url;
     private Charset _charset;
-    private Map<String, String> _cookies;
+    private MultiMap<String> _headers;
+    private MultiMap<String> _cookies;
+    private MultiMap<String> _params;
     private RequestBody _body;
-    private List<KeyValue<String>> _form;
     private boolean _multipart = false;
 
     private MultipartBody.Builder _part_builer;
@@ -143,7 +138,7 @@ public class HttpUtilsImpl implements HttpUtils {
      */
     @Override
     public HttpUtilsImpl userAgent(String ua) {
-        _builder.header("User-Agent", ua);
+        tryInitHeaders().put("User-Agent", ua);
         return this;
     }
 
@@ -160,10 +155,13 @@ public class HttpUtilsImpl implements HttpUtils {
      * 设置请求头
      */
     @Override
-    public HttpUtilsImpl headers(Map<String, String> headers) {
+    public HttpUtilsImpl headers(Map headers) {
         if (headers != null) {
+            tryInitHeaders();
             headers.forEach((k, v) -> {
-                _builder.header(k, v);
+                if (k != null && v != null) {
+                    _headers.put(k.toString(), v.toString());
+                }
             });
         }
 
@@ -173,11 +171,10 @@ public class HttpUtilsImpl implements HttpUtils {
     @Override
     public HttpUtils headers(Iterable<KeyValues<String>> headers) {
         if (headers != null) {
-            headers.forEach((kv) -> {
-                for (String val : kv.getValues()) {
-                    _builder.header(kv.getKey(), val);
-                }
-            });
+            tryInitHeaders();
+            for (KeyValues<String> kv : headers) {
+                _headers.holder(kv.getKey()).setValues(kv.getValues());
+            }
         }
 
         return this;
@@ -192,7 +189,7 @@ public class HttpUtilsImpl implements HttpUtils {
             return this;
         }
 
-        _builder.header(name, value);
+        tryInitHeaders().put(name, value);
         return this;
     }
 
@@ -205,7 +202,56 @@ public class HttpUtilsImpl implements HttpUtils {
             return this;
         }
 
-        _builder.addHeader(name, value);
+        tryInitHeaders().add(name, value);
+        return this;
+    }
+
+    /**
+     * 设置请求 cookies
+     */
+    @Override
+    public HttpUtilsImpl cookies(Map cookies) {
+        if (cookies != null) {
+            tryInitCookies();
+            cookies.forEach((k, v) -> {
+                if (k != null && v != null) {
+                    _cookies.put(k.toString(), v.toString());
+                }
+            });
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils cookies(Iterable<KeyValues<String>> cookies) {
+        if (cookies != null) {
+            tryInitCookies();
+            for (KeyValues<String> kv : cookies) {
+                _cookies.holder(kv.getKey()).setValues(kv.getValues());
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils cookie(String name, String value) {
+        if (name == null || value == null) {
+            return this;
+        }
+
+        tryInitCookies().put(name, value);
+        return this;
+    }
+
+    @Override
+    public HttpUtils cookieAdd(String name, String value) {
+        if (name == null || value == null) {
+            return this;
+        }
+
+        tryInitCookies().add(name, value);
         return this;
     }
 
@@ -215,11 +261,10 @@ public class HttpUtilsImpl implements HttpUtils {
     @Override
     public HttpUtilsImpl data(Map data) {
         if (data != null) {
-            tryInitForm();
-
+            tryInitParams();
             data.forEach((k, v) -> {
                 if (k != null && v != null) {
-                    _form.add(new KeyValue(k.toString(), v.toString()));
+                    _params.put(k.toString(), v.toString());
                 }
             });
         }
@@ -230,13 +275,10 @@ public class HttpUtilsImpl implements HttpUtils {
     @Override
     public HttpUtils data(Iterable<KeyValues<String>> data) {
         if (data != null) {
-            tryInitForm();
-
-            data.forEach((kv) -> {
-                for (String val : kv.getValues()) {
-                    _form.add(new KeyValue(kv.getKey(), val));
-                }
-            });
+            tryInitParams();
+            for (KeyValues<String> kv : data) {
+                _params.holder(kv.getKey()).setValues(kv.getValues());
+            }
         }
 
         return this;
@@ -246,13 +288,12 @@ public class HttpUtilsImpl implements HttpUtils {
      * 设置表单数据
      */
     @Override
-    public HttpUtilsImpl data(String key, String value) {
-        if (key == null || value == null) {
+    public HttpUtilsImpl data(String name, String value) {
+        if (name == null || value == null) {
             return this;
         }
 
-        tryInitForm();
-        _form.add(new KeyValue(key, value));
+        tryInitParams().add(name, value);
         return this;
     }
 
@@ -267,9 +308,7 @@ public class HttpUtilsImpl implements HttpUtils {
         }
 
         multipart(true);
-        tryInitPartBuilder(MultipartBody.FORM);
-
-        _part_builer.addFormDataPart(key,
+        tryInitPartBuilder().addFormDataPart(key,
                 filename,
                 new StreamBody(contentType, inputStream));
 
@@ -348,24 +387,6 @@ public class HttpUtilsImpl implements HttpUtils {
         return this;
     }
 
-
-    /**
-     * 设置请求 cookies
-     */
-    @Override
-    public HttpUtilsImpl cookies(Map<String, String> cookies) {
-        if (cookies != null) {
-            tryInitCookies();
-
-            cookies.forEach((k, v) -> {
-                _cookies.put(k.toString(), v.toString());
-            });
-        }
-
-        return this;
-    }
-
-
     private void execCallback(Response resp, Exception err) {
         try {
             if (_callback == null) {
@@ -388,12 +409,22 @@ public class HttpUtilsImpl implements HttpUtils {
 
 
     private HttpResponse execDo(String mothod) throws IOException {
-        if (_multipart) {
-            tryInitPartBuilder(MultipartBody.FORM);
+        if(_headers != null) {
+            _headers.forEach(kv -> {
+                for (String val : kv.getValues()) {
+                    _builder.addHeader(kv.getKey(), val);
+                }
+            });
+        }
 
-            if (_form != null) {
-                _form.forEach((kv) -> {
-                    _part_builer.addFormDataPart(kv.getKey(), kv.getValue());
+        if (_multipart) {
+            tryInitPartBuilder();
+
+            if (_params != null) {
+                _params.forEach((kv) -> {
+                    for (String val : kv.getValues()) {
+                        _part_builer.addFormDataPart(kv.getKey(), val);
+                    }
                 });
             }
 
@@ -403,13 +434,15 @@ public class HttpUtilsImpl implements HttpUtils {
                 //这里不要取消（内容为空时，会出错）
             }
         } else {
-            if (_form != null) {
-                FormBody.Builder fb = new FormBody.Builder(_charset);
+            if (_params != null) {
+                FormBody.Builder _form_builer = new FormBody.Builder(_charset);
 
-                _form.forEach((kv) -> {
-                    fb.add(kv.getKey(), kv.getValue());
+                _params.forEach((kv) -> {
+                    for (String val : kv.getValues()) {
+                        _form_builer.add(kv.getKey(), val);
+                    }
                 });
-                _body = fb.build();
+                _body = _form_builer.build();
             }
         }
 
@@ -586,60 +619,49 @@ public class HttpUtilsImpl implements HttpUtils {
         return execAsCode("HEAD");
     }
 
-    private static String getRequestCookieString(Map<String, String> cookies) {
+    private static String getRequestCookieString(MultiMap<String> cookies) {
         StringBuilder sb = new StringBuilder();
-        boolean first = true;
 
-        for (Map.Entry<String, String> kv : cookies.entrySet()) {
-            sb.append(kv.getKey()).append('=').append(kv.getValue());
-            if (!first) {
-                sb.append("; ");
-            } else {
-                first = false;
+        for (KeyValues<String> kv : cookies) {
+            for (String val : kv.getValues()) {
+                sb.append(kv.getKey()).append('=').append(val).append(";");
             }
+        }
+
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 1);
         }
 
         return sb.toString();
     }
 
-    private void tryInitPartBuilder(MediaType type) {
+    private MultipartBody.Builder tryInitPartBuilder() {
         if (_part_builer == null) {
-            _part_builer = new MultipartBody.Builder().setType(type);
+            _part_builer = new MultipartBody.Builder().setType(MultipartBody.FORM);
         }
+
+        return _part_builer;
     }
 
-    private void tryInitForm() {
-        if (_form == null) {
-            _form = new ArrayList<>();
+    private MultiMap<String> tryInitParams() {
+        if (_params == null) {
+            _params = new MultiMap<>();
         }
+        return _params;
     }
 
-    private void tryInitCookies() {
+    private MultiMap<String> tryInitCookies() {
         if (_cookies == null) {
-            _cookies = new HashMap<>();
+            _cookies = new MultiMap<>();
         }
+        return _cookies;
     }
 
-    public static String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, Solon.encoding());
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException(e);
+    private MultiMap<String> tryInitHeaders() {
+        if (_headers == null) {
+            _headers = new MultiMap<>();
         }
-    }
-
-    public static String toQueryString(Map<?, ?> map) throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-            if (sb.length() > 0) {
-                sb.append("&");
-            }
-            sb.append(String.format("%s=%s",
-                    urlEncode(entry.getKey().toString()),
-                    urlEncode(entry.getValue().toString())
-            ));
-        }
-        return sb.toString();
+        return _headers;
     }
 
     public static class StreamBody extends RequestBody {
