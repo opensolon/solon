@@ -247,8 +247,16 @@ public class VxWebContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            for (Cookie c1 : _request.cookies()) {
-                _cookieMap.add(c1.getName(), c1.getValue());
+            //_request.cookies() 不能获取多个同名 cookie
+            String cookieStr = header("Cookie");
+            if (Utils.isNotEmpty(cookieStr)) {
+                String[] cookieItems = cookieStr.split(";");
+                for (String item : cookieItems) {
+                    String[] kv = item.split("=");
+                    if (kv.length == 2) {
+                        _cookieMap.add(kv[0].trim(), kv[1].trim());
+                    }
+                }
             }
         }
 
