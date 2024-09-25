@@ -18,11 +18,6 @@ package features.type0;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.fastjson2.Fastjson2RenderTypedFactory;
-import org.noear.solon.test.SolonTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

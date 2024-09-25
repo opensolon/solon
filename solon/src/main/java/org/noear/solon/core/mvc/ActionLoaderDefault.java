@@ -37,44 +37,40 @@ import java.util.*;
  * @since 3.0
  * */
 public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
-    protected BeanWrap bw;
-    protected Render bRender;
-    protected Mapping bMapping;
-    protected String bPath;
-    protected boolean bRemoting;
+    protected final BeanWrap bw;
+    protected final Render bRender;
+    protected final Mapping bMapping;
+    protected final String bPath;
+    protected final boolean bRemoting;
 
-    protected boolean allowMapping;
+    protected final boolean allowMapping;
 
     public ActionLoaderDefault(BeanWrap wrap) {
-        bMapping = wrap.clz().getAnnotation(Mapping.class);
-
-        if (bMapping == null) {
-            initDo(wrap, null, wrap.remoting(), null, true);
-        } else {
-            String bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
-            initDo(wrap, bPath, wrap.remoting(), null, true);
-        }
+        this(wrap, null, wrap.remoting(), null, true);
     }
 
     public ActionLoaderDefault(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        initDo(wrap, mapping, remoting, render, allowMapping);
-    }
-
-    protected void initDo(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        if(render == null) {
+        if (render == null) {
             if (wrap.raw() instanceof Render) {
                 render = wrap.raw();
             }
+        }
+
+        if (mapping == null) {
+            bMapping = wrap.clz().getAnnotation(Mapping.class);
+
+            if (bMapping != null) {
+                mapping = Utils.annoAlias(bMapping.value(), bMapping.path());
+            }
+        } else {
+            bMapping = null;
         }
 
         this.bw = wrap;
         this.bRender = render;
         this.allowMapping = allowMapping;
 
-        if (mapping != null) {
-            this.bPath = mapping;
-        }
-
+        this.bPath = Utils.valueOr(mapping, "");
         this.bRemoting = remoting;
     }
 
@@ -131,10 +127,6 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      * 加载 Action 处理
      */
     protected void loadActions(HandlerSlots slots, boolean all) {
-        if (bPath == null) {
-            bPath = "";
-        }
-
         Set<MethodType> b_limitMethodSet = new HashSet<>();
         Set<MethodType> b_addinMethodSet = new HashSet<>();
 
