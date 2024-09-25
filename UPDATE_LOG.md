@@ -34,6 +34,7 @@
 * 优化 solon Gateway 在过滤之前构建 ctx.action()
 * 添加 solon-cloud Event:broadcast 属性
 * 收集 liquor-eval 框架
+* redisx 升为 1.6.6
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
 * easy-trans 升为 1.3.1
