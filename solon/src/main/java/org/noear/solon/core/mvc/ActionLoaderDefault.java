@@ -70,7 +70,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         this.bRender = render;
         this.allowMapping = allowMapping;
 
-        this.bPath = Utils.valueOr(mapping, "");
+        this.bPath = Utils.annoAlias(mapping, "");
         this.bRemoting = remoting;
     }
 
