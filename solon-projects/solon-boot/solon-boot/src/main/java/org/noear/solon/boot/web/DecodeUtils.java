@@ -117,16 +117,38 @@ public class DecodeUtils {
             return;
         }
 
-        String[] ss = cookies.split(";");
+        decodeCookiesDo(ctx, cookies, 0);
+    }
 
-        for (String s1 : ss) {
-            int idx = s1.indexOf('=');
-            if (idx > 0) {
-                String name = s1.substring(0, idx);
-                String value = s1.substring(idx + 1);
-                ctx.cookieMap().add(name.trim(), value.trim());
+    private static  void decodeCookiesDo(Context ctx, String cookies, int offset) {
+        //去掉头部空隔
+        while (offset < cookies.length() && cookies.charAt(offset + 1) == ' ') {
+            offset++;
+        }
+
+        int idx1 = cookies.indexOf("=", offset);
+        if (idx1 < 0) {
+            return;
+        }
+        String name = cookies.substring(offset, idx1);
+
+        int idx2 = cookies.indexOf(";", idx1 + 1);
+        if ((offset = idx2) > 0) {
+            //去掉尾部空隔
+            while (offset > idx1 && cookies.charAt(offset - 1) == ' ') {
+                offset--;
             }
         }
+
+        String value = offset > 0 ? cookies.substring(idx1 + 1, offset) : "";
+
+        ctx.cookieMap().add(name, value.trim());
+
+        if (idx2 < 0) {
+            return;
+        }
+
+        decodeCookiesDo(ctx, cookies, idx2 + 1);
     }
 
     /**

@@ -624,12 +624,12 @@ public class HttpUtilsImpl implements HttpUtils {
 
         for (KeyValues<String> kv : cookies) {
             for (String val : kv.getValues()) {
-                sb.append(kv.getKey()).append('=').append(val).append(";");
+                sb.append(kv.getKey()).append('=').append(val).append("; ");
             }
         }
 
         if (sb.length() > 0) {
-            sb.setLength(sb.length() - 1);
+            sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
