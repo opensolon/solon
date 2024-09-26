@@ -25,8 +25,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
+import java.net.URL;
 
 /**
  * 应用管理中心
@@ -50,6 +49,8 @@ public class Solon {
     private static SolonApp appMain;
     //全局默认编码
     private static String encoding = "utf-8";
+    //应用源码位置
+    private static URL location;
 
     /**
      * 框架版本号
@@ -94,6 +95,13 @@ public class Solon {
         } else {
             return app.context();
         }
+    }
+
+    /**
+     * 应用源码位置
+     * */
+    public static URL location() {
+        return location;
     }
 
     /**
@@ -154,6 +162,9 @@ public class Solon {
         if (Utils.isNotEmpty(encoding)) {
             System.setProperty("file.encoding", encoding);
         }
+
+        //确定源码位置
+        location =  source.getProtectionDomain().getCodeSource().getLocation();
 
         //设置 headless 默认值
         System.getProperties().putIfAbsent("java.awt.headless", "true");

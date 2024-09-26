@@ -17,9 +17,9 @@ package org.noear.solon;
 
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
-import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.lang.Nullable;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -522,12 +522,24 @@ public class Utils {
      *
      * @since 2.7
      */
-    public static String appFolder() {
+    public static @Nullable String appFolder() {
+        if (Solon.location() == null) {
+            return null;
+        }
+
         if (_appFolder == null) {
             _appFolder = new AtomicReference<>();
 
-            String uri = Solon.app().sourceLocation().getPath();
-            int endIdx = uri.lastIndexOf("/") + 1;
+            String uri = Solon.location().getPath();
+            int endIdx;
+
+            if (uri.endsWith("/classes/")) {
+                //说明是源代码
+                endIdx = uri.lastIndexOf("/classes/") + 1;
+            } else {
+                //说明是原生运行（或 jar 运行）
+                endIdx = uri.lastIndexOf("/") + 1;
+            }
 
             if (uri.startsWith("file:/")) {
                 uri = uri.substring(5, endIdx);
