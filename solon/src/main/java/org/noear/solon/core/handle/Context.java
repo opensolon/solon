@@ -319,6 +319,11 @@ public abstract class Context {
     }
 
     /**
+     * 获取请求的Referer
+     * */
+    public String referer(){ return  header("Referer"); }
+
+    /**
      * 获取请求的URL字符串
      */
     public abstract String url();
