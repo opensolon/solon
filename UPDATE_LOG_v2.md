@@ -29,6 +29,7 @@
 * sms4j 升为 3.3.3
 * lombok 升为 1.18.34
 * dromara-plugins 升为 0.1.3
+* native-tool 升为 0.10.3
 
 ### 2.9.4
 
