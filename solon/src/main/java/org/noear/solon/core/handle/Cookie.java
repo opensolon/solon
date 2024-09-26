@@ -31,9 +31,9 @@ public class Cookie {
     public boolean httpOnly;
 
     /**
-     * @param name 名称
+     * @param name  名称
      * @param value 值
-     * */
+     */
     public Cookie(String name, String value) {
         this.name = name;
         this.value = value;
@@ -73,6 +73,9 @@ public class Cookie {
         return this;
     }
 
+    /**
+     * httpOnly 标志
+     */
     public Cookie httpOnly(boolean httpOnly) {
         this.httpOnly = httpOnly;
         return this;
