@@ -320,8 +320,10 @@ public abstract class Context {
 
     /**
      * 获取请求的Referer
-     * */
-    public String referer(){ return  header("Referer"); }
+     */
+    public String referer() {
+        return header("Referer");
+    }
 
     /**
      * 获取请求的URL字符串
@@ -941,13 +943,13 @@ public abstract class Context {
      * 设置 cookie
      */
     public void cookieSet(String name, String val, String domain, int maxAge) {
-        cookieSet(name, val, domain, "/", maxAge);
+        cookieSet(new Cookie(name, val).domain(domain).maxAge(maxAge));
     }
 
     /**
      * 设置 cookie
      */
-    public abstract void cookieSet(String name, String val, String domain, String path, int maxAge);
+    public abstract void cookieSet(Cookie cookie);
 
     /**
      * 移徐 cookie

@@ -328,22 +328,24 @@ public class SolonServletContext extends WebContextBase {
         return _response.getHeaderNames();
     }
 
-
     @Override
-    public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie c = new Cookie(key, val);
+    public void cookieSet(org.noear.solon.core.handle.Cookie cookie) {
+        Cookie c = new Cookie(cookie.name, cookie.value);
 
-        if (Utils.isNotEmpty(path)) {
-            c.setPath(path);
+        if (cookie.maxAge >= 0) {
+            c.setMaxAge(cookie.maxAge);
         }
 
-        if (maxAge >= 0) {
-            c.setMaxAge(maxAge);
+        if (Utils.isNotEmpty(cookie.domain)) {
+            c.setDomain(cookie.domain);
         }
 
-        if (Utils.isNotEmpty(domain)) {
-            c.setDomain(domain);
+        if (Utils.isNotEmpty(cookie.path)) {
+            c.setPath(cookie.path);
         }
+
+        c.setSecure(cookie.secure);
+        c.setHttpOnly(cookie.httpOnly);
 
         _response.addCookie(c);
     }

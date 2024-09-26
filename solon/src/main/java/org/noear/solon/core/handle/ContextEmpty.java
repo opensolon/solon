@@ -305,8 +305,8 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        cookieMap().put(key, val);
+    public void cookieSet(Cookie cookie) {
+
     }
 
     @Override

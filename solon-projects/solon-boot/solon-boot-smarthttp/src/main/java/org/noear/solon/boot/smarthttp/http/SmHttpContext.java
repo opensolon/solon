@@ -348,22 +348,25 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
-    public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie cookie = new Cookie(key, val);
+    public void cookieSet(org.noear.solon.core.handle.Cookie cookie) {
+        Cookie c = new Cookie(cookie.name, cookie.value);
 
-        if (Utils.isNotEmpty(path)) {
-            cookie.setPath(path);
+        if (cookie.maxAge >= 0) {
+            c.setMaxAge(cookie.maxAge);
         }
 
-        if (maxAge >= 0) {
-            cookie.setMaxAge(maxAge);
+        if (Utils.isNotEmpty(cookie.domain)) {
+            c.setDomain(cookie.domain);
         }
 
-        if (Utils.isNotEmpty(domain)) {
-            cookie.setDomain(domain);
+        if (Utils.isNotEmpty(cookie.path)) {
+            c.setPath(cookie.path);
         }
 
-        _response.addCookie(cookie);
+        c.setSecure(cookie.secure);
+        c.setHttpOnly(cookie.httpOnly);
+
+        _response.addCookie(c);
     }
 
     @Override
