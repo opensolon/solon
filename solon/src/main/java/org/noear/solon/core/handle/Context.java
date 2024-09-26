@@ -535,7 +535,7 @@ public abstract class Context {
     /**
      * 获取所有参数的名字集合
      */
-    public Set<String> paramNames() {
+    public Collection<String> paramNames() {
         return paramMap().keySet();
     }
 
@@ -612,7 +612,7 @@ public abstract class Context {
     /**
      * 获取所有小饼的名字集合
      */
-    public Set<String> cookieNames() {
+    public Collection<String> cookieNames() {
         return cookieMap().keySet();
     }
 
@@ -652,7 +652,7 @@ public abstract class Context {
     /**
      * 获取所有头的名字集合
      */
-    public Set<String> headerNames() {
+    public Collection<String> headerNames() {
         return headerMap().keySet();
     }
 
