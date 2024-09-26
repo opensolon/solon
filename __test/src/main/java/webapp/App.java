@@ -69,8 +69,6 @@ public class App {
         System.out.println("Default Charset=" + Charset.defaultCharset());
         System.out.println("Default Charset in Use=" + getDefaultCharSet());
         System.out.println("file.encoding=" + System.getProperty("file.encoding"));
-        System.out.println("user.dir=" + System.getProperty("user.dir"));
-        System.out.println("app.dir=" + Utils.appFolder());
         System.out.println("resource[/]=" + App.class.getResource("/").getPath());
         System.out.println("resource[]=" + App.class.getResource("").getPath());
 
@@ -87,6 +85,10 @@ public class App {
         //构建方式
 
         Solon.start(App.class, args, x -> {
+            System.out.println("user.dir=" + System.getProperty("user.dir"));
+            System.out.println("app.dir=" + Utils.appFolder());
+
+
             x.enableSocketD(true);
             x.enableWebSocket(true);
 

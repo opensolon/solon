@@ -60,6 +60,8 @@ solon.config.load:
   - "classpath:cfg-load1.yml"
   - "classpath:cfg-load2.yml"
 
+solon.config.add: ./app.yml
+
 solon.locale: "en_US"
 
 solon.threads.virtual.enabled: true

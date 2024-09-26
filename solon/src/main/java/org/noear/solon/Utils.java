@@ -777,15 +777,28 @@ public class Utils {
      * @since 2.7
      */
     public static @Nullable String appFolder() {
-        if (Solon.app() == null) {
+        if (Solon.location() == null) {
             return null;
         }
 
         if (_appFolder == null) {
             _appFolder = new AtomicReference<>();
 
-            String uri = Solon.app().sourceLocation().getPath();
-            int endIdx = uri.lastIndexOf("/") + 1;
+            String uri = Solon.location().getPath();
+            int endIdx;
+
+            if (uri.contains(".jar")) {
+                //说明是 jar 运行
+                endIdx = uri.lastIndexOf("/") + 1;
+            } else {
+                if (uri.endsWith("/classes/")) {
+                    //说明是源代码
+                    endIdx = uri.lastIndexOf("/classes/") + 1;
+                } else {
+                    //说明是原生运行
+                    endIdx = uri.lastIndexOf("/") + 1;
+                }
+            }
 
             if (uri.startsWith("file:/")) {
                 uri = uri.substring(5, endIdx);
