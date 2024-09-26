@@ -787,17 +787,12 @@ public class Utils {
             String uri = Solon.location().getPath();
             int endIdx;
 
-            if (uri.contains(".jar")) {
-                //说明是 jar 运行
-                endIdx = uri.lastIndexOf("/") + 1;
+            if (uri.endsWith("/classes/")) {
+                //说明是源代码
+                endIdx = uri.lastIndexOf("/classes/") + 1;
             } else {
-                if (uri.endsWith("/classes/")) {
-                    //说明是源代码
-                    endIdx = uri.lastIndexOf("/classes/") + 1;
-                } else {
-                    //说明是原生运行
-                    endIdx = uri.lastIndexOf("/") + 1;
-                }
+                //说明是原生运行（或 jar 运行）
+                endIdx = uri.lastIndexOf("/") + 1;
             }
 
             if (uri.startsWith("file:/")) {
