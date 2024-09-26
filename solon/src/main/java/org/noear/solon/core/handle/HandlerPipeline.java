@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core.handle;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ import java.util.List;
  * @since 1.0
  */
 public class HandlerPipeline implements Handler {
-    private List<Handler> chain = new LinkedList<>();
+    private List<Handler> chain = new ArrayList<>();
 
     /**
      * 下一步

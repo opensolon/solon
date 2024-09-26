@@ -95,9 +95,7 @@ public class XPluginImp implements Plugin {
         loadStaticMimes();
 
         //4.切换代理（让静态文件优先）
-        HandlerPipeline pipeline = new HandlerPipeline();
-        pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
-        Solon.app().handlerSet(pipeline);
+        Solon.app().handler().prev(new StaticResourceHandler());
     }
 
     private void loadStaticMimes(){

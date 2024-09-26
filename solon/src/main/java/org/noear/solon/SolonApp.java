@@ -54,6 +54,7 @@ public class SolonApp extends RouterWrapper {
     private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
     private final RenderManager _renderManager; //渲染管理器
+    private final HandlerPipeline _handler = new HandlerPipeline();
 
     private final Class<?> _source; //应用加载源
     private final URL _sourceLocation;
@@ -121,7 +122,7 @@ public class SolonApp extends RouterWrapper {
         //初始化路由
         initRouter();
 
-        _handler = routerHandler();
+        _handler.next(routerHandler());
     }
 
 
@@ -424,25 +425,12 @@ public class SolonApp extends RouterWrapper {
         cfg().plugsSort();
     }
 
-    /**
-     * Solon Handler
-     */
-    private Handler _handler = null;
 
     /**
      * 处理器获取
      */
-    public Handler handlerGet() {
+    public HandlerPipeline handler() {
         return _handler;
-    }
-
-    /**
-     * 处理器设置
-     */
-    public void handlerSet(Handler handler) {
-        if (handler != null) {
-            _handler = handler;
-        }
     }
 
 
