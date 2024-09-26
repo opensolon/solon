@@ -1045,6 +1045,13 @@ public abstract class Context {
 
 
     /**
+     * 获取上下文特性的名字集合
+     */
+    public Collection<String> attrNames() {
+        return attrMap().keySet();
+    }
+
+    /**
      * 清除所有上下文特性
      *
      * @since 2.9
