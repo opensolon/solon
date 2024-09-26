@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.0-RC
+Solon v3.0.0
 </h1>
 <p align="center">
 	<strong>Java "new" application development framework, restraint, concise, efficient, open, ecological!</strong>
