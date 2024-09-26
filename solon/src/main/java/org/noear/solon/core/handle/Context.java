@@ -978,9 +978,11 @@ public abstract class Context {
             pathNew(PathUtil.mergePath(Solon.cfg().serverContextPath(), pathNew));
         }
 
-        Solon.app().tryHandle(this);
-        setHandled(true);
-        setRendered(true);
+        try {
+            Solon.app().handler().handle(this);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
