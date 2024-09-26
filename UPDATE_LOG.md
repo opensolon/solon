@@ -37,7 +37,7 @@
 * 修复 打散包时外部相对文件定位失识问题（优化 Utils::appFolder）
 * 优化 solon Gateway 在过滤之前构建 ctx.action()
 * 添加 solon-cloud Event:broadcast 属性
-* 添加 solon Context::cookieSet(Cookie) 方法
+* 添加 solon Context::cookieSet(Cookie) 方法，支持 httponly, secure 配置
 * 添加 liquor-eval 框架收集
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52

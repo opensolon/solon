@@ -390,11 +390,11 @@ public class JdkHttpContext extends WebContextBase {
         }
 
         if (cookie.secure) {
-            buf.append("secure=").append(cookie.secure).append(";");
+            buf.append("secure").append(";");
         }
 
         if (cookie.httpOnly) {
-            buf.append("httpOnly=").append(cookie.httpOnly).append(";");
+            buf.append("httponly").append(";");
         }
 
         headerAdd(Constants.HEADER_SET_COOKIE, buf.toString());
