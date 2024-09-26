@@ -974,13 +974,11 @@ public abstract class Context {
      * 转发
      */
     public void forward(String pathNew) {
-        if (Utils.isEmpty(Solon.cfg().serverContextPath())) {
-            pathNew(pathNew);
-        } else {
-            pathNew(PathUtil.mergePath(Solon.cfg().serverContextPath(), pathNew));
-        }
+        //直接执行处理器，不需要再添加 context-path 前缀
+        pathNew(pathNew);
 
         try {
+            //直接执行处理器（省去了过滤）
             Solon.app().handler().handle(this);
         } catch (Throwable e) {
             throw new RuntimeException(e);

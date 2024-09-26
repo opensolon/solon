@@ -31,8 +31,8 @@
 * 移除 部分事件扩展（具体参考对应表）
 * 调整 solon-net WebSocket:paramMap 改为 MultiMap 类型
 * 调整 solon-net WebSocket:send 改为 Future<Void>
-* 调整 Context::forward 改为“不经过”过滤器
-* 调整 Solon.app().handler() 替代原来的 handlerGet() 和 HandletSet(x)；并简化 StaticResourceHandler 接入处理
+* 调整 solon Context::forward 改为“不经过”过滤器
+* 调整 solon Solon.app().handler() 替代原来的 handlerGet() 和 HandletSet(x)；并简化 StaticResourceHandler 接入处理
 * 修复 代理类中无法获取到泛型参数的BUG
 * 修复 打散包时外部相对文件定位失识问题（优化 Utils::appFolder）
 * 优化 solon Gateway 在过滤之前构建 ctx.action()
