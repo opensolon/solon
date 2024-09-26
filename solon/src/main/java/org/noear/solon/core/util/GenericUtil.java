@@ -51,6 +51,8 @@ public class GenericUtil {
                             .map(item -> (Class<?>) item)
                             .toArray(Class[]::new);
                 }
+            } else if (type0 instanceof Class<?>) {
+                return resolveTypeArguments((Class<?>)type0, genericIfc);
             }
         }
 
