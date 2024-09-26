@@ -53,6 +53,8 @@
 * snack3 升为 3.2.111
 * beetlsql 升为 3.30.13-RELEASE
 * asm 升为 9.7
+* maven-compiler 升为 3.13.0
+* maven-assembly 升为 3.7.1
 
 ### 2.9.3
 * 新增 solon-web-vertx 插件
