@@ -36,6 +36,7 @@
         <wood.version>1.3.6</wood.version>
         <redisx.version>1.6.6</redisx.version>
         <socketd.version>2.5.11</socketd.version>
+        <liquor.version>1.3.6</liquor.version>
 
         <folkmq.version>1.7.7</folkmq.version>
         <water.version>2.14.2</water.version>
@@ -223,6 +224,12 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solonx-web-webservices</artifactId>
                 <version>${solonx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>liquor-eval</artifactId>
+                <version>${liquor.version}</version>
             </dependency>
 
             <dependency>
