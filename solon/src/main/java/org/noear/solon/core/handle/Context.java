@@ -1059,7 +1059,15 @@ public abstract class Context {
     /**
      * 设置 cookie
      */
-    public abstract void cookieSet(String name, String val, String domain, String path, int maxAge);
+    @Deprecated
+    public void cookieSet(String name, String val, String domain, String path, int maxAge) {
+        cookieSet(new Cookie(name, val).domain(domain).path(path).maxAge(maxAge));
+    }
+
+    /**
+     * 设置 cookie
+     */
+    public abstract void cookieSet(Cookie cookie);
 
     /**
      * 移徐 cookie

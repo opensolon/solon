@@ -16,7 +16,6 @@
 package org.noear.solon.web.vertx;
 
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.impl.CookieImpl;
@@ -24,6 +23,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
+import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
@@ -236,7 +236,7 @@ public class VxWebContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            for (Cookie c1 : _request.cookies()) {
+            for (io.vertx.core.http.Cookie c1 : _request.cookies()) {
                 _cookieMap.add(c1.getName(), c1.getValue());
             }
         }
@@ -363,22 +363,25 @@ public class VxWebContext extends WebContextBase {
     }
 
     @Override
-    public void cookieSet(String name, String val, String domain, String path, int maxAge) {
-        CookieImpl cookie = new CookieImpl(name, val);
+    public void cookieSet(Cookie cookie) {
+        CookieImpl c = new CookieImpl(cookie.name, cookie.value);
 
-        if (Utils.isNotEmpty(path)) {
-            cookie.setPath(path);
+        if (cookie.maxAge >= 0) {
+            c.setMaxAge(cookie.maxAge);
         }
 
-        if (maxAge >= 0) {
-            cookie.setMaxAge(maxAge);
+        if (Utils.isNotEmpty(cookie.domain)) {
+            c.setDomain(cookie.domain);
         }
 
-        if (Utils.isNotEmpty(domain)) {
-            cookie.setDomain(domain);
+        if (Utils.isNotEmpty(cookie.path)) {
+            c.setPath(cookie.path);
         }
 
-        _response.addCookie(cookie);
+        c.setSecure(cookie.secure);
+        c.setHttpOnly(cookie.httpOnly);
+
+        _response.addCookie(c);
     }
 
     @Override

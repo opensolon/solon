@@ -24,6 +24,7 @@ import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
+import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
@@ -376,23 +377,31 @@ public class JlHttpContext extends WebContextBase {
     }
 
     @Override
-    public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(key).append("=").append(val).append(";");
+    public void cookieSet(Cookie cookie) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(cookie.name).append("=").append(cookie.value).append(";");
 
-        if (Utils.isNotEmpty(path)) {
-            sb.append("path=").append(path).append(";");
+        if (cookie.maxAge >= 0) {
+            buf.append("max-age=").append(cookie.maxAge).append(";");
         }
 
-        if (maxAge >= 0) {
-            sb.append("max-age=").append(maxAge).append(";");
+        if (Utils.isNotEmpty(cookie.domain)) {
+            buf.append("domain=").append(cookie.domain.toLowerCase()).append(";");
         }
 
-        if (Utils.isNotEmpty(domain)) {
-            sb.append("domain=").append(domain.toLowerCase()).append(";");
+        if (Utils.isNotEmpty(cookie.path)) {
+            buf.append("path=").append(cookie.path).append(";");
         }
 
-        headerAdd(Constants.HEADER_SET_COOKIE, sb.toString());
+        if (cookie.secure) {
+            buf.append("secure").append(";");
+        }
+
+        if (cookie.httpOnly) {
+            buf.append("httponly").append(";");
+        }
+
+        headerAdd(Constants.HEADER_SET_COOKIE, buf.toString());
     }
 
     @Override
