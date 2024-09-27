@@ -29,6 +29,7 @@
 * 调整 solon Context::forward 改为“不经过”过滤器
 * 添加 solon `Context:cookieSet(Cookie)` 方法，支持 httponly, secure 配置
 * 添加 solon `Solon:location()` 方法
+* 添加 solon `Context::referer()` 方法
 * 添加 liquor-eval 框架收集
 * 优化 solon-web `Context::contentLength()` 统一处理（jlhttp, jdkhttp, vert.x）
 * 优化 solon-web `Context:cookieMap()` 统一解码（增加多个同名 cookie 支持）
