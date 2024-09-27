@@ -145,22 +145,14 @@ public class VxWebContext extends WebContextBase {
     }
 
 
-    private int contentLength = -2;
-
+    private long contentLength = -2;
     @Override
     public long contentLength() {
-        if (contentLength > -2) {
-            return contentLength;
-        } else {
-            String tmp = _request.getHeader("Content-Length");
-            if (Utils.isEmpty(tmp)) {
-                contentLength = -1;
-            } else {
-                contentLength = Integer.parseInt(tmp);
-            }
-
-            return contentLength;
+        if (contentLength < -1) {
+            contentLength = DecodeUtils.decodeContentLengthLong(this);
         }
+
+        return contentLength;
     }
 
     @Override
