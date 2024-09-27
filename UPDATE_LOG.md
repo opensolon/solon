@@ -41,6 +41,7 @@
 * 添加 solon Context::cookieSet(Cookie) 方法，支持 httponly, secure 配置
 * 添加 liquor-eval 框架收集
 * smart-http 升为 1.6.0
+* noear-jlhttp 升为 1.0.1
 * smartsocket 升为 1.5.52
 * easy-trans 升为 1.3.1
 * sa-token 升为 1.39.0
