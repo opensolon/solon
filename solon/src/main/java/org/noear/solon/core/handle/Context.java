@@ -1058,6 +1058,8 @@ public abstract class Context {
 
     /**
      * 设置 cookie
+     *
+     * @deprecated 2.9
      */
     @Deprecated
     public void cookieSet(String name, String val, String domain, String path, int maxAge) {
