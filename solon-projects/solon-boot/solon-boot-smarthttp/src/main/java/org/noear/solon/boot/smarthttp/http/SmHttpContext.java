@@ -224,9 +224,7 @@ public class SmHttpContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            for (Cookie c1 : _request.getCookies()) {
-                _cookieMap.add(c1.getName(), c1.getValue());
-            }
+            DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }
 
         return _cookieMap;
