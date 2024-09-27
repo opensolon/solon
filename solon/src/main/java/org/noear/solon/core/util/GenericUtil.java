@@ -52,7 +52,10 @@ public class GenericUtil {
                             .toArray(Class[]::new);
                 }
             } else if (type0 instanceof Class<?>) {
-                return resolveTypeArguments((Class<?>)type0, genericIfc);
+                Class<?>[] classes = resolveTypeArguments((Class<?>) type0, genericIfc);
+                if (classes != null) {
+                    return classes;
+                }
             }
         }
 
