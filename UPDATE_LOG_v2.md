@@ -26,10 +26,12 @@
 * 修复 代理类中无法获取到泛型参数的BUG
 * 修复 打散包时外部配置相对文件定位失效的问题
 * 调整 solon `Context:cookieSet(name,val,domain,path,maxAge)` 标为弃用，由 `Context:cookieSet(cookie)` 替换
+* 调整 solon Context::forward 改为“不经过”过滤器
 * 添加 solon `Context:cookieSet(Cookie)` 方法，支持 httponly, secure 配置
 * 添加 solon `Solon:location()` 方法
 * 添加 liquor-eval 框架收集
 * 优化 solon-web `Context:cookieMap()` 统一解码（增加多个同名 cookie 支持）
+* 优化 solon-web-vertx `VxWebContext:url()` 保持与其它适配相同逻辑
 * redisx 升为 1.6.6
 * sms4j 升为 3.3.3
 * lombok 升为 1.18.34

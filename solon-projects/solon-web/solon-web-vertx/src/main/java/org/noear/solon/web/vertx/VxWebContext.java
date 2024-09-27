@@ -128,9 +128,20 @@ public class VxWebContext extends WebContextBase {
         return false;
     }
 
+    private String _url;
     @Override
     public String url() {
-        return _request.absoluteURI();
+        if (_url == null) {
+            String tmp = _request.absoluteURI();
+            int idx = tmp.indexOf('?');
+            if (idx < 0) {
+                _url = tmp;
+            } else {
+                _url = tmp.substring(0, idx);
+            }
+        }
+
+        return _url;
     }
 
 
