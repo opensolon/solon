@@ -980,6 +980,8 @@ public abstract class Context {
         try {
             //直接执行处理器（省去了过滤）
             Solon.app().handler().handle(this);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
