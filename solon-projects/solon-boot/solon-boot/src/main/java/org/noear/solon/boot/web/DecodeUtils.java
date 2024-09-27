@@ -173,14 +173,6 @@ public class DecodeUtils {
     /**
      * 提取内容长度
      * */
-    public static int decodeContentLength(Context ctx) {
-        long length = decodeContentLengthLong(ctx);
-        return length > 2147483647L ? -1 : (int)length;
-    }
-
-    /**
-     * 提取内容长度
-     * */
     public static long decodeContentLengthLong(Context ctx) {
         String contentLength = ctx.header("Content-Length");
         return contentLength != null && !contentLength.isEmpty() ? Long.parseLong(contentLength) : -1L;

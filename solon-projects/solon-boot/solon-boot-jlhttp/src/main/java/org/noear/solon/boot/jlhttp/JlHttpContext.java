@@ -157,10 +157,16 @@ public class JlHttpContext extends WebContextBase {
         return _url;
     }
 
+    private long contentLength = -2;
     @Override
     public long contentLength() {
-        return DecodeUtils.decodeContentLengthLong(this);
+        if (contentLength < -1) {
+            contentLength = DecodeUtils.decodeContentLengthLong(this);
+        }
+
+        return contentLength;
     }
+
     @Override
     public String queryString() {
         return _request.getURI().getQuery();
