@@ -1094,15 +1094,15 @@ public abstract class Context {
      * 转发
      */
     public void forward(String pathNew) {
-        if (Utils.isEmpty(Solon.cfg().serverContextPath())) {
-            pathNew(pathNew);
-        } else {
-            pathNew(PathUtil.mergePath(Solon.cfg().serverContextPath(), pathNew));
-        }
+        pathNew(pathNew);
 
-        Solon.app().tryHandle(this);
-        setHandled(true);
-        setRendered(true);
+        try {
+            Solon.app().handlerGet().handle(this);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

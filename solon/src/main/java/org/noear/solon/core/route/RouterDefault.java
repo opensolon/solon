@@ -118,9 +118,10 @@ public class RouterDefault implements Router, HandlerSlots {
 
         if (result.getData() != null) {
             ctx.attrSet(Constants.mainHandler, result.getData());
+            ctx.attrSet(Constants.mainStatus, 200);
         } else {
+            ctx.attrSet(Constants.mainHandler, null);
             ctx.attrSet(Constants.mainStatus, result.getCode());
-
         }
 
         return result.getData();
