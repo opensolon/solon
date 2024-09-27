@@ -18,7 +18,7 @@ package org.noear.solon.web.servlet;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.BodyUtils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
@@ -195,7 +195,7 @@ public class SolonServletContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                BodyUtils.decodeFormUrlencoded(this);
+                DecodeUtils.decodeFormUrlencoded(this);
 
                 //多分段处理
                 if (autoMultipart()) {
@@ -229,13 +229,8 @@ public class SolonServletContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            Cookie[] _cookies = _request.getCookies();
-
-            if (_cookies != null) {
-                for (Cookie c : _cookies) {
-                    _cookieMap.add(c.getName(), c.getValue());
-                }
-            }
+            //_request.cookies() 可能不支持多个同名 cookie
+            DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }
 
         return _cookieMap;

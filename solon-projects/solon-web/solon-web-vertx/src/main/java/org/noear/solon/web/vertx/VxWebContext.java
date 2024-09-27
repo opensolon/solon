@@ -83,7 +83,7 @@ public class VxWebContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -179,7 +179,7 @@ public class VxWebContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw BodyUtils.status4xx(this, e);
+            throw DecodeUtils.status4xx(this, e);
         }
     }
 
@@ -202,7 +202,7 @@ public class VxWebContext extends WebContextBase {
 
             try {
                 //编码窗体预处理
-                BodyUtils.decodeFormUrlencoded(this, false);
+                DecodeUtils.decodeFormUrlencoded(this, false);
 
                 //多分段处理
                 if (autoMultipart()) {
@@ -217,7 +217,7 @@ public class VxWebContext extends WebContextBase {
                     _paramMap.add(kv.getKey(), kv.getValue());
                 }
             } catch (Exception e) {
-                throw BodyUtils.status4xx(this, e);
+                throw DecodeUtils.status4xx(this, e);
             }
         }
     }
@@ -236,9 +236,8 @@ public class VxWebContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<String>();
 
-            for (io.vertx.core.http.Cookie c1 : _request.cookies()) {
-                _cookieMap.add(c1.getName(), c1.getValue());
-            }
+            //_request.cookies() 可能不支持多个同名 cookie
+            DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }
 
         return _cookieMap;

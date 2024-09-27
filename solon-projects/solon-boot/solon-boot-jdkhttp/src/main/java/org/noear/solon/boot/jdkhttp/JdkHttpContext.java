@@ -69,7 +69,7 @@ public class JdkHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            BodyUtils.decodeMultipart(this, _fileMap);
+            DecodeUtils.decodeMultipart(this, _fileMap);
         }
     }
 
@@ -157,7 +157,7 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        return HeaderUtils.getContentLengthLong(this);
+        return DecodeUtils.decodeContentLengthLong(this);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class JdkHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw BodyUtils.status4xx(this, e);
+            throw DecodeUtils.status4xx(this, e);
         }
     }
 
@@ -223,7 +223,7 @@ public class JdkHttpContext extends WebContextBase {
                     }
                 }
             } catch (Exception e) {
-                throw BodyUtils.status4xx(this, e);
+                throw DecodeUtils.status4xx(this, e);
             }
         }
     }
@@ -242,16 +242,7 @@ public class JdkHttpContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<>();
 
-            String tmp = headerOrDefault(Constants.HEADER_COOKIE, "");
-            String[] ss = tmp.split(";");
-            for (String s : ss) {
-                String[] kv = s.split("=");
-                if (kv.length > 1) {
-                    _cookieMap.add(kv[0].trim(), kv[1].trim());
-                } else {
-                    _cookieMap.add(kv[0].trim(), "");
-                }
-            }
+            DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }
 
         return _cookieMap;

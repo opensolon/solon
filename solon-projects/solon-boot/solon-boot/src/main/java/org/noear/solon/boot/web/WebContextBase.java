@@ -79,7 +79,7 @@ public abstract class WebContextBase extends Context {
     @Override
     public String contentCharset() {
         if (contentCharset == null) {
-            contentCharset = HeaderUtils.extractQuotedValueFromHeader(contentType(), "charset");
+            contentCharset = DecodeUtils.extractQuotedValueFromHeader(contentType(), "charset");
 
             if (Utils.isEmpty(contentCharset)) {
                 contentCharset = ServerProps.request_encoding;
