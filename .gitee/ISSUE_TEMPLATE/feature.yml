@@ -1,0 +1,23 @@
+name: 功能建议
+description: 对本项目提出一个功能建议
+title: "[建议]: "
+labels: [ "enhancement" ]
+body:
+    -   type: textarea
+        id: related-problem
+        attributes:
+            label: 您的功能建议：
+        validations:
+            required: false
+    -   type: textarea
+        id: desired-solution
+        attributes:
+            label: 您希望看到什么解决方案：
+        validations:
+            required: true
+    -   type: textarea
+        id: alternatives
+        attributes:
+            label: 您考虑过哪些替代方案：
+        validations:
+            required: false

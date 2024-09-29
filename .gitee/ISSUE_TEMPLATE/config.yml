@@ -1,0 +1,8 @@
+# 鼓励用户使用 Issue 模板（不允许用户创建空白 Issue）
+blank_issues_enabled: false
+
+# 引导用户浏览相关文档
+contact_links:
+    -   name: Solon 官网
+        url: https://solon.noear.org/
+        about: 查阅官网以获得基本功能使用、介绍和常见问题解答
