@@ -130,7 +130,7 @@
         <kafka.version>3.8.0</kafka.version>
         <pulsar.version>2.11.2</pulsar.version>
 
-        <nacos1.version>1.4.7</nacos1.version>
+        <nacos1.version>1.4.8</nacos1.version>
         <nacos2.version>2.3.2</nacos2.version>
         <zookeeper.version>3.9.2</zookeeper.version>
         <jetcd.version>0.7.7</jetcd.version>
