@@ -37,14 +37,11 @@ import java.util.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
 
     public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
-        this(ctx, clz, m, null);
-    }
-
-    public MethodWrap(AppContext ctx, Class<?> clz, Method m, Map<String, Type> genericInfo) {
         context = ctx;
 
         tagretClz = clz;
@@ -52,7 +49,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
         method = m;
         rawParameters = m.getParameters();
-        parameters = buildParamsWrap(rawParameters, genericInfo);
+        parameters = buildParamsWrap(rawParameters, tagretClz);
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
         interceptorsIdx = new HashSet<>();
@@ -93,10 +90,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Map<String, Type> genericInfo) {
+    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Class<?> clz) {
         ParamWrap[] tmp = new ParamWrap[pAry.length];
         for (int i = 0, len = pAry.length; i < len; i++) {
-            tmp[i] = new ParamWrap(pAry[i], method, genericInfo);
+            //@since 3.0
+            tmp[i] = new ParamWrap(pAry[i], method, clz);
 
             if (tmp[i].isRequiredBody()) {
                 isRequiredBody = true;

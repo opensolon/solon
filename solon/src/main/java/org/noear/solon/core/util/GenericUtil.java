@@ -197,4 +197,44 @@ public class GenericUtil {
 
         return typeMap;
     }
+
+    /**
+     * 审查类型
+     *
+     * @param type        原始类型
+     * @param genericInfo 泛型信息
+     * @since 3.0
+     * */
+    public static Type reviewType(Type type, Map<String, Type> genericInfo) {
+        if (genericInfo == null) {
+            return type;
+        }
+
+        if (type instanceof TypeVariable) {
+            //如果是类型变量，则重新构建类型
+            Type typeTmp = genericInfo.get(type.getTypeName());
+
+            return reviewType(typeTmp, genericInfo);
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType typeTmp = (ParameterizedType) type;
+            Type[] typeArgs = typeTmp.getActualTypeArguments();
+            boolean gChanged = false;
+
+            for (int i = 0; i < typeArgs.length; i++) {
+                Type t1 = typeArgs[i];
+                typeArgs[i] = reviewType(t1, genericInfo);
+                if (typeArgs[i] != t1) {
+                    gChanged = true;
+                }
+            }
+
+            if (gChanged) {
+                return new ParameterizedTypeImpl((Class<?>) typeTmp.getRawType(), typeArgs, typeTmp.getOwnerType());
+            } else {
+               return type;
+            }
+        } else {
+            return type;
+        }
+    }
 }

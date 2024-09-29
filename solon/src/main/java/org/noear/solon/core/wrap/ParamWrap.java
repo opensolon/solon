@@ -15,8 +15,10 @@
  */
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.lang.Nullable;
+
 import java.lang.reflect.*;
-import java.util.Map;
 
 /**
  * 参数包装
@@ -25,43 +27,51 @@ import java.util.Map;
  * @since 1.2
  * @since 1.6
  * @since 2.4
+ * @since 3.0
  */
 public class ParamWrap extends VarDescriptorBase {
     private final Parameter parameter;
     private Class<?> type;
-    private Type genericType;
+    private @Nullable ParameterizedType genericType;
 
     public ParamWrap(Parameter parameter) {
         this(parameter, null, null);
     }
 
-    public ParamWrap(Parameter parameter, Executable method, Map<String, Type> genericInfo) {
+    public ParamWrap(Parameter parameter, Executable method, Class<?> clz) {
         super(parameter, parameter.getName());
         this.parameter = parameter;
         this.type = parameter.getType();
-        this.genericType = parameter.getParameterizedType();
+
+        Type type0 = parameter.getParameterizedType();
 
         if (method != null) {
             //for action
             this.init();
+        }
 
-            if (genericInfo != null && genericType instanceof TypeVariable) {
-                Type type0 = genericInfo.get(genericType.getTypeName());
+        if (clz != null) {
+            //@since 3.0
+            if (type0 instanceof TypeVariable || type0 instanceof ParameterizedType) {
+                type0 = GenericUtil.reviewType(type0, GenericUtil.getGenericInfo(clz));
 
                 if (type0 instanceof ParameterizedType) {
-                    genericType = type0;
-                    type0 = ((ParameterizedType) type0).getRawType();
-                }
-
-                if (type0 instanceof Class) {
+                    genericType = (ParameterizedType) type0;
+                    type = (Class<?>) genericType.getRawType();
+                } else if (type0 instanceof Class) {
+                    genericType = null;
                     type = (Class<?>) type0;
                 } else {
-                    throw new IllegalStateException("Mapping mehtod generic analysis error: "
+                    throw new IllegalStateException("Method parameter generic analysis failed: "
                             + method.getDeclaringClass().getName()
                             + "."
                             + method.getName());
                 }
             }
+        }
+
+        if (genericType == null && type0 instanceof ParameterizedType) {
+            genericType = (ParameterizedType) type0;
         }
     }
 

@@ -34,11 +34,11 @@ public class FieldWrapDescriptor extends VarDescriptorBase {
 
     @Override
     public Type getGenericType() {
-        return fieldWrap.field.getGenericType();
+        return fieldWrap.genericType;
     }
 
     @Override
     public Class<?> getType() {
-        return fieldWrap.field.getType();
+        return fieldWrap.type;
     }
 }

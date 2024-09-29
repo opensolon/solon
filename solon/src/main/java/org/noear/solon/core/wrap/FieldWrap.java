@@ -21,12 +21,10 @@ import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NameUtil;
-import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.Map;
 
 /**
  * 字段包装
@@ -77,47 +75,26 @@ public class FieldWrap {
         annoS = f1.getAnnotations();
         readonly = isFinal;
 
-        Type tmp = f1.getGenericType();
-        if (tmp instanceof TypeVariable) {
-            //如果是类型变量，则重新构建类型
-            Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
-            Type typeH = gMap.get(tmp.getTypeName());
 
-            if (typeH instanceof ParameterizedType) {
-                //以防外万一
-                genericType = (ParameterizedType) typeH;
-                type = (Class<?>) ((ParameterizedType) typeH).getRawType();
-            } else {
+        Type type0 = f1.getGenericType();
+        if (type0 instanceof TypeVariable || type0 instanceof ParameterizedType) {
+            type0 = GenericUtil.reviewType(type0, GenericUtil.getGenericInfo(clz));
+
+            if (type0 instanceof ParameterizedType) {
+                genericType = (ParameterizedType) type0;
+                type = (Class<?>) genericType.getRawType();
+            } else if (type0 instanceof Class) {
                 genericType = null;
-                type = (Class<?>) typeH;
+                type = (Class<?>) type0;
+            } else {
+                throw new IllegalStateException("Field generic analysis failed: "
+                        + f1.getDeclaringClass().getName()
+                        + "."
+                        + f1.getName());
             }
         } else {
+            genericType = null;
             type = f1.getType();
-
-            if (tmp instanceof ParameterizedType) {
-                ParameterizedType gt0 = (ParameterizedType) tmp;
-
-                Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
-                Type[] gArgs = gt0.getActualTypeArguments();
-                boolean gChanged = false;
-
-                for (int i = 0; i < gArgs.length; i++) {
-                    Type t1 = gArgs[i];
-                    if (t1 instanceof TypeVariable) {
-                        //尝试转换参数类型
-                        gArgs[i] = gMap.get(t1.getTypeName());
-                        gChanged = true;
-                    }
-                }
-
-                if (gChanged) {
-                    genericType = new ParameterizedTypeImpl((Class<?>) gt0.getRawType(), gArgs, gt0.getOwnerType());
-                } else {
-                    genericType = gt0;
-                }
-            } else {
-                genericType = null;
-            }
         }
 
         _setter = doFindSetter(clz, f1);
