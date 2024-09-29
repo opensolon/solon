@@ -29,16 +29,17 @@
 * 移除 solon `Component:registered` 由  `:delivered` 替代
 * 移除 无关配置的弃用代码（具体参考对应表）
 * 移除 部分事件扩展（具体参考对应表）
-* 调整 solon-net WebSocket:paramMap 改为 MultiMap 类型
-* 调整 solon-net WebSocket:send 改为 Future<Void>
+* 调整 solon-net `WebSocket:paramMap` 改为 MultiMap 类型
+* 调整 solon-net `WebSocket:send` 改为 Future<Void>
 * 调整 solon Context::forward 改为“不经过”过滤器
-* 调整 solon Solon.app().handler() 替代原来的 handlerGet() 和 HandletSet(x)；并简化 StaticResourceHandler 接入处理
+* 调整 solon `Solon.app().handler()` 替代原来的 handlerGet() 和 HandletSet(x)；并简化 StaticResourceHandler 接入处理
 * 修复 代理类中无法获取到泛型参数的BUG
-* 修复 打散包时外部相对文件定位失识问题（优化 Utils::appFolder）
-* 优化 solon Gateway 在过滤之前构建 ctx.action()
-* 优化 solon-web 统一 Context::cookeMap 解析
-* 添加 solon-cloud Event:broadcast 属性
-* 添加 solon Context::cookieSet(Cookie) 方法，支持 httponly, secure 配置
+* 修复 打散包时外部相对文件定位失识问题（优化 `Utils::appFolder`）
+* 优化 solon Gateway 在过滤之前构建 `ctx.action()`
+* 优化 solon-web 统一 `Context::cookeMap` 解析
+* 添加 solon `AppContext:getBeanFuture,getBeansFutureOfType,getBeansMapFutureOfType`
+* 添加 solon-cloud `Event:broadcast` 属性
+* 添加 solon `Context:cookieSet(Cookie)` 方法，支持 httponly, secure 配置
 * 添加 liquor-eval 框架收集
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
