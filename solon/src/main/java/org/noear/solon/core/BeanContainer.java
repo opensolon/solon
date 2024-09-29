@@ -831,6 +831,7 @@ public abstract class BeanContainer {
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 putWrap(t.getTypeName(), bw);
+                bw.genericList().add(t.getTypeName());
             }
         }
     }

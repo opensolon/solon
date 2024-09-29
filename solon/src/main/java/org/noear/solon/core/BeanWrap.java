@@ -18,6 +18,8 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
@@ -62,6 +64,14 @@ public class BeanWrap {
     private final Annotation[] annotations;
 
     private final AppContext context;
+    private Set<String> genericList;
+    protected Set<String> genericList(){
+        if(genericList == null) {
+            genericList = new HashSet<>();
+        }
+
+        return genericList;
+    }
 
 
     public BeanWrap(AppContext context, Class<?> clz) {
