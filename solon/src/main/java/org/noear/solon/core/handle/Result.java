@@ -118,6 +118,15 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "code=" + code +
+                ", description='" + description + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     /**
      * 成功的空结果
      */
