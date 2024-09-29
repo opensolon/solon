@@ -42,7 +42,7 @@
 * 添加 solon `Context:cookieSet(Cookie)` 方法，支持 httponly, secure 配置
 * 添加 solon GenericUtil:reviewType 方法，实现 ParamWrap 和 FieldWrap 的泛型审查
 * 添加 solon 泛型集合注入支持
-* 添加 solon SolonApp::enableScanning 控制是否自动扫描
+* 添加 solon-test `@SolonTest:scanning` 控制是否自动扫描（关闭时，需要通过 `@Import`）
 * 添加 liquor-eval 框架收集
 * smart-http 升为 1.6.0
 * smartsocket 升为 1.5.52
