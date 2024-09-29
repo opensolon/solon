@@ -19,14 +19,17 @@ package labs;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Import;
 
 /**
  * @author noear 2022/12/2 created
  */
+@Import(PathTest.class)
 @Configuration
 public class PathTest {
     public static void main(String[] args){
         Solon.start(PathTest.class, args, app->{
+            app.enableScanning(false);
             app.context().lifecycle(()->{
                 app.context().subBeansOfType(String.class, bean->{
                     System.out.println(bean);
