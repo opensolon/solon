@@ -562,10 +562,24 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
+        return getBeansOfType(baseType, null);
+    }
+
+    /**
+     * 获取某类型的 bean list
+     *
+     * @param baseType    基类
+     * @param geneticName 泛型名
+     */
+    public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName) {
         List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
+            if(geneticName != null && bw.genericList().contains(geneticName) == false) {
+                continue;
+            }
+
             beans.add(bw.get());
         }
 
@@ -578,11 +592,27 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> Map<String, T> getBeansMapOfType(Class<T> baseType) {
+        return getBeansMapOfType(baseType, null);
+    }
+
+    /**
+     * 获取某类型的 bean map
+     *
+     * @param baseType    基类
+     * @param geneticName 泛型名
+     */
+    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
-                beanMap.put(bw.name(), bw.get());
+                if (geneticName != null && bw.genericList().contains(geneticName) == false) {
+                    return;
+                }
+
+                if (Utils.isNotEmpty(bw.name())) {
+                    beanMap.put(bw.name(), bw.get());
+                }
             }
         });
 
@@ -673,9 +703,11 @@ public abstract class BeanContainer {
         CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
         Map<String, T> beanMap = new LinkedHashMap<>();
         subWrapsOfType(baseType, (bw) -> {
-            beanMap.put(bw.name(), bw.get());
-            if (future.isDone() == false) {
-                future.complete(beanMap);
+            if (Utils.isNotEmpty(bw.name())) {
+                beanMap.put(bw.name(), bw.get());
+                if (future.isDone() == false) {
+                    future.complete(beanMap);
+                }
             }
         });
         return future;

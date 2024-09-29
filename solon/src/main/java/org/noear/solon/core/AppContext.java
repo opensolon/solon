@@ -263,13 +263,18 @@ public class AppContext extends BeanContainer {
 
         if (Utils.isEmpty(name) && vh.getGenericType() != null) {
             if (List.class == vh.getType()) {
-                //支持 List<Bean> 注入
-                Type type0 = vh.getGenericType().getActualTypeArguments()[0];
-                if (type0 instanceof ParameterizedType) {
-                    type0 = ((ParameterizedType) type0).getRawType();
-                }
+                //支持 List<Bean> 注入 //@since 3.0
+                Type tmp = vh.getGenericType().getActualTypeArguments()[0];
 
-                Type type = type0;
+                final String typeFilter; //过滤泛型
+                final Type type ;
+                if (tmp instanceof ParameterizedType) {
+                    type = ((ParameterizedType) tmp).getRawType();
+                    typeFilter = tmp.getTypeName();
+                }else {
+                    type = tmp;
+                    typeFilter = null;
+                }
 
                 if (type instanceof Class) {
                     if (vh.isField()) {
@@ -279,13 +284,13 @@ public class AppContext extends BeanContainer {
                                 return;
                             }
 
-                            BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                            BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type, typeFilter);
                             vh.setValue(beanListSupplier);
                         });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) type);
-                        BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type);
+                        BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type, typeFilter);
                         vh.setValueOnly(beanListSupplier);
                     }
                     return;
@@ -293,15 +298,21 @@ public class AppContext extends BeanContainer {
             }
 
             if (Map.class == vh.getType()) {
-                //支持 Map<String,Bean> 注入
-                Type keyType = vh.getGenericType().getActualTypeArguments()[0];
-                Type valType0 = vh.getGenericType().getActualTypeArguments()[1];
+                //支持 Map<String,Bean> 注入 //@since 3.0
+                Type valTmp = vh.getGenericType().getActualTypeArguments()[1];
 
-                if (valType0 instanceof ParameterizedType) {
-                    valType0 = ((ParameterizedType) valType0).getRawType();
+                Type keyType = vh.getGenericType().getActualTypeArguments()[0];
+                Type valType;
+                String valFilter;
+
+                if (valTmp instanceof ParameterizedType) {
+                    valType = ((ParameterizedType) valTmp).getRawType();
+                    valFilter = valTmp.getTypeName();
+                } else {
+                    valType = valTmp;
+                    valFilter = null;
                 }
 
-                Type valType = valType0;
 
                 if (String.class == keyType && valType instanceof Class) {
                     if (vh.isField()) {
@@ -311,13 +322,13 @@ public class AppContext extends BeanContainer {
                                 return;
                             }
 
-                            BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                            BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType, valFilter);
                             vh.setValue(beanMapSupplier);
                         });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) valType);
-                        BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType);
+                        BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType, valFilter);
                         vh.setValueOnly(beanMapSupplier);
                     }
                     return;
