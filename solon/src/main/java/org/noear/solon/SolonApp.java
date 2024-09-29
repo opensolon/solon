@@ -248,7 +248,7 @@ public class SolonApp extends RouterWrapper {
         beanImportTry();
 
         //2.2.通过源扫描bean
-        if (source() != null && enableScanning()) {
+        if (source() != null && cfg().scanning()) {
             context().beanScan(source());
         }
 
@@ -684,23 +684,6 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableSessionState(boolean enable) {
         _enableSessionState = enable;
-        return this;
-    }
-
-    private boolean _enableScanning = true;
-
-    /**
-     * 是否已启用扫描
-     */
-    public boolean enableScanning() {
-        return _enableScanning;
-    }
-
-    /**
-     * 启用扫描
-     */
-    public SolonApp enableScanning(boolean enable) {
-        _enableScanning = enable;
         return this;
     }
 }

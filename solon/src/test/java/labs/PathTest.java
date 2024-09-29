@@ -27,11 +27,10 @@ import org.noear.solon.annotation.Import;
 @Import(PathTest.class)
 @Configuration
 public class PathTest {
-    public static void main(String[] args){
-        Solon.start(PathTest.class, args, app->{
-            app.enableScanning(false);
-            app.context().lifecycle(()->{
-                app.context().subBeansOfType(String.class, bean->{
+    public static void main(String[] args) {
+        Solon.start(PathTest.class, new String[]{"-scanning=0"}, app -> {
+            app.context().lifecycle(() -> {
+                app.context().subBeansOfType(String.class, bean -> {
                     System.out.println(bean);
                 });
             });
@@ -39,12 +38,12 @@ public class PathTest {
     }
 
     @Bean("str1")
-    public String str1(){
+    public String str1() {
         return "1";
     }
 
     @Bean("str2")
-    public String str2(){
+    public String str2() {
         return "2";
     }
 }

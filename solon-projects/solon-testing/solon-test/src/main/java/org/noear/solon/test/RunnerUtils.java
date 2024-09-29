@@ -134,6 +134,11 @@ public class RunnerUtils {
                 argsAry.add("-debug=1");
             }
 
+            //添加扫描模式
+            if (anno.scanning() == false) {
+                argsAry.add("-scanning=0");
+            }
+
             //添加环境变量
             if (Utils.isNotEmpty(anno.env())) {
                 argsAry.add("-env=" + anno.env());
