@@ -33,6 +33,7 @@
 * 调整 solon-net `WebSocket:send` 改为 Future<Void>
 * 调整 solon Context::forward 改为“不经过”过滤器
 * 调整 solon `Solon.app().handler()` 替代原来的 handlerGet() 和 HandletSet(x)；并简化 StaticResourceHandler 接入处理
+* 调整 solon `warp.*` 部分方法设计（内部类）
 * 修复 代理类中无法获取到泛型参数的BUG
 * 修复 打散包时外部相对文件定位失识问题（优化 `Utils::appFolder`）
 * 优化 solon Gateway 在过滤之前构建 `ctx.action()`
@@ -42,6 +43,7 @@
 * 添加 solon `Context:cookieSet(Cookie)` 方法，支持 httponly, secure 配置
 * 添加 solon GenericUtil:reviewType 方法，实现 ParamWrap 和 FieldWrap 的泛型审查
 * 添加 solon 泛型集合注入支持
+* 添加 solon 静态字段注入支持
 * 添加 solon-test `@SolonTest:scanning` 控制是否自动扫描（关闭时，需要通过 `@Import`）
 * 添加 liquor-eval 框架收集
 * smart-http 升为 1.6.0
