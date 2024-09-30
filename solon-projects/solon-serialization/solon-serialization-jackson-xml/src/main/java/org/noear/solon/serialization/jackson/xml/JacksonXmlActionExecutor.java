@@ -115,12 +115,12 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -132,7 +132,7 @@ public class JacksonXmlActionExecutor extends ActionExecuteHandlerDefault {
         JsonNode tmp = (JsonNode) bodyObj;
 
         if (tmp.isObject()) {
-            if (p.isRequiredBody() == false) {
+            if (p.spec().isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //

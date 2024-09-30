@@ -415,7 +415,7 @@ public class OpenApi2Builder {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
-                    if (isRequiredBody == false && paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
+                    if (isRequiredBody == false && paramHolder.getParam() != null && paramHolder.getParam().spec().isRequiredBody() == false) {
                         modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                     }
 
@@ -461,7 +461,7 @@ public class OpenApi2Builder {
                             modelParameter.setSchema(new RefModel(paramSchema));
                         }
 
-                        if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
+                        if (paramHolder.getParam() != null && paramHolder.getParam().spec().isRequiredBody() == false) {
                             modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                         }
 

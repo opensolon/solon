@@ -107,12 +107,12 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -124,13 +124,13 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
         ONode tmp = (ONode) bodyObj;
 
         if (tmp.isObject()) {
-            if (p.isRequiredBody() == false) {
+            if (p.spec().isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
                 if (tmp.contains(p.getName())) {
                     //支持泛型的转换
-                    if (p.isGenericType()) {
+                    if (p.spec().isGenericType()) {
                         return tmp.get(p.getName()).toObject(p.getGenericType());
                     } else {
                         return tmp.get(p.getName()).toObject(pt);
@@ -152,7 +152,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                if (p.isGenericType()) {
+                if (p.spec().isGenericType()) {
                     return tmp.toObject(p.getGenericType());
                 } else {
                     return tmp.toObject(pt);
@@ -167,7 +167,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
             }
 
             //集合类型转换
-            if (p.isGenericType()) {
+            if (p.spec().isGenericType()) {
                 //转换带泛型的集合
                 return tmp.toObject(p.getGenericType());
             } else {

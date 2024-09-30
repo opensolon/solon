@@ -162,7 +162,7 @@ public class ParamHolder {
 
     public String paramType() {
         if (param != null) {
-            if (param.isRequiredBody()) {
+            if (param.spec().isRequiredBody()) {
                 return ApiEnum.PARAM_TYPE_BODY;
             }
         }
@@ -202,7 +202,7 @@ public class ParamHolder {
 
     public boolean isRequired() {
         if (param != null) {
-            if (param.isRequiredInput()) {
+            if (param.spec().isRequiredInput()) {
                 return true;
             }
         }
@@ -217,7 +217,7 @@ public class ParamHolder {
     public boolean isRequiredBody() {
         boolean tmp = false;
         if (param != null) {
-            tmp = param.isRequiredBody();
+            tmp = param.spec().isRequiredBody();
         }
 
         if (!tmp && anno != null) {
@@ -230,7 +230,7 @@ public class ParamHolder {
     public boolean isRequiredHeader() {
         boolean tmp = false;
         if (param != null) {
-            tmp = param.isRequiredHeader();
+            tmp = param.spec().isRequiredHeader();
         }
 
         if (!tmp && anno != null) {
@@ -243,7 +243,7 @@ public class ParamHolder {
     public boolean isRequiredCookie() {
         boolean tmp = false;
         if (param != null) {
-            return param.isRequiredCookie();
+            return param.spec().isRequiredCookie();
         }
 
         if (!tmp && anno != null) {
@@ -256,7 +256,7 @@ public class ParamHolder {
     public boolean isRequiredPath() {
         boolean tmp = false;
         if (param != null) {
-            return param.isRequiredPath();
+            return param.spec().isRequiredPath();
         }
 
         if (!tmp && anno != null) {

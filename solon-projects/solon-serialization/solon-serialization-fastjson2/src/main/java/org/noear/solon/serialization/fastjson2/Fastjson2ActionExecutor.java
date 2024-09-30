@@ -87,12 +87,12 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()) {
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header 变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //可能是 path、queryString 变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -104,13 +104,13 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
         if (bodyObj instanceof JSONObject) {
             JSONObject tmp = (JSONObject) bodyObj;
 
-            if (p.isRequiredBody() == false) {
+            if (p.spec().isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
                 if (tmp.containsKey(p.getName())) {
                     //支持泛型的转换
-                    if (p.isGenericType()) {
+                    if (p.spec().isGenericType()) {
                         return tmp.getObject(p.getName(), p.getGenericType());
                     } else {
                         return tmp.getObject(p.getName(), pt);
@@ -131,7 +131,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                if (p.isGenericType()) {
+                if (p.spec().isGenericType()) {
                     return tmp.to(p.getGenericType());
                 } else {
                     return tmp.to(pt);
@@ -146,7 +146,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
             //集合类型转换
-            if (p.isGenericType()) {
+            if (p.spec().isGenericType()) {
                 //转换带泛型的集合
                 return tmp.to(p.getGenericType());
             } else {
