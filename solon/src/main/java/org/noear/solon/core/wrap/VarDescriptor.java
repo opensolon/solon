@@ -83,7 +83,7 @@ public interface VarDescriptor {
      * 是否为泛型
      * */
     default boolean isGenericType(){
-        return getGenericType() != null;
+        return getGenericType() instanceof ParameterizedType;
     }
 
 
