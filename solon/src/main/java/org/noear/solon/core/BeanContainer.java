@@ -31,8 +31,6 @@ import java.io.Closeable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.*;
 
@@ -659,60 +657,7 @@ public abstract class BeanContainer {
         subWrapsOfType(baseType, (bw) -> {
             callback.accept(bw.get());
         });
-//        EventBus.subscribe(baseType,callback::accept);
     }
-
-
-
-    /**
-     * 异步获取 Bean（Future 风格）
-     *
-     * @param nameOrType 名字或类型
-     */
-    public <T> Future<T> getBeanFuture(Object nameOrType) {
-        CompletableFuture<T> future = new CompletableFuture<>();
-        getWrapAsync(nameOrType, (bw) -> {
-            future.complete(bw.get());
-        });
-        return future;
-    }
-
-    /**
-     * 异步某类型的 Bean list（Future 风格）；不能保证顺序，非线程安全
-     *
-     * @param baseType 基类
-     */
-    public <T> Future<List<T>> getBeansFutureOfType(Class<T> baseType) {
-        CompletableFuture<List<T>> future = new CompletableFuture<>();
-        List<T> beanList = new ArrayList<>();
-        subWrapsOfType(baseType, (bw) -> {
-            beanList.add(bw.get());
-            if (future.isDone() == false) {
-                future.complete(beanList);
-            }
-        });
-        return future;
-    }
-
-    /**
-     * 异步某类型的 Bean map（Future 风格）；不能保证顺序，非线程安全
-     *
-     * @param baseType 基类
-     */
-    public <T> Future<Map<String,T>> getBeansMapFutureOfType(Class<T> baseType) {
-        CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
-        Map<String, T> beanMap = new LinkedHashMap<>();
-        subWrapsOfType(baseType, (bw) -> {
-            if (Utils.isNotEmpty(bw.name())) {
-                beanMap.put(bw.name(), bw.get());
-                if (future.isDone() == false) {
-                    future.complete(beanMap);
-                }
-            }
-        });
-        return future;
-    }
-
 
     /**
      * 包装
