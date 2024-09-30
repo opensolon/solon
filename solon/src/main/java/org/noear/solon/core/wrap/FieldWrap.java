@@ -38,24 +38,29 @@ public class FieldWrap {
     private final Class<?> ownerClz;
     //字段
     private final Field field;
-    //字段是否只读
-    private final boolean readonly;
+    //是否只读
+    private final boolean isFinal;
+    //是否字段
+    private final boolean isStatic;
 
     //值设置器
-    private final Method _setter;
+    private Method _setter;
     //值获取器
-    private final Method _getter;
+    private Method _getter;
 
     //自己申明的注解（懒加载）
     private Annotation[] annoS;
 
-    protected FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
+    protected FieldWrap(Class<?> clz, Field f1) {
         ownerClz = clz;
         field = f1;
-        readonly = isFinal;
+        isFinal = Modifier.isFinal(f1.getModifiers());
+        isStatic = Modifier.isStatic(f1.getModifiers());
 
-        _setter = doFindSetter(clz, f1);
-        _getter = doFindGetter(clz, f1);
+        if (isStatic == false) {
+            _setter = doFindSetter(clz, f1);
+            _getter = doFindGetter(clz, f1);
+        }
     }
 
 
@@ -98,6 +103,7 @@ public class FieldWrap {
 
     //字段类型包装（懒加载）
     private TypeWrap typeWrap;
+
     private TypeWrap getTypeWrap() {
         if (typeWrap == null) {
             typeWrap = new TypeWrap(ownerClz, field.getType(), field.getGenericType());
@@ -127,18 +133,12 @@ public class FieldWrap {
         return getTypeWrap().getGenericType();
     }
 
-    /**
-     * 是否只读
-     */
-    public boolean isReadonly() {
-        return readonly;
-    }
 
     /**
      * 获取所有注解
      */
     public Annotation[] getAnnoS() {
-        if(annoS == null) {
+        if (annoS == null) {
             annoS = field.getAnnotations();
         }
 
@@ -155,19 +155,33 @@ public class FieldWrap {
     /**
      * 获取字段的值
      */
-    public Object getValue(Object tObj) throws ReflectiveOperationException {
-        if (_getter == null) {
-            return get(tObj);
-        } else {
-            return _getter.invoke(tObj);
-        }
+    public Object getValue(Object tObj) {
+        return getValue(tObj, false);
     }
 
-    public Object get(Object tObj) throws IllegalAccessException {
-        if (!field.isAccessible()) {
-            field.setAccessible(true);
+    /**
+     * 获取字段的值
+     */
+    public Object getValue(Object tObj, boolean disFun) {
+        if (isStatic) {
+            tObj = null;
         }
-        return field.get(tObj);
+
+        try {
+            if (_getter == null || disFun) {
+                if (!field.isAccessible()) {
+                    field.setAccessible(true);
+                }
+
+                return field.get(tObj);
+            } else {
+                return _getter.invoke(tObj);
+            }
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -178,8 +192,12 @@ public class FieldWrap {
     }
 
     public void setValue(Object tObj, Object val, boolean disFun) {
-        if (readonly) {
+        if (isFinal) {
             return;
+        }
+
+        if (isStatic) {
+            tObj = null;
         }
 
         try {
@@ -218,10 +236,10 @@ public class FieldWrap {
             if (getFun != null) {
                 return getFun;
             }
-        } catch (NoSuchMethodException ex) {
+        } catch (NoSuchMethodException e) {
 
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        } catch (SecurityException e) {
+            LogUtil.global().warn("FieldWrap doFindGetter failed!", e);
         }
 
         return null;
@@ -235,7 +253,7 @@ public class FieldWrap {
         String setterName = NameUtil.getPropSetterName(field.getName());
 
         try {
-            Method setFun = tCls.getMethod(setterName, new Class[]{field.getType()});
+            Method setFun = tCls.getMethod(setterName, field.getType());
             if (setFun != null) {
                 return setFun;
             }

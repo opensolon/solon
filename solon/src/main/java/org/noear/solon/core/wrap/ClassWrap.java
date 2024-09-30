@@ -27,9 +27,7 @@ import org.noear.solon.core.util.ReflectUtil;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * 类包装，用于缓存类的方法和字段等相关信息
@@ -77,6 +75,7 @@ public class ClassWrap {
     private final List<FieldWrap> declaredFieldWraps;
     //所有字段包装（公或私）
     private final Map<String, FieldWrap> allFieldWrapMap;
+    private final Map<String, FieldWrap> staticFieldWrapMap;
 
     //for record
     //是否记录类型的？
@@ -96,9 +95,10 @@ public class ClassWrap {
 
         declaredFieldWraps = new ArrayList<>();
         allFieldWrapMap = new LinkedHashMap<>();
+        staticFieldWrapMap = new LinkedHashMap<>();
 
         //扫描所有字段
-        doScanAllFields(clz, allFieldWrapMap::containsKey, allFieldWrapMap::put);
+        doScanAllFields(clz);
 
         //自己申明的字段
         for (Field f : ReflectUtil.getDeclaredFields(clz)) {
@@ -125,10 +125,17 @@ public class ClassWrap {
     }
 
     /**
-     * 获取所有字段的包装（含超类）
+     * 获取所有非静态字段的包装（含超类）
      */
     public Collection<FieldWrap> getAllFieldWraps() {
         return allFieldWrapMap.values();
+    }
+
+    /**
+     * 获取所有静态字段的包装（含超类，用于注入）
+     */
+    public Collection<FieldWrap> getStaticFieldWraps() {
+        return staticFieldWrapMap.values();
     }
 
 
@@ -269,7 +276,7 @@ public class ClassWrap {
     /**
      * 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段）
      */
-    private void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String, FieldWrap> consumer) {
+    private void doScanAllFields(Class<?> clz) {
         if (clz == null) {
             return;
         }
@@ -278,17 +285,20 @@ public class ClassWrap {
             int mod = f.getModifiers();
 
             if (!Modifier.isStatic(mod)) {
-                if (checker.test(f.getName()) == false) {
+                if (allFieldWrapMap.containsKey(f.getName()) == false) {
                     _recordable &= Modifier.isFinal(mod);
                     //使用当前类，而不是申明类！
-                    consumer.accept(f.getName(), new FieldWrap(_clz, f, Modifier.isFinal(mod)));
+                    allFieldWrapMap.put(f.getName(), new FieldWrap(_clz, f));
                 }
+            } else {
+                //静态函数收集
+                staticFieldWrapMap.put(f.getName(), new FieldWrap(_clz, f));
             }
         }
 
         Class<?> sup = clz.getSuperclass();
         if (sup != Object.class) {
-            doScanAllFields(sup, checker, consumer);
+            doScanAllFields(sup);
         }
     }
 }

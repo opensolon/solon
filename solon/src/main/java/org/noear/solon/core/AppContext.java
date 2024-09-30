@@ -536,8 +536,14 @@ public class AppContext extends BeanContainer {
         List<FieldWrap> fwList = new ArrayList<>();
 
         //支持父类注入(找到有注解的字段)
-        for (FieldWrap fw : clzWrap.getAllFieldWraps()) {
+        for (FieldWrap fw : clzWrap.getAllFieldWraps()) { //非静态
             if (fw.getAnnoS().length > 0) {
+                fwList.add(fw);
+            }
+        }
+
+        for (FieldWrap fw : clzWrap.getStaticFieldWraps()) { //静态
+            if (fw.getAnnoS().length > 0 && fw.getValue(null, true) == null) {
                 fwList.add(fw);
             }
         }

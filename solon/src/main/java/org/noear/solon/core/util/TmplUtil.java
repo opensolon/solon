@@ -100,11 +100,7 @@ public class TmplUtil {
                             throw new IllegalArgumentException("Missing tmpl parameter (result field): " + name);
                         }
 
-                        try {
-                            valTmp = fw.getValue(obj);
-                        } catch (ReflectiveOperationException e) {
-                            throw new RuntimeException(e);
-                        }
+                        valTmp = fw.getValue(obj);
                     }
 
                     if (valTmp != null) {

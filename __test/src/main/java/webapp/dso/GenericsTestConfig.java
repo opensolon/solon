@@ -12,10 +12,10 @@ import java.util.Map;
 public class GenericsTestConfig {
 
     @Inject
-    public WxCallbackContext wxCallbackContext;
+    public static WxCallbackContext wxCallbackContext;
 
     @Inject
-    public FsCallbackContext fsCallbackContext;
+    public static FsCallbackContext fsCallbackContext;
 
     public interface SocialEventAware<E extends SocialEventAware<E>> {
     }

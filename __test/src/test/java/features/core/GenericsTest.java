@@ -17,13 +17,23 @@ public class GenericsTest {
     GenericsTestConfig genericsTestConfig;
 
     @Test
-    public void test1(){
+    public void test1() {
+        assert genericsTestConfig.wxCallbackContext != null;
+
         genericsTestConfig.wxCallbackContext.check();
         genericsTestConfig.fsCallbackContext.check();
     }
 
     @Test
-    public void test2(){
+    public void test1_static() {
+        assert GenericsTestConfig.fsCallbackContext != null;
+
+        GenericsTestConfig.fsCallbackContext.check();
+        GenericsTestConfig.fsCallbackContext.check();
+    }
+
+    @Test
+    public void test2() {
         GenericsTestConfig.TestConfig.check();
     }
 }

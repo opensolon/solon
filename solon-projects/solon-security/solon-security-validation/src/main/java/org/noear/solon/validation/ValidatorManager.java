@@ -348,7 +348,7 @@ public class ValidatorManager {
                     }
 
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(anno, fw.get(obj), tmp);
+                    Result rst = valid.validateOfValue(anno, fw.getValue(obj, true), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         if (Utils.isEmpty(rst.getDescription())) {
