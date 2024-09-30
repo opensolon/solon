@@ -614,23 +614,23 @@ public class OpenApi2Builder {
 
         //做为 字段
         ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
-        for (FieldWrap fw : classWrap.getFieldWraps().values()) {
-            if (Modifier.isTransient(fw.field.getModifiers())) {
+        for (FieldWrap fw : classWrap.getAllFieldWraps()) {
+            if (Modifier.isTransient(fw.getField().getModifiers())) {
                 continue;
             }
 
             QueryParameter parameter = new QueryParameter();
 
-            if (Collection.class.isAssignableFrom(fw.type)) {
+            if (Collection.class.isAssignableFrom(fw.getType())) {
                 parameter.setType(ApiEnum.RES_ARRAY);
-            } else if (Map.class.isAssignableFrom(fw.type)) {
+            } else if (Map.class.isAssignableFrom(fw.getType())) {
                 parameter.setType(ApiEnum.RES_OBJECT);
             } else {
-                parameter.setType(fw.type.getSimpleName());
+                parameter.setType(fw.getType().getSimpleName());
             }
 
-            ApiModelProperty anno = fw.field.getAnnotation(ApiModelProperty.class);
-            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fw.field);
+            ApiModelProperty anno = fw.getField().getAnnotation(ApiModelProperty.class);
+            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fw.getField());
 
             String description = format(fieldJavadoc.getComment());
             parameter.setDescription(description);
@@ -646,7 +646,7 @@ public class OpenApi2Builder {
             }
 
             if (Utils.isEmpty(parameter.getName())) {
-                parameter.setName(fw.field.getName());
+                parameter.setName(fw.getField().getName());
             }
 
 
@@ -801,13 +801,13 @@ public class OpenApi2Builder {
 
         // 3.完成模型解析
         ClassWrap classWrap = ClassWrap.get(clazz);
-        for (FieldWrap fw : classWrap.getFieldWraps().values()) {
-            if (Modifier.isStatic(fw.field.getModifiers())) {
+        for (FieldWrap fw : classWrap.getAllFieldWraps()) {
+            if (Modifier.isStatic(fw.getField().getModifiers())) {
                 //静态的跳过
                 continue;
             }
 
-            Field field = fw.field;
+            Field field = fw.getField();
 
             FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(field);
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
