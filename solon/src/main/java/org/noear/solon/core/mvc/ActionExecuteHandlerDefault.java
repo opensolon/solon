@@ -113,7 +113,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 Object tv = ctx.pull(pt);
 
                 if (tv == null) {
-                    if (p.isRequiredBody()) {
+                    if (p.spec().isRequiredBody()) {
                         //需要 body 数据
                         if (String.class.equals(pt)) {
                             tv = ctx.bodyNew();
@@ -166,8 +166,8 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 }
 
                 if (tv == null) {
-                    if (p.isRequiredInput()) {
-                        throw new StatusException(p.getRequiredHint(), 400);
+                    if (p.spec().isRequiredInput()) {
+                        throw new StatusException(p.spec().getRequiredHint(), 400);
                     }
                 }
 
@@ -199,11 +199,11 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();        //参数名
-        String pv = p.getValue(ctx);    //参数值
+        String pv = p.spec().getValue(ctx);    //参数值
         Object tv = null;               //目标值
 
         if (pv == null) {
-            pv = p.getDefaultValue();
+            pv = p.spec().getDefaultValue();
         }
 
         if (pv == null) {
@@ -248,7 +248,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      * @param type 数据类型
      */
     protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
-        return ConvertUtil.to(p, value, ctx);
+        return ConvertUtil.to(p.spec(), value, ctx);
     }
 
     /**

@@ -64,19 +64,19 @@ public class FieldWrap {
     }
 
 
-    private VarDescriptor descriptor;
+    //变量申明（懒加载）
+    private VarSpec __spec;
 
     /**
-     * 变量申明者
+     * 变量申明
      *
      * @since 2.3
      */
-    public VarDescriptor getDescriptor() {
-        if (descriptor == null) {
-            //采用懒加载，不浪费
-            descriptor = new FieldWrapDescriptor(this);
+    public VarSpec spec() {
+        if (__spec == null) {
+            __spec = new FieldWrapSpec(this);
         }
-        return descriptor;
+        return __spec;
     }
 
     /**

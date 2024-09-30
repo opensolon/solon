@@ -205,7 +205,7 @@ public class ClassWrap {
 
                 if (val0 != null) {
                     //将 string 转为目标 type，并为字段赋值
-                    Object val = ConvertUtil.to(p, val0, ctx);
+                    Object val = ConvertUtil.to(p.spec(), val0, ctx);
                     argsV[i] = val;
                 } else {
                     if (p.getType() == UploadedFile.class) {
@@ -260,7 +260,7 @@ public class ClassWrap {
 
             if (val0 != null) {
                 //将 string 转为目标 type，并为字段赋值
-                Object val = ConvertUtil.to(fw.getDescriptor(), val0, ctx);
+                Object val = ConvertUtil.to(fw.spec(), val0, ctx);
                 fw.setValue(bean, val);
             } else {
                 if (ctx != null && fw.getType() == UploadedFile.class) {

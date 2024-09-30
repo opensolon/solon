@@ -45,20 +45,14 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final Class<?> declaringClz;
     //函数
     private final Method method;
-    //函数返回类型
-    private final TypeWrap returnTypeWrap;
-    //函数参数
-    private final ParamWrap[] paramWraps;
     //函数原始参数
     private final Parameter[] parameters;
-    //函数Body参数(用于 web)
-    private ParamWrap bodyParamWrap;
     //函数注解
     private final Annotation[] annotations;
     //函数拦截器列表（扩展切点）
     private final List<InterceptorEntity> interceptors;
+    //函数拦截索引
     private final Set<Interceptor> interceptorsIdx;
-    private boolean isRequiredBody;
 
     public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
         context = ctx;
@@ -68,8 +62,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
         method = m;
         parameters = m.getParameters();
-        returnTypeWrap = new TypeWrap(clz, m.getReturnType(), m.getGenericReturnType());
-        paramWraps = buildParamWraps(parameters, ownerClz);
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
         interceptorsIdx = new HashSet<>();
@@ -110,19 +102,46 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] buildParamWraps(Parameter[] pAry, Class<?> clz) {
-        ParamWrap[] tmp = new ParamWrap[pAry.length];
-        for (int i = 0, len = pAry.length; i < len; i++) {
-            //@since 3.0
-            tmp[i] = new ParamWrap(pAry[i], method, clz);
+    //函数返回类型（懒加载）
+    private TypeWrap __returnTypeWrap;
+    //函数参数（懒加载）
+    private ParamWrap[] __paramWraps;
 
-            if (tmp[i].isRequiredBody()) {
-                isRequiredBody = true;
-                bodyParamWrap = tmp[i];
-            }
+    private TypeWrap returnTypeWrap() {
+        if (__returnTypeWrap == null) {
+            __returnTypeWrap = new TypeWrap(ownerClz, method.getReturnType(), method.getGenericReturnType());
         }
 
+        return __returnTypeWrap;
+    }
+
+    public ParamWrap[] paramWraps() {
+        if (__paramWraps == null) {
+            __paramWraps = buildParamWraps();
+        }
+
+        return __paramWraps;
+    }
+
+    private ParamWrap[] buildParamWraps() {
+        ParamWrap[] tmp = new ParamWrap[parameters.length];
+        for (int i = 0, len = parameters.length; i < len; i++) {
+            //@since 3.0
+            tmp[i] = new ParamWrap(parameters[i], method, ownerClz);
+        }
         return tmp;
+    }
+
+    /**
+     * 初始化
+     */
+    public MethodWrap ofHandler() {
+        //没有时，不处理
+        for (ParamWrap pw : getParamWraps()) {
+            pw.spec();
+        }
+
+        return this;
     }
 
 
@@ -143,15 +162,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
             interceptors.add(i);
         }
     }
-
-
-    /**
-     * 是否需要 body（用于 web）
-     */
-    public boolean isRequiredBody() {
-        return isRequiredBody;
-    }
-
 
     /**
      * 获取函数名
@@ -187,21 +197,21 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * 获取函数反回类型
      */
     public Class<?> getReturnType() {
-        return returnTypeWrap.getType();
+        return returnTypeWrap().getType();
     }
 
     /**
      * 获取函数泛型类型
      */
     public @Nullable ParameterizedType getGenericReturnType() {
-        return returnTypeWrap.getGenericType();
+        return returnTypeWrap().getGenericType();
     }
 
     /**
      * 获取函数参数
      */
     public ParamWrap[] getParamWraps() {
-        return paramWraps;
+        return paramWraps();
     }
 
     /**
@@ -209,13 +219,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public Parameter[] getParameters() {
         return parameters;
-    }
-
-    /**
-     * 获取函数Body参数
-     */
-    public @Nullable ParamWrap getBodyParamWrap() {
-        return bodyParamWrap;
     }
 
     /**

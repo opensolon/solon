@@ -25,22 +25,24 @@ import java.lang.reflect.ParameterizedType;
  * @author noear
  * @since 2.4
  */
-public class FieldWrapDescriptor extends VarDescriptorBase {
-    private final FieldWrap fieldWrap;
+public class ParamWrapSpec extends VarSpecBase {
+    private final ParamWrap paramWrap;
 
-    public FieldWrapDescriptor(FieldWrap fieldWrap) {
-        super(fieldWrap.getField(), fieldWrap.getName());
-        this.fieldWrap = fieldWrap;
+    public ParamWrapSpec(ParamWrap paramWrap) {
+        super(paramWrap.getParameter(), paramWrap.getName());
+        this.paramWrap = paramWrap;
+
+        initAction();
     }
 
 
     @Override
     public @Nullable ParameterizedType getGenericType() {
-        return fieldWrap.getGenericType();
+        return paramWrap.getGenericType();
     }
 
     @Override
     public Class<?> getType() {
-        return fieldWrap.getType();
+        return paramWrap.getType();
     }
 }

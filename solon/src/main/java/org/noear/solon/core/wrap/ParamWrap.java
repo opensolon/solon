@@ -29,7 +29,7 @@ import java.lang.reflect.*;
  * @since 2.4
  * @since 3.0
  */
-public class ParamWrap extends VarDescriptorBase {
+public class ParamWrap {
     private final Parameter parameter;
     private final TypeWrap typeWrap;
 
@@ -40,7 +40,6 @@ public class ParamWrap extends VarDescriptorBase {
      * @param executable 可执行的（构造函数，或方法）
      */
     public ParamWrap(Parameter parameter, Executable executable, Class<?> clz) {
-        super(parameter, parameter.getName());
         this.parameter = parameter;
 
         this.typeWrap = new TypeWrap(clz, parameter.getType(), parameter.getParameterizedType());
@@ -50,11 +49,25 @@ public class ParamWrap extends VarDescriptorBase {
                     + "."
                     + executable.getName());
         }
+    }
 
-        if (executable instanceof Method) {
-            //for action
-            this.initAction();
+    //变量申明（懒加载）
+    private VarSpec __spec;
+
+    /**
+     * 变量申明
+     *
+     * @since 3.0
+     */
+    public VarSpec spec() {
+        if (__spec == null) {
+            __spec = new ParamWrapSpec(this);
         }
+        return __spec;
+    }
+
+    public String getName() {
+        return parameter.getName();
     }
 
     /**
@@ -64,6 +77,9 @@ public class ParamWrap extends VarDescriptorBase {
         return parameter;
     }
 
+    /**
+     * 获取所有注解
+     */
     public Annotation[] getAnnoS() {
         if (annoS == null) {
             annoS = parameter.getAnnotations();
@@ -74,7 +90,6 @@ public class ParamWrap extends VarDescriptorBase {
     /**
      * 获取类型
      */
-    @Override
     public Class<?> getType() {
         return typeWrap.getType();
     }
@@ -82,7 +97,6 @@ public class ParamWrap extends VarDescriptorBase {
     /**
      * 获取泛型
      */
-    @Override
     public @Nullable ParameterizedType getGenericType() {
         return typeWrap.getGenericType();
     }

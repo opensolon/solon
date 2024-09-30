@@ -19,15 +19,14 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 /**
- * 变量描述符
+ * 变量说明
  *
  * @author noear
  * @since 2.3
  */
-public interface VarDescriptor {
+public interface VarSpec {
     /**
      * 必须有 body（一般是指用了 @Body 注解）
      */

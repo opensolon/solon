@@ -20,7 +20,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.exception.ConvertException;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.wrap.VarDescriptor;
+import org.noear.solon.core.wrap.VarSpec;
 
 import java.io.File;
 import java.lang.reflect.*;
@@ -46,7 +46,7 @@ public class ConvertUtil {
      * @param val        值
      * @param ctx        通用上下文
      */
-    public static Object to(VarDescriptor descriptor, String val, Context ctx) throws ClassCastException {
+    public static Object to(VarSpec descriptor, String val, Context ctx) throws ClassCastException {
         if (String.class == descriptor.getType()) {
             //如果是 string 返回原始值
             return val;

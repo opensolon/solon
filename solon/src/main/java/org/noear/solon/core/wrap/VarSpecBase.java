@@ -21,12 +21,12 @@ import org.noear.solon.core.handle.ActionParam;
 import java.lang.reflect.AnnotatedElement;
 
 /**
- * 变量描述符 基类
+ * 变量说明 基类
  *
  * @author noear
  * @since 2.4
  */
-public abstract class VarDescriptorBase implements VarDescriptor {
+public abstract class VarSpecBase implements VarSpec {
     private final AnnotatedElement element;
     private final ActionParam vo = new ActionParam();
 
@@ -77,7 +77,7 @@ public abstract class VarDescriptorBase implements VarDescriptor {
         return vo.defaultValue;
     }
 
-    public VarDescriptorBase(AnnotatedElement element, String name) {
+    public VarSpecBase(AnnotatedElement element, String name) {
         this.element = element;
         this.vo.name = name;
     }

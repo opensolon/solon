@@ -82,7 +82,7 @@ public class ActionDefault extends HandlerAide implements Action {
         }
 
         //@since 3.0
-        mWrap = new MethodWrap(bWrap.context(), bWrap.rawClz(), method);
+        mWrap = new MethodWrap(bWrap.context(), bWrap.rawClz(), method).ofHandler();
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;
