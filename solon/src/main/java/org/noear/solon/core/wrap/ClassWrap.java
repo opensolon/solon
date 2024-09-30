@@ -36,6 +36,7 @@ import java.util.function.Predicate;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public class ClassWrap {
     private static Map<Class<?>, ClassWrap> cached = new ConcurrentHashMap<>();
@@ -62,20 +63,24 @@ public class ClassWrap {
         return cw;
     }
 
-    //clz //与函数同名，_开头
+    ///////////////////////////////
+
+    //本类
     private final Class<?> _clz;
-    //clz.methodS
+    //自己申明函数
     private final Method[] declaredMethods;
+    //所有公有函数
     private final Method[] methods;
-    //clz.fieldS
+    //自己申明字段包装
     private final List<FieldWrap> declaredFieldWraps;
-    //clz.all_fieldS
-    private final Map<String, FieldWrap> fieldWrapsMap;
+    //所有字段包装（公或私）
+    private final Map<String, FieldWrap> allFieldWrapMap;
 
     //for record
+    //是否记录类型的？
     private boolean _recordable;
-    private Constructor _recordConstructor;
-    private List<ParamWrap> _recordParams;
+    //记录的构建器
+    private ConstructorWrap _recordConstructorWrap;
 
     protected ClassWrap(Class<?> clz) {
         _clz = clz;
@@ -88,14 +93,14 @@ public class ClassWrap {
         //所有字段的包装（自己的 + 父类的）
 
         declaredFieldWraps = new ArrayList<>();
-        fieldWrapsMap = new LinkedHashMap<>();
+        allFieldWrapMap = new LinkedHashMap<>();
 
         //扫描所有字段
-        doScanAllFields(clz, fieldWrapsMap::containsKey, fieldWrapsMap::put);
+        doScanAllFields(clz, allFieldWrapMap::containsKey, allFieldWrapMap::put);
 
         //自己申明的字段
         for (Field f : ReflectUtil.getDeclaredFields(clz)) {
-            FieldWrap fw = fieldWrapsMap.get(f.getName());
+            FieldWrap fw = allFieldWrapMap.get(f.getName());
             if (fw != null) {
                 declaredFieldWraps.add(fw);
             }
@@ -108,11 +113,8 @@ public class ClassWrap {
         if (_recordable) {
             //如果合字段只读
             Constructor<?>[] tmp = clz.getDeclaredConstructors();
-            _recordConstructor = tmp[tmp.length - 1];
-            _recordParams = new ArrayList<>();
-            for (Parameter p : _recordConstructor.getParameters()) {
-                _recordParams.add(new ParamWrap(p));
-            }
+            //取最后一个构造器进行包装（有选参数默认值时；会产生多个构造器；最后一个为全参）
+            _recordConstructorWrap = new ConstructorWrap(clz, tmp[tmp.length - 1]);
         }
     }
 
@@ -123,13 +125,13 @@ public class ClassWrap {
     /**
      * 获取所有字段的包装（含超类）
      */
-    public Map<String, FieldWrap> getFieldWraps() {
-        return Collections.unmodifiableMap(fieldWrapsMap);
+    public Collection<FieldWrap> getAllFieldWraps() {
+        return allFieldWrapMap.values();
     }
 
 
     public FieldWrap getFieldWrap(String field) {
-        return fieldWrapsMap.get(field);
+        return allFieldWrapMap.get(field);
     }
 
     /**
@@ -144,27 +146,6 @@ public class ClassWrap {
      */
     public Method[] getMethods() {
         return methods;
-    }
-
-    /**
-     * 是否为 record
-     */
-    public boolean recordable() {
-        return _recordable;
-    }
-
-    /**
-     * record 构建函数（可能为 null）
-     */
-    public Constructor recordConstructor() {
-        return _recordConstructor;
-    }
-
-    /**
-     * record 构造参数（可能为 null）
-     */
-    public List<ParamWrap> recordParams() {
-        return _recordParams;
     }
 
     /**
@@ -203,13 +184,13 @@ public class ClassWrap {
      * @param ctx  上下文
      */
     public <T> T newBy(Function<String, String> data, Context ctx) throws Exception {
-        if (recordable()) {
+        if (_recordable) {
             //for record
-            List<ParamWrap> argsP = recordParams();
-            Object[] argsV = new Object[argsP.size()];
+            ParamWrap[] argsP = _recordConstructorWrap.getParamWraps();
+            Object[] argsV = new Object[argsP.length];
 
-            for (int i = 0; i < argsP.size(); i++) {
-                ParamWrap p = argsP.get(i);
+            for (int i = 0; i < argsP.length; i++) {
+                ParamWrap p = argsP[i];
                 String key = p.getName();
                 String val0 = data.apply(key);
 
@@ -226,7 +207,7 @@ public class ClassWrap {
                 }
             }
 
-            Object obj = recordConstructor().newInstance(argsV);
+            Object obj = _recordConstructorWrap.getConstructor().newInstance(argsV);
             return (T) obj;
         } else {
             Object obj = ClassUtil.newInstance(clz());
@@ -259,10 +240,10 @@ public class ClassWrap {
      * @param ctx  上下文
      */
     private void doFill(Object bean, Function<String, String> data, Context ctx) throws Exception {
-        if (fieldWrapsMap.isEmpty() && NativeDetector.inNativeImage()) {
+        if (allFieldWrapMap.isEmpty() && NativeDetector.inNativeImage()) {
             LogUtil.global().warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", _clz.getName()));
         }
-        for (Map.Entry<String, FieldWrap> kv : fieldWrapsMap.entrySet()) {
+        for (Map.Entry<String, FieldWrap> kv : allFieldWrapMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
@@ -273,7 +254,7 @@ public class ClassWrap {
                 Object val = ConvertUtil.to(fw.getDescriptor(), val0, ctx);
                 fw.setValue(bean, val);
             } else {
-                if (ctx != null && fw.type == UploadedFile.class) {
+                if (ctx != null && fw.getType() == UploadedFile.class) {
                     UploadedFile file1 = ctx.file(key);
                     if (file1 != null) {
                         fw.setValue(bean, file1);

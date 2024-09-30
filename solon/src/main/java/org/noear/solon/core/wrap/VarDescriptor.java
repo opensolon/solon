@@ -69,22 +69,22 @@ public interface VarDescriptor {
     String getDefaultValue();
 
     /**
+     * 获取类型
+     * */
+    Class<?> getType();
+
+    /**
      * 获取泛型
      * */
     @Nullable
-    Type getGenericType();
+    ParameterizedType getGenericType();
 
     /**
      * 是否为泛型
      * */
     default boolean isGenericType(){
-        return getGenericType() instanceof ParameterizedType;
+        return getGenericType() != null;
     }
-
-    /**
-     * 获取类型
-     * */
-    Class<?> getType();
 
 
     /**

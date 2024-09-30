@@ -536,10 +536,9 @@ public class AppContext extends BeanContainer {
         List<FieldWrap> fwList = new ArrayList<>();
 
         //支持父类注入(找到有注解的字段)
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldWraps().entrySet()) {
-            Annotation[] annS = kv.getValue().annoS;
-            if (annS.length > 0) {
-                fwList.add(kv.getValue());
+        for (FieldWrap fw : clzWrap.getAllFieldWraps()) {
+            if (fw.getAnnoS().length > 0) {
+                fwList.add(fw);
             }
         }
 
@@ -556,7 +555,7 @@ public class AppContext extends BeanContainer {
             for (FieldWrap fw : fwList) {
                 VarHolder vh = fw.holder(this, obj, gather);
                 gather.add(vh);
-                tryInject(vh, fw.annoS);
+                tryInject(vh, fw.getAnnoS());
             }
         }
     }
@@ -741,7 +740,7 @@ public class AppContext extends BeanContainer {
             //0.没有参数
             tryBuildBeanOfMethod2(anno, mWrap, bw, new Object[]{});
         } else {
-            tryMethodParamsGather(bw.context(), 1, mWrap.getReturnType(), mWrap.getRawParameters(), (args2) -> {
+            tryMethodParamsGather(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
                 RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(anno, mWrap, bw, args2));
             });
         }
@@ -750,7 +749,7 @@ public class AppContext extends BeanContainer {
     /**
      * 尝试方法参数收集
      */
-    protected void tryMethodParamsGather(AppContext context, int label, Class<?> outType, Parameter[] paramAry, ConsumerEx<Object[]> completionConsumer) {
+    protected void tryMethodParamsGather(AppContext context, int label, Class<?> outType, ParamWrap[] paramAry, ConsumerEx<Object[]> completionConsumer) {
         //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
         InjectGather gather = new InjectGather(label, outType, true, paramAry.length, (args2) -> {
             //变量收集完成后，会回调此处
@@ -761,16 +760,15 @@ public class AppContext extends BeanContainer {
         gatherSet.add(gather);
 
         //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-        for (Parameter p1 : paramAry) {
-            VarHolder vh = new VarHolderOfParam(context, p1, gather);
+        for (ParamWrap pw1 : paramAry) {
+            VarHolder vh = new VarHolderOfParam(context, pw1, gather);
             gather.add(vh);
 
-            Annotation[] annoS = p1.getAnnotations();
-            if (annoS.length == 0) {
+            if (pw1.getAnnoS().length == 0) {
                 //没带注解的，算必须
                 beanInject(vh, null, true, false);
             } else {
-                tryInject(vh, annoS);
+                tryInject(vh, pw1.getAnnoS());
             }
         }
     }
@@ -909,7 +907,10 @@ public class AppContext extends BeanContainer {
         if (c1 == null || c1.getParameterCount() == 0) {
             tryBuildBeanOfClass3(clz, builder, anno, null, null);
         } else {
-            tryMethodParamsGather(this, 2, clz, c1.getParameters(), (args2) -> {
+            //包装（处理泛型参数）
+            ConstructorWrap cw = new ConstructorWrap(clz, c1);
+
+            tryMethodParamsGather(this, 2, clz, cw.getParamWraps(), (args2) -> {
                 tryBuildBeanOfClass3(clz, builder, anno, c1, args2);
             });
         }

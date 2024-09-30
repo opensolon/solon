@@ -72,7 +72,7 @@ public class VarHolderOfField implements VarHolder {
      * */
     @Override
     public @Nullable ParameterizedType getGenericType() {
-        return fw.genericType;
+        return fw.getGenericType();
     }
 
 
@@ -95,7 +95,7 @@ public class VarHolderOfField implements VarHolder {
      * */
     @Override
     public Class<?> getType(){
-        return fw.type;
+        return fw.getType();
     }
 
     /**
@@ -103,7 +103,7 @@ public class VarHolderOfField implements VarHolder {
      * */
     @Override
     public Annotation[] getAnnoS(){
-        return fw.annoS;
+        return fw.getAnnoS();
     }
 
     /**
@@ -111,7 +111,7 @@ public class VarHolderOfField implements VarHolder {
      * */
     @Override
     public String getFullName() {
-        return fw.entityClz.getName() + "::" + fw.field.getName();
+        return fw.getOwnerClz().getName() + "::" + fw.getName();
     }
 
 

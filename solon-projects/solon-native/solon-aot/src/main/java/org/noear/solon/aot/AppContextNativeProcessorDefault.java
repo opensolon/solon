@@ -174,9 +174,8 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         ClassWrap clzWrap = ClassWrap.get(clazz);
 
         // 处理字段
-        Map<String, FieldWrap> fieldWraps = clzWrap.getFieldWraps();
-        for (FieldWrap fieldWrap : fieldWraps.values()) {
-            processFieldDo(nativeMetadata, fieldWrap.field);
+        for (FieldWrap fieldWrap : clzWrap.getAllFieldWraps()) {
+            processFieldDo(nativeMetadata, fieldWrap.getField());
         }
     }
 

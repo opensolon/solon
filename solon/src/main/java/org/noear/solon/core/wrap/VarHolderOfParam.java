@@ -33,8 +33,7 @@ import java.lang.reflect.*;
  * @since 1.0
  * */
 public class VarHolderOfParam implements VarHolder {
-    private final Parameter p;
-    private final ParameterizedType genericType;
+    private final ParamWrap pw;
     private final AppContext ctx;
     private Class<?> dependencyType;
 
@@ -44,18 +43,10 @@ public class VarHolderOfParam implements VarHolder {
 
     private InjectGather gather;
 
-    public VarHolderOfParam(AppContext ctx, Parameter p, InjectGather gather) {
+    public VarHolderOfParam(AppContext ctx, ParamWrap pw, InjectGather gather) {
         this.ctx = ctx;
-        this.p = p;
+        this.pw = pw;
         this.gather = gather;
-
-        //简化处理 //只在 @Bean 时有用；不会有复杂的泛型
-        Type tmp = p.getParameterizedType();
-        if (tmp instanceof ParameterizedType) {
-            genericType = (ParameterizedType) tmp;
-        } else {
-            genericType = null;
-        }
     }
 
     /**
@@ -74,15 +65,10 @@ public class VarHolderOfParam implements VarHolder {
         return false;
     }
 
+
     /**
-     * 泛型（可能为 null）
+     * 获取依赖类型
      */
-    @Override
-    public @Nullable ParameterizedType getGenericType() {
-        return genericType;
-    }
-
-
     @Override
     public Class<?> getDependencyType() {
         if (dependencyType == null) {
@@ -92,6 +78,9 @@ public class VarHolderOfParam implements VarHolder {
         }
     }
 
+    /**
+     * 配置依赖类型
+     */
     @Override
     public void setDependencyType(Class<?> dependencyType) {
         this.dependencyType = dependencyType;
@@ -102,7 +91,15 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public Class<?> getType() {
-        return p.getType();
+        return pw.getType();
+    }
+
+    /**
+     * 泛型（可能为 null）
+     */
+    @Override
+    public @Nullable ParameterizedType getGenericType() {
+        return pw.getGenericType();
     }
 
     /**
@@ -110,7 +107,7 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public Annotation[] getAnnoS() {
-        return p.getAnnotations();
+        return pw.getParameter().getAnnotations();
     }
 
     /**
@@ -118,8 +115,8 @@ public class VarHolderOfParam implements VarHolder {
      */
     @Override
     public String getFullName() {
-        Executable e = p.getDeclaringExecutable();
-        return e.toString() + " - @" + p.getName();
+        Executable e = pw.getParameter().getDeclaringExecutable();
+        return e.toString() + " - @" + pw.getParameter().getName();
 
         //return e.getDeclaringClass().getName() + "::" + e.getName();
     }

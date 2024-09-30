@@ -15,9 +15,9 @@
  */
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.lang.Nullable;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 
 /**
@@ -31,47 +31,29 @@ import java.lang.reflect.*;
  */
 public class ParamWrap extends VarDescriptorBase {
     private final Parameter parameter;
-    private Class<?> type;
-    private @Nullable ParameterizedType genericType;
+    private final TypeWrap typeWrap;
 
-    public ParamWrap(Parameter parameter) {
-        this(parameter, null, null);
-    }
+    //自己申明的注解（懒加载）
+    private Annotation[] annoS;
 
-    public ParamWrap(Parameter parameter, Executable method, Class<?> clz) {
+    /**
+     * @param executable 可执行的（构造函数，或方法）
+     */
+    public ParamWrap(Parameter parameter, Executable executable, Class<?> clz) {
         super(parameter, parameter.getName());
         this.parameter = parameter;
-        this.type = parameter.getType();
 
-        Type type0 = parameter.getParameterizedType();
+        this.typeWrap = new TypeWrap(clz, parameter.getType(), parameter.getParameterizedType());
+        if (typeWrap.isInvalid()) {
+            throw new IllegalStateException("Method parameter generic analysis failed: "
+                    + executable.getDeclaringClass().getName()
+                    + "."
+                    + executable.getName());
+        }
 
-        if (method != null) {
+        if (executable instanceof Method) {
             //for action
-            this.init();
-        }
-
-        if (clz != null) {
-            //@since 3.0
-            if (type0 instanceof TypeVariable || type0 instanceof ParameterizedType) {
-                type0 = GenericUtil.reviewType(type0, GenericUtil.getGenericInfo(clz));
-
-                if (type0 instanceof ParameterizedType) {
-                    genericType = (ParameterizedType) type0;
-                    type = (Class<?>) genericType.getRawType();
-                } else if (type0 instanceof Class) {
-                    genericType = null;
-                    type = (Class<?>) type0;
-                } else {
-                    throw new IllegalStateException("Method parameter generic analysis failed: "
-                            + method.getDeclaringClass().getName()
-                            + "."
-                            + method.getName());
-                }
-            }
-        }
-
-        if (genericType == null && type0 instanceof ParameterizedType) {
-            genericType = (ParameterizedType) type0;
+            this.initAction();
         }
     }
 
@@ -82,12 +64,11 @@ public class ParamWrap extends VarDescriptorBase {
         return parameter;
     }
 
-    /**
-     * 获取泛型
-     */
-    @Override
-    public Type getGenericType() {
-        return genericType;
+    public Annotation[] getAnnoS() {
+        if (annoS == null) {
+            annoS = parameter.getAnnotations();
+        }
+        return annoS;
     }
 
     /**
@@ -95,6 +76,14 @@ public class ParamWrap extends VarDescriptorBase {
      */
     @Override
     public Class<?> getType() {
-        return type;
+        return typeWrap.getType();
+    }
+
+    /**
+     * 获取泛型
+     */
+    @Override
+    public @Nullable ParameterizedType getGenericType() {
+        return typeWrap.getGenericType();
     }
 }

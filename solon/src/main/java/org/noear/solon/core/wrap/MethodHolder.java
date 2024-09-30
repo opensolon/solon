@@ -31,12 +31,14 @@ import java.util.List;
 public interface MethodHolder {
     /**
      * 获取函数
-     * */
+     */
     Method getMethod();
+
     /**
      * 获取函数参数
      */
     ParamWrap[] getParamWraps();
+
     /**
      * 获取函数反回类型
      */
@@ -44,7 +46,7 @@ public interface MethodHolder {
 
     /**
      * 获取函数所有注解
-     * */
+     */
     Annotation[] getAnnotations();
 
     /**
@@ -54,11 +56,16 @@ public interface MethodHolder {
 
     /**
      * 获取函数某种注解
-     * */
+     */
     <T extends Annotation> T getAnnotation(Class<T> type);
 
     /**
+     * 获取所有者类
+     */
+    Class<?> getOwnerClz();
+
+    /**
      * 获取申明类
-     * */
+     */
     Class<?> getDeclaringClz();
 }

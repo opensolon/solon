@@ -15,7 +15,9 @@
  */
 package org.noear.solon.core.wrap;
 
-import java.lang.reflect.Type;
+import org.noear.solon.lang.Nullable;
+
+import java.lang.reflect.ParameterizedType;
 
 /**
  * 字段 变量描述符
@@ -27,18 +29,18 @@ public class FieldWrapDescriptor extends VarDescriptorBase {
     private final FieldWrap fieldWrap;
 
     public FieldWrapDescriptor(FieldWrap fieldWrap) {
-        super(fieldWrap.field, fieldWrap.field.getName());
+        super(fieldWrap.getField(), fieldWrap.getName());
         this.fieldWrap = fieldWrap;
     }
 
 
     @Override
-    public Type getGenericType() {
-        return fieldWrap.genericType;
+    public @Nullable ParameterizedType getGenericType() {
+        return fieldWrap.getGenericType();
     }
 
     @Override
     public Class<?> getType() {
-        return fieldWrap.type;
+        return fieldWrap.getType();
     }
 }

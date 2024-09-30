@@ -18,7 +18,6 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.lang.Nullable;
@@ -35,66 +34,35 @@ import java.lang.reflect.*;
  * @since 1.0
  * */
 public class FieldWrap {
-    /**
-     * 实体类型
-     */
-    public final Class<?> entityClz;
-    /**
-     * 字段
-     */
-    public final Field field;
-    /**
-     * 自己申明的注解
-     */
-    public final Annotation[] annoS;
-    /**
-     * 字段类型
-     */
-    public final Class<?> type;
-    /**
-     * 字段泛型类型（可能为null）
-     */
-    public final @Nullable ParameterizedType genericType;
-    /**
-     * 字段是否只读
-     */
-    public final boolean readonly;
+    //所有者类
+    private final Class<?> ownerClz;
+    //字段
+    private final Field field;
+    //字段类型包装
+    private final TypeWrap typeWrap;
+    //字段是否只读
+    private final boolean readonly;
 
-    /**
-     * 值设置器
-     */
-    private Method _setter;
-    /**
-     * 值获取器
-     */
-    private Method _getter;
+    //值设置器
+    private final Method _setter;
+    //值获取器
+    private final Method _getter;
+
+    //自己申明的注解（懒加载）
+    private Annotation[] annoS;
 
     protected FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
-        entityClz = clz;
+        ownerClz = clz;
         field = f1;
-        annoS = f1.getAnnotations();
         readonly = isFinal;
 
+        typeWrap = new TypeWrap(clz, f1.getType(), f1.getGenericType());
 
-        Type type0 = f1.getGenericType();
-        if (type0 instanceof TypeVariable || type0 instanceof ParameterizedType) {
-            type0 = GenericUtil.reviewType(type0, GenericUtil.getGenericInfo(clz));
-
-            if (type0 instanceof ParameterizedType) {
-                genericType = (ParameterizedType) type0;
-                type = (Class<?>) genericType.getRawType();
-            } else if (type0 instanceof Class) {
-                genericType = null;
-                type = (Class<?>) type0;
-            } else {
-                throw new IllegalStateException("Field generic analysis failed: "
-                        + f1.getDeclaringClass().getName()
-                        + "."
-                        + f1.getName());
-            }
-        } else {
-            genericType = null;
-            type = f1.getType();
+        if (typeWrap.isInvalid()) {
+            throw new IllegalStateException("Field generic analysis failed: "
+                    + f1.getDeclaringClass().getName()
+                    + "."
+                    + f1.getName());
         }
 
         _setter = doFindSetter(clz, f1);
@@ -117,10 +85,58 @@ public class FieldWrap {
         return descriptor;
     }
 
+    /**
+     * 获取所有者类
+     */
+    public Class<?> getOwnerClz() {
+        return ownerClz;
+    }
+
+    /**
+     * 获取字段名
+     */
     public String getName() {
         return field.getName();
     }
 
+    /**
+     * 获取字段
+     */
+    public Field getField() {
+        return field;
+    }
+
+    /**
+     * 获取类型
+     */
+    public Class<?> getType() {
+        return field.getType();
+    }
+
+    /**
+     * 获取参数类型
+     */
+    public @Nullable ParameterizedType getGenericType() {
+        return typeWrap.getGenericType();
+    }
+
+    /**
+     * 是否只读
+     */
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    /**
+     * 获取所有注解
+     */
+    public Annotation[] getAnnoS() {
+        if(annoS == null) {
+            annoS = field.getAnnotations();
+        }
+
+        return annoS;
+    }
 
     /**
      * 获取自身的临时对象

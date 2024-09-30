@@ -337,10 +337,8 @@ public class ValidatorManager {
 
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
-        for (Map.Entry<String, FieldWrap> kv : cw.getFieldWraps().entrySet()) {
-            FieldWrap fieldWrap = kv.getValue();
-
-            for (Annotation anno : kv.getValue().annoS) {
+        for (FieldWrap fw : cw.getAllFieldWraps()) {
+            for (Annotation anno : fw.getAnnoS()) {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
@@ -350,11 +348,11 @@ public class ValidatorManager {
                     }
 
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(anno, fieldWrap.get(obj), tmp);
+                    Result rst = valid.validateOfValue(anno, fw.get(obj), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         if (Utils.isEmpty(rst.getDescription())) {
-                            rst.setDescription(cw.clz().getSimpleName() + "." + fieldWrap.getName());
+                            rst.setDescription(cw.clz().getSimpleName() + "." + fw.getName());
                         }
 
                         if (VALIDATE_ALL){
@@ -365,12 +363,12 @@ public class ValidatorManager {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
                             }else {
-                                rst.setData(new BeanValidateInfo(fieldWrap.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
                         }else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
-                                rst.setData(new BeanValidateInfo(fieldWrap.getName(), anno, valid.message(anno)));
+                                rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                             }
                             return rst;
                         }

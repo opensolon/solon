@@ -24,10 +24,7 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 
 /**
@@ -40,16 +37,39 @@ import java.util.*;
  * @since 3.0
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
+    private final AppContext context;
+
+    //所有者类
+    private final Class<?> ownerClz;
+    //申明类型
+    private final Class<?> declaringClz;
+    //函数
+    private final Method method;
+    //函数返回类型
+    private final TypeWrap returnTypeWrap;
+    //函数参数
+    private final ParamWrap[] paramWraps;
+    //函数原始参数
+    private final Parameter[] parameters;
+    //函数Body参数(用于 web)
+    private ParamWrap bodyParamWrap;
+    //函数注解
+    private final Annotation[] annotations;
+    //函数拦截器列表（扩展切点）
+    private final List<InterceptorEntity> interceptors;
+    private final Set<Interceptor> interceptorsIdx;
+    private boolean isRequiredBody;
 
     public MethodWrap(AppContext ctx, Class<?> clz, Method m) {
         context = ctx;
 
-        tagretClz = clz;
+        ownerClz = clz;
         declaringClz = m.getDeclaringClass();
 
         method = m;
-        rawParameters = m.getParameters();
-        parameters = buildParamsWrap(rawParameters, tagretClz);
+        parameters = m.getParameters();
+        returnTypeWrap = new TypeWrap(clz, m.getReturnType(), m.getGenericReturnType());
+        paramWraps = buildParamWraps(parameters, ownerClz);
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
         interceptorsIdx = new HashSet<>();
@@ -69,7 +89,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
 
         //scan class @Around
-        for (Annotation anno : tagretClz.getAnnotations()) {
+        for (Annotation anno : ownerClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
@@ -90,7 +110,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Class<?> clz) {
+    private ParamWrap[] buildParamWraps(Parameter[] pAry, Class<?> clz) {
         ParamWrap[] tmp = new ParamWrap[pAry.length];
         for (int i = 0, len = pAry.length; i < len; i++) {
             //@since 3.0
@@ -98,7 +118,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
             if (tmp[i].isRequiredBody()) {
                 isRequiredBody = true;
-                bodyParameter = tmp[i];
+                bodyParamWrap = tmp[i];
             }
         }
 
@@ -124,24 +144,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
     }
 
-    private final AppContext context;
-
-    private final Class<?> tagretClz;
-    //实体类型
-    private final Class<?> declaringClz;
-    //函数
-    private final Method method;
-    //函数参数
-    private final ParamWrap[] parameters;
-    private final Parameter[] rawParameters;
-    //函数Body参数(用于 web)
-    private ParamWrap bodyParameter;
-    //函数注解
-    private final Annotation[] annotations;
-    //函数拦截器列表（扩展切点）
-    private final List<InterceptorEntity> interceptors;
-    private final Set<Interceptor> interceptorsIdx;
-    private boolean isRequiredBody;
 
     /**
      * 是否需要 body（用于 web）
@@ -156,6 +158,14 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public String getName() {
         return method.getName();
+    }
+
+
+    /**
+     * 获取所有者类
+     */
+    public Class<?> getOwnerClz() {
+        return ownerClz;
     }
 
     /**
@@ -177,35 +187,35 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * 获取函数反回类型
      */
     public Class<?> getReturnType() {
-        return method.getReturnType();
+        return returnTypeWrap.getType();
     }
 
     /**
      * 获取函数泛型类型
      */
-    public Type getGenericReturnType() {
-        return method.getGenericReturnType();
+    public @Nullable ParameterizedType getGenericReturnType() {
+        return returnTypeWrap.getGenericType();
     }
 
     /**
      * 获取函数参数
      */
     public ParamWrap[] getParamWraps() {
-        return parameters;
+        return paramWraps;
     }
 
     /**
      * 获取函数原始参数
      */
-    public Parameter[] getRawParameters() {
-        return rawParameters;
+    public Parameter[] getParameters() {
+        return parameters;
     }
 
     /**
      * 获取函数Body参数
      */
     public @Nullable ParamWrap getBodyParamWrap() {
-        return bodyParameter;
+        return bodyParamWrap;
     }
 
     /**

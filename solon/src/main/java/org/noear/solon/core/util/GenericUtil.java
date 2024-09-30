@@ -198,6 +198,22 @@ public class GenericUtil {
         return typeMap;
     }
 
+
+    /**
+     * 审查类型
+     *
+     * @param type        原始类型
+     * @param genericInfo 泛型信息类
+     * @since 3.0
+     * */
+    public static Type reviewType(Type type, Type genericInfo) {
+        if (type instanceof TypeVariable || type instanceof ParameterizedType) {
+            return reviewType(type, getGenericInfo(genericInfo));
+        } else {
+            return type;
+        }
+    }
+
     /**
      * 审查类型
      *
@@ -235,6 +251,27 @@ public class GenericUtil {
             }
         } else {
             return type;
+        }
+    }
+
+    public static List<Class<?>> reviewTypeArguments(ParameterizedType type) {
+        if (type == null) {
+            return null;
+        }
+
+        List<Class<?>> list = new ArrayList<>();
+        reviewTypeArguments0(type, list);
+
+        return list;
+    }
+
+    private static void reviewTypeArguments0(ParameterizedType type, List<Class<?>> list) {
+        for (Type t1 : type.getActualTypeArguments()) {
+            if (t1 instanceof ParameterizedType) {
+                reviewTypeArguments0((ParameterizedType) t1, list);
+            } else if (t1 instanceof Class) {
+                list.add((Class<?>) t1);
+            }
         }
     }
 }

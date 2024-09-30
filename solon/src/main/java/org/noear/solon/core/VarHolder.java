@@ -57,8 +57,7 @@ public interface VarHolder {
     /**
      * 获取泛型（可能为 null）
      */
-    @Nullable
-    ParameterizedType getGenericType();
+    @Nullable ParameterizedType getGenericType();
 
     /**
      * 获取类型
