@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.0
+Solon v3.0.0-RC3
 </h1>
 <p align="center">
 	<strong>Java “新式”应用开发框架，克制、简洁、高效、开放、生态！</strong>
@@ -42,7 +42,7 @@ Solon v3.0.0
 		<img src="https://img.shields.io/github/stars/opensolon/solon.svg?style=flat&logo=github" alt="github star"/>
 	</a>
     <a target="_blank" href='https://gitcode.com/opensolon/solon/star'>
-		<img src='https://gitcode.com/opensolon/solon/star/badge.svg' alt='gitee star'/>
+		<img src='https://gitcode.com/opensolon/solon/star/badge.svg' alt='gitcode star'/>
 	</a>
 </p>
 
