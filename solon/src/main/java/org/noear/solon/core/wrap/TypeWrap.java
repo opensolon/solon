@@ -36,6 +36,11 @@ public class TypeWrap {
     public TypeWrap(Class<?> genericInfo, Class<?> type, Type genericType) {
         this.type = type;
 
+        if (type == Void.class) {
+            //空类型不需要处理
+            return;
+        }
+
         Type tmp = GenericUtil.reviewType(genericType, genericInfo);
 
         if (tmp instanceof ParameterizedType) {
@@ -49,9 +54,11 @@ public class TypeWrap {
                 this.invalid = true;
             }
         } else if (tmp instanceof TypeVariable) {
-            this.type = Object.class;
-            this.invalid = true;
             //说明解码失败了
+            this.invalid = true;
+        } else if (tmp instanceof Class<?>) {
+            //如果原来是 TypeVariable，会被转成正常类型
+            this.type = (Class<?>) tmp;
         }
     }
 

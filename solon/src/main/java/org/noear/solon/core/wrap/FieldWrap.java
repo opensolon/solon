@@ -38,8 +38,6 @@ public class FieldWrap {
     private final Class<?> ownerClz;
     //字段
     private final Field field;
-    //字段类型包装
-    private final TypeWrap typeWrap;
     //字段是否只读
     private final boolean readonly;
 
@@ -55,15 +53,6 @@ public class FieldWrap {
         ownerClz = clz;
         field = f1;
         readonly = isFinal;
-
-        typeWrap = new TypeWrap(clz, f1.getType(), f1.getGenericType());
-
-        if (typeWrap.isInvalid()) {
-            throw new IllegalStateException("Field generic analysis failed: "
-                    + f1.getDeclaringClass().getName()
-                    + "."
-                    + f1.getName());
-        }
 
         _setter = doFindSetter(clz, f1);
         _getter = doFindGetter(clz, f1);
@@ -106,18 +95,36 @@ public class FieldWrap {
         return field;
     }
 
+
+    //字段类型包装（懒加载）
+    private TypeWrap typeWrap;
+    private TypeWrap getTypeWrap() {
+        if (typeWrap == null) {
+            typeWrap = new TypeWrap(ownerClz, field.getType(), field.getGenericType());
+
+            if (typeWrap.isInvalid()) {
+                throw new IllegalStateException("Field generic analysis failed: "
+                        + field.getDeclaringClass().getName()
+                        + "."
+                        + field.getName());
+            }
+        }
+
+        return typeWrap;
+    }
+
     /**
      * 获取类型
      */
     public Class<?> getType() {
-        return field.getType();
+        return getTypeWrap().getType();
     }
 
     /**
      * 获取参数类型
      */
     public @Nullable ParameterizedType getGenericType() {
-        return typeWrap.getGenericType();
+        return getTypeWrap().getGenericType();
     }
 
     /**

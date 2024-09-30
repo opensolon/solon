@@ -55,6 +55,8 @@ public class ClassWrap {
                     cw = new ClassWrap(clz);
                     cached.put(clz, cw);
                 }
+            } catch (Exception ex) {
+                throw new IllegalStateException("ClassWrap build failed: " + clz.getName(), ex);
             } finally {
                 Utils.locker().unlock();
             }

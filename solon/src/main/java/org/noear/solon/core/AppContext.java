@@ -773,55 +773,59 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanOfMethod2(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Throwable {
-        Object raw = mWrap.invoke(bw.raw(), args);
+    protected void tryBuildBeanOfMethod2(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) {
+        try {
+            Object raw = mWrap.invoke(bw.raw(), args);
 
-        if (raw != null) {
-            Class<?> beanClz = mWrap.getReturnType();
-            Type beanGtp = mWrap.getGenericReturnType();
+            if (raw != null) {
+                Class<?> beanClz = mWrap.getReturnType();
+                Type beanGtp = mWrap.getGenericReturnType();
 
-            //产生的bean，不再支持二次注入
+                //产生的bean，不再支持二次注入
 
-            BeanWrap m_bw = null;
-            if (raw instanceof BeanWrap) {
-                m_bw = (BeanWrap) raw;
-            } else {
-                if (anno.injected()) {
-                    //执行注入
-                    beanInject(raw);
+                BeanWrap m_bw = null;
+                if (raw instanceof BeanWrap) {
+                    m_bw = (BeanWrap) raw;
+                } else {
+                    if (anno.injected()) {
+                        //执行注入
+                        beanInject(raw);
+                    }
+
+                    //@Bean 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
+                    //EventBus.publish(raw);//@deprecated
+
+                    //动态构建的bean，都用新生成wrap（否则会类型混乱）
+                    m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
                 }
 
-                //@Bean 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
-                //EventBus.publish(raw);//@deprecated
+                String beanName = Utils.annoAlias(anno.value(), anno.name());
 
-                //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
+                m_bw.nameSet(beanName);
+                m_bw.tagSet(anno.tag());
+                m_bw.typedSet(anno.typed());
+
+                //确定顺序位
+                m_bw.indexSet(anno.index());
+
+                //特定能力接口交付
+                if (anno.delivered()) {
+                    beanDeliver(m_bw);
+                }
+
+                //注册到容器
+                beanRegister(m_bw, beanName, anno.typed());
+
+                //尝试泛型注册(通过 name 实现)
+                if (beanGtp instanceof ParameterizedType) {
+                    putWrap(beanGtp.getTypeName(), m_bw);
+                }
+
+                //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
+                wrapPublish(m_bw);
             }
-
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-            m_bw.nameSet(beanName);
-            m_bw.tagSet(anno.tag());
-            m_bw.typedSet(anno.typed());
-
-            //确定顺序位
-            m_bw.indexSet(anno.index());
-
-            //特定能力接口交付
-            if (anno.delivered()) {
-                beanDeliver(m_bw);
-            }
-
-            //注册到容器
-            beanRegister(m_bw, beanName, anno.typed());
-
-            //尝试泛型注册(通过 name 实现)
-            if (beanGtp instanceof ParameterizedType) {
-                putWrap(beanGtp.getTypeName(), m_bw);
-            }
-
-            //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-            wrapPublish(m_bw);
+        } catch (Throwable ex) {
+            throw new IllegalStateException("Build bean of method failed: " + mWrap.getMethod(), ex);
         }
     }
 

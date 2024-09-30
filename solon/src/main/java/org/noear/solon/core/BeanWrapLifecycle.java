@@ -68,8 +68,6 @@ class BeanWrapLifecycle implements LifecycleBean {
             return false;
         }
 
-        ClassWrap clzWrap = ClassWrap.get(bw.rawClz());
-
         //按名字找（优先）
         try {
             if (Utils.isNotEmpty(initMethodName)) {
@@ -83,31 +81,35 @@ class BeanWrapLifecycle implements LifecycleBean {
             throw new RuntimeException(e);
         }
 
+
         //如果都没有，则安注解找
-        if(initMethod == null && destroyMethod == null) {
-            //找查注解函数
-            for (Method m : clzWrap.getDeclaredMethods()) {
-                Init initAnno = m.getAnnotation(Init.class);
-                if (initAnno != null) {
-                    if (m.getParameters().length == 0) {
-                        //只接收没有参数的，支持非公有函数
-                        initMethod = m;
-                        initMethod.setAccessible(true);
-                        initIndex = initAnno.index();
-                    }
-                } else {
-                    Destroy destroyAnno = m.getAnnotation(Destroy.class);
-                    if (destroyAnno != null) {
+        if (initMethod == null && destroyMethod == null) {
+            //如果不是 jdk 的类（否则没必要）
+            if (bw.rawClz().getName().startsWith("java.") == false) {
+                //找查注解函数
+                for (Method m : ClassWrap.get(bw.rawClz()).getDeclaredMethods()) {
+                    Init initAnno = m.getAnnotation(Init.class);
+                    if (initAnno != null) {
                         if (m.getParameters().length == 0) {
-                            destroyMethod = m;
-                            destroyMethod.setAccessible(true);
+                            //只接收没有参数的，支持非公有函数
+                            initMethod = m;
+                            initMethod.setAccessible(true);
+                            initIndex = initAnno.index();
+                        }
+                    } else {
+                        Destroy destroyAnno = m.getAnnotation(Destroy.class);
+                        if (destroyAnno != null) {
+                            if (m.getParameters().length == 0) {
+                                destroyMethod = m;
+                                destroyMethod.setAccessible(true);
+                            }
                         }
                     }
-                }
 
-                if (initMethod != null && destroyMethod != null) {
-                    //如果两个都找到了，就不用找了
-                    break;
+                    if (initMethod != null && destroyMethod != null) {
+                        //如果两个都找到了，就不用找了
+                        break;
+                    }
                 }
             }
         }
