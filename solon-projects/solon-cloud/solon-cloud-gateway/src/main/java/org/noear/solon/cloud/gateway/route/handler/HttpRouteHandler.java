@@ -16,7 +16,6 @@
 package org.noear.solon.cloud.gateway.route.handler;
 
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
@@ -24,7 +23,7 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
-import org.noear.solon.Solon;
+import org.noear.solon.boot.vertx.VertxHolder;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
 import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
@@ -48,16 +47,14 @@ public class HttpRouteHandler implements RouteHandler {
     private WebClient httpClient;
 
     public HttpRouteHandler() {
-        Solon.context().getBeanAsync(Vertx.class, b -> {
-            WebClientOptions options = new WebClientOptions()
-                    .setMaxPoolSize(250)
-                    .setConnectTimeout(1000 * 3) // milliseconds: 3s
-                    .setIdleTimeout(60) // seconds: 60s
-                    .setKeepAlive(true)
-                    .setKeepAliveTimeout(60); // seconds: 60s
+        WebClientOptions options = new WebClientOptions()
+                .setMaxPoolSize(250)
+                .setConnectTimeout(1000 * 3) // milliseconds: 3s
+                .setIdleTimeout(60) // seconds: 60s
+                .setKeepAlive(true)
+                .setKeepAliveTimeout(60); // seconds: 60s
 
-            this.httpClient = WebClient.create(b, options);
-        });
+        this.httpClient = WebClient.create(VertxHolder.getVertx(), options);
     }
 
     @Override

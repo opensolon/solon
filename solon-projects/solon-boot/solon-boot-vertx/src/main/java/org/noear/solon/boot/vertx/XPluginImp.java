@@ -16,7 +16,6 @@
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -44,7 +43,6 @@ public class XPluginImp implements Plugin {
         return "vertx-http/" + Solon.version();
     }
 
-    private Vertx _vertx;
     private VxHttpServerComb _server;
 
     @Override
@@ -53,16 +51,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        VertxOptions vertxOptions = new VertxOptions();
-        //vertxOptions.setWorkerPoolSize(20); //暂时默认
-        //vertxOptions.setEventLoopPoolSize(2 * Runtime.getRuntime().availableProcessors());
-        //vertxOptions.setInternalBlockingPoolSize(20);
-
-        //添加总线扩展
-        EventBus.publish(vertxOptions);
-
-        _vertx = Vertx.vertx(vertxOptions);
-        context.wrapAndPut(Vertx.class, _vertx);
+        context.wrapAndPut(Vertx.class, VertxHolder.getVertx());
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(Solon.app());
@@ -85,9 +74,9 @@ public class XPluginImp implements Plugin {
         _server.enableWebSocket(app.enableWebSocket());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
-            if(Solon.cfg().isEnabledVirtualThreads()){
+            if (Solon.cfg().isEnabledVirtualThreads()) {
                 _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            }else{
+            } else {
                 _server.setExecutor(props.getBioExecutor("smarthttp-"));
             }
         }
@@ -131,7 +120,7 @@ public class XPluginImp implements Plugin {
         }
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info(connectorInfo + "}{"+ httpServerUrl +"}");
+        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: vertx-http: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
@@ -141,9 +130,6 @@ public class XPluginImp implements Plugin {
             _server.stop();
         }
 
-        if (_vertx != null) {
-            _vertx.close();
-            _vertx = null;
-        }
+        VertxHolder.tryClose();
     }
 }
