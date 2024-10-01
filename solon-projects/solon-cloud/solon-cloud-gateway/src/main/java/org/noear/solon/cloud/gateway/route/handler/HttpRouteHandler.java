@@ -23,7 +23,7 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
-import org.noear.solon.boot.vertx.VertxHolder;
+import io.vertx.solon.VertxHolder;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
 import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;

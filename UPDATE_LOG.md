@@ -21,7 +21,13 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### v3.0.0
+
+### v3.0.1
+
+* 添加 solon-boot-vertx VertxHolder ，管理 Vertx 全局单例
+* 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
+
+### v3.0.0 (2024-10-01)
 
 * 新增 solon-data-sqlutils 插件
 * 移除 solon `Before`、`After` 体系，（统一为 `Filter` 体系） // ok（化敏为简）

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package io.vertx.solon;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;

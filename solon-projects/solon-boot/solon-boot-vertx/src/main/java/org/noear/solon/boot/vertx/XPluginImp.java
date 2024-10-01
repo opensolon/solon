@@ -16,6 +16,7 @@
 package org.noear.solon.boot.vertx;
 
 import io.vertx.core.Vertx;
+import io.vertx.solon.VertxHolder;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
