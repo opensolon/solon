@@ -18,7 +18,7 @@ package org.noear.solon.net.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.net.http.impl.HttpUtilsImpl;
+import org.noear.solon.net.http.impl.okhttp.HttpUtilsImpl;
 
 import java.io.IOException;
 import java.io.InputStream;

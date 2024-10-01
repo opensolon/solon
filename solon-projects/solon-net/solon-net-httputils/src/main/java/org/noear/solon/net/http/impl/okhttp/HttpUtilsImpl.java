@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.http.impl;
+package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
@@ -23,6 +23,8 @@ import okio.Source;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.http.*;
+import org.noear.solon.net.http.impl.HttpSsl;
+import org.noear.solon.net.http.impl.HttpTimeout;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -52,6 +54,8 @@ public class HttpUtilsImpl implements HttpUtils {
             .readTimeout(60, TimeUnit.SECONDS)
             .dispatcher(httpClientDispatcher.get())
             .addInterceptor(HttpInterceptorImpl.instance)
+            .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
+            .hostnameVerifier(HttpSsl.defaultHostnameVerifier)
             .build();
 
     private OkHttpClient _client;

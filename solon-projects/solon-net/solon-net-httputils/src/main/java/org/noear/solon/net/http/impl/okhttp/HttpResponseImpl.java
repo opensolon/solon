@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.http.impl;
+package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Response;
 import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 
@@ -59,6 +60,11 @@ public class HttpResponseImpl implements HttpResponse {
     @Override
     public String contentType() {
         return response.body().contentType().type();
+    }
+
+    @Override
+    public Charset contentEncoding() {
+        return response.body().contentType().charset();
     }
 
     @Override

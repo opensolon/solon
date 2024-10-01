@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 
@@ -51,6 +52,11 @@ public interface HttpResponse {
      * 获取内容类型
      */
     String contentType();
+
+    /**
+     * 获取内容编码
+     */
+    Charset contentEncoding();
 
     /**
      * 获取小饼数组

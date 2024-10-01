@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.http.okhttp;
+package org.noear.solon.net.http.impl;
 
 import javax.net.ssl.*;
 import java.security.KeyStore;
@@ -27,7 +27,7 @@ import java.util.Arrays;
  *
  * @author desire
  * */
-public class SSLClient {
+public class HttpSsl {
     public static final DefaultHostnameVerifier defaultHostnameVerifier=new DefaultHostnameVerifier();
     public static final DefaultX509TrustManager defaultTrustManager=new DefaultX509TrustManager();
     public static class DefaultX509TrustManager implements X509TrustManager {

@@ -26,9 +26,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-net-httputils</artifactId>
         </dependency>
     </dependencies>
 

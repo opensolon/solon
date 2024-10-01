@@ -15,10 +15,12 @@
  */
 package org.noear.nami.channel.http.okhttp;
 
-import okhttp3.MediaType;
-import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
+import org.noear.solon.net.http.HttpResponse;
+import org.noear.solon.net.http.HttpUtils;
+
+import java.nio.charset.Charset;
 
 /**
  * Http 通道
@@ -62,7 +64,7 @@ public class HttpChannel extends ChannelBase implements Channel {
 
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(ctx.headers).timeout(ctx.config.getTimeout());
-        Response response = null;
+        HttpResponse response = null;
         Encoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
@@ -98,17 +100,19 @@ public class HttpChannel extends ChannelBase implements Channel {
         }
 
         //2.构建结果
-        Result result = new Result(response.code(), response.body().bytes());
+        Result result = new Result(response.code(), response.bodyAsBytes());
 
         //2.1.设置头
-        for (int i = 0, len = response.headers().size(); i < len; i++) {
-            result.headerAdd(response.headers().name(i), response.headers().value(i));
+        for (String name : response.headerNames()) {
+            for (String v : response.headers(name)) {
+                result.headerAdd(name, v);
+            }
         }
 
         //2.2.设置字符码
-        MediaType contentType = response.body().contentType();
-        if (contentType != null) {
-            result.charsetSet(contentType.charset());
+        Charset contentEncoding = response.contentEncoding();
+        if (contentEncoding != null) {
+            result.charsetSet(contentEncoding);
         }
 
         //3.返回结果

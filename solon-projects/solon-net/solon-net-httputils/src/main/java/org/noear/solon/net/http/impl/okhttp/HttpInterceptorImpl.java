@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.http.okhttp;
+package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
+import org.noear.solon.net.http.impl.HttpTimeout;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Http 请求拦截器
+ * Http 请求拦截器实现
  *
  * @author noear
- * @since 1.7
+ * @since 2.8
  */
-public class HttpInterceptor implements Interceptor {
-    public static final HttpInterceptor instance = new HttpInterceptor();
+public class HttpInterceptorImpl implements Interceptor {
+    public static final HttpInterceptorImpl instance = new HttpInterceptorImpl();
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        TimeoutProps timeout = chain.request().tag(TimeoutProps.class);
+        HttpTimeout timeout = chain.request().tag(HttpTimeout.class);
 
         if (timeout != null) {
             if (timeout.connectTimeout > 0) {
