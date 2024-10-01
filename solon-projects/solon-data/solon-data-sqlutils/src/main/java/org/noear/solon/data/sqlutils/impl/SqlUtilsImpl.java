@@ -79,26 +79,26 @@ public class SqlUtilsImpl implements SqlUtils {
             prepare.stmt = prepare.conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         } else {
             if (returnKeys) {
-                prepare.stmt = prepare.conn.prepareStatement(sql);
-            } else {
                 prepare.stmt = prepare.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            } else {
+                prepare.stmt = prepare.conn.prepareStatement(sql);
             }
         }
 
-
-        if (args instanceof List) {
+        if (args instanceof Collection) {
             //批处理
             List<Object[]> rowList = (List<Object[]>) args;
             for (Object[] row : rowList) {
                 for (int i = 0; i < row.length; i++) {
-                    setObject(prepare.stmt, i, row[i]);
+                    setObject(prepare.stmt, i + 1, row[i]);
                 }
                 prepare.stmt.addBatch();
             }
         } else {
+            //单处理
             Object[] row = (Object[]) args;
             for (int i = 0; i < row.length; i++) {
-                setObject(prepare.stmt, i, row[i]);
+                setObject(prepare.stmt, i + 1, row[i]);
             }
         }
 
@@ -167,6 +167,7 @@ public class SqlUtilsImpl implements SqlUtils {
     public Iterator<Map<String, Object>> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException {
         CommandPrepare prepare = buildPrepare(sql, args, false, true);
         prepare.stmt.setFetchSize(fetchSize);
+        prepare.rsts = prepare.stmt.executeQuery();
 
         return new DataIterator(prepare);
     }
@@ -200,7 +201,7 @@ public class SqlUtilsImpl implements SqlUtils {
     }
 
     @Override
-    public int[] executeBatch(String sql, List<Object[]> argsList) throws SQLException {
+    public int[] executeBatch(String sql, Collection<Object[]> argsList) throws SQLException {
         try (CommandPrepare prepare = buildPrepare(sql, argsList, false, false)) {
             return prepare.stmt.executeBatch();
         }

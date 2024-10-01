@@ -20,12 +20,13 @@ import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Sql 工具类
+ * Sql 工具类（线程安全，可作为单例保存）
  *
  * @author noear
  * @since 3.0
@@ -90,5 +91,5 @@ public interface SqlUtils {
      *
      * @return 受影响行数组
      */
-    int[] executeBatch(String sql, List<Object[]> argsList) throws SQLException;
+    int[] executeBatch(String sql, Collection<Object[]> argsList) throws SQLException;
 }

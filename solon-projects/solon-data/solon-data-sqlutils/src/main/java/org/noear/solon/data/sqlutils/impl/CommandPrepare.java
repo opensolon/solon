@@ -48,7 +48,7 @@ class CommandPrepare implements Closeable {
         }
 
         Map<String, Object> row = new LinkedHashMap<>();
-        for (int i = 0; i < rowMeta.getColumnCount(); i++) {
+        for (int i = 1; i <= rowMeta.getColumnCount(); i++) {
             row.put(rowMeta.getColumnLabel(i), _utils.getObject(this, i));
         }
 
