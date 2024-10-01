@@ -21,6 +21,8 @@
         <module>../../solon-projects/nami/nami-channel-http-okhttp</module>
         <module>../../solon-projects/nami/nami-channel-http-hutool</module>
 
+
+        <module>../../solon-projects/nami/nami-channel-http</module>
         <module>../../solon-projects/nami/nami-channel-socketd</module>
 
         <module>../../solon-projects/nami/nami-coder-snack3</module>

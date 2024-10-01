@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.http.okhttp;
+package org.noear.nami.channel.http;
 
 import org.noear.nami.NamiManager;
 import org.noear.solon.core.AppContext;
