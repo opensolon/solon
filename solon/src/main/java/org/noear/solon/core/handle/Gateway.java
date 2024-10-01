@@ -195,7 +195,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 执行预备
      */
+    protected String pathNewCached = "";
     protected void prepareDo(Context c) {
+        if (pathNewCached.equals(c.pathNew())) {
+            return;
+        } else {
+            pathNewCached = c.pathNew();
+        }
+
         Handler m = find(c);
         Object obj = null;
 
@@ -218,6 +225,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 执行主处理
      */
     protected void mainDo(Context c) throws Throwable {
+        //预处理
+        prepareDo(c);
+
+        //获取主处理
         Handler m = c.attr(Constants.ATTR_MAIN_HANDLER);
 
         //m 不可能为 null；有 _def 打底
