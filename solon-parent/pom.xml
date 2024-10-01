@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.0.0-RC3</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,10 +24,10 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>3.0.0-RC3</solon.version>
-        <solon-cloud.version>3.0.0-RC3</solon-cloud.version>
-        <solon-admin.version>3.0.0-RC3</solon-admin.version>
-        <solon-integration.version>3.0.0-RC3</solon-integration.version>
+        <solon.version>3.0.0</solon.version>
+        <solon-cloud.version>3.0.0</solon-cloud.version>
+        <solon-admin.version>3.0.0</solon-admin.version>
+        <solon-integration.version>3.0.0</solon-integration.version>
 
         <solonx.version>1.1.0</solonx.version>
 
@@ -36,13 +36,13 @@
         <wood.version>1.3.7</wood.version>
         <redisx.version>1.6.6</redisx.version>
         <socketd.version>2.5.12</socketd.version>
-        <liquor.version>1.3.4</liquor.version>
+        <liquor.version>1.3.6</liquor.version>
 
         <folkmq.version>1.7.8</folkmq.version>
         <water.version>2.15.0</water.version>
         <luffy.version>1.9.0</luffy.version>
 
-        <redisson.version>3.35.0</redisson.version>
+        <redisson.version>3.36.0</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
@@ -412,6 +412,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-data</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-data-sqlutils</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

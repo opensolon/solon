@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.0.0-RC3</version>
+        <version>3.0.0</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -19,6 +19,7 @@
         <module>../../solon-projects/solon-data/solon-data</module>
         <module>../../solon-projects/solon-data/solon-data-dynamicds</module>
         <module>../../solon-projects/solon-data/solon-data-shardingds</module>
+        <module>../../solon-projects/solon-data/solon-data-sqlutils</module>
         <module>../../solon-projects/solon-data/solon-cache-caffeine</module>
         <module>../../solon-projects/solon-data/solon-cache-jedis</module>
         <module>../../solon-projects/solon-data/solon-cache-spymemcached</module>

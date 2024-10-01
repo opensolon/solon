@@ -8,24 +8,16 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>3.0.0</version>
-        <relativePath>../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nanoxlsx4j-solon-plugin</artifactId>
+    <artifactId>solon-data-sqlutils</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/ch.rabanti/nanoxlsx4j -->
-        <dependency>
-            <groupId>ch.rabanti</groupId>
-            <artifactId>nanoxlsx4j</artifactId>
-            <version>1.2.8</version>
+            <artifactId>solon-data</artifactId>
         </dependency>
     </dependencies>
 
