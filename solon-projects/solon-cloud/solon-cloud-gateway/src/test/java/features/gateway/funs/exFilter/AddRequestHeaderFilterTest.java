@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.exFilter;
+package features.gateway.funs.exFilter;
 
-import features.ExContextEmpty;
+import features.gateway.funs.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
@@ -28,16 +28,15 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/8/21 created
  */
 @SolonTest
-public class PrefixPathFilterTest {
+public class AddRequestHeaderFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "PrefixPath=/app");
+                "AddRequestHeader=app.ver,1");
 
         assert filter != null;
 
         ExNewRequest newRequest = new ExNewRequest();
-        newRequest.path("/test");
         filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
@@ -45,6 +44,7 @@ public class PrefixPathFilterTest {
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert "/app/test".equals(newRequest.getPath());
+        assert newRequest.getHeaders().size() == 1;
+        assert "1".equals(newRequest.getHeaders().get("app.ver"));
     }
 }

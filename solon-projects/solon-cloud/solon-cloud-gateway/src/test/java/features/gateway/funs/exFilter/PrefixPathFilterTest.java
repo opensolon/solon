@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.exFilter;
+package features.gateway.funs.exFilter;
 
-import features.ExContextEmpty;
+import features.gateway.funs.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
-import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
+import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.impl.CompletableSubscriberSimple;
@@ -28,23 +28,23 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/8/21 created
  */
 @SolonTest
-public class RedirectToFilterTest {
+public class PrefixPathFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "RedirectTo=301,/app");
+                "PrefixPath=/app");
 
         assert filter != null;
 
-        ExNewResponse newResponse = new ExNewResponse();
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.path("/test");
         filter.doFilter(new ExContextEmpty() {
             @Override
-            public ExNewResponse newResponse() {
-                return newResponse;
+            public ExNewRequest newRequest() {
+                return newRequest;
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert newResponse.getStatus() == 301;
-        assert "/app".equals(newResponse.getHeaders().get("Location"));
+        assert "/app/test".equals(newRequest.getPath());
     }
 }

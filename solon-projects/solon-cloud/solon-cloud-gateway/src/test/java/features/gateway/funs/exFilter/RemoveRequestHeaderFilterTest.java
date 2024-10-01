@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.exFilter;
+package features.gateway.funs.exFilter;
 
-import features.ExContextEmpty;
+import features.gateway.funs.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
@@ -28,16 +28,20 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/8/21 created
  */
 @SolonTest
-public class StripPrefixFilterTest {
+public class RemoveRequestHeaderFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "StripPrefix=1");
+                "RemoveRequestHeader=app.ver,1");
 
         assert filter != null;
 
         ExNewRequest newRequest = new ExNewRequest();
-        newRequest.path("/demo/test");
+        newRequest.headerAdd("a", "1");
+        newRequest.headerAdd("app.ver", "1");
+
+        assert newRequest.getHeaders().size() == 2;
+
         filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
@@ -45,6 +49,6 @@ public class StripPrefixFilterTest {
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert "/test".equals(newRequest.getPath());
+        assert newRequest.getHeaders().size() == 1;
     }
 }

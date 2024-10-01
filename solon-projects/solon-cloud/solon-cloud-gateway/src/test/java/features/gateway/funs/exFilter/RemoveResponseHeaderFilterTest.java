@@ -13,40 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.exFilter;
+package features.gateway.funs.exFilter;
 
-import features.ExContextEmpty;
+import features.gateway.funs.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
-import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
+import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.impl.CompletableSubscriberSimple;
 import org.noear.solon.test.SolonTest;
 
-import java.util.List;
-
 /**
  * @author noear 2024/8/21 created
  */
 @SolonTest
-public class AddRequestHeaderFilterTest {
+public class RemoveResponseHeaderFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "AddRequestHeader=app.ver,1");
+                "RemoveResponseHeader=app.ver,1");
 
         assert filter != null;
 
-        ExNewRequest newRequest = new ExNewRequest();
+        ExNewResponse newResponse = new ExNewResponse();
+        newResponse.headerAdd("a", "1");
+        newResponse.headerAdd("app.ver", "1");
+
+        assert newResponse.getHeaders().size() == 2;
+
         filter.doFilter(new ExContextEmpty() {
             @Override
-            public ExNewRequest newRequest() {
-                return newRequest;
+            public ExNewResponse newResponse() {
+                return newResponse;
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert newRequest.getHeaders().size() == 1;
-        assert "1".equals(newRequest.getHeaders().get("app.ver"));
+        assert newResponse.getHeaders().size() == 1;
     }
 }

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.exFilter;
+package features.gateway.funs.exFilter;
 
-import features.ExContextEmpty;
+import features.gateway.funs.ExContextEmpty;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
@@ -28,20 +28,15 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/8/21 created
  */
 @SolonTest
-public class RemoveResponseHeaderFilterTest {
+public class RedirectToFilterTest {
     @Test
     public void testValidConfig() {
         ExFilter filter = RouteFactoryManager.buildFilter(
-                "RemoveResponseHeader=app.ver,1");
+                "RedirectTo=301,/app");
 
         assert filter != null;
 
         ExNewResponse newResponse = new ExNewResponse();
-        newResponse.headerAdd("a", "1");
-        newResponse.headerAdd("app.ver", "1");
-
-        assert newResponse.getHeaders().size() == 2;
-
         filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewResponse newResponse() {
@@ -49,6 +44,7 @@ public class RemoveResponseHeaderFilterTest {
             }
         }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
 
-        assert newResponse.getHeaders().size() == 1;
+        assert newResponse.getStatus() == 301;
+        assert "/app".equals(newResponse.getHeaders().get("Location"));
     }
 }

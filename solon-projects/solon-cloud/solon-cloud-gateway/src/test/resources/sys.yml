@@ -1,0 +1,18 @@
+server.port: 8079
+
+solon.app:
+  name: demo-app
+  group: gateway
+
+solon.cloud.gateway:
+  routes:
+    - id: "test"
+      target: "http://localhost:8079"
+      predicates:
+        - "Path=/test/**"
+      filters:
+        - "StripPrefix=1"
+
+solon.logging.logger:
+  root:
+    level: "INFO"
