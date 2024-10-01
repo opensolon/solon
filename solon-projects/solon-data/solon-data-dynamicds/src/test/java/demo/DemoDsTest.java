@@ -59,10 +59,12 @@ public class Config {
 public class UserService{
     @Db("db_user")
     UserMapper userMapper;
+
     @DynamicDs //使用默认源
     public void addUser(){
         userMapper.inserUser();
     }
+
     @DynamicDs("db_user_1") //使用 db_user_1 源
     public void getUserList(){
         userMapper.selectUserList();
