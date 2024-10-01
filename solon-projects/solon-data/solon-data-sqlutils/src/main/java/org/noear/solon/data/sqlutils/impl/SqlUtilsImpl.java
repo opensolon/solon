@@ -76,12 +76,23 @@ public class SqlUtilsImpl implements SqlUtils {
         prepare.conn = getConnection();
 
         if (isStream) {
-            prepare.stmt = prepare.conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            //流
+            if (sql.startsWith("{call")) {
+                prepare.stmt = prepare.conn.prepareCall(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            } else {
+                prepare.stmt = prepare.conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            }
         } else {
             if (returnKeys) {
+                //插入
                 prepare.stmt = prepare.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             } else {
-                prepare.stmt = prepare.conn.prepareStatement(sql);
+                //其它
+                if (sql.startsWith("{call")) {
+                    prepare.stmt = prepare.conn.prepareCall(sql);
+                } else {
+                    prepare.stmt = prepare.conn.prepareStatement(sql);
+                }
             }
         }
 
