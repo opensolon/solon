@@ -22,7 +22,6 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### 2.9.4
-
 * 添加 solon Duration 类型配置注入
 * 添加 solon AppContext::beanExclude 方法
 * 添加 solon AppContext::beanDeliver 方法
