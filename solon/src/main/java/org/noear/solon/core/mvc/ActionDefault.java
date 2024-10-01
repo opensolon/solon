@@ -229,19 +229,6 @@ public class ActionDefault extends HandlerAide implements Action {
             x.autoMultipart(true);
         }
 
-        //controllerFilterDo
-        if (bAide == null) {
-            actionFilterDo(x);
-        } else {
-            new FilterChainImpl(bAide.filters(), this::actionFilterDo).doFilter(x);
-        }
-    }
-
-    protected void actionFilterDo(Context x) throws Throwable {
-        new FilterChainImpl(filters(), this::actionHandleDo).doFilter(x);
-    }
-
-    protected void actionHandleDo(Context x) throws Throwable{
         invoke(x, null);
     }
 
@@ -261,7 +248,12 @@ public class ActionDefault extends HandlerAide implements Action {
             c.attrSet("controller", obj);
             c.attrSet("action", this);
 
-            invoke0(c, obj);
+
+            if (bAide == null) {
+                invokeFilterDo(c);
+            } else {
+                new FilterChainImpl(bAide.filters(), this::invokeFilterDo).doFilter(c);
+            }
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
@@ -282,11 +274,26 @@ public class ActionDefault extends HandlerAide implements Action {
         }
     }
 
+    /**
+     * 执行内部过滤处理
+     * */
+    protected void invokeFilterDo(Context x) throws Throwable {
+        new FilterChainImpl(filters(), this::invokeHandleDo).doFilter(x);
+    }
 
     /**
-     * 执行内部调用
+     * 执行内部转换处理
+     * */
+    protected void invokeHandleDo(Context x) throws Throwable {
+        Object obj = x.controller();
+        invokeMethodDo(x, obj);
+    }
+
+
+    /**
+     * 执行内部方法调用
      */
-    protected void invoke0(Context c, Object obj) throws Throwable {
+    protected void invokeMethodDo(Context c, Object obj) throws Throwable {
 
         /**
          * 1.确保所有'处理器'，能拿到控制器
