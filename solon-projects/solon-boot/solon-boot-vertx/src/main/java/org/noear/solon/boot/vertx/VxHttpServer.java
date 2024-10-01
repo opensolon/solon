@@ -147,6 +147,8 @@ public class VxHttpServer implements ServerLifecycle {
                 }
 
                 vxHandler.handle(req);
+            } else {
+                vxHandler.handle(req);
             }
         });
 
