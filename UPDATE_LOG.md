@@ -25,8 +25,9 @@
 
 ### v3.0.1
 
-* 添加 solon-boot-vertx VertxHolder ，管理 Vertx 全局单例
+* 新增 nami-channel-http（基于 httputils 实现） 替代 nami-channel-http-okhttp
 * 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
+* 修复 solon `@Param` 注解部分失效的问题
 
 ### v3.0.0 (2024-10-01)
 
