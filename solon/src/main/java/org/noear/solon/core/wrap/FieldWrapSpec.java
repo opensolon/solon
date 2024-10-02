@@ -29,7 +29,7 @@ public class FieldWrapSpec extends VarSpecBase {
     private final FieldWrap fieldWrap;
 
     public FieldWrapSpec(FieldWrap fieldWrap) {
-        super(fieldWrap.getField(), fieldWrap.getName());
+        super(fieldWrap.getField(), fieldWrap.getField().getName());
         this.fieldWrap = fieldWrap;
     }
 

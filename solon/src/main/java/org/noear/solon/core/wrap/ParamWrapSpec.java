@@ -29,7 +29,7 @@ public class ParamWrapSpec extends VarSpecBase {
     private final ParamWrap paramWrap;
 
     public ParamWrapSpec(ParamWrap paramWrap) {
-        super(paramWrap.getParameter(), paramWrap.getName());
+        super(paramWrap.getParameter(), paramWrap.getParameter().getName());
         this.paramWrap = paramWrap;
 
         initAction();
