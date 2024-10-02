@@ -88,7 +88,7 @@ public class ParamHolder {
      */
     public String getName() {
         if (param != null) {
-            return param.getName();
+            return param.spec().getName();
         }
 
         if (anno != null) {

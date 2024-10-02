@@ -108,7 +108,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
             } else if (UploadedFile.class == pt) {
                 //如果是 UploadedFile
                 //
-                args.add(ctx.file(p.getName()));
+                args.add(ctx.file(p.spec().getName()));
             } else {
                 Object tv = ctx.pull(pt);
 
@@ -132,7 +132,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                     } catch (ConstructionException e) {
                         throw e;
                     } catch (Exception e) {
-                        String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
+                        String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.spec().getName();
                         throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);
                     }
                 }
@@ -160,7 +160,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                             //
                             //其它类型不支持
                             //
-                            throw new IllegalArgumentException("Please enter a valid parameter @" + p.getName());
+                            throw new IllegalArgumentException("Please enter a valid parameter @" + p.spec().getName());
                         }
                     }
                 }
@@ -198,7 +198,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      * @param bodyObj 主体对象
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        String pn = p.getName();        //参数名
+        String pn = p.spec().getName();        //参数名
         String pv = p.spec().getValue(ctx);    //参数值
         Object tv = null;               //目标值
 

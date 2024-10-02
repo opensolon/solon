@@ -75,7 +75,7 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -90,8 +90,8 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
             if (bodyObj instanceof Map) {
                 Map<String, Object> tmp = (Map<String, Object>) bodyObj;
 
-                if (tmp.containsKey(p.getName())) {
-                    return tmp.get(p.getName());
+                if (tmp.containsKey(p.spec().getName())) {
+                    return tmp.get(p.spec().getName());
                 }
             }
 

@@ -372,7 +372,7 @@ public class OpenApi2Builder {
     private List<Parameter> parseActionParameters(ActionHolder actionHolder, boolean isRequiredBody) {
         Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
         for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
-            actionParamMap.put(p1.getName(), new ParamHolder(p1));
+            actionParamMap.put(p1.spec().getName(), new ParamHolder(p1));
         }
 
         // 获取参数注解信息

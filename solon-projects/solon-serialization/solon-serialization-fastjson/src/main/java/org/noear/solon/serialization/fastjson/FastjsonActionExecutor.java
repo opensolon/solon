@@ -88,7 +88,7 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -104,12 +104,12 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
-                if (tmp.containsKey(p.getName())) {
+                if (tmp.containsKey(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return tmp.getObject(p.getName(), p.getGenericType());
+                        return tmp.getObject(p.spec().getName(), p.getGenericType());
                     } else {
-                        return tmp.getObject(p.getName(), pt);
+                        return tmp.getObject(p.spec().getName(), pt);
                     }
                 }
             }

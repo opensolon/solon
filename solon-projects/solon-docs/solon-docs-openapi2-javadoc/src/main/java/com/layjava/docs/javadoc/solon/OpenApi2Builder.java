@@ -408,7 +408,7 @@ public class OpenApi2Builder {
         // 将方法参数存储到map
 
         for (ParamWrap p1 : method.getParamWraps()) {
-            actionParamMap.put(p1.getName(), new ParamHolder(p1));
+            actionParamMap.put(p1.spec().getName(), new ParamHolder(p1));
         }
 
         // 获取参数注解信息

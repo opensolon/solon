@@ -67,7 +67,7 @@ public class ParamWrap {
     }
 
     public String getName() {
-        return spec().getName();
+        return parameter.getName();//spec().getName();
     }
 
     /**

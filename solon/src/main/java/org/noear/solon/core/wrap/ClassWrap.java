@@ -200,7 +200,7 @@ public class ClassWrap {
 
             for (int i = 0; i < argsP.length; i++) {
                 ParamWrap p = argsP[i];
-                String key = p.getName();
+                String key = p.spec().getName();
                 String val0 = data.apply(key);
 
                 if (val0 != null) {

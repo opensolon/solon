@@ -112,7 +112,7 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -128,12 +128,12 @@ public class PropertiesActionExecutor extends ActionExecuteHandlerDefault {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
-                if (tmp.contains(p.getName())) {
+                if (tmp.contains(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return tmp.get(p.getName()).toObject(p.getGenericType());
+                        return tmp.get(p.spec().getName()).toObject(p.getGenericType());
                     } else {
-                        return tmp.get(p.getName()).toObject(pt);
+                        return tmp.get(p.spec().getName()).toObject(pt);
                     }
                 }
             }

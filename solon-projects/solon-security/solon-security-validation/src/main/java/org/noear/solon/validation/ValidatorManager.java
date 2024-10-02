@@ -211,7 +211,7 @@ public class ValidatorManager {
             ParamWrap pw = inv.method().getParamWraps()[i];
 
             for (Annotation anno : pw.getParameter().getAnnotations()) {
-                validateOfValue0(pw.getName(), anno, inv.args()[i], result, tmp);
+                validateOfValue0(pw.spec().getName(), anno, inv.args()[i], result, tmp);
             }
         }
 

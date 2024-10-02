@@ -89,7 +89,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -105,12 +105,12 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
-                if (tmp.has(p.getName())) {
+                if (tmp.has(p.spec().getName())) {
                     //支持泛型的转换
                     if (p.spec().isGenericType()) {
-                        return serializer.getGson().fromJson(tmp.get(p.getName()), p.getGenericType());
+                        return serializer.getGson().fromJson(tmp.get(p.spec().getName()), p.getGenericType());
                     } else {
-                        return serializer.getGson().fromJson(tmp.get(p.getName()), pt);
+                        return serializer.getGson().fromJson(tmp.get(p.spec().getName()), pt);
                     }
                 }
             }
