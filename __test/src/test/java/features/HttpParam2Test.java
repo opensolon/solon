@@ -36,7 +36,11 @@ public class HttpParam2Test extends HttpTester {
 
     @Test
     public void test1_required() throws IOException {
-        assert path("/demo2/param2/anno/required").execAsCode("GET") == 400;
+        assert path("/demo2/param2/anno/required").bodyJson("{\"name\":\"hi\"}").execAsCode("POST") != 400;
+    }
+
+    @Test
+    public void test1_required_2() throws IOException {
 
         assert path("/demo2/param2/anno/required?name=hi").execAsCode("GET") != 400;
     }
@@ -56,5 +60,12 @@ public class HttpParam2Test extends HttpTester {
         assert path("/demo2/param2/anno/name?n2=noear").get().equals("noear");
 
         assert path("/demo2/param2/anno/name?n2=hi").get().equals("hi");
+    }
+
+    @Test
+    public void test4_2() throws IOException {
+        assert path("/demo2/param2/anno/name").bodyJson("{\"n2\":\"noear\"}").post().equals("noear");
+
+        assert path("/demo2/param2/anno/name").bodyJson("{\"n2\":\"hi\"}").post().equals("hi");
     }
 }
