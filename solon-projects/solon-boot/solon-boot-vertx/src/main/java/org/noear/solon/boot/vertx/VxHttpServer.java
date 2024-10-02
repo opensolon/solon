@@ -145,11 +145,9 @@ public class VxHttpServer implements ServerLifecycle {
                         return;
                     }
                 }
-
-                vxHandler.handle(req);
-            } else {
-                vxHandler.handle(req);
             }
+
+            vxHandler.handle(req);
         });
 
         if (Utils.isNotEmpty(host)) {
