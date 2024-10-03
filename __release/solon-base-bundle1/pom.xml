@@ -36,10 +36,6 @@
         <module>../../solon-projects/solon-security/solon-security-vault</module>
         <module>../../solon-projects/solon-security/solon-security-validation</module>
 
-        <module>../../solon-projects/solon-security/solon.auth</module>
-        <module>../../solon-projects/solon-security/solon.vault</module>
-        <module>../../solon-projects/solon-security/solon.validation</module>
-
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-springboot-starter</module>
 
@@ -51,5 +47,9 @@
         <module>../../solon-projects/solon-base_old/solon.mvc</module>
 
         <module>../../solon-projects/solon-native_old/solon.aot</module>
+
+        <module>../../solon-projects/solon-security_old/solon.auth</module>
+        <module>../../solon-projects/solon-security_old/solon.vault</module>
+        <module>../../solon-projects/solon-security_old/solon.validation</module>
     </modules>
 </project>
