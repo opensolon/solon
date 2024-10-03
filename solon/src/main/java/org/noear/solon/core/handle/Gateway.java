@@ -233,9 +233,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //获取主处理
         Handler m = c.attr(Constants.ATTR_MAIN_HANDLER);
 
-        //m 不可能为 null；有 _def 打底
+        //一般 m 不可能为 null；有 _def 打底
         if (m != null) {
             if (m == this) {
+                //避免死循环
                 return;
             }
 

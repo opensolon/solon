@@ -15,7 +15,6 @@
  */
 package webapp.demo1_handler;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Gateway;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
@@ -25,7 +24,7 @@ import org.noear.solon.annotation.Controller;
  * */
 @Mapping("/demo1/run2/*")
 @Controller
-public class Run2Handler extends Gateway {
+public class Run2Gateway extends Gateway {
     @Override
     protected void register() {
         //filter((x,c)->{...;o.doFilter(x)});
