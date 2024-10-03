@@ -32,10 +32,16 @@ public class AesVaultCoder implements VaultCoder {
     private final String charset = "UTF-8";
 
     private final String algorithm = "AES/ECB/PKCS5Padding";
-    private final String password;
+    private final SecretKey key;
 
     public AesVaultCoder() {
-        this.password = Solon.cfg().get("solon.vault.password");
+        try {
+            String password = Solon.cfg().get("solon.vault.password");
+            byte[] passwordBytes = password.getBytes(charset);
+            key = new SecretKeySpec(passwordBytes, "AES");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -43,11 +49,8 @@ public class AesVaultCoder implements VaultCoder {
      */
     @Override
     public String encrypt(String str) throws Exception {
-        byte[] passwordBytes = password.getBytes(charset);
-        SecretKeySpec secretKey = new SecretKeySpec(passwordBytes, "AES");
-
         Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
 
         byte[] encrypted = cipher.doFinal(str.getBytes(charset));
         return Base64.getEncoder().encodeToString(encrypted);
@@ -58,12 +61,9 @@ public class AesVaultCoder implements VaultCoder {
      */
     @Override
     public String decrypt(String str) throws Exception {
-        byte[] passwordBytes = password.getBytes(charset);
-        SecretKey secretKey = new SecretKeySpec(passwordBytes, "AES");
-
         //密码
         Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        cipher.init(Cipher.DECRYPT_MODE, key);
 
         byte[] encrypted1 = Base64.getDecoder().decode(str);
         byte[] original = cipher.doFinal(encrypted1);
