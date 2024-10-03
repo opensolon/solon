@@ -91,7 +91,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
 
     @Override
-    protected HttpResponse execDo(String mothod, HttpCallback callback) throws IOException {
+    protected HttpResponse execDo(String method, HttpCallback callback) throws IOException {
         Request.Builder _builder = new Request.Builder().url(_url);
 
         if (_timeout != null) {
@@ -148,12 +148,12 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 }
                 _body = _form_builer.build();
             } else {
-                //HEAD 等可以为空
+                //HEAD 可以为空
             }
         }
 
 
-        switch (mothod.toUpperCase()) {
+        switch (method.toUpperCase()) {
             case "GET":
                 _builder.method("GET", null);
                 break;

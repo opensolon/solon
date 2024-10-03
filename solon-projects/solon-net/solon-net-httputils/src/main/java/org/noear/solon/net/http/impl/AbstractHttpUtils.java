@@ -249,7 +249,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
      */
     @Override
     public HttpUtils bodyTxt(String txt) {
-        return bodyTxt(txt, null);
+        return bodyTxt(txt, "text/plain");
     }
 
     /**
@@ -393,7 +393,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     /////////////////////
 
-    protected abstract HttpResponse execDo(String mothod, HttpCallback callback) throws IOException;
+    protected abstract HttpResponse execDo(String method, HttpCallback callback) throws IOException;
 
 
     /////////////////////
