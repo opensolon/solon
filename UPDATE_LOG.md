@@ -28,6 +28,9 @@
 * 新增 nami-channel-http（基于 httputils 实现） 替代 nami-channel-http-okhttp
 * 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
 * 修复 solon `@Param` 注解部分失效的问题
+* 修复 solon 本地网关可能会死循环的问题
+* 调整 Fastjson2 适配，时间默认为 dateTicks 模式（保持与其它序列化的统一）
+* 优化 dateAsTicks（并为默认），支持 longAsString 时的字符串转换
 
 ### v3.0.0 (2024-10-01)
 
