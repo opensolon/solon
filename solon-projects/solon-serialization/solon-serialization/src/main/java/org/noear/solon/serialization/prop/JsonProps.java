@@ -27,7 +27,16 @@ import java.io.Serializable;
  */
 public class JsonProps implements Serializable {
     public static JsonProps create(AppContext context) {
-        return context.cfg().toBean("solon.serialization.json", JsonProps.class);
+        JsonProps tmp = context.cfg().toBean("solon.serialization.json", JsonProps.class);
+
+        if (tmp == null) {
+            tmp = new JsonProps();
+            tmp.dateAsTicks = true;
+        } else {
+            tmp.dateAsTicks = tmp.dateAsFormat == null;
+        }
+
+        return tmp;
     }
 
     public String dateAsTimeZone;

@@ -70,7 +70,13 @@ public class JsonPropsUtil {
         }
 
         if (jsonProps.dateAsTicks) {
-            factory.addConvertor(Date.class, Date::getTime);
+            factory.addConvertor(Date.class, d -> {
+                if (jsonProps.longAsString) {
+                    return String.valueOf(d.getTime());
+                } else {
+                    return d.getTime();
+                }
+            });
         }
 
         if (jsonProps.boolAsInt) {
