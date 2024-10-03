@@ -18,7 +18,7 @@ package org.noear.solon.net.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.net.http.impl.okhttp.HttpUtilsImpl;
+import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +44,7 @@ public interface HttpUtils {
     }
 
     static HttpUtils http(String url) {
-        return new HttpUtilsImpl(url);
+        return new OkHttpUtilsImpl(url);
     }
 
     /**
@@ -211,11 +211,6 @@ public interface HttpUtils {
     //////
 
     /**
-     * 执行请求并返回响应
-     */
-    HttpResponse exec(String mothod) throws IOException;
-
-    /**
      * 执行请求并返回响应主体
      */
     String execAsBody(String mothod) throws IOException;
@@ -223,7 +218,12 @@ public interface HttpUtils {
     /**
      * 执行请求并返回代码
      */
-    int execAsCode(String mothod) throws IOException;
+    int execAsCode(String method) throws IOException;
+
+    /**
+     * 执行请求并返回响应
+     */
+    HttpResponse exec(String method) throws IOException;
 
     //////
 

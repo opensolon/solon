@@ -30,10 +30,10 @@ import java.util.List;
  * @author noear
  * @since 2.8
  */
-public class HttpResponseImpl implements HttpResponse {
+public class OkHttpResponseImpl implements HttpResponse {
     private Response response;
 
-    public HttpResponseImpl(Response response) {
+    public OkHttpResponseImpl(Response response) {
         this.response = response;
     }
 
