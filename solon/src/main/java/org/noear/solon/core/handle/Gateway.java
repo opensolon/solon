@@ -197,11 +197,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     protected void prepareDo(Context c) {
         //缓存处理
-        String pathNewCached = c.attr("path_new_cached");
+        String pathNewCached = c.attr("tmp_path_new_cached");
         if (pathNewCached != null && pathNewCached.equals(c.pathNew())) {
             return;
         } else {
-            c.attrSet("path_new_cached", c.pathNew());
+            c.attrSet("tmp_path_new_cached", c.pathNew());
         }
 
         //查找处理器，并预处理
