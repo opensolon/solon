@@ -276,14 +276,14 @@ public class ActionDefault extends HandlerAide implements Action {
 
     /**
      * 执行内部过滤处理
-     * */
+     */
     protected void invokeFilterDo(Context x) throws Throwable {
         new FilterChainImpl(filters(), this::invokeHandleDo).doFilter(x);
     }
 
     /**
      * 执行内部转换处理
-     * */
+     */
     protected void invokeHandleDo(Context x) throws Throwable {
         Object obj = x.controller();
         invokeMethodDo(x, obj);
@@ -427,5 +427,10 @@ public class ActionDefault extends HandlerAide implements Action {
             //是否再渲染或处理，由代理内部控制
             bRender.render(obj, c);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Mapping: " + fullName();
     }
 }
