@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlutils;
+package org.noear.solon.data.sql;
 
-import org.noear.solon.data.sqlutils.impl.SqlUtilsImpl;
+import org.noear.solon.data.sql.impl.SqlUtilsImpl;
 import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
