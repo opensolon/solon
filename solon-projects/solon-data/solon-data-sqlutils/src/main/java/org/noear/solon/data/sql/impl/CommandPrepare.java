@@ -33,9 +33,9 @@ class CommandPrepare implements Closeable {
     public PreparedStatement stmt = null;
     public ResultSet rsts = null;
 
-    private final SqlUtilsImpl _utils;
+    private final SimpleSqlUtilsImpl _utils;
 
-    public CommandPrepare(SqlUtilsImpl utils) {
+    public CommandPrepare(SimpleSqlUtilsImpl utils) {
         _utils = utils;
     }
 

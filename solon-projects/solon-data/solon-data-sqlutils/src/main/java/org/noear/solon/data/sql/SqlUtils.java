@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sql;
 
-import org.noear.solon.data.sql.impl.SqlUtilsImpl;
+import org.noear.solon.data.sql.impl.SimpleSqlUtilsImpl;
 import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public interface SqlUtils {
     static SqlUtils of(DataSource dataSource) {
-        return new SqlUtilsImpl(dataSource);
+        return new SimpleSqlUtilsImpl(dataSource);
     }
 
     /**

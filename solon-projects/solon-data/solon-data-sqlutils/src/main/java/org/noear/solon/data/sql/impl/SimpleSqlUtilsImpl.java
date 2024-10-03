@@ -26,10 +26,10 @@ import java.util.*;
  * @author noear
  * @since 3.0
  */
-public class SqlUtilsImpl implements SqlUtils {
+public class SimpleSqlUtilsImpl implements SqlUtils {
     private final DataSource dataSource;
 
-    public SqlUtilsImpl(DataSource dataSource) {
+    public SimpleSqlUtilsImpl(DataSource dataSource) {
         assert dataSource != null;
         this.dataSource = dataSource;
     }
