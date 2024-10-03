@@ -31,6 +31,11 @@ import org.noear.solon.serialization.JsonRenderFactory;
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
     protected Fastjson2StringSerializer serializer = new Fastjson2StringSerializer();
 
+    public Fastjson2RenderFactoryBase(){
+        //默认时间处理为时间戳
+        serializer.getSerializeConfig().setDateFormat("millis");
+    }
+
     /**
      * 获取序列化器
      */

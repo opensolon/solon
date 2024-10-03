@@ -80,10 +80,6 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
         }
 
         if (JsonPropsUtil.apply(this, jsonProps)) {
-            if (jsonProps.longAsString) {
-                this.addFeatures(JSONWriter.Feature.WriteLongAsString);
-            }
-
             boolean writeNulls = jsonProps.nullAsWriteable ||
                     jsonProps.nullNumberAsZero ||
                     jsonProps.nullArrayAsEmpty ||
