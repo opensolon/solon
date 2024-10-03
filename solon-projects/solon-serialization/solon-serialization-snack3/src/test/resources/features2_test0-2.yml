@@ -1,0 +1,3 @@
+
+solon.serialization.json:
+  longAsString: true #将long型转为字符串输出 （默认为false）

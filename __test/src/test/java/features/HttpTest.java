@@ -91,6 +91,7 @@ public class HttpTest extends HttpTester {
     @Test
     public void test14() throws IOException {
         assert path("/demo1/run2/send").get().equals("http://localhost:8080/demo1/run2/send");
+        assert path("/demo1/run2/test").get().equals("http://localhost:8080/demo1/run2/test");
     }
 
     @Test
