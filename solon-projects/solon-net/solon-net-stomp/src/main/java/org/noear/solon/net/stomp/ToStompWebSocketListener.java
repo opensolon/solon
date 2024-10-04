@@ -59,7 +59,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
         BeanWrap bw = Solon.context().wrap(endpoint, this.messageSender);
         Solon.context().putWrap(endpoint, bw);
-        Solon.context().putWrap(StompMessageSender.class, bw);
+        Solon.context().putWrap(StompBrokerSender.class, bw);
 
         this.addListener(new StompListenerImpl(this.messageSender));
     }

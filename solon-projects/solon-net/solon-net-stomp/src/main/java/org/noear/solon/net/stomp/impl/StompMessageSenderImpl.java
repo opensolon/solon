@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp.impl;
 
 import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.StompMessageSender;
+import org.noear.solon.net.stomp.StompBrokerSender;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
  * @author limliu
  * @since 2.7
  */
-public final class StompMessageSenderImpl implements StompMessageSender {
+public final class StompMessageSenderImpl implements StompBrokerSender {
     private StompMessageOperations operations = new StompMessageOperations();
 
     public StompMessageOperations getOperations() {

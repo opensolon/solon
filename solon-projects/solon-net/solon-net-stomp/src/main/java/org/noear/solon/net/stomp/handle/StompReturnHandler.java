@@ -3,7 +3,7 @@ package org.noear.solon.net.stomp.handle;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.annotation.SendTo;
+import org.noear.solon.annotation.To;
 
 /**
  * @author noear 2024/10/4 created
@@ -24,7 +24,7 @@ public class StompReturnHandler implements ActionReturnHandler {
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
         if (returnValue != null) {
 
-            SendTo anno = action.method().getAnnotation(SendTo.class);
+            To anno = action.method().getAnnotation(To.class);
             StompContext ctx1 = (StompContext) ctx;
 
             String payload;

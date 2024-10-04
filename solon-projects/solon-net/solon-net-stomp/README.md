@@ -17,15 +17,15 @@ public class ChatStompBroker extends StompBroker {
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Http;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.SendTo;
+import org.noear.solon.annotation.To;
 
 @Controller
 public class TestController {
     @Inject
-    StompMessageSender messageSender;
+    StompBrokerSender brokerSender;
 
     @Mapping("/hello")
-    @SendTo("/topic/greetings")
+    @To("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
@@ -44,7 +44,7 @@ public class TestController {
         Thread.sleep(1000); // simulated delay
 
         String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
-        messageSender.sendTo("/topic/greetings", payload);
+        brokerSender.sendTo("/topic/greetings", payload);
     }
 
     @Mapping("/sendToUser")
@@ -52,7 +52,7 @@ public class TestController {
         Thread.sleep(1000); // simulated delay
 
         String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
-        messageSender.sendTo("/topic/user/" + message.getUserId() + "/sendToUser", payload);
+        brokerSender.sendTo("/topic/user/" + message.getUserId() + "/sendToUser", payload);
     }
 }
 ```

@@ -20,7 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompListener;
-import org.noear.solon.net.stomp.StompMessageSender;
+import org.noear.solon.net.stomp.StompBrokerSender;
 import org.noear.solon.net.stomp.StompBroker;
 
 import java.util.Timer;
@@ -41,10 +41,10 @@ public class ChatStompBroker extends StompBroker {
     private static AtomicInteger atomicInteger = new AtomicInteger();
 
     @Inject
-    StompMessageSender messageSender;
+    StompBrokerSender messageSender;
 
     @Inject("/chat")
-    StompMessageSender messageSender1;
+    StompBrokerSender messageSender1;
 
     public ChatStompBroker() {
         //此处仅为示例，实际按需扩展，可以不添加

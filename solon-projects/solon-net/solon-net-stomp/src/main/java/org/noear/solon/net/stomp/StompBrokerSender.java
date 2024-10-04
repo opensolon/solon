@@ -8,7 +8,7 @@ import org.noear.solon.net.websocket.WebSocket;
  * @author noear
  * @since 3.0
  */
-public interface StompMessageSender {
+public interface StompBrokerSender {
     void sendTo(WebSocket session, Message message);
 
     default void sendTo(WebSocket session, String payload) {
