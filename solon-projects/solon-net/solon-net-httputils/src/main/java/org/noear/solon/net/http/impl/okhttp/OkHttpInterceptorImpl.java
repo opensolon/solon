@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Http 请求拦截器实现
+ * Http 请求 OkHttp 拦截器实现
  *
  * @author noear
  * @since 2.8

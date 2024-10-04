@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Http 响应实现
+ * Http 响应 OkHttp 实现
  *
  * @author noear
  * @since 2.8

@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
- * Http 工具的 OkHttp 实现
+ * Http 工具 OkHttp 实现
  *
  * @author noear
  * @since 1.5

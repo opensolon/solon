@@ -16,8 +16,11 @@
 package org.noear.solon.net.http;
 
 
+import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 
 import java.io.IOException;
@@ -44,7 +47,11 @@ public interface HttpUtils {
     }
 
     static HttpUtils http(String url) {
-        return new OkHttpUtilsImpl(url);
+        if (ClassUtil.hasClass(() -> OkHttpClient.class)) {
+            return new OkHttpUtilsImpl(url);
+        } else {
+            return new JdkHttpUtilsImpl(url);
+        }
     }
 
     /**
