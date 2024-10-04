@@ -26,6 +26,8 @@
 ### v3.0.1
 
 * 新增 nami-channel-http（基于 httputils 实现） 替代 nami-channel-http-okhttp
+  * nami-channel-http 使用 URLConnection 适配（更小） 
+  * nami-channel-http-okhttp 使用 okhttp 适配
 * 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
 * 修复 solon `@Param` 注解部分失效的问题
 * 修复 solon 本地网关可能会死循环的问题
