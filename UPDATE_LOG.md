@@ -32,9 +32,10 @@
 * 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
 * 修复 solon `@Param` 注解部分失效的问题
 * 修复 solon 本地网关可能会死循环的问题
-* 调整 Fastjson2 适配，时间默认为 dateTicks 模式（保持与其它序列化的统一）
+* 调整 solon-serialization Fastjson2 适配，时间默认为 dateTicks 模式（保持与其它序列化的统一）
 * 调整 solon-net-httputils 默认使用 URLConnection 适配（引入 okhttp 后，自动切换） 
-* 优化 dateAsTicks（并为默认），支持 longAsString 时的字符串转换
+* 添加 solon 基于上下文的返回类型处理控制（Constants.ATTR_RETURN_HANDLER）
+* 优化 solon-serialization dateAsTicks（并为默认），支持 longAsString 时的字符串转换
 
 ### v3.0.0 (2024-10-01)
 

@@ -28,6 +28,8 @@ public interface Constants {
     String ATTR_CONTROLLER = "controller";
     String ATTR_MAIN_HANDLER = "mainHandler";
     String ATTR_MAIN_STATUS = "mainStatus";
+    //@since: 3.0
+    String ATTR_RETURN_HANDLER = "returnHandler";
 
     //@since: 3.0
     int FT_IDX_CONTEXT_PATH = -990;

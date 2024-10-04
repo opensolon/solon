@@ -324,7 +324,10 @@ public class ActionDefault extends HandlerAide implements Action {
                 }
 
                 //结果处理
-                ActionReturnHandler returnHandler = Solon.app().chainManager().getReturnHandler(method().getReturnType());
+                ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
+                if (returnHandler == null) {
+                    returnHandler = Solon.app().chainManager().getReturnHandler(method().getReturnType());
+                }
 
                 if (returnHandler != null) {
                     //执行函数
