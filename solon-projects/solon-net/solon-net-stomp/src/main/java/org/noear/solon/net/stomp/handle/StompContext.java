@@ -73,6 +73,11 @@ public class StompContext extends ContextEmpty {
         return null;
     }
 
+    /**
+     * <code>
+     *     new StompContext(...).tryHandle();
+     * </code>
+     * */
     public void tryHandle() throws Throwable {
         Handler handler = Solon.app().router().matchMain(this);
         if (handler != null) {
