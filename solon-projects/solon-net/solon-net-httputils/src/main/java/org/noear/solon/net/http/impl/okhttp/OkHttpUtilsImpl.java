@@ -154,9 +154,6 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
 
         switch (method.toUpperCase()) {
-            case "GET":
-                _builder.method("GET", null);
-                break;
             case "POST":
                 _builder.method("POST", _body);
                 break;
@@ -168,6 +165,9 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 break;
             case "PATCH":
                 _builder.method("PATCH", _body);
+                break;
+            case "GET":
+                _builder.method("GET", null);
                 break;
             case "HEAD":
                 _builder.method("HEAD", null);

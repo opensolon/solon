@@ -15,20 +15,19 @@
  */
 package features.aot;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author songyinyin
@@ -59,7 +58,7 @@ public class RuntimeNativeMetadataTest {
         System.out.println(reflectionJson);
         String resourceAsString = ResourceUtil.getResourceAsString("test-reflect-config.json");
 
-        Assert.assertEquals(reflectionJson, resourceAsString);
+        assertEquals(reflectionJson, resourceAsString);
     }
 
     @Test
@@ -79,7 +78,7 @@ public class RuntimeNativeMetadataTest {
 
         String resourceAsString = ResourceUtil.getResourceAsString("test-resource-config.json");
 
-        Assert.assertEquals(resourcesJson, resourceAsString);
+        assertEquals(resourcesJson, resourceAsString);
     }
 
     @Test
@@ -95,6 +94,6 @@ public class RuntimeNativeMetadataTest {
         String resourceAsString = ResourceUtil.getResourceAsString("test-serialization-config.json");
         System.out.println(resourceAsString);
 
-        Assert.assertEquals(resourcesJson, resourceAsString);
+        assertEquals(resourcesJson, resourceAsString);
     }
 }

@@ -15,7 +15,6 @@
  */
 package features;
 
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;

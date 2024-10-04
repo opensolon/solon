@@ -24,7 +24,7 @@ import org.noear.solon.core.LoadBalance;
  * @author noear
  * @since 2.8
  */
-public class LoadBalanceUtils {
+public final class LoadBalanceUtils {
     /**
      * 获取服务地址
      *

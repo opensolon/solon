@@ -29,11 +29,17 @@ import org.noear.solon.net.http.impl.HttpUploadFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -43,6 +49,17 @@ import java.util.concurrent.ThreadLocalRandom;
  * @since 3.0
  */
 public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
+    static final Set<String> METHODS_NOBODY;
+    static {
+        METHODS_NOBODY = new HashSet<>(3); //es-GET 会有 body
+        METHODS_NOBODY.add("HEAD");
+        METHODS_NOBODY.add("TRACE");
+        METHODS_NOBODY.add("OPTIONS");
+
+        allowMethods("PATCH");
+    }
+
+
 
     public JdkHttpUtilsImpl(String url) {
         super(url);
@@ -78,32 +95,30 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         _builder.setRequestMethod(method);
 
         _builder.setDoInput(true);
-        if (!"GET".equals(method) || !"HEAD".equals(method)) {
-            _builder.setUseCaches(false);
-        }
 
-        if (_bodyRaw != null) {
-            String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
-            _builder.setRequestProperty("Content-Type", contentType);
+        if(METHODS_NOBODY.contains(method) == false) {
+            if (_bodyRaw != null) {
+                String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
+                _builder.setRequestProperty("Content-Type", contentType);
 
-            _builder.setDoOutput(true);
-            try (OutputStream out = _builder.getOutputStream()) {
-                IoUtil.transferTo(_bodyRaw.content, out);
-                out.flush();
-            }
-        } else {
-            if (_multipart) {
                 _builder.setDoOutput(true);
-                new FormDataBody(_charset).write(_builder, _files, _params);
-            } else if (_params != null) {
-                _builder.setDoOutput(true);
-                new FormBody(_charset).write(_builder, _params);
+                try (OutputStream out = _builder.getOutputStream()) {
+                    IoUtil.transferTo(_bodyRaw.content, out);
+                    out.flush();
+                }
             } else {
-                //HEAD 可以为空
+                if (_multipart) {
+                    _builder.setDoOutput(true);
+                    new FormDataBody(_charset).write(_builder, _files, _params);
+                } else if (_params != null) {
+                    _builder.setDoOutput(true);
+                    new FormBody(_charset).write(_builder, _params);
+                } else {
+                    //HEAD 可以为空
+                }
             }
         }
 
-        //
         return new JdkHttpResponseImpl(_builder);
     }
 
@@ -214,7 +229,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    public static String urlRebuild(String url, Charset charset) throws UnsupportedEncodingException {
+    protected static String urlRebuild(String url, Charset charset) throws UnsupportedEncodingException {
         int pathOf = url.indexOf("://");
         int queryOf = url.indexOf("?");
 
@@ -254,5 +269,29 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             }
         }
         return text;
+    }
+
+    /**
+     * 补丁，增加新方法支持
+     * */
+    private static void allowMethods(String... methods) {
+        try {
+            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
+
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
+
+            methodsField.setAccessible(true);
+
+            String[] oldMethods = (String[]) methodsField.get(null);
+            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
+            methodsSet.addAll(Arrays.asList(methods));
+            String[] newMethods = methodsSet.toArray(new String[0]);
+
+            methodsField.set(null/*static field*/, newMethods);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            // do non thing
+        }
     }
 }
