@@ -58,9 +58,9 @@ public final class StompMessageSenderImpl implements StompMessageSender {
     public void sendTo(String destination, Message message) {
         operations.getDestinationInfoSet().parallelStream()
                 .filter(destinationInfo -> {
-                    return operations.getDestinationMatch().get(destinationInfo.destination).matcher(destination).matches();
+                    return operations.getDestinationMatch().get(destinationInfo.getDestination()).matcher(destination).matches();
                 }).forEach(destinationInfo -> {
-                    WebSocket sendSocket = operations.getWebSocketMap().get(destinationInfo.sessionId);
+                    WebSocket sendSocket = operations.getWebSocketMap().get(destinationInfo.getSessionId());
                     if (sendSocket != null) {
                         sendTo(sendSocket, message);
                     }
