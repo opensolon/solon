@@ -258,26 +258,41 @@ public interface HttpUtils {
     /**
      * url 编码
      */
-    static String urlEncode(String s) {
-        try {
+    static String urlEncode(String s) throws IOException {
+        return urlEncode(s, null);
+    }
+
+    /**
+     * url 编码
+     */
+    static String urlEncode(String s, String charset) throws UnsupportedEncodingException {
+        if (charset == null) {
             return URLEncoder.encode(s, Solon.encoding());
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException(e);
+        } else {
+            return URLEncoder.encode(s, charset);
         }
     }
 
     /**
      * map 转为 queryString
      */
-    static String toQueryString(Map<?, ?> map) {
+    static String toQueryString(Map<?, ?> map) throws IOException {
+        return toQueryString(map, null);
+    }
+
+    /**
+     * map 转为 queryString
+     */
+    static String toQueryString(Map<?, ?> map, String charset) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             if (sb.length() > 0) {
                 sb.append("&");
             }
+
             sb.append(String.format("%s=%s",
-                    urlEncode(entry.getKey().toString()),
-                    urlEncode(entry.getValue().toString())
+                    urlEncode(entry.getKey().toString(), charset),
+                    urlEncode(entry.getValue().toString(), charset)
             ));
         }
         return sb.toString();

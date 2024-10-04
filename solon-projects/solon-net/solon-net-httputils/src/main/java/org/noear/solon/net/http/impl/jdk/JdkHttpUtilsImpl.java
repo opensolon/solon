@@ -23,9 +23,11 @@ import org.noear.solon.net.http.HttpCallback;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
+import org.noear.solon.net.http.impl.HttpSsl;
 import org.noear.solon.net.http.impl.HttpTimeout;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -34,7 +36,6 @@ import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -59,8 +60,6 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         allowMethods("PATCH");
     }
 
-
-
     public JdkHttpUtilsImpl(String url) {
         super(url);
         _timeout = new HttpTimeout(60);
@@ -72,6 +71,13 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         method = method.toUpperCase();
 
         HttpURLConnection _builder = (HttpURLConnection) new URL(url0).openConnection();
+
+        if(_builder instanceof HttpsURLConnection){
+            //调整 ssl 支持
+            HttpsURLConnection tmp = ((HttpsURLConnection)_builder);
+            tmp.setSSLSocketFactory(HttpSsl.getSSLSocketFactory());
+            tmp.setHostnameVerifier(HttpSsl.defaultHostnameVerifier);
+        }
 
         if (_timeout != null) {
             _builder.setConnectTimeout(_timeout.connectTimeout * 1000);
@@ -124,20 +130,20 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
     public static class FormDataBody {
         private static final String horizontalLine = "--------------------------";
-        private static final String lineFeed = "\r\n";
+        private static final String CRLF = "\r\n";
         private static final String fileFormat = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\nContent-Type: %s";
         private static final String textFormat = "Content-Disposition: form-data; name=\"%s\"";
 
-        final Charset charset;
-        final String contentType;
-        final String separator;
-        final String endFlag;
+        private final Charset charset;
+        private final String contentType;
+        private final String separator;
+        private final String endFlag;
 
         public FormDataBody(Charset charset) {
             long randomNumber = ThreadLocalRandom.current().nextLong();
             this.contentType = "multipart/form-data; boundary=" + horizontalLine + randomNumber;
             this.separator = "--" + horizontalLine + randomNumber;
-            this.endFlag = lineFeed + separator + "--" + lineFeed;
+            this.endFlag = CRLF + separator + "--" + CRLF;
             this.charset = charset;
         }
 
@@ -170,9 +176,9 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             StringBuilder builder = new StringBuilder(1024);
 
             // append 头部信息
-            builder.append(lineFeed).append(separator).append(lineFeed);
-            builder.append(String.format(fileFormat, key, value.fileName, value.fileStream.contentType)).append(lineFeed);
-            builder.append(lineFeed);
+            builder.append(CRLF).append(separator).append(CRLF);
+            builder.append(String.format(fileFormat, key, value.fileName, value.fileStream.contentType)).append(CRLF);
+            builder.append(CRLF);
             outputStream.write(builder.toString().getBytes(charset));
             // append 实体
             IoUtil.transferTo(value.fileStream.content, outputStream);
@@ -185,9 +191,9 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             StringBuilder builder = new StringBuilder(1024);
 
             // append 头部信息
-            builder.append(lineFeed).append(separator).append(lineFeed);
-            builder.append(String.format(textFormat, key)).append(lineFeed);
-            builder.append(lineFeed);
+            builder.append(CRLF).append(separator).append(CRLF);
+            builder.append(String.format(textFormat, key)).append(CRLF);
+            builder.append(CRLF);
             // append 实体
             builder.append(value);
             outputStream.write(builder.toString().getBytes(this.charset));
@@ -198,8 +204,8 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     }
 
     public static class FormBody {
-        final String contentType;
-        final Charset charset;
+        private final String contentType;
+        private final Charset charset;
 
         FormBody(Charset charset) {
             this.charset = charset;
@@ -212,15 +218,15 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
             try (OutputStream out = http.getOutputStream()) {
                 StringBuilder builder = new StringBuilder(128);
-                paramMap.forEach(kv -> {
+                for (KeyValues<String> kv : paramMap) {
                     // urlEncode : if charset is empty not do Encode
                     for (Object val : kv.getValues()) {
-                        builder.append(urlEncode(kv.getKey(), charset));
+                        builder.append(HttpUtils.urlEncode(kv.getKey(), charset.name()));
                         builder.append("=");
-                        builder.append(urlEncode(String.valueOf(val), charset));
+                        builder.append(HttpUtils.urlEncode(String.valueOf(val), charset.name()));
                         builder.append("&");
                     }
-                });
+                }
 
                 String data = builder.delete(builder.length() - 1, builder.length()).toString();
 
@@ -241,7 +247,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             String hostAndPath0 = URLDecoder.decode(hostAndPath, charset.name());
 
             if (hostAndPath.equals(hostAndPath0)) {
-                hostAndPath = urlEncode(hostAndPath, charset);
+                hostAndPath = HttpUtils.urlEncode(hostAndPath, charset.name());
                 hostAndPath = hostAndPath.replace("%2F", "/").replace("%3A", ":");
             }
         }
@@ -249,26 +255,12 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         if (query.length() > 0) {
             String query0 = URLDecoder.decode(query, charset.name());
             if (query.equals(query0)) {
-                query = urlEncode(query, charset);
+                query = HttpUtils.urlEncode(query, charset.name());
                 query = query.replace("%3F", "?").replace("%2F", "/").replace("%3A", ":").replace("%3D", "=").replace("%26", "&").replace("%23", "#");
             }
         }
 
         return schema + hostAndPath + query;
-    }
-
-    /**
-     * url 编码
-     */
-    private static String urlEncode(String text, Charset charset) {
-        if (Utils.isNotEmpty(text)) {
-            try {
-                return URLEncoder.encode(text, charset.name());
-            } catch (UnsupportedEncodingException e) {
-                // do non thing
-            }
-        }
-        return text;
     }
 
     /**

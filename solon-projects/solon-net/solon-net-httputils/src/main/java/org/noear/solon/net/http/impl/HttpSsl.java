@@ -28,8 +28,9 @@ import java.util.Arrays;
  * @author desire
  * */
 public class HttpSsl {
-    public static final DefaultHostnameVerifier defaultHostnameVerifier=new DefaultHostnameVerifier();
-    public static final DefaultX509TrustManager defaultTrustManager=new DefaultX509TrustManager();
+    public static final DefaultHostnameVerifier defaultHostnameVerifier = new DefaultHostnameVerifier();
+    public static final DefaultX509TrustManager defaultTrustManager = new DefaultX509TrustManager();
+
     public static class DefaultX509TrustManager implements X509TrustManager {
 
         @Override
@@ -47,6 +48,7 @@ public class HttpSsl {
             return new X509Certificate[0];
         }
     }
+
     public static class DefaultHostnameVerifier implements HostnameVerifier {
         @Override
         public boolean verify(String s, SSLSession sslSession) {
@@ -63,6 +65,7 @@ public class HttpSsl {
             throw new RuntimeException(e);
         }
     }
+
     public static X509TrustManager getX509TrustManager() {
         X509TrustManager trustManager = null;
         try {

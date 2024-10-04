@@ -21,6 +21,7 @@ import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * Http 通道
@@ -44,13 +45,13 @@ public class HttpChannel extends ChannelBase implements Channel {
             //如果URL中含有固定参数,应该用'&'添加参数
             sb.append(ctx.url.contains("?") ? "&" : "?");
 
-            ctx.args.forEach((k, v) -> {
-                if (v != null) {
-                    sb.append(k).append("=")
-                            .append(HttpUtils.urlEncode(v.toString()))
+            for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
+                if (kv.getValue() != null) {
+                    sb.append(kv.getKey()).append("=")
+                            .append(HttpUtils.urlEncode(kv.getValue().toString()))
                             .append("&");
                 }
-            });
+            }
 
             url = sb.substring(0, sb.length() - 1);
         }
