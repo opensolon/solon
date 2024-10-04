@@ -25,6 +25,7 @@
 
 ### v3.0.1
 
+* 新增 solon-web-webservices 插件
 * 新增 nami-channel-http（基于 httputils 实现） 替代 nami-channel-http-okhttp
   * nami-channel-http 使用 URLConnection 适配（更小） 
   * nami-channel-http-okhttp 使用 okhttp 适配
