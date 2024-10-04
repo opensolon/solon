@@ -21,7 +21,7 @@ import org.noear.solon.annotation.To;
 
 @Controller
 public class TestController {
-    @Inject
+    @Inject //@Inject("/chat") 多经纪人时，指定名字
     StompBrokerSender brokerSender;
 
     @Mapping("/hello")
