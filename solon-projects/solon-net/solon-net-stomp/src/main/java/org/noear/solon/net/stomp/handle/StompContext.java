@@ -1,6 +1,8 @@
 package org.noear.solon.net.stomp.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ContextEmpty;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompMessageSender;
@@ -69,5 +71,14 @@ public class StompContext extends ContextEmpty {
         }
 
         return null;
+    }
+
+    public void tryHandle() throws Throwable {
+        Handler handler = Solon.app().router().matchMain(this);
+        if (handler != null) {
+            handler.handle(this);
+        } else {
+            throw new IllegalStateException("No mapping registration");
+        }
     }
 }
