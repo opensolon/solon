@@ -30,6 +30,7 @@
 * 修复 solon `@Param` 注解部分失效的问题
 * 修复 solon 本地网关可能会死循环的问题
 * 调整 Fastjson2 适配，时间默认为 dateTicks 模式（保持与其它序列化的统一）
+* 调整 solon-net-httputils 默认使用 URLConnection 适配（引入 okhttp 后，自动切换） 
 * 优化 dateAsTicks（并为默认），支持 longAsString 时的字符串转换
 
 ### v3.0.0 (2024-10-01)
