@@ -46,4 +46,3 @@ public interface MessageCodec {
     void decode(String input, Consumer<Message> out);
 
 }
-

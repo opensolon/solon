@@ -15,11 +15,11 @@
  */
 package org.noear.solon.net.stomp.impl;
 
-import org.noear.solon.net.stomp.Header;
+import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Message;
+import org.noear.solon.net.stomp.MessageBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
@@ -29,75 +29,74 @@ import java.util.function.Consumer;
  * @since 2.7
  */
 public class MessageCodecImpl implements MessageCodec {
-
-    /**
-     * Command 结束符
-     */
+    //Command 结束符
     private String commandEnd = "\n";
-
-    /**
-     * Headers 结束符
-     */
+    //Headers 结束符
     private String headersEnd = "\n\n";
-
-    /**
-     * Header 之间的分隔符
-     */
+    //Header 之间的分隔符
     private String headerDelimiter = "\n";
-
-    /**
-     * Header 键值 间的分隔符
-     */
+    //Header 键值 间的分隔符
     private String headerKvDelimiter = ":";
-
-    /**
-     * Body 结束符
-     */
+    //Body 结束符
     private String bodyEnd = "\u0000";
+
+    //锁
+    private ReentrantLock LOCK = new ReentrantLock();
+
+
+    @Override
+    public String encode(Message input) {
+        StringBuilder buf = new StringBuilder();
+
+        //command
+        buf.append(input.getCommand());
+        buf.append(commandEnd);
+
+        //headers
+        int count = input.getHeaderAll().size();
+        int index = 0;
+        for (KeyValue<String> kv: input.getHeaderAll()) {
+            buf.append(kv.getKey())
+                    .append(headerKvDelimiter)
+                    .append(kv.getValue());
+
+            if (index < count - 1) {
+                buf.append(headerDelimiter);
+            }
+
+            index++;
+        }
+        buf.append(headersEnd);
+
+        //payload
+        if (input.getPayload() != null) {
+            buf.append(input.getPayload());
+        }
+        buf.append(bodyEnd);
+
+        return buf.toString();
+    }
 
     /**
      * 待解析的 Stomp 报文容器
      */
-    private final StringBuilder pending = new StringBuilder();
+    private final StringBuilder PENDING = new StringBuilder();
 
     @Override
-    public String encode(Message input) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(input.getCommand()).append(commandEnd);
-        List<Header> headers = msgHeaders(input);
-        int hCnt = headers.size();
-        for (int index = 0; index < hCnt; index++) {
-            Header header = headers.get(index);
-            sb.append(header.getKey())
-                    .append(headerKvDelimiter)
-                    .append(header.getValue());
-            if (index < hCnt - 1) {
-                sb.append(headerDelimiter);
-            }
-        }
-        sb.append(headersEnd);
-        String payload = input.getPayload();
-        if (payload != null) {
-            sb.append(payload);
-        }
-        sb.append(bodyEnd);
-        return sb.toString();
-    }
-
-    protected List<Header> msgHeaders(Message input) {
-        List<Header> headers = input.getHeaderAll();
-        return new ArrayList<>(headers);
-    }
-
-    @Override
-    public synchronized void decode(String input, Consumer<Message> out) {
+    public void decode(String input, Consumer<Message> out) {
         if (input == null || input.isEmpty()) {
             return;
         }
-        // 装入待解析容器
-        pending.append(input);
-        // 开始解析
-        decode(out, 0);
+
+        LOCK.lock();
+        try {
+            // 装入待解析容器
+            PENDING.append(input);
+            // 开始解析
+            decode(out, 0);
+        } finally {
+            LOCK.unlock();
+        }
     }
 
     /**
@@ -106,34 +105,46 @@ public class MessageCodecImpl implements MessageCodec {
      */
     protected void decode(Consumer<Message> out, int start) {
         cleanPendingStartData(start);
+
         // Body 结尾符下标
-        int bEndIdx = pending.indexOf(bodyEnd);
+        int bEndIdx = PENDING.indexOf(bodyEnd);
         if (bEndIdx < 0) {
             // 数据包尚未接收完毕，直接返回
             return;
         }
+
         // Command 结尾符下标
-        int cEndIdx = pending.indexOf(commandEnd);
+        int cEndIdx = PENDING.indexOf(commandEnd);
+
         // Headers 结尾符下标
-        int hEndIdx = pending.indexOf(headersEnd);
+        int hEndIdx = PENDING.indexOf(headersEnd);
         if (cEndIdx <= 0 || hEndIdx <= cEndIdx || bEndIdx <= hEndIdx) {
             // 非法数据包，跳过一个字符重新解析
             this.decode(out, 1);
             return;
         }
+
         // 解析 Command
-        String command = pending.substring(0, cEndIdx).trim();
+        String command = PENDING.substring(0, cEndIdx).trim();
         if (!isCommand(command)) {
             // 非法数据包，跳过一个字符重新解析
             this.decode(out, 1);
             return;
         }
+
+        MessageBuilder builder = Message.newBuilder();
+        builder.command(command);
+
         // 解析 Headers
-        List<Header> headers = this.decodeHeaders(cEndIdx, hEndIdx);
+        this.decodeHeaders(builder, cEndIdx, hEndIdx);
+
         // 解析 Body
-        String payload = pending.substring(hEndIdx + headersEnd.length(), bEndIdx);
+        String payload = PENDING.substring(hEndIdx + headersEnd.length(), bEndIdx);
+        builder.payload(payload);
+
         // 输出解析结果
-        out.accept(createMessage(command, headers, payload));
+        out.accept(builder.build());
+
         // 重新解析 bodyEnd 之后的数据
         this.decode(out, bEndIdx + bodyEnd.length());
     }
@@ -141,20 +152,22 @@ public class MessageCodecImpl implements MessageCodec {
     protected void cleanPendingStartData(int start) {
         if (start > 0) {
             // 清空 start 之前的数据
-            pending.delete(0, start);
+            PENDING.delete(0, start);
         }
+
         // Command 开始符下标
         int index = 0;
-        for (int i = 0; i < pending.length(); i++) {
-            char c = pending.charAt(i);
+        for (int i = 0; i < PENDING.length(); i++) {
+            char c = PENDING.charAt(i);
             if (this.isCommandChar(c)) {
                 index = i;
                 break;
             }
         }
+
         if (index > 0) {
             // 清空 Command 之前的数据
-            pending.delete(0, index);
+            PENDING.delete(0, index);
         }
     }
 
@@ -165,21 +178,24 @@ public class MessageCodecImpl implements MessageCodec {
      * @param hEndIdx Headers 结尾符下标
      * @return Headers
      */
-    protected List<Header> decodeHeaders(int cEndIdx, int hEndIdx) {
-        String[] strHeaders = pending.substring(cEndIdx + commandEnd.length(), hEndIdx)
-                .split(headerDelimiter);
-        List<Header> headers = new ArrayList<>(strHeaders.length);
+    protected void decodeHeaders(MessageBuilder builder,int cEndIdx, int hEndIdx) {
+        String[] strHeaders = PENDING.substring(cEndIdx + commandEnd.length(), hEndIdx).split(headerDelimiter);
+
         for (String header : strHeaders) {
             if (header == null) {
                 continue;
             }
+
             int start = header.indexOf(headerKvDelimiter);
             if (start < 1) {
                 continue;
             }
-            headers.add(new Header(header.substring(0, start), header.substring(start + headerKvDelimiter.length(), header.length())));
+
+            String name = header.substring(0, start);
+            String value = header.substring(start + headerKvDelimiter.length(), header.length());
+
+            builder.header(name, value);
         }
-        return headers;
     }
 
     protected boolean isCommand(String command) {
@@ -188,59 +204,5 @@ public class MessageCodecImpl implements MessageCodec {
 
     protected boolean isCommandChar(char c) {
         return c >= 'A' && c <= 'Z';
-    }
-
-    protected Message createMessage(String command, List<Header> headers, String payload) {
-        return new MessageImpl(command, headers, payload);
-    }
-
-    public String getCommandEnd() {
-        return commandEnd;
-    }
-
-    public void setCommandEnd(String commandEnd) {
-        if (commandEnd != null) {
-            this.commandEnd = commandEnd;
-        }
-    }
-
-    public String getHeadersEnd() {
-        return headersEnd;
-    }
-
-    public void setHeadersEnd(String headersEnd) {
-        if (headersEnd != null) {
-            this.headersEnd = headersEnd;
-        }
-    }
-
-    public String getBodyEnd() {
-        return bodyEnd;
-    }
-
-    public void setBodyEnd(String bodyEnd) {
-        if (bodyEnd != null) {
-            this.bodyEnd = bodyEnd;
-        }
-    }
-
-    public String getHeaderDelimiter() {
-        return headerDelimiter;
-    }
-
-    public void setHeaderDelimiter(String headerDelimiter) {
-        if (headerDelimiter != null) {
-            this.headerDelimiter = headerDelimiter;
-        }
-    }
-
-    public String getHeaderKvDelimiter() {
-        return headerKvDelimiter;
-    }
-
-    public void setHeaderKvDelimiter(String headerKvDelimiter) {
-        if (headerKvDelimiter != null) {
-            this.headerKvDelimiter = headerKvDelimiter;
-        }
     }
 }

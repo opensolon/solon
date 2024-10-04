@@ -17,10 +17,8 @@ package org.noear.solon.net.stomp;
 
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.impl.*;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
@@ -37,42 +35,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * websocket转stomp处理
+ * websocket 转 stomp 监听器
  *
  * @author limliu
  * @since 2.7
  */
-public abstract class ToStompWebSocketListener implements WebSocketListener, SubProtocolCapable {
-    static Logger log = LoggerFactory.getLogger(StompListenerImpl.class);
+public class ToStompWebSocketListener implements WebSocketListener, SubProtocolCapable {
+    static Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
 
-    private List<StompListener> listenerList = new ArrayList<>();
-    private StompMessageOperations stompMessageOperations;
-    protected StompMessageSendingTemplate stompMessageSendingTemplate;
+    private final List<StompListener> listenerList = new ArrayList<>();
+    private final StompMessageSenderImpl messageSender;
 
-    public ToStompWebSocketListener() {
+    protected ToStompWebSocketListener() {
         this(null);
     }
 
-    public ToStompWebSocketListener(StompListener listener) {
-        ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
-        if(serverEndpoint == null || Utils.isEmpty(serverEndpoint.value())){
-            throw new RuntimeException("Path is not null");
+    protected ToStompWebSocketListener(String endpoint) {
+        if (endpoint == null) {
+            throw new IllegalArgumentException("Endpoint is not empty");
         }
-        this.stompMessageOperations = new StompMessageOperations();
-        this.stompMessageSendingTemplate = new StompMessageSendingTemplate(stompMessageOperations);
-        BeanWrap bw = Solon.context().wrap(StompMessageSendingTemplate.class, this.stompMessageSendingTemplate);
-        Solon.context().beanRegister(bw, serverEndpoint.value(), true);
-        this.addListener(new StompListenerImpl(stompMessageOperations, this.stompMessageSendingTemplate), listener);
+
+        this.messageSender = new StompMessageSenderImpl();
+
+        BeanWrap bw = Solon.context().wrap(endpoint, this.messageSender);
+        Solon.context().putWrap(endpoint, bw);
+        Solon.context().putWrap(StompMessageSender.class, bw);
+
+        this.addListener(new StompListenerImpl(this.messageSender));
     }
 
     public void addListener(StompListener... listeners) {
-        if (listeners == null || listeners.length == 0) {
-            return;
-        }
         for (StompListener listener : listeners) {
-            if (listener == null) {
-                continue;
-            }
             listenerList.add(listener);
         }
     }
@@ -92,7 +85,8 @@ public abstract class ToStompWebSocketListener implements WebSocketListener, Sub
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(Boolean.TRUE);
-        stompMessageOperations.getMsgCodec().decode(text, msg -> {
+
+        messageSender.getOperations().getMsgCodec().decode(text, msg -> {
             atomicBoolean.set(Boolean.FALSE);
             String command = msg.getCommand() == null ? "" : msg.getCommand();
             switch (command) {
@@ -136,7 +130,8 @@ public abstract class ToStompWebSocketListener implements WebSocketListener, Sub
                 default: {
                     //未知命令
                     log.warn("session unknown, {}\r\n{}", socket.id(), text);
-                    doSend(socket, new MessageImpl(Commands.UNKNOWN, text));
+
+                    doSend(socket, Message.newBuilder().command(Commands.UNKNOWN).payload(text).build());
                 }
             }
         });
@@ -146,12 +141,12 @@ public abstract class ToStompWebSocketListener implements WebSocketListener, Sub
                 log.debug("session ping, {}", socket.id());
             }
             //可能是ping，响应
-            doSend(socket, new MessageImpl(Commands.MESSAGE, text));
+            doSend(socket, Message.newBuilder().command(Commands.MESSAGE).payload(text).build());
         }
     }
 
     protected void doSend(WebSocket socket, Message message) {
-        stompMessageSendingTemplate.send(socket, message);
+        messageSender.sendTo(socket, message);
     }
 
     @Override

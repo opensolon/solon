@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.impl;
 /**
  * 头信息
  *
  * @author limliu
  * @since 2.7
  */
-public class Header {
+public class Constants {
 
     /**
      * 订阅者 ID
@@ -116,28 +116,5 @@ public class Header {
      * 是否开启ack, boolean类型
      */
     public static final String OPEN_ACK = "openAck";
-
-
-    private final String key;
-    private final String value;
-
-
-    public Header(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return key + ':' + value;
-    }
 
 }

@@ -47,6 +47,7 @@ public class StompClientTest {
     public static void main(String[] args) throws Exception {
         WHttpTask whttpTask = OkHttps.webSocket("ws://127.0.0.1:8080/chat?user=test001")
                 .heatbeat(5, 5);
+
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("resource", "test"));
         AtomicInteger atomicInteger = new AtomicInteger();
@@ -71,10 +72,6 @@ public class StompClientTest {
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 
     private static Timer timer = new Timer();
-
-    static {
-
-    }
 
     private static void conn(WHttpTask whttpTask, List<Header> headers, int count, Consumer<Stomp> onConnected) {
         log.info("Init webSocket client index {}", count);

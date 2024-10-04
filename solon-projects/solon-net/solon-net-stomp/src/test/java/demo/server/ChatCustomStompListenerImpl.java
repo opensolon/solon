@@ -26,7 +26,7 @@ import org.noear.solon.net.websocket.WebSocket;
  * @since 2.4
  */
 @Component
-public class CustomStompListenerImpl extends SimpleStompListener {
+public class ChatCustomStompListenerImpl extends SimpleStompListener {
 
     @Override
     public void onOpen(WebSocket socket) {

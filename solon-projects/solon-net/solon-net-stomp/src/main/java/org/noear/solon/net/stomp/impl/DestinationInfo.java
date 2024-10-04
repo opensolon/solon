@@ -16,64 +16,49 @@
 package org.noear.solon.net.stomp.impl;
 
 /**
- * 通道信息
+ * 订阅目标信息
  *
  * @author limliu
  * @since 2.7
  */
 public class DestinationInfo {
     /**
-     * 通道信息
+     * 会话ID
      */
-    private String destination;
+    protected final String sessionId;
+
+    /**
+     * 订阅目标
+     */
+    protected final String destination;
 
     /**
      * 通道ID
      */
-    private String subscription;
+    protected final String subscription;
 
-    /**
-     * sessionId
-     */
-    private String sessionId;
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
+    public DestinationInfo(String sessionId, String destination, String subscription) {
+        this.sessionId = sessionId;
         this.destination = destination;
-    }
-
-    public String getSubscription() {
-        return subscription;
-    }
-
-    public void setSubscription(String subscription) {
         this.subscription = subscription;
     }
 
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
+
         if (!(obj instanceof DestinationInfo)) {
             return false;
         }
+
         DestinationInfo target = (DestinationInfo) obj;
-        if (getSessionId().equals(target.getSessionId())
-                && getDestination().equals(target.getDestination())) {
+        if (sessionId.equals(target.sessionId) && destination.equals(target.destination)) {
             return true;
         }
+
         return false;
     }
 }

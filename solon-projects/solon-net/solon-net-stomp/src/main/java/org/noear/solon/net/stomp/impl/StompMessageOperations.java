@@ -17,7 +17,7 @@ package org.noear.solon.net.stomp.impl;
 
 import org.noear.solon.net.websocket.WebSocket;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +38,7 @@ public final class StompMessageOperations {
     /**
      * 地址与session映射
      */
-    private final Set<DestinationInfo> destinationInfoSet = new HashSet<>();
+    private final Set<DestinationInfo> destinationInfoSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     /**
      * 地址匹配正则
@@ -46,7 +46,7 @@ public final class StompMessageOperations {
     private final ConcurrentHashMap<String, Pattern> destinationMatch = new ConcurrentHashMap<>();
 
     /**
-     *
+     * 消息编码器
      */
     private final MessageCodec msgCodec = new MessageCodecImpl();
 
