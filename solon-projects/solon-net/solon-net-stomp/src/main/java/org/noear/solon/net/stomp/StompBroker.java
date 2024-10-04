@@ -10,10 +10,10 @@ import org.noear.solon.net.websocket.WebSocketListenerSupplier;
  *
  * @author noear 2024/10/4 created
  */
-public class ToStompWebSocketAdapter implements WebSocketListenerSupplier {
+public class StompBroker implements WebSocketListenerSupplier {
     protected ToStompWebSocketListener toStompWebSocketListener;
 
-    public ToStompWebSocketAdapter() {
+    public StompBroker() {
         ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
         if (serverEndpoint == null || Utils.isEmpty(serverEndpoint.value())) {
             throw new IllegalArgumentException("Endpoint is not empty");

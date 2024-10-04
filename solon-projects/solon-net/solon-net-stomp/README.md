@@ -2,32 +2,57 @@
 
 ### 使用说明：
 
-* 注册适配器
+* 注册经理人
 
 ```java
 @ServerEndpoint("/chat")
-public class ChatToStompWebSocketAdapter extends ToStompWebSocketAdapter {
+public class ChatStompBroker extends StompBroker {
     
 }
 ```
 
-* 使用发送器
+* 业务场景应用
 
 ```java
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Http;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.SendTo;
 
 @Controller
-public class DemoController() {
+public class TestController {
     @Inject
     StompMessageSender messageSender;
 
-    @Inject("/chat") //有多个地址监听时，需要与 @ServerEndpoint("/chat") 对应起来
-    StompMessageSender messageSender1;
+    @Mapping("/hello")
+    @SendTo("/topic/greetings")
+    public Greeting greeting(HelloMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+    }
 
-    @Mapping("test")
-    public void test() {
-        messageSender.sendTo("/topic/todoTask1/1", "test");
+    @Mapping("/topic/greetings")
+    public Greeting greeting2(HelloMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        //log.info ("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+    }
+
+    @Http
+    @Mapping("/hello2")
+    public void greeting3(Context ctx, HelloMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+
+        String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
+        messageSender.sendTo("/topic/greetings", payload);
+    }
+
+    @Mapping("/sendToUser")
+    public void sendToUser(Context ctx, HelloMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+
+        String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
+        messageSender.sendTo("/topic/user/" + message.getUserId() + "/sendToUser", payload);
     }
 }
 ```

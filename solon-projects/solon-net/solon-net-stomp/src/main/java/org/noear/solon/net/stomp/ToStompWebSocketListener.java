@@ -77,6 +77,8 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onOpen(WebSocket socket) {
+        socket.attr("STOMP_MESSAGE_SENDER", messageSender);
+
         for (StompListener listener : listenerList) {
             listener.onOpen(socket);
         }

@@ -3,7 +3,7 @@ package org.noear.solon.net.stomp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.impl.Commands;
-import org.noear.solon.net.stomp.impl.Constants;
+import org.noear.solon.net.stomp.impl.Headers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +43,7 @@ public class MessageBuilder {
 
     public MessageBuilder contentType(String contentType) {
         if (Utils.isNotEmpty(contentType)) {
-            return header(Constants.CONTENT_TYPE, contentType);
+            return header(Headers.CONTENT_TYPE, contentType);
         }
 
         return this;
@@ -51,7 +51,7 @@ public class MessageBuilder {
 
     public MessageBuilder destination(String destination) {
         if (Utils.isNotEmpty(destination)) {
-            return header(Constants.DESTINATION, destination);
+            return header(Headers.DESTINATION, destination);
         }
 
         return this;

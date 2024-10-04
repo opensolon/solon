@@ -21,7 +21,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompListener;
 import org.noear.solon.net.stomp.StompMessageSender;
-import org.noear.solon.net.stomp.ToStompWebSocketAdapter;
+import org.noear.solon.net.stomp.StompBroker;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.4
  */
 @ServerEndpoint("/chat")
-public class ChatToStompWebSocketAdapter extends ToStompWebSocketAdapter {
+public class ChatStompBroker extends StompBroker {
     //示例，非必须
     private static Timer timer = new Timer();
     //示例，非必须
@@ -46,7 +46,7 @@ public class ChatToStompWebSocketAdapter extends ToStompWebSocketAdapter {
     @Inject("/chat")
     StompMessageSender messageSender1;
 
-    public ChatToStompWebSocketAdapter() {
+    public ChatStompBroker() {
         //此处仅为示例，实际按需扩展，可以不添加
         Solon.context().subBeansOfType(StompListener.class, bean -> {
             this.addListener(bean);

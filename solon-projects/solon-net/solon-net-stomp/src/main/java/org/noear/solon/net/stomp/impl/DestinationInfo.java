@@ -22,20 +22,9 @@ package org.noear.solon.net.stomp.impl;
  * @since 2.7
  */
 public class DestinationInfo {
-    /**
-     * 会话ID
-     */
-    protected final String sessionId;
-
-    /**
-     * 订阅目标
-     */
-    protected final String destination;
-
-    /**
-     * 通道ID
-     */
-    protected final String subscription;
+    private final String sessionId;
+    private final String destination;
+    private final String subscription;
 
     public DestinationInfo(String sessionId, String destination, String subscription) {
         this.sessionId = sessionId;
@@ -43,6 +32,26 @@ public class DestinationInfo {
         this.subscription = subscription;
     }
 
+    /**
+     * 会话ID
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * 目的地
+     */
+    public String getDestination() {
+        return destination;
+    }
+
+    /**
+     * 订阅者ID
+     */
+    public String getSubscription() {
+        return subscription;
+    }
 
     @Override
     public boolean equals(Object obj) {

@@ -20,7 +20,7 @@ package org.noear.solon.net.stomp.impl;
  * @author limliu
  * @since 2.7
  */
-public class Constants {
+public class Headers {
 
     /**
      * 订阅者 ID

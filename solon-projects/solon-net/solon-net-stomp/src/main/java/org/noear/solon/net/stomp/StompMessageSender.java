@@ -11,6 +11,10 @@ import org.noear.solon.net.websocket.WebSocket;
 public interface StompMessageSender {
     void sendTo(WebSocket session, Message message);
 
+    default void sendTo(WebSocket session, String payload) {
+        sendTo(session, Message.newBuilder().payload(payload).build());
+    }
+
     void sendTo(String destination, Message message);
 
     default void sendTo(String destination, String payload) {

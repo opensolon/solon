@@ -70,12 +70,12 @@ public final class StompListenerImpl implements StompListener {
      */
     @Override
     public void onConnect(WebSocket socket, Message message) {
-        String heartBeat = message.getHeader(Constants.HEART_BEAT);
+        String heartBeat = message.getHeader(Headers.HEART_BEAT);
 
         Message message1 = Message.newBuilder().command(Commands.CONNECTED)
-                .headers(new KeyValue<>(Constants.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
-                        new KeyValue<>(Constants.SERVER, "stomp"),
-                        new KeyValue<>(Constants.VERSION, "1.2"))
+                .headers(new KeyValue<>(Headers.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
+                        new KeyValue<>(Headers.SERVER, "stomp"),
+                        new KeyValue<>(Headers.VERSION, "1.2"))
                 .build();
 
         messageSender.sendTo(socket, message1);
@@ -90,10 +90,10 @@ public final class StompListenerImpl implements StompListener {
      */
     @Override
     public void onDisconnect(WebSocket socket, Message message) {
-        String receiptId = message.getHeader(Constants.RECEIPT);
+        String receiptId = message.getHeader(Headers.RECEIPT);
 
         Message message1 = Message.newBuilder().command(Commands.RECEIPT)
-                .header(Constants.RECEIPT_ID, receiptId)
+                .header(Headers.RECEIPT_ID, receiptId)
                 .build();
 
         messageSender.sendTo(socket, message1);
@@ -107,8 +107,11 @@ public final class StompListenerImpl implements StompListener {
      */
     @Override
     public void onSubscribe(WebSocket socket, Message message) {
-        final String subscriptionId = message.getHeader(Constants.ID);
-        final String destination = message.getHeader(Constants.DESTINATION);
+        //订阅者Id
+        final String subscriptionId = message.getHeader(Headers.ID);
+        //目的地
+        final String destination = message.getHeader(Headers.DESTINATION);
+
         if (destination == null || destination.length() == 0 || subscriptionId == null || subscriptionId.length() == 0) {
             Message message1 = Message.newBuilder().command(Commands.ERROR)
                     .payload("Required 'destination' or 'id' header missed")
@@ -126,10 +129,10 @@ public final class StompListenerImpl implements StompListener {
             messageSender.getOperations().getDestinationMatch().put(destination, Pattern.compile(destinationRegexp));
         }
 
-        final String receiptId = message.getHeader(Constants.RECEIPT);
+        final String receiptId = message.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
             Message message1 = Message.newBuilder().command(Commands.RECEIPT)
-                    .header(Constants.RECEIPT_ID, receiptId)
+                    .header(Headers.RECEIPT_ID, receiptId)
                     .build();
             messageSender.sendTo(socket, message1);
         }
@@ -147,14 +150,14 @@ public final class StompListenerImpl implements StompListener {
         final String sessionId = socket.id();
         if (message == null) {
             this.unSubscribeHandle(destinationInfo -> {
-                return sessionId.equals(destinationInfo.sessionId);
+                return sessionId.equals(destinationInfo.getSessionId());
             });
         } else {
-            String subscription = message.getHeader(Constants.ID);
-            String destination = message.getHeader(Constants.DESTINATION);
+            String subscription = message.getHeader(Headers.ID);
+            String destination = message.getHeader(Headers.DESTINATION);
             this.unSubscribeHandle(destinationInfo -> {
-                return sessionId.equals(destinationInfo.sessionId)
-                        && (destinationInfo.destination.equals(destination) || destinationInfo.subscription.equals(subscription));
+                return sessionId.equals(destinationInfo.getSessionId())
+                        && (destinationInfo.getDestination().equals(destination) || destinationInfo.getSubscription().equals(subscription));
             });
         }
     }
@@ -167,7 +170,7 @@ public final class StompListenerImpl implements StompListener {
      */
     @Override
     public void onSend(WebSocket socket, Message message) {
-        String destination = message.getHeader(Constants.DESTINATION);
+        String destination = message.getHeader(Headers.DESTINATION);
 
         if (destination == null || destination.length() == 0) {
             Message message1 = Message.newBuilder()
@@ -179,7 +182,7 @@ public final class StompListenerImpl implements StompListener {
         } else {
             Message message1 = Message.newBuilder()
                     .payload(message.getPayload())
-                    .contentType(message.getHeader(Constants.CONTENT_TYPE))
+                    .contentType(message.getHeader(Headers.CONTENT_TYPE))
                     .build();
 
             messageSender.sendTo(destination, message1);
