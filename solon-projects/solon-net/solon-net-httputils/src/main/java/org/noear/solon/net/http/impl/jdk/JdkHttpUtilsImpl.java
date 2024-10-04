@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.HttpCallback;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
@@ -72,9 +73,9 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
         HttpURLConnection _builder = (HttpURLConnection) new URL(url0).openConnection();
 
-        if(_builder instanceof HttpsURLConnection){
+        if (_builder instanceof HttpsURLConnection) {
             //调整 ssl 支持
-            HttpsURLConnection tmp = ((HttpsURLConnection)_builder);
+            HttpsURLConnection tmp = ((HttpsURLConnection) _builder);
             tmp.setSSLSocketFactory(HttpSsl.getSSLSocketFactory());
             tmp.setHostnameVerifier(HttpSsl.defaultHostnameVerifier);
         }
@@ -102,30 +103,52 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
         _builder.setDoInput(true);
 
-        if(METHODS_NOBODY.contains(method) == false) {
-            if (_bodyRaw != null) {
-                String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
-                _builder.setRequestProperty("Content-Type", contentType);
+        try {
+            if (METHODS_NOBODY.contains(method) == false) {
+                if (_bodyRaw != null) {
+                    String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
+                    _builder.setRequestProperty("Content-Type", contentType);
 
-                _builder.setDoOutput(true);
-                try (OutputStream out = _builder.getOutputStream()) {
-                    IoUtil.transferTo(_bodyRaw.content, out);
-                    out.flush();
-                }
-            } else {
-                if (_multipart) {
                     _builder.setDoOutput(true);
-                    new FormDataBody(_charset).write(_builder, _files, _params);
-                } else if (_params != null) {
-                    _builder.setDoOutput(true);
-                    new FormBody(_charset).write(_builder, _params);
+                    try (OutputStream out = _builder.getOutputStream()) {
+                        IoUtil.transferTo(_bodyRaw.content, out);
+                        out.flush();
+                    }
                 } else {
-                    //HEAD 可以为空
+                    if (_multipart) {
+                        _builder.setDoOutput(true);
+                        new FormDataBody(_charset).write(_builder, _files, _params);
+                    } else if (_params != null) {
+                        _builder.setDoOutput(true);
+                        new FormBody(_charset).write(_builder, _params);
+                    } else {
+                        //HEAD 可以为空
+                    }
                 }
             }
-        }
 
-        return new JdkHttpResponseImpl(_builder);
+            JdkHttpResponseImpl resp = new JdkHttpResponseImpl(_builder);
+
+            if (callback == null) {
+                return resp;
+            } else {
+                RunUtil.async(() -> {
+                    execCallback(callback, resp, null);
+                });
+
+                return null;
+            }
+        } catch (IOException e) {
+            if (callback == null) {
+                throw e;
+            } else {
+                RunUtil.async(() -> {
+                    execCallback(callback, null, e);
+                });
+
+                return null;
+            }
+        }
     }
 
     public static class FormDataBody {

@@ -120,4 +120,9 @@ public class JdkHttpResponseImpl implements HttpResponse {
             body().close();
         }
     }
+
+    @Override
+    public void close() throws IOException {
+        body().close();
+    }
 }

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author noear
  * @since 2.8
  */
-public interface HttpResponse {
+public interface HttpResponse extends Closeable {
     /**
      * 获取头名
      */

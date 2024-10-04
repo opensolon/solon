@@ -2,7 +2,10 @@ package org.noear.solon.net.http.impl;
 
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +21,8 @@ import java.util.Map;
  * @since 3.0
  */
 public abstract class AbstractHttpUtils implements HttpUtils {
+    static final Logger log = LoggerFactory.getLogger(AbstractHttpUtils.class);
+
     protected boolean _enablePrintln = false;
 
     protected final String _url;
@@ -388,6 +393,26 @@ public abstract class AbstractHttpUtils implements HttpUtils {
             execDo(method, callback);
         } catch (IOException e) {
             throw new RuntimeException(_url + ", request failed", e);
+        }
+    }
+
+    protected void execCallback(HttpCallback callback, HttpResponse resp, Exception err) {
+        if (callback == null) {
+            return;
+        }
+
+        try {
+            if (resp != null) {
+                callback.callback(true, resp, err);
+            } else {
+                callback.callback(false, null, err);
+            }
+        } catch (Throwable ex) {
+            log.warn(ex.getMessage(), ex);
+        } finally {
+            if (resp != null) {
+                RunUtil.runAndTry(resp::close);
+            }
         }
     }
 

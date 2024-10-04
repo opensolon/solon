@@ -91,4 +91,9 @@ public class OkHttpResponseImpl implements HttpResponse {
     public String bodyAsString() throws IOException {
         return response.body().string();
     }
+
+    @Override
+    public void close() throws IOException {
+        response.close();
+    }
 }

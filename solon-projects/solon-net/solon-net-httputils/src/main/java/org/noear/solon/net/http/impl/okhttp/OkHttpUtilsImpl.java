@@ -23,7 +23,6 @@ import okio.Source;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
@@ -69,25 +68,6 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    private void execCallback(HttpCallback callback, Response resp, Exception err) {
-        if (callback == null) {
-            return;
-        }
-
-        try {
-            if (resp != null) {
-                callback.callback(resp.isSuccessful(), new OkHttpResponseImpl(resp), err);
-            } else {
-                callback.callback(false, null, err);
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        } finally {
-            if (resp != null) {
-                resp.close();
-            }
-        }
-    }
 
 
     @Override
@@ -190,13 +170,13 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
-                    execCallback(callback, null, e);
+                    execCallback(callback,  null, e);
                     call.cancel();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    execCallback(callback, response, null);
+                    execCallback(callback, new OkHttpResponseImpl(response), null);
                     call.cancel();
                 }
             });
