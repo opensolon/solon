@@ -50,6 +50,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     static final Set<String> METHODS_NOBODY;
+
     static {
         METHODS_NOBODY = new HashSet<>(3); //es-GET 会有 body
         METHODS_NOBODY.add("HEAD");
@@ -65,11 +66,11 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    protected HttpResponse execDo(String method, HttpCallback callback) throws IOException {
-        String url0 = urlRebuild(_url, _charset);
-        method = method.toUpperCase();
+    protected HttpResponse execDo(String _method, HttpCallback callback) throws IOException {
+        final String url = urlRebuild(_url, _charset);
+        final String method = _method.toUpperCase();
 
-        HttpURLConnection _builder = (HttpURLConnection) new URL(url0).openConnection();
+        HttpURLConnection _builder = (HttpURLConnection) new URL(url).openConnection();
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
@@ -110,7 +111,6 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                     _builder.setRequestProperty("Content-Type", contentType);
 
                     _builder.setDoOutput(true);
-                    _builder.setChunkedStreamingMode(1024);
 
                     try (OutputStream out = _builder.getOutputStream()) {
                         IoUtil.transferTo(_bodyRaw.content, out);
@@ -119,12 +119,10 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 } else {
                     if (_multipart) {
                         _builder.setDoOutput(true);
-                        _builder.setChunkedStreamingMode(1024);
 
                         new FormDataBody(_charset).write(_builder, _files, _params);
                     } else if (_params != null) {
                         _builder.setDoOutput(true);
-                        _builder.setChunkedStreamingMode(1024);
 
                         new FormBody(_charset).write(_builder, _params);
                     } else {
@@ -139,17 +137,19 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 return resp;
             } else {
                 RunUtil.async(() -> {
-                    execCallback(callback, resp, null);
+                    execCallback(method, callback, resp, null);
                 });
 
                 return null;
             }
         } catch (IOException e) {
+            RunUtil.runAndTry(_builder::disconnect);
+
             if (callback == null) {
                 throw e;
             } else {
                 RunUtil.async(() -> {
-                    execCallback(callback, null, e);
+                    execCallback(method, callback, null, e);
                 });
 
                 return null;
@@ -288,7 +288,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
     /**
      * 补丁，增加新方法支持
-     * */
+     */
     private static void allowMethods(String... methods) {
         try {
             Field methodsField = HttpURLConnection.class.getDeclaredField("methods");

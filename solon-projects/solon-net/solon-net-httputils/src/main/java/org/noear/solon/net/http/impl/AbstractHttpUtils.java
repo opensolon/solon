@@ -48,7 +48,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     /**
      * 初始化扩展
-     * */
+     */
     private void initExtension() {
         for (HttpExtension ext : HttpExtensionManager.getExtensions()) {
             ext.onInit(this, _url);
@@ -343,7 +343,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         String text = exec(method).bodyAsString();
 
         if (_enablePrintln) {
-            System.out.println(_url + ":: " + text);
+            System.out.println(method + " " + _url + ":: " + text);
         }
 
         return text;
@@ -354,7 +354,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         int code = exec(method).code();
 
         if (_enablePrintln) {
-            System.out.println(_url + "::code:: " + code);
+            System.out.println(method + " " + _url + "::code:: " + code);
         }
 
         return code;
@@ -368,7 +368,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         try {
             return execDo(method, null);
         } catch (IOException e) {
-            throw new IOException(_url + ", request failed", e);
+            throw new IOException(method + " " + _url + ", request failed", e);
         }
     }
 
@@ -392,11 +392,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         try {
             execDo(method, callback);
         } catch (IOException e) {
-            throw new RuntimeException(_url + ", request failed", e);
+            throw new RuntimeException(method + " " + _url + ", request failed", e);
         }
     }
 
-    protected void execCallback(HttpCallback callback, HttpResponse resp, Exception err) {
+    protected void execCallback(String method, HttpCallback callback, HttpResponse resp, Exception err) {
         if (callback == null) {
             return;
         }
@@ -408,7 +408,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 callback.callback(false, null, err);
             }
         } catch (Throwable ex) {
-            log.warn(ex.getMessage(), ex);
+            log.warn(method + " " + _url + ", request failed", ex);
         } finally {
             if (resp != null) {
                 RunUtil.runAndTry(resp::close);
