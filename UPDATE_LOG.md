@@ -27,13 +27,15 @@
 
 * 新增 solon-web-webservices 插件
 * 新增 nami-channel-http（基于 httputils 实现） 替代 nami-channel-http-okhttp
-  * nami-channel-http 使用 URLConnection 适配（更小） 
+  * nami-channel-http 默认使用 URLConnection 适配（更小） 
   * nami-channel-http-okhttp 使用 okhttp 适配
 * 修复 solon-boot-vertx 没有启用 websocket 时，无法接收请求的问题
 * 修复 solon `@Param` 注解部分失效的问题
 * 修复 solon 本地网关可能会死循环的问题
 * 调整 solon-serialization Fastjson2 适配，时间默认为 dateTicks 模式（保持与其它序列化的统一）
 * 调整 solon-net-httputils 默认使用 URLConnection 适配（引入 okhttp 后，自动切换） 
+* 调整 solon Constants.ATTR_CONTROLLER,ATTR_MAIN_HANDLER,ATTR_MAIN_STATUS 内部常量值，避免与用户 attr 冲突
+* 调整 solon ActionReturnHandler 匹配增加 ctx 入参，提供更多扩展可能
 * 添加 solon 基于上下文的返回类型处理控制（Constants.ATTR_RETURN_HANDLER）
 * 优化 solon-serialization dateAsTicks（并为默认），支持 longAsString 时的字符串转换
 
