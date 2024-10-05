@@ -16,6 +16,7 @@
 package org.noear.solon.vault.coder;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.vault.VaultCoder;
 
 import javax.crypto.Cipher;
@@ -32,13 +33,18 @@ public class AesVaultCoder implements VaultCoder {
     private final String charset = "UTF-8";
 
     private final String algorithm = "AES/ECB/PKCS5Padding";
-    private final SecretKey key;
+    private SecretKey key;
 
     public AesVaultCoder() {
+        this(Solon.cfg().get("solon.vault.password"));
+    }
+
+    public AesVaultCoder(String password) {
         try {
-            String password = Solon.cfg().get("solon.vault.password");
-            byte[] passwordBytes = password.getBytes(charset);
-            key = new SecretKeySpec(passwordBytes, "AES");
+            if (Utils.isNotEmpty(password)) {
+                byte[] passwordBytes = password.getBytes(charset);
+                key = new SecretKeySpec(passwordBytes, "AES");
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -49,6 +55,10 @@ public class AesVaultCoder implements VaultCoder {
      */
     @Override
     public String encrypt(String str) throws Exception {
+        if (key == null) {
+            return str;
+        }
+
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, key);
 
@@ -61,6 +71,10 @@ public class AesVaultCoder implements VaultCoder {
      */
     @Override
     public String decrypt(String str) throws Exception {
+        if (key == null) {
+            return str;
+        }
+
         //密码
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.DECRYPT_MODE, key);

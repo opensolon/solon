@@ -27,7 +27,9 @@ import java.util.Properties;
 public class ConfigVaultTest {
     @Test
     public void test() {
-        Solon.start(ConfigVaultTest.class, new String[]{});
+        Solon.start(ConfigVaultTest.class, new String[]{}, app -> {
+            app.cfg().loadAdd("test1.yml");
+        });
 
         String password1 = Solon.cfg().get("test.password1");
         String password2 = VaultUtils.guard(Solon.cfg().get("test.password2"));
@@ -44,5 +46,16 @@ public class ConfigVaultTest {
         assert db1_props.get("password").equals(db2_props.get("password"));
         assert db1_props.get("username").equals(db2_props.get("username"));
         assert db1_props.get("url").equals(db2_props.get("url"));
+    }
+
+    @Test
+    public void test2() {
+        Solon.start(ConfigVaultTest.class, new String[]{});
+
+        String password2 = VaultUtils.guard("dddd");
+
+        System.out.println(password2);
+
+        assert password2.equals("dddd");
     }
 }
