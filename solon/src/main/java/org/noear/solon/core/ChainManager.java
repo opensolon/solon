@@ -228,9 +228,9 @@ public class ChainManager {
         }
     }
 
-    public ActionReturnHandler getReturnHandler(Class<?> returnType) {
+    public ActionReturnHandler getReturnHandler(Context ctx, Class<?> returnType) {
         for (ActionReturnHandler handler : returnHandlers.values()) {
-            if (handler.matched(returnType)) {
+            if (handler.matched(ctx, returnType)) {
                 return handler;
             }
         }

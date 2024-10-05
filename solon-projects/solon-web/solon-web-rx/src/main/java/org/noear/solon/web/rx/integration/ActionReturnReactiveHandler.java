@@ -29,7 +29,7 @@ import reactor.core.publisher.Flux;
  */
 public class ActionReturnReactiveHandler implements ActionReturnHandler {
     @Override
-    public boolean matched(Class<?> returnType) {
+    public boolean matched(Context ctx, Class<?> returnType) {
         return Publisher.class.isAssignableFrom(returnType);
     }
 

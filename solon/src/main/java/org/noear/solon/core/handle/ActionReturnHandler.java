@@ -25,9 +25,10 @@ public interface ActionReturnHandler {
     /**
      * 是否匹配
      *
+     * @param ctx        上下文
      * @param returnType 返回类型
      */
-    boolean matched(Class<?> returnType);
+    boolean matched(Context ctx, Class<?> returnType);
 
     /**
      * 返回处理

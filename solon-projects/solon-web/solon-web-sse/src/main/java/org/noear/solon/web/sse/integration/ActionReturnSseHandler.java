@@ -27,7 +27,7 @@ import org.noear.solon.web.sse.SseEmitterHandler;
  */
 public class ActionReturnSseHandler implements ActionReturnHandler {
     @Override
-    public boolean matched(Class<?> returnType) {
+    public boolean matched(Context ctx, Class<?> returnType) {
         return SseEmitter.class.isAssignableFrom(returnType);
     }
 

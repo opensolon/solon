@@ -16,7 +16,7 @@ public class StompReturnHandler implements ActionReturnHandler {
     }
 
     @Override
-    public boolean matched(Class<?> returnType) {
+    public boolean matched(Context ctx, Class<?> returnType) {
         return false;
     }
 
