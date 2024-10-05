@@ -74,20 +74,19 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
-            //调整 ssl 支持
+            //调整 ssl
             HttpsURLConnection tmp = ((HttpsURLConnection) _builder);
             tmp.setSSLSocketFactory(HttpSsl.getSSLSocketFactory());
             tmp.setHostnameVerifier(HttpSsl.defaultHostnameVerifier);
         }
 
         if (_timeout != null) {
+            //调整 timeout
             _builder.setConnectTimeout(_timeout.connectTimeout * 1000);
             _builder.setReadTimeout(_timeout.readTimeout * 1000);
         }
 
-        String contentTypeDef = null;
         if (_headers != null) {
-            contentTypeDef = _headers.get("Content-Type");
             for (KeyValues<String> kv : _headers) {
                 for (String val : kv.getValues()) {
                     _builder.addRequestProperty(kv.getKey(), val);
@@ -100,13 +99,29 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         }
 
         _builder.setRequestMethod(method);
-
         _builder.setDoInput(true);
 
+        if (callback == null) {
+            return request(_builder, method);
+        } else {
+            RunUtil.async(() -> {
+                try {
+                    HttpResponse resp = request(_builder, method);
+                    execCallback(method, callback, resp, null);
+                } catch (IOException e) {
+                    execCallback(method, callback, null, e);
+                }
+            });
+
+            return null;
+        }
+    }
+
+    private HttpResponse request(HttpURLConnection _builder, String method) throws IOException {
         try {
             if (METHODS_NOBODY.contains(method) == false) {
-
                 if (_bodyRaw != null) {
+                    String contentTypeDef = _headers.get("Content-Type");
                     String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
                     _builder.setRequestProperty("Content-Type", contentType);
 
@@ -131,29 +146,10 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            JdkHttpResponseImpl resp = new JdkHttpResponseImpl(_builder);
-
-            if (callback == null) {
-                return resp;
-            } else {
-                RunUtil.async(() -> {
-                    execCallback(method, callback, resp, null);
-                });
-
-                return null;
-            }
+            return new JdkHttpResponseImpl(_builder);
         } catch (IOException e) {
-            RunUtil.runAndTry(_builder::disconnect);
-
-            if (callback == null) {
-                throw e;
-            } else {
-                RunUtil.async(() -> {
-                    execCallback(method, callback, null, e);
-                });
-
-                return null;
-            }
+            _builder.disconnect();
+            throw e;
         }
     }
 

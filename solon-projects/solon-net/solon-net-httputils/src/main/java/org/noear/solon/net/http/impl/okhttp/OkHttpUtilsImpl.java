@@ -71,7 +71,8 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
 
     @Override
-    protected HttpResponse execDo(String method, HttpCallback callback) throws IOException {
+    protected HttpResponse execDo(String _method, HttpCallback callback) throws IOException {
+        String method = _method.toUpperCase();
         Request.Builder _builder = new Request.Builder().url(_url);
 
         if (_timeout != null) {
@@ -170,13 +171,13 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
-                    execCallback(callback,  null, e);
+                    execCallback(method, callback, null, e);
                     call.cancel();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    execCallback(callback, new OkHttpResponseImpl(response), null);
+                    execCallback(method, callback, new OkHttpResponseImpl(response), null);
                     call.cancel();
                 }
             });
