@@ -70,6 +70,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         method = method.toUpperCase();
 
         HttpURLConnection _builder = (HttpURLConnection) new URL(url0).openConnection();
+        _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
             //调整 ssl 支持
