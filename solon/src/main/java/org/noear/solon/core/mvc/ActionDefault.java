@@ -245,8 +245,8 @@ public class ActionDefault extends HandlerAide implements Action {
             }
 
             //传递控制器实例
-            c.attrSet("controller", obj);
-            c.attrSet("action", this);
+            c.attrSet(Constants.ATTR_CONTROLLER, obj);
+            c.attrSet(Constants.ATTR_MAIN_HANDLER, this);
 
 
             if (bAide == null) {

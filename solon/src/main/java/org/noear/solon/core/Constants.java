@@ -25,11 +25,11 @@ public interface Constants {
     String PARM_UNDEFINED_VALUE = "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
     //@since: 2.5
-    String ATTR_CONTROLLER = "controller";
-    String ATTR_MAIN_HANDLER = "mainHandler";
-    String ATTR_MAIN_STATUS = "mainStatus";
+    String ATTR_CONTROLLER = "ATTR_CONTROLLER";
+    String ATTR_MAIN_HANDLER = "ATTR_MAIN_HANDLER";
+    String ATTR_MAIN_STATUS = "ATTR_MAIN_STATUS";
     //@since: 3.0
-    String ATTR_RETURN_HANDLER = "returnHandler";
+    String ATTR_RETURN_HANDLER = "ATTR_RETURN_HANDLER";
 
     //@since: 3.0
     int FT_IDX_CONTEXT_PATH = -990;
