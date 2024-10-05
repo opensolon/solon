@@ -279,7 +279,13 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             String query0 = URLDecoder.decode(query, charset.name());
             if (query.equals(query0)) {
                 query = HttpUtils.urlEncode(query, charset.name());
-                query = query.replace("%3F", "?").replace("%2F", "/").replace("%3A", ":").replace("%3D", "=").replace("%26", "&").replace("%23", "#");
+                query = query.replace("%3F", "?")
+                        .replace("%2F", "/")
+                        .replace("%3A", ":")
+                        .replace("%3D", "=")
+                        .replace("%26", "&")
+                        .replace("%40", "@")
+                        .replace("%23", "#");
             }
         }
 
