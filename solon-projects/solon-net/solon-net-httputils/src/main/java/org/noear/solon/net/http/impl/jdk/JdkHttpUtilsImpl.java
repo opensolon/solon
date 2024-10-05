@@ -29,9 +29,7 @@ import org.noear.solon.net.http.impl.HttpTimeout;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
@@ -105,11 +103,14 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
         try {
             if (METHODS_NOBODY.contains(method) == false) {
+
                 if (_bodyRaw != null) {
                     String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
                     _builder.setRequestProperty("Content-Type", contentType);
 
                     _builder.setDoOutput(true);
+                    _builder.setChunkedStreamingMode(1024);
+
                     try (OutputStream out = _builder.getOutputStream()) {
                         IoUtil.transferTo(_bodyRaw.content, out);
                         out.flush();
@@ -117,9 +118,13 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 } else {
                     if (_multipart) {
                         _builder.setDoOutput(true);
+                        _builder.setChunkedStreamingMode(1024);
+
                         new FormDataBody(_charset).write(_builder, _files, _params);
                     } else if (_params != null) {
                         _builder.setDoOutput(true);
+                        _builder.setChunkedStreamingMode(1024);
+
                         new FormBody(_charset).write(_builder, _params);
                     } else {
                         //HEAD 可以为空
@@ -152,32 +157,29 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     }
 
     public static class FormDataBody {
-        private static final String horizontalLine = "--------------------------";
         private static final String CRLF = "\r\n";
-        private static final String fileFormat = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\nContent-Type: %s";
+        private static final String fileFormat = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"";
         private static final String textFormat = "Content-Disposition: form-data; name=\"%s\"";
 
         private final Charset charset;
         private final String contentType;
-        private final String separator;
-        private final String endFlag;
+        private final String boundary;
 
         public FormDataBody(Charset charset) {
-            long randomNumber = ThreadLocalRandom.current().nextLong();
-            this.contentType = "multipart/form-data; boundary=" + horizontalLine + randomNumber;
-            this.separator = "--" + horizontalLine + randomNumber;
-            this.endFlag = CRLF + separator + "--" + CRLF;
+            this.boundary = Long.toHexString(System.currentTimeMillis());
+            this.contentType = "multipart/form-data; boundary=" + boundary;
             this.charset = charset;
         }
 
         void write(HttpURLConnection http, MultiMap<HttpUploadFile> fileMap, MultiMap<String> paramMap) throws IOException {
             http.setRequestProperty("Content-Type", contentType);
 
-            try (OutputStream out = http.getOutputStream()) {
+            try (OutputStream out = http.getOutputStream();
+                 PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, charset), true)) {
                 if (fileMap != null) {
                     for (KeyValues<HttpUploadFile> kv : fileMap) {
                         for (HttpUploadFile val : kv.getValues()) {
-                            appendFile(out, kv.getKey(), val);
+                            appendPartFile(out, writer, kv.getKey(), val);
                         }
                     }
                 }
@@ -185,44 +187,35 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 if (paramMap != null) {
                     for (KeyValues<String> kv : paramMap) {
                         for (String val : kv.getValues()) {
-                            appendText(out, kv.getKey(), val);
+                            appendPartText(out, writer, kv.getKey(), val);
                         }
                     }
                 }
 
-                out.write(this.endFlag.getBytes(this.charset));
-                out.flush();
+                writer.append("--").append(boundary).append("--").append(CRLF).flush();
             }
         }
 
-        private void appendFile(OutputStream outputStream, String key, HttpUploadFile value) throws IOException {
-            StringBuilder builder = new StringBuilder(1024);
+        private void appendPartFile(OutputStream out, PrintWriter writer, String key, HttpUploadFile value) throws IOException {
+            writer.append("--").append(boundary).append(CRLF);
+            writer.append(String.format(fileFormat, HttpUtils.urlEncode(key, charset.name()), value.fileName)).append(CRLF);
+            writer.append("Content-Type: ").append(value.fileStream.contentType).append(CRLF);
+            writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+            writer.append(CRLF).flush();
 
-            // append 头部信息
-            builder.append(CRLF).append(separator).append(CRLF);
-            builder.append(String.format(fileFormat, key, value.fileName, value.fileStream.contentType)).append(CRLF);
-            builder.append(CRLF);
-            outputStream.write(builder.toString().getBytes(charset));
-            // append 实体
-            IoUtil.transferTo(value.fileStream.content, outputStream);
-            // append 换行
-            //outputStream.write(lineFeed.getBytes(this.charset));
-            outputStream.flush();
+            IoUtil.transferTo(value.fileStream.content, out).flush();
+
+            writer.append(CRLF).flush();
         }
 
-        private void appendText(OutputStream outputStream, String key, String value) throws IOException {
-            StringBuilder builder = new StringBuilder(1024);
+        private void appendPartText(OutputStream out, PrintWriter writer, String key, String value) throws IOException {
+            writer.append("--").append(boundary).append(CRLF);
+            writer.append(String.format(textFormat, HttpUtils.urlEncode(key, charset.name()))).append(CRLF);
+            writer.append(CRLF).flush();
 
-            // append 头部信息
-            builder.append(CRLF).append(separator).append(CRLF);
-            builder.append(String.format(textFormat, key)).append(CRLF);
-            builder.append(CRLF);
-            // append 实体
-            builder.append(value);
-            outputStream.write(builder.toString().getBytes(this.charset));
-            // append 换行
-            //outputStream.write(lineFeed.getBytes(this.charset));
-            outputStream.flush();
+            writer.append(value).flush();
+
+            writer.append(CRLF).flush();
         }
     }
 
