@@ -17,6 +17,7 @@ package org.noear.solon.net.http.impl.jdk;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
@@ -35,19 +36,25 @@ import java.util.zip.GZIPInputStream;
 public class JdkHttpResponseImpl implements HttpResponse {
     private final HttpURLConnection http;
     private final int statusCode;
-    private final Map<String, List<String>> headers;
+    private final MultiMap<String> headers;
     private final InputStream body;
 
     public JdkHttpResponseImpl(HttpURLConnection http) throws IOException {
         this.http = http;
 
         this.statusCode = http.getResponseCode();
-        this.headers = http.getHeaderFields();
+        this.headers = new MultiMap<>();
+
+        for (Map.Entry<String, List<String>> kv : http.getHeaderFields().entrySet()) {
+            if (kv.getKey() != null) {
+                headers.holder(kv.getKey()).setValues(kv.getValue());
+            }
+        }
 
         InputStream inputStream = statusCode < 400 ? http.getInputStream() : http.getErrorStream();
         // 获取响应头是否有Content-Encoding=gzip
         String gzip = http.getHeaderField("Content-Encoding");
-        if(Utils.isNotEmpty(gzip) && gzip.contains("gzip")) {
+        if (Utils.isNotEmpty(gzip) && gzip.contains("gzip")) {
             inputStream = new GZIPInputStream(inputStream);
         }
         body = new JdkInputStreamWrapper(http, inputStream);
@@ -69,7 +76,7 @@ public class JdkHttpResponseImpl implements HttpResponse {
 
     @Override
     public List<String> headers(String name) {
-        return headers.get(name);
+        return headers.getAll(name);
     }
 
     @Override
