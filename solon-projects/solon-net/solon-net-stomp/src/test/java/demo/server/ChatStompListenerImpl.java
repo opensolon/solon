@@ -15,7 +15,6 @@
  */
 package demo.server;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.net.stomp.SimpleStompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -25,8 +24,7 @@ import org.noear.solon.net.websocket.WebSocket;
  * @author noear
  * @since 2.4
  */
-@Component
-public class ChatCustomStompListenerImpl extends SimpleStompListener {
+public class ChatStompListenerImpl extends SimpleStompListener {
 
     @Override
     public void onOpen(WebSocket socket) {

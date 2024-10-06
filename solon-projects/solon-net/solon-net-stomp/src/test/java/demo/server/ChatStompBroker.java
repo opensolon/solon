@@ -15,16 +15,11 @@
  */
 package demo.server;
 
-
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.stomp.StompListener;
-import org.noear.solon.net.stomp.StompBrokerSender;
 import org.noear.solon.net.stomp.StompBroker;
+import org.noear.solon.net.stomp.handle.ToHandleStompListener;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -35,31 +30,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @ServerEndpoint("/chat")
 public class ChatStompBroker extends StompBroker {
-    //示例，非必须
-    private static Timer timer = new Timer();
-    //示例，非必须
-    private static AtomicInteger atomicInteger = new AtomicInteger();
-
-    @Inject
-    StompBrokerSender messageSender;
-
-    @Inject("/chat")
-    StompBrokerSender messageSender1;
-
     public ChatStompBroker() {
-        //此处仅为示例，实际按需扩展，可以不添加
-        Solon.context().subBeansOfType(StompListener.class, bean -> {
-            this.addListener(bean);
-        });
+        //此为示例，实际按需扩展
+        this.addListener(new ToHandleStompListener(getSender()));
+        this.addListener(new ChatStompListenerImpl());
 
-        //this.addListener(new CustomStompListenerImpl());
-        //此处仅为服务发送消息示例(继承方式发消息)，可以不添加；间隔3秒发一次
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                messageSender.sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
-                messageSender1.sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端2");
-            }
+        //此为示例
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        RunUtil.scheduleAtFixedRate(() -> {
+            getSender().sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
         }, 3000, 3000);
     }
 }
