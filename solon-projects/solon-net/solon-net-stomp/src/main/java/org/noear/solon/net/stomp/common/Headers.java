@@ -13,109 +13,120 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.impl;
+package org.noear.solon.net.stomp.common;
 
 /**
  * 头信息
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
-public class Headers {
+public interface Headers {
 
     /**
      * 订阅者 ID
      */
-    public static final String ID = "id";
+    String ID = "id";
 
     /**
      * 接受版本
      */
-    public static final String ACCEPT_VERSION = "accept-version";
+    String ACCEPT_VERSION = "accept-version";
 
     /**
      * 心跳
      */
-    public static final String HEART_BEAT = "heart-beat";
+    String HEART_BEAT = "heart-beat";
 
     /**
      * 目的地
      */
-    public static final String DESTINATION = "destination";
+    String DESTINATION = "destination";
 
     /**
      * 内容类型
      */
-    public static final String CONTENT_TYPE = "content-type";
+    String CONTENT_TYPE = "content-type";
+
+    /**
+     * 内容长度
+     */
+    String CONTENT_LENGTH = "content-length";
 
     /**
      * 消息 ID
      */
-    public static final String MESSAGE_ID = "message-id";
+    String MESSAGE_ID = "message-id";
 
     /**
      * 凭据
      */
-    public static final String RECEIPT = "receipt";
+    String RECEIPT = "receipt";
 
     /**
      * 凭据 ID
      */
-    public static final String RECEIPT_ID = "receipt-id";
+    String RECEIPT_ID = "receipt-id";
+
+    /**
+     * 事务
+     * */
+    String TRANSACTION = "transaction";
 
     /**
      * 订阅者
      */
-    public static final String SUBSCRIPTION = "subscription";
+    String SUBSCRIPTION = "subscription";
 
     /**
      * 确认
      */
-    public static final String ACK = "ack";
+    String ACK = "ack";
 
     /**
      * 确认
      */
-    public static final String NACK = "nack";
+    String NACK = "nack";
 
     /**
      * 账号
      */
-    public static final String LOGIN = "login";
+    String LOGIN = "login";
 
     /**
      * 密码
      */
-    public static final String PASSCODE = "passcode";
+    String PASSCODE = "passcode";
 
     /**
      * 鉴权-有权限
      */
-    public static final String AUTHORIZED = "Authorized";
+    String AUTHORIZED = "Authorized";
 
     /**
      * 鉴权-无权限
      */
-    public static final String UNAUTHORIZED = "Unauthorized";
+    String UNAUTHORIZED = "Unauthorized";
 
     /**
      *
      */
-    public static final String SERVER = "server";
+    String SERVER = "server";
 
     /**
      *
      */
-    public static final String VERSION = "version";
+    String VERSION = "version";
 
     /**
      * 是否开启持久化, boolean类型
      */
-    public static final String OPEN_PERSISTENCE = "openPersistence";
+    String OPEN_PERSISTENCE = "openPersistence";
 
     /**
      * 是否开启ack, boolean类型
      */
-    public static final String OPEN_ACK = "openAck";
+    String OPEN_ACK = "openAck";
 
 }

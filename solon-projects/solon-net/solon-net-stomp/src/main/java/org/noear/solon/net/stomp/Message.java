@@ -16,22 +16,27 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.core.util.KeyValue;
+import org.noear.solon.net.stomp.common.Commands;
+
 import java.util.Collection;
 
 /**
- * 消息
+ * Stomp 消息
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
 public interface Message {
     /**
      * 获取命令, 如send...等。参考#Commands
+     *
+     * @see Commands
      */
     String getCommand();
 
     /**
-     * 获取消息内容
+     * 获取有效载荷
      *
      * @return
      */

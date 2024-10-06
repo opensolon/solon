@@ -19,7 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.broker.SimpleStompListener;
 import org.noear.solon.net.stomp.StompSender;
-import org.noear.solon.net.stomp.broker.impl.Headers;
+import org.noear.solon.net.stomp.common.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**

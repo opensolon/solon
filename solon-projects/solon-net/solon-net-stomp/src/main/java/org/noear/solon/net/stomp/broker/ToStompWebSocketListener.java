@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.net.stomp.common.Commands;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.stomp.broker.impl.*;

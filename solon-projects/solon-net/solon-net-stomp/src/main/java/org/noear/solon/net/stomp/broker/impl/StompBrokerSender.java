@@ -15,8 +15,10 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.net.stomp.common.Commands;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.common.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
