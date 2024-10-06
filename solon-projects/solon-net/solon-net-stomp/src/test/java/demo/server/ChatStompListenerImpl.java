@@ -15,6 +15,7 @@
  */
 package demo.server;
 
+import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.SimpleStompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -58,10 +59,10 @@ public class ChatStompListenerImpl extends SimpleStompListener {
     //    System.out.println("按需扩展");
     //}
     //
-    //@Override
-    //public void onSend(WebSocket socket, Message message) {
-    //    System.out.println("按需扩展");
-    //}
+    @Override
+    public void onSend(WebSocket socket, Message message) {
+        System.out.println(message);
+    }
     //
     //@Override
     //public void onAck(WebSocket socket, Message message) {

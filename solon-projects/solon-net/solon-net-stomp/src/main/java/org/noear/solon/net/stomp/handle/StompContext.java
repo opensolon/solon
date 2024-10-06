@@ -27,6 +27,8 @@ import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 3.0
@@ -67,13 +69,18 @@ public class StompContext extends ContextEmpty {
     }
 
     @Override
+    public String path() {
+        return destination;
+    }
+
+    @Override
     public String contentType() {
         return message.getHeader(Headers.CONTENT_TYPE);
     }
 
     @Override
-    public String path() {
-        return destination;
+    public String body(String charset) throws IOException {
+        return message.getPayload();
     }
 
     @Override
