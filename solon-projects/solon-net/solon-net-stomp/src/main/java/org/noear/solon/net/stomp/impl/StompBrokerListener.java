@@ -181,12 +181,7 @@ public final class StompBrokerListener implements StompListener {
 
             messageSender.sendTo(socket, message1);
         } else {
-            Message message1 = Message.newBuilder()
-                    .payload(message.getPayload())
-                    .contentType(message.getHeader(Headers.CONTENT_TYPE))
-                    .build();
-
-            messageSender.sendTo(destination, message1);
+            messageSender.sendTo(destination, message);
         }
     }
 
