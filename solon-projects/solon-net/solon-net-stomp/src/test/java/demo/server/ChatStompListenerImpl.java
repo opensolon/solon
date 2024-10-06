@@ -16,7 +16,7 @@
 package demo.server;
 
 import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.SimpleStompListener;
+import org.noear.solon.net.stomp.broker.SimpleStompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**

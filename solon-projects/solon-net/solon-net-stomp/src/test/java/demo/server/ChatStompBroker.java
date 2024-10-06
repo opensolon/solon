@@ -17,8 +17,8 @@ package demo.server;
 
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.stomp.StompBroker;
-import org.noear.solon.net.stomp.handle.ToHandleStompListener;
+import org.noear.solon.net.stomp.broker.StompBroker;
+import org.noear.solon.net.stomp.broker.handle.ToHandlerStompListener;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChatStompBroker extends StompBroker {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
-        this.addListener(new ToHandleStompListener(getSender()));
+        this.addListener(new ToHandlerStompListener(getSender()));
         this.addListener(new ChatStompListenerImpl());
 
         //此为示例

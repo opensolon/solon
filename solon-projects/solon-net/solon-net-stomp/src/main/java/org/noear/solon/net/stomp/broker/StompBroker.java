@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.broker;
 
 import org.noear.solon.Utils;
 import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 

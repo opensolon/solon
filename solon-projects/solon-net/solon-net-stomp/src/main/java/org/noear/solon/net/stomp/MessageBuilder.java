@@ -17,8 +17,8 @@ package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.net.stomp.impl.Commands;
-import org.noear.solon.net.stomp.impl.Headers;
+import org.noear.solon.net.stomp.broker.impl.Commands;
+import org.noear.solon.net.stomp.broker.impl.Headers;
 
 import java.util.ArrayList;
 import java.util.Collection;

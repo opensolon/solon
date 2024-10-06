@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.handle;
+package org.noear.solon.net.stomp.broker.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.SimpleStompListener;
+import org.noear.solon.net.stomp.broker.SimpleStompListener;
 import org.noear.solon.net.stomp.StompSender;
-import org.noear.solon.net.stomp.impl.Headers;
+import org.noear.solon.net.stomp.broker.impl.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
  * @author noear
  * @since 3.0
  */
-public class ToHandleStompListener extends SimpleStompListener {
+public class ToHandlerStompListener extends SimpleStompListener {
     private final StompSender sender;
 
-    public ToHandleStompListener(StompSender sender) {
+    public ToHandlerStompListener(StompSender sender) {
         this.sender = sender;
     }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.handle;
+package org.noear.solon.net.stomp.broker.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -22,7 +22,7 @@ import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompSender;
-import org.noear.solon.net.stomp.impl.Headers;
+import org.noear.solon.net.stomp.broker.impl.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
