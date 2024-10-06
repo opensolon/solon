@@ -21,6 +21,7 @@ import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 /**
  * stomp 处理工具类
@@ -62,7 +63,17 @@ public final class StompBrokerSenderImpl implements StompBrokerSender {
                 }).forEach(destinationInfo -> {
                     WebSocket sendSocket = operations.getWebSocketMap().get(destinationInfo.getSessionId());
                     if (sendSocket != null) {
-                        sendTo(sendSocket, message);
+                        //transform(Commands.MESSAGE, destinationInfo.getDestination(), payload, contentType, Arrays.asList(new Header(Header.SUBSCRIPTION, destinationInfo.getSubscription()), new Header(Header.MESSAGE_ID, UUID.randomUUID().toString()))
+
+                        Message message1 = Message.newBuilder()
+                                .command(Commands.MESSAGE)
+                                .header(Headers.CONTENT_TYPE, message.getHeader(Headers.CONTENT_TYPE))
+                                .header(Headers.DESTINATION, destinationInfo.getDestination())
+                                .header(Headers.SUBSCRIPTION, destinationInfo.getSubscription())
+                                .header(Headers.MESSAGE_ID, UUID.randomUUID().toString())
+                                .build();
+
+                        sendTo(sendSocket, message1);
                     }
                 });
     }

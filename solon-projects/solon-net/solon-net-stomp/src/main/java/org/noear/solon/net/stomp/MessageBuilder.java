@@ -36,8 +36,18 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder headers(Iterable<KeyValue<String>> headers) {
+        for (KeyValue<String> header : headers) {
+            this.headers.add(header);
+        }
+        return this;
+    }
+
     public MessageBuilder header(String key, String val) {
-        headers.add(new KeyValue<>(key, val));
+        if (key != null && val != null) {
+            headers.add(new KeyValue<>(key, val));
+        }
+
         return this;
     }
 
