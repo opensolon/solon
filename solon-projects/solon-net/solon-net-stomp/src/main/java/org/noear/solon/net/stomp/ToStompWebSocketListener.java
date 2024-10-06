@@ -17,6 +17,7 @@ package org.noear.solon.net.stomp;
 
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.stomp.impl.*;
@@ -68,13 +69,17 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public String getSubProtocols(@Nullable Collection<String> requestProtocols) {
-        return "stomp";
+        if (Utils.isEmpty(requestProtocols)) {
+            //如果没有子协议要求，则不限制
+            return null;
+        } else {
+            //如果有子协议要求，只允许 stomp
+            return "stomp";
+        }
     }
 
     @Override
     public void onOpen(WebSocket socket) {
-        socket.attr("STOMP_MESSAGE_SENDER", messageSender);
-
         for (StompListener listener : listenerList) {
             listener.onOpen(socket);
         }
