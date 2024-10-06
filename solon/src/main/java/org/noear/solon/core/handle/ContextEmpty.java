@@ -119,7 +119,7 @@ public class ContextEmpty extends Context {
         return null;
     }
 
-    private MultiMap<String> paramMap = null;
+    protected MultiMap<String> paramMap = null;
 
     @Override
     public MultiMap<String> paramMap() {
@@ -130,7 +130,7 @@ public class ContextEmpty extends Context {
     }
 
 
-    MultiMap<UploadedFile> filesMap = null;
+    protected MultiMap<UploadedFile> filesMap = null;
 
     @Override
     public MultiMap<UploadedFile> fileMap() {
@@ -147,7 +147,7 @@ public class ContextEmpty extends Context {
     }
 
 
-    private MultiMap<String> cookieMap = null;
+    protected MultiMap<String> cookieMap = null;
 
     @Override
     public MultiMap<String> cookieMap() {
@@ -157,7 +157,7 @@ public class ContextEmpty extends Context {
         return cookieMap;
     }
 
-    private MultiMap<String> headerMap = null;
+    protected MultiMap<String> headerMap = null;
 
     @Override
     public MultiMap<String> headerMap() {
