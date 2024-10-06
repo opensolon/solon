@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * @author limliu
  * @since 2.8
  */
-public final class StompMessageOperations {
+public final class StompBrokerOperations {
     /**
      * session存放
      */

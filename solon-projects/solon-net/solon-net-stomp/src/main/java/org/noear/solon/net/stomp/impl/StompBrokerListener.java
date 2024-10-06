@@ -20,7 +20,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompListener;
-import org.noear.solon.net.stomp.handle.StompContext;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.util.Iterator;
@@ -33,10 +32,10 @@ import java.util.regex.Pattern;
  * @author limliu
  * @since 2.7
  */
-public final class StompListenerImpl implements StompListener {
-    private final StompMessageSenderImpl messageSender;
+public final class StompBrokerListener implements StompListener {
+    private final StompBrokerSenderImpl messageSender;
 
-    public StompListenerImpl(StompMessageSenderImpl messageSender) {
+    public StompBrokerListener(StompBrokerSenderImpl messageSender) {
         this.messageSender = messageSender;
     }
 
@@ -188,9 +187,6 @@ public final class StompListenerImpl implements StompListener {
                     .build();
 
             messageSender.sendTo(destination, message1);
-
-            //同时转发给 Solon Handler 体系
-            new StompContext(socket, message, destination, messageSender).tryHandle();;
         }
     }
 

@@ -28,10 +28,10 @@ import java.nio.charset.StandardCharsets;
  * @author limliu
  * @since 2.7
  */
-public final class StompMessageSenderImpl implements StompBrokerSender {
-    private StompMessageOperations operations = new StompMessageOperations();
+public final class StompBrokerSenderImpl implements StompBrokerSender {
+    private StompBrokerOperations operations = new StompBrokerOperations();
 
-    public StompMessageOperations getOperations() {
+    public StompBrokerOperations getOperations() {
         return operations;
     }
 

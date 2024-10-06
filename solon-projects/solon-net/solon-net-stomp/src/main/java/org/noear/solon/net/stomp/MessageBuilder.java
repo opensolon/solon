@@ -69,9 +69,9 @@ public class MessageBuilder {
 
         public MessageImpl(String command, String payload, List<KeyValue<String>> headers) {
             if (Utils.isEmpty(command)) {
-                this.command = command;
-            } else {
                 this.command = Commands.MESSAGE;
+            } else {
+                this.command = command;
             }
 
             this.payload = payload;

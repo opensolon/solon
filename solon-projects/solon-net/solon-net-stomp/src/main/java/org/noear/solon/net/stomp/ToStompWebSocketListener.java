@@ -20,6 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.net.stomp.handle.ToHandleStompListener;
 import org.noear.solon.net.stomp.impl.*;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
@@ -45,20 +46,21 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     static Logger log = LoggerFactory.getLogger(ToStompWebSocketListener.class);
 
     private final List<StompListener> listenerList = new ArrayList<>();
-    private final StompMessageSenderImpl messageSender;
+    private final StompBrokerSenderImpl messageSender;
 
     protected ToStompWebSocketListener(String endpoint) {
         if (endpoint == null) {
             throw new IllegalArgumentException("Endpoint is not empty");
         }
 
-        this.messageSender = new StompMessageSenderImpl();
+        this.messageSender = new StompBrokerSenderImpl();
 
         BeanWrap bw = Solon.context().wrap(endpoint, this.messageSender);
         Solon.context().putWrap(endpoint, bw);
         Solon.context().putWrap(StompBrokerSender.class, bw);
 
-        this.addListener(new StompListenerImpl(this.messageSender));
+        this.addListener(new StompBrokerListener(this.messageSender));
+        this.addListener(new ToHandleStompListener(this.messageSender));
     }
 
     public void addListener(StompListener... listeners) {

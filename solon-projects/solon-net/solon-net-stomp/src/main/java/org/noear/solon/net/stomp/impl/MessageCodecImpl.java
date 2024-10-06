@@ -53,19 +53,18 @@ public class MessageCodecImpl implements MessageCodec {
         buf.append(commandEnd);
 
         //headers
-        int count = input.getHeaderAll().size();
-        int index = 0;
-        for (KeyValue<String> kv: input.getHeaderAll()) {
+        for (KeyValue<String> kv : input.getHeaderAll()) {
             buf.append(kv.getKey())
                     .append(headerKvDelimiter)
                     .append(kv.getValue());
 
-            if (index < count - 1) {
-                buf.append(headerDelimiter);
-            }
-
-            index++;
+            buf.append(headerDelimiter);
         }
+
+        if (input.getHeaderAll().size() > 0) {
+            buf.setLength(buf.length() - 1);
+        }
+
         buf.append(headersEnd);
 
         //payload
