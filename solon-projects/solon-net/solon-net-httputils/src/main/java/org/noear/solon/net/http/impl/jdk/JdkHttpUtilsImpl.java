@@ -15,7 +15,6 @@
  */
 package org.noear.solon.net.http.impl.jdk;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
@@ -40,7 +39,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Http 工具 JDK HttpURLConnection 实现
@@ -121,9 +119,9 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         try {
             if (METHODS_NOBODY.contains(method) == false) {
                 if (_bodyRaw != null) {
-                    String contentTypeDef = _headers.get("Content-Type");
-                    String contentType = Utils.annoAlias(_bodyRaw.contentType, contentTypeDef);
-                    _builder.setRequestProperty("Content-Type", contentType);
+                    if (_bodyRaw.contentType != null) {
+                        _builder.setRequestProperty("Content-Type", _bodyRaw.contentType);
+                    }
 
                     _builder.setDoOutput(true);
 
@@ -196,7 +194,9 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         private void appendPartFile(OutputStream out, PrintWriter writer, String key, HttpUploadFile value) throws IOException {
             writer.append("--").append(boundary).append(CRLF);
             writer.append(String.format(fileFormat, HttpUtils.urlEncode(key, charset.name()), value.fileName)).append(CRLF);
-            writer.append("Content-Type: ").append(value.fileStream.contentType).append(CRLF);
+            if (value.fileStream.contentType != null) {
+                writer.append("Content-Type: ").append(value.fileStream.contentType).append(CRLF);
+            }
             writer.append("Content-Transfer-Encoding: binary").append(CRLF);
             writer.append(CRLF).flush();
 
