@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.stomp.impl;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.MessageBuilder;
@@ -53,15 +54,15 @@ public class MessageCodecImpl implements MessageCodec {
         buf.append(commandEnd);
 
         //headers
-        for (KeyValue<String> kv : input.getHeaderAll()) {
-            buf.append(kv.getKey())
-                    .append(headerKvDelimiter)
-                    .append(kv.getValue());
-
-            buf.append(headerDelimiter);
-        }
-
         if (input.getHeaderAll().size() > 0) {
+            for (KeyValue<String> kv : input.getHeaderAll()) {
+                buf.append(kv.getKey())
+                        .append(headerKvDelimiter)
+                        .append(kv.getValue());
+
+                buf.append(headerDelimiter);
+            }
+
             buf.setLength(buf.length() - 1);
         }
 
@@ -83,7 +84,7 @@ public class MessageCodecImpl implements MessageCodec {
 
     @Override
     public void decode(String input, Consumer<Message> out) {
-        if (input == null || input.isEmpty()) {
+        if (Utils.isEmpty(input)) {
             return;
         }
 
