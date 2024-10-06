@@ -33,7 +33,7 @@ public class JsonProps implements Serializable {
             tmp = new JsonProps();
             tmp.dateAsTicks = true;
         } else {
-            tmp.dateAsTicks = tmp.dateAsFormat == null;
+            tmp.dateAsTicks = (tmp.dateAsFormat == null);
         }
 
         return tmp;
