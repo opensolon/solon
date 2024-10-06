@@ -65,15 +65,16 @@ public final class StompBrokerSenderImpl implements StompBrokerSender {
                     if (sendSocket != null) {
                         //transform(Commands.MESSAGE, destinationInfo.getDestination(), payload, contentType, Arrays.asList(new Header(Header.SUBSCRIPTION, destinationInfo.getSubscription()), new Header(Header.MESSAGE_ID, UUID.randomUUID().toString()))
 
-                        Message message1 = Message.newBuilder()
+                        Message replyMessage = Message.newBuilder()
                                 .command(Commands.MESSAGE)
+                                .payload(message.getPayload())
                                 .header(Headers.CONTENT_TYPE, message.getHeader(Headers.CONTENT_TYPE))
                                 .header(Headers.DESTINATION, destinationInfo.getDestination())
                                 .header(Headers.SUBSCRIPTION, destinationInfo.getSubscription())
                                 .header(Headers.MESSAGE_ID, UUID.randomUUID().toString())
                                 .build();
 
-                        sendTo(sendSocket, message1);
+                        sendTo(sendSocket, replyMessage);
                     }
                 });
     }
