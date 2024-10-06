@@ -340,28 +340,32 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     @Override
     public String execAsBody(String method) throws IOException {
-        String text = exec(method).bodyAsString();
+        try (HttpResponse resp = exec(method)) {
+            String text = resp.bodyAsString();
 
-        if (_enablePrintln) {
-            System.out.println(method + " " + _url + ":: " + text);
+            if (_enablePrintln) {
+                System.out.println(method + " " + _url + ":: " + text);
+            }
+
+            return text;
         }
-
-        return text;
     }
 
     @Override
     public int execAsCode(String method) throws IOException {
-        int code = exec(method).code();
+        try (HttpResponse resp = exec(method)) {
+            int code = resp.code();
 
-        if (_enablePrintln) {
-            System.out.println(method + " " + _url + "::code:: " + code);
+            if (_enablePrintln) {
+                System.out.println(method + " " + _url + "::code:: " + code);
+            }
+
+            return code;
         }
-
-        return code;
     }
 
     /**
-     * 执行请求，返回响应对象
+     * 执行请求，返回响应对象（需要自己做关闭处理）
      */
     @Override
     public HttpResponse exec(String method) throws IOException {
