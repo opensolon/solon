@@ -329,6 +329,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
+    public String options() throws IOException {
+        return execAsBody("OPTIONS");
+    }
+
+    @Override
     public int head() throws IOException {
         return execAsCode("HEAD");
     }
@@ -370,36 +375,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         } catch (IOException e) {
             throw new IOException(method + " " + _url + ", request failed", e);
         }
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> getAsync() {
-        return execAsync("GET");
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> postAsync() {
-        return execAsync("POST");
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> putAsync() {
-        return execAsync("PUT");
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> patchAsync() {
-        return execAsync("PATCH");
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> deleteAsync() {
-        return execAsync("DELETE");
-    }
-
-    @Override
-    public CompletableFuture<HttpResponse> headAsync() {
-        return execAsync("HEAD");
     }
 
     @Override

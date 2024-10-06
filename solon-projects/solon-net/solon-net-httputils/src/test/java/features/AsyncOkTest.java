@@ -17,7 +17,7 @@ public class AsyncOkTest {
 
     @Test
     public void case11() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = http("https://solon.noear.org/").getAsync();
+        CompletableFuture<HttpResponse> htmlFuture = http("https://solon.noear.org/").execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);
@@ -28,7 +28,7 @@ public class AsyncOkTest {
 
     @Test
     public void case12() throws Exception {
-        CompletableFuture<HttpResponse> htmlFuture = http("https://www.bilibili.com/").getAsync();
+        CompletableFuture<HttpResponse> htmlFuture = http("https://www.bilibili.com/").execAsync("GET");
 
         String text = htmlFuture.get().bodyAsString();
         System.out.println(text);
