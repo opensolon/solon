@@ -38,6 +38,7 @@
 * 调整 solon ActionReturnHandler 匹配增加 ctx 入参，提供更多扩展可能
 * 添加 solon 基于上下文的返回类型处理控制（Constants.ATTR_RETURN_HANDLER）
 * 优化 solon-serialization dateAsTicks（并为默认），支持 longAsString 时的字符串转换
+* snack3 升为 3.2.113
 
 ### v3.0.0 (2024-10-01)
 
