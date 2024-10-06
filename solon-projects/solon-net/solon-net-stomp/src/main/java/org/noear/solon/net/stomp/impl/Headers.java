@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.noear.solon.net.stomp.impl;
+
 /**
  * 头信息
  *

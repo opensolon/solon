@@ -15,43 +15,24 @@
  */
 package org.noear.solon.net.stomp;
 
-import org.noear.solon.core.util.KeyValue;
-import java.util.Collection;
+import org.noear.solon.net.websocket.WebSocket;
 
 /**
- * 消息
+ * 消息发送器
  *
- * @author limliu
- * @since 2.7
+ * @author noear
+ * @since 3.0
  */
-public interface Message {
-    /**
-     * 获取命令, 如send...等。参考#Commands
-     */
-    String getCommand();
+public interface StompSender {
+    void sendTo(WebSocket session, Message message);
 
-    /**
-     * 获取消息内容
-     *
-     * @return
-     */
-    String getPayload();
+    default void sendTo(WebSocket session, String payload) {
+        sendTo(session, Message.newBuilder().payload(payload).build());
+    }
 
-    /**
-     * 获取head
-     *
-     * @param key 参考#Header
-     */
-    String getHeader(String key);
+    void sendTo(String destination, Message message);
 
-    /**
-     * 获取head集合
-     *
-     * @return
-     */
-    Collection<KeyValue<String>> getHeaderAll();
-
-    static MessageBuilder newBuilder() {
-        return new MessageBuilder();
+    default void sendTo(String destination, String payload) {
+        sendTo(destination, Message.newBuilder().payload(payload).build());
     }
 }

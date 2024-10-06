@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
@@ -6,7 +21,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.StompBrokerSender;
+import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.stomp.impl.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
@@ -22,18 +37,19 @@ public class StompContext extends ContextEmpty {
     private WebSocket session;
     private Message message;
     private String destination;
-    private StompBrokerSender messageSender;
+    private StompSender sender;
 
-    public StompContext(WebSocket session, Message message, String destination, StompBrokerSender brokerSender) {
+    public StompContext(WebSocket session, Message message, String destination, StompSender sender) {
         this.session = session;
         this.message = message;
         this.destination = destination;
-        this.messageSender = brokerSender;//session.attr("STOMP_MESSAGE_SENDER");
+        this.sender = sender;//session.attr("STOMP_MESSAGE_SENDER");
 
         attrSet(org.noear.solon.core.Constants.ATTR_RETURN_HANDLER, StompReturnHandler.getInstance());
     }
 
-    public WebSocket getSession() {
+    @Override
+    public Object request() {
         return session;
     }
 
@@ -41,8 +57,8 @@ public class StompContext extends ContextEmpty {
         return message;
     }
 
-    public StompBrokerSender getMessageSender() {
-        return messageSender;
+    public StompSender getSender() {
+        return sender;
     }
 
     @Override
