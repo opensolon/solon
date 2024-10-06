@@ -25,6 +25,7 @@ import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -71,7 +72,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
 
     @Override
-    protected HttpResponse execDo(String _method, HttpCallback callback) throws IOException {
+    protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
         String method = _method.toUpperCase();
         Request.Builder _builder = new Request.Builder().url(_url);
 
@@ -163,22 +164,21 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 throw new IllegalArgumentException("This method is not supported");
         }
 
-        if (callback == null) {
+        if (future == null) {
             Call call = _client.newCall(_builder.build());
             return new OkHttpResponseImpl(call.execute());
         } else {
             _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                    execCallback(method, callback, null, e);
+                    future.completeExceptionally(e);
                     call.cancel();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    execCallback(method, callback, new OkHttpResponseImpl(response), null);
-                    call.cancel();
+                    future.complete(new OkHttpResponseImpl(response));
+                    //call.cancel();
                 }
             });
 

@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Http 工具类
@@ -206,11 +207,6 @@ public interface HttpUtils {
     String delete() throws IOException;
 
     /**
-     * options 请求并返回 body
-     */
-    String options() throws IOException;
-
-    /**
      * head 请求并返回 code
      */
     int head() throws IOException;
@@ -233,26 +229,40 @@ public interface HttpUtils {
     HttpResponse exec(String method) throws IOException;
 
     //////
+    /**
+     * get 异步执行请求
+     */
+    CompletableFuture<HttpResponse> getAsync() throws IOException;
 
     /**
      * post 异步执行请求
      */
-    void postAsync(HttpCallback callback) throws IOException;
+    CompletableFuture<HttpResponse> postAsync() throws IOException;
 
     /**
-     * get 异步执行请求
+     * put 异步执行请求
      */
-    void getAsync(HttpCallback callback) throws IOException;
+    CompletableFuture<HttpResponse> putAsync() throws IOException;
+
+    /**
+     * patch 异步执行请求
+     */
+    CompletableFuture<HttpResponse> patchAsync() throws IOException;
+
+    /**
+     * delete 异步执行请求
+     */
+    CompletableFuture<HttpResponse> deleteAsync() throws IOException;
 
     /**
      * head 异步执行请求
      */
-    void headAsync(HttpCallback callback) throws IOException;
+    CompletableFuture<HttpResponse> headAsync() throws IOException;
 
     /**
      * 异步执行请求
      */
-    void execAsync(String method, HttpCallback callback);
+    CompletableFuture<HttpResponse> execAsync(String method);
 
 
     /**

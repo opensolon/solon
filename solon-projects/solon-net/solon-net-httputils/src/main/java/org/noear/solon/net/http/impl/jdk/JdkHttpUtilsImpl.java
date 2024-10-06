@@ -19,7 +19,6 @@ import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.net.http.HttpCallback;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
@@ -39,6 +38,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Http 工具 JDK HttpURLConnection 实现
@@ -64,7 +64,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    protected HttpResponse execDo(String _method, HttpCallback callback) throws IOException {
+    protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
         final String url = urlRebuild(_url, _charset);
         final String method = _method.toUpperCase();
 
@@ -99,15 +99,15 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         _builder.setRequestMethod(method);
         _builder.setDoInput(true);
 
-        if (callback == null) {
+        if (future == null) {
             return request(_builder, method);
         } else {
             RunUtil.async(() -> {
                 try {
                     HttpResponse resp = request(_builder, method);
-                    execCallback(method, callback, resp, null);
+                    future.complete(resp);
                 } catch (IOException e) {
-                    execCallback(method, callback, null, e);
+                    future.completeExceptionally(e);
                 }
             });
 

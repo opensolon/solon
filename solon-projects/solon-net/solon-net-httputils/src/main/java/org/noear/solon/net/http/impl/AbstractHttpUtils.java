@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Http 工具基类
@@ -328,11 +329,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public String options() throws IOException {
-        return execAsBody("OPTIONS");
-    }
-
-    @Override
     public int head() throws IOException {
         return execAsCode("HEAD");
     }
@@ -377,52 +373,49 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public void postAsync(HttpCallback callback) throws IOException {
-        execAsync("POST", callback);
+    public CompletableFuture<HttpResponse> getAsync() {
+        return execAsync("GET");
     }
 
     @Override
-    public void getAsync(HttpCallback callback) throws IOException {
-        execAsync("GET", callback);
+    public CompletableFuture<HttpResponse> postAsync() {
+        return execAsync("POST");
     }
 
     @Override
-    public void headAsync(HttpCallback callback) throws IOException {
-        execAsync("HEAD", callback);
+    public CompletableFuture<HttpResponse> putAsync() {
+        return execAsync("PUT");
     }
 
     @Override
-    public void execAsync(String method, HttpCallback callback) {
+    public CompletableFuture<HttpResponse> patchAsync() {
+        return execAsync("PATCH");
+    }
+
+    @Override
+    public CompletableFuture<HttpResponse> deleteAsync() {
+        return execAsync("DELETE");
+    }
+
+    @Override
+    public CompletableFuture<HttpResponse> headAsync() {
+        return execAsync("HEAD");
+    }
+
+    @Override
+    public CompletableFuture<HttpResponse> execAsync(String method) {
         try {
-            execDo(method, callback);
+            CompletableFuture<HttpResponse> future = new CompletableFuture<>();
+            execDo(method, future);
+            return future;
         } catch (IOException e) {
             throw new RuntimeException(method + " " + _url + ", request failed", e);
         }
     }
 
-    protected void execCallback(String method, HttpCallback callback, HttpResponse resp, Exception err) {
-        if (callback == null) {
-            return;
-        }
-
-        try {
-            if (resp != null) {
-                callback.callback(true, resp, err);
-            } else {
-                callback.callback(false, null, err);
-            }
-        } catch (Throwable ex) {
-            log.warn(method + " " + _url + ", request failed", ex);
-        } finally {
-            if (resp != null) {
-                RunUtil.runAndTry(resp::close);
-            }
-        }
-    }
-
     /////////////////////
 
-    protected abstract HttpResponse execDo(String method, HttpCallback callback) throws IOException;
+    protected abstract HttpResponse execDo(String method, CompletableFuture<HttpResponse> future) throws IOException;
 
 
     /////////////////////
