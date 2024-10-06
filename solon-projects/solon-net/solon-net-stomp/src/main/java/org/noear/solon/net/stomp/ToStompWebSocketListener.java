@@ -46,10 +46,6 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     private final List<StompListener> listenerList = new ArrayList<>();
     private final StompMessageSenderImpl messageSender;
 
-    protected ToStompWebSocketListener() {
-        this(null);
-    }
-
     protected ToStompWebSocketListener(String endpoint) {
         if (endpoint == null) {
             throw new IllegalArgumentException("Endpoint is not empty");

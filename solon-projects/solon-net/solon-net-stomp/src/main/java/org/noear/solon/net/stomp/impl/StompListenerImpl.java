@@ -16,9 +16,11 @@
 package org.noear.solon.net.stomp.impl;
 
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompListener;
+import org.noear.solon.net.stomp.handle.StompContext;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.util.Iterator;
@@ -172,7 +174,7 @@ public final class StompListenerImpl implements StompListener {
     public void onSend(WebSocket socket, Message message) {
         String destination = message.getHeader(Headers.DESTINATION);
 
-        if (destination == null || destination.length() == 0) {
+        if (Utils.isEmpty(destination)) {
             Message message1 = Message.newBuilder()
                     .command(Commands.ERROR)
                     .payload("Required 'destination' header missed")
@@ -186,6 +188,9 @@ public final class StompListenerImpl implements StompListener {
                     .build();
 
             messageSender.sendTo(destination, message1);
+
+            //同时转发给 Solon Handler 体系
+            new StompContext(socket, message, destination, messageSender).tryHandle();;
         }
     }
 
