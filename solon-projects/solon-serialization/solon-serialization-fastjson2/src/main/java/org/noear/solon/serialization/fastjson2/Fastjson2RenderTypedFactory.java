@@ -32,7 +32,8 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
         serializer.cfgSerializeFeatures(false, true,
                 JSONWriter.Feature.BrowserCompatible,
                 JSONWriter.Feature.WriteClassName,
-                JSONWriter.Feature.ReferenceDetection
+                JSONWriter.Feature.ReferenceDetection,
+                JSONWriter.Feature.WriteLongAsString
         );
     }
 
