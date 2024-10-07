@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp;
+package org.noear.solon.lang;
 
-import org.noear.solon.lang.Preview;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
 /**
- * Stomp 帧发送器
+ * 预览（只是标识一下）
  *
  * @author noear
- * @since 3.0
+ * @since 1.10
  */
-@Preview("3.0")
-public interface StompSender {
-    /**
-     * 发送帧
-     *
-     * @param destination 目的地
-     * @param frame       帧
-     */
-    void sendTo(String destination, Frame frame);
-
-    /**
-     * 发送消息有效核载
-     *
-     * @param destination 目的地
-     * @param payload     消息有效核载
-     */
-    default void sendTo(String destination, String payload) {
-        sendTo(destination, new Message(payload));
-    }
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+@Documented
+public @interface Preview {
+    String value();
 }
