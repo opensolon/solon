@@ -20,10 +20,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
 /**
- * 预览（只是标识一下）
+ * 预览的（只是标识一下）
  *
  * @author noear
- * @since 1.10
+ * @since 3.0
  */
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
 @Documented
