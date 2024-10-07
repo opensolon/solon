@@ -41,7 +41,7 @@ public class StompBrokerMedia {
     /**
      * 服务端发送器
      */
-    public final StompSender sender;
+    public final StompServerSender sender;
 
     public StompBrokerMedia() {
         listeners = new ArrayList<>();

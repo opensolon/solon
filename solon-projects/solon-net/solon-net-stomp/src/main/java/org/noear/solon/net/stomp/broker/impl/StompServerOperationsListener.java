@@ -35,10 +35,10 @@ import java.util.regex.Pattern;
  * @since 2.7
  */
 public class StompServerOperationsListener implements StompListener {
-    private final StompSender sender;
+    private final StompServerSender sender;
     private final StompServerOperations operations;
 
-    protected StompServerOperationsListener(StompServerOperations operations, StompSender sender) {
+    protected StompServerOperationsListener(StompServerOperations operations, StompServerSender sender) {
         this.sender = sender;
         this.operations = operations;
     }

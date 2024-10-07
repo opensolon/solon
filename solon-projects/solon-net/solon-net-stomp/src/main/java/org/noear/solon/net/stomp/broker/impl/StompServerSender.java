@@ -48,7 +48,7 @@ public class StompServerSender implements StompSender {
      * @param frame   帧
      */
     public void sendTo(WebSocket session, Frame frame) {
-        assert frame != null;
+        assert frame!=null;
 
         if (session.isValid()) {
             String frameStr = operations.getCodec().encode(frame);
@@ -65,9 +65,9 @@ public class StompServerSender implements StompSender {
      */
     @Override
     public void sendTo(String destination, Frame frame) {
-        assert frame != null;
+        assert frame!=null;
 
-        if (Utils.isEmpty(destination)) {
+        if(Utils.isEmpty(destination)){
             return;
         }
 

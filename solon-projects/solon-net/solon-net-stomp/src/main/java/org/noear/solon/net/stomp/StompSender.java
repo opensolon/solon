@@ -27,14 +27,6 @@ public interface StompSender {
     /**
      * 发送帧
      *
-     * @param session 会话
-     * @param frame   帧
-     */
-    void sendTo(WebSocket session, Frame frame);
-
-    /**
-     * 发送帧
-     *
      * @param destination 目的地
      * @param frame       帧
      */
