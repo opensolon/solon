@@ -24,7 +24,7 @@ import org.noear.solon.annotation.To;
 @Controller
 public class TestController {
     @Inject //@Inject("/chat") 多经纪人时，指定名字
-    StompSender stompSender;
+    StompEmitter stompEmitter;
 
     @Mapping("/hello")
     @To("/topic/greetings")
@@ -46,15 +46,7 @@ public class TestController {
         Thread.sleep(1000); // simulated delay
 
         String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
-        stompSender.sendTo("/topic/greetings", payload);
-    }
-
-    @Mapping("/sendToUser")
-    public void sendToUser(Context ctx, HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-
-        String payload = ctx.renderAndReturn(new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!"));
-        stompSender.sendTo("/topic/user/" + message.getUserId() + "/sendToUser", payload);
+        stompEmitter.sendTo("/topic/greetings", payload);
     }
 }
 ```

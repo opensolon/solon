@@ -18,7 +18,7 @@ package org.noear.solon.net.stomp.broker.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -27,16 +27,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 /**
- * Stomp 服务端帧发送器
+ * Stomp 服务端发射器
  *
  * @author limliu
  * @since 2.7
  * @since 3.0
  */
-public class StompServerSender implements StompSender {
+public class StompServerEmitter implements StompEmitter {
     private final StompServerOperations operations;
 
-    protected StompServerSender(StompServerOperations operations) {
+    protected StompServerEmitter(StompServerOperations operations) {
         this.operations = operations;
     }
 

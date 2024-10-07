@@ -34,11 +34,11 @@ import java.util.regex.Pattern;
  * @since 2.7
  */
 public class StompServerOperationsListener implements StompListener {
-    private final StompServerSender sender;
+    private final StompServerEmitter emitter;
     private final StompServerOperations operations;
 
-    protected StompServerOperationsListener(StompServerOperations operations, StompServerSender sender) {
-        this.sender = sender;
+    protected StompServerOperationsListener(StompServerOperations operations, StompServerEmitter emitter) {
+        this.emitter = emitter;
         this.operations = operations;
     }
 
@@ -56,8 +56,6 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 连接关闭
      * 当连接断开时触发
-     *
-     * @param socket
      */
     @Override
     public void onClose(WebSocket socket) {
@@ -68,60 +66,51 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 连接命令
      * 需要响应
-     *
-     * @param socket
-     * @param message
      */
     @Override
-    public void onConnect(WebSocket socket, Frame message) {
-        String heartBeat = message.getHeader(Headers.HEART_BEAT);
+    public void onConnect(WebSocket socket, Frame frame) {
+        String heartBeat = frame.getHeader(Headers.HEART_BEAT);
 
-        Frame message1 = Frame.newBuilder().command(Commands.CONNECTED)
+        Frame frame1 = Frame.newBuilder().command(Commands.CONNECTED)
                 .headers(new KeyValue<>(Headers.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
                         new KeyValue<>(Headers.SERVER, "stomp"),
                         new KeyValue<>(Headers.VERSION, "1.2"))
                 .build();
 
-        sender.sendTo(socket, message1);
+        emitter.sendTo(socket, frame1);
     }
 
     /**
      * 断开命令
      * 需要响应
-     *
-     * @param socket
-     * @param message
      */
     @Override
-    public void onDisconnect(WebSocket socket, Frame message) {
-        String receiptId = message.getHeader(Headers.RECEIPT);
+    public void onDisconnect(WebSocket socket, Frame frame) {
+        String receiptId = frame.getHeader(Headers.RECEIPT);
 
-        Frame message1 = Frame.newBuilder().command(Commands.RECEIPT)
+        Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
                 .header(Headers.RECEIPT_ID, receiptId)
                 .build();
 
-        sender.sendTo(socket, message1);
+        emitter.sendTo(socket, frame1);
     }
 
     /**
      * 订阅命令
-     *
-     * @param socket
-     * @param message
      */
     @Override
-    public void onSubscribe(WebSocket socket, Frame message) {
+    public void onSubscribe(WebSocket socket, Frame frame) {
         //订阅者Id
-        final String subscriptionId = message.getHeader(Headers.ID);
+        final String subscriptionId = frame.getHeader(Headers.ID);
         //目的地
-        final String destination = message.getHeader(Headers.DESTINATION);
+        final String destination = frame.getHeader(Headers.DESTINATION);
 
         if (destination == null || destination.length() == 0 || subscriptionId == null || subscriptionId.length() == 0) {
-            Frame message1 = Frame.newBuilder().command(Commands.ERROR)
+            Frame frame1 = Frame.newBuilder().command(Commands.ERROR)
                     .payload("Required 'destination' or 'id' header missed")
                     .build();
 
-            sender.sendTo(socket, message1);
+            emitter.sendTo(socket, frame1);
             return;
         }
 
@@ -135,32 +124,29 @@ public class StompServerOperationsListener implements StompListener {
             operations.getDestinationMatchs().put(destination, Pattern.compile(destinationRegexp));
         }
 
-        final String receiptId = message.getHeader(Headers.RECEIPT);
+        final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
-            Frame message1 = Frame.newBuilder().command(Commands.RECEIPT)
+            Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
                     .header(Headers.RECEIPT_ID, receiptId)
                     .build();
-            sender.sendTo(socket, message1);
+            emitter.sendTo(socket, frame1);
         }
     }
 
 
     /**
      * 取消订阅命令
-     *
-     * @param socket
-     * @param message
      */
     @Override
-    public void onUnsubscribe(WebSocket socket, Frame message) {
+    public void onUnsubscribe(WebSocket socket, Frame frame) {
         final String sessionId = socket.id();
-        if (message == null) {
+        if (frame == null) {
             this.unSubscribeHandle(destinationInfo -> {
                 return sessionId.equals(destinationInfo.getSessionId());
             });
         } else {
-            String subscriptionId = message.getHeader(Headers.ID);
-            String destination = message.getHeader(Headers.DESTINATION);
+            String subscriptionId = frame.getHeader(Headers.ID);
+            String destination = frame.getHeader(Headers.DESTINATION);
             this.unSubscribeHandle(destinationInfo -> {
                 return sessionId.equals(destinationInfo.getSessionId())
                         && (destinationInfo.getDestination().equals(destination) || destinationInfo.getSubscriptionId().equals(subscriptionId));
@@ -170,34 +156,28 @@ public class StompServerOperationsListener implements StompListener {
 
     /**
      * 发送消息
-     *
-     * @param socket
-     * @param frame
      */
     @Override
     public void onSend(WebSocket socket, Frame frame) {
         String destination = frame.getHeader(Headers.DESTINATION);
 
         if (Utils.isEmpty(destination)) {
-            Frame message1 = Frame.newBuilder()
+            Frame frame1 = Frame.newBuilder()
                     .command(Commands.ERROR)
                     .payload("Required 'destination' header missed")
                     .build();
 
-            sender.sendTo(socket, message1);
+            emitter.sendTo(socket, frame1);
         } else {
-            sender.sendTo(destination, frame);
+            emitter.sendTo(destination, frame);
         }
     }
 
     /**
      * 消息ACK
-     *
-     * @param socket
-     * @param message
      */
     @Override
-    public void onAck(WebSocket socket, Frame message) {
+    public void onAck(WebSocket socket, Frame frame) {
 
     }
 

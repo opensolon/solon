@@ -2,7 +2,7 @@ package demo.server;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.StompEmitter;
 
 /**
  * @author noear 2024/10/7 created
@@ -10,7 +10,7 @@ import org.noear.solon.net.stomp.StompSender;
 @Controller
 public class ChatStompController {
     @Inject //@Inject("/chat")
-    StompSender stompSender;
+    StompEmitter stompSender;
 
     @Mapping("/topic/todoTask1/open")
     //@To("/topic/todoTask1/s1")

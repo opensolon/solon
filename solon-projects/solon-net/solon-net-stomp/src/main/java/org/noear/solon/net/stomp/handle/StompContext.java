@@ -21,7 +21,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
@@ -39,9 +39,9 @@ public class StompContext extends ContextEmpty {
     private WebSocket session;
     private Frame message;
     private String destination;
-    private StompSender sender;
+    private StompEmitter sender;
 
-    public StompContext(WebSocket session, Frame message, String destination, StompSender sender) {
+    public StompContext(WebSocket session, Frame message, String destination, StompEmitter sender) {
         this.session = session;
         this.message = message;
         this.destination = destination;
@@ -59,7 +59,7 @@ public class StompContext extends ContextEmpty {
         return message;
     }
 
-    public StompSender getSender() {
+    public StompEmitter getSender() {
         return sender;
     }
 

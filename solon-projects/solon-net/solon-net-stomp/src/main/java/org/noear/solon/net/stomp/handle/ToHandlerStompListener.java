@@ -18,7 +18,7 @@ package org.noear.solon.net.stomp.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -27,9 +27,9 @@ import org.noear.solon.net.websocket.WebSocket;
  * @since 3.0
  */
 public class ToHandlerStompListener extends SimpleStompListener {
-    private final StompSender sender;
+    private final StompEmitter sender;
 
-    public ToHandlerStompListener(StompSender sender) {
+    public ToHandlerStompListener(StompEmitter sender) {
         this.sender = sender;
     }
 

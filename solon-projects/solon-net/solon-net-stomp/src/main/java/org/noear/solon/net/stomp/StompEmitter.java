@@ -18,13 +18,13 @@ package org.noear.solon.net.stomp;
 import org.noear.solon.lang.Preview;
 
 /**
- * Stomp 帧发送器
+ * Stomp 发射器
  *
  * @author noear
  * @since 3.0
  */
 @Preview("3.0")
-public interface StompSender {
+public interface StompEmitter {
     /**
      * 发送帧
      *

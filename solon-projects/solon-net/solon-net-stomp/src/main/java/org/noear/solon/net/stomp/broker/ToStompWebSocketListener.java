@@ -93,7 +93,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             }
 
             //可能是ping，响应
-            brokerMedia.sender.sendTo(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
+            brokerMedia.emitter.sendTo(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
         }
     }
 
@@ -157,7 +157,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
                 //未知命令
                 log.warn("session unknown, {}\r\n{}", socket.id(), text);
 
-                brokerMedia.sender.sendTo(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(text).build());
+                brokerMedia.emitter.sendTo(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(text).build());
             }
         }
     }

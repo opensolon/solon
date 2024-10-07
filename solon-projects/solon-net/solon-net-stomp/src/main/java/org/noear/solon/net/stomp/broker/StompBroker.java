@@ -20,7 +20,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -36,7 +36,7 @@ import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 public class StompBroker implements WebSocketListenerSupplier {
     //WebSocket 监听器
     protected final ToStompWebSocketListener webSocketListener;
-    //服务端监听器
+    //Broker 媒介
     protected final StompBrokerMedia brokerMedia;
 
     public StompBroker() {
@@ -49,9 +49,9 @@ public class StompBroker implements WebSocketListenerSupplier {
         webSocketListener = new ToStompWebSocketListener(serverEndpoint.value(), brokerMedia);
 
         //注册到容器
-        BeanWrap bw = Solon.context().wrap(serverEndpoint.value(), brokerMedia.sender);
+        BeanWrap bw = Solon.context().wrap(serverEndpoint.value(), brokerMedia.emitter);
         Solon.context().putWrap(serverEndpoint.value(), bw);
-        Solon.context().putWrap(StompSender.class, bw);
+        Solon.context().putWrap(StompEmitter.class, bw);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class StompBroker implements WebSocketListenerSupplier {
     /**
      * 获取服务端发送器
      */
-    public StompSender getServerSender() {
-        return brokerMedia.sender;
+    public StompEmitter getServerSender() {
+        return brokerMedia.emitter;
     }
 }

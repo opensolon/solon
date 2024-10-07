@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class StompBrokerMedia {
     /**
-     * 服务端监听器
+     * 服务端监听器集合
      */
     public final List<StompListener> listeners;
 
@@ -38,15 +38,15 @@ public class StompBrokerMedia {
     public final StompServerOperations operations;
 
     /**
-     * 服务端发送器
+     * 服务端发射器
      */
-    public final StompServerSender sender;
+    public final StompServerEmitter emitter;
 
     public StompBrokerMedia() {
         listeners = new ArrayList<>();
         operations = new StompServerOperations();
-        sender = new StompServerSender(operations);
+        emitter = new StompServerEmitter(operations);
 
-        listeners.add(new StompServerOperationsListener(operations, sender));
+        listeners.add(new StompServerOperationsListener(operations, emitter));
     }
 }

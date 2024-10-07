@@ -20,6 +20,7 @@ package org.noear.solon.net.stomp.broker.impl;
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
 public class SubscriptionInfo {
     private final String sessionId;
