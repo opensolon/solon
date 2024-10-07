@@ -20,7 +20,6 @@ import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Headers;
-import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
 

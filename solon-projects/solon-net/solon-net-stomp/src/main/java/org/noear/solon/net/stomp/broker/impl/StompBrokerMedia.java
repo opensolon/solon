@@ -15,7 +15,6 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
-import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.stomp.listener.StompListener;
 
 import java.util.ArrayList;
