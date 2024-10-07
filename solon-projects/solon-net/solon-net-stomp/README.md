@@ -9,7 +9,10 @@ https://blog.csdn.net/weixin_43871956/article/details/91350748
 ```java
 @ServerEndpoint("/chat")
 public class ChatStompBroker extends StompBroker {
-    
+    public ChatStompBroker(){
+        //转发到 Solon Handler 体系（即 @Mapping 函数）
+        this.addServerListener(new ToHandlerStompListener(getServerSender()));
+    }
 }
 ```
 
