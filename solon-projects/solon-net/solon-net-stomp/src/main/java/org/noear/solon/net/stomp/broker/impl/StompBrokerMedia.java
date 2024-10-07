@@ -15,7 +15,8 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
-import org.noear.solon.net.stomp.broker.listener.StompServerListener;
+import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.listener.StompListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class StompBrokerMedia {
     /**
      * 服务端监听器
      */
-    public final List<StompServerListener> listeners;
+    public final List<StompListener> listeners;
 
     /**
      * 服务端操作缓存
@@ -40,7 +41,7 @@ public class StompBrokerMedia {
     /**
      * 服务端发送器
      */
-    public final StompServerSender sender;
+    public final StompSender sender;
 
     public StompBrokerMedia() {
         listeners = new ArrayList<>();

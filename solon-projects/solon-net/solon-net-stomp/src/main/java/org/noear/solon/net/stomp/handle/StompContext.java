@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.handle;
+package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ContextEmpty;

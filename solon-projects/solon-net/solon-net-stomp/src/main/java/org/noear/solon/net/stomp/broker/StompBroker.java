@@ -21,7 +21,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompSender;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
-import org.noear.solon.net.stomp.broker.listener.StompServerListener;
+import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 
@@ -60,8 +60,8 @@ public class StompBroker implements WebSocketListenerSupplier {
     /**
      * 添加服务端监听器
      */
-    public void addServerListener(StompServerListener... listeners) {
-        for (StompServerListener listener : listeners) {
+    public void addServerListener(StompListener... listeners) {
+        for (StompListener listener : listeners) {
             brokerMedia.listeners.add(listener);
         }
     }

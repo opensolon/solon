@@ -20,7 +20,7 @@ import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
-import org.noear.solon.net.stomp.broker.listener.StompServerListener;
+import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
@@ -66,7 +66,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onOpen(WebSocket socket) {
-        for (StompServerListener listener : brokerMedia.listeners) {
+        for (StompListener listener : brokerMedia.listeners) {
             listener.onOpen(socket);
         }
     }
@@ -99,7 +99,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onClose(WebSocket socket) {
-        for (StompServerListener listener : brokerMedia.listeners) {
+        for (StompListener listener : brokerMedia.listeners) {
             listener.onClose(socket);
         }
     }
@@ -117,38 +117,38 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
         switch (command) {
             case Commands.STOMP:
             case Commands.CONNECT: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onConnect(socket, frame);
                 }
                 break;
             }
             case Commands.DISCONNECT: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onDisconnect(socket, frame);
                 }
                 break;
             }
             case Commands.SUBSCRIBE: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onSubscribe(socket, frame);
                 }
                 break;
             }
             case Commands.UNSUBSCRIBE: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onUnsubscribe(socket, frame);
                 }
                 break;
             }
             case Commands.SEND: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onSend(socket, frame);
                 }
                 break;
             }
             case Commands.ACK:
             case Commands.NACK: {
-                for (StompServerListener listener : brokerMedia.listeners) {
+                for (StompListener listener : brokerMedia.listeners) {
                     listener.onAck(socket, frame);
                 }
                 break;

@@ -20,7 +20,8 @@ import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Headers;
-import org.noear.solon.net.stomp.broker.listener.StompServerListener;
+import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.util.Iterator;
@@ -33,11 +34,11 @@ import java.util.regex.Pattern;
  * @author limliu
  * @since 2.7
  */
-public class StompServerOperationsListener implements StompServerListener {
-    private final StompServerSender sender;
+public class StompServerOperationsListener implements StompListener {
+    private final StompSender sender;
     private final StompServerOperations operations;
 
-    protected StompServerOperationsListener(StompServerOperations operations, StompServerSender sender) {
+    protected StompServerOperationsListener(StompServerOperations operations, StompSender sender) {
         this.sender = sender;
         this.operations = operations;
     }

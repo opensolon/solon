@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.handle;
+package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
@@ -21,7 +21,6 @@ import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.annotation.To;
 import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.websocket.WebSocket;
 
 /**
  * @author noear

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.listener;
+package org.noear.solon.net.stomp.listener;
 
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.websocket.WebSocket;
@@ -25,7 +25,7 @@ import org.noear.solon.net.websocket.WebSocket;
  * @since 2.7
  * @since 3.0
  */
-public interface StompServerListener {
+public interface StompListener {
 
     /**
      * 打开链接（可以鉴权；参数通过url和head方式指定）
