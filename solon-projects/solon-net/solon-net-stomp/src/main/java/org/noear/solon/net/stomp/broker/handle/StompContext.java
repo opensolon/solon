@@ -20,9 +20,9 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.net.stomp.Message;
+import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.StompSender;
-import org.noear.solon.net.stomp.common.Headers;
+import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,11 @@ public class StompContext extends ContextEmpty {
     private static final Logger log = LoggerFactory.getLogger(StompContext.class);
 
     private WebSocket session;
-    private Message message;
+    private Frame message;
     private String destination;
     private StompSender sender;
 
-    public StompContext(WebSocket session, Message message, String destination, StompSender sender) {
+    public StompContext(WebSocket session, Frame message, String destination, StompSender sender) {
         this.session = session;
         this.message = message;
         this.destination = destination;
@@ -55,7 +55,7 @@ public class StompContext extends ContextEmpty {
         return session;
     }
 
-    public Message getMessage() {
+    public Frame getMessage() {
         return message;
     }
 
@@ -98,7 +98,7 @@ public class StompContext extends ContextEmpty {
 
     @Override
     public Object pull(Class<?> clz) {
-        if (Message.class.isAssignableFrom(clz)) {
+        if (Frame.class.isAssignableFrom(clz)) {
             return message;
         }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.common;
+package org.noear.solon.net.stomp;
 
 /**
  * Stomp 命令
@@ -99,11 +99,6 @@ public interface Commands {
      */
     String ABORT = "ABORT";
 
-    /**
-     * 未知命令
-     */
-    String UNKNOWN = "UNKNOWN";
-
 
     ///
     /// 服务端可发送的帧
@@ -123,4 +118,13 @@ public interface Commands {
      * 收到错误（可以有主体）
      */
     String ERROR = "ERROR";
+
+    ///
+    /// 未知帧
+    ///
+
+    /**
+     * 未知命令
+     */
+    String UNKNOWN = "UNKNOWN";
 }

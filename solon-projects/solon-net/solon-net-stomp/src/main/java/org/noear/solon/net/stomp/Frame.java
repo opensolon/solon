@@ -13,36 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.impl;
+package org.noear.solon.net.stomp;
 
+import org.noear.solon.core.util.KeyValue;
 
-import org.noear.solon.net.stomp.Message;
-
-import java.util.function.Consumer;
-
+import java.util.Collection;
 
 /**
- * 消息编解码器
+ * Stomp 帧
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
-public interface MessageCodec {
+public interface Frame {
+    /**
+     * 获取命令, 如send...等。参考#Commands
+     *
+     * @see Commands
+     */
+    String getCommand();
 
     /**
-     * 编码
+     * 获取有效载荷
      *
-     * @param input Stomp 消息
-     * @return 编码后的文本
+     * @return
      */
-    String encode(Message input);
+    String getPayload();
 
     /**
-     * 解码
+     * 获取head
      *
-     * @param input 输入
-     * @param out   输出
+     * @param key 参考#Header
      */
-    void decode(String input, Consumer<Message> out);
+    String getHeader(String key);
 
+    /**
+     * 获取head集合
+     *
+     * @return
+     */
+    Collection<KeyValue<String>> getHeaderAll();
+
+    /**
+     * 新建构建器
+     */
+    static FrameBuilder newBuilder() {
+        return new FrameBuilder();
+    }
 }

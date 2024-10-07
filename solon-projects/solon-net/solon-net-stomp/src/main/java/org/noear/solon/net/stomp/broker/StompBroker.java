@@ -15,20 +15,27 @@
  */
 package org.noear.solon.net.stomp.broker;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
+import org.noear.solon.net.stomp.broker.listener.StompServerListener;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 
 /**
- * websocket 转 stomp 适配器 (使用 ToStompWebSocketAdapter 比 ToStompWebSocketListener，扩展类更清爽些)
+ * Stomp 经理人
  *
  * @author noear
  * @since 3.0
  */
 public class StompBroker implements WebSocketListenerSupplier {
-    protected final ToStompWebSocketListener toStompWebSocketListener;
+    //WebSocket 监听器
+    protected final ToStompWebSocketListener webSocketListener;
+    //服务端监听器
+    protected final StompBrokerMedia brokerMedia;
 
     public StompBroker() {
         ServerEndpoint serverEndpoint = getClass().getAnnotation(ServerEndpoint.class);
@@ -36,19 +43,33 @@ public class StompBroker implements WebSocketListenerSupplier {
             throw new IllegalArgumentException("Endpoint is not empty");
         }
 
-        toStompWebSocketListener = new ToStompWebSocketListener(serverEndpoint.value());
+        brokerMedia = new StompBrokerMedia();
+        webSocketListener = new ToStompWebSocketListener(serverEndpoint.value(), brokerMedia);
+
+        //注册到容器
+        BeanWrap bw = Solon.context().wrap(serverEndpoint.value(), brokerMedia.sender);
+        Solon.context().putWrap(serverEndpoint.value(), bw);
+        Solon.context().putWrap(StompSender.class, bw);
     }
 
     @Override
     public WebSocketListener getWebSocketListener() {
-        return toStompWebSocketListener;
+        return webSocketListener;
     }
 
-    public void addListener(StompListener... listeners) {
-        toStompWebSocketListener.addListener(listeners);
+    /**
+     * 添加服务端监听器
+     */
+    public void addServerListener(StompServerListener... listeners) {
+        for (StompServerListener listener : listeners) {
+            brokerMedia.listeners.add(listener);
+        }
     }
 
-    public StompSender getSender() {
-        return toStompWebSocketListener.getSender();
+    /**
+     * 获取服务端发送器
+     */
+    public StompSender getServerSender() {
+        return brokerMedia.sender;
     }
 }

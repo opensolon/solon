@@ -13,30 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo.server;
+package org.noear.solon.net.stomp;
 
-import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.broker.listener.SimpleStompServerListener;
-import org.noear.solon.net.websocket.WebSocket;
+
+import java.util.function.Consumer;
+
 
 /**
- * 按需扩展，比是必须
+ * Stomp 帧编解码器
  *
- * @author noear
- * @since 2.4
+ * @author limliu
+ * @since 2.7
  */
-public class ChatStompListenerImpl extends SimpleStompServerListener {
+public interface FrameCodec {
 
-    @Override
-    public void onOpen(WebSocket socket) {
-        String user = socket.param("user");
-        System.out.println("建议放鉴权: " + user);
-    }
+    /**
+     * 编码
+     *
+     * @param frame 帧
+     * @return 被编码的文本
+     */
+    String encode(Frame frame);
 
-
-    @Override
-    public void onSend(WebSocket socket, Frame frame) {
-        System.out.println(frame);
-    }
-
+    /**
+     * 解码
+     *
+     * @param input 被编码的文本
+     * @param out   输出
+     */
+    void decode(String input, Consumer<Frame> out);
 }

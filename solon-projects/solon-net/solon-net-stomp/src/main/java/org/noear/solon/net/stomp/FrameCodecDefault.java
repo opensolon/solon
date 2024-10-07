@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker.impl;
+package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.MessageBuilder;
 
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
- * 消息编解码器实现
+ * Stomp 帧编解码器默认实现
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
-public class MessageCodecImpl implements MessageCodec {
+public class FrameCodecDefault implements FrameCodec {
     //Command 结束符
     private String commandEnd = "\n";
     //Headers 结束符
@@ -46,16 +45,16 @@ public class MessageCodecImpl implements MessageCodec {
 
 
     @Override
-    public String encode(Message input) {
+    public String encode(Frame frame) {
         StringBuilder buf = new StringBuilder();
 
         //command
-        buf.append(input.getCommand());
+        buf.append(frame.getCommand());
         buf.append(commandEnd);
 
         //headers
-        if (input.getHeaderAll().size() > 0) {
-            for (KeyValue<String> kv : input.getHeaderAll()) {
+        if (frame.getHeaderAll().size() > 0) {
+            for (KeyValue<String> kv : frame.getHeaderAll()) {
                 buf.append(kv.getKey())
                         .append(headerKvDelimiter)
                         .append(kv.getValue());
@@ -69,8 +68,8 @@ public class MessageCodecImpl implements MessageCodec {
         buf.append(headersEnd);
 
         //payload
-        if (input.getPayload() != null) {
-            buf.append(input.getPayload());
+        if (frame.getPayload() != null) {
+            buf.append(frame.getPayload());
         }
         buf.append(bodyEnd);
 
@@ -83,7 +82,7 @@ public class MessageCodecImpl implements MessageCodec {
     private final StringBuilder PENDING = new StringBuilder();
 
     @Override
-    public void decode(String input, Consumer<Message> out) {
+    public void decode(String input, Consumer<Frame> out) {
         if (Utils.isEmpty(input)) {
             return;
         }
@@ -103,7 +102,7 @@ public class MessageCodecImpl implements MessageCodec {
      * @param out   输出
      * @param start 开始解析的问题
      */
-    protected void decode(Consumer<Message> out, int start) {
+    protected void decode(Consumer<Frame> out, int start) {
         cleanPendingStartData(start);
 
         // Body 结尾符下标
@@ -132,7 +131,7 @@ public class MessageCodecImpl implements MessageCodec {
             return;
         }
 
-        MessageBuilder builder = Message.newBuilder();
+        FrameBuilder builder = Frame.newBuilder();
         builder.command(command);
 
         // 解析 Headers
@@ -178,7 +177,7 @@ public class MessageCodecImpl implements MessageCodec {
      * @param hEndIdx Headers 结尾符下标
      * @return Headers
      */
-    protected void decodeHeaders(MessageBuilder builder,int cEndIdx, int hEndIdx) {
+    protected void decodeHeaders(FrameBuilder builder, int cEndIdx, int hEndIdx) {
         String[] strHeaders = PENDING.substring(cEndIdx + commandEnd.length(), hEndIdx).split(headerDelimiter);
 
         for (String header : strHeaders) {

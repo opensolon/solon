@@ -17,10 +17,10 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.net.stomp.common.Commands;
-import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.broker.StompListener;
-import org.noear.solon.net.stomp.common.Headers;
+import org.noear.solon.net.stomp.Commands;
+import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.Headers;
+import org.noear.solon.net.stomp.broker.listener.StompServerListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.util.Iterator;
@@ -28,20 +28,18 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
- * 消息处理监听
+ * Stomp 服务端消息操作监听
  *
  * @author limliu
  * @since 2.7
  */
-public final class StompBrokerListener implements StompListener {
-    private final StompBrokerSender sender;
+public class StompServerOperationsListener implements StompServerListener {
+    private final StompServerSender sender;
+    private final StompServerOperations operations;
 
-    public StompBrokerSender getSender() {
-        return sender;
-    }
-
-    public StompBrokerListener(StompBrokerSender sender) {
+    protected StompServerOperationsListener(StompServerOperations operations, StompServerSender sender) {
         this.sender = sender;
+        this.operations = operations;
     }
 
     /**
@@ -52,7 +50,7 @@ public final class StompBrokerListener implements StompListener {
      */
     @Override
     public void onOpen(WebSocket socket) {
-        sender.getOperations().getWebSocketMap().put(socket.id(), socket);
+        operations.getSessionMap().put(socket.id(), socket);
     }
 
     /**
@@ -63,7 +61,7 @@ public final class StompBrokerListener implements StompListener {
      */
     @Override
     public void onClose(WebSocket socket) {
-        sender.getOperations().getWebSocketMap().remove(socket);
+        operations.getSessionMap().remove(socket);
         this.onUnsubscribe(socket, null);
     }
 
@@ -75,10 +73,10 @@ public final class StompBrokerListener implements StompListener {
      * @param message
      */
     @Override
-    public void onConnect(WebSocket socket, Message message) {
+    public void onConnect(WebSocket socket, Frame message) {
         String heartBeat = message.getHeader(Headers.HEART_BEAT);
 
-        Message message1 = Message.newBuilder().command(Commands.CONNECTED)
+        Frame message1 = Frame.newBuilder().command(Commands.CONNECTED)
                 .headers(new KeyValue<>(Headers.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
                         new KeyValue<>(Headers.SERVER, "stomp"),
                         new KeyValue<>(Headers.VERSION, "1.2"))
@@ -95,10 +93,10 @@ public final class StompBrokerListener implements StompListener {
      * @param message
      */
     @Override
-    public void onDisconnect(WebSocket socket, Message message) {
+    public void onDisconnect(WebSocket socket, Frame message) {
         String receiptId = message.getHeader(Headers.RECEIPT);
 
-        Message message1 = Message.newBuilder().command(Commands.RECEIPT)
+        Frame message1 = Frame.newBuilder().command(Commands.RECEIPT)
                 .header(Headers.RECEIPT_ID, receiptId)
                 .build();
 
@@ -112,14 +110,14 @@ public final class StompBrokerListener implements StompListener {
      * @param message
      */
     @Override
-    public void onSubscribe(WebSocket socket, Message message) {
+    public void onSubscribe(WebSocket socket, Frame message) {
         //订阅者Id
         final String subscriptionId = message.getHeader(Headers.ID);
         //目的地
         final String destination = message.getHeader(Headers.DESTINATION);
 
         if (destination == null || destination.length() == 0 || subscriptionId == null || subscriptionId.length() == 0) {
-            Message message1 = Message.newBuilder().command(Commands.ERROR)
+            Frame message1 = Frame.newBuilder().command(Commands.ERROR)
                     .payload("Required 'destination' or 'id' header missed")
                     .build();
 
@@ -127,17 +125,19 @@ public final class StompBrokerListener implements StompListener {
             return;
         }
 
-        DestinationInfo destinationInfo = new DestinationInfo(socket.id(), destination, subscriptionId);
+        SubscriptionInfo destinationInfo = new SubscriptionInfo(socket.id(), destination, subscriptionId);
 
-        sender.getOperations().getDestinationInfoSet().add(destinationInfo);
-        if (!sender.getOperations().getDestinationMatch().containsKey(destination)) {
-            String destinationRegexp = "^" + destination.replaceAll("\\*\\*", ".+").replaceAll("\\*", ".+") + "$";
-            sender.getOperations().getDestinationMatch().put(destination, Pattern.compile(destinationRegexp));
+        operations.getSubscriptionInfos().add(destinationInfo);
+        if (!operations.getDestinationMatchs().containsKey(destination)) {
+            String destinationRegexp = "^" + destination
+                    .replaceAll("\\*\\*", ".+")
+                    .replaceAll("\\*", "[^/]+") + "$";
+            operations.getDestinationMatchs().put(destination, Pattern.compile(destinationRegexp));
         }
 
         final String receiptId = message.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
-            Message message1 = Message.newBuilder().command(Commands.RECEIPT)
+            Frame message1 = Frame.newBuilder().command(Commands.RECEIPT)
                     .header(Headers.RECEIPT_ID, receiptId)
                     .build();
             sender.sendTo(socket, message1);
@@ -152,18 +152,18 @@ public final class StompBrokerListener implements StompListener {
      * @param message
      */
     @Override
-    public void onUnsubscribe(WebSocket socket, Message message) {
+    public void onUnsubscribe(WebSocket socket, Frame message) {
         final String sessionId = socket.id();
         if (message == null) {
             this.unSubscribeHandle(destinationInfo -> {
                 return sessionId.equals(destinationInfo.getSessionId());
             });
         } else {
-            String subscription = message.getHeader(Headers.ID);
+            String subscriptionId = message.getHeader(Headers.ID);
             String destination = message.getHeader(Headers.DESTINATION);
             this.unSubscribeHandle(destinationInfo -> {
                 return sessionId.equals(destinationInfo.getSessionId())
-                        && (destinationInfo.getDestination().equals(destination) || destinationInfo.getSubscription().equals(subscription));
+                        && (destinationInfo.getDestination().equals(destination) || destinationInfo.getSubscriptionId().equals(subscriptionId));
             });
         }
     }
@@ -172,21 +172,21 @@ public final class StompBrokerListener implements StompListener {
      * 发送消息
      *
      * @param socket
-     * @param message
+     * @param frame
      */
     @Override
-    public void onSend(WebSocket socket, Message message) {
-        String destination = message.getHeader(Headers.DESTINATION);
+    public void onSend(WebSocket socket, Frame frame) {
+        String destination = frame.getHeader(Headers.DESTINATION);
 
         if (Utils.isEmpty(destination)) {
-            Message message1 = Message.newBuilder()
+            Frame message1 = Frame.newBuilder()
                     .command(Commands.ERROR)
                     .payload("Required 'destination' header missed")
                     .build();
 
             sender.sendTo(socket, message1);
         } else {
-            sender.sendTo(destination, message);
+            sender.sendTo(destination, frame);
         }
     }
 
@@ -197,7 +197,7 @@ public final class StompBrokerListener implements StompListener {
      * @param message
      */
     @Override
-    public void onAck(WebSocket socket, Message message) {
+    public void onAck(WebSocket socket, Frame message) {
 
     }
 
@@ -206,8 +206,8 @@ public final class StompBrokerListener implements StompListener {
      *
      * @param function
      */
-    protected void unSubscribeHandle(Function<DestinationInfo, Boolean> function) {
-        Iterator<DestinationInfo> iterator = sender.getOperations().getDestinationInfoSet().iterator();
+    protected void unSubscribeHandle(Function<SubscriptionInfo, Boolean> function) {
+        Iterator<SubscriptionInfo> iterator = operations.getSubscriptionInfos().iterator();
 
         while (iterator.hasNext()) {
             if (function.apply(iterator.next())) {

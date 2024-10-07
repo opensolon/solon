@@ -13,40 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.broker.impl;
 
-import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.stomp.broker.listener.StompServerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Stomp 帧发送器
+ * Stomp 经理人媒介
  *
  * @author noear
  * @since 3.0
  */
-public interface StompSender {
+public class StompBrokerMedia {
     /**
-     * 发送帧
-     *
-     * @param session 会话
-     * @param frame   帧
+     * 服务端监听器
      */
-    void sendTo(WebSocket session, Frame frame);
+    public final List<StompServerListener> listeners;
 
     /**
-     * 发送帧
-     *
-     * @param destination 目的地
-     * @param frame       帧
+     * 服务端操作缓存
      */
-    void sendTo(String destination, Frame frame);
+    public final StompServerOperations operations;
 
     /**
-     * 发送消息有效核载
-     *
-     * @param destination 目的地
-     * @param payload     消息有效核载
+     * 服务端发送器
      */
-    default void sendTo(String destination, String payload) {
-        sendTo(destination, new Message(payload));
+    public final StompServerSender sender;
+
+    public StompBrokerMedia() {
+        listeners = new ArrayList<>();
+        operations = new StompServerOperations();
+        sender = new StompServerSender(operations);
+
+        listeners.add(new StompServerOperationsListener(operations, sender));
     }
 }

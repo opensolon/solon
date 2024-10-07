@@ -15,11 +15,12 @@
  */
 package org.noear.solon.net.stomp.broker.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.annotation.To;
-import org.noear.solon.net.stomp.StompSender;
+import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
@@ -41,33 +42,36 @@ public class StompReturnHandler implements ActionReturnHandler {
     @Override
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
         if (returnValue != null) {
+            if (ctx instanceof StompContext == false) {
+                return;
+            }
+
             To anno = action.method().getAnnotation(To.class);
 
             //sender
-            final StompSender sender;
-            if (ctx instanceof StompContext) {
-                StompContext ctx1 = (StompContext) ctx;
-                sender = ctx1.getSender();
-            } else {
-                sender = null;
-            }
+            final StompContext ctx1 = (StompContext) ctx;
 
             //payload
-            final String payload;
-            if (returnValue instanceof String) {
-                payload = (String) returnValue;
+            final Message message;
+            if (returnValue instanceof Message) {
+                message = (Message) returnValue;
+            } else if (returnValue instanceof String) {
+                message = new Message((String) returnValue);
             } else {
-                payload = ctx.renderAndReturn(returnValue);
+                message = new Message(ctx.renderAndReturn(returnValue));
             }
 
             //send-to
             if (anno == null) {
-                if (ctx instanceof StompContext) {
-                    sender.sendTo((WebSocket) ctx.request(), payload);
-                }
+                ctx1.getSender().sendTo(ctx.path(), message);
             } else {
                 for (String destination : anno.value()) {
-                    sender.sendTo(destination, payload);
+                    if (Utils.isEmpty(destination)) {
+                        //如果是空的
+                        ctx1.getSender().sendTo(ctx.path(), message);
+                    } else {
+                        ctx1.getSender().sendTo(destination, message);
+                    }
                 }
             }
         }

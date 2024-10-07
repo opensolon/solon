@@ -16,25 +16,25 @@
 package org.noear.solon.net.stomp.broker.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.broker.SimpleStompListener;
+import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.broker.listener.SimpleStompServerListener;
 import org.noear.solon.net.stomp.StompSender;
-import org.noear.solon.net.stomp.common.Headers;
+import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
  * @author noear
  * @since 3.0
  */
-public class ToHandlerStompListener extends SimpleStompListener {
+public class ToHandlerStompServerListener extends SimpleStompServerListener {
     private final StompSender sender;
 
-    public ToHandlerStompListener(StompSender sender) {
+    public ToHandlerStompServerListener(StompSender sender) {
         this.sender = sender;
     }
 
     @Override
-    public void onSend(WebSocket socket, Message message) {
+    public void onSend(WebSocket socket, Frame message) {
         String destination = message.getHeader(Headers.DESTINATION);
 
         if(Utils.isNotEmpty(destination)) {

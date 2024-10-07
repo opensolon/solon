@@ -16,47 +16,52 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.net.stomp.common.Commands;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Stomp 消息
  *
- * @author limliu
- * @since 2.7
+ * @author noear
  * @since 3.0
  */
-public interface Message {
-    /**
-     * 获取命令, 如send...等。参考#Commands
-     *
-     * @see Commands
-     */
-    String getCommand();
+public class Message extends SimpleFrame implements Frame {
+
+    public Message(String payload) {
+        super(Commands.MESSAGE, payload, new ArrayList<>());
+    }
 
     /**
-     * 获取有效载荷
-     *
-     * @return
+     * 配置头
      */
-    String getPayload();
+    public Message headers(KeyValue<String>... headers) {
+        for (KeyValue<String> header : headers) {
+            this.headers.add(header);
+        }
+        return this;
+    }
 
     /**
-     * 获取head
-     *
-     * @param key 参考#Header
+     * 配置头
      */
-    String getHeader(String key);
+    public Message headers(Iterable<KeyValue<String>> headers) {
+        for (KeyValue<String> header : headers) {
+            this.headers.add(header);
+        }
+        return this;
+    }
 
     /**
-     * 获取head集合
+     * 配置头
      *
-     * @return
+     * @param key 键名
+     * @param val 值
      */
-    Collection<KeyValue<String>> getHeaderAll();
+    public Message header(String key, String val) {
+        if (key != null && val != null) {
+            headers.add(new KeyValue<>(key, val));
+        }
 
-    static MessageBuilder newBuilder() {
-        return new MessageBuilder();
+        return this;
     }
 }

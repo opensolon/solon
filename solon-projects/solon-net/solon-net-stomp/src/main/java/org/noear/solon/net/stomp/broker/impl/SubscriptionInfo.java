@@ -16,20 +16,20 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 /**
- * 订阅目标信息
+ * 订阅信息
  *
  * @author limliu
  * @since 2.7
  */
-public class DestinationInfo {
+public class SubscriptionInfo {
     private final String sessionId;
     private final String destination;
-    private final String subscription;
+    private final String subscriptionId;
 
-    public DestinationInfo(String sessionId, String destination, String subscription) {
+    public SubscriptionInfo(String sessionId, String destination, String subscriptionId) {
         this.sessionId = sessionId;
         this.destination = destination;
-        this.subscription = subscription;
+        this.subscriptionId = subscriptionId;
     }
 
     /**
@@ -49,8 +49,8 @@ public class DestinationInfo {
     /**
      * 订阅者ID
      */
-    public String getSubscription() {
-        return subscription;
+    public String getSubscriptionId() {
+        return subscriptionId;
     }
 
     @Override
@@ -59,11 +59,11 @@ public class DestinationInfo {
             return false;
         }
 
-        if (!(obj instanceof DestinationInfo)) {
+        if (!(obj instanceof SubscriptionInfo)) {
             return false;
         }
 
-        DestinationInfo target = (DestinationInfo) obj;
+        SubscriptionInfo target = (SubscriptionInfo) obj;
         if (sessionId.equals(target.sessionId) && destination.equals(target.destination)) {
             return true;
         }

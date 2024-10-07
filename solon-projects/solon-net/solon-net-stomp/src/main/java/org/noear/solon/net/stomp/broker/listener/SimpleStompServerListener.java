@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp.broker;
+package org.noear.solon.net.stomp.broker.listener;
 
-import org.noear.solon.net.stomp.Message;
+import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.websocket.WebSocket;
 
 /**
@@ -23,15 +23,12 @@ import org.noear.solon.net.websocket.WebSocket;
  *
  * @author noear
  * @since 2.7
+ * @since 3.0
  */
-public class SimpleStompListener implements StompListener{
+public class SimpleStompServerListener implements StompServerListener {
+
     @Override
     public void onOpen(WebSocket socket) {
-
-    }
-
-    @Override
-    public void onConnect(WebSocket socket, Message message) {
 
     }
 
@@ -41,27 +38,32 @@ public class SimpleStompListener implements StompListener{
     }
 
     @Override
-    public void onDisconnect(WebSocket socket, Message message) {
+    public void onConnect(WebSocket socket, Frame frame) {
 
     }
 
     @Override
-    public void onSubscribe(WebSocket socket, Message message) {
+    public void onDisconnect(WebSocket socket, Frame frame) {
 
     }
 
     @Override
-    public void onUnsubscribe(WebSocket socket, Message message) {
+    public void onSubscribe(WebSocket socket, Frame frame) {
 
     }
 
     @Override
-    public void onSend(WebSocket socket, Message message) {
+    public void onUnsubscribe(WebSocket socket, Frame frame) {
 
     }
 
     @Override
-    public void onAck(WebSocket socket, Message message) {
+    public void onSend(WebSocket socket, Frame frame) {
+
+    }
+
+    @Override
+    public void onAck(WebSocket socket, Frame frame) {
 
     }
 }
