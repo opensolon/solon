@@ -39,20 +39,20 @@ class CommandHolder implements Closeable {
     }
 
 
-    private ResultSetMetaData rowMeta;
+    private MetaHolder metaHolder;
 
     public Row getRow() throws SQLException {
-        if (rowMeta == null) {
-            rowMeta = rsts.getMetaData();
+        if(metaHolder == null){
+            metaHolder = new MetaHolder(rsts.getMetaData());
         }
 
+        Object[] values = new Object[metaHolder.size];
 
-        Object[] values = new Object[rowMeta.getColumnCount()];
         for (int i = 1; i <= values.length; i++) {
             values[i - 1] = _utils.getObject(this, i);
         }
 
-        return new SimpleRow(rowMeta, values);
+        return new SimpleRow(metaHolder, values);
     }
 
     @Override

@@ -27,7 +27,7 @@ import java.util.Iterator;
  * @author noear
  * @since 3.0
  */
-public class RowIterator implements Iterator<Row>, Closeable {
+class RowIterator implements Iterator<Row>, Closeable {
     private final CommandHolder holder;
 
     public RowIterator(CommandHolder holder) {

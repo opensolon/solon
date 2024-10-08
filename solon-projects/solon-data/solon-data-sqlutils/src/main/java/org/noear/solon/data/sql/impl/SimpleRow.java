@@ -13,46 +13,62 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  */
-public class SimpleRow implements Row {
-    private final ResultSetMetaData meta;
-    private final Object[] data;
+class SimpleRow implements Row {
+    private final MetaHolder _metaHolder;
+    private final Object[] _data;
 
-    public SimpleRow(ResultSetMetaData meta, Object[] data) {
-        this.meta = meta;
-        this.data = data;
+    public SimpleRow(MetaHolder metaHolder, Object[] data) {
+        this._metaHolder = metaHolder;
+        this._data = data;
     }
 
     @Override
     public int size() {
-        return data.length;
+        return _metaHolder.size;
     }
 
     @Override
-    public ResultSetMetaData getMeta() {
-        return meta;
+    public ResultSetMetaData meta() {
+        return _metaHolder.meta;
     }
 
     @Override
-    public Object[] getData() {
-        return data;
+    public Object[] data() {
+        return _data;
     }
 
     @Override
     public String getName(int columnIdx) throws SQLException {
-        return meta.getColumnLabel(columnIdx);
+        return _metaHolder.getName(columnIdx);
     }
 
     @Override
-    public Object getValue(int columnIndex) {
-        return data[columnIndex - 1];
+    public int getNameColumnIdx(String name) throws SQLException {
+        return _metaHolder.getNameColumnIdx(name);
+    }
+
+    @Override
+    public Object getValue(int columnIndex) throws SQLException {
+        return _data[columnIndex - 1];
+    }
+
+    @Override
+    public Object getValue(String name) throws SQLException {
+        int idx = getNameColumnIdx(name);
+        if (idx < 1) {
+            throw new SQLException("Column '" + name + "' not found");
+        }
+
+        return getValue(idx);
     }
 
     @Override
     public Map<String, Object> toMap() throws SQLException {
         Map<String, Object> map = new LinkedHashMap<>();
-        for (int i = 1; i <= meta.getColumnCount(); i++) {
+        for (int i = 1; i <= _metaHolder.size; i++) {
             map.put(getName(i), getValue(i));
         }
+
         return map;
     }
 }

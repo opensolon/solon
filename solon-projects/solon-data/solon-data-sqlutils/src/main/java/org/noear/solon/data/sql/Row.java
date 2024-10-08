@@ -27,19 +27,19 @@ import java.util.Map;
  */
 public interface Row {
     /**
-     * 大小
+     * 行大小
      */
     int size();
 
     /**
-     * 获取元信息
+     * 元信息
      */
-    ResultSetMetaData getMeta();
+    ResultSetMetaData meta();
 
     /**
-     * 获取行数据
+     * 行数据
      */
-    Object[] getData();
+    Object[] data();
 
     /**
      * 获取名字
@@ -49,12 +49,25 @@ public interface Row {
     String getName(int columnIdx) throws SQLException;
 
     /**
+     * 获取名字列顺位
+     *
+     * @param name 名字
+     */
+    int getNameColumnIdx(String name) throws SQLException;
+
+    /**
      * 获取值
      *
      * @param columnIdx 列顺位（从1开始）
      */
-    Object getValue(int columnIdx);
+    Object getValue(int columnIdx) throws SQLException;
 
+    /**
+     * 获取值
+     *
+     * @param name 名字
+     */
+    Object getValue(String name) throws SQLException;
 
     /**
      * 转为 Map
