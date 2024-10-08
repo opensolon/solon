@@ -4,8 +4,6 @@ import org.noear.solon.data.sql.Row;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 行简单实现
@@ -60,15 +58,5 @@ class SimpleRow implements Row {
         }
 
         return getValue(idx);
-    }
-
-    @Override
-    public Map<String, Object> toMap() throws SQLException {
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (int i = 1; i <= _metaHolder.size; i++) {
-            map.put(getName(i), getValue(i));
-        }
-
-        return map;
     }
 }

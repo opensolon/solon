@@ -17,6 +17,7 @@ package org.noear.solon.data.sql;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -72,5 +73,12 @@ public interface Row {
     /**
      * 转为 Map
      */
-    Map<String, Object> toMap() throws SQLException;
+    default Map<String, Object> toMap() throws SQLException {
+        Map<String, Object> map = new LinkedHashMap<>();
+        for (int cI = 1; cI <= size(); cI++) {
+            map.put(getName(cI), getValue(cI));
+        }
+
+        return map;
+    }
 }
