@@ -37,36 +37,47 @@ public interface SqlUtils {
 
     /**
      * 查询并获取单值
+     *
+     * @param sql SQL for retrieving record
      */
     @Nullable
     Object selectValue(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取数组
+     *
+     * @param sql SQL for retrieving record
      */
     @Nullable
     List<Object> selectValueArray(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行
+     *
+     * @param sql SQL for retrieving record
      */
     @Nullable
     Row selectRow(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行列表
+     *
+     * @param sql SQL for retrieving record
      */
     @Nullable
     List<Row> selectRowList(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行遍历器
+     *
+     * @param sql SQL for retrieving record
      */
     Iterator<Row> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException;
 
     /**
      * 插入
      *
+     * @param sql SQL for retrieving record
      * @return 受影响行数
      */
     int insert(String sql, Object... args) throws SQLException;
@@ -74,6 +85,7 @@ public interface SqlUtils {
     /**
      * 插入并返回自增键
      *
+     * @param sql SQL for retrieving record
      * @return 自增键
      */
     long insertReturnKey(String sql, Object... args) throws SQLException;
@@ -81,6 +93,7 @@ public interface SqlUtils {
     /**
      * 执行（更新，或删除）
      *
+     * @param sql SQL for retrieving record
      * @return 受影响行数
      */
     int execute(String sql, Object... args) throws SQLException;
@@ -88,6 +101,7 @@ public interface SqlUtils {
     /**
      * 批量执行（更新，或删除）
      *
+     * @param sql SQL for retrieving record
      * @return 受影响行数组
      */
     int[] executeBatch(String sql, Collection<Object[]> argsList) throws SQLException;
