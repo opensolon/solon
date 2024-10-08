@@ -55,29 +55,33 @@ public class TmplUtil {
      *
      * <pre><code>name=${name},type={.type}</code></pre>
      *
-     * @param view  模板
+     * @param tmpl  模板
      * @param model 参数
      */
-    public static String parse(String view, Map<String, Object> model) {
-        if (view.indexOf('$') < 0) {
-            return view;
+    public static String parse(String tmpl, Map<String, Object> model) {
+        if (tmpl.indexOf('$') < 0) {
+            return tmpl;
         }
 
-        StringBuilder str2 = new StringBuilder(view);
+        StringBuilder str2 = new StringBuilder(tmpl);
 
         //${name}
         //${.name}
         //${obj.name}
-        Matcher m = tmpPattern.matcher(view);
+        Matcher m = tmpPattern.matcher(tmpl);
         while (m.find()) {
             String mark = m.group(0);
             String name = m.group(1);
 
             if (model.containsKey(name)) {
                 //说明从输入参数取值
-                String val = String.valueOf(model.get(name));
+                Object val = model.get(name);
+                if(val == null){
+                    val = "";
+                }
+
                 int idx = str2.indexOf(mark);
-                str2 = str2.replace(idx, idx + mark.length(), val);
+                str2 = str2.replace(idx, idx + mark.length(), val.toString());
             } else if (name.indexOf('.') >= 0) {
                 //说明要从返回结果取值
                 Object obj;
