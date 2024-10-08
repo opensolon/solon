@@ -15,44 +15,46 @@
  */
 package org.noear.solon.data.sql.impl;
 
+import org.noear.solon.data.sql.Row;
+
 import java.io.Closeable;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
- * 数据遍历器
+ * 行遍历器
  *
  * @author noear
  * @since 3.0
  */
-public class DataIterator implements Iterator<Map<String,Object>>, Closeable {
-    private final CommandPrepare prepare;
+public class RowIterator implements Iterator<Row>, Closeable {
+    private final CommandHolder holder;
 
-    public DataIterator(CommandPrepare prepare) {
-        this.prepare = prepare;
+    public RowIterator(CommandHolder holder) {
+        this.holder = holder;
     }
 
-    private Map<String, Object> rowTmp;
+    //当前行
+    private Row rowCurrent;
 
     @Override
     public boolean hasNext() {
         try {
-            if (prepare.rsts.next()) {
-                rowTmp = prepare.getRow();
+            if (holder.rsts.next()) {
+                rowCurrent = holder.getRow();
             } else {
-                rowTmp = null;
+                rowCurrent = null;
             }
 
-            return rowTmp != null;
+            return rowCurrent != null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Map<String, Object> next() {
-        return rowTmp;
+    public Row next() {
+        return rowCurrent;
     }
 
     @Override
@@ -62,6 +64,6 @@ public class DataIterator implements Iterator<Map<String,Object>>, Closeable {
 
     @Override
     public void close() {
-        prepare.close();
+        holder.close();
     }
 }

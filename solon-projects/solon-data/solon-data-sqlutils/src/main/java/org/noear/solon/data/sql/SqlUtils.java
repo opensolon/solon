@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sql;
 
-import org.noear.solon.data.sql.impl.SimpleSqlUtilsImpl;
+import org.noear.solon.data.sql.impl.SimpleSqlUtils;
 import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Sql 工具类（线程安全，可作为单例保存）
@@ -33,7 +32,7 @@ import java.util.Map;
  */
 public interface SqlUtils {
     static SqlUtils of(DataSource dataSource) {
-        return new SimpleSqlUtilsImpl(dataSource);
+        return new SimpleSqlUtils(dataSource);
     }
 
     /**
@@ -52,18 +51,18 @@ public interface SqlUtils {
      * 查询并获取行
      */
     @Nullable
-    Map<String, Object> selectRow(String sql, Object... args) throws SQLException;
+    Row selectRow(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行列表
      */
     @Nullable
-    List<Map<String, Object>> selectRowList(String sql, Object... args) throws SQLException;
+    List<Row> selectRowList(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行遍历器
      */
-    Iterator<Map<String, Object>> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException;
+    Iterator<Row> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException;
 
     /**
      * 插入

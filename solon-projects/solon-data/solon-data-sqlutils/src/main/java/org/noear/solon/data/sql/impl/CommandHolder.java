@@ -16,43 +16,43 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.data.sql.Row;
 
 import java.io.Closeable;
 import java.sql.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
- * 指令预处理
+ * 指令持有人
  *
  * @author noear
  * @since 3.0
  */
-class CommandPrepare implements Closeable {
+class CommandHolder implements Closeable {
     public Connection conn = null;
     public PreparedStatement stmt = null;
     public ResultSet rsts = null;
 
-    private final SimpleSqlUtilsImpl _utils;
+    private final SimpleSqlUtils _utils;
 
-    public CommandPrepare(SimpleSqlUtilsImpl utils) {
+    public CommandHolder(SimpleSqlUtils utils) {
         _utils = utils;
     }
 
 
     private ResultSetMetaData rowMeta;
 
-    public Map<String, Object> getRow() throws SQLException {
+    public Row getRow() throws SQLException {
         if (rowMeta == null) {
             rowMeta = rsts.getMetaData();
         }
 
-        Map<String, Object> row = new LinkedHashMap<>();
-        for (int i = 1; i <= rowMeta.getColumnCount(); i++) {
-            row.put(rowMeta.getColumnLabel(i), _utils.getObject(this, i));
+
+        Object[] values = new Object[rowMeta.getColumnCount()];
+        for (int i = 1; i <= values.length; i++) {
+            values[i - 1] = _utils.getObject(this, i);
         }
 
-        return row;
+        return new SimpleRow(rowMeta, values);
     }
 
     @Override
