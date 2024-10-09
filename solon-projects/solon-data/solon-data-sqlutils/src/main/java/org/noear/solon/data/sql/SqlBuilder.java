@@ -73,7 +73,7 @@ public class SqlBuilder {
      * 备分状态
      */
     protected void backup() {
-        b_builder.append(c_builder.toString());
+        b_builder.append(c_builder);
         b_args.addAll(c_args);
     }
 
@@ -90,17 +90,17 @@ public class SqlBuilder {
      * 插入到某个位置前面
      */
     public SqlBuilder insert(int offset, String sql, Object... args) {
-        SqlPartBuilder pb = new SqlPartBuilder(sql, args);
+        SqlPartBuilder tmp = new SqlPartBuilder(sql, args);
 
         if (offset < 0) {
             //如果找不到位置；加到后面
-            c_builder.append(pb.sql);
-            c_args.addAll(pb.args);
+            c_builder.append(tmp.sql);
+            c_args.addAll(tmp.args);
         } else {
             if (offset == 0) {
                 //如果是0位
-                c_builder.insert(0, pb.sql);
-                c_args.addAll(0, pb.args);
+                c_builder.insert(0, tmp.sql);
+                c_args.addAll(0, tmp.args);
             } else {
                 //如果大于0
                 String idxBef = c_builder.substring(0, offset);
@@ -111,8 +111,8 @@ public class SqlBuilder {
                     }
                 }
 
-                c_builder.insert(offset, pb.sql);
-                c_args.addAll(idxBefQm, pb.args);
+                c_builder.insert(offset, tmp.sql);
+                c_args.addAll(idxBefQm, tmp.args);
             }
         }
 
