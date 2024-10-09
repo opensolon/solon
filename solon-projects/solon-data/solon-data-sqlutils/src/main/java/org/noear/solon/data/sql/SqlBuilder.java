@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,13 +92,12 @@ public class SqlBuilder {
      * 插入到某个位置前面
      */
     public SqlBuilder insert(int offset, String sql, Object... args) {
-        SqlPartBuilder tmp = new SqlPartBuilder(sql, args);
-
         if (offset < 0) {
             //如果找不到位置；加到后面
-            c_builder.append(tmp.sql);
-            c_args.addAll(tmp.args);
+            append(sql, args);
         } else {
+            SqlPartBuilder tmp = new SqlPartBuilder(sql, args);
+
             if (offset == 0) {
                 //如果是0位
                 c_builder.insert(0, tmp.sql);
@@ -138,12 +139,26 @@ public class SqlBuilder {
     /**
      * 添加SQL
      */
-    public SqlBuilder append(String sql, Object... args) {
-        SqlPartBuilder pb = new SqlPartBuilder(sql, args);
+    public SqlBuilder appendIf(boolean condition, String sql, Object... args) {
+        if (condition) {
+            if (Utils.isEmpty(args)) {
+                c_builder.append(sql);
+            } else {
+                SqlPartBuilder pb = new SqlPartBuilder(sql, args);
 
-        c_builder.append(pb.sql);
-        this.c_args.addAll(pb.args);
+                c_builder.append(pb.sql);
+                c_args.addAll(pb.args);
+            }
+        }
+
         return this;
+    }
+
+    /**
+     * 添加SQL
+     */
+    public SqlBuilder append(String sql, Object... args) {
+        return appendIf(true, sql, args);
     }
 
     /**
