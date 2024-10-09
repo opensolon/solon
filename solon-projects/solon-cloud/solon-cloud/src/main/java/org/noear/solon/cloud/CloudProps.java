@@ -29,6 +29,8 @@ import org.noear.solon.core.Props;
  * @since 1.2
  */
 public class CloudProps {
+    public static final String PREFIX_properties = "properties.";
+
     public static final String PREFIX_config = "config.";
     public static final String PREFIX_discovery = "discovery.";
     public static final String PREFIX_event = "event.";
@@ -69,10 +71,7 @@ public class CloudProps {
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
     private String DISCOVERY_CLUSTER_NAME = "solon.cloud.@@.discovery.clusterName";
-    //private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
-    //private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
-    //private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
     private String DISCOVERY_REFRESH_INTERVAL = "solon.cloud.@@.discovery.refreshInterval";
 
     //事件总线服务相关
@@ -669,7 +668,7 @@ public class CloudProps {
      * 获取所有属性
      */
     public Props getProp() {
-        return appContext.cfg().getProp(ROOT.substring(0, ROOT.length() - 1));
+        return appContext.cfg().getProp(ROOT);
     }
 
     /**
