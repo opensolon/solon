@@ -63,7 +63,7 @@ class SimpleRow implements Row {
     }
 
     @Override
-    public <T> T toClass(Class<?> clazz) throws SQLException {
+    public <T> T toBean(Class<?> clazz) throws SQLException {
         return ONode.load(toMap()).toObject(clazz);
     }
 

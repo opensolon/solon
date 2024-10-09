@@ -83,7 +83,7 @@ public interface Row {
     }
 
     /**
-     * 转为 Clz
+     * 转为 Bean
      */
-    <T> T toClass(Class<?> clazz) throws SQLException;
+    <T> T toBean(Class<?> clazz) throws SQLException;
 }
