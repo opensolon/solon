@@ -1,5 +1,6 @@
 package org.noear.solon.data.sql.impl;
 
+import org.noear.snack.ONode;
 import org.noear.solon.data.sql.Row;
 
 import java.sql.ResultSetMetaData;
@@ -59,6 +60,11 @@ class SimpleRow implements Row {
         }
 
         return getValue(idx);
+    }
+
+    @Override
+    public <T> T toClass(Class<?> clazz) throws SQLException {
+        return ONode.load(toMap()).toObject(clazz);
     }
 
     @Override

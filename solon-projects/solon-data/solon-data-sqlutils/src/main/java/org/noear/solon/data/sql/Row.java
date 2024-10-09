@@ -81,4 +81,9 @@ public interface Row {
 
         return map;
     }
+
+    /**
+     * 转为 Clz
+     */
+    <T> T toClass(Class<?> clazz) throws SQLException;
 }
