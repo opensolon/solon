@@ -23,6 +23,12 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### v3.0.2
+
+* 调整 solon-boot 的 junit-jupiter 依赖标为 scope=test
+* 优化 TmplUtil 处理，当模型参数为 null 用空替代（避免出现"null"）
+* 优化 solon-data-sqlutils 设计（进一步提搞性能）
+
 ### v3.0.1
 
 * 新增 solon-web-webservices 插件
