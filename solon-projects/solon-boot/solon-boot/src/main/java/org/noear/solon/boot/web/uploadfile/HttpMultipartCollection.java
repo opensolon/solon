@@ -32,7 +32,7 @@ public class HttpMultipartCollection implements Iterator<HttpMultipart> {
         if (!ct.containsKey("multipart/form-data"))
             throw new IllegalArgumentException("Content-Type is not multipart/form-data");
 
-        String boundary = ct.get("boundary"); // should be US-ASCII
+        String boundary = ct.get("boundary");
         if (boundary == null)
             throw new IllegalArgumentException("Content-Type is missing boundary");
         in = new HttpMultipartInputStream(bodyStream, Utils.getBytes(boundary));

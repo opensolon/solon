@@ -33,7 +33,7 @@ public class HttpMultipartInputStream extends FilterInputStream {
         super(in);
         int len = boundary.length;
         if (len == 0 || len > 70)
-            throw new IllegalArgumentException("invalid boundary length");
+            throw new IllegalArgumentException("Invalid boundary length");
         this.boundary = new byte[len + 4]; // CRLF--boundary
         System.arraycopy(CRLF, 0, this.boundary, 0, 2);
         this.boundary[2] = this.boundary[3] = '-';

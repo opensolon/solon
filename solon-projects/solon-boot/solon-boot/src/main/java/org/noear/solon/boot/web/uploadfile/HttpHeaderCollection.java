@@ -42,14 +42,14 @@ public class HttpHeaderCollection implements Iterable<HttpHeader> {
     }
 
     public void add(String name, String value) {
-        HttpHeader header = new HttpHeader(name, value); // also validates
-        // expand array if necessary
+        HttpHeader header = new HttpHeader(name, value);
+
         if (count == headers.length) {
             HttpHeader[] expanded = new HttpHeader[2 * count];
             System.arraycopy(headers, 0, expanded, 0, count);
             headers = expanded;
         }
-        headers[count++] = header; // inlining header would cause a bug!
+        headers[count++] = header;
     }
 
     public void addAll(HttpHeaderCollection headers) {
@@ -89,8 +89,6 @@ public class HttpHeaderCollection implements Iterable<HttpHeader> {
     }
 
     public Iterator<HttpHeader> iterator() {
-        // we use the built-in wrapper instead of a trivial custom implementation
-        // since even a tiny anonymous class here compiles to a 1.5K class file
         return Arrays.asList(headers).subList(0, count).iterator();
     }
 }
