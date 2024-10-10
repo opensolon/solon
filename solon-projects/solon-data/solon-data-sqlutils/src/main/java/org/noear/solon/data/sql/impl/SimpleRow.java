@@ -19,6 +19,8 @@ import org.noear.solon.data.sql.Row;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 行简单实现
@@ -73,5 +75,40 @@ class SimpleRow implements Row {
         }
 
         return getValue(idx);
+    }
+
+
+    /**
+     * 转为 Map
+     */
+    @Override
+    public Map<String, Object> toMap() throws SQLException {
+        Map<String, Object> map = new LinkedHashMap<>();
+        for (int cI = 1; cI <= size(); cI++) {
+            map.put(getName(cI), getValue(cI));
+        }
+
+        return map;
+    }
+
+    /**
+     * 转为 Bean
+     *
+     * @param type      类型
+     * @param converter 转换器
+     */
+    @Override
+    public  <T> T toBean(Class<T> type, Converter converter) throws SQLException {
+        return (T) converter.convert(this, type);
+    }
+
+    /**
+     * 转为 Bean
+     *
+     * @param type 类型
+     */
+    @Override
+    public  <T> T toBean(Class<T> type) throws SQLException {
+        return toBean(type, DefaultConverter.getInstance());
     }
 }

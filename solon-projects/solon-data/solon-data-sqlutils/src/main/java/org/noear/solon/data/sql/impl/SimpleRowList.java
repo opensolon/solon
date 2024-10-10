@@ -18,7 +18,9 @@ package org.noear.solon.data.sql.impl;
 import org.noear.solon.data.sql.Row;
 import org.noear.solon.data.sql.RowList;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 行列表简单实现
@@ -27,5 +29,29 @@ import java.util.ArrayList;
  * @since 3.0
  */
 class SimpleRowList extends ArrayList<Row> implements RowList {
+    /**
+     * 转为 Bean List
+     *
+     * @param type      类型
+     * @param converter 转换器
+     */
+    @Override
+    public <T> List<T> toBeanList(Class<T> type, Row.Converter converter) throws SQLException {
+        List<T> list = new ArrayList<>();
+        for (Row row : this) {
+            list.add(row.toBean(type, converter));
+        }
 
+        return list;
+    }
+
+    /**
+     * 转为 Bean List
+     *
+     * @param type 类型
+     */
+    @Override
+    public <T> List<T> toBeanList(Class<T> type) throws SQLException {
+        return toBeanList(type, DefaultConverter.getInstance());
+    }
 }

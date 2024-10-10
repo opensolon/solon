@@ -17,7 +17,6 @@ package org.noear.solon.data.sql;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -73,14 +72,7 @@ public interface Row {
     /**
      * 转为 Map
      */
-    default Map<String, Object> toMap() throws SQLException {
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (int cI = 1; cI <= size(); cI++) {
-            map.put(getName(cI), getValue(cI));
-        }
-
-        return map;
-    }
+    Map<String, Object> toMap() throws SQLException;
 
     /**
      * 转为 Bean
@@ -88,16 +80,26 @@ public interface Row {
      * @param type      类型
      * @param converter 转换器
      */
-    default <T> T toBean(Class<T> type, RowConverter converter) throws SQLException {
-        return (T) converter.convert(this, type);
-    }
+    <T> T toBean(Class<T> type, Row.Converter converter) throws SQLException;
 
     /**
      * 转为 Bean
      *
      * @param type 类型
      */
-    default <T> T toBean(Class<T> type) throws SQLException {
-        return toBean(type, RowConverter.DEFAUlT);
+    <T> T toBean(Class<T> type) throws SQLException;
+
+    /**
+     * 行转换器
+     */
+    @FunctionalInterface
+    static interface Converter {
+        /**
+         * 转换
+         *
+         * @param row  行
+         * @param type 类型
+         */
+        Object convert(Row row, Class<?> type) throws SQLException;
     }
 }
