@@ -131,12 +131,12 @@ public class SimpleSqlUtils implements SqlUtils {
 
 
     @Override
-    public Object selectValue(String sql, Object... args) throws SQLException {
+    public <T> T selectValue(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
-                return getObject(holder, 1);
+                return (T) getObject(holder, 1);
             }
 
             return null;
@@ -144,14 +144,14 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public List<Object> selectValueArray(String sql, Object... args) throws SQLException {
+    public <T> List<T> selectValueArray(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
-            List<Object> list = new ArrayList<>();
+            List<T> list = new ArrayList<>();
 
             while (holder.rsts.next()) {
-                list.add(getObject(holder, 1));
+                list.add((T) getObject(holder, 1));
             }
 
             return list.size() > 0 ? list : null;

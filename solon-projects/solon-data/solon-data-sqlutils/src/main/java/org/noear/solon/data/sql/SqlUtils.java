@@ -41,7 +41,7 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    Object selectValue(String sql, Object... args) throws SQLException;
+    <T> T selectValue(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取数组
@@ -49,7 +49,7 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    List<Object> selectValueArray(String sql, Object... args) throws SQLException;
+    <T> List<T> selectValueArray(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行
