@@ -19,7 +19,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * 行
@@ -89,7 +88,7 @@ public interface Row {
      * @param type      类型
      * @param converter 转换器
      */
-    default <T> T toBean(Class<T> type, Function<Row, T> converter) {
-        return converter.apply(this);
+    default <T> T toBean(Class<T> type, RowConverter<T> converter) throws SQLException {
+        return converter.convert(this, type);
     }
 }

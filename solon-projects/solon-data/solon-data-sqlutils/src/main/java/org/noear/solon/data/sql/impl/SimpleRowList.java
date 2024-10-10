@@ -16,11 +16,12 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.data.sql.Row;
+import org.noear.solon.data.sql.RowConverter;
 import org.noear.solon.data.sql.RowList;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 行列表简单实现
@@ -30,10 +31,10 @@ import java.util.function.Function;
  */
 class SimpleRowList extends ArrayList<Row> implements RowList {
     @Override
-    public <T> List<T> toBeanList(Class<T> type, Function<Row, T> converter) {
+    public <T> List<T> toBeanList(Class<T> type, RowConverter<T> converter) throws SQLException {
         List<T> list = new ArrayList<>();
         for (Row row : this) {
-            list.add(converter.apply(row));
+            list.add(converter.convert(row, type));
         }
 
         return list;

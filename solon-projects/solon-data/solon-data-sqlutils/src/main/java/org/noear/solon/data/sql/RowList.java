@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.sql;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 行列表
@@ -31,5 +31,5 @@ public interface RowList extends List<Row> {
      * @param type      类型
      * @param converter 转换器
      */
-    <T> List<T> toBeanList(Class<T> type, Function<Row, T> converter);
+    <T> List<T> toBeanList(Class<T> type, RowConverter<T> converter) throws SQLException;
 }

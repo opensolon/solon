@@ -16,15 +16,19 @@
 package org.noear.solon.data.sql;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 
 /**
- * 行遍历器
+ * 行转换器
  *
  * @author noear
  * @since 3.0
- */
-public interface RowIterator extends Iterator<Row> , AutoCloseable {
-    @Override
-    void close() throws SQLException;
+ * */
+public interface RowConverter<T> {
+    /**
+     * 转换
+     *
+     * @param row  行
+     * @param type 类型
+     */
+    T convert(Row row, Class<T> type) throws SQLException;
 }
