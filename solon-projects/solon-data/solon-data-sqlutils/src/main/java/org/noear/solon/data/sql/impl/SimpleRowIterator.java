@@ -35,12 +35,15 @@ class SimpleRowIterator implements RowIterator {
 
     //当前行
     private Row rowCurrent;
+    //行号
+    private int rowNum = 0;
 
     @Override
     public boolean hasNext() {
         try {
             if (holder.rsts.next()) {
                 rowCurrent = holder.getRow();
+                rowNum++;
             } else {
                 rowCurrent = null;
             }
@@ -54,6 +57,11 @@ class SimpleRowIterator implements RowIterator {
     @Override
     public Row next() {
         return rowCurrent;
+    }
+
+    @Override
+    public long rownum() {
+        return rowNum;
     }
 
     @Override

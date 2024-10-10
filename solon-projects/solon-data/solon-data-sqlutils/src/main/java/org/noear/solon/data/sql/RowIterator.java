@@ -25,6 +25,14 @@ import java.util.Iterator;
  * @since 3.0
  */
 public interface RowIterator extends Iterator<Row> , AutoCloseable {
+    /**
+     * 关闭
+     */
     @Override
     void close() throws SQLException;
+
+    /**
+     * 行号
+     */
+    long rownum();
 }
