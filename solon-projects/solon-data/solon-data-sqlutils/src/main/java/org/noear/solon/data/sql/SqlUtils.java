@@ -21,7 +21,6 @@ import org.noear.solon.lang.Nullable;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -65,14 +64,14 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    List<Row> selectRowList(String sql, Object... args) throws SQLException;
+    RowList selectRowList(String sql, Object... args) throws SQLException;
 
     /**
-     * 查询并获取行遍历器
+     * 查询并获取行遍历器（流式读取）
      *
      * @param sql SQL for retrieving record
      */
-    Iterator<Row> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException;
+    RowIterator selectRowIterator(String sql, int fetchSize, Object... args) throws SQLException;
 
     /**
      * 插入

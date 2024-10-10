@@ -16,21 +16,20 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.data.sql.Row;
+import org.noear.solon.data.sql.RowIterator;
 
-import java.io.Closeable;
 import java.sql.SQLException;
-import java.util.Iterator;
 
 /**
- * 行遍历器
+ * 行遍历器简单实现
  *
  * @author noear
  * @since 3.0
  */
-class RowIterator implements Iterator<Row>, Closeable {
+class SimpleRowIterator implements RowIterator {
     private final CommandHolder holder;
 
-    public RowIterator(CommandHolder holder) {
+    public SimpleRowIterator(CommandHolder holder) {
         this.holder = holder;
     }
 

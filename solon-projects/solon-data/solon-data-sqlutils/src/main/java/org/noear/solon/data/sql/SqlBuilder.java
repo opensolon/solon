@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sql 构建器
+ * Sql 代码构建器
  *
  * @author noear
  * @since 3.0

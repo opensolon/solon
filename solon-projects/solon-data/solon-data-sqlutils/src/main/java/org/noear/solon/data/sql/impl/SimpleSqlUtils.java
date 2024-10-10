@@ -17,6 +17,8 @@ package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.data.sql.Row;
+import org.noear.solon.data.sql.RowList;
+import org.noear.solon.data.sql.RowIterator;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.tran.TranUtils;
 
@@ -172,11 +174,11 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public List<Row> selectRowList(String sql, Object... args) throws SQLException {
+    public RowList selectRowList(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
-            List<Row> rowList = new ArrayList<>();
+            RowList rowList = new SimpleRowList();
 
             while (holder.rsts.next()) {
                 rowList.add(holder.getRow());
@@ -187,12 +189,12 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public Iterator<Row> selectRowStream(String sql, int fetchSize, Object... args) throws SQLException {
+    public RowIterator selectRowIterator(String sql, int fetchSize, Object... args) throws SQLException {
         CommandHolder holder = buildCommand(sql, args, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
-        return new RowIterator(holder);
+        return new SimpleRowIterator(holder);
     }
 
     @Override
