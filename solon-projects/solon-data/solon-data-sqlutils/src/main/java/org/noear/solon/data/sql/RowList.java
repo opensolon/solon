@@ -16,6 +16,7 @@
 package org.noear.solon.data.sql;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,5 +32,21 @@ public interface RowList extends List<Row> {
      * @param type      类型
      * @param converter 转换器
      */
-    <T> List<T> toBeanList(Class<T> type, RowConverter converter) throws SQLException;
+    default <T> List<T> toBeanList(Class<T> type, RowConverter converter) throws SQLException {
+        List<T> list = new ArrayList<>();
+        for (Row row : this) {
+            list.add(row.toBean(type, converter));
+        }
+
+        return list;
+    }
+
+    /**
+     * 转为 Bean List
+     *
+     * @param type 类型
+     */
+    default <T> List<T> toBeanList(Class<T> type) throws SQLException {
+        return toBeanList(type, RowConverter.DEFAUlT);
+    }
 }

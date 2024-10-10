@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.snack.ONode;
+
 import java.sql.SQLException;
 
 /**
@@ -23,7 +25,11 @@ import java.sql.SQLException;
  * @author noear
  * @since 3.0
  * */
+@FunctionalInterface
 public interface RowConverter {
+    //默认转换器
+    static RowConverter DEFAUlT = (r, c) -> ONode.load(r.toMap()).toObject(c);
+
     /**
      * 转换
      *

@@ -91,4 +91,13 @@ public interface Row {
     default <T> T toBean(Class<T> type, RowConverter converter) throws SQLException {
         return (T) converter.convert(this, type);
     }
+
+    /**
+     * 转为 Bean
+     *
+     * @param type 类型
+     */
+    default <T> T toBean(Class<T> type) throws SQLException {
+        return toBean(type, RowConverter.DEFAUlT);
+    }
 }
