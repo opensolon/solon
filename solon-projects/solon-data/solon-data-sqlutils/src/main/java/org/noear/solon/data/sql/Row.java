@@ -88,7 +88,7 @@ public interface Row {
      * @param type      类型
      * @param converter 转换器
      */
-    default <T> T toBean(Class<T> type, RowConverter<T> converter) throws SQLException {
-        return converter.convert(this, type);
+    default <T> T toBean(Class<T> type, RowConverter converter) throws SQLException {
+        return (T) converter.convert(this, type);
     }
 }

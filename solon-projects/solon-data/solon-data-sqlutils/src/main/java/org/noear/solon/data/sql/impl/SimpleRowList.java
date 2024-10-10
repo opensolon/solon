@@ -31,10 +31,10 @@ import java.util.List;
  */
 class SimpleRowList extends ArrayList<Row> implements RowList {
     @Override
-    public <T> List<T> toBeanList(Class<T> type, RowConverter<T> converter) throws SQLException {
+    public <T> List<T> toBeanList(Class<T> type, RowConverter converter) throws SQLException {
         List<T> list = new ArrayList<>();
         for (Row row : this) {
-            list.add(converter.convert(row, type));
+            list.add(row.toBean(type, converter));
         }
 
         return list;

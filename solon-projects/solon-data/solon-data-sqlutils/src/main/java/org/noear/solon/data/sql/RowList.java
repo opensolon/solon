@@ -31,5 +31,5 @@ public interface RowList extends List<Row> {
      * @param type      类型
      * @param converter 转换器
      */
-    <T> List<T> toBeanList(Class<T> type, RowConverter<T> converter) throws SQLException;
+    <T> List<T> toBeanList(Class<T> type, RowConverter converter) throws SQLException;
 }

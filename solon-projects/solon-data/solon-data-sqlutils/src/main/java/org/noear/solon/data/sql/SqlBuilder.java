@@ -74,7 +74,7 @@ public class SqlBuilder {
     /**
      * 备分状态
      */
-    protected void backup() {
+    public void backup() {
         b_builder.append(c_builder);
         b_args.addAll(c_args);
     }
@@ -82,7 +82,7 @@ public class SqlBuilder {
     /**
      * 还原状态
      */
-    protected void restore() {
+    public void restore() {
         clear();
         c_builder.append(b_builder);
         c_args.addAll(b_args);

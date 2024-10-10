@@ -23,12 +23,12 @@ import java.sql.SQLException;
  * @author noear
  * @since 3.0
  * */
-public interface RowConverter<T> {
+public interface RowConverter {
     /**
      * 转换
      *
      * @param row  行
      * @param type 类型
      */
-    T convert(Row row, Class<T> type) throws SQLException;
+    Object convert(Row row, Class<?> type) throws SQLException;
 }
