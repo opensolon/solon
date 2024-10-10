@@ -1,11 +1,9 @@
 package org.noear.solon.data.sql.impl;
 
-import org.noear.snack.ONode;
 import org.noear.solon.data.sql.Row;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 /**
  * 行简单实现
@@ -60,15 +58,5 @@ class SimpleRow implements Row {
         }
 
         return getValue(idx);
-    }
-
-    @Override
-    public <T> T toBean(Class<?> clazz) throws SQLException {
-        return ONode.load(toMap()).toObject(clazz);
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(data());
     }
 }

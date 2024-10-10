@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sql.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.data.sql.Row;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.tran.TranUtils;
@@ -41,7 +42,11 @@ public class SimpleSqlUtils implements SqlUtils {
      * 获取连接（为转换提供重写机会）
      */
     protected Connection getConnection() throws SQLException {
-        return TranUtils.getConnectionProxy(dataSource);
+        if (Solon.app() == null) {
+            return dataSource.getConnection();
+        } else {
+            return TranUtils.getConnectionProxy(dataSource);
+        }
     }
 
     /**

@@ -81,9 +81,4 @@ public interface Row {
 
         return map;
     }
-
-    /**
-     * 转为 Bean
-     */
-    <T> T toBean(Class<?> clazz) throws SQLException;
 }
