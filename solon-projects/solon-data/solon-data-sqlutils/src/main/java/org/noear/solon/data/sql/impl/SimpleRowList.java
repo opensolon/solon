@@ -21,6 +21,7 @@ import org.noear.solon.data.sql.RowList;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 行列表简单实现
@@ -29,6 +30,19 @@ import java.util.List;
  * @since 3.0
  */
 class SimpleRowList extends ArrayList<Row> implements RowList {
+    /**
+     * 转为 Map List
+     */
+    @Override
+    public List<Map<String, Object>> toMapList() throws SQLException {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Row row : this) {
+            list.add(row.toMap());
+        }
+
+        return list;
+    }
+
     /**
      * 转为 Bean List
      *

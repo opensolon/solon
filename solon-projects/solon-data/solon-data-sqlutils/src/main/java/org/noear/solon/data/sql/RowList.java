@@ -17,6 +17,7 @@ package org.noear.solon.data.sql;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 行列表
@@ -25,6 +26,11 @@ import java.util.List;
  * @since 3.0
  */
 public interface RowList extends List<Row> {
+    /**
+     * 转为 Map List
+     */
+    List<Map<String, Object>> toMapList() throws SQLException;
+
     /**
      * 转为 Bean List
      *
