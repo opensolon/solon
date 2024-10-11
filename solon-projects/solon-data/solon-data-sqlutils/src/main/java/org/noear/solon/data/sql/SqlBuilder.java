@@ -26,7 +26,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  */
-public class SqlBuilder implements SqlSpec{
+public class SqlBuilder implements SqlSpec {
     //当前数据
     private StringBuilder c_builder = new StringBuilder(200);
     private List<Object> c_args = new ArrayList<Object>();
@@ -269,24 +269,25 @@ public class SqlBuilder implements SqlSpec{
 
                 for (Object a1 : args) {
                     if (a1 instanceof Iterable) { //将数组转为单体
-                        StringBuilder sb = new StringBuilder();
+                        int idx = buf.indexOf("?...");
+                        if (idx < 0) {
+                            throw new IllegalArgumentException("Arg iterable required symbol '?...'");
+                        }
+
+                        StringBuilder tmp = new StringBuilder();
                         for (Object a2 : (Iterable) a1) {
                             this.args.add(a2);
-                            sb.append("?").append(",");
+                            tmp.append("?").append(",");
                         }
 
-                        int len = sb.length();
-                        if (len > 0) {
-                            sb.deleteCharAt(len - 1);
+                        if (tmp.length() > 0) {
+                            tmp.setLength(tmp.length() - 1);
                         }
 
-                        int idx = buf.indexOf("?...");
-                        String tmp = sb.toString();
-
-                        if (len == 0) {
+                        if (tmp.length() == 0) {
                             buf.replace(idx, idx + 4, "null");
                         } else {
-                            buf.replace(idx, idx + 4, tmp);
+                            buf.replace(idx, idx + 4, tmp.toString());
                         }
                     } else {
                         this.args.add(a1);
