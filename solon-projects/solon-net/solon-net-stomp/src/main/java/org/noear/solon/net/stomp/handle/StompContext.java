@@ -18,6 +18,7 @@ package org.noear.solon.net.stomp.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Frame;
@@ -66,6 +67,11 @@ public class StompContext extends ContextEmpty {
     @Override
     public String sessionId() {
         return session.id();
+    }
+
+    @Override
+    public String method() {
+        return MethodType.MESSAGE.name;
     }
 
     @Override

@@ -66,6 +66,10 @@ public class MethodTypeResolver {
             list.add(MethodType.SOCKET);
         }
 
+        if (checker.test(Message.class)) {
+            list.add(MethodType.MESSAGE);
+        }
+
         return list;
     }
 }

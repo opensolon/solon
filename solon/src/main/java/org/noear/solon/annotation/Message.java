@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package benchmark;
+package org.noear.solon.annotation;
+
+import java.lang.annotation.*;
 
 /**
- * @author noear 2022/12/2 created
+ * 做为 @Mapping 的副词用
+ *
+ * @author noear
+ * @since 3.0
  */
-public class MethodTest {
-    public static void main(String[] args){
-        long timeStart = System.currentTimeMillis();
-
-        for(int i=0; i<100000; i++){
-            if("GET".equals("GET")){
-
-            }
-        }
-
-        System.out.println(System.currentTimeMillis() - timeStart);
-    }
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Message {
 }

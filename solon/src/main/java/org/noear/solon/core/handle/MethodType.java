@@ -51,6 +51,11 @@ public enum MethodType {
      */
     SOCKET("SOCKET", SignalType.SOCKET),
 
+    /**
+     * message forwarding
+     */
+    MESSAGE("MESSAGE", SignalType.SOCKET),
+
     ALL("ALL", SignalType.ALL);
 
     public final String name;

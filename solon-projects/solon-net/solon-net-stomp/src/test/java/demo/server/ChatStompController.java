@@ -12,6 +12,7 @@ public class ChatStompController {
     @Inject //@Inject("/chat")
     StompEmitter stompSender;
 
+    @Message
     @Mapping("/topic/todoTask1/open")
     //@To("/topic/todoTask1/s1")
     public String test(Context ctx, @Body String text) {
