@@ -40,7 +40,7 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    <T> T selectValue(String sql, Object... args) throws SQLException;
+    <T> T queryValue(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取数组
@@ -48,7 +48,7 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    <T> List<T> selectValueArray(String sql, Object... args) throws SQLException;
+    <T> List<T> queryValueArray(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行
@@ -56,7 +56,7 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    Row selectRow(String sql, Object... args) throws SQLException;
+    Row queryRow(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行列表
@@ -64,44 +64,38 @@ public interface SqlUtils {
      * @param sql SQL for retrieving record
      */
     @Nullable
-    RowList selectRowList(String sql, Object... args) throws SQLException;
+    RowList queryRowList(String sql, Object... args) throws SQLException;
 
     /**
      * 查询并获取行遍历器（流式读取）
      *
      * @param sql SQL for retrieving record
      */
-    RowIterator selectRowIterator(String sql, int fetchSize, Object... args) throws SQLException;
+    RowIterator queryRowIterator(String sql, int fetchSize, Object... args) throws SQLException;
+
 
     /**
-     * 插入
+     * 更新（插入、或更新、或删除）
      *
      * @param sql SQL for retrieving record
      * @return 受影响行数
      */
-    int insert(String sql, Object... args) throws SQLException;
+    int update(String sql, Object... args) throws SQLException;
 
     /**
-     * 插入并返回自增键
-     *
-     * @param sql SQL for retrieving record
-     * @return 自增键
-     */
-    long insertReturnKey(String sql, Object... args) throws SQLException;
-
-    /**
-     * 执行（更新，或删除）
-     *
-     * @param sql SQL for retrieving record
-     * @return 受影响行数
-     */
-    int execute(String sql, Object... args) throws SQLException;
-
-    /**
-     * 批量执行（更新，或删除）
+     * 批量更新（插入、或更新、或删除）
      *
      * @param sql SQL for retrieving record
      * @return 受影响行数组
      */
-    int[] executeBatch(String sql, Collection<Object[]> argsList) throws SQLException;
+    int[] updateBatch(String sql, Collection<Object[]> argsList) throws SQLException;
+
+
+    /**
+     * 更新并返回主键
+     *
+     * @param sql SQL for retrieving record
+     * @return 自增键
+     */
+    long updateReturnKey(String sql, Object... args) throws SQLException;
 }

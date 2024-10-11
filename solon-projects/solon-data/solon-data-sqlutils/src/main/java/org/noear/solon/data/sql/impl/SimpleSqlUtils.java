@@ -112,8 +112,8 @@ public class SimpleSqlUtils implements SqlUtils {
 
         if (args instanceof Collection) {
             //批处理
-            List<Object[]> rowList = (List<Object[]>) args;
-            for (Object[] row : rowList) {
+            Collection<Object[]> argsList = (Collection<Object[]>) args;
+            for (Object[] row : argsList) {
                 for (int i = 0; i < row.length; i++) {
                     setObject(holder.stmt, i + 1, row[i]);
                 }
@@ -133,7 +133,7 @@ public class SimpleSqlUtils implements SqlUtils {
 
 
     @Override
-    public <T> T selectValue(String sql, Object... args) throws SQLException {
+    public <T> T queryValue(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
@@ -146,7 +146,7 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public <T> List<T> selectValueArray(String sql, Object... args) throws SQLException {
+    public <T> List<T> queryValueArray(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
@@ -161,7 +161,7 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public Row selectRow(String sql, Object... args) throws SQLException {
+    public Row queryRow(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
@@ -174,7 +174,7 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public RowList selectRowList(String sql, Object... args) throws SQLException {
+    public RowList queryRowList(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
@@ -189,7 +189,7 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public RowIterator selectRowIterator(String sql, int fetchSize, Object... args) throws SQLException {
+    public RowIterator queryRowIterator(String sql, int fetchSize, Object... args) throws SQLException {
         CommandHolder holder = buildCommand(sql, args, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
@@ -198,14 +198,21 @@ public class SimpleSqlUtils implements SqlUtils {
     }
 
     @Override
-    public int insert(String sql, Object... args) throws SQLException {
+    public int update(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, false, false)) {
             return holder.stmt.executeUpdate();
         }
     }
 
     @Override
-    public long insertReturnKey(String sql, Object... args) throws SQLException {
+    public int[] updateBatch(String sql, Collection<Object[]> argsList) throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, argsList, false, false)) {
+            return holder.stmt.executeBatch();
+        }
+    }
+
+    @Override
+    public long updateReturnKey(String sql, Object... args) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, args, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
@@ -215,20 +222,6 @@ public class SimpleSqlUtils implements SqlUtils {
             } else {
                 return -1L;
             }
-        }
-    }
-
-    @Override
-    public int execute(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            return holder.stmt.executeUpdate();
-        }
-    }
-
-    @Override
-    public int[] executeBatch(String sql, Collection<Object[]> argsList) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, argsList, false, false)) {
-            return holder.stmt.executeBatch();
         }
     }
 }
