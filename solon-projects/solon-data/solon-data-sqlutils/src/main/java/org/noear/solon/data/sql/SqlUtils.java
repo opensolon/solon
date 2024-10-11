@@ -16,12 +16,8 @@
 package org.noear.solon.data.sql;
 
 import org.noear.solon.data.sql.impl.SimpleSqlUtils;
-import org.noear.solon.lang.Nullable;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Sql 工具类（线程安全，可作为单例保存）
@@ -35,67 +31,19 @@ public interface SqlUtils {
     }
 
     /**
-     * 查询并获取单值
+     * 查询代码
      *
-     * @param sql SQL for retrieving record
+     * @param sql  代码
+     * @param args 参数
      */
-    @Nullable
-    <T> T queryValue(String sql, Object... args) throws SQLException;
+    SqlExecutor sql(String sql, Object... args);
 
     /**
-     * 查询并获取数组
+     * 查询代码
      *
-     * @param sql SQL for retrieving record
+     * @param sql 代码和参数
      */
-    @Nullable
-    <T> List<T> queryValueArray(String sql, Object... args) throws SQLException;
-
-    /**
-     * 查询并获取行
-     *
-     * @param sql SQL for retrieving record
-     */
-    @Nullable
-    Row queryRow(String sql, Object... args) throws SQLException;
-
-    /**
-     * 查询并获取行列表
-     *
-     * @param sql SQL for retrieving record
-     */
-    @Nullable
-    RowList queryRowList(String sql, Object... args) throws SQLException;
-
-    /**
-     * 查询并获取行遍历器（流式读取）
-     *
-     * @param sql SQL for retrieving record
-     */
-    RowIterator queryRowIterator(String sql, int fetchSize, Object... args) throws SQLException;
-
-
-    /**
-     * 更新（插入、或更新、或删除）
-     *
-     * @param sql SQL for retrieving record
-     * @return 受影响行数
-     */
-    int update(String sql, Object... args) throws SQLException;
-
-    /**
-     * 批量更新（插入、或更新、或删除）
-     *
-     * @param sql SQL for retrieving record
-     * @return 受影响行数组
-     */
-    int[] updateBatch(String sql, Collection<Object[]> argsList) throws SQLException;
-
-
-    /**
-     * 更新并返回主键
-     *
-     * @param sql SQL for retrieving record
-     * @return 自增键
-     */
-    long updateReturnKey(String sql, Object... args) throws SQLException;
+    default SqlExecutor sql(SqlBuilder sql) {
+        return sql(sql.getSql(), sql.getArgs());
+    }
 }

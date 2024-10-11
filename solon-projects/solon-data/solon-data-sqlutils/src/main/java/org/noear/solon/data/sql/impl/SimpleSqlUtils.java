@@ -16,10 +16,7 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.Solon;
-import org.noear.solon.data.sql.Row;
-import org.noear.solon.data.sql.RowList;
-import org.noear.solon.data.sql.RowIterator;
-import org.noear.solon.data.sql.SqlUtils;
+import org.noear.solon.data.sql.*;
 import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
@@ -131,97 +128,8 @@ public class SimpleSqlUtils implements SqlUtils {
         return holder;
     }
 
-
     @Override
-    public <T> T queryValue(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            holder.rsts = holder.stmt.executeQuery();
-
-            if (holder.rsts.next()) {
-                return (T) getObject(holder, 1);
-            }
-
-            return null;
-        }
-    }
-
-    @Override
-    public <T> List<T> queryValueArray(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            holder.rsts = holder.stmt.executeQuery();
-
-            List<T> list = new ArrayList<>();
-
-            while (holder.rsts.next()) {
-                list.add((T) getObject(holder, 1));
-            }
-
-            return list.size() > 0 ? list : null;
-        }
-    }
-
-    @Override
-    public Row queryRow(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            holder.rsts = holder.stmt.executeQuery();
-
-            if (holder.rsts.next()) {
-                return holder.getRow();
-            } else {
-                return null;
-            }
-        }
-    }
-
-    @Override
-    public RowList queryRowList(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            holder.rsts = holder.stmt.executeQuery();
-
-            RowList rowList = new SimpleRowList();
-
-            while (holder.rsts.next()) {
-                rowList.add(holder.getRow());
-            }
-
-            return rowList.size() > 0 ? rowList : null;
-        }
-    }
-
-    @Override
-    public RowIterator queryRowIterator(String sql, int fetchSize, Object... args) throws SQLException {
-        CommandHolder holder = buildCommand(sql, args, false, true);
-        holder.stmt.setFetchSize(fetchSize);
-        holder.rsts = holder.stmt.executeQuery();
-
-        return new SimpleRowIterator(holder);
-    }
-
-    @Override
-    public int update(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, false, false)) {
-            return holder.stmt.executeUpdate();
-        }
-    }
-
-    @Override
-    public int[] updateBatch(String sql, Collection<Object[]> argsList) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, argsList, false, false)) {
-            return holder.stmt.executeBatch();
-        }
-    }
-
-    @Override
-    public long updateReturnKey(String sql, Object... args) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, args, true, false)) {
-            holder.stmt.executeUpdate();
-            holder.rsts = holder.stmt.getGeneratedKeys();
-
-            if (holder.rsts.next()) {
-                return holder.rsts.getLong(1);
-            } else {
-                return -1L;
-            }
-        }
+    public SqlExecutor sql(String sql, Object... args) {
+        return new SimpleSqlExecutor(this, sql, args);
     }
 }

@@ -60,14 +60,14 @@ public interface Row {
      *
      * @param columnIdx 列顺位（从1开始）
      */
-    Object getValue(int columnIdx) throws SQLException;
+    Object getObject(int columnIdx) throws SQLException;
 
     /**
      * 获取值
      *
      * @param name 名字
      */
-    Object getValue(String name) throws SQLException;
+    Object getObject(String name) throws SQLException;
 
     /**
      * 转为 Map

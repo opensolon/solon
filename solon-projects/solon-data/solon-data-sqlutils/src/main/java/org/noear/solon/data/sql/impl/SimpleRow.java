@@ -63,18 +63,18 @@ class SimpleRow implements Row {
     }
 
     @Override
-    public Object getValue(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) throws SQLException {
         return _data[columnIndex - 1];
     }
 
     @Override
-    public Object getValue(String name) throws SQLException {
+    public Object getObject(String name) throws SQLException {
         int idx = getNameColumnIdx(name);
         if (idx < 1) {
             throw new SQLException("Column '" + name + "' not found");
         }
 
-        return getValue(idx);
+        return getObject(idx);
     }
 
 
@@ -85,7 +85,7 @@ class SimpleRow implements Row {
     public Map<String, Object> toMap() throws SQLException {
         Map<String, Object> map = new LinkedHashMap<>();
         for (int cI = 1; cI <= size(); cI++) {
-            map.put(getName(cI), getValue(cI));
+            map.put(getName(cI), getObject(cI));
         }
 
         return map;
