@@ -31,7 +31,7 @@ public interface SqlUtils {
     }
 
     /**
-     * 查询代码
+     * 执行代码
      *
      * @param sql  代码
      * @param args 参数
@@ -39,7 +39,7 @@ public interface SqlUtils {
     SqlExecutor sql(String sql, Object... args);
 
     /**
-     * 查询代码
+     * 执行代码
      *
      * @param sqlSpec 代码申明
      */
