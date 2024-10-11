@@ -41,9 +41,9 @@ public interface SqlUtils {
     /**
      * 查询代码
      *
-     * @param sql 代码和参数
+     * @param sqlSpec 代码申明
      */
-    default SqlExecutor sql(SqlBuilder sql) {
-        return sql(sql.getSql(), sql.getArgs());
+    default SqlExecutor sql(SqlSpec sqlSpec) {
+        return sql(sqlSpec.getSql(), sqlSpec.getArgs());
     }
 }

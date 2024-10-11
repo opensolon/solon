@@ -26,7 +26,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  */
-public class SqlBuilder {
+public class SqlBuilder implements SqlSpec{
     //当前数据
     private StringBuilder c_builder = new StringBuilder(200);
     private List<Object> c_args = new ArrayList<Object>();
@@ -233,8 +233,9 @@ public class SqlBuilder {
     }
 
     /**
-     * 获取SQL
+     * 获取代码
      */
+    @Override
     public String getSql() {
         return c_builder.toString();
     }
@@ -242,6 +243,7 @@ public class SqlBuilder {
     /**
      * 获取参数
      */
+    @Override
     public Object[] getArgs() {
         return c_args.toArray();
     }
