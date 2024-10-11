@@ -74,18 +74,20 @@ public class SqlBuilder implements SqlSpec {
     /**
      * 备分状态
      */
-    public void backup() {
+    public SqlBuilder backup() {
         b_builder.append(c_builder);
         b_args.addAll(c_args);
+        return this;
     }
 
     /**
      * 还原状态
      */
-    public void restore() {
+    public SqlBuilder restore() {
         clear();
         c_builder.append(b_builder);
         c_args.addAll(b_args);
+        return this;
     }
 
     /**
