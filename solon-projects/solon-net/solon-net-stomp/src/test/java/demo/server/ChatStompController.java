@@ -17,6 +17,7 @@ public class ChatStompController {
     //@To("/topic/todoTask1/s1")
     public String test(Context ctx, @Body String text) {
         System.out.println(ctx.headerMap());
+        System.out.println(ctx.method());
         System.out.println(text);
 
         stompSender.sendTo(ctx.path(), "收到1：" +text);
