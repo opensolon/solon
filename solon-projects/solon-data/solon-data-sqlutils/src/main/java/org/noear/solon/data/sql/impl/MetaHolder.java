@@ -27,19 +27,26 @@ import java.util.Map;
  * @since 3.0
  */
 class MetaHolder {
-    public final ResultSetMetaData meta;
+    private final ResultSetMetaData meta;
+    private final String[] names;
+
     public final int size;
 
     public MetaHolder(ResultSetMetaData meta) throws SQLException {
         this.meta = meta;
         this.size = meta.getColumnCount();
+        this.names = new String[size];
+
+        for (int cI = 1; cI <= size; cI++) {
+            names[cI - 1] = meta.getColumnLabel(cI);
+        }
     }
 
     /**
      * 获取名字
      */
     public String getName(int columnIdx) throws SQLException {
-        return meta.getColumnLabel(columnIdx);
+        return names[columnIdx - 1];
     }
 
     private Map<String, Integer> namesIdx;

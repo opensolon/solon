@@ -32,11 +32,6 @@ public interface Row {
     int size();
 
     /**
-     * 元信息
-     */
-    ResultSetMetaData meta();
-
-    /**
      * 行数据
      */
     Object[] data();

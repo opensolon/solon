@@ -17,7 +17,6 @@ package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.data.sql.Row;
 
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,11 +39,6 @@ class SimpleRow implements Row {
     @Override
     public int size() {
         return _metaHolder.size;
-    }
-
-    @Override
-    public ResultSetMetaData meta() {
-        return _metaHolder.meta;
     }
 
     @Override
