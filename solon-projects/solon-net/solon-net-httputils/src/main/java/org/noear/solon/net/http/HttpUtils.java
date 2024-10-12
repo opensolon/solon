@@ -205,6 +205,17 @@ public interface HttpUtils {
     String post() throws IOException;
 
     /**
+     * post 请求并返回 body
+     */
+    default String post(boolean useMultipart) throws IOException {
+        if (useMultipart) {
+            multipart(true);
+        }
+
+        return post();
+    }
+
+    /**
      * put 请求并返回 body
      */
     String put() throws IOException;
