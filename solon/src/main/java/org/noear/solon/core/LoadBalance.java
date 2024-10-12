@@ -53,6 +53,9 @@ import java.net.URI;
 public interface LoadBalance {
     static String URI_SCHEME = "lb";
 
+    /**
+     * 解析并生成负载均衡器
+     */
     static LoadBalance parse(String uriStr) {
         if (uriStr.contains("://")) {
             return parse(URI.create(uriStr));
@@ -62,6 +65,9 @@ public interface LoadBalance {
         }
     }
 
+    /**
+     * 解析并生成负载均衡器
+     */
     static LoadBalance parse(URI uri) {
         if (URI_SCHEME.equals(uri.getScheme())) {
             //"lb://"
@@ -113,6 +119,9 @@ public interface LoadBalance {
         LoadBalance create(String group, String service);
     }
 
+    /**
+     * 负载均衡器包装器
+     */
     static class LoadBalanceWrap implements LoadBalance {
         private String server0;
         private LoadBalance lb0;
