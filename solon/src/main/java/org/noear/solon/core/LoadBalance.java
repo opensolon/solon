@@ -71,6 +71,7 @@ public interface LoadBalance {
                 }
             }
         } else {
+            //as service
             return get(uriStr);
         }
     }
