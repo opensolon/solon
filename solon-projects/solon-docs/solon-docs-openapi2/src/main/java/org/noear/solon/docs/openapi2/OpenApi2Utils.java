@@ -104,18 +104,12 @@ public class OpenApi2Utils {
         } else {
             //代理模式
             URI upstreamTarget = docket.upstream().getTarget();
-            String targetAddr;
-            if (LoadBalance.URI_SCHEME.equals(upstreamTarget.getScheme())) {
-                targetAddr = LoadBalance.get(upstreamTarget.getHost()).getServer(upstreamTarget.getPort());
-
-                if (targetAddr == null) {
-                    throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
-                }
-            } else {
-                targetAddr = docket.upstream().getTarget().toString();
+            String targetAddr = LoadBalance.parse(upstreamTarget).getServer();
+            if (targetAddr == null) {
+                throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
             }
 
-            String url = PathUtil.mergePath(targetAddr, docket.upstream().getUri()).substring(1);
+            String url = PathUtil.joinUri(targetAddr, docket.upstream().getUri()).substring(1);
             return httpGet(url, docket);
         }
     }

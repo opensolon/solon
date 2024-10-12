@@ -25,12 +25,13 @@ import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
+import org.noear.solon.exception.SolonException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.SocketException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -104,14 +105,13 @@ public class OpenApi2Utils {
             return getSwaggerJson(docket, null);
         } else {
             //代理模式
-            String targetAddr;
-            if (LoadBalance.URI_SCHEME.equals(docket.upstream().getTarget().getScheme())) {
-                targetAddr = LoadBalance.get(docket.upstream().getTarget().getHost()).getServer();
-            } else {
-                targetAddr = docket.upstream().getTarget().toString();
+            URI upstreamTarget = docket.upstream().getTarget();
+            String targetAddr = LoadBalance.parse(upstreamTarget).getServer();
+            if (targetAddr == null) {
+                throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
             }
 
-            String url = PathUtil.mergePath(targetAddr, docket.upstream().getUri()).substring(1);
+            String url = PathUtil.joinUri(targetAddr, docket.upstream().getUri()).substring(1);
             return httpGet(url, docket);
         }
     }
