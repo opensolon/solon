@@ -136,10 +136,14 @@ public interface LoadBalance {
         @Override
         public String getServer(int port) {
             if (server0 == null) {
-                if (port0 > 0) {
-                    return lb0.getServer(port0);
+                if (lb0 == null) {
+                    return null;
                 } else {
-                    return lb0.getServer(port);
+                    if (port0 > 0) {
+                        return lb0.getServer(port0);
+                    } else {
+                        return lb0.getServer(port);
+                    }
                 }
             } else {
                 return server0;
