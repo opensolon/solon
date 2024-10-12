@@ -188,12 +188,12 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         private MediaType _contentType = null;
         private HttpStream _httpStream = null;
 
-        public StreamBody(HttpStream httpStream) {
-            if (_httpStream.getContentType() != null) {
-                _contentType = MediaType.parse(_httpStream.getContentType());
+        public StreamBody(HttpStream stream) {
+            if (stream.getContentType() != null) {
+                _contentType = MediaType.parse(stream.getContentType());
             }
 
-            this._httpStream = httpStream;
+            this._httpStream = stream;
         }
 
         @Override
