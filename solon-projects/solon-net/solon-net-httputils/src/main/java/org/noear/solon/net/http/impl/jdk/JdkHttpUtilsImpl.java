@@ -119,14 +119,15 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         try {
             if (METHODS_NOBODY.contains(method) == false) {
                 if (_bodyRaw != null) {
-                    if (_bodyRaw.contentType != null) {
-                        _builder.setRequestProperty("Content-Type", _bodyRaw.contentType);
+                    if (_bodyRaw.getContentType() != null) {
+                        _builder.setRequestProperty("Content-Type", _bodyRaw.getContentType());
                     }
 
                     _builder.setDoOutput(true);
 
-                    try (OutputStream out = _builder.getOutputStream()) {
-                        IoUtil.transferTo(_bodyRaw.content, out);
+                    try (OutputStream out = _builder.getOutputStream();
+                         InputStream ins = _bodyRaw.getContent()) {
+                        IoUtil.transferTo(ins, out);
                         out.flush();
                     }
                 } else {
@@ -194,13 +195,15 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         private void appendPartFile(OutputStream out, PrintWriter writer, String key, HttpUploadFile value) throws IOException {
             writer.append("--").append(boundary).append(CRLF);
             writer.append(String.format(fileFormat, HttpUtils.urlEncode(key, charset.name()), value.fileName)).append(CRLF);
-            if (value.fileStream.contentType != null) {
-                writer.append("Content-Type: ").append(value.fileStream.contentType).append(CRLF);
+            if (value.fileStream.getContentType() != null) {
+                writer.append("Content-Type: ").append(value.fileStream.getContentType()).append(CRLF);
             }
             writer.append("Content-Transfer-Encoding: binary").append(CRLF);
             writer.append(CRLF).flush();
 
-            IoUtil.transferTo(value.fileStream.content, out).flush();
+            try(InputStream ins = value.fileStream.getContent()) {
+                IoUtil.transferTo(ins, out).flush();
+            }
 
             writer.append(CRLF).flush();
         }

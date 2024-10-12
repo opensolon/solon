@@ -24,7 +24,6 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -68,7 +67,6 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             _client = client;
         }
     }
-
 
 
     @Override
@@ -188,14 +186,14 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
     public static class StreamBody extends RequestBody {
         private MediaType _contentType = null;
-        private InputStream _inputStream = null;
+        private HttpStream _httpStream = null;
 
         public StreamBody(HttpStream httpStream) {
-            if (httpStream.contentType != null) {
-                _contentType = MediaType.parse(httpStream.contentType);
+            if (_httpStream.getContentType() != null) {
+                _contentType = MediaType.parse(_httpStream.getContentType());
             }
 
-            _inputStream = httpStream.content;
+            this._httpStream = httpStream;
         }
 
         @Override
@@ -205,7 +203,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
         @Override
         public long contentLength() throws IOException {
-            return _inputStream.available();
+            return _httpStream.getContentLength();
         }
 
         @Override
@@ -213,7 +211,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             Source source = null;
 
             try {
-                source = Okio.source(_inputStream);
+                source = Okio.source(_httpStream.getContent());
                 sink.writeAll(source);
             } finally {
                 Util.closeQuietly(source);

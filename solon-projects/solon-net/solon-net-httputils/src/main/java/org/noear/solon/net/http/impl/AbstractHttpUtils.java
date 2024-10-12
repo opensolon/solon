@@ -7,9 +7,7 @@ import org.noear.solon.net.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -246,6 +244,18 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
         multipart(true);
         tryInitFiles().add(name, new HttpUploadFile(filename, new HttpStream(inputStream, contentType)));
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils data(String name, String filename, File file) {
+        if (name == null || file == null) {
+            return this;
+        }
+
+        multipart(true);
+        tryInitFiles().add(name, new HttpUploadFile(filename, new HttpStream(file)));
 
         return this;
     }

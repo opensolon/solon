@@ -23,6 +23,7 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -144,6 +145,18 @@ public interface HttpUtils {
      * 参数配置
      */
     HttpUtils data(String name, String filename, InputStream inputStream, String contentType);
+
+    /**
+     * 参数配置
+     */
+    HttpUtils data(String name, String filename, File file);
+
+    /**
+     * 参数配置
+     */
+    default HttpUtils data(String name, File file) {
+        return data(name, file.getName(), file);
+    }
 
     /**
      * 主体配置
