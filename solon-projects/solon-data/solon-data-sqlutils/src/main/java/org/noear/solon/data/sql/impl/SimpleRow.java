@@ -17,7 +17,6 @@ package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.data.sql.Row;
 
-import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -47,25 +46,25 @@ class SimpleRow implements Row {
     }
 
     @Override
-    public String getName(int columnIdx) throws SQLException {
+    public String getName(int columnIdx) {
         return _metaHolder.getName(columnIdx);
     }
 
     @Override
-    public int getNameColumnIdx(String name) throws SQLException {
+    public int getNameColumnIdx(String name) {
         return _metaHolder.getNameColumnIdx(name);
     }
 
     @Override
-    public Object getObject(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) {
         return _data[columnIndex - 1];
     }
 
     @Override
-    public Object getObject(String name) throws SQLException {
+    public Object getObject(String name) {
         int idx = getNameColumnIdx(name);
         if (idx < 1) {
-            throw new SQLException("Column '" + name + "' not found");
+            throw new IllegalArgumentException("Column '" + name + "' not found");
         }
 
         return getObject(idx);
@@ -76,7 +75,7 @@ class SimpleRow implements Row {
      * 转为 Map
      */
     @Override
-    public Map<String, Object> toMap() throws SQLException {
+    public Map<String, Object> toMap() {
         Map<String, Object> map = new LinkedHashMap<>();
         for (int cI = 1; cI <= size(); cI++) {
             map.put(getName(cI), getObject(cI));
@@ -92,7 +91,7 @@ class SimpleRow implements Row {
      * @param converter 转换器
      */
     @Override
-    public  <T> T toBean(Class<T> type, Converter converter) throws SQLException {
+    public <T> T toBean(Class<T> type, Converter converter) {
         return (T) converter.convert(this, type);
     }
 
@@ -102,7 +101,7 @@ class SimpleRow implements Row {
      * @param type 类型
      */
     @Override
-    public  <T> T toBean(Class<T> type) throws SQLException {
+    public <T> T toBean(Class<T> type) {
         return toBean(type, DefaultConverter.getInstance());
     }
 }

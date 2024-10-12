@@ -45,7 +45,7 @@ class MetaHolder {
     /**
      * 获取名字
      */
-    public String getName(int columnIdx) throws SQLException {
+    public String getName(int columnIdx) {
         return names[columnIdx - 1];
     }
 
@@ -54,7 +54,7 @@ class MetaHolder {
     /**
      * 获取名字的列顺位
      */
-    public int getNameColumnIdx(String name) throws SQLException {
+    public int getNameColumnIdx(String name) {
         if (namesIdx == null) {
             namesIdx = new HashMap<>();
 

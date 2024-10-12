@@ -4,8 +4,6 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.data.sql.Row;
 
-import java.sql.SQLException;
-
 /**
  * @author noear
  * @since 3.0
@@ -41,7 +39,7 @@ public class DefaultConverter implements Row.Converter {
      * 转换
      */
     @Override
-    public Object convert(Row row, Class<?> type) throws SQLException {
+    public Object convert(Row row, Class<?> type) {
         return ONode.load(row.toMap()).toObject(type);
     }
 }

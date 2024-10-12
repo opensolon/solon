@@ -15,8 +15,7 @@
  */
 package org.noear.solon.data.sql;
 
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+
 import java.util.Map;
 
 /**
@@ -41,33 +40,33 @@ public interface Row {
      *
      * @param columnIdx 列顺位（从1开始）
      */
-    String getName(int columnIdx) throws SQLException;
+    String getName(int columnIdx);
 
     /**
      * 获取名字列顺位
      *
      * @param name 名字
      */
-    int getNameColumnIdx(String name) throws SQLException;
+    int getNameColumnIdx(String name);
 
     /**
      * 获取值
      *
      * @param columnIdx 列顺位（从1开始）
      */
-    Object getObject(int columnIdx) throws SQLException;
+    Object getObject(int columnIdx);
 
     /**
      * 获取值
      *
      * @param name 名字
      */
-    Object getObject(String name) throws SQLException;
+    Object getObject(String name);
 
     /**
      * 转为 Map
      */
-    Map<String, Object> toMap() throws SQLException;
+    Map<String, Object> toMap();
 
     /**
      * 转为 Bean
@@ -75,14 +74,14 @@ public interface Row {
      * @param type      类型
      * @param converter 转换器
      */
-    <T> T toBean(Class<T> type, Row.Converter converter) throws SQLException;
+    <T> T toBean(Class<T> type, Row.Converter converter);
 
     /**
      * 转为 Bean
      *
      * @param type 类型
      */
-    <T> T toBean(Class<T> type) throws SQLException;
+    <T> T toBean(Class<T> type);
 
     /**
      * 行转换器
@@ -95,6 +94,6 @@ public interface Row {
          * @param row  行
          * @param type 类型
          */
-        Object convert(Row row, Class<?> type) throws SQLException;
+        Object convert(Row row, Class<?> type);
     }
 }
