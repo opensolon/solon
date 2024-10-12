@@ -54,25 +54,21 @@ public interface LoadBalance {
     static String URI_SCHEME = "lb";
 
     static LoadBalance parse(String uriStr) {
-        int schemeIdx = uriStr.indexOf("://");
-
-        if (schemeIdx > 0) {
-            URI uri = URI.create(uriStr);
-            if (URI_SCHEME.equals(uri.getScheme())) {
-                //"lb://"
-                return new LoadBalanceWrap(null, get(uri.getHost()), uri.getPort());
-            } else {
-                //"http://","ftp://"...
-                int end = uriStr.indexOf(schemeIdx + 4);
-                if (end > 0) {
-                    return new LoadBalanceWrap(uriStr.substring(0, end), null, 0);
-                } else {
-                    return new LoadBalanceWrap(uriStr, null, 0);
-                }
-            }
+        if (uriStr.contains("://")) {
+            return parse(URI.create(uriStr));
         } else {
             //as service
             return get(uriStr);
+        }
+    }
+
+    static LoadBalance parse(URI uri) {
+        if (URI_SCHEME.equals(uri.getScheme())) {
+            //"lb://"
+            return new LoadBalanceWrap(null, get(uri.getHost()), uri.getPort());
+        } else {
+            //"http://","ftp://"...
+            return new LoadBalanceWrap(uri.getScheme() + "://" + uri.getAuthority(), null, -1);
         }
     }
 
@@ -123,7 +119,7 @@ public interface LoadBalance {
         private int port0;
 
         public LoadBalanceWrap(String server, LoadBalance lb, int port) {
-            this.server0 = server0;
+            this.server0 = server;
             this.lb0 = lb;
             this.port0 = port;
         }
