@@ -254,8 +254,12 @@ public abstract class AbstractHttpUtils implements HttpUtils {
             return this;
         }
 
+        if (filename == null) {
+            filename = file.getName();
+        }
+
         multipart(true);
-        tryInitFiles().add(name, new HttpUploadFile(filename, new HttpStream(file)));
+        tryInitFiles().add(name, new HttpUploadFile(filename, new HttpStream(filename, file)));
 
         return this;
     }

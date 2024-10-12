@@ -22,8 +22,8 @@ public class HttpStream {
         this.content = content;
     }
 
-    public HttpStream(File file) {
-        this.contentType = Utils.mime(file.getName());
+    public HttpStream(String filename, File file) {
+        this.contentType = Utils.mime(filename);
         this.file = file;
     }
 
