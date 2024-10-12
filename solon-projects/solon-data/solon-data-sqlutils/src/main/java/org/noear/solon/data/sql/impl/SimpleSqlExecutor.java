@@ -122,15 +122,15 @@ public class SimpleSqlExecutor implements SqlExecutor {
     }
 
     @Override
-    public long updateReturnKey() throws SQLException {
+    public <T> T updateReturnKey() throws SQLException {
         try (CommandHolder holder = utils.buildCommand(sql, args, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
             if (holder.rsts.next()) {
-                return holder.rsts.getLong(1);
+                return (T) holder.rsts.getObject(1);
             } else {
-                return -1L;
+                return null;
             }
         }
     }

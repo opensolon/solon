@@ -88,5 +88,6 @@ public interface SqlExecutor {
      *
      * @return 主键
      */
-    long updateReturnKey() throws SQLException;
+    @Nullable
+    <T> T updateReturnKey() throws SQLException;
 }
