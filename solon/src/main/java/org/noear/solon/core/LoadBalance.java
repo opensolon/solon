@@ -17,6 +17,8 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 
+import java.net.URI;
+
 /**
  * 负载均衡器（为服务提供一个简单的负载接口；起到适配中介效果）
  *
@@ -35,7 +37,7 @@ import org.noear.solon.Solon;
  * //通过 NamiClient 使用，然后调用一个restful api（注：NamiClient 已与 LoadBalance 适配）
  * @Component
  * public class DemoBean{
- *     @NamiClient("local:/demo/hello/")    //此处的local，对上面的local
+ *     @NamiClient(name="local", path="/demo/hello/")    //此处的local，对上面的local
  *     HelloService demo;
  * }
  *
@@ -50,6 +52,28 @@ import org.noear.solon.Solon;
 @FunctionalInterface
 public interface LoadBalance {
     static String URI_SCHEME = "lb";
+
+    static LoadBalance parse(String uriStr) {
+        int schemeIdx = uriStr.indexOf("://");
+
+        if (schemeIdx > 0) {
+            URI uri = URI.create(uriStr);
+            if (URI_SCHEME.equals(uri.getScheme())) {
+                //"lb://"
+                return new LoadBalanceWrap(null, get(uri.getHost()), uri.getPort());
+            } else {
+                //"http://","ftp://"...
+                int end = uriStr.indexOf(schemeIdx + 4);
+                if (end > 0) {
+                    return new LoadBalanceWrap(uriStr.substring(0, end), null, 0);
+                } else {
+                    return new LoadBalanceWrap(uriStr, null, 0);
+                }
+            }
+        } else {
+            return get(uriStr);
+        }
+    }
 
     /**
      * 获取负载均衡器
@@ -90,5 +114,30 @@ public interface LoadBalance {
      */
     interface Factory {
         LoadBalance create(String group, String service);
+    }
+
+    static class LoadBalanceWrap implements LoadBalance {
+        private String server0;
+        private LoadBalance lb0;
+        private int port0;
+
+        public LoadBalanceWrap(String server, LoadBalance lb, int port) {
+            this.server0 = server0;
+            this.lb0 = lb;
+            this.port0 = port;
+        }
+
+        @Override
+        public String getServer(int port) {
+            if (server0 == null) {
+                if (port0 > 0) {
+                    return lb0.getServer(port0);
+                } else {
+                    return lb0.getServer(port);
+                }
+            } else {
+                return server0;
+            }
+        }
     }
 }
