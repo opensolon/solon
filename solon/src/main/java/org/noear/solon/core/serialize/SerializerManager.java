@@ -15,9 +15,6 @@
  */
 package org.noear.solon.core.serialize;
 
-import org.noear.solon.core.util.GenericUtil;
-
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,15 +34,12 @@ public class SerializerManager {
      * @param serializer 序列化器
      * */
     public <T> void register(String mapping, Serializer<T> serializer) {
-        Map<String, Type> giMap = GenericUtil.getGenericInfo(serializer.getClass());
-        Type tType = null;
-
-        if (giMap != null) {
-            tType = giMap.get("T");
+        if(serializer.contentType() == null){
+            throw new IllegalArgumentException("Invalid Serializer contentType: " + serializer.getClass().getName());
         }
 
-        if (tType == null || tType == Object.class) {
-            throw new IllegalArgumentException("Invalid Serializer data type: " + serializer.getClass().getName());
+        if (serializer.type() == null) {
+            throw new IllegalArgumentException("Invalid Serializer type: " + serializer.getClass().getName());
         }
 
         _mapping.put(mapping, serializer);
