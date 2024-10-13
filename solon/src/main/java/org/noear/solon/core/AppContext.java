@@ -16,6 +16,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.bean.LifecycleBean;
@@ -52,7 +53,11 @@ import java.util.stream.Collectors;
 public class AppContext extends BeanContainer {
 
     public AppContext(ClassLoader classLoader, Props props) {
-        super(classLoader, props);
+        this(Solon.app(), classLoader, props);
+    }
+
+    public AppContext(SolonApp app, ClassLoader classLoader, Props props) {
+        super(app, classLoader, props);
         initialize();
         lifecycle(Constants.LF_IDX_PARAM_COLLECTION_INJECT, () -> {
             this.startInjectReview(true);

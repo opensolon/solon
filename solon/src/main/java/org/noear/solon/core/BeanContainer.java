@@ -41,6 +41,8 @@ import java.util.function.*;
  * @since 1.0
  * */
 public abstract class BeanContainer {
+    //应用
+    private final SolonApp app;
     //属性
     private final Props props;
     //类加载器（热插拨时，会有独立的类加载器）
@@ -54,9 +56,14 @@ public abstract class BeanContainer {
     protected final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
 
-    public BeanContainer(ClassLoader classLoader, Props props) {
+    public BeanContainer(SolonApp app, ClassLoader classLoader, Props props) {
+        this.app = app;
         this.classLoader = classLoader;
         this.props = props;
+    }
+
+    public SolonApp app(){
+        return app;
     }
 
     /**
