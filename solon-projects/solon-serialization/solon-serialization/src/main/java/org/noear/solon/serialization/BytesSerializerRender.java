@@ -36,7 +36,7 @@ public abstract class BytesSerializerRender implements Render {
      * 获取渲染器名字
      */
     @Override
-    public String getName() {
+    public String name() {
         return this.getClass().getSimpleName() + "#" + getSerializer().name();
     }
 
@@ -63,7 +63,7 @@ public abstract class BytesSerializerRender implements Render {
     @Override
     public void render(Object data, Context ctx) throws Throwable {
         if (SerializationConfig.isOutputMeta()) {
-            ctx.headerAdd("solon.serialization", getName());
+            ctx.headerAdd("solon.serialization", name());
         }
 
         getSerializer().serializeToBody(ctx, data);

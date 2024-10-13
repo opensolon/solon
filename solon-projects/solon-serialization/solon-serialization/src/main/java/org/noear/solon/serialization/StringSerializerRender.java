@@ -54,7 +54,7 @@ public class StringSerializerRender implements Render {
      * 获取渲染器名字
      */
     @Override
-    public String getName() {
+    public String name() {
         return this.getClass().getSimpleName() + "#" + serializer.name();
     }
 
@@ -90,7 +90,7 @@ public class StringSerializerRender implements Render {
     @Override
     public void render(Object data, Context ctx) throws Throwable {
         if (SerializationConfig.isOutputMeta()) {
-            ctx.headerAdd("solon.serialization", getName());
+            ctx.headerAdd("solon.serialization", name());
         }
 
         String text = null;

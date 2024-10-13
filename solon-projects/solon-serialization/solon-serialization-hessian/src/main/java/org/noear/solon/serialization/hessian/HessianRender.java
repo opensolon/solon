@@ -35,7 +35,7 @@ public class HessianRender extends BytesSerializerRender {
      * 获取渲染器名字
      */
     @Override
-    public String getName() {
+    public String name() {
         return this.getClass().getSimpleName();
     }
 }

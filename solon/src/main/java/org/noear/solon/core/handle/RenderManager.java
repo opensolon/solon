@@ -91,7 +91,7 @@ public class RenderManager implements Render {
             //mapping=.ftl | @json
             _mapping.put(mapping, render);
 
-            LogUtil.global().info("Render mapping: " + mapping + "=" + render.getName());
+            LogUtil.global().info("Render mapping: " + mapping + "=" + render.name());
         }
     }
 
