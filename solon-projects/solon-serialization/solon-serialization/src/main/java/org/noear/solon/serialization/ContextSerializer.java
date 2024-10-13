@@ -28,17 +28,17 @@ import java.io.IOException;
  */
 public interface ContextSerializer<T> extends Serializer<T> {
     /**
-     * 获取内容类型
-     */
-    String getContentType();
-
-    /**
      * 匹配
      *
      * @param ctx  上下文
      * @param mime
      */
     boolean matched(Context ctx, String mime);
+
+    /**
+     * 内容类型
+     */
+    String contentType();
 
     /**
      * 序列化到

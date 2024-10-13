@@ -133,7 +133,7 @@ public class StringSerializerRender implements Render {
         if (data instanceof String && isTyped() == false) {
             ctx.output(text);
         } else {
-            ctx.contentType(serializer.getContentType());
+            ctx.contentType(serializer.contentType());
             ctx.output(text);
         }
     }

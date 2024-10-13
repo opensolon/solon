@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -63,7 +62,7 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
      * 获取内容类型
      */
     @Override
-    public String getContentType() {
+    public String contentType() {
         return "application/properties";
     }
 
@@ -133,7 +132,7 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(getContentType());
+        ctx.contentType(contentType());
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));

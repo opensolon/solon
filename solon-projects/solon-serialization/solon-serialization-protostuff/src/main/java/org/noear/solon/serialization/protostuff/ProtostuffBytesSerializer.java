@@ -39,7 +39,7 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
      * 获取内容类型
      */
     @Override
-    public String getContentType() {
+    public String contentType() {
         return label;
     }
 
@@ -116,7 +116,7 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(getContentType());
+        ctx.contentType(contentType());
         ctx.output(serialize(data));
     }
 

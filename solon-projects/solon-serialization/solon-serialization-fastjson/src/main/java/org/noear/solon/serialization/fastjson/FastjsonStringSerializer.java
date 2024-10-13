@@ -113,7 +113,7 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
      * 获取内容类型
      */
     @Override
-    public String getContentType() {
+    public String contentType() {
         return "application/json";
     }
 
@@ -185,7 +185,7 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(getContentType());
+        ctx.contentType(contentType());
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));

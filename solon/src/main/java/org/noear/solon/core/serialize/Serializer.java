@@ -28,7 +28,14 @@ public interface Serializer<T> {
     /**
      * 名字
      */
-    String name();
+    default String name() {
+        return this.getClass().getSimpleName();
+    }
+
+    /**
+     * 内容类型
+     */
+    default String contentType(){return null;}
 
     /**
      * 序列化

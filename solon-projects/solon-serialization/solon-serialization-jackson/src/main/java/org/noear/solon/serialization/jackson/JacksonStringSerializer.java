@@ -108,7 +108,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
      * 获取内容类型
      */
     @Override
-    public String getContentType() {
+    public String contentType() {
         return "application/json";
     }
 
@@ -174,7 +174,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     public void serializeToBody(Context ctx, Object data) throws IOException {
         init();
 
-        ctx.contentType(getContentType());
+        ctx.contentType(contentType());
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));
