@@ -15,9 +15,9 @@
  */
 package org.noear.solon.serialization.fury;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.SerializationNames;
 
 public class XPluginImpl implements Plugin {
 
@@ -26,13 +26,14 @@ public class XPluginImpl implements Plugin {
         //::render
         FuryRender render = new FuryRender();
         context.wrapAndPut(FuryRender.class, render); //用于扩展
-        Solon.app().renderManager().register("@fury",render);
+        context.app().renderManager().register(SerializationNames.FURY,render);
+        context.app().serializerManager().register(SerializationNames.FURY, render.getSerializer());
 
         //::actionExecutor
         //支持 fury 内容类型执行
         FuryActionExecutor executor = new FuryActionExecutor();
         context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
 
-        Solon.app().chainManager().addExecuteHandler(executor);
+        context.app().chainManager().addExecuteHandler(executor);
     }
 }

@@ -15,9 +15,9 @@
  */
 package org.noear.solon.serialization.protostuff;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.serialization.SerializationNames;
 
 /**
  * @author noear
@@ -28,11 +28,12 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         ProtostuffRender render = new ProtostuffRender();
         context.wrapAndPut(ProtostuffRender.class, render); //用于扩展
-        Solon.app().renderManager().register("@protobuf",render);
+        context.app().renderManager().register(SerializationNames.PROTOBUF, render);
+        context.app().serializerManager().register(SerializationNames.PROTOBUF, render.getSerializer());
 
         //支持 protostuff 内容类型执行
         ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
         context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
-        Solon.app().chainManager().addExecuteHandler(executor);
+        context.app().chainManager().addExecuteHandler(executor);
     }
 }

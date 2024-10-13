@@ -31,6 +31,13 @@ public class PropertiesRenderFactory  implements RenderFactory {
     private final PropertiesStringSerializer serializer = new PropertiesStringSerializer();
 
     /**
+     * 获取序列化器
+     */
+    public PropertiesStringSerializer getSerializer() {
+        return serializer;
+    }
+
+    /**
      * 序列化配置
      */
     public Options config() {
