@@ -24,10 +24,13 @@
 
 
 ### v3.0.2
-
+* 添加 solon SerializerManager 及序列化可选注册机制
+* 添加 solon Serializer::contentType,type 可选属性
+* 添加 添加 AppContext::app() 属性
 * 调整 solon-boot 的 junit-jupiter 依赖标为 scope=test
 * 优化 TmplUtil 处理，当模型参数为 null 用空替代（避免出现"null"）
-* 优化 solon-data-sqlutils 设计（进一步提搞性能）
+* 优化 solon-data-sqlutils 设计（进一步提搞性能和适用性）
+* 优化 solon-net-httputils 支持快捷序列化
 * cxf 升为 3.5.9
 * beetlsql 升为 3.30.14-RELEASE
 
