@@ -17,7 +17,7 @@ package org.noear.solon.serialization.jackson.xml;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.serialization.SerializationNames;
+import org.noear.solon.core.serialize.SerializerNames;
 import org.noear.solon.serialization.prop.JsonProps;
 
 /**
@@ -37,13 +37,13 @@ public class XPluginImp implements Plugin {
         JacksonXmlRenderFactory renderFactory = new JacksonXmlRenderFactory(jsonProps);
         context.wrapAndPut(JacksonXmlRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializationNames.XML, renderFactory.getSerializer());
+        context.app().serializerManager().register(SerializerNames.AT_XML, renderFactory.getSerializer());
 
         //::renderTypedFactory
         JacksonXmlRenderTypedFactory renderTypedFactory = new JacksonXmlRenderTypedFactory();
         context.wrapAndPut(JacksonXmlRenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
-        context.app().serializerManager().register(SerializationNames.XML_TYPED, renderTypedFactory.getSerializer());
+        context.app().serializerManager().register(SerializerNames.AT_XML_TYPED, renderTypedFactory.getSerializer());
 
 
         //支持 xml 内容类型执行

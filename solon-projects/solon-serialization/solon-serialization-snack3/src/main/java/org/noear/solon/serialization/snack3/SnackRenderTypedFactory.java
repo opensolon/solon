@@ -18,7 +18,7 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.SerializationNames;
+import org.noear.solon.core.serialize.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -45,7 +45,7 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
      */
     @Override
     public String[] mappings() {
-        return new String[]{SerializationNames.JSON_TYPED};
+        return new String[]{SerializerNames.AT_JSON_TYPED};
     }
 
     /**

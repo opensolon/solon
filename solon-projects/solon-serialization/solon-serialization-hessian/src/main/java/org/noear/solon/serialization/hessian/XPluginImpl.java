@@ -17,7 +17,7 @@ package org.noear.solon.serialization.hessian;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.serialization.SerializationNames;
+import org.noear.solon.core.serialize.SerializerNames;
 
 public class XPluginImpl implements Plugin {
 
@@ -26,8 +26,8 @@ public class XPluginImpl implements Plugin {
         //::render
         HessianRender render = new HessianRender();
         context.wrapAndPut(HessianRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializationNames.HESSIAN, render);
-        context.app().serializerManager().register(SerializationNames.HESSIAN, render.getSerializer());
+        context.app().renderManager().register(SerializerNames.AT_HESSIAN, render);
+        context.app().serializerManager().register(SerializerNames.AT_HESSIAN, render.getSerializer());
 
         //::actionExecutor
         //支持 hessian 内容类型执行

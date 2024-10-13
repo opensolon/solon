@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization;
+package org.noear.solon.core.serialize;
 
 /**
- * 序列化方案名字（内部适配的）
+ * 序列化方案名字（内部已适配的）
  *
  * @author noear
  * @since 3.0
  */
-public interface SerializationNames {
-    String JSON = "@json";
-    String JSON_TYPED = "@type_json";
-    String XML = "@xml";
-    String XML_TYPED = "@type_xml";
-    String PROPERTIES = "@properties";
-    String FURY = "@fury";
-    String HESSIAN = "@hessian";
-    String PROTOBUF = "@protobuf";
+public interface SerializerNames {
+    String AT_JSON = "@json";
+    String AT_JSON_TYPED = "@type_json";
+    String AT_XML = "@xml";
+    String AT_XML_TYPED = "@type_xml";
+    String AT_PROPERTIES = "@properties";
+    String AT_FURY = "@fury";
+    String AT_HESSIAN = "@hessian";
+    String AT_PROTOBUF = "@protobuf";
 }

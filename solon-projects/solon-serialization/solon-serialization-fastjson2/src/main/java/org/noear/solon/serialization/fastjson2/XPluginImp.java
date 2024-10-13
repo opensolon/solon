@@ -17,7 +17,7 @@ package org.noear.solon.serialization.fastjson2;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.serialization.SerializationNames;
+import org.noear.solon.core.serialize.SerializerNames;
 import org.noear.solon.serialization.prop.JsonProps;
 
 public class XPluginImp implements Plugin {
@@ -31,13 +31,13 @@ public class XPluginImp implements Plugin {
         Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(jsonProps);
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializationNames.JSON, renderFactory.getSerializer());
+        context.app().serializerManager().register(SerializerNames.AT_JSON, renderFactory.getSerializer());
 
         //::renderTypedFactory
         Fastjson2RenderTypedFactory renderTypedFactory = new Fastjson2RenderTypedFactory();
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory); //用于扩展
         context.app().renderManager().register(renderTypedFactory);
-        context.app().serializerManager().register(SerializationNames.JSON_TYPED, renderTypedFactory.getSerializer());
+        context.app().serializerManager().register(SerializerNames.AT_JSON_TYPED, renderTypedFactory.getSerializer());
 
         //::actionExecutor
         //支持 json 内容类型执行

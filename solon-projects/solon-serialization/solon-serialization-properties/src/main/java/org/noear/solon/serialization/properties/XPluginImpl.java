@@ -17,7 +17,7 @@ package org.noear.solon.serialization.properties;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.serialization.SerializationNames;
+import org.noear.solon.core.serialize.SerializerNames;
 
 public class XPluginImpl implements Plugin {
     @Override
@@ -27,7 +27,7 @@ public class XPluginImpl implements Plugin {
         PropertiesRenderFactory renderFactory = new PropertiesRenderFactory();
         context.wrapAndPut(PropertiesRenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);
-        context.app().serializerManager().register(SerializationNames.PROPERTIES, renderFactory.getSerializer());
+        context.app().serializerManager().register(SerializerNames.AT_PROPERTIES, renderFactory.getSerializer());
 
         //::actionExecutor
         //支持 props 内容类型执行
