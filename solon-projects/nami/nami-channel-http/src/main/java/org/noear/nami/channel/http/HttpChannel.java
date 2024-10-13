@@ -47,9 +47,9 @@ public class HttpChannel extends ChannelBase implements Channel {
 
             for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
                 if (kv.getValue() != null) {
-                    sb.append(kv.getKey()).append("=")
+                    sb.append(kv.getKey()).append('=')
                             .append(HttpUtils.urlEncode(kv.getValue().toString()))
-                            .append("&");
+                            .append('&');
                 }
             }
 

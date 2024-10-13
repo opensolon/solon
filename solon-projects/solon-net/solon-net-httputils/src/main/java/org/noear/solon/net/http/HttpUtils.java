@@ -344,25 +344,25 @@ public interface HttpUtils {
     /**
      * map 转为 queryString
      */
-    static String toQueryString(Map<?, ?> map) throws IOException {
+    static CharSequence toQueryString(Map<?, ?> map) throws IOException {
         return toQueryString(map, null);
     }
 
     /**
      * map 转为 queryString
      */
-    static String toQueryString(Map<?, ?> map, String charset) throws IOException {
-        StringBuilder sb = new StringBuilder();
+    static CharSequence toQueryString(Map<?, ?> map, String charset) throws IOException {
+        StringBuilder buf = new StringBuilder();
         for (Map.Entry<?, ?> entry : map.entrySet()) {
-            if (sb.length() > 0) {
-                sb.append("&");
+            if (buf.length() > 0) {
+                buf.append('&');
             }
 
-            sb.append(String.format("%s=%s",
-                    urlEncode(entry.getKey().toString(), charset),
-                    urlEncode(entry.getValue().toString(), charset)
-            ));
+            buf.append(urlEncode(entry.getKey().toString(), charset))
+                    .append('=')
+                    .append(urlEncode(entry.getValue().toString(), charset));
         }
-        return sb.toString();
+
+        return buf.toString();
     }
 }
