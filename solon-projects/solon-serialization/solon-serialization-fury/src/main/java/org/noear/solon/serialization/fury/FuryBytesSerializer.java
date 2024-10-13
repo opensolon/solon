@@ -70,11 +70,19 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     /**
-     * 获取内容类型
+     * 内容类型
      */
     @Override
     public String contentType() {
         return label;
+    }
+
+    /**
+     * 类型
+     * */
+    @Override
+    public Class<byte[]> type() {
+        return byte[].class;
     }
 
     /**

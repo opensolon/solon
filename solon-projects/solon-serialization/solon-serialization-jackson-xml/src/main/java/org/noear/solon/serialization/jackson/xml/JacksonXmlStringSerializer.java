@@ -112,6 +112,14 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
     }
 
     /**
+     * 类型
+     * */
+    @Override
+    public Class<String> type() {
+        return String.class;
+    }
+
+    /**
      * 是否匹配
      *
      * @param ctx  请求上下文

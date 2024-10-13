@@ -24,7 +24,7 @@ package org.noear.solon.core.handle;
  * */
 public interface Render {
     /**
-     * 名称
+     * 名字
      */
     default String name() {
         return this.getClass().getSimpleName();

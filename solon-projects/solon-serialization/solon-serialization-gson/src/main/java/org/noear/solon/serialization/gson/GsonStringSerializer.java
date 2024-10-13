@@ -74,11 +74,19 @@ public class GsonStringSerializer implements ContextSerializer<String> {
     }
 
     /**
-     * 获取内容类型
+     * 内容类型
      */
     @Override
     public String contentType() {
         return "application/json";
+    }
+
+    /**
+     * 类型
+     * */
+    @Override
+    public Class<String> type() {
+        return String.class;
     }
 
     /**

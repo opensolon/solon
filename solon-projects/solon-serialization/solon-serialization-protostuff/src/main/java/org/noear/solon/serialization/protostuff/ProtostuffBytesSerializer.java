@@ -44,6 +44,14 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     /**
+     * 类型
+     */
+    @Override
+    public Class<byte[]> type() {
+        return byte[].class;
+    }
+
+    /**
      * 是否匹配
      *
      * @param ctx  请求上下文

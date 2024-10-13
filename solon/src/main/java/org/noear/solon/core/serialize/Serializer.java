@@ -35,7 +35,14 @@ public interface Serializer<T> {
     /**
      * 内容类型
      */
-    default String contentType(){return null;}
+    default String contentType() {
+        return null;
+    }
+
+    /**
+     * 目标类型
+     */
+    Class<T> type();
 
     /**
      * 序列化

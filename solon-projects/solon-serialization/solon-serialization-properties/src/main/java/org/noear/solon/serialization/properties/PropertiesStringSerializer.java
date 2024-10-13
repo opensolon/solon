@@ -59,11 +59,19 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
     }
 
     /**
-     * 获取内容类型
+     * 内容类型
      */
     @Override
     public String contentType() {
         return "application/properties";
+    }
+
+    /**
+     * 类型
+     * */
+    @Override
+    public Class<String> type() {
+        return String.class;
     }
 
     /**
