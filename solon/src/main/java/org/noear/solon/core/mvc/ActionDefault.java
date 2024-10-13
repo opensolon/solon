@@ -326,7 +326,7 @@ public class ActionDefault extends HandlerAide implements Action {
                 //结果处理
                 ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
                 if (returnHandler == null) {
-                    returnHandler = Solon.app().chainManager().getReturnHandler(c, method().getReturnType());
+                    returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
                 }
 
                 if (returnHandler != null) {
@@ -366,7 +366,7 @@ public class ActionDefault extends HandlerAide implements Action {
     }
 
     protected Object executeDo(Context c, Object target) throws Throwable {
-        ActionExecuteHandler executeHandler = Solon.app().chainManager()
+        ActionExecuteHandler executeHandler = bWrap.context().app().chainManager()
                 .getExecuteHandler(c, mWrap.getParamWraps().length);
 
 
@@ -374,7 +374,7 @@ public class ActionDefault extends HandlerAide implements Action {
         Object[] args = executeHandler.resolveArguments(c, target, mWrap);
 
         //参数提交确认
-        Solon.app().chainManager().postArguments(c, mWrap.getParamWraps(), args);
+        bWrap.context().app().chainManager().postArguments(c, mWrap.getParamWraps(), args);
 
         //质变行
         return mWrap.invokeByAspect(target, args);
@@ -395,7 +395,7 @@ public class ActionDefault extends HandlerAide implements Action {
         //
         //可以通过before关掉render
         //
-        obj = Solon.app().chainManager().postResult(c, obj);
+        obj = bWrap.context().app().chainManager().postResult(c, obj);
 
         if (allowMultiple || c.getRendered() == false) {
             c.result = obj;

@@ -819,7 +819,7 @@ public abstract class BeanContainer {
 
         //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
-            Solon.app().router().add(bw);
+            app().router().add(bw);
         }
     }
 
@@ -885,7 +885,7 @@ public abstract class BeanContainer {
             }
 
             if (SolonApp.class.isAssignableFrom(vh.getType())) {
-                vh.setValue(Solon.app());
+                vh.setValue(app());
                 return;
             }
 

@@ -130,7 +130,7 @@ public class SolonApp extends RouterWrapper {
         _context = new AppContext(this, new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
-        initRouter();
+        initRouter(this);
 
         _handler.next(routerHandler());
     }

@@ -223,7 +223,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            Solon.app().router().add(bw);
+            app().router().add(bw);
         });
 
         //注册 @Inject 注入器
@@ -380,7 +380,7 @@ public class AppContext extends BeanContainer {
 
         //LoadBalance.Factory
         if (bw.raw() instanceof LoadBalance.Factory) {
-            Solon.app().factoryManager().loadBalanceFactory(bw.raw());
+            app().factoryManager().loadBalanceFactory(bw.raw());
             singletonHint = "LoadBalance.Factory";
         }
 
@@ -390,62 +390,62 @@ public class AppContext extends BeanContainer {
             Mapping mapping = bw.clz().getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Set<MethodType> v0 = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
+                Set<MethodType> v0 = app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
-                Solon.app().add(mapping, v0, handler);
+                app().add(mapping, v0, handler);
                 singletonHint = "Handler";
             }
         }
 
         //Render
         if (bw.raw() instanceof Render) {
-            Solon.app().renderManager().register(bw.name(), (Render) bw.raw());
+            app().renderManager().register(bw.name(), (Render) bw.raw());
             singletonHint = "Render";
         }
 
         //RenderFactory
         if (bw.raw() instanceof RenderFactory) {
-            Solon.app().renderManager().register(bw.raw());
+            app().renderManager().register(bw.raw());
             singletonHint = "RenderFactory";
         }
 
         //Filter
         if (bw.raw() instanceof Filter) {
-            Solon.app().filter(bw.index(), bw.raw());
+            app().filter(bw.index(), bw.raw());
             singletonHint = "Filter";
         }
 
         //RouterInterceptor
         if (bw.raw() instanceof RouterInterceptor) {
-            Solon.app().routerInterceptor(bw.index(), bw.raw());
+            app().routerInterceptor(bw.index(), bw.raw());
             singletonHint = "RouterInterceptor";
         }
 
         //ActionReturnHandler
         if (bw.raw() instanceof ActionReturnHandler) {
-            Solon.app().chainManager().addReturnHandler(bw.raw());
+            app().chainManager().addReturnHandler(bw.raw());
             singletonHint = "ActionReturnHandler";
         }
 
         //ActionExecuteHandler
         if (bw.raw() instanceof ActionExecuteHandler) {
-            Solon.app().chainManager().addExecuteHandler(bw.raw());
+            app().chainManager().addExecuteHandler(bw.raw());
             singletonHint = "ActionExecuteHandler";
         }
 
         //Converter
         if (bw.raw() instanceof Converter) {
             Converter c = bw.raw();
-            Solon.app().converterManager().register(c);
+            app().converterManager().register(c);
             singletonHint = "Converter";
         }
 
         //ConverterFactory
         if (bw.raw() instanceof ConverterFactory) {
             ConverterFactory cf = bw.raw();
-            Solon.app().converterManager().register(cf);
+            app().converterManager().register(cf);
             singletonHint = "ConverterFactory";
         }
 

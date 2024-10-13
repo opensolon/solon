@@ -16,6 +16,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
@@ -36,9 +37,9 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     public abstract AppContext context();
 
-    protected void initRouter() {
+    protected void initRouter(SolonApp app) {
         //顺序不能换
-        _chainManager = new ChainManager();
+        _chainManager = new ChainManager(app);
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router, _chainManager);
     }

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChainImpl;
@@ -24,7 +24,6 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.lang.Nullable;
 
-import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -35,6 +34,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 1.12
  */
 public class ChainManager {
+    private final SolonApp app;
+    public ChainManager(SolonApp app) {
+        this.app = app;
+    }
+
     /**
      * 类型集合（用于重复检测）
      */
@@ -303,7 +307,7 @@ public class ChainManager {
 
     public ActionExecuteHandler getExecuteHandlerDefault() {
         if (executeHandlerDefault == null) {
-            return Solon.app().factoryManager().mvcFactory().getExecuteHandlerDefault();
+            return app.factoryManager().mvcFactory().getExecuteHandlerDefault();
         } else {
             return executeHandlerDefault;
         }
