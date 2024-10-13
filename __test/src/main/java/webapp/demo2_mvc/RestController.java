@@ -16,8 +16,7 @@
 package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MethodType;
+import webapp.models.Book;
 
 /**
  * @author noear 2021/11/25 created
@@ -61,5 +60,10 @@ public class RestController {
     @Mapping("test")
     public String test_patch(String name) {
         return "Patch-" + name;
+    }
+
+    @Mapping("book")
+    public Book book(Book book) {
+        return book;
     }
 }

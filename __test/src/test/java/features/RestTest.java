@@ -16,11 +16,10 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.models.Book;
 
 /**
  * @author noear 2021/11/25 created
@@ -56,5 +55,42 @@ public class RestTest extends HttpTester {
     @Test
     public void patch() throws Exception {
         assert path("/demo2a/rest/test").data("name", "noear").patch().equals("Patch-noear");
+    }
+
+
+
+    @Test
+    public void get_book() throws Exception {
+        Book book = path("/demo2a/rest/book?bookId=1&title=b").get(Book.class);
+        assert book != null;
+        assert book.bookId == 1;
+    }
+
+    @Test
+    public void post_book() throws Exception {
+        Book book = path("/demo2a/rest/book").bodyBean(new Book(1, "b")).post(Book.class);
+        assert book != null;
+        assert book.bookId == 1;
+    }
+
+    @Test
+    public void put_book() throws Exception {
+        Book book = path("/demo2a/rest/book").bodyBean(new Book(1, "b")).put(Book.class);
+        assert book != null;
+        assert book.bookId == 1;
+    }
+
+    @Test
+    public void patch_book() throws Exception {
+        Book book = path("/demo2a/rest/book").bodyBean(new Book(1, "b")).patch(Book.class);
+        assert book != null;
+        assert book.bookId == 1;
+    }
+
+    @Test
+    public void delete_book() throws Exception {
+        Book book = path("/demo2a/rest/book").bodyBean(new Book(1, "b")).delete(Book.class);
+        assert book != null;
+        assert book.bookId == 1;
     }
 }
