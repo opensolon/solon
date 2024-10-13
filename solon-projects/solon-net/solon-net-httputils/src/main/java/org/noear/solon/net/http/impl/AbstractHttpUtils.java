@@ -365,8 +365,18 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
+    public <T> T get(Class<T> type) throws IOException {
+        return execAsBody("GET", type);
+    }
+
+    @Override
     public String post() throws IOException {
         return execAsBody("POST");
+    }
+
+    @Override
+    public <T> T post(Class<T> type) throws IOException {
+        return execAsBody("POST", type);
     }
 
     @Override
@@ -375,13 +385,28 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
+    public <T> T put(Class<T> type) throws IOException {
+        return execAsBody("PUT", type);
+    }
+
+    @Override
     public String patch() throws IOException {
         return execAsBody("PATCH");
     }
 
     @Override
+    public <T> T patch(Class<T> type) throws IOException {
+        return execAsBody("PATCH", type);
+    }
+
+    @Override
     public String delete() throws IOException {
         return execAsBody("DELETE");
+    }
+
+    @Override
+    public <T> T delete(Class<T> type) throws IOException {
+        return execAsBody("DELETE", type);
     }
 
     @Override
@@ -405,6 +430,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
             }
 
             return text;
+        }
+    }
+
+    @Override
+    public <T> T execAsBody(String method, Class<T> type) throws IOException {
+        try (HttpResponse resp = exec(method)) {
+            return resp.bodyAsBean(type);
         }
     }
 

@@ -216,9 +216,19 @@ public interface HttpUtils {
     String get() throws IOException;
 
     /**
+     * get 请求并返回 body
+     */
+    <T> T get(Class<T> type) throws IOException;
+
+    /**
      * post 请求并返回 body
      */
     String post() throws IOException;
+
+    /**
+     * post 请求并返回 body
+     */
+    <T> T post(Class<T> type) throws IOException;
 
     /**
      * post 请求并返回 body
@@ -232,9 +242,25 @@ public interface HttpUtils {
     }
 
     /**
+     * post 请求并返回 body
+     */
+    default <T> T post(Class<T> type, boolean useMultipart) throws IOException {
+        if (useMultipart) {
+            multipart(true);
+        }
+
+        return post(type);
+    }
+
+    /**
      * put 请求并返回 body
      */
     String put() throws IOException;
+
+    /**
+     * put 请求并返回 body
+     */
+    <T> T put(Class<T> type) throws IOException;
 
     /**
      * patch 请求并返回 body
@@ -242,9 +268,20 @@ public interface HttpUtils {
     String patch() throws IOException;
 
     /**
+     * patch 请求并返回 body
+     */
+    <T> T patch(Class<T> type) throws IOException;
+
+    /**
      * delete 请求并返回 body
      */
     String delete() throws IOException;
+
+    /**
+     * delete 请求并返回 body
+     */
+    <T> T delete(Class<T> type) throws IOException;
+
 
     /**
      * options 请求并返回 body
@@ -261,7 +298,12 @@ public interface HttpUtils {
     /**
      * 执行请求并返回响应主体
      */
-    String execAsBody(String mothod) throws IOException;
+    String execAsBody(String method) throws IOException;
+
+    /**
+     * 执行请求并返回响应主体
+     */
+    <T> T execAsBody(String method, Class<T> type) throws IOException;
 
     /**
      * 执行请求并返回代码
