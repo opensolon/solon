@@ -24,6 +24,7 @@ import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 
@@ -53,6 +54,7 @@ public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
     private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
+    private final SerializerManager _serializerManager; //渲染管理器
     private final RenderManager _renderManager; //渲染管理器
     private final HandlerPipeline _handler = new HandlerPipeline();
 
@@ -75,6 +77,13 @@ public class SolonApp extends RouterWrapper {
      */
     public ConverterManager converterManager() {
         return _converterManager;
+    }
+
+    /**
+     * 序列化管理器
+     */
+    public SerializerManager serializerManager() {
+        return _serializerManager;
     }
 
     /**
@@ -107,6 +116,7 @@ public class SolonApp extends RouterWrapper {
         _source = source;
         _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         _converterManager = new ConverterManager();
+        _serializerManager = new SerializerManager();
         _renderManager = new RenderManager();
 
 
@@ -117,7 +127,7 @@ public class SolonApp extends RouterWrapper {
 
         //初始化配置
         _cfg = new SolonProps(this, args);
-        _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
+        _context = new AppContext(this, new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
         initRouter();
