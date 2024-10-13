@@ -33,6 +33,7 @@
 * 优化 solon-net-httputils 支持快捷序列化
 * cxf 升为 3.5.9
 * beetlsql 升为 3.30.14-RELEASE
+* hutool 升为 5.8.32
 
 ### v3.0.1
 
