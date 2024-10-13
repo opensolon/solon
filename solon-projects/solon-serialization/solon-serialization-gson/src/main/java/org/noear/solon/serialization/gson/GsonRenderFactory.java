@@ -17,6 +17,7 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.JsonSerializer;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.SerializationNames;
 import org.noear.solon.serialization.StringSerializerRender;
 import org.noear.solon.serialization.gson.impl.*;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -49,7 +50,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
      */
     @Override
     public String[] mappings() {
-        return new String[]{"@json"};
+        return new String[]{SerializationNames.JSON};
     }
 
     /**

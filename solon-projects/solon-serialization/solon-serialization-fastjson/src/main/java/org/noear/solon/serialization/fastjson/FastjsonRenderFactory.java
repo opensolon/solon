@@ -17,6 +17,7 @@ package org.noear.solon.serialization.fastjson;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.SerializationNames;
 import org.noear.solon.serialization.StringSerializerRender;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
@@ -39,7 +40,7 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
      */
     @Override
     public String[] mappings() {
-        return new String[]{"@json"};
+        return new String[]{SerializationNames.JSON};
     }
 
     /**

@@ -16,6 +16,7 @@
 package org.noear.solon.serialization.gson;
 
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.SerializationNames;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -34,7 +35,7 @@ public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
      */
     @Override
     public String[] mappings() {
-        return new String[]{"@type_json"};
+        return new String[]{SerializationNames.JSON_TYPED};
     }
 
     /**

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.SerializationNames;
 import org.noear.solon.serialization.StringSerializerRender;
 import org.noear.solon.serialization.jackson.xml.impl.NullBeanSerializerModifierImpl;
 import org.noear.solon.serialization.prop.JsonProps;
@@ -52,7 +53,7 @@ public class JacksonXmlRenderFactory extends JacksonXmlRenderFactoryBase {
      */
     @Override
     public String[] mappings() {
-        return new String[]{"@xml"};
+        return new String[]{SerializationNames.XML};
     }
 
     /**
