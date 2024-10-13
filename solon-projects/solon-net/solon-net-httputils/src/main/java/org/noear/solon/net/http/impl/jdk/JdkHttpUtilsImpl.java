@@ -145,7 +145,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            return new JdkHttpResponseImpl(_builder);
+            return new JdkHttpResponseImpl(this, _builder);
         } catch (IOException e) {
             _builder.disconnect();
             throw e;

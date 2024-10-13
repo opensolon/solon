@@ -18,6 +18,7 @@ package org.noear.solon.net.http.impl.jdk;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
@@ -34,12 +35,14 @@ import java.util.zip.GZIPInputStream;
  * @since 3.0
  */
 public class JdkHttpResponseImpl implements HttpResponse {
+    private final JdkHttpUtilsImpl utils;
     private final HttpURLConnection http;
     private final int statusCode;
     private final MultiMap<String> headers;
     private final InputStream body;
 
-    public JdkHttpResponseImpl(HttpURLConnection http) throws IOException {
+    public JdkHttpResponseImpl(JdkHttpUtilsImpl utils, HttpURLConnection http) throws IOException {
+        this.utils = utils;
         this.http = http;
 
         this.statusCode = http.getResponseCode();
@@ -125,6 +128,17 @@ public class JdkHttpResponseImpl implements HttpResponse {
             return IoUtil.transferToString(body());
         } finally {
             body().close();
+        }
+    }
+
+    @Override
+    public <T> T bodyAsBean(Class<T> type) throws IOException {
+        if (String.class == utils.serializer().type()) {
+            return (T) utils.serializer().deserialize(bodyAsString(), type);
+        } else if (byte[].class == utils.serializer().type()) {
+            return (T) utils.serializer().deserialize(bodyAsBytes(), type);
+        } else {
+            throw new SolonException("Invalid serializer type!");
         }
     }
 

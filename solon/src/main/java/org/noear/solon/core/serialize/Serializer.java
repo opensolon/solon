@@ -42,7 +42,9 @@ public interface Serializer<T> {
     /**
      * 目标类型
      */
-    Class<T> type();
+    default Class<T> type() {
+        return null;
+    }
 
     /**
      * 序列化

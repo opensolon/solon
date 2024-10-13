@@ -162,9 +162,11 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 throw new IllegalArgumentException("This method is not supported");
         }
 
+        final OkHttpUtilsImpl self = this;
+
         if (future == null) {
             Call call = _client.newCall(_builder.build());
-            return new OkHttpResponseImpl(call.execute());
+            return new OkHttpResponseImpl(this, call.execute());
         } else {
             _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
@@ -175,7 +177,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    future.complete(new OkHttpResponseImpl(response));
+                    future.complete(new OkHttpResponseImpl(self, response));
                     //call.cancel();
                 }
             });

@@ -16,6 +16,7 @@
 package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Response;
+import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
@@ -31,9 +32,11 @@ import java.util.List;
  * @since 2.8
  */
 public class OkHttpResponseImpl implements HttpResponse {
-    private Response response;
+    private final OkHttpUtilsImpl utils;
+    private final Response response;
 
-    public OkHttpResponseImpl(Response response) {
+    public OkHttpResponseImpl(OkHttpUtilsImpl utils, Response response) {
+        this.utils = utils;
         this.response = response;
     }
 
@@ -90,6 +93,17 @@ public class OkHttpResponseImpl implements HttpResponse {
     @Override
     public String bodyAsString() throws IOException {
         return response.body().string();
+    }
+
+    @Override
+    public <T> T bodyAsBean(Class<T> type) throws IOException {
+        if (String.class == utils.serializer().type()) {
+            return (T) utils.serializer().deserialize(bodyAsString(), type);
+        } else if (byte[].class == utils.serializer().type()) {
+            return (T) utils.serializer().deserialize(bodyAsBytes(), type);
+        } else {
+            throw new SolonException("Invalid serializer type!");
+        }
     }
 
     @Override

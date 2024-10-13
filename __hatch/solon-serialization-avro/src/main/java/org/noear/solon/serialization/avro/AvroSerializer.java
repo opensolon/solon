@@ -30,29 +30,30 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.5
  */
-public class AvroSerializer implements Serializer<String> {
+public class AvroSerializer implements Serializer<byte[]> {
     @Override
     public String name() {
         return "avro-bytes";
     }
 
+
     @Override
-    public String serialize(Object obj) throws IOException {
+    public byte[] serialize(Object obj) throws IOException {
         DatumWriter datumWriter = new SpecificDatumWriter(obj.getClass());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
 
         datumWriter.write(obj, encoder);
 
-        return out.toString();
+        return out.toByteArray();
     }
 
     @Override
-    public Object deserialize(String data, Type toType) throws IOException {
+    public Object deserialize(byte[] data, Type toType) throws IOException {
         Class<?> clz = ClassUtil.getTypeClass(toType);
 
         DatumReader datumReader = new SpecificDatumReader(clz);
-        ByteArrayInputStream in = new ByteArrayInputStream(data.getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
         BinaryDecoder decoder = DecoderFactory.get().binaryDecoder(in, null);
 
         return datumReader.read(null, decoder);

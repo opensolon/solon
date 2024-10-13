@@ -1,8 +1,11 @@
 package org.noear.solon.net.http.impl;
 
+import org.noear.solon.Solon;
+import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.core.serialize.SerializerNames;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     protected boolean _multipart = false;
     protected HttpTimeout _timeout;
+    protected Serializer _serializer;
 
     public AbstractHttpUtils(String url) {
         _url = url;
@@ -43,6 +47,29 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         }
 
         initExtension();
+    }
+
+    @Override
+    public HttpUtils serializer(Serializer serializer) {
+        if (serializer != null) {
+            _serializer = serializer;
+        }
+        return this;
+    }
+
+    @Override
+    public Serializer serializer() {
+        if (_serializer == null) {
+            if (Solon.app() != null) {
+                _serializer = Solon.app().serializerManager().get(SerializerNames.AT_JSON);
+            }
+
+            if (_serializer == null) {
+                throw new SolonException("Missing serializer!");
+            }
+        }
+
+        return _serializer;
     }
 
     /**
@@ -287,6 +314,21 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils bodyJson(String txt) {
         return bodyTxt(txt, "application/json");
+    }
+
+    @Override
+    public HttpUtils bodyBean(Object obj) throws IOException {
+        Object tmp = serializer().serialize(obj);
+
+        if (tmp instanceof String) {
+            bodyTxt((String) tmp, serializer().contentType());
+        } else if (tmp instanceof byte[]) {
+            bodyRaw((byte[]) tmp, serializer().contentType());
+        } else {
+            throw new SolonException("Invalid serializer type!");
+        }
+
+        return this;
     }
 
     @Override

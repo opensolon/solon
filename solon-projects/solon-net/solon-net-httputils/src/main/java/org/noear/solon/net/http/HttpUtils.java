@@ -18,6 +18,7 @@ package org.noear.solon.net.http;
 
 import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
+import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
@@ -55,6 +56,16 @@ public interface HttpUtils {
             return new JdkHttpUtilsImpl(url);
         }
     }
+
+    /**
+     * 配置序列化器
+     */
+    HttpUtils serializer(Serializer serializer);
+
+    /**
+     * 获取序列化器
+     */
+    Serializer serializer();
 
     /**
      * 启用打印（专为 tester 服务）
@@ -172,6 +183,11 @@ public interface HttpUtils {
      * 主体配置
      */
     HttpUtils bodyJson(String txt);
+
+    /**
+     * 主体配置
+     */
+    HttpUtils bodyBean(Object obj) throws IOException;
 
     /**
      * 主体配置

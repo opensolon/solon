@@ -75,12 +75,17 @@ public interface HttpResponse extends Closeable {
     InputStream body();
 
     /**
-     * 获取响应主体字节数组
+     * 获取响应主体并转为字节数组
      */
     byte[] bodyAsBytes() throws IOException;
 
     /**
-     * 获取响应主体字符串
+     * 获取响应主体并转为字符串
      */
     String bodyAsString() throws IOException;
+
+    /**
+     * 获取响应主体并转为对象
+     */
+    <T> T bodyAsBean(Class<T> type) throws IOException;
 }
