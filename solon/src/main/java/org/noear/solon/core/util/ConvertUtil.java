@@ -259,9 +259,11 @@ public class ConvertUtil {
      */
     public static Object tryTo(Class<?> type, String val) {
         //尝试获取转换器
-        Converter converter = Solon.app().converterManager().find(String.class, type);
-        if (converter != null) {
-            return converter.convert(val);
+        if (Solon.app() != null) {
+            Converter converter = Solon.app().converterManager().find(String.class, type);
+            if (converter != null) {
+                return converter.convert(val);
+            }
         }
 
         if (Byte.class == type || type == Byte.TYPE) {
@@ -324,7 +326,7 @@ public class ConvertUtil {
                     .toLocalDateTime();
         }
 
-        if (Instant.class == type){
+        if (Instant.class == type) {
             return dateOf(val).toInstant();
         }
 
@@ -348,7 +350,7 @@ public class ConvertUtil {
             return Charset.forName(val);
         }
 
-        if(Duration.class == type){
+        if (Duration.class == type) {
             String tmp = val.toUpperCase();
             if (tmp.indexOf('P') != 0) {
                 if (tmp.indexOf('D') > 0) {
@@ -368,7 +370,7 @@ public class ConvertUtil {
         return null;
     }
 
-    private static Date dateOf(String val){
+    private static Date dateOf(String val) {
         try {
             return DateAnalyzer.global().parse(val);
         } catch (ParseException e) {
