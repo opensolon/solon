@@ -117,6 +117,12 @@ public class ConverterManager {
         }
     }
 
+    /**
+     * 查找转换器（在工厂里找）
+     *
+     * @param sourceType 源类型
+     * @param tagertType 目标类型
+     */
     public <S, T> Converter<S, T> findInFactory(Class<S> sourceType, Class<T> tagertType) {
         Map<Class<?>, ConverterFactory> cfMap = cfLib.get(sourceType);
 
