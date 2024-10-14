@@ -160,7 +160,7 @@ public class SimpleScheduler implements Lifecycle {
         if (nextTime != null) {
             delayMillis = nextTime.getTime() - System.currentTimeMillis();
 
-            if (delayMillis <= 0L) { //10L, 避免波动
+            if (delayMillis <= 0L) {
                 //到时（=0）或超时（<0）了
                 jobFutureOfCron = RunUtil.parallel(this::exec0);
 
