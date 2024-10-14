@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.0.2-M5</version>
+    <version>3.0.2-M6</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,7 +24,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>3.0.2-M5</solon.version>
+        <solon.version>3.0.2-M6</solon.version>
         <solon-cloud.version>3.0.2-M5</solon-cloud.version>
         <solon-admin.version>3.0.2-M5</solon-admin.version>
         <solon-integration.version>3.0.2-M5</solon-integration.version>
@@ -137,7 +137,7 @@
         <polaris.version>1.14.1</polaris.version>
 
         <feign.version>8.18.0</feign.version>
-        <aws.s3.version>1.12.769</aws.s3.version>
+        <aws.s3.version>2.28.20</aws.s3.version>
         <quartz.version>2.3.2</quartz.version>
         <powerjob.version>5.1.0</powerjob.version>
 
