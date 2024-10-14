@@ -50,12 +50,15 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
             ScheduledHelper.configScheduled(warpper);
 
             JobHandler handler = new JobHandlerBeanProxy(bw);
-            String name = warpper.name();
+
+            String name= warpper.name();
+            String simpleName = warpper.name();
             if (Utils.isEmpty(name)) {
                 name = bw.clz().getName();
+                simpleName = bw.clz().getSimpleName();
             }
 
-            jobManager.jobAdd(name, warpper, handler);
+            jobManager.jobAdd(name, warpper, handler).simpleName(simpleName);
         } else {
             throw new IllegalStateException("Job only supports Runnable or JobHandler types!");
         }
@@ -68,11 +71,14 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
         ScheduledHelper.configScheduled(warpper);
 
         JobHandler handler = new JobHandlerMethodProxy(bw, method);
+
         String name = warpper.name();
+        String simpleName = warpper.name();
         if (Utils.isEmpty(name)) {
             name = bw.clz().getName() + "::" + method.getName();
+            simpleName = method.getName();
         }
 
-        jobManager.jobAdd(name, warpper, handler);
+        jobManager.jobAdd(name, warpper, handler).simpleName(simpleName);
     }
 }

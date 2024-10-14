@@ -34,6 +34,7 @@ public class JobHolder implements JobHandler {
     protected final Scheduled scheduled;
     protected final JobHandler handler;
     protected final IJobManager jobManager;
+    protected String simpleName;
 
     protected Map<String, String> data;
     protected Object attachment;
@@ -43,6 +44,15 @@ public class JobHolder implements JobHandler {
         this.scheduled = scheduled;
         this.handler = handler;
         this.jobManager = jobManager;
+    }
+
+    public JobHolder simpleName(String simpleName){
+        this.simpleName = simpleName;
+        return this;
+    }
+
+    public String getSimpleName() {
+        return simpleName;
     }
 
     /**

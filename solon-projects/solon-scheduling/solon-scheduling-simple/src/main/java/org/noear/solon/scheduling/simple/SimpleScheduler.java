@@ -23,6 +23,7 @@ import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -45,14 +46,9 @@ public class SimpleScheduler implements Lifecycle {
     private CronExpressionPlus cron;
 
     /**
-     * 休息时间
+     * 延后时间
      */
-    private long sleepMillis;
-
-    /**
-     * 基准时间（对于比对）
-     */
-    private Date baseTime;
+    private long delayMillis;
     /**
      * 下次执行时间
      */
@@ -130,20 +126,15 @@ public class SimpleScheduler implements Lifecycle {
 
 
     private void run() {
-        if (baseTime == null) {
-            baseTime = new Date();
-        }
-
         if (isStarted == false) {
             return;
         }
 
         try {
             runAsCron();
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            if(e instanceof InterruptedException){
+            if (e instanceof InterruptedException) {
                 //任务中止
                 isStarted = false;
                 return;
@@ -152,11 +143,11 @@ public class SimpleScheduler implements Lifecycle {
             log.warn(e.getMessage(), e);
         }
 
-        if (sleepMillis < 0) {
-            sleepMillis = 100;
+        if (delayMillis < 0L) {
+            delayMillis = 100L;
         }
 
-        RunUtil.delay(this::run, sleepMillis);
+        RunUtil.delay(this::run, delayMillis);
     }
 
     /**
@@ -164,23 +155,19 @@ public class SimpleScheduler implements Lifecycle {
      */
     private void runAsCron() throws Throwable {
         //::按表达式调度（并行调用）
-        nextTime = cron.getNextValidTimeAfter(baseTime);
+        nextTime = cron.getNextValidTimeAfter(new Date(System.currentTimeMillis() - 10L));  //-10L, 避免波动
 
         if (nextTime != null) {
-            sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+            delayMillis = nextTime.getTime() - System.currentTimeMillis();
 
-            if (sleepMillis >= 0) {
-                if (sleepMillis <= 1000) {
-                    jobFutureOfCron = RunUtil.parallel(this::exec0);
-                }
+            if (delayMillis <= 0L) { //10L, 避免波动
+                //到时（=0）或超时（<0）了
+                jobFutureOfCron = RunUtil.parallel(this::exec0);
 
-                baseTime = nextTime;
-                nextTime = cron.getNextValidTimeAfter(baseTime);
+                nextTime = cron.getNextValidTimeAfter(nextTime);
                 if (nextTime != null) {
-                    if (sleepMillis <= 1000) {
-                        //重新设定休息时间
-                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    }
+                    //重新设定休息时间
+                    delayMillis = nextTime.getTime() - System.currentTimeMillis();
                 }
             }
         }
@@ -196,6 +183,10 @@ public class SimpleScheduler implements Lifecycle {
      */
     private void exec0() {
         try {
+            if (jobHolder.getSimpleName() != null) {
+                MDC.put("job", jobHolder.getSimpleName());
+            }
+
             jobHolder.handle(null);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
