@@ -20,8 +20,12 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.core.util.RunUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author noear 2023/6/19 created
@@ -32,19 +36,26 @@ public class App {
         Solon.start(App.class, args);
     }
 
-    @Mapping("t1")
-    public Mono<String> t1(String name) {
+    @Mapping("m1")
+    public Mono<String> m1(String name) {
         return Mono.just("Hello " + name);
     }
 
-    @Mapping("t2")
-    public Flux<String> t2(String name) {
+    @Mapping("m2")
+    public Mono<String> m2(String name) {
+        AtomicReference<MonoSink<String>> sinkRef = new AtomicReference<>();
+
+        return Mono.create(sink -> sinkRef.set(sink));
+    }
+
+    @Mapping("f1")
+    public Flux<String> f1(String name) {
         return Flux.just("Hello " + name, "hello2 " + name);
     }
 
     @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
-    @Mapping("t3")
-    public Flux<String> t3(String name) {
+    @Mapping("f2")
+    public Flux<String> f2(String name) {
         return Flux.just("Hello " + name, "hello2 " + name);
     }
 }
