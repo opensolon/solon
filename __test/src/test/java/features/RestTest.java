@@ -61,35 +61,35 @@ public class RestTest extends HttpTester {
 
     @Test
     public void get_book() throws Exception {
-        Book book = path("/demo2a/rest/book?bookId=1&title=b").get(Book.class);
+        Book book = path("/demo2a/rest/book?bookId=1&title=b").getAs(Book.class);
         assert book != null;
         assert book.bookId == 1;
     }
 
     @Test
     public void post_book() throws Exception {
-        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).post(Book.class);
+        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).postAs(Book.class);
         assert book != null;
         assert book.bookId == 1;
     }
 
     @Test
     public void put_book() throws Exception {
-        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).put(Book.class);
+        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).putAs(Book.class);
         assert book != null;
         assert book.bookId == 1;
     }
 
     @Test
     public void patch_book() throws Exception {
-        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).patch(Book.class);
+        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).patchAs(Book.class);
         assert book != null;
         assert book.bookId == 1;
     }
 
     @Test
     public void delete_book() throws Exception {
-        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).delete(Book.class);
+        Book book = path("/demo2a/rest/book").bodyOfBean(new Book(1, "b")).deleteAs(Book.class);
         assert book != null;
         assert book.bookId == 1;
     }

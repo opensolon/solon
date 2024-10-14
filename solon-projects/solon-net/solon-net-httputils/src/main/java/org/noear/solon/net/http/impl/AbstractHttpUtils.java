@@ -351,7 +351,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T get(Type type) throws IOException {
+    public <T> T getAs(Type type) throws IOException {
         return execAsBody("GET", type);
     }
 
@@ -361,7 +361,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T post(Type type) throws IOException {
+    public <T> T postAs(Type type) throws IOException {
         return execAsBody("POST", type);
     }
 
@@ -371,7 +371,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T put(Type type) throws IOException {
+    public <T> T putAs(Type type) throws IOException {
         return execAsBody("PUT", type);
     }
 
@@ -381,7 +381,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T patch(Type type) throws IOException {
+    public <T> T patchAs(Type type) throws IOException {
         return execAsBody("PATCH", type);
     }
 
@@ -391,7 +391,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T delete(Type type) throws IOException {
+    public <T> T deleteAs(Type type) throws IOException {
         return execAsBody("DELETE", type);
     }
 

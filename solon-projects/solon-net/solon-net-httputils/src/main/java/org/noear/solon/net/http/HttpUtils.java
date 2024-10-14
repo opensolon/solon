@@ -23,6 +23,8 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +42,8 @@ import java.util.concurrent.CompletableFuture;
  * @since 2.8
  * */
 public interface HttpUtils {
+    static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
     static HttpUtils http(String service, String path) {
         String url = LoadBalanceUtils.getServer(null, service) + path;
         return http(url);
@@ -227,7 +231,7 @@ public interface HttpUtils {
     /**
      * get 请求并返回 body
      */
-    <T> T get(Type type) throws IOException;
+    <T> T getAs(Type type) throws IOException;
 
     /**
      * post 请求并返回 body
@@ -237,7 +241,7 @@ public interface HttpUtils {
     /**
      * post 请求并返回 body
      */
-    <T> T post(Type type) throws IOException;
+    <T> T postAs(Type type) throws IOException;
 
     /**
      * post 请求并返回 body
@@ -253,12 +257,12 @@ public interface HttpUtils {
     /**
      * post 请求并返回 body
      */
-    default <T> T post(Type type, boolean useMultipart) throws IOException {
+    default <T> T postAs(Type type, boolean useMultipart) throws IOException {
         if (useMultipart) {
             multipart(true);
         }
 
-        return post(type);
+        return postAs(type);
     }
 
     /**
@@ -269,7 +273,7 @@ public interface HttpUtils {
     /**
      * put 请求并返回 body
      */
-    <T> T put(Type type) throws IOException;
+    <T> T putAs(Type type) throws IOException;
 
     /**
      * patch 请求并返回 body
@@ -279,7 +283,7 @@ public interface HttpUtils {
     /**
      * patch 请求并返回 body
      */
-    <T> T patch(Type type) throws IOException;
+    <T> T patchAs(Type type) throws IOException;
 
     /**
      * delete 请求并返回 body
@@ -289,7 +293,7 @@ public interface HttpUtils {
     /**
      * delete 请求并返回 body
      */
-    <T> T delete(Type type) throws IOException;
+    <T> T deleteAs(Type type) throws IOException;
 
 
     /**
@@ -330,8 +334,6 @@ public interface HttpUtils {
     CompletableFuture<HttpResponse> execAsync(String method);
 
 
-
-
     /////////////
 
     /**
@@ -340,7 +342,8 @@ public interface HttpUtils {
      * @deprecated 3.0
      */
     @Deprecated
-    default HttpUtils bodyTxt(String txt, String contentType){
+    default HttpUtils bodyTxt(String txt, String contentType) {
+        log.warn("'HttpUtils.bodyTxt(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
         return body(txt, contentType);
     }
 
@@ -351,6 +354,7 @@ public interface HttpUtils {
      */
     @Deprecated
     default HttpUtils bodyTxt(String txt) {
+        log.warn("'HttpUtils.bodyTxt(.)' will be removed, please use 'HttpUtils.bodyOfTxt(.)'!");
         return bodyOfTxt(txt);
     }
 
@@ -361,6 +365,7 @@ public interface HttpUtils {
      */
     @Deprecated
     default HttpUtils bodyJson(String txt) {
+        log.warn("'HttpUtils.bodyJson(.)' will be removed, please use 'HttpUtils.bodyOfJson(.)'!");
         return bodyOfJson(txt);
     }
 
@@ -371,7 +376,8 @@ public interface HttpUtils {
      * @deprecated 3.0
      */
     @Deprecated
-    default HttpUtils bodyRaw(byte[] bytes, String contentType){
+    default HttpUtils bodyRaw(byte[] bytes, String contentType) {
+        log.warn("'HttpUtils.bodyRaw(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
         return body(bytes, contentType);
     }
 
@@ -382,6 +388,7 @@ public interface HttpUtils {
      */
     @Deprecated
     default HttpUtils bodyRaw(byte[] bytes) {
+        log.warn("'HttpUtils.bodyRaw(.)' will be removed, please use 'HttpUtils.body(.)'!");
         return body(bytes);
     }
 
@@ -391,7 +398,8 @@ public interface HttpUtils {
      * @deprecated 3.0
      */
     @Deprecated
-    default HttpUtils bodyRaw(InputStream raw){
+    default HttpUtils bodyRaw(InputStream raw) {
+        log.warn("'HttpUtils.bodyRaw(.)' will be removed, please use 'HttpUtils.body(.)'!");
         return body(raw);
     }
 
@@ -401,7 +409,8 @@ public interface HttpUtils {
      * @deprecated 3.0
      */
     @Deprecated
-    default HttpUtils bodyRaw(InputStream raw, String contentType){
+    default HttpUtils bodyRaw(InputStream raw, String contentType) {
+        log.warn("'HttpUtils.bodyRaw(.,.)' will be removed, please use 'HttpUtils.body(.,.)'!");
         return body(raw, contentType);
     }
 
