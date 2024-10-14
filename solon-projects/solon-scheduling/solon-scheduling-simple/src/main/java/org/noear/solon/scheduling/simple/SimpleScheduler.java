@@ -39,7 +39,7 @@ import java.util.concurrent.ScheduledFuture;
 public class SimpleScheduler implements Lifecycle {
     static final Logger log = LoggerFactory.getLogger(SimpleScheduler.class);
 
-    private JobHolder jobHolder;
+    private final JobHolder jobHolder;
     /**
      * 调度表达式
      */
@@ -115,7 +115,7 @@ public class SimpleScheduler implements Lifecycle {
      */
     @Override
     public void stop() throws Throwable {
-        if (isStarted = false) {
+        if (isStarted == false) {
             return;
         } else {
             isStarted = false;
