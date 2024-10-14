@@ -71,6 +71,9 @@ public class SimpleScheduler implements Lifecycle {
         }
     }
 
+    /**
+     * 是否开始
+     * */
     private boolean isStarted = false;
 
     /**
