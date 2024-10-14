@@ -300,14 +300,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     /**
-     * 设置 BODY txt
-     */
-    @Override
-    public HttpUtils bodyTxt(String txt) {
-        return bodyTxt(txt, "text/plain");
-    }
-
-    /**
      * 设置 BODY txt 及内容类型
      */
     @Override
@@ -317,11 +309,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         }
 
         return this;
-    }
-
-    @Override
-    public HttpUtils bodyJson(String txt) {
-        return bodyTxt(txt, "application/json");
     }
 
     @Override
@@ -337,11 +324,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         }
 
         return this;
-    }
-
-    @Override
-    public HttpUtils bodyRaw(byte[] bytes) {
-        return bodyRaw(bytes, null);
     }
 
     @Override

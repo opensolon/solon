@@ -172,17 +172,21 @@ public interface HttpUtils {
     /**
      * 主体配置
      */
-    HttpUtils bodyTxt(String txt);
-
-    /**
-     * 主体配置
-     */
     HttpUtils bodyTxt(String txt, String contentType);
 
     /**
      * 主体配置
      */
-    HttpUtils bodyJson(String txt);
+    default HttpUtils bodyTxt(String txt) {
+        return bodyTxt(txt, "text/plain");
+    }
+
+    /**
+     * 主体配置
+     */
+    default HttpUtils bodyJson(String txt) {
+        return bodyTxt(txt, "application/json");
+    }
 
     /**
      * 主体配置
@@ -192,12 +196,14 @@ public interface HttpUtils {
     /**
      * 主体配置
      */
-    HttpUtils bodyRaw(byte[] bytes);
+    HttpUtils bodyRaw(byte[] bytes, String contentType);
 
     /**
      * 主体配置
      */
-    HttpUtils bodyRaw(byte[] bytes, String contentType);
+    default HttpUtils bodyRaw(byte[] bytes) {
+        return bodyRaw(bytes, null);
+    }
 
     /**
      * 主体配置
