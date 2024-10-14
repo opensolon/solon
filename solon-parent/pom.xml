@@ -26,8 +26,8 @@
 
         <solon.version>3.0.2-M6</solon.version>
         <solon-cloud.version>3.0.2-M6</solon-cloud.version>
-        <solon-admin.version>3.0.2-M5</solon-admin.version>
-        <solon-integration.version>3.0.2-M5</solon-integration.version>
+        <solon-admin.version>3.0.2-M6</solon-admin.version>
+        <solon-integration.version>3.0.2-M6</solon-integration.version>
 
         <solonx.version>1.1.0</solonx.version>
 
