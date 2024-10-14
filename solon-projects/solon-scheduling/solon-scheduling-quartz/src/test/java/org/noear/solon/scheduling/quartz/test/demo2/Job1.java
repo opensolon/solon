@@ -24,11 +24,11 @@ import java.util.Date;
  * @author noear 2022/10/15 created
  */
 @Slf4j
-@Scheduled(cron = "1/2 * * * * ?")
+@Scheduled(cron = "* * * * * ?")
 public class Job1 implements Runnable {
     @Override
     public void run() {
-        log.warn(new Date() + ": 1/2 * * * * ?");
+        log.warn(new Date() + ": * * * * * ?");
 
         try {
             Thread.sleep(1000 * 2);
