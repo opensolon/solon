@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core;
 
-import org.noear.solon.core.mvc.MvcFactoryDefault;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.util.function.BiFunction;
 
@@ -30,6 +30,10 @@ public final class FactoryManager {
 
     public static FactoryManager getGlobal() {
         return global;
+    }
+
+    public FactoryManager(){
+        mvcFactory = ClassUtil.tryInstance("org.noear.solon.core.mvc.MvcFactoryDefault");
     }
 
     //////////
@@ -90,7 +94,7 @@ public final class FactoryManager {
     //
     // mvcFactory 对接
     //
-    private MvcFactory mvcFactory = new MvcFactoryDefault();
+    private MvcFactory mvcFactory;
 
     public boolean hasMvcFactory() {
         return mvcFactory != null;

@@ -17,7 +17,8 @@ package org.noear.solon.core.mvc;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Addition;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
@@ -27,7 +28,9 @@ import org.noear.solon.core.util.LogUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 动作加载器默认实现（根据bean加载）
