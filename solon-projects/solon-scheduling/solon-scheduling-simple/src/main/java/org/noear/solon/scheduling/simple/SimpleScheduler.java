@@ -154,8 +154,10 @@ public class SimpleScheduler implements Lifecycle {
      * 调度
      */
     private void runAsCron() throws Throwable {
-        //::按表达式调度（并行调用）
-        nextTime = cron.getNextValidTimeAfter(new Date(System.currentTimeMillis() - 10L));  //-10L, 避免正好过时
+        if (nextTime == null) {
+            //说明是第一次
+            nextTime = cron.getNextValidTimeAfter(new Date());
+        }
 
         if (nextTime != null) {
             delayMillis = nextTime.getTime() - System.currentTimeMillis();
