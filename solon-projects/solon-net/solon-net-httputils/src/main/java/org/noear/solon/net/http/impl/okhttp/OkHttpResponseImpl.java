@@ -21,6 +21,7 @@ import org.noear.solon.net.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
@@ -96,7 +97,7 @@ public class OkHttpResponseImpl implements HttpResponse {
     }
 
     @Override
-    public <T> T bodyAsBean(Class<T> type) throws IOException {
+    public <T> T bodyAsBean(Type type) throws IOException {
         if (String.class == utils.serializer().type()) {
             return (T) utils.serializer().deserialize(bodyAsString(), type);
         } else if (byte[].class == utils.serializer().type()) {

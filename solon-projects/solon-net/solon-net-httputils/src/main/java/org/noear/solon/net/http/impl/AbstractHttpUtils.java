@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -355,7 +356,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T get(Class<T> type) throws IOException {
+    public <T> T get(Type type) throws IOException {
         return execAsBody("GET", type);
     }
 
@@ -365,7 +366,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T post(Class<T> type) throws IOException {
+    public <T> T post(Type type) throws IOException {
         return execAsBody("POST", type);
     }
 
@@ -375,7 +376,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T put(Class<T> type) throws IOException {
+    public <T> T put(Type type) throws IOException {
         return execAsBody("PUT", type);
     }
 
@@ -385,7 +386,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T patch(Class<T> type) throws IOException {
+    public <T> T patch(Type type) throws IOException {
         return execAsBody("PATCH", type);
     }
 
@@ -395,7 +396,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T delete(Class<T> type) throws IOException {
+    public <T> T delete(Type type) throws IOException {
         return execAsBody("DELETE", type);
     }
 
@@ -424,7 +425,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public <T> T execAsBody(String method, Class<T> type) throws IOException {
+    public <T> T execAsBody(String method, Type type) throws IOException {
         try (HttpResponse resp = exec(method)) {
             return resp.bodyAsBean(type);
         }

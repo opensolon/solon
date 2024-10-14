@@ -18,6 +18,7 @@ package org.noear.solon.net.http;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
@@ -87,5 +88,5 @@ public interface HttpResponse extends Closeable {
     /**
      * 获取响应主体并转为对象
      */
-    <T> T bodyAsBean(Class<T> type) throws IOException;
+    <T> T bodyAsBean(Type type) throws IOException;
 }

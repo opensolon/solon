@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -224,7 +225,7 @@ public interface HttpUtils {
     /**
      * get 请求并返回 body
      */
-    <T> T get(Class<T> type) throws IOException;
+    <T> T get(Type type) throws IOException;
 
     /**
      * post 请求并返回 body
@@ -234,7 +235,7 @@ public interface HttpUtils {
     /**
      * post 请求并返回 body
      */
-    <T> T post(Class<T> type) throws IOException;
+    <T> T post(Type type) throws IOException;
 
     /**
      * post 请求并返回 body
@@ -250,7 +251,7 @@ public interface HttpUtils {
     /**
      * post 请求并返回 body
      */
-    default <T> T post(Class<T> type, boolean useMultipart) throws IOException {
+    default <T> T post(Type type, boolean useMultipart) throws IOException {
         if (useMultipart) {
             multipart(true);
         }
@@ -266,7 +267,7 @@ public interface HttpUtils {
     /**
      * put 请求并返回 body
      */
-    <T> T put(Class<T> type) throws IOException;
+    <T> T put(Type type) throws IOException;
 
     /**
      * patch 请求并返回 body
@@ -276,7 +277,7 @@ public interface HttpUtils {
     /**
      * patch 请求并返回 body
      */
-    <T> T patch(Class<T> type) throws IOException;
+    <T> T patch(Type type) throws IOException;
 
     /**
      * delete 请求并返回 body
@@ -286,7 +287,7 @@ public interface HttpUtils {
     /**
      * delete 请求并返回 body
      */
-    <T> T delete(Class<T> type) throws IOException;
+    <T> T delete(Type type) throws IOException;
 
 
     /**
@@ -309,7 +310,7 @@ public interface HttpUtils {
     /**
      * 执行请求并返回响应主体
      */
-    <T> T execAsBody(String method, Class<T> type) throws IOException;
+    <T> T execAsBody(String method, Type type) throws IOException;
 
     /**
      * 执行请求并返回代码
