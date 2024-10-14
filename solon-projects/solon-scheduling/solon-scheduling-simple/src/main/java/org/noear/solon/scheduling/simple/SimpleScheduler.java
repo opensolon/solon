@@ -94,6 +94,9 @@ public class SimpleScheduler implements Lifecycle {
             isStarted = true;
         }
 
+        //重置（可能会二次启动）
+        nextTime = null;
+
         if (jobHolder.getScheduled().fixedDelay() > 0) {
             jobFutureOfFixed = RunUtil.scheduleWithFixedDelay(this::exec0,
                     jobHolder.getScheduled().initialDelay(),
