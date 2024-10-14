@@ -92,7 +92,7 @@ public class HttpChannel extends ChannelBase implements Channel {
             byte[] bytes = encoder.encode(ctx.body);
 
             if (bytes != null) {
-                response = http.bodyRaw(bytes, encoder.enctype()).exec(ctx.action);
+                response = http.body(bytes, encoder.enctype()).exec(ctx.action);
             }
         }
 

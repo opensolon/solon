@@ -33,7 +33,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";
 
-        String json2 = path("/demo2/param4/json").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json").bodyOfJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
@@ -46,7 +46,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";
 
-        String json2 = path("/demo2/param4/json_2").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json_2").bodyOfJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
@@ -59,7 +59,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";
 
-        String json2 = path("/demo2/param4/json_2/header/t").header("id", "1").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json_2/header/t").header("id", "1").bodyOfJson(json).post();
 
         assert json2 != null;
         assert json2.startsWith("1{");
@@ -70,7 +70,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";
 
-        String json2 = path("/demo2/param4/json_2/1").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json_2/1").bodyOfJson(json).post();
 
         assert "1".equals(json2);
     }
@@ -80,7 +80,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式OK
         String json = "{id:1,name:'noear',date:'2021-12-12T12:12:12'}";
 
-        String json2 = path("/demo2/param4/json").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json").bodyOfJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
@@ -93,7 +93,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式OK
         String json = "[{id:1,name:'noear',date:'2021-12-12T12:12:12'}]";
 
-        String json2 = path("/demo2/param4/json2").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json2").bodyOfJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
@@ -107,7 +107,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式OK
         String json = "[{id:1,name:'noear',date:'2021-12-12T12:12:12'}]";
 
-        String json2 = path("/demo2/param4/json2/1").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json2/1").bodyOfJson(json).post();
 
         assert "1".equals(json2);
     }
@@ -117,7 +117,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式OK
         String json = "[[1],[3,4],[5,6,9]]";
 
-        String val = path("/demo2/param4/json3").bodyJson(json).post();
+        String val = path("/demo2/param4/json3").bodyOfJson(json).post();
 
         assert "Long".equals(val);
     }
@@ -127,7 +127,7 @@ public class HttpParam4Test extends HttpTester {
         //走json通过，这个格式OK
         String json = "{\"list\":[[1],[3,4],[5,6,9]]}";
 
-        String val = path("/demo2/param4/json3").bodyJson(json).post();
+        String val = path("/demo2/param4/json3").bodyOfJson(json).post();
 
         assert "Long".equals(val);
     }
@@ -215,7 +215,7 @@ public class HttpParam4Test extends HttpTester {
 
 
         //走param，@Param 的格式化会起效果
-        String json2 = path("/demo2/param4/param3").bodyJson(oNode.toJson()).post();
+        String json2 = path("/demo2/param4/param3").bodyOfJson(oNode.toJson()).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
@@ -229,11 +229,11 @@ public class HttpParam4Test extends HttpTester {
     public void body() throws IOException {
         String body = "{\"name\":\"noear\"}";
 
-        String body2 = path("/demo2/param4/body").bodyJson(body).post();
+        String body2 = path("/demo2/param4/body").bodyOfJson(body).post();
         assert body.equals(body2);
 
 
-        body2 = path("/demo2/param4/body").bodyTxt(body).post();
+        body2 = path("/demo2/param4/body").bodyOfTxt(body).post();
         assert body.equals(body2);
     }
 
@@ -245,7 +245,7 @@ public class HttpParam4Test extends HttpTester {
         body2 = path("/demo2/param4/body_map").data("name","noear").post();
         assert "1".equals(body2);
 
-        body2 = path("/demo2/param4/body_map").bodyJson(body).post();
+        body2 = path("/demo2/param4/body_map").bodyOfJson(body).post();
         assert "1".equals(body2);
     }
 
@@ -257,7 +257,7 @@ public class HttpParam4Test extends HttpTester {
         body2 = path("/demo2/param4/body_val").data("name","noear").post();
         assert "1".equals(body2);
 
-        body2 = path("/demo2/param4/body_val").bodyJson(body).post();
+        body2 = path("/demo2/param4/body_val").bodyOfJson(body).post();
         assert "1".equals(body2);
     }
 
@@ -269,7 +269,7 @@ public class HttpParam4Test extends HttpTester {
         body2 = path("/demo2/param4/val").data("name","noear").post();
         assert "noear".equals(body2);
 
-        body2 = path("/demo2/param4/val").bodyJson(body).post();
+        body2 = path("/demo2/param4/val").bodyOfJson(body).post();
         assert "noear".equals(body2);
     }
 
@@ -278,7 +278,7 @@ public class HttpParam4Test extends HttpTester {
         String body = "{username:'noear',confirmPassword:'123456'}";
 
         System.out.println(body);
-        String body2 = path("/demo2/param4/body2").bodyJson(body).post();
+        String body2 = path("/demo2/param4/body2").bodyOfJson(body).post();
         ONode oNode = ONode.loadStr(body2);
 
 
@@ -291,7 +291,7 @@ public class HttpParam4Test extends HttpTester {
         String body = "{page:1,pageSize:3,data:{id:5,name:'noear'}}";
 
         System.out.println(body);
-        String body2 = path("/demo2/param4/body2_t").bodyJson(body).post();
+        String body2 = path("/demo2/param4/body2_t").bodyOfJson(body).post();
         ONode oNode = ONode.loadStr(body2);
 
 
@@ -305,7 +305,7 @@ public class HttpParam4Test extends HttpTester {
 
         //paramMap()->body()
         System.out.println(body);
-        String body2 = path("/demo2/param4/test").bodyJson(body).post();
+        String body2 = path("/demo2/param4/test").bodyOfJson(body).post();
         System.out.println(body2);
 
         assert body.equals(body2);

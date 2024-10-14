@@ -37,7 +37,7 @@ public class HttpJsonTest extends HttpTester {
         userModel.id = 12;
         oNode.set("1", ONode.loadObj(userModel));
 
-        assert path("/demo2/json/map").bodyJson(oNode.toJson()).post().equals("12");
+        assert path("/demo2/json/map").bodyOfJson(oNode.toJson()).post().equals("12");
     }
 
     @Test
@@ -51,7 +51,7 @@ public class HttpJsonTest extends HttpTester {
         ONode oNode1 = new ONode();
         oNode1.set("userMap", oNode);
 
-        assert path("/demo2/json/map").bodyJson(oNode1.toJson()).post().equals("12");
+        assert path("/demo2/json/map").bodyOfJson(oNode1.toJson()).post().equals("12");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class HttpJsonTest extends HttpTester {
 
         list.add(userModel);
 
-        assert path("/demo2/json/list").bodyJson(ONode.stringify(list)).post().equals("12");
+        assert path("/demo2/json/list").bodyOfJson(ONode.stringify(list)).post().equals("12");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class HttpJsonTest extends HttpTester {
 
         String rst = path("/demo2/json/map_r")
                 .header("Accept", "application/xml")
-                .bodyJson(oNode.toJson()).post();
+                .bodyOfJson(oNode.toJson()).post();
 
         assert rst.contains("<id>12</id>");
         assert rst.contains("@type") == false;
@@ -96,7 +96,7 @@ public class HttpJsonTest extends HttpTester {
         oNode.set("1", ONode.loadObj(userModel));
 
         String rst = path("/demo2/json/map_xml")
-                .bodyJson(oNode.toJson()).post();
+                .bodyOfJson(oNode.toJson()).post();
 
         assert rst.contains("<id>12</id>");
         assert rst.contains("@type") == false;

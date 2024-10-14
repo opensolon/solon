@@ -304,22 +304,22 @@ public abstract class AbstractHttpUtils implements HttpUtils {
      * 设置 BODY txt 及内容类型
      */
     @Override
-    public HttpUtils bodyTxt(String txt, String contentType) {
+    public HttpUtils body(String txt, String contentType) {
         if (txt != null) {
-            bodyRaw(txt.getBytes(_charset), contentType);
+            body(txt.getBytes(_charset), contentType);
         }
 
         return this;
     }
 
     @Override
-    public HttpUtils bodyBean(Object obj) throws IOException {
+    public HttpUtils bodyOfBean(Object obj) throws IOException {
         Object tmp = serializer().serialize(obj);
 
         if (tmp instanceof String) {
-            bodyTxt((String) tmp, serializer().contentType());
+            body((String) tmp, serializer().contentType());
         } else if (tmp instanceof byte[]) {
-            bodyRaw((byte[]) tmp, serializer().contentType());
+            body((byte[]) tmp, serializer().contentType());
         } else {
             throw new SolonException("Invalid serializer type!");
         }
@@ -328,21 +328,16 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public HttpUtils bodyRaw(byte[] bytes, String contentType) {
+    public HttpUtils body(byte[] bytes, String contentType) {
         if (bytes == null) {
             return this;
         }
 
-        return bodyRaw(new ByteArrayInputStream(bytes), contentType);
+        return body(new ByteArrayInputStream(bytes), contentType);
     }
 
     @Override
-    public HttpUtils bodyRaw(InputStream raw) {
-        return bodyRaw(raw, null);
-    }
-
-    @Override
-    public HttpUtils bodyRaw(InputStream raw, String contentType) {
+    public HttpUtils body(InputStream raw, String contentType) {
         if (raw != null) {
             _bodyRaw = new HttpStream(raw, contentType);
         }

@@ -34,7 +34,7 @@ public class HttpExtTest extends HttpTester {
 
     @Test
     public void ext_gt2() throws Exception {
-        String rst = path("/demo2/ext/save").bodyJson("{id:1,name:'solon'}").post();
+        String rst = path("/demo2/ext/save").bodyOfJson("{id:1,name:'solon'}").post();
 
         assert rst != null;
         assert rst.contains("solon");

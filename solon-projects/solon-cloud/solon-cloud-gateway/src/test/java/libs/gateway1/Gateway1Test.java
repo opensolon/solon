@@ -75,7 +75,7 @@ public class Gateway1Test extends HttpTester {
             buf.append("noear0123456789abcdef");
         }
 
-        String rst = path("/demo/test").bodyJson("{\"name\":\"" + buf + "\"}").post();
+        String rst = path("/demo/test").bodyOfJson("{\"name\":\"" + buf + "\"}").post();
         assert rst != null;
         assert rst.contains("noear");
     }
@@ -87,7 +87,7 @@ public class Gateway1Test extends HttpTester {
             buf.append("noear0123456789abcdef");
         }
 
-        int code = path("/demo/test").bodyJson("{\"name\":\"" + buf + "\"}").execAsCode("POST");
+        int code = path("/demo/test").bodyOfJson("{\"name\":\"" + buf + "\"}").execAsCode("POST");
         assert code == 413;
     }
 

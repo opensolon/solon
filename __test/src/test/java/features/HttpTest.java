@@ -16,14 +16,12 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
-import org.noear.solon.test.SolonJUnit5Extension;
 import webapp.App;
 
 import java.io.File;
@@ -70,12 +68,12 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test12_post() throws IOException {
-        assert path("/demo1/run1/*").bodyTxt("").post().equals("http://localhost:8080/demo1/run1/*");
+        assert path("/demo1/run1/*").bodyOfTxt("").post().equals("http://localhost:8080/demo1/run1/*");
     }
 
     @Test
     public void test12_put() throws IOException {
-        assert path("/demo1/run1/*").bodyTxt("").put().equals("http://localhost:8080/demo1/run1/*");
+        assert path("/demo1/run1/*").bodyOfTxt("").put().equals("http://localhost:8080/demo1/run1/*");
     }
 
     @Test
@@ -200,9 +198,9 @@ public class HttpTest extends HttpTester {
 
     @Test
     public void test2d_2() throws IOException {
-        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
+        assert path("/demo2/param/body").bodyOfTxt("name=xxx").post().equals("name=xxx");
         assert path("/demo2/param/body?name=xxx").get().equals("");
-        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
+        assert path("/demo2/param/body").bodyOfTxt("name=xxx").post().equals("name=xxx");
     }
 
     @Test
@@ -363,7 +361,7 @@ public class HttpTest extends HttpTester {
     public void test2j_2() throws IOException {
         String json = "{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":\"2019-11-11T11:11:11\",\"aaa\":[1,2]}";
 
-        String json2 = path("/demo2/param/model").bodyTxt(json, "application/json")
+        String json2 = path("/demo2/param/model").body(json, "application/json")
                 .post();
 
         ONode oNode = ONode.load(json2);

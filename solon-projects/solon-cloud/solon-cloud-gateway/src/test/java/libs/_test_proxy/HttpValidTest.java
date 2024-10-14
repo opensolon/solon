@@ -199,11 +199,11 @@ public class HttpValidTest extends HttpTester {
 
     @Test
     public void test2v_patt_json() throws IOException {
-        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
-        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:''}").post().equals("OK");
-        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'1'}").post().equals("OK") == false;
-        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'1'}").post().contains("demo");
-        assert path("/demo2/valid/patt").bodyJson("{}").post().equals("OK");
+        assert path("/demo2/valid/patt").bodyOfJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
+        assert path("/demo2/valid/patt").bodyOfJson("{val1:'111-12',val2:''}").post().equals("OK");
+        assert path("/demo2/valid/patt").bodyOfJson("{val1:'111-12',val2:'1'}").post().equals("OK") == false;
+        assert path("/demo2/valid/patt").bodyOfJson("{val1:'111-12',val2:'1'}").post().contains("demo");
+        assert path("/demo2/valid/patt").bodyOfJson("{}").post().equals("OK");
     }
 
     @Test
@@ -215,9 +215,9 @@ public class HttpValidTest extends HttpTester {
 
     @Test
     public void test2v_patt2_json() throws IOException {
-        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
-        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:'222-12-6'}").post().equals("OK") == false;
-        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:''}").post().equals("OK") == false;
+        assert path("/demo2/valid/patt2").bodyOfJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
+        assert path("/demo2/valid/patt2").bodyOfJson("{val1:'111-12',val2:'222-12-6'}").post().equals("OK") == false;
+        assert path("/demo2/valid/patt2").bodyOfJson("{val1:'111-12',val2:''}").post().equals("OK") == false;
     }
 
     @Test
@@ -251,8 +251,8 @@ public class HttpValidTest extends HttpTester {
         ONode node2 = ONode.loadStr("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
 
 
-        assert path("/demo2/valid/beanlist").bodyJson(node.toJson()).post().equals("OK");
-        assert path("/demo2/valid/beanlist").bodyJson(node2.toJson()).post().equals("OK") == false;
+        assert path("/demo2/valid/beanlist").bodyOfJson(node.toJson()).post().equals("OK");
+        assert path("/demo2/valid/beanlist").bodyOfJson(node2.toJson()).post().equals("OK") == false;
     }
 
     @Test
@@ -262,14 +262,14 @@ public class HttpValidTest extends HttpTester {
         ONode node2 = ONode.loadStr("{list:[{mobile:'x'},{mobile:'y',password:'y'}]}");
 
 
-        assert path("/demo2/valid/beanlist2").bodyJson(node.toJson()).post().equals("OK");
-        assert path("/demo2/valid/beanlist2").bodyJson(node2.toJson()).post().equals("OK") == false;
+        assert path("/demo2/valid/beanlist2").bodyOfJson(node.toJson()).post().equals("OK");
+        assert path("/demo2/valid/beanlist2").bodyOfJson(node2.toJson()).post().equals("OK") == false;
     }
 
     @Test
     public void test2v_beanlist2_b() throws IOException {
-        assert path("/demo2/valid/beanlist2").bodyJson("[]").post().equals("OK") == false;
-        assert path("/demo2/valid/beanlist2").bodyJson("[{}]").post().equals("OK") == false;
+        assert path("/demo2/valid/beanlist2").bodyOfJson("[]").post().equals("OK") == false;
+        assert path("/demo2/valid/beanlist2").bodyOfJson("[{}]").post().equals("OK") == false;
     }
 
 
@@ -280,8 +280,8 @@ public class HttpValidTest extends HttpTester {
         ONode node2 = ONode.loadStr("{a:{mobile:'x'},b:{mobile:'y'}}");
 
 
-        assert path("/demo2/valid/map").bodyJson(node.toJson()).post().equals("OK");
-        assert path("/demo2/valid/map").bodyJson(node2.toJson()).post().equals("OK") == false;
+        assert path("/demo2/valid/map").bodyOfJson(node.toJson()).post().equals("OK");
+        assert path("/demo2/valid/map").bodyOfJson(node2.toJson()).post().equals("OK") == false;
     }
 
 }

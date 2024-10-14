@@ -26,8 +26,8 @@ public class HttpTest3 extends HttpTester {
 
     @Test
     public void test2d_2() throws IOException {
-        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
+        assert path("/demo2/param/body").bodyOfTxt("name=xxx").post().equals("name=xxx");
         assert path("/demo2/param/body?name=xxx").get().equals("");
-        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
+        assert path("/demo2/param/body").bodyOfTxt("name=xxx").post().equals("name=xxx");
     }
 }

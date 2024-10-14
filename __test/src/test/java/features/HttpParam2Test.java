@@ -16,9 +16,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
@@ -36,7 +34,7 @@ public class HttpParam2Test extends HttpTester {
 
     @Test
     public void test1_required() throws IOException {
-        assert path("/demo2/param2/anno/required").bodyJson("{\"name\":\"hi\"}").execAsCode("POST") != 400;
+        assert path("/demo2/param2/anno/required").bodyOfJson("{\"name\":\"hi\"}").execAsCode("POST") != 400;
     }
 
     @Test
@@ -64,8 +62,8 @@ public class HttpParam2Test extends HttpTester {
 
     @Test
     public void test4_2() throws IOException {
-        assert path("/demo2/param2/anno/name").bodyJson("{\"n2\":\"noear\"}").post().equals("noear");
+        assert path("/demo2/param2/anno/name").bodyOfJson("{\"n2\":\"noear\"}").post().equals("noear");
 
-        assert path("/demo2/param2/anno/name").bodyJson("{\"n2\":\"hi\"}").post().equals("hi");
+        assert path("/demo2/param2/anno/name").bodyOfJson("{\"n2\":\"hi\"}").post().equals("hi");
     }
 }

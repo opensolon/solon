@@ -173,48 +173,50 @@ public interface HttpUtils {
     /**
      * 主体配置
      */
-    HttpUtils bodyTxt(String txt, String contentType);
-
-    /**
-     * 主体配置
-     */
-    default HttpUtils bodyTxt(String txt) {
-        return bodyTxt(txt, "text/plain");
+    default HttpUtils bodyOfTxt(String txt) {
+        return body(txt, "text/plain");
     }
 
     /**
      * 主体配置
      */
-    default HttpUtils bodyJson(String txt) {
-        return bodyTxt(txt, "application/json");
+    default HttpUtils bodyOfJson(String txt) {
+        return body(txt, "application/json");
+    }
+
+    /**
+     * 主体配置（由序列化器决定内容类型）
+     */
+    HttpUtils bodyOfBean(Object obj) throws IOException;
+
+    /**
+     * 主体配置
+     */
+    HttpUtils body(String txt, String contentType);
+
+    /**
+     * 主体配置
+     */
+    HttpUtils body(byte[] bytes, String contentType);
+
+    /**
+     * 主体配置
+     */
+    default HttpUtils body(byte[] bytes) {
+        return body(bytes, null);
     }
 
     /**
      * 主体配置
      */
-    HttpUtils bodyBean(Object obj) throws IOException;
+    HttpUtils body(InputStream raw, String contentType);
 
     /**
      * 主体配置
      */
-    HttpUtils bodyRaw(byte[] bytes, String contentType);
-
-    /**
-     * 主体配置
-     */
-    default HttpUtils bodyRaw(byte[] bytes) {
-        return bodyRaw(bytes, null);
+    default HttpUtils body(InputStream raw) {
+        return body(raw, null);
     }
-
-    /**
-     * 主体配置
-     */
-    HttpUtils bodyRaw(InputStream raw);
-
-    /**
-     * 主体配置
-     */
-    HttpUtils bodyRaw(InputStream raw, String contentType);
 
 
     /**
@@ -328,7 +330,83 @@ public interface HttpUtils {
     CompletableFuture<HttpResponse> execAsync(String method);
 
 
-    //////
+
+
+    /////////////
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyTxt(String txt, String contentType){
+        return body(txt, contentType);
+    }
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyTxt(String txt) {
+        return bodyOfTxt(txt);
+    }
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyJson(String txt) {
+        return bodyOfJson(txt);
+    }
+
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyRaw(byte[] bytes, String contentType){
+        return body(bytes, contentType);
+    }
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyRaw(byte[] bytes) {
+        return body(bytes);
+    }
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyRaw(InputStream raw){
+        return body(raw);
+    }
+
+    /**
+     * 主体配置
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
+    default HttpUtils bodyRaw(InputStream raw, String contentType){
+        return body(raw, contentType);
+    }
+
+
+    /////////////
 
     /**
      * url 编码

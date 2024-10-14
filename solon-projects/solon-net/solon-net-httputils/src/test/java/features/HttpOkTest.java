@@ -2,7 +2,6 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 
 /**
@@ -36,11 +35,11 @@ public class HttpOkTest {
                 .enablePrintln(true)
                 .execAsCode("POST") == 200;
 
-        assert http(url).bodyJson("{\"user\":\"noear\"}")
+        assert http(url).bodyOfJson("{\"user\":\"noear\"}")
                 .enablePrintln(true)
                 .execAsCode("POST") == 200;
 
-        assert http(url).bodyRaw("{\"user\":\"noear\"}".getBytes())
+        assert http(url).body("{\"user\":\"noear\"}".getBytes())
                 .enablePrintln(true)
                 .execAsCode("POST") == 200;
     }
@@ -51,11 +50,11 @@ public class HttpOkTest {
                 .enablePrintln(true)
                 .execAsCode("POST") == 404;
 
-        assert http(url404).bodyJson("{\"user\":\"noear\"}")
+        assert http(url404).bodyOfJson("{\"user\":\"noear\"}")
                 .enablePrintln(true)
                 .execAsCode("POST") == 404;
 
-        assert http(url404).bodyRaw("{\"user\":\"noear\"}".getBytes())
+        assert http(url404).body("{\"user\":\"noear\"}".getBytes())
                 .enablePrintln(true)
                 .execAsCode("POST") == 404;
     }

@@ -37,7 +37,7 @@ public class HttpValidTest2 extends HttpTester {
 
     @Test
     public void test0_1() throws IOException {
-        assert path("/demo2/valid/bean2").bodyJson("").post().contains("field1");
+        assert path("/demo2/valid/bean2").bodyOfJson("").post().contains("field1");
     }
 
     @Test
@@ -333,11 +333,11 @@ public class HttpValidTest2 extends HttpTester {
         ONode node = ONode.load(data);
         node.getOrNew("field18").add("1").add("2");
 
-        assert path("/demo2/valid/bean2").bodyJson(node.toJson()).post().contains("OK");
+        assert path("/demo2/valid/bean2").bodyOfJson(node.toJson()).post().contains("OK");
 
         node.get("field18").clear();
         node.get("node").add("1");
 
-        assert path("/demo2/valid/bean2").bodyJson(node.toJson()).post().contains("field18");
+        assert path("/demo2/valid/bean2").bodyOfJson(node.toJson()).post().contains("field18");
     }
 }

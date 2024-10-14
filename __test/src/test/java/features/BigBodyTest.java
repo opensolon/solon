@@ -46,7 +46,7 @@ public class BigBodyTest extends HttpTester {
         String len = String.valueOf(json.length());
         System.out.println(json.length());
 
-        assert path("/demo2/json/body").bodyJson(json).post().equals(len);
+        assert path("/demo2/json/body").bodyOfJson(json).post().equals(len);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class BigBodyTest extends HttpTester {
         System.out.println(json.length());
 
 
-        HttpResponse resp = path("/demo2/json/body").bodyJson(json).exec("POST");
+        HttpResponse resp = path("/demo2/json/body").bodyOfJson(json).exec("POST");
         System.out.println("code: " + resp.code());
         System.out.println("body: " + resp.bodyAsString());
 
