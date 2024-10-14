@@ -538,7 +538,14 @@ public class Utils {
                 endIdx = uri.lastIndexOf("/classes/") + 1;
             } else {
                 //说明是原生运行（或 jar 运行）
-                endIdx = uri.lastIndexOf("/") + 1;
+                if (uri.indexOf("!/BOOT-INF/classes!/") > 0) {
+                    //jar in jar 打包
+                    endIdx = uri.lastIndexOf("!/BOOT-INF/classes!/");
+                    endIdx = uri.lastIndexOf("/", endIdx) + 1;
+                } else {
+                    //native 或者 maven-assembly-plugin 打包
+                    endIdx = uri.lastIndexOf("/") + 1;
+                }
             }
 
             if (uri.startsWith("file:/")) {
