@@ -35,6 +35,7 @@
 * beetlsql 升为 3.30.14-RELEASE
 * hutool 升为 5.8.32
 * liteflow 升为 2.12.4
+* snack3 升为 3.2.114
 
 ### v3.0.1
 
