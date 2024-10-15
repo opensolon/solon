@@ -13,24 +13,24 @@ import org.noear.solon.test.SolonTest;
 public class AppTest extends HttpTester {
     @Test
     public void test1() throws Exception {
-        assert path("/t1?name=d").get().equals("Hello d");
+        assert path("/m1?name=d").get().equals("Hello d");
     }
 
     @Test
     public void test2() throws Exception {
-        assert path("/t2?name=d").get().equals("[\"Hello d\",\"hello2 d\"]");
+        assert path("/f1?name=d").get().equals("[\"Hello d\",\"hello2 d\"]");
     }
 
     @Test
     public void test3() throws Exception {
-        assert path("/t2?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get().equals("Hello d\n" +
+        assert path("/f1?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get().equals("Hello d\n" +
                 "hello2 d");
 
     }
 
     @Test
     public void test4() throws Exception {
-        assert path("/t3?name=d").get().equals("Hello d\n" +
+        assert path("/f2?name=d").get().equals("Hello d\n" +
                 "hello2 d");
     }
 }

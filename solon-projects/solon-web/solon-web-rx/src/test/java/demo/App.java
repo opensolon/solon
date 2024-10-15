@@ -41,13 +41,6 @@ public class App {
         return Mono.just("Hello " + name);
     }
 
-    @Mapping("m2")
-    public Mono<String> m2(String name) {
-        AtomicReference<MonoSink<String>> sinkRef = new AtomicReference<>();
-
-        return Mono.create(sink -> sinkRef.set(sink));
-    }
-
     @Mapping("f1")
     public Flux<String> f1(String name) {
         return Flux.just("Hello " + name, "hello2 " + name);
