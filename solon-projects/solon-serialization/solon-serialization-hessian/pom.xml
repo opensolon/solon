@@ -14,16 +14,14 @@
     <artifactId>solon-serialization-hessian</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-serialization</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>hessian-lite</artifactId>
             <version>${hessian-lite.version}</version>
         </dependency>

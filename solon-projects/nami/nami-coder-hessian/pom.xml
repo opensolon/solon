@@ -26,7 +26,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>hessian-lite</artifactId>
             <version>${hessian-lite.version}</version>
         </dependency>
