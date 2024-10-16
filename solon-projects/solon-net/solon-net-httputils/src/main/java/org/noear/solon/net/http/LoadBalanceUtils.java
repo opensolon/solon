@@ -34,7 +34,7 @@ public final class LoadBalanceUtils {
     public static String getServer(String group, String service) {
         LoadBalance upstream = null;
         if (Utils.isEmpty(group)) {
-            upstream = LoadBalance.get(service);
+            upstream = LoadBalance.parse(service);
         } else {
             upstream = LoadBalance.get(group, service);
         }
