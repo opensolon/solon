@@ -104,16 +104,25 @@ public class AuthAdapter {
     }
 
     /**
+     * 设置规则路径前缀
+     */
+    public String pathPrefix() {
+        return authRulePathPrefix;
+    }
+
+    /**
      * 设置规则路径前缀（用于支持 AuthAdapterSupplier 的前缀特性）
      *
      * @param pathPrefix 路径前缀
      */
-    protected void setRulePathPrefix(String pathPrefix) {
+    public AuthAdapter pathPrefix(String pathPrefix) {
         authRulePathPrefix = pathPrefix;
 
         if (authRuleHandler != null) {
             authRuleHandler.setPathPrefix(authRulePathPrefix);
         }
+
+        return this;
     }
 
     //=================//=================//=================

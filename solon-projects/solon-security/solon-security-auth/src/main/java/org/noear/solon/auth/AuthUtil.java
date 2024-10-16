@@ -15,7 +15,7 @@
  */
 package org.noear.solon.auth;
 
-import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.auth.annotation.Logical;
 import org.noear.solon.core.handle.Context;
 
@@ -30,43 +30,68 @@ import java.util.List;
  * @since 1.4
  */
 public class AuthUtil {
-    private static AuthAdapter adapter = new AuthAdapter();
-    private static List<AuthAdapterSupplier> adapterSuppliers = new ArrayList<>();
+    private static AuthAdapter adapterDef = new AuthAdapter();
+    private static List<AuthAdapter> adapterList = new ArrayList<>();
 
-    static {
-        //如果容器里有，优先用容器的
-        Solon.context().getBeanAsync(AuthAdapter.class, bean -> {
-            adapter = bean;
-        });
-    }
-
+    /**
+     * 获取鉴权适配器
+     */
     public static AuthAdapter adapter() {
-        if (adapterSuppliers.size() > 0) {
+        if (adapterList.size() > 0) {
             Context ctx = Context.current();
-            for (AuthAdapterSupplier a1 : adapterSuppliers) {
+            for (AuthAdapter a1 : adapterList) {
                 if (ctx.pathNew().startsWith(a1.pathPrefix())) {
-                    return a1.adapter();
+                    return a1;
                 }
             }
 
             throw new IllegalStateException("Unsupported auth path: " + ctx.pathNew());
         } else {
-            return adapter;
+            return adapterDef;
         }
     }
 
+    /**
+     * 添加鉴权适配器
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
     public static void adapterAdd(AuthAdapterSupplier supplier) {
         //绑定规则的路径前缀
-        supplier.adapter().setRulePathPrefix(supplier.pathPrefix());
-
-        //添加到集合
-        adapterSuppliers.add(supplier);
-        //排除，短的在后（用负数反一反）
-        adapterSuppliers.sort(Comparator.comparingInt(e -> -e.pathPrefix().length()));
+        supplier.adapter().pathPrefix(supplier.pathPrefix());
+        adapterAdd(supplier.adapter());
     }
 
+    /**
+     * 添加鉴权适配器
+     */
+    public static void adapterAdd(AuthAdapter adapter) {
+        if (Utils.isEmpty(adapter.pathPrefix())) {
+            adapterDef = adapter;
+        } else {
+            //添加到集合
+            adapterList.add(adapter);
+            //排除，短的在后（用负数反一反）
+            adapterList.sort(Comparator.comparingInt(e -> -e.pathPrefix().length()));
+        }
+    }
+
+    /**
+     * 移除鉴权适配器
+     *
+     * @deprecated 3.0
+     */
+    @Deprecated
     public static void adapterRemove(AuthAdapterSupplier supplier) {
-        adapterSuppliers.remove(supplier);
+        adapterList.remove(supplier.adapter());
+    }
+
+    /**
+     * 移除鉴权适配器
+     */
+    public static void adapterRemove(AuthAdapter adapter) {
+        adapterList.remove(adapter);
     }
 
     /**
@@ -86,7 +111,7 @@ public class AuthUtil {
     /**
      * 验证是否有路径授权
      *
-     * @param path 路径
+     * @param path   路径
      * @param method 请求方式
      */
     public static boolean verifyPath(String path, String method) {
@@ -116,7 +141,7 @@ public class AuthUtil {
      * 验证是否有权限授权
      *
      * @param permissions 权限
-     * @param logical 验证的逻辑关系
+     * @param logical     验证的逻辑关系
      */
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
         //是否要校验登录，由用户的适配处理器决定
@@ -144,7 +169,7 @@ public class AuthUtil {
     /**
      * 验证是否有角色授权
      *
-     * @param roles 角色
+     * @param roles   角色
      * @param logical 验证的逻辑关系
      */
     public static boolean verifyRoles(String[] roles, Logical logical) {

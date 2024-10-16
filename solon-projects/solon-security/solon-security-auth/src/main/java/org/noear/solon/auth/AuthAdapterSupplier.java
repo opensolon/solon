@@ -20,7 +20,9 @@ package org.noear.solon.auth;
  *
  * @author noear
  * @since 1.10
+ * @deprecated 3.0
  */
+@Deprecated
 public interface AuthAdapterSupplier {
     /**
      * 路径前缀

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.auth.integration;
 
+import org.noear.solon.auth.AuthAdapter;
 import org.noear.solon.auth.AuthAdapterSupplier;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.*;
@@ -35,6 +36,9 @@ public class XPluginImp implements Plugin {
         context.beanInterceptorAdd(AuthPermissions.class, new PermissionsInterceptor());
         context.beanInterceptorAdd(AuthRoles.class, new RolesInterceptor());
 
+        context.subBeansOfType(AuthAdapter.class, e -> AuthUtil.adapterAdd(e));
+
+        //@deprecated 3.0
         context.subBeansOfType(AuthAdapterSupplier.class, e -> AuthUtil.adapterAdd(e));
     }
 }
