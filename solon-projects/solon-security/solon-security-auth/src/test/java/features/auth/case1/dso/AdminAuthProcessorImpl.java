@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo2.dso;
+package features.auth.case1.dso;
 
 import org.noear.solon.auth.AuthProcessor;
 import org.noear.solon.auth.annotation.Logical;

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo2.controller;
+package features.auth.case1.controller;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.auth.annotation.AuthPath;
 
 /**
  * @author noear 2022/10/12 created
@@ -25,12 +26,18 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class UserController {
     @Mapping("login")
-    public String login(){
-        return "ok";
+    public String login() {
+        return "user/login";
     }
 
     @Mapping("test")
-    public String test(){
-        return "ok";
+    public String test() {
+        return "user/test";
+    }
+
+    @AuthPath
+    @Mapping("login_path")
+    public String login_path() {
+        return "user/login_path";
     }
 }

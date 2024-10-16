@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo2;
+package features.auth.case1.controller;
 
-import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
 
 /**
  * @author noear 2022/10/12 created
  */
-public class DemoApp {
-    public static void main(String[] args){
-        Solon.start(DemoApp.class, args);
+@Mapping("admin")
+@Controller
+public class AdminController {
+    @Mapping("login")
+    public String login(){
+        return "admin/login";
+    }
+
+    @Mapping("test")
+    public String test(){
+        return "admin/test";
     }
 }

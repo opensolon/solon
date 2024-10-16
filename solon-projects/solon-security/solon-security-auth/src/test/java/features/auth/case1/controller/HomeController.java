@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo2.controller;
+package features.auth.case1.controller;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -30,6 +30,6 @@ public class HomeController {
 
     @Mapping("/test")
     public String test(){
-        return "ok";
+        return "test";
     }
 }
