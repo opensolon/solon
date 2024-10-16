@@ -116,7 +116,7 @@ public class VarHolderOfParam implements VarHolder {
     @Override
     public String getFullName() {
         Executable e = pw.getParameter().getDeclaringExecutable();
-        return e.toString() + " - @" + pw.getParameter().getName();
+        return e.toString() + " - '" + pw.getParameter().getName() + "'";
 
         //return e.getDeclaringClass().getName() + "::" + e.getName();
     }
