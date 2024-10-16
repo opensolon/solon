@@ -44,16 +44,25 @@ import java.util.concurrent.CompletableFuture;
 public interface HttpUtils {
     static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
+    /**
+     * 创建
+     */
     static HttpUtils http(String service, String path) {
         String url = LoadBalanceUtils.getServer(null, service) + path;
         return http(url);
     }
 
+    /**
+     * 创建
+     */
     static HttpUtils http(String group, String service, String path) {
         String url = LoadBalanceUtils.getServer(group, service) + path;
         return http(url);
     }
 
+    /**
+     * 创建
+     */
     static HttpUtils http(String url) {
         if (ClassUtil.hasClass(() -> OkHttpClient.class)) {
             return new OkHttpUtilsImpl(url);
