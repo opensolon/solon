@@ -119,7 +119,7 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
 
     /**
      * 类型
-     * */
+     */
     @Override
     public Class<String> type() {
         return String.class;
@@ -177,6 +177,14 @@ public class FastjsonStringSerializer implements ContextSerializer<String> {
                 return JSON.parse(data, deserializeConfig, deserializeFeatures);
             }
         } else {
+            if (toType instanceof Class) {
+                //处理匿名名类
+                Class<?> toClz = (Class<?>) toType;
+                if (toClz.isAnonymousClass()) {
+                    toType = toClz.getGenericSuperclass();
+                }
+            }
+
             if (deserializeConfig == null) {
                 return JSON.parseObject(data, toType, deserializeFeatures);
             } else {

@@ -23,6 +23,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.serialization.jackson.xml.impl.TypeReferenceImpl;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -167,8 +168,16 @@ public class JacksonXmlStringSerializer implements ContextSerializer<String> {
         if (toType == null) {
             return getConfig().readTree(data);
         } else {
-            Class<?> clz = ClassUtil.getTypeClass(toType);
-            return getConfig().readValue(data, clz);
+            if (toType instanceof Class) {
+                //处理匿名名类
+                Class<?> toClz = (Class<?>) toType;
+                if (toClz.isAnonymousClass()) {
+                    toType = toClz.getGenericSuperclass();
+                }
+            }
+
+            TypeReferenceImpl typeRef = new TypeReferenceImpl(toType);
+            return getConfig().readValue(data, typeRef);
         }
     }
 

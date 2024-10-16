@@ -63,7 +63,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
 
             try {
                 if (_gson == null) {
-                    _gson = config.create();
+                    _gson = getConfig().create();
                 }
             } finally {
                 Utils.locker().unlock();
@@ -133,6 +133,14 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         if (toType == null) {
             return JsonParser.parseString(data);
         } else {
+            if (toType instanceof Class) {
+                //处理匿名名类
+                Class<?> toClz = (Class<?>) toType;
+                if (toClz.isAnonymousClass()) {
+                    toType = toClz.getGenericSuperclass();
+                }
+            }
+
             JsonElement jsonElement = JsonParser.parseString(data);
             return getGson().fromJson(jsonElement, toType);
         }

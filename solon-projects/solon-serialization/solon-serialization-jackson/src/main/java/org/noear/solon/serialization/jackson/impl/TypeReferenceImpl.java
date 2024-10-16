@@ -35,6 +35,10 @@ public class TypeReferenceImpl<T> extends TypeReference<T> {
         }
     }
 
+    public TypeReferenceImpl(Type type) {
+        this._type2 = type;
+    }
+
     @Override
     public Type getType() {
         return _type2;

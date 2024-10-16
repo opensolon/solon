@@ -129,6 +129,14 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
         if (toType == null) {
             return fury.deserialize(data);
         } else {
+            if (toType instanceof Class) {
+                //处理匿名名类
+                Class<?> toClz = (Class<?>) toType;
+                if (toClz.isAnonymousClass()) {
+                    toType = toClz.getGenericSuperclass();
+                }
+            }
+
             Class<?> clz = ClassUtil.getTypeClass(toType);
             return fury.deserializeJavaObject(data, clz);
         }
