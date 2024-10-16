@@ -29,10 +29,13 @@
 * 添加 solon AppContext::app() 属性
 * 添加 solon-cloud CloudFileService 添加 getTempUrl(Duration) 方法
 * 调整 solon-boot 的 junit-jupiter 依赖标为 scope=test
+* 调整 solon VarHolderOfParam:getFullName 的显示，原 "@" 改为 "''"
 * 修复 solon Utils.appFolder() 在 jar in jar 打包时，失效的问题
 * 修复 solon TmplUtil 当模型参数为 null 会出现 "null"（改为用空替代）
 * 优化 solon-data-sqlutils 设计（进一步提搞性能和适用性）
 * 优化 solon-net-httputils 支持快捷序列化
+* 优化 solon-serialization 序列化器的泛型反序列化处理
+* 优化 solon-security-auth 允许 AuthAdapter 直接支持“多套账号体系鉴权”处理（简化了）。AuthAdapterSupplier 标为弃用 
 * cxf 升为 3.5.9
 * beetlsql 升为 3.30.14-RELEASE
 * hutool 升为 5.8.32
