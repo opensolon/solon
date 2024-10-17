@@ -30,7 +30,11 @@ public class ChatStompListenerImpl extends SimpleStompListener {
     @Override
     public void onOpen(WebSocket socket) {
         String user = socket.param("user");
-        System.out.println("建议放鉴权: " + user);
+        if ("aaa".equals(user)) {
+            socket.close();
+        } else {
+            System.out.println("建议放鉴权: " + user);
+        }
     }
 
 
@@ -38,5 +42,4 @@ public class ChatStompListenerImpl extends SimpleStompListener {
     public void onFrame(WebSocket socket, Frame frame) {
         System.out.println(frame);
     }
-
 }
