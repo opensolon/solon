@@ -15,13 +15,11 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.NonNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.util.*;
 import java.util.zip.GZIPOutputStream;
@@ -251,17 +249,31 @@ public class ContextEmpty extends Context {
 
     @Override
     public void output(byte[] bytes) {
-
+        try {
+            outputStream().write(bytes);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public void output(InputStream stream) {
-
+        try {
+            IoUtil.transferTo(stream, outputStream());
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
+
+    private ByteArrayOutputStream outputStream = null;
 
     @Override
     public OutputStream outputStream() {
-        return null;
+        if (outputStream == null) {
+            outputStream = new ByteArrayOutputStream();
+        }
+
+        return outputStream;
     }
 
     @Override

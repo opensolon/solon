@@ -196,32 +196,6 @@ public class SocketdContext extends ContextEmpty {
         return _response.meta(name);
     }
 
-
-    ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
-
-    @Override
-    public OutputStream outputStream() {
-        return _outputStream;
-    }
-
-    @Override
-    public void output(byte[] bytes) {
-        try {
-            outputStream().write(bytes);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void output(InputStream stream) {
-        try {
-            IoUtil.transferTo(stream, outputStream());
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
     @Override
     public void outputAsFile(File file) throws IOException {
         //文件，直接答复处理
@@ -252,7 +226,8 @@ public class SocketdContext extends ContextEmpty {
     }
 
     protected void commit() throws IOException {
-        replyDo(ByteBuffer.wrap(_outputStream.toByteArray()), _outputStream.size());
+        ByteArrayOutputStream out = (ByteArrayOutputStream)outputStream();
+        replyDo(ByteBuffer.wrap(out.toByteArray()), out.size());
     }
 
     private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {

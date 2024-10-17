@@ -29,7 +29,7 @@ import java.util.List;
  * @since 3.0
  */
 class SimpleFrame implements Frame {
-    protected final String source;
+    protected final transient String source;
     protected final String command;
     protected final List<KeyValue<String>> headers;
     protected final String payload;

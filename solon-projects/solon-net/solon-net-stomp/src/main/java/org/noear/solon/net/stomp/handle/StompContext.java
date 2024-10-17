@@ -15,15 +15,20 @@
  */
 package org.noear.solon.net.stomp.handle;
 
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.To;
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -144,5 +149,46 @@ public class StompContext extends ContextEmpty {
         }
 
         return null;
+    }
+
+    public void commit() throws Throwable {
+        //payload
+        ByteArrayOutputStream baos = (ByteArrayOutputStream) outputStream();
+        String returnValue = new String(baos.toByteArray());
+
+        commit(returnValue);
+    }
+
+    public void commit(Object returnValue) throws Throwable {
+        //payload
+        final Message message;
+        if (returnValue instanceof Message) {
+            message = (Message) returnValue;
+        } else if (returnValue instanceof String) {
+            message = new Message((String) returnValue);
+        } else {
+            message = new Message(renderAndReturn(returnValue));
+        }
+
+        //to anno
+        Action action = action();
+        To anno = null;
+        if (action != null) {
+            action.method().getAnnotation(To.class);
+        }
+
+        //send-to
+        if (anno == null) {
+            emitter().sendTo(path(), message);
+        } else {
+            for (String destination : anno.value()) {
+                if (Utils.isEmpty(destination)) {
+                    //如果是空的
+                    emitter().sendTo(path(), message);
+                } else {
+                    emitter().sendTo(destination, message);
+                }
+            }
+        }
     }
 }

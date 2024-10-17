@@ -17,13 +17,11 @@ package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.broker.StompBroker;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
 import org.noear.solon.net.stomp.Headers;
-import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,24 +46,22 @@ public class ToHandlerStompListener extends SimpleStompListener {
         if (Commands.SEND.equals(frame.getCommand())) {
             String destination = frame.getHeader(Headers.DESTINATION);
 
-            if (Utils.isNotEmpty(destination)) {
-                Context ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
-                handleDo(socket, ctx);
-            }
-        }
-    }
+            if (Utils.isEmpty(destination)) {
+                log.warn("This stomp message is missing route, source={}", frame.getSource());
+            } else {
+                try {
+                    StompContext ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
 
-    /**
-     * 处理
-     */
-    protected void handleDo(WebSocket socket, Context ctx) {
-        try {
-            Solon.app().routerHandler().handle(ctx);
-        } catch (Throwable ex) {
-            log.warn(ex.getMessage(), ex);
+                    Solon.app().tryHandle(ctx);
 
-            for (StompListener l1 : broker.getServerListeners()) {
-                l1.onError(socket, ex);
+                    if (ctx.getHandled() || ctx.status() != 404) {
+                        ctx.commit();
+                    }
+                } catch (Throwable e) {
+                    //context 初始化时，可能会出错
+                    //
+                    log.warn(e.getMessage(), e);
+                }
             }
         }
     }

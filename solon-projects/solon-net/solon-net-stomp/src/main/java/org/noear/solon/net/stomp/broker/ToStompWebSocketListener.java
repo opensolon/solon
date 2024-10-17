@@ -83,13 +83,13 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
         brokerMedia.operations.getCodec().decode(text, frame -> {
             decodeOk.set(Boolean.TRUE);
-            onStomp(socket, frame, text);
+            onStomp(socket, frame);
         });
 
         if (decodeOk.get() == false) {
             //解码失败
             if (log.isDebugEnabled()) {
-                log.debug("session ping, {}", socket.id());
+                log.debug("Session ping, {}", socket.id());
             }
 
             //可能是ping，响应
@@ -106,13 +106,15 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onError(WebSocket socket, Throwable error) {
-        log.error("", error);
+        for (StompListener listener : brokerMedia.listeners) {
+            listener.onError(socket, error);
+        }
     }
 
     /**
      * Stomp 帧接收
      */
-    protected void onStomp(WebSocket socket, Frame frame, String text) {
+    protected void onStomp(WebSocket socket, Frame frame) {
         for (StompListener listener : brokerMedia.listeners) {
             listener.onFrame(socket, frame);
         }

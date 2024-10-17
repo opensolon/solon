@@ -15,12 +15,9 @@
  */
 package org.noear.solon.net.stomp.handle;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.annotation.To;
-import org.noear.solon.net.stomp.Message;
 
 /**
  * Stomp 返回处理
@@ -50,37 +47,8 @@ public class StompReturnHandler implements ActionReturnHandler {
     @Override
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
         if (returnValue != null) {
-            if (ctx instanceof StompContext == false) {
-                return;
-            }
-
-            To anno = action.method().getAnnotation(To.class);
-
-            //sender
-            final StompContext ctx1 = (StompContext) ctx;
-
-            //payload
-            final Message message;
-            if (returnValue instanceof Message) {
-                message = (Message) returnValue;
-            } else if (returnValue instanceof String) {
-                message = new Message((String) returnValue);
-            } else {
-                message = new Message(ctx.renderAndReturn(returnValue));
-            }
-
-            //send-to
-            if (anno == null) {
-                ctx1.emitter().sendTo(ctx.path(), message);
-            } else {
-                for (String destination : anno.value()) {
-                    if (Utils.isEmpty(destination)) {
-                        //如果是空的
-                        ctx1.emitter().sendTo(ctx.path(), message);
-                    } else {
-                        ctx1.emitter().sendTo(destination, message);
-                    }
-                }
+            if (ctx instanceof StompContext) {
+                ((StompContext) ctx).commit(returnValue);
             }
         }
     }
