@@ -48,9 +48,6 @@ public class StompContext extends ContextEmpty {
         this.frame = frame;
         this.destination = destination;
         this.emitter = emitter;
-
-        //指定返回处理
-        attrSet(org.noear.solon.core.Constants.ATTR_RETURN_HANDLER, StompReturnHandler.getInstance());
     }
 
     /**
@@ -154,9 +151,13 @@ public class StompContext extends ContextEmpty {
     public void commit() throws Throwable {
         //payload
         ByteArrayOutputStream baos = (ByteArrayOutputStream) outputStream();
-        String returnValue = new String(baos.toByteArray());
 
-        commit(returnValue);
+        if (baos.size() > 0) {
+            //has data
+            String returnValue = new String(baos.toByteArray());
+
+            commit(returnValue);
+        }
     }
 
     public void commit(Object returnValue) throws Throwable {
