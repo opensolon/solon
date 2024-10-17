@@ -44,8 +44,10 @@ public abstract class RouterWrapper implements HandlerSlots {
         _routerHandler = new RouterHandler(_router, _chainManager);
     }
 
-
-    protected RouterHandler routerHandler() {
+    /**
+     * 路由器处理器
+     */
+    public RouterHandler routerHandler() {
         return _routerHandler;
     }
 
@@ -56,6 +58,9 @@ public abstract class RouterWrapper implements HandlerSlots {
         return _router;
     }
 
+    /**
+     * 处理链管理器
+     */
     public ChainManager chainManager() {
         return _chainManager;
     }
@@ -130,21 +135,21 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     /**
      * 添加渲染器
-     * */
+     */
     public void render(String name, Render render) {
         Solon.app().renderManager().register(name, render);
     }
 
     /**
      * 获取渲染器
-     * */
+     */
     public Render render(String name) {
         return Solon.app().renderManager().get(name);
     }
 
     /**
      * 获取 Json 渲染器
-     * */
+     */
     public Render renderOfJson() {
         return render(SerializerNames.AT_JSON);
     }
