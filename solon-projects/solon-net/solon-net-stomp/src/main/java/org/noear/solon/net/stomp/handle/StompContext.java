@@ -15,9 +15,7 @@
  */
 package org.noear.solon.net.stomp.handle;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.MultiMap;
@@ -25,76 +23,104 @@ import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /**
+ * Stomp 通用上下文适配
+ *
  * @author noear
  * @since 3.0
  */
 public class StompContext extends ContextEmpty {
-    private static final Logger log = LoggerFactory.getLogger(StompContext.class);
-
     private WebSocket session;
-    private Frame message;
+    private Frame frame;
     private String destination;
-    private StompEmitter sender;
+    private StompEmitter emitter;
 
-    public StompContext(WebSocket session, Frame message, String destination, StompEmitter sender) {
+    public StompContext(WebSocket session, Frame frame, String destination, StompEmitter emitter) {
         this.session = session;
-        this.message = message;
+        this.frame = frame;
         this.destination = destination;
-        this.sender = sender;//session.attr("STOMP_MESSAGE_SENDER");
+        this.emitter = emitter;
 
+        //指定返回处理
         attrSet(org.noear.solon.core.Constants.ATTR_RETURN_HANDLER, StompReturnHandler.getInstance());
     }
 
+    /**
+     * 数据帧
+     */
+    public Frame frame() {
+        return frame;
+    }
+
+    /**
+     * 发射器
+     */
+    public StompEmitter emitter() {
+        return emitter;
+    }
+
+    /**
+     * 请求对象
+     */
     @Override
     public Object request() {
         return session;
     }
 
-    public Frame getMessage() {
-        return message;
-    }
-
-    public StompEmitter getSender() {
-        return sender;
-    }
-
+    /**
+     * 会话Id
+     */
     @Override
     public String sessionId() {
         return session.id();
     }
 
+    /**
+     * 请求方式
+     */
     @Override
     public String method() {
         return MethodType.MESSAGE.name;
     }
 
+    /**
+     * 请求路径
+     */
     @Override
     public String path() {
         return destination;
     }
 
+    /**
+     * 内容类型
+     */
     @Override
     public String contentType() {
-        return message.getHeader(Headers.CONTENT_TYPE);
+        return frame.getHeader(Headers.CONTENT_TYPE);
     }
 
+    /**
+     * 请求主体
+     *
+     * @param charset 字符集
+     */
     @Override
     public String body(String charset) throws IOException {
-        return message.getPayload();
+        return frame.getPayload();
     }
 
+    /**
+     * 请求头
+     */
     @Override
     public MultiMap<String> headerMap() {
         if (headerMap == null) {
             headerMap = new MultiMap<>();
 
-            for (KeyValue<String> kv : message.getHeaderAll()) {
+            for (KeyValue<String> kv : frame.getHeaderAll()) {
                 headerMap.add(kv.getKey(), kv.getValue());
             }
         }
@@ -102,10 +128,13 @@ public class StompContext extends ContextEmpty {
         return headerMap;
     }
 
+    /**
+     * 提取
+     */
     @Override
     public Object pull(Class<?> clz) {
         if (Frame.class.isAssignableFrom(clz)) {
-            return message;
+            return frame;
         }
 
         if (WebSocket.class.isAssignableFrom(clz)) {
@@ -113,21 +142,5 @@ public class StompContext extends ContextEmpty {
         }
 
         return null;
-    }
-
-    /**
-     * <code>
-     * new StompContext(...).tryHandle();
-     * </code>
-     */
-    public void tryHandle() {
-        try {
-            Handler handler = Solon.app().router().matchMain(this);
-            if (handler != null) {
-                handler.handle(this);
-            }
-        } catch (Throwable ex) {
-            log.warn(ex.getMessage(), ex);
-        }
     }
 }

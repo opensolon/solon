@@ -23,6 +23,8 @@ import org.noear.solon.annotation.To;
 import org.noear.solon.net.stomp.Message;
 
 /**
+ * Stomp 返回处理
+ *
  * @author noear
  * @since 3.0
  */
@@ -33,11 +35,18 @@ public class StompReturnHandler implements ActionReturnHandler {
         return instance;
     }
 
+    /**
+     * 匹配
+     */
     @Override
     public boolean matched(Context ctx, Class<?> returnType) {
-        return ctx.action().method().isAnnotationPresent(To.class);
+        //禁止用于所有返回处理
+        return false;
     }
 
+    /**
+     * 返回处理
+     */
     @Override
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
         if (returnValue != null) {
@@ -62,14 +71,14 @@ public class StompReturnHandler implements ActionReturnHandler {
 
             //send-to
             if (anno == null) {
-                ctx1.getSender().sendTo(ctx.path(), message);
+                ctx1.emitter().sendTo(ctx.path(), message);
             } else {
                 for (String destination : anno.value()) {
                     if (Utils.isEmpty(destination)) {
                         //如果是空的
-                        ctx1.getSender().sendTo(ctx.path(), message);
+                        ctx1.emitter().sendTo(ctx.path(), message);
                     } else {
-                        ctx1.getSender().sendTo(destination, message);
+                        ctx1.emitter().sendTo(destination, message);
                     }
                 }
             }

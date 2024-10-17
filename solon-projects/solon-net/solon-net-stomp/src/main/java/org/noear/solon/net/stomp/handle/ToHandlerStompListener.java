@@ -15,18 +15,27 @@
  */
 package org.noear.solon.net.stomp.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
 import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * 转到 Handler 接口协议的 Listener（服务端、客户端，都可用）
+ *
  * @author noear
  * @since 3.0
  */
 public class ToHandlerStompListener extends SimpleStompListener {
+    private static final Logger log = LoggerFactory.getLogger(ToHandlerStompListener.class);
+
     private final StompEmitter sender;
 
     public ToHandlerStompListener(StompEmitter sender) {
@@ -34,12 +43,26 @@ public class ToHandlerStompListener extends SimpleStompListener {
     }
 
     @Override
-    public void onSend(WebSocket socket, Frame message) {
-        String destination = message.getHeader(Headers.DESTINATION);
+    public void onSend(WebSocket socket, Frame frame) {
+        String destination = frame.getHeader(Headers.DESTINATION);
 
-        if(Utils.isNotEmpty(destination)) {
-            //同时转发给 Solon Handler 体系
-            new StompContext(socket, message, destination, sender).tryHandle();;
+        if (Utils.isNotEmpty(destination)) {
+            Context ctx = new StompContext(socket, frame, destination, sender);
+            handleDo(ctx);
+        }
+    }
+
+    /**
+     * 处理
+     */
+    protected void handleDo(Context ctx) {
+        try {
+            Handler handler = Solon.app().router().matchMain(ctx);
+            if (handler != null) {
+                handler.handle(ctx);
+            }
+        } catch (Throwable ex) {
+            log.warn(ex.getMessage(), ex);
         }
     }
 }
