@@ -85,7 +85,7 @@ class SimpleFrame implements Frame {
      * 获取所有头
      */
     @Override
-    public Iterable<KeyValues<String>> getHeaderAll() {
+    public MultiMap<String> getHeaderAll() {
         return headers;
     }
 

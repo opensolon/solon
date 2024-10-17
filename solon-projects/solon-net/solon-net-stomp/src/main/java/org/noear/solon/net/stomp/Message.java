@@ -16,6 +16,7 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.core.util.KeyValue;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 
 /**
@@ -31,27 +32,29 @@ public class Message extends SimpleFrame implements Frame {
     }
 
     /**
-     * 配置头
+     * 头
      */
     public Message headers(KeyValue<String>... headers) {
-        for (KeyValue<String> header : headers) {
-            this.headers.holder(header.getKey()).addValue(header.getValue());
+        for (KeyValue<String> kv : headers) {
+            this.headers.holder(kv.getKey()).addValue(kv.getValue());
         }
         return this;
     }
 
     /**
-     * 配置头
+     * 头
      */
-    public Message headers(Iterable<KeyValue<String>> headers) {
-        for (KeyValue<String> header : headers) {
-            this.headers.holder(header.getKey()).addValue(header.getValue());
+    public Message headers(Iterable<KeyValues<String>> headers) {
+        for (KeyValues<String> kv : headers) {
+            for (String val : kv.getValues()) {
+                this.headers.holder(kv.getKey()).addValue(val);
+            }
         }
         return this;
     }
 
     /**
-     * 配置头
+     * 头
      *
      * @param key 键名
      * @param val 值

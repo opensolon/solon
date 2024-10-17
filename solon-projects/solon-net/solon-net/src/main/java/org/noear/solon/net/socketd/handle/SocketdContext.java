@@ -47,14 +47,11 @@ public class SocketdContext extends ContextEmpty {
     private Session _session;
     private Message _request;
     private EntityDefault _response;
-    private MethodType _method;
 
     public SocketdContext(Session session, Message message) throws IOException {
         _session = session;
         _request = message;
         _response = new EntityDefault();
-
-        _method = MethodType.SOCKET;
 
         //传递 sessoin param
         if (session.handshake().paramMap().size() > 0) {
@@ -100,7 +97,7 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public String method() {
-        return _method.name;
+        return MethodType.SOCKET.name;
     }
 
     @Override

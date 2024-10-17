@@ -20,7 +20,6 @@ import org.noear.solon.annotation.To;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Message;
@@ -28,8 +27,11 @@ import org.noear.solon.net.stomp.StompEmitter;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.websocket.WebSocket;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Stomp 通用上下文适配
@@ -74,6 +76,29 @@ public class StompContext extends ContextEmpty {
         return socket;
     }
 
+    @Override
+    public String remoteIp() {
+        try {
+            return socket.remoteAddress().getAddress().toString();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public int remotePort() {
+        try {
+            return socket.remoteAddress().getPort();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public boolean isMultipart() {
+        return false;
+    }
+
     /**
      * 会话Id
      */
@@ -103,7 +128,18 @@ public class StompContext extends ContextEmpty {
      */
     @Override
     public String contentType() {
+        //头名需小写
         return frame.getHeader(Headers.CONTENT_TYPE);
+    }
+
+    private InputStream bodyAsStream;
+    @Override
+    public InputStream bodyAsStream() throws IOException {
+        if (bodyAsStream == null) {
+            bodyAsStream = new ByteArrayInputStream(frame.getPayload().getBytes(StandardCharsets.UTF_8));
+        }
+
+        return bodyAsStream;
     }
 
     /**
@@ -122,15 +158,22 @@ public class StompContext extends ContextEmpty {
     @Override
     public MultiMap<String> headerMap() {
         if (headerMap == null) {
-            headerMap = new MultiMap<>();
-
-            for (KeyValues<String> kv : frame.getHeaderAll()) {
-                headerMap.holder(kv.getKey()).setValues(kv.getValues());
-            }
+            headerMap = frame.getHeaderAll();
         }
 
         return headerMap;
     }
+
+    @Override
+    public Object response() {
+        return socket;
+    }
+
+    @Override
+    public void contentType(String contentType) {
+        headerSet(Headers.CONTENT_TYPE, contentType);
+    }
+
 
     /**
      * 提取
@@ -170,6 +213,9 @@ public class StompContext extends ContextEmpty {
         } else {
             message = new Message(renderAndReturn(returnValue));
         }
+
+        //headers
+        message.headers(headerMap());
 
         //to anno
         Action action = action();

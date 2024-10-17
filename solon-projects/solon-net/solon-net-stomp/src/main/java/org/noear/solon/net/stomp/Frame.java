@@ -15,7 +15,7 @@
  */
 package org.noear.solon.net.stomp;
 
-import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * Stomp 帧
@@ -56,7 +56,7 @@ public interface Frame {
      *
      * @return
      */
-    Iterable<KeyValues<String>> getHeaderAll();
+    MultiMap<String> getHeaderAll();
 
     /**
      * 新建构建器
