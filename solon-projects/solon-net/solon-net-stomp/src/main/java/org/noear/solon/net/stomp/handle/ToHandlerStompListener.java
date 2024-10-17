@@ -18,7 +18,6 @@ package org.noear.solon.net.stomp.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
 import org.noear.solon.net.stomp.StompEmitter;
@@ -57,10 +56,7 @@ public class ToHandlerStompListener extends SimpleStompListener {
      */
     protected void handleDo(Context ctx) {
         try {
-            Handler handler = Solon.app().router().matchMain(ctx);
-            if (handler != null) {
-                handler.handle(ctx);
-            }
+            Solon.app().routerHandler().handle(ctx);
         } catch (Throwable ex) {
             log.warn(ex.getMessage(), ex);
         }
