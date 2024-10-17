@@ -16,11 +16,8 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.KeyValue;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * Stomp 简单帧
@@ -31,10 +28,10 @@ import java.util.List;
 class SimpleFrame implements Frame {
     protected final transient String source;
     protected final String command;
-    protected final List<KeyValue<String>> headers;
+    protected final MultiMap<String> headers;
     protected final String payload;
 
-    public SimpleFrame(String source,String command, String payload, List<KeyValue<String>> headers) {
+    public SimpleFrame(String source,String command, String payload, MultiMap<String> headers) {
         if (Utils.isEmpty(command)) {
             this.command = Commands.MESSAGE;
         } else {
@@ -81,22 +78,14 @@ class SimpleFrame implements Frame {
             return null;
         }
 
-        Iterator<KeyValue<String>> iterator = headers.iterator();
-        while (iterator.hasNext()) {
-            KeyValue<String> h = iterator.next();
-            if (key.equals(h.getKey())) {
-                return h.getValue();
-            }
-        }
-
-        return null;
+        return headers.get(key);
     }
 
     /**
      * 获取所有头
      */
     @Override
-    public Collection<KeyValue<String>> getHeaderAll() {
+    public Iterable<KeyValues<String>> getHeaderAll() {
         return headers;
     }
 

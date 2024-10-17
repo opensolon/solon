@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.KeyValue;
+import org.noear.solon.core.util.KeyValues;
 
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -51,17 +51,20 @@ public class FrameCodecDefault implements FrameCodec {
         //command
         buf.append(frame.getCommand());
         buf.append(commandEnd);
+        int lenBak = buf.length();
 
         //headers
-        if (frame.getHeaderAll().size() > 0) {
-            for (KeyValue<String> kv : frame.getHeaderAll()) {
+        for (KeyValues<String> kv : frame.getHeaderAll()) {
+            for (String val : kv.getValues()) {
                 buf.append(kv.getKey())
                         .append(headerKvDelimiter)
-                        .append(kv.getValue());
-
-                buf.append(headerDelimiter);
+                        .append(val);
             }
 
+            buf.append(headerDelimiter);
+        }
+
+        if (buf.length() > lenBak) {
             buf.setLength(buf.length() - 1);
         }
 

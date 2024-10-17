@@ -20,7 +20,7 @@ import org.noear.solon.annotation.To;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.KeyValue;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Message;
@@ -127,8 +127,8 @@ public class StompContext extends ContextEmpty {
         if (headerMap == null) {
             headerMap = new MultiMap<>();
 
-            for (KeyValue<String> kv : frame.getHeaderAll()) {
-                headerMap.add(kv.getKey(), kv.getValue());
+            for (KeyValues<String> kv : frame.getHeaderAll()) {
+                headerMap.holder(kv.getKey()).setValues(kv.getValues());
             }
         }
 

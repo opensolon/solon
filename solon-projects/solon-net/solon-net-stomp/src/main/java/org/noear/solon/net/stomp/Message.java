@@ -16,8 +16,7 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.core.util.KeyValue;
-
-import java.util.*;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * Stomp 消息
@@ -28,7 +27,7 @@ import java.util.*;
 public class Message extends SimpleFrame implements Frame {
 
     public Message(String payload) {
-        super(null, Commands.MESSAGE, payload, new ArrayList<>());
+        super(null, Commands.MESSAGE, payload, new MultiMap<>());
     }
 
     /**
@@ -36,7 +35,7 @@ public class Message extends SimpleFrame implements Frame {
      */
     public Message headers(KeyValue<String>... headers) {
         for (KeyValue<String> header : headers) {
-            this.headers.add(header);
+            this.headers.holder(header.getKey()).addValue(header.getValue());
         }
         return this;
     }
@@ -46,7 +45,7 @@ public class Message extends SimpleFrame implements Frame {
      */
     public Message headers(Iterable<KeyValue<String>> headers) {
         for (KeyValue<String> header : headers) {
-            this.headers.add(header);
+            this.headers.holder(header.getKey()).addValue(header.getValue());
         }
         return this;
     }
@@ -59,7 +58,7 @@ public class Message extends SimpleFrame implements Frame {
      */
     public Message header(String key, String val) {
         if (key != null && val != null) {
-            headers.add(new KeyValue<>(key, val));
+            this.headers.holder(key).addValue(val);
         }
 
         return this;

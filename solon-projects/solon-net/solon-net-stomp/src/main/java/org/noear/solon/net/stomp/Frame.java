@@ -15,9 +15,7 @@
  */
 package org.noear.solon.net.stomp;
 
-import org.noear.solon.core.util.KeyValue;
-
-import java.util.Collection;
+import org.noear.solon.core.util.KeyValues;
 
 /**
  * Stomp 帧
@@ -58,7 +56,7 @@ public interface Frame {
      *
      * @return
      */
-    Collection<KeyValue<String>> getHeaderAll();
+    Iterable<KeyValues<String>> getHeaderAll();
 
     /**
      * 新建构建器

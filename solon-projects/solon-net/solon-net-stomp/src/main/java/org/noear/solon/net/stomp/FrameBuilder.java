@@ -17,9 +17,7 @@ package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.noear.solon.core.util.MultiMap;
 
 /**
  * Stomp 帧构建器
@@ -29,7 +27,7 @@ import java.util.List;
  */
 public class FrameBuilder {
     private String command = "";
-    private List<KeyValue<String>> headers = new ArrayList<>();
+    private final MultiMap<String> headers  = new MultiMap<>();
     private String payload;
     private String source;
 
@@ -66,7 +64,7 @@ public class FrameBuilder {
      */
     public FrameBuilder headers(KeyValue<String>... headers) {
         for (KeyValue<String> header : headers) {
-            this.headers.add(header);
+            this.headers.holder(header.getKey()).addValue(header.getValue());
         }
         return this;
     }
@@ -76,7 +74,7 @@ public class FrameBuilder {
      */
     public FrameBuilder headers(Iterable<KeyValue<String>> headers) {
         for (KeyValue<String> header : headers) {
-            this.headers.add(header);
+            this.headers.holder(header.getKey()).addValue(header.getValue());
         }
         return this;
     }
@@ -86,7 +84,7 @@ public class FrameBuilder {
      */
     public FrameBuilder header(String key, String val) {
         if (key != null && val != null) {
-            headers.add(new KeyValue<>(key, val));
+            this.headers.holder(key).addValue(val);
         }
 
         return this;
