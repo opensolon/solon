@@ -15,12 +15,15 @@
  */
 package org.noear.solon.net.http;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * Http 工具类工厂
  *
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface HttpUtilsFactory {
     /**
      * 创建

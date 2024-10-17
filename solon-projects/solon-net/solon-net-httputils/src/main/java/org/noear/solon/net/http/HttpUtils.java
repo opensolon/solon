@@ -21,6 +21,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.lang.Preview;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 2.8
  * */
+@Preview("3.0")
 public interface HttpUtils {
     static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 

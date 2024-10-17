@@ -16,6 +16,7 @@
 package org.noear.solon.data.sql;
 
 import org.noear.solon.data.sql.impl.SimpleSqlUtils;
+import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
 
@@ -25,6 +26,7 @@ import javax.sql.DataSource;
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface SqlUtils {
     static SqlUtils of(DataSource dataSource) {
         return new SimpleSqlUtils(dataSource);
