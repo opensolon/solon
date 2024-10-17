@@ -33,37 +33,17 @@ public class SimpleStompListener implements StompListener {
     }
 
     @Override
+    public void onFrame(WebSocket socket, Frame frame) {
+
+    }
+
+    @Override
     public void onClose(WebSocket socket) {
 
     }
 
     @Override
-    public void onConnect(WebSocket socket, Frame frame) {
-
-    }
-
-    @Override
-    public void onDisconnect(WebSocket socket, Frame frame) {
-
-    }
-
-    @Override
-    public void onSubscribe(WebSocket socket, Frame frame) {
-
-    }
-
-    @Override
-    public void onUnsubscribe(WebSocket socket, Frame frame) {
-
-    }
-
-    @Override
-    public void onSend(WebSocket socket, Frame frame) {
-
-    }
-
-    @Override
-    public void onAck(WebSocket socket, Frame frame) {
+    public void onError(WebSocket socket, Throwable error) {
 
     }
 }

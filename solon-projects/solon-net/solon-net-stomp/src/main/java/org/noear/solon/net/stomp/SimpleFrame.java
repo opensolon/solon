@@ -29,19 +29,29 @@ import java.util.List;
  * @since 3.0
  */
 class SimpleFrame implements Frame {
+    protected final String source;
     protected final String command;
     protected final List<KeyValue<String>> headers;
     protected final String payload;
 
-    public SimpleFrame(String command, String payload, List<KeyValue<String>> headers) {
+    public SimpleFrame(String source,String command, String payload, List<KeyValue<String>> headers) {
         if (Utils.isEmpty(command)) {
             this.command = Commands.MESSAGE;
         } else {
             this.command = command;
         }
 
+        this.source = source;
         this.payload = payload;
         this.headers = headers;
+    }
+
+    /**
+     * 获取原始数据
+     */
+    @Override
+    public String getSource() {
+        return source;
     }
 
     /**

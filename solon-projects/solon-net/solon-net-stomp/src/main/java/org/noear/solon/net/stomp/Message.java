@@ -28,7 +28,7 @@ import java.util.*;
 public class Message extends SimpleFrame implements Frame {
 
     public Message(String payload) {
-        super(Commands.MESSAGE, payload, new ArrayList<>());
+        super(null, Commands.MESSAGE, payload, new ArrayList<>());
     }
 
     /**

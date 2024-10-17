@@ -28,6 +28,11 @@ import java.util.Collection;
  */
 public interface Frame {
     /**
+     * 获取原始数据
+     */
+    String getSource();
+
+    /**
      * 获取命令, 如send...等。参考#Commands
      *
      * @see Commands

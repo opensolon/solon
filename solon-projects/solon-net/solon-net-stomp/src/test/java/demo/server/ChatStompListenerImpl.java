@@ -35,7 +35,7 @@ public class ChatStompListenerImpl extends SimpleStompListener {
 
 
     @Override
-    public void onSend(WebSocket socket, Frame frame) {
+    public void onFrame(WebSocket socket, Frame frame) {
         System.out.println(frame);
     }
 

@@ -22,6 +22,8 @@ import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.function.Function;
@@ -34,6 +36,8 @@ import java.util.regex.Pattern;
  * @since 2.7
  */
 public class StompServerOperationsListener implements StompListener {
+    static Logger log = LoggerFactory.getLogger(StompServerOperationsListener.class);
+
     private final StompServerEmitter emitter;
     private final StompServerOperations operations;
 
@@ -53,6 +57,44 @@ public class StompServerOperationsListener implements StompListener {
         operations.getSessionMap().put(socket.id(), socket);
     }
 
+    @Override
+    public void onFrame(WebSocket socket, Frame frame) {
+        switch (frame.getCommand()) {
+            case Commands.STOMP:
+            case Commands.CONNECT: {
+                onConnect(socket, frame);
+                break;
+            }
+            case Commands.DISCONNECT: {
+                onDisconnect(socket, frame);
+                break;
+            }
+            case Commands.SUBSCRIBE: {
+                onSubscribe(socket, frame);
+                break;
+            }
+            case Commands.UNSUBSCRIBE: {
+                onUnsubscribe(socket, frame);
+                break;
+            }
+            case Commands.SEND: {
+                onSend(socket, frame);
+                break;
+            }
+            case Commands.ACK:
+            case Commands.NACK: {
+                onAck(socket, frame);
+                break;
+            }
+            default: {
+                //未知命令
+                log.warn("Frame unknown, {}\r\n{}", socket.id(), frame.getSource());
+
+                emitter.sendTo(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
+            }
+        }
+    }
+
     /**
      * 连接关闭
      * 当连接断开时触发
@@ -63,11 +105,15 @@ public class StompServerOperationsListener implements StompListener {
         this.onUnsubscribe(socket, null);
     }
 
+    @Override
+    public void onError(WebSocket socket, Throwable error) {
+
+    }
+
     /**
      * 连接命令
      * 需要响应
      */
-    @Override
     public void onConnect(WebSocket socket, Frame frame) {
         String heartBeat = frame.getHeader(Headers.HEART_BEAT);
 
@@ -84,7 +130,6 @@ public class StompServerOperationsListener implements StompListener {
      * 断开命令
      * 需要响应
      */
-    @Override
     public void onDisconnect(WebSocket socket, Frame frame) {
         String receiptId = frame.getHeader(Headers.RECEIPT);
 
@@ -98,7 +143,6 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 订阅命令
      */
-    @Override
     public void onSubscribe(WebSocket socket, Frame frame) {
         //订阅者Id
         final String subscriptionId = frame.getHeader(Headers.ID);
@@ -137,7 +181,6 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 取消订阅命令
      */
-    @Override
     public void onUnsubscribe(WebSocket socket, Frame frame) {
         final String sessionId = socket.id();
         if (frame == null) {
@@ -157,7 +200,6 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 发送消息
      */
-    @Override
     public void onSend(WebSocket socket, Frame frame) {
         String destination = frame.getHeader(Headers.DESTINATION);
 
@@ -176,7 +218,6 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 消息ACK
      */
-    @Override
     public void onAck(WebSocket socket, Frame frame) {
 
     }

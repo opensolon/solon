@@ -113,52 +113,8 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
      * Stomp 帧接收
      */
     protected void onStomp(WebSocket socket, Frame frame, String text) {
-        String command = frame.getCommand() == null ? "" : frame.getCommand();
-        switch (command) {
-            case Commands.STOMP:
-            case Commands.CONNECT: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onConnect(socket, frame);
-                }
-                break;
-            }
-            case Commands.DISCONNECT: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onDisconnect(socket, frame);
-                }
-                break;
-            }
-            case Commands.SUBSCRIBE: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onSubscribe(socket, frame);
-                }
-                break;
-            }
-            case Commands.UNSUBSCRIBE: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onUnsubscribe(socket, frame);
-                }
-                break;
-            }
-            case Commands.SEND: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onSend(socket, frame);
-                }
-                break;
-            }
-            case Commands.ACK:
-            case Commands.NACK: {
-                for (StompListener listener : brokerMedia.listeners) {
-                    listener.onAck(socket, frame);
-                }
-                break;
-            }
-            default: {
-                //未知命令
-                log.warn("session unknown, {}\r\n{}", socket.id(), text);
-
-                brokerMedia.emitter.sendTo(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(text).build());
-            }
+        for (StompListener listener : brokerMedia.listeners) {
+            listener.onFrame(socket, frame);
         }
     }
 }

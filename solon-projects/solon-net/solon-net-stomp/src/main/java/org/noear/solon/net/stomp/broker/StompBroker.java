@@ -26,6 +26,9 @@ import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Stomp 经理人
  *
@@ -69,9 +72,16 @@ public class StompBroker implements WebSocketListenerSupplier {
     }
 
     /**
+     * 获取服务端监听器
+     */
+    public Collection<StompListener> getServerListeners() {
+        return Collections.unmodifiableList(brokerMedia.listeners);
+    }
+
+    /**
      * 获取服务端发送器
      */
-    public StompEmitter getServerSender() {
+    public StompEmitter getServerEmitter() {
         return brokerMedia.emitter;
     }
 }

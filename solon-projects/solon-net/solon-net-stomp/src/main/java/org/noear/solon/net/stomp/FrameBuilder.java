@@ -28,15 +28,28 @@ import java.util.List;
  * @since 3.0
  */
 public class FrameBuilder {
-    private String command;
+    private String command = "";
     private List<KeyValue<String>> headers = new ArrayList<>();
     private String payload;
+    private String source;
+
+    /**
+     * 原始数据
+     */
+    public FrameBuilder source(String source) {
+        this.source = source;
+        return this;
+    }
 
     /**
      * 命令
      */
     public FrameBuilder command(String command) {
-        this.command = command;
+        if (command != null) {
+            //确保不产生 null
+            this.command = command;
+        }
+
         return this;
     }
 
@@ -105,6 +118,6 @@ public class FrameBuilder {
      * 构建
      */
     public Frame build() {
-        return new SimpleFrame(command, payload, headers);
+        return new SimpleFrame(source, command, payload, headers);
     }
 }

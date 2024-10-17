@@ -92,7 +92,7 @@ public class FrameCodecDefault implements FrameCodec {
             // 装入待解析容器
             PENDING.append(input);
             // 开始解析
-            decode(out, 0);
+            decode(input, out, 0);
         } finally {
             LOCK.unlock();
         }
@@ -102,7 +102,7 @@ public class FrameCodecDefault implements FrameCodec {
      * @param out   输出
      * @param start 开始解析的问题
      */
-    protected void decode(Consumer<Frame> out, int start) {
+    protected void decode(String input, Consumer<Frame> out, int start) {
         cleanPendingStartData(start);
 
         // Body 结尾符下标
@@ -119,7 +119,7 @@ public class FrameCodecDefault implements FrameCodec {
         int hEndIdx = PENDING.indexOf(headersEnd);
         if (cEndIdx <= 0 || hEndIdx <= cEndIdx || bEndIdx <= hEndIdx) {
             // 非法数据包，跳过一个字符重新解析
-            this.decode(out, 1);
+            this.decode(input, out, 1);
             return;
         }
 
@@ -127,11 +127,12 @@ public class FrameCodecDefault implements FrameCodec {
         String command = PENDING.substring(0, cEndIdx).trim();
         if (!isCommand(command)) {
             // 非法数据包，跳过一个字符重新解析
-            this.decode(out, 1);
+            this.decode(input, out, 1);
             return;
         }
 
         FrameBuilder builder = Frame.newBuilder();
+        builder.source(input);
         builder.command(command);
 
         // 解析 Headers
@@ -145,7 +146,7 @@ public class FrameCodecDefault implements FrameCodec {
         out.accept(builder.build());
 
         // 重新解析 bodyEnd 之后的数据
-        this.decode(out, bEndIdx + bodyEnd.length());
+        this.decode(input, out, bEndIdx + bodyEnd.length());
     }
 
     protected void cleanPendingStartData(int start) {

@@ -33,13 +33,13 @@ import java.io.IOException;
  * @since 3.0
  */
 public class StompContext extends ContextEmpty {
-    private WebSocket session;
+    private WebSocket socket;
     private Frame frame;
     private String destination;
     private StompEmitter emitter;
 
-    public StompContext(WebSocket session, Frame frame, String destination, StompEmitter emitter) {
-        this.session = session;
+    public StompContext(WebSocket socket, Frame frame, String destination, StompEmitter emitter) {
+        this.socket = socket;
         this.frame = frame;
         this.destination = destination;
         this.emitter = emitter;
@@ -62,12 +62,14 @@ public class StompContext extends ContextEmpty {
         return emitter;
     }
 
+    //////////////
+
     /**
      * 请求对象
      */
     @Override
     public Object request() {
-        return session;
+        return socket;
     }
 
     /**
@@ -75,7 +77,7 @@ public class StompContext extends ContextEmpty {
      */
     @Override
     public String sessionId() {
-        return session.id();
+        return socket.id();
     }
 
     /**
@@ -138,7 +140,7 @@ public class StompContext extends ContextEmpty {
         }
 
         if (WebSocket.class.isAssignableFrom(clz)) {
-            return session;
+            return socket;
         }
 
         return null;

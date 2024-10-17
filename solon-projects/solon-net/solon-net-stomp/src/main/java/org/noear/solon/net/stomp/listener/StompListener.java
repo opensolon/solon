@@ -28,48 +28,27 @@ import org.noear.solon.net.websocket.WebSocket;
 public interface StompListener {
 
     /**
-     * 打开链接（可以鉴权；参数通过url和head方式指定）
+     * 连接打开时（可以鉴权；参数通过url和head方式指定）
      *
      * @param socket
      */
     void onOpen(WebSocket socket);
 
     /**
-     * 关闭链接（被动监听；当断开时触发）
+     * 收到消息帧
+     *
+     * @param socket
+     * @param frame  帧
+     */
+    void onFrame(WebSocket socket, Frame frame);
+
+    /**
+     * 连接关闭时（被动监听；当断开时触发）
      */
     void onClose(WebSocket socket);
 
-
     /**
-     * 协议连接
+     * 出错时
      */
-    void onConnect(WebSocket socket, Frame frame);
-
-    /**
-     * 协议断开连接
-     */
-    void onDisconnect(WebSocket socket, Frame frame);
-
-
-    /**
-     * 协议订阅消息
-     */
-    void onSubscribe(WebSocket socket, Frame frame);
-
-    /**
-     * 协议取消消息订阅
-     */
-    void onUnsubscribe(WebSocket socket, Frame frame);
-
-
-    /**
-     * 协议发送消息
-     */
-    void onSend(WebSocket socket, Frame frame);
-
-
-    /**
-     * 协议消息确认
-     */
-    void onAck(WebSocket socket, Frame frame);
+    void onError(WebSocket socket, Throwable error);
 }

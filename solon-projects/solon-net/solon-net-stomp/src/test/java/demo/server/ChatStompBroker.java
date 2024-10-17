@@ -34,13 +34,13 @@ public class ChatStompBroker extends StompBroker {
         super();
 
         //此为示例，实际按需扩展
-        this.addServerListener(new ToHandlerStompListener(getServerSender()));
+        this.addServerListener(new ToHandlerStompListener(this));
         this.addServerListener(new ChatStompListenerImpl());
 
         //此为示例
         final AtomicInteger atomicInteger = new AtomicInteger();
         RunUtil.scheduleAtFixedRate(() -> {
-            getServerSender().sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
+            getServerEmitter().sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
         }, 3000, 3000);
     }
 }
