@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.exception.StatusException;
@@ -47,7 +46,7 @@ public class RouterHandler implements Handler {
              *
              * @since 3.0
              * */
-            Solon.app().chainManager().refreshSessionState(ctx);
+            chainManager.refreshSessionState(ctx);
 
             h.handle(ctx);
             return ctx.status() != 404;
