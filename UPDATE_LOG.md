@@ -38,12 +38,13 @@
 * 优化 solon-net-stomp 设计 
 * 优化 solon-serialization 序列化器的泛型反序列化处理
 * 优化 solon-security-auth 允许 AuthAdapter 直接支持“多套账号体系鉴权”处理（简化了）。AuthAdapterSupplier 标为弃用 
-* cxf 升为 3.5.9
+* cxf-webservices 升为 3.5.9
 * beetlsql 升为 3.30.14-RELEASE
 * hutool 升为 5.8.32
 * liteflow 升为 2.12.4
 * snack3 升为 3.2.114
 * wood 升为 1.3.12
+* redisx 升为 1.6.7
 
 ### v3.0.1
 
