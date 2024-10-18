@@ -92,7 +92,7 @@ public class XPluginImpl implements Plugin {
                 context.wrapPublish(dsBw);
 
                 //aot注册
-                context.aot().registerEntityType(kv.getClass(), null);
+                context.aot().registerEntityType(dsBw.rawClz(), null);
             }
         }
     }
