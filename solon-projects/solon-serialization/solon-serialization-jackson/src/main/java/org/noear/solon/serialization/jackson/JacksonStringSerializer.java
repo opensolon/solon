@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
-import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.serialization.ContextSerializer;
 import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
 
@@ -109,7 +108,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
      * 内容类型
      */
     @Override
-    public String contentType() {
+    public String mimeType() {
         return "application/json";
     }
 
@@ -191,7 +190,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     public void serializeToBody(Context ctx, Object data) throws IOException {
         init();
 
-        ctx.contentType(contentType());
+        ctx.contentType(this.mimeType());
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));

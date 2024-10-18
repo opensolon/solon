@@ -33,9 +33,9 @@ public interface Serializer<T> {
     }
 
     /**
-     * 内容类型
+     * 媒体类型
      */
-    default String contentType() {
+    default String mimeType() {
         return null;
     }
 

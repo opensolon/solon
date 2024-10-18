@@ -37,7 +37,7 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
      * 内容类型
      */
     @Override
-    public String contentType() {
+    public String mimeType() {
         return label;
     }
 
@@ -108,7 +108,7 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(contentType());
+        ctx.contentType(this.mimeType());
 
         Hessian2Output ho = new Hessian2Output(ctx.outputStream());
         if (data instanceof ModelAndView) {

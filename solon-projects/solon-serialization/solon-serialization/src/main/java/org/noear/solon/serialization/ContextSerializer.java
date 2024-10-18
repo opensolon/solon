@@ -36,9 +36,9 @@ public interface ContextSerializer<T> extends Serializer<T> {
     boolean matched(Context ctx, String mime);
 
     /**
-     * 内容类型
+     * 媒体类型
      */
-    String contentType();
+    String mimeType();
 
     /**
      * 序列化到

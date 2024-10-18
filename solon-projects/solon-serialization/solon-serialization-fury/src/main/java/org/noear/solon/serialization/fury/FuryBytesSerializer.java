@@ -73,7 +73,7 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
      * 内容类型
      */
     @Override
-    public String contentType() {
+    public String mimeType() {
         return label;
     }
 
@@ -150,7 +150,7 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(contentType());
+        ctx.contentType(this.mimeType());
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));

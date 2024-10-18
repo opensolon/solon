@@ -34,8 +34,8 @@ public class SerializerManager {
      * @param serializer 序列化器
      * */
     public <T> void register(String mapping, Serializer<T> serializer) {
-        if(serializer.contentType() == null){
-            throw new IllegalArgumentException("Invalid Serializer contentType: " + serializer.getClass().getName());
+        if(serializer.mimeType() == null){
+            throw new IllegalArgumentException("Invalid Serializer mimeType: " + serializer.getClass().getName());
         }
 
         if (serializer.dataType() == null) {

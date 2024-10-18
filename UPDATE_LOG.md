@@ -25,7 +25,7 @@
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制
-* 添加 solon Serializer::contentType,dataType 可选属性，具有自我描述性
+* 添加 solon Serializer::mimeType,dataType 可选属性，具有自我描述性
 * 添加 solon AppContext::app() 属性
 * 添加 solon-cloud CloudFileService 添加 getTempUrl(Duration) 方法
 * 调整 solon-boot 的 junit-jupiter 依赖标为 scope=test

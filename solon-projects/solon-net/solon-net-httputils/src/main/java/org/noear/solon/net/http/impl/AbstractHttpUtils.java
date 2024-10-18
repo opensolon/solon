@@ -53,8 +53,8 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils serializer(Serializer serializer) {
         if (serializer != null) {
-            if(serializer.contentType() == null){
-                throw new IllegalArgumentException("Invalid Serializer contentType: " + serializer.getClass().getName());
+            if(serializer.mimeType() == null){
+                throw new IllegalArgumentException("Invalid Serializer mimeType: " + serializer.getClass().getName());
             }
 
             if (serializer.dataType() == null) {
@@ -317,9 +317,9 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         Object tmp = serializer().serialize(obj);
 
         if (tmp instanceof String) {
-            body((String) tmp, serializer().contentType());
+            body((String) tmp, serializer().mimeType());
         } else if (tmp instanceof byte[]) {
-            body((byte[]) tmp, serializer().contentType());
+            body((byte[]) tmp, serializer().mimeType());
         } else {
             throw new SolonException("Invalid serializer type!");
         }
