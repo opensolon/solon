@@ -90,6 +90,9 @@ public class XPluginImpl implements Plugin {
                 }
                 //对外发布
                 context.wrapPublish(dsBw);
+
+                //aot注册
+                context.aot().registerEntityType(kv.getClass(), null);
             }
         }
     }
