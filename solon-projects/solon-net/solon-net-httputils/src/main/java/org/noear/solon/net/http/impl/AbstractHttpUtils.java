@@ -57,8 +57,8 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 throw new IllegalArgumentException("Invalid Serializer contentType: " + serializer.getClass().getName());
             }
 
-            if (serializer.type() == null) {
-                throw new IllegalArgumentException("Invalid Serializer type: " + serializer.getClass().getName());
+            if (serializer.dataType() == null) {
+                throw new IllegalArgumentException("Invalid Serializer dataType: " + serializer.getClass().getName());
             }
 
             _serializer = serializer;

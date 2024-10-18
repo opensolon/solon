@@ -44,10 +44,10 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     /**
-     * 类型
+     * 数据类型
      */
     @Override
-    public Class<byte[]> type() {
+    public Class<byte[]> dataType() {
         return byte[].class;
     }
 

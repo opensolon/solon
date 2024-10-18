@@ -67,10 +67,10 @@ public class PropertiesStringSerializer implements ContextSerializer<String> {
     }
 
     /**
-     * 类型
+     * 数据类型
      * */
     @Override
-    public Class<String> type() {
+    public Class<String> dataType() {
         return String.class;
     }
 

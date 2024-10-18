@@ -134,9 +134,9 @@ public class JdkHttpResponseImpl implements HttpResponse {
 
     @Override
     public <T> T bodyAsBean(Type type) throws IOException {
-        if (String.class == utils.serializer().type()) {
+        if (String.class == utils.serializer().dataType()) {
             return (T) utils.serializer().deserialize(bodyAsString(), type);
-        } else if (byte[].class == utils.serializer().type()) {
+        } else if (byte[].class == utils.serializer().dataType()) {
             return (T) utils.serializer().deserialize(bodyAsBytes(), type);
         } else {
             throw new SolonException("Invalid serializer type!");

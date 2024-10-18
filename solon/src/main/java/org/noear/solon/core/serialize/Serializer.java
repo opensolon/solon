@@ -40,9 +40,9 @@ public interface Serializer<T> {
     }
 
     /**
-     * 目标类型
+     * 数据类型
      */
-    default Class<T> type() {
+    default Class<T> dataType() {
         return null;
     }
 

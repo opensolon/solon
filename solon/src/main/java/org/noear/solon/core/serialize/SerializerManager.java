@@ -38,8 +38,8 @@ public class SerializerManager {
             throw new IllegalArgumentException("Invalid Serializer contentType: " + serializer.getClass().getName());
         }
 
-        if (serializer.type() == null) {
-            throw new IllegalArgumentException("Invalid Serializer type: " + serializer.getClass().getName());
+        if (serializer.dataType() == null) {
+            throw new IllegalArgumentException("Invalid Serializer dataType: " + serializer.getClass().getName());
         }
 
         _mapping.put(mapping, serializer);
