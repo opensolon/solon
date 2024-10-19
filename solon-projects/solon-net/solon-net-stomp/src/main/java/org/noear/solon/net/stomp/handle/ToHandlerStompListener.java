@@ -17,6 +17,7 @@ package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.broker.StompBroker;
@@ -50,10 +51,10 @@ public class ToHandlerStompListener extends SimpleStompListener {
                 log.warn("This stomp message is missing route, source={}", frame.getSource());
             } else {
                 StompContext ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
+                Handler handler = Solon.app().router().matchMain(ctx);
 
-                Solon.app().tryHandle(ctx);
-
-                if (ctx.getHandled() || ctx.status() != 404) {
+                if (handler != null) {
+                    handler.handle(ctx);
                     ctx.commit();
                 }
             }
