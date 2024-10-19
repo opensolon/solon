@@ -107,7 +107,11 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     @Override
     public void onError(WebSocket socket, Throwable error) {
         for (StompListener listener : brokerMedia.listeners) {
-            listener.onError(socket, error);
+            try {
+                listener.onError(socket, error);
+            } catch (Throwable e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 
@@ -116,7 +120,11 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
      */
     protected void onStomp(WebSocket socket, Frame frame) {
         for (StompListener listener : brokerMedia.listeners) {
-            listener.onFrame(socket, frame);
+            try {
+                listener.onFrame(socket, frame);
+            } catch (Throwable e) {
+                onError(socket, e);
+            }
         }
     }
 }

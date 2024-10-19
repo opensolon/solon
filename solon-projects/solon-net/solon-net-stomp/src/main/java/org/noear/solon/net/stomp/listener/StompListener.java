@@ -40,7 +40,7 @@ public interface StompListener {
      * @param socket
      * @param frame  帧
      */
-    void onFrame(WebSocket socket, Frame frame);
+    void onFrame(WebSocket socket, Frame frame) throws Throwable;
 
     /**
      * 连接关闭时（被动监听；当断开时触发）

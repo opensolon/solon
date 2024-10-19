@@ -31,8 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint("/chat")
 public class ChatStompBroker extends StompBroker {
     public ChatStompBroker() {
-        super();
-
         //此为示例，实际按需扩展
         this.addServerListener(new ToHandlerStompListener(this));
         this.addServerListener(new ChatStompListenerImpl());

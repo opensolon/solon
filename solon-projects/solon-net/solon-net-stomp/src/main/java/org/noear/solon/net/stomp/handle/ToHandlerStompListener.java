@@ -42,25 +42,19 @@ public class ToHandlerStompListener extends SimpleStompListener {
     }
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) {
+    public void onFrame(WebSocket socket, Frame frame) throws Throwable {
         if (Commands.SEND.equals(frame.getCommand())) {
             String destination = frame.getHeader(Headers.DESTINATION);
 
             if (Utils.isEmpty(destination)) {
                 log.warn("This stomp message is missing route, source={}", frame.getSource());
             } else {
-                try {
-                    StompContext ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
+                StompContext ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
 
-                    Solon.app().tryHandle(ctx);
+                Solon.app().tryHandle(ctx);
 
-                    if (ctx.getHandled() || ctx.status() != 404) {
-                        ctx.commit();
-                    }
-                } catch (Throwable e) {
-                    //context 初始化时，可能会出错
-                    //
-                    log.warn(e.getMessage(), e);
+                if (ctx.getHandled() || ctx.status() != 404) {
+                    ctx.commit();
                 }
             }
         }

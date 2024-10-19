@@ -33,7 +33,7 @@ public class SimpleStompListener implements StompListener {
     }
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) {
+    public void onFrame(WebSocket socket, Frame frame) throws Throwable {
 
     }
 
