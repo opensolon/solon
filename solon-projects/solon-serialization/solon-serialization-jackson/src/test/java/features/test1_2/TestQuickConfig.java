@@ -41,6 +41,8 @@ public class TestQuickConfig {
         dateDo.setDate(new Date(1673861993477L));
         dateDo.setDate2(new Date(1673861993477L));
         dateDo.setDate3(new Date(1673861993477L));
+        dateDo.setVal1("1");
+        dateDo.setVal2("2");
 
         ContextEmpty ctx = new ContextEmpty();
         renderFactory.create().render(dateDo, ctx);
@@ -48,6 +50,6 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16 17:39:53\"}".equals(output);
+        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16 17:39:53\",\"val_1\":\"1\"}".equals(output);
     }
 }

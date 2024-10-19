@@ -17,6 +17,7 @@ package features.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,4 +36,13 @@ public class CustomDateDo {
 
     @JsonIgnore
     private Date date3;
+
+    @JsonProperty(value = "val_1")
+    private String val1;
+
+    @JsonIgnore
+    private String val2;
+
+    @JsonIgnore
+    private String val3;
 }
