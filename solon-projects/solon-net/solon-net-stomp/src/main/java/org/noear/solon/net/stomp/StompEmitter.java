@@ -16,6 +16,7 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.lang.Preview;
+import org.noear.solon.net.websocket.WebSocket;
 
 /**
  * Stomp 发射器
@@ -25,6 +26,14 @@ import org.noear.solon.lang.Preview;
  */
 @Preview("3.0")
 public interface StompEmitter {
+    /**
+     * 发送帧
+     *
+     * @param session 会话
+     * @param frame   帧
+     */
+    void sendTo(WebSocket session, Frame frame);
+
     /**
      * 发送帧
      *
