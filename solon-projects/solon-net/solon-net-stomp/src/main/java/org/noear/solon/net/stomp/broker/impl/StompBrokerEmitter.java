@@ -16,8 +16,9 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.stomp.*;
+
+import java.util.List;
 
 /**
  * Stomp 代理端发射器
@@ -70,9 +71,9 @@ public class StompBrokerEmitter implements StompEmitter {
      */
     @Override
     public void sendToUser(String user, String destination, Message message) {
-        KeyValues<StompSession> sessions = brokerMedia.sessionNameMap.get(user);
+        List<StompSession> sessions = brokerMedia.sessionNameMap.get(user);
 
-        for (StompSession s1 : sessions.getValues()) {
+        for (StompSession s1 : sessions) {
             sendToSession(s1, destination, message);
         }
     }

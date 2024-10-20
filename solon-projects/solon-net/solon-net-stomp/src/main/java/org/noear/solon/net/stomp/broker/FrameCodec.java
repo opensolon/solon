@@ -15,11 +15,9 @@
  */
 package org.noear.solon.net.stomp.broker;
 
-
 import org.noear.solon.net.stomp.Frame;
 
 import java.util.function.Consumer;
-
 
 /**
  * Stomp 帧编解码器

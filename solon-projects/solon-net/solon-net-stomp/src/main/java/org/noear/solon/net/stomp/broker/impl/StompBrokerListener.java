@@ -17,13 +17,14 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 /**
@@ -52,8 +53,8 @@ public class StompBrokerListener implements StompListener {
         brokerMedia.sessionIdMap.put(session.id(), session);
 
         if (session.name() != null) {
-            brokerMedia.sessionNameMap.computeIfAbsent(session.name(), k -> new KeyValues<>(k))
-                    .addValue(session);
+            brokerMedia.sessionNameMap.computeIfAbsent(session.name(), k -> new CopyOnWriteArrayList<>())
+                    .add(session);
         }
     }
 
@@ -67,10 +68,10 @@ public class StompBrokerListener implements StompListener {
         brokerMedia.sessionIdMap.remove(session.id());
 
         if (session.name() != null) {
-            KeyValues<StompSession> sessionList = brokerMedia.sessionNameMap.get(session.name());
+            List<StompSession> sessionList = brokerMedia.sessionNameMap.get(session.name());
             if (sessionList != null) {
-                sessionList.removeValue(session);
-                if (sessionList.getValues().size() == 0) {
+                sessionList.remove(session);
+                if (sessionList.size() == 0) {
                     brokerMedia.sessionNameMap.remove(session.name());
                 }
             }

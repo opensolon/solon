@@ -15,7 +15,6 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.FrameCodec;
@@ -37,7 +36,7 @@ public class StompBrokerMedia {
     /**
      * 监听器集合
      */
-    public final List<RankEntity<StompListener>> listeners;
+    public final List<RankEntity<StompListener>> listeners = new ArrayList<>();
 
     /**
      * 会话Id集合
@@ -47,7 +46,7 @@ public class StompBrokerMedia {
     /**
      * 会话Name集合
      */
-    public final Map<String, KeyValues<StompSession>> sessionNameMap = new ConcurrentHashMap<>();
+    public final Map<String, List<StompSession>> sessionNameMap = new ConcurrentHashMap<>();
 
     /**
      * 订阅集合
@@ -60,9 +59,7 @@ public class StompBrokerMedia {
     public final StompBrokerEmitter emitter;
 
     public StompBrokerMedia() {
-        listeners = new ArrayList<>();
         emitter = new StompBrokerEmitter(this);
-
         listeners.add(new RankEntity<>(new StompBrokerListener(this), 999));
     }
 }
