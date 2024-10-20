@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChatStompBroker extends StompBroker {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
-        this.addServerListener(-1, new ChatStompListenerImpl());
+        this.addServerListener(0, new ChatStompListenerImpl());
         this.addServerListener(new ToHandlerStompListener(this));
 
         //此为示例

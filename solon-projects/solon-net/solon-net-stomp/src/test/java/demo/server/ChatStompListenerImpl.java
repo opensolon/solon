@@ -28,11 +28,14 @@ import org.noear.solon.net.websocket.WebSocket;
 public class ChatStompListenerImpl extends SimpleStompListener {
 
     @Override
-    public void onOpen(WebSocket socket) {
-        String user = socket.param("user");
+    public void onOpen(WebSocket userSocket) {
+        String user = userSocket.param("user");
         if ("aaa".equals(user)) {
-            socket.close();
+            userSocket.close();
         } else {
+            //确定 用户名
+            userSocket.nameAs(user);
+
             System.out.println("建议放鉴权: " + user);
         }
     }

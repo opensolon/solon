@@ -291,29 +291,38 @@ public class ContextEmpty extends Context {
 
     }
 
+    protected MultiMap<String> headerOfResponseMap = null;
+
+    protected MultiMap<String> headerOfResponseMap() {
+        if (headerOfResponseMap == null) {
+            headerOfResponseMap = new MultiMap<>();
+        }
+        return headerOfResponseMap;
+    }
+
     @Override
     public void headerSet(String key, String val) {
-        headerMap().put(key, val);
+        headerOfResponseMap().put(key, val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        headerMap().add(key, val);
+        headerOfResponseMap().add(key, val);
     }
 
     @Override
     public String headerOfResponse(String name) {
-        return headerMap().get(name);
+        return headerOfResponseMap().get(name);
     }
 
     @Override
     public Collection<String> headerValuesOfResponse(String name) {
-        return Arrays.asList(headerMap().get(name));
+        return headerOfResponseMap().getAll(name);
     }
 
     @Override
     public Collection<String> headerNamesOfResponse() {
-        return headerMap().keySet();
+        return headerOfResponseMap().keySet();
     }
 
     @Override

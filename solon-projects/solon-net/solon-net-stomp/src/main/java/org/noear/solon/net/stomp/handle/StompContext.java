@@ -214,11 +214,13 @@ public class StompContext extends ContextEmpty {
         }
 
         //headers
-        for (KeyValues<String> kv : headerMap()) {
-            //转为小写
-            String key = kv.getKey().toLowerCase();
-            for (String val : kv.getValues()) {
-                message.headerAdd(key, val);
+        if(headerOfResponseMap != null) {
+            for (KeyValues<String> kv : headerOfResponseMap) {
+                //转为小写
+                String key = kv.getKey().toLowerCase();
+                for (String val : kv.getValues()) {
+                    message.headerAdd(key, val);
+                }
             }
         }
 
