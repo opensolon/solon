@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
  * @see Action
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public class PathMatcher {
     private static boolean _caseSensitive = true;
