@@ -17,12 +17,10 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
-import org.noear.solon.net.stomp.Commands;
-import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.Headers;
-import org.noear.solon.net.stomp.Message;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.listener.StompListener;
-import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,14 +49,15 @@ public class StompServerOperationsListener implements StompListener {
      * 可以放鉴权，参数可以通过Head或者地址栏
      * 鉴权失败可以直接关闭, 如：socket.close();
      *
-     * @param socket
+     * @param session
      */
     @Override
-    public void onOpen(WebSocket socket) {
-        operations.getSessionIdMap().put(socket.id(), socket);
+    public void onOpen(StompSession session) {
+        operations.getSessionIdMap().put(session.id(), session);
 
-        if (socket.name() != null) {
-            operations.getSessionNameMap().put(socket.name(), socket);
+        if (session.name() != null) {
+            operations.getSessionNameMap().computeIfAbsent(session.name(), k -> new KeyValues<>(k))
+                    .addValue(session);
         }
     }
 
@@ -68,55 +67,62 @@ public class StompServerOperationsListener implements StompListener {
      * 当连接断开时触发
      */
     @Override
-    public void onClose(WebSocket socket) {
-        operations.getSessionIdMap().remove(socket.id());
-        if (socket.name() != null) {
-            operations.getSessionNameMap().remove(socket.name());
+    public void onClose(StompSession session) {
+        operations.getSessionIdMap().remove(session.id());
+
+        if (session.name() != null) {
+            KeyValues<StompSession> sessionList = operations.getSessionNameMap().get(session.name());
+            if (sessionList != null) {
+                sessionList.removeValue(session);
+                if (sessionList.getValues().size() == 0) {
+                    operations.getSessionNameMap().remove(session.name());
+                }
+            }
         }
 
-        this.onUnsubscribe(socket, null);
+        this.onUnsubscribe(session, null);
     }
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) {
+    public void onFrame(StompSession session, Frame frame) {
         switch (frame.getCommand()) {
             case Commands.STOMP:
             case Commands.CONNECT: {
-                onConnect(socket, frame);
+                onConnect(session, frame);
                 break;
             }
             case Commands.DISCONNECT: {
-                onDisconnect(socket, frame);
+                onDisconnect(session, frame);
                 break;
             }
             case Commands.SUBSCRIBE: {
-                onSubscribe(socket, frame);
+                onSubscribe(session, frame);
                 break;
             }
             case Commands.UNSUBSCRIBE: {
-                onUnsubscribe(socket, frame);
+                onUnsubscribe(session, frame);
                 break;
             }
             case Commands.SEND: {
-                onSend(socket, frame);
+                onSend(session, frame);
                 break;
             }
             case Commands.ACK:
             case Commands.NACK: {
-                onAck(socket, frame);
+                onAck(session, frame);
                 break;
             }
             default: {
                 //未知命令
-                log.warn("Frame unknown, {}\r\n{}", socket.id(), frame.getSource());
+                log.warn("Frame unknown, {}\r\n{}", session.id(), frame.getSource());
 
-                emitter.sendToSession(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
+                emitter.sendToSocket(session.getSocket(), Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
             }
         }
     }
 
     @Override
-    public void onError(WebSocket socket, Throwable error) {
+    public void onError(StompSession socket, Throwable error) {
 
     }
 
@@ -124,7 +130,7 @@ public class StompServerOperationsListener implements StompListener {
      * 连接命令
      * 需要响应
      */
-    public void onConnect(WebSocket socket, Frame frame) {
+    public void onConnect(StompSession session, Frame frame) {
         String heartBeat = frame.getHeader(Headers.HEART_BEAT);
 
         Frame frame1 = Frame.newBuilder().command(Commands.CONNECTED)
@@ -133,27 +139,27 @@ public class StompServerOperationsListener implements StompListener {
                         new KeyValue<>(Headers.VERSION, "1.2"))
                 .build();
 
-        emitter.sendToSession(socket, frame1);
+        emitter.sendToSocket(session.getSocket(), frame1);
     }
 
     /**
      * 断开命令
      * 需要响应
      */
-    public void onDisconnect(WebSocket socket, Frame frame) {
+    public void onDisconnect(StompSession session, Frame frame) {
         String receiptId = frame.getHeader(Headers.RECEIPT);
 
         Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
                 .headerAdd(Headers.RECEIPT_ID, receiptId)
                 .build();
 
-        emitter.sendToSession(socket, frame1);
+        emitter.sendToSocket(session.getSocket(), frame1);
     }
 
     /**
      * 订阅命令
      */
-    public void onSubscribe(WebSocket socket, Frame frame) {
+    public void onSubscribe(StompSession session, Frame frame) {
         //订阅者Id
         final String subscriptionId = frame.getHeader(Headers.ID);
         //目的地
@@ -164,26 +170,23 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' or 'id' header missed")
                     .build();
 
-            emitter.sendToSession(socket, frame1);
+            emitter.sendToSocket(session.getSocket(), frame1);
             return;
         }
 
-        SubscriptionInfo destinationInfo = new SubscriptionInfo(socket.id(), destination, subscriptionId);
+        SubscriptionInfo destinationInfo = new SubscriptionInfo(session.id(), destination, subscriptionId);
 
+        ((StompSessionImpl) session).addSubscription(destinationInfo);
         operations.getSubscriptionInfos().add(destinationInfo);
-        if (!operations.getDestinationPatterns().containsKey(destination)) {
-            String destinationRegexp = "^" + destination
-                    .replaceAll("\\*\\*", ".+")
-                    .replaceAll("\\*", "[^/]+") + "$";
-            operations.getDestinationPatterns().put(destination, Pattern.compile(destinationRegexp));
-        }
+        operations.getDestinationPatterns().computeIfAbsent(destination, k -> PathAnalyzer.get(k));
+
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
             Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
                     .headerAdd(Headers.RECEIPT_ID, receiptId)
                     .build();
-            emitter.sendToSession(socket, frame1);
+            emitter.sendToSocket(session.getSocket(), frame1);
         }
     }
 
@@ -191,7 +194,7 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 取消订阅命令
      */
-    public void onUnsubscribe(WebSocket socket, Frame frame) {
+    public void onUnsubscribe(StompSession socket, Frame frame) {
         final String sessionId = socket.id();
         if (frame == null) {
             this.unSubscribeHandle(destinationInfo -> {
@@ -210,7 +213,7 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 发送消息
      */
-    public void onSend(WebSocket socket, Frame frame) {
+    public void onSend(StompSession session, Frame frame) {
         String destination = frame.getHeader(Headers.DESTINATION);
 
         if (Utils.isEmpty(destination)) {
@@ -219,7 +222,7 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' header missed")
                     .build();
 
-            emitter.sendToSession(socket, frame1);
+            emitter.sendToSocket(session.getSocket(), frame1);
         } else {
             Message message = new Message(frame.getPayload()).headerAdd(frame.getHeaderAll());
             emitter.sendTo(destination, message);
@@ -229,7 +232,7 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 消息ACK
      */
-    public void onAck(WebSocket socket, Frame frame) {
+    public void onAck(StompSession socket, Frame frame) {
 
     }
 

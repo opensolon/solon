@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.lang.Preview;
-import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 
 /**
  * Stomp 发射器
@@ -29,10 +29,11 @@ public interface StompEmitter {
     /**
      * 发送帧
      *
-     * @param session 会话
-     * @param frame   帧
+     * @param session     会话
+     * @param destination 目的地
+     * @param message     消息
      */
-    void sendToSession(WebSocket session, Frame frame);
+    void sendToSession(StompSession session, String destination, Message message);
 
     /**
      * 发送帧

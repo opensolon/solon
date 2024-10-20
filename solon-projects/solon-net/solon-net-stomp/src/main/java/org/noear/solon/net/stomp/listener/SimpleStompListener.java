@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp.listener;
 
 import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.stomp.StompSession;
 
 /**
  * 简单消息监听器
@@ -27,23 +27,24 @@ import org.noear.solon.net.websocket.WebSocket;
  */
 public class SimpleStompListener implements StompListener {
 
+
     @Override
-    public void onOpen(WebSocket socket) {
+    public void onOpen(StompSession session) {
 
     }
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) throws Throwable {
+    public void onFrame(StompSession session, Frame frame) throws Throwable {
 
     }
 
     @Override
-    public void onClose(WebSocket socket) {
+    public void onClose(StompSession session) {
 
     }
 
     @Override
-    public void onError(WebSocket socket, Throwable error) {
+    public void onError(StompSession session, Throwable error) {
 
     }
 }

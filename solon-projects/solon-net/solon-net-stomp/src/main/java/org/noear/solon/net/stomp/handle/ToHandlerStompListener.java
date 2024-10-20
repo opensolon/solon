@@ -20,6 +20,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.StompBroker;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
 import org.noear.solon.net.stomp.Headers;
@@ -43,14 +44,14 @@ public class ToHandlerStompListener extends SimpleStompListener {
     }
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) throws Throwable {
+    public void onFrame(StompSession session, Frame frame) throws Throwable {
         if (Commands.SEND.equals(frame.getCommand())) {
             String destination = frame.getHeader(Headers.DESTINATION);
 
             if (Utils.isEmpty(destination)) {
                 log.warn("This stomp message is missing route, source={}", frame.getSource());
             } else {
-                StompContext ctx = new StompContext(socket, frame, destination, broker.getServerEmitter());
+                StompContext ctx = new StompContext(session, frame, destination, broker.getServerEmitter());
                 Handler handler = Solon.app().router().matchMain(ctx);
 
                 if (handler != null) {

@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.SubProtocolCapable;
@@ -66,8 +67,10 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onOpen(WebSocket socket) {
+        StompSessionImpl session = StompSessionImpl.of(socket);
+
         for (StompListener listener : brokerMedia.listeners) {
-            listener.onOpen(socket);
+            listener.onOpen(session);
         }
     }
 
@@ -79,11 +82,13 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
+        StompSessionImpl session = StompSessionImpl.of(socket);
+
         AtomicBoolean decodeOk = new AtomicBoolean(Boolean.FALSE);
 
         brokerMedia.operations.getCodec().decode(text, frame -> {
             decodeOk.set(Boolean.TRUE);
-            onStomp(socket, frame);
+            onStomp(session, frame);
         });
 
         if (decodeOk.get() == false) {
@@ -93,22 +98,26 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             }
 
             //可能是ping，响应
-            brokerMedia.emitter.sendToSession(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
+            brokerMedia.emitter.sendToSocket(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
         }
     }
 
     @Override
     public void onClose(WebSocket socket) {
+        StompSessionImpl session = StompSessionImpl.of(socket);
+
         for (StompListener listener : brokerMedia.listeners) {
-            listener.onClose(socket);
+            listener.onClose(session);
         }
     }
 
     @Override
     public void onError(WebSocket socket, Throwable error) {
+        StompSessionImpl session = StompSessionImpl.of(socket);
+
         for (StompListener listener : brokerMedia.listeners) {
             try {
-                listener.onError(socket, error);
+                listener.onError(session, error);
             } catch (Throwable e) {
                 log.error(e.getMessage(), e);
             }
@@ -118,12 +127,12 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     /**
      * Stomp 帧接收
      */
-    protected void onStomp(WebSocket socket, Frame frame) {
+    protected void onStomp(StompSessionImpl session, Frame frame) {
         for (StompListener listener : brokerMedia.listeners) {
             try {
-                listener.onFrame(socket, frame);
+                listener.onFrame(session, frame);
             } catch (Throwable e) {
-                onError(socket, e);
+                onError(session.getSocket(), e);
             }
         }
     }

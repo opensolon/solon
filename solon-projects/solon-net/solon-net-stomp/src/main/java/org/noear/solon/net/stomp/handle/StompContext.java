@@ -15,7 +15,6 @@
  */
 package org.noear.solon.net.stomp.handle;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.To;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -23,6 +22,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.*;
+import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.io.ByteArrayInputStream;
@@ -38,13 +38,13 @@ import java.nio.charset.StandardCharsets;
  * @since 3.0
  */
 public class StompContext extends ContextEmpty {
-    private WebSocket socket;
+    private StompSession session;
     private Frame frame;
     private String destination;
     private StompEmitter emitter;
 
-    public StompContext(WebSocket socket, Frame frame, String destination, StompEmitter emitter) {
-        this.socket = socket;
+    public StompContext(StompSession session, Frame frame, String destination, StompEmitter emitter) {
+        this.session = session;
         this.frame = frame;
         this.destination = destination;
         this.emitter = emitter;
@@ -71,13 +71,13 @@ public class StompContext extends ContextEmpty {
      */
     @Override
     public Object request() {
-        return socket;
+        return session;
     }
 
     @Override
     public String remoteIp() {
         try {
-            return socket.remoteAddress().getAddress().toString();
+            return session.getSocket().remoteAddress().getAddress().toString();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -86,7 +86,7 @@ public class StompContext extends ContextEmpty {
     @Override
     public int remotePort() {
         try {
-            return socket.remoteAddress().getPort();
+            return session.getSocket().remoteAddress().getPort();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -102,7 +102,7 @@ public class StompContext extends ContextEmpty {
      */
     @Override
     public String sessionId() {
-        return socket.id();
+        return session.id();
     }
 
     /**
@@ -165,7 +165,7 @@ public class StompContext extends ContextEmpty {
 
     @Override
     public Object response() {
-        return socket;
+        return session;
     }
 
     @Override
@@ -184,7 +184,7 @@ public class StompContext extends ContextEmpty {
         }
 
         if (WebSocket.class.isAssignableFrom(clz)) {
-            return socket;
+            return session;
         }
 
         return null;
@@ -214,7 +214,7 @@ public class StompContext extends ContextEmpty {
         }
 
         //headers
-        if(headerOfResponseMap != null) {
+        if (headerOfResponseMap != null) {
             for (KeyValues<String> kv : headerOfResponseMap) {
                 //转为小写
                 String key = kv.getKey().toLowerCase();
@@ -228,7 +228,7 @@ public class StompContext extends ContextEmpty {
         Action action = action();
         To anno = null;
         if (action != null) {
-            action.method().getAnnotation(To.class);
+            anno = action.method().getAnnotation(To.class);
         }
 
         //send-to
@@ -254,20 +254,7 @@ public class StompContext extends ContextEmpty {
             emitter().sendTo(destination, message);
         } else if (".".equals(user)) {
             //to session
-            String replyDestination = destination.substring(1);
-            if (Utils.isEmpty(replyDestination)) {
-                replyDestination = path();
-            }
-
-            Frame replyMessage = Frame.newBuilder()
-                    .command(Commands.MESSAGE)
-                    .payload(message.getPayload())
-                    .headerAdd(message.getHeaderAll())
-                    .headerSet(Headers.DESTINATION, replyDestination)
-                    .headerSet(Headers.MESSAGE_ID, Utils.guid())
-                    .build();
-
-            emitter().sendToSession(socket, replyMessage);
+            emitter().sendToSession(session, destination, message);
         } else {
             //to user
             emitter().sendToUser(user, destination, message);

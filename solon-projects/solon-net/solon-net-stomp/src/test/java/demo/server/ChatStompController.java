@@ -23,8 +23,6 @@ public class ChatStompController {
         System.out.println(ctx.method());
         System.out.println(text);
 
-        stompSender.sendTo(ctx.path(), "收到1：" +text);
-
         Map<String,Object> map = new HashMap<>();
         map.put("data", text);
         map.put("type", "收到2");

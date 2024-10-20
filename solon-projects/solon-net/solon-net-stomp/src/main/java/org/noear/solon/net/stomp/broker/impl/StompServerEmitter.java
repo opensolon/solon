@@ -16,12 +16,13 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.regex.Pattern;
 
 /**
  * Stomp 服务端发射器
@@ -41,31 +42,48 @@ public class StompServerEmitter implements StompEmitter {
     /**
      * 发送到会话
      *
-     * @param session 会话
-     * @param frame   帧
+     * @param socket 会话
+     * @param frame  帧
      */
-    public void sendToSession(WebSocket session, Frame frame) {
+    public void sendToSocket(WebSocket socket, Frame frame) {
         assert frame != null;
 
-        if (session.isValid()) {
+        if (socket.isValid()) {
             String frameStr = operations.getCodec().encode(frame);
-            session.send(ByteBuffer.wrap(frameStr.getBytes(StandardCharsets.UTF_8)));
+            socket.send(ByteBuffer.wrap(frameStr.getBytes(StandardCharsets.UTF_8)));
+        }
+    }
+
+    public void sendToSessionDo(StompSession session, SubscriptionInfo subscription, String destination, Message message) {
+        if (subscription != null) {
+            Frame replyMessage = Frame.newBuilder()
+                    .command(Commands.MESSAGE)
+                    .payload(message.getPayload())
+                    .headerAdd(message.getHeaderAll())
+                    .headerSet(Headers.DESTINATION, destination)
+                    .headerSet(Headers.SUBSCRIPTION, subscription.getSubscriptionId())
+                    .headerSet(Headers.MESSAGE_ID, Utils.guid())
+                    .build();
+
+            sendToSocket(session.getSocket(), replyMessage);
+        }
+    }
+
+    @Override
+    public void sendToSession(StompSession session, String destination, Message message) {
+        SubscriptionInfo subscription = session.getSubscription(destination);
+        if (subscription != null) {
+            sendToSessionDo(session, subscription, destination, message);
         }
     }
 
     @Override
     public void sendToUser(String user, String destination, Message message) {
-        WebSocket sendSocket = operations.getSessionNameMap().get(user);
+        KeyValues<StompSession> sessions = operations.getSessionNameMap().get(user);
 
-        Frame replyMessage = Frame.newBuilder()
-                .command(Commands.MESSAGE)
-                .payload(message.getPayload())
-                .headerAdd(message.getHeaderAll())
-                .headerSet(Headers.DESTINATION, destination)
-                .headerSet(Headers.MESSAGE_ID, Utils.guid())
-                .build();
-
-        sendToSession(sendSocket, replyMessage);
+        for (StompSession s1 : sessions.getValues()) {
+            sendToSession(s1, destination, message);
+        }
     }
 
 
@@ -85,27 +103,18 @@ public class StompServerEmitter implements StompEmitter {
 
         operations.getSubscriptionInfos().parallelStream()
                 .filter(subscriptionInfo -> {
-                    Pattern pattern = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
+                    PathAnalyzer pathAnalyzer = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
 
-                    if (pattern == null) {
+                    if (pathAnalyzer == null) {
                         return false;
                     } else {
-                        return pattern.matcher(destination).matches();
+                        return pathAnalyzer.matches(destination);
                     }
-                }).forEach(subscriptionInfo -> {
-                    WebSocket sendSocket = operations.getSessionIdMap().get(subscriptionInfo.getSessionId());
+                }).forEach(subscription -> {
+                    StompSession session = operations.getSessionIdMap().get(subscription.getSessionId());
 
-                    if (sendSocket != null) {
-                        Frame replyMessage = Frame.newBuilder()
-                                .command(Commands.MESSAGE)
-                                .payload(message.getPayload())
-                                .headerAdd(message.getHeaderAll())
-                                .headerSet(Headers.DESTINATION, subscriptionInfo.getDestination())
-                                .headerSet(Headers.SUBSCRIPTION, subscriptionInfo.getSubscriptionId())
-                                .headerSet(Headers.MESSAGE_ID, Utils.guid())
-                                .build();
-
-                        sendToSession(sendSocket, replyMessage);
+                    if (session != null) {
+                        sendToSessionDo(session, subscription, destination, message);
                     }
                 });
     }

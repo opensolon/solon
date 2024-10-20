@@ -15,9 +15,11 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.net.stomp.FrameCodec;
 import org.noear.solon.net.stomp.FrameCodecDefault;
-import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.stomp.StompSession;
 
 import java.util.Collections;
 import java.util.Map;
@@ -39,12 +41,12 @@ public class StompServerOperations {
     /**
      * session id 存放
      */
-    private final Map<String, WebSocket> sessionIdMap = new ConcurrentHashMap<>();
+    private final Map<String, StompSession> sessionIdMap = new ConcurrentHashMap<>();
 
     /**
      * session name 存放
      */
-    private final Map<String, WebSocket> sessionNameMap = new ConcurrentHashMap<>();
+    private final Map<String, KeyValues<StompSession>> sessionNameMap = new ConcurrentHashMap<>();
 
     /**
      * 地址与 session 映射
@@ -54,7 +56,7 @@ public class StompServerOperations {
     /**
      * 地址匹配正则
      */
-    private final ConcurrentHashMap<String, Pattern> destinationPatterns = new ConcurrentHashMap<>();
+    private final Map<String, PathAnalyzer> destinationPatterns = new ConcurrentHashMap<>();
 
     /**
      * 消息编码器
@@ -64,14 +66,14 @@ public class StompServerOperations {
     /**
      * 会话Id集合
      */
-    public Map<String, WebSocket> getSessionIdMap() {
+    public Map<String, StompSession> getSessionIdMap() {
         return sessionIdMap;
     }
 
     /**
      * 会话Name集合
      */
-    public Map<String, WebSocket> getSessionNameMap() {
+    public Map<String, KeyValues<StompSession>> getSessionNameMap() {
         return sessionNameMap;
     }
 
@@ -85,7 +87,7 @@ public class StompServerOperations {
     /**
      * 目的地匹配集合
      */
-    public ConcurrentHashMap<String, Pattern> getDestinationPatterns() {
+    public Map<String, PathAnalyzer> getDestinationPatterns() {
         return destinationPatterns;
     }
 

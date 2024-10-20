@@ -16,6 +16,7 @@
 package demo.server;
 
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.listener.SimpleStompListener;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -28,13 +29,13 @@ import org.noear.solon.net.websocket.WebSocket;
 public class ChatStompListenerImpl extends SimpleStompListener {
 
     @Override
-    public void onOpen(WebSocket userSocket) {
-        String user = userSocket.param("user");
+    public void onOpen(StompSession session) {
+        String user = session.getSocket().param("user");
         if ("aaa".equals(user)) {
-            userSocket.close();
+            session.getSocket().close();
         } else {
             //确定 用户名
-            userSocket.nameAs(user);
+            session.nameAs(user);
 
             System.out.println("建议放鉴权: " + user);
         }
@@ -42,7 +43,7 @@ public class ChatStompListenerImpl extends SimpleStompListener {
 
 
     @Override
-    public void onFrame(WebSocket socket, Frame frame) {
+    public void onFrame(StompSession session, Frame frame) {
         System.out.println(frame);
     }
 }

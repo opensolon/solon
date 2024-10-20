@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp.listener;
 
 import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.stomp.StompSession;
 
 /**
  * Stomp 服务端消息监听器
@@ -30,25 +30,29 @@ public interface StompListener {
     /**
      * 连接打开时（可以鉴权；参数通过url和head方式指定）
      *
-     * @param socket
+     * @param session
      */
-    void onOpen(WebSocket socket);
+    void onOpen(StompSession session);
 
     /**
      * 收到消息帧
      *
-     * @param socket
-     * @param frame  帧
+     * @param session
+     * @param frame   帧
      */
-    void onFrame(WebSocket socket, Frame frame) throws Throwable;
+    void onFrame(StompSession session, Frame frame) throws Throwable;
 
     /**
      * 连接关闭时（被动监听；当断开时触发）
+     *
+     * @param session
      */
-    void onClose(WebSocket socket);
+    void onClose(StompSession session);
 
     /**
      * 出错时
+     *
+     * @param session
      */
-    void onError(WebSocket socket, Throwable error);
+    void onError(StompSession session, Throwable error);
 }

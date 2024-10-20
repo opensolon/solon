@@ -15,6 +15,8 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.core.util.PathAnalyzer;
+
 /**
  * 订阅信息
  *
@@ -24,13 +26,15 @@ package org.noear.solon.net.stomp.broker.impl;
  */
 public class SubscriptionInfo {
     private final String sessionId;
-    private final String destination;
     private final String subscriptionId;
+    private final String destination;
+    private final PathAnalyzer destinationAnalyzer;
 
     public SubscriptionInfo(String sessionId, String destination, String subscriptionId) {
         this.sessionId = sessionId;
         this.destination = destination;
         this.subscriptionId = subscriptionId;
+        this.destinationAnalyzer = PathAnalyzer.get(destination);
     }
 
     /**
@@ -52,6 +56,13 @@ public class SubscriptionInfo {
      */
     public String getSubscriptionId() {
         return subscriptionId;
+    }
+
+    /**
+     * 是否匹配
+     */
+    public boolean matches(String destination) {
+        return destinationAnalyzer.matches(destination);
     }
 
     @Override

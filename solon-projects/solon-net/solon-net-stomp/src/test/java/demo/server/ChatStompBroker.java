@@ -39,6 +39,6 @@ public class ChatStompBroker extends StompBroker {
         final AtomicInteger atomicInteger = new AtomicInteger();
         RunUtil.scheduleAtFixedRate(() -> {
             getServerEmitter().sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
-        }, 3000, 3000);
+        }, 3000, 10000);
     }
 }
