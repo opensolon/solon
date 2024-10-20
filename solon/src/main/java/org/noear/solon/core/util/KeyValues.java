@@ -48,6 +48,15 @@ public class KeyValues<T> implements Serializable {
     }
 
     /**
+     * 移除值
+     */
+    public void removeValue(T value) {
+        if (values != null) {
+            values.remove(value);
+        }
+    }
+
+    /**
      * 添加值
      */
     public void addValue(T value) {
