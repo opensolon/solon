@@ -18,7 +18,6 @@ package org.noear.solon.net.stomp.broker.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.slf4j.Logger;
@@ -115,7 +114,7 @@ public class StompServerOperationsListener implements StompListener {
                 //未知命令
                 log.warn("Frame unknown, {}\r\n{}", session.id(), frame.getSource());
 
-                emitter.sendToSocket(session.getSocket(), Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
+                session.send(Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
             }
         }
     }
@@ -138,7 +137,7 @@ public class StompServerOperationsListener implements StompListener {
                         new KeyValue<>(Headers.VERSION, "1.2"))
                 .build();
 
-        emitter.sendToSocket(session.getSocket(), frame1);
+        session.send(frame1);
     }
 
     /**
@@ -152,7 +151,7 @@ public class StompServerOperationsListener implements StompListener {
                 .headerAdd(Headers.RECEIPT_ID, receiptId)
                 .build();
 
-        emitter.sendToSocket(session.getSocket(), frame1);
+        session.send(frame1);
     }
 
     /**
@@ -169,23 +168,22 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' or 'id' header missed")
                     .build();
 
-            emitter.sendToSocket(session.getSocket(), frame1);
+            session.send(frame1);
             return;
         }
 
         SubscriptionInfo destinationInfo = new SubscriptionInfo(session.id(), destination, subscriptionId);
 
         ((StompSessionImpl) session).addSubscription(destinationInfo);
-        operations.getSubscriptionInfos().add(destinationInfo);
-        operations.getDestinationPatterns().computeIfAbsent(destination, k -> PathMatcher.get(k));
-
+        operations.getSubscriptions().add(destinationInfo);
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
             Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
                     .headerAdd(Headers.RECEIPT_ID, receiptId)
                     .build();
-            emitter.sendToSocket(session.getSocket(), frame1);
+
+            session.send(frame1);
         }
     }
 
@@ -221,7 +219,7 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' header missed")
                     .build();
 
-            emitter.sendToSocket(session.getSocket(), frame1);
+            session.send(frame1);
         } else {
             Message message = new Message(frame.getPayload()).headerAdd(frame.getHeaderAll());
             emitter.sendTo(destination, message);
@@ -231,7 +229,7 @@ public class StompServerOperationsListener implements StompListener {
     /**
      * 消息ACK
      */
-    public void onAck(StompSession socket, Frame frame) {
+    public void onAck(StompSession session, Frame frame) {
 
     }
 
@@ -241,7 +239,7 @@ public class StompServerOperationsListener implements StompListener {
      * @param function
      */
     protected void unSubscribeHandle(Function<SubscriptionInfo, Boolean> function) {
-        Iterator<SubscriptionInfo> iterator = operations.getSubscriptionInfos().iterator();
+        Iterator<SubscriptionInfo> iterator = operations.getSubscriptions().iterator();
 
         while (iterator.hasNext()) {
             if (function.apply(iterator.next())) {

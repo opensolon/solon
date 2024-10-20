@@ -86,7 +86,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
         AtomicBoolean decodeOk = new AtomicBoolean(Boolean.FALSE);
 
-        brokerMedia.operations.getCodec().decode(text, frame -> {
+        StompBrokerMedia.codec.decode(text, frame -> {
             decodeOk.set(Boolean.TRUE);
             onStomp(session, frame);
         });
@@ -98,7 +98,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             }
 
             //可能是ping，响应
-            brokerMedia.emitter.sendToSocket(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
+            session.send(Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
         }
     }
 

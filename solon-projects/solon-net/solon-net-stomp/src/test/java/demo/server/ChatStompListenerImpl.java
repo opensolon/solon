@@ -30,9 +30,9 @@ public class ChatStompListenerImpl extends SimpleStompListener {
 
     @Override
     public void onOpen(StompSession session) {
-        String user = session.getSocket().param("user");
+        String user = session.param("user");
         if ("aaa".equals(user)) {
-            session.getSocket().close();
+            session.close();
         } else {
             //确定 用户名
             session.nameAs(user);

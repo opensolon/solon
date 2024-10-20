@@ -16,9 +16,6 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathMatcher;
-import org.noear.solon.net.stomp.FrameCodec;
-import org.noear.solon.net.stomp.FrameCodecDefault;
 import org.noear.solon.net.stomp.StompSession;
 
 import java.util.Collections;
@@ -37,30 +34,10 @@ public class StompServerOperations {
 
     }
 
-    /**
-     * session id 存放
-     */
     private final Map<String, StompSession> sessionIdMap = new ConcurrentHashMap<>();
-
-    /**
-     * session name 存放
-     */
     private final Map<String, KeyValues<StompSession>> sessionNameMap = new ConcurrentHashMap<>();
+    private final Set<SubscriptionInfo> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    /**
-     * 地址与 session 映射
-     */
-    private final Set<SubscriptionInfo> subscriptionInfos = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-    /**
-     * 地址匹配正则
-     */
-    private final Map<String, PathMatcher> destinationPatterns = new ConcurrentHashMap<>();
-
-    /**
-     * 消息编码器
-     */
-    private final FrameCodec codec = new FrameCodecDefault();
 
     /**
      * 会话Id集合
@@ -77,23 +54,9 @@ public class StompServerOperations {
     }
 
     /**
-     * 订阅信息集合
+     * 订阅集合
      */
-    public Set<SubscriptionInfo> getSubscriptionInfos() {
-        return subscriptionInfos;
-    }
-
-    /**
-     * 目的地匹配集合
-     */
-    public Map<String, PathMatcher> getDestinationPatterns() {
-        return destinationPatterns;
-    }
-
-    /**
-     * 编解码器
-     */
-    public FrameCodec getCodec() {
-        return codec;
+    public Set<SubscriptionInfo> getSubscriptions() {
+        return subscriptions;
     }
 }

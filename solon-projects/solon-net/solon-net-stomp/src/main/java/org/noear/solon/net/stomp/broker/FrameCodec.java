@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.stomp;
+package org.noear.solon.net.stomp.broker;
 
+
+import org.noear.solon.net.stomp.Frame;
 
 import java.util.function.Consumer;
 

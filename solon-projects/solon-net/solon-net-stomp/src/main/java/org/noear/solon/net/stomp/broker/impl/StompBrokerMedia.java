@@ -15,6 +15,8 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.net.stomp.broker.FrameCodec;
+import org.noear.solon.net.stomp.broker.FrameCodecDefault;
 import org.noear.solon.net.stomp.listener.StompListener;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import java.util.List;
  * @since 3.0
  */
 public class StompBrokerMedia {
+    public static final FrameCodec codec = new FrameCodecDefault();
+
     /**
      * 服务端监听器集合
      */

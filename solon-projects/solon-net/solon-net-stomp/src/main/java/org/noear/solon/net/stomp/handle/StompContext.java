@@ -22,7 +22,6 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.*;
-import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.io.ByteArrayInputStream;
@@ -77,7 +76,7 @@ public class StompContext extends ContextEmpty {
     @Override
     public String remoteIp() {
         try {
-            return session.getSocket().remoteAddress().getAddress().toString();
+            return session.remoteAddress().getAddress().toString();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -86,7 +85,7 @@ public class StompContext extends ContextEmpty {
     @Override
     public int remotePort() {
         try {
-            return session.getSocket().remoteAddress().getPort();
+            return session.remoteAddress().getPort();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

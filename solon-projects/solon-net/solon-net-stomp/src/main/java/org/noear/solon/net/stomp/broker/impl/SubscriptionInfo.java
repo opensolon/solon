@@ -17,6 +17,8 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.core.util.PathMatcher;
 
+import java.util.Objects;
+
 /**
  * 订阅信息
  *
@@ -28,13 +30,13 @@ public class SubscriptionInfo {
     private final String sessionId;
     private final String subscriptionId;
     private final String destination;
-    private final PathMatcher destinationAnalyzer;
+    private final PathMatcher destinationMatcher;
 
     public SubscriptionInfo(String sessionId, String destination, String subscriptionId) {
         this.sessionId = sessionId;
         this.destination = destination;
         this.subscriptionId = subscriptionId;
-        this.destinationAnalyzer = PathMatcher.get(destination);
+        this.destinationMatcher = PathMatcher.get(destination);
     }
 
     /**
@@ -62,24 +64,17 @@ public class SubscriptionInfo {
      * 是否匹配
      */
     public boolean matches(String destination) {
-        return destinationAnalyzer.matches(destination);
+        return destinationMatcher.matches(destination);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubscriptionInfo)) return false;
 
-        if (!(obj instanceof SubscriptionInfo)) {
-            return false;
-        }
-
-        SubscriptionInfo target = (SubscriptionInfo) obj;
-        if (sessionId.equals(target.sessionId) && destination.equals(target.destination)) {
-            return true;
-        }
-
-        return false;
+        SubscriptionInfo that = (SubscriptionInfo) o;
+        return Objects.equals(sessionId, that.sessionId)
+                && Objects.equals(subscriptionId, that.subscriptionId)
+                && Objects.equals(destination, that.destination);
     }
 }

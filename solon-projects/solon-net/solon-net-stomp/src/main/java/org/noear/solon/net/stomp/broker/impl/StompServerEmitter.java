@@ -17,12 +17,7 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.net.stomp.*;
-import org.noear.solon.net.websocket.WebSocket;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Stomp 服务端发射器
@@ -38,23 +33,7 @@ public class StompServerEmitter implements StompEmitter {
         this.operations = operations;
     }
 
-
-    /**
-     * 发送到会话
-     *
-     * @param socket 会话
-     * @param frame  帧
-     */
-    public void sendToSocket(WebSocket socket, Frame frame) {
-        assert frame != null;
-
-        if (socket.isValid()) {
-            String frameStr = operations.getCodec().encode(frame);
-            socket.send(ByteBuffer.wrap(frameStr.getBytes(StandardCharsets.UTF_8)));
-        }
-    }
-
-    public void sendToSessionDo(StompSession session, SubscriptionInfo subscription, String destination, Message message) {
+    private void sendToSessionDo(StompSession session, SubscriptionInfo subscription, String destination, Message message) {
         if (subscription != null) {
             Frame replyMessage = Frame.newBuilder()
                     .command(Commands.MESSAGE)
@@ -65,16 +44,14 @@ public class StompServerEmitter implements StompEmitter {
                     .headerSet(Headers.MESSAGE_ID, Utils.guid())
                     .build();
 
-            sendToSocket(session.getSocket(), replyMessage);
+            session.send(replyMessage);
         }
     }
 
     @Override
     public void sendToSession(StompSession session, String destination, Message message) {
-        SubscriptionInfo subscription = session.getSubscription(destination);
-        if (subscription != null) {
-            sendToSessionDo(session, subscription, destination, message);
-        }
+        SubscriptionInfo subscription = ((StompSessionImpl) session).getSubscription(destination);
+        sendToSessionDo(session, subscription, destination, message);
     }
 
     @Override
@@ -101,16 +78,9 @@ public class StompServerEmitter implements StompEmitter {
             return;
         }
 
-        operations.getSubscriptionInfos().parallelStream()
-                .filter(subscriptionInfo -> {
-                    PathMatcher pathAnalyzer = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
-
-                    if (pathAnalyzer == null) {
-                        return false;
-                    } else {
-                        return pathAnalyzer.matches(destination);
-                    }
-                }).forEach(subscription -> {
+        operations.getSubscriptions().parallelStream()
+                .filter(subscription -> subscription.matches(destination))
+                .forEach(subscription -> {
                     StompSession session = operations.getSessionIdMap().get(subscription.getSessionId());
 
                     if (session != null) {

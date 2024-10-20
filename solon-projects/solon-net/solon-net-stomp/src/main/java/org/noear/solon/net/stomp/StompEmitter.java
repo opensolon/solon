@@ -16,7 +16,6 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.lang.Preview;
-import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 
 /**
  * Stomp 发射器
@@ -34,6 +33,17 @@ public interface StompEmitter {
      * @param message     消息
      */
     void sendToSession(StompSession session, String destination, Message message);
+
+    /**
+     * 发送帧
+     *
+     * @param session     会话
+     * @param destination 目的地
+     * @param payload     消息有效核载
+     */
+    default void sendToSession(StompSession session, String destination, String payload) {
+        sendToSession(session, destination, new Message(payload));
+    }
 
     /**
      * 发送帧
