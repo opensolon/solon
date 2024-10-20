@@ -32,13 +32,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChatStompBroker extends StompBroker {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
-        this.addServerListener(0, new ChatStompListenerImpl());
-        this.addServerListener(new ToHandlerStompListener(this));
+        this.addListener(-1, new ChatStompListenerImpl());
+        this.addListener(new ToHandlerStompListener(this));
 
         //此为示例
         final AtomicInteger atomicInteger = new AtomicInteger();
         RunUtil.scheduleAtFixedRate(() -> {
-            getServerEmitter().sendTo("/topic/todoTask1/" + atomicInteger.incrementAndGet(), "我来自服务端1");
+            int i = atomicInteger.incrementAndGet();
+            getEmitter().sendTo("/topic/todoTask1/" + i, "我来自服务端-" + i);
         }, 3000, 10000);
     }
 }

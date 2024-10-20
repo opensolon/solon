@@ -13,7 +13,7 @@ import java.util.Map;
 @Controller
 public class ChatStompController {
     @Inject //@Inject("/chat")
-    StompEmitter stompSender;
+    StompEmitter stompEmitter;
 
     @Message
     @Mapping("/topic/todoTask1/open")

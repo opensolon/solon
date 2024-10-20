@@ -16,6 +16,7 @@
 package org.noear.solon.net.stomp.broker;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
@@ -69,8 +70,8 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     public void onOpen(WebSocket socket) {
         StompSessionImpl session = StompSessionImpl.of(socket);
 
-        for (StompListener listener : brokerMedia.listeners) {
-            listener.onOpen(session);
+        for (RankEntity<StompListener> listener : brokerMedia.listeners) {
+            listener.target.onOpen(session);
         }
     }
 
@@ -106,8 +107,8 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     public void onClose(WebSocket socket) {
         StompSessionImpl session = StompSessionImpl.of(socket);
 
-        for (StompListener listener : brokerMedia.listeners) {
-            listener.onClose(session);
+        for (RankEntity<StompListener> listener : brokerMedia.listeners) {
+            listener.target.onClose(session);
         }
     }
 
@@ -115,9 +116,9 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
     public void onError(WebSocket socket, Throwable error) {
         StompSessionImpl session = StompSessionImpl.of(socket);
 
-        for (StompListener listener : brokerMedia.listeners) {
+        for (RankEntity<StompListener> listener : brokerMedia.listeners) {
             try {
-                listener.onError(session, error);
+                listener.target.onError(session, error);
             } catch (Throwable e) {
                 log.error(e.getMessage(), e);
             }
@@ -128,9 +129,9 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
      * Stomp 帧接收
      */
     protected void onStomp(StompSessionImpl session, Frame frame) {
-        for (StompListener listener : brokerMedia.listeners) {
+        for (RankEntity<StompListener> listener : brokerMedia.listeners) {
             try {
-                listener.onFrame(session, frame);
+                listener.target.onFrame(session, frame);
             } catch (Throwable e) {
                 onError(session.getSocket(), e);
             }

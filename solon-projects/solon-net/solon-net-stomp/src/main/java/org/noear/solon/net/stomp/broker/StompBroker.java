@@ -18,6 +18,7 @@ package org.noear.solon.net.stomp.broker;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompEmitter;
@@ -25,6 +26,8 @@ import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
+
+import java.util.Collections;
 
 /**
  * Stomp 经理人
@@ -62,21 +65,23 @@ public class StompBroker implements WebSocketListenerSupplier {
     /**
      * 添加服务端监听器
      */
-    public void addServerListener(StompListener listener) {
-        brokerMedia.listeners.add(listener);
+    public void addListener(StompListener listener) {
+        brokerMedia.listeners.add(new RankEntity<>(listener, 0));
+        Collections.sort(brokerMedia.listeners);
     }
 
     /**
      * 添加服务端监听器
      */
-    public void addServerListener(int index, StompListener listener) {
-        brokerMedia.listeners.add(index, listener);
+    public void addListener(int index, StompListener listener) {
+        brokerMedia.listeners.add(new RankEntity<>(listener, index));
+        Collections.sort(brokerMedia.listeners);
     }
 
     /**
      * 获取服务端发送器
      */
-    public StompEmitter getServerEmitter() {
+    public StompEmitter getEmitter() {
         return brokerMedia.emitter;
     }
 }
