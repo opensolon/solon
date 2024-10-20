@@ -26,7 +26,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.MethodWrap;
 
@@ -66,7 +66,7 @@ public class ActionDefault extends HandlerAide implements Action {
     private boolean mMultipart;
 
     //path 分析器
-    private PathAnalyzer pathKeysAnalyzer;//路径分析器
+    private PathMatcher pathKeysAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
 
@@ -165,7 +165,7 @@ public class ActionDefault extends HandlerAide implements Action {
             }
 
             if (pathKeys.size() > 0) {
-                pathKeysAnalyzer = PathAnalyzer.get(path);
+                pathKeysAnalyzer = PathMatcher.get(path);
             }
         }
     }

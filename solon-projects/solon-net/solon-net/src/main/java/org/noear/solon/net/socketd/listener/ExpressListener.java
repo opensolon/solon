@@ -18,7 +18,7 @@ package org.noear.solon.net.socketd.listener;
 import org.noear.socketd.transport.core.Listener;
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.core.util.PathUtil;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class ExpressListener implements Listener {
     private Listener listener;
 
     //path 分析器
-    private PathAnalyzer pathAnalyzer;//路径分析器
+    private PathMatcher pathAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
 
@@ -53,7 +53,7 @@ public class ExpressListener implements Listener {
             }
 
             if (pathKeys.size() > 0) {
-                pathAnalyzer = PathAnalyzer.get(path);
+                pathAnalyzer = PathMatcher.get(path);
             }
         }
     }

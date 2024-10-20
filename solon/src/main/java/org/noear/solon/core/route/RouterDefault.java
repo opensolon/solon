@@ -19,7 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class RouterDefault implements Router, HandlerSlots {
 
     @Override
     public void caseSensitive(boolean caseSensitive) {
-        PathAnalyzer.setCaseSensitive(caseSensitive);
+        PathMatcher.setCaseSensitive(caseSensitive);
     }
 
     /**

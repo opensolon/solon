@@ -15,9 +15,8 @@
  */
 package org.noear.solon.net.websocket.listener;
 
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 
@@ -37,7 +36,7 @@ public class ExpressWebSocketListener implements WebSocketListener {
     private WebSocketListener listener;
 
     //path 分析器
-    private PathAnalyzer pathAnalyzer;//路径分析器
+    private PathMatcher pathAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
 
@@ -54,7 +53,7 @@ public class ExpressWebSocketListener implements WebSocketListener {
             }
 
             if (pathKeys.size() > 0) {
-                pathAnalyzer = PathAnalyzer.get(path);
+                pathAnalyzer = PathMatcher.get(path);
             }
         }
     }

@@ -17,7 +17,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 
 /**
  * 路由默认实现
@@ -32,7 +32,7 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     public RoutingDefault(String path, MethodType method, int index, T target) {
-        this.rule = PathAnalyzer.get(path);
+        this.rule = PathMatcher.get(path);
 
         this.method = method;
         this.path = path;
@@ -40,7 +40,7 @@ public class RoutingDefault<T> implements Routing<T> {
         this.target = target;
     }
 
-    private final PathAnalyzer rule; //path rule 规则
+    private final PathMatcher rule; //path rule 规则
 
     private final int index; //顺序
     private final String path; //path

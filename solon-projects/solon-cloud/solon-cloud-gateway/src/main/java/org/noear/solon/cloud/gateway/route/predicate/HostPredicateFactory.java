@@ -19,10 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
-import org.noear.solon.core.route.PathRule;
-import org.noear.solon.core.util.PathAnalyzer;
-
-import java.util.regex.Pattern;
+import org.noear.solon.core.util.PathMatcher;
 
 /**
  * 路由 Host 匹配检测器
@@ -42,7 +39,7 @@ public class HostPredicateFactory implements RoutePredicateFactory {
     }
 
     public static class HostPredicate implements ExPredicate {
-        private PathAnalyzer rule;
+        private PathMatcher rule;
 
         /**
          * @param config (Host=*.demo.com)
@@ -52,7 +49,7 @@ public class HostPredicateFactory implements RoutePredicateFactory {
                 throw new IllegalArgumentException("HostPredicate config cannot be blank");
             }
 
-            rule = PathAnalyzer.get(config, false); //借用路径规则
+            rule = PathMatcher.get(config, false); //借用路径规则
         }
 
         @Override

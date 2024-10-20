@@ -15,7 +15,7 @@
  */
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +31,15 @@ public class PathRule implements Predicate<String> {
     /**
      * 拦截规则（包函规则）
      */
-    private List<PathAnalyzer> includeList = new ArrayList<>();
+    private List<PathMatcher> includeList = new ArrayList<>();
     /**
      * 放行规则（排除规则）
      */
-    private List<PathAnalyzer> excludeList = new ArrayList<>();
+    private List<PathMatcher> excludeList = new ArrayList<>();
 
     public PathRule include(String... patterns) {
         for (String p1 : patterns) {
-            includeList.add(PathAnalyzer.get(p1));
+            includeList.add(PathMatcher.get(p1));
         }
 
         return this;
@@ -47,7 +47,7 @@ public class PathRule implements Predicate<String> {
 
     public PathRule exclude(String... patterns) {
         for (String p1 : patterns) {
-            excludeList.add(PathAnalyzer.get(p1));
+            excludeList.add(PathMatcher.get(p1));
         }
 
         return this;
@@ -66,14 +66,14 @@ public class PathRule implements Predicate<String> {
     @Override
     public boolean test(String path) {
         //1.放行匹配
-        for (PathAnalyzer pa : excludeList) {
+        for (PathMatcher pa : excludeList) {
             if (pa.matches(path)) {
                 return false;
             }
         }
 
         //2.拦截匹配
-        for (PathAnalyzer pa : includeList) {
+        for (PathMatcher pa : includeList) {
             if (pa.matches(path)) {
                 return true;
             }

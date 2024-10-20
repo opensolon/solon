@@ -18,7 +18,7 @@ package org.noear.solon.net.stomp.broker.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.slf4j.Logger;
@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 /**
  * Stomp 服务端消息操作监听
@@ -178,7 +177,7 @@ public class StompServerOperationsListener implements StompListener {
 
         ((StompSessionImpl) session).addSubscription(destinationInfo);
         operations.getSubscriptionInfos().add(destinationInfo);
-        operations.getDestinationPatterns().computeIfAbsent(destination, k -> PathAnalyzer.get(k));
+        operations.getDestinationPatterns().computeIfAbsent(destination, k -> PathMatcher.get(k));
 
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);

@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.net.stomp.FrameCodec;
 import org.noear.solon.net.stomp.FrameCodecDefault;
 import org.noear.solon.net.stomp.StompSession;
@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
 
 /**
  * Stomp 服务端操作缓存
@@ -56,7 +55,7 @@ public class StompServerOperations {
     /**
      * 地址匹配正则
      */
-    private final Map<String, PathAnalyzer> destinationPatterns = new ConcurrentHashMap<>();
+    private final Map<String, PathMatcher> destinationPatterns = new ConcurrentHashMap<>();
 
     /**
      * 消息编码器
@@ -87,7 +86,7 @@ public class StompServerOperations {
     /**
      * 目的地匹配集合
      */
-    public Map<String, PathAnalyzer> getDestinationPatterns() {
+    public Map<String, PathMatcher> getDestinationPatterns() {
         return destinationPatterns;
     }
 

@@ -17,7 +17,7 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.PathAnalyzer;
+import org.noear.solon.core.util.PathMatcher;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -103,7 +103,7 @@ public class StompServerEmitter implements StompEmitter {
 
         operations.getSubscriptionInfos().parallelStream()
                 .filter(subscriptionInfo -> {
-                    PathAnalyzer pathAnalyzer = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
+                    PathMatcher pathAnalyzer = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
 
                     if (pathAnalyzer == null) {
                         return false;
