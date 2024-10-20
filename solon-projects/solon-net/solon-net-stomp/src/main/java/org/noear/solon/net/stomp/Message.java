@@ -32,9 +32,9 @@ public class Message extends SimpleFrame implements Frame {
     }
 
     /**
-     * 头
+     * 头添加
      */
-    public Message headers(KeyValue<String>... headers) {
+    public Message headerAdd(KeyValue<String>... headers) {
         for (KeyValue<String> kv : headers) {
             this.headers.holder(kv.getKey()).addValue(kv.getValue());
         }
@@ -42,9 +42,9 @@ public class Message extends SimpleFrame implements Frame {
     }
 
     /**
-     * 头
+     * 头添加
      */
-    public Message headers(Iterable<KeyValues<String>> headers) {
+    public Message headerAdd(Iterable<KeyValues<String>> headers) {
         for (KeyValues<String> kv : headers) {
             for (String val : kv.getValues()) {
                 this.headers.holder(kv.getKey()).addValue(val);
@@ -54,14 +54,28 @@ public class Message extends SimpleFrame implements Frame {
     }
 
     /**
-     * 头
+     * 头添加
      *
      * @param key 键名
      * @param val 值
      */
-    public Message header(String key, String val) {
+    public Message headerAdd(String key, String val) {
         if (key != null && val != null) {
             this.headers.holder(key).addValue(val);
+        }
+
+        return this;
+    }
+
+    /**
+     * 头替换
+     *
+     * @param key 键名
+     * @param val 值
+     */
+    public Message headerSet(String key, String val) {
+        if (key != null && val != null) {
+            this.headers.holder(key).setValues(val);
         }
 
         return this;

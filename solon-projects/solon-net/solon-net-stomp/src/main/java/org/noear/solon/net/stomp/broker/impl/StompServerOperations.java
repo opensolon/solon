@@ -37,9 +37,14 @@ public class StompServerOperations {
     }
 
     /**
-     * session 存放
+     * session id 存放
      */
-    private final Map<String, WebSocket> sessionMap = new ConcurrentHashMap<>();
+    private final Map<String, WebSocket> sessionIdMap = new ConcurrentHashMap<>();
+
+    /**
+     * session name 存放
+     */
+    private final Map<String, WebSocket> sessionNameMap = new ConcurrentHashMap<>();
 
     /**
      * 地址与 session 映射
@@ -49,7 +54,7 @@ public class StompServerOperations {
     /**
      * 地址匹配正则
      */
-    private final ConcurrentHashMap<String, Pattern> destinationMatchs = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Pattern> destinationPatterns = new ConcurrentHashMap<>();
 
     /**
      * 消息编码器
@@ -57,10 +62,17 @@ public class StompServerOperations {
     private final FrameCodec codec = new FrameCodecDefault();
 
     /**
-     * 会话集合
+     * 会话Id集合
      */
-    public Map<String, WebSocket> getSessionMap() {
-        return sessionMap;
+    public Map<String, WebSocket> getSessionIdMap() {
+        return sessionIdMap;
+    }
+
+    /**
+     * 会话Name集合
+     */
+    public Map<String, WebSocket> getSessionNameMap() {
+        return sessionNameMap;
     }
 
     /**
@@ -73,8 +85,8 @@ public class StompServerOperations {
     /**
      * 目的地匹配集合
      */
-    public ConcurrentHashMap<String, Pattern> getDestinationMatchs() {
-        return destinationMatchs;
+    public ConcurrentHashMap<String, Pattern> getDestinationPatterns() {
+        return destinationPatterns;
     }
 
     /**

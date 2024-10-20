@@ -197,7 +197,7 @@ public class FrameCodecDefault implements FrameCodec {
             String name = header.substring(0, start);
             String value = header.substring(start + headerKvDelimiter.length(), header.length());
 
-            builder.header(name, value);
+            builder.headerAdd(name, value);
         }
     }
 

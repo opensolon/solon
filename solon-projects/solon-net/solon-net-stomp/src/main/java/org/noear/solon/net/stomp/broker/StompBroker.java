@@ -62,10 +62,15 @@ public class StompBroker implements WebSocketListenerSupplier {
     /**
      * 添加服务端监听器
      */
-    public void addServerListener(StompListener... listeners) {
-        for (StompListener listener : listeners) {
-            brokerMedia.listeners.add(listener);
-        }
+    public void addServerListener(StompListener listener) {
+        brokerMedia.listeners.add(listener);
+    }
+
+    /**
+     * 添加服务端监听器
+     */
+    public void addServerListener(int index, StompListener listener) {
+        brokerMedia.listeners.add(index, listener);
     }
 
     /**

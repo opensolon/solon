@@ -20,11 +20,9 @@ import org.noear.solon.annotation.To;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.Message;
-import org.noear.solon.net.stomp.StompEmitter;
-import org.noear.solon.net.stomp.Headers;
+import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.io.ByteArrayInputStream;
@@ -133,6 +131,7 @@ public class StompContext extends ContextEmpty {
     }
 
     private InputStream bodyAsStream;
+
     @Override
     public InputStream bodyAsStream() throws IOException {
         if (bodyAsStream == null) {
@@ -215,7 +214,13 @@ public class StompContext extends ContextEmpty {
         }
 
         //headers
-        message.headers(headerMap());
+        for (KeyValues<String> kv : headerMap()) {
+            //转为小写
+            String key = kv.getKey().toLowerCase();
+            for (String val : kv.getValues()) {
+                message.headerAdd(key, val);
+            }
+        }
 
         //to anno
         Action action = action();
@@ -225,17 +230,45 @@ public class StompContext extends ContextEmpty {
         }
 
         //send-to
-        if (anno == null) {
-            emitter().sendTo(path(), message);
+        if (anno == null || anno.value().length == 0) {
+            //to from
+            sendTo("*", path(), message);
         } else {
-            for (String destination : anno.value()) {
-                if (Utils.isEmpty(destination)) {
-                    //如果是空的
-                    emitter().sendTo(path(), message);
+            for (String to : anno.value()) {
+                //to destination
+                int idx = to.indexOf(':');
+                if (idx < 1) {
+                    throw new IllegalArgumentException("Invalid to: " + to);
                 } else {
-                    emitter().sendTo(destination, message);
+                    sendTo(to.substring(0, idx), to.substring(idx + 1), message);
                 }
             }
+        }
+    }
+
+    private void sendTo(String user, String destination, Message message) {
+        if ("*".equals(user)) {
+            //to subscriber
+            emitter().sendTo(destination, message);
+        } else if (".".equals(user)) {
+            //to session
+            String replyDestination = destination.substring(1);
+            if (Utils.isEmpty(replyDestination)) {
+                replyDestination = path();
+            }
+
+            Frame replyMessage = Frame.newBuilder()
+                    .command(Commands.MESSAGE)
+                    .payload(message.getPayload())
+                    .headerAdd(message.getHeaderAll())
+                    .headerSet(Headers.DESTINATION, replyDestination)
+                    .headerSet(Headers.MESSAGE_ID, Utils.guid())
+                    .build();
+
+            emitter().sendToSession(socket, replyMessage);
+        } else {
+            //to user
+            emitter().sendToUser(user, destination, message);
         }
     }
 }

@@ -17,7 +17,7 @@ public class ChatStompController {
 
     @Message
     @Mapping("/topic/todoTask1/open")
-    //@To("/topic/todoTask1/s1")
+    @To(".:/topic/todoTask1/s1")
     public Map<String,Object> test(Context ctx, @Body String text) {
         System.out.println(ctx.headerMap());
         System.out.println(ctx.method());

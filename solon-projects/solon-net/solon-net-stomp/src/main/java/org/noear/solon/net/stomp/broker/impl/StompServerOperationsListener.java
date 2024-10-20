@@ -20,6 +20,7 @@ import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Headers;
+import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocket;
 import org.slf4j.Logger;
@@ -54,7 +55,26 @@ public class StompServerOperationsListener implements StompListener {
      */
     @Override
     public void onOpen(WebSocket socket) {
-        operations.getSessionMap().put(socket.id(), socket);
+        operations.getSessionIdMap().put(socket.id(), socket);
+
+        if (socket.name() != null) {
+            operations.getSessionNameMap().put(socket.name(), socket);
+        }
+    }
+
+
+    /**
+     * 连接关闭
+     * 当连接断开时触发
+     */
+    @Override
+    public void onClose(WebSocket socket) {
+        operations.getSessionIdMap().remove(socket.id());
+        if (socket.name() != null) {
+            operations.getSessionNameMap().remove(socket.name());
+        }
+
+        this.onUnsubscribe(socket, null);
     }
 
     @Override
@@ -90,19 +110,9 @@ public class StompServerOperationsListener implements StompListener {
                 //未知命令
                 log.warn("Frame unknown, {}\r\n{}", socket.id(), frame.getSource());
 
-                emitter.sendTo(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
+                emitter.sendToSession(socket, Frame.newBuilder().command(Commands.UNKNOWN).payload(frame.getSource()).build());
             }
         }
-    }
-
-    /**
-     * 连接关闭
-     * 当连接断开时触发
-     */
-    @Override
-    public void onClose(WebSocket socket) {
-        operations.getSessionMap().remove(socket);
-        this.onUnsubscribe(socket, null);
     }
 
     @Override
@@ -118,12 +128,12 @@ public class StompServerOperationsListener implements StompListener {
         String heartBeat = frame.getHeader(Headers.HEART_BEAT);
 
         Frame frame1 = Frame.newBuilder().command(Commands.CONNECTED)
-                .headers(new KeyValue<>(Headers.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
+                .headerAdd(new KeyValue<>(Headers.HEART_BEAT, (heartBeat == null ? "0,0" : heartBeat)),
                         new KeyValue<>(Headers.SERVER, "stomp"),
                         new KeyValue<>(Headers.VERSION, "1.2"))
                 .build();
 
-        emitter.sendTo(socket, frame1);
+        emitter.sendToSession(socket, frame1);
     }
 
     /**
@@ -134,10 +144,10 @@ public class StompServerOperationsListener implements StompListener {
         String receiptId = frame.getHeader(Headers.RECEIPT);
 
         Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
-                .header(Headers.RECEIPT_ID, receiptId)
+                .headerAdd(Headers.RECEIPT_ID, receiptId)
                 .build();
 
-        emitter.sendTo(socket, frame1);
+        emitter.sendToSession(socket, frame1);
     }
 
     /**
@@ -154,26 +164,26 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' or 'id' header missed")
                     .build();
 
-            emitter.sendTo(socket, frame1);
+            emitter.sendToSession(socket, frame1);
             return;
         }
 
         SubscriptionInfo destinationInfo = new SubscriptionInfo(socket.id(), destination, subscriptionId);
 
         operations.getSubscriptionInfos().add(destinationInfo);
-        if (!operations.getDestinationMatchs().containsKey(destination)) {
+        if (!operations.getDestinationPatterns().containsKey(destination)) {
             String destinationRegexp = "^" + destination
                     .replaceAll("\\*\\*", ".+")
                     .replaceAll("\\*", "[^/]+") + "$";
-            operations.getDestinationMatchs().put(destination, Pattern.compile(destinationRegexp));
+            operations.getDestinationPatterns().put(destination, Pattern.compile(destinationRegexp));
         }
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
             Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
-                    .header(Headers.RECEIPT_ID, receiptId)
+                    .headerAdd(Headers.RECEIPT_ID, receiptId)
                     .build();
-            emitter.sendTo(socket, frame1);
+            emitter.sendToSession(socket, frame1);
         }
     }
 
@@ -209,9 +219,10 @@ public class StompServerOperationsListener implements StompListener {
                     .payload("Required 'destination' header missed")
                     .build();
 
-            emitter.sendTo(socket, frame1);
+            emitter.sendToSession(socket, frame1);
         } else {
-            emitter.sendTo(destination, frame);
+            Message message = new Message(frame.getPayload()).headerAdd(frame.getHeaderAll());
+            emitter.sendTo(destination, message);
         }
     }
 

@@ -61,9 +61,9 @@ public class FrameBuilder {
     }
 
     /**
-     * 头
+     * 头添加
      */
-    public FrameBuilder headers(KeyValue<String>... headers) {
+    public FrameBuilder headerAdd(KeyValue<String>... headers) {
         for (KeyValue<String> kv : headers) {
             this.headers.holder(kv.getKey()).addValue(kv.getValue());
         }
@@ -71,9 +71,9 @@ public class FrameBuilder {
     }
 
     /**
-     * 头
+     * 头添加
      */
-    public FrameBuilder headers(Iterable<KeyValues<String>> headers) {
+    public FrameBuilder headerAdd(Iterable<KeyValues<String>> headers) {
         for (KeyValues<String> kv : headers) {
             for (String val : kv.getValues()) {
                 this.headers.holder(kv.getKey()).addValue(val);
@@ -83,11 +83,22 @@ public class FrameBuilder {
     }
 
     /**
-     * 头
+     * 头添加
      */
-    public FrameBuilder header(String key, String val) {
+    public FrameBuilder headerAdd(String key, String val) {
         if (key != null && val != null) {
             this.headers.holder(key).addValue(val);
+        }
+
+        return this;
+    }
+
+    /**
+     * 头替换
+     */
+    public FrameBuilder headerSet(String key, String val) {
+        if (key != null && val != null) {
+            this.headers.holder(key).setValues(val);
         }
 
         return this;
@@ -98,7 +109,7 @@ public class FrameBuilder {
      */
     public FrameBuilder contentType(String contentType) {
         if (Utils.isNotEmpty(contentType)) {
-            return header(Headers.CONTENT_TYPE, contentType);
+            return headerAdd(Headers.CONTENT_TYPE, contentType);
         }
 
         return this;
@@ -109,7 +120,7 @@ public class FrameBuilder {
      */
     public FrameBuilder destination(String destination) {
         if (Utils.isNotEmpty(destination)) {
-            return header(Headers.DESTINATION, destination);
+            return headerAdd(Headers.DESTINATION, destination);
         }
 
         return this;

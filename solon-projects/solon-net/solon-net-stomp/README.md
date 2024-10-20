@@ -30,7 +30,9 @@ public class TestController {
     StompEmitter stompEmitter;
 
     @Mapping("/hello")
-    @To("/topic/greetings")
+    @To("*:/topic/greetings") //发给所有订阅者
+    @To(".:/topic/greetings") //发给当前用户
+    @To("user1:/topic/greetings") //发给特定用户
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");

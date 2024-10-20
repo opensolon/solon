@@ -93,7 +93,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             }
 
             //可能是ping，响应
-            brokerMedia.emitter.sendTo(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
+            brokerMedia.emitter.sendToSession(socket, Frame.newBuilder().command(Commands.MESSAGE).payload(text).build());
         }
     }
 

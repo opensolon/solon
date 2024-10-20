@@ -32,15 +32,35 @@ public interface StompEmitter {
      * @param session 会话
      * @param frame   帧
      */
-    void sendTo(WebSocket session, Frame frame);
+    void sendToSession(WebSocket session, Frame frame);
+
+    /**
+     * 发送帧
+     *
+     * @param user        用户
+     * @param destination 目的地
+     * @param message     消息
+     */
+    void sendToUser(String user, String destination, Message message);
+
+    /**
+     * 发送帧
+     *
+     * @param user        用户
+     * @param destination 目的地
+     * @param payload     消息有效核载
+     */
+    default void sendToUser(String user, String destination, String payload) {
+        sendToUser(user, destination, new Message(payload));
+    }
 
     /**
      * 发送帧
      *
      * @param destination 目的地
-     * @param frame       帧
+     * @param message     消息
      */
-    void sendTo(String destination, Frame frame);
+    void sendTo(String destination, Message message);
 
     /**
      * 发送消息有效核载

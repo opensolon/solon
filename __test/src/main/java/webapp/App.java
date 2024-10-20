@@ -16,7 +16,6 @@
 package webapp;
 
 import cn.dev33.satoken.SaManager;
-import freemarker.template.Configuration;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;

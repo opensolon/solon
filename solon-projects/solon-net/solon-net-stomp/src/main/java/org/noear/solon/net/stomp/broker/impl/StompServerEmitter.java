@@ -16,10 +16,7 @@
 package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
-import org.noear.solon.net.stomp.Commands;
-import org.noear.solon.net.stomp.Frame;
-import org.noear.solon.net.stomp.StompEmitter;
-import org.noear.solon.net.stomp.Headers;
+import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.nio.ByteBuffer;
@@ -47,8 +44,8 @@ public class StompServerEmitter implements StompEmitter {
      * @param session 会话
      * @param frame   帧
      */
-    public void sendTo(WebSocket session, Frame frame) {
-        assert frame!=null;
+    public void sendToSession(WebSocket session, Frame frame) {
+        assert frame != null;
 
         if (session.isValid()) {
             String frameStr = operations.getCodec().encode(frame);
@@ -56,24 +53,39 @@ public class StompServerEmitter implements StompEmitter {
         }
     }
 
+    @Override
+    public void sendToUser(String user, String destination, Message message) {
+        WebSocket sendSocket = operations.getSessionNameMap().get(user);
+
+        Frame replyMessage = Frame.newBuilder()
+                .command(Commands.MESSAGE)
+                .payload(message.getPayload())
+                .headerAdd(message.getHeaderAll())
+                .headerSet(Headers.DESTINATION, destination)
+                .headerSet(Headers.MESSAGE_ID, Utils.guid())
+                .build();
+
+        sendToSession(sendSocket, replyMessage);
+    }
+
 
     /**
      * 发送到目的地
      *
      * @param destination 目标（支持模糊匹配，如/topic/**）
-     * @param frame       帧
+     * @param message     消息
      */
     @Override
-    public void sendTo(String destination, Frame frame) {
-        assert frame!=null;
+    public void sendTo(String destination, Message message) {
+        assert message != null;
 
-        if(Utils.isEmpty(destination)){
+        if (Utils.isEmpty(destination)) {
             return;
         }
 
         operations.getSubscriptionInfos().parallelStream()
                 .filter(subscriptionInfo -> {
-                    Pattern pattern = operations.getDestinationMatchs().get(subscriptionInfo.getDestination());
+                    Pattern pattern = operations.getDestinationPatterns().get(subscriptionInfo.getDestination());
 
                     if (pattern == null) {
                         return false;
@@ -81,19 +93,19 @@ public class StompServerEmitter implements StompEmitter {
                         return pattern.matcher(destination).matches();
                     }
                 }).forEach(subscriptionInfo -> {
-                    WebSocket sendSocket = operations.getSessionMap().get(subscriptionInfo.getSessionId());
+                    WebSocket sendSocket = operations.getSessionIdMap().get(subscriptionInfo.getSessionId());
 
                     if (sendSocket != null) {
                         Frame replyMessage = Frame.newBuilder()
                                 .command(Commands.MESSAGE)
-                                .payload(frame.getPayload())
-                                .header(Headers.CONTENT_TYPE, frame.getHeader(Headers.CONTENT_TYPE))
-                                .header(Headers.DESTINATION, subscriptionInfo.getDestination())
-                                .header(Headers.SUBSCRIPTION, subscriptionInfo.getSubscriptionId())
-                                .header(Headers.MESSAGE_ID, Utils.guid())
+                                .payload(message.getPayload())
+                                .headerAdd(message.getHeaderAll())
+                                .headerSet(Headers.DESTINATION, subscriptionInfo.getDestination())
+                                .headerSet(Headers.SUBSCRIPTION, subscriptionInfo.getSubscriptionId())
+                                .headerSet(Headers.MESSAGE_ID, Utils.guid())
                                 .build();
 
-                        sendTo(sendSocket, replyMessage);
+                        sendToSession(sendSocket, replyMessage);
                     }
                 });
     }
