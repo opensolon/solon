@@ -40,9 +40,10 @@
 * 优化 solon-security-auth 允许 AuthAdapter 直接支持“多套账号体系鉴权”处理（简化了）。AuthAdapterSupplier 标为弃用 
 * cxf-webservices 升为 3.5.9
 * beetlsql 升为 3.30.14-RELEASE
+* mybatis-flex 升为 1.9.8
 * hutool 升为 5.8.32
 * liteflow 升为 2.12.4
-* snack3 升为 3.2.114
+* snack3 升为 3.2.117
 * wood 升为 1.3.12
 * redisx 升为 1.6.7
 * fastjson2 升为 2.0.53
