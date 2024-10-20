@@ -36,6 +36,18 @@ public interface WebSocket {
     String id();
 
     /**
+     * 名字（由用户设定）
+     */
+    String name();
+
+    /**
+     * 名字命为
+     *
+     * @param name 名字
+     */
+    void nameAs(String name);
+
+    /**
      * 是否有效
      */
     boolean isValid();

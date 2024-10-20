@@ -38,6 +38,7 @@ public abstract class WebSocketBase implements WebSocket {
     private boolean isClosed;
     private String pathNew;
     private String id = Utils.guid();
+    private String name;
 
     protected void init(URI uri) {
         this.handshake = new HandshakeImpl(uri);
@@ -50,15 +51,25 @@ public abstract class WebSocketBase implements WebSocket {
 
     /**
      * 会话id
-     * */
+     */
     @Override
     public String id() {
         return id;
     }
 
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
+    public void nameAs(String name) {
+        this.name = name;
+    }
+
     /**
      * 获取请求地址
-     * */
+     */
     @Override
     public String url() {
         return handshake.getUrl();
