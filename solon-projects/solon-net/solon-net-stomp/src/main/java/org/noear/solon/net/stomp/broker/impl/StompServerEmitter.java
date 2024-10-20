@@ -27,10 +27,10 @@ import org.noear.solon.net.stomp.*;
  * @since 3.0
  */
 public class StompServerEmitter implements StompEmitter {
-    private final StompServerOperations operations;
+    private final StompBrokerMedia brokerMedia;
 
-    protected StompServerEmitter(StompServerOperations operations) {
-        this.operations = operations;
+    protected StompServerEmitter(StompBrokerMedia brokerMedia) {
+        this.brokerMedia = brokerMedia;
     }
 
     private void sendToSessionDo(StompSession session, SubscriptionInfo subscription, String destination, Message message) {
@@ -48,15 +48,29 @@ public class StompServerEmitter implements StompEmitter {
         }
     }
 
+    /**
+     * 发送给会话
+     *
+     * @param session     会话
+     * @param destination 目标
+     * @param message     消息
+     */
     @Override
     public void sendToSession(StompSession session, String destination, Message message) {
         SubscriptionInfo subscription = ((StompSessionImpl) session).getSubscription(destination);
         sendToSessionDo(session, subscription, destination, message);
     }
 
+    /**
+     * 发送给用户
+     *
+     * @param user        用户
+     * @param destination 目标
+     * @param message     消息
+     */
     @Override
     public void sendToUser(String user, String destination, Message message) {
-        KeyValues<StompSession> sessions = operations.getSessionNameMap().get(user);
+        KeyValues<StompSession> sessions = brokerMedia.sessionNameMap.get(user);
 
         for (StompSession s1 : sessions.getValues()) {
             sendToSession(s1, destination, message);
@@ -67,7 +81,7 @@ public class StompServerEmitter implements StompEmitter {
     /**
      * 发送到目的地
      *
-     * @param destination 目标（支持模糊匹配，如/topic/**）
+     * @param destination 目标
      * @param message     消息
      */
     @Override
@@ -78,10 +92,10 @@ public class StompServerEmitter implements StompEmitter {
             return;
         }
 
-        operations.getSubscriptions().parallelStream()
+        brokerMedia.subscriptions.parallelStream()
                 .filter(subscription -> subscription.matches(destination))
                 .forEach(subscription -> {
-                    StompSession session = operations.getSessionIdMap().get(subscription.getSessionId());
+                    StompSession session = brokerMedia.sessionIdMap.get(subscription.getSessionId());
 
                     if (session != null) {
                         sendToSessionDo(session, subscription, destination, message);

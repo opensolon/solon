@@ -35,12 +35,10 @@ import java.util.function.Function;
 public class StompServerOperationsListener implements StompListener {
     static Logger log = LoggerFactory.getLogger(StompServerOperationsListener.class);
 
-    private final StompServerEmitter emitter;
-    private final StompServerOperations operations;
+    private final StompBrokerMedia brokerMedia;
 
-    protected StompServerOperationsListener(StompServerOperations operations, StompServerEmitter emitter) {
-        this.emitter = emitter;
-        this.operations = operations;
+    protected StompServerOperationsListener(StompBrokerMedia brokerMedia) {
+        this.brokerMedia = brokerMedia;
     }
 
     /**
@@ -51,10 +49,10 @@ public class StompServerOperationsListener implements StompListener {
      */
     @Override
     public void onOpen(StompSession session) {
-        operations.getSessionIdMap().put(session.id(), session);
+        brokerMedia.sessionIdMap.put(session.id(), session);
 
         if (session.name() != null) {
-            operations.getSessionNameMap().computeIfAbsent(session.name(), k -> new KeyValues<>(k))
+            brokerMedia.sessionNameMap.computeIfAbsent(session.name(), k -> new KeyValues<>(k))
                     .addValue(session);
         }
     }
@@ -66,14 +64,14 @@ public class StompServerOperationsListener implements StompListener {
      */
     @Override
     public void onClose(StompSession session) {
-        operations.getSessionIdMap().remove(session.id());
+        brokerMedia.sessionIdMap.remove(session.id());
 
         if (session.name() != null) {
-            KeyValues<StompSession> sessionList = operations.getSessionNameMap().get(session.name());
+            KeyValues<StompSession> sessionList = brokerMedia.sessionNameMap.get(session.name());
             if (sessionList != null) {
                 sessionList.removeValue(session);
                 if (sessionList.getValues().size() == 0) {
-                    operations.getSessionNameMap().remove(session.name());
+                    brokerMedia.sessionNameMap.remove(session.name());
                 }
             }
         }
@@ -175,7 +173,7 @@ public class StompServerOperationsListener implements StompListener {
         SubscriptionInfo destinationInfo = new SubscriptionInfo(session.id(), destination, subscriptionId);
 
         ((StompSessionImpl) session).addSubscription(destinationInfo);
-        operations.getSubscriptions().add(destinationInfo);
+        brokerMedia.subscriptions.add(destinationInfo);
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
@@ -222,7 +220,7 @@ public class StompServerOperationsListener implements StompListener {
             session.send(frame1);
         } else {
             Message message = new Message(frame.getPayload()).headerAdd(frame.getHeaderAll());
-            emitter.sendTo(destination, message);
+            brokerMedia.emitter.sendTo(destination, message);
         }
     }
 
@@ -239,7 +237,7 @@ public class StompServerOperationsListener implements StompListener {
      * @param function
      */
     protected void unSubscribeHandle(Function<SubscriptionInfo, Boolean> function) {
-        Iterator<SubscriptionInfo> iterator = operations.getSubscriptions().iterator();
+        Iterator<SubscriptionInfo> iterator = brokerMedia.subscriptions.iterator();
 
         while (iterator.hasNext()) {
             if (function.apply(iterator.next())) {

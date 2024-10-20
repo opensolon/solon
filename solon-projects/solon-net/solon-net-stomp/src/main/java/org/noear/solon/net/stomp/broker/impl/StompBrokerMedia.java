@@ -15,12 +15,15 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.FrameCodec;
 import org.noear.solon.net.stomp.broker.FrameCodecDefault;
 import org.noear.solon.net.stomp.listener.StompListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Stomp 经理人媒介
@@ -32,25 +35,34 @@ public class StompBrokerMedia {
     public static final FrameCodec codec = new FrameCodecDefault();
 
     /**
-     * 服务端监听器集合
+     * 监听器集合
      */
-    public final List<StompListener> listeners;
+    public final List<RankEntity<StompListener>> listeners;
 
     /**
-     * 服务端操作缓存
+     * 会话Id集合
      */
-    public final StompServerOperations operations;
+    public final Map<String, StompSession> sessionIdMap = new ConcurrentHashMap<>();
 
     /**
-     * 服务端发射器
+     * 会话Name集合
+     */
+    public final Map<String, KeyValues<StompSession>> sessionNameMap = new ConcurrentHashMap<>();
+
+    /**
+     * 订阅集合
+     */
+    public final Set<SubscriptionInfo> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    /**
+     * 发射器
      */
     public final StompServerEmitter emitter;
 
     public StompBrokerMedia() {
         listeners = new ArrayList<>();
-        operations = new StompServerOperations();
-        emitter = new StompServerEmitter(operations);
+        emitter = new StompServerEmitter(this);
 
-        listeners.add(new StompServerOperationsListener(operations, emitter));
+        listeners.add(new RankEntity<>(new StompServerOperationsListener(this), 999));
     }
 }
