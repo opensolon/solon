@@ -27,17 +27,17 @@ import java.util.Iterator;
 import java.util.function.Function;
 
 /**
- * Stomp 服务端消息操作监听
+ * Stomp 代理端消息监听器
  *
  * @author limliu
  * @since 2.7
  */
-public class StompServerOperationsListener implements StompListener {
-    static Logger log = LoggerFactory.getLogger(StompServerOperationsListener.class);
+public class StompBrokerListener implements StompListener {
+    static Logger log = LoggerFactory.getLogger(StompBrokerListener.class);
 
     private final StompBrokerMedia brokerMedia;
 
-    protected StompServerOperationsListener(StompBrokerMedia brokerMedia) {
+    protected StompBrokerListener(StompBrokerMedia brokerMedia) {
         this.brokerMedia = brokerMedia;
     }
 
@@ -170,10 +170,10 @@ public class StompServerOperationsListener implements StompListener {
             return;
         }
 
-        SubscriptionInfo destinationInfo = new SubscriptionInfo(session.id(), destination, subscriptionId);
+        Subscription subscription = new Subscription(session.id(), destination, subscriptionId);
 
-        ((StompSessionImpl) session).addSubscription(destinationInfo);
-        brokerMedia.subscriptions.add(destinationInfo);
+        ((StompSessionImpl) session).addSubscription(subscription);
+        brokerMedia.subscriptions.add(subscription);
 
         final String receiptId = frame.getHeader(Headers.RECEIPT);
         if (receiptId != null) {
@@ -198,9 +198,10 @@ public class StompServerOperationsListener implements StompListener {
         } else {
             String subscriptionId = frame.getHeader(Headers.ID);
             String destination = frame.getHeader(Headers.DESTINATION);
-            this.unSubscribeHandle(destinationInfo -> {
-                return sessionId.equals(destinationInfo.getSessionId())
-                        && (destinationInfo.getDestination().equals(destination) || destinationInfo.getSubscriptionId().equals(subscriptionId));
+
+            this.unSubscribeHandle(subscription -> {
+                return sessionId.equals(subscription.getSessionId())
+                        && (subscription.getDestination().equals(destination) || subscription.getId().equals(subscriptionId));
             });
         }
     }
@@ -236,8 +237,8 @@ public class StompServerOperationsListener implements StompListener {
      *
      * @param function
      */
-    protected void unSubscribeHandle(Function<SubscriptionInfo, Boolean> function) {
-        Iterator<SubscriptionInfo> iterator = brokerMedia.subscriptions.iterator();
+    protected void unSubscribeHandle(Function<Subscription, Boolean> function) {
+        Iterator<Subscription> iterator = brokerMedia.subscriptions.iterator();
 
         while (iterator.hasNext()) {
             if (function.apply(iterator.next())) {

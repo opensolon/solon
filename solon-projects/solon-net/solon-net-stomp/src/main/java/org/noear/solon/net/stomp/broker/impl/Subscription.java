@@ -26,16 +26,21 @@ import java.util.Objects;
  * @since 2.7
  * @since 3.0
  */
-public class SubscriptionInfo {
+public class Subscription {
     private final String sessionId;
-    private final String subscriptionId;
     private final String destination;
     private final PathMatcher destinationMatcher;
+    private final String id;
 
-    public SubscriptionInfo(String sessionId, String destination, String subscriptionId) {
+    /**
+     * @param sessionId   会话Id
+     * @param destination 目的地（支持模糊匹配，/topic/**）
+     * @param id          订阅Id
+     */
+    public Subscription(String sessionId, String destination, String id) {
         this.sessionId = sessionId;
         this.destination = destination;
-        this.subscriptionId = subscriptionId;
+        this.id = id;
         this.destinationMatcher = PathMatcher.get(destination);
     }
 
@@ -54,10 +59,10 @@ public class SubscriptionInfo {
     }
 
     /**
-     * 订阅者ID
+     * 订阅ID
      */
-    public String getSubscriptionId() {
-        return subscriptionId;
+    public String getId() {
+        return id;
     }
 
     /**
@@ -70,11 +75,10 @@ public class SubscriptionInfo {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SubscriptionInfo)) return false;
+        if (!(o instanceof Subscription)) return false;
 
-        SubscriptionInfo that = (SubscriptionInfo) o;
+        Subscription that = (Subscription) o;
         return Objects.equals(sessionId, that.sessionId)
-                && Objects.equals(subscriptionId, that.subscriptionId)
                 && Objects.equals(destination, that.destination);
     }
 }

@@ -20,27 +20,27 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.stomp.*;
 
 /**
- * Stomp 服务端发射器
+ * Stomp 代理端发射器
  *
  * @author limliu
  * @since 2.7
  * @since 3.0
  */
-public class StompServerEmitter implements StompEmitter {
+public class StompBrokerEmitter implements StompEmitter {
     private final StompBrokerMedia brokerMedia;
 
-    protected StompServerEmitter(StompBrokerMedia brokerMedia) {
+    protected StompBrokerEmitter(StompBrokerMedia brokerMedia) {
         this.brokerMedia = brokerMedia;
     }
 
-    private void sendToSessionDo(StompSession session, SubscriptionInfo subscription, String destination, Message message) {
+    private void sendToSessionDo(StompSession session, Subscription subscription, String destination, Message message) {
         if (subscription != null) {
             Frame replyMessage = Frame.newBuilder()
                     .command(Commands.MESSAGE)
                     .payload(message.getPayload())
                     .headerAdd(message.getHeaderAll())
                     .headerSet(Headers.DESTINATION, destination)
-                    .headerSet(Headers.SUBSCRIPTION, subscription.getSubscriptionId())
+                    .headerSet(Headers.SUBSCRIPTION, subscription.getId())
                     .headerSet(Headers.MESSAGE_ID, Utils.guid())
                     .build();
 
@@ -57,7 +57,7 @@ public class StompServerEmitter implements StompEmitter {
      */
     @Override
     public void sendToSession(StompSession session, String destination, Message message) {
-        SubscriptionInfo subscription = ((StompSessionImpl) session).getSubscription(destination);
+        Subscription subscription = ((StompSessionImpl) session).getSubscription(destination);
         sendToSessionDo(session, subscription, destination, message);
     }
 

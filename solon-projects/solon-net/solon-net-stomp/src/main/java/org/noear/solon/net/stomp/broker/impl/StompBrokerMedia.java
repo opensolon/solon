@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Stomp 经理人媒介
+ * Stomp 代理端媒介
  *
  * @author noear
  * @since 3.0
@@ -52,17 +52,17 @@ public class StompBrokerMedia {
     /**
      * 订阅集合
      */
-    public final Set<SubscriptionInfo> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    public final Set<Subscription> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     /**
      * 发射器
      */
-    public final StompServerEmitter emitter;
+    public final StompBrokerEmitter emitter;
 
     public StompBrokerMedia() {
         listeners = new ArrayList<>();
-        emitter = new StompServerEmitter(this);
+        emitter = new StompBrokerEmitter(this);
 
-        listeners.add(new RankEntity<>(new StompServerOperationsListener(this), 999));
+        listeners.add(new RankEntity<>(new StompBrokerListener(this), 999));
     }
 }

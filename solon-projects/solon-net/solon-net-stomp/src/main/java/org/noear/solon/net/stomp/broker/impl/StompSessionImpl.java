@@ -30,7 +30,7 @@ public class StompSessionImpl implements StompSession {
     }
 
     private final WebSocket socket;
-    private final Set<SubscriptionInfo> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Subscription> subscriptions = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 
     private StompSessionImpl(WebSocket socket) {
@@ -87,12 +87,12 @@ public class StompSessionImpl implements StompSession {
         socket.close();
     }
 
-    public void addSubscription(SubscriptionInfo subscription) {
+    public void addSubscription(Subscription subscription) {
         subscriptions.add(subscription);
     }
 
-    public SubscriptionInfo getSubscription(String destination) {
-        for (SubscriptionInfo sub : subscriptions) {
+    public Subscription getSubscription(String destination) {
+        for (Subscription sub : subscriptions) {
             if (sub.matches(destination)) {
                 return sub;
             }
