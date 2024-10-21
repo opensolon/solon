@@ -25,6 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -50,5 +51,10 @@ public class App {
     @Mapping("f2")
     public Flux<String> f2(String name) {
         return Flux.just("Hello " + name, "hello2 " + name);
+    }
+
+    @Mapping("t1")
+    public Mono<Long> t1(String name) {
+        return Mono.delay(Duration.ofMillis(500));
     }
 }

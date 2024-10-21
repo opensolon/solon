@@ -63,7 +63,6 @@ public class ActionReactiveSubscriber implements Subscriber {
         isFirst = true;
 
         //启动异步模式（-1 表示不超时）
-
         ctx.asyncStart(-1L, () -> {
             if (isMultiple) {
                 subscription.request(Long.MAX_VALUE);
@@ -71,7 +70,6 @@ public class ActionReactiveSubscriber implements Subscriber {
                 subscription.request(1);
             }
         });
-
     }
 
     @Override
