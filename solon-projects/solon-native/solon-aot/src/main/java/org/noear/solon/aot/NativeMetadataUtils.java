@@ -62,6 +62,10 @@ public class NativeMetadataUtils {
     }
 
     private static void processGenericType(RuntimeNativeMetadata metadata, Type genericType) {
+        if (genericType == null) {
+            return;
+        }
+
         Map<String, Type> genericInfo = GenericUtil.getGenericInfo(genericType);
         for (Map.Entry<String, Type> entry : genericInfo.entrySet()) {
             if (!entry.getValue().getTypeName().startsWith("java.")) {

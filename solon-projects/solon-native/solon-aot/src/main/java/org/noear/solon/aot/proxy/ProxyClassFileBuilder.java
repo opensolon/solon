@@ -223,7 +223,8 @@ public class ProxyClassFileBuilder {
 
         //添加函数泛型
         for (TypeVariable te : methodElement.getTypeParameters()) {
-            methodBuilder.addTypeVariable(TypeVariableName.get(te));
+            TypeVariableName teName = TypeNameUtil.getTypeVariableName(typeGenericMap, te);
+            methodBuilder.addTypeVariable(teName);
         }
 
         //构建代码块和参数

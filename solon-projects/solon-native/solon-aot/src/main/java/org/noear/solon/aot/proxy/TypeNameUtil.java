@@ -18,6 +18,8 @@ package org.noear.solon.aot.proxy;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeVariableName;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
 
 import java.lang.reflect.ParameterizedType;
@@ -46,13 +48,7 @@ public class TypeNameUtil {
                 ClassName petClassName = ClassName.get(clz);
                 List<TypeName> petTypeVars = new ArrayList<>();
                 for (Type e : type2.getActualTypeArguments()) {
-                    if (e instanceof TypeVariable) {
-                        Type e2 = typeGenericMap.get(e.getTypeName());
-                        if(e2 != null){
-                            e = e2;
-                        }
-                    }
-
+                    e = GenericUtil.reviewType(e, typeGenericMap);
                     petTypeVars.add(TypeName.get(e));
                 }
 
@@ -64,13 +60,29 @@ public class TypeNameUtil {
             if (type instanceof TypeVariable) {
                 Type type2 = typeGenericMap.get(type.getTypeName());
 
-                if(type2 != null){
+                if (type2 != null) {
                     type = type2;
+                } else {
+                    return getTypeVariableName(typeGenericMap, (TypeVariable) type);
                 }
             }
 
-
             return TypeName.get(type);
+        }
+    }
+
+    public static TypeVariableName getTypeVariableName(Map<String, Type> typeGenericMap, TypeVariable type) {
+        if (type.getBounds().length > 0) {
+            Type[] bounds = new Type[type.getBounds().length];
+
+            for (int i = 0; i < bounds.length; i++) {
+                Type b1 = type.getBounds()[i];
+                bounds[i] = GenericUtil.reviewType(b1, typeGenericMap);
+            }
+
+            return TypeVariableName.get(type.getTypeName(), bounds);
+        } else {
+            return TypeVariableName.get(type);
         }
     }
 
