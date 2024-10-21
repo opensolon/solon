@@ -27,6 +27,7 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,9 @@ import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Socket.D Context + Hnalder 适配
@@ -47,6 +51,15 @@ public class SocketdContext extends ContextEmpty {
     private Session _session;
     private Message _request;
     private EntityDefault _response;
+
+    private boolean _isAsync;
+    private long _asyncTimeout = 30000L;//默认30秒
+    private CompletableFuture<Object> _asyncFuture;
+    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
+
+    protected boolean innerIsAsync() {
+        return _isAsync;
+    }
 
     public SocketdContext(Session session, Message message) throws IOException {
         _session = session;
@@ -64,6 +77,14 @@ public class SocketdContext extends ContextEmpty {
         }
 
         sessionState = new SocketdSessionState(_session);
+    }
+
+    protected Session session() {
+        return _session;
+    }
+
+    protected Message message() {
+        return _request;
     }
 
 
@@ -124,13 +145,14 @@ public class SocketdContext extends ContextEmpty {
     }
 
     private String path;
+
     /**
      * 获取请求的URI路径
      */
     public String path() {
         if (path == null && url() != null) {
             path = uri().getPath();
-            if(path == null){
+            if (path == null) {
                 this.path = "";
             }
             if (path.contains("//")) {
@@ -157,6 +179,7 @@ public class SocketdContext extends ContextEmpty {
     }
 
     private InputStream bodyAsStream;
+
     @Override
     public InputStream bodyAsStream() throws IOException {
         if (bodyAsStream == null) {
@@ -180,12 +203,12 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public void headerSet(String key, String val) {
-        _response.metaPut(key,val);
+        _response.metaPut(key, val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.metaPut(key,val);
+        _response.metaPut(key, val);
     }
 
     @Override
@@ -222,9 +245,65 @@ public class SocketdContext extends ContextEmpty {
         replyDo(ByteBuffer.wrap(bytes), (int) file.getContentSize());
     }
 
-    protected void commit() throws IOException {
-        ByteArrayOutputStream out = (ByteArrayOutputStream)outputStream();
-        replyDo(ByteBuffer.wrap(out.toByteArray()), out.size());
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
+        if (_isAsync == false) {
+            _isAsync = true;
+
+            _asyncFuture = new CompletableFuture<>();
+
+            if (listener != null) {
+                _asyncListeners.add(listener);
+            }
+
+            if (timeout != 0) {
+                _asyncTimeout = timeout;
+            }
+
+            if (_asyncTimeout > 0) {
+                RunUtil.delay(() -> {
+                    for (ContextAsyncListener listener1 : _asyncListeners) {
+                        try {
+                            listener1.onTimeout(this);
+                        } catch (IOException e) {
+                            log.warn(e.getMessage(), e);
+                        }
+                    }
+                }, _asyncTimeout);
+            }
+
+            if (runnable != null) {
+                runnable.run();
+            }
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (_isAsync) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed ", e);
+            } finally {
+                _asyncFuture.complete(this);
+            }
+        }
+    }
+
+    protected void innerCommit() throws IOException {
+        if (getHandled() || status() >= 200) {
+            ByteArrayOutputStream out = (ByteArrayOutputStream) outputStream();
+            replyDo(ByteBuffer.wrap(out.toByteArray()), out.size());
+        } else {
+            _session.sendAlarm(_request, "No event handler was found! like code=404");
+        }
     }
 
     private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {
@@ -236,25 +315,6 @@ public class SocketdContext extends ContextEmpty {
                 log.warn("No reply is supported for the current message, sid={}", _request.sid());
             }
         }
-    }
-
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        //本身就是异步机制，不用启动
-
-        if (runnable != null) {
-            runnable.run();
-        }
-    }
-
-    @Override
-    public void asyncComplete() {
-
     }
 
     @Override

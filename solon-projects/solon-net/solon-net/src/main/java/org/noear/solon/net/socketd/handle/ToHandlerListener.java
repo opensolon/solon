@@ -45,23 +45,28 @@ public class ToHandlerListener extends EventListener {
             return;
         }
 
-        try {
-            SocketdContext ctx = new SocketdContext(session, message);
+        //不需要线程池（socket.d 有交换线程池了）
+        handle0(new SocketdContext(session, message));
+    }
 
+    protected void handle0(SocketdContext ctx) {
+        try {
             Solon.app().tryHandle(ctx);
 
-            if (ctx.getHandled() || ctx.status() != 404) {
-                ctx.commit();
-            } else {
-                session.sendAlarm(message, "No event handler was found! like code=404");
+            if (ctx.innerIsAsync() == false) {
+                ctx.innerCommit();
             }
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
             log.warn(e.getMessage(), e);
 
-            if (session.isValid()) {
-                session.sendAlarm(message, e.getMessage());
+            if (ctx.session().isValid()) {
+                try {
+                    ctx.session().sendAlarm(ctx.message(), e.getMessage());
+                } catch (Throwable err) {
+                    onError(ctx.session(), err);
+                }
             }
         }
     }
