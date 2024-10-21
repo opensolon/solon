@@ -58,7 +58,10 @@ public class ToHandlerStompListener extends SimpleStompListener {
                     try {
                         ContextUtil.currentSet(ctx);
                         handler.handle(ctx);
-                        ctx.commit();
+
+                        if (ctx.innerIsAsync() == false) {
+                            ctx.innerCommit();
+                        }
                     } finally {
                         ContextUtil.currentRemove();
                     }

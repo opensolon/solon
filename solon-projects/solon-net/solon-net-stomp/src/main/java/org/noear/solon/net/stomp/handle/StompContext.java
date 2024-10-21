@@ -17,18 +17,25 @@ package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.annotation.To;
 import org.noear.solon.core.handle.Action;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.net.stomp.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Stomp 通用上下文适配
@@ -37,10 +44,21 @@ import java.nio.charset.StandardCharsets;
  * @since 3.0
  */
 public class StompContext extends ContextEmpty {
+    static final Logger log = LoggerFactory.getLogger(StompContext.class);
+
     private StompSession session;
     private Frame frame;
     private String destination;
     private StompEmitter emitter;
+
+    private boolean _isAsync;
+    private long _asyncTimeout = 30000L;//默认30秒
+    private CompletableFuture<Object> _asyncFuture;
+    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
+
+    protected boolean innerIsAsync() {
+        return _isAsync;
+    }
 
     public StompContext(StompSession session, Frame frame, String destination, StompEmitter emitter) {
         this.session = session;
@@ -189,19 +207,75 @@ public class StompContext extends ContextEmpty {
         return null;
     }
 
-    public void commit() throws Throwable {
-        //payload
-        ByteArrayOutputStream baos = (ByteArrayOutputStream) outputStream();
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
 
-        if (baos.size() > 0) {
-            //has data
-            String returnValue = new String(baos.toByteArray());
+    @Override
+    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
+        if (_isAsync == false) {
+            _isAsync = true;
 
-            commit(returnValue);
+            _asyncFuture = new CompletableFuture<>();
+
+            if (listener != null) {
+                _asyncListeners.add(listener);
+            }
+
+            if (timeout != 0) {
+                _asyncTimeout = timeout;
+            }
+
+            if (_asyncTimeout > 0) {
+                RunUtil.delay(() -> {
+                    for (ContextAsyncListener listener1 : _asyncListeners) {
+                        try {
+                            listener1.onTimeout(this);
+                        } catch (IOException e) {
+                            log.warn(e.getMessage(), e);
+                        }
+                    }
+                }, _asyncTimeout);
+            }
+
+            if (runnable != null) {
+                runnable.run();
+            }
         }
     }
 
-    public void commit(Object returnValue) throws Throwable {
+
+    @Override
+    public void asyncComplete() {
+        if (_isAsync) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed ", e);
+            } finally {
+                _asyncFuture.complete(this);
+            }
+        }
+    }
+
+    protected void innerCommit() throws Throwable {
+        if (getHandled() || status() >= 200) {
+            //payload
+            ByteArrayOutputStream baos = (ByteArrayOutputStream) outputStream();
+
+            if (baos.size() > 0) {
+                //has data
+                String returnValue = new String(baos.toByteArray());
+
+                commit(returnValue);
+            }
+        } else {
+            //...
+        }
+    }
+
+    private void commit(Object returnValue) throws Throwable {
         //payload
         final Message message;
         if (returnValue instanceof Message) {
