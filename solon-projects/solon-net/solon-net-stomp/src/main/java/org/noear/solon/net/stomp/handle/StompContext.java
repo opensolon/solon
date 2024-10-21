@@ -16,13 +16,13 @@
 package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.annotation.To;
+import org.noear.solon.boot.web.AsyncContextState;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.net.stomp.*;
 import org.slf4j.Logger;
@@ -33,9 +33,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 /**
  * Stomp 通用上下文适配
@@ -50,15 +47,6 @@ public class StompContext extends ContextEmpty {
     private Frame frame;
     private String destination;
     private StompEmitter emitter;
-
-    private boolean _isAsync;
-    private ScheduledFuture<?> _asyncTimeoutFuture;
-    private long _asyncTimeout = 30000L;//默认30秒
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
-
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
 
     public StompContext(StompSession session, Frame frame, String destination, StompEmitter emitter) {
         this.session = session;
@@ -207,58 +195,6 @@ public class StompContext extends ContextEmpty {
         return null;
     }
 
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if (_asyncTimeout > 0) {
-                _asyncTimeoutFuture = RunUtil.delay(() -> {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        try {
-                            listener1.onTimeout(this);
-                        } catch (IOException e) {
-                            log.warn(e.getMessage(), e);
-                        }
-                    }
-                }, _asyncTimeout);
-            }
-
-            if (runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed ", e);
-            } finally {
-                if (_asyncTimeoutFuture != null) {
-                    _asyncTimeoutFuture.cancel(true);
-                }
-            }
-        }
-    }
-
     protected void innerCommit() throws Throwable {
         if (getHandled() || status() >= 200) {
             //payload
@@ -333,6 +269,58 @@ public class StompContext extends ContextEmpty {
         } else {
             //to user
             emitter().sendToUser(user, destination, message);
+        }
+    }
+
+
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    protected final AsyncContextState asyncState = new AsyncContextState();
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
+            }
         }
     }
 }

@@ -53,7 +53,7 @@ public class ToHandlerListener extends EventListener {
         try {
             Solon.app().tryHandle(ctx);
 
-            if (ctx.innerIsAsync() == false) {
+            if (ctx.asyncStarted() == false) {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {

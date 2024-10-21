@@ -19,10 +19,7 @@ import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.boot.web.DecodeUtils;
-import org.noear.solon.boot.web.WebContextBase;
-import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.RedirectUtils;
+import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.UploadedFile;
@@ -39,22 +36,12 @@ import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class JlHttpContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(JlHttpContext.class);
 
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
-
-    private boolean _isAsync;
-    private long _asyncTimeout = 30000L;//默认30秒
-    private CompletableFuture<Object> _asyncFuture;
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
-
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
 
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
@@ -158,6 +145,7 @@ public class JlHttpContext extends WebContextBase {
     }
 
     private long contentLength = -2;
+
     @Override
     public long contentLength() {
         if (contentLength < -1) {
@@ -172,7 +160,8 @@ public class JlHttpContext extends WebContextBase {
         return _request.getURI().getQuery();
     }
 
-    private InputStream bodyAsStream ;
+    private InputStream bodyAsStream;
+
     @Override
     public InputStream bodyAsStream() throws IOException {
         if (bodyAsStream == null) {
@@ -434,73 +423,24 @@ public class JlHttpContext extends WebContextBase {
         _response.close();
     }
 
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            _asyncFuture = new CompletableFuture<>();
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if (runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed ", e);
-            } finally {
-                _asyncFuture.complete(this);
-            }
-        }
-    }
-
-    protected void asyncAwait() throws InterruptedException, ExecutionException, IOException {
-        if(_isAsync){
-            if (_asyncTimeout > 0) {
-                try {
-                    _asyncFuture.get(_asyncTimeout, TimeUnit.MILLISECONDS);
-                } catch (Exception e) {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        listener1.onTimeout(this);
-                    }
-                }
-            } else {
-                _asyncFuture.get();
-            }
-        }
-    }
-
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
     protected void innerCommit() throws IOException {
-        if (getHandled() || status() >= 200) {
-            sendHeaders(true);
-        } else {
-            if (!_response.headersSent()) {
-                _response.sendError(404);
+        try {
+            if (getHandled() || status() >= 200) {
+                sendHeaders(true);
+            } else {
+                if (!_response.headersSent()) {
+                    _response.sendError(404);
+                }
+            }
+        } finally {
+            if (asyncState.asyncFuture != null) {
+                asyncState.asyncFuture.complete(null);
             }
         }
     }
+
 
     private boolean _allows_write = true;
 
@@ -525,6 +465,64 @@ public class JlHttpContext extends WebContextBase {
                     _response.sendHeaders(status(), -1L, -1, null, null, null);
                 }
             }
+        }
+    }
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    private AsyncContextState asyncState = new AsyncContextState();
+
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+
+            asyncState.asyncFuture = new CompletableFuture<>();
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
+            }
+        }
+    }
+
+    protected void asyncAwait() throws InterruptedException, ExecutionException, IOException {
+        if (asyncState.isStarted) {
+            asyncState.asyncFuture.get();
         }
     }
 }

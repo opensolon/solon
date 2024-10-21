@@ -1181,12 +1181,12 @@ public abstract class Context {
      * @param timeout  超时
      * @param runnable 运行器
      */
-    public abstract void asyncStart(long timeout, Runnable runnable) throws IOException;
+    public abstract void asyncStart(long timeout, Runnable runnable);
 
     /**
      * 异步开始
      */
-    public void asyncStart() throws IOException {
+    public void asyncStart() {
         asyncStart(0L, null);
     }
 

@@ -17,10 +17,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.DecodeUtils;
-import org.noear.solon.boot.web.WebContextBase;
-import org.noear.solon.boot.web.RedirectUtils;
+import org.noear.solon.boot.web.*;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
@@ -51,10 +48,6 @@ public class SolonServletContext extends WebContextBase {
 
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-
-    protected boolean innerIsAsync() {
-        return asyncContext != null;
-    }
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
@@ -367,45 +360,6 @@ public class SolonServletContext extends WebContextBase {
         _response.setStatus(status);
     }
 
-    AsyncContext asyncContext;
-
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (asyncContext == null) {
-            asyncContext = _request.startAsync();
-
-            if (listener != null) {
-                asyncContext.addListener(new AsyncListenerWrap(this, listener));
-            }
-
-            if (timeout != 0) {
-                //内部默认30秒
-                asyncContext.setTimeout(timeout);
-            }
-
-            if (runnable != null) {
-                asyncContext.start(runnable);
-            }
-        }
-    }
-
-    @Override
-    public void asyncComplete() {
-        if (asyncContext != null) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed", e);
-            } finally {
-                asyncContext.complete();
-            }
-        }
-    }
 
     @Override
     public void flush() throws IOException {
@@ -434,6 +388,61 @@ public class SolonServletContext extends WebContextBase {
 
             if (sessionState() != null) {
                 sessionState().sessionPublish();
+            }
+        }
+    }
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    protected final AsyncContextState asyncState = new AsyncContextState();
+    private   AsyncContext asyncContext;
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncContext != null;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncContext == null) {
+            asyncContext = _request.startAsync();
+            asyncState.isStarted = true;
+
+            asyncContext.addListener(new AsyncListenerWrap(this, asyncState));
+
+            if (timeout != 0) {
+                //内部默认30秒
+                asyncContext.setTimeout(timeout);
+            }
+
+            if (runnable != null) {
+                asyncContext.start(runnable);
+            }
+        }
+    }
+
+    @Override
+    public void asyncComplete() {
+        if (asyncContext != null) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncContext.complete();
             }
         }
     }

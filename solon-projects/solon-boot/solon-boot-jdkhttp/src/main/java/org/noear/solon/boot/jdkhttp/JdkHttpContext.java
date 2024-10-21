@@ -37,22 +37,11 @@ import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class JdkHttpContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(JdkHttpContext.class);
 
     private HttpExchange _exchange;
-
-    private boolean _isAsync;
-    private long _asyncTimeout = 30000L; //默认30秒
-    private CompletableFuture<Object> _asyncFuture;
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
-
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
-
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
@@ -156,6 +145,7 @@ public class JdkHttpContext extends WebContextBase {
     }
 
     private long contentLength = -2;
+
     @Override
     public long contentLength() {
         if (contentLength < -1) {
@@ -171,7 +161,8 @@ public class JdkHttpContext extends WebContextBase {
     }
 
 
-    private InputStream bodyAsStream ;
+    private InputStream bodyAsStream;
+
     @Override
     public InputStream bodyAsStream() throws IOException {
         if (bodyAsStream == null) {
@@ -429,69 +420,18 @@ public class JdkHttpContext extends WebContextBase {
     }
 
     @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            _asyncFuture = new CompletableFuture<>();
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if(runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed", e);
-            } finally {
-                _asyncFuture.complete(this);
-            }
-        }
-    }
-
-    protected void asyncAwait() throws InterruptedException, ExecutionException, IOException{
-        if(_isAsync){
-            if (_asyncTimeout > 0) {
-                try {
-                    _asyncFuture.get(_asyncTimeout, TimeUnit.MILLISECONDS);
-                } catch (Exception e) {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        listener1.onTimeout(this);
-                    }
-                }
-            } else {
-                _asyncFuture.get();
-            }
-        }
-    }
-
-
-    @Override
     protected void innerCommit() throws IOException {
-        if (getHandled() || status() >= 200) {
-            sendHeaders(true);
-        } else {
-            status(404);
-            sendHeaders(true);
+        try {
+            if (getHandled() || status() >= 200) {
+                sendHeaders(true);
+            } else {
+                status(404);
+                sendHeaders(true);
+            }
+        } finally {
+            if (asyncState.asyncFuture != null) {
+                asyncState.asyncFuture.complete(null);
+            }
         }
     }
 
@@ -521,6 +461,64 @@ public class JdkHttpContext extends WebContextBase {
                     _exchange.sendResponseHeaders(status(), 0L);
                 }
             }
+        }
+    }
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    private AsyncContextState asyncState = new AsyncContextState();
+
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+
+            asyncState.asyncFuture = new CompletableFuture<>();
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
+            }
+        }
+    }
+
+    protected void asyncAwait() throws InterruptedException, ExecutionException {
+        if (asyncState.isStarted) {
+            asyncState.asyncFuture.get();
         }
     }
 }

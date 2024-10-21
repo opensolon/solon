@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Web 上下文
+ * Web 上下文基类
  *
  * @author noear
  * @since 1.11

@@ -22,7 +22,6 @@ import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartboot.http.common.Cookie;
@@ -41,10 +40,6 @@ public class SmHttpContext extends WebContextBase {
     private HttpRequest _request;
     private HttpResponse _response;
 
-    private boolean _isAsync;
-    private long _asyncTimeout = 30000L;//默认30秒
-    private CompletableFuture<Object> _asyncFuture;
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
     protected HttpRequest innerGetRequest() {
         return _request;
@@ -54,19 +49,13 @@ public class SmHttpContext extends WebContextBase {
         return _response;
     }
 
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
 
-    protected List<ContextAsyncListener> innerAsyncListeners() {
-        return _asyncListeners;
-    }
-
+    private CompletableFuture<Object> _future;
 
     public SmHttpContext(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
         _request = request;
         _response = response;
-        _asyncFuture = future;
+        _future = future;
     }
 
     private boolean _loadMultipartFormData = false;
@@ -141,6 +130,7 @@ public class SmHttpContext extends WebContextBase {
     }
 
     private String queryString;
+
     @Override
     public String queryString() {
         try {
@@ -405,62 +395,16 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if (_asyncTimeout > 0) {
-                RunUtil.delay(() -> {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        try {
-                            listener1.onTimeout(this);
-                        } catch (IOException e) {
-                            log.warn(e.getMessage(), e);
-                        }
-                    }
-                }, _asyncTimeout);
-            }
-
-            if (runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed", e);
-            } finally {
-                _asyncFuture.complete(this);
-            }
-        }
-    }
-
-    @Override
     protected void innerCommit() throws IOException {
-        if (getHandled() || status() >= 200) {
-            sendHeaders(true);
-        } else {
-            status(404);
-            sendHeaders(true);
+        try {
+            if (getHandled() || status() >= 200) {
+                sendHeaders(true);
+            } else {
+                status(404);
+                sendHeaders(true);
+            }
+        } finally {
+            _future.complete(null);
         }
     }
 
@@ -483,6 +427,57 @@ public class SmHttpContext extends WebContextBase {
 
             if (isCommit || _allows_write == false) {
                 _response.setContentLength(0);
+            }
+        }
+    }
+
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    protected final AsyncContextState asyncState = new AsyncContextState();
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
             }
         }
     }

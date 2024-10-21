@@ -46,7 +46,7 @@ public class SolonServletHandler extends HttpServlet {
 
         Solon.app().tryHandle(ctx);
 
-        if(ctx.innerIsAsync() == false){
+        if(ctx.asyncStarted() == false){
             ctx.innerCommit();
         }
     }

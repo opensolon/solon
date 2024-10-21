@@ -107,7 +107,7 @@ public class VxWebHandler implements VxHandler {
                 handler.handle(ctx);
             }
 
-            if (ctx.innerIsAsync() == false) {
+            if (ctx.asyncStarted() == false) {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {

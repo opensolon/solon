@@ -17,7 +17,6 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
-import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,14 +55,12 @@ public class SmHttpContextHandler extends HttpServerHandler {
         }
 
         SmHttpContext ctx = request.getAttachment().get(httpHolderKey);
-        if (ctx != null && ctx.innerIsAsync()) {
+        if (ctx != null && ctx.asyncStarted()) {
             try {
-                for (ContextAsyncListener listener : ctx.innerAsyncListeners()) {
-                    try {
-                        listener.onComplete(ctx);
-                    } catch (Throwable e) {
-                        log.warn(e.getMessage(), e);
-                    }
+                try {
+                    ctx.asyncState.onComplete(ctx);
+                } catch (Throwable e) {
+                    log.warn(e.getMessage(), e);
                 }
             } finally {
                 request.getAttachment().remove(httpHolderKey);
@@ -92,7 +89,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 }
             }
         } finally {
-            if (ctx.innerIsAsync() == false) {
+            if (ctx.asyncStarted() == false) {
                 request.getAttachment().remove(httpHolderKey);
             }
         }
@@ -104,7 +101,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            if (ctx.innerIsAsync() == false) {
+            if (ctx.asyncStarted() == false) {
                 future.complete(ctx);
             }
         }
@@ -124,7 +121,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
             handler.handle(ctx);
 
-            if (ctx.innerIsAsync() == false) {
+            if (ctx.asyncStarted() == false) {
                 ctx.innerCommit();
             }
 

@@ -22,12 +22,12 @@ import org.noear.socketd.transport.core.entity.EntityDefault;
 import org.noear.socketd.transport.core.entity.FileEntity;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.AsyncContextState;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.IoUtil;
-import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +35,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Socket.D Context + Hnalder 适配
@@ -51,15 +48,6 @@ public class SocketdContext extends ContextEmpty {
     private Session _session;
     private Message _request;
     private EntityDefault _response;
-
-    private boolean _isAsync;
-    private long _asyncTimeout = 30000L;//默认30秒
-    private CompletableFuture<Object> _asyncFuture;
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
-
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
 
     public SocketdContext(Session session, Message message) throws IOException {
         _session = session;
@@ -245,58 +233,6 @@ public class SocketdContext extends ContextEmpty {
         replyDo(ByteBuffer.wrap(bytes), (int) file.getContentSize());
     }
 
-    @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            _asyncFuture = new CompletableFuture<>();
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if (_asyncTimeout > 0) {
-                RunUtil.delay(() -> {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        try {
-                            listener1.onTimeout(this);
-                        } catch (IOException e) {
-                            log.warn(e.getMessage(), e);
-                        }
-                    }
-                }, _asyncTimeout);
-            }
-
-            if (runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed ", e);
-            } finally {
-                _asyncFuture.complete(this);
-            }
-        }
-    }
-
     protected void innerCommit() throws IOException {
         if (getHandled() || status() >= 200) {
             ByteArrayOutputStream out = (ByteArrayOutputStream) outputStream();
@@ -320,5 +256,56 @@ public class SocketdContext extends ContextEmpty {
     @Override
     public void close() throws IOException {
         _session.close();
+    }
+
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    protected final AsyncContextState asyncState = new AsyncContextState();
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
+            }
+        }
     }
 }

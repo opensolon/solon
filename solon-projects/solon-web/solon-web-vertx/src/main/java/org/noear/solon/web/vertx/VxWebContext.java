@@ -27,7 +27,6 @@ import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,24 +45,12 @@ public class VxWebContext extends WebContextBase {
     private HttpServerResponse _response;
     private Buffer _requestBody;
 
-    private boolean _isAsync;
-    private long _asyncTimeout = 30000L;//默认30秒
-    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
-
     protected HttpServerRequest innerGetRequest() {
         return _request;
     }
 
     protected HttpServerResponse innerGetResponse() {
         return _response;
-    }
-
-    protected boolean innerIsAsync() {
-        return _isAsync;
-    }
-
-    protected List<ContextAsyncListener> innerAsyncListeners() {
-        return _asyncListeners;
     }
 
     public VxWebContext(HttpServerRequest request, Buffer requestBody) {
@@ -129,6 +116,7 @@ public class VxWebContext extends WebContextBase {
     }
 
     private String _url;
+
     @Override
     public String url() {
         if (_url == null) {
@@ -146,6 +134,7 @@ public class VxWebContext extends WebContextBase {
 
 
     private long contentLength = -2;
+
     @Override
     public long contentLength() {
         if (contentLength < -1) {
@@ -426,68 +415,22 @@ public class VxWebContext extends WebContextBase {
     }
 
     @Override
-    public boolean asyncSupported() {
-        return true;
-    }
-
-    @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
-        if (_isAsync == false) {
-            _isAsync = true;
-
-            if (listener != null) {
-                _asyncListeners.add(listener);
-            }
-
-            if (timeout != 0) {
-                _asyncTimeout = timeout;
-            }
-
-            if (_asyncTimeout > 0) {
-                RunUtil.delay(() -> {
-                    for (ContextAsyncListener listener1 : _asyncListeners) {
-                        try {
-                            listener1.onTimeout(this);
-                        } catch (IOException e) {
-                            log.warn(e.getMessage(), e);
-                        }
-                    }
-                }, _asyncTimeout);
-            }
-
-            if (runnable != null) {
-                runnable.run();
-            }
-        }
-    }
-
-
-    @Override
-    public void asyncComplete() {
-        if (_isAsync) {
-            try {
-                innerCommit();
-            } catch (Throwable e) {
-                log.warn("Async completion failed", e);
-            } finally {
-                if (_response.ended() == false) {
-                    _response.end();
-                }
-            }
-        }
-    }
-
-    @Override
     protected void innerCommit() throws IOException {
-        if (getHandled() || status() >= 200) {
-            sendHeaders(true);
-            flush();
-            _response.send();
-        } else {
-            status(404);
-            sendHeaders(true);
-            flush();
-            _response.send();
+        try {
+            if (getHandled() || status() >= 200) {
+                sendHeaders(true);
+                flush();
+                _response.send();
+            } else {
+                status(404);
+                sendHeaders(true);
+                flush();
+                _response.send();
+            }
+        } finally {
+            if (_response.ended() == false) {
+                _response.end();
+            }
         }
     }
 
@@ -514,6 +457,57 @@ public class VxWebContext extends WebContextBase {
                 if (_response.headers().contains("Content-Length") == false) {
                     _response.setChunked(true);
                 }
+            }
+        }
+    }
+
+
+    ///////////////////////
+    // for async
+    ///////////////////////
+
+    protected final AsyncContextState asyncState = new AsyncContextState();
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean asyncStarted() {
+        return asyncState.isStarted;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        asyncState.addListener(listener);
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
+        if (asyncState.isStarted == false) {
+            asyncState.isStarted = true;
+            asyncState.asyncDelay(timeout, this, this::innerCommit);
+
+            if (runnable != null) {
+                runnable.run();
+            }
+
+            asyncState.onStart(this);
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (asyncState.isStarted) {
+            try {
+                innerCommit();
+            } catch (Throwable e) {
+                log.warn("Async completion failed", e);
+                asyncState.onError(this, e);
+            } finally {
+                asyncState.onComplete(this);
             }
         }
     }

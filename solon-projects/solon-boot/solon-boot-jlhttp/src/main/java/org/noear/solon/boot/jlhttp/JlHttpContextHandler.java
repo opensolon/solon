@@ -57,7 +57,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
             handler.handle(ctx);
 
-            if (ctx.innerIsAsync()) {
+            if (ctx.asyncStarted()) {
                 //如果启用了异步?
                 ctx.asyncAwait();
             } else {

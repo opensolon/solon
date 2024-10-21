@@ -51,5 +51,5 @@ public interface ContextAsyncListener {
      * @param ctx 请求上下文
      * @param e   异步
      */
-    void onError(Context ctx, Throwable e);
+    void onError(Context ctx, Throwable e) throws IOException;
 }
