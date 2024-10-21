@@ -18,6 +18,7 @@ package org.noear.solon.web.rx.integration;
 import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.RunUtil;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -58,18 +59,24 @@ public class ActionReactiveSubscriber implements Subscriber {
         }
     }
 
+    private void request(Subscription subscription) {
+        if (isMultiple) {
+            subscription.request(Long.MAX_VALUE);
+        } else {
+            subscription.request(1);
+        }
+    }
+
     @Override
     public void onSubscribe(Subscription subscription) {
         isFirst = true;
 
         //启动异步模式（-1 表示不超时）
-        ctx.asyncStart(-1L, () -> {
-            if (isMultiple) {
-                subscription.request(Long.MAX_VALUE);
-            } else {
-                subscription.request(1);
-            }
-        });
+        if (ctx.asyncStarted()) {
+            RunUtil.async(() -> request(subscription));
+        } else {
+            ctx.asyncStart(-1L, () -> request(subscription));
+        }
     }
 
     @Override

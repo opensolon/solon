@@ -20,6 +20,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RunUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,7 +55,14 @@ public class App {
     }
 
     @Mapping("t1")
-    public Mono<Long> t1(String name) {
+    public Mono<Long> t1(Context ctx) {
+        ctx.asyncStart(100L, null);
         return Mono.delay(Duration.ofMillis(500));
+    }
+
+    @Mapping("t2")
+    public Mono<Long> t2(Context ctx) {
+        ctx.asyncStart(500L, null);
+        return Mono.delay(Duration.ofMillis(100));
     }
 }

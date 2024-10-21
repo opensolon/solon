@@ -33,4 +33,14 @@ public class AppTest extends HttpTester {
         assert path("/f2?name=d").get().equals("Hello d\n" +
                 "hello2 d");
     }
+
+    @Test
+    public void test5() throws Exception {
+        assert 500 == path("/t1?").head();
+    }
+
+    @Test
+    public void test6() throws Exception {
+        assert 200 == path("/t2?").head();
+    }
 }
