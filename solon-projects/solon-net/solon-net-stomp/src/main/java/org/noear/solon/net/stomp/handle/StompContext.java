@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Stomp 通用上下文适配
@@ -52,8 +52,8 @@ public class StompContext extends ContextEmpty {
     private StompEmitter emitter;
 
     private boolean _isAsync;
+    private ScheduledFuture<?> _asyncTimeoutFuture;
     private long _asyncTimeout = 30000L;//默认30秒
-    private CompletableFuture<Object> _asyncFuture;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
     protected boolean innerIsAsync() {
@@ -217,8 +217,6 @@ public class StompContext extends ContextEmpty {
         if (_isAsync == false) {
             _isAsync = true;
 
-            _asyncFuture = new CompletableFuture<>();
-
             if (listener != null) {
                 _asyncListeners.add(listener);
             }
@@ -228,7 +226,7 @@ public class StompContext extends ContextEmpty {
             }
 
             if (_asyncTimeout > 0) {
-                RunUtil.delay(() -> {
+                _asyncTimeoutFuture = RunUtil.delay(() -> {
                     for (ContextAsyncListener listener1 : _asyncListeners) {
                         try {
                             listener1.onTimeout(this);
@@ -254,7 +252,9 @@ public class StompContext extends ContextEmpty {
             } catch (Throwable e) {
                 log.warn("Async completion failed ", e);
             } finally {
-                _asyncFuture.complete(this);
+                if (_asyncTimeoutFuture != null) {
+                    _asyncTimeoutFuture.cancel(true);
+                }
             }
         }
     }

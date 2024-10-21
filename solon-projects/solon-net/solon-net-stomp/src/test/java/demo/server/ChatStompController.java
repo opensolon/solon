@@ -3,6 +3,7 @@ package demo.server;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.stomp.StompEmitter;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class ChatStompController {
     @Message
     @Mapping("/app/todoTask1/self")
     @To(".:/topic/todoTask1/s1")
-    public Map<String,Object> app_self(Context ctx, @Body String text) {
+    public Mono<Map<String,Object>> app_self(Context ctx, @Body String text) {
         System.out.println(ctx.headerMap());
         System.out.println(ctx.method());
         System.out.println(text);
@@ -57,7 +58,7 @@ public class ChatStompController {
         map.put("data", text);
         map.put("type", "收到2");
 
-        return map;
+        return Mono.just(map);
     }
 
     @Mapping("/")
