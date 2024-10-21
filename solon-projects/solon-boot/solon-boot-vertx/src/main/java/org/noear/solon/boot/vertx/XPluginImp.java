@@ -27,7 +27,6 @@ import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ThreadsUtil;
 
 /**
  * @author noear
@@ -75,20 +74,7 @@ public class XPluginImp implements Plugin {
         _server.enableWebSocket(app.enableWebSocket());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
-            if (Solon.cfg().isEnabledVirtualThreads()) {
-                _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            } else {
-                _server.setExecutor(props.getBioExecutor("smarthttp-"));
-            }
-        }
-
-        if (props.isIoBound()) {
-            //如果是io密集型的，加二段线程池
-            if (Solon.cfg().isEnabledVirtualThreads()) {
-                _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            } else {
-                _server.setExecutor(props.getBioExecutor("vertxhttp-"));
-            }
+            _server.setExecutor(props.newWorkExecutor("vertxhttp-"));
         }
 
         _server.setHandler(Solon.app()::tryHandle);

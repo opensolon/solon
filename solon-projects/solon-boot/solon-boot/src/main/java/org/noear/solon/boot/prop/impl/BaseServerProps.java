@@ -203,11 +203,11 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
      * 最大线程数
      */
     @Override
-    public int getMaxThreads(boolean bio) {
+    public int getMaxThreads(boolean isIoBound) {
         if (maxThreads > 0) {
             return maxThreads;
         } else {
-            if (bio) {
+            if (isIoBound) {
                 return getCoreThreads() * 32;
             } else {
                 return getCoreThreads() * 8;

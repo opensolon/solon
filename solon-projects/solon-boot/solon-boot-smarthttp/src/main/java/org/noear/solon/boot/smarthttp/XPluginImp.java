@@ -26,7 +26,6 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ThreadsUtil;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -91,11 +90,7 @@ public final class XPluginImp implements Plugin {
         _server.setCoreThreads(props.getCoreThreads());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
-            if(Solon.cfg().isEnabledVirtualThreads()){
-                _server.setExecutor(ThreadsUtil.newVirtualThreadPerTaskExecutor());
-            }else{
-                _server.setExecutor(props.getBioExecutor("smarthttp-"));
-            }
+            _server.setExecutor(props.newWorkExecutor("smarthttp-"));
         }
 
         _server.setHandler(Solon.app()::tryHandle);

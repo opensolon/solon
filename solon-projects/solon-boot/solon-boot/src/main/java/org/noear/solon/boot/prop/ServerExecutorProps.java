@@ -15,7 +15,9 @@
  */
 package org.noear.solon.boot.prop;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.util.NamedThreadFactory;
+import org.noear.solon.core.util.ThreadsUtil;
 
 import java.util.concurrent.*;
 
@@ -26,6 +28,9 @@ import java.util.concurrent.*;
  * @since 1.10
  */
 public interface ServerExecutorProps {
+    /**
+     * 是否IO密集性
+     */
     boolean isIoBound();
 
     /**
@@ -36,7 +41,7 @@ public interface ServerExecutorProps {
     /**
      * 最大线程数
      */
-    int getMaxThreads(boolean bio);
+    int getMaxThreads(boolean isIoBound);
 
     /**
      * 闲置超时
@@ -49,12 +54,17 @@ public interface ServerExecutorProps {
     long getIdleTimeoutOrDefault();
 
     /**
-     * 获取一个执行器（Bio 一级执行器）
+     * 新建一个执行器
      */
-    default ExecutorService getBioExecutor(String namePrefix) {
-        return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
-                60, TimeUnit.SECONDS,
-                new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
-                new NamedThreadFactory(namePrefix));
+    default ExecutorService newWorkExecutor(String namePrefix) {
+        if (Solon.cfg().isEnabledVirtualThreads()) {
+            return ThreadsUtil.newVirtualThreadPerTaskExecutor();
+        } else {
+            return new ThreadPoolExecutor(getCoreThreads(),
+                    getMaxThreads(isIoBound()),
+                    60, TimeUnit.SECONDS,
+                    new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
+                    new NamedThreadFactory(namePrefix));
+        }
     }
 }
