@@ -363,7 +363,17 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable) {
+    public boolean asyncStarted() {
+        return false;
+    }
+
+    @Override
+    public void asyncListener(ContextAsyncListener listener) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void asyncStart(long timeout, Runnable runnable) {
         throw new UnsupportedOperationException();
     }
 

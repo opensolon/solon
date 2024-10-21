@@ -1124,28 +1124,6 @@ public abstract class Context {
      */
     public abstract void close() throws IOException;
 
-    /**
-     * 是否支持异步
-     */
-    public abstract boolean asyncSupported();
-
-    /**
-     * 异步开始
-     */
-    public abstract void asyncStart(long timeout, ContextAsyncListener listener, Runnable runnable);
-
-    /**
-     * 异步开始
-     */
-    public void asyncStart() {
-        asyncStart(0L, null, null);
-    }
-
-    /**
-     * 异步完成
-     */
-    public abstract void asyncComplete();
-
 
     /**
      * 用于在处理链中透传处理结果
@@ -1183,4 +1161,43 @@ public abstract class Context {
     public @Nullable Handler mainHandler() {
         return attr(Constants.ATTR_MAIN_HANDLER);
     }
+
+
+    /////////
+
+    /**
+     * 是否支持异步
+     */
+    public abstract boolean asyncSupported();
+
+    /**
+     * 异步监听
+     */
+    public abstract void asyncListener(ContextAsyncListener listener);
+
+    /**
+     * 异步开始
+     *
+     * @param timeout  超时
+     * @param runnable 运行器
+     */
+    public abstract void asyncStart(long timeout, Runnable runnable) throws IOException;
+
+    /**
+     * 异步开始
+     */
+    public void asyncStart() throws IOException {
+        asyncStart(0L, null);
+    }
+
+    /**
+     * 异步已开始
+     */
+    public abstract boolean asyncStarted();
+
+    /**
+     * 异步完成
+     */
+    public abstract void asyncComplete();
+
 }
