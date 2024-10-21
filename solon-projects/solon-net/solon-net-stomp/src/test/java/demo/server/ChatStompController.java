@@ -17,8 +17,38 @@ public class ChatStompController {
 
     @Message
     @Mapping("/topic/todoTask1/open")
-    @To(".:/topic/todoTask1/s1")
+    @To("*:/topic/todoTask1/s1")
     public Map<String,Object> test(Context ctx, @Body String text) {
+        System.out.println(ctx.headerMap());
+        System.out.println(ctx.method());
+        System.out.println(text);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("data", text);
+        map.put("type", "收到2");
+
+        return map;
+    }
+
+    @Message
+    @Mapping("/app/todoTask1/user")
+    @To("${user}:/topic/todoTask1/s1")
+    public Map<String,Object> app_user(Context ctx, @Header("user") String user, @Body String text) {
+        System.out.println(ctx.headerMap());
+        System.out.println(ctx.method());
+        System.out.println(text);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("data", text);
+        map.put("type", "收到2");
+
+        return map;
+    }
+
+    @Message
+    @Mapping("/app/todoTask1/self")
+    @To(".:/topic/todoTask1/s1")
+    public Map<String,Object> app_self(Context ctx, @Body String text) {
         System.out.println(ctx.headerMap());
         System.out.println(ctx.method());
         System.out.println(text);

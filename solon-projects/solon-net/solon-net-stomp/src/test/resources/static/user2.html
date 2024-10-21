@@ -12,13 +12,15 @@
     <div id="localinfo"></div>
     <div>
         <br><label for="wsurl">输入WS地址</label>
-        <input type="text" style="width: 300px" id="wsurl" value="ws://127.0.0.1:8080/chat?user=test001"><br>
+        <input type="text" style="width: 300px" id="wsurl" value="ws://127.0.0.1:8080/chat?user=test002"><br>
         <button id="connect" onclick="connect()">连接</button>
         <button id="disconnect" onclick="disconnect();">断开连接</button>
     </div>
     <div id="conversationDiv" style="visibility: hidden;">
         <label for="message">输入消息</label> <input type="text" id="message">
-        <button id="send" onclick="send();">发送</button>
+        <button id="send" onclick="send();">发给订阅者</button>
+        <button id="send2" onclick="send2();">发给用户</button>
+        <button id="send3" onclick="send3();">发给应用</button>
         <br>
         <p id="response"
            style="max-width:1498px;min-height:350px;max-height:350px;border:1px solid;overflow-y:auto;"></p>
@@ -100,6 +102,26 @@
         if($('#message').val()){
             stompClient.publish({
                 destination: "/topic/todoTask1/open",
+                body: $('#message').val(),
+                headers: {"openPersistence": "true", "openAck": "true"}
+            });
+        }
+    }
+
+    function send2() {
+        if($('#message').val()){
+            stompClient.publish({
+                destination: "/app/todoTask1/user",
+                body: $('#message').val(),
+                headers: {"openPersistence": "true", "openAck": "true", "user": "test001"}
+            });
+        }
+    }
+
+    function send3() {
+        if($('#message').val()){
+            stompClient.publish({
+                destination: "/app/todoTask1/self",
                 body: $('#message').val(),
                 headers: {"openPersistence": "true", "openAck": "true"}
             });

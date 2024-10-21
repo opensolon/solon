@@ -17,6 +17,7 @@ package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
@@ -54,8 +55,13 @@ public class ToHandlerStompListener extends SimpleStompListener {
                 Handler handler = Solon.app().router().matchMain(ctx);
 
                 if (handler != null) {
-                    handler.handle(ctx);
-                    ctx.commit();
+                    try {
+                        ContextUtil.currentSet(ctx);
+                        handler.handle(ctx);
+                        ctx.commit();
+                    } finally {
+                        ContextUtil.currentRemove();
+                    }
                 }
             }
         }

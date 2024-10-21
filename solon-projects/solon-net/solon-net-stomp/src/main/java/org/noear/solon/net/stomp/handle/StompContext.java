@@ -21,8 +21,8 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.net.stomp.*;
-import org.noear.solon.net.websocket.WebSocket;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -182,7 +182,7 @@ public class StompContext extends ContextEmpty {
             return frame;
         }
 
-        if (WebSocket.class.isAssignableFrom(clz)) {
+        if (StompSession.class.isAssignableFrom(clz)) {
             return session;
         }
 
@@ -236,7 +236,9 @@ public class StompContext extends ContextEmpty {
             sendTo("*", path(), message);
         } else {
             for (String to : anno.value()) {
-                //to destination
+                //to target（支持模板）
+                to = TmplUtil.parse(to, headerMap()::containsKey, headerMap()::get);
+
                 int idx = to.indexOf(':');
                 if (idx < 1) {
                     throw new IllegalArgumentException("Invalid to: " + to);

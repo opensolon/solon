@@ -17,6 +17,8 @@ package org.noear.solon.net.stomp.broker.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.net.stomp.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  * @since 3.0
  */
 public class StompBrokerEmitter implements StompEmitter {
+    static final Logger log = LoggerFactory.getLogger(StompBrokerEmitter.class);
     private final StompBrokerMedia brokerMedia;
 
     protected StompBrokerEmitter(StompBrokerMedia brokerMedia) {
@@ -46,6 +49,8 @@ public class StompBrokerEmitter implements StompEmitter {
                     .build();
 
             session.send(replyMessage);
+        } else {
+            log.warn("No subscription found: '{}'", destination);
         }
     }
 
@@ -73,8 +78,12 @@ public class StompBrokerEmitter implements StompEmitter {
     public void sendToUser(String user, String destination, Message message) {
         List<StompSession> sessions = brokerMedia.sessionNameMap.get(user);
 
-        for (StompSession s1 : sessions) {
-            sendToSession(s1, destination, message);
+        if (sessions == null) {
+            log.warn("No user found: '{}'", user);
+        } else {
+            for (StompSession s1 : sessions) {
+                sendToSession(s1, destination, message);
+            }
         }
     }
 
