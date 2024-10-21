@@ -41,7 +41,7 @@ public class ChatStompBroker extends StompBroker implements StompListener {
     public void onOpen(StompSession session) {
         String user = session.param("user");
 
-        if ("test".equals(user)) {
+        if ("demo".equals(user)) {
             //签权拒绝
             session.close();
         } else {
