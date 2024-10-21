@@ -51,11 +51,13 @@ public class TypeWrap {
                 this.type = (Class<?>) tmp;
             } else {
                 //说明解码失败了
-                this.invalid = true;
+                this.type = Object.class;
+                //this.invalid = true;
             }
         } else if (tmp instanceof TypeVariable) {
             //说明解码失败了
-            this.invalid = true;
+            this.type = Object.class;
+            //this.invalid = true;
         } else if (tmp instanceof Class<?>) {
             //如果原来是 TypeVariable，会被转成正常类型
             this.type = (Class<?>) tmp;
