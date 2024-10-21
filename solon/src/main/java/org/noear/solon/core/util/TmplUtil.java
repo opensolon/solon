@@ -21,6 +21,8 @@ import org.noear.solon.core.wrap.FieldWrap;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,9 +58,22 @@ public class TmplUtil {
      * <pre><code>name=${name},type={.type}</code></pre>
      *
      * @param tmpl  模板
-     * @param model 参数
+     * @param model 数据模型
      */
     public static String parse(String tmpl, Map<String, Object> model) {
+        return parse(tmpl, model::containsKey, model::get);
+    }
+
+    /**
+     * 解析模板
+     *
+     * <pre><code>name=${name},type={.type}</code></pre>
+     *
+     * @param tmpl    模板
+     * @param checker 检测器（是否存在 key）
+     * @param getter  获取器（获取某个 key）
+     */
+    public static String parse(String tmpl, Predicate<String> checker, Function<String, Object> getter) {
         if (tmpl.indexOf('$') < 0) {
             return tmpl;
         }
@@ -73,10 +88,10 @@ public class TmplUtil {
             String mark = m.group(0);
             String name = m.group(1);
 
-            if (model.containsKey(name)) {
+            if (checker.test(name)) {
                 //说明从输入参数取值
-                Object val = model.get(name);
-                if(val == null){
+                Object val = getter.apply(name);
+                if (val == null) {
                     val = "";
                 }
 
@@ -89,7 +104,7 @@ public class TmplUtil {
                 String fieldVal = null;
                 {
                     String[] cf = name.split("\\.");
-                    obj = model.get(cf[0]);
+                    obj = getter.apply(cf[0]);
                     fieldKey = cf[1];
                 }
 
