@@ -21,6 +21,7 @@
         <button id="send" onclick="send();">发给订阅者</button>
         <button id="send2" onclick="send2();">发给用户</button>
         <button id="send3" onclick="send3();">发给应用</button>
+        <button id="send4" onclick="send4();">异常测试</button>
         <br>
         <p id="response"
            style="max-width:1498px;min-height:350px;max-height:350px;border:1px solid;overflow-y:auto;"></p>
@@ -69,7 +70,10 @@
                 console.info('Connected', frame);
                 stompClient.subscribe('/topic/todoTask1/*', function (response) {
                     showResponse(response.body);
-                    //response.ack({"message-id": response.headers["message-id"]});
+                }, {ack: 'client'});
+
+                stompClient.subscribe('/user/app/error', function (response) {
+                    showResponse(response.body);
                 }, {ack: 'client'});
 
                 var subscription = stompClient.subscribe('/topic/todoTask2/*', function (response) {
@@ -122,6 +126,16 @@
         if($('#message').val()){
             stompClient.publish({
                 destination: "/app/todoTask1/self",
+                body: $('#message').val(),
+                headers: {"openPersistence": "true", "openAck": "true"}
+            });
+        }
+    }
+
+    function send4() {
+        if($('#message').val()){
+            stompClient.publish({
+                destination: "/app/todoTask1/error",
                 body: $('#message').val(),
                 headers: {"openPersistence": "true", "openAck": "true"}
             });

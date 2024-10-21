@@ -15,12 +15,13 @@
  */
 package demo.server;
 
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.Message;
+import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.StompBroker;
 import org.noear.solon.net.stomp.handle.ToHandlerStompListener;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import org.noear.solon.net.stomp.listener.StompListener;
 
 /**
  * stomp server 必须
@@ -29,17 +30,41 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.4
  */
 @ServerEndpoint("/chat")
-public class ChatStompBroker extends StompBroker {
+public class ChatStompBroker extends StompBroker implements StompListener {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
-        this.addListener(-1, new ChatStompListenerImpl());
+        this.addListener(this);
         this.addListener(new ToHandlerStompListener(this));
+    }
 
-        //此为示例
-        final AtomicInteger atomicInteger = new AtomicInteger();
-        RunUtil.scheduleAtFixedRate(() -> {
-            int i = atomicInteger.incrementAndGet();
-            getEmitter().sendTo("/topic/todoTask1/" + i, "我来自服务端-" + i);
-        }, 3000, 10000);
+    @Override
+    public void onOpen(StompSession session) {
+        String user = session.param("user");
+
+        if ("test".equals(user)) {
+            //签权拒绝
+            session.close();
+        } else {
+            //签权通过；并对会话命名
+            session.nameAs(user); //命名后，可对 user 发消息
+        }
+    }
+
+    @Override
+    public void onFrame(StompSession session, Frame frame) throws Throwable {
+        System.out.println(frame);
+    }
+
+    @Override
+    public void onClose(StompSession session) {
+
+    }
+
+    @Override
+    public void onError(StompSession session, Throwable error) {
+        //如果出错，反馈给客户端（比如用 "/user/app/errors" 目的地）
+        getEmitter().sendToSession(session,
+                "/user/app/errors",
+                new Message(error.getMessage()));
     }
 }
