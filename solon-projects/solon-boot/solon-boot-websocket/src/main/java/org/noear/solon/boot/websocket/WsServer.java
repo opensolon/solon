@@ -156,8 +156,8 @@ public class WsServer extends WebSocketServer {
             webSocket.onReceive();
 
             webSocketRouter.getListener().onMessage(webSocket, data);
-        } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+        } catch (Exception e) {
+            onError(conn, e);
         }
     }
 
@@ -168,8 +168,8 @@ public class WsServer extends WebSocketServer {
             webSocket.onReceive();
 
             webSocketRouter.getListener().onMessage(webSocket, data);
-        } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+        } catch (Exception e) {
+            onError(conn, e);
         }
     }
 
