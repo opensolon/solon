@@ -37,6 +37,8 @@
 * 优化 solon-data-sqlutils 设计（进一步提搞性能和适用性）
 * 优化 solon-net-httputils 设计 支持快捷序列化
 * 优化 solon-net-stomp 设计 
+* 优化 solon-scheduling-simple cron 调度实现
+* 优化 local-solon-cloud-plugin job cron 调度实现
 * 优化 solon-serialization 序列化器的泛型反序列化处理
 * 优化 solon-security-auth 允许 AuthAdapter 直接支持“多套账号体系鉴权”处理（简化了）。AuthAdapterSupplier 标为弃用 
 * cxf-webservices 升为 3.5.9
