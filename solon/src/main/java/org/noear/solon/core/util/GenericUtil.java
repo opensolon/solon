@@ -231,7 +231,11 @@ public class GenericUtil {
             //如果是类型变量，则重新构建类型
             Type typeTmp = genericInfo.get(type.getTypeName());
 
-            return reviewType(typeTmp, genericInfo);
+            if(typeTmp == null){
+                return type;
+            }else{
+                return reviewType(typeTmp, genericInfo);
+            }
         } else if (type instanceof ParameterizedType) {
             ParameterizedType typeTmp = (ParameterizedType) type;
             Type[] typeArgs = typeTmp.getActualTypeArguments();
