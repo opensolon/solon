@@ -379,7 +379,7 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public void contentLength(long size) {
-        _response.setContentLength((int) size);
+        _response.setContentLength(size);
     }
 
     @Override

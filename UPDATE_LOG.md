@@ -33,6 +33,7 @@
 * 调整 solon mvc 代码独立为 solon-mvc
 * 修复 solon Utils.appFolder() 在 jar in jar 打包时，失效的问题
 * 修复 solon TmplUtil 当模型参数为 null 会出现 "null"（改为用空替代）
+* 修复 solon-boot-smarthttp 适配，在 contentLength(long) 时会精度丢失的问题
 * 优化 solon-data-sqlutils 设计（进一步提搞性能和适用性）
 * 优化 solon-net-httputils 设计 支持快捷序列化
 * 优化 solon-net-stomp 设计 
