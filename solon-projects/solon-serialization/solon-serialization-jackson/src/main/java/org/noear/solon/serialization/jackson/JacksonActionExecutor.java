@@ -69,13 +69,6 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     public JacksonActionExecutor() {
         config(newMapper(new JavaTimeModule()));
 
-        addDeserializer(Instant.class, new TimeDeserializer<>(Instant.class));
-
-        addDeserializer(ZonedDateTime.class, new TimeDeserializer<>(ZonedDateTime.class));
-
-        addDeserializer(OffsetDateTime.class, new TimeDeserializer<>(OffsetDateTime.class));
-        addDeserializer(OffsetTime.class, new TimeDeserializer<>(OffsetTime.class));
-
         addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
         addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
         addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
