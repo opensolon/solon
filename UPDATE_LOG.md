@@ -39,6 +39,7 @@
 * 优化 solon-net-stomp 设计 
 * 优化 solon-scheduling-simple cron 调度实现
 * 优化 local-solon-cloud-plugin job cron 调度实现
+* 优化 solon-data 事务管理，支持 RoutingDataSource 深度查找
 * 优化 solon-serialization 序列化器的泛型反序列化处理
 * 优化 solon-serialization-jackson LocalDateTime,LocalDate,LocalTime 时间反序列化处理
 * 优化 solon-security-auth 允许 AuthAdapter 直接支持“多套账号体系鉴权”处理（简化了）。AuthAdapterSupplier 标为弃用 
