@@ -46,18 +46,27 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     /**
      * 反序列化配置
      */
-    public ObjectMapper config(){
+    public ObjectMapper config() {
         return serializer.getConfig();
     }
 
     /**
      * 配置
      */
-    public void config(ObjectMapper objectMapper){
+    public void config(ObjectMapper objectMapper) {
         serializer.setConfig(objectMapper);
     }
 
     public JacksonActionExecutor() {
+        init(new JavaTimeModule());
+    }
+
+    /**
+     * 初始化
+     *
+     * @param javaTimeModule 时间模块
+     */
+    protected void init(JavaTimeModule javaTimeModule) {
         serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -65,7 +74,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
                 serializer.getConfig().getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        serializer.getConfig().registerModule(new JavaTimeModule());
+        serializer.getConfig().registerModule(javaTimeModule);
         // 允许使用未带引号的字段名
         serializer.getConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         // 允许使用单引号
@@ -106,7 +115,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if(p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()){
+        if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
