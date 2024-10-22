@@ -70,15 +70,15 @@
                 console.info('Connected', frame);
                 stompClient.subscribe('/topic/todoTask1/*', function (response) {
                     showResponse(response.body);
-                }, {ack: 'client'});
+                });
 
-                stompClient.subscribe('/user/app/error', function (response) {
+                stompClient.subscribe('/user/app/errors', function (response) {
                     showResponse(response.body);
-                }, {ack: 'client'});
+                });
 
                 var subscription = stompClient.subscribe('/topic/todoTask2/*', function (response) {
 
-                }, {});
+                });
                 subscription.unsubscribe();
             },
             onWebSocketClose: function (frame) {
