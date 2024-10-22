@@ -15,15 +15,14 @@
  */
 package org.noear.solon.net.stomp.handle;
 
-import org.noear.solon.annotation.To;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.web.AsyncContextState;
-import org.noear.solon.core.handle.Action;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.net.stomp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Stomp 通用上下文适配
@@ -233,22 +233,16 @@ public class StompContext extends ContextEmpty {
             }
         }
 
-        //to anno
-        Action action = action();
-        To anno = null;
-        if (action != null) {
-            anno = action.method().getAnnotation(To.class);
-        }
+        //to anno（支持模板；已通过拦截器处理模板）
+        List<String> toList = this.attr(Constants.ATTR_TO);
 
         //send-to
-        if (anno == null || anno.value().length == 0) {
+        if (Utils.isEmpty(toList)) {
             //to from
             sendTo("*", path(), message);
         } else {
-            for (String to : anno.value()) {
-                //to target（支持模板）
-                to = TmplUtil.parse(to, headerMap()::containsKey, headerMap()::get);
-
+            for (String to : toList) {
+                //to target
                 int idx = to.indexOf(':');
                 if (idx < 1) {
                     throw new IllegalArgumentException("Invalid to: " + to);
@@ -271,7 +265,6 @@ public class StompContext extends ContextEmpty {
             emitter().sendToUser(user, destination, message);
         }
     }
-
 
 
     ///////////////////////

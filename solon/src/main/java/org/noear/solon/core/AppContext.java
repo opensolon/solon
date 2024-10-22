@@ -230,6 +230,26 @@ public class AppContext extends BeanContainer {
         beanInjectorAdd(Inject.class, ((vh, anno) -> {
             beanInject(vh, anno.value(), anno.required(), anno.autoRefreshed());
         }));
+
+        //注册 @To 拦截器
+        beanInterceptorAdd(To.class, inv -> {
+            Object rst = inv.invoke();
+
+            Context ctx = Context.current();
+            if (ctx != null) {
+                To anno = inv.method().getAnnotation(To.class);
+                if (anno.value().length > 0) {
+                    //支持模板处理
+                    List<String> list = new ArrayList<>(anno.value().length);
+                    for (String val : anno.value()) {
+                        list.add(TmplUtil.parse(val, inv, rst));
+                    }
+                    ctx.attrSet(Constants.ATTR_TO, list);
+                }
+            }
+
+            return rst;
+        });
     }
 
     /**
@@ -272,11 +292,11 @@ public class AppContext extends BeanContainer {
                 Type tmp = vh.getGenericType().getActualTypeArguments()[0];
 
                 final String typeFilter; //过滤泛型
-                final Type type ;
+                final Type type;
                 if (tmp instanceof ParameterizedType) {
                     type = ((ParameterizedType) tmp).getRawType();
                     typeFilter = tmp.getTypeName();
-                }else {
+                } else {
                     type = tmp;
                     typeFilter = null;
                 }

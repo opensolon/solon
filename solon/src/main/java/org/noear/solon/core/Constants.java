@@ -30,6 +30,7 @@ public interface Constants {
     String ATTR_MAIN_STATUS = "ATTR_MAIN_STATUS";
     //@since: 3.0
     String ATTR_RETURN_HANDLER = "ATTR_RETURN_HANDLER";
+    String ATTR_TO = "ATTR_TO";
 
     //@since: 3.0
     int FT_IDX_CONTEXT_PATH = -990;
