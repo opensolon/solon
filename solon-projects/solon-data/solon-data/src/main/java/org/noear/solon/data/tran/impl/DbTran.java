@@ -59,23 +59,23 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     public Connection getConnection(DataSource ds) throws SQLException {
-        if(ds instanceof RoutingDataSource){
-            //支持动态数据源事务管理
-            ds = ((RoutingDataSource)ds).determineCurrentTarget();
-        }
-
-        if (conMap.containsKey(ds)) {
-            return conMap.get(ds);
+        if (ds instanceof RoutingDataSource) {
+            //支持"深度"动态数据源事务管理
+            return getConnection(((RoutingDataSource) ds).determineCurrentTarget());
         } else {
-            Connection con = ds.getConnection();
-            con.setAutoCommit(false);
-            con.setReadOnly(meta.readOnly());
-            if (meta.isolation().level > 0) {
-                con.setTransactionIsolation(meta.isolation().level);
-            }
+            if (conMap.containsKey(ds)) {
+                return conMap.get(ds);
+            } else {
+                Connection con = ds.getConnection();
+                con.setAutoCommit(false);
+                con.setReadOnly(meta.readOnly());
+                if (meta.isolation().level > 0) {
+                    con.setTransactionIsolation(meta.isolation().level);
+                }
 
-            conMap.putIfAbsent(ds, con);
-            return con;
+                conMap.putIfAbsent(ds, con);
+                return con;
+            }
         }
     }
 
