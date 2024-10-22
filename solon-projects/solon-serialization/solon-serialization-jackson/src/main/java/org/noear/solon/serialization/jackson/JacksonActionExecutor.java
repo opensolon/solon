@@ -24,8 +24,10 @@ import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.serialization.jackson.impl.TimeDeserializer;
 import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
 
+import java.time.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,28 +59,50 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
         serializer.setConfig(objectMapper);
     }
 
+    /**
+     * 添加反序列化器
+     * */
+    public <T> void addDeserializer(Class<T> clz, JsonDeserializer<? extends T> deser) {
+        serializer.getCustomModule().addDeserializer(clz, deser);
+    }
+
     public JacksonActionExecutor() {
-        init(new JavaTimeModule());
+        config(newMapper(new JavaTimeModule()));
+
+        addDeserializer(Instant.class, new TimeDeserializer<>(Instant.class));
+
+        addDeserializer(ZonedDateTime.class, new TimeDeserializer<>(ZonedDateTime.class));
+
+        addDeserializer(OffsetDateTime.class, new TimeDeserializer<>(OffsetDateTime.class));
+        addDeserializer(OffsetTime.class, new TimeDeserializer<>(OffsetTime.class));
+
+        addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
+        addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
+        addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
     }
 
     /**
      * 初始化
      *
-     * @param javaTimeModule 时间模块
+     * @param modules 配置模块
      */
-    protected void init(JavaTimeModule javaTimeModule) {
-        serializer.getConfig().enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        serializer.getConfig().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        serializer.getConfig().setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        serializer.getConfig().activateDefaultTypingAsProperty(
-                serializer.getConfig().getPolymorphicTypeValidator(),
+    public ObjectMapper newMapper(Module... modules) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper.activateDefaultTypingAsProperty(
+                mapper.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
-        serializer.getConfig().registerModule(javaTimeModule);
+        mapper.registerModules(modules);
         // 允许使用未带引号的字段名
-        serializer.getConfig().configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         // 允许使用单引号
-        serializer.getConfig().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
+        return mapper;
     }
 
     /**
