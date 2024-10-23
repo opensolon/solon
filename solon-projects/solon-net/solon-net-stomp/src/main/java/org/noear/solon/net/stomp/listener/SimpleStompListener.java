@@ -25,26 +25,26 @@ import org.noear.solon.net.stomp.StompSession;
  * @since 2.7
  * @since 3.0
  */
-public class SimpleStompListener implements StompListener {
+public interface SimpleStompListener extends StompListener {
 
 
     @Override
-    public void onOpen(StompSession session) {
+    default void onOpen(StompSession session) {
 
     }
 
     @Override
-    public void onFrame(StompSession session, Frame frame) throws Throwable {
+    default void onFrame(StompSession session, Frame frame) throws Throwable {
 
     }
 
     @Override
-    public void onClose(StompSession session) {
+    default void onClose(StompSession session) {
 
     }
 
     @Override
-    public void onError(StompSession session, Throwable error) {
+    default void onError(StompSession session, Throwable error) {
 
     }
 }

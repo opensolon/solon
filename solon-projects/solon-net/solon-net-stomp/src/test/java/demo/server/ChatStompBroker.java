@@ -20,7 +20,7 @@ import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.StompBroker;
-import org.noear.solon.net.stomp.listener.StompListener;
+import org.noear.solon.net.stomp.listener.SimpleStompListener;
 
 /**
  * stomp server 必须
@@ -29,7 +29,7 @@ import org.noear.solon.net.stomp.listener.StompListener;
  * @since 2.4
  */
 @ServerEndpoint("/chat")
-public class ChatStompBroker extends StompBroker implements StompListener {
+public class ChatStompBroker extends StompBroker implements SimpleStompListener {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
         this.addListener(this);
@@ -52,11 +52,6 @@ public class ChatStompBroker extends StompBroker implements StompListener {
     @Override
     public void onFrame(StompSession session, Frame frame) throws Throwable {
         //System.out.println(frame);
-    }
-
-    @Override
-    public void onClose(StompSession session) {
-
     }
 
     @Override

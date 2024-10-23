@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 3.0
  */
-public class ForwardStompListener extends SimpleStompListener {
+public class ForwardStompListener implements SimpleStompListener {
     static final Logger log = LoggerFactory.getLogger(ForwardStompListener.class);
 
     private final StompBrokerMedia brokerMedia;
