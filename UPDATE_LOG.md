@@ -22,6 +22,8 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### v3.0.3
+* 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制
