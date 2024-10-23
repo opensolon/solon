@@ -111,7 +111,7 @@ public class OpenApi2Utils {
                 throw new SolonException("The target service does not exist (" + upstreamTarget + ")");
             }
 
-            String url = PathUtil.joinUri(targetAddr, docket.upstream().getUri()).substring(1);
+            String url = PathUtil.joinUri(targetAddr, docket.upstream().getUri());
             return httpGet(url, docket);
         }
     }
