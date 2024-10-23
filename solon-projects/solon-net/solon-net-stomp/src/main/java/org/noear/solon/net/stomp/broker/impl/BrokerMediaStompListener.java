@@ -15,30 +15,29 @@
  */
 package org.noear.solon.net.stomp.broker.impl;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 /**
- * Stomp 代理端消息监听器
+ * Stomp 代理中介监听器（收集协议元数据）
  *
  * @author limliu
  * @since 2.7
+ * @since 3.0
  */
-public class StompBrokerListener implements StompListener {
-    static Logger log = LoggerFactory.getLogger(StompBrokerListener.class);
+public class BrokerMediaStompListener implements StompListener {
+    static Logger log = LoggerFactory.getLogger(BrokerMediaStompListener.class);
 
     private final StompBrokerMedia brokerMedia;
 
-    protected StompBrokerListener(StompBrokerMedia brokerMedia) {
+    public BrokerMediaStompListener(StompBrokerMedia brokerMedia) {
         this.brokerMedia = brokerMedia;
     }
 
@@ -211,19 +210,7 @@ public class StompBrokerListener implements StompListener {
      * 发送消息
      */
     public void onSend(StompSession session, Frame frame) {
-        String destination = frame.getHeader(Headers.DESTINATION);
 
-        if (Utils.isEmpty(destination)) {
-            Frame frame1 = Frame.newBuilder()
-                    .command(Commands.ERROR)
-                    .payload("Required 'destination' header missed")
-                    .build();
-
-            session.send(frame1);
-        } else {
-            Message message = new Message(frame.getPayload()).headerAdd(frame.getHeaderAll());
-            brokerMedia.emitter.sendTo(destination, message);
-        }
     }
 
     /**

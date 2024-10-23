@@ -20,7 +20,6 @@ import org.noear.solon.net.stomp.Frame;
 import org.noear.solon.net.stomp.Message;
 import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.StompBroker;
-import org.noear.solon.net.stomp.handle.ToHandlerStompListener;
 import org.noear.solon.net.stomp.listener.StompListener;
 
 /**
@@ -34,7 +33,7 @@ public class ChatStompBroker extends StompBroker implements StompListener {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
         this.addListener(this);
-        this.addListener(new ToHandlerStompListener(this));
+        this.setBrokerDestinationPrefixes("/topic/", "/queue/");
     }
 
     @Override

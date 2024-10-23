@@ -22,11 +22,14 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.stomp.StompEmitter;
+import org.noear.solon.net.stomp.broker.impl.BrokerMediaStompListener;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
+import org.noear.solon.net.stomp.handle.ForwardStompListener;
 import org.noear.solon.net.stomp.listener.StompListener;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketListenerSupplier;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -48,6 +51,7 @@ public class StompBroker implements WebSocketListenerSupplier {
             throw new IllegalArgumentException("Endpoint is not empty");
         }
 
+        //初始化
         brokerMedia = new StompBrokerMedia();
         webSocketListener = new ToStompWebSocketListener(serverEndpoint.value(), brokerMedia);
 
@@ -55,6 +59,17 @@ public class StompBroker implements WebSocketListenerSupplier {
         BeanWrap bw = Solon.context().wrap(serverEndpoint.value(), brokerMedia.emitter);
         Solon.context().putWrap(serverEndpoint.value(), bw);
         Solon.context().putWrap(StompEmitter.class, bw);
+
+        //添加处理监听
+        this.addListener(999, new BrokerMediaStompListener(brokerMedia));
+        this.addListener(998, new ForwardStompListener(brokerMedia));
+    }
+
+    /**
+     * 设置经理前缀
+     * */
+    protected void setBrokerDestinationPrefixes(String... destinationPrefixes) {
+        brokerMedia.brokerDestinationPrefixes.addAll(Arrays.asList(destinationPrefixes));
     }
 
     @Override
@@ -66,8 +81,7 @@ public class StompBroker implements WebSocketListenerSupplier {
      * 添加服务端监听器
      */
     public void addListener(StompListener listener) {
-        brokerMedia.listeners.add(new RankEntity<>(listener, 0));
-        Collections.sort(brokerMedia.listeners);
+        addListener(0, listener);
     }
 
     /**
