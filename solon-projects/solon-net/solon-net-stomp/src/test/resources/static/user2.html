@@ -72,6 +72,11 @@
                     showResponse(response.body);
                 });
 
+                stompClient.subscribe('/app/todoTask1/*', function (response) {
+                    showResponse(response.body);
+                    //response.ack({"message-id": response.headers["message-id"]});
+                });
+
                 stompClient.subscribe('/user/app/errors', function (response) {
                     showResponse(response.body);
                 });

@@ -33,7 +33,7 @@ public class ChatStompBroker extends StompBroker implements StompListener {
     public ChatStompBroker() {
         //此为示例，实际按需扩展
         this.addListener(this);
-        this.setBrokerDestinationPrefixes("/topic/", "/queue/");
+        this.setBrokerDestinationPrefixes("/topic/");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ChatStompBroker extends StompBroker implements StompListener {
 
     @Override
     public void onFrame(StompSession session, Frame frame) throws Throwable {
-        System.out.println(frame);
+        //System.out.println(frame);
     }
 
     @Override

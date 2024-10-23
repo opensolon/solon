@@ -42,7 +42,7 @@ import java.util.Collections;
 public class StompBroker implements WebSocketListenerSupplier {
     //WebSocket 监听器
     protected final ToStompWebSocketListener webSocketListener;
-    //Broker 媒介
+    //Broker 媒介（用于内存东西）
     protected final StompBrokerMedia brokerMedia;
 
     public StompBroker() {
@@ -67,29 +67,32 @@ public class StompBroker implements WebSocketListenerSupplier {
 
     /**
      * 设置经理前缀
-     * */
+     */
     protected void setBrokerDestinationPrefixes(String... destinationPrefixes) {
         brokerMedia.brokerDestinationPrefixes.addAll(Arrays.asList(destinationPrefixes));
-    }
-
-    @Override
-    public WebSocketListener getWebSocketListener() {
-        return webSocketListener;
     }
 
     /**
      * 添加服务端监听器
      */
-    public void addListener(StompListener listener) {
+    protected void addListener(StompListener listener) {
         addListener(0, listener);
     }
 
     /**
      * 添加服务端监听器
      */
-    public void addListener(int index, StompListener listener) {
+    protected void addListener(int index, StompListener listener) {
         brokerMedia.listeners.add(new RankEntity<>(listener, index));
         Collections.sort(brokerMedia.listeners);
+    }
+
+    /**
+     * 获取 WebSocket 监听器（对接 WebSocket 体系）
+     */
+    @Override
+    public WebSocketListener getWebSocketListener() {
+        return webSocketListener;
     }
 
     /**
