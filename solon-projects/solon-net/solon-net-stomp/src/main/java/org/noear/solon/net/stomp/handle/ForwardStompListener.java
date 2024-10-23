@@ -21,7 +21,7 @@ import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
-import org.noear.solon.net.stomp.listener.SimpleStompListener;
+import org.noear.solon.net.stomp.listener.StompListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 3.0
  */
-public class ForwardStompListener implements SimpleStompListener {
+public class ForwardStompListener implements StompListener {
     static final Logger log = LoggerFactory.getLogger(ForwardStompListener.class);
 
     private final StompBrokerMedia brokerMedia;

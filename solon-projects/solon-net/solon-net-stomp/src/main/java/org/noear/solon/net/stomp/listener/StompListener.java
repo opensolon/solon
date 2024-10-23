@@ -32,7 +32,9 @@ public interface StompListener {
      *
      * @param session
      */
-    void onOpen(StompSession session);
+    default void onOpen(StompSession session) {
+
+    }
 
     /**
      * 收到消息帧
@@ -40,19 +42,25 @@ public interface StompListener {
      * @param session
      * @param frame   帧
      */
-    void onFrame(StompSession session, Frame frame) throws Throwable;
+    default void onFrame(StompSession session, Frame frame) throws Throwable {
+
+    }
 
     /**
      * 连接关闭时（被动监听；当断开时触发）
      *
      * @param session
      */
-    void onClose(StompSession session);
+    default void onClose(StompSession session) {
+
+    }
 
     /**
      * 出错时
      *
      * @param session
      */
-    void onError(StompSession session, Throwable error);
+    default void onError(StompSession session, Throwable error) {
+
+    }
 }
