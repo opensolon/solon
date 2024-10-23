@@ -24,6 +24,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.net.stomp.*;
+import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,16 +44,16 @@ import java.util.List;
 public class StompContext extends ContextEmpty {
     static final Logger log = LoggerFactory.getLogger(StompContext.class);
 
-    private StompSession session;
-    private Frame frame;
-    private String destination;
-    private StompEmitter emitter;
+    private final StompSession session;
+    private final Frame frame;
+    private final String destination;
+    private final StompBrokerMedia brokerMedia;
 
-    public StompContext(StompSession session, Frame frame, String destination, StompEmitter emitter) {
+    public StompContext(StompSession session, Frame frame, String destination, StompBrokerMedia brokerMedia) {
         this.session = session;
         this.frame = frame;
         this.destination = destination;
-        this.emitter = emitter;
+        this.brokerMedia = brokerMedia;
     }
 
     /**
@@ -66,7 +67,7 @@ public class StompContext extends ContextEmpty {
      * 发射器
      */
     public StompEmitter emitter() {
-        return emitter;
+        return brokerMedia.emitter;
     }
 
     //////////////
@@ -238,14 +239,19 @@ public class StompContext extends ContextEmpty {
 
         //send-to
         if (Utils.isEmpty(toList)) {
-            //to from
-            sendTo("*", path(), message);
+            if (brokerMedia.isBrokerDestination(path())) {
+                //to broker
+                sendTo("*", path(), message);
+            } else {
+                //to session
+                sendTo(".", path(), message);
+            }
         } else {
             for (String to : toList) {
-                //to target
+                //to target(broker, app, user)
                 int idx = to.indexOf(':');
-                if (idx < 1) {
-                    throw new IllegalArgumentException("Invalid to: " + to);
+                if (idx < 0) {
+                    sendTo(to, path(), message);
                 } else {
                     sendTo(to.substring(0, idx), to.substring(idx + 1), message);
                 }
@@ -253,16 +259,16 @@ public class StompContext extends ContextEmpty {
         }
     }
 
-    private void sendTo(String user, String destination, Message message) {
-        if ("*".equals(user)) {
+    private void sendTo(String target, String destination, Message message) {
+        if ("*".equals(target)) {
             //to subscriber
             emitter().sendTo(destination, message);
-        } else if (".".equals(user)) {
+        } else if (".".equals(target)) {
             //to session
             emitter().sendToSession(session, destination, message);
         } else {
             //to user
-            emitter().sendToUser(user, destination, message);
+            emitter().sendToUser(target, destination, message);
         }
     }
 

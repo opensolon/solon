@@ -18,7 +18,6 @@ package org.noear.solon.net.stomp.broker.impl;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.stomp.broker.FrameCodec;
-import org.noear.solon.net.stomp.broker.FrameCodecDefault;
 import org.noear.solon.net.stomp.listener.StompListener;
 
 import java.util.*;
@@ -31,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 3.0
  */
 public class StompBrokerMedia {
-    public static final FrameCodec codec = new FrameCodecDefault();
+    public static final FrameCodec codec = new FrameCodecImpl();
 
     /**
      * 监听器集合
@@ -56,10 +55,29 @@ public class StompBrokerMedia {
     /**
      * 发射器
      */
-    public final StompBrokerEmitter emitter;
+    public final StompBrokerEmitter emitter = new StompBrokerEmitter(this);
 
-    public StompBrokerMedia() {
-        emitter = new StompBrokerEmitter(this);
-        listeners.add(new RankEntity<>(new StompBrokerListener(this), 999));
+
+    /**
+     * 经理地址前缀
+     */
+    public final Set<String> brokerDestinationPrefixes = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    /**
+     * 是否为经理地址
+     */
+    public boolean isBrokerDestination(String destination) {
+        if (brokerDestinationPrefixes.size() == 0) {
+            //没有启用
+            return false;
+        }
+
+        for (String p1 : brokerDestinationPrefixes) {
+            if (destination.startsWith(p1)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
