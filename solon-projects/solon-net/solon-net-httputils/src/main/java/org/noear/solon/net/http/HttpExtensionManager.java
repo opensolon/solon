@@ -1,8 +1,6 @@
 package org.noear.solon.net.http;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Http 扩展管理
@@ -11,7 +9,7 @@ import java.util.List;
  * @since 2.9
  */
 public class HttpExtensionManager {
-    private static List<HttpExtension> extensions = new ArrayList<>();
+    private static Set<HttpExtension> extensions = new LinkedHashSet<>();
 
     /**
      * 添加扩展
