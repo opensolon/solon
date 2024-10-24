@@ -1,6 +1,8 @@
 package org.noear.solon.net.stomp.broker.impl;
 
+import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.stomp.StompSession;
 import org.noear.solon.net.websocket.WebSocket;
 
@@ -73,16 +75,6 @@ public class StompSessionImpl implements StompSession {
     }
 
     @Override
-    public void send(Frame frame) {
-        assert frame != null;
-
-        if (socket.isValid()) {
-            String frameStr = StompBrokerMedia.codec.encode(frame);
-            socket.send(ByteBuffer.wrap(frameStr.getBytes(StandardCharsets.UTF_8)));
-        }
-    }
-
-    @Override
     public void close() {
         socket.close();
     }
@@ -99,5 +91,35 @@ public class StompSessionImpl implements StompSession {
         }
 
         return null;
+    }
+
+
+    //////////////
+
+    /**
+     * 发送
+     */
+    @Override
+    public void send(Frame frame) {
+        assert frame != null;
+
+        if (socket.isValid()) {
+            String frameStr = StompBrokerMedia.codec.encode(frame);
+            socket.send(ByteBuffer.wrap(frameStr.getBytes(StandardCharsets.UTF_8)));
+        }
+    }
+
+    /**
+     * 答复凭据
+     */
+    public void receipt(Frame frame) {
+        final String receiptId = frame.getHeader(Headers.RECEIPT);
+        if (receiptId != null) {
+            Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
+                    .headerAdd(Headers.RECEIPT_ID, receiptId)
+                    .build();
+
+            this.send(frame1);
+        }
     }
 }

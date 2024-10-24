@@ -93,6 +93,9 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
         StompBrokerMedia.codec.decode(text, frame -> {
             decodeOk.set(Boolean.TRUE);
             onStomp(session, frame);
+
+            //统一处理凭据
+            session.receipt(frame);
         });
 
         if (decodeOk.get() == false) {
@@ -142,6 +145,9 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             //事务开始
             String txAttrKey = Headers.TRANSACTION + ":" + txId;
             session.getSocket().attr(txAttrKey, new ArrayList<Frame>());
+
+            //答复凭据
+            //session.receipt(frame);
         } else if (Commands.COMMIT.equals(frame.getCommand())) {
             //事务提交
             String txAttrKey = Headers.TRANSACTION + ":" + txId;
@@ -156,11 +162,17 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
                 //移除事务缓存
                 session.getSocket().attrMap().remove(txAttrKey);
             }
+
+            //答复凭据
+            //session.receipt(frame);
         } else if (Commands.ABORT.equals(frame.getCommand())) {
             //事务回滚
             String txAttrKey = Headers.TRANSACTION + ":" + txId;
             //移除事务缓存
             session.getSocket().attrMap().remove(txAttrKey);
+
+            //答复凭据
+            //session.receipt(frame);
         } else if (txId != null) {
             //事务中
             String txAttrKey = Headers.TRANSACTION + ":" + txId;

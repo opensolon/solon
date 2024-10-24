@@ -143,13 +143,7 @@ public class BrokerMediaStompListener implements StompListener {
      * 需要响应
      */
     public void onDisconnect(StompSession session, Frame frame) {
-        String receiptId = frame.getHeader(Headers.RECEIPT);
-
-        Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
-                .headerAdd(Headers.RECEIPT_ID, receiptId)
-                .build();
-
-        session.send(frame1);
+        //((StompSessionImpl) session).receipt(frame);
     }
 
     /**
@@ -175,14 +169,7 @@ public class BrokerMediaStompListener implements StompListener {
         ((StompSessionImpl) session).addSubscription(subscription);
         brokerMedia.subscriptions.add(subscription);
 
-        final String receiptId = frame.getHeader(Headers.RECEIPT);
-        if (receiptId != null) {
-            Frame frame1 = Frame.newBuilder().command(Commands.RECEIPT)
-                    .headerAdd(Headers.RECEIPT_ID, receiptId)
-                    .build();
-
-            session.send(frame1);
-        }
+        //((StompSessionImpl) session).receipt(frame);
     }
 
 
