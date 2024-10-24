@@ -17,14 +17,26 @@ package org.noear.solon.serialization.kryo;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.serialize.SerializerNames;
 
 /**
  * @author noear
- * @since 2.8
+ * @since 3.0
  */
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
+        //::render
+        KryoRender render = new KryoRender();
+        context.wrapAndPut(KryoRender.class, render); //用于扩展
+        context.app().renderManager().register(SerializerNames.AT_KRYO,render);
+        context.app().serializerManager().register(SerializerNames.AT_KRYO, render.getSerializer());
 
+        //::actionExecutor
+        //支持 kryo 内容类型执行
+        KryoActionExecutor executor = new KryoActionExecutor();
+        context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
+
+        context.app().chainManager().addExecuteHandler(executor);
     }
 }

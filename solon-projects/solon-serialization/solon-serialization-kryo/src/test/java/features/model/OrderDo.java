@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.serialize;
+package features.model;
+
+import java.io.Serializable;
 
 /**
- * 序列化方案名字（内部已适配的）
- *
- * @author noear
- * @since 3.0
+ * @author noear 2023/8/16 created
  */
-public interface SerializerNames {
-    String AT_JSON = "@json";
-    String AT_JSON_TYPED = "@type_json";
-    String AT_XML = "@xml";
-    String AT_XML_TYPED = "@type_xml";
-    String AT_PROPERTIES = "@properties";
-    String AT_FURY = "@fury";
-    String AT_KRYO = "@kryo";
-    String AT_HESSIAN = "@hessian";
-    String AT_PROTOBUF = "@protobuf";
+public class OrderDo implements Serializable {
+    long orderId = 2;
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
 }

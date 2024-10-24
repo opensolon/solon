@@ -1,13 +1,13 @@
 package features.genetic;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.serialization.fury.FuryBytesSerializer;
+import org.noear.solon.serialization.kryo.KryoBytesSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author noear 2024/10/16 created
+ * @author noear 2024/10/24 created
  */
 public class GeneticTest {
     @Test
@@ -19,12 +19,13 @@ public class GeneticTest {
 
         ///////////////////////
 
-        FuryBytesSerializer serializer = new FuryBytesSerializer();
+        KryoBytesSerializer serializer = new KryoBytesSerializer();
         byte[] data = serializer.serialize(dataRaw);
         System.out.println(data);
 
 
-        List<Book> list0 = (List<Book>) serializer.deserialize(data, null);
+        List<Book> list0 = (List<Book>) serializer.deserialize(data, new ArrayList<Book>() {
+        }.getClass());
 
         assert list0 != null;
         assert list0.size() == 1;

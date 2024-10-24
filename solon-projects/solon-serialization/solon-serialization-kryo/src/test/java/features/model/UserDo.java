@@ -13,22 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.serialize;
+package features.model;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 序列化方案名字（内部已适配的）
- *
- * @author noear
- * @since 3.0
+ * @author noear 2023/1/16 created
  */
-public interface SerializerNames {
-    String AT_JSON = "@json";
-    String AT_JSON_TYPED = "@type_json";
-    String AT_XML = "@xml";
-    String AT_XML_TYPED = "@type_xml";
-    String AT_PROPERTIES = "@properties";
-    String AT_FURY = "@fury";
-    String AT_KRYO = "@kryo";
-    String AT_HESSIAN = "@hessian";
-    String AT_PROTOBUF = "@protobuf";
+@ToString
+@Getter
+@Setter
+public class UserDo implements Serializable {
+    String s0;
+
+    String s1 = "noear";
+
+    Boolean b0;
+    boolean b1 = true;
+
+    Long n0;
+    Long n1 = 1L;
+
+    Double d0;
+    Double d1 = 1.0D;
+
+    Object obj0;
+    List list0;
+    Map map0;
+    Map map1;
 }
