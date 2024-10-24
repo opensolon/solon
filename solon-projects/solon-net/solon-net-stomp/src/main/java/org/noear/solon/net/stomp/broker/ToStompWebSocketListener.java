@@ -20,6 +20,7 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.stomp.Commands;
 import org.noear.solon.net.stomp.Frame;
+import org.noear.solon.net.stomp.Headers;
 import org.noear.solon.net.stomp.broker.impl.StompSessionImpl;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
 import org.noear.solon.net.stomp.listener.StompListener;
@@ -32,7 +33,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -105,10 +108,14 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
 
     @Override
     public void onClose(WebSocket socket) {
-        StompSessionImpl session = StompSessionImpl.of(socket);
+        try {
+            StompSessionImpl session = StompSessionImpl.of(socket);
 
-        for (RankEntity<StompListener> listener : brokerMedia.listeners) {
-            listener.target.onClose(session);
+            for (RankEntity<StompListener> listener : brokerMedia.listeners) {
+                listener.target.onClose(session);
+            }
+        } finally {
+            socket.attrMap().clear();
         }
     }
 
@@ -129,6 +136,42 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
      * Stomp 帧接收
      */
     protected void onStomp(StompSessionImpl session, Frame frame) {
+        String txId = frame.getHeader(Headers.TRANSACTION);
+
+        if (Commands.BEGIN.equals(frame.getCommand())) {
+            //事务开始
+            String txAttrKey = Headers.TRANSACTION + ":" + txId;
+            session.getSocket().attr(txAttrKey, new ArrayList<Frame>());
+        } else if (Commands.COMMIT.equals(frame.getCommand())) {
+            //事务提交
+            String txAttrKey = Headers.TRANSACTION + ":" + txId;
+            List<Frame> frameList = session.getSocket().attr(txAttrKey);
+            try {
+                if (frameList != null && frameList.size() > 0) {
+                    for (Frame f : frameList) {
+                        onStomp(session, f);
+                    }
+                }
+            } finally {
+                //移除事务缓存
+                session.getSocket().attrMap().remove(txAttrKey);
+            }
+        } else if (Commands.ABORT.equals(frame.getCommand())) {
+            //事务回滚
+            String txAttrKey = Headers.TRANSACTION + ":" + txId;
+            //移除事务缓存
+            session.getSocket().attrMap().remove(txAttrKey);
+        } else if (txId != null) {
+            //事务中
+            String txAttrKey = Headers.TRANSACTION + ":" + txId;
+            List<Frame> frameList = (List<Frame>) session.getSocket().attrMap().computeIfAbsent(txAttrKey, k -> new ArrayList());
+            frameList.add(frame);
+        } else {
+            onStompDo(session, frame);
+        }
+    }
+
+    protected void onStompDo(StompSessionImpl session, Frame frame) {
         for (RankEntity<StompListener> listener : brokerMedia.listeners) {
             try {
                 listener.target.onFrame(session, frame);

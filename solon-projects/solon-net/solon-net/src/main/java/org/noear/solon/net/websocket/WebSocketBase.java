@@ -21,8 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * WebSocket 会话接口基础
@@ -33,7 +33,7 @@ import java.util.Map;
 public abstract class WebSocketBase implements WebSocket {
     static final Logger log = LoggerFactory.getLogger(WebSocketBase.class);
 
-    private final Map<String, Object> attrMap = new HashMap<>();
+    private final Map<String, Object> attrMap = new ConcurrentHashMap<>();
     private Handshake handshake;
     private boolean isClosed;
     private String pathNew;
