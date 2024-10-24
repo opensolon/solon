@@ -149,7 +149,7 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             try {
                 if (frameList != null && frameList.size() > 0) {
                     for (Frame f : frameList) {
-                        onStomp(session, f);
+                        stompToListener(session, f);
                     }
                 }
             } finally {
@@ -167,11 +167,14 @@ public class ToStompWebSocketListener implements WebSocketListener, SubProtocolC
             List<Frame> frameList = (List<Frame>) session.getSocket().attrMap().computeIfAbsent(txAttrKey, k -> new ArrayList());
             frameList.add(frame);
         } else {
-            onStompDo(session, frame);
+            stompToListener(session, frame);
         }
     }
 
-    protected void onStompDo(StompSessionImpl session, Frame frame) {
+    /**
+     * Stomp 帧转给监听器
+     */
+    protected void stompToListener(StompSessionImpl session, Frame frame) {
         for (RankEntity<StompListener> listener : brokerMedia.listeners) {
             try {
                 listener.target.onFrame(session, frame);
