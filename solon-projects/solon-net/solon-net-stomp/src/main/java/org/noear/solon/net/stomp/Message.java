@@ -80,4 +80,11 @@ public class Message extends SimpleFrame implements Frame {
 
         return this;
     }
+
+    /**
+     * 内容类型
+     */
+    public Message contentType(String contentType) {
+        return headerSet(Headers.CONTENT_TYPE, contentType);
+    }
 }
