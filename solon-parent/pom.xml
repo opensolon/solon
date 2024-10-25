@@ -669,6 +669,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-kryo</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-fastjson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
