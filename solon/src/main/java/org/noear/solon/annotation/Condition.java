@@ -36,7 +36,13 @@ public @interface Condition {
     String onClassName() default "";
 
     /**
-     * 有属性
+     * 有属性（支持多条件）
+     * <pre><code>
+     * @Condition(onProperty="${prop1}")
+     * @Condition(onProperty="${prop1} == 1")
+     * @Condition(onProperty="${prop1} == 1 && ${prop2} == 2")
+     * </code></pre>
+     *
      */
     String onProperty() default "";
 

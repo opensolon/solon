@@ -121,18 +121,9 @@ public class ConditionUtil {
         }
 
         if (Utils.isNotEmpty(anno.onProperty())) {
-            String[] kv = anno.onProperty().split("=");
-
-            if (kv.length > 1) {
-                String val = context.cfg().getByExpr(kv[0].trim());
-                //值要等于kv[1] （val 可能为 null）
-                if (kv[1].trim().equals(val) == false) {
-                    return true;
-                }
-            } else {
-                String val = context.cfg().getByExpr(anno.onProperty());
-                //有值就行
-                if (Utils.isNotEmpty(val) == false) {
+            String[] exprs = anno.onProperty().split("&&");
+            for (String expr : exprs) {
+                if (testPropertyNo(context, expr.trim())) {
                     return true;
                 }
             }
@@ -151,6 +142,54 @@ public class ConditionUtil {
         if (Utils.isNotEmpty(anno.onMissingBeanName())) {
             if (context.hasWrap(anno.onMissingBeanName())) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean testPropertyNo(AppContext context, String expr) {
+        int kIdx = expr.indexOf('=');
+
+        if (kIdx < 0) {
+            String val = context.cfg().getByExpr(expr);
+            //有值就行
+            if (Utils.isNotEmpty(val) == false) {
+                return true;
+            }
+        } else {
+            String left, right;
+            boolean isNeq = false;
+
+            if (expr.charAt(kIdx + 1) == '=') {
+                //说明是 '=='
+                left = expr.substring(0, kIdx).trim();
+                kIdx++;
+                right = expr.substring(kIdx + 1, expr.length()).trim();
+            } else if (expr.charAt(kIdx - 1) == '!') {
+                //说明是 '!='
+                isNeq = true;
+                right = expr.substring(kIdx + 1, expr.length()).trim();
+                kIdx--;
+                left = expr.substring(0, kIdx).trim();
+            } else {
+                //说明是 '='
+                left = expr.substring(0, kIdx).trim();
+                right = expr.substring(kIdx + 1, expr.length()).trim();
+            }
+
+            String leftV = context.cfg().getByExpr(left);
+
+            if (isNeq) {
+                //!=
+                if (right.equals(leftV)) {
+                    return true;
+                }
+            } else {
+                //==
+                if (right.equals(leftV) == false) {
+                    return true;
+                }
             }
         }
 

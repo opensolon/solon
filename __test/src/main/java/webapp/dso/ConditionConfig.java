@@ -85,13 +85,13 @@ public class ConditionConfig {
         username2 = u2;
     }
 
-    @Condition(onProperty = "${username} = noear")
+    @Condition(onProperty = "${username} == noear")
     @Bean
     public void setUsername3(@Inject("${username}") String u1){
         username3 = u1;
     }
 
-    @Condition(onProperty = "username != noear")
+    @Condition(onProperty = "username != noear") //语法错误
     @Bean
     public void setUsername4(@Inject("${username}") String u1){
         username4 = u1;
