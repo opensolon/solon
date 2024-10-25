@@ -65,8 +65,9 @@ public class BeanWrap {
 
     private final AppContext context;
     private Set<String> genericList;
-    protected Set<String> genericList(){
-        if(genericList == null) {
+
+    protected Set<String> genericList() {
+        if (genericList == null) {
             genericList = new HashSet<>();
         }
 
@@ -153,7 +154,7 @@ public class BeanWrap {
 
         if (raw != null) {
             //如果_raw存在，则进行代理转换
-            raw = proxy.getProxy(context(), raw, rawCon, rawConArgs);
+            raw = proxy.getProxy(context(), name(), raw, rawCon, rawConArgs);
         }
     }
 
@@ -316,7 +317,7 @@ public class BeanWrap {
 
                 //3.尝试代理转换
                 if (proxy != null) {
-                    tmp = proxy.getProxy(context(), tmp, rawCon, rawConArgs);
+                    tmp = proxy.getProxy(context(), name(), tmp, rawCon, rawConArgs);
                 }
 
                 return (T) tmp;
@@ -329,7 +330,7 @@ public class BeanWrap {
 
         //3.尝试代理转换
         if (proxy != null) {
-            tmp = proxy.getProxy(context(), tmp, rawCon, rawConArgs);
+            tmp = proxy.getProxy(context(), name(), tmp, rawCon, rawConArgs);
         }
 
         return (T) tmp;
@@ -392,7 +393,7 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AppContext ctx, Object raw, Constructor rawCon, Object[] rawConArgs);
+        Object getProxy(AppContext ctx, String name, Object raw, Constructor rawCon, Object[] rawConArgs);
     }
 
     /**
