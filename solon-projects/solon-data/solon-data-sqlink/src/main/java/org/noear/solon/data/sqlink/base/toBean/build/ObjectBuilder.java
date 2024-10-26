@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.data.sqlink.base.toBean.build;
 
 
@@ -213,7 +228,7 @@ public class ObjectBuilder<T>
     {
         if (metaData.hasConverter())
         {
-            Class<?> type = metaData.getConverter().getDbType();
+            Class<?> type = metaData.getDbType();
             ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
             Object value = typeHandler.getValue(resultSet, index, cast(type));
             IConverter<?, ?> converter = metaData.getConverter();
@@ -221,27 +236,9 @@ public class ObjectBuilder<T>
         }
         else
         {
-            Type type = metaData.getGenericType();
+            Type type = metaData.isGenericType() ? metaData.getGenericType() : metaData.getType();
             ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
             return typeHandler.getValue(resultSet, index, cast(type));
         }
     }
-
-//    private T defConvertValue() throws SQLException, NoSuchFieldException, IllegalAccessException
-//    {
-//        if (target.isEnum())
-//        {
-//            String Enum = resultSet.getString(1);
-//            return (T) target.getField(Enum).get(null);
-//        }
-//        else if (target == Character.class)
-//        {
-//            String result = resultSet.getString(1);
-//            return (result != null && !result.isEmpty()) ? cast(result.charAt(0)) : null;
-//        }
-//        else
-//        {
-//            return resultSet.getObject(1, target);
-//        }
-//    }
 }

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.data.sqlink.base.metaData;
 
 
@@ -19,6 +34,8 @@ public class PropertyMetaData
     private final boolean ignoreColumn;
     private final NavigateData navigateData;
     private final boolean isPrimaryKey;
+    private final Class<?> dbType;
+    private final Class<?> javaType;
 
     public PropertyMetaData(String property, String column, Method getter, Method setter, Field field, IConverter<?, ?> converter, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey)
     {
@@ -34,6 +51,16 @@ public class PropertyMetaData
         this.converter = converter;
         this.navigateData = navigateData;
         this.isGenericType = field.getGenericType() instanceof ParameterizedType;
+        if (converter != null)
+        {
+            this.dbType = converter.getDbType();
+            this.javaType = converter.getJavaType();
+        }
+        else
+        {
+            this.dbType = null;
+            this.javaType = null;
+        }
     }
 
     public String getProperty()
@@ -109,6 +136,16 @@ public class PropertyMetaData
     public boolean isPrimaryKey()
     {
         return isPrimaryKey;
+    }
+
+    public Class<?> getDbType()
+    {
+        return dbType;
+    }
+
+    public Class<?> getJavaType()
+    {
+        return javaType;
     }
 
     @Override

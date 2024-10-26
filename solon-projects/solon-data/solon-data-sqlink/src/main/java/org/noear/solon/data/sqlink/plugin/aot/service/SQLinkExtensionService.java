@@ -33,7 +33,7 @@ import java.util.Set;
 
 public class SQLinkExtensionService implements IExtensionService
 {
-    private static final String projectVersion = "1.0.14";
+    private static final String projectVersion = "3.0.3-SNAPSHOT";
     private FileObject aotConfig;
     private boolean aotTime;
     private Set<String> AnonymousClassesName = new HashSet<>();
@@ -84,7 +84,6 @@ public class SQLinkExtensionService implements IExtensionService
     private void recodeClasses(TaskEvent event)
     {
         if (event.getKind() != TaskEvent.Kind.ANALYZE) return;
-        String sourceFileName = event.getSourceFile().getName();
         CompilationUnitTree compilationUnit = event.getCompilationUnit();
         for (Tree tree : compilationUnit.getTypeDecls())
         {

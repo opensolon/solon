@@ -127,7 +127,7 @@ public abstract class InsertBase extends CRUD
                         throw new RuntimeException(e);
                     }
                 }
-                sqlValues.add(new SqlValue(converter.getDbType(), values));
+                sqlValues.add(new SqlValue(pro.getDbType(), values));
             }
             else
             {
@@ -142,7 +142,7 @@ public abstract class InsertBase extends CRUD
                         throw new RuntimeException(e);
                     }
                 }
-                sqlValues.add(new SqlValue(pro.getField().getType(), values));
+                sqlValues.add(new SqlValue(pro.getType(), values));
             }
 
         }
