@@ -64,7 +64,7 @@ public class SQLinkExtensionService implements IExtensionService
     private void createAotFile(Context context) throws IOException
     {
         Filer filer = JavacProcessingEnvironment.instance(context).getFiler();
-        aotConfig = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/native-image/io/github/kiryu1223/SQLink/" + projectVersion + "/reflect-config.json");
+        aotConfig = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/native-image/org/noear/solon/data/sqlink/" + projectVersion + "/reflect-config.json");
     }
 
     @Override
