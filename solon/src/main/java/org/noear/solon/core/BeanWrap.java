@@ -393,7 +393,7 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AppContext ctx, String name, Object raw, Constructor rawCon, Object[] rawConArgs);
+        Object getProxy(AppContext ctx, String name, Object bean, Constructor beanCon, Object[] beanConArgs);
     }
 
     /**

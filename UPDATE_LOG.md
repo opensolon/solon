@@ -27,7 +27,6 @@
 * 添加 solon Condition:onProperty 多条件支持
 * 添加 solon-net-stomp 简单事务支持，并添加统一凭据答复
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
-* velocity 升为 2.4.1
 * freemarker 升为 2.3.33
 
 ### v3.0.2
