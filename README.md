@@ -4,7 +4,7 @@
 Solon v3.0.3-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>Java "new" application development framework, restraint, concise, efficient, open, ecological!</strong>
+	<strong>Java "ecological" application development framework, restraint, simple, efficient, open, ecological!</strong>
     <br/>
     <strong>[OpenAtom foundation, incubation project]</strong>
 </p>
