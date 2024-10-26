@@ -40,8 +40,8 @@ public class BeanWrap {
     // bean lifecycle
     private BeanWrapLifecycle lifecycle;
     // bean raw（初始实例）
-    private Constructor rawCon;
-    private Object[] rawConArgs;
+    private Constructor rawCtor;
+    private Object[] rawCtorArgs;
     private Object raw;
     private Object rawUnproxied;
     private Class<?> rawClz;
@@ -101,21 +101,21 @@ public class BeanWrap {
         this(context, clz, raw, name, typed, initMethodName, destroyMethodName, null, null);
     }
 
-    public BeanWrap(AppContext context, Class<?> clz, Constructor rawCon, Object[] rawConArgs) {
-        this(context, clz, null, null, false, null, null, rawCon, rawConArgs);
+    public BeanWrap(AppContext context, Class<?> clz, Constructor rawCtor, Object[] rawCtorArgs) {
+        this(context, clz, null, null, false, null, null, rawCtor, rawCtorArgs);
     }
 
     /**
      * @since 1.10
      */
-    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName, Constructor rawCon, Object[] rawConArgs) {
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed, String initMethodName, String destroyMethodName, Constructor rawCtor, Object[] rawCtorArgs) {
         this.context = context;
         this.clz = clz;
         this.name = name;
         this.typed = typed;
 
-        this.rawCon = rawCon;
-        this.rawConArgs = rawConArgs;
+        this.rawCtor = rawCtor;
+        this.rawCtorArgs = rawCtorArgs;
 
         //不否为单例
         Singleton anoS = clz.getAnnotation(Singleton.class);
@@ -175,7 +175,7 @@ public class BeanWrap {
 
         if (raw != null) {
             //如果_raw存在，则进行代理转换
-            raw = proxy.getProxy(context(), name(), raw, rawCon, rawConArgs);
+            raw = proxy.getProxy(this, raw);
         }
     }
 
@@ -220,6 +220,20 @@ public class BeanWrap {
      */
     public Method clzDestroy() {
         return lifecycle.destroyMethod();
+    }
+
+    /**
+     * bean 类构造函数
+     */
+    public Constructor clzCtor() {
+        return rawCtor;
+    }
+
+    /**
+     * bean 类构造函数参数
+     */
+    public Object[] clzCtorArgs() {
+        return rawCtorArgs;
     }
 
     /**
@@ -352,27 +366,27 @@ public class BeanWrap {
             if (singleton) {
                 return (T) raw;
             } else {
-                Object tmp = _new(); //如果是 interface ，则返回 _raw
+                Object bean = _new(); //如果是 interface ，则返回 _raw
 
                 //3.尝试代理转换
                 if (proxy != null) {
-                    tmp = proxy.getProxy(context(), name(), tmp, rawCon, rawConArgs);
+                    bean = proxy.getProxy(this, bean);
                 }
 
-                return (T) tmp;
+                return (T) bean;
             }
         }
     }
 
     public <T> T create() {
-        Object tmp = _new(); //如果是 interface ，则返回 _raw
+        Object bean = _new(); //如果是 interface ，则返回 _raw
 
         //3.尝试代理转换
         if (proxy != null) {
-            tmp = proxy.getProxy(context(), name(), tmp, rawCon, rawConArgs);
+            bean = proxy.getProxy(this, bean);
         }
 
-        return (T) tmp;
+        return (T) bean;
     }
 
 
@@ -386,12 +400,12 @@ public class BeanWrap {
 
         try {
             //1.构造
-            if (rawCon == null) {
-                rawCon = clz.getDeclaredConstructor();
-                rawConArgs = new Object[]{};
+            if (rawCtor == null) {
+                rawCtor = rawClz().getDeclaredConstructor();
+                rawCtorArgs = new Object[]{};
             }
 
-            Object bean = ClassUtil.newInstance(rawCon, rawConArgs);
+            Object bean = ClassUtil.newInstance(rawCtor, rawCtorArgs);
 
             //2.完成注入动作
             context.beanInject(bean);
@@ -432,7 +446,7 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AppContext ctx, String name, Object bean, Constructor beanCon, Object[] beanConArgs);
+        Object getProxy(BeanWrap bw, Object bean);
     }
 
     /**
