@@ -144,11 +144,32 @@ public class BeanWrap {
         return context;
     }
 
+    private boolean isDoned;
+
+    /**
+     * 包装已完成的（完成后，不能再修改元信息）
+     */
+    public boolean isDoned() {
+        return isDoned;
+    }
+
+    /**
+     * 完成（完成后，不能再修改元信息）
+     */
+    public void done() {
+        isDoned = true;
+    }
+
+    /**
+     * 获取代理
+     */
     public Proxy proxy() {
         return proxy;
     }
 
-    //设置代理
+    /**
+     * 设置代理
+     */
     public void proxySet(BeanWrap.Proxy proxy) {
         this.proxy = proxy;
 

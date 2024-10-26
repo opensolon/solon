@@ -838,6 +838,7 @@ public class AppContext extends BeanContainer {
 
                 //确定顺序位
                 m_bw.indexSet(anno.index());
+                m_bw.done();
 
                 //特定能力接口交付
                 if (anno.delivered()) {
@@ -958,6 +959,7 @@ public class AppContext extends BeanContainer {
         //执行构建
         builder.doBuild(clz, bw, anno);
         //尝试入库
+        bw.done();
         this.putWrap(clz, bw);
     }
 
