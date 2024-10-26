@@ -256,22 +256,35 @@ public class BeanWrap {
     }
 
     /**
-     * bean 标签
+     * bean 名字
      */
     public String name() {
         return name;
     }
 
-    protected void nameSet(String name) {
-        this.name = name;
+    /**
+     * bean 名字设置
+     */
+    public void nameSet(String name) {
+        if (isDoned() == false) {
+            this.name = name;
+        }
     }
 
+    /**
+     * bean 序位
+     */
     public int index() {
         return index;
     }
 
-    protected void indexSet(int index) {
-        this.index = index;
+    /**
+     * bean 序位设置
+     */
+    public void indexSet(int index) {
+        if (isDoned() == false) {
+            this.index = index;
+        }
     }
 
     /**
@@ -281,8 +294,11 @@ public class BeanWrap {
         return tag;
     }
 
-    protected void tagSet(String tag) {
-        if (this.tag == null) {
+    /**
+     * bean 标签设置
+     */
+    public void tagSet(String tag) {
+        if (isDoned() == false) {
             this.tag = tag;
         }
     }
@@ -294,8 +310,10 @@ public class BeanWrap {
         return typed;
     }
 
-    protected void typedSet(boolean typed) {
-        this.typed = typed;
+    public void typedSet(boolean typed) {
+        if (isDoned() == false) {
+            this.typed = typed;
+        }
     }
 
     /**
