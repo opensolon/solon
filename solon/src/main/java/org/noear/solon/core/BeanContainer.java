@@ -24,6 +24,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.util.TypeMap;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -185,7 +186,7 @@ public abstract class BeanContainer {
     /**
      * wrap 外部消费者
      */
-    private final Set<Consumer<BeanWrap>> wrapExternalConsumers = new LinkedHashSet<>();
+    private final List<RankEntity<Consumer<BeanWrap>>> wrapExternalConsumers = new ArrayList<>();
 
 
     public void clear() {
@@ -350,10 +351,14 @@ public abstract class BeanContainer {
     /**
      * wrap 外部订阅
      */
-    protected void wrapExternalSubscribe(Consumer<BeanWrap> callback) {
+    protected void wrapExternalSubscribe(Consumer<BeanWrap> callback, int index) {
         SYNC_LOCK.lock();
         try {
-            wrapExternalConsumers.add(callback);
+            wrapExternalConsumers.add(new RankEntity<>(callback, index));
+            if (index < 0) {
+                //减少排序
+                Collections.sort(wrapExternalConsumers);
+            }
         } finally {
             SYNC_LOCK.unlock();
         }
@@ -388,8 +393,8 @@ public abstract class BeanContainer {
         //避免在forEach时，对它进行add
         SYNC_LOCK.lock();
         try {
-            for (Consumer<BeanWrap> s1 : wrapExternalConsumers) {
-                s1.accept(wrap);
+            for (RankEntity<Consumer<BeanWrap>> s1 : wrapExternalConsumers) {
+                s1.target.accept(wrap);
             }
         } finally {
             SYNC_LOCK.unlock();
@@ -525,6 +530,15 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
+        subWrapsOfType(baseType, callback, 0);
+    }
+
+    /**
+     * 订阅某类型的 bean 包装
+     *
+     * @param baseType 基类
+     */
+    public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback, int index) {
         //获取现有的
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
@@ -537,7 +551,7 @@ public abstract class BeanContainer {
             if (baseType.isAssignableFrom(bw.rawClz())) {
                 callback.accept(bw);
             }
-        });
+        }, index);
     }
 
     /**

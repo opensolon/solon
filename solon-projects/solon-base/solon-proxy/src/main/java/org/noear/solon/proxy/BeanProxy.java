@@ -45,7 +45,7 @@ public class BeanProxy implements BeanWrap.Proxy {
      * 获取代理
      */
     @Override
-    public Object getProxy(AppContext context, String name, Object raw, Constructor rawCon, Object[] rawConArgs) {
-        return new BeanInvocationHandler(context, handler, raw, rawCon, rawConArgs).getProxy();
+    public Object getProxy(BeanWrap bw, Object bean) {
+        return new BeanInvocationHandler(handler, bw, bean).getProxy();
     }
 }
