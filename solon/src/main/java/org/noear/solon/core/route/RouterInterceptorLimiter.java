@@ -19,8 +19,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.Parameter;
-
 /**
  * 路由拦截器-限制器（根据路由规则限制）
  *

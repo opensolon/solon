@@ -20,8 +20,6 @@ import org.noear.solon.core.PluginEntity;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 import java.util.function.Consumer;
 

@@ -30,7 +30,6 @@ import org.noear.solon.annotation.Inject;
  * @since 1.6
  */
 public class IndexBuilder {
-
 	private final Map<String, Integer> map = new HashMap<>();
 	private final ArrayList<String> classStack = new ArrayList<>();
 
