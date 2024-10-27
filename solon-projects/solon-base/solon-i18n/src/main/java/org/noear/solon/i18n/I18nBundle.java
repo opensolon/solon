@@ -19,7 +19,6 @@ import org.noear.solon.core.Props;
 
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * 国际化内容包

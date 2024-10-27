@@ -73,7 +73,7 @@ public class RepackageMojo extends AbstractMojo {
     @Parameter(defaultValue = "true")
     public boolean includeSystemScope;
 
-    @Parameter( defaultValue = "${project}", readonly = true )
+    @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
     /**

@@ -18,7 +18,6 @@ package org.noear.solon.cloud.model;
 import org.noear.solon.core.Props;
 
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * 数据包

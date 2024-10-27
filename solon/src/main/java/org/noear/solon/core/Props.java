@@ -518,7 +518,7 @@ public class Props extends Properties {
 
     protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
         //加载配置
-        this.loadAddDo( props,  toSystem,  addIfAbsent, false);
+        this.loadAddDo(props, toSystem, addIfAbsent, false);
         //校正配置
         this.reviseDo(false);
     }

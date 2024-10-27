@@ -16,7 +16,6 @@
 package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.dso.JtBridge;
-import org.noear.luffy.dso.JtFun;
 import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
@@ -25,7 +24,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.ContextUtil;
 
-import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 

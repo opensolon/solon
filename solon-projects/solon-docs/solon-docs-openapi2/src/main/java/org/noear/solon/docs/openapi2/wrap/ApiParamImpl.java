@@ -15,7 +15,6 @@
  */
 package org.noear.solon.docs.openapi2.wrap;
 
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.Example;
 

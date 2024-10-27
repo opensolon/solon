@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.solon.validation.annotation.Length;
 import org.noear.solon.validation.annotation.NotBlank;
-import org.noear.solon.validation.annotation.NotNull;
 
 /**
  * 注册账号实体类

@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package webapp.demo5_rpc.rpc_customer;
+package webapp.demoa_interceptor;
 
-import org.noear.nami.Nami;
-import webapp.demo5_rpc.rockapi;
-
-public class demo5_consume {
-    public static void main(String[] args){
-        rockapi client =  Nami.builder().create(rockapi.class);
+import org.noear.solon.annotation.Addition;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.Context;
 
 
-        Object val = client.test1(12);
-        if(val == null){
-            return;
-        }
+@Addition({BeforeHandlerBean.Before1.class, BeforeHandlerBean.Before2.class, BeforeHandlerBean.Before3.class, AfterHandler.class})
+@Mapping("/demoa/trigger")
+@Controller
+public class DemoaHandler {
+    @Mapping
+    public void handle(Context context) throws Throwable {
+        context.output(context.path());
     }
 }

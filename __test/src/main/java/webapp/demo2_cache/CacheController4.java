@@ -18,11 +18,9 @@ package webapp.demo2_cache;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
 import webapp.models.UserModel;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Controller

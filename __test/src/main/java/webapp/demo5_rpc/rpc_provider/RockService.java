@@ -19,7 +19,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Remoting;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
-import webapp.demo5_rpc.rockapi;
+import webapp.demo5_rpc.RockApi;
 import webapp.models.UserModel;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 //@Before({SocketChannelAdapter.class})
 @Mapping(value = "/demo5/test", method = {MethodType.HTTP, MethodType.SOCKET})
 @Remoting
-public class rockservice implements rockapi {
+public class RockService implements RockApi {
 
     @Override
     public Object test1(Integer a) {

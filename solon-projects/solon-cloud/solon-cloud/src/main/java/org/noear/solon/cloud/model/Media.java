@@ -16,7 +16,6 @@
 package org.noear.solon.cloud.model;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.core.util.IoUtil;
 

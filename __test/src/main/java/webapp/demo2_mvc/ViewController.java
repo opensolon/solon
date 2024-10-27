@@ -18,7 +18,6 @@ package webapp.demo2_mvc;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.core.handle.ModelAndView;
-import org.noear.solon.i18n.annotation.I18n;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -42,8 +41,8 @@ public class ViewController {
 
         model.put("bool",true);
         model.put("int",12);
-        model.put("long",12l);
-        model.put("double",12.12d);
+        model.put("long",12L);
+        model.put("double",12.12D);
         model.put("date",new Date());
         model.put("local_date", LocalDate.now());
 

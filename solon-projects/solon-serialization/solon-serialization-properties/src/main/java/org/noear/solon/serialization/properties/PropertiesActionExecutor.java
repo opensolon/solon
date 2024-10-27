@@ -26,7 +26,6 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Properties 动作执行器

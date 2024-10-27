@@ -15,9 +15,6 @@
  */
 package org.noear.solon.docs;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.LoadBalance;
-
 import java.io.Serializable;
 import java.net.URI;
 

@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Mapping("/demo5/rpctest/")
 @Controller
-public class rpctest implements Handler {
+public class RpcTest implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
@@ -45,10 +45,10 @@ public class rpctest implements Handler {
     private Object httpOf() {
         String root = "http://localhost:" + Solon.cfg().serverPort();
 
-        rockapi client = Nami.builder()
+        RockApi client = Nami.builder()
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
-                .create(rockapi.class);
+                .create(RockApi.class);
 
         return client.test1(12);
     }
@@ -56,8 +56,8 @@ public class rpctest implements Handler {
     private Object socketOf() {
         int _port = 20000 + Solon.cfg().serverPort();
 
-        rockapi client = Nami.builder().upstream(() -> "tcp://localhost:" + _port)
-                .create(rockapi.class);
+        RockApi client = Nami.builder().upstream(() -> "tcp://localhost:" + _port)
+                .create(RockApi.class);
 
         return client.test1(12);
     }

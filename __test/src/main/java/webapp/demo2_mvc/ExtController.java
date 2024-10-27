@@ -24,5 +24,5 @@ import webapp.models.UserModel;
  */
 @Mapping("/demo2/ext/")
 @Controller
-public class ExtController extends ExtControllerBase<UserModel>{
+public class ExtController extends ExtControllerBase<UserModel> {
 }

@@ -50,6 +50,11 @@ public class MethodDigest {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "MethodDigest{" +
                 "access=" + access +

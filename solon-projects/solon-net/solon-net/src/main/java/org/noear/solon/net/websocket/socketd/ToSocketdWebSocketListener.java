@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * 转到 Sokcet.D 协议的 WebSocketListener（服务端、客户端，都可用）

@@ -20,7 +20,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.slf4j.Logger;

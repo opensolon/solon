@@ -19,7 +19,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.handle.HandlerPipeline;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.*;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;

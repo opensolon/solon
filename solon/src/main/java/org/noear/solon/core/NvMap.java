@@ -89,7 +89,7 @@ public class NvMap extends IgnoreCaseMap<String> {
     }
 
     public long getLong(String key) {
-        return getLong(key, 0l);
+        return getLong(key, 0L);
     }
 
     public long getLong(String key, long def) {

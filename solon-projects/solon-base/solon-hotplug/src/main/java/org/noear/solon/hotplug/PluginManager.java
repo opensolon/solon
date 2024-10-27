@@ -16,13 +16,8 @@
 package org.noear.solon.hotplug;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.util.PluginUtil;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 

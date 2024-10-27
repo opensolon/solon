@@ -15,10 +15,8 @@
  */
 package org.noear.solon.proxy;
 
-import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
 /**

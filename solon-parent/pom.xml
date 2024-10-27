@@ -421,6 +421,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-data-sqlink</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-data-dynamicds</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -2159,6 +2164,67 @@
                     <artifactId>solon-aot</artifactId>
                 </dependency>
             </dependencies>
+        </profile>
+        <!-- profile: checkstyle -->
+        <profile>
+            <id>checkstyle</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>remove</goal>
+                                    <goal>format</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <quiet>true</quiet>
+                            <header>${user.dir}/style/copyright</header>
+                            <includes>
+                                <include>**/src/main/java/**</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/script/**</exclude>
+                                <exclude>**/generated/**</exclude>
+                            </excludes>
+                            <strictCheck>true</strictCheck>
+                            <mapping>
+                                <java>SLASHSTAR_STYLE</java>
+                                <lua>DOUBLEBAR_STYLE</lua>
+                                <conf>SCRIPT_STYLE</conf>
+                                <def>SCRIPT_STYLE</def>
+                            </mapping>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <configuration>
+                                    <configLocation>${user.dir}/style/solon_checkstyle.xml</configLocation>
+                                    <suppressionsLocation>${user.dir}/style/solon_suppressions.xml</suppressionsLocation>
+                                    <consoleOutput>true</consoleOutput>
+                                    <failsOnError>true</failsOnError>
+                                </configuration>
+                                <goals>
+                                    <goal>checkstyle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
