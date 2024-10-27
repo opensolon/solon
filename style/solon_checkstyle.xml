@@ -91,9 +91,9 @@
 <!--            <property name="format" value="^[A-Z0-9]*$"/>-->
 <!--        </module>-->
         <!--Validates identifiers for method type parameters-->
-        <module name="MethodTypeParameterName">
-            <property name="format" value="^[A-Z0-9]*$"/>
-        </module>
+<!--        <module name="MethodTypeParameterName">-->
+<!--            <property name="format" value="^[A-Z0-9]*$"/>-->
+<!--        </module>-->
         <module name="PackageName"/>
 <!--        <module name="ParameterName"/>-->
         <module name="StaticVariableName">
