@@ -13,9 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.core.api.crud.read.group;
+package org.noear.solon.data.sqlink.core.exception;
 
-public class Group10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends SqlAggregation10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> implements IGroup
+public class Winner
 {
-    public Key key;
+    private final static boolean win = true;
+
+    public static void boom()
+    {
+        if (win)
+        {
+            throw new SqlFunctionInvokeException();
+        }
+    }
 }

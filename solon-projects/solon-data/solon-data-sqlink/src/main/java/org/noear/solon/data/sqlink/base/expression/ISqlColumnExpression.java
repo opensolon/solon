@@ -17,7 +17,6 @@ package org.noear.solon.data.sqlink.base.expression;
 
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
 public interface ISqlColumnExpression extends ISqlExpression

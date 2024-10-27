@@ -24,44 +24,44 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public abstract class SqlExpressionFactory
+public interface SqlExpressionFactory
 {
-    public abstract ISqlAsExpression as(ISqlExpression expression, String asName);
+    ISqlAsExpression as(ISqlExpression expression, String asName);
 
-    public ISqlColumnExpression column(PropertyMetaData propertyMetaData)
+    default ISqlColumnExpression column(PropertyMetaData propertyMetaData)
     {
         return column(propertyMetaData, 0);
     }
 
-    public abstract ISqlColumnExpression column(PropertyMetaData propertyMetaData, int tableIndex);
+    ISqlColumnExpression column(PropertyMetaData propertyMetaData, int tableIndex);
 
-    public abstract ISqlConditionsExpression condition();
+    ISqlConditionsExpression condition();
 
-    public ISqlFromExpression from(ISqlTableExpression sqlTable)
+    default ISqlFromExpression from(ISqlTableExpression sqlTable)
     {
         return from(sqlTable, 0);
     }
 
-    public abstract ISqlFromExpression from(ISqlTableExpression sqlTable, int index);
+    ISqlFromExpression from(ISqlTableExpression sqlTable, int index);
 
-    public abstract ISqlGroupByExpression groupBy();
+    ISqlGroupByExpression groupBy();
 
-    public ISqlGroupByExpression groupBy(LinkedHashMap<String, ISqlExpression> columns)
+    default ISqlGroupByExpression groupBy(LinkedHashMap<String, ISqlExpression> columns)
     {
         ISqlGroupByExpression groupByExpression = groupBy();
         groupByExpression.setColumns(columns);
         return groupByExpression;
     }
 
-    public abstract ISqlHavingExpression having();
+    ISqlHavingExpression having();
 
-    public abstract ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index);
+    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index);
 
-    public abstract ISqlJoinsExpression Joins();
+    ISqlJoinsExpression Joins();
 
-    public abstract ISqlLimitExpression limit();
+    ISqlLimitExpression limit();
 
-    public ISqlLimitExpression limit(long offset, long rows)
+    default ISqlLimitExpression limit(long offset, long rows)
     {
         ISqlLimitExpression limit = limit();
         limit.setOffset(offset);
@@ -69,61 +69,61 @@ public abstract class SqlExpressionFactory
         return limit;
     }
 
-    public abstract ISqlOrderByExpression orderBy();
+    ISqlOrderByExpression orderBy();
 
-    public ISqlOrderExpression order(ISqlExpression expression)
+    default ISqlOrderExpression order(ISqlExpression expression)
     {
         return order(expression, true);
     }
 
-    public abstract ISqlOrderExpression order(ISqlExpression expression, boolean asc);
+    ISqlOrderExpression order(ISqlExpression expression, boolean asc);
 
-    public ISqlQueryableExpression queryable(Class<?> target)
+    default ISqlQueryableExpression queryable(Class<?> target)
     {
         return queryable(from(table(target), 0));
     }
 
-    public ISqlQueryableExpression queryable(Class<?> target, int offset)
+    default ISqlQueryableExpression queryable(Class<?> target, int offset)
     {
         return queryable(from(table(target), offset));
     }
 
-    public ISqlQueryableExpression queryable(ISqlFromExpression from)
+    default ISqlQueryableExpression queryable(ISqlFromExpression from)
     {
         return queryable(select(from.getSqlTableExpression().getTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
-    public ISqlQueryableExpression queryable(ISqlTableExpression table)
+    default ISqlQueryableExpression queryable(ISqlTableExpression table)
     {
         return queryable(from(table));
     }
 
-    public abstract ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit);
+    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit);
 
-    public abstract ISqlRealTableExpression table(Class<?> tableClass);
+    ISqlRealTableExpression table(Class<?> tableClass);
 
-    public ISqlSelectExpression select(Class<?> target)
+    default ISqlSelectExpression select(Class<?> target)
     {
         return select(getColumnByClass(target), target, false, false);
     }
 
-    public ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target)
+    default ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target)
     {
         return select(column, target, false, false);
     }
 
-    public abstract ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target, boolean isSingle, boolean isDistinct);
+    ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target, boolean isSingle, boolean isDistinct);
 
-    public ISqlWhereExpression where()
+    default ISqlWhereExpression where()
     {
         return where(condition());
     }
 
-    public abstract ISqlWhereExpression where(ISqlConditionsExpression conditions);
+    ISqlWhereExpression where(ISqlConditionsExpression conditions);
 
-    public abstract ISqlSetExpression set(ISqlColumnExpression column, ISqlExpression value);
+    ISqlSetExpression set(ISqlColumnExpression column, ISqlExpression value);
 
-    public ISqlValueExpression AnyValue(Object value)
+    default ISqlValueExpression AnyValue(Object value)
     {
         if (value instanceof Collection<?>)
         {
@@ -136,25 +136,25 @@ public abstract class SqlExpressionFactory
         }
     }
 
-    public abstract ISqlSingleValueExpression value(Object value);
+    ISqlSingleValueExpression value(Object value);
 
-    public abstract ISqlCollectedValueExpression value(Collection<Object> value);
+    ISqlCollectedValueExpression value(Collection<Object> value);
 
-    public abstract ISqlTemplateExpression template(List<String> templates, List<? extends ISqlExpression> expressions);
+    ISqlTemplateExpression template(List<String> templates, List<? extends ISqlExpression> expressions);
 
-    public abstract ISqlBinaryExpression binary(SqlOperator operator, ISqlExpression left, ISqlExpression right);
+    ISqlBinaryExpression binary(SqlOperator operator, ISqlExpression left, ISqlExpression right);
 
-    public abstract ISqlUnaryExpression unary(SqlOperator operator, ISqlExpression expression);
+    ISqlUnaryExpression unary(SqlOperator operator, ISqlExpression expression);
 
-    public abstract ISqlParensExpression parens(ISqlExpression expression);
+    ISqlParensExpression parens(ISqlExpression expression);
 
-    public abstract ISqlConstStringExpression constString(String s);
+    ISqlConstStringExpression constString(String s);
 
-    public abstract ISqlSetsExpression sets();
+    ISqlSetsExpression sets();
 
-    public abstract ISqlTypeExpression type(Class<?> c);
+    ISqlTypeExpression type(Class<?> c);
 
-    private List<ISqlExpression> getColumnByClass(Class<?> target)
+    default List<ISqlExpression> getColumnByClass(Class<?> target)
     {
         MetaData metaData = MetaDataCache.getMetaData(target);
         List<PropertyMetaData> property = metaData.getNotIgnorePropertys();
