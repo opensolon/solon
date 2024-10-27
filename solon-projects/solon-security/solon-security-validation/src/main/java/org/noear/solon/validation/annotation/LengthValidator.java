@@ -20,8 +20,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
 
-import java.time.format.DateTimeFormatter;
-
 /**
  *
  * @author noear

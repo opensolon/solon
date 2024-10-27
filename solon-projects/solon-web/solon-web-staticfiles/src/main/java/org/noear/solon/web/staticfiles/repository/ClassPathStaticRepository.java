@@ -22,7 +22,6 @@ import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticRepository;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 
 /**

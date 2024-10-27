@@ -16,7 +16,6 @@
 package org.noear.solon.health.detector.impl;
 
 import org.noear.solon.health.detector.AbstractDetector;
-import org.noear.solon.health.detector.util.CmdUtil;
 import org.noear.solon.health.detector.util.SizeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 

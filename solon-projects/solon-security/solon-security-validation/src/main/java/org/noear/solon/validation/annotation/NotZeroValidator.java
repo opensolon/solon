@@ -15,7 +15,6 @@
  */
 package org.noear.solon.validation.annotation;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;

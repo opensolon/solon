@@ -16,7 +16,6 @@
 package org.noear.solon.net.stomp;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 
 /**

@@ -33,7 +33,6 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

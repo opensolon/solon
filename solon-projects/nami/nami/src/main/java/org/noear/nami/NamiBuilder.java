@@ -17,7 +17,6 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 

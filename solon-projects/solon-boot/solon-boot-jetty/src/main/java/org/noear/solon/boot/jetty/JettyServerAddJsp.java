@@ -24,7 +24,6 @@ import org.noear.solon.boot.jetty.jsp.JspTldLocator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.descriptor.TaglibDescriptor;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;

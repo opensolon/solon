@@ -357,7 +357,7 @@ public class ValidatorManager {
 
                         if (VALIDATE_ALL){
                             result.setCode(rst.getCode());
-                            if (rst.getData() instanceof BeanValidateInfo ) {
+                            if (rst.getData() instanceof BeanValidateInfo) {
                                 list.add((BeanValidateInfo) rst.getData());
                             }else if (rst.getData() instanceof Collection){
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();

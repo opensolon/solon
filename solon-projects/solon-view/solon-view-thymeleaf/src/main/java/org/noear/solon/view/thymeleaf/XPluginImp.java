@@ -16,7 +16,6 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;

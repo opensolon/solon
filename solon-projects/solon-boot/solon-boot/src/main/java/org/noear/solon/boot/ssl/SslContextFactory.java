@@ -16,12 +16,10 @@
 package org.noear.solon.boot.ssl;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;

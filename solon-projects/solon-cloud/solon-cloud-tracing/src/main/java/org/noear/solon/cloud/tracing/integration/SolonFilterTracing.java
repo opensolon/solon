@@ -30,7 +30,6 @@ import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**

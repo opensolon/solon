@@ -15,8 +15,6 @@
  */
 package org.noear.nami.annotation;
 
-import org.noear.solon.annotation.Note;
-
 import java.lang.annotation.*;
 
 /**

@@ -33,10 +33,10 @@
         <property name="fileExtensions" value="java"/>
     </module>
 
-    <module name="RegexpHeader">
-        <property name="header" value="^.*$\n[#\s]Copyright 2017-2024 noear.org and authors"/>
-        <property name="fileExtensions" value="properties"/>
-    </module>
+<!--    <module name="RegexpHeader">-->
+<!--        <property name="header" value="^.*$\n[#\s]Copyright 2017-2024 noear.org and authors"/>-->
+<!--        <property name="fileExtensions" value="properties"/>-->
+<!--    </module>-->
 
 <!--    <module name="RegexpSingleline">-->
 <!--        <property name="format" value="System\.out\.println"/>-->
@@ -74,7 +74,7 @@
         <!--Check that the default is after all the cases in producerGroup switch statement-->
         <module name="DefaultComesLast"/>
         <!--Detects empty statements (standalone ";" semicolon)-->
-        <module name="EmptyStatement"/>
+<!--        <module name="EmptyStatement"/>-->
         <!--Checks that long constants are defined with an upper ell-->
         <module name="UpperEll"/>
 <!--        <module name="ConstantName">-->

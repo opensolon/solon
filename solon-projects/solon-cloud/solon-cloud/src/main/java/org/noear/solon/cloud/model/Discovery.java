@@ -15,8 +15,6 @@
  */
 package org.noear.solon.cloud.model;
 
-import org.noear.solon.Solon;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;

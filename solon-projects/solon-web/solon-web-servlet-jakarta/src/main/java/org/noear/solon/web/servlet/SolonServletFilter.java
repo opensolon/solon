@@ -16,7 +16,6 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.core.handle.Handler;

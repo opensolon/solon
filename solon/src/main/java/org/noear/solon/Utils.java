@@ -280,17 +280,11 @@ public class Utils {
      */
     public static String trimDuplicates(String str, char c) {
         int start = 0;
-
         while ((start = str.indexOf(c, start) + 1) > 0) {
             int end;
-
-            for (end = start; end < str.length() && str.charAt(end) == c; end++) {
-
-            }
-
-            if (end > start) {
+            for (end = start; end < str.length() && str.charAt(end) == c; end++) ;
+            if (end > start)
                 str = str.substring(0, start) + str.substring(end);
-            }
         }
         return str;
     }

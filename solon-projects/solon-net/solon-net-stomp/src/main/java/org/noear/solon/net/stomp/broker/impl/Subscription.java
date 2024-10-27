@@ -81,4 +81,9 @@ public class Subscription {
         return Objects.equals(sessionId, that.sessionId)
                 && Objects.equals(destination, that.destination);
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

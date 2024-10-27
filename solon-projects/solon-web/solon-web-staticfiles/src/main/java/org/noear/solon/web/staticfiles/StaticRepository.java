@@ -15,7 +15,6 @@
  */
 package org.noear.solon.web.staticfiles;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 
 import java.io.InputStream;
