@@ -62,6 +62,13 @@ public class HttpParam2Test extends HttpTester {
 
     @Test
     public void test4_2() throws IOException {
+        assert path("/demo2/param2/anno/name").data("n2", "noear").get().equals("noear");
+
+        assert path("/demo2/param2/anno/name").data("n2", "hi").get().equals("hi");
+    }
+
+    @Test
+    public void test4_3() throws IOException {
         assert path("/demo2/param2/anno/name").bodyOfJson("{\"n2\":\"noear\"}").post().equals("noear");
 
         assert path("/demo2/param2/anno/name").bodyOfJson("{\"n2\":\"hi\"}").post().equals("hi");
