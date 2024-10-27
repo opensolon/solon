@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package webapp.demo5_rpc;
+package webapp.demo5_rpc.rpc_customer;
 
-import org.noear.nami.annotation.NamiClient;
-import webapp.models.UserModel;
+import org.noear.nami.Nami;
+import webapp.demo5_rpc.RockApi;
 
-import java.util.List;
+public class Demo5Consume {
+    public static void main(String[] args){
+        RockApi client =  Nami.builder().create(RockApi.class);
 
-@NamiClient(name = "demo",path = "/demo5/test/", timeout = 20)
-public interface rockapi {
-    Object test1(Integer a);
-    Object test2(int b);
-    Object test3();
-    UserModel test4();
-    List<UserModel> test5();
 
-    Object testerror();
-
-    default Object textdef(){
-        return test3();
+        Object val = client.test1(12);
+        if(val == null){
+            return;
+        }
     }
 }

@@ -22,12 +22,12 @@ import org.noear.solon.core.handle.Context;
 import java.util.Date;
 
 @Controller
-public class test {
+public class Test {
     @Mapping("/demob/session/setval")
     public void setVal(Context ctx) {
         ctx.sessionSet("v1", new Date());
         ctx.sessionSet("v2", "我是字符串");
-        ctx.sessionSet("v3", 121212l);
+        ctx.sessionSet("v3", 121212L);
     }
 
     @Mapping(value = "/demob/session/getval", produces = "text/html;charset=utf-8")

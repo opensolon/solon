@@ -41,7 +41,7 @@ public class DemoService {
 
     //监听事件并处理
     @Component
-    public static class HelloEventListener implements EventListener<HelloEvent>{
+    public static class HelloEventListener implements EventListener<HelloEvent> {
         @Override
         public void onEvent(HelloEvent event) throws Throwable {
             event.getName();

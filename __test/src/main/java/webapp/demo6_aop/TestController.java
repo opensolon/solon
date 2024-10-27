@@ -22,7 +22,6 @@ import org.noear.solon.annotation.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Controller
 public class TestController extends TestControllerBase{

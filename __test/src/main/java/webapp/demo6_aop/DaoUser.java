@@ -22,5 +22,5 @@ import webapp.models.UserD;
  * @author noear 2023/10/8 created
  */
 @Component
-public class DaoUser extends DaoBase<UserD>{
+public class DaoUser extends DaoBase<UserD> {
 }

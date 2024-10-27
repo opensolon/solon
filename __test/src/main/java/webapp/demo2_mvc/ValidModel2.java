@@ -17,7 +17,6 @@ package webapp.demo2_mvc;
 
 import lombok.Data;
 import org.noear.solon.validation.annotation.*;
-import webapp.demo5_rpc.rpc_gateway.Interceptor;
 
 import java.util.List;
 

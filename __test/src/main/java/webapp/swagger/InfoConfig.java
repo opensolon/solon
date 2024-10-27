@@ -15,9 +15,6 @@
  */
 package webapp.swagger;
 
-//import io.swagger.models.Contact;
-//import io.swagger.models.Info;
-import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 
 @Configuration

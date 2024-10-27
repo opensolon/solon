@@ -421,6 +421,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-data-sqlink</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-data-dynamicds</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -2163,9 +2168,9 @@
         <!-- profile: checkstyle -->
         <profile>
             <id>checkstyle</id>
-<!--            <activation>-->
-<!--                <jdk>[1.8,)</jdk>-->
-<!--            </activation>-->
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -2189,9 +2194,6 @@
                             <excludes>
                                 <exclude>**/script/**</exclude>
                                 <exclude>**/generated/**</exclude>
-                                <exclude>**/antlr/mysql/parser/*.*</exclude>
-                                <exclude>**/antlr/mysql/antlr/*.*</exclude>
-                                <exclude>**/antlr/mysql/stream/ANTLRNoCaseStringStream.java</exclude>
                             </excludes>
                             <strictCheck>true</strictCheck>
                             <mapping>
@@ -2213,7 +2215,7 @@
                                     <configLocation>${user.dir}/style/solon_checkstyle.xml</configLocation>
                                     <suppressionsLocation>${user.dir}/style/solon_suppressions.xml</suppressionsLocation>
                                     <consoleOutput>true</consoleOutput>
-<!--                                    <failsOnError>true</failsOnError>-->
+                                    <failsOnError>true</failsOnError>
                                 </configuration>
                                 <goals>
                                     <goal>checkstyle</goal>

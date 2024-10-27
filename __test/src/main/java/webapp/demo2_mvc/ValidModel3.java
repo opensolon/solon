@@ -18,9 +18,6 @@ package webapp.demo2_mvc;
 import lombok.Data;
 import org.noear.solon.validation.annotation.*;
 
-import java.util.List;
-
-
 /**
  * @author noear 2021/5/11 created
  */

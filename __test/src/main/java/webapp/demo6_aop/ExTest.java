@@ -15,8 +15,6 @@
  */
 package webapp.demo6_aop;
 
-import org.noear.solon.annotation.Mapping;
-
 import java.lang.annotation.*;
 
 /**

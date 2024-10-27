@@ -37,8 +37,8 @@ public class JsonRpcController {
 
         model.put("bool", true);
         model.put("int", 12);
-        model.put("long", 12l);
-        model.put("double", 12.12d);
+        model.put("long", 12L);
+        model.put("double", 12.12D);
         model.put("date", new Date());
         model.put("local_date", LocalDate.now());
 

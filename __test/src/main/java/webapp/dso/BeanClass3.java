@@ -21,5 +21,5 @@ import org.noear.solon.annotation.Component;
  * @author noear 2022/2/25 created
  */
 @Component
-public class BeanClass3 extends BeanClass2<Integer>{
+public class BeanClass3 extends BeanClass2<Integer> {
 }

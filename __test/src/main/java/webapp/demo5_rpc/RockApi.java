@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package webapp.demoa_interceptor;
+package webapp.demo5_rpc;
 
-import org.noear.solon.annotation.Addition;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.Context;
+import org.noear.nami.annotation.NamiClient;
+import webapp.models.UserModel;
 
+import java.util.List;
 
-@Addition({BeforeHandlerBean.Before1.class, BeforeHandlerBean.Before2.class, BeforeHandlerBean.Before3.class, AfterHandler.class})
-@Mapping("/demoa/trigger")
-@Controller
-public class demoa_handler  {
-    @Mapping
-    public void handle(Context context) throws Throwable {
-        context.output(context.path());
+@NamiClient(name = "demo",path = "/demo5/test/", timeout = 20)
+public interface RockApi {
+    Object test1(Integer a);
+    Object test2(int b);
+    Object test3();
+    UserModel test4();
+    List<UserModel> test5();
+
+    Object testerror();
+
+    default Object textdef(){
+        return test3();
     }
 }
