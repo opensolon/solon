@@ -17,6 +17,10 @@ package org.noear.solon.data.sqlink.core.dialect;
 
 import org.noear.solon.data.sqlink.base.IDialect;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class H2Dialect implements IDialect
 {
     @Override

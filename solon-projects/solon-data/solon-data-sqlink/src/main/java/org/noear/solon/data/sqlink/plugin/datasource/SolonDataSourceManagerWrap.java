@@ -15,14 +15,16 @@
  */
 package org.noear.solon.data.sqlink.plugin.datasource;
 
-
-
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SolonDataSourceManagerWrap implements DataSourceManager
 {
     private DataSourceManager dataSourceManager;

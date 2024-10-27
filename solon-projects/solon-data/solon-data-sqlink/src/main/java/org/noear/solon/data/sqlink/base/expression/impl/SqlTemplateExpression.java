@@ -21,6 +21,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlTemplateExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlTemplateExpression implements ISqlTemplateExpression
 {
     private final List<String> functions;

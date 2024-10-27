@@ -15,10 +15,28 @@
  */
 package org.noear.solon.data.sqlink.base.annotation;
 
+/**
+ * 关联关系注解
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public enum RelationType
 {
+    /**
+     * 一对一
+     */
     OneToOne,
+    /**
+     * 一对多
+     */
     OneToMany,
+    /**
+     * 多对一
+     */
     ManyToOne,
+    /**
+     * 多对多
+     */
     ManyToMany
 }

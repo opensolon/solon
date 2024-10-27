@@ -26,13 +26,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DeleteSqlBuilder implements ISqlBuilder
 {
     private final IConfig config;
     private final ISqlJoinsExpression joins;
     private final ISqlWhereExpression wheres;
     private final Class<?> target;
-    private Set<Integer> excludes = new HashSet<>();
+    private final Set<Integer> excludes = new HashSet<>();
     private final SqlExpressionFactory factory;
     private final List<Class<?>> orderedClasses = new ArrayList<>();
 

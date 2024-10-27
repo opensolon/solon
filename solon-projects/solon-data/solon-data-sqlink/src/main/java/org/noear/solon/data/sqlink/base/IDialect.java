@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.base;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IDialect
 {
     String disambiguation(String property);

@@ -36,6 +36,10 @@ import org.noear.solon.data.sqlink.core.expression.pgsql.PostgreSQLExpressionFac
 import org.noear.solon.data.sqlink.core.expression.sqlite.SqliteExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.sqlserver.SqlServerExpressionFactory;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 class Config implements IConfig
 {
     private final Option option;

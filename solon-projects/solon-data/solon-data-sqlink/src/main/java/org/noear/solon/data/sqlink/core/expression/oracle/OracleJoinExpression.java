@@ -24,6 +24,10 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlJoinExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleJoinExpression extends SqlJoinExpression
 {
     protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index)

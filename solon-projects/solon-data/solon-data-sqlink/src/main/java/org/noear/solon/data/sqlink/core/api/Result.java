@@ -25,6 +25,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Getter
 @Setter
 public class Result

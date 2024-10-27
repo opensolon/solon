@@ -15,10 +15,15 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
+/**
+ * 字段表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlColumnExpression extends ISqlExpression
 {
     PropertyMetaData getPropertyMetaData();

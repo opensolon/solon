@@ -24,6 +24,10 @@ import org.noear.solon.data.sqlink.base.IDialect;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class UpdateSqlBuilder implements ISqlBuilder
 {
     private final IConfig config;

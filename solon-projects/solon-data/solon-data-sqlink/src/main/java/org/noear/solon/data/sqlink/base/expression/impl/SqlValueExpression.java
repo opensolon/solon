@@ -17,6 +17,10 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.expression.ISqlValueExpression;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class SqlValueExpression implements ISqlValueExpression
 {
 }

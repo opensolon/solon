@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.session.SqlSession;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class IncludeFactory
 {
     public abstract <T> IncludeBuilder<T> getBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable);

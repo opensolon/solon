@@ -15,10 +15,13 @@
  */
 package org.noear.solon.data.sqlink.plugin.builder;
 
-
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class AotBeanCreatorFactory extends BeanCreatorFactory
 {
     @Override

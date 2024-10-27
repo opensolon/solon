@@ -17,6 +17,10 @@ package org.noear.solon.data.sqlink.base.transaction;
 
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultTransactionManager implements TransactionManager
 {
     protected final DataSourceManager dataSourceManager;

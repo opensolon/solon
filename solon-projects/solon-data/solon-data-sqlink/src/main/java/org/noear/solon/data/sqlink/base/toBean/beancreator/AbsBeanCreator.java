@@ -19,6 +19,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class AbsBeanCreator<T>
 {
     protected final Class<T> target;

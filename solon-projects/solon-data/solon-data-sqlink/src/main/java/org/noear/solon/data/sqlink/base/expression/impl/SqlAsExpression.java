@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlAsExpression implements ISqlAsExpression
 {
     private final ISqlExpression expression;

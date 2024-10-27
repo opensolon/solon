@@ -22,6 +22,10 @@ import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class IncludeCond<T> extends QueryBase
 {
     public IncludeCond(IConfig config, Class<?> c)

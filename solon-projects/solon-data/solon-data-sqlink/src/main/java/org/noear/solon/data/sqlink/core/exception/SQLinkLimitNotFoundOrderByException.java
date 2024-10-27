@@ -17,6 +17,10 @@ package org.noear.solon.data.sqlink.core.exception;
 
 import org.noear.solon.data.sqlink.base.DbType;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkLimitNotFoundOrderByException extends SQLinkException
 {
     public SQLinkLimitNotFoundOrderByException(DbType dbType)

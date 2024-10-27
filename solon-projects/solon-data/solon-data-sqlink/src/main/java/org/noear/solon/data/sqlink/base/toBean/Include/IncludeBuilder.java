@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.Include;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.*;
@@ -30,7 +29,10 @@ import java.util.stream.Collectors;
 
 import static com.sun.jmx.mbeanserver.Util.cast;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class IncludeBuilder<T>
 {
     protected static final Logger log = LoggerFactory.getLogger(IncludeBuilder.class);

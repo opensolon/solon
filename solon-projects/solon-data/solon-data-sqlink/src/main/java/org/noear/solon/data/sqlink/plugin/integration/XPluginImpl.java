@@ -40,6 +40,10 @@ import org.noear.solon.data.datasource.DsUtils;
 
 import java.util.Map;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class XPluginImpl implements Plugin
 {
     @Override

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.core.sqlExt;
 
-
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlTimeUnit;
@@ -42,6 +41,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlFunctions
 {
 

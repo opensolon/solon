@@ -19,6 +19,10 @@ import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
 import org.noear.solon.data.sqlink.base.expression.SqlOperator;
 import org.noear.solon.data.sqlink.core.exception.SqlCalculatesInvokeException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlCalculates
 {
     @SqlOperatorMethod(SqlOperator.IS)

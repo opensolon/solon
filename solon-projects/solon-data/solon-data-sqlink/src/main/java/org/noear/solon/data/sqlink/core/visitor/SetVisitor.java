@@ -25,6 +25,10 @@ import io.github.kiryu1223.expressionTree.expressions.Expression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SetVisitor extends SqlVisitor
 {
     public SetVisitor(IConfig config)

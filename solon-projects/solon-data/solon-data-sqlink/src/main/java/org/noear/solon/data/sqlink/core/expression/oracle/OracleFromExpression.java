@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlFromExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleFromExpression extends SqlFromExpression
 {
     public OracleFromExpression(ISqlTableExpression sqlTableExpression, int index)

@@ -19,6 +19,12 @@ import org.noear.solon.data.sqlink.base.IConfig;
 
 import java.util.List;
 
+/**
+ * sql表达式基类
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlExpression
 {
     String getSqlAndValue(IConfig config, List<Object> values);
@@ -28,5 +34,11 @@ public interface ISqlExpression
         return getSqlAndValue(config, null);
     }
 
+    /**
+     * 获取自己的拷贝
+     * @param config 运行时配置
+     * @return 自身的拷贝对象
+     * @param <T> 自身类型
+     */
     <T extends ISqlExpression> T copy(IConfig config);
 }

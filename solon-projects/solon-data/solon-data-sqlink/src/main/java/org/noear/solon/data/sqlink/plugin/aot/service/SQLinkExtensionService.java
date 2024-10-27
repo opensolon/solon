@@ -31,6 +31,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkExtensionService implements IExtensionService
 {
     private static final String projectVersion = "3.0.3-SNAPSHOT";

@@ -26,6 +26,10 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase
 {
     public GroupedQuery4(QuerySqlBuilder sqlBuilder)

@@ -21,6 +21,12 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
 import java.util.List;
 
+/**
+ * 单个值表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlSingleValueExpression extends ISqlValueExpression
 {
     Object getValue();

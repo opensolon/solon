@@ -35,6 +35,10 @@ import java.util.List;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class InsertBase extends CRUD
 {
     public final static Logger log = LoggerFactory.getLogger(InsertBase.class);

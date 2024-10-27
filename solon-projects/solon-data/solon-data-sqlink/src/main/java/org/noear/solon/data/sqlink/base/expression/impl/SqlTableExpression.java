@@ -15,9 +15,12 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-
 import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class SqlTableExpression implements ISqlTableExpression
 {
     public abstract Class<?> getTableClass();

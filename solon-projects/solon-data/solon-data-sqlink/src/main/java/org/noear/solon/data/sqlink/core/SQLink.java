@@ -26,6 +26,10 @@ import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLink
 {
     private SQLink()

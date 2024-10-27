@@ -24,6 +24,12 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * sql表达式工厂
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface SqlExpressionFactory
 {
     ISqlAsExpression as(ISqlExpression expression, String asName);

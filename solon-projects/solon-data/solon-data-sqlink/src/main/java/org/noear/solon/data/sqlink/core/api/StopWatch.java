@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.core.api;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 class StopWatch
 {
     public enum Style

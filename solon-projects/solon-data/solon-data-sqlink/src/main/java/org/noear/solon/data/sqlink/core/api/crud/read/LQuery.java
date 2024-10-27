@@ -29,7 +29,10 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 
 import java.util.*;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LQuery<T> extends QueryBase
 {
     // region [INIT]

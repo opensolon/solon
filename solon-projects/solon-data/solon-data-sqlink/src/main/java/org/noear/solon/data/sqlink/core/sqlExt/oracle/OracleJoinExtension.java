@@ -23,6 +23,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleJoinExtension extends BaseSqlExtension
 {
     @Override

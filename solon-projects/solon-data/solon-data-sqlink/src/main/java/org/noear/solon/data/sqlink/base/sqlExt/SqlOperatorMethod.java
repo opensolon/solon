@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.base.sqlExt;
 
-
 import org.noear.solon.data.sqlink.base.expression.SqlOperator;
 
 import java.lang.annotation.ElementType;
@@ -23,6 +22,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SqlOperatorMethod

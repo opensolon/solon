@@ -24,6 +24,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class MathMethods
 {
     public static ISqlTemplateExpression atan2(IConfig config, ISqlExpression arg1, ISqlExpression arg2)

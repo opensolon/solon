@@ -15,13 +15,16 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class PropertyMetaData
 {
     private final String property;

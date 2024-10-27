@@ -15,12 +15,17 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * select表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlSelectExpression extends ISqlExpression
 {
     List<ISqlExpression> getColumns();

@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlOrderExpression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlOrderByExpression implements ISqlOrderByExpression
 {
     protected final List<ISqlOrderExpression> sqlOrders = new ArrayList<>();

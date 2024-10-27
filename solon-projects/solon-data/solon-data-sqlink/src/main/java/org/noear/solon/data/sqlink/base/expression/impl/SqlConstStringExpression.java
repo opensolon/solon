@@ -20,6 +20,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlConstStringExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlConstStringExpression implements ISqlConstStringExpression
 {
     private final String string;

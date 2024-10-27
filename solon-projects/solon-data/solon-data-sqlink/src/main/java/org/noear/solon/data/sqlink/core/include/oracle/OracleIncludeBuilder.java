@@ -25,6 +25,10 @@ import org.noear.solon.data.sqlink.base.session.SqlSession;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleIncludeBuilder<T> extends IncludeBuilder<T>
 {
     public OracleIncludeBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable)

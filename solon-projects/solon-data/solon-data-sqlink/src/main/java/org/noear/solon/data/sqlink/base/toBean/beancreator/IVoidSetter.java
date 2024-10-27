@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.beancreator;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IVoidSetter<T1,T2>
 {
     void apply(T1 t,T2 value);

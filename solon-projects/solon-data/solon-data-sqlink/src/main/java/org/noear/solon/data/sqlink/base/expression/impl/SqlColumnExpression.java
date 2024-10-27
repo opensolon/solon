@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlColumnExpression implements ISqlColumnExpression
 {
     private final PropertyMetaData propertyMetaData;

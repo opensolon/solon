@@ -18,6 +18,10 @@ package org.noear.solon.data.sqlink.core.api.crud.read;
 
 import org.noear.solon.data.sqlink.base.annotation.EmptyTable;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @EmptyTable
 public class Empty
 {

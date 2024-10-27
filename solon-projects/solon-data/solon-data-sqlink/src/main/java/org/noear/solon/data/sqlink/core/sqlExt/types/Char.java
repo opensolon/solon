@@ -2,6 +2,10 @@ package org.noear.solon.data.sqlink.core.sqlExt.types;
 
 import org.noear.solon.data.sqlink.base.IConfig;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class Char extends SqlTypes<Character>
 {
     private final int length;

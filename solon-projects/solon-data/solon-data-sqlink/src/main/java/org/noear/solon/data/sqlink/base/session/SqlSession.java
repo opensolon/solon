@@ -15,12 +15,15 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface SqlSession
 {
     interface Function<T, R>

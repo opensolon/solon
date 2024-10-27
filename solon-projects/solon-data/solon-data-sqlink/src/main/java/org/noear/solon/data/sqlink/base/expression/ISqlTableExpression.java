@@ -15,7 +15,12 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
+/**
+ * 抽象table表达式（可能是实体表也可能是虚拟表）
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlTableExpression extends ISqlExpression
 {
     Class<?> getTableClass();

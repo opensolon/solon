@@ -40,10 +40,4 @@ public class SqlTypeExpression implements ISqlTypeExpression
     {
         return type.getSimpleName();
     }
-
-    @Override
-    public ISqlTypeExpression copy(IConfig config)
-    {
-        return config.getSqlExpressionFactory().type(type);
-    }
 }

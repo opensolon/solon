@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.core.api.client;
 
-
 import org.noear.solon.data.sqlink.core.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.core.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.core.api.crud.read.EmptyQuery;
@@ -24,9 +23,14 @@ import org.noear.solon.data.sqlink.core.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
+import org.noear.solon.data.sqlink.core.exception.SQLinkException;
 
 import java.util.Collection;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class Client
 {
     private final IConfig config;
@@ -94,7 +98,7 @@ public class Client
         {
             return (Class<T>) t.getClass();
         }
-        throw new RuntimeException();
+        throw new SQLinkException("insert内容为空");
     }
 
     public IConfig getConfig()

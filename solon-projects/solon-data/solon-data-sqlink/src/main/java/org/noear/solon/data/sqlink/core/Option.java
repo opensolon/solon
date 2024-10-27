@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.core;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class Option
 {
     private boolean ignoreUpdateNoWhere = false;

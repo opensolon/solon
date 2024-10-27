@@ -31,6 +31,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class DeleteBase extends CRUD
 {
     public final static Logger log = LoggerFactory.getLogger(DeleteBase.class);

@@ -21,6 +21,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 集合值表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlCollectedValueExpression extends ISqlValueExpression
 {
     Collection<Object> getCollection();

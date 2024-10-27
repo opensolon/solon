@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.plugin.builder;
 
-
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -26,6 +25,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class AotFastCreator<T> extends DefaultBeanCreator<T>
 {
     public AotFastCreator(Class<T> target)

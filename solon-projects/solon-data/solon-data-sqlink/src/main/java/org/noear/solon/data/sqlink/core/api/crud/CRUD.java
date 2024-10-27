@@ -19,6 +19,10 @@ package org.noear.solon.data.sqlink.core.api.crud;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.slf4j.Logger;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class CRUD
 {
     protected abstract IConfig getConfig();

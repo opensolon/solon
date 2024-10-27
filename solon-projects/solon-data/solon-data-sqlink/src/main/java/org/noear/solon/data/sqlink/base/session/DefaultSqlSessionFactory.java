@@ -15,10 +15,13 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
-
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultSqlSessionFactory implements SqlSessionFactory
 {
     protected final DataSourceManager dataSourceManager;

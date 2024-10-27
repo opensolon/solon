@@ -20,6 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * 空表注解
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface EmptyTable {}

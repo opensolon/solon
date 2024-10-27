@@ -17,6 +17,12 @@ package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.IConfig;
 
+/**
+ * 单个order（因为可能会指定升降序）
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlOrderExpression extends ISqlExpression
 {
     ISqlExpression getExpression();

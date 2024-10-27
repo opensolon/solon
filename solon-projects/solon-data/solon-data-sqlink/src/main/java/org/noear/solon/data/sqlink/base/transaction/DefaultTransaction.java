@@ -19,6 +19,10 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultTransaction implements Transaction
 {
     protected Connection connection;

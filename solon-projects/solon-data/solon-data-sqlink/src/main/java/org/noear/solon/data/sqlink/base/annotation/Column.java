@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  *
  * @author kiryu1223
  * @since 3.0
- * */
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Column

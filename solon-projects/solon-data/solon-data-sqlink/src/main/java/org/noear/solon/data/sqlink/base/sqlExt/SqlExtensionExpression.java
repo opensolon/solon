@@ -19,6 +19,10 @@ import org.noear.solon.data.sqlink.base.DbType;
 
 import java.lang.annotation.*;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Repeatable(SqlExtensionExpressions.class)

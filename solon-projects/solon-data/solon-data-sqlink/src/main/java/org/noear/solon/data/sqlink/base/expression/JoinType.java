@@ -15,6 +15,12 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
+/**
+ * Join类型
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public enum JoinType
 {
     INNER,

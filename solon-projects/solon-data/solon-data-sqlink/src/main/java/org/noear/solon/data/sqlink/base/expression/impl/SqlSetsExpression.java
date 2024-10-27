@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlSetsExpression implements ISqlSetsExpression
 {
     private final List<ISqlSetExpression> sets = new ArrayList<>();

@@ -15,12 +15,17 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * group by表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlGroupByExpression extends ISqlExpression
 {
     void setColumns(LinkedHashMap<String, ISqlExpression> columns);

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -24,6 +23,12 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 查询语句表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlQueryableExpression extends ISqlTableExpression
 {
     @Override

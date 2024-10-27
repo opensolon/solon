@@ -32,6 +32,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class ExpressionUtil
 {
     public static boolean isProperty(List<ParameterExpression> parameters, MethodCallExpression methodCall)

@@ -21,6 +21,12 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 默认的数据源管理器
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultDataSourceManager implements DataSourceManager
 {
     private final Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<>();

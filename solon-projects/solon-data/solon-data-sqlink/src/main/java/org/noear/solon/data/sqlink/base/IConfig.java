@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IConfig
 {
     SqlExpressionFactory getSqlExpressionFactory();

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
-
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
@@ -27,6 +26,10 @@ import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultSqlSession implements SqlSession
 {
     protected final DataSourceManager dataSourceManager;

@@ -15,14 +15,16 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.Include;
 
-
-
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class IncludeSet
 {
     private final ISqlColumnExpression columnExpression;

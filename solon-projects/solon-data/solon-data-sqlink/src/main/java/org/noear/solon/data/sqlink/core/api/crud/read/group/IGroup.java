@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IGroup
 {
 }

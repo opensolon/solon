@@ -19,6 +19,12 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * 数据源管理器
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface DataSourceManager
 {
     Connection getConnection() throws SQLException;

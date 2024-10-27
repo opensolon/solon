@@ -15,12 +15,15 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-
 import org.noear.solon.data.sqlink.base.annotation.Navigate;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 
 import java.util.Collection;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class NavigateData
 {
     private final Navigate navigate;

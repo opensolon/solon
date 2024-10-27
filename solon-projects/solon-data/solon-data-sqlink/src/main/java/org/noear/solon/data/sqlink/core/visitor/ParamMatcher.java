@@ -18,6 +18,10 @@ package org.noear.solon.data.sqlink.core.visitor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class ParamMatcher
 {
     public List<String> bracesContent = new ArrayList<>();

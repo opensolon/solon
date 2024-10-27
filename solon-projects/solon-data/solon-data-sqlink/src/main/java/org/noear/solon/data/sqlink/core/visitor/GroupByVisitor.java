@@ -21,7 +21,10 @@ import io.github.kiryu1223.expressionTree.expressions.*;
 
 import java.util.LinkedHashMap;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class GroupByVisitor extends SqlVisitor
 {
     public GroupByVisitor(IConfig config)

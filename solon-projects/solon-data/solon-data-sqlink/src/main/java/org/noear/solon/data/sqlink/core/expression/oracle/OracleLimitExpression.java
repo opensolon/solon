@@ -20,6 +20,10 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlLimitExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleLimitExpression extends SqlLimitExpression
 {
     @Override

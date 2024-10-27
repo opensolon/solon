@@ -20,6 +20,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.expression.SqlOperator;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class TemporalMethods
 {
     public static ISqlExpression isAfter(IConfig config, ISqlExpression thiz, ISqlExpression that)

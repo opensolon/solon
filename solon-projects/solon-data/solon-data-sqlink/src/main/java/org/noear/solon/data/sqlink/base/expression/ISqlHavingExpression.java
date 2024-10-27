@@ -15,9 +15,14 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
+/**
+ * having表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlHavingExpression extends ISqlExpression
 {
     ISqlConditionsExpression getConditions();

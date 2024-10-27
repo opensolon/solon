@@ -15,7 +15,21 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
+import org.noear.solon.data.sqlink.base.IConfig;
+
+/**
+ * 承载java类型，一般不调用他的getSql函数
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlTypeExpression extends ISqlExpression
 {
     Class<?> getType();
+
+    @Override
+    default ISqlTypeExpression copy(IConfig config)
+    {
+        return config.getSqlExpressionFactory().type(getType());
+    }
 }

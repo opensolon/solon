@@ -15,9 +15,14 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
+/**
+ * 常量字符串
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlConstStringExpression extends ISqlExpression
 {
     String getString();

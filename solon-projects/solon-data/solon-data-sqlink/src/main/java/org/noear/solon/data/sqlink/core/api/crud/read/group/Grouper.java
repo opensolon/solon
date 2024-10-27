@@ -18,6 +18,10 @@ package org.noear.solon.data.sqlink.core.api.crud.read.group;
 import io.github.kiryu1223.expressionTree.expressions.annos.Getter;
 import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Getter
 @Setter
 public class Grouper

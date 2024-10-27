@@ -15,9 +15,12 @@
  */
 package org.noear.solon.data.sqlink.core.expression.mysql;
 
-
 import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFactory;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class MySqlExpressionFactory extends DefaultSqlExpressionFactory
 {
 }

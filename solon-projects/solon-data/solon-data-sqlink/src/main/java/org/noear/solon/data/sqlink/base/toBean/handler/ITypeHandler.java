@@ -21,13 +21,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ITypeHandler<T>
 {
     T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException;
 
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
-    default Type getActualType()
+    default Type getGenericType()
     {
         Type[] genericInterfaces = this.getClass().getGenericInterfaces();
         for (Type genericInterface : genericInterfaces)

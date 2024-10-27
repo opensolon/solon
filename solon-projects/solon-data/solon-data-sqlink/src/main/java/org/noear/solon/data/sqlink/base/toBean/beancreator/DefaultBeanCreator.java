@@ -24,6 +24,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultBeanCreator<T> extends AbsBeanCreator<T>
 {
     protected static final Unsafe unsafe;

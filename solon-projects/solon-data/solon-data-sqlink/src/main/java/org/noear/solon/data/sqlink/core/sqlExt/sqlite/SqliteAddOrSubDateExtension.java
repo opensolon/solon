@@ -27,6 +27,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqliteAddOrSubDateExtension extends BaseSqlExtension
 {
     @Override

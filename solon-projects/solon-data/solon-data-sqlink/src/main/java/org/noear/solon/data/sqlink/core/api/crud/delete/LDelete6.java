@@ -23,6 +23,10 @@ import io.github.kiryu1223.expressionTree.delegate.Func7;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
 {
     public LDelete6(DeleteSqlBuilder sqlBuilder)

@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 
 import static org.noear.solon.data.sqlink.core.exception.Winner.boom;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class SqlAggregation7<T1, T2, T3, T4, T5, T6, T7> implements IAggregation
 {
     public <R> long count(Func7<T1, T2, T3, T4, T5, T6, T7, R> expr)

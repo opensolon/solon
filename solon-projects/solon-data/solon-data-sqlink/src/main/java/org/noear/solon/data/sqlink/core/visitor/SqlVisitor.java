@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
-
 import org.noear.solon.data.sqlink.core.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
@@ -43,6 +42,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression>
 {
     protected List<ParameterExpression> parameters;

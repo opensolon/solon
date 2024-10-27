@@ -27,6 +27,10 @@ import org.noear.solon.data.sqlink.core.exception.SQLinkLimitNotFoundOrderByExce
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleQueryableExpression extends SqlQueryableExpression
 {
     public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit)

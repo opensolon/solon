@@ -23,6 +23,10 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SolonTransaction extends DefaultTransaction
 {
     public SolonTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager)

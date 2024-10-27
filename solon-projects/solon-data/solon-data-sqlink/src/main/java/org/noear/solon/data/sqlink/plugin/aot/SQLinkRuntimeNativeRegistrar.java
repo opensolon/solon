@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.plugin.aot;
 
-
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.MemberCategory;
@@ -25,13 +24,16 @@ import org.noear.solon.data.sqlink.core.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.*;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Char;
 import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
-import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar2;
+import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
 {
     @Override
@@ -76,7 +78,7 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
         //sql类型
         registerSqlType(metadata, Arrays.asList(
                 Char.class,
-                Varchar2.class
+                Varchar.class
         ));
     }
 

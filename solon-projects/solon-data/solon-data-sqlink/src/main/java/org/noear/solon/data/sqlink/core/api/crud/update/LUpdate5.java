@@ -24,6 +24,10 @@ import io.github.kiryu1223.expressionTree.delegate.Func6;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LUpdate5<T1, T2, T3, T4, T5> extends UpdateBase
 {
     public LUpdate5(UpdateSqlBuilder sqlBuilder)

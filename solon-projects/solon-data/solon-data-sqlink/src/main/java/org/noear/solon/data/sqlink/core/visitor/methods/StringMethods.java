@@ -25,6 +25,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class StringMethods
 {
     public static ISqlBinaryExpression contains(IConfig config, ISqlExpression left, ISqlExpression right)

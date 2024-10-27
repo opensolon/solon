@@ -22,6 +22,12 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 
 import java.util.List;
 
+/**
+ * 实体table表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlRealTableExpression extends ISqlTableExpression
 {
     @Override

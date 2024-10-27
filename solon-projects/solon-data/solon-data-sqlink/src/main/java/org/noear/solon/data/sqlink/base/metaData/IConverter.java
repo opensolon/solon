@@ -15,10 +15,13 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IConverter<J, D>
 {
     D toDb(J value, PropertyMetaData propertyMetaData);

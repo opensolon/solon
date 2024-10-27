@@ -25,6 +25,10 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LQuery3<T1, T2, T3> extends QueryBase
 {
     // region [INIT]

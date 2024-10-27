@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class BaseSqlExtension
 {
     public abstract ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args);

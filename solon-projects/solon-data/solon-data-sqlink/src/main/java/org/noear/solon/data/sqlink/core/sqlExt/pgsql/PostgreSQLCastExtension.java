@@ -26,6 +26,10 @@ import java.util.List;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class PostgreSQLCastExtension extends BaseSqlExtension
 {
     @Override

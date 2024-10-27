@@ -21,6 +21,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlOrderExpression;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlOrderExpression implements ISqlOrderExpression
 {
     private final ISqlExpression expression;

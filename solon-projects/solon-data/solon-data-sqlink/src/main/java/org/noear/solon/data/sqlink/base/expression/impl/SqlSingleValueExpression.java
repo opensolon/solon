@@ -25,6 +25,10 @@ import java.util.List;
 
 import static com.sun.jmx.mbeanserver.Util.cast;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlSingleValueExpression extends SqlValueExpression implements ISqlSingleValueExpression
 {
     private final Object value;

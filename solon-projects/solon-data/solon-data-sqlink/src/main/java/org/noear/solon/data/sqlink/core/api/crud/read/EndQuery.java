@@ -19,6 +19,10 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class EndQuery<T> extends QueryBase
 {
     public EndQuery(QuerySqlBuilder sqlBuilder)

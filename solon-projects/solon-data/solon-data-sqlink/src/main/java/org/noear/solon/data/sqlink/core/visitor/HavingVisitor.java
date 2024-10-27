@@ -23,6 +23,10 @@ import io.github.kiryu1223.expressionTree.expressions.FieldSelectExpression;
 
 import java.util.Map;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class HavingVisitor extends SqlVisitor
 {
     private final ISqlQueryableExpression queryable;

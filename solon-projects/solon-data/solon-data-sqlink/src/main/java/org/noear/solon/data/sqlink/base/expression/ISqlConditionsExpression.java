@@ -19,6 +19,12 @@ import org.noear.solon.data.sqlink.base.IConfig;
 
 import java.util.List;
 
+/**
+ * 条件表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlConditionsExpression extends ISqlExpression
 {
     List<ISqlExpression> getConditions();

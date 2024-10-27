@@ -21,9 +21,12 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultSqlExpressionFactory implements SqlExpressionFactory
 {
-
     @Override
     public ISqlAsExpression as(ISqlExpression expression, String asName)
     {

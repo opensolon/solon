@@ -17,6 +17,10 @@ package org.noear.solon.data.sqlink.core.exception;
 
 import java.lang.reflect.Method;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkNotFoundPropertyException extends SQLinkException
 {
     public SQLinkNotFoundPropertyException(Method method)

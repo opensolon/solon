@@ -32,6 +32,10 @@ import java.util.Map;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGroupKey;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SelectVisitor extends SqlVisitor
 {
     private final ISqlQueryableExpression queryable;

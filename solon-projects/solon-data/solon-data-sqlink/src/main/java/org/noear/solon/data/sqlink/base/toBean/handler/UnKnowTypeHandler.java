@@ -19,6 +19,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class UnKnowTypeHandler<T> implements ITypeHandler<T>
 {
     @Override

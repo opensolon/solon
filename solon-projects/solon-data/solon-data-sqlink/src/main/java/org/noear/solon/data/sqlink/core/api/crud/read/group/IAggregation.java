@@ -20,6 +20,10 @@ import org.noear.solon.data.sqlink.core.exception.SqlFunctionInvokeException;
 
 import static org.noear.solon.data.sqlink.core.exception.Winner.boom;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface IAggregation
 {
     default long count()

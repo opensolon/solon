@@ -24,6 +24,10 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 
 import java.util.Collection;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class IncludeQuery<T, TPreviousProperty> extends LQuery<T>
 {
     private final IncludeSet curIncludeSet;

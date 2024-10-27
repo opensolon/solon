@@ -25,19 +25,18 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class TypeHandlerManager
 {
     private static final Map<Type, ITypeHandler<?>> cache = new HashMap<>();
     private static final UnKnowTypeHandler<?> unKnowTypeHandler = new UnKnowTypeHandler<>();
 
-//    public static <T> void set(TypeRef<T> typeRef, ITypeHandler<T> typeHandler)
-//    {
-//        cache.put(typeRef.getActualType(), typeHandler);
-//    }
-
     public static <T> void set(ITypeHandler<T> typeHandler)
     {
-        Type actualType = typeHandler.getActualType();
+        Type actualType = typeHandler.getGenericType();
         warpBaseType(actualType, typeHandler);
         cache.put(actualType, typeHandler);
     }

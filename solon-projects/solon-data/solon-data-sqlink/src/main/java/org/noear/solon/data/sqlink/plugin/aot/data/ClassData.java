@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.plugin.aot.data;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class ClassData
 {
     public ClassData(String name)

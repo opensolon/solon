@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LogicExpression
 {
     public static ISqlExpression IfExpression(IConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart)

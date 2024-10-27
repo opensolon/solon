@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlQueryableExpression extends SqlTableExpression implements ISqlQueryableExpression
 {
     protected final ISqlSelectExpression select;

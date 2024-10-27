@@ -2,16 +2,20 @@ package org.noear.solon.data.sqlink.core.sqlExt.types;
 
 import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class SqlTypes<T> implements ISqlKeywords
 {
-    public static Varchar2 varchar2()
+    public static Varchar varchar2()
     {
-        return new Varchar2(255);
+        return new Varchar(255);
     }
 
-    public static Varchar2 varchar2(int length)
+    public static Varchar varchar2(int length)
     {
-        return new Varchar2(length);
+        return new Varchar(length);
     }
 
     public static Char Char()

@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlJoinsExpression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlJoinsExpression implements ISqlJoinsExpression
 {
     private final List<ISqlJoinExpression> joins = new ArrayList<>();

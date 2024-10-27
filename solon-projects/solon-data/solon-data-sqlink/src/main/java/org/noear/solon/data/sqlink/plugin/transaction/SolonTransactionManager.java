@@ -20,6 +20,10 @@ import org.noear.solon.data.sqlink.base.transaction.DefaultTransactionManager;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.tran.TranUtils;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SolonTransactionManager extends DefaultTransactionManager
 {
     public SolonTransactionManager(DataSourceManager dataSourceManager)

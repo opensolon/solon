@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlSelectExpression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlSelectExpression implements ISqlSelectExpression
 {
     protected List<ISqlExpression> columns;

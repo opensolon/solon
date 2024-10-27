@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlGroupByExpression implements ISqlGroupByExpression
 {
     protected final LinkedHashMap<String, ISqlExpression> columns = new LinkedHashMap<>();

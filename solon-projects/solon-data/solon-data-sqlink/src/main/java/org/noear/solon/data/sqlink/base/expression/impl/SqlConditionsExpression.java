@@ -22,6 +22,10 @@ import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlConditionsExpression implements ISqlConditionsExpression
 {
     private final List<ISqlExpression> conditions = new ArrayList<>();

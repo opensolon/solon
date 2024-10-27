@@ -15,13 +15,16 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.create;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class ObjectInsert<T> extends InsertBase
 {
     private final List<T> tObjects = new ArrayList<>();

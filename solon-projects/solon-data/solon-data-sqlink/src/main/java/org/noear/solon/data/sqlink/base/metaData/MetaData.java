@@ -27,6 +27,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class MetaData
 {
     private final List<PropertyMetaData> propertys = new ArrayList<>();

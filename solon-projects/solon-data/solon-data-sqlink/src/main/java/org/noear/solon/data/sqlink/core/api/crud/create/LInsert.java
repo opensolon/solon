@@ -15,13 +15,16 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.create;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class LInsert<T> extends InsertBase
 {
     private final Class<T> t;

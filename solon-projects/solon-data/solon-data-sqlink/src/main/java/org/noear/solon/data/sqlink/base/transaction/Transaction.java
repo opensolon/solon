@@ -18,6 +18,10 @@ package org.noear.solon.data.sqlink.base.transaction;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface Transaction extends AutoCloseable
 {
     void commit();

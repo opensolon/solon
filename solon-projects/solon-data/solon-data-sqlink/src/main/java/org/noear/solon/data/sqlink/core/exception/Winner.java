@@ -15,6 +15,10 @@
  */
 package org.noear.solon.data.sqlink.core.exception;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class Winner
 {
     private final static boolean win = true;

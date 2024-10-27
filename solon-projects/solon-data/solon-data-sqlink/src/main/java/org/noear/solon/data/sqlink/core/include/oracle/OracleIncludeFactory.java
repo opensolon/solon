@@ -25,6 +25,10 @@ import org.noear.solon.data.sqlink.base.session.SqlSession;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class OracleIncludeFactory extends IncludeFactory
 {
     @Override

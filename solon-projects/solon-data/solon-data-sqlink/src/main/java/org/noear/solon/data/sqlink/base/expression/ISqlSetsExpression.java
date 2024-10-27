@@ -21,6 +21,12 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 承载多个set表达式的对象
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlSetsExpression extends ISqlExpression
 {
     List<ISqlSetExpression> getSets();

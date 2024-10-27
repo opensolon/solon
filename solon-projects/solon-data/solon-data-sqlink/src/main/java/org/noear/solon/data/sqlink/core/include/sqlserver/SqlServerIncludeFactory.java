@@ -25,6 +25,10 @@ import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SqlServerIncludeFactory extends IncludeFactory
 {
     @Override

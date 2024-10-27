@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.build;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.metaData.IConverter;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
@@ -37,6 +36,10 @@ import java.util.function.Supplier;
 
 import static com.sun.jmx.mbeanserver.Util.cast;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class ObjectBuilder<T>
 {
     private final ResultSet resultSet;

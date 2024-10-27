@@ -15,11 +15,16 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 
+/**
+ * from表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlFromExpression extends ISqlExpression
 {
     ISqlTableExpression getSqlTableExpression();

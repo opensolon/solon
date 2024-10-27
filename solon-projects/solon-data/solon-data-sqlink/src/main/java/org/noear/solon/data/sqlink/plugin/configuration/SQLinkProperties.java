@@ -19,6 +19,10 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.core.Option;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 @Configuration
 public class SQLinkProperties
 {

@@ -15,9 +15,14 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-
 import org.noear.solon.data.sqlink.base.IConfig;
 
+/**
+ * where表达式
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlWhereExpression extends ISqlExpression
 {
     default boolean isEmpty()

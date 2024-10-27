@@ -18,6 +18,10 @@ package org.noear.solon.data.sqlink.base.toBean.beancreator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class BeanCreatorFactory
 {
     private static final Map<Class<?>, AbsBeanCreator<?>> cache = new ConcurrentHashMap<>();

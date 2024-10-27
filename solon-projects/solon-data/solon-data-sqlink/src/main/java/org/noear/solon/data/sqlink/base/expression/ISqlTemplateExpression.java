@@ -20,6 +20,12 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 模板表达式，一般用于sql函数
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface ISqlTemplateExpression extends ISqlExpression
 {
     List<String> getFunctions();
