@@ -2168,14 +2168,15 @@
         <!-- profile: checkstyle -->
         <profile>
             <id>checkstyle</id>
-            <activation>
-                <jdk>[1.8,)</jdk>
-            </activation>
+<!--            <activation>-->
+<!--                <jdk>[1.8,)</jdk>-->
+<!--            </activation>-->
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.mycila</groupId>
                         <artifactId>license-maven-plugin</artifactId>
+                        <version>4.6</version>
                         <executions>
                             <execution>
                                 <phase>generate-sources</phase>
@@ -2207,6 +2208,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>3.6.0</version>
                         <executions>
                             <execution>
                                 <id>validate</id>
