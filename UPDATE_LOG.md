@@ -26,6 +26,7 @@
 * 新增 solon-serialization-kryo 插件
 * 添加 solon Condition:onProperty 多条件支持
 * 添加 solon-net-stomp 简单事务支持，并添加统一凭据答复
+* 添加 solon `@Controller` 和 `@Remoting` 非 Mapping 函数支持 aop 和 extr 支持
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
 * 调整 BeanWrap.Proxy 接口简化
 * 调整 BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
