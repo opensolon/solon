@@ -24,6 +24,8 @@ import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -72,7 +74,9 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
         String method = _method.toUpperCase();
-        Request.Builder _builder = new Request.Builder().url(_url);
+        String newUrl = urlRebuild(method, _url, _charset);
+
+        Request.Builder _builder = new Request.Builder().url(newUrl);
 
         if (_timeout != null) {
             _builder.tag(HttpTimeout.class, _timeout);
@@ -183,6 +187,28 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             });
 
             return null;
+        }
+    }
+
+    protected String urlRebuild(String method, String url, Charset charset) throws UnsupportedEncodingException {
+        if (_params != null && "GET".equals(method)) {
+            StringBuilder newUrl = new StringBuilder(url);
+
+            for (KeyValues<String> kv : _params) {
+                String key = HttpUtils.urlEncode(kv.getKey(), charset.name());
+                for (String val : kv.getValues()) {
+                    if (newUrl.indexOf("?") < 0) {
+                        newUrl.append("?");
+                    } else {
+                        newUrl.append("&");
+                    }
+                    newUrl.append(key).append("=").append(HttpUtils.urlEncode(val, charset.name()));
+                }
+            }
+
+            return newUrl.toString();
+        }else{
+            return url;
         }
     }
 
