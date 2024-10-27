@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http.impl.jdk;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
@@ -31,6 +32,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
@@ -54,6 +56,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("HEAD");
         METHODS_NOBODY.add("TRACE");
         METHODS_NOBODY.add("OPTIONS");
+        METHODS_NOBODY.add("GET");
 
         allowMethods("PATCH");
     }
@@ -65,10 +68,10 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
-        final String url = urlRebuild(_url, _charset);
         final String method = _method.toUpperCase();
+        final String newUrl = urlRebuild(method, _url, _charset);
 
-        HttpURLConnection _builder = (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection _builder = (HttpURLConnection) new URL(newUrl).openConnection();
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
@@ -201,7 +204,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             writer.append("Content-Transfer-Encoding: binary").append(CRLF);
             writer.append(CRLF).flush();
 
-            try(InputStream ins = value.fileStream.getContent()) {
+            try (InputStream ins = value.fileStream.getContent()) {
                 IoUtil.transferTo(ins, out).flush();
             }
 
@@ -251,7 +254,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    protected static String urlRebuild(String url, Charset charset) throws UnsupportedEncodingException {
+    protected String urlRebuild(String method, String url, Charset charset) throws UnsupportedEncodingException {
         int pathOf = url.indexOf("://");
         int queryOf = url.indexOf("?");
 
@@ -282,7 +285,26 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             }
         }
 
-        return schema + hostAndPath + query;
+        StringBuilder newUrl = new StringBuilder();
+        newUrl.append(schema);
+        newUrl.append(hostAndPath);
+        newUrl.append(query);
+
+        if (_params != null && "GET".equals(method)) {
+            for (KeyValues<String> kv : _params) {
+                String key = HttpUtils.urlEncode(kv.getKey(), charset.name());
+                for (String val : kv.getValues()) {
+                    if (newUrl.indexOf("?") < 0) {
+                        newUrl.append("?");
+                    } else {
+                        newUrl.append("&");
+                    }
+                    newUrl.append(key).append("=").append(HttpUtils.urlEncode(val, charset.name()));
+                }
+            }
+        }
+
+        return newUrl.toString();
     }
 
     /**

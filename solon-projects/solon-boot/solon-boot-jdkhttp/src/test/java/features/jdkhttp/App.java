@@ -11,12 +11,12 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class App {
     public static void main(String[] args) {
-        Solon.start(ServerText.class, args);
+        Solon.start(App.class, args);
     }
 
     @Mapping("hello")
-    public String hello() {
-        return "hello";
+    public String hello(String name) {
+        return "hello " + name;
     }
 
     @Mapping("async")

@@ -9,7 +9,7 @@ public class ServerText extends HttpTester {
 
     @Test
     public void hello() throws Exception {
-        assert "hello".equals(path("/hello").get());
+        assert "hello null".equals(path("/hello").get());
     }
 
     @Test
