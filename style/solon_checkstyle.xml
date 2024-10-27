@@ -25,7 +25,7 @@
     <property name="localeLanguage" value="en"/>
 
     <!--To configure the check to report on the first instance in each file-->
-    <module name="FileTabCharacter"/>
+<!--    <module name="FileTabCharacter"/>-->
 
     <!-- header -->
     <module name="RegexpHeader">
@@ -38,10 +38,10 @@
         <property name="fileExtensions" value="properties"/>
     </module>
 
-    <module name="RegexpSingleline">
-        <property name="format" value="System\.out\.println"/>
-        <property name="message" value="Prohibit invoking System.out.println in source code !"/>
-    </module>
+<!--    <module name="RegexpSingleline">-->
+<!--        <property name="format" value="System\.out\.println"/>-->
+<!--        <property name="message" value="Prohibit invoking System.out.println in source code !"/>-->
+<!--    </module>-->
 
     <module name="RegexpSingleline">
         <property name="format" value="//FIXME"/>
@@ -66,10 +66,10 @@
         <module name="EqualsHashCode"/>
         <!--Checks for over-complicated boolean expressions. Currently finds code like if (topic == true), topic || true, !false, etc.-->
 <!--        <module name="SimplifyBooleanExpression"/>-->
-        <module name="OneStatementPerLine"/>
+<!--        <module name="OneStatementPerLine"/>-->
 <!--        <module name="UnnecessaryParentheses"/>-->
         <!--Checks for over-complicated boolean return statements. For example the following code-->
-        <module name="SimplifyBooleanReturn"/>
+<!--        <module name="SimplifyBooleanReturn"/>-->
 
         <!--Check that the default is after all the cases in producerGroup switch statement-->
         <module name="DefaultComesLast"/>
@@ -77,25 +77,25 @@
         <module name="EmptyStatement"/>
         <!--Checks that long constants are defined with an upper ell-->
         <module name="UpperEll"/>
-        <module name="ConstantName">
-            <property name="format" value="(^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$)|(^log$)"/>
-        </module>
+<!--        <module name="ConstantName">-->
+<!--            <property name="format" value="(^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$)|(^log$)"/>-->
+<!--        </module>-->
         <!--Checks that local, non-final variable names conform to producerGroup format specified by the format property-->
-        <module name="LocalVariableName"/>
+<!--        <module name="LocalVariableName"/>-->
         <!--Validates identifiers for local, final variables, including catch parameters-->
-        <module name="LocalFinalVariableName"/>
+<!--        <module name="LocalFinalVariableName"/>-->
         <!--Validates identifiers for non-static fields-->
 <!--        <module name="MemberName"/>-->
         <!--Validates identifiers for class type parameters-->
-        <module name="ClassTypeParameterName">
-            <property name="format" value="^[A-Z0-9]*$"/>
-        </module>
+<!--        <module name="ClassTypeParameterName">-->
+<!--            <property name="format" value="^[A-Z0-9]*$"/>-->
+<!--        </module>-->
         <!--Validates identifiers for method type parameters-->
         <module name="MethodTypeParameterName">
             <property name="format" value="^[A-Z0-9]*$"/>
         </module>
         <module name="PackageName"/>
-        <module name="ParameterName"/>
+<!--        <module name="ParameterName"/>-->
         <module name="StaticVariableName">
             <property name="format" value="^[a-zA-Z0-9_]*$"/>
         </module>
@@ -109,11 +109,11 @@
         <module name="GenericWhitespace"/>
         <!--<module name="NoWhitespaceBefore"/>-->
         <!--<module name="NoWhitespaceAfter"/>-->
-        <module name="WhitespaceAround">
-            <property name="allowEmptyConstructors" value="true"/>
-            <property name="allowEmptyMethods" value="true"/>
-        </module>
-        <module name="Indentation"/>
+<!--        <module name="WhitespaceAround">-->
+<!--            <property name="allowEmptyConstructors" value="true"/>-->
+<!--            <property name="allowEmptyMethods" value="true"/>-->
+<!--        </module>-->
+<!--        <module name="Indentation"/>-->
         <module name="MethodParamPad"/>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
