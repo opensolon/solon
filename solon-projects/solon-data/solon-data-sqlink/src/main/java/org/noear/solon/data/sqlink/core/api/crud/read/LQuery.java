@@ -15,17 +15,19 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
-import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery;
-import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.expression.JoinType;
-import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
+import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.*;
 
@@ -249,12 +251,12 @@ public class LQuery<T> extends QueryBase
 
     // region [GROUP BY]
 
-    public <Key> GroupedQuery<Key, T> groupBy(@Expr Func1<T, Key> expr)
+    public <Key extends Grouper> GroupedQuery<Key, T> groupBy(@Expr Func1<T, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery<Key, T> groupBy(ExprTree<Func1<T, Key>> expr)
+    public <Key extends Grouper> GroupedQuery<Key, T> groupBy(ExprTree<Func1<T, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery<>(getSqlBuilder());
@@ -274,12 +276,12 @@ public class LQuery<T> extends QueryBase
         return new LQuery<>(boxedQuerySqlBuilder());
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func1<T, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func1<T, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func1<T, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func1<T, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);
@@ -388,15 +390,16 @@ public class LQuery<T> extends QueryBase
         return super.first();
     }
 
-    public List<T> toList()
+    public List<? extends T> toList()
     {
         return super.toList();
     }
 
     public <R> List<R> toList(Func1<T, R> func)
     {
-        List<R> rList = new ArrayList<>();
-        for (T t : toList())
+        List<? extends T> list = toList();
+        List<R> rList = new ArrayList<>(list.size());
+        for (T t : list)
         {
             rList.add(func.invoke(t));
         }

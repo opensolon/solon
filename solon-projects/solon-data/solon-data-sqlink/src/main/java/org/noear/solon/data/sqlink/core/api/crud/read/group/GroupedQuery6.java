@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
+import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.LQuery;
@@ -90,12 +91,12 @@ public class GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> extends QueryBase
     // endregion
 
     // region [SELECT]
-    public <R> LQuery<? extends R> select(@Expr Func1<Group6<Key, T1, T2, T3, T4, T5, T6>, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func1<Group6<Key, T1, T2, T3, T4, T5, T6>, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func1<Group6<Key, T1, T2, T3, T4, T5, T6>, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group6<Key, T1, T2, T3, T4, T5, T6>, R>> expr)
     {
         singleCheck(select(expr.getTree()));
         return new LQuery<>(boxedQuerySqlBuilder());
@@ -120,7 +121,7 @@ public class GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> extends QueryBase
     }
 
     @Override
-    public List<Key> toList()
+    public List<? extends Key> toList()
     {
         return super.toList();
     }

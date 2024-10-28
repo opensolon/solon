@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Result
+public abstract class Result
 {
     @Override
     public String toString()

@@ -15,6 +15,14 @@
  */
 package org.noear.solon.data.sqlink.plugin.integration;
 
+import org.noear.solon.aot.RuntimeNativeRegistrar;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Props;
+import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -29,14 +37,6 @@ import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManagerWrap;
 import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
-import org.noear.solon.aot.RuntimeNativeRegistrar;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.data.datasource.DsUtils;
 
 import java.util.Map;
 
@@ -49,7 +49,8 @@ public class XPluginImpl implements Plugin
     @Override
     public void start(AppContext context) throws Throwable
     {
-        Map<String, Props> data = context.cfg().getGroupedProp("SQLink");
+        Map<String, Props> data = context.cfg().getGroupedProp("solon.data.SQLink");
+        if (data.isEmpty()) return;
         for (Map.Entry<String, Props> entry : data.entrySet())
         {
             Props props = entry.getValue();
@@ -81,7 +82,7 @@ public class XPluginImpl implements Plugin
         context.getBeanAsync(ITypeHandler.class, TypeHandlerManager::set);
         registerAot(context);
     }
-    
+
     private void registerAot(AppContext context)
     {
         if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class))

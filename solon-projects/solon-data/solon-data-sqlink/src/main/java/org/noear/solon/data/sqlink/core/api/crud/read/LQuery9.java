@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
 import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery9;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
@@ -223,12 +225,12 @@ public class LQuery9<T1, T2, T3, T4, T5, T6, T7, T8, T9> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery9<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9> groupBy(@Expr Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Key> expr)
+    public <Key extends Grouper> GroupedQuery9<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9> groupBy(@Expr Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery9<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9> groupBy(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Key>> expr)
+    public <Key extends Grouper> GroupedQuery9<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9> groupBy(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery9<>(getSqlBuilder());
@@ -241,12 +243,12 @@ public class LQuery9<T1, T2, T3, T4, T5, T6, T7, T8, T9> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

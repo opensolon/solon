@@ -15,8 +15,10 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
+import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery2;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
@@ -221,12 +223,12 @@ public class LQuery2<T1, T2> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery2<Key, T1, T2> groupBy(@Expr Func2<T1, T2, Key> expr)
+    public <Key extends Grouper> GroupedQuery2<Key, T1, T2> groupBy(@Expr Func2<T1, T2, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery2<Key, T1, T2> groupBy(ExprTree<Func2<T1, T2, Key>> expr)
+    public <Key extends Grouper> GroupedQuery2<Key, T1, T2> groupBy(ExprTree<Func2<T1, T2, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery2<>(getSqlBuilder());
@@ -240,12 +242,12 @@ public class LQuery2<T1, T2> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func2<T1, T2, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func2<T1, T2,R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func2<T1, T2, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func2<T1, T2,R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);
@@ -279,59 +281,4 @@ public class LQuery2<T1, T2> extends QueryBase
     }
 
     //endregion
-
-    // region [toAny]
-
-
-//    public String toSQL()
-//    {
-//        return clientQueryable.toSQL();
-//    }
-//
-//    public ToSQLResult toSQLResult()
-//    {
-//        return clientQueryable.toSQLResult();
-//    }
-//
-//    public List<T1> toList()
-//    {
-//        return clientQueryable.toList();
-//    }
-//
-//    public <R> List<R> toList(Func1<T1, R> func)
-//    {
-//        List<R> rList = new ArrayList<>();
-//        for (T1 t : toList())
-//        {
-//            rList.add(func.invoke(t));
-//        }
-//        return rList;
-//    }
-//
-//    public Map<String, Object> toMap()
-//    {
-//        return clientQueryable.toMap();
-//    }
-//
-//    public List<Map<String, Object>> toMaps()
-//    {
-//        return clientQueryable.toMaps();
-//    }
-
-//    public EasyPageResult<T1> toPageResult(long pageIndex, long pageSize)
-//    {
-//        return clientQueryable.toPageResult(pageIndex, pageSize);
-//    }
-//
-//    public EasyPageResult<T1> toPageResult(long pageIndex, long pageSize, long pageTotal)
-//    {
-//        return clientQueryable.toPageResult(pageIndex, pageSize, pageTotal);
-//    }
-//
-//    public <TPageResult> TPageResult toPageResult(Pager<T1, TPageResult> pager)
-//    {
-//        return clientQueryable.toPageResult(pager);
-//    }
-
-    // endregion
 }

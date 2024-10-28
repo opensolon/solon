@@ -15,15 +15,17 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
-import org.noear.solon.data.sqlink.base.expression.JoinType;
-import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
-import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery3;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func3;
 import io.github.kiryu1223.expressionTree.delegate.Func4;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
+import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery3;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 /**
  * @author kiryu1223
@@ -223,12 +225,12 @@ public class LQuery3<T1, T2, T3> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery3<Key, T1, T2, T3> groupBy(@Expr Func3<T1, T2, T3, Key> expr)
+    public <Key extends Grouper> GroupedQuery3<Key, T1, T2, T3> groupBy(@Expr Func3<T1, T2, T3, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery3<Key, T1, T2, T3> groupBy(ExprTree<Func3<T1, T2, T3, Key>> expr)
+    public <Key extends Grouper> GroupedQuery3<Key, T1, T2, T3> groupBy(ExprTree<Func3<T1, T2, T3, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery3<>(getSqlBuilder());
@@ -241,12 +243,12 @@ public class LQuery3<T1, T2, T3> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func3<T1, T2, T3, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func3<T1, T2, T3, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func3<T1, T2, T3, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func3<T1, T2, T3, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);
@@ -278,4 +280,6 @@ public class LQuery3<T1, T2, T3> extends QueryBase
         distinct0(condition);
         return this;
     }
+
+    // endregion
 }

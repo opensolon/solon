@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
+import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.LQuery;
@@ -94,12 +95,12 @@ public class GroupedQuery<Key, T> extends QueryBase
 
     // region [SELECT]
 
-    public <R> LQuery<? extends R> select(@Expr Func1<Group<Key, T>, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func1<Group<Key, T>, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func1<Group<Key, T>, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group<Key, T>, R>> expr)
     {
         singleCheck(select(expr.getTree()));
         return new LQuery<>(boxedQuerySqlBuilder());
@@ -125,7 +126,7 @@ public class GroupedQuery<Key, T> extends QueryBase
     }
 
     @Override
-    public List<Key> toList()
+    public List<? extends Key> toList()
     {
         return super.toList();
     }

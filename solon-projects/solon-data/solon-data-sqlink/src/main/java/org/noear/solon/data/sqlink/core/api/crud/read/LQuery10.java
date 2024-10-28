@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery10;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
@@ -146,12 +148,12 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> groupBy(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Key> expr)
+    public <Key extends Grouper> GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> groupBy(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> groupBy(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Key>> expr)
+    public <Key extends Grouper> GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> groupBy(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery10<>(getSqlBuilder());
@@ -164,12 +166,12 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

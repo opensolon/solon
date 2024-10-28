@@ -15,14 +15,15 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
-import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import io.github.kiryu1223.expressionTree.delegate.Func1;
+import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
+import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.QueryBase;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
-import io.github.kiryu1223.expressionTree.delegate.Func1;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.List;
 
@@ -89,12 +90,12 @@ public class GroupedQuery2<Key, T1, T2> extends QueryBase
     // endregion
 
     // region [SELECT]
-    public <R> LQuery<? extends R> select(@Expr Func1<Group2<Key, T1, T2>, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func1<Group2<Key, T1, T2>, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func1<Group2<Key, T1, T2>, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group2<Key, T1, T2>, R>> expr)
     {
         singleCheck(select(expr.getTree()));
         return new LQuery<>(boxedQuerySqlBuilder());
@@ -119,7 +120,7 @@ public class GroupedQuery2<Key, T1, T2> extends QueryBase
     }
 
     @Override
-    public List<Key> toList()
+    public List<? extends Key> toList()
     {
         return super.toList();
     }

@@ -17,6 +17,8 @@ package org.noear.solon.data.sqlink.core.api.crud.read;
 
 
 import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery8;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
@@ -224,12 +226,12 @@ public class LQuery8<T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> groupBy(@Expr Func8<T1, T2, T3, T4, T5, T6, T7, T8, Key> expr)
+    public <Key extends Grouper> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> groupBy(@Expr Func8<T1, T2, T3, T4, T5, T6, T7, T8, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> groupBy(ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, Key>> expr)
+    public <Key extends Grouper> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> groupBy(ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery8<>(getSqlBuilder());
@@ -242,12 +244,12 @@ public class LQuery8<T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func8<T1, T2, T3, T4, T5, T6, T7, T8, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func8<T1, T2, T3, T4, T5, T6, T7, T8, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
 import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.GroupedQuery6;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
@@ -223,12 +225,12 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase
     // endregion
 
     // region [GROUP BY]
-    public <Key> GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> groupBy(@Expr Func6<T1, T2, T3, T4, T5, T6, Key> expr)
+    public <Key extends Grouper> GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> groupBy(@Expr Func6<T1, T2, T3, T4, T5, T6, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key> GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> groupBy(ExprTree<Func6<T1, T2, T3, T4, T5, T6, Key>> expr)
+    public <Key extends Grouper> GroupedQuery6<Key, T1, T2, T3, T4, T5, T6> groupBy(ExprTree<Func6<T1, T2, T3, T4, T5, T6, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery6<>(getSqlBuilder());
@@ -241,12 +243,12 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase
         return super.select(r);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func6<T1, T2, T3, T4, T5, T6, ? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func6<T1, T2, T3, T4, T5, T6, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func6<T1, T2, T3, T4, T5, T6, ? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func6<T1, T2, T3, T4, T5, T6, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);
@@ -280,8 +282,4 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase
     }
 
     //endregion
-
-    // region [toAny]
-
-    // endregion
 }

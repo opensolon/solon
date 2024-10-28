@@ -65,10 +65,10 @@ public class SqlFunctions
     }
 
     @SqlExtensionExpression(template = "SUM({t})")
-    public static <T> T sum(T t)
+    public static <T> BigDecimal sum(T t)
     {
         boom();
-        return (T) new Object();
+        return BigDecimal.ZERO;
     }
 
     @SqlExtensionExpression(template = "AVG({t})")
@@ -2080,12 +2080,12 @@ public class SqlFunctions
         return (T) new Object();
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "",extension = H2CastExtension.class)
+    @SqlExtensionExpression(dbType = DbType.H2, template = "", extension = H2CastExtension.class)
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlCastExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleCastExtension.class)
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "",extension = SQLServerCastExtension.class)
-    @SqlExtensionExpression(dbType = DbType.SQLite, template = "",extension = SqliteCastExtension.class)
-    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "",extension = PostgreSQLCastExtension.class)
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "", extension = SQLServerCastExtension.class)
+    @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteCastExtension.class)
+    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLCastExtension.class)
     public static <T> T cast(Object value, Class<T> targetType)
     {
         boom();
