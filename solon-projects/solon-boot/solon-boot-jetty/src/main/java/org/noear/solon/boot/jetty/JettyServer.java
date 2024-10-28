@@ -28,14 +28,9 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected Server real = null;
 
     protected boolean enableWebSocket;
-    protected boolean enableSessionState;
 
     public void enableWebSocket(boolean enableWebSocket) {
         this.enableWebSocket = enableWebSocket;
-    }
-
-    public void enableSessionState(boolean enableSessionState) {
-        this.enableSessionState = enableSessionState;
     }
 
     @Override

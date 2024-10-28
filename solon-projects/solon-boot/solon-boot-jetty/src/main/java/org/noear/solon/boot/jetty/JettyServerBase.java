@@ -20,7 +20,6 @@ import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
@@ -45,11 +44,18 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected Executor executor;
     protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
+    protected boolean enableSessionState;
+
     private boolean isSecure;
 
     public boolean isSecure() {
         return isSecure;
     }
+
+    public void enableSessionState(boolean enableSessionState) {
+        this.enableSessionState = enableSessionState;
+    }
+
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
@@ -146,7 +152,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
 
         //添加session state 支持
-        if (Solon.app().enableSessionState()) {
+        if (enableSessionState) {
             handler.setSessionHandler(new SessionHandler());
 
             if (SessionProps.session_timeout > 0) {

@@ -66,9 +66,9 @@ public class XPluginImpl implements Plugin {
         //ssl 配置支持
         final SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_SOCKET);
         final SSLContext sslContext;
-        if(sslConfig.isSslEnable()){
-             sslContext = sslConfig.getSslContext();
-        }else{
+        if (sslConfig.isSslEnable()) {
+            sslContext = sslConfig.getSslContext();
+        } else {
             sslContext = null;
         }
 
@@ -80,7 +80,7 @@ public class XPluginImpl implements Plugin {
             serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
             //总线扩展
             EventBus.publish(serverTmp);
-            startServer1(serverTmp, serverProps, 0);
+            startServer1(context, serverTmp, serverProps, 0);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:udp");
@@ -88,7 +88,7 @@ public class XPluginImpl implements Plugin {
             serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
             //总线扩展
             EventBus.publish(serverTmp);
-            startServer1(serverTmp, serverProps, 1);
+            startServer1(context, serverTmp, serverProps, 1);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:ws");
@@ -96,7 +96,7 @@ public class XPluginImpl implements Plugin {
             serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor).sslContext(sslContext));
             //总线扩展
             EventBus.publish(serverTmp);
-            startServer1(serverTmp, serverProps, 2);
+            startServer1(context, serverTmp, serverProps, 2);
         }
 
         if (serverList.size() == 0) {
@@ -105,7 +105,7 @@ public class XPluginImpl implements Plugin {
         }
     }
 
-    private void startServer1(Server server, SocketServerProps serverProps, int portAdd) throws Exception {
+    private void startServer1(AppContext context, Server server, SocketServerProps serverProps, int portAdd) throws Exception {
         long time_start = System.currentTimeMillis();
 
         int portReal = serverProps.getPort() + portAdd;
@@ -124,12 +124,12 @@ public class XPluginImpl implements Plugin {
 
         server.start();
 
-        if(Utils.isNotEmpty(serverProps.getName())) {
+        if (Utils.isNotEmpty(serverProps.getName())) {
             final String _wrapHost = serverProps.getWrapHost();
             final int _wrapPort = serverProps.getWrapPort() + portAdd;
             Signal _signal = new SignalSim(serverProps.getName(), _wrapHost, _wrapPort, "socketd", SignalType.SOCKET);
 
-            Solon.app().signalAdd(_signal);
+            context.app().signalAdd(_signal);
         }
 
         long time_end = System.currentTimeMillis();
