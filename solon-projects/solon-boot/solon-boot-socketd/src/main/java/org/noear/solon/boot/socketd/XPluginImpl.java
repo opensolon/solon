@@ -46,7 +46,7 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
-        if (Solon.app().enableSocketD() == false) {
+        if (context.app().enableSocketD() == false) {
             return;
         }
 

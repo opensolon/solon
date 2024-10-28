@@ -76,7 +76,7 @@ public class XPluginImp implements Plugin {
             _server.setExecutor(props.newWorkExecutor("vertxhttp-"));
         }
 
-        _server.setHandler(Solon.app()::tryHandle);
+        _server.setHandler(context.app()::tryHandle);
 
 
         //尝试事件扩展

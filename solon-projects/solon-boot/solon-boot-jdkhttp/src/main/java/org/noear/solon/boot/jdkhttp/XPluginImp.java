@@ -77,7 +77,7 @@ public final class XPluginImp implements Plugin {
 
         _server = new JdkHttpServerComb();
         _server.setExecutor(props.newWorkExecutor("jdkhttp-"));
-        _server.setHandler(Solon.app()::tryHandle);
+        _server.setHandler(context.app()::tryHandle);
 
         //尝试事件扩展
         EventBus.publish(_server);
