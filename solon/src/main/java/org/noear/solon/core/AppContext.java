@@ -222,6 +222,8 @@ public class AppContext extends BeanContainer {
             bw.remotingSet(true);
             //注册到容器
             beanRegister(bw, "", false);
+
+            app().router().add(bw);
         });
 
         //注册 @Controller 构建器

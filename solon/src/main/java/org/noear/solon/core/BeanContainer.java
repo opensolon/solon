@@ -829,12 +829,6 @@ public abstract class BeanContainer {
             putWrap(bw.clz().getName(), bw);
             beanRegisterSup0(bw.clz(), bw);
         }
-
-
-        //尝试Remoting处理。如果是，则加载到 Solon 路由器
-        if (bw.remoting()) {
-            app().router().add(bw);
-        }
     }
 
     /**
