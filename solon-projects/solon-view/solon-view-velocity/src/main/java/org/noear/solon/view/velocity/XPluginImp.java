@@ -16,7 +16,6 @@
 package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
-import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
@@ -47,8 +46,8 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(null, render);
-        Solon.app().renderManager().register(".vm", render);
+        context.app().renderManager().register(null, render);
+        context.app().renderManager().register(".vm", render);
         context.wrapAndPut(VelocityRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

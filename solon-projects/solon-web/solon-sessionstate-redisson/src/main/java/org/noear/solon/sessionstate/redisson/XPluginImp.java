@@ -15,7 +15,6 @@
  */
 package org.noear.solon.sessionstate.redisson;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
@@ -23,11 +22,11 @@ import org.noear.solon.core.util.LogUtil;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-        if (Solon.app().enableSessionState() == false) {
+        if (context.app().enableSessionState() == false) {
             return;
         }
 
-        if (Solon.app().chainManager().getSessionStateFactory().priority()
+        if (context.app().chainManager().getSessionStateFactory().priority()
                 >= RedissonSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
@@ -45,7 +44,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        Solon.app().chainManager().setSessionStateFactory(RedissonSessionStateFactory.getInstance());
+        context.app().chainManager().setSessionStateFactory(RedissonSessionStateFactory.getInstance());
 
         LogUtil.global().info("Session: Redis session state plugin is loaded");
     }

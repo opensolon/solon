@@ -15,7 +15,6 @@
  */
 package org.noear.solon.scheduling.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
@@ -36,7 +35,7 @@ import java.lang.annotation.Annotation;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        Class<?> source = Solon.app().source();
+        Class<?> source = context.app().source();
 
         // @since 2.2
         Annotation enableAnno = source.getAnnotation(EnableAsync.class);
