@@ -74,7 +74,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + time1 + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
 
             ctx.result = ctx.attr("output");
             System.out.println(ctx.result);
@@ -100,7 +100,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + time3 + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
 
             ctx.result = ctx.attr("output");
             System.out.println(ctx.result);
@@ -116,7 +116,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + LocalDate.now() + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
         }
 
         {
@@ -125,7 +125,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + LocalTime.now() + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
         }
 
         {
@@ -134,7 +134,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + OffsetDateTime.now() + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
         }
 
         {
@@ -143,7 +143,7 @@ public class TestExecutor {
             ctx.pathNew("/a3");
             ctx.bodyNew("{\"name\":\"noear\",\"time\":\"" + OffsetTime.now() + "\"}");
 
-            Solon.app().routerHandler().handle(ctx);
+            context.app().routerHandler().handle(ctx);
         }
     }
 
