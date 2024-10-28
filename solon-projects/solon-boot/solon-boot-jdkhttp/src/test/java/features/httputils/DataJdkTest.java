@@ -33,6 +33,16 @@ public class DataJdkTest {
     }
 
     @Test
+    public void get2_body() throws Exception {
+        String rst = http("http://localhost:8080/body")
+                .data("tag", "hello")
+                .bodyOfTxt("noear")
+                .get();
+
+        assert rst.equals("hello:noear");
+    }
+
+    @Test
     public void post() throws Exception {
         String rst = http("http://localhost:8080/hello")
                 .data("name", "noear")
