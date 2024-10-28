@@ -32,6 +32,14 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         FreemarkerRender render = new FreemarkerRender();
 
+        context.app().shared().forEach((k, v) -> {
+            render.putVariable(k, v);
+        });
+
+        context.app().onSharedAdd((k, v) -> {
+            render.putVariable(k, v);
+        });
+
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {

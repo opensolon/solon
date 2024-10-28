@@ -78,14 +78,6 @@ public class FreemarkerRender implements Render {
 
         forDebug();
         forRelease();
-
-        Solon.app().shared().forEach((k, v) -> {
-            putVariable(k, v);
-        });
-
-        Solon.app().onSharedAdd((k, v) -> {
-            putVariable(k, v);
-        });
     }
 
     //尝试 调试模式 进行实始化
