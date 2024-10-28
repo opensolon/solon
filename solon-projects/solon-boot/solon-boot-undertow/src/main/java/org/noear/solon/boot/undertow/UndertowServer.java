@@ -20,8 +20,6 @@ import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
@@ -36,14 +34,20 @@ import org.noear.solon.core.event.EventBus;
 public class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
     private boolean isSecure;
+    private boolean enableWebSocket;
+
     public boolean isSecure() {
         return isSecure;
+    }
+
+    public void enableWebSocket(boolean enableWebSocket) {
+        this.enableWebSocket = enableWebSocket;
     }
 
     @Override
     public void start(String host, int port) {
         try {
-            setup(Solon.app(), host, port);
+            setup(host, port);
 
             _server.start();
         } catch (RuntimeException e) {
@@ -61,7 +65,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         }
     }
 
-    protected void setup(SolonApp app, String host, int port) throws Throwable {
+    protected void setup(String host, int port) throws Throwable {
         HttpHandler httpHandler = buildHandler();
 
         //************************** init server start******************
@@ -108,7 +112,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             builder.addHttpListener(portAdd, host);
         }
 
-        if (app.enableWebSocket()) {
+        if (enableWebSocket) {
             builder.setHandler(new UtWsProtocolHandshakeHandler(httpHandler));
         } else {
             builder.setHandler(httpHandler);

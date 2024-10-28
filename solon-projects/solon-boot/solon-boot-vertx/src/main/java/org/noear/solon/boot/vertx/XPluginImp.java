@@ -18,7 +18,6 @@ package org.noear.solon.boot.vertx;
 import io.vertx.core.Vertx;
 import io.vertx.solon.VertxHolder;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
@@ -47,18 +46,18 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
-        if (Solon.app().enableHttp() == false) {
+        if (context.app().enableHttp() == false) {
             return;
         }
 
         context.wrapAndPut(Vertx.class, VertxHolder.getVertx());
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -70,8 +69,8 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        _server = new VxHttpServerComb();
-        _server.enableWebSocket(app.enableWebSocket());
+        _server = new VxHttpServerComb(context);
+        _server.enableWebSocket(context.app().enableWebSocket());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
             _server.setExecutor(props.newWorkExecutor("vertxhttp-"));
@@ -88,18 +87,18 @@ public class XPluginImp implements Plugin {
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
-        app.signalAdd(_signal);
+        context.app().signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "solon.connector:main: vertx-http: Started ServerConnector@{HTTP/1.1,[http/1.1]";
 
-        if (app.enableWebSocket()) {
+        if (context.app().enableWebSocket()) {
             //有名字定义时，添加信号注册
             WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
             if (Utils.isNotEmpty(wsProps.getName())) {
                 SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
-                app.signalAdd(wsSignal);
+                context.app().signalAdd(wsSignal);
             }
 
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
