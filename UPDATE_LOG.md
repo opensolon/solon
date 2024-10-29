@@ -23,6 +23,7 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.3
+* 新增 nami-coder-kryo 插件
 * 新增 solon-serialization-kryo 插件
 * 添加 solon Condition:onProperty 多条件支持
 * 添加 solon-net-stomp 简单事务支持，并添加统一凭据答复
