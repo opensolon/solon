@@ -35,7 +35,7 @@ public class XPluginImp implements Plugin {
         //通过动态控制是否启用
         //
 
-        if (Solon.app().enableStaticfiles() == false) {
+        if (context.app().enableStaticfiles() == false) {
             return;
         }
 
@@ -91,15 +91,11 @@ public class XPluginImp implements Plugin {
         //尝试启动静态代理（也可能在后面动态添加仓库）
 
         //3.加载自定义 mime
-        loadStaticMimes();
-
-        //4.切换代理（让静态文件优先）
-        Solon.app().handler().prev(new StaticResourceHandler());
-    }
-
-    private void loadStaticMimes(){
-        Solon.cfg().getMap("solon.mime.").forEach((key, val) -> {
+        context.cfg().getMap("solon.mime.").forEach((key, val) -> {
             StaticMimes.add("." + key, val);
         });
+
+        //4.切换代理（让静态文件优先）
+        context.app().handler().prev(new StaticResourceHandler());
     }
 }

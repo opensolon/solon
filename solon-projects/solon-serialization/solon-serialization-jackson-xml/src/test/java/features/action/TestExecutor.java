@@ -1,9 +1,10 @@
 package features.action;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.test.SolonTest;
 
@@ -12,6 +13,9 @@ import org.noear.solon.test.SolonTest;
  */
 @SolonTest
 public class TestExecutor {
+    @Inject
+    AppContext context;
+
     @Test
     public void test() throws Throwable {
         ContextEmpty ctx = new ContextEmpty();
@@ -19,7 +23,7 @@ public class TestExecutor {
         ctx.pathNew("/a1");
         ctx.bodyNew("<xml><name>noear</name><label>A</label></xml>");
 
-        Solon.app().tryHandle(ctx);
+        context.app().tryHandle(ctx);
         ctx.result = ctx.attr("output");
         System.out.println(ctx.result);
         assert "Hello noear A".equals(ctx.result);
@@ -29,7 +33,7 @@ public class TestExecutor {
         ctx.pathNew("/a2");
         ctx.bodyNew("<xml><name>noear</name><label>A</label></xml>");
 
-        Solon.app().tryHandle(ctx);
+        context.app().tryHandle(ctx);
         ctx.result = ctx.attr("output");
         System.out.println(ctx.result);
         assert "A".equals(ctx.result);

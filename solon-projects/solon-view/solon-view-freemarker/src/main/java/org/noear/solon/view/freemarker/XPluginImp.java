@@ -17,7 +17,6 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.TemplateDirectiveModel;
 
-import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;
@@ -32,6 +31,14 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
         FreemarkerRender render = new FreemarkerRender();
+
+        context.app().shared().forEach((k, v) -> {
+            render.putVariable(k, v);
+        });
+
+        context.app().onSharedAdd((k, v) -> {
+            render.putVariable(k, v);
+        });
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
@@ -51,8 +58,8 @@ public class XPluginImp implements Plugin {
         });
 
 
-        Solon.app().renderManager().register(null, render);
-        Solon.app().renderManager().register(".ftl", render);
+        context.app().renderManager().register(null, render);
+        context.app().renderManager().register(".ftl", render);
         context.wrapAndPut(FreemarkerRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

@@ -46,7 +46,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        if (Solon.app().enableHttp() == false) {
+        if (context.app().enableHttp() == false) {
             return;
         }
 
@@ -58,11 +58,11 @@ public final class XPluginImp implements Plugin {
         });
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -77,6 +77,8 @@ public final class XPluginImp implements Plugin {
             _server = new UndertowServerAddJsp();
         }
 
+        _server.enableWebSocket(context.app().enableWebSocket());
+
         HttpServerProps props = _server.getProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
@@ -90,7 +92,7 @@ public final class XPluginImp implements Plugin {
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
 
-        app.signalAdd(_signal);
+        context.app().signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
@@ -98,12 +100,12 @@ public final class XPluginImp implements Plugin {
         if (_server.isSecure() && _server.enableHttp2) {
             connectorInfo += ";HTTP/2,[http/2]";
         }
-        if (app.enableWebSocket()) {
+        if (context.app().enableWebSocket()) {
             //有名字定义时，添加信号注册
             WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
             if (Utils.isNotEmpty(wsProps.getName())) {
                 SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
-                app.signalAdd(wsSignal);
+                context.app().signalAdd(wsSignal);
             }
 
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());

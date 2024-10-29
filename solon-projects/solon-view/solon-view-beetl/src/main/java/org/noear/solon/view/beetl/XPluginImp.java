@@ -29,8 +29,15 @@ import org.noear.solon.view.beetl.tags.AuthRolesTag;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
-
         BeetlRender render = new BeetlRender();
+
+        context.app().shared().forEach((k, v) -> {
+            render.putVariable(k, v);
+        });
+
+        context.app().onSharedAdd((k, v) -> {
+            render.putVariable(k, v);
+        });
 
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, bw) -> {
@@ -48,9 +55,9 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().renderManager().register(null, render); //def
-        Solon.app().renderManager().register(".htm", render);
-        Solon.app().renderManager().register(".btl", render);
+        context.app().renderManager().register(null, render); //def
+        context.app().renderManager().register(".htm", render);
+        context.app().renderManager().register(".btl", render);
         context.wrapAndPut(BeetlRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {

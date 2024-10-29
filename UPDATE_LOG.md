@@ -23,15 +23,23 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.3
+* 新增 nami-coder-kryo 插件
 * 新增 solon-serialization-kryo 插件
 * 添加 solon Condition:onProperty 多条件支持
 * 添加 solon-net-stomp 简单事务支持，并添加统一凭据答复
-* 添加 solon `@Controller` 和 `@Remoting` “非 Mapping” 函数支持 “拦截注解” 和 “提取注解” 支持
+* 添加 solon-net-httputils 对 data + get 请求的支持
+* 添加 solon `@Controller` 和 `@Remoting` “非 Mapping” 函数支持 “拦截注解”
+* 添加 solon @Bean 函数，非 public 的警告日志
+* 添加 solon AppContext:beanInterceptorHas 检测方法
+* 添加 solon AppContext:subWrapsOfType(baseType, callback, index) 方法
+* 添加 solon-parent checkstyle 编译可选配置？？？
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
-* 调整 BeanWrap.Proxy 接口简化
-* 调整 BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
+* 调整 solon BeanWrap.Proxy 接口简化
+* 调整 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
+* 调整 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
 * freemarker 升为 2.3.33
 * velocity 升为 2.4.1
+* redisson 升为 3.37.0
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制

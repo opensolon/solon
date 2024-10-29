@@ -20,6 +20,7 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
@@ -101,7 +102,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             if (_multipart) {
                 MultipartBody.Builder _part_builer = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
-                if (_files != null) {
+                if (Utils.isEmpty(_files) == false) {
                     for (KeyValues<HttpUploadFile> kv : _files) {
                         for (HttpUploadFile val : kv.getValues()) {
                             _part_builer.addFormDataPart(kv.getKey(), val.fileName, new StreamBody(val.fileStream));
@@ -109,7 +110,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                     }
                 }
 
-                if (_params != null) {
+                if (Utils.isEmpty(_params) == false) {
                     for (KeyValues<String> kv : _params) {
                         for (String val : kv.getValues()) {
                             _part_builer.addFormDataPart(kv.getKey(), val);
@@ -122,7 +123,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 } catch (IllegalStateException ex) {
                     //这里不要取消（内容为空时，会出错）
                 }
-            } else if (_params != null) {
+            } else if (Utils.isEmpty(_params) == false) {
                 FormBody.Builder _form_builer = new FormBody.Builder(_charset);
 
                 for (KeyValues<String> kv : _params) {
@@ -206,8 +207,9 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
+            _params.clear();
             return newUrl.toString();
-        }else{
+        } else {
             return url;
         }
     }

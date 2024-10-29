@@ -34,26 +34,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 1.7
  */
 public class TracingManager {
-    private static AtomicBoolean enabled = new AtomicBoolean();
+    private static AtomicBoolean enabled = new AtomicBoolean(false);
 
     /**
      * 启用
      */
     public static void enable(String excluded) {
-        if (enabled.get()) {
-            return;
-        } else {
-            enabled.set(true);
+        if (enabled.compareAndSet(false, true)) {
+            //添加 nami 适配
+            NamiManager.reg(new NamiFilterTracing());
+
+            //添加 solon 适配
+            Solon.app().filter(new SolonFilterTracing(excluded));
+
+            //添加 @Tracing 适配
+            Solon.context().beanInterceptorAdd(Tracing.class, new TracingInterceptor());
         }
-
-        //添加 nami 适配
-        NamiManager.reg(new NamiFilterTracing());
-
-        //添加 solon 适配
-        Solon.app().filter(new SolonFilterTracing(excluded));
-
-        //添加 @Tracing 适配
-        Solon.context().beanInterceptorAdd(Tracing.class, new TracingInterceptor());
     }
 
     /**

@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        if (Solon.app().enableHttp() == false) {
+        if (context.app().enableHttp() == false) {
             return;
         }
 
@@ -63,13 +63,13 @@ public final class XPluginImp implements Plugin {
         }
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
     private static final String SMARTHTTP_LOG_LEVEL = "smarthttp.log.level";
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         if(Utils.isEmpty(System.getProperty(SMARTHTTP_LOG_LEVEL))) {
             System.setProperty(SMARTHTTP_LOG_LEVEL, "WARNING");
         }
@@ -86,14 +86,15 @@ public final class XPluginImp implements Plugin {
 
 
         _server = new SmHttpServerComb();
-        _server.enableWebSocket(app.enableWebSocket());
+        _server.enableWebSocket(context.app().enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
+
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
             _server.setExecutor(props.newWorkExecutor("smarthttp-"));
         }
 
-        _server.setHandler(Solon.app()::tryHandle);
+        _server.setHandler(context.app()::tryHandle);
 
         //尝试事件扩展
         EventBus.publish(_server);
@@ -103,17 +104,17 @@ public final class XPluginImp implements Plugin {
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
-        app.signalAdd(_signal);
+        context.app().signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
-        if (app.enableWebSocket()) {
+        if (context.app().enableWebSocket()) {
             //有名字定义时，添加信号注册
             WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
             if (Utils.isNotEmpty(wsProps.getName())) {
                 SignalSim wsSignal = new SignalSim(wsProps.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
-                app.signalAdd(wsSignal);
+                context.app().signalAdd(wsSignal);
             }
 
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());

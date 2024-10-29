@@ -17,6 +17,7 @@ package org.noear.solon.boot.vertx;
 
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 
 import javax.net.ssl.SSLContext;
@@ -31,14 +32,20 @@ import java.util.concurrent.Executor;
  * @since 2.9
  */
 public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
+    private final AppContext context;
+
     private Executor workExecutor;
     private boolean enableWebSocket;
     private Handler handler;
-    protected boolean enableSsl = true;
-    protected boolean enableHttp2 = false;
-    protected SSLContext sslContext;
-    protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
-    protected List<VxHttpServer> servers = new ArrayList<>();
+    private boolean enableSsl = true;
+    private boolean enableHttp2 = false;
+    private SSLContext sslContext;
+    private Set<Integer> addHttpPorts = new LinkedHashSet<>();
+    private List<VxHttpServer> servers = new ArrayList<>();
+
+    public VxHttpServerComb(AppContext context) {
+        this.context = context;
+    }
 
     @Override
     public void enableSsl(boolean enable, SSLContext sslContext) {
@@ -84,7 +91,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         {
             //主端口，支持外部扩展处理器（例，网关）
-            VxHttpServer s1 = new VxHttpServer(true);
+            VxHttpServer s1 = new VxHttpServer(context, true);
             s1.setWorkExecutor(workExecutor);
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
@@ -97,7 +104,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
 
         //增量端口，不支持外部扩展处理器
         for (Integer portAdd : addHttpPorts) {
-            VxHttpServer s2 = new VxHttpServer(false);
+            VxHttpServer s2 = new VxHttpServer(context, false);
             s2.setWorkExecutor(workExecutor);
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);

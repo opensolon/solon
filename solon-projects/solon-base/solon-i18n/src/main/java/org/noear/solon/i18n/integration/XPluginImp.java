@@ -15,7 +15,6 @@
  */
 package org.noear.solon.i18n.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
@@ -29,6 +28,6 @@ public class XPluginImp implements Plugin {
     public void start(AppContext context) {
         context.beanInterceptorAdd(I18n.class, I18nInterceptor.instance);
 
-        Solon.app().filter(Constants.FT_IDX_I18N, new I18nFilter());
+        context.app().filter(Constants.FT_IDX_I18N, new I18nFilter());
     }
 }

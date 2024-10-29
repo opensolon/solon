@@ -87,14 +87,6 @@ public class EnjoyRender implements Render {
 
         forDebug();
         forRelease();
-
-        Solon.app().shared().forEach((k, v) -> {
-            putVariable(k, v);
-        });
-
-        Solon.app().onSharedAdd((k, v) -> {
-            putVariable(k, v);
-        });
     }
 
 

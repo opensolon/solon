@@ -46,7 +46,7 @@ public class KryoBytesSerializer implements ContextSerializer<byte[]> {
         return tmp;
     }
 
-    public void free(Kryo kryo) {
+    protected void free(Kryo kryo) {
         this.objects.offer(kryo);
     }
 

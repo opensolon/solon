@@ -19,7 +19,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.JksOptions;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
@@ -29,6 +28,7 @@ import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.boot.vertx.http.VxHandlerSupplier;
 import org.noear.solon.boot.vertx.http.VxHandlerSupplierDefault;
 import org.noear.solon.boot.vertx.websocket.VxWebSocketHandlerImpl;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.web.vertx.VxHandler;
@@ -42,7 +42,9 @@ import java.util.concurrent.TimeUnit;
  * @since 2.9
  */
 public class VxHttpServer implements ServerLifecycle {
-    protected HttpServerProps props = HttpServerProps.getInstance();
+    protected final HttpServerProps props = HttpServerProps.getInstance();
+    protected final AppContext context;
+
     private HttpServer server = null;
     private Handler handler;
     private Executor workExecutor;
@@ -52,8 +54,9 @@ public class VxHttpServer implements ServerLifecycle {
     private boolean isSecure;
     private boolean allowExternalHandler;
 
-    public VxHttpServer(boolean allowExternalHandler) {
+    public VxHttpServer(AppContext context, boolean allowExternalHandler) {
         this.allowExternalHandler = allowExternalHandler;
+        this.context = context;
     }
 
     public boolean isSecure() {
@@ -82,11 +85,11 @@ public class VxHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        Vertx _vertx = Solon.context().getBean(Vertx.class);
+        Vertx _vertx = context.getBean(Vertx.class);
 
         VxHandlerSupplier handlerFactory = null;
         if (allowExternalHandler) {
-            handlerFactory = Solon.context().getBean(VxHandlerSupplier.class);
+            handlerFactory = context.getBean(VxHandlerSupplier.class);
         }
 
         if (handlerFactory == null) {
@@ -115,7 +118,7 @@ public class VxHttpServer implements ServerLifecycle {
             isSecure = _serverOptions.isSsl();
         }
 
-        if(enableWebSocket){
+        if (enableWebSocket) {
             _serverOptions.addWebSocketSubProtocol("*");
         }
 

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.scheduling.quartz.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
@@ -31,7 +30,7 @@ import java.lang.reflect.Method;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) {
-        if (Solon.app().source().getAnnotation(EnableScheduling.class) == null) {
+        if (context.app().source().getAnnotation(EnableScheduling.class) == null) {
             return;
         }
 

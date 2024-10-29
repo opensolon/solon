@@ -15,7 +15,6 @@
  */
 package org.noear.solon.health.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -33,8 +32,8 @@ public class HealthPlugin implements Plugin {
         //
         // HealthHandler 独立出来，便于其它检测路径的复用
         //
-        Solon.app().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
-        Solon.app().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        context.app().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        context.app().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
 
         //添加 HealthIndicator 自动注册
         context.subWrapsOfType(HealthIndicator.class, bw -> {

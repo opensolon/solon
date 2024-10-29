@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin {
 
         //开启WEB关闭
         if (enable) {
-            Solon.app().get(path, (c) -> {
+            context.app().get(path, (c) -> {
                 int delay2 = c.paramAsInt("delay", delay);
 
                 if (delay2 < 0) {
