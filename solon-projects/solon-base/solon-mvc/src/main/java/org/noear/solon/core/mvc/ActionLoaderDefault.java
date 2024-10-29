@@ -24,6 +24,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ProxyBinder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -144,9 +145,22 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
             }
         }
 
+        boolean enableProxy = false;
+
         //只支持 public 函数为 Action
         for (Method method : ClassUtil.findPublicMethods(bw.clz())) {
             loadActionItem(slots, all, method, b_limitMethodSet, b_addinMethodSet);
+
+            //是否需要自动代理
+            enableProxy = enableProxy || bw.context().beanInterceptorHas(method);
+        }
+
+        //是否需要自动代理
+        enableProxy = enableProxy || bw.context().beanInterceptorHas(bw.rawClz());
+
+        if (enableProxy) {
+            //需要代理（作为一般托管 bean 使用时，会跳过 Action 执行；此时需要代理）
+            ProxyBinder.global().binding(bw);
         }
     }
 

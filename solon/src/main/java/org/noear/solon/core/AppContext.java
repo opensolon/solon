@@ -215,9 +215,6 @@ public class AppContext extends BeanContainer {
 
         //注册 @Remoting 构建器
         beanBuilderAdd(Remoting.class, (clz, bw, anno) -> {
-            //尝试提取函数并确定自动代理
-            beanExtractOrProxy(bw);
-
             //设置remoting状态
             bw.remotingSet(true);
             //注册到容器
@@ -228,9 +225,6 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            //尝试提取函数并确定自动代理
-            beanExtractOrProxy(bw);
-
             app().router().add(bw);
         });
 
@@ -527,31 +521,18 @@ public class AppContext extends BeanContainer {
                     }
 
                     //是否需要自动代理
-                    enableProxy = enableProxy || requiredProxy(a);
+                    enableProxy = enableProxy || beanInterceptorHas(a);
 
                 }
             }
         }
 
-        if (enableProxy == false) {
-            for (Annotation a : bw.clz().getAnnotations()) {
-                //是否需要自动代理
-                enableProxy = enableProxy || requiredProxy(a);
-            }
-        }
+        //是否需要自动代理
+        enableProxy = enableProxy || beanInterceptorHas(bw.clz());
 
         if (enableProxy) {
             ProxyBinder.global().binding(bw);
         }
-    }
-
-    /**
-     * 是否需要有代理
-     */
-    private boolean requiredProxy(Annotation a) {
-        return beanInterceptors.containsKey(a.annotationType())
-                || a.annotationType().isAnnotationPresent(Around.class)
-                || a.annotationType().equals(Around.class);
     }
 
 
