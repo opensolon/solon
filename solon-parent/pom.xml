@@ -90,6 +90,7 @@
         <hessian-sofa.version>4.0.4</hessian-sofa.version>
         <hessian-lite.version>4.0.3</hessian-lite.version>
         <protostuff.version>1.8.0</protostuff.version>
+        <kryo.version>5.6.0</kryo.version>
 
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.11.0</junit5.version>
@@ -674,11 +675,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-serialization-kryo</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-fastjson</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -720,6 +716,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-serialization-fury</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-serialization-kryo</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
@@ -859,6 +860,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami-coder-fury</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami-coder-kryo</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
