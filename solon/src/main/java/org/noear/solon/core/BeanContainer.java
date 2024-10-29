@@ -18,6 +18,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Around;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
@@ -314,6 +315,28 @@ public abstract class BeanContainer {
      */
     public <T extends Annotation> InterceptorEntity beanInterceptorGet(Class<T> annoClz) {
         return beanInterceptors.get(annoClz);
+    }
+
+    /**
+     * 是否有拦截处理
+     */
+    public boolean beanInterceptorHas(AnnotatedElement ae) {
+        for (Annotation a : ae.getAnnotations()) {
+            if (beanInterceptorHas(a)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否有拦截处理
+     */
+    public boolean beanInterceptorHas(Annotation a) {
+        return beanInterceptors.containsKey(a.annotationType())
+                || a.annotationType().isAnnotationPresent(Around.class)
+                || a.annotationType().equals(Around.class);
     }
 
 
