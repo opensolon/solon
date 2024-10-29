@@ -498,6 +498,16 @@ public class AppContext extends BeanContainer {
      * 为一个对象提取函数或自动代理
      */
     public void beanExtractOrProxy(BeanWrap bw) {
+        beanExtractOrProxy(bw, true, true);
+    }
+
+    /**
+     * 为一个对象提取函数或自动代理
+     *
+     * @param tryExtract 尝试提取
+     * @param tryProxy   尝试代理
+     */
+    public void beanExtractOrProxy(BeanWrap bw, boolean tryExtract, boolean tryProxy) {
         if (bw == null) {
             return;
         }
@@ -509,34 +519,40 @@ public class AppContext extends BeanContainer {
 
             for (Method m : clzWrap.getMethods()) { //只支持公有函数检查
                 for (Annotation a : m.getAnnotations()) {
-                    BeanExtractor be = beanExtractors.get(a.annotationType());
+                    if (tryExtract) {
+                        BeanExtractor be = beanExtractors.get(a.annotationType());
 
-                    //是否需要提取
-                    if (be != null) {
-                        try {
-                            be.doExtract(bw, m, a);
-                        } catch (Throwable e) {
-                            e = Utils.throwableUnwrap(e);
-                            if (e instanceof RuntimeException) {
-                                throw (RuntimeException) e;
-                            } else {
-                                throw new RuntimeException(e);
+                        //是否需要提取
+                        if (be != null) {
+                            try {
+                                be.doExtract(bw, m, a);
+                            } catch (Throwable e) {
+                                e = Utils.throwableUnwrap(e);
+                                if (e instanceof RuntimeException) {
+                                    throw (RuntimeException) e;
+                                } else {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
                     }
 
-                    //是否需要自动代理
-                    enableProxy = enableProxy || beanInterceptorHas(a);
+                    if (tryProxy) {
+                        //是否需要自动代理
+                        enableProxy = enableProxy || beanInterceptorHas(a);
+                    }
 
                 }
             }
         }
 
-        //是否需要自动代理
-        enableProxy = enableProxy || beanInterceptorHas(bw.clz());
+        if (tryProxy) {
+            //是否需要自动代理
+            enableProxy = enableProxy || beanInterceptorHas(bw.clz());
 
-        if (enableProxy) {
-            ProxyBinder.global().binding(bw);
+            if (enableProxy) {
+                ProxyBinder.global().binding(bw);
+            }
         }
     }
 
