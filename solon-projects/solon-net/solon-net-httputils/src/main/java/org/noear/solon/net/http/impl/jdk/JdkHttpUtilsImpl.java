@@ -56,7 +56,6 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("HEAD");
         METHODS_NOBODY.add("TRACE");
         METHODS_NOBODY.add("OPTIONS");
-        METHODS_NOBODY.add("GET");
 
         allowMethods("PATCH");
     }
@@ -138,7 +137,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                         _builder.setDoOutput(true);
 
                         new FormDataBody(_charset).write(_builder, _files, _params);
-                    } else if (_params != null) {
+                    } else if (Utils.isEmpty(_params) == false) {
                         _builder.setDoOutput(true);
 
                         new FormBody(_charset).write(_builder, _params);
@@ -302,6 +301,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                     newUrl.append(key).append("=").append(HttpUtils.urlEncode(val, charset.name()));
                 }
             }
+            _params.clear();
         }
 
         return newUrl.toString();

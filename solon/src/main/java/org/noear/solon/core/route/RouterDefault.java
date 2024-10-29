@@ -72,7 +72,7 @@ public class RouterDefault implements Router, HandlerSlots {
 
             if (controllerWrap.remoting()) {
                 if (al.mapping() == null) {
-                    //如果没有 mapping，则不进行  remoting注册
+                    //如果类没有 mapping，则不进行  remoting注册
                     return;
                 }
             }

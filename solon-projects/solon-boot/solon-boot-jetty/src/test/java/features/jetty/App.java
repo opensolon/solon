@@ -3,6 +3,7 @@ package features.jetty;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
 
 /**
@@ -32,5 +33,15 @@ public class App {
     @Mapping("async_timeout")
     public void async_timeout(Context ctx) {
         ctx.asyncStart(100L, null);
+    }
+
+    @Mapping("session")
+    public Object session(Context ctx, @Param("name") String name) {
+        if (name == null) {
+            return ctx.session("name");
+        } else {
+            ctx.sessionSet("name", name);
+            return name;
+        }
     }
 }

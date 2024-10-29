@@ -331,12 +331,31 @@ public class Utils {
         return s == null || s.size() == 0;
     }
 
+    /**
+     * 检查映射是否为空
+     *
+     * @param s 集合
+     */
     public static boolean isEmpty(Map s) {
         return s == null || s.size() == 0;
     }
 
-    public static <T> boolean isEmpty(T[] array) {
-        return array == null || array.length == 0;
+    /**
+     * 检查多值映射是否为空
+     *
+     * @param s 集合
+     */
+    public static boolean isEmpty(MultiMap s) {
+        return s == null || s.size() == 0;
+    }
+
+    /**
+     * 检查数组是否为空
+     *
+     * @param s 集合
+     */
+    public static <T> boolean isEmpty(T[] s) {
+        return s == null || s.length == 0;
     }
 
     /**

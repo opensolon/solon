@@ -90,14 +90,6 @@ public class VelocityRender implements Render {
 
         engineInit(provider);
         engineInit(providerOfDebug);
-
-        Solon.app().shared().forEach((k, v) -> {
-            putVariable(k, v);
-        });
-
-        Solon.app().onSharedAdd((k, v) -> {
-            putVariable(k, v);
-        });
     }
 
     private void engineInit(RuntimeInstance ve) {

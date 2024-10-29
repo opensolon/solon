@@ -16,7 +16,6 @@
 package org.noear.solon.boot.jdkhttp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
@@ -40,7 +39,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        if (Solon.app().enableHttp() == false) {
+        if (context.app().enableHttp() == false) {
             return;
         }
 
@@ -60,11 +59,11 @@ public final class XPluginImp implements Plugin {
         }
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -78,7 +77,7 @@ public final class XPluginImp implements Plugin {
 
         _server = new JdkHttpServerComb();
         _server.setExecutor(props.newWorkExecutor("jdkhttp-"));
-        _server.setHandler(Solon.app()::tryHandle);
+        _server.setHandler(context.app()::tryHandle);
 
         //尝试事件扩展
         EventBus.publish(_server);
@@ -88,7 +87,7 @@ public final class XPluginImp implements Plugin {
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
-        app.signalAdd(_signal);
+        context.app().signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 

@@ -20,7 +20,6 @@ import io.micrometer.core.instrument.Metrics;
 
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.MeterBinder;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.metrics.annotation.*;
@@ -70,10 +69,10 @@ public class XPluginImpl implements Plugin {
 
 
         //添加基础接口
-        Solon.app().add("/", MetricsController.class);
+        context.app().add("/", MetricsController.class);
 
         //初始化公共标签
-        forCommonTagsInit();
+        forCommonTagsInit(context);
 
         //增加开放接口支持
         forOpener(context);
@@ -86,35 +85,35 @@ public class XPluginImpl implements Plugin {
         CloudManager.register(new CloudMetricServiceImpl());
     }
 
-    private void forOpener(AppContext aopContext) {
+    private void forOpener(AppContext context) {
         //订阅 MeterOpener
         meterOpeners.add(new PrometheusOpener());
-        aopContext.subBeansOfType(MeterOpener.class, bean -> {
+        context.subBeansOfType(MeterOpener.class, bean -> {
             meterOpeners.add(bean);
         });
 
         //拦取处理
         EventBus.subscribe(AppBeanLoadEndEvent.class, e -> {
             for (MeterOpener adapter : meterOpeners) {
-                if (adapter.isSupported(aopContext)) {
-                    Solon.app().get(adapter.path(), adapter);
+                if (adapter.isSupported(context)) {
+                    context.app().get(adapter.path(), adapter);
                 }
             }
         });
     }
 
-    private void forCommonTagsInit() {
+    private void forCommonTagsInit(AppContext context) {
         List<Tag> commonTags = new ArrayList<>();
-        if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            commonTags.add(Tag.of("solon.app.name", Solon.cfg().appName()));
+        if (Utils.isNotEmpty(context.app().cfg().appName())) {
+            commonTags.add(Tag.of("solon.app.name", context.app().cfg().appName()));
         }
 
-        if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
-            commonTags.add(Tag.of("solon.app.group", Solon.cfg().appGroup()));
+        if (Utils.isNotEmpty(context.app().cfg().appGroup())) {
+            commonTags.add(Tag.of("solon.app.group", context.app().cfg().appGroup()));
         }
 
-        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            commonTags.add(Tag.of("solon.app.nameSpace", Solon.cfg().appNamespace()));
+        if (Utils.isNotEmpty(context.app().cfg().appNamespace())) {
+            commonTags.add(Tag.of("solon.app.nameSpace", context.app().cfg().appNamespace()));
         }
 
         if (commonTags.size() > 0) {

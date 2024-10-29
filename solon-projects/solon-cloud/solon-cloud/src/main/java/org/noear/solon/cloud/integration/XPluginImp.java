@@ -88,12 +88,12 @@ public class XPluginImp implements Plugin {
             }
 
             //设置负载工厂
-            Solon.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
+            context.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
         } else {
             //@since 1.6
             if (CloudClient.loadBalance().count() > 0) {
                 //设置负载工厂
-                Solon.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
+                context.app().factoryManager().loadBalanceFactory(CloudClient.loadBalance());
             }
         }
 

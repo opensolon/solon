@@ -16,7 +16,6 @@
 package org.noear.solon.boot.websocket.netty;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
@@ -45,16 +44,16 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
-        if (Solon.app().enableWebSocket() == false) {
+        if (context.app().enableWebSocket() == false) {
             return;
         }
 
         context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(Solon.app());
+            start0(context);
         });
     }
 
-    private void start0(SolonApp app) throws Throwable {
+    private void start0(AppContext context) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -76,7 +75,7 @@ public class XPluginImpl implements Plugin {
             final int _wrapPort = props.getWrapPort();
             _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, "ws", SignalType.WEBSOCKET);
 
-            app.signalAdd(_signal);
+            context.app().signalAdd(_signal);
         }
 
         long time_end = System.currentTimeMillis();

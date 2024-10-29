@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
-            <version>5.6.0</version>
+            <version>${kryo.version}</version>
         </dependency>
 
         <dependency>

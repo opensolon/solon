@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.AppPluginLoadEndEvent;
 import org.noear.solon.data.annotation.*;
@@ -37,12 +36,12 @@ public class XPluginImpl implements Plugin {
         CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
 
         //添加事务控制支持
-        if (Solon.app().enableTransaction()) {
+        if (context.app().enableTransaction()) {
             context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
         }
 
         //添加缓存控制支持
-        if (Solon.app().enableCaching()) {
+        if (context.app().enableCaching()) {
             CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
             context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
@@ -59,9 +58,9 @@ public class XPluginImpl implements Plugin {
         }
 
         //自动构建数据源
-        Props props = Solon.cfg().getProp("solon.dataSources");
+        Props props = context.cfg().getProp("solon.dataSources");
         if (props.size() > 0) {
-            Solon.app().onEvent(AppPluginLoadEndEvent.class, e -> {
+            context.app().onEvent(AppPluginLoadEndEvent.class, e -> {
                 //支持 ENC() 加密符
                 VaultUtils.guard(props);
                 buildDataSource(context, props);

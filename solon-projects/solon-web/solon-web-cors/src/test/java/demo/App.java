@@ -16,6 +16,7 @@
 package demo;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.web.cors.CrossFilter;
 import org.noear.solon.web.cors.CrossInterceptor;
 
@@ -24,18 +25,18 @@ import org.noear.solon.web.cors.CrossInterceptor;
  */
 public class App {
     public static void main(String[] args) {
-        Solon.start(App.class, args, app -> {
+        SolonApp app = Solon.start(App.class, args, x -> {
             //例：增加全局处理（用过滤器模式）
-            app.filter(-1, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
+            x.filter(-1, new CrossFilter().allowedOrigins("*")); //加-1 优先级更高
 
             //例：或者增某段路径的处理
-            app.filter(new CrossFilter().pathPatterns("/user/**").allowedOrigins("*"));
+            x.filter(new CrossFilter().pathPatterns("/user/**").allowedOrigins("*"));
 
             //例：或者增某段路径的处理
-            app.routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
+            x.routerInterceptor(new CrossInterceptor().pathPatterns("/user/**").allowedOrigins("*"));
         });
 
-        Solon.app().router().getAll().forEach(e -> {
+        app.router().getAll().forEach(e -> {
             System.out.println(e.method() + " " + e.path());
         });
     }

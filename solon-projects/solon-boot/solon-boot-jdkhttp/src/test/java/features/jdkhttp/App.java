@@ -1,6 +1,7 @@
 package features.jdkhttp;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
@@ -17,6 +18,11 @@ public class App {
     @Mapping("hello")
     public String hello(String name) {
         return "hello " + name;
+    }
+
+    @Mapping("body")
+    public String body(String tag, @Body String body) {
+        return tag + ":" + body;
     }
 
     @Mapping("async")
