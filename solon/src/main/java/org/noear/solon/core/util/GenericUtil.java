@@ -259,17 +259,17 @@ public class GenericUtil {
         } else if (type instanceof ParameterizedType) {
             ParameterizedType typeTmp = (ParameterizedType) type;
             Type[] typeArgs = typeTmp.getActualTypeArguments();
-            boolean gChanged = false;
+            boolean typeChanged = false;
 
             for (int i = 0; i < typeArgs.length; i++) {
                 Type t1 = typeArgs[i];
                 typeArgs[i] = reviewType(t1, genericInfo);
                 if (typeArgs[i] != t1) {
-                    gChanged = true;
+                    typeChanged = true;
                 }
             }
 
-            if (gChanged) {
+            if (typeChanged) {
                 return new ParameterizedTypeImpl((Class<?>) typeTmp.getRawType(), typeArgs, typeTmp.getOwnerType());
             } else {
                return type;
