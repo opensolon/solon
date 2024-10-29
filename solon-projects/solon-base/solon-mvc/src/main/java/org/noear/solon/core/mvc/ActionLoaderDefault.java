@@ -151,8 +151,10 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         for (Method method : ClassUtil.findPublicMethods(bw.clz())) {
             loadActionItem(slots, all, method, b_limitMethodSet, b_addinMethodSet);
 
-            //是否需要自动代理
-            enableProxy = enableProxy || bw.context().beanInterceptorHas(method);
+            //是否需要自动代理 //只支持 public
+            if (Modifier.isPublic(method.getModifiers())) {
+                enableProxy = enableProxy || bw.context().beanInterceptorHas(method);
+            }
         }
 
         //是否需要自动代理
@@ -179,7 +181,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         } else {
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
             if (Modifier.isPublic(method.getModifiers()) == false) {
-                LogUtil.global().warn("This mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
+                LogUtil.global().warn("This @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
             }
         }
 
