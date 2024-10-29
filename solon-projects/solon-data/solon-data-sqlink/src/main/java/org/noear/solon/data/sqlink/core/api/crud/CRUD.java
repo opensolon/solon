@@ -27,6 +27,12 @@ public abstract class CRUD
 {
     protected abstract IConfig getConfig();
 
+    /**
+     * 获取Sql语句
+     * @return Sql
+     */
+    protected abstract String toSql();
+
     protected void tryPrintSql(Logger log, String sql)
     {
         if (getConfig().isPrintSql())

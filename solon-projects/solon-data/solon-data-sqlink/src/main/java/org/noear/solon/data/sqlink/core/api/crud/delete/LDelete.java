@@ -35,6 +35,15 @@ public class LDelete<T> extends DeleteBase
     }
 
     //region [JOIN]
+
+    /**
+     * join新对象（表）<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     * @param target 数据表类
+     * @param func 连接的条件
+     * @return 泛型数量+1的删除过程对象
+     * @param <Tn> join过来的表的类型
+     */
     public <Tn> LDelete2<T, Tn> innerJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();

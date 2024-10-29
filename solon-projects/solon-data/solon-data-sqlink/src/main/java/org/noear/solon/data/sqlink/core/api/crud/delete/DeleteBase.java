@@ -61,6 +61,10 @@ public abstract class DeleteBase extends CRUD
         return sqlBuilder.getConfig();
     }
 
+    /**
+     * 执行sql语句
+     * @return 执行后的结果
+     */
     public long executeRows()
     {
         IConfig config = getConfig();

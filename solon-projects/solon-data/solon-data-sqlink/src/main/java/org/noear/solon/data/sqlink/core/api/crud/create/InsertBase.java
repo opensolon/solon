@@ -60,6 +60,10 @@ public abstract class InsertBase extends CRUD
         this.sqlBuilder = new InsertSqlBuilder(c);
     }
 
+    /**
+     * 执行sql语句
+     * @return 执行后的结果
+     */
     public long executeRows()
     {
         List<Object> objects = getObjects();

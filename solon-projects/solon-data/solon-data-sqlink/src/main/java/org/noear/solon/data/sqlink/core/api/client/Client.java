@@ -28,6 +28,8 @@ import org.noear.solon.data.sqlink.core.exception.SQLinkException;
 import java.util.Collection;
 
 /**
+ * 发起数据库操作的对象
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -50,43 +52,87 @@ public class Client
         config.getDataSourceManager().useDefDs();
     }
 
+    /**
+     * 手动开始事务
+     * @param isolationLevel 事务级别
+     * @return 事务对象
+     */
     public Transaction beginTransaction(Integer isolationLevel)
     {
         return config.getTransactionManager().get(isolationLevel);
     }
 
+    /**
+     * 手动开始事务
+     * @return 事务对象
+     */
     public Transaction beginTransaction()
     {
         return beginTransaction(null);
     }
 
+    /**
+     * 查询
+     *
+     * @param c 数据类类对象
+     * @return 查询过程对象
+     * @param <T> 数据类类型
+     */
     public <T> LQuery<T> query(@Recode Class<T> c)
     {
         return new LQuery<>(config, c);
     }
 
+    /**
+     * 进行不包含表的查询
+     * @return 查询过程对象
+     */
     public EmptyQuery queryEmptyTable()
     {
         return new EmptyQuery(config);
     }
 
+    /**
+     * 新增
+     * @param t 数据类对象
+     * @return 新增过程对象
+     * @param <T> 数据类类型
+     */
     public <T> ObjectInsert<T> insert(@Recode T t)
     {
         ObjectInsert<T> objectInsert = new ObjectInsert<>(config, (Class<T>) t.getClass());
         return objectInsert.insert(t);
     }
 
+    /**
+     * 集合新增
+     * @param ts 数据类对象集合
+     * @return 新增过程对象
+     * @param <T> 数据类类型
+     */
     public <T> ObjectInsert<T> insert(@Recode Collection<T> ts)
     {
         ObjectInsert<T> objectInsert = new ObjectInsert<>(config, getType(ts));
         return objectInsert.insert(ts);
     }
 
+    /**
+     * 更新
+     * @param c 数据类类对象
+     * @return 更新过程对象
+     * @param <T> 数据类类型
+     */
     public <T> LUpdate<T> update(@Recode Class<T> c)
     {
         return new LUpdate<>(config, c);
     }
 
+    /**
+     * 删除
+     * @param c 数据类类对象
+     * @return 删除过程对象
+     * @param <T> 数据类类型
+     */
     public <T> LDelete<T> delete(@Recode Class<T> c)
     {
         return new LDelete<>(config, c);

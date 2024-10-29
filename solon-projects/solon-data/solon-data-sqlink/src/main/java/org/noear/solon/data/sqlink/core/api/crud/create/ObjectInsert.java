@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 新增过程对象
  * @author kiryu1223
  * @since 3.0
  */
@@ -36,12 +37,22 @@ public class ObjectInsert<T> extends InsertBase
         this.tableType = tableType;
     }
 
+    /**
+     * 增加一个需要新增的数据
+     * @param t 同类型数据对象
+     * @return this
+     */
     public ObjectInsert<T> insert(T t)
     {
         tObjects.add(t);
         return this;
     }
 
+    /**
+     * 增加多个需要新增的数据
+     * @param ts 同类型数据集合
+     * @return this
+     */
     public ObjectInsert<T> insert(Collection<T> ts)
     {
         tObjects.addAll(ts);
