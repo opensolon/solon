@@ -108,10 +108,30 @@ public class GenericUtil {
     /**
      * 转换为参数化类型
      * */
-    public static ParameterizedType toParameterizedType(Type type) {
+    private static ParameterizedType toParameterizedType(Type type, Map<String, Type> typeMap) {
         ParameterizedType result = null;
         if (type instanceof ParameterizedType) {
             result = (ParameterizedType) type;
+
+            if (typeMap.size() > 0) {
+                boolean typeArgumentsChanged = false;
+                Type[] typeArguments = result.getActualTypeArguments();
+                Class<?> rawType = (Class<?>) result.getRawType();
+                for (int i = 0; i < typeArguments.length; i++) {
+                    Type typeArg = typeArguments[i];
+                    if (typeArg instanceof TypeVariable) {
+                        typeArg = typeMap.get(typeArg.getTypeName());
+                        if (typeArg != null) {
+                            typeArgumentsChanged = true;
+                            typeArguments[i] = typeArg;
+                        }
+                    }
+                }
+
+                if (typeArgumentsChanged) {
+                    result = new ParameterizedTypeImpl(rawType, typeArguments, result.getOwnerType());
+                }
+            }
         } else if (type instanceof Class) {
             final Class<?> clazz = (Class<?>) type;
             Type genericSuper = clazz.getGenericSuperclass();
@@ -123,7 +143,7 @@ public class GenericUtil {
                     genericSuper = genericInterfaces[0];
                 }
             }
-            result = toParameterizedType(genericSuper);
+            result = toParameterizedType(genericSuper, typeMap);
         }
         return result;
     }
@@ -176,8 +196,8 @@ public class GenericUtil {
         // 找到对应关系，如果对应的是继承的泛型变量，则递归继续找，直到找到实际或返回null为止。
         // 如果传入的非Class，例如TypeReference，获取到泛型参数中实际的泛型对象类，继续按照类处理
         while (null != type) {
-            final ParameterizedType parameterizedType = toParameterizedType(type);
-            if(null == parameterizedType){
+            final ParameterizedType parameterizedType = toParameterizedType(type, typeMap);
+            if (null == parameterizedType) {
                 break;
             }
             final Type[] typeArguments = parameterizedType.getActualTypeArguments();
