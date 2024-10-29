@@ -186,6 +186,11 @@ public class AppContext extends BeanContainer {
 
                 if (ma != null) {
                     tryBuildBeanOfMethod(bw, m, ma);
+
+                    //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
+                    if (Modifier.isPublic(m.getModifiers()) == false) {
+                        LogUtil.global().warn("This @Bean method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+                    }
                 }
             }
 
