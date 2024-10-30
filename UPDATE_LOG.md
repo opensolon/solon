@@ -34,6 +34,7 @@
 * 添加 solon AppContext:subWrapsOfType(baseType, callback, index) 方法
 * 添加 solon-parent checkstyle 编译可选配置？？？
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
+* 修复 配置注入与 HikariCP 6.0 的兼容问题
 * 调整 solon BeanWrap.Proxy 接口简化
 * 调整 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 调整 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
