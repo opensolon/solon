@@ -15,11 +15,11 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.delete;
 
-import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func10;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 
 /**
  * @author kiryu1223
@@ -33,6 +33,14 @@ public class LDelete10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends DeleteBa
     }
 
     // region [WHERE]
+
+    /**
+     * 设置where条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public LDelete10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> where(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean> func)
     {
         throw new NotCompiledException();
@@ -45,7 +53,16 @@ public class LDelete10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends DeleteBa
     }
     // endregion
 
-    public <R> LDelete10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> selectDelete(@Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr)
+    /**
+     * 设置需要delete的表，默认只delete第一张表，多次调用可以delete多个表
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回指定表的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <R>  指定表的类型
+     * @return this
+     */
+    public <R> LDelete10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> selectDelete(@Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> func)
     {
         throw new NotCompiledException();
     }

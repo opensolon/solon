@@ -30,14 +30,22 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
  */
 public class LUpdate2<T1, T2> extends UpdateBase
 {
-    // region [INIT]
     public LUpdate2(UpdateSqlBuilder sqlBuilder)
     {
         super(sqlBuilder);
     }
-    //endregion
 
     //region [JOIN]
+
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的更新过程对象
+     */
     public <Tn> LUpdate3<T1, T2, Tn> innerJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -49,6 +57,15 @@ public class LUpdate2<T1, T2> extends UpdateBase
         return new LUpdate3<>(getSqlBuilder());
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的更新过程对象
+     */
     public <Tn> LUpdate3<T1, T2, Tn> leftJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -60,6 +77,15 @@ public class LUpdate2<T1, T2> extends UpdateBase
         return new LUpdate3<>(getSqlBuilder());
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的更新过程对象
+     */
     public <Tn> LUpdate3<T1, T2, Tn> rightJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -73,6 +99,13 @@ public class LUpdate2<T1, T2> extends UpdateBase
     //endregion
 
     //region [SET]
+
+    /**
+     * 为需要更新的字段赋值
+     * <p><b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     * @param action lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public LUpdate2<T1, T2> set(@Expr Action2<T1, T2> action)
     {
         throw new NotCompiledException();
@@ -86,6 +119,14 @@ public class LUpdate2<T1, T2> extends UpdateBase
     //endregion
 
     //region [WHERE]
+
+    /**
+     * 设置where条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public LUpdate2<T1, T2> where(@Expr Func2<T1, T2, Boolean> func)
     {
         throw new NotCompiledException();

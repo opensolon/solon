@@ -63,6 +63,7 @@ public abstract class DeleteBase extends CRUD
 
     /**
      * 执行sql语句
+     *
      * @return 执行后的结果
      */
     public long executeRows()

@@ -15,15 +15,15 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.update;
 
-import org.noear.solon.data.sqlink.core.api.crud.CRUD;
-import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
-import org.noear.solon.data.sqlink.base.session.SqlSession;
-import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
-import org.noear.solon.data.sqlink.core.visitor.SetVisitor;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.core.api.crud.CRUD;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
+import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
+import org.noear.solon.data.sqlink.core.visitor.SetVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class UpdateBase extends CRUD
 
     public UpdateBase(IConfig config, Class<?> target)
     {
-        this.sqlBuilder = new UpdateSqlBuilder(config,target);
+        this.sqlBuilder = new UpdateSqlBuilder(config, target);
     }
 
     public UpdateBase(UpdateSqlBuilder sqlBuilder)
@@ -65,6 +65,11 @@ public class UpdateBase extends CRUD
         return sqlBuilder.getSql();
     }
 
+    /**
+     * 执行sql语句
+     *
+     * @return 执行后的结果
+     */
     public long executeRows()
     {
         IConfig config = getConfig();
