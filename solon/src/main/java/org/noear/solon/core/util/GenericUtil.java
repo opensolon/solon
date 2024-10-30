@@ -42,28 +42,30 @@ public class GenericUtil {
      * @param genericIfc 泛型接口
      * */
     public static Class<?>[] resolveTypeArguments(Class<?> clazz, Class<?> genericIfc) {
-        for (Type type0 : clazz.getGenericInterfaces()) {
-            if (type0 instanceof ParameterizedType) {
-                ParameterizedType type = (ParameterizedType) type0;
-                Class<?> rawType = (Class<?>) type.getRawType();
+        for (Type supIfc : clazz.getGenericInterfaces()) {
+            if (supIfc instanceof ParameterizedType) {
+                ParameterizedType type = (ParameterizedType) supIfc;
+                Class<?> rawClz = (Class<?>) type.getRawType();
 
-                if (rawType == genericIfc || getGenericInterfaces(rawType).contains(genericIfc)) {
+                if (rawClz == genericIfc || getGenericInterfaces(rawClz).contains(genericIfc)) {
                     return Arrays.stream(type.getActualTypeArguments())
+                            .filter(item -> item instanceof Class<?>)
                             .map(item -> (Class<?>) item)
                             .toArray(Class[]::new);
                 }
-            } else if (type0 instanceof Class<?>) {
-                Class<?>[] classes = resolveTypeArguments((Class<?>) type0, genericIfc);
+            } else if (supIfc instanceof Class<?>) {
+                Class<?>[] classes = resolveTypeArguments((Class<?>) supIfc, genericIfc);
                 if (classes != null) {
                     return classes;
                 }
             }
         }
 
-        Type type1 = clazz.getGenericSuperclass();
-        if (type1 instanceof ParameterizedType) {
-            ParameterizedType type = (ParameterizedType) type1;
+        Type supClz = clazz.getGenericSuperclass();
+        if (supClz instanceof ParameterizedType) {
+            ParameterizedType type = (ParameterizedType) supClz;
             return Arrays.stream(type.getActualTypeArguments())
+                    .filter(item -> item instanceof Class<?>)
                     .map(item -> (Class<?>) item)
                     .toArray(Class[]::new);
         }
@@ -72,10 +74,10 @@ public class GenericUtil {
     }
 
     /**
-     * 获取指定类的所有父类
+     * 获取指定类的所有父接口
      *
      * @param clazz 要获取的类
-     * @return 所有父类
+     * @return 所有父接口
      */
     private static List<Class<?>> getGenericInterfaces(Class<?> clazz) {
         return getGenericInterfaces(clazz, new ArrayList<>());
@@ -88,18 +90,11 @@ public class GenericUtil {
      * @return 所有父类
      */
     private static List<Class<?>> getGenericInterfaces(Class<?> clazz, List<Class<?>> classes) {
-        Type[] interfaces = clazz.getGenericInterfaces();
-        for (Type type : interfaces) {
-            if (type instanceof ParameterizedType) {
-                Class<?> aClass = (Class<?>) ((ParameterizedType) type).getRawType();
-                classes.add(aClass);
-                for (Type type0 : aClass.getGenericInterfaces()) {
-                    if (type0 instanceof ParameterizedType) {
-                        Class<?> clazz0 = (Class<?>) ((ParameterizedType) type0).getRawType();
-                        classes.add(clazz0);
-                        getGenericInterfaces(clazz0, classes);
-                    }
-                }
+        for (Type supIfc : clazz.getGenericInterfaces()) {
+            if (supIfc instanceof ParameterizedType) {
+                Class<?> rawClz = (Class<?>) ((ParameterizedType) supIfc).getRawType();
+                classes.add(rawClz);
+                getGenericInterfaces(rawClz, classes);
             }
         }
         return classes;
@@ -114,35 +109,36 @@ public class GenericUtil {
             result = (ParameterizedType) type;
 
             if (typeMap.size() > 0) {
-                boolean typeArgumentsChanged = false;
-                Type[] typeArguments = result.getActualTypeArguments();
-                Class<?> rawType = (Class<?>) result.getRawType();
-                for (int i = 0; i < typeArguments.length; i++) {
-                    Type typeArg = typeArguments[i];
-                    if (typeArg instanceof TypeVariable) {
-                        typeArg = typeMap.get(typeArg.getTypeName());
-                        if (typeArg != null) {
-                            typeArgumentsChanged = true;
-                            typeArguments[i] = typeArg;
+                boolean typeArgsChanged = false;
+                Type[] typeArgs = result.getActualTypeArguments();
+                Class<?> rawClz = (Class<?>) result.getRawType();
+                for (int i = 0; i < typeArgs.length; i++) {
+                    Type typeArg1 = typeArgs[i];
+                    if (typeArg1 instanceof TypeVariable) {
+                        typeArg1 = typeMap.get(typeArg1.getTypeName());
+                        if (typeArg1 != null) {
+                            typeArgsChanged = true;
+                            typeArgs[i] = typeArg1;
                         }
                     }
                 }
 
-                if (typeArgumentsChanged) {
-                    result = new ParameterizedTypeImpl(rawType, typeArguments, result.getOwnerType());
+                if (typeArgsChanged) {
+                    result = new ParameterizedTypeImpl(rawClz, typeArgs, result.getOwnerType());
                 }
             }
         } else if (type instanceof Class) {
             final Class<?> clazz = (Class<?>) type;
             Type genericSuper = clazz.getGenericSuperclass();
             if (null == genericSuper || Object.class.equals(genericSuper)) {
-                // 如果类没有父类，而是实现一些定义好的泛型接口，则取接口的Type
+                // 如果类没有父类，而是实现一些定义好的泛型接口，则取接口的 Type
                 final Type[] genericInterfaces = clazz.getGenericInterfaces();
                 if (genericInterfaces != null && genericInterfaces.length > 0) {
-                    // 默认取第一个实现接口的泛型Type
+                    // 默认取第一个实现接口的泛型 Type
                     genericSuper = genericInterfaces[0];
                 }
             }
+
             result = toParameterizedType(genericSuper, typeMap);
         }
         return result;
