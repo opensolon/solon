@@ -32,6 +32,8 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import java.util.*;
 
 /**
+ * 查询过程对象
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -58,6 +60,15 @@ public class LQuery<T> extends QueryBase
         return new LQuery2<>(getSqlBuilder());
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> innerJoin(Class<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -69,6 +80,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> innerJoin(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -80,6 +100,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> leftJoin(Class<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -91,6 +120,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> leftJoin(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -102,6 +140,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> leftJoin(EndQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -113,6 +160,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> rightJoin(Class<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -124,6 +180,15 @@ public class LQuery<T> extends QueryBase
         return joinNewQuery();
     }
 
+    /**
+     * join表操作<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <Tn>   join过来的表的类型
+     * @return 泛型数量+1的查询过程对象
+     */
     public <Tn> LQuery2<T, Tn> rightJoin(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func)
     {
         throw new NotCompiledException();
@@ -139,6 +204,13 @@ public class LQuery<T> extends QueryBase
 
     // region [WHERE]
 
+    /**
+     * 设置where条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public LQuery<T> where(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
     {
         throw new NotCompiledException();
@@ -150,6 +222,13 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
+    /**
+     * 设置where条件，并且以or将多个where连接<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public LQuery<T> orWhere(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
     {
         throw new NotCompiledException();
@@ -161,7 +240,15 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
-    public <E> LQuery<T> exists(Class<E> table, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
+    /**
+     * 等价于在where中调用exists<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
+    public <E> LQuery<T> exists(Class<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
     {
         throw new NotCompiledException();
     }
@@ -172,7 +259,15 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
-    public <E> LQuery<T> exists(LQuery<E> query, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
+    /**
+     * 等价于在where中调用exists<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
+    public <E> LQuery<T> exists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
     {
         throw new NotCompiledException();
     }
@@ -183,7 +278,15 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
-    public <E> LQuery<T> notExists(Class<E> table, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
+    /**
+     * 等价于在where中调用 not exists<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
+    public <E> LQuery<T> notExists(Class<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
     {
         throw new NotCompiledException();
     }
@@ -194,7 +297,15 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
-    public <E> LQuery<T> notExists(LQuery<E> query, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
+    /**
+     * 等价于在where中调用 not exists<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param target 数据表类或查询过程
+     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
+    public <E> LQuery<T> notExists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
     {
         throw new NotCompiledException();
     }
@@ -209,6 +320,14 @@ public class LQuery<T> extends QueryBase
 
     // region [ORDER BY]
 
+    /**
+     * 设置orderBy的字段以及升降序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param asc  是否为升序
+     * @return this
+     */
     public <R> LQuery<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, boolean asc)
     {
         throw new NotCompiledException();
@@ -220,6 +339,13 @@ public class LQuery<T> extends QueryBase
         return this;
     }
 
+    /**
+     * 设置orderBy的字段并且为升序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public <R> LQuery<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr)
     {
         throw new NotCompiledException();
@@ -235,12 +361,25 @@ public class LQuery<T> extends QueryBase
 
     // region [LIMIT]
 
+    /**
+     * 获取指定数量的数据
+     *
+     * @param rows 需要返回的条数
+     * @return this
+     */
     public LQuery<T> limit(long rows)
     {
         limit0(rows);
         return this;
     }
 
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param offset 需要跳过的条数
+     * @param rows   需要返回的条数
+     * @return this
+     */
     public LQuery<T> limit(long offset, long rows)
     {
         limit0(offset, rows);
@@ -251,6 +390,13 @@ public class LQuery<T> extends QueryBase
 
     // region [GROUP BY]
 
+    /**
+     * 设置groupBy<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个继承于Grouper的匿名对象的lambda表达式((a) -> new Grouper(){...})，初始化段{...}内编写需要加入到Group的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return 分组查询过程对象
+     */
     public <Key extends Grouper> GroupedQuery<Key, T> groupBy(@Expr Func1<T, Key> expr)
     {
         throw new NotCompiledException();
@@ -266,16 +412,31 @@ public class LQuery<T> extends QueryBase
 
     // region [SELECT]
 
+    /**
+     * 设置select，根据指定的类型的字段匹配去生成选择的sql字段
+     *
+     * @param r   指定的返回类型
+     * @param <R> 指定的返回类型
+     * @return 终结查询过程
+     */
     public <R> EndQuery<R> select(@Recode Class<R> r)
     {
         return super.select(r);
     }
 
-    public LQuery<T> select()
-    {
-        return new LQuery<>(boxedQuerySqlBuilder());
-    }
+//    public LQuery<T> select()
+//    {
+//        return new LQuery<>(boxedQuerySqlBuilder());
+//    }
 
+    /**
+     * 设置select<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个继承于Result的匿名对象的lambda表达式((a) -> new Result(){...})，初始化段{...}内编写需要select的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <R>  Result
+     * @return 基于Result类型的新查询过程对象
+     */
     public <R extends Result> LQuery<R> select(@Expr Func1<T, R> expr)
     {
         throw new NotCompiledException();
@@ -288,6 +449,13 @@ public class LQuery<T> extends QueryBase
         return new LQuery<>(boxedQuerySqlBuilder());
     }
 
+    /**
+     * 此重载用于当想要返回某个字段的情况((r) -> r.getId),因为select泛型限制为必须是Result的子类<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个值的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return 终结查询过程
+     */
     public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func1<T, R> expr)
     {
         throw new NotCompiledException();
@@ -362,12 +530,23 @@ public class LQuery<T> extends QueryBase
 
     //region [OTHER]
 
+    /**
+     * 设置distinct
+     *
+     * @return this
+     */
     public LQuery<T> distinct()
     {
         distinct0(true);
         return this;
     }
 
+    /**
+     * 设置distinct
+     *
+     * @param condition 是否distinct
+     * @return this
+     */
     public LQuery<T> distinct(boolean condition)
     {
         distinct0(condition);
@@ -378,23 +557,44 @@ public class LQuery<T> extends QueryBase
 
     // region [toAny]
 
+    /**
+     * 检查表中是否存在至少一条数据
+     *
+     * @return boolean
+     */
     @Override
     public boolean any()
     {
         return super.any();
     }
 
+    /**
+     * 返回一条数据，会调用各种数据库limit 1的具体实现，无数据则返回null
+     *
+     * @return T
+     */
     @Override
     public T first()
     {
         return super.first();
     }
 
+    /**
+     * list集合形式返回数据，无数据则返回空list
+     *
+     * @return List
+     */
     public List<? extends T> toList()
     {
         return super.toList();
     }
 
+    /**
+     * list集合形式返回数据，并且执行你想要对已写入内存中的数据进行的操作，执行后再返回list
+     *
+     * @param func 执行操作的lambda
+     * @return List
+     */
     public <R> List<R> toList(Func1<T, R> func)
     {
         List<? extends T> list = toList();
@@ -406,11 +606,23 @@ public class LQuery<T> extends QueryBase
         return rList;
     }
 
+    /**
+     * Map形式返回数据，无数据则返回空Map
+     *
+     * @param func 指定一个key
+     * @return Map
+     */
     public <K> Map<K, T> toMap(Func1<T, K> func)
     {
         return toMap(func, new HashMap<>());
     }
 
+    /**
+     * Map形式返回数据，无数据则返回空Map
+     * @param func 指定一个key
+     * @param map 指定你想要的Map类型
+     * @return Map
+     */
     public <K> Map<K, T> toMap(Func1<T, K> func, Map<K, T> map)
     {
         for (T t : toList())

@@ -15,13 +15,16 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
-import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func0;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
+import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.core.api.Result;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 
 /**
+ * 空表查询过程（用于数据库计算）
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -32,12 +35,12 @@ public class EmptyQuery extends QueryBase
         super(config, Empty.class);
     }
 
-    public <R> LQuery<? extends R> select(@Expr Func0<? extends R> expr)
+    public <R extends Result> LQuery<R> select(@Expr Func0<R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R> LQuery<? extends R> select(ExprTree<Func0<? extends R>> expr)
+    public <R extends Result> LQuery<R> select(ExprTree<Func0<R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

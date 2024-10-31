@@ -15,19 +15,21 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
+import io.github.kiryu1223.expressionTree.delegate.Func1;
+import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import org.noear.solon.data.sqlink.core.api.Result;
-import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.QueryBase;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
-import io.github.kiryu1223.expressionTree.delegate.Func1;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.List;
 
 /**
+ * 分组查询过程对象
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -40,6 +42,13 @@ public class GroupedQuery<Key, T> extends QueryBase
 
     // region [HAVING]
 
+    /**
+     * 设置having<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public GroupedQuery<Key, T> having(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, Boolean> func)
     {
         throw new NotCompiledException();
@@ -55,6 +64,14 @@ public class GroupedQuery<Key, T> extends QueryBase
 
     // region [ORDER BY]
 
+    /**
+     * 设置orderBy的字段以及升降序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param asc  是否为升序
+     * @return this
+     */
     public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr, boolean asc)
     {
         throw new NotCompiledException();
@@ -66,7 +83,13 @@ public class GroupedQuery<Key, T> extends QueryBase
         return this;
     }
 
-
+    /**
+     * 设置orderBy的字段并且为升序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr)
     {
         throw new NotCompiledException();
@@ -80,12 +103,26 @@ public class GroupedQuery<Key, T> extends QueryBase
     // endregion
 
     // region [LIMIT]
+
+    /**
+     * 获取指定数量的数据
+     *
+     * @param rows 需要返回的条数
+     * @return this
+     */
     public GroupedQuery<Key, T> limit(long rows)
     {
         limit0(rows);
         return this;
     }
 
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param offset 需要跳过的条数
+     * @param rows   需要返回的条数
+     * @return this
+     */
     public GroupedQuery<Key, T> limit(long offset, long rows)
     {
         limit0(offset, rows);
@@ -95,6 +132,14 @@ public class GroupedQuery<Key, T> extends QueryBase
 
     // region [SELECT]
 
+    /**
+     * 设置select<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个继承于Result的匿名对象的lambda表达式((a) -> new Result(){...})，初始化段{...}内编写需要select的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <R>  Result
+     * @return 基于Result类型的新查询过程对象
+     */
     public <R extends Result> LQuery<R> select(@Expr Func1<Group<Key, T>, R> expr)
     {
         throw new NotCompiledException();
@@ -106,6 +151,13 @@ public class GroupedQuery<Key, T> extends QueryBase
         return new LQuery<>(boxedQuerySqlBuilder());
     }
 
+    /**
+     * 此重载用于当想要返回某个字段的情况((r) -> r.getId),因为select泛型限制为必须是Result的子类<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个值的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return 终结查询过程
+     */
     public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr)
     {
         throw new NotCompiledException();
@@ -119,24 +171,45 @@ public class GroupedQuery<Key, T> extends QueryBase
 
     // endregion
 
+    /**
+     * 检查表中是否存在至少一条数据
+     *
+     * @return boolean
+     */
     @Override
     public boolean any()
     {
         return super.any();
     }
 
+    /**
+     * list集合形式返回数据，无数据则返回空list
+     *
+     * @return List
+     */
     @Override
     public List<? extends Key> toList()
     {
         return super.toList();
     }
 
+    /**
+     * 设置distinct
+     *
+     * @return this
+     */
     public GroupedQuery<Key, T> distinct()
     {
         distinct0(true);
         return this;
     }
 
+    /**
+     * 设置distinct
+     *
+     * @param condition 是否distinct
+     * @return this
+     */
     public GroupedQuery<Key, T> distinct(boolean condition)
     {
         distinct0(condition);

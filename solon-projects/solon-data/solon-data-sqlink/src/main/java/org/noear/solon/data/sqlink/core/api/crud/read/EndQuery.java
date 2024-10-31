@@ -20,6 +20,8 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import java.util.List;
 
 /**
+ * 终结查询过程
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -30,18 +32,33 @@ public class EndQuery<T> extends QueryBase
         super(sqlBuilder);
     }
 
+    /**
+     * 检查表中是否存在至少一条数据
+     *
+     * @return boolean
+     */
     @Override
     public boolean any()
     {
         return super.any();
     }
 
+    /**
+     * list集合形式返回数据，无数据则返回空list
+     *
+     * @return List
+     */
     @Override
     public List<T> toList()
     {
         return super.toList();
     }
 
+    /**
+     * 返回一条数据，会调用各种数据库limit 1的具体实现，无数据则返回null
+     *
+     * @return T
+     */
     @Override
     public T first()
     {

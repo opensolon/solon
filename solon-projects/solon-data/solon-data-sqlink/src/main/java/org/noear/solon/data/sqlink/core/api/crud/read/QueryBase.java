@@ -82,45 +82,6 @@ public abstract class QueryBase extends CRUD
         return session.executeQuery(f -> f.next(), "SELECT 1 FROM (" + sql + ") LIMIT 1", values);
     }
 
-    // 脑子瓦塔了，toMap不用这么麻烦
-//    protected <K,T> Map<K,T> toMap(LambdaExpression<?> lambda)
-//    {
-//        // getMapKey
-//        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-//        SqlContext context = normalVisitor.visit(lambda);
-//        if (!(context instanceof SqlPropertyContext)) throw new RuntimeException("toMap需要一个对象拥有的字段为key");
-//        SqlPropertyContext propertyContext = (SqlPropertyContext) context;
-//        String column=propertyContext.getProperty();
-//
-//        Config config = getConfig();
-//        AtomicBoolean atomicBoolean=new AtomicBoolean();
-//        List<PropertyMetaData> mappingData = sqlBuilder.getMappingData(atomicBoolean);
-//        List<Object> values = new ArrayList<>();
-//        String sql = sqlBuilder.getSqlAndValue(values);
-//        tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
-//        tryPrintSql(log, sql);
-//        Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
-//        SqlSession session = config.getSqlSessionFactory().getSession();
-//        Map<K, T> map = session.executeQuery(
-//                r -> ObjectBuilder.start(r, targetClass, mappingData, atomicBoolean.get()).createMap(column),
-//                sql,
-//                values
-//        );
-//        if (!includes.isEmpty())
-//        {
-//            try
-//            {
-//                IncludeBuilder<T> navigateBuilder = new IncludeBuilder<>(getConfig(),targetClass, map.values(), includes);
-//                navigateBuilder.include();
-//            } catch (InvocationTargetException | IllegalAccessException e)
-//            {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//        return map;
-//    }
-
-
     protected <T> List<T> toList()
     {
         IConfig config = getConfig();
@@ -214,11 +175,6 @@ public abstract class QueryBase extends CRUD
     protected void select0(Class<?> c)
     {
         sqlBuilder.setSelect(c);
-    }
-
-    protected <Tn> QueryBase joinNewQuery()
-    {
-        return null;
     }
 
     protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr)

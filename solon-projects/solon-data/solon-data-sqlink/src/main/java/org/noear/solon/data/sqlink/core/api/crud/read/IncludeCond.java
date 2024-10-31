@@ -15,12 +15,12 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
-import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
+import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 
 /**
  * @author kiryu1223

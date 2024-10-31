@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.api.crud.read.group;
 
 
-import org.noear.solon.data.sqlink.core.exception.SqlFunctionInvokeException;
+import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 
 import static org.noear.solon.data.sqlink.core.exception.Winner.boom;
 
@@ -26,12 +26,20 @@ import static org.noear.solon.data.sqlink.core.exception.Winner.boom;
  */
 public interface IAggregation
 {
+    /**
+     * 等价于聚合函数COUNT(*)
+     * @return 符合的条数
+     */
     default long count()
     {
         boom();
         return 0;
     }
 
+    /**
+     * 等价于聚合函数COUNT(i)
+     * @return 符合的条数
+     */
     default long count(int i)
     {
         boom();
