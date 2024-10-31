@@ -20,7 +20,6 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeVariableName;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.ParameterizedTypeImpl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -86,31 +85,7 @@ public class TypeNameUtil {
         }
     }
 
-    public static Type getType(Map<String, Type> typeGenericMap, Class<?> clz, Type type) {
-        if (type instanceof ParameterizedType) {
-            ParameterizedType type2 = (ParameterizedType) type;
-
-            if (type2.getActualTypeArguments().length > 0) {
-
-                List<Type> petTypes = new ArrayList<>();
-                for (Type e : type2.getActualTypeArguments()) {
-                    if (e instanceof TypeVariable) {
-                        e = typeGenericMap.get(e.getTypeName());
-                    }
-
-                    petTypes.add(e);
-                }
-
-                return new ParameterizedTypeImpl(clz, petTypes.toArray(new Type[]{}), type2.getOwnerType());
-            } else {
-                return type;
-            }
-        } else {
-            if (type instanceof TypeVariable) {
-                return typeGenericMap.get(type.getTypeName());
-            } else {
-                return type;
-            }
-        }
-    }
+//    public static Type getType(Map<String, Type> typeGenericMap, Class<?> clz, Type type) {
+//        return GenericUtil.reviewType(type, typeGenericMap);
+//    }
 }
