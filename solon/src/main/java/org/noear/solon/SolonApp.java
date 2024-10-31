@@ -62,7 +62,7 @@ public class SolonApp extends RouterWrapper {
     private final URL _sourceLocation;
     private final long _startupTime;
 
-    protected boolean stopped = false;
+    protected boolean stopping = false;
 
     /**
      * 应用上下文
@@ -155,6 +155,24 @@ public class SolonApp extends RouterWrapper {
 
         //3.运行应用（运行插件、扫描Bean等）
         run();
+    }
+
+    /**
+     * 预停止
+     */
+    protected void prestop() {
+        this.cfg().plugs().forEach(p -> p.prestop());
+        this.context().prestop();
+        EventBus.publishTry(new AppPrestopEndEvent(this));
+    }
+
+    /**
+     * 停止
+     */
+    protected void stop() {
+        this.cfg().plugs().forEach(p -> p.stop());
+        this.context().stop();
+        EventBus.publishTry(new AppStopEndEvent(this));
     }
 
     /**
@@ -454,7 +472,7 @@ public class SolonApp extends RouterWrapper {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
 
-            if (stopped) {
+            if (stopping) {
                 x.status(503);
             } else {
                 chainManager().doFilter(x, _handler);
