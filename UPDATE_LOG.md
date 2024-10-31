@@ -32,14 +32,18 @@
 * 添加 solon @Bean 函数，非 public 的警告日志
 * 添加 solon AppContext:beanInterceptorHas 检测方法
 * 添加 solon AppContext:subWrapsOfType(baseType, callback, index) 方法
+* 添加 solon ClassUtil::findPublicMethods 缓存效果
 * 添加 solon-parent checkstyle 编译可选配置？？？
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
+* 修复 solon-config-plus 配置注入与 HikariCP 6.0 的兼容问题
+* 修复 solon GenericUtil 在泛型变量名在传递过程中改名后，无法还原的问题。（不过，改名会有潜在问题）
 * 调整 solon BeanWrap.Proxy 接口简化
 * 调整 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 调整 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
 * freemarker 升为 2.3.33
 * velocity 升为 2.4.1
 * redisson 升为 3.37.0
+* snack3 升为 3.2.120
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制

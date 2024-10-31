@@ -24,6 +24,7 @@ import org.noear.solon.core.event.AppStopEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.lang.Preview;
 
 import java.net.URL;
 
@@ -56,7 +57,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "3.0.3-M1";
+        return "3.0.3-M2";
     }
 
     /**
@@ -99,7 +100,7 @@ public class Solon {
 
     /**
      * 应用源码位置
-     * */
+     */
     public static URL location() {
         return location;
     }
@@ -164,7 +165,7 @@ public class Solon {
         }
 
         //确定源码位置
-        location =  source.getProtectionDomain().getCodeSource().getLocation();
+        location = source.getProtectionDomain().getCodeSource().getLocation();
 
         //设置 headless 默认值
         System.getProperties().putIfAbsent("java.awt.headless", "true");
@@ -218,6 +219,20 @@ public class Solon {
         return app;
     }
 
+
+    /**
+     * 启动应用区块（用于范围内测试）
+     *
+     * @since 3.0
+     */
+    @Preview("3.0")
+    public static void startBlock(ConsumerEx<SolonApp> initialize) {
+        Solon.start(Solon.class, new String[]{"--scanning=0"}, app -> {
+            app.enableHttp(false);
+            initialize.accept(app);
+        });
+    }
+
     /**
      * 停止应用
      */
@@ -236,6 +251,17 @@ public class Solon {
      */
     public static void stop(int delay) {
         new Thread(() -> stop0(true, delay)).start();
+    }
+
+
+    /**
+     * 停止应用（未完成之前，会一直卡住）
+     *
+     * @since 3.0
+     */
+    @Preview("3.0")
+    public static void stopBlock() {
+        stop0(false, 0);
     }
 
     /**
