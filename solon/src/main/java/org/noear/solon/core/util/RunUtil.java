@@ -29,10 +29,6 @@ import java.util.function.Supplier;
  */
 public class RunUtil {
     /**
-     * 并行执行器（一般用于执行简单的定时任务）
-     */
-    private static ExecutorService parallelExecutor;
-    /**
      * 异步执行器（一般用于执行 @Async 注解任务）
      */
     private static ExecutorService asyncExecutor;
@@ -43,17 +39,11 @@ public class RunUtil {
 
     static {
         if (Solon.app() != null && Solon.cfg().isEnabledVirtualThreads()) {
-            parallelExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
             asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
         } else {
-            parallelExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                    60L, TimeUnit.SECONDS,
-                    new SynchronousQueue<Runnable>(),
-                    new NamedThreadFactory("Solon-executor-"));
-
             int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-            asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,
-                    0L, TimeUnit.MILLISECONDS,
+            asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
+                    60L, TimeUnit.SECONDS,
                     new LinkedBlockingQueue<Runnable>(),
                     new NamedThreadFactory("Solon-asyncExecutor-"));
         }
@@ -63,6 +53,17 @@ public class RunUtil {
                 new NamedThreadFactory("Solon-scheduledExecutor-"));
     }
 
+    /**
+     * @deprecated 3.0
+     */
+    @Deprecated
+    public static void setParallelExecutor(ExecutorService parallelExecutor) {
+
+    }
+
+    /**
+     * 设置调度执行器
+     */
     public static void setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
         if (scheduledExecutor != null) {
             ScheduledExecutorService old = RunUtil.scheduledExecutor;
@@ -71,14 +72,9 @@ public class RunUtil {
         }
     }
 
-    public static void setParallelExecutor(ExecutorService parallelExecutor) {
-        if (parallelExecutor != null) {
-            ExecutorService old = RunUtil.parallelExecutor;
-            RunUtil.parallelExecutor = parallelExecutor;
-            old.shutdown();
-        }
-    }
-
+    /**
+     * 设置异步执行器
+     */
     public static void setAsyncExecutor(ExecutorService asyncExecutor) {
         if (asyncExecutor != null) {
             ExecutorService old = RunUtil.asyncExecutor;
@@ -116,16 +112,22 @@ public class RunUtil {
 
     /**
      * 并行执行
+     *
+     * @deprecated 3.0
      */
+    @Deprecated
     public static Future<?> parallel(Runnable task) {
-        return parallelExecutor.submit(task);
+        return asyncExecutor.submit(task);
     }
 
     /**
      * 并行执行
+     *
+     * @deprecated 3.0
      */
+    @Deprecated
     public static <T> Future<T> parallel(Callable<T> task) {
-        return parallelExecutor.submit(task);
+        return asyncExecutor.submit(task);
     }
 
     /**
@@ -142,8 +144,11 @@ public class RunUtil {
         return CompletableFuture.supplyAsync(task, asyncExecutor);
     }
 
+    /**
+     * 异步执行并吃掉异常
+     */
     public static CompletableFuture<Void> asyncAndTry(RunnableEx task) {
-        return CompletableFuture.runAsync(()->{
+        return CompletableFuture.runAsync(() -> {
             runAndTry(task);
         }, asyncExecutor);
     }
@@ -164,14 +169,14 @@ public class RunUtil {
 
     /**
      * 定时任务
-     * */
+     */
     public static ScheduledFuture<?> scheduleAtFixedRate(Runnable task, long initialDelay, long millisPeriod) {
         return scheduledExecutor.scheduleAtFixedRate(task, initialDelay, millisPeriod, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 定时任务
-     * */
+     */
     public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable task, long initialDelay, long millisDelay) {
         return scheduledExecutor.scheduleWithFixedDelay(task, initialDelay, millisDelay, TimeUnit.MILLISECONDS);
     }

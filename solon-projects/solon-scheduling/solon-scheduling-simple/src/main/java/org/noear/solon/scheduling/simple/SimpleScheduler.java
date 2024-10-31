@@ -106,7 +106,7 @@ public class SimpleScheduler implements Lifecycle {
                     jobHolder.getScheduled().initialDelay(),
                     jobHolder.getScheduled().fixedRate());
         } else {
-            RunUtil.parallel(this::run);
+            RunUtil.async(this::run);
         }
     }
 
@@ -170,7 +170,7 @@ public class SimpleScheduler implements Lifecycle {
 
             if (delayMillis <= 0L) {
                 //到时（=0）或超时（<0）了
-                jobFutureOfCron = RunUtil.parallel(this::exec0);
+                jobFutureOfCron = RunUtil.async(this::exec0);
 
                 nextTime = cron.getNextValidTimeAfter(nextTime);
                 if (nextTime != null) {
