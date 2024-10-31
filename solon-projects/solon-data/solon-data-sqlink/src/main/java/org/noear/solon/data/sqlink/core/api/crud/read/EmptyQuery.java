@@ -35,6 +35,14 @@ public class EmptyQuery extends QueryBase
         super(config, Empty.class);
     }
 
+    /**
+     * 设置select<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回一个继承于Result的匿名对象的lambda表达式(() -> new Result(){...})，初始化段{...}内编写需要select的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param <R>  Result
+     * @return 基于Result类型的新查询过程对象
+     */
     public <R extends Result> LQuery<R> select(@Expr Func0<R> expr)
     {
         throw new NotCompiledException();
@@ -47,6 +55,13 @@ public class EmptyQuery extends QueryBase
         return new LQuery<>(boxedQuerySqlBuilder());
     }
 
+    /**
+     * 设置select<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return 终结查询过程
+     */
     public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func0<R> expr)
     {
         throw new NotCompiledException();

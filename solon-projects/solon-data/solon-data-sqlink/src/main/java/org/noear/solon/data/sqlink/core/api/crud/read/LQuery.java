@@ -471,6 +471,13 @@ public class LQuery<T> extends QueryBase
 
     // region [INCLUDE]
 
+    /**
+     * 对象抓取器，会根据导航属性自动为选择的字段填充属性<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
+     * @return 抓取过程对象
+     */
     public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr)
     {
         throw new NotCompiledException();
@@ -482,6 +489,14 @@ public class LQuery<T> extends QueryBase
         return new IncludeQuery<>(getSqlBuilder());
     }
 
+    /**
+     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置简单的过滤条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
+     * @param cond 简单的过滤条件
+     * @return 抓取过程对象
+     */
     public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> cond)
     {
         throw new NotCompiledException();
@@ -493,6 +508,9 @@ public class LQuery<T> extends QueryBase
         return new IncludeQuery<>(getSqlBuilder());
     }
 
+    /**
+     * include的集合版本
+     */
     public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr)
     {
         throw new NotCompiledException();
@@ -504,6 +522,9 @@ public class LQuery<T> extends QueryBase
         return new IncludeQuery<>(getSqlBuilder());
     }
 
+    /**
+     * include的集合版本
+     */
     public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> cond)
     {
         throw new NotCompiledException();
@@ -515,6 +536,14 @@ public class LQuery<T> extends QueryBase
         return new IncludeQuery<>(getSqlBuilder());
     }
 
+    /**
+     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置复杂的过滤条件(取得的条数，排列规则，取得数据的限制条件)<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
+     * @param cond 复杂的过滤条件
+     * @return 抓取过程对象
+     */
     public <R> IncludeQuery<T, R> includesByCond(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, Action1<IncludeCond<R>> cond)
     {
         throw new NotCompiledException();
@@ -619,8 +648,9 @@ public class LQuery<T> extends QueryBase
 
     /**
      * Map形式返回数据，无数据则返回空Map
+     *
      * @param func 指定一个key
-     * @param map 指定你想要的Map类型
+     * @param map  指定你想要的Map类型
      * @return Map
      */
     public <K> Map<K, T> toMap(Func1<T, K> func, Map<K, T> map)

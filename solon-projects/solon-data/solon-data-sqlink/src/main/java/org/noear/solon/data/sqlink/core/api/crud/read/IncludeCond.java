@@ -35,6 +35,13 @@ public class IncludeCond<T> extends QueryBase
 
     // region [WHERE]
 
+    /**
+     * 设置where条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public IncludeCond<T> where(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
     {
         throw new NotCompiledException();
@@ -46,6 +53,13 @@ public class IncludeCond<T> extends QueryBase
         return this;
     }
 
+    /**
+     * 设置where条件，并且以or将多个where连接<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public IncludeCond<T> orWhere(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
     {
         throw new NotCompiledException();
@@ -57,54 +71,18 @@ public class IncludeCond<T> extends QueryBase
         return this;
     }
 
-    public <E> IncludeCond<T> exists(Class<E> table, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
-    {
-        throw new NotCompiledException();
-    }
-
-    public <E> IncludeCond<T> exists(Class<E> table, ExprTree<Func2<T, E, Boolean>> expr)
-    {
-        exists(table, expr.getTree(), false);
-        return this;
-    }
-
-    public <E> IncludeCond<T> exists(IncludeCond<E> query, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
-    {
-        throw new NotCompiledException();
-    }
-
-    public <E> IncludeCond<T> exists(IncludeCond<E> query, ExprTree<Func2<T, E, Boolean>> expr)
-    {
-        exists(query, expr.getTree(), false);
-        return this;
-    }
-
-    public <E> IncludeCond<T> notExists(Class<E> table, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
-    {
-        throw new NotCompiledException();
-    }
-
-    public <E> IncludeCond<T> notExists(Class<E> table, ExprTree<Func2<T, E, Boolean>> expr)
-    {
-        exists(table, expr.getTree(), true);
-        return this;
-    }
-
-    public <E> IncludeCond<T> notExists(IncludeCond<E> query, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func)
-    {
-        throw new NotCompiledException();
-    }
-
-    public <E> IncludeCond<T> notExists(IncludeCond<E> query, ExprTree<Func2<T, E, Boolean>> expr)
-    {
-        exists(query, expr.getTree(), true);
-        return this;
-    }
-
     // endregion
 
     // region [ORDER BY]
 
+    /**
+     * 设置orderBy的字段以及升降序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param asc  是否为升序
+     * @return this
+     */
     public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, boolean asc)
     {
         throw new NotCompiledException();
@@ -116,6 +94,13 @@ public class IncludeCond<T> extends QueryBase
         return this;
     }
 
+    /**
+     * 设置orderBy的字段并且为升序，多次调用可以指定多个orderBy字段<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @return this
+     */
     public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr)
     {
         throw new NotCompiledException();
@@ -131,12 +116,25 @@ public class IncludeCond<T> extends QueryBase
 
     // region [LIMIT]
 
+    /**
+     * 获取指定数量的数据
+     *
+     * @param rows 需要返回的条数
+     * @return this
+     */
     public IncludeCond<T> limit(long rows)
     {
         limit0(rows);
         return this;
     }
 
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param offset 需要跳过的条数
+     * @param rows   需要返回的条数
+     * @return this
+     */
     public IncludeCond<T> limit(long offset, long rows)
     {
         limit0(offset, rows);
