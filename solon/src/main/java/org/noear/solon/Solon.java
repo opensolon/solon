@@ -226,11 +226,28 @@ public class Solon {
      * @since 3.0
      */
     @Preview("3.0")
-    public static void startBlock(ConsumerEx<SolonApp> initialize) {
-        Solon.start(Solon.class, new String[]{"--scanning=0"}, app -> {
-            app.enableHttp(false);
-            initialize.accept(app);
-        });
+    public static SolonApp startBlock(ConsumerEx<SolonApp> initialize) {
+        //绑定类加载器（即替换当前线程[即主线程]的类加载器）
+        AppClassLoader.bindingThread();
+
+        //启动区域app
+        try {
+            SolonApp blockApp = new SolonApp(Solon.class, new NvMap().set("scanning", "0"));
+            appSet(blockApp);
+            blockApp.start(app -> {
+                app.enableHttp(false);
+
+                if (initialize != null) {
+                    initialize.accept(app);
+                }
+            });
+
+            return blockApp;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -343,7 +360,7 @@ public class Solon {
             EventBus.publishTry(new AppStopEndEvent(Solon.app()));
         }
 
-        LogUtil.global().info("App: End stop");
+        LogUtil.global().info("App: Stopped");
 
         app = null;
         appMain = null;

@@ -252,7 +252,9 @@ public class SolonApp extends RouterWrapper {
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
 
-        LogUtil.global().info("App: Bean scanning");
+        if (cfg().scanning()) {
+            LogUtil.global().info("App: Bean scanning");
+        }
 
         //2.1.通过注解导入bean（一般是些配置器）
         beanImportTry();
