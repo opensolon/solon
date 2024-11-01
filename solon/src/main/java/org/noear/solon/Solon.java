@@ -19,9 +19,6 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.event.AppPrestopEndEvent;
-import org.noear.solon.core.event.AppStopEndEvent;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Preview;
@@ -226,11 +223,28 @@ public class Solon {
      * @since 3.0
      */
     @Preview("3.0")
-    public static void startBlock(ConsumerEx<SolonApp> initialize) {
-        Solon.start(Solon.class, new String[]{"--scanning=0"}, app -> {
-            app.enableHttp(false);
-            initialize.accept(app);
-        });
+    public static SolonApp startBlock(ConsumerEx<SolonApp> initialize) {
+        //绑定类加载器（即替换当前线程[即主线程]的类加载器）
+        AppClassLoader.bindingThread();
+
+        //启动区域app
+        try {
+            SolonApp blockApp = new SolonApp(Solon.class, new NvMap().set("scanning", "0"));
+            appSet(blockApp);
+            blockApp.start(app -> {
+                app.enableHttp(false);
+
+                if (initialize != null) {
+                    initialize.accept(app);
+                }
+            });
+
+            return blockApp;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -299,11 +313,8 @@ public class Solon {
             LogUtil.global().info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
 
             //1.预停止
-            Solon.cfg().plugs().forEach(p -> p.prestop());
-            Solon.context().prestop();
-            EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
+            Solon.app().prestop();
             LogUtil.global().info("App: Security to stop: 1/3 completed");
-
 
             //2.延时标停
             LogUtil.global().info("App: Security to stop: delay " + delay + "s...");
@@ -315,7 +326,7 @@ public class Solon {
                 sleep0(delay1); //给发现服务留时间
             }
 
-            Solon.app().stopped = true; //http 503，lb 开始切流
+            Solon.app().stopping = true; //http 503，lb 开始切流
 
             //二段暂停
             if (delay2 > 0) {
@@ -325,25 +336,18 @@ public class Solon {
             LogUtil.global().info("App: Security to stop: 2/3 completed");
 
             //3.停止
-            Solon.cfg().plugs().forEach(p -> p.stop());
-            Solon.context().stop();
-            EventBus.publishTry(new AppStopEndEvent(Solon.app()));
+            Solon.app().stop();
             LogUtil.global().info("App: Security to stop: 3/3 completed");
         } else {
             //1.预停止
-            Solon.cfg().plugs().forEach(p -> p.prestop());
-            Solon.context().prestop();
-            EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
-
+            Solon.app().prestop();
             //2.标停
-            Solon.app().stopped = true;
+            Solon.app().stopping = true;
             //3.停止
-            Solon.cfg().plugs().forEach(p -> p.stop());
-            Solon.context().stop();
-            EventBus.publishTry(new AppStopEndEvent(Solon.app()));
+            Solon.app().stop();
         }
 
-        LogUtil.global().info("App: End stop");
+        LogUtil.global().info("App: Stopped");
 
         app = null;
         appMain = null;

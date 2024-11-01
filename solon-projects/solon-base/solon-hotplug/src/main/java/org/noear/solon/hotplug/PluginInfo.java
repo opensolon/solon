@@ -42,14 +42,23 @@ public class PluginInfo {
         this.file = file;
     }
 
+    /**
+     * 获取名字
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取 jar 文件
+     */
     public File getFile() {
         return file;
     }
 
+    /**
+     * 是否已开始
+     */
     public boolean getStarted() {
         if (addinPackage == null) {
             return false;
@@ -59,6 +68,9 @@ public class PluginInfo {
     }
 
 
+    /**
+     * 获取插件包
+     */
     public PluginPackage getAddinPackage() {
         return addinPackage;
     }
