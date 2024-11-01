@@ -33,9 +33,9 @@ public interface SqlSession
 
     <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<Object> values);
 
-    long executeUpdate(String sql, List<SqlValue> values);
+    long executeInsert(String sql, List<Object> values);
 
-    long executeUpdate(String sql, List<Object> values, Object... o);
+    long executeUpdate(String sql, List<Object> values);
 
-    long batchExecuteUpdate(String sql, long limit, List<SqlValue> values);
+    long executeDelete(String sql, List<Object> values);
 }

@@ -19,7 +19,12 @@ import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.data.sqlink.base.metaData.NoConverter;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime.*;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.number.*;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.other.URLTypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.varchar.CharTypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.varchar.StringTypeHandler;
 import org.noear.solon.data.sqlink.core.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.*;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Char;
@@ -27,6 +32,7 @@ import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,8 +47,6 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
     {
         //配置文件
         metadata.registerReflection(SQLinkProperties.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-        //转换器
-        metadata.registerReflection(NoConverter.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //空表
         metadata.registerReflection(Empty.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //Group类
@@ -80,6 +84,29 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
                 Char.class,
                 Varchar.class
         ));
+        // typeHandler
+        registerTypeHandler(metadata, Arrays.asList(
+                ITypeHandler.class,
+                CharTypeHandler.class,
+                StringTypeHandler.class,
+                ByteTypeHandler.class,
+                ShortTypeHandler.class,
+                IntTypeHandler.class,
+                LongTypeHandler.class,
+                BoolTypeHandler.class,
+                FloatTypeHandler.class,
+                DoubleTypeHandler.class,
+                BigIntegerTypeHandler.class,
+                BigDecimalTypeHandler.class,
+                DateTypeHandler.class,
+                UtilDateHandler.class,
+                TimeTypeHandler.class,
+                TimestampTypeHandler.class,
+                LocalDateTimeTypeHandler.class,
+                LocalDateTypeHandler.class,
+                LocalTimeTypeHandler.class,
+                URLTypeHandler.class
+        ));
     }
 
 //    private void registerExtension(RuntimeNativeMetadata metadata, List<Class<? extends BaseSqlExtension>> extensions)
@@ -95,6 +122,14 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
         for (Class<? extends SqlTypes<?>> sqlType : sqlTypes)
         {
             metadata.registerReflection(sqlType, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
+        }
+    }
+
+    private void registerTypeHandler(RuntimeNativeMetadata metadata, List<Class<? extends ITypeHandler>> typeHandlers)
+    {
+        for (Class<? extends ITypeHandler> typeHandler : typeHandlers)
+        {
+            metadata.registerReflection(typeHandler, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
         }
     }
 }

@@ -107,10 +107,10 @@ class Config implements IConfig
         return sqlSessionFactory;
     }
 
-    public boolean isPrintUseDs()
-    {
-        return option.isPrintUseDs();
-    }
+//    public boolean isPrintUseDs()
+//    {
+//        return option.isPrintUseDs();
+//    }
 
     public boolean isPrintBatch()
     {

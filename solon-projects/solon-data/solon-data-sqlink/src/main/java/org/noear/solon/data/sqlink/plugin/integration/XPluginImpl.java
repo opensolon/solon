@@ -67,6 +67,7 @@ public class XPluginImpl implements Plugin
                     .setSqlSessionFactory(sqlSessionFactory)
                     .setFastCreatorFactory(aotFastCreatorFactory)
                     .setOption(properties.bulidOption())
+                    .setDbType(properties.getDbType())
                     .build();
 
             BeanWrap wrap = context.wrap(entry.getKey(), client);

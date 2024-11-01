@@ -42,6 +42,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
+ * Sql函数
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -50,6 +52,9 @@ public class SqlFunctions
 
     // region [聚合函数]
 
+    /**
+     * 聚合函数COUNT(*)
+     */
     @SqlExtensionExpression(template = "COUNT(*)")
     public static long count()
     {
@@ -57,6 +62,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 聚合函数COUNT(t)
+     */
     @SqlExtensionExpression(template = "COUNT({t})")
     public static <T> long count(T t)
     {
@@ -64,6 +72,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 聚合函数SUM(t)
+     */
     @SqlExtensionExpression(template = "SUM({t})")
     public static <T> BigDecimal sum(T t)
     {
@@ -71,6 +82,9 @@ public class SqlFunctions
         return BigDecimal.ZERO;
     }
 
+    /**
+     * 聚合函数AVG(t)
+     */
     @SqlExtensionExpression(template = "AVG({t})")
     public static <T extends Number> BigDecimal avg(T t)
     {
@@ -78,6 +92,9 @@ public class SqlFunctions
         return BigDecimal.ZERO;
     }
 
+    /**
+     * 聚合函数MIN(t)
+     */
     @SqlExtensionExpression(template = "MIN({t})")
     public static <T> T min(T t)
     {
@@ -85,6 +102,9 @@ public class SqlFunctions
         return (T) new Object();
     }
 
+    /**
+     * 聚合函数MAX(t)
+     */
     @SqlExtensionExpression(template = "MAX({t})")
     public static <T> T max(T t)
     {
@@ -118,6 +138,9 @@ public class SqlFunctions
 
     // region [时间]
 
+    /**
+     * 获取当前日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "NOW()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "NOW()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CAST(CURRENT_TIMESTAMP AS TIMESTAMP)")
@@ -130,18 +153,9 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "NOW({precision})")
-    @SqlExtensionExpression(dbType = DbType.MySQL, template = "NOW({precision})")
-    @SqlExtensionExpression(dbType = DbType.Oracle, template = "CAST(CURRENT_TIMESTAMP AS TIMESTAMP)")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "GETDATE()")
-    @SqlExtensionExpression(dbType = DbType.SQLite, template = "DATETIME('now','localtime')")
-    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "NOW()")
-    public static LocalDateTime now(int precision)
-    {
-        boom();
-        return LocalDateTime.now();
-    }
-
+    /**
+     * 获取当前utc日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "UTC_TIMESTAMP()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "UTC_TIMESTAMP()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CURRENT_TIMESTAMP AT TIME ZONE 'UTC')")
@@ -154,28 +168,9 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
-//    @SqlExtensionExpression(dbType = DbType.H2, template = "LOCALTIME()")
-//    @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOCALTIME()")
-//    @SqlExtensionExpression(dbType = DbType.Oracle, template = "LOCALTIMESTAMP")
-//    @SqlExtensionExpression(dbType = DbType.Oracle, template = "CURRENT_DATE")
-//    public static LocalDateTime localNow()
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-
-    @SqlExtensionExpression(dbType = DbType.H2, template = "SYSDATE()")
-    @SqlExtensionExpression(dbType = DbType.MySQL, template = "SYSDATE()")
-    @SqlExtensionExpression(dbType = DbType.Oracle, template = "SYSDATE")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "SYSDATETIME()")
-    @SqlExtensionExpression(dbType = DbType.SQLite, template = "DATETIME('now','localtime')")
-    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "NOW()")
-    public static LocalDateTime systemNow()
-    {
-        boom();
-        return LocalDateTime.now();
-    }
-
+    /**
+     * 获取当前日期
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CURDATE()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CURDATE()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CURRENT_DATE")
@@ -188,6 +183,9 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 获取当前时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CURTIME()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CURTIME()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CURRENT_DATE")
@@ -200,6 +198,9 @@ public class SqlFunctions
         return LocalTime.now();
     }
 
+    /**
+     * 获取当前utc日期
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "UTC_DATE()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "UTC_DATE()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CAST(SYS_EXTRACT_UTC(CURRENT_TIMESTAMP) AS DATE)")
@@ -212,6 +213,9 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 获取当前utc时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "UTC_TIME()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "UTC_TIME()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CAST(SYS_EXTRACT_UTC(CURRENT_TIMESTAMP) AS DATE)")
@@ -224,114 +228,13 @@ public class SqlFunctions
         return LocalTime.now();
     }
 
-    //    public static LocalDateTime addDays(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addDays(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addHours(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addHours(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMinutes(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMinutes(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addSeconds(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addSeconds(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMicroSeconds(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMicroSeconds(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMilliSeconds(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMilliSeconds(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addNanoSeconds(LocalDateTime time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addNanoSeconds(LocalDate time, long duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMonths(LocalDateTime time, int duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addMonths(LocalDate time, int duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addYears(LocalDateTime time, int duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-//
-//    public static LocalDateTime addYears(LocalDate time, int duration)
-//    {
-//        boom();
-//        return LocalDateTime.now();
-//    }
-
+    /**
+     * 指定日期或日期时间加上指定单位的时间
+     *
+     * @param time 指定的日期或日期时间
+     * @param unit 时间单位
+     * @param num  单位数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ADDDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ADDDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -344,6 +247,13 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
+    /**
+     * 指定日期或日期时间加上指定单位的时间
+     *
+     * @param time 指定的日期或日期时间
+     * @param unit 时间单位
+     * @param num  单位数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ADDDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ADDDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -356,6 +266,12 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 指定日期或日期时间加上指定的天数
+     *
+     * @param time 指定的日期或日期时间
+     * @param days 天数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ADDDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ADDDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -368,6 +284,12 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
+    /**
+     * 指定日期或日期时间加上指定的天数
+     *
+     * @param time 指定的日期或日期时间
+     * @param days 天数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ADDDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ADDDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -380,6 +302,13 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 指定日期或日期时间减去指定单位的时间
+     *
+     * @param time 指定的日期或日期时间
+     * @param unit 时间单位
+     * @param num  单位数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -392,6 +321,13 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
+    /**
+     * 指定日期或日期时间减去指定单位的时间
+     *
+     * @param time 指定的日期或日期时间
+     * @param unit 时间单位
+     * @param num  单位数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBDATE({time},INTERVAL {num} {unit})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -404,6 +340,12 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 指定日期或日期时间减去指定的天数
+     *
+     * @param time 指定的日期或日期时间
+     * @param days 天数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -416,6 +358,12 @@ public class SqlFunctions
         return LocalDateTime.now();
     }
 
+    /**
+     * 指定日期或日期时间减去指定的天数
+     *
+     * @param time 指定的日期或日期时间
+     * @param days 天数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBDATE({time},{days})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleAddOrSubDateExtension.class)
@@ -428,114 +376,183 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleDateTimeDiffExtension.class)
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime t1, LocalDateTime t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime from, LocalDateTime to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime t1, LocalDate t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime from, LocalDate to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime t1, String t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDateTime from, String to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate t1, LocalDate t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate from, LocalDate to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate t1, LocalDateTime t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate from, LocalDateTime to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate t1, String t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, LocalDate from, String to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, String t1, String t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, String from, String to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, String t1, LocalDate t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, String from, LocalDate to)
     {
         boom();
         return 0;
     }
 
-    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{t1},{t2})")
+    /**
+     * 计算两个日期或日期时间的指定的时间单位的差距
+     *
+     * @param unit 时间单位
+     * @param from 过去时间
+     * @param to   将来时间
+     */
+    @SqlExtensionExpression(dbType = DbType.H2, template = "TIMESTAMPDIFF({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, extension = OracleDateTimeDiffExtension.class, template = "")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{t1},{t2})")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "DATEDIFF_BIG({unit},{from},{to})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "", extension = SqliteDateTimeDiffExtension.class)
     @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "", extension = PostgreSQLDateTimeDiffExtension.class)
-    public static long dateTimeDiff(SqlTimeUnit unit, String t1, LocalDateTime t2)
+    public static long dateTimeDiff(SqlTimeUnit unit, String from, LocalDateTime to)
     {
         boom();
         return 0;
     }
 
+    /**
+     * 格式化时间到字符串
+     *
+     * @param time   日期或日期时间
+     * @param format 格式
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},{format})")
@@ -548,6 +565,12 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 格式化时间到字符串
+     *
+     * @param time   日期或日期时间
+     * @param format 格式
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},{format})")
@@ -560,6 +583,12 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 格式化时间到字符串
+     *
+     * @param time   日期或日期时间
+     * @param format 格式
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DATE_FORMAT({time},{format})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),{format})")
@@ -572,6 +601,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 提取日期或日期时间中的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(DAY FROM {time})")
@@ -584,6 +618,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(DAY FROM {time})")
@@ -596,6 +635,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(DAY FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -608,6 +652,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间为星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},'DAY')")
@@ -620,6 +669,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 获取指定日期或日期时间为星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},'DAY')")
@@ -632,6 +686,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 获取指定日期或日期时间为星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'DAY')")
@@ -644,6 +703,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 从指定的日期或日期时间中取出星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'D'))")
@@ -656,6 +720,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 从指定的日期或日期时间中取出星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'D'))")
@@ -668,6 +737,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 从指定的日期或日期时间中取出星期几
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFWEEK({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'D'))")
@@ -680,6 +754,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间为今年的多少天
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'DDD'))")
@@ -692,6 +771,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间为今年的多少天
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'DDD'))")
@@ -704,6 +788,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间为今年的多少天
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DAYOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'DDD'))")
@@ -762,6 +851,11 @@ public class SqlFunctions
 //        return LocalDateTime.now();
 //    }
 
+    /**
+     * 获取指定日期或日期时间从公元到今天的天数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TRUNC({time} - (TO_DATE('0001-01-01', 'YYYY-MM-DD') - INTERVAL '1' YEAR) - 2)")
@@ -774,6 +868,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间从公元到今天的天数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TRUNC({time} - (TO_DATE('0001-01-01', 'YYYY-MM-DD') - INTERVAL '1' YEAR) - 2)")
@@ -786,6 +885,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间从公元到今天的天数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TO_DAYS({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(DAY FROM (TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff') - (TO_TIMESTAMP('0001-01-01', 'YYYY-MM-DD') - INTERVAL '1' YEAR) - INTERVAL '2' DAY))")
@@ -828,6 +932,11 @@ public class SqlFunctions
 //        return 0;
 //    }
 
+    /**
+     * 提取日期时间中的小时
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(HOUR FROM {time})")
@@ -840,6 +949,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的小时
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(HOUR FROM {time})")
@@ -852,6 +966,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的小时
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "HOUR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(HOUR FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -864,6 +983,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定的日期或日期时间当月的最后一天的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LAST_DAY({time})")
@@ -876,6 +1000,11 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 获取指定的日期或日期时间当月的最后一天的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LAST_DAY({time})")
@@ -888,6 +1017,11 @@ public class SqlFunctions
         return LocalDate.now();
     }
 
+    /**
+     * 获取指定的日期或日期时间当月的最后一天的日期
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LAST_DAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LAST_DAY(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -916,6 +1050,11 @@ public class SqlFunctions
 //        return 0;
 //    }
 
+    /**
+     * 提取日期时间中的分钟
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MINUTE FROM {time})")
@@ -928,6 +1067,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的分钟
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MINUTE FROM {time})")
@@ -940,6 +1084,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的分钟
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MINUTE({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MINUTE FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -952,6 +1101,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的月份
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MONTH FROM {time})")
@@ -964,6 +1118,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的月份
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MONTH FROM {time})")
@@ -976,6 +1135,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的月份
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTH({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(MONTH FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -988,6 +1152,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取指定日期或日期时间那个月的名字
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},'FMMONTH')")
@@ -1000,6 +1169,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 获取指定日期或日期时间那个月的名字
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR({time},'FMMONTH')")
@@ -1012,6 +1186,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 获取指定日期或日期时间那个月的名字
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MONTHNAME({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'FMMONTH')")
@@ -1024,6 +1203,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 提取日期或日期时间所在季度
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CEIL(EXTRACT(MONTH FROM {time}) / 3)")
@@ -1036,6 +1220,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间所在季度
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CEIL(EXTRACT(MONTH FROM {time}) / 3)")
@@ -1048,6 +1237,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间所在季度
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "QUARTER({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CEIL(EXTRACT(MONTH FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff')) / 3)")
@@ -1060,6 +1254,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的秒数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(SECOND FROM {time})")
@@ -1072,6 +1271,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的秒数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(SECOND FROM {time})")
@@ -1084,6 +1288,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的秒数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SECOND({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(SECOND FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -1096,6 +1305,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的毫秒
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(EXTRACT(SECOND FROM {time}) * 1000)")
@@ -1108,6 +1322,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的毫秒
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(EXTRACT(SECOND FROM {time}) * 1000)")
@@ -1120,6 +1339,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期时间中的毫秒
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "(MICROSECOND({time}) / 1000)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(EXTRACT(SECOND FROM {time}) * 1000)")
@@ -1132,6 +1356,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'IW'))")
@@ -1144,6 +1373,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'IW'))")
@@ -1156,6 +1390,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEK({time},1)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'IW'))")
@@ -1176,6 +1415,11 @@ public class SqlFunctions
 //        return 0;
 //    }
 
+    /**
+     * 返回给定日期或日期时间的工作日编号
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE TO_NUMBER(TO_CHAR({time},'D')) WHEN 1 THEN 6 ELSE TO_NUMBER(TO_CHAR({time},'D')) - 2 END)")
@@ -1188,6 +1432,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 返回给定日期或日期时间的工作日编号
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE TO_NUMBER(TO_CHAR({time},'D')) WHEN 1 THEN 6 ELSE TO_NUMBER(TO_CHAR({time},'D')) - 2 END)")
@@ -1200,6 +1449,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 返回给定日期或日期时间的工作日编号
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKDAY({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'D')) WHEN 1 THEN 6 ELSE TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'D')) - 2 END)")
@@ -1212,6 +1466,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'IW'))")
@@ -1224,6 +1483,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR({time},'IW'))")
@@ -1236,6 +1500,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取日期或日期时间中的周数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "WEEKOFYEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TO_NUMBER(TO_CHAR(TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'),'IW'))")
@@ -1248,6 +1517,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的年数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(YEAR FROM {time})")
@@ -1260,6 +1534,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的年数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(YEAR FROM {time})")
@@ -1272,6 +1551,11 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 提取日期或日期时间中的年数
+     *
+     * @param time 日期或日期时间
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "YEAR({time})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXTRACT(YEAR FROM TO_TIMESTAMP({time},'YYYY-MM-DD hh24:mi:ss:ff'))")
@@ -1288,6 +1572,9 @@ public class SqlFunctions
 
     // region [数值]
 
+    /**
+     * 取绝对值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ABS({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ABS({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ABS({a})")
@@ -1300,6 +1587,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 计算cos
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "COS({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "COS({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "COS({a})")
@@ -1312,6 +1602,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算sin
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SIN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SIN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SIN({a})")
@@ -1324,6 +1617,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算tan
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TAN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TAN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TAN({a})")
@@ -1336,6 +1632,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算acos
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ACOS({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ACOS({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ACOS({a})")
@@ -1348,6 +1647,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算asin
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ASIN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ASIN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ASIN({a})")
@@ -1360,6 +1662,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算atan
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ATAN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ATAN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ATAN({a})")
@@ -1372,6 +1677,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算atan2
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ATAN2({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ATAN2({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ATAN2({a},{b})")
@@ -1384,6 +1692,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 向上取整
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CEIL({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CEIL({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CEIL({a})")
@@ -1396,6 +1707,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 向下取整
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "FLOOR({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "FLOOR({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "FLOOR({a})")
@@ -1408,6 +1722,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 余切函数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "COT({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "COT({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE SIN({a}) WHEN 0 THEN 0 ELSE COS({a}) / SIN({a}) END)")
@@ -1420,6 +1737,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 将弧度转换为角度
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "DEGREES({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "DEGREES({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "({a} * 180 / " + Math.PI + ")")
@@ -1432,6 +1752,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算给定数值的指数函数值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "EXP({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "EXP({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "EXP({a})")
@@ -1444,6 +1767,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取最大值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "GREATEST({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "GREATEST({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "GREATEST({a},{b})")
@@ -1456,6 +1782,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 获取最大值
+     */
     @SafeVarargs
     @SqlExtensionExpression(dbType = DbType.H2, template = "GREATEST({a},{b},{cs})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "GREATEST({a},{b},{cs})")
@@ -1469,6 +1798,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 获取最小值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LEAST({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LEAST({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LEAST({a},{b})")
@@ -1481,6 +1813,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 获取最小值
+     */
     @SafeVarargs
     @SqlExtensionExpression(dbType = DbType.H2, template = "LEAST({a},{b},{cs})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LEAST({a},{b},{cs})")
@@ -1494,6 +1829,10 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+
+    /**
+     * 计算指定基数的对数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LN({a})")
@@ -1506,6 +1845,12 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算指定基数的对数
+     *
+     * @param a    数值，用于计算其对数
+     * @param base 对数的基数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LOG({base},{a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOG({base},{a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LOG({base},{a})")
@@ -1518,6 +1863,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算指定基数为2的对数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LOG2({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOG2({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LOG(2,{a})")
@@ -1530,6 +1878,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算指定基数为10的对数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LOG10({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOG10({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LOG(10,{a})")
@@ -1542,6 +1893,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 取模运算
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "MOD({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "MOD({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "MOD({a},{b})")
@@ -1554,6 +1908,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 获取π
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "PI()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "PI()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(" + Math.PI + ")")
@@ -1566,6 +1923,9 @@ public class SqlFunctions
         return 3.14159;
     }
 
+    /**
+     * 幂运算
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "POWER({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "POWER({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "POWER({a},{b})")
@@ -1578,6 +1938,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 将角度转换为弧度
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "RADIANS({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "RADIANS({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "({a} * " + Math.PI + " / 180)")
@@ -1590,6 +1953,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取从0-1的随机数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "RAND()")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "RAND()")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "DBMS_RANDOM.VALUE")
@@ -1613,6 +1979,9 @@ public class SqlFunctions
 //        return 0;
 //    }
 
+    /**
+     * 四舍五入
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ROUND({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ROUND({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ROUND({a})")
@@ -1625,6 +1994,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 指定到多少位的小数位为止，四舍五入
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ROUND({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ROUND({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ROUND({a},{b})")
@@ -1637,6 +2009,9 @@ public class SqlFunctions
         return (T) new Num();
     }
 
+    /**
+     * 如果数字大于0，sign函数返回1；如果数字小于0，返回-1；如果数字等于0，返回0
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SIGN({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SIGN({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SIGN({a})")
@@ -1649,6 +2024,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 计算平方根
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SQRT({a})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SQRT({a})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SQRT({a})")
@@ -1661,6 +2039,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 截取到指定小数位的小数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TRUNCATE({a},{b})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TRUNCATE({a},{b})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TRUNC({a},{b})")
@@ -1673,6 +2054,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 截取到整数
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TRUNCATE({a},0)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TRUNCATE({a},0)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TRUNC({a})")
@@ -1689,6 +2073,9 @@ public class SqlFunctions
 
     // region [字符串]
 
+    /**
+     * 判断字符串是否为空
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "(CHAR_LENGTH({str}) = 0)")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "(CHAR_LENGTH({str}) = 0)")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(NVL(LENGTH({str}),0) = 0)")
@@ -1701,6 +2088,9 @@ public class SqlFunctions
         return true;
     }
 
+    /**
+     * 字符串转ASCII码
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "ASCII({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "ASCII({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "ASCII({str})")
@@ -1713,6 +2103,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * ASCII码转字符串
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CHAR({t})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CHAR({t})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CHR({t})")
@@ -1725,6 +2118,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 获取字符串长度
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CHAR_LENGTH({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CHAR_LENGTH({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "NVL(LENGTH({str}),0)")
@@ -1737,6 +2133,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取字节长度
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LENGTH({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LENGTH({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LENGTHB({str})")
@@ -1749,6 +2148,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 字符串拼接
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CONCAT({s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CONCAT({s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CONCAT({s1},{s2})")
@@ -1761,6 +2163,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 字符串拼接
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CONCAT({s1},{s2},{ss})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CONCAT({s1},{s2},{ss})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "({s1}||{s2}||{ss})", separator = "||")
@@ -1773,6 +2178,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 以指定字符为间隔，拼接字符串
+     *
+     * @param separator 间隔
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CONCAT_WS({separator},{s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CONCAT_WS({separator},{s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "({s1}||{separator}||{s2})")
@@ -1785,6 +2195,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 以指定字符为间隔，拼接字符串
+     *
+     * @param separator 间隔
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CONCAT_WS({separator},{s1},{s2},{ss})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CONCAT_WS({separator},{s1},{s2},{ss})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleJoinExtension.class)
@@ -1810,6 +2225,9 @@ public class SqlFunctions
 //        return "";
 //    }
 
+    /**
+     * 获取子串在字符串中的位置
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "INSTR({str},{subStr})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "INSTR({str},{subStr})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "INSTR({str},{subStr})")
@@ -1822,6 +2240,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 获取子串在字符串中的位置，并且设置起始偏移
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LOCATE({subStr},{str},{offset})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOCATE({subStr},{str},{offset})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "INSTR({str},{subStr},{offset})")
@@ -1834,6 +2255,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 将字符串转换为小写
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LOWER({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LOWER({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LOWER({str})")
@@ -1846,6 +2270,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 将字符串转换为大写
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "UPPER({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "UPPER({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "UPPER({str})")
@@ -1858,6 +2285,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 返回字符串中从左开始的指定数量字符
+     *
+     * @param length 指定的数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LEFT({str},{length})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LEFT({str},{length})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SUBSTR({str},1,{length})")
@@ -1870,6 +2302,11 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 返回字符串中从右开始的指定数量字符
+     *
+     * @param length 指定的数量
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "RIGHT({str},{length})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "RIGHT({str},{length})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SUBSTR({str},LENGTH({str}) - ({length} - 1),{length})")
@@ -1882,6 +2319,12 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 将字符串左侧重复指定字符以填充到指定长度
+     *
+     * @param length  指定长度
+     * @param lpadStr 指定字符
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LPAD({str},{length},{lpadStr})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LPAD({str},{length},{lpadStr})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LPAD({str},{length},{lpadStr})")
@@ -1894,6 +2337,12 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 将字符串右侧重复指定字符以填充到指定长度
+     *
+     * @param length  指定长度
+     * @param rpadStr 指定字符
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "RPAD({str},{length},{rpadStr})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "RPAD({str},{length},{rpadStr})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "RPAD({str},{length},{rpadStr})")
@@ -1906,6 +2355,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 去除字符串两端空格
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "TRIM({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "TRIM({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "TRIM({str})")
@@ -1918,6 +2370,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 去除字符串左侧的空格
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LTRIM({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LTRIM({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LTRIM({str})")
@@ -1930,6 +2385,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 去除字符串右侧的空格
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "RTRIM({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "RTRIM({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "RTRIM({str})")
@@ -1942,6 +2400,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 替换字符串
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "REPLACE({cur},{subs},{news})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "REPLACE({cur},{subs},{news})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "REPLACE({cur},{subs},{news})")
@@ -1954,6 +2415,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 反转字符串
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "REVERSE({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "REVERSE({str})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "REVERSE({str})")
@@ -1966,6 +2430,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 比较两个字符串的大小
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "STRCMP({s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "STRCMP({s1},{s2})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE WHEN {s1} < {s2} THEN -1 WHEN {s1} = {s2} THEN 0 ELSE 1 END)")
@@ -1978,6 +2445,9 @@ public class SqlFunctions
         return 0;
     }
 
+    /**
+     * 截取字符串
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBSTR({str},{beginIndex})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBSTR({str},{beginIndex})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SUBSTR({str},{beginIndex})")
@@ -1990,6 +2460,9 @@ public class SqlFunctions
         return "";
     }
 
+    /**
+     * 截取字符串
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "SUBSTR({str},{beginIndex},{endIndex})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "SUBSTR({str},{beginIndex},{endIndex})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "SUBSTR({str},{beginIndex},{endIndex})")
@@ -2006,6 +2479,9 @@ public class SqlFunctions
 
     // region [控制流程]
 
+    /**
+     * 发起一段CASE表达式
+     */
     @SqlExtensionExpression(template = "CASE {when} END")
     public static <R> R Case(When<R> when)
     {
@@ -2013,6 +2489,9 @@ public class SqlFunctions
         return (R) new Object();
     }
 
+    /**
+     * 发起一段CASE表达式
+     */
     @SafeVarargs
     @SqlExtensionExpression(template = "CASE {when} {rs} END")
     public static <R> R Case(When<R> when, When<R>... rs)
@@ -2021,6 +2500,9 @@ public class SqlFunctions
         return (R) new Object();
     }
 
+    /**
+     * 发起一段CASE表达式，并设置ELSE
+     */
     @SqlExtensionExpression(template = "CASE {when} ELSE {elsePart} END")
     public static <R> R Case(R elsePart, When<R> when)
     {
@@ -2028,6 +2510,9 @@ public class SqlFunctions
         return (R) new Object();
     }
 
+    /**
+     * 发起一段CASE表达式，并设置ELSE
+     */
     @SafeVarargs
     @SqlExtensionExpression(template = "CASE {when} {rs} ELSE {elsePart} END", separator = " ")
     public static <R> R Case(R elsePart, When<R> when, When<R>... rs)
@@ -2036,6 +2521,9 @@ public class SqlFunctions
         return (R) new Object();
     }
 
+    /**
+     * 编写CASE表达式的WHEN子句
+     */
     @SqlExtensionExpression(template = "WHEN {condition} THEN {then}")
     public static <R> When<R> when(boolean condition, R then)
     {
@@ -2043,7 +2531,11 @@ public class SqlFunctions
         return new When<>();
     }
 
-
+    /**
+     * @param condition 判断条件
+     * @param truePart  如果条件成立，返回的值
+     * @param falsePart 如果条件不成立，返回的值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "IF({condition},{truePart},{falsePart})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "IF({condition},{truePart},{falsePart})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "(CASE WHEN {condition} THEN {truePart} ELSE {falsePart} END)")
@@ -2056,6 +2548,12 @@ public class SqlFunctions
         return (T) new Object();
     }
 
+    /**
+     * 如果值不为NULL，则返回该值，否则返回另一个值
+     *
+     * @param valueNotNull 如果值不为NULL，则返回该值
+     * @param valueIsNull  如果值为NULL，则返回该值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "IFNULL({valueNotNull},{valueIsNull})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "IFNULL({valueNotNull},{valueIsNull})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "NVL({valueNotNull},{valueIsNull})")
@@ -2068,6 +2566,9 @@ public class SqlFunctions
         return (T) new Object();
     }
 
+    /**
+     * 如果两个值相等，则返回NULL，否则返回第一个值
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "NULLIF({t1},{t2})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "NULLIF({t1},{t2})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "NULLIF({t1},{t2})")
@@ -2080,6 +2581,9 @@ public class SqlFunctions
         return (T) new Object();
     }
 
+    /**
+     * 类型转换
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "", extension = H2CastExtension.class)
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "", extension = MySqlCastExtension.class)
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "", extension = OracleCastExtension.class)
@@ -2092,6 +2596,9 @@ public class SqlFunctions
         return (T) new Object();
     }
 
+    /**
+     * 类型转换
+     */
     @SqlExtensionExpression(dbType = DbType.H2, template = "CAST({value} AS {targetType})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "CAST({value} AS {targetType})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "CAST({value} AS {targetType})")
@@ -2114,6 +2621,9 @@ public class SqlFunctions
 //        return (T) new Object();
 //    }
 
+    /**
+     * 判断是否为NULL
+     */
     @SqlExtensionExpression(template = "{t} IS NULL")
     public static <T> boolean isNull(T t)
     {
@@ -2121,6 +2631,9 @@ public class SqlFunctions
         return false;
     }
 
+    /**
+     * 判断是否不为NULL
+     */
     @SqlExtensionExpression(template = "{t} IS NOT NULL")
     public static <T> boolean isNotNull(T t)
     {

@@ -17,10 +17,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
 
 /**
  * @author kiryu1223
@@ -29,7 +26,7 @@ import java.sql.Time;
 public class TimeTypeHandler implements ITypeHandler<Time>
 {
     @Override
-    public Time getValue(ResultSet resultSet, int index,Class<?> c) throws SQLException
+    public Time getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
     {
         return resultSet.getTime(index);
     }
@@ -37,6 +34,13 @@ public class TimeTypeHandler implements ITypeHandler<Time>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, Time time) throws SQLException
     {
-        preparedStatement.setTime(index, time);
+        if (time == null)
+        {
+            preparedStatement.setNull(index, JDBCType.TIME.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setTime(index, time);
+        }
     }
 }

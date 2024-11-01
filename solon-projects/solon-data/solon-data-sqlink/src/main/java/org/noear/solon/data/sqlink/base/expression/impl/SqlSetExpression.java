@@ -16,11 +16,9 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlSetExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
+import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -56,10 +54,20 @@ public class SqlSetExpression implements ISqlSetExpression
     {
         String set = getColumn().getSqlAndValue(config, values) + " = ";
         PropertyMetaData propertyMetaData = getColumn().getPropertyMetaData();
-        if (propertyMetaData.hasConverter() && getValue() instanceof ISqlSingleValueExpression)
+        if (propertyMetaData.isUseTypeHandler() && getValue() instanceof ISqlValueExpression)
         {
-            ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
-            return set + sqlSingleValueExpression.getSqlAndValue(config, values, propertyMetaData.getConverter(), propertyMetaData);
+            if (getValue() instanceof ISqlSingleValueExpression)
+            {
+                ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
+                values.add(new SqlValue(sqlSingleValueExpression.getValue(), propertyMetaData.getTypeHandler()));
+                return set + "?";
+            }
+            else
+            {
+                ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) getValue();
+                values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), propertyMetaData.getTypeHandler()));
+                return set + "?";
+            }
         }
         else
         {

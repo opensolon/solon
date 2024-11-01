@@ -24,7 +24,7 @@ public class Option
     private boolean ignoreUpdateNoWhere = false;
     private boolean ignoreDeleteNoWhere = false;
     private boolean printSql = true;
-    private boolean printUseDs = false;
+    //private boolean printUseDs = false;
     private boolean printBatch = false;
 
     public boolean isIgnoreUpdateNoWhere()
@@ -57,15 +57,15 @@ public class Option
         this.printSql = printSql;
     }
 
-    public boolean isPrintUseDs()
-    {
-        return printUseDs;
-    }
-
-    public void setPrintUseDs(boolean printUseDs)
-    {
-        this.printUseDs = printUseDs;
-    }
+//    public boolean isPrintUseDs()
+//    {
+//        return printUseDs;
+//    }
+//
+//    public void setPrintUseDs(boolean printUseDs)
+//    {
+//        this.printUseDs = printUseDs;
+//    }
 
     public boolean isPrintBatch()
     {

@@ -46,7 +46,7 @@ public interface IConfig
 
     boolean isPrintSql();
 
-    boolean isPrintUseDs();
+    //boolean isPrintUseDs();
 
     boolean isPrintBatch();
 

@@ -16,7 +16,6 @@
 package org.noear.solon.data.sqlink.base.toBean.build;
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.metaData.IConverter;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.ISetterCaller;
@@ -24,7 +23,6 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -33,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-
-import static com.sun.jmx.mbeanserver.Util.cast;
 
 /**
  * @author kiryu1223
@@ -229,19 +225,20 @@ public class ObjectBuilder<T>
 
     private Object convertValue(PropertyMetaData metaData, int index) throws SQLException, NoSuchFieldException, IllegalAccessException
     {
-        if (metaData.hasConverter())
-        {
-            Class<?> type = metaData.getDbType();
-            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-            Object value = typeHandler.getValue(resultSet, index, cast(type));
-            IConverter<?, ?> converter = metaData.getConverter();
-            return converter.toJava(cast(value), metaData);
-        }
-        else
-        {
-            Type type = metaData.isGenericType() ? metaData.getGenericType() : metaData.getType();
-            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-            return typeHandler.getValue(resultSet, index, cast(type));
-        }
+//        if (metaData.hasConverter())
+//        {
+//            Class<?> type = metaData.getDbType();
+//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
+//            Object value = typeHandler.getValue(resultSet, index, cast(type));
+//            IConverter<?, ?> converter = metaData.getConverter();
+//            return converter.toJava(cast(value), metaData);
+//        }
+//        else
+//        {
+//            Type type = metaData.isGenericType() ? metaData.getGenericType() : metaData.getType();
+//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
+//            return typeHandler.getValue(resultSet, index, cast(type));
+//        }
+        return metaData.getTypeHandler().getValue(resultSet, index, metaData.getType());
     }
 }

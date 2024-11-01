@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,13 @@ public class BigIntegerTypeHandler implements ITypeHandler<BigInteger>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, BigInteger bigInteger) throws SQLException
     {
-        preparedStatement.setBigDecimal(index, new BigDecimal(bigInteger));
+        if (bigInteger == null)
+        {
+            preparedStatement.setNull(index, JDBCType.BIGINT.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setBigDecimal(index, new BigDecimal(bigInteger));
+        }
     }
-
 }

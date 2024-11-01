@@ -32,6 +32,7 @@ import java.util.Map;
 public class TypeHandlerManager
 {
     private static final Map<Type, ITypeHandler<?>> cache = new HashMap<>();
+    private static final Map<Class<? extends ITypeHandler<?>>, ITypeHandler<?>> handlerCache = new HashMap<>();
     private static final UnKnowTypeHandler<?> unKnowTypeHandler = new UnKnowTypeHandler<>();
 
     public static <T> void set(ITypeHandler<T> typeHandler)
@@ -79,6 +80,24 @@ public class TypeHandlerManager
             return (ITypeHandler<T>) unKnowTypeHandler;
         }
         return iTypeHandler;
+    }
+
+    public static <T> ITypeHandler<T> getByHandlerType(Class<? extends ITypeHandler<T>> handlerType)
+    {
+        ITypeHandler<T> typeHandler = (ITypeHandler<T>) handlerCache.get(handlerType);
+        if (typeHandler == null)
+        {
+            try
+            {
+                typeHandler = handlerType.newInstance();
+                handlerCache.put(handlerType, typeHandler);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return typeHandler;
     }
 
     private static void warpBaseType(Type actualType, ITypeHandler<?> typeHandler)

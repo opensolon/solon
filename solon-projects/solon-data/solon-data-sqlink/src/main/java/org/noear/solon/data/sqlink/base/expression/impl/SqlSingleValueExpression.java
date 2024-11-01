@@ -17,7 +17,6 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
-import org.noear.solon.data.sqlink.base.metaData.IConverter;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
 
@@ -62,17 +61,17 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
         }
     }
 
-    @Override
-    public String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, PropertyMetaData propertyMetaData)
-    {
-        if (getValue() == null)
-        {
-            return "NULL";
-        }
-        else
-        {
-            if (values != null) values.add(converter.toDb(cast(getValue()), propertyMetaData));
-            return "?";
-        }
-    }
+//    @Override
+//    public String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, PropertyMetaData propertyMetaData)
+//    {
+//        if (getValue() == null)
+//        {
+//            return "NULL";
+//        }
+//        else
+//        {
+//            if (values != null) values.add(converter.toDb(cast(getValue()), propertyMetaData));
+//            return "?";
+//        }
+//    }
 }

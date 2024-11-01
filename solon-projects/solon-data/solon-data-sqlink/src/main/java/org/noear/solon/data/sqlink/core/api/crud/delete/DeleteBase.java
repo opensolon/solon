@@ -72,7 +72,7 @@ public abstract class DeleteBase extends CRUD
         checkHasWhere();
         List<Object> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);
-        tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
+        //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         SqlSession session = config.getSqlSessionFactory().getSession();
         return session.executeUpdate(sql, values);

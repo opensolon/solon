@@ -17,10 +17,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 /**
@@ -39,6 +36,13 @@ public class LocalDateTypeHandler implements ITypeHandler<LocalDate>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, LocalDate localDate) throws SQLException
     {
-        preparedStatement.setDate(index, Date.valueOf(localDate));
+        if (localDate == null)
+        {
+            preparedStatement.setNull(index, JDBCType.DATE.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setDate(index, Date.valueOf(localDate));
+        }
     }
 }

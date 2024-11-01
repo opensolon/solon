@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +39,13 @@ public class DoubleTypeHandler implements ITypeHandler<Double>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, Double aDouble) throws SQLException
     {
-        preparedStatement.setDouble(index, aDouble);
+        if (aDouble == null)
+        {
+            preparedStatement.setNull(index, JDBCType.DOUBLE.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setDouble(index, aDouble);
+        }
     }
 }

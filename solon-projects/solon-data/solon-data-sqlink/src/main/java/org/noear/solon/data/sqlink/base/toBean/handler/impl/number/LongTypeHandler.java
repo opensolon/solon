@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,13 @@ public class LongTypeHandler implements ITypeHandler<Long>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, Long aLong) throws SQLException
     {
-        preparedStatement.setLong(index, aLong);
+        if (aLong == null)
+        {
+            preparedStatement.setNull(index, JDBCType.BIGINT.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setLong(index, aLong);
+        }
     }
 }

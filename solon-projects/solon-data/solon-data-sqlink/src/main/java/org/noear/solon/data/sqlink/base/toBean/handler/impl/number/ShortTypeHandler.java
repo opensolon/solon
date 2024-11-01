@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,13 @@ public class ShortTypeHandler implements ITypeHandler<Short>
     @Override
     public void setValue(PreparedStatement preparedStatement, int index, Short aShort) throws SQLException
     {
-        preparedStatement.setShort(index, aShort);
+        if (aShort == null)
+        {
+            preparedStatement.setNull(index, JDBCType.SMALLINT.getVendorTypeNumber());
+        }
+        else
+        {
+            preparedStatement.setShort(index, aShort);
+        }
     }
 }

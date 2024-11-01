@@ -93,7 +93,7 @@ public abstract class QueryBase extends CRUD
         String sql = sqlBuilder.getSqlAndValue(values);
         //System.out.println("本次toSql耗时" + (System.nanoTime() - start));
 
-        tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
+        //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession();

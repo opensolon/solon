@@ -41,13 +41,13 @@ public abstract class CRUD
         }
     }
 
-    protected void tryPrintUseDs(Logger log, String ds)
-    {
-        if (getConfig().isPrintUseDs())
-        {
-            log.info("Current use datasource: {}", ds == null ? "default" : ds);
-        }
-    }
+//    protected void tryPrintUseDs(Logger log, String ds)
+//    {
+//        if (getConfig().isPrintUseDs())
+//        {
+//            log.info("Current use datasource: {}", ds == null ? "default" : ds);
+//        }
+//    }
 
     protected void tryPrintBatch(Logger log, long count)
     {
