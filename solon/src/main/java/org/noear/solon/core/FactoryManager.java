@@ -102,7 +102,7 @@ public final class FactoryManager {
 
     public MvcFactory mvcFactory() {
         if (mvcFactory == null) {
-            throw new IllegalStateException("The 'solon.mvc' plugin is missing");
+            throw new IllegalStateException("The 'solon-mvc' plugin is missing");
         }
         return mvcFactory;
     }
