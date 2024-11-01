@@ -16,6 +16,7 @@
 package org.noear.solon.hotplug;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 
 import java.io.File;
 import java.util.*;
@@ -36,7 +37,8 @@ public class PluginManager {
         if (pops.size() > 0) {
             pops.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
-                    add((String) k, new File((String) v));
+                    //通过 Utils.getFile 获取文件，支持 ./xxx.jar 或者 xxx.jar （相对主程序包的位置）
+                    add((String) k, Utils.getFile((String) v));
                 }
             });
         }
