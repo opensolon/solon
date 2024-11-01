@@ -46,17 +46,33 @@ public class PluginManager {
         return pluginMap.values();
     }
 
+    /**
+     * 添加插件
+     *
+     * @param name 插件名
+     * @param file 插件的 jar 文件
+     */
     public static void add(String name, File file) {
         pluginMap.computeIfAbsent(name, k -> {
             return new PluginInfo(name, file);
         });
     }
 
+    /**
+     * 移除插件
+     *
+     * @param name 插件名
+     */
     public static void remove(String name) {
         pluginMap.remove(name);
     }
 
 
+    /**
+     * 加载插件
+     *
+     * @param name 插件名
+     */
     public static PluginPackage load(String name) {
         PluginInfo info = pluginMap.get(name);
 
@@ -71,6 +87,11 @@ public class PluginManager {
         return info.getAddinPackage();
     }
 
+    /**
+     * 卸载插件
+     *
+     * @param name 插件名
+     */
     public static void unload(String name) {
         PluginInfo info = pluginMap.get(name);
 
@@ -86,6 +107,11 @@ public class PluginManager {
         info.setAddinPackage(null);
     }
 
+    /**
+     * 启动插件
+     *
+     * @param name 插件名
+     */
     public static void start(String name) {
         PluginInfo info = pluginMap.get(name);
 
@@ -105,6 +131,11 @@ public class PluginManager {
         info.getAddinPackage().start();
     }
 
+    /**
+     * 停止插件
+     *
+     * @param name 插件名
+     */
     public static void stop(String name) {
         PluginInfo info = pluginMap.get(name);
 
