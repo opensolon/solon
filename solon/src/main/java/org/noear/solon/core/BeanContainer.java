@@ -389,9 +389,9 @@ public abstract class BeanContainer {
     }
 
     /**
-     * bean 通知，偏向对内
+     * bean hash 发布（通知外部订阅者）
      */
-    protected void beanNotice(Object nameOrType, BeanWrap wrap) {
+    protected void beanHashPublish(Object nameOrType, BeanWrap wrap) {
         if (wrap.raw() == null) {
             return;
         }
@@ -475,7 +475,7 @@ public abstract class BeanContainer {
                     beanWrapsOfName.put(name, wrap);
                     beanWrapSet.add(wrap);
 
-                    beanNotice(name, wrap);
+                    beanHashPublish(name, wrap);
                 }
             } finally {
                 SYNC_LOCK.unlock();
@@ -499,7 +499,7 @@ public abstract class BeanContainer {
                     beanWrapsOfType.put(type, wrap);
                     beanWrapSet.add(wrap);
 
-                    beanNotice(type, wrap);
+                    beanHashPublish(type, wrap);
                 }
             } finally {
                 SYNC_LOCK.unlock();
