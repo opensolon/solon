@@ -177,17 +177,17 @@ public abstract class BeanContainer {
 
 
     /**
-     * bean name 订阅者
+     * bean name hash 订阅者
      */
-    private final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribersOfName = new HashMap<>();
+    private final Map<Object, Set<Consumer<BeanWrap>>> beanHashSubscribersOfName = new HashMap<>();
     /**
-     * bean type 订阅者
+     * bean type hash 订阅者
      */
-    private final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribersOfType = new HashMap<>();
+    private final Map<Object, Set<Consumer<BeanWrap>>> beanHashSubscribersOfType = new HashMap<>();
     /**
-     * wrap 外部消费者
+     * bean base type 订阅者
      */
-    private final List<RankEntity<Consumer<BeanWrap>>> wrapExternalConsumers = new ArrayList<>();
+    private final List<RankEntity<Consumer<BeanWrap>>> beanBaseSubscribersOfType = new ArrayList<>();
 
 
     public void clear() {
@@ -198,15 +198,16 @@ public abstract class BeanContainer {
         attachs.clear();
         aot.clear();
 
-        wrapExternalConsumers.clear();
 
-        //内部关系，不能清除
+        //能力注册，不能清除
 //        beanBuilders.clear();
 //        beanInjectors.clear();
 //        beanExtractors.clear();
 //        beanInterceptors.clear();
-//
-//        beanSubscribers.clear();
+        //订阅关系，不能清除
+//        beanHashSubscribersOfName.clear();
+//        beanHashSubscribersOfType.clear();
+//        beanBaseSubscribersOfType.clear();
     }
 
     /**
@@ -346,23 +347,23 @@ public abstract class BeanContainer {
     //
     /////////////////////////
 
-    private Map<Object, Set<Consumer<BeanWrap>>> getBeanSubscribers(Object nameOrType) {
+    private Map<Object, Set<Consumer<BeanWrap>>> getBeanHashSubscribers(Object nameOrType) {
         if (nameOrType instanceof String) {
-            return beanSubscribersOfName;
+            return beanHashSubscribersOfName;
         } else {
-            return beanSubscribersOfType;
+            return beanHashSubscribersOfType;
         }
     }
 
     /**
-     * bean 订阅
+     * bean hash 订阅
      */
-    protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
+    protected void beanHashSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
             SYNC_LOCK.lock();
 
             try {
-                Set<Consumer<BeanWrap>> tmp = getBeanSubscribers(nameOrType)
+                Set<Consumer<BeanWrap>> tmp = getBeanHashSubscribers(nameOrType)
                         .computeIfAbsent(nameOrType, k -> new LinkedHashSet<>());
                 tmp.add(callback);
             } finally {
@@ -372,15 +373,15 @@ public abstract class BeanContainer {
     }
 
     /**
-     * wrap 外部订阅
+     * bean base type 订阅
      */
-    protected void wrapExternalSubscribe(Consumer<BeanWrap> callback, int index) {
+    protected void beanBaseSubscribe(Consumer<BeanWrap> callback, int index) {
         SYNC_LOCK.lock();
         try {
-            wrapExternalConsumers.add(new RankEntity<>(callback, index));
+            beanBaseSubscribersOfType.add(new RankEntity<>(callback, index));
             if (index < 0) {
                 //减少排序
-                Collections.sort(wrapExternalConsumers);
+                Collections.sort(beanBaseSubscribersOfType);
             }
         } finally {
             SYNC_LOCK.unlock();
@@ -398,7 +399,7 @@ public abstract class BeanContainer {
         SYNC_LOCK.lock();
         try {
             //避免在forEach时，对它进行add
-            Set<Consumer<BeanWrap>> tmp = getBeanSubscribers(nameOrType).get(nameOrType);
+            Set<Consumer<BeanWrap>> tmp = getBeanHashSubscribers(nameOrType).get(nameOrType);
             if (tmp != null) {
                 for (Consumer<BeanWrap> s1 : tmp) {
                     s1.accept(wrap);
@@ -416,7 +417,7 @@ public abstract class BeanContainer {
         //避免在forEach时，对它进行add
         SYNC_LOCK.lock();
         try {
-            for (RankEntity<Consumer<BeanWrap>> s1 : wrapExternalConsumers) {
+            for (RankEntity<Consumer<BeanWrap>> s1 : beanBaseSubscribersOfType) {
                 s1.target.accept(wrap);
             }
         } finally {
@@ -541,7 +542,7 @@ public abstract class BeanContainer {
         BeanWrap bw = getWrap(nameOrType);
 
         if (bw == null || bw.raw() == null) {
-            beanSubscribe(nameOrType, callback);
+            beanHashSubscribe(nameOrType, callback);
         } else {
             callback.accept(bw);
         }
@@ -570,7 +571,7 @@ public abstract class BeanContainer {
         });
 
         //获取未来的
-        wrapExternalSubscribe((bw) -> {
+        beanBaseSubscribe((bw) -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
                 callback.accept(bw);
             }
