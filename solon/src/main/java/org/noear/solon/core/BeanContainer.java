@@ -41,6 +41,7 @@ import java.util.function.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.0
  * */
 public abstract class BeanContainer {
     //应用
@@ -412,6 +413,8 @@ public abstract class BeanContainer {
 
     /**
      * bean base type 发布（通知外部订阅者）
+     *
+     * @since 3.0
      */
     protected void beanBasePublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
