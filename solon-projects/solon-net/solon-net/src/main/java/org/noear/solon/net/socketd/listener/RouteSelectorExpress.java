@@ -42,11 +42,7 @@ public class RouteSelectorExpress implements RouteSelector<Listener> {
     public void put(String path, Listener listener) {
         Routing<Listener> routing = new RoutingDefault<>(path, MethodType.SOCKET, 0, listener);
 
-        if (path.contains("*") || path.contains("{")) {
-            inner.add(routing);
-        } else {
-            inner.add(0, routing);
-        }
+        inner.add(routing);
     }
 
     @Override

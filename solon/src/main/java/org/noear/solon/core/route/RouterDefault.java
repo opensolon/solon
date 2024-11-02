@@ -56,12 +56,7 @@ public class RouterDefault implements Router, HandlerSlots {
     public void add(String path, MethodType method, int index, Handler handler) {
         RoutingDefault routing = new RoutingDefault<>(path, method, index, handler);
 
-        if (path.contains("*") || path.contains("{")) {
-            table.add(routing);
-        } else {
-            //没有*号的，优先
-            table.add(0, routing);
-        }
+        table.add(routing);
     }
 
     @Override

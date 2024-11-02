@@ -18,6 +18,7 @@ package org.noear.solon.core.route;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.RankEntity;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * @since 1.0
  * */
 public class RoutingTableDefault<T> implements RoutingTable<T> {
-    private List<Routing<T>> table = new ArrayList<>();
+    private List<RankEntity<Routing<T>>> table = new ArrayList<>();
 
 
     /**
@@ -39,30 +40,46 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      */
     @Override
     public void add(Routing<T> routing) {
-        table.add(routing);
+        int index = 0;
+
+        if (routing.path().indexOf('{') >= 0) {
+            index = 1;
+        }
+
+        if (routing.path().indexOf('*') >= 0) {
+            index = 2;
+        }
+
+        RankEntity<Routing<T>> entity = new RankEntity<>(routing, index, routing.index(), false);
+
+        table.add(entity);
+
+        if (index == 1 || routing.index() != 0) {
+            //有 * 号的 或有 index 的；排序下
+            Collections.sort(table);
+        }
     }
 
     /**
-     * 添加路由记录
+     * 移除路由记录
      *
-     * @param routing 路由
-     * @param index   索引位置
+     * @param pathPrefix 路径前缀
      */
     @Override
-    public void add(int index, Routing<T> routing) {
-        table.add(index, routing);
-    }
-
-    @Override
     public void remove(String pathPrefix) {
-        table.removeIf(l -> l.path().startsWith(pathPrefix));
+        table.removeIf(l -> l.target.path().startsWith(pathPrefix));
     }
 
+    /**
+     * 移除路由记录
+     *
+     * @param controllerClz 控制器类
+     */
     @Override
     public void remove(Class<?> controllerClz) {
         table.removeIf(l -> {
-            if (l.target() instanceof Action) {
-                Action a = (Action) l.target();
+            if (l.target.target() instanceof Action) {
+                Action a = (Action) l.target.target();
                 if (a.controller().clz().equals(controllerClz)) {
                     return true;
                 }
@@ -78,14 +95,14 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
 
     @Override
     public Collection<Routing<T>> getAll() {
-        return Collections.unmodifiableList(table);
+        return table.stream().map(l -> l.target).collect(Collectors.toList());
     }
 
     @Override
     public Collection<Routing<T>> getBy(String path) {
         return table.stream()
-                .filter(l -> l.test(path))
-                .sorted(Comparator.comparingInt(l -> l.index()))
+                .filter(l -> l.target.test(path))
+                .map(l -> l.target)
                 .collect(Collectors.toList());
     }
 
@@ -93,15 +110,15 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     public Collection<Routing<T>> getBy(Class<?> controllerClz) {
         return table.stream()
                 .filter(l -> {
-                    if (l.target() instanceof Action) {
-                        Action a = (Action) l.target();
+                    if (l.target.target() instanceof Action) {
+                        Action a = (Action) l.target.target();
                         if (a.controller().clz().equals(controllerClz)) {
                             return true;
                         }
                     }
                     return false;
                 })
-                .sorted(Comparator.comparingInt(l -> l.index()))
+                .map(l -> l.target)
                 .collect(Collectors.toList());
     }
 
@@ -113,9 +130,9 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一个区配的目标
      */
     public T matchOne(String path, MethodType method) {
-        for (Routing<T> l : table) {
-            if (l.matches(method, path)) {
-                return l.target();
+        for (RankEntity<Routing<T>> l : table) {
+            if (l.target.matches(method, path)) {
+                return l.target.target();
             }
         }
 
@@ -132,10 +149,10 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     @Override
     public Result<T> matchOneAndStatus(String path, MethodType method) {
         int degrees = 0;
-        for (Routing<T> l : table) {
-            int tmp = l.degrees(method, path);
+        for (RankEntity<Routing<T>> l : table) {
+            int tmp = l.target.degrees(method, path);
             if (tmp == 2) {
-                return Result.succeed(l.target());
+                return Result.succeed(l.target.target());
             } else {
                 if (tmp > degrees) {
                     degrees = tmp;
@@ -159,9 +176,8 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      */
     public List<T> matchMore(String path, MethodType method) {
         return table.stream()
-                .filter(l -> l.matches(method, path))
-                .sorted(Comparator.comparingInt(l -> l.index()))
-                .map(l -> l.target())
+                .filter(l -> l.target.matches(method, path))
+                .map(l -> l.target.target())
                 .collect(Collectors.toList());
     }
 
