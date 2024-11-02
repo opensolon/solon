@@ -17,7 +17,6 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;

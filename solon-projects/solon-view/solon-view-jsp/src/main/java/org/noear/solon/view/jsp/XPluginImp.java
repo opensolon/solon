@@ -15,7 +15,6 @@
  */
 package org.noear.solon.view.jsp;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ClassUtil;

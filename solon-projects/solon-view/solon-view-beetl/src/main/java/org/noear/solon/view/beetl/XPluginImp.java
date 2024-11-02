@@ -16,7 +16,6 @@
 package org.noear.solon.view.beetl;
 
 import org.beetl.core.tag.Tag;
-import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;

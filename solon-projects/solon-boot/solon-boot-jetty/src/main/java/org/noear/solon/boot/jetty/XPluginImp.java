@@ -17,7 +17,6 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
