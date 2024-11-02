@@ -45,7 +45,7 @@ public class RunUtil {
             asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
                     60L, TimeUnit.SECONDS,
                     new LinkedBlockingQueue<Runnable>(),
-                    new NamedThreadFactory("Solon-asyncExecutor-"));
+                    new NamedThreadFactory("Solon-executor-"));
         }
 
         int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
