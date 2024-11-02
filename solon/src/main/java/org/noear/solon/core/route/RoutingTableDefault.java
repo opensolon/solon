@@ -54,7 +54,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
 
         table.add(entity);
 
-        if (index == 1 || routing.index() != 0) {
+        if (index != 0 || routing.index() != 0) {
             //有 * 号的 或有 index 的；排序下
             Collections.sort(table);
         }
