@@ -16,6 +16,7 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
 import io.github.kiryu1223.expressionTree.ext.IExtensionService;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
+import org.noear.solon.Solon;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.plugin.aot.data.AnonymousClassData;
 import org.noear.solon.data.sqlink.plugin.aot.data.ClassData;
@@ -37,7 +38,7 @@ import java.util.Set;
  */
 public class SQLinkExtensionService implements IExtensionService
 {
-    private static final String projectVersion = "3.0.3-SNAPSHOT";
+    private static final String projectVersion = Solon.version();
     private FileObject aotConfig;
     private boolean aotTime;
     private Set<String> AnonymousClassesName = new HashSet<>();

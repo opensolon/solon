@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.plugin.integration;
 
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
@@ -38,7 +39,7 @@ import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManagerWrap;
 import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author kiryu1223
@@ -49,15 +50,22 @@ public class XPluginImpl implements Plugin
     @Override
     public void start(AppContext context) throws Throwable
     {
-        System.out.println("SQLink启动！");
-        Map<String, Props> data = context.cfg().getGroupedProp("solon.data.SQLink");
-        if (data.isEmpty()) return;
+        System.out.println("SQLink启动");
+        Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
+        if (data.isEmpty())
+        {
+            return;
+        }
+        Map<String, Client> clients = new LinkedHashMap<>();
         for (Map.Entry<String, Props> entry : data.entrySet())
         {
             Props props = entry.getValue();
             SQLinkProperties properties = props.toBean(SQLinkProperties.class);
             String dsName = properties.getDsName();
-            if (dsName.isEmpty()) continue;
+            if (dsName.isEmpty())
+            {
+                continue;
+            }
             DataSourceManager dataSourceManager = new SolonDataSourceManagerWrap();
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
@@ -71,8 +79,9 @@ public class XPluginImpl implements Plugin
                     .setDbType(properties.getDbType())
                     .build();
 
-            BeanWrap wrap = context.wrap(entry.getKey(), client);
-            context.beanRegister(wrap, entry.getKey(), true);
+            //BeanWrap wrap = context.wrap(entry.getKey(), client);
+            //context.beanRegister(wrap, entry.getKey(), true);
+            clients.put(entry.getKey(), client);
 
             DsUtils.observeDs(context, dsName, beanWrap ->
             {
@@ -80,6 +89,21 @@ public class XPluginImpl implements Plugin
                 sourceManagerWrap.setDataSourceManager(new SolonDataSourceManager(beanWrap.get()));
             });
         }
+
+        context.beanInjectorAdd(Inject.class, Client.class, (varHolder, inject) ->
+        {
+            varHolder.required(inject.required());
+            String name = inject.value();
+            if (name.isEmpty())
+            {
+                Optional<Client> first = clients.values().stream().findFirst();
+                varHolder.setValue(first.orElseThrow(RuntimeException::new));
+            }
+            else
+            {
+                varHolder.setValue(clients.get(name));
+            }
+        });
 
         context.getBeanAsync(ITypeHandler.class, TypeHandlerManager::set);
         registerAot(context);
