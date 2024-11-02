@@ -1,26 +1,41 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
-import org.noear.solon.data.sqlink.core.api.crud.CRUD;
+import io.github.kiryu1223.expressionTree.delegate.Action1;
+import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
-import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.core.api.crud.CRUD;
+import org.noear.solon.data.sqlink.core.exception.SQLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.GroupByVisitor;
 import org.noear.solon.data.sqlink.core.visitor.HavingVisitor;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
 import org.noear.solon.data.sqlink.core.visitor.SelectVisitor;
 import org.noear.solon.data.sqlink.core.visitor.methods.LogicExpression;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
-import io.github.kiryu1223.expressionTree.delegate.Action1;
-import io.github.kiryu1223.expressionTree.expressions.ExprTree;
-import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +44,10 @@ import java.util.*;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public abstract class QueryBase extends CRUD
 {
     public final static Logger log = LoggerFactory.getLogger(QueryBase.class);
@@ -64,45 +82,6 @@ public abstract class QueryBase extends CRUD
         return session.executeQuery(f -> f.next(), "SELECT 1 FROM (" + sql + ") LIMIT 1", values);
     }
 
-    // 脑子瓦塔了，toMap不用这么麻烦
-//    protected <K,T> Map<K,T> toMap(LambdaExpression<?> lambda)
-//    {
-//        // getMapKey
-//        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-//        SqlContext context = normalVisitor.visit(lambda);
-//        if (!(context instanceof SqlPropertyContext)) throw new RuntimeException("toMap需要一个对象拥有的字段为key");
-//        SqlPropertyContext propertyContext = (SqlPropertyContext) context;
-//        String column=propertyContext.getProperty();
-//
-//        Config config = getConfig();
-//        AtomicBoolean atomicBoolean=new AtomicBoolean();
-//        List<PropertyMetaData> mappingData = sqlBuilder.getMappingData(atomicBoolean);
-//        List<Object> values = new ArrayList<>();
-//        String sql = sqlBuilder.getSqlAndValue(values);
-//        tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
-//        tryPrintSql(log, sql);
-//        Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
-//        SqlSession session = config.getSqlSessionFactory().getSession();
-//        Map<K, T> map = session.executeQuery(
-//                r -> ObjectBuilder.start(r, targetClass, mappingData, atomicBoolean.get()).createMap(column),
-//                sql,
-//                values
-//        );
-//        if (!includes.isEmpty())
-//        {
-//            try
-//            {
-//                IncludeBuilder<T> navigateBuilder = new IncludeBuilder<>(getConfig(),targetClass, map.values(), includes);
-//                navigateBuilder.include();
-//            } catch (InvocationTargetException | IllegalAccessException e)
-//            {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//        return map;
-//    }
-
-
     protected <T> List<T> toList()
     {
         IConfig config = getConfig();
@@ -114,7 +93,7 @@ public abstract class QueryBase extends CRUD
         String sql = sqlBuilder.getSqlAndValue(values);
         //System.out.println("本次toSql耗时" + (System.nanoTime() - start));
 
-        tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
+        //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession();
@@ -149,7 +128,7 @@ public abstract class QueryBase extends CRUD
         querySqlBuilder.getIncludeSets().addAll(getSqlBuilder().getIncludeSets());
         LQuery<T> lQuery = new LQuery<>(querySqlBuilder);
         lQuery.limit(1);
-        List<T> list = lQuery.toList();
+        List<? extends T> list = lQuery.toList();
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -187,7 +166,7 @@ public abstract class QueryBase extends CRUD
                         expression = LogicExpression.IfExpression(config, expression, factory.constString("1"), factory.constString("0"));
                 }
             }
-            selectExpression = factory.select(Collections.singletonList(expression), lambda.getReturnType(), true,false);
+            selectExpression = factory.select(Collections.singletonList(expression), lambda.getReturnType(), true, false);
         }
         sqlBuilder.setSelect(selectExpression);
         return sqlBuilder.isSingle();
@@ -196,11 +175,6 @@ public abstract class QueryBase extends CRUD
     protected void select0(Class<?> c)
     {
         sqlBuilder.setSelect(c);
-    }
-
-    protected <Tn> QueryBase joinNewQuery()
-    {
-        return null;
     }
 
     protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr)
@@ -239,7 +213,7 @@ public abstract class QueryBase extends CRUD
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
         QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), table, sqlBuilder.getQueryable().getOrderedCount());
-        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true,false));
+        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true, false));
         querySqlBuilder.addWhere(where);
         ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
         if (not)
@@ -259,7 +233,7 @@ public abstract class QueryBase extends CRUD
         ISqlExpression where = normalVisitor.visit(lambda);
         ISqlQueryableExpression queryable = queryBase.getSqlBuilder().getQueryable();
         QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryable, sqlBuilder.getQueryable().getOrderedCount());
-        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), queryable.getTableClass(), true,false));
+        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), queryable.getTableClass(), true, false));
         querySqlBuilder.addWhere(where);
         ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
         if (not)

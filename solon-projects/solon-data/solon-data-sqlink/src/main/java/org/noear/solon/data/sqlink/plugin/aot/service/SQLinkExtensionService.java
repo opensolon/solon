@@ -16,7 +16,7 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
 import io.github.kiryu1223.expressionTree.ext.IExtensionService;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
-import org.noear.solon.data.sqlink.base.metaData.IConverter;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.plugin.aot.data.AnonymousClassData;
 import org.noear.solon.data.sqlink.plugin.aot.data.ClassData;
 import org.noear.solon.data.sqlink.plugin.aot.data.NormalClassData;
@@ -31,9 +31,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkExtensionService implements IExtensionService
 {
-    private static final String projectVersion = "1.0.14";
+    private static final String projectVersion = "3.0.3-SNAPSHOT";
     private FileObject aotConfig;
     private boolean aotTime;
     private Set<String> AnonymousClassesName = new HashSet<>();
@@ -64,7 +68,7 @@ public class SQLinkExtensionService implements IExtensionService
     private void createAotFile(Context context) throws IOException
     {
         Filer filer = JavacProcessingEnvironment.instance(context).getFiler();
-        aotConfig = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/native-image/io/github/kiryu1223/SQLink/" + projectVersion + "/reflect-config.json");
+        aotConfig = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/native-image/org/noear/solon/data/sqlink/" + projectVersion + "/reflect-config.json");
     }
 
     @Override
@@ -84,7 +88,6 @@ public class SQLinkExtensionService implements IExtensionService
     private void recodeClasses(TaskEvent event)
     {
         if (event.getKind() != TaskEvent.Kind.ANALYZE) return;
-        String sourceFileName = event.getSourceFile().getName();
         CompilationUnitTree compilationUnit = event.getCompilationUnit();
         for (Tree tree : compilationUnit.getTypeDecls())
         {
@@ -190,7 +193,7 @@ public class SQLinkExtensionService implements IExtensionService
                 for (JCTree.JCExpression jcExpression : classDecl.getImplementsClause())
                 {
                     //看看是不是转换器类
-                    if (jcExpression.type.asElement().flatName().toString().equals(IConverter.class.getCanonicalName()))
+                    if (jcExpression.type.asElement().flatName().toString().equals(ITypeHandler.class.getCanonicalName()))
                     {
                         //是的话先注册转换器
                         classesName.add(classDecl.sym.flatName().toString());
