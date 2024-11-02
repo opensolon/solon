@@ -117,49 +117,17 @@ public abstract class InsertBase extends CRUD
         MetaData metaData = MetaDataCache.getMetaData(getTableType());
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
-        for (PropertyMetaData pro : metaData.getNotIgnorePropertys())
+        for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys())
         {
-            //IConverter<?, ?> converter = pro.getConverter();
-            tableFields.add(pro.getColumn());
-            tableValues.add("?");
-//            if (pro.hasConverter())
-//            {
-//                for (Object o : objects)
-//                {
-//                    try
-//                    {
-//                        Object obj = pro.getGetter().invoke(o);
-//                        if (obj != null)
-//                        {
-//                            values.add(converter.toDb(cast(obj), pro));
-//                        }
-//                        else
-//                        {
-//                            values.add(null);
-//                        }
-//                    }
-//                    catch (IllegalAccessException | InvocationTargetException e)
-//                    {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//                sqlValues.add(new SqlValue(pro.getDbType(), values));
-//            }
-//            else
-//            {
-//                for (Object o : objects)
-//                {
-//                    try
-//                    {
-//                        values.add(pro.getGetter().invoke(o));
-//                    }
-//                    catch (IllegalAccessException | InvocationTargetException e)
-//                    {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//                sqlValues.add(new SqlValue(pro.getType(), values));
-//            }
+            if (propertyMetaData.isPrimaryKey())
+            {
+
+            }
+            else
+            {
+                tableFields.add(propertyMetaData.getColumn());
+                tableValues.add("?");
+            }
         }
         IDialect dialect = getSqlBuilder().getConfig().getDisambiguation();
         return "INSERT INTO " + dialect.disambiguationTableName(metaData.getTableName()) + "(" + String.join(",", tableFields)

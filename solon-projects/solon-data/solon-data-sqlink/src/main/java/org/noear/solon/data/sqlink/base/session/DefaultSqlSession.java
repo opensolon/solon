@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
@@ -297,9 +298,17 @@ public class DefaultSqlSession implements SqlSession
         {
             int index = 1;
             MetaData metaData = MetaDataCache.getMetaData(value.getClass());
-            for (PropertyMetaData notIgnoreProperty : metaData.getNotIgnorePropertys())
+            for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys())
             {
-                notIgnoreProperty.getTypeHandler().setValue(preparedStatement, index++, cast(notIgnoreProperty.getGetter().invoke(value)));
+                if (propertyMetaData.isPrimaryKey())
+                {
+
+                }
+                else
+                {
+                    ITypeHandler<?> typeHandler = propertyMetaData.getTypeHandler();
+                    typeHandler.setValue(preparedStatement, index++, cast(propertyMetaData.getGetter().invoke(value)));
+                }
             }
             if (batch)
             {

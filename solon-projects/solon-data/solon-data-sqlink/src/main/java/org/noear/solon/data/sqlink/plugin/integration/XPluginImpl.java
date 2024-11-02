@@ -49,6 +49,7 @@ public class XPluginImpl implements Plugin
     @Override
     public void start(AppContext context) throws Throwable
     {
+        System.out.println("SQLink启动！");
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.SQLink");
         if (data.isEmpty()) return;
         for (Map.Entry<String, Props> entry : data.entrySet())
