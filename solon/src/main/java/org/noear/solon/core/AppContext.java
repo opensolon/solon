@@ -421,7 +421,11 @@ public class AppContext extends BeanContainer {
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
-                app().add(mapping, v0, handler);
+
+                String path = Utils.annoAlias(mapping.value(), mapping.path());
+                for (MethodType m1 : v0) {
+                    app().router().add(path, m1, bw.index(), handler);
+                }
                 singletonHint = "Handler";
             }
         }
