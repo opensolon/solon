@@ -2,11 +2,15 @@ package org.noear.solon.data.sqlink.core.sqlExt.types;
 
 import org.noear.solon.data.sqlink.base.IConfig;
 
-public class Varchar2 extends SqlTypes<String>
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
+public class Varchar extends SqlTypes<String>
 {
     private final int length;
 
-    public Varchar2(int length)
+    public Varchar(int length)
     {
         this.length = length;
     }

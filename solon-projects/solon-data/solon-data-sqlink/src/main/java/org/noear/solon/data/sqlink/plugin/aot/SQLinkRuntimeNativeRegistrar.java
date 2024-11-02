@@ -1,22 +1,45 @@
+/*
+ * Copyright 2017-2024 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.data.sqlink.plugin.aot;
-
 
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.data.sqlink.base.metaData.NoConverter;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime.*;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.number.*;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.other.URLTypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.varchar.CharTypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.impl.varchar.StringTypeHandler;
 import org.noear.solon.data.sqlink.core.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.core.api.crud.read.group.*;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Char;
 import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
-import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar2;
+import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
 {
     @Override
@@ -24,8 +47,6 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
     {
         //配置文件
         metadata.registerReflection(SQLinkProperties.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-        //转换器
-        metadata.registerReflection(NoConverter.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //空表
         metadata.registerReflection(Empty.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //Group类
@@ -61,7 +82,30 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
         //sql类型
         registerSqlType(metadata, Arrays.asList(
                 Char.class,
-                Varchar2.class
+                Varchar.class
+        ));
+        // typeHandler
+        registerTypeHandler(metadata, Arrays.asList(
+                ITypeHandler.class,
+                CharTypeHandler.class,
+                StringTypeHandler.class,
+                ByteTypeHandler.class,
+                ShortTypeHandler.class,
+                IntTypeHandler.class,
+                LongTypeHandler.class,
+                BoolTypeHandler.class,
+                FloatTypeHandler.class,
+                DoubleTypeHandler.class,
+                BigIntegerTypeHandler.class,
+                BigDecimalTypeHandler.class,
+                DateTypeHandler.class,
+                UtilDateHandler.class,
+                TimeTypeHandler.class,
+                TimestampTypeHandler.class,
+                LocalDateTimeTypeHandler.class,
+                LocalDateTypeHandler.class,
+                LocalTimeTypeHandler.class,
+                URLTypeHandler.class
         ));
     }
 
@@ -78,6 +122,14 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
         for (Class<? extends SqlTypes<?>> sqlType : sqlTypes)
         {
             metadata.registerReflection(sqlType, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
+        }
+    }
+
+    private void registerTypeHandler(RuntimeNativeMetadata metadata, List<Class<? extends ITypeHandler>> typeHandlers)
+    {
+        for (Class<? extends ITypeHandler> typeHandler : typeHandlers)
+        {
+            metadata.registerReflection(typeHandler, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
         }
     }
 }
