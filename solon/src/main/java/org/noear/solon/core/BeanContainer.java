@@ -64,7 +64,7 @@ public abstract class BeanContainer {
         this.props = props;
     }
 
-    public SolonApp app(){
+    public SolonApp app() {
         return app;
     }
 
@@ -411,9 +411,9 @@ public abstract class BeanContainer {
     }
 
     /**
-     * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
+     * bean base type 发布（通知外部订阅者）
      */
-    public void wrapPublish(BeanWrap wrap) {
+    protected void beanBasePublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
         SYNC_LOCK.lock();
         try {
@@ -423,6 +423,13 @@ public abstract class BeanContainer {
         } finally {
             SYNC_LOCK.unlock();
         }
+    }
+
+    /**
+     * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
+     */
+    public void wrapPublish(BeanWrap wrap) {
+        beanBasePublish(wrap);
     }
 
 
@@ -528,7 +535,7 @@ public abstract class BeanContainer {
      * 获取一个bean包装列表
      *
      * @param baseType 基类
-     * */
+     */
     public List<BeanWrap> getWrapsOfType(Class<?> baseType) {
         return beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
     }
@@ -619,7 +626,7 @@ public abstract class BeanContainer {
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
-            if(geneticName != null && bw.genericList().contains(geneticName) == false) {
+            if (geneticName != null && bw.genericList().contains(geneticName) == false) {
                 continue;
             }
 
