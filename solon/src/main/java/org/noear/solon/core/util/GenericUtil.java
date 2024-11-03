@@ -103,19 +103,30 @@ public class GenericUtil {
     /**
      * 转换为参数化类型
      * */
-    private static ParameterizedType toParameterizedType(Type type, Map<String, Type> typeMap) {
+    public static ParameterizedType toParameterizedType(Type type) {
+        return toParameterizedType(type, null);
+    }
+
+    /**
+     * 转换为参数化类型
+     *
+     * @param genericInfo 泛型信息
+     * @since 3.0
+     * */
+    public static ParameterizedType toParameterizedType(Type type, Map<String, Type> genericInfo) {
         ParameterizedType result = null;
         if (type instanceof ParameterizedType) {
             result = (ParameterizedType) type;
 
-            if (typeMap.size() > 0) {
+            if (Utils.isEmpty(genericInfo) == false) {
+                //如果有泛型信息，做二次分析转换变量符
                 boolean typeArgsChanged = false;
                 Type[] typeArgs = result.getActualTypeArguments();
                 Class<?> rawClz = (Class<?>) result.getRawType();
                 for (int i = 0; i < typeArgs.length; i++) {
                     Type typeArg1 = typeArgs[i];
                     if (typeArg1 instanceof TypeVariable) {
-                        typeArg1 = typeMap.get(typeArg1.getTypeName());
+                        typeArg1 = genericInfo.get(typeArg1.getTypeName());
                         if (typeArg1 != null) {
                             typeArgsChanged = true;
                             typeArgs[i] = typeArg1;
@@ -139,7 +150,7 @@ public class GenericUtil {
                 }
             }
 
-            result = toParameterizedType(genericSuper, typeMap);
+            result = toParameterizedType(genericSuper, genericInfo);
         }
         return result;
     }
