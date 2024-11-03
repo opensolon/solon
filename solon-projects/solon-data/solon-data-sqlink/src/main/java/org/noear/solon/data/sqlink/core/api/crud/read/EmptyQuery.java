@@ -43,12 +43,12 @@ public class EmptyQuery extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func0<R> expr)
+    public <R extends Result> LQuery<? extends R> select(@Expr Func0<R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func0<R>> expr)
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func0<R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

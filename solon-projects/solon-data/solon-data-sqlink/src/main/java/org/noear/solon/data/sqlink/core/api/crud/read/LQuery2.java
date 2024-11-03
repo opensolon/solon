@@ -364,12 +364,12 @@ public class LQuery2<T1, T2> extends QueryBase
      * @param expr 返回一个继承于Grouper的匿名对象的lambda表达式((a) -> new Grouper(){...})，初始化段{...}内编写需要加入到Group的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return 分组查询过程对象
      */
-    public <Key extends Grouper> GroupedQuery2<Key, T1, T2> groupBy(@Expr Func2<T1, T2, Key> expr)
+    public <Key extends Grouper> GroupedQuery2<? extends Key, T1, T2> groupBy(@Expr Func2<T1, T2, Key> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <Key extends Grouper> GroupedQuery2<Key, T1, T2> groupBy(ExprTree<Func2<T1, T2, Key>> expr)
+    public <Key extends Grouper> GroupedQuery2<? extends Key, T1, T2> groupBy(ExprTree<Func2<T1, T2, Key>> expr)
     {
         groupBy(expr.getTree());
         return new GroupedQuery2<>(getSqlBuilder());
@@ -398,12 +398,12 @@ public class LQuery2<T1, T2> extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func2<T1, T2, R> expr)
+    public <R extends Result> LQuery<? extends R> select(@Expr Func2<T1, T2, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func2<T1, T2, R>> expr)
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func2<T1, T2, R>> expr)
     {
         boolean single = select(expr.getTree());
         singleCheck(single);

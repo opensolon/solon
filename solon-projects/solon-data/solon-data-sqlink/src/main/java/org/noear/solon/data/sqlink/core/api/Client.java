@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.core.api.client;
+package org.noear.solon.data.sqlink.core.api;
 
 import org.noear.solon.data.sqlink.core.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.core.api.crud.delete.LDelete;

@@ -140,12 +140,12 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func1<Group<Key, T>, R> expr)
+    public <R extends Result> LQuery<? extends R> select(@Expr Func1<Group<Key, T>, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group<Key, T>, R>> expr)
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func1<Group<Key, T>, R>> expr)
     {
         singleCheck(select(expr.getTree()));
         return new LQuery<>(boxedQuerySqlBuilder());
@@ -188,7 +188,7 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @return List
      */
     @Override
-    public List<? extends Key> toList()
+    public List<Key> toList()
     {
         return super.toList();
     }

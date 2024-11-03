@@ -17,7 +17,7 @@ package org.noear.solon.data.sqlink.core;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
-import org.noear.solon.data.sqlink.core.api.client.Client;
+import org.noear.solon.data.sqlink.core.api.Client;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.transaction.DefaultTransactionManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;

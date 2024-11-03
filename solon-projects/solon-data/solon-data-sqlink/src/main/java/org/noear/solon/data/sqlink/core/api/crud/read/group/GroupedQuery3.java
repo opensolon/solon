@@ -140,12 +140,12 @@ public class GroupedQuery3<Key, T1, T2, T3> extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func1<Group3<Key, T1, T2, T3>, R> expr)
+    public <R extends Result> LQuery<? extends R> select(@Expr Func1<Group3<Key, T1, T2, T3>, R> expr)
     {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group3<Key, T1, T2, T3>, R>> expr)
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func1<Group3<Key, T1, T2, T3>, R>> expr)
     {
         singleCheck(select(expr.getTree()));
 
@@ -188,7 +188,7 @@ public class GroupedQuery3<Key, T1, T2, T3> extends QueryBase
      * @return List
      */
     @Override
-    public List<? extends Key> toList()
+    public List<Key> toList()
     {
         return super.toList();
     }
