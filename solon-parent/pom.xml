@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.0.3-M2</version>
+    <version>3.0.3-M3</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -24,10 +24,10 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
 
-        <solon.version>3.0.3-M2</solon.version>
-        <solon-cloud.version>3.0.2</solon-cloud.version>
-        <solon-admin.version>3.0.2</solon-admin.version>
-        <solon-integration.version>3.0.2</solon-integration.version>
+        <solon.version>3.0.3-M3</solon.version>
+        <solon-cloud.version>3.0.3-M3</solon-cloud.version>
+        <solon-admin.version>3.0.3-M3</solon-admin.version>
+        <solon-integration.version>3.0.3-M3</solon-integration.version>
 
         <solonx.version>1.1.0</solonx.version>
 
@@ -57,8 +57,8 @@
 
         <smartsocket.version>1.5.52</smartsocket.version>
         <smarthttp.version>1.6.0</smarthttp.version>
-        <jetty.version>9.4.55.v20240627</jetty.version>
-        <undertow.version>2.2.34.Final</undertow.version>
+        <jetty.version>9.4.56.v20240826</jetty.version>
+        <undertow.version>2.2.37.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>

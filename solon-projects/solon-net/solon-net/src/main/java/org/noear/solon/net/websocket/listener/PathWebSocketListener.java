@@ -62,12 +62,7 @@ public class PathWebSocketListener implements WebSocketListener {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
         Routing<WebSocketListener> routing = new RoutingDefault<>(path, MethodType.SOCKET, index, lh);
 
-        if (path.contains("*") || path.contains("{")) {
-            routingTable.add(routing);
-        } else {
-            //没有*号的，优先
-            routingTable.add(0, routing);
-        }
+        routingTable.add(routing);
 
         return this;
     }

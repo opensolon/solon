@@ -33,6 +33,7 @@
 * 添加 solon AppContext:beanInterceptorHas 检测方法
 * 添加 solon AppContext:subWrapsOfType(baseType, callback, index) 方法
 * 添加 solon ClassUtil::findPublicMethods 缓存效果
+* 添加 solon 路由器二级索引排序支持
 * 添加 solon-parent checkstyle 编译可选配置？？？
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
 * 修复 solon-config-plus 配置注入与 HikariCP 6.0 的兼容问题
@@ -44,6 +45,8 @@
 * velocity 升为 2.4.1
 * redisson 升为 3.37.0
 * snack3 升为 3.2.120
+* undertow 升为 2.2.37.Final
+* jetty 升为 9.4.56.v20240826
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制

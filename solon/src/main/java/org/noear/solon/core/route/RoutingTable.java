@@ -36,14 +36,6 @@ public interface RoutingTable<T> {
     void add(Routing<T> routing);
 
     /**
-     * 添加路由记录
-     *
-     * @param routing 路由
-     * @param index   索引位置
-     */
-    void add(int index, Routing<T> routing);
-
-    /**
      * 移除路由记录
      *
      * @param pathPrefix 路径前缀
@@ -61,6 +53,11 @@ public interface RoutingTable<T> {
      * 数量
      */
     int count();
+
+    /**
+     * 清空
+     */
+    void clear();
 
     /**
      * 获取所有的路由记录
@@ -112,10 +109,4 @@ public interface RoutingTable<T> {
      * @since 2.5
      */
     List<T> matchMore(String path, MethodType method);
-
-
-    /**
-     * 清空
-     */
-    void clear();
 }

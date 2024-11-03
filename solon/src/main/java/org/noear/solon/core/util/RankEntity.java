@@ -37,14 +37,22 @@ public class RankEntity<T> implements Comparable<RankEntity<T>> {
      */
     public final int priority;
 
+    //
+    private final boolean priorityDesc;
+
     public RankEntity(T t, int i) {
         this(t, i, 0);
     }
 
     public RankEntity(T t, int i, int p) {
+        this(t, i, p, true);
+    }
+
+    public RankEntity(T t, int i, int p, boolean pIsDesc) {
         target = t;
         index = i;
         priority = p;
+        priorityDesc = pIsDesc;
     }
 
     @Override
@@ -68,10 +76,12 @@ public class RankEntity<T> implements Comparable<RankEntity<T>> {
         if (this.index == o.index) {
             if (this.priority == o.priority) {
                 return 0;
-            } else if (this.priority > o.priority) { //越大越优
-                return -1;
             } else {
-                return 1;
+                if (this.priority > o.priority) { //默认：越大越优
+                    return priorityDesc ? -1 : 1;
+                } else {
+                    return priorityDesc ? 1 : -1;
+                }
             }
         } else if (this.index < o.index) { //越小越前
             return -1;
