@@ -57,7 +57,7 @@
 
         <smartsocket.version>1.5.52</smartsocket.version>
         <smarthttp.version>1.6.0</smarthttp.version>
-        <jetty.version>9.4.55.v20240627</jetty.version>
+        <jetty.version>9.4.56.v20240826</jetty.version>
         <undertow.version>2.2.37.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
