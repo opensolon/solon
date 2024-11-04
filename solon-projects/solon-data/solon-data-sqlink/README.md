@@ -48,7 +48,7 @@ solon.data.sqlink:
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.data.sqlink.core.api.client.SQLinkClientClient;
+import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 //应用
