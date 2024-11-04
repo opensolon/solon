@@ -1,18 +1,29 @@
-package labs.genericsTest2;
+package features.solon.generic3;
 
+import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.event.EventListener;
 
 import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class GenericsTest implements EventListener<AppLoadEndEvent> {
+public class GenericsTest {
+
+    @Test
+    public void main() throws Exception {
+        Solon.startBlock(app -> {
+            app.context().beanScan(features.solon.generic2.GenericsTest.class);
+        });
+
+        features.solon.generic2.GenericsTest self = Solon.context().getBean(features.solon.generic2.GenericsTest.class);
+
+        self.wxCallbackContext.check();
+        self.fsCallbackContext.check();
+    }
 
     @Inject
     private WxCallbackContext wxCallbackContext;
@@ -20,15 +31,6 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
     @Inject
     private FsCallbackContext fsCallbackContext;
 
-    @Override
-    public void onEvent(AppLoadEndEvent event) throws Throwable {
-        wxCallbackContext.check();
-        fsCallbackContext.check();
-    }
-
-    public static void main(String[] args) throws Exception {
-        Solon.start(GenericsTest.class, args);
-    }
 
     public interface SocialEventAware<E extends SocialEventAware<E>> {
     }
@@ -42,19 +44,19 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Component(name = "WxUserCallback", typed = true)
+    @Component("WxUserCallback")
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component(name = "WxDeptCallback", typed = true)
+    @Component("WxDeptCallback")
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component(name = "FsUserCallback", typed = true)
+    @Component("FsUserCallback")
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Component(name = "FsDeptCallback", typed = true)
+    @Component("FsDeptCallback")
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -65,17 +67,13 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
         @Inject
         protected Map<String, SocialEventCallback<E, S>> socialEventCallbackMap;
 
-        /**
-         * 子类指定了具体的泛型，所以这两个集合的元素数量应该都是 2
-         * 实际上，socialEventCallbacks.size() == 4，
-         *        socialEventCallbackMap.size() == 1
-         */
+
         public void check() {
             System.out.println("socialEventCallbacks: 2, " + socialEventCallbacks.size());
             System.out.println("socialEventCallbackMap: 2, " + socialEventCallbackMap.size());
 
             assert socialEventCallbacks.size() == 2; //为 2
-            assert socialEventCallbackMap.size() == 2; //为 0, 因为都没有名字
+            assert socialEventCallbackMap.size() == 2; //为 2
         }
     }
 
@@ -98,7 +96,7 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
         @Bean
         public void test2(Map<String, SocialEventCallback<WxEvent, String>> v2) {
             System.out.println("v2: 2, " + v2.size());
-            assert v2.size() == 2; //为 0, 因为都没有名字
+            assert v2.size() == 2; //为 2
         }
     }
 }

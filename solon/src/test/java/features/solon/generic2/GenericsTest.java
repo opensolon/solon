@@ -1,5 +1,6 @@
-package labs.genericsTest;
+package features.solon.generic2;
 
+import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
@@ -12,23 +13,25 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class GenericsTest implements EventListener<AppLoadEndEvent> {
+public class GenericsTest {
+    @Test
+    public void main() throws Exception {
+        Solon.startBlock(app -> {
+            app.context().beanScan(GenericsTest.class);
+        });
 
-    @Inject
-    private WxCallbackContext wxCallbackContext;
+        GenericsTest self = Solon.context().getBean(GenericsTest.class);
 
-    @Inject
-    private FsCallbackContext fsCallbackContext;
-
-    @Override
-    public void onEvent(AppLoadEndEvent event) throws Throwable {
-        wxCallbackContext.check();
-        fsCallbackContext.check();
+        self.wxCallbackContext.check();
+        self.fsCallbackContext.check();
     }
 
-    public static void main(String[] args) throws Exception {
-        Solon.start(GenericsTest.class, args);
-    }
+
+    @Inject
+    public WxCallbackContext wxCallbackContext;
+
+    @Inject
+    public FsCallbackContext fsCallbackContext;
 
     public interface SocialEventAware<E extends SocialEventAware<E>> {
     }
@@ -68,14 +71,14 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
         /**
          * 子类指定了具体的泛型，所以这两个集合的元素数量应该都是 2
          * 实际上，socialEventCallbacks.size() == 4，
-         *        socialEventCallbackMap.size() == 1
+         * socialEventCallbackMap.size() == 1
          */
         public void check() {
             System.out.println("socialEventCallbacks: 2, " + socialEventCallbacks.size());
             System.out.println("socialEventCallbackMap: 0, " + socialEventCallbackMap.size());
 
             assert socialEventCallbacks.size() == 2; //为 2
-            assert socialEventCallbackMap.size() == 0; //为 0, 因为都没有名字
+            assert socialEventCallbackMap.size() == 0; //为 0（因为没有 name）
         }
     }
 
@@ -98,7 +101,7 @@ public class GenericsTest implements EventListener<AppLoadEndEvent> {
         @Bean
         public void test2(Map<String, SocialEventCallback<WxEvent, String>> v2) {
             System.out.println("v2: 0, " + v2.size());
-            assert v2.size() == 0; //为 0, 因为都没有名字
+            assert v2.size() == 0; //为 0（因为没有 name）
         }
     }
 }
