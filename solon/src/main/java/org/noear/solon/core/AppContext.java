@@ -201,7 +201,7 @@ public class AppContext extends BeanContainer {
             //beanRegister(bw,bw.name(),bw.typed());
 
             //支持基类注册
-            beanRegisterSup0(clz, bw);
+            beanRegisterSupI(clz, bw);
         });
 
         //注册 @Component 构建器

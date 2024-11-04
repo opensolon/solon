@@ -847,6 +847,12 @@ public abstract class BeanContainer {
             //
             putWrap(name, bw);
             if (typed == false) {
+                //尝试绑定泛型（用于支持泛型集合注入）
+                beanBindingSupT(bw.rawClz(), bw);
+                if (bw.rawClz().equals(bw.clz()) == false) {
+                    beanBindingSupT(bw.clz(), bw);
+                }
+
                 //如果非typed，则直接返回
                 return;
             }
@@ -855,20 +861,20 @@ public abstract class BeanContainer {
         //按实例类型注册
         putWrap(bw.rawClz(), bw);
         putWrap(bw.rawClz().getName(), bw);
-        beanRegisterSup0(bw.rawClz(), bw);
+        beanRegisterSupI(bw.rawClz(), bw);
 
         if (bw.rawClz().equals(bw.clz()) == false) {
             //按返回类型注册
             putWrap(bw.clz(), bw);
             putWrap(bw.clz().getName(), bw);
-            beanRegisterSup0(bw.clz(), bw);
+            beanRegisterSupI(bw.clz(), bw);
         }
     }
 
     /**
-     * 尝试Bean的基类注册
+     * 尝试Bean的实现接口类型注册
      */
-    protected void beanRegisterSup0(Class<?> clz, BeanWrap bw) {
+    protected void beanRegisterSupI(Class<?> clz, BeanWrap bw) {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = clz.getInterfaces();
         for (Class<?> c : list) {
@@ -881,6 +887,18 @@ public abstract class BeanContainer {
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 putWrap(t.getTypeName(), bw);
+                bw.genericList().add(t.getTypeName());
+            }
+        }
+    }
+
+    /**
+     * 尝试Bean的实现泛型接口类型绑定
+     */
+    protected void beanBindingSupT(Class<?> clz, BeanWrap bw) {
+        Type[] list2 = clz.getGenericInterfaces(); //有可能跟 getInterfaces() 一样
+        for (Type t : list2) {
+            if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 bw.genericList().add(t.getTypeName());
             }
         }
