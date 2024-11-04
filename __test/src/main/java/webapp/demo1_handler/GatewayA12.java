@@ -22,13 +22,13 @@ import org.noear.solon.core.handle.Gateway;
 /**
  * 简单的http处理(带简单的内部导航 + 前后置处理)
  * */
-@Mapping("/demo1/b1/*")
-@Component(index = 1)
-public class GatewayB1_2 extends Gateway {
+@Mapping("/demo1/a1/*")
+@Component(index = 2)
+public class GatewayA12 extends Gateway {
     @Override
     protected void register() {
         add(null, c -> {
-            c.output("b1-2-1");
+            c.output("a1-2");
         });
     }
 }
