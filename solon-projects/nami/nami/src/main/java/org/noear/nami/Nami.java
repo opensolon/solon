@@ -134,8 +134,7 @@ public class Nami {
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            Invocation invocation = new Invocation(_config, _target,_method, _action, _url, body, this::callDo);
-
+            Invocation invocation = new Invocation(_config, _target, _method, _action, _url, body, this::callDo);
 
             if (headers != null) {
                 invocation.headers.putAll(headers);
@@ -226,7 +225,24 @@ public class Nami {
             decoder = NamiManager.getDecoder(ContentTypes.JSON_VALUE);
         }
 
-        return decoder.decode(_result, returnType);
+        Object returnVal;
+        try {
+            returnVal = decoder.decode(_result, returnType);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+
+        if (returnVal != null && returnVal instanceof Throwable) {
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
+        } else {
+            return (T) returnVal;
+        }
     }
 
     public static NamiBuilder builder() {
