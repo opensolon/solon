@@ -284,8 +284,8 @@ public class NamiHandler implements InvocationHandler {
                 .method(proxy, method)
                 .action(act)
                 .url(url, fun)
-                .call(headers, args, body)
-                .getObject(type);
+                .callOrThrow(headers, args, body) //使用 OrThrow，可减少异常包装
+                .getObjectOrThrow(type);
 
         return rst;//调试时，方便看
     }
