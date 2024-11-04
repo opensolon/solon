@@ -42,6 +42,10 @@ public class KryoDecoder extends KryoPool implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type clz) {
+        if (rst.body().length == 0) {
+            return null;
+        }
+
         ByteArrayInputStream inputStream = new ByteArrayInputStream(rst.body());
 
         Kryo tmp = obtain();

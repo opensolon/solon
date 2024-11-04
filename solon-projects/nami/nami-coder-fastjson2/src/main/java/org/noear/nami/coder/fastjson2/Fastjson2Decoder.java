@@ -23,6 +23,7 @@ import org.noear.nami.EncoderTyped;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
 
@@ -43,39 +44,25 @@ public class Fastjson2Decoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type type) {
-        String str = rst.bodyAsString();
-
-        Object returnVal = null;
-        try {
-            if (str == null) {
-                return (T) str;
-            }
-
-            if ("null".equals(str)) {
-                return null;
-            }
-
-            if (str.contains("\"stackTrace\":[{")) {
-                returnVal = JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
-            } else {
-                returnVal = JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
-            }
-        } catch (Throwable ex) {
-            if (String.class == type) {
-                returnVal = str;
-            } else {
-                returnVal = ex;
-            }
+        if (rst.body().length == 0) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
+        String str = rst.bodyAsString();
+        if ("null".equals(str)) {
+            return null;
+        }
+
+        if (str.contains("\"stackTrace\":[{")) {
+            return (T) JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
         } else {
-            return (T) returnVal;
+            if (String.class == type && Utils.isNotEmpty(str)) {
+                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                    return (T) str;
+                }
+            }
+
+            return (T) JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
         }
     }
 

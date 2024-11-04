@@ -39,25 +39,15 @@ public class ProtostuffUtil {
             Schema schema = WRAPPER_SCHEMA;
 
             return ProtostuffIOUtil.toByteArray(serializerObj, schema, buffer);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         } finally {
             buffer.clear();
         }
     }
 
-    public static <T> T deserialize(byte[] data) {
-        try {
-            DataWrapper<T> wrapper = new DataWrapper<>();
-            ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
-            return wrapper.getData();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    public static <T> T deserialize(byte[] data) throws Exception {
+        DataWrapper<T> wrapper = new DataWrapper<>();
+        ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
+        return wrapper.getData();
     }
 
 

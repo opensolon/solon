@@ -21,6 +21,7 @@ import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Hessian 编码器
@@ -37,17 +38,13 @@ public class HessianEncoder implements Encoder {
     }
 
     @Override
-    public byte[] encode(Object obj) {
+    public byte[] encode(Object obj) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Hessian2Output ho = new Hessian2Output(out);
-
         try {
             ho.writeObject(obj);
+        } finally {
             ho.close();
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
 
         return out.toByteArray();

@@ -34,12 +34,18 @@ public class NamiCoderTest_hessian {
 
 
     @Test
-    public void test_hessian_err() {
+    public void test_hessian_err() throws Throwable{
         //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, HessianEncoder.instance.encode(err));
         try {
-            HessianDecoder.instance.decode(err_rst, UserModel.class);
+            Object rst = HessianDecoder.instance.decode(err_rst, UserModel.class);
+            if (rst instanceof IllegalArgumentException) {
+                assert true;
+                System.out.println("test_hessian::ok");
+                return;
+            }
+
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;
@@ -48,7 +54,7 @@ public class NamiCoderTest_hessian {
     }
 
     @Test
-    public void test_hessian_bean() {
+    public void test_hessian_bean() throws Throwable{
         //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 

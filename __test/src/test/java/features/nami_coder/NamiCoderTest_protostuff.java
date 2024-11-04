@@ -34,12 +34,17 @@ public class NamiCoderTest_protostuff {
 
 
     @Test
-    public void test_protostuff_err() {
+    public void test_protostuff_err() throws Throwable{
         //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
         try {
-            ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
+            Object rst = ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
+            if (rst instanceof IllegalArgumentException) {
+                assert true;
+                System.out.println("test_protostuff::ok");
+                return;
+            }
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;
@@ -48,7 +53,7 @@ public class NamiCoderTest_protostuff {
     }
 
     @Test
-    public void test_protostuff_bean() {
+    public void test_protostuff_bean() throws Throwable{
         //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 

@@ -22,6 +22,7 @@ import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
 
@@ -35,32 +36,22 @@ public class SnackDecoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type type) {
-        String str = rst.bodyAsString();
+        if (rst.body().length == 0) {
+            return null;
+        }
 
-        Object returnVal = null;
-        try {
-            if (str == null) {
+        String str = rst.bodyAsString();
+        if ("null".equals(str)) {
+            return null;
+        }
+
+        if (String.class == type && Utils.isNotEmpty(str)) {
+            if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
                 return (T) str;
             }
-            returnVal = ONode.deserialize(str, type);
-
-        } catch (Throwable ex) {
-            if (String.class == type) {
-                returnVal = str;
-            } else {
-                returnVal = ex;
-            }
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
-        } else {
-            return (T) returnVal;
-        }
+        return ONode.deserialize(str, type);
     }
 
     @Override

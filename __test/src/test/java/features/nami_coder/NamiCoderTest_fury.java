@@ -39,7 +39,13 @@ public class NamiCoderTest_fury {
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, FuryEncoder.instance.encode(err));
         try {
-            FuryDecoder.instance.decode(err_rst, UserModel.class);
+            Object rst = FuryDecoder.instance.decode(err_rst, UserModel.class);
+            if (rst instanceof IllegalArgumentException) {
+                assert true;
+                System.out.println("test_fury::ok");
+                return;
+            }
+
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;

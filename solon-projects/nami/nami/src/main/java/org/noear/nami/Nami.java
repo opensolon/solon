@@ -132,26 +132,34 @@ public class Nami {
         return call(headers, args, null);
     }
 
+    /**
+     * 执行完成呼叫
+     */
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            Invocation invocation = new Invocation(_config, _target,_method, _action, _url, body, this::callDo);
-
-
-            if (headers != null) {
-                invocation.headers.putAll(headers);
-            }
-
-            if (args != null) {
-                invocation.args.putAll(args);
-            }
-
-            _result = invocation.invoke();
+            return callOrThrow(headers, args, body);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
 
+    /**
+     * 执行完成呼叫或异常
+     */
+    public Nami callOrThrow(Map<String, String> headers, Map args, Object body) throws Throwable {
+        Invocation invocation = new Invocation(_config, _target, _method, _action, _url, body, this::callDo);
+
+        if (headers != null) {
+            invocation.headers.putAll(headers);
+        }
+
+        if (args != null) {
+            invocation.args.putAll(args);
+        }
+
+        _result = invocation.invoke();
         return this;
     }
 
@@ -190,6 +198,9 @@ public class Nami {
 
     private Result _result;
 
+    /**
+     * 获取结果
+     */
     public Result result() {
         return _result;
     }
@@ -207,8 +218,25 @@ public class Nami {
 
     /**
      * 获取结果（返序列化为object）
+     *
+     * @param returnType 返回类型
      */
     public <T> T getObject(Type returnType) {
+        try {
+            return getObjectOrThrow(returnType);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 获取结果或异步（返序列化为object）
+     *
+     * @param returnType 返回类型
+     */
+    public <T> T getObjectOrThrow(Type returnType) throws Throwable {
         if (_result == null) {
             return null;
         }
@@ -226,9 +254,22 @@ public class Nami {
             decoder = NamiManager.getDecoder(ContentTypes.JSON_VALUE);
         }
 
-        return decoder.decode(_result, returnType);
+        Object returnVal = decoder.decode(_result, returnType);
+
+        if (returnVal != null && returnVal instanceof Throwable) {
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
+        } else {
+            return (T) returnVal;
+        }
     }
 
+    /**
+     * 新建构建器
+     */
     public static NamiBuilder builder() {
         return new NamiBuilder();
     }

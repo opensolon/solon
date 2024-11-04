@@ -37,7 +37,13 @@ public class NamiCoderTest_fastjson2 {
         //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
-            Fastjson2Decoder.instance.decode(err_rst, UserModel.class);
+            Object rst = Fastjson2Decoder.instance.decode(err_rst, UserModel.class);
+            if (rst instanceof IllegalArgumentException) {
+                assert true;
+                System.out.println("test_fastjson::ok");
+                return;
+            }
+
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;
@@ -59,7 +65,7 @@ public class NamiCoderTest_fastjson2 {
         Object usr_obj_ary = Fastjson2Decoder.instance.decode(usr_rst_ary, List.class);
 
         assert usr_obj_ary instanceof List;
-        assert ((List<?>) usr_obj_ary).size()==1;
+        assert ((List<?>) usr_obj_ary).size() == 1;
 
 
         //null
