@@ -16,6 +16,7 @@
 package org.noear.nami.coder.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,12 +48,8 @@ public class JacksonEncoder implements Encoder {
     }
 
     @Override
-    public byte[] encode(Object obj) {
-        try {
-            return mapper.writeValueAsBytes(obj);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+    public byte[] encode(Object obj) throws JsonProcessingException {
+        return mapper.writeValueAsBytes(obj);
     }
 
     @Override
