@@ -26,16 +26,16 @@ import java.lang.reflect.Type;
 public interface Decoder {
     /**
      * 编码
-     * */
+     */
     String enctype();
 
     /**
      * 反序列化
-     * */
-    <T> T decode(Result rst, Type clz);
+     */
+    <T> T decode(Result rst, Type clz) throws Throwable;
 
     /**
      * 预处理
-     * */
+     */
     void pretreatment(Context ctx);
 }

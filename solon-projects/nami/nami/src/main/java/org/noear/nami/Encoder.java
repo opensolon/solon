@@ -24,16 +24,16 @@ package org.noear.nami;
 public interface Encoder {
     /**
      * 编码
-     * */
+     */
     String enctype();
 
     /**
      * 序列化
-     * */
-    byte[] encode(Object obj);
+     */
+    byte[] encode(Object obj) throws Throwable;
 
     /**
      * 预处理
-     * */
+     */
     void pretreatment(Context ctx);
 }

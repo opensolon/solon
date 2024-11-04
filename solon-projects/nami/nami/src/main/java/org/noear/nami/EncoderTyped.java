@@ -21,5 +21,5 @@ package org.noear.nami;
  * @author noear
  * @since 2.3
  */
-public interface EncoderTyped extends Encoder{
+public interface EncoderTyped extends Encoder {
 }
