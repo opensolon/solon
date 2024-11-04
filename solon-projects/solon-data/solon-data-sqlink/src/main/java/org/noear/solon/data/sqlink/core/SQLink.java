@@ -25,7 +25,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.DefaultTransactionManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
-import org.noear.solon.data.sqlink.core.api.Client;
+import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
 
 /**
  * @author kiryu1223
@@ -43,7 +43,7 @@ public class SQLink {
     private SqlSessionFactory sqlSessionFactory;
     private BeanCreatorFactory beanCreatorFactory;
 
-    public Client build() {
+    public SQLinkClient build() {
         if (dataSourceManager == null) {
             throw new NullPointerException("dataSourceManager is null");
         }
@@ -60,7 +60,7 @@ public class SQLink {
         if (dialect != null) {
             config.setDisambiguation(dialect);
         }
-        return new Client(config);
+        return new SQLinkClient(config);
     }
 
     public static SQLink bootStrap() {

@@ -48,8 +48,7 @@ solon.data.sqlink:
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.data.sqlink.core.api.Client;
+import org.noear.solon.data.sqlink.core.api.client.SQLinkClientClient;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 //应用
@@ -58,13 +57,13 @@ import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 public class DemoController
 {
     @Inject // or @Inject("main")
-    Client client;
+    SQLinkClient SQLinkClient;
 
     @Mapping("/hello")
     public String hello(String name)
     {
         // SELECT CONCAT_WS(' ','hello', {name})
-        return client.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
+        return SQLinkClient.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
     }
 }
 ```
