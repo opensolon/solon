@@ -23,6 +23,7 @@ import org.noear.nami.EncoderTyped;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
 
@@ -55,6 +56,12 @@ public class Fastjson2Decoder implements Decoder {
         if (str.contains("\"stackTrace\":[{")) {
             return (T) JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
         } else {
+            if (String.class == type && Utils.isNotEmpty(str)) {
+                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                    return (T) str;
+                }
+            }
+
             return (T) JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
         }
     }

@@ -28,6 +28,7 @@ import org.noear.nami.EncoderTyped;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
 
@@ -74,6 +75,12 @@ public class JacksonDecoder implements Decoder {
         if (str.contains("\"stackTrace\":[{")) {
             return (T) mapper_type.readValue(str, RuntimeException.class);
         } else {
+            if (String.class == type && Utils.isNotEmpty(str)) {
+                if (str.charAt(0) != '\'' && str.charAt(0) != '"') {
+                    return (T) str;
+                }
+            }
+
             return (T) mapper_type.readValue(str, new TypeReferenceImp(type));
         }
     }

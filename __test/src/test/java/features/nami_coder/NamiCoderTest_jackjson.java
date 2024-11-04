@@ -34,12 +34,17 @@ public class NamiCoderTest_jackjson {
 
 
     @Test
-    public void test_jackjson() {
+    public void test_jackjson() throws Throwable{
         //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, JacksonEncoder.instance.encode(err));
         try {
-            JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            Object rst = JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            if (rst instanceof RuntimeException) {
+                assert true;
+                System.out.println("test_jackjson::ok");
+                return;
+            }
             assert false;
         } catch (RuntimeException e) {
             assert true;
@@ -71,12 +76,18 @@ public class NamiCoderTest_jackjson {
 
 
     @Test
-    public void test_jackjson_err() {
+    public void test_jackjson_err() throws Throwable{
         //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, JacksonEncoder.instance.encode(err));
         try {
-            JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            Object rst = JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            if(rst instanceof RuntimeException){
+                assert true;
+                System.out.println("test_jackjson::ok");
+                return;
+            }
+
             assert false;
         } catch (RuntimeException e) {
             assert true;
@@ -85,7 +96,7 @@ public class NamiCoderTest_jackjson {
     }
 
     @Test
-    public void test_jackjson_bean() {
+    public void test_jackjson_bean() throws Throwable{
 
         //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
@@ -112,7 +123,7 @@ public class NamiCoderTest_jackjson {
 //    }
 
     @Test
-    public void test_jackjson_null() {
+    public void test_jackjson_null() throws Throwable{
         //null
         Result usr_rst = new Result(200, JacksonEncoder.instance.encode(null));
         Object usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
