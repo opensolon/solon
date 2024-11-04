@@ -41,6 +41,7 @@
 * 调整 solon BeanWrap.Proxy 接口简化
 * 调整 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 调整 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
+* 调整 nami 简化编解码处理
 * freemarker 升为 2.3.33
 * velocity 升为 2.4.1
 * redisson 升为 3.37.0
