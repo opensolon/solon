@@ -26,15 +26,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlSelectExpression implements ISqlSelectExpression
-{
+public class SqlSelectExpression implements ISqlSelectExpression {
     protected List<ISqlExpression> columns;
     protected boolean distinct = false;
     protected Class<?> target;
     protected boolean isSingle;
 
-    SqlSelectExpression(List<ISqlExpression> columns, Class<?> target, boolean isSingle, boolean isDistinct)
-    {
+    SqlSelectExpression(List<ISqlExpression> columns, Class<?> target, boolean isSingle, boolean isDistinct) {
         this.columns = columns;
         this.target = target;
         this.isSingle = isSingle;
@@ -42,62 +40,51 @@ public class SqlSelectExpression implements ISqlSelectExpression
     }
 
     @Override
-    public List<ISqlExpression> getColumns()
-    {
+    public List<ISqlExpression> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<ISqlExpression> columns)
-    {
+    public void setColumns(List<ISqlExpression> columns) {
         this.columns = columns;
     }
 
     @Override
-    public boolean isDistinct()
-    {
+    public boolean isDistinct() {
         return distinct;
     }
 
-    public void setDistinct(boolean distinct)
-    {
+    public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 
     @Override
-    public Class<?> getTarget()
-    {
+    public Class<?> getTarget() {
         return target;
     }
 
-    public void setTarget(Class<?> target)
-    {
+    public void setTarget(Class<?> target) {
         this.target = target;
     }
 
     @Override
-    public boolean isSingle()
-    {
+    public boolean isSingle() {
         return isSingle;
     }
 
-    public void setSingle(boolean single)
-    {
+    public void setSingle(boolean single) {
         isSingle = single;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>(getColumns().size());
-        for (ISqlExpression sqlExpression : getColumns())
-        {
+        for (ISqlExpression sqlExpression : getColumns()) {
             strings.add(sqlExpression.getSqlAndValue(config, values));
         }
         String col = String.join(",", strings);
         List<String> result = new ArrayList<>();
         result.add("SELECT");
-        if (isDistinct())
-        {
+        if (isDistinct()) {
             result.add("DISTINCT");
         }
         result.add(col);

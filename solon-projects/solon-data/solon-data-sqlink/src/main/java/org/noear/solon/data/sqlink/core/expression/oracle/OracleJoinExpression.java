@@ -28,16 +28,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleJoinExpression extends SqlJoinExpression
-{
-    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index)
-    {
+public class OracleJoinExpression extends SqlJoinExpression {
+    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index) {
         super(joinType, joinTable, conditions, index);
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " t" + index + " ON " + conditions.getSqlAndValue(config, values);
     }
 }

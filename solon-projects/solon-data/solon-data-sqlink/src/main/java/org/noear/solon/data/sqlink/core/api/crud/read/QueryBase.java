@@ -16,8 +16,12 @@
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.delegate.Action1;
+import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.Expression;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import io.github.kiryu1223.expressionTree.expressions.ParameterExpression;
+import io.github.kiryu1223.expressionTree.util.ReflectUtil;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
@@ -29,8 +33,11 @@ import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
 import org.noear.solon.data.sqlink.core.api.crud.CRUD;
+import org.noear.solon.data.sqlink.core.api.page.PagedResult;
+import org.noear.solon.data.sqlink.core.api.page.Pager;
 import org.noear.solon.data.sqlink.core.exception.SQLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 import org.noear.solon.data.sqlink.core.visitor.GroupByVisitor;
 import org.noear.solon.data.sqlink.core.visitor.HavingVisitor;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
@@ -48,42 +55,31 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class QueryBase extends CRUD
-{
+public abstract class QueryBase extends CRUD {
     public final static Logger log = LoggerFactory.getLogger(QueryBase.class);
 
     private final QuerySqlBuilder sqlBuilder;
 
-    public QueryBase(IConfig config, Class<?> c)
-    {
-        this.sqlBuilder = new QuerySqlBuilder(config, c);
-    }
-
-    public QueryBase(QuerySqlBuilder sqlBuilder)
-    {
+    public QueryBase(QuerySqlBuilder sqlBuilder) {
         this.sqlBuilder = sqlBuilder;
     }
 
-    protected QuerySqlBuilder getSqlBuilder()
-    {
+    protected QuerySqlBuilder getSqlBuilder() {
         return sqlBuilder;
     }
 
-    protected IConfig getConfig()
-    {
+    protected IConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
-    protected boolean any()
-    {
+    protected boolean any() {
         SqlSession session = getConfig().getSqlSessionFactory().getSession();
         List<Object> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);
         return session.executeQuery(f -> f.next(), "SELECT 1 FROM (" + sql + ") LIMIT 1", values);
     }
 
-    protected <T> List<T> toList()
-    {
+    protected <T> List<T> toList() {
         IConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<PropertyMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
@@ -106,23 +102,19 @@ public abstract class QueryBase extends CRUD
         );
         //System.out.println("本次toBean耗时" + (System.nanoTime() - start2));
 
-        if (!sqlBuilder.getIncludeSets().isEmpty())
-        {
-            try
-            {
+        if (!sqlBuilder.getIncludeSets().isEmpty()) {
+            try {
                 IncludeFactory includeFactory = config.getIncludeFactory();
                 includeFactory.getBuilder(getConfig(), session, targetClass, ts, sqlBuilder.getIncludeSets(), sqlBuilder.getQueryable()).include();
             }
-            catch (InvocationTargetException | IllegalAccessException e)
-            {
+            catch (InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
         return ts;
     }
 
-    protected <T> T first()
-    {
+    protected <T> T first() {
         ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(getConfig());
         QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryableCopy);
         querySqlBuilder.getIncludeSets().addAll(getSqlBuilder().getIncludeSets());
@@ -132,35 +124,28 @@ public abstract class QueryBase extends CRUD
         return list.isEmpty() ? null : list.get(0);
     }
 
-    protected void distinct0(boolean condition)
-    {
+    protected void distinct0(boolean condition) {
         sqlBuilder.setDistinct(condition);
     }
 
-    protected <R> EndQuery<R> select(Class<R> r)
-    {
+    protected <R> EndQuery<R> select(Class<R> r) {
         select0(r);
         return new EndQuery<>(boxedQuerySqlBuilder());
     }
 
-    protected boolean select(LambdaExpression<?> lambda)
-    {
+    protected boolean select(LambdaExpression<?> lambda) {
         SelectVisitor selectVisitor = new SelectVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlExpression expression = selectVisitor.visit(lambda);
         ISqlSelectExpression selectExpression;
-        if (expression instanceof ISqlSelectExpression)
-        {
+        if (expression instanceof ISqlSelectExpression) {
             selectExpression = (ISqlSelectExpression) expression;
         }
-        else
-        {
+        else {
             SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
             // 用于包装某些数据库不支持直接返回bool
-            if (isBool(lambda.getReturnType()))
-            {
+            if (isBool(lambda.getReturnType())) {
                 IConfig config = getConfig();
-                switch (config.getDbType())
-                {
+                switch (config.getDbType()) {
                     case SQLServer:
                     case Oracle:
                         expression = LogicExpression.IfExpression(config, expression, factory.constString("1"), factory.constString("0"));
@@ -172,91 +157,79 @@ public abstract class QueryBase extends CRUD
         return sqlBuilder.isSingle();
     }
 
-    protected void select0(Class<?> c)
-    {
+    protected void select0(Class<?> c) {
         sqlBuilder.setSelect(c);
     }
 
-    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr)
-    {
+    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression on = normalVisitor.visit(expr.getTree());
         sqlBuilder.addJoin(joinType, factory.table(target), on);
     }
 
-    protected void join(JoinType joinType, QueryBase target, ExprTree<?> expr)
-    {
+    protected void join(JoinType joinType, QueryBase target, ExprTree<?> expr) {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression on = normalVisitor.visit(expr.getTree());
         sqlBuilder.addJoin(joinType, target.getSqlBuilder().getQueryable(), on);
     }
 
-    protected void where(LambdaExpression<?> lambda)
-    {
+    protected void where(LambdaExpression<?> lambda) {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
         sqlBuilder.addWhere(where);
     }
 
-    protected void orWhere(LambdaExpression<?> lambda)
-    {
+    protected void orWhere(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
         sqlBuilder.addOrWhere(where);
     }
 
-    protected void exists(Class<?> table, LambdaExpression<?> lambda, boolean not)
-    {
+    protected void exists(Class<?> table, LambdaExpression<?> lambda, boolean not) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), table, sqlBuilder.getQueryable().getOrderedCount());
+        int offset = sqlBuilder.getQueryable().getOrderedCount();
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(table, offset));
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true, false));
         querySqlBuilder.addWhere(where);
         ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
-        if (not)
-        {
+        if (not) {
             sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
         }
-        else
-        {
+        else {
             sqlBuilder.addWhere(exists);
         }
     }
 
-    protected void exists(QueryBase queryBase, LambdaExpression<?> lambda, boolean not)
-    {
+    protected void exists(QueryBase queryBase, LambdaExpression<?> lambda, boolean not) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
         ISqlQueryableExpression queryable = queryBase.getSqlBuilder().getQueryable();
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryable, sqlBuilder.getQueryable().getOrderedCount());
+        int offset = sqlBuilder.getQueryable().getOrderedCount();
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, offset)));
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), queryable.getTableClass(), true, false));
         querySqlBuilder.addWhere(where);
         ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
-        if (not)
-        {
+        if (not) {
             sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
         }
-        else
-        {
+        else {
             sqlBuilder.addWhere(exists);
         }
     }
 
-    protected void groupBy(LambdaExpression<?> lambda)
-    {
+    protected void groupBy(LambdaExpression<?> lambda) {
         GroupByVisitor groupByVisitor = new GroupByVisitor(getConfig());
         ISqlExpression expression = groupByVisitor.visit(lambda);
         ISqlGroupByExpression group;
-        if (expression instanceof ISqlGroupByExpression)
-        {
+        if (expression instanceof ISqlGroupByExpression) {
             group = (ISqlGroupByExpression) expression;
         }
-        else
-        {
+        else {
             SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
             LinkedHashMap<String, ISqlExpression> map = new LinkedHashMap<>();
             map.put("key", expression);
@@ -265,137 +238,111 @@ public abstract class QueryBase extends CRUD
         sqlBuilder.setGroup(group);
     }
 
-    protected void having(LambdaExpression<?> lambda)
-    {
+    protected void having(LambdaExpression<?> lambda) {
         HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlExpression expression = havingVisitor.visit(lambda);
         sqlBuilder.addHaving(expression);
     }
 
-    protected void orderBy(LambdaExpression<?> lambda, boolean asc)
-    {
+    protected void orderBy(LambdaExpression<?> lambda, boolean asc) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlExpression expression = havingVisitor.visit(lambda);
         sqlBuilder.addOrder(factory.order(expression, asc));
     }
 
-    protected void limit0(long rows)
-    {
+    protected void limit0(long rows) {
         limit0(0, rows);
     }
 
-    protected void limit0(long offset, long rows)
-    {
+    protected void limit0(long offset, long rows) {
         sqlBuilder.setLimit(offset, rows);
     }
 
-    protected void singleCheck(boolean single)
-    {
-        if (single)
-        {
+    protected void singleCheck(boolean single) {
+        if (single) {
             throw new RuntimeException("query.select(Func<T1,T2..., R> expr) 不允许传入单个元素, 单元素请使用endSelect");
         }
     }
 
-    public String toSql()
-    {
+    public String toSql() {
         return sqlBuilder.getSql();
     }
 
-    protected QuerySqlBuilder boxedQuerySqlBuilder()
-    {
-        return new QuerySqlBuilder(getConfig(), sqlBuilder.getQueryable());
+    protected QuerySqlBuilder boxedQuerySqlBuilder() {
+        return new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(sqlBuilder.getQueryable()));
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond, List<IncludeSet> includeSets)
-    {
+    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond, List<IncludeSet> includeSets) {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression expression = normalVisitor.visit(lambda);
-        if (expression instanceof ISqlColumnExpression)
-        {
+        if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            if (!columnExpression.getPropertyMetaData().hasNavigate())
-            {
+            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
                 throw new RuntimeException("include指定的字段需要被@Navigate修饰");
             }
             relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
             IncludeSet includeSet;
-            if (cond != null)
-            {
+            if (cond != null) {
                 NormalVisitor normalVisitor2 = new NormalVisitor(getConfig());
                 ISqlExpression condition = normalVisitor2.visit(cond);
                 includeSet = new IncludeSet(columnExpression, condition);
             }
-            else
-            {
+            else {
                 includeSet = new IncludeSet(columnExpression);
             }
             includeSets.add(includeSet);
         }
-        else
-        {
+        else {
             throw new RuntimeException("include需要指定一个字段");
         }
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond)
-    {
+    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
 
-    protected void include(LambdaExpression<?> lambda)
-    {
+    protected void include(LambdaExpression<?> lambda) {
         include(lambda, null, sqlBuilder.getIncludeSets());
     }
 
-    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action, List<IncludeSet> includeSets)
-    {
+    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action, List<IncludeSet> includeSets) {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression expression = normalVisitor.visit(lambda);
-        if (expression instanceof ISqlColumnExpression)
-        {
+        if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
             PropertyMetaData propertyMetaData = columnExpression.getPropertyMetaData();
-            if (!columnExpression.getPropertyMetaData().hasNavigate())
-            {
+            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
                 throw new RuntimeException("include指定的字段需要被@Navigate修饰");
             }
             relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
             Class<R> navigateTargetType = (Class<R>) propertyMetaData.getNavigateData().getNavigateTargetType();
-            IncludeCond<R> temp = new IncludeCond<>(getConfig(), navigateTargetType);
+            IncludeCond<R> temp = new IncludeCond<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(navigateTargetType)));
             action.invoke(temp);
             IncludeSet includeSet = new IncludeSet(columnExpression, temp.getSqlBuilder().getQueryable());
             includeSets.add(includeSet);
         }
-        else
-        {
+        else {
             throw new RuntimeException("include需要指定一个字段");
         }
     }
 
-    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action)
-    {
+    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action) {
         includeByCond(lambda, action, sqlBuilder.getIncludeSets());
     }
 
-    protected void relationTypeCheck(NavigateData navigateData)
-    {
+    protected void relationTypeCheck(NavigateData navigateData) {
         RelationType relationType = navigateData.getRelationType();
-        switch (relationType)
-        {
+        switch (relationType) {
             case OneToOne:
             case ManyToOne:
-                if (navigateData.isCollectionWrapper())
-                {
+                if (navigateData.isCollectionWrapper()) {
                     throw new SQLinkException(relationType + "不支持集合");
                 }
                 break;
             case OneToMany:
-                if (!navigateData.isCollectionWrapper())
-                {
-                    if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType())))
-                    {
+                if (!navigateData.isCollectionWrapper()) {
+                    if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType()))) {
                         throw new SQLinkException(relationType + "只支持List和Set");
                     }
                     throw new SQLinkException(relationType + "只支持集合");
@@ -404,19 +351,43 @@ public abstract class QueryBase extends CRUD
             case ManyToMany:
                 if (navigateData.getMappingTableType() == IMappingTable.class
                         || navigateData.getSelfMappingPropertyName().isEmpty()
-                        || navigateData.getTargetMappingPropertyName().isEmpty())
-                {
+                        || navigateData.getTargetMappingPropertyName().isEmpty()) {
                     throw new SQLinkException(relationType + "下@Navigate注解的midTable和SelfMapping和TargetMapping字段都不能为空");
                 }
-                if (!navigateData.isCollectionWrapper())
-                {
-                    if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType())))
-                    {
+                if (!navigateData.isCollectionWrapper()) {
+                    if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType()))) {
                         throw new SQLinkException(relationType + "只支持List和Set");
                     }
                     throw new RuntimeException(relationType + "只支持集合");
                 }
                 break;
         }
+    }
+
+    protected <T> PagedResult<T> toPagedResult0(long pageIndex, long pageSize, Pager pager) {
+        LQuery<T> countQuery = new LQuery<>(boxedQuerySqlBuilder());
+        //SELECT COUNT(*) ...
+        long total = countQuery.endSelect(
+                ExprTree.<Func1<T, Long>>Expr(
+                        t -> SqlFunctions.count(),
+                        Expression.Lambda(
+                                Expression.MethodCall(
+                                        Expression.StaticClass(SqlFunctions.class),
+                                        ReflectUtil.getMethod(SqlFunctions.class, "count", new Class<?>[0]),
+                                        new Expression[0]),
+                                new ParameterExpression[0],
+                                Long.class
+                        )
+                )
+        ).toList().get(0);
+        QuerySqlBuilder dataQuerySqlBuilder = new QuerySqlBuilder(getConfig(), getSqlBuilder().getQueryable().copy(getConfig()));
+        //拷贝Include
+        dataQuerySqlBuilder.getIncludeSets().addAll(dataQuerySqlBuilder.getIncludeSets());
+        LQuery<T> dataQuery = new LQuery<>(dataQuerySqlBuilder);
+        long take = Math.max(pageSize, 1);
+        long index = Math.max(pageIndex, 1);
+        long offset = (index - 1) * take;
+        List<T> list = dataQuery.limit(offset, take).toList();
+        return pager.getPagedResult(total, list);
     }
 }

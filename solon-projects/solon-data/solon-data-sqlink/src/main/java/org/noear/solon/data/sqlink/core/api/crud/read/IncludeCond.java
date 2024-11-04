@@ -16,21 +16,18 @@
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.delegate.Func1;
-import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public class IncludeCond<T> extends QueryBase
-{
-    public IncludeCond(IConfig config, Class<?> c)
-    {
-        super(config, c);
+public class IncludeCond<T> extends QueryBase {
+    public IncludeCond(QuerySqlBuilder sqlBuilder) {
+        super(sqlBuilder);
     }
 
     // region [WHERE]
@@ -42,13 +39,11 @@ public class IncludeCond<T> extends QueryBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public IncludeCond<T> where(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
-    {
+    public IncludeCond<T> where(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public IncludeCond<T> where(ExprTree<Func1<T, Boolean>> expr)
-    {
+    public IncludeCond<T> where(ExprTree<Func1<T, Boolean>> expr) {
         where(expr.getTree());
         return this;
     }
@@ -60,13 +55,11 @@ public class IncludeCond<T> extends QueryBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public IncludeCond<T> orWhere(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func)
-    {
+    public IncludeCond<T> orWhere(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public IncludeCond<T> orWhere(ExprTree<Func1<T, Boolean>> expr)
-    {
+    public IncludeCond<T> orWhere(ExprTree<Func1<T, Boolean>> expr) {
         orWhere(expr.getTree());
         return this;
     }
@@ -83,13 +76,11 @@ public class IncludeCond<T> extends QueryBase
      * @param asc  是否为升序
      * @return this
      */
-    public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, boolean asc)
-    {
+    public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, boolean asc) {
         throw new NotCompiledException();
     }
 
-    public <R> IncludeCond<T> orderBy(ExprTree<Func1<T, R>> expr, boolean asc)
-    {
+    public <R> IncludeCond<T> orderBy(ExprTree<Func1<T, R>> expr, boolean asc) {
         orderBy(expr.getTree(), asc);
         return this;
     }
@@ -101,13 +92,11 @@ public class IncludeCond<T> extends QueryBase
      * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr)
-    {
+    public <R> IncludeCond<T> orderBy(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R> IncludeCond<T> orderBy(ExprTree<Func1<T, R>> expr)
-    {
+    public <R> IncludeCond<T> orderBy(ExprTree<Func1<T, R>> expr) {
         orderBy(expr, true);
         return this;
     }
@@ -122,8 +111,7 @@ public class IncludeCond<T> extends QueryBase
      * @param rows 需要返回的条数
      * @return this
      */
-    public IncludeCond<T> limit(long rows)
-    {
+    public IncludeCond<T> limit(long rows) {
         limit0(rows);
         return this;
     }
@@ -135,8 +123,7 @@ public class IncludeCond<T> extends QueryBase
      * @param rows   需要返回的条数
      * @return this
      */
-    public IncludeCond<T> limit(long offset, long rows)
-    {
+    public IncludeCond<T> limit(long offset, long rows) {
         limit0(offset, rows);
         return this;
     }

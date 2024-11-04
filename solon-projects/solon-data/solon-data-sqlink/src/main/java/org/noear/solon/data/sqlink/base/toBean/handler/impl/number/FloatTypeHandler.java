@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class FloatTypeHandler implements ITypeHandler<Float>
-{
+public class FloatTypeHandler implements ITypeHandler<Float> {
     @Override
-    public Float getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Float getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         float aFloat = resultSet.getFloat(index);
         return resultSet.wasNull() ? null : aFloat;
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Float aFloat) throws SQLException
-    {
-        if (aFloat == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Float aFloat) throws SQLException {
+        if (aFloat == null) {
             preparedStatement.setNull(index, JDBCType.FLOAT.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setFloat(index, aFloat);
         }
     }

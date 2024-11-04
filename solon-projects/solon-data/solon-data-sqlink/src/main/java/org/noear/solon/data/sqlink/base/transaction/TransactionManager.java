@@ -19,8 +19,7 @@ package org.noear.solon.data.sqlink.base.transaction;
  * @author kiryu1223
  * @since 3.0
  */
-public interface TransactionManager
-{
+public interface TransactionManager {
     Transaction get(Integer isolationLevel);
 
     void remove();

@@ -23,8 +23,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlBinaryExpression extends ISqlExpression
-{
+public interface ISqlBinaryExpression extends ISqlExpression {
     ISqlExpression getLeft();
 
     ISqlExpression getRight();
@@ -32,8 +31,7 @@ public interface ISqlBinaryExpression extends ISqlExpression
     SqlOperator getOperator();
 
     @Override
-    default ISqlBinaryExpression copy(IConfig config)
-    {
+    default ISqlBinaryExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(getOperator(), getLeft().copy(config), getRight().copy(config));
     }

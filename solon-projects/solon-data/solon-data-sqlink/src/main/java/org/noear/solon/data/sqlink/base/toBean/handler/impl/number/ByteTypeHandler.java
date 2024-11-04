@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class ByteTypeHandler implements ITypeHandler<Byte>
-{
+public class ByteTypeHandler implements ITypeHandler<Byte> {
     @Override
-    public Byte getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Byte getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         byte aByte = resultSet.getByte(index);
         return resultSet.wasNull() ? null : aByte;
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Byte aByte) throws SQLException
-    {
-        if (aByte == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Byte aByte) throws SQLException {
+        if (aByte == null) {
             preparedStatement.setNull(index, JDBCType.TINYINT.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setByte(index, aByte);
         }
     }

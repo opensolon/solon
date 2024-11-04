@@ -23,13 +23,11 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlTypeExpression extends ISqlExpression
-{
+public interface ISqlTypeExpression extends ISqlExpression {
     Class<?> getType();
 
     @Override
-    default ISqlTypeExpression copy(IConfig config)
-    {
+    default ISqlTypeExpression copy(IConfig config) {
         return config.getSqlExpressionFactory().type(getType());
     }
 }

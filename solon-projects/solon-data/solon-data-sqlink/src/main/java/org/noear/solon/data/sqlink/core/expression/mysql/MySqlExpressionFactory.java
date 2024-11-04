@@ -21,6 +21,5 @@ import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFact
  * @author kiryu1223
  * @since 3.0
  */
-public class MySqlExpressionFactory extends DefaultSqlExpressionFactory
-{
+public class MySqlExpressionFactory extends DefaultSqlExpressionFactory {
 }

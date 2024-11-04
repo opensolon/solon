@@ -24,13 +24,10 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlServerLimitExpression extends SqlLimitExpression
-{
+public class SqlServerLimitExpression extends SqlLimitExpression {
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
-        if (hasRowsAndOffset())
-        {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
+        if (hasRowsAndOffset()) {
             return String.format("OFFSET %d ROWS FETCH NEXT %d ROWS ONLY", offset, rows);
         }
         return "";

@@ -30,12 +30,10 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface SqlExpressionFactory
-{
+public interface SqlExpressionFactory {
     ISqlAsExpression as(ISqlExpression expression, String asName);
 
-    default ISqlColumnExpression column(PropertyMetaData propertyMetaData)
-    {
+    default ISqlColumnExpression column(PropertyMetaData propertyMetaData) {
         return column(propertyMetaData, 0);
     }
 
@@ -43,8 +41,7 @@ public interface SqlExpressionFactory
 
     ISqlConditionsExpression condition();
 
-    default ISqlFromExpression from(ISqlTableExpression sqlTable)
-    {
+    default ISqlFromExpression from(ISqlTableExpression sqlTable) {
         return from(sqlTable, 0);
     }
 
@@ -52,8 +49,7 @@ public interface SqlExpressionFactory
 
     ISqlGroupByExpression groupBy();
 
-    default ISqlGroupByExpression groupBy(LinkedHashMap<String, ISqlExpression> columns)
-    {
+    default ISqlGroupByExpression groupBy(LinkedHashMap<String, ISqlExpression> columns) {
         ISqlGroupByExpression groupByExpression = groupBy();
         groupByExpression.setColumns(columns);
         return groupByExpression;
@@ -67,8 +63,7 @@ public interface SqlExpressionFactory
 
     ISqlLimitExpression limit();
 
-    default ISqlLimitExpression limit(long offset, long rows)
-    {
+    default ISqlLimitExpression limit(long offset, long rows) {
         ISqlLimitExpression limit = limit();
         limit.setOffset(offset);
         limit.setRows(rows);
@@ -77,30 +72,25 @@ public interface SqlExpressionFactory
 
     ISqlOrderByExpression orderBy();
 
-    default ISqlOrderExpression order(ISqlExpression expression)
-    {
+    default ISqlOrderExpression order(ISqlExpression expression) {
         return order(expression, true);
     }
 
     ISqlOrderExpression order(ISqlExpression expression, boolean asc);
 
-    default ISqlQueryableExpression queryable(Class<?> target)
-    {
+    default ISqlQueryableExpression queryable(Class<?> target) {
         return queryable(from(table(target), 0));
     }
 
-    default ISqlQueryableExpression queryable(Class<?> target, int offset)
-    {
+    default ISqlQueryableExpression queryable(Class<?> target, int offset) {
         return queryable(from(table(target), offset));
     }
 
-    default ISqlQueryableExpression queryable(ISqlFromExpression from)
-    {
+    default ISqlQueryableExpression queryable(ISqlFromExpression from) {
         return queryable(select(from.getSqlTableExpression().getTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
-    default ISqlQueryableExpression queryable(ISqlTableExpression table)
-    {
+    default ISqlQueryableExpression queryable(ISqlTableExpression table) {
         return queryable(from(table));
     }
 
@@ -108,20 +98,17 @@ public interface SqlExpressionFactory
 
     ISqlRealTableExpression table(Class<?> tableClass);
 
-    default ISqlSelectExpression select(Class<?> target)
-    {
+    default ISqlSelectExpression select(Class<?> target) {
         return select(getColumnByClass(target), target, false, false);
     }
 
-    default ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target)
-    {
+    default ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target) {
         return select(column, target, false, false);
     }
 
     ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target, boolean isSingle, boolean isDistinct);
 
-    default ISqlWhereExpression where()
-    {
+    default ISqlWhereExpression where() {
         return where(condition());
     }
 
@@ -129,15 +116,12 @@ public interface SqlExpressionFactory
 
     ISqlSetExpression set(ISqlColumnExpression column, ISqlExpression value);
 
-    default ISqlValueExpression AnyValue(Object value)
-    {
-        if (value instanceof Collection<?>)
-        {
+    default ISqlValueExpression AnyValue(Object value) {
+        if (value instanceof Collection<?>) {
             Collection<Object> objects = (Collection<Object>) value;
             return value(objects);
         }
-        else
-        {
+        else {
             return value(value);
         }
     }
@@ -160,13 +144,11 @@ public interface SqlExpressionFactory
 
     ISqlTypeExpression type(Class<?> c);
 
-    default List<ISqlExpression> getColumnByClass(Class<?> target)
-    {
+    default List<ISqlExpression> getColumnByClass(Class<?> target) {
         MetaData metaData = MetaDataCache.getMetaData(target);
         List<PropertyMetaData> property = metaData.getNotIgnorePropertys();
         List<ISqlExpression> columns = new ArrayList<>(property.size());
-        for (PropertyMetaData data : property)
-        {
+        for (PropertyMetaData data : property) {
             columns.add(column(data, 0));
         }
         return columns;

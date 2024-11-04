@@ -19,6 +19,5 @@ package org.noear.solon.data.sqlink.base.metaData;
  * @author kiryu1223
  * @since 3.0
  */
-public interface IMappingTable
-{
+public interface IMappingTable {
 }

@@ -19,41 +19,34 @@ package org.noear.solon.data.sqlink.core;
  * @author kiryu1223
  * @since 3.0
  */
-public class Option
-{
+public class Option {
     private boolean ignoreUpdateNoWhere = false;
     private boolean ignoreDeleteNoWhere = false;
     private boolean printSql = true;
     //private boolean printUseDs = false;
     private boolean printBatch = false;
 
-    public boolean isIgnoreUpdateNoWhere()
-    {
+    public boolean isIgnoreUpdateNoWhere() {
         return ignoreUpdateNoWhere;
     }
 
-    public void setIgnoreUpdateNoWhere(boolean ignoreUpdateNoWhere)
-    {
+    public void setIgnoreUpdateNoWhere(boolean ignoreUpdateNoWhere) {
         this.ignoreUpdateNoWhere = ignoreUpdateNoWhere;
     }
 
-    public boolean isIgnoreDeleteNoWhere()
-    {
+    public boolean isIgnoreDeleteNoWhere() {
         return ignoreDeleteNoWhere;
     }
 
-    public void setIgnoreDeleteNoWhere(boolean ignoreDeleteNoWhere)
-    {
+    public void setIgnoreDeleteNoWhere(boolean ignoreDeleteNoWhere) {
         this.ignoreDeleteNoWhere = ignoreDeleteNoWhere;
     }
 
-    public boolean isPrintSql()
-    {
+    public boolean isPrintSql() {
         return printSql;
     }
 
-    public void setPrintSql(boolean printSql)
-    {
+    public void setPrintSql(boolean printSql) {
         this.printSql = printSql;
     }
 
@@ -67,13 +60,11 @@ public class Option
 //        this.printUseDs = printUseDs;
 //    }
 
-    public boolean isPrintBatch()
-    {
+    public boolean isPrintBatch() {
         return printBatch;
     }
 
-    public void setPrintBatch(boolean printBatch)
-    {
+    public void setPrintBatch(boolean printBatch) {
         this.printBatch = printBatch;
     }
 }

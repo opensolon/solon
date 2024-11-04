@@ -23,6 +23,5 @@ import org.noear.solon.data.sqlink.base.annotation.EmptyTable;
  * @since 3.0
  */
 @EmptyTable
-public class Empty
-{
+public final class Empty {
 }

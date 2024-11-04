@@ -21,10 +21,8 @@ import org.noear.solon.data.sqlink.base.DbType;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlFuncExtNotFoundException extends RuntimeException
-{
-    public SqlFuncExtNotFoundException(DbType type)
-    {
+public class SqlFuncExtNotFoundException extends RuntimeException {
+    public SqlFuncExtNotFoundException(DbType type) {
         super("No corresponding SqlExtensionExpression annotation found for database type: " + type);
     }
 }

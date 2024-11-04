@@ -23,15 +23,13 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlUnaryExpression extends ISqlExpression
-{
+public interface ISqlUnaryExpression extends ISqlExpression {
     SqlOperator getOperator();
 
     ISqlExpression getExpression();
 
     @Override
-    default ISqlUnaryExpression copy(IConfig config)
-    {
+    default ISqlUnaryExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.unary(getOperator(), getExpression().copy(config));
     }

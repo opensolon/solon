@@ -23,15 +23,13 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlOrderExpression extends ISqlExpression
-{
+public interface ISqlOrderExpression extends ISqlExpression {
     ISqlExpression getExpression();
 
     boolean isAsc();
 
     @Override
-    default ISqlOrderExpression copy(IConfig config)
-    {
+    default ISqlOrderExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.order(getExpression().copy(config), isAsc());
     }

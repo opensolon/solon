@@ -21,7 +21,6 @@ import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFact
  * @author kiryu1223
  * @since 3.0
  */
-public class PostgreSQLExpressionFactory extends DefaultSqlExpressionFactory
-{
+public class PostgreSQLExpressionFactory extends DefaultSqlExpressionFactory {
 
 }

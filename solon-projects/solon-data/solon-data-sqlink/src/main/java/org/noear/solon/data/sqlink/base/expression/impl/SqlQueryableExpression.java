@@ -26,8 +26,7 @@ import java.util.stream.Collectors;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlQueryableExpression extends SqlTableExpression implements ISqlQueryableExpression
-{
+public class SqlQueryableExpression extends SqlTableExpression implements ISqlQueryableExpression {
     protected final ISqlSelectExpression select;
     protected final ISqlFromExpression from;
     protected final ISqlJoinsExpression joins;
@@ -37,8 +36,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
 
-    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit)
-    {
+    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -50,8 +48,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
         strings.add(getSelect().getSqlAndValue(config, values));
         String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
@@ -66,8 +63,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
         String orderBySqlAndValue = getOrderBy().getSqlAndValue(config, values);
         if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
-        if (!getFrom().isEmptyTable())
-        {
+        if (!getFrom().isEmptyTable()) {
             String limitSqlAndValue = getLimit().getSqlAndValue(config, values);
             if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
         }
@@ -76,102 +72,83 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
 
 
     @Override
-    public Class<?> getTableClass()
-    {
+    public Class<?> getTableClass() {
         return select.getTarget();
     }
 
-    public void addWhere(ISqlExpression cond)
-    {
+    public void addWhere(ISqlExpression cond) {
         where.addCondition(cond);
     }
 
-    public void addJoin(ISqlJoinExpression join)
-    {
+    public void addJoin(ISqlJoinExpression join) {
         joins.addJoin(join);
     }
 
-    public void setGroup(ISqlGroupByExpression group)
-    {
+    public void setGroup(ISqlGroupByExpression group) {
         groupBy.setColumns(group.getColumns());
     }
 
-    public void addHaving(ISqlExpression cond)
-    {
+    public void addHaving(ISqlExpression cond) {
         having.addCond(cond);
     }
 
-    public void addOrder(ISqlOrderExpression order)
-    {
+    public void addOrder(ISqlOrderExpression order) {
         orderBy.addOrder(order);
     }
 
-    public void setSelect(ISqlSelectExpression newSelect)
-    {
+    public void setSelect(ISqlSelectExpression newSelect) {
         select.setColumns(newSelect.getColumns());
         select.setTarget(newSelect.getTarget());
         select.setSingle(newSelect.isSingle());
     }
 
-    public void setLimit(long offset, long rows)
-    {
+    public void setLimit(long offset, long rows) {
         limit.setOffset(offset);
         limit.setRows(rows);
     }
 
-    public void setDistinct(boolean distinct)
-    {
+    public void setDistinct(boolean distinct) {
         select.setDistinct(distinct);
     }
 
-    public ISqlFromExpression getFrom()
-    {
+    public ISqlFromExpression getFrom() {
         return from;
     }
 
-    public int getOrderedCount()
-    {
+    public int getOrderedCount() {
         return 1 + joins.getJoins().size();
     }
 
-    public ISqlWhereExpression getWhere()
-    {
+    public ISqlWhereExpression getWhere() {
         return where;
     }
 
-    public ISqlGroupByExpression getGroupBy()
-    {
+    public ISqlGroupByExpression getGroupBy() {
         return groupBy;
     }
 
-    public ISqlJoinsExpression getJoins()
-    {
+    public ISqlJoinsExpression getJoins() {
         return joins;
     }
 
-    public ISqlSelectExpression getSelect()
-    {
+    public ISqlSelectExpression getSelect() {
         return select;
     }
 
-    public ISqlOrderByExpression getOrderBy()
-    {
+    public ISqlOrderByExpression getOrderBy() {
         return orderBy;
     }
 
-    public ISqlLimitExpression getLimit()
-    {
+    public ISqlLimitExpression getLimit() {
         return limit;
     }
 
     @Override
-    public ISqlHavingExpression getHaving()
-    {
+    public ISqlHavingExpression getHaving() {
         return having;
     }
 
-    public List<Class<?>> getOrderedClass()
-    {
+    public List<Class<?>> getOrderedClass() {
         Class<?> tableClass = getTableClass();
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getTableClass()).collect(Collectors.toList());
         collect.add(0, tableClass);

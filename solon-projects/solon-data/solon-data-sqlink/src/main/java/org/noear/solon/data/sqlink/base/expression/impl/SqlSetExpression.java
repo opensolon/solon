@@ -26,51 +26,42 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlSetExpression implements ISqlSetExpression
-{
+public class SqlSetExpression implements ISqlSetExpression {
     private final ISqlColumnExpression column;
     private final ISqlExpression value;
 
-    SqlSetExpression(ISqlColumnExpression column, ISqlExpression value)
-    {
+    SqlSetExpression(ISqlColumnExpression column, ISqlExpression value) {
         this.column = column;
         this.value = value;
     }
 
     @Override
-    public ISqlColumnExpression getColumn()
-    {
+    public ISqlColumnExpression getColumn() {
         return column;
     }
 
     @Override
-    public ISqlExpression getValue()
-    {
+    public ISqlExpression getValue() {
         return value;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         String set = getColumn().getSqlAndValue(config, values) + " = ";
         PropertyMetaData propertyMetaData = getColumn().getPropertyMetaData();
-        if (propertyMetaData.isUseTypeHandler() && getValue() instanceof ISqlValueExpression)
-        {
-            if (getValue() instanceof ISqlSingleValueExpression)
-            {
+        if (propertyMetaData.isUseTypeHandler() && getValue() instanceof ISqlValueExpression) {
+            if (getValue() instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
                 values.add(new SqlValue(sqlSingleValueExpression.getValue(), propertyMetaData.getTypeHandler()));
                 return set + "?";
             }
-            else
-            {
+            else {
                 ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) getValue();
                 values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), propertyMetaData.getTypeHandler()));
                 return set + "?";
             }
         }
-        else
-        {
+        else {
             return set + getValue().getSqlAndValue(config, values);
         }
     }

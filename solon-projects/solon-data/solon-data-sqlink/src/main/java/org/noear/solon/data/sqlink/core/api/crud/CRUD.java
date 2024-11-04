@@ -23,20 +23,18 @@ import org.slf4j.Logger;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class CRUD
-{
+public abstract class CRUD {
     protected abstract IConfig getConfig();
 
     /**
      * 获取Sql语句
+     *
      * @return Sql
      */
     protected abstract String toSql();
 
-    protected void tryPrintSql(Logger log, String sql)
-    {
-        if (getConfig().isPrintSql())
-        {
+    protected void tryPrintSql(Logger log, String sql) {
+        if (getConfig().isPrintSql()) {
             log.info("==> {}", sql);
         }
     }
@@ -49,18 +47,14 @@ public abstract class CRUD
 //        }
 //    }
 
-    protected void tryPrintBatch(Logger log, long count)
-    {
-        if (getConfig().isPrintBatch())
-        {
+    protected void tryPrintBatch(Logger log, long count) {
+        if (getConfig().isPrintBatch()) {
             log.info("DataSize: {} Use batch execute", count);
         }
     }
 
-    protected void tryPrintNoBatch(Logger log, long count)
-    {
-        if (getConfig().isPrintBatch())
-        {
+    protected void tryPrintNoBatch(Logger log, long count) {
+        if (getConfig().isPrintBatch()) {
             log.info("DataSize: {} Use normal execute", count);
         }
     }

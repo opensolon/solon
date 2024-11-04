@@ -23,23 +23,18 @@ import java.sql.*;
  * @author kiryu1223
  * @since 3.0
  */
-public class TimeTypeHandler implements ITypeHandler<Time>
-{
+public class TimeTypeHandler implements ITypeHandler<Time> {
     @Override
-    public Time getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Time getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         return resultSet.getTime(index);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Time time) throws SQLException
-    {
-        if (time == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Time time) throws SQLException {
+        if (time == null) {
             preparedStatement.setNull(index, JDBCType.TIME.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setTime(index, time);
         }
     }

@@ -24,8 +24,7 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public interface Transaction extends AutoCloseable
-{
+public interface Transaction extends AutoCloseable {
     /**
      * 提交事务
      */

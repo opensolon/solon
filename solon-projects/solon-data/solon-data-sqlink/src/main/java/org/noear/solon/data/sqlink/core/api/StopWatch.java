@@ -19,26 +19,21 @@ package org.noear.solon.data.sqlink.core.api;
  * @author kiryu1223
  * @since 3.0
  */
-class StopWatch
-{
-    public enum Style
-    {
+class StopWatch {
+    public enum Style {
         NANO,
         MILLISECOND
     }
 
-    public static void setStyle(Style style)
-    {
+    public static void setStyle(Style style) {
         StopWatch.style = style;
     }
 
     private static Style style = Style.NANO;
     private static long click;
 
-    public static void start()
-    {
-        switch (style)
-        {
+    public static void start() {
+        switch (style) {
             case NANO:
                 click = System.nanoTime();
                 break;
@@ -48,10 +43,8 @@ class StopWatch
         }
     }
 
-    public static void end(String make)
-    {
-        switch (style)
-        {
+    public static void end(String make) {
+        switch (style) {
             case NANO:
                 System.out.printf(make + "耗时%d纳秒%n", System.nanoTime() - click);
                 break;
@@ -61,10 +54,8 @@ class StopWatch
         }
     }
 
-    public static void end()
-    {
-        switch (style)
-        {
+    public static void end() {
+        switch (style) {
             case NANO:
                 System.out.println(System.nanoTime() - click);
                 break;

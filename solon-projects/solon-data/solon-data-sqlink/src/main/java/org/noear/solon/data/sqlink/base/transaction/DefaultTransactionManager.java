@@ -21,21 +21,17 @@ import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
  * @author kiryu1223
  * @since 3.0
  */
-public class DefaultTransactionManager implements TransactionManager
-{
+public class DefaultTransactionManager implements TransactionManager {
     protected final DataSourceManager dataSourceManager;
     protected final ThreadLocal<Transaction> curTransaction = new ThreadLocal<>();
 
-    public DefaultTransactionManager(DataSourceManager dataSourceManager)
-    {
+    public DefaultTransactionManager(DataSourceManager dataSourceManager) {
         this.dataSourceManager = dataSourceManager;
     }
 
     @Override
-    public Transaction get(Integer isolationLevel)
-    {
-        if (currentThreadInTransaction())
-        {
+    public Transaction get(Integer isolationLevel) {
+        if (currentThreadInTransaction()) {
             throw new RuntimeException("不支持多重事务");
         }
         DefaultTransaction defaultTransaction = new DefaultTransaction(isolationLevel, dataSourceManager.getDataSource(), this);
@@ -44,26 +40,22 @@ public class DefaultTransactionManager implements TransactionManager
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         curTransaction.remove();
     }
 
     @Override
-    public Transaction getCurTransaction()
-    {
+    public Transaction getCurTransaction() {
         return curTransaction.get();
     }
 
     @Override
-    public boolean currentThreadInTransaction()
-    {
+    public boolean currentThreadInTransaction() {
         return isOpenTransaction();
     }
 
     @Override
-    public boolean isOpenTransaction()
-    {
+    public boolean isOpenTransaction() {
         return curTransaction.get() != null;
     }
 }

@@ -30,11 +30,9 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
  * @author kiryu1223
  * @since 3.0
  */
-public class PostgreSQLCastExtension extends BaseSqlExtension
-{
+public class PostgreSQLCastExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression expression = args.get(1);
@@ -43,52 +41,40 @@ public class PostgreSQLCastExtension extends BaseSqlExtension
         templates.add("");
         sqlExpressions.add(args.get(0));
         String unit;
-        if (isByte(type) || isShort(type))
-        {
+        if (isByte(type) || isShort(type)) {
             unit = "INT2";
         }
-        else if (isInt(type))
-        {
+        else if (isInt(type)) {
             unit = "INT4";
         }
-        else if (isLong(type))
-        {
+        else if (isLong(type)) {
             unit = "INT8";
         }
-        else if (isFloat(type))
-        {
+        else if (isFloat(type)) {
             unit = "FLOAT4";
         }
-        else if (isDouble(type))
-        {
+        else if (isDouble(type)) {
             unit = "FLOAT8";
         }
-        else if (isDecimal(type))
-        {
+        else if (isDecimal(type)) {
             unit = "NUMERIC";
         }
-        else if (isChar(type))
-        {
+        else if (isChar(type)) {
             unit = "CHAR";
         }
-        else if (isString(type))
-        {
+        else if (isString(type)) {
             unit = "VARCHAR";
         }
-        else if (isTime(type))
-        {
+        else if (isTime(type)) {
             unit = "TIME";
         }
-        else if (isDate(type))
-        {
+        else if (isDate(type)) {
             unit = "DATE";
         }
-        else if (isDateTime(type))
-        {
+        else if (isDateTime(type)) {
             unit = "TIMESTAMP";
         }
-        else
-        {
+        else {
             throw new UnsupportedOperationException("不支持的Java类型:" + type.getName());
         }
         templates.add("::" + unit);

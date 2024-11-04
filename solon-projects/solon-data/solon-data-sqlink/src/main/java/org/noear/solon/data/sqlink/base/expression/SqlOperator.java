@@ -21,8 +21,7 @@ package org.noear.solon.data.sqlink.base.expression;
  * @author kiryu1223
  * @since 3.0
  */
-public enum SqlOperator
-{
+public enum SqlOperator {
     POS("+", true),                             // +
     NEG("-", true),                             // -
     NOT("NOT", true),                             // !
@@ -77,37 +76,31 @@ public enum SqlOperator
     private final String operator;
     private final boolean isLeft;
 
-    SqlOperator()
-    {
+    SqlOperator() {
         this.operator = name();
         this.isLeft = false;
     }
 
-    SqlOperator(boolean isLeft)
-    {
+    SqlOperator(boolean isLeft) {
         this.operator = name();
         this.isLeft = isLeft;
     }
 
-    SqlOperator(String operator)
-    {
+    SqlOperator(String operator) {
         this.operator = operator;
         this.isLeft = false;
     }
 
-    SqlOperator(String operator, boolean isLeft)
-    {
+    SqlOperator(String operator, boolean isLeft) {
         this.operator = operator;
         this.isLeft = isLeft;
     }
 
-    public String getOperator()
-    {
+    public String getOperator() {
         return operator;
     }
 
-    public boolean isLeft()
-    {
+    public boolean isLeft() {
         return isLeft;
     }
 }

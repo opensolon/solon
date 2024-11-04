@@ -24,15 +24,13 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlColumnExpression extends ISqlExpression
-{
+public interface ISqlColumnExpression extends ISqlExpression {
     PropertyMetaData getPropertyMetaData();
 
     int getTableIndex();
 
     @Override
-    default ISqlColumnExpression copy(IConfig config)
-    {
+    default ISqlColumnExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.column(getPropertyMetaData(), getTableIndex());
     }

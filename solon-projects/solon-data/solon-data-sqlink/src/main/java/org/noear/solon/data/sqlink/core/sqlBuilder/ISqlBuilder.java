@@ -23,8 +23,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlBuilder
-{
+public interface ISqlBuilder {
     IConfig getConfig();
 
     String getSql();

@@ -27,23 +27,18 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class URLTypeHandler implements ITypeHandler<URL>
-{
+public class URLTypeHandler implements ITypeHandler<URL> {
     @Override
-    public URL getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public URL getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         return resultSet.getURL(index);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, URL value) throws SQLException
-    {
-        if (value == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, URL value) throws SQLException {
+        if (value == null) {
             preparedStatement.setNull(index, JDBCType.VARCHAR.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setURL(index, value);
         }
     }

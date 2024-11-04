@@ -22,11 +22,9 @@ import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
  * @author kiryu1223
  * @since 3.0
  */
-public class AotBeanCreatorFactory extends BeanCreatorFactory
-{
+public class AotBeanCreatorFactory extends BeanCreatorFactory {
     @Override
-    protected <T> AbsBeanCreator<T> create(Class<T> target)
-    {
+    protected <T> AbsBeanCreator<T> create(Class<T> target) {
         return new AotFastCreator<>(target);
     }
 }

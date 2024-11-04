@@ -21,12 +21,9 @@ import org.noear.solon.data.sqlink.base.IDialect;
  * @author kiryu1223
  * @since 3.0
  */
-public class H2Dialect implements IDialect
-{
+public class H2Dialect implements IDialect {
     @Override
-    public String disambiguation(String property)
-    {
-        //return "\"" + property + "\"";
-        return  property;
+    public String disambiguation(String property) {
+        return "\"" + property + "\"";
     }
 }

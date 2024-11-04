@@ -26,33 +26,27 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlWhereExpression implements ISqlWhereExpression
-{
+public class SqlWhereExpression implements ISqlWhereExpression {
     private final ISqlConditionsExpression conditions;
 
-    SqlWhereExpression(ISqlConditionsExpression conditions)
-    {
+    SqlWhereExpression(ISqlConditionsExpression conditions) {
         this.conditions = conditions;
     }
 
-    public void addCondition(ISqlExpression condition)
-    {
+    public void addCondition(ISqlExpression condition) {
         conditions.getConditions().add(condition);
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return conditions.isEmpty();
     }
 
-    public ISqlConditionsExpression getConditions()
-    {
+    public ISqlConditionsExpression getConditions() {
         return conditions;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         if (isEmpty()) return "";
         return "WHERE " + getConditions().getSqlAndValue(config, values);
     }

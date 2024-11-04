@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class ShortTypeHandler implements ITypeHandler<Short>
-{
+public class ShortTypeHandler implements ITypeHandler<Short> {
     @Override
-    public Short getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Short getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         short aShort = resultSet.getShort(index);
         return resultSet.wasNull() ? null : aShort;
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Short aShort) throws SQLException
-    {
-        if (aShort == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Short aShort) throws SQLException {
+        if (aShort == null) {
             preparedStatement.setNull(index, JDBCType.SMALLINT.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setShort(index, aShort);
         }
     }

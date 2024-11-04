@@ -25,22 +25,17 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ITypeHandler<T>
-{
+public interface ITypeHandler<T> {
     T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException;
 
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
-    default Type getGenericType()
-    {
+    default Type getGenericType() {
         Type[] genericInterfaces = this.getClass().getGenericInterfaces();
-        for (Type genericInterface : genericInterfaces)
-        {
-            if (genericInterface instanceof ParameterizedType)
-            {
+        for (Type genericInterface : genericInterfaces) {
+            if (genericInterface instanceof ParameterizedType) {
                 ParameterizedType anInterface = (ParameterizedType) genericInterface;
-                if (anInterface.getRawType() == ITypeHandler.class)
-                {
+                if (anInterface.getRawType() == ITypeHandler.class) {
                     return anInterface.getActualTypeArguments()[0];
                 }
             }

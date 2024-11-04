@@ -16,10 +16,10 @@
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.IDialect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class UpdateSqlBuilder implements ISqlBuilder
-{
+public class UpdateSqlBuilder implements ISqlBuilder {
     private final IConfig config;
     private final ISqlJoinsExpression joins;
     private final ISqlSetsExpression sets;
@@ -37,8 +36,7 @@ public class UpdateSqlBuilder implements ISqlBuilder
     private final Class<?> target;
     private final SqlExpressionFactory factory;
 
-    public UpdateSqlBuilder(IConfig config, Class<?> target)
-    {
+    public UpdateSqlBuilder(IConfig config, Class<?> target) {
         this.config = config;
         this.target = target;
         factory = config.getSqlExpressionFactory();
@@ -47,8 +45,7 @@ public class UpdateSqlBuilder implements ISqlBuilder
         wheres = factory.where();
     }
 
-    public void addJoin(Class<?> target, JoinType joinType, ISqlTableExpression table, ISqlExpression on)
-    {
+    public void addJoin(Class<?> target, JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
@@ -58,82 +55,69 @@ public class UpdateSqlBuilder implements ISqlBuilder
         joins.addJoin(join);
     }
 
-    public void addSet(ISqlSetsExpression set)
-    {
+    public void addSet(ISqlSetsExpression set) {
         sets.addSet(set.getSets());
     }
 
-    public void addSet(ISqlSetExpression set)
-    {
+    public void addSet(ISqlSetExpression set) {
         sets.addSet(set);
     }
 
-    public void addWhere(ISqlExpression where)
-    {
+    public void addWhere(ISqlExpression where) {
         wheres.addCondition(where);
     }
 
-    public boolean hasWhere()
-    {
+    public boolean hasWhere() {
         return !wheres.isEmpty();
     }
 
     @Override
-    public String getSql()
-    {
+    public String getSql() {
         return makeUpdate();
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values)
-    {
+    public String getSqlAndValue(List<Object> values) {
         return makeUpdate();
     }
 
-    public IConfig getConfig()
-    {
+    public IConfig getConfig() {
         return config;
     }
 
-    private String makeUpdate()
-    {
+    private String makeUpdate() {
         MetaData metaData = MetaDataCache.getMetaData(target);
         IDialect dbConfig = config.getDisambiguation();
         String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         String joinsSqlAndValue = joins.getSql(config);
-        if (!joinsSqlAndValue.isEmpty())
-        {
+        if (!joinsSqlAndValue.isEmpty()) {
             sb.append(" ").append(joinsSqlAndValue);
         }
         String setsSqlAndValue = sets.getSql(config);
         sb.append(" ").append(setsSqlAndValue);
         String wheresSqlAndValue = wheres.getSql(config);
-        if (!wheresSqlAndValue.isEmpty())
-        {
+        if (!wheresSqlAndValue.isEmpty()) {
             sb.append(" ").append(wheresSqlAndValue);
         }
         return sb.toString();
     }
 
-    private String makeUpdate(List<Object> values)
-    {
+    private String makeUpdate(List<Object> values) {
         MetaData metaData = MetaDataCache.getMetaData(target);
         IDialect dbConfig = config.getDisambiguation();
         String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
         List<String> sb = new ArrayList<>();
         sb.add(sql);
         String joinsSqlAndValue = joins.getSqlAndValue(config, values);
-        if (!joinsSqlAndValue.isEmpty())
-        {
+        if (!joinsSqlAndValue.isEmpty()) {
             sb.add(joinsSqlAndValue);
         }
         String setsSqlAndValue = sets.getSqlAndValue(config, values);
         sb.add(setsSqlAndValue);
         String wheresSqlAndValue = wheres.getSqlAndValue(config, values);
-        if (!wheresSqlAndValue.isEmpty())
-        {
+        if (!wheresSqlAndValue.isEmpty()) {
             sb.add(wheresSqlAndValue);
         }
         return String.join(" ", sb);

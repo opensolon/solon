@@ -18,11 +18,14 @@ package org.noear.solon.data.sqlink.plugin.integration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.sqlink.base.DbType;
+import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -38,31 +41,30 @@ import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManagerWrap;
 import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
 
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public class XPluginImpl implements Plugin
-{
+public class XPluginImpl implements Plugin {
     @Override
-    public void start(AppContext context) throws Throwable
-    {
+    public void start(AppContext context) throws Throwable {
         System.out.println("SQLink启动");
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
-        if (data.isEmpty())
-        {
+        if (data.isEmpty()) {
             return;
         }
         Map<String, Client> clients = new LinkedHashMap<>();
-        for (Map.Entry<String, Props> entry : data.entrySet())
-        {
+        for (Map.Entry<String, Props> entry : data.entrySet()) {
             Props props = entry.getValue();
             SQLinkProperties properties = props.toBean(SQLinkProperties.class);
-            String dsName = properties.getDsName();
-            if (dsName.isEmpty())
-            {
+            String dsName = entry.getKey();
+            if (dsName.isEmpty()) {
                 continue;
             }
             DataSourceManager dataSourceManager = new SolonDataSourceManagerWrap();
@@ -75,31 +77,25 @@ public class XPluginImpl implements Plugin
                     .setSqlSessionFactory(sqlSessionFactory)
                     .setFastCreatorFactory(aotFastCreatorFactory)
                     .setOption(properties.bulidOption())
-                    .setDbType(properties.getDbType())
                     .build();
 
             //BeanWrap wrap = context.wrap(entry.getKey(), client);
             //context.beanRegister(wrap, entry.getKey(), true);
             clients.put(entry.getKey(), client);
+            IConfig config = client.getConfig();
 
-            DsUtils.observeDs(context, dsName, beanWrap ->
-            {
-                SolonDataSourceManagerWrap sourceManagerWrap = (SolonDataSourceManagerWrap) client.getConfig().getDataSourceManager();
-                sourceManagerWrap.setDataSourceManager(new SolonDataSourceManager(beanWrap.get()));
-            });
+            DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
         }
 
         context.beanInjectorAdd(Inject.class, Client.class, (varHolder, inject) ->
         {
             varHolder.required(inject.required());
             String name = inject.value();
-            if (name.isEmpty())
-            {
+            if (name.isEmpty()) {
                 Optional<Client> first = clients.values().stream().findFirst();
                 varHolder.setValue(first.orElseThrow(RuntimeException::new));
             }
-            else
-            {
+            else {
                 varHolder.setValue(clients.get(name));
             }
         });
@@ -108,10 +104,21 @@ public class XPluginImpl implements Plugin
         registerAot(context);
     }
 
-    private void registerAot(AppContext context)
-    {
-        if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class))
-        {
+    private static void registerDataSource(BeanWrap beanWrap, IConfig config) {
+        SolonDataSourceManagerWrap sourceManagerWrap = (SolonDataSourceManagerWrap) config.getDataSourceManager();
+        sourceManagerWrap.setDataSourceManager(new SolonDataSourceManager(beanWrap.get()));
+        try (Connection connection = sourceManagerWrap.getConnection()) {
+            String databaseProductName = connection.getMetaData().getDatabaseProductName();
+            DbType dbType = DbType.getByName(databaseProductName);
+            config.setDbType(dbType);
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void registerAot(AppContext context) {
+        if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
             context.wrapAndPut(SQLinkRuntimeNativeRegistrar.class, new SQLinkRuntimeNativeRegistrar());
         }
     }

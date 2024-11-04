@@ -24,17 +24,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleLimitExpression extends SqlLimitExpression
-{
+public class OracleLimitExpression extends SqlLimitExpression {
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
-        if (onlyHasRows())
-        {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
+        if (onlyHasRows()) {
             return String.format("FETCH NEXT %d ROWS ONLY", rows);
         }
-        else if (hasRowsAndOffset())
-        {
+        else if (hasRowsAndOffset()) {
             return String.format("OFFSET %d ROWS FETCH NEXT %d ROWS ONLY", offset, rows);
         }
         return "";

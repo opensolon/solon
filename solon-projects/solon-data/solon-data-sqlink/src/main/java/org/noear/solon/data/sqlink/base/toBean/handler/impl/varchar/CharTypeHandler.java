@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class CharTypeHandler implements ITypeHandler<Character>
-{
+public class CharTypeHandler implements ITypeHandler<Character> {
     @Override
-    public Character getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Character getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         String string = resultSet.getString(index);
         return string == null ? null : string.charAt(0);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Character character) throws SQLException
-    {
-        if (character == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Character character) throws SQLException {
+        if (character == null) {
             preparedStatement.setNull(index, JDBCType.CHAR.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setString(index, character.toString());
         }
     }

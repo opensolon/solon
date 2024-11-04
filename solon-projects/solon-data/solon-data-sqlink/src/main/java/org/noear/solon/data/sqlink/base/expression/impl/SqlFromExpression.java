@@ -26,40 +26,33 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlFromExpression implements ISqlFromExpression
-{
+public class SqlFromExpression implements ISqlFromExpression {
     protected final ISqlTableExpression sqlTableExpression;
     protected final int index;
 
-    public SqlFromExpression(ISqlTableExpression sqlTableExpression, int index)
-    {
+    public SqlFromExpression(ISqlTableExpression sqlTableExpression, int index) {
         this.sqlTableExpression = sqlTableExpression;
         this.index = index;
     }
 
     @Override
-    public ISqlTableExpression getSqlTableExpression()
-    {
+    public ISqlTableExpression getSqlTableExpression() {
         return sqlTableExpression;
     }
 
     @Override
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         if (isEmptyTable()) return "";
         String sql;
-        if (getSqlTableExpression() instanceof ISqlRealTableExpression)
-        {
+        if (getSqlTableExpression() instanceof ISqlRealTableExpression) {
             sql = getSqlTableExpression().getSqlAndValue(config, values);
         }
-        else
-        {
+        else {
             sql = "(" + getSqlTableExpression().getSqlAndValue(config, values) + ")";
         }
         String t = "t" + getIndex();

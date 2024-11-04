@@ -30,11 +30,9 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension
-{
+public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression unit = args.get(0);
@@ -45,12 +43,10 @@ public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension
         boolean isFromIsString = parameterTypes[1] == String.class;
         String toString = isToIsString ? "::TIMESTAMP" : "";
         String fromString = isFromIsString ? "::TIMESTAMP" : "";
-        if (unit instanceof ISqlSingleValueExpression)
-        {
+        if (unit instanceof ISqlSingleValueExpression) {
             ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) unit;
             SqlTimeUnit timeUnit = (SqlTimeUnit) sqlSingleValueExpression.getValue();
-            switch (timeUnit)
-            {
+            switch (timeUnit) {
                 case YEAR:
                     templates.add("EXTRACT(YEAR FROM AGE(");
                     sqlExpressions.add(to);
@@ -113,8 +109,7 @@ public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension
                     break;
             }
         }
-        else
-        {
+        else {
             throw new SQLinkException("SqlTimeUnit必须为可求值的");
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);

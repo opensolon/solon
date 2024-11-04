@@ -23,30 +23,25 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class InsertSqlBuilder implements ISqlBuilder
-{
+public class InsertSqlBuilder implements ISqlBuilder {
     private final IConfig config;
 
-    public InsertSqlBuilder(IConfig config)
-    {
+    public InsertSqlBuilder(IConfig config) {
         this.config = config;
     }
 
 
     @Override
-    public String getSql()
-    {
+    public String getSql() {
         return "";
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values)
-    {
+    public String getSqlAndValue(List<Object> values) {
         return "";
     }
 
-    public IConfig getConfig()
-    {
+    public IConfig getConfig() {
         return config;
     }
 }

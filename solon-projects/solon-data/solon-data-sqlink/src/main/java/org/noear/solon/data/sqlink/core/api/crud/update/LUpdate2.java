@@ -28,10 +28,8 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
  * @author kiryu1223
  * @since 3.0
  */
-public class LUpdate2<T1, T2> extends UpdateBase
-{
-    public LUpdate2(UpdateSqlBuilder sqlBuilder)
-    {
+public class LUpdate2<T1, T2> extends UpdateBase {
+    public LUpdate2(UpdateSqlBuilder sqlBuilder) {
         super(sqlBuilder);
     }
 
@@ -46,13 +44,11 @@ public class LUpdate2<T1, T2> extends UpdateBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的更新过程对象
      */
-    public <Tn> LUpdate3<T1, T2, Tn> innerJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> innerJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LUpdate3<T1, T2, Tn> innerJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> innerJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
         join(JoinType.INNER, target, expr);
         return new LUpdate3<>(getSqlBuilder());
     }
@@ -66,13 +62,11 @@ public class LUpdate2<T1, T2> extends UpdateBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的更新过程对象
      */
-    public <Tn> LUpdate3<T1, T2, Tn> leftJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> leftJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LUpdate3<T1, T2, Tn> leftJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> leftJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
         join(JoinType.LEFT, target, expr);
         return new LUpdate3<>(getSqlBuilder());
     }
@@ -86,13 +80,11 @@ public class LUpdate2<T1, T2> extends UpdateBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的更新过程对象
      */
-    public <Tn> LUpdate3<T1, T2, Tn> rightJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> rightJoin(Class<Tn> target, @Expr Func3<T1, T2, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LUpdate3<T1, T2, Tn> rightJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr)
-    {
+    public <Tn> LUpdate3<T1, T2, Tn> rightJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
         join(JoinType.RIGHT, target, expr);
         return new LUpdate3<>(getSqlBuilder());
     }
@@ -103,16 +95,15 @@ public class LUpdate2<T1, T2> extends UpdateBase
     /**
      * 为需要更新的字段赋值
      * <p><b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
      * @param action lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate2<T1, T2> set(@Expr Action2<T1, T2> action)
-    {
+    public LUpdate2<T1, T2> set(@Expr Action2<T1, T2> action) {
         throw new NotCompiledException();
     }
 
-    public LUpdate2<T1, T2> set(ExprTree<Action2<T1, T2>> expr)
-    {
+    public LUpdate2<T1, T2> set(ExprTree<Action2<T1, T2>> expr) {
         set(expr.getTree());
         return this;
     }
@@ -127,13 +118,11 @@ public class LUpdate2<T1, T2> extends UpdateBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate2<T1, T2> where(@Expr Func2<T1, T2, Boolean> func)
-    {
+    public LUpdate2<T1, T2> where(@Expr Func2<T1, T2, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public LUpdate2<T1, T2> where(ExprTree<Func2<T1, T2, Boolean>> expr)
-    {
+    public LUpdate2<T1, T2> where(ExprTree<Func2<T1, T2, Boolean>> expr) {
         where(expr.getTree());
         return this;
     }

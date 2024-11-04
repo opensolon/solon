@@ -26,15 +26,12 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class LogicExpression
-{
-    public static ISqlExpression IfExpression(IConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart)
-    {
+public class LogicExpression {
+    public static ISqlExpression IfExpression(IConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> args = Arrays.asList(cond, truePart, falsePart);
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
             case SQLite:
                 function = Arrays.asList("IIF(", ",", ",", ")");

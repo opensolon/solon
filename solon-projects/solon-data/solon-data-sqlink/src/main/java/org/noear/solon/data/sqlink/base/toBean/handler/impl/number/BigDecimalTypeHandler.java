@@ -27,23 +27,18 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class BigDecimalTypeHandler implements ITypeHandler<BigDecimal>
-{
+public class BigDecimalTypeHandler implements ITypeHandler<BigDecimal> {
     @Override
-    public BigDecimal getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public BigDecimal getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         return resultSet.getBigDecimal(index);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, BigDecimal bigDecimal) throws SQLException
-    {
-        if (bigDecimal == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, BigDecimal bigDecimal) throws SQLException {
+        if (bigDecimal == null) {
             preparedStatement.setNull(index, JDBCType.DECIMAL.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setBigDecimal(index, bigDecimal);
         }
     }

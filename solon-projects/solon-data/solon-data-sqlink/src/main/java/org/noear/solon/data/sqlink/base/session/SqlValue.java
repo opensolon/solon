@@ -26,19 +26,16 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlValue
-{
+public class SqlValue {
     private final Object value;
     private final ITypeHandler<?> typeHandler;
 
-    public SqlValue(Object value, ITypeHandler<?> typeHandler)
-    {
+    public SqlValue(Object value, ITypeHandler<?> typeHandler) {
         this.value = value;
         this.typeHandler = typeHandler;
     }
 
-    public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException
-    {
+    public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException {
         typeHandler.setValue(preparedStatement, index, cast(value));
     }
 }

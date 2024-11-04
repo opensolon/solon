@@ -26,11 +26,14 @@ import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
  * @author kiryu1223
  * @since 3.0
  */
-public interface IConfig
-{
+public interface IConfig {
+    void setDbType(DbType dbType);
+
     SqlExpressionFactory getSqlExpressionFactory();
 
     IDialect getDisambiguation();
+
+    void setDisambiguation(IDialect disambiguation);
 
     DataSourceManager getDataSourceManager();
 

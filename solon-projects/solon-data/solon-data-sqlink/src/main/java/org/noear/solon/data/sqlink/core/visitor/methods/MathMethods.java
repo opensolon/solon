@@ -28,14 +28,11 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class MathMethods
-{
-    public static ISqlTemplateExpression atan2(IConfig config, ISqlExpression arg1, ISqlExpression arg2)
-    {
+public class MathMethods {
+    public static ISqlTemplateExpression atan2(IConfig config, ISqlExpression arg1, ISqlExpression arg2) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("ATN2(", ",", ")");
                 break;
@@ -45,12 +42,10 @@ public class MathMethods
         return factory.template(function, Arrays.asList(arg1, arg2));
     }
 
-    public static ISqlTemplateExpression ceil(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression ceil(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("CEILING(", ")");
                 break;
@@ -60,13 +55,11 @@ public class MathMethods
         return factory.template(function, Collections.singletonList(arg));
     }
 
-    public static ISqlTemplateExpression toDegrees(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression toDegrees(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         String s = "({a} * 180 / " + Math.PI + ")";
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
                 function = Arrays.asList("(", " * 180 / " + Math.PI + ")");
                 break;
@@ -76,12 +69,10 @@ public class MathMethods
         return factory.template(function, Collections.singletonList(arg));
     }
 
-    public static ISqlTemplateExpression toRadians(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression toRadians(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
                 function = Arrays.asList("(", " * " + Math.PI + " / 180)");
                 break;
@@ -91,12 +82,10 @@ public class MathMethods
         return factory.template(function, Collections.singletonList(arg));
     }
 
-    public static ISqlTemplateExpression log(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression log(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("LOG(", ")");
                 break;
@@ -106,13 +95,11 @@ public class MathMethods
         return factory.template(function, Collections.singletonList(arg));
     }
 
-    public static ISqlTemplateExpression log10(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression log10(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("LOG(", ",10)");
                 break;
@@ -125,13 +112,11 @@ public class MathMethods
         return factory.template(function, Collections.singletonList(arg));
     }
 
-    public static ISqlTemplateExpression random(IConfig config)
-    {
+    public static ISqlTemplateExpression random(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
                 function = Collections.singletonList("DBMS_RANDOM.VALUE");
                 break;
@@ -147,13 +132,11 @@ public class MathMethods
         return factory.template(function, Collections.emptyList());
     }
 
-    public static ISqlTemplateExpression round(IConfig config, ISqlExpression arg)
-    {
+    public static ISqlTemplateExpression round(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("ROUND(", ",0)");
                 break;

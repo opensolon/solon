@@ -28,61 +28,48 @@ import java.util.function.Supplier;
  * @author kiryu1223
  * @since 3.0
  */
-public class DefaultBeanCreator<T> extends AbsBeanCreator<T>
-{
+public class DefaultBeanCreator<T> extends AbsBeanCreator<T> {
     protected static final Unsafe unsafe;
 
-    static
-    {
-        try
-        {
+    static {
+        try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
             unsafe = (Unsafe) field.get(null);
         }
-        catch (IllegalAccessException | NoSuchFieldException e)
-        {
+        catch (IllegalAccessException | NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public DefaultBeanCreator(Class<T> target)
-    {
+    public DefaultBeanCreator(Class<T> target) {
         super(target);
     }
 
     @Override
-    protected Supplier<T> initBeanCreator(Class<T> target)
-    {
-        if (target.isAnonymousClass())
-        {
+    protected Supplier<T> initBeanCreator(Class<T> target) {
+        if (target.isAnonymousClass()) {
             return unsafeCreator(target);
         }
-        else
-        {
+        else {
             return methodHandleCreator(target);
         }
     }
 
-    protected Supplier<T> unsafeCreator(Class<T> target)
-    {
+    protected Supplier<T> unsafeCreator(Class<T> target) {
         return () ->
         {
-            try
-            {
+            try {
                 return (T) unsafe.allocateInstance(target);
             }
-            catch (InstantiationException e)
-            {
+            catch (InstantiationException e) {
                 throw new RuntimeException(e);
             }
         };
     }
 
-    protected Supplier<T> methodHandleCreator(Class<T> target)
-    {
-        try
-        {
+    protected Supplier<T> methodHandleCreator(Class<T> target) {
+        try {
             MethodType constructorType = MethodType.methodType(void.class);
             MethodHandles.Lookup caller = MethodHandles.lookup();
             MethodHandle constructorHandle = caller.findConstructor(target, constructorType);
@@ -95,33 +82,27 @@ public class DefaultBeanCreator<T> extends AbsBeanCreator<T>
                     constructorHandle.type(), 1);
             return (Supplier<T>) site.getTarget().invokeExact();
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected ISetterCaller<T> initBeanSetter(String property)
-    {
-        if (target.isAnonymousClass())
-        {
+    protected ISetterCaller<T> initBeanSetter(String property) {
+        if (target.isAnonymousClass()) {
             return methodBeanSetter(property);
         }
-        else
-        {
+        else {
             return methodHandleBeanSetter(property);
         }
     }
 
-    protected ISetterCaller<T> methodBeanSetter(String property)
-    {
+    protected ISetterCaller<T> methodBeanSetter(String property) {
         PropertyMetaData propertyMetaData = MetaDataCache.getMetaData(target).getPropertyMetaDataByFieldName(property);
         Method setter = propertyMetaData.getSetter();
         return (t, v) -> setter.invoke(t, v);
     }
 
-    protected ISetterCaller<T> methodHandleBeanSetter(String property)
-    {
+    protected ISetterCaller<T> methodHandleBeanSetter(String property) {
         PropertyMetaData propertyMetaData = MetaDataCache.getMetaData(target).getPropertyMetaDataByFieldName(property);
         Class<?> propertyType = propertyMetaData.getType();
 
@@ -131,8 +112,7 @@ public class DefaultBeanCreator<T> extends AbsBeanCreator<T>
 
         Class<?> lambdaPropertyType = upperClass(propertyType);
         String getFunName = writeMethod.getName();
-        try
-        {
+        try {
 
             //()->{bean.setxxx(propertyType)}
             MethodType instantiatedMethodType = MethodType.methodType(void.class, target, lambdaPropertyType);
@@ -150,55 +130,42 @@ public class DefaultBeanCreator<T> extends AbsBeanCreator<T>
             IVoidSetter<Object, Object> objectPropertyVoidSetter = (IVoidSetter<Object, Object>) site.getTarget().invokeExact();
             return objectPropertyVoidSetter::apply;
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Class<?> upperClass(Class<?> c)
-    {
-        if (c.isPrimitive())
-        {
-            if (c == Character.TYPE)
-            {
+    private Class<?> upperClass(Class<?> c) {
+        if (c.isPrimitive()) {
+            if (c == Character.TYPE) {
                 return Character.class;
             }
-            if (c == Byte.TYPE)
-            {
+            if (c == Byte.TYPE) {
                 return Byte.class;
             }
-            else if (c == Short.TYPE)
-            {
+            else if (c == Short.TYPE) {
                 return Short.class;
             }
-            else if (c == Integer.TYPE)
-            {
+            else if (c == Integer.TYPE) {
                 return Integer.class;
             }
-            else if (c == Long.TYPE)
-            {
+            else if (c == Long.TYPE) {
                 return Long.class;
             }
-            else if (c == Float.TYPE)
-            {
+            else if (c == Float.TYPE) {
                 return Float.class;
             }
-            else if (c == Double.TYPE)
-            {
+            else if (c == Double.TYPE) {
                 return Double.class;
             }
-            else if (c == Boolean.TYPE)
-            {
+            else if (c == Boolean.TYPE) {
                 return Boolean.class;
             }
-            else
-            {
+            else {
                 return Void.class;
             }
         }
-        else
-        {
+        else {
             return c;
         }
     }

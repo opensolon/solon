@@ -24,24 +24,19 @@ import java.time.LocalDateTime;
  * @author kiryu1223
  * @since 3.0
  */
-public class LocalDateTimeTypeHandler implements ITypeHandler<LocalDateTime>
-{
+public class LocalDateTimeTypeHandler implements ITypeHandler<LocalDateTime> {
     @Override
-    public LocalDateTime getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public LocalDateTime getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         Timestamp timestamp = resultSet.getTimestamp(index);
         return timestamp == null ? null : timestamp.toLocalDateTime();
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, LocalDateTime localDateTime) throws SQLException
-    {
-        if (localDateTime == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, LocalDateTime localDateTime) throws SQLException {
+        if (localDateTime == null) {
             preparedStatement.setNull(index, JDBCType.TIMESTAMP.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setTimestamp(index, Timestamp.valueOf(localDateTime));
         }
     }

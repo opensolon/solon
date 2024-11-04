@@ -29,10 +29,8 @@ import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
  * @author kiryu1223
  * @since 3.0
  */
-public class LDelete<T> extends DeleteBase
-{
-    public LDelete(IConfig config, Class<T> c)
-    {
+public class LDelete<T> extends DeleteBase {
+    public LDelete(IConfig config, Class<T> c) {
         super(config, c);
     }
 
@@ -47,13 +45,11 @@ public class LDelete<T> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete2<T, Tn> innerJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func)
-    {
+    public <Tn> LDelete2<T, Tn> innerJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LDelete2<T, Tn> innerJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr)
-    {
+    public <Tn> LDelete2<T, Tn> innerJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
         join(JoinType.INNER, target, expr);
         return new LDelete2<>(getSqlBuilder());
     }
@@ -67,13 +63,11 @@ public class LDelete<T> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete2<T, Tn> leftJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func)
-    {
+    public <Tn> LDelete2<T, Tn> leftJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LDelete2<T, Tn> leftJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr)
-    {
+    public <Tn> LDelete2<T, Tn> leftJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
         join(JoinType.LEFT, target, expr);
         return new LDelete2<>(getSqlBuilder());
     }
@@ -87,13 +81,11 @@ public class LDelete<T> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete2<T, Tn> rightJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func)
-    {
+    public <Tn> LDelete2<T, Tn> rightJoin(Class<Tn> target, @Expr Func2<T, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LDelete2<T, Tn> rightJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr)
-    {
+    public <Tn> LDelete2<T, Tn> rightJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
         join(JoinType.RIGHT, target, expr);
         return new LDelete2<>(getSqlBuilder());
     }
@@ -108,13 +100,11 @@ public class LDelete<T> extends DeleteBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LDelete<T> where(@Expr Func1<T, Boolean> func)
-    {
+    public LDelete<T> where(@Expr Func1<T, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public LDelete<T> where(ExprTree<Func1<T, Boolean>> expr)
-    {
+    public LDelete<T> where(ExprTree<Func1<T, Boolean>> expr) {
         where(expr.getTree());
         return this;
     }

@@ -23,8 +23,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlJoinExpression extends ISqlExpression
-{
+public interface ISqlJoinExpression extends ISqlExpression {
     JoinType getJoinType();
 
     ISqlTableExpression getJoinTable();
@@ -34,8 +33,7 @@ public interface ISqlJoinExpression extends ISqlExpression
     int getIndex();
 
     @Override
-    default ISqlJoinExpression copy(IConfig config)
-    {
+    default ISqlJoinExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.join(getJoinType(), getJoinTable().copy(config), getConditions().copy(config), getIndex());
     }

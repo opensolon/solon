@@ -30,18 +30,15 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleDateTimeDiffExtension extends BaseSqlExtension
-{
+public class OracleDateTimeDiffExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression unit = args.get(0);
         ISqlExpression t1 = args.get(1);
         ISqlExpression t2 = args.get(2);
-        if (unit instanceof ISqlSingleValueExpression)
-        {
+        if (unit instanceof ISqlSingleValueExpression) {
             ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) unit;
             SqlTimeUnit timeUnit = (SqlTimeUnit) sqlSingleValueExpression.getValue();
             Class<?> t1Type = sqlFunc.getParameterTypes()[1];
@@ -50,8 +47,7 @@ public class OracleDateTimeDiffExtension extends BaseSqlExtension
             String t1TO_TIMESTAMPRight = t1Type == String.class ? ",'YYYY-MM-DD hh24:mi:ss:ff')" : "";
             String t2TO_TIMESTAMPLeft = t2Type == String.class ? "TO_TIMESTAMP(" : "";
             String t2TO_TIMESTAMPRight = t2Type == String.class ? ",'YYYY-MM-DD hh24:mi:ss:ff')" : "";
-            switch (timeUnit)
-            {
+            switch (timeUnit) {
                 case YEAR:
                     templates.add("FLOOR(MONTHS_BETWEEN(" + t2TO_TIMESTAMPLeft);
                     sqlExpressions.add(t2);
@@ -148,8 +144,7 @@ public class OracleDateTimeDiffExtension extends BaseSqlExtension
                     templates.add("(0)");
             }
         }
-        else
-        {
+        else {
             throw new SQLinkException("SqlTimeUnit必须为可求值的");
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);

@@ -24,15 +24,17 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlSingleValueExpression extends ISqlValueExpression
-{
+public interface ISqlSingleValueExpression extends ISqlValueExpression {
     Object getValue();
+
+    default Class<?> getType() {
+        return getValue().getClass();
+    }
 
     //String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, PropertyMetaData propertyMetaData);
 
     @Override
-    default ISqlSingleValueExpression copy(IConfig config)
-    {
+    default ISqlSingleValueExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.value(getValue());
     }

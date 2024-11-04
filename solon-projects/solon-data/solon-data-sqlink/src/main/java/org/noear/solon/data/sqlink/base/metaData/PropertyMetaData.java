@@ -27,8 +27,7 @@ import java.util.Objects;
  * @author kiryu1223
  * @since 3.0
  */
-public class PropertyMetaData
-{
+public class PropertyMetaData {
     private final String property;
     private final String column;
     private final Method getter;
@@ -41,8 +40,7 @@ public class PropertyMetaData
     private final NavigateData navigateData;
     private final boolean isPrimaryKey;
 
-    public PropertyMetaData(String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey)
-    {
+    public PropertyMetaData(String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey) {
         this.property = property;
         this.column = column;
         this.ignoreColumn = ignoreColumn;
@@ -58,84 +56,68 @@ public class PropertyMetaData
         this.isGenericType = field.getGenericType() instanceof ParameterizedType;
     }
 
-    public String getProperty()
-    {
+    public String getProperty() {
         return property;
     }
 
-    public String getColumn()
-    {
+    public String getColumn() {
         return column;
     }
 
-    public Method getGetter()
-    {
+    public Method getGetter() {
         return getter;
     }
 
-    public Method getSetter()
-    {
+    public Method getSetter() {
         return setter;
     }
 
-    public Field getField()
-    {
+    public Field getField() {
         return field;
     }
 
-    public boolean isIgnoreColumn()
-    {
+    public boolean isIgnoreColumn() {
         return ignoreColumn;
     }
 
-    public boolean hasNavigate()
-    {
+    public boolean hasNavigate() {
         return navigateData != null;
     }
 
-    public NavigateData getNavigateData()
-    {
+    public NavigateData getNavigateData() {
         return navigateData;
     }
 
-    public Class<?> getParentType()
-    {
+    public Class<?> getParentType() {
         return field.getDeclaringClass();
     }
 
-    public Class<?> getType()
-    {
+    public Class<?> getType() {
         return field.getType();
     }
 
-    public Type getGenericType()
-    {
+    public Type getGenericType() {
         return field.getGenericType();
     }
 
-    public boolean isGenericType()
-    {
+    public boolean isGenericType() {
         return isGenericType;
     }
 
-    public boolean isPrimaryKey()
-    {
+    public boolean isPrimaryKey() {
         return isPrimaryKey;
     }
 
-    public ITypeHandler<?> getTypeHandler()
-    {
+    public ITypeHandler<?> getTypeHandler() {
         return typeHandler;
     }
 
-    public boolean isUseTypeHandler()
-    {
+    public boolean isUseTypeHandler() {
         return useTypeHandler;
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PropertyMetaData that = (PropertyMetaData) o;
@@ -143,8 +125,7 @@ public class PropertyMetaData
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(property, column, getter, setter, field, isGenericType, useTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey);
     }
 }

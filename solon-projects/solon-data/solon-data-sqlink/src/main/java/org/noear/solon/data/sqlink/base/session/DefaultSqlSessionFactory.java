@@ -22,20 +22,17 @@ import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
  * @author kiryu1223
  * @since 3.0
  */
-public class DefaultSqlSessionFactory implements SqlSessionFactory
-{
+public class DefaultSqlSessionFactory implements SqlSessionFactory {
     protected final DataSourceManager dataSourceManager;
     protected final TransactionManager transactionManager;
 
-    public DefaultSqlSessionFactory(DataSourceManager dataSourceManager, TransactionManager transactionManager)
-    {
+    public DefaultSqlSessionFactory(DataSourceManager dataSourceManager, TransactionManager transactionManager) {
         this.dataSourceManager = dataSourceManager;
         this.transactionManager = transactionManager;
     }
 
     @Override
-    public SqlSession getSession()
-    {
+    public SqlSession getSession() {
         return new DefaultSqlSession(dataSourceManager, transactionManager);
     }
 }

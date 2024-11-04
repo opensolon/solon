@@ -24,18 +24,14 @@ import org.noear.solon.data.tran.TranUtils;
  * @author kiryu1223
  * @since 3.0
  */
-public class SolonTransactionManager extends DefaultTransactionManager
-{
-    public SolonTransactionManager(DataSourceManager dataSourceManager)
-    {
+public class SolonTransactionManager extends DefaultTransactionManager {
+    public SolonTransactionManager(DataSourceManager dataSourceManager) {
         super(dataSourceManager);
     }
 
     @Override
-    public Transaction get(Integer isolationLevel)
-    {
-        if (currentThreadInTransaction())
-        {
+    public Transaction get(Integer isolationLevel) {
+        if (currentThreadInTransaction()) {
             throw new RuntimeException("不支持多重事务");
         }
         SolonTransaction solonTransaction = new SolonTransaction(isolationLevel, dataSourceManager.getDataSource(), this);
@@ -44,8 +40,7 @@ public class SolonTransactionManager extends DefaultTransactionManager
     }
 
     @Override
-    public boolean currentThreadInTransaction()
-    {
+    public boolean currentThreadInTransaction() {
         return TranUtils.inTrans() || isOpenTransaction();
     }
 }

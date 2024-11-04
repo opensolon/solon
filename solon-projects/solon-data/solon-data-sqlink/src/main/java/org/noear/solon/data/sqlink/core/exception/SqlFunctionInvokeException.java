@@ -19,10 +19,8 @@ package org.noear.solon.data.sqlink.core.exception;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlFunctionInvokeException extends RuntimeException
-{
-    public SqlFunctionInvokeException()
-    {
+public class SqlFunctionInvokeException extends RuntimeException {
+    public SqlFunctionInvokeException() {
         super("SqlFunction cannot be called from outside an expression");
     }
 }

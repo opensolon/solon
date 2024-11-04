@@ -25,15 +25,14 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public interface DataSourceManager
-{
+public interface DataSourceManager {
     Connection getConnection() throws SQLException;
 
     DataSource getDataSource();
 
-    void useDs(String key);
-
-    void useDefDs();
-
-    String getDsKey();
+//    void useDs(String key);
+//
+//    void useDefDs();
+//
+//    String getDsKey();
 }

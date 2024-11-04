@@ -34,24 +34,20 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class InsertBase extends CRUD
-{
+public abstract class InsertBase extends CRUD {
     public final static Logger log = LoggerFactory.getLogger(InsertBase.class);
 
     private final InsertSqlBuilder sqlBuilder;
 
-    protected InsertSqlBuilder getSqlBuilder()
-    {
+    protected InsertSqlBuilder getSqlBuilder() {
         return sqlBuilder;
     }
 
-    protected IConfig getConfig()
-    {
+    protected IConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
-    public InsertBase(IConfig c)
-    {
+    public InsertBase(IConfig c) {
         this.sqlBuilder = new InsertSqlBuilder(c);
     }
 
@@ -60,71 +56,57 @@ public abstract class InsertBase extends CRUD
      *
      * @return 执行后的结果
      */
-    public long executeRows()
-    {
+    public long executeRows() {
         List<Object> objects = getObjects();
-        if (!objects.isEmpty())
-        {
+        if (!objects.isEmpty()) {
             return objectsExecuteRows(objects);
         }
-        else
-        {
+        else {
             return 0;
         }
     }
 
-    public String toSql()
-    {
+    public String toSql() {
         List<Object> objects = getObjects();
-        if (!objects.isEmpty())
-        {
+        if (!objects.isEmpty()) {
             return makeByObjects();
         }
-        else
-        {
+        else {
             return sqlBuilder.getSql();
         }
     }
 
-    protected <T> List<T> getObjects()
-    {
+    protected <T> List<T> getObjects() {
         return Collections.emptyList();
     }
 
     protected abstract <T> Class<T> getTableType();
 
-    private long objectsExecuteRows(List<Object> objects)
-    {
+    private long objectsExecuteRows(List<Object> objects) {
         IConfig config = getConfig();
         //List<SqlValue> sqlValues = new ArrayList<>();
         String sql = makeByObjects();
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         SqlSession session = config.getSqlSessionFactory().getSession();
-        if (objects.size() > 1)
-        {
+        if (objects.size() > 1) {
             tryPrintBatch(log, objects.size());
         }
-        else
-        {
+        else {
             tryPrintNoBatch(log, objects.size());
         }
         return session.executeInsert(sql, objects);
     }
 
-    private String makeByObjects()
-    {
+    private String makeByObjects() {
         MetaData metaData = MetaDataCache.getMetaData(getTableType());
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
-        for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys())
-        {
-            if (propertyMetaData.isPrimaryKey())
-            {
+        for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys()) {
+            if (propertyMetaData.isPrimaryKey()) {
 
             }
-            else
-            {
+            else {
                 tableFields.add(propertyMetaData.getColumn());
                 tableValues.add("?");
             }

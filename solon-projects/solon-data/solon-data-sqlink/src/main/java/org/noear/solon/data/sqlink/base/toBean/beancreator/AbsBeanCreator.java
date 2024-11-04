@@ -23,14 +23,12 @@ import java.util.function.Supplier;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class AbsBeanCreator<T>
-{
+public abstract class AbsBeanCreator<T> {
     protected final Class<T> target;
     protected final Supplier<T> supplier;
     protected final Map<String, ISetterCaller<T>> setters = new ConcurrentHashMap<>();
 
-    protected AbsBeanCreator(Class<T> target)
-    {
+    protected AbsBeanCreator(Class<T> target) {
         this.target = target;
         this.supplier = initBeanCreator(target);
     }
@@ -39,16 +37,13 @@ public abstract class AbsBeanCreator<T>
 
     protected abstract ISetterCaller<T> initBeanSetter(String property);
 
-    public Supplier<T> getBeanCreator()
-    {
+    public Supplier<T> getBeanCreator() {
         return supplier;
     }
 
-    public ISetterCaller<T> getBeanSetter(String property)
-    {
+    public ISetterCaller<T> getBeanSetter(String property) {
         ISetterCaller<T> setterCaller = setters.get(property);
-        if (setterCaller == null)
-        {
+        if (setterCaller == null) {
             setterCaller = initBeanSetter(property);
             setters.put(property, setterCaller);
         }

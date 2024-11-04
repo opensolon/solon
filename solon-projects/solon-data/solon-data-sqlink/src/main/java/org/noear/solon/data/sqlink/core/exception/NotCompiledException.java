@@ -19,10 +19,8 @@ package org.noear.solon.data.sqlink.core.exception;
  * @author kiryu1223
  * @since 3.0
  */
-public class NotCompiledException extends RuntimeException
-{
-    public NotCompiledException()
-    {
+public class NotCompiledException extends RuntimeException {
+    public NotCompiledException() {
         super("Please clean and recompile the project");
     }
 }

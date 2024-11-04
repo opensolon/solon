@@ -23,13 +23,11 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlConstStringExpression extends ISqlExpression
-{
+public interface ISqlConstStringExpression extends ISqlExpression {
     String getString();
 
     @Override
-    default ISqlConstStringExpression copy(IConfig config)
-    {
+    default ISqlConstStringExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.constString(getString());
     }

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.core.api.crud.read;
 
+import org.noear.solon.data.sqlink.core.api.page.DefaultPager;
+import org.noear.solon.data.sqlink.core.api.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.List;
@@ -25,10 +27,8 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class EndQuery<T> extends QueryBase
-{
-    public EndQuery(QuerySqlBuilder sqlBuilder)
-    {
+public class EndQuery<T> extends QueryBase {
+    public EndQuery(QuerySqlBuilder sqlBuilder) {
         super(sqlBuilder);
     }
 
@@ -38,8 +38,7 @@ public class EndQuery<T> extends QueryBase
      * @return boolean
      */
     @Override
-    public boolean any()
-    {
+    public boolean any() {
         return super.any();
     }
 
@@ -49,8 +48,7 @@ public class EndQuery<T> extends QueryBase
      * @return List
      */
     @Override
-    public List<T> toList()
-    {
+    public List<T> toList() {
         return super.toList();
     }
 
@@ -60,8 +58,29 @@ public class EndQuery<T> extends QueryBase
      * @return T
      */
     @Override
-    public T first()
-    {
+    public T first() {
         return super.first();
+    }
+
+    /**
+     * 分页返回数据，无数据则返回空List
+     *
+     * @param pageIndex 页编号 默认1开始
+     * @param pageSize  页长度 默认大于等于1
+     * @return 分页数据
+     */
+    public PagedResult<T> toPagedResult(long pageIndex, long pageSize) {
+        return toPagedResult0(pageIndex, pageSize, DefaultPager.instance);
+    }
+
+    /**
+     * 分页返回数据，无数据则返回空List
+     *
+     * @param pageIndex 页编号 默认1开始
+     * @param pageSize  页长度 默认大于等于1
+     * @return 分页数据
+     */
+    public PagedResult<T> toPagedResult(int pageIndex, int pageSize) {
+        return toPagedResult((long) pageIndex, (long) pageSize);
     }
 }

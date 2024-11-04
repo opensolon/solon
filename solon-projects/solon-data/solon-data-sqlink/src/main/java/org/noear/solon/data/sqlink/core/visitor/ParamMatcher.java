@@ -22,14 +22,12 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class ParamMatcher
-{
+public class ParamMatcher {
     public List<String> bracesContent = new ArrayList<>();
     public List<String> remainder = new ArrayList<>();
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return bracesContent + "\n" + remainder;
     }
 }

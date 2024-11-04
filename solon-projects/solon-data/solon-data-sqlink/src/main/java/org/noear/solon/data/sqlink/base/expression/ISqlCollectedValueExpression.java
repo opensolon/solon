@@ -27,8 +27,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlCollectedValueExpression extends ISqlValueExpression
-{
+public interface ISqlCollectedValueExpression extends ISqlValueExpression {
     Collection<Object> getCollection();
 
     void setDelimiter(String delimiter);
@@ -36,8 +35,7 @@ public interface ISqlCollectedValueExpression extends ISqlValueExpression
     String getDelimiter();
 
     @Override
-    default ISqlCollectedValueExpression copy(IConfig config)
-    {
+    default ISqlCollectedValueExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<Object> newValues = new ArrayList<>(getCollection());
         ISqlCollectedValueExpression value = factory.value(newValues);

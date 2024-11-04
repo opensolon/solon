@@ -26,19 +26,16 @@ import java.util.Map;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlGroupByExpression extends ISqlExpression
-{
+public interface ISqlGroupByExpression extends ISqlExpression {
     void setColumns(LinkedHashMap<String, ISqlExpression> columns);
 
     LinkedHashMap<String, ISqlExpression> getColumns();
 
     @Override
-    default ISqlGroupByExpression copy(IConfig config)
-    {
+    default ISqlGroupByExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlGroupByExpression groupByExpression = factory.groupBy();
-        for (Map.Entry<String, ISqlExpression> entry : getColumns().entrySet())
-        {
+        for (Map.Entry<String, ISqlExpression> entry : getColumns().entrySet()) {
             groupByExpression.getColumns().put(entry.getKey(), entry.getValue().copy(config));
         }
         return groupByExpression;

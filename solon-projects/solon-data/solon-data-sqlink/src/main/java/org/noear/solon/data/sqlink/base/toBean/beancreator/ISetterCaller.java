@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISetterCaller<T>
-{
+public interface ISetterCaller<T> {
     void call(T t, Object value) throws InvocationTargetException, IllegalAccessException;
 }

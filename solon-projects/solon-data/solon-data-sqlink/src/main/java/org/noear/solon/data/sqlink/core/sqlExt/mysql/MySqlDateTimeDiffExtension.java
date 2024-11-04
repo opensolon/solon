@@ -30,28 +30,23 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class MySqlDateTimeDiffExtension extends BaseSqlExtension
-{
+public class MySqlDateTimeDiffExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
-        List<String> templates=new ArrayList<>();
-        List<ISqlExpression> sqlExpressions=new ArrayList<>();
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+        List<String> templates = new ArrayList<>();
+        List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression expression = args.get(0);
-        if (expression instanceof ISqlSingleValueExpression)
-        {
+        if (expression instanceof ISqlSingleValueExpression) {
             ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) expression;
             SqlTimeUnit timeUnit = (SqlTimeUnit) sqlSingleValueExpression.getValue();
-            if (timeUnit == SqlTimeUnit.MILLISECOND)
-            {
+            if (timeUnit == SqlTimeUnit.MILLISECOND) {
                 templates.add("(TIMESTAMPDIFF(MICROSECOND,");
                 sqlExpressions.add(args.get(1));
                 templates.add(",");
                 sqlExpressions.add(args.get(2));
                 templates.add(") / 1000)");
             }
-            else
-            {
+            else {
                 templates.add("TIMESTAMPDIFF(");
                 sqlExpressions.add(expression);
                 templates.add(",");
@@ -61,10 +56,9 @@ public class MySqlDateTimeDiffExtension extends BaseSqlExtension
                 templates.add(")");
             }
         }
-        else
-        {
+        else {
             throw new SQLinkException("SqlTimeUnit必须为可求值的");
         }
-        return config.getSqlExpressionFactory().template(templates,sqlExpressions);
+        return config.getSqlExpressionFactory().template(templates, sqlExpressions);
     }
 }

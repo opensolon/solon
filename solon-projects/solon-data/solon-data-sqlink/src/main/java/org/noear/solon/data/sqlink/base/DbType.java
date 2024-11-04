@@ -15,12 +15,14 @@
  */
 package org.noear.solon.data.sqlink.base;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public enum DbType
-{
+public enum DbType {
     Any,
     MySQL,
     SQLServer,
@@ -28,4 +30,27 @@ public enum DbType
     Oracle,
     SQLite,
     PostgreSQL,
+    ;
+
+    private static final Logger log = LoggerFactory.getLogger(DbType.class);
+
+    public static DbType getByName(String dbName) {
+        switch (dbName) {
+            case "MySQL":
+                return MySQL;
+            case "Microsoft SQL Server":
+                return SQLServer;
+            case "H2":
+                return H2;
+            case "Oracle":
+                return Oracle;
+            case "SQLite":
+                return SQLite;
+            case "PostgreSQL":
+                return PostgreSQL;
+            default:
+                log.warn("Unsupported database type:{}", dbName);
+                return Any;
+        }
+    }
 }

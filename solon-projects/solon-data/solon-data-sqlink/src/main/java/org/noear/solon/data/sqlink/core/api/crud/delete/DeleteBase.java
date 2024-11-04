@@ -35,29 +35,24 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class DeleteBase extends CRUD
-{
+public abstract class DeleteBase extends CRUD {
     public final static Logger log = LoggerFactory.getLogger(DeleteBase.class);
 
     private final DeleteSqlBuilder sqlBuilder;
 
-    public DeleteBase(IConfig config, Class<?> target)
-    {
-        this.sqlBuilder = new DeleteSqlBuilder(config,target);
+    public DeleteBase(IConfig config, Class<?> target) {
+        this.sqlBuilder = new DeleteSqlBuilder(config, target);
     }
 
-    public DeleteBase(DeleteSqlBuilder sqlBuilder)
-    {
+    public DeleteBase(DeleteSqlBuilder sqlBuilder) {
         this.sqlBuilder = sqlBuilder;
     }
 
-    protected DeleteSqlBuilder getSqlBuilder()
-    {
+    protected DeleteSqlBuilder getSqlBuilder() {
         return sqlBuilder;
     }
 
-    public IConfig getConfig()
-    {
+    public IConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
@@ -66,8 +61,7 @@ public abstract class DeleteBase extends CRUD
      *
      * @return 执行后的结果
      */
-    public long executeRows()
-    {
+    public long executeRows() {
         IConfig config = getConfig();
         checkHasWhere();
         List<Object> values = new ArrayList<>();
@@ -78,35 +72,29 @@ public abstract class DeleteBase extends CRUD
         return session.executeUpdate(sql, values);
     }
 
-    public String toSql()
-    {
+    public String toSql() {
         return sqlBuilder.getSql();
     }
 
-    private void checkHasWhere()
-    {
+    private void checkHasWhere() {
         if (getConfig().isIgnoreDeleteNoWhere()) return;
-        if (!sqlBuilder.hasWhere())
-        {
+        if (!sqlBuilder.hasWhere()) {
             throw new RuntimeException("DELETE没有条件");
         }
     }
 
-    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr)
-    {
+    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression on = normalVisitor.visit(expr.getTree());
         getSqlBuilder().addJoin(target, joinType, factory.table(target), on);
     }
 
-    protected void selectDeleteTable(Class<?> c)
-    {
+    protected void selectDeleteTable(Class<?> c) {
         getSqlBuilder().addExclude(c);
     }
 
-    protected void where(LambdaExpression<?> lambda)
-    {
+    protected void where(LambdaExpression<?> lambda) {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression expression = normalVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);

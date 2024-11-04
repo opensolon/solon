@@ -21,15 +21,13 @@ package org.noear.solon.data.sqlink.base.expression;
  * @author kiryu1223
  * @since 3.0
  */
-public enum JoinType
-{
+public enum JoinType {
     INNER,
     LEFT,
     RIGHT,
     ;
 
-    public String getJoin()
-    {
+    public String getJoin() {
         return name() + " JOIN";
     }
 }

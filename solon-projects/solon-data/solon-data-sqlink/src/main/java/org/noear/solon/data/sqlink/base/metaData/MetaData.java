@@ -35,8 +35,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
  * @author kiryu1223
  * @since 3.0
  */
-public class MetaData
-{
+public class MetaData {
     private final List<PropertyMetaData> propertys = new ArrayList<>();
     private final Class<?> type;
     private final Constructor<?> constructor;
@@ -44,10 +43,8 @@ public class MetaData
     private final String schema;
     private final boolean isEmptyTable;
 
-    public MetaData(Class<?> type)
-    {
-        try
-        {
+    public MetaData(Class<?> type) {
+        try {
             this.type = type;
 
             this.constructor = !type.isAnonymousClass() ? type.getConstructor() : null;
@@ -55,8 +52,7 @@ public class MetaData
             this.tableName = (table == null || table.value().isEmpty()) ? type.getSimpleName() : table.value();
             this.schema = table == null ? "" : table.schema();
             this.isEmptyTable = type.isAnnotationPresent(EmptyTable.class);
-            for (PropertyDescriptor descriptor : propertyDescriptors(type))
-            {
+            for (PropertyDescriptor descriptor : propertyDescriptors(type)) {
                 String property = descriptor.getName();
                 Field field = type.getDeclaredField(property);
                 Column column = field.getAnnotation(Column.class);
@@ -67,17 +63,14 @@ public class MetaData
                 NavigateData navigateData = null;
                 Navigate navigate = field.getAnnotation(Navigate.class);
                 boolean isPrimaryKey = column != null && column.primaryKey();
-                if (navigate != null)
-                {
+                if (navigate != null) {
                     Class<?> navigateTargetType;
-                    if (Collection.class.isAssignableFrom(field.getType()))
-                    {
+                    if (Collection.class.isAssignableFrom(field.getType())) {
                         Type genericType = field.getGenericType();
                         navigateTargetType = (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
                         navigateData = new NavigateData(navigate, navigateTargetType, (Class<? extends Collection<?>>) field.getType());
                     }
-                    else
-                    {
+                    else {
                         navigateTargetType = field.getType();
                         navigateData = new NavigateData(navigate, navigateTargetType, null);
                     }
@@ -86,93 +79,75 @@ public class MetaData
                 propertys.add(new PropertyMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey));
             }
         }
-        catch (NoSuchFieldException | NoSuchMethodException e)
-        {
+        catch (NoSuchFieldException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private PropertyDescriptor[] propertyDescriptors(Class<?> c)
-    {
-        try
-        {
+    private PropertyDescriptor[] propertyDescriptors(Class<?> c) {
+        try {
             BeanInfo beanInfo = Introspector.getBeanInfo(c, Object.class);
             return beanInfo.getPropertyDescriptors();
         }
-        catch (IntrospectionException e)
-        {
+        catch (IntrospectionException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<PropertyMetaData> getPropertys()
-    {
+    public List<PropertyMetaData> getPropertys() {
         return propertys;
     }
 
-    public List<PropertyMetaData> getNotIgnorePropertys()
-    {
+    public List<PropertyMetaData> getNotIgnorePropertys() {
         return propertys.stream().filter(f -> !f.isIgnoreColumn()).collect(Collectors.toList());
     }
 
-    public PropertyMetaData getPropertyMetaDataByFieldName(String key)
-    {
+    public PropertyMetaData getPropertyMetaDataByFieldName(String key) {
         return propertys.stream().filter(f -> f.getProperty().equals(key)).findFirst().orElseThrow(() -> new RuntimeException(key));
     }
 
-    public PropertyMetaData getPropertyMetaDataByColumnName(String asName)
-    {
+    public PropertyMetaData getPropertyMetaDataByColumnName(String asName) {
         return propertys.stream().filter(f -> f.getColumn().equals(asName)).findFirst().orElseThrow(() -> new RuntimeException(asName));
     }
 
-    public PropertyMetaData getPropertyMetaDataByGetter(Method getter)
-    {
+    public PropertyMetaData getPropertyMetaDataByGetter(Method getter) {
         return getPropertyMetaDataByColumnName(getColumnNameByGetter(getter));
     }
 
-    public PropertyMetaData getPropertyMetaDataBySetter(Method setter)
-    {
+    public PropertyMetaData getPropertyMetaDataBySetter(Method setter) {
         return getPropertyMetaDataByColumnName(getColumnNameBySetter(setter));
     }
 
-    public String getColumnNameByGetter(Method getter)
-    {
+    public String getColumnNameByGetter(Method getter) {
         return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new RuntimeException(getter.toGenericString())).getColumn();
     }
 
-    public String getColumnNameBySetter(Method setter)
-    {
+    public String getColumnNameBySetter(Method setter) {
         return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new RuntimeException(setter.toGenericString())).getColumn();
     }
 
-    public PropertyMetaData getPrimary()
-    {
+    public PropertyMetaData getPrimary() {
         return propertys.stream().filter(f -> f.isPrimaryKey()).findFirst().orElse(null);
     }
 
-    public Class<?> getType()
-    {
+    public Class<?> getType() {
         return type;
     }
 
-    public String getTableName()
-    {
+    public String getTableName() {
         return tableName;
     }
 
-    public String getSchema()
-    {
+    public String getSchema() {
         return schema;
     }
 
-    public boolean isEmptyTable()
-    {
+    public boolean isEmptyTable() {
         return isEmptyTable;
     }
 
-    public Constructor<?> getConstructor()
-    {
+    public Constructor<?> getConstructor() {
         return constructor;
     }
 }

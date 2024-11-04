@@ -21,10 +21,8 @@ import org.noear.solon.data.sqlink.base.DbType;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkLimitNotFoundOrderByException extends SQLinkException
-{
-    public SQLinkLimitNotFoundOrderByException(DbType dbType)
-    {
+public class SQLinkLimitNotFoundOrderByException extends SQLinkException {
+    public SQLinkLimitNotFoundOrderByException(DbType dbType) {
         super(dbType.name() + "数据库下进行的limit操作需要声明order by的字段，或者为表类指定一个主键");
     }
 }

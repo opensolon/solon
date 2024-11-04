@@ -27,31 +27,25 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlSetsExpression implements ISqlSetsExpression
-{
+public class SqlSetsExpression implements ISqlSetsExpression {
     private final List<ISqlSetExpression> sets = new ArrayList<>();
 
-    public List<ISqlSetExpression> getSets()
-    {
+    public List<ISqlSetExpression> getSets() {
         return sets;
     }
 
-    public void addSet(ISqlSetExpression set)
-    {
+    public void addSet(ISqlSetExpression set) {
         sets.add(set);
     }
 
-    public void addSet(Collection<ISqlSetExpression> set)
-    {
+    public void addSet(Collection<ISqlSetExpression> set) {
         sets.addAll(set);
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>(getSets().size());
-        for (ISqlSetExpression expression : getSets())
-        {
+        for (ISqlSetExpression expression : getSets()) {
             strings.add(expression.getSqlAndValue(config, values));
         }
         return "SET " + String.join(",", strings);

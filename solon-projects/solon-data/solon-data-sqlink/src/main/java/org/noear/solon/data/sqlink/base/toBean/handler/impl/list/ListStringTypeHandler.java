@@ -28,18 +28,15 @@ import java.util.stream.Collectors;
  * @author kiryu1223
  * @since 3.0
  */
-public class ListStringTypeHandler implements ITypeHandler<List<String>>
-{
+public class ListStringTypeHandler implements ITypeHandler<List<String>> {
     @Override
-    public List<String> getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public List<String> getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         String string = resultSet.getString(index);
         return Arrays.stream(string.split(",")).collect(Collectors.toList());
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, List<String> strings) throws SQLException
-    {
+    public void setValue(PreparedStatement preparedStatement, int index, List<String> strings) throws SQLException {
         preparedStatement.setString(index, String.join(",", strings));
     }
 }

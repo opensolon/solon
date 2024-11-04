@@ -21,7 +21,6 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlKeywords
-{
+public interface ISqlKeywords {
     String getKeyword(IConfig config);
 }

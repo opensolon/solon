@@ -25,24 +25,20 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlJoinsExpression extends ISqlExpression
-{
+public interface ISqlJoinsExpression extends ISqlExpression {
     void addJoin(ISqlJoinExpression join);
 
     List<ISqlJoinExpression> getJoins();
 
-    default boolean isEmpty()
-    {
+    default boolean isEmpty() {
         return getJoins().isEmpty();
     }
 
     @Override
-    default ISqlJoinsExpression copy(IConfig config)
-    {
+    default ISqlJoinsExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlJoinsExpression newJoins = factory.Joins();
-        for (ISqlJoinExpression join : getJoins())
-        {
+        for (ISqlJoinExpression join : getJoins()) {
             newJoins.addJoin(join.copy(config));
         }
         return newJoins;

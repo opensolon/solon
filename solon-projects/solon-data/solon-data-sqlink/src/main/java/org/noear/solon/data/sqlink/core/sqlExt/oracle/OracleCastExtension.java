@@ -30,48 +30,40 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleCastExtension extends BaseSqlExtension
-{
+public class OracleCastExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression expression = args.get(1);
         ISqlTypeExpression typeExpression = (ISqlTypeExpression) expression;
         Class<?> type = typeExpression.getType();
-        if (isBool(type))
-        {
+        if (isBool(type)) {
             templates.add("CAST(");
             sqlExpressions.add(args.get(0));
             templates.add(" AS BOOLEAN)");
         }
-        else if (isDate(type) || isDateTime(type))
-        {
+        else if (isDate(type) || isDateTime(type)) {
             templates.add("CAST(");
             sqlExpressions.add(args.get(0));
             templates.add(" AS DATE)");
         }
-        else if (isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isDecimal(type))
-        {
+        else if (isByte(type) || isShort(type) || isInt(type) || isLong(type) || isFloat(type) || isDouble(type) || isDecimal(type)) {
             templates.add("CAST(");
             sqlExpressions.add(args.get(0));
             templates.add(" AS NUMBER)");
         }
-        else if (isString(type))
-        {
+        else if (isString(type)) {
             templates.add("TO_CHAR(");
             sqlExpressions.add(args.get(0));
             templates.add(")");
         }
-        else if (isChar(type))
-        {
+        else if (isChar(type)) {
             templates.add("SUBSTR(TO_CHAR(");
             sqlExpressions.add(args.get(0));
             templates.add("),1,1)");
         }
-        else
-        {
+        else {
             throw new UnsupportedOperationException("不支持的Java类型:" + type.getName());
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);
