@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
+import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
@@ -23,7 +24,6 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.core.visitor.methods.LogicExpression;
-import io.github.kiryu1223.expressionTree.expressions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,39 +36,31 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGroupKey
  * @author kiryu1223
  * @since 3.0
  */
-public class SelectVisitor extends SqlVisitor
-{
+public class SelectVisitor extends SqlVisitor {
     private final ISqlQueryableExpression queryable;
     //private boolean useUnNameClassOrNotFirst = false;
 
-    public SelectVisitor(IConfig config, ISqlQueryableExpression queryable)
-    {
+    public SelectVisitor(IConfig config, ISqlQueryableExpression queryable) {
         super(config);
         this.queryable = queryable;
     }
 
     @Override
-    public ISqlExpression visit(NewExpression newExpression)
-    {
+    public ISqlExpression visit(NewExpression newExpression) {
         BlockExpression classBody = newExpression.getClassBody();
-        if (classBody == null)
-        {
+        if (classBody == null) {
             return super.visit(newExpression);
         }
-        else
-        {
+        else {
             //useUnNameClassOrNotFirst = true;
             List<ISqlExpression> expressions = new ArrayList<>();
-            for (Expression expression : classBody.getExpressions())
-            {
-                if (expression.getKind() == Kind.Variable)
-                {
+            for (Expression expression : classBody.getExpressions()) {
+                if (expression.getKind() == Kind.Variable) {
                     VariableExpression variable = (VariableExpression) expression;
                     String name = variable.getName();
                     MetaData metaData = MetaDataCache.getMetaData(newExpression.getType());
                     Expression init = variable.getInit();
-                    if (init != null)
-                    {
+                    if (init != null) {
                         ISqlExpression context = visit(variable.getInit());
                         context = boxTheBool(variable.getInit(), context);
                         setAs(expressions, context, name);
@@ -145,8 +137,7 @@ public class SelectVisitor extends SqlVisitor
 //    }
 
     @Override
-    public ISqlExpression visit(FieldSelectExpression fieldSelect)
-    {
+    public ISqlExpression visit(FieldSelectExpression fieldSelect) {
         if (isGroupKey(parameters, fieldSelect)) // g.key
         {
             return queryable.getGroupBy().getColumns().get("key");
@@ -156,69 +147,55 @@ public class SelectVisitor extends SqlVisitor
             Map<String, ISqlExpression> columns = queryable.getGroupBy().getColumns();
             return columns.get(fieldSelect.getField().getName());
         }
-        else
-        {
+        else {
             return super.visit(fieldSelect);
         }
     }
 
     @Override
-    protected SqlVisitor getSelf()
-    {
+    protected SqlVisitor getSelf() {
         return new SelectVisitor(config, queryable);
     }
 
     @Override
-    public ISqlExpression visit(ParameterExpression parameter)
-    {
-        if (parameters.contains(parameter))
-        {
+    public ISqlExpression visit(ParameterExpression parameter) {
+        if (parameters.contains(parameter)) {
             Class<?> type = parameter.getType();
             int index = parameters.indexOf(parameter);
             MetaData metaData = MetaDataCache.getMetaData(type);
             //propertyMetaData.addAll(metaData.getColumns().values());
             List<ISqlExpression> expressions = new ArrayList<>();
-            for (PropertyMetaData pm : metaData.getNotIgnorePropertys())
-            {
+            for (PropertyMetaData pm : metaData.getNotIgnorePropertys()) {
                 expressions.add(factory.column(pm, index));
             }
             return factory.select(expressions, parameter.getType());
         }
-        else
-        {
+        else {
             return super.visit(parameter);
         }
     }
 
-    protected void setAs(List<ISqlExpression> contexts, ISqlExpression expression, String name)
-    {
-        if (expression instanceof ISqlColumnExpression)
-        {
+    protected void setAs(List<ISqlExpression> contexts, ISqlExpression expression, String name) {
+        if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression sqlColumn = (ISqlColumnExpression) expression;
-            if (!sqlColumn.getPropertyMetaData().getColumn().equals(name))
-            {
+            if (!sqlColumn.getPropertyMetaData().getColumn().equals(name)) {
                 contexts.add(factory.as(expression, name));
             }
-            else
-            {
+            else {
                 contexts.add(expression);
             }
         }
-        else
-        {
+        else {
             contexts.add(factory.as(expression, name));
         }
     }
 
-    protected ISqlExpression boxTheBool(Expression init, ISqlExpression result)
-    {
-        if (init instanceof MethodCallExpression)
-        {
+    protected ISqlExpression boxTheBool(Expression init, ISqlExpression result) {
+        if (init instanceof MethodCallExpression) {
             MethodCallExpression methodCall = (MethodCallExpression) init;
             return boxTheBool(isBool(methodCall.getMethod().getReturnType()), result);
         }
-        else if (init instanceof UnaryExpression)
-        {
+        else if (init instanceof UnaryExpression) {
             UnaryExpression unary = (UnaryExpression) init;
             return boxTheBool(unary.getOperatorType() == OperatorType.NOT, result);
         }
@@ -226,11 +203,9 @@ public class SelectVisitor extends SqlVisitor
     }
 
 
-    protected ISqlExpression boxTheBool(boolean condition, ISqlExpression result)
-    {
+    protected ISqlExpression boxTheBool(boolean condition, ISqlExpression result) {
         if (!condition) return result;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
             case Oracle:
                 return LogicExpression.IfExpression(config, result, factory.constString("1"), factory.constString("0"));

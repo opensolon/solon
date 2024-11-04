@@ -24,23 +24,19 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlConstStringExpression implements ISqlConstStringExpression
-{
+public class SqlConstStringExpression implements ISqlConstStringExpression {
     private final String string;
 
-    public SqlConstStringExpression(String string)
-    {
+    public SqlConstStringExpression(String string) {
         this.string = string;
     }
 
-    public String getString()
-    {
+    public String getString() {
         return string;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         return getString();
     }
 }

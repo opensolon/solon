@@ -23,8 +23,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlLimitExpression extends ISqlExpression
-{
+public interface ISqlLimitExpression extends ISqlExpression {
     long getOffset();
 
     long getRows();
@@ -33,24 +32,20 @@ public interface ISqlLimitExpression extends ISqlExpression
 
     void setRows(long rows);
 
-    default boolean onlyHasRows()
-    {
+    default boolean onlyHasRows() {
         return getRows() > 0 && getOffset() <= 0;
     }
 
-    default boolean hasRowsAndOffset()
-    {
+    default boolean hasRowsAndOffset() {
         return getRows() > 0 && getOffset() > 0;
     }
 
-    default boolean hasRowsOrOffset()
-    {
+    default boolean hasRowsOrOffset() {
         return getRows() > 0 || getOffset() > 0;
     }
 
     @Override
-    default ISqlLimitExpression copy(IConfig config)
-    {
+    default ISqlLimitExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.limit(getOffset(), getRows());
     }

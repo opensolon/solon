@@ -29,62 +29,48 @@ import java.util.function.Supplier;
  * @author kiryu1223
  * @since 3.0
  */
-public class AotFastCreator<T> extends DefaultBeanCreator<T>
-{
-    public AotFastCreator(Class<T> target)
-    {
+public class AotFastCreator<T> extends DefaultBeanCreator<T> {
+    public AotFastCreator(Class<T> target) {
         super(target);
     }
 
     @Override
-    public Supplier<T> initBeanCreator(Class<T> target)
-    {
-        if (target.isAnonymousClass())
-        {
+    public Supplier<T> initBeanCreator(Class<T> target) {
+        if (target.isAnonymousClass()) {
             return unsafeCreator(target);
         }
-        else
-        {
+        else {
             // aot下我们不能使用方法句柄
-            if (NativeDetector.inNativeImage())
-            {
+            if (NativeDetector.inNativeImage()) {
                 MetaData metaData = MetaDataCache.getMetaData(target);
                 Constructor<T> constructor = (Constructor<T>) metaData.getConstructor();
                 return () ->
                 {
-                    try
-                    {
+                    try {
                         return constructor.newInstance();
                     }
-                    catch (InstantiationException | IllegalAccessException | InvocationTargetException e)
-                    {
+                    catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                         throw new RuntimeException(e);
                     }
                 };
             }
-            else
-            {
+            else {
                 return methodHandleCreator(target);
             }
         }
     }
 
     @Override
-    protected ISetterCaller<T> initBeanSetter(String property)
-    {
-        if (target.isAnonymousClass())
-        {
+    protected ISetterCaller<T> initBeanSetter(String property) {
+        if (target.isAnonymousClass()) {
             return methodBeanSetter(property);
         }
-        else
-        {
+        else {
             // aot下我们不能使用方法句柄
-            if (NativeDetector.inNativeImage())
-            {
+            if (NativeDetector.inNativeImage()) {
                 return methodBeanSetter(property);
             }
-            else
-            {
+            else {
                 return methodHandleBeanSetter(property);
             }
         }

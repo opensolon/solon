@@ -21,10 +21,8 @@ import io.github.kiryu1223.expressionTree.expressions.Expression;
  * @author kiryu1223
  * @since 3.0
  */
-public class IllegalExpressionException extends RuntimeException
-{
-    public IllegalExpressionException(Expression expression)
-    {
+public class IllegalExpressionException extends RuntimeException {
+    public IllegalExpressionException(Expression expression) {
         super("Unsupported expression\n" + expression);
     }
 }

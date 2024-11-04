@@ -24,24 +24,19 @@ import java.util.Date;
  * @author kiryu1223
  * @since 3.0
  */
-public class UtilDateHandler implements ITypeHandler<Date>
-{
+public class UtilDateHandler implements ITypeHandler<Date> {
     @Override
-    public Date getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Date getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         Timestamp timestamp = resultSet.getTimestamp(index);
         return timestamp == null ? null : Date.from(timestamp.toInstant());
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Date date) throws SQLException
-    {
-        if (date == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Date date) throws SQLException {
+        if (date == null) {
             preparedStatement.setNull(index, JDBCType.TIMESTAMP.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setTimestamp(index, Timestamp.from(date.toInstant()));
         }
     }

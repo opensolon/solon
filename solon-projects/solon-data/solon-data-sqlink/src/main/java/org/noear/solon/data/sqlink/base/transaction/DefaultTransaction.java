@@ -23,88 +23,72 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class DefaultTransaction implements Transaction
-{
+public class DefaultTransaction implements Transaction {
     protected Connection connection;
     protected final DataSource dataSource;
     protected final Integer isolationLevel;
     protected final TransactionManager manager;
+    private boolean autoCommit;
 
-    public DefaultTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager)
-    {
+    public DefaultTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager) {
         this.isolationLevel = isolationLevel;
         this.dataSource = dataSource;
         this.manager = manager;
     }
 
-    public Integer getIsolationLevel()
-    {
+    public Integer getIsolationLevel() {
         return isolationLevel;
     }
 
-    public void commit()
-    {
-        try
-        {
+    public void commit() {
+        try {
             connection.commit();
-            close();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             rollback();
             throw new RuntimeException(e);
         }
-        finally
-        {
-            clear();
-        }
     }
 
-    public void rollback()
-    {
-        try
-        {
+    public void rollback() {
+        try {
             connection.rollback();
-            close();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        finally
-        {
-            clear();
         }
     }
 
     @Override
-    public void close()
-    {
-        try
-        {
-            connection.close();
+    public void close() {
+        try {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        finally
-        {
+        finally {
             clear();
         }
     }
 
-    protected void clear()
-    {
+    protected void clear() {
         manager.remove();
+        try {
+            connection.setAutoCommit(autoCommit);
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public Connection getConnection() throws SQLException
-    {
-        if (connection == null)
-        {
+    public Connection getConnection() throws SQLException {
+        if (connection == null) {
             connection = dataSource.getConnection();
         }
+        autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         if (isolationLevel != null) connection.setTransactionIsolation(isolationLevel);
         return connection;

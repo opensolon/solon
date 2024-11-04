@@ -24,13 +24,11 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlParensExpression extends ISqlExpression
-{
+public interface ISqlParensExpression extends ISqlExpression {
     ISqlExpression getExpression();
 
     @Override
-    default ISqlParensExpression copy(IConfig config)
-    {
+    default ISqlParensExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.parens(getExpression().copy(config));
     }

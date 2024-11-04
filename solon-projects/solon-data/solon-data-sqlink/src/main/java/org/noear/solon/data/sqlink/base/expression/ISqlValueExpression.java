@@ -21,6 +21,5 @@ package org.noear.solon.data.sqlink.base.expression;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlValueExpression extends ISqlExpression
-{
+public interface ISqlValueExpression extends ISqlExpression {
 }

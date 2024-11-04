@@ -31,16 +31,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleQueryableExpression extends SqlQueryableExpression
-{
-    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit)
-    {
+public class OracleQueryableExpression extends SqlQueryableExpression {
+    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         super(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
 //        if (!from.isEmptyTable() && (limit.onlyHasRows() || limit.hasRowsAndOffset()))
 //        {
@@ -59,8 +56,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression
         if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
         String orderBySqlAndValue = orderBy.getSqlAndValue(config, values);
         if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
-        if(!from.isEmptyTable())
-        {
+        if (!from.isEmptyTable()) {
             limitAndOrderCheck(strings, values, config);
             String limitSqlAndValue = limit.getSqlAndValue(config, values);
             if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
@@ -80,14 +76,11 @@ public class OracleQueryableExpression extends SqlQueryableExpression
         return String.join(" ", strings);
     }
 
-    private void limitAndOrderCheck(List<String> strings, List<Object> values, IConfig config)
-    {
-        if (limit.hasRowsOrOffset() && orderBy.isEmpty())
-        {
+    private void limitAndOrderCheck(List<String> strings, List<Object> values, IConfig config) {
+        if (limit.hasRowsOrOffset() && orderBy.isEmpty()) {
             MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
             PropertyMetaData primary = metaData.getPrimary();
-            if (primary == null)
-            {
+            if (primary == null) {
                 throw new SQLinkLimitNotFoundOrderByException(DbType.Oracle);
             }
             SqlExpressionFactory factory = config.getSqlExpressionFactory();

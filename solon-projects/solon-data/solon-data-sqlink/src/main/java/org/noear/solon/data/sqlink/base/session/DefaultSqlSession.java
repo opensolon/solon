@@ -37,190 +37,144 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
  * @author kiryu1223
  * @since 3.0
  */
-public class DefaultSqlSession implements SqlSession
-{
+public class DefaultSqlSession implements SqlSession {
     protected final DataSourceManager dataSourceManager;
     protected final TransactionManager transactionManager;
 
-    public DefaultSqlSession(DataSourceManager dataSourceManager, TransactionManager transactionManager)
-    {
+    public DefaultSqlSession(DataSourceManager dataSourceManager, TransactionManager transactionManager) {
         this.dataSourceManager = dataSourceManager;
         this.transactionManager = transactionManager;
     }
 
-    public <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<Object> values)
-    {
-        if (!transactionManager.currentThreadInTransaction())
-        {
-            try (Connection connection = dataSourceManager.getConnection())
-            {
+    public <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<Object> values) {
+        if (!transactionManager.currentThreadInTransaction()) {
+            try (Connection connection = dataSourceManager.getConnection()) {
                 return executeQuery(connection, func, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        else
-        {
-            try
-            {
+        else {
+            try {
                 Connection connection;
-                if (transactionManager.isOpenTransaction())
-                {
+                if (transactionManager.isOpenTransaction()) {
                     connection = transactionManager.getCurTransaction().getConnection();
                 }
-                else
-                {
+                else {
                     connection = dataSourceManager.getConnection();
                 }
                 return executeQuery(connection, func, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private <R> R executeQuery(Connection connection, Function<ResultSet, R> func, String sql, Collection<Object> values)
-    {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
-        {
+    private <R> R executeQuery(Connection connection, Function<ResultSet, R> func, String sql, Collection<Object> values) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setObjects(preparedStatement, values);
-            try (ResultSet resultSet = preparedStatement.executeQuery())
-            {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return func.invoke(resultSet);
             }
         }
-        catch (SQLException | NoSuchFieldException | InvocationTargetException | IllegalAccessException e)
-        {
+        catch (SQLException | NoSuchFieldException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public long executeInsert(String sql, List<Object> values)
-    {
-        if (!transactionManager.currentThreadInTransaction())
-        {
-            try (Connection connection = dataSourceManager.getConnection())
-            {
+    public long executeInsert(String sql, List<Object> values) {
+        if (!transactionManager.currentThreadInTransaction()) {
+            try (Connection connection = dataSourceManager.getConnection()) {
                 return executeInsert(connection, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        else
-        {
-            try
-            {
+        else {
+            try {
                 Connection connection;
-                if (transactionManager.isOpenTransaction())
-                {
+                if (transactionManager.isOpenTransaction()) {
                     connection = transactionManager.getCurTransaction().getConnection();
                 }
-                else
-                {
+                else {
                     connection = dataSourceManager.getConnection();
                 }
                 return executeInsert(connection, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     @Override
-    public long executeDelete(String sql, List<Object> values)
-    {
+    public long executeDelete(String sql, List<Object> values) {
         return executeUpdate(sql, values);
     }
 
-    public long executeUpdate(String sql, List<Object> values)
-    {
-        if (!transactionManager.currentThreadInTransaction())
-        {
-            try (Connection connection = dataSourceManager.getConnection())
-            {
+    public long executeUpdate(String sql, List<Object> values) {
+        if (!transactionManager.currentThreadInTransaction()) {
+            try (Connection connection = dataSourceManager.getConnection()) {
                 return executeUpdate(connection, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        else
-        {
-            try
-            {
+        else {
+            try {
                 Connection connection;
-                if (transactionManager.isOpenTransaction())
-                {
+                if (transactionManager.isOpenTransaction()) {
                     connection = transactionManager.getCurTransaction().getConnection();
                 }
-                else
-                {
+                else {
                     connection = dataSourceManager.getConnection();
                 }
                 return executeUpdate(connection, sql, values);
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    protected long executeInsert(Connection connection, String sql, Collection<Object> values)
-    {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
-        {
+    protected long executeInsert(Connection connection, String sql, Collection<Object> values) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setObjectsByEntity(preparedStatement, values);
-            if (values.size() == 1)
-            {
+            if (values.size() == 1) {
                 return preparedStatement.executeUpdate();
             }
-            else
-            {
+            else {
                 return preparedStatement.executeBatch().length;
             }
         }
-        catch (SQLException | InvocationTargetException | IllegalAccessException e)
-        {
+        catch (SQLException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected long executeUpdate(Connection connection, String sql, Collection<Object> values, Object... o)
-    {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
-        {
+    protected long executeUpdate(Connection connection, String sql, Collection<Object> values, Object... o) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setObjects(preparedStatement, values);
             return preparedStatement.executeUpdate();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected void setObjects(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException
-    {
+    protected void setObjects(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException {
         int index = 1;
-        for (Object value : values)
-        {
-            if (value instanceof SqlValue)
-            {
+        for (Object value : values) {
+            if (value instanceof SqlValue) {
                 SqlValue sqlValue = (SqlValue) value;
                 sqlValue.preparedStatementSetValue(preparedStatement, index++);
             }
-            else
-            {
+            else {
                 TypeHandlerManager.get(value.getClass()).setValue(preparedStatement, index++, value);
             }
         }
@@ -291,27 +245,21 @@ public class DefaultSqlSession implements SqlSession
 //        }
 //    }
 
-    protected static void setObjectsByEntity(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException, InvocationTargetException, IllegalAccessException
-    {
+    protected static void setObjectsByEntity(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException, InvocationTargetException, IllegalAccessException {
         boolean batch = values.size() > 1;
-        for (Object value : values)
-        {
+        for (Object value : values) {
             int index = 1;
             MetaData metaData = MetaDataCache.getMetaData(value.getClass());
-            for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys())
-            {
-                if (propertyMetaData.isPrimaryKey())
-                {
+            for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys()) {
+                if (propertyMetaData.isPrimaryKey()) {
 
                 }
-                else
-                {
+                else {
                     ITypeHandler<?> typeHandler = propertyMetaData.getTypeHandler();
                     typeHandler.setValue(preparedStatement, index++, cast(propertyMetaData.getGetter().invoke(value)));
                 }
             }
-            if (batch)
-            {
+            if (batch) {
                 preparedStatement.addBatch();
             }
         }

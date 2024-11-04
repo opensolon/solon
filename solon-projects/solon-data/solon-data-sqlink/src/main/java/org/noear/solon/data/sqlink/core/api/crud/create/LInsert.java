@@ -25,29 +25,24 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
  * @author kiryu1223
  * @since 3.0
  */
-public class LInsert<T> extends InsertBase
-{
+public class LInsert<T> extends InsertBase {
     private final Class<T> t;
 
-    public LInsert(IConfig c, Class<T> t)
-    {
+    public LInsert(IConfig c, Class<T> t) {
         super(c);
         this.t = t;
     }
 
-    public LInsert<T> set(@Expr Action1<T> action)
-    {
+    public LInsert<T> set(@Expr Action1<T> action) {
         throw new NotCompiledException();
     }
 
-    public LInsert<T> set(ExprTree<Action1<T>> action)
-    {
+    public LInsert<T> set(ExprTree<Action1<T>> action) {
         throw new NotCompiledException();
     }
 
     @Override
-    protected Class<T> getTableType()
-    {
+    protected Class<T> getTableType() {
         return t;
     }
 }

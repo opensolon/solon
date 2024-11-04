@@ -24,6 +24,5 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
  */
 @Getter
 @Setter
-public abstract class Grouper
-{
+public abstract class Grouper {
 }

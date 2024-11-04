@@ -31,48 +31,38 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqliteAddOrSubDateExtension extends BaseSqlExtension
-{
+public class SqliteAddOrSubDateExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         boolean isPlus = sqlFunc.getName().equals("addDate");
-        if (sqlFunc.getParameterTypes()[0] == LocalDate.class)
-        {
+        if (sqlFunc.getParameterTypes()[0] == LocalDate.class) {
             templates.add("DATE(");
         }
-        else
-        {
+        else {
             templates.add("DATETIME(");
         }
         sqlExpressions.add(args.get(0));
-        if (sqlFunc.getParameterCount() == 2)
-        {
+        if (sqlFunc.getParameterCount() == 2) {
             ISqlExpression num = args.get(1);
-            if (num instanceof ISqlSingleValueExpression)
-            {
+            if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
                 templates.add(",'" + (isPlus ? "" : "-") + valueExpression.getValue() + " DAY')");
             }
-            else
-            {
+            else {
                 throw new SQLinkIntervalException(DbType.SQLite);
             }
         }
-        else
-        {
+        else {
             ISqlExpression num = args.get(2);
-            if (num instanceof ISqlSingleValueExpression)
-            {
+            if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
-                templates.add(",'" + (isPlus ? "" : "-") + valueExpression.getValue()+" ");
+                templates.add(",'" + (isPlus ? "" : "-") + valueExpression.getValue() + " ");
                 sqlExpressions.add(args.get(1));
                 templates.add("')");
             }
-            else
-            {
+            else {
                 throw new SQLinkIntervalException(DbType.SQLite);
             }
         }

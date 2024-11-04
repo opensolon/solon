@@ -29,14 +29,11 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class StringMethods
-{
-    public static ISqlBinaryExpression contains(IConfig config, ISqlExpression left, ISqlExpression right)
-    {
+public class StringMethods {
+    public static ISqlBinaryExpression contains(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
             case SQLite:
                 functions = Arrays.asList("('%'||", "||'%')");
@@ -49,13 +46,11 @@ public class StringMethods
         return factory.binary(SqlOperator.LIKE, left, function);
     }
 
-    public static ISqlBinaryExpression startsWith(IConfig config, ISqlExpression left, ISqlExpression right)
-    {
+    public static ISqlBinaryExpression startsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> args = Collections.singletonList(right);
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLite:
                 functions = Arrays.asList("(", "||'%')");
                 break;
@@ -66,13 +61,11 @@ public class StringMethods
         return factory.binary(SqlOperator.LIKE, left, factory.template(functions, args));
     }
 
-    public static ISqlBinaryExpression endsWith(IConfig config, ISqlExpression left, ISqlExpression right)
-    {
+    public static ISqlBinaryExpression endsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> args = Collections.singletonList(right);
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLite:
                 functions = Arrays.asList("('%'||", ")");
                 break;
@@ -83,12 +76,10 @@ public class StringMethods
         return factory.binary(SqlOperator.LIKE, left, factory.template(functions, args));
     }
 
-    public static ISqlTemplateExpression length(IConfig config, ISqlExpression thiz)
-    {
+    public static ISqlTemplateExpression length(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 functions = Arrays.asList("LEN(", ")");
                 break;
@@ -107,26 +98,22 @@ public class StringMethods
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
-    public static ISqlTemplateExpression toUpperCase(IConfig config, ISqlExpression thiz)
-    {
+    public static ISqlTemplateExpression toUpperCase(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("UPPER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
-    public static ISqlTemplateExpression toLowerCase(IConfig config, ISqlExpression thiz)
-    {
+    public static ISqlTemplateExpression toLowerCase(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("LOWER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
-    public static ISqlTemplateExpression concat(IConfig config, ISqlExpression left, ISqlExpression right)
-    {
+    public static ISqlTemplateExpression concat(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLite:
                 functions = Arrays.asList("(", "||", ")");
                 break;
@@ -136,18 +123,15 @@ public class StringMethods
         return factory.template(functions, Arrays.asList(left, right));
     }
 
-    public static ISqlTemplateExpression trim(IConfig config, ISqlExpression thiz)
-    {
+    public static ISqlTemplateExpression trim(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("TRIM(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
-    public static ISqlExpression isEmpty(IConfig config, ISqlExpression thiz)
-    {
+    public static ISqlExpression isEmpty(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 return factory.parens(factory.binary(SqlOperator.EQ, factory.template(Arrays.asList("DATALENGTH(", ")"), Collections.singletonList(thiz)), factory.constString("0")));
             default:
@@ -163,13 +147,11 @@ public class StringMethods
 //        }
     }
 
-    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr)
-    {
+    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 functions = Arrays.asList("CHARINDEX(", ",", ")");
                 sqlExpressions = Arrays.asList(subStr, thisStr);
@@ -185,13 +167,11 @@ public class StringMethods
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr, ISqlExpression fromIndex)
-    {
+    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr, ISqlExpression fromIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 functions = Arrays.asList("CHARINDEX(", ",", ",", ")");
                 sqlExpressions = Arrays.asList(subStr, thisStr, fromIndex);
@@ -215,21 +195,18 @@ public class StringMethods
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression replace(IConfig config, ISqlExpression thisStr, ISqlExpression oldStr, ISqlExpression newStr)
-    {
+    public static ISqlTemplateExpression replace(IConfig config, ISqlExpression thisStr, ISqlExpression oldStr, ISqlExpression newStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("REPLACE(", ",", ",", ")");
         List<ISqlExpression> sqlExpressions = Arrays.asList(thisStr, oldStr, newStr);
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex)
-    {
+    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 functions = Arrays.asList("SUBSTRING(", ",", ",LEN(", ") - (", " - 1))");
                 sqlExpressions = Arrays.asList(thisStr, beginIndex, thisStr, beginIndex);
@@ -242,13 +219,11 @@ public class StringMethods
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex, ISqlExpression endIndex)
-    {
+    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex, ISqlExpression endIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions = Arrays.asList(thisStr, beginIndex, endIndex);
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case SQLServer:
                 functions = Arrays.asList("SUBSTRING(", ",", ",", ")");
                 break;
@@ -258,21 +233,17 @@ public class StringMethods
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression joinArray(IConfig config, ISqlExpression delimiter, List<ISqlExpression> elements)
-    {
+    public static ISqlTemplateExpression joinArray(IConfig config, ISqlExpression delimiter, List<ISqlExpression> elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>(1 + elements.size());
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
             case SQLite:
                 functions.add("(");
-                for (int i = 0; i < elements.size(); i++)
-                {
+                for (int i = 0; i < elements.size(); i++) {
                     sqlExpressions.add(elements.get(i));
-                    if (i < elements.size() - 1)
-                    {
+                    if (i < elements.size() - 1) {
                         functions.add("||");
                         sqlExpressions.add(delimiter);
                         functions.add("||");
@@ -285,8 +256,7 @@ public class StringMethods
                 sqlExpressions.addAll(elements);
                 functions.add("CONCAT_WS(");
                 functions.add(",");
-                for (int i = 0; i < sqlExpressions.size(); i++)
-                {
+                for (int i = 0; i < sqlExpressions.size(); i++) {
                     if (i < elements.size() - 1) functions.add(",");
                 }
                 functions.add(")");
@@ -294,25 +264,20 @@ public class StringMethods
         return factory.template(functions, sqlExpressions);
     }
 
-    public static ISqlTemplateExpression joinList(IConfig config, ISqlExpression delimiter, ISqlExpression elements)
-    {
+    public static ISqlTemplateExpression joinList(IConfig config, ISqlExpression delimiter, ISqlExpression elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
-        if (elements instanceof ISqlCollectedValueExpression)
-        {
-            if (config.getDbType() == DbType.Oracle || config.getDbType() == DbType.SQLite)
-            {
+        if (elements instanceof ISqlCollectedValueExpression) {
+            if (config.getDbType() == DbType.Oracle || config.getDbType() == DbType.SQLite) {
                 ISqlCollectedValueExpression expression = (ISqlCollectedValueExpression) elements;
                 List<Object> collection = new ArrayList<>(expression.getCollection());
                 functions = new ArrayList<>(collection.size() * 2);
                 sqlExpressions = new ArrayList<>(collection.size() * 2);
                 functions.add("(");
-                for (int i = 0; i < collection.size(); i++)
-                {
+                for (int i = 0; i < collection.size(); i++) {
                     sqlExpressions.add(factory.value(collection.get(i)));
-                    if (i < collection.size() - 1)
-                    {
+                    if (i < collection.size() - 1) {
                         functions.add("||");
                         sqlExpressions.add(delimiter);
                         functions.add("||");
@@ -320,18 +285,15 @@ public class StringMethods
                 }
                 functions.add(")");
             }
-            else
-            {
+            else {
                 functions = new ArrayList<>();
                 sqlExpressions = Arrays.asList(delimiter, elements);
             }
         }
-        else
-        {
+        else {
             throw new SQLinkException("String.join()的第二个参数必须是java中能获取到的");
         }
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
             case SQLite:
                 break;

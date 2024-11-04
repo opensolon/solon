@@ -25,23 +25,19 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlParensExpression implements ISqlParensExpression
-{
+public class SqlParensExpression implements ISqlParensExpression {
     private final ISqlExpression expression;
 
-    public SqlParensExpression(ISqlExpression expression)
-    {
+    public SqlParensExpression(ISqlExpression expression) {
         this.expression = expression;
     }
 
-    public ISqlExpression getExpression()
-    {
+    public ISqlExpression getExpression() {
         return expression;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         return "(" + getExpression().getSqlAndValue(config, values) + ")";
     }
 }

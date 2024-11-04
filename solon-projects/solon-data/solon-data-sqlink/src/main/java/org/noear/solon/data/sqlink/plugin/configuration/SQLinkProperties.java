@@ -24,59 +24,60 @@ import org.noear.solon.data.sqlink.core.Option;
  * @since 3.0
  */
 @Configuration
-public class SQLinkProperties
-{
-    private DbType dbType = DbType.MySQL;
-    private String dsName = "";
+public class SQLinkProperties {
+    private DbType dbType;
     private boolean printSql = true;
     private boolean printBatch = false;
+    private boolean ignoreUpdateNoWhere = false;
+    private boolean ignoreDeleteNoWhere = false;
 
-    public DbType getDbType()
-    {
+    public DbType getDbType() {
         return dbType;
     }
 
-    public void setDbType(DbType dbType)
-    {
+    public void setDbType(DbType dbType) {
         this.dbType = dbType;
     }
 
-    public boolean isPrintSql()
-    {
+    public boolean isPrintSql() {
         return printSql;
     }
 
-    public void setPrintSql(boolean printSql)
-    {
+    public void setPrintSql(boolean printSql) {
         this.printSql = printSql;
     }
 
-    public boolean isPrintBatch()
-    {
+    public boolean isPrintBatch() {
         return printBatch;
     }
 
-    public void setPrintBatch(boolean printBatch)
-    {
+    public void setPrintBatch(boolean printBatch) {
         this.printBatch = printBatch;
     }
 
-    public String getDsName()
-    {
-        return dsName;
+    public boolean isIgnoreUpdateNoWhere() {
+        return ignoreUpdateNoWhere;
     }
 
-    public void setDsName(String dsName)
-    {
-        this.dsName = dsName;
+    public void setIgnoreUpdateNoWhere(boolean ignoreUpdateNoWhere) {
+        this.ignoreUpdateNoWhere = ignoreUpdateNoWhere;
     }
 
-    public Option bulidOption()
-    {
+    public boolean isIgnoreDeleteNoWhere() {
+        return ignoreDeleteNoWhere;
+    }
+
+    public void setIgnoreDeleteNoWhere(boolean ignoreDeleteNoWhere) {
+        this.ignoreDeleteNoWhere = ignoreDeleteNoWhere;
+    }
+
+    public Option bulidOption() {
         Option option = new Option();
         option.setPrintSql(isPrintSql());
         //option.setPrintUseDs(isPrintUseDs());
         option.setPrintBatch(isPrintBatch());
+        option.setIgnoreUpdateNoWhere(isIgnoreUpdateNoWhere());
+        option.setIgnoreDeleteNoWhere(isIgnoreDeleteNoWhere());
         return option;
     }
 }

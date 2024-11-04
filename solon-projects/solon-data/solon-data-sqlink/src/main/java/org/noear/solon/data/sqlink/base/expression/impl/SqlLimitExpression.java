@@ -24,41 +24,32 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlLimitExpression implements ISqlLimitExpression
-{
+public class SqlLimitExpression implements ISqlLimitExpression {
     protected long offset, rows;
 
-    public long getOffset()
-    {
+    public long getOffset() {
         return offset;
     }
 
-    public long getRows()
-    {
+    public long getRows() {
         return rows;
     }
 
-    public void setOffset(long offset)
-    {
+    public void setOffset(long offset) {
         this.offset = offset;
     }
 
-    public void setRows(long rows)
-    {
+    public void setRows(long rows) {
         this.rows = rows;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
-        if (getRows() > 0)
-        {
-            if (getOffset() > 0)
-            {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
+        if (getRows() > 0) {
+            if (getOffset() > 0) {
                 return String.format("LIMIT %d OFFSET %d", getRows(), getOffset());
             }
-            else
-            {
+            else {
                 return String.format("LIMIT %d", getRows());
             }
         }

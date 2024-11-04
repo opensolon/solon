@@ -26,32 +26,27 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlAsExpression implements ISqlAsExpression
-{
+public class SqlAsExpression implements ISqlAsExpression {
     private final ISqlExpression expression;
     private final String asName;
 
-    public SqlAsExpression(ISqlExpression expression, String asName)
-    {
+    public SqlAsExpression(ISqlExpression expression, String asName) {
         this.expression = expression;
         this.asName = asName;
     }
 
     @Override
-    public ISqlExpression getExpression()
-    {
+    public ISqlExpression getExpression() {
         return expression;
     }
 
     @Override
-    public String getAsName()
-    {
+    public String getAsName() {
         return asName;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         IDialect dialect = config.getDisambiguation();
         return getExpression().getSqlAndValue(config, values) + " AS " + dialect.disambiguation(getAsName());
     }

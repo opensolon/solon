@@ -30,11 +30,9 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqliteCastExtension extends BaseSqlExtension
-{
+public class SqliteCastExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression expression = args.get(1);
@@ -43,20 +41,16 @@ public class SqliteCastExtension extends BaseSqlExtension
         templates.add("CAST(");
         sqlExpressions.add(args.get(0));
         String unit;
-        if (isChar(type) || isString(type))
-        {
+        if (isChar(type) || isString(type)) {
             unit = "TEXT";
         }
-        else if (isByte(type) || isShort(type) || isInt(type) || isLong(type))
-        {
+        else if (isByte(type) || isShort(type) || isInt(type) || isLong(type)) {
             unit = "INTEGER";
         }
-        else if (isFloat(type) || isDouble(type) || isDecimal(type))
-        {
+        else if (isFloat(type) || isDouble(type) || isDecimal(type)) {
             unit = "REAL";
         }
-        else
-        {
+        else {
             throw new UnsupportedOperationException("不支持的Java类型:" + type.getName());
         }
         templates.add(" AS " + unit + ")");

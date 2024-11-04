@@ -27,8 +27,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlSetsExpression extends ISqlExpression
-{
+public interface ISqlSetsExpression extends ISqlExpression {
     List<ISqlSetExpression> getSets();
 
     void addSet(ISqlSetExpression sqlSetExpression);
@@ -36,12 +35,10 @@ public interface ISqlSetsExpression extends ISqlExpression
     void addSet(Collection<ISqlSetExpression> set);
 
     @Override
-    default ISqlSetsExpression copy(IConfig config)
-    {
+    default ISqlSetsExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlSetsExpression newSets = factory.sets();
-        for (ISqlSetExpression set : getSets())
-        {
+        for (ISqlSetExpression set : getSets()) {
             newSets.addSet(set.copy(config));
         }
         return newSets;

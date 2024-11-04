@@ -19,10 +19,8 @@ package org.noear.solon.data.sqlink.core.exception;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkInvalidOperationException extends SQLinkException
-{
-    public SQLinkInvalidOperationException(String message)
-    {
+public class SQLinkInvalidOperationException extends SQLinkException {
+    public SQLinkInvalidOperationException(String message) {
         super(message);
     }
 }

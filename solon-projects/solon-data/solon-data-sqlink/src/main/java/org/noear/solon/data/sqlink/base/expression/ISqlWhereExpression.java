@@ -23,10 +23,8 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlWhereExpression extends ISqlExpression
-{
-    default boolean isEmpty()
-    {
+public interface ISqlWhereExpression extends ISqlExpression {
+    default boolean isEmpty() {
         return getConditions().isEmpty();
     }
 
@@ -35,8 +33,7 @@ public interface ISqlWhereExpression extends ISqlExpression
     void addCondition(ISqlExpression condition);
 
     @Override
-    default ISqlWhereExpression copy(IConfig config)
-    {
+    default ISqlWhereExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.where(getConditions().copy(config));
     }

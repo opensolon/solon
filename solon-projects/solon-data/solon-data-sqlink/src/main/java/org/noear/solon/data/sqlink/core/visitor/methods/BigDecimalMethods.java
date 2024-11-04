@@ -26,15 +26,12 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class BigDecimalMethods
-{
-    public static ISqlExpression remainder(IConfig config, ISqlExpression left, ISqlExpression right)
-    {
+public class BigDecimalMethods {
+    public static ISqlExpression remainder(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> sqlExpressions;
-        switch (config.getDbType())
-        {
+        switch (config.getDbType()) {
             case Oracle:
                 function = Arrays.asList("MOD(", ",", ")");
                 break;

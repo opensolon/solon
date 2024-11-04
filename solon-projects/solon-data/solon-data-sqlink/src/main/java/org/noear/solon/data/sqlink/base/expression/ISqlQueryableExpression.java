@@ -29,11 +29,9 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlQueryableExpression extends ISqlTableExpression
-{
+public interface ISqlQueryableExpression extends ISqlTableExpression {
     @Override
-    default ISqlQueryableExpression copy(IConfig config)
-    {
+    default ISqlQueryableExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
     }
@@ -77,28 +75,21 @@ public interface ISqlQueryableExpression extends ISqlTableExpression
 
     List<Class<?>> getOrderedClass();
 
-    default List<PropertyMetaData> getMappingData(IConfig config)
-    {
+    default List<PropertyMetaData> getMappingData(IConfig config) {
         List<Class<?>> orderedClass = getOrderedClass();
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         Class<?> target = getSelect().getTarget();
         MetaData metaData = MetaDataCache.getMetaData(target);
-        if (orderedClass.contains(target))
-        {
+        if (orderedClass.contains(target)) {
             return metaData.getNotIgnorePropertys();
         }
-        else
-        {
+        else {
             List<PropertyMetaData> propertyMetaDataList = new ArrayList<>();
-            for (PropertyMetaData sel : metaData.getNotIgnorePropertys())
-            {
+            for (PropertyMetaData sel : metaData.getNotIgnorePropertys()) {
                 GOTO:
-                for (MetaData data : MetaDataCache.getMetaData(getOrderedClass()))
-                {
-                    for (PropertyMetaData noi : data.getNotIgnorePropertys())
-                    {
-                        if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType()))
-                        {
+                for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
+                    for (PropertyMetaData noi : data.getNotIgnorePropertys()) {
+                        if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
                             propertyMetaDataList.add(sel);
                             break GOTO;
                         }

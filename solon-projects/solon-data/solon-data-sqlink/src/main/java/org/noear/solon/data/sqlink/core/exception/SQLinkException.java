@@ -19,29 +19,23 @@ package org.noear.solon.data.sqlink.core.exception;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkException extends RuntimeException
-{
-    public SQLinkException()
-    {
+public class SQLinkException extends RuntimeException {
+    public SQLinkException() {
     }
 
-    public SQLinkException(String message)
-    {
+    public SQLinkException(String message) {
         super(message);
     }
 
-    public SQLinkException(String message, Throwable cause)
-    {
+    public SQLinkException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public SQLinkException(Throwable cause)
-    {
+    public SQLinkException(Throwable cause) {
         super(cause);
     }
 
-    public SQLinkException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
-    {
+    public SQLinkException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

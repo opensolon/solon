@@ -26,15 +26,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlTemplateExpression extends ISqlExpression
-{
+public interface ISqlTemplateExpression extends ISqlExpression {
     List<String> getFunctions();
 
     List<? extends ISqlExpression> getExpressions();
 
     @Override
-    default ISqlTemplateExpression copy(IConfig config)
-    {
+    default ISqlTemplateExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> newFunctions = new ArrayList<>(getFunctions());
         List<? extends ISqlExpression> newExpressions = new ArrayList<>(getExpressions());

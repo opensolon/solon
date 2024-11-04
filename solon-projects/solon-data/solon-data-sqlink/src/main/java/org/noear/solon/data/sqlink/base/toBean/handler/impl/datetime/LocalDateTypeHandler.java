@@ -24,24 +24,19 @@ import java.time.LocalDate;
  * @author kiryu1223
  * @since 3.0
  */
-public class LocalDateTypeHandler implements ITypeHandler<LocalDate>
-{
+public class LocalDateTypeHandler implements ITypeHandler<LocalDate> {
     @Override
-    public LocalDate getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public LocalDate getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         Date date = resultSet.getDate(index);
         return date == null ? null : date.toLocalDate();
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, LocalDate localDate) throws SQLException
-    {
-        if (localDate == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, LocalDate localDate) throws SQLException {
+        if (localDate == null) {
             preparedStatement.setNull(index, JDBCType.DATE.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setDate(index, Date.valueOf(localDate));
         }
     }

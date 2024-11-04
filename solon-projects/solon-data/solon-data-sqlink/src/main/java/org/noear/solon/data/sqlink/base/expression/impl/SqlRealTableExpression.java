@@ -15,24 +15,40 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
+import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
+import org.noear.solon.data.sqlink.base.metaData.MetaData;
+import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+
+import java.util.List;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlRealTableExpression extends SqlTableExpression implements ISqlRealTableExpression
-{
+public class SqlRealTableExpression extends SqlTableExpression implements ISqlRealTableExpression {
     private final Class<?> tableClass;
 
-    SqlRealTableExpression(Class<?> tableClass)
-    {
+    SqlRealTableExpression(Class<?> tableClass) {
         this.tableClass = tableClass;
     }
 
     @Override
-    public Class<?> getTableClass()
-    {
+    public Class<?> getTableClass() {
         return tableClass;
+    }
+
+    @Override
+    public String getSqlAndValue(IConfig config, List<Object> values) {
+        String fullName = "";
+        MetaData metaData = MetaDataCache.getMetaData(getTableClass());
+        IDialect dbConfig = config.getDisambiguation();
+        String schema = metaData.getSchema();
+        if (!schema.isEmpty()) {
+            fullName += dbConfig.disambiguationTableName(schema) + ".";
+        }
+        fullName += dbConfig.disambiguationTableName(metaData.getTableName());
+        return fullName;
     }
 }

@@ -20,24 +20,20 @@ import org.noear.solon.data.sqlink.base.expression.ISqlTypeExpression;
 
 import java.util.List;
 
-public class SqlTypeExpression implements ISqlTypeExpression
-{
+public class SqlTypeExpression implements ISqlTypeExpression {
     private final Class<?> type;
 
-    public SqlTypeExpression(Class<?> type)
-    {
+    public SqlTypeExpression(Class<?> type) {
         this.type = type;
     }
 
     @Override
-    public Class<?> getType()
-    {
+    public Class<?> getType() {
         return type;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         return type.getSimpleName();
     }
 }

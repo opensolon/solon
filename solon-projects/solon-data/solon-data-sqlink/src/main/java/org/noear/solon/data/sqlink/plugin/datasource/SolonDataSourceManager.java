@@ -26,42 +26,38 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class SolonDataSourceManager implements DataSourceManager
-{
+public class SolonDataSourceManager implements DataSourceManager {
     private final DataSource dataSource;
 
-    public SolonDataSourceManager(DataSource dataSource)
-    {
+    public SolonDataSourceManager(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Connection getConnection() throws SQLException
-    {
+    public Connection getConnection() throws SQLException {
         return TranUtils.getConnection(getDataSource());
     }
 
     @Override
-    public DataSource getDataSource()
-    {
+    public DataSource getDataSource() {
         return dataSource;
     }
 
-    @Override
-    public void useDs(String key)
-    {
-
-    }
-
-    @Override
-    public void useDefDs()
-    {
-
-    }
-
-    @Override
-    public String getDsKey()
-    {
-        return "";
-    }
+//    @Override
+//    public void useDs(String key)
+//    {
+//
+//    }
+//
+//    @Override
+//    public void useDefDs()
+//    {
+//
+//    }
+//
+//    @Override
+//    public String getDsKey()
+//    {
+//        return "";
+//    }
 }

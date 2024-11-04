@@ -19,19 +19,35 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * 事务控制器
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public interface Transaction extends AutoCloseable
-{
+public interface Transaction extends AutoCloseable {
+    /**
+     * 提交事务
+     */
     void commit();
 
+    /**
+     * 回滚事务
+     */
     void rollback();
 
+    /**
+     * 关闭事务
+     */
     @Override
     void close();
 
+    /**
+     * 获取连接对象
+     */
     Connection getConnection() throws SQLException;
 
+    /**
+     * 获取事务级别
+     */
     Integer getIsolationLevel();
 }

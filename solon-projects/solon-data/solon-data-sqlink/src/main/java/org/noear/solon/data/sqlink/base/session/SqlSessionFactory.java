@@ -19,7 +19,6 @@ package org.noear.solon.data.sqlink.base.session;
  * @author kiryu1223
  * @since 3.0
  */
-public interface SqlSessionFactory
-{
+public interface SqlSessionFactory {
     SqlSession getSession();
 }

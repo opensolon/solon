@@ -23,23 +23,18 @@ import java.sql.*;
  * @author kiryu1223
  * @since 3.0
  */
-public class DateTypeHandler implements ITypeHandler<Date>
-{
+public class DateTypeHandler implements ITypeHandler<Date> {
     @Override
-    public Date getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Date getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         return resultSet.getDate(index);
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Date date) throws SQLException
-    {
-        if (date == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Date date) throws SQLException {
+        if (date == null) {
             preparedStatement.setNull(index, JDBCType.DATE.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setDate(index, date);
         }
     }

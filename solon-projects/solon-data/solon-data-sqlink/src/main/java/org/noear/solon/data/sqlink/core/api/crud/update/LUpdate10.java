@@ -26,10 +26,8 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
  * @author kiryu1223
  * @since 3.0
  */
-public class LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends UpdateBase
-{
-    public LUpdate10(UpdateSqlBuilder sqlBuilder)
-    {
+public class LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends UpdateBase {
+    public LUpdate10(UpdateSqlBuilder sqlBuilder) {
         super(sqlBuilder);
     }
 
@@ -42,13 +40,11 @@ public class LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends UpdateBa
      * @param action lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(@Expr Action10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action)
-    {
+    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(@Expr Action10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action) {
         throw new NotCompiledException();
     }
 
-    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(ExprTree<Action10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expr)
-    {
+    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> set(ExprTree<Action10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expr) {
         set(expr.getTree());
         return this;
     }
@@ -63,13 +59,11 @@ public class LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends UpdateBa
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> where(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean> func)
-    {
+    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> where(@Expr Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> where(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean>> expr)
-    {
+    public LUpdate10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> where(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean>> expr) {
         where(expr.getTree());
         return this;
     }

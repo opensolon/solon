@@ -25,12 +25,10 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlFromExpression extends ISqlExpression
-{
+public interface ISqlFromExpression extends ISqlExpression {
     ISqlTableExpression getSqlTableExpression();
 
-    default boolean isEmptyTable()
-    {
+    default boolean isEmptyTable() {
         Class<?> tableClass = getSqlTableExpression().getTableClass();
         MetaData metaData = MetaDataCache.getMetaData(tableClass);
         return metaData.isEmptyTable();
@@ -39,8 +37,7 @@ public interface ISqlFromExpression extends ISqlExpression
     int getIndex();
 
     @Override
-    default ISqlFromExpression copy(IConfig config)
-    {
+    default ISqlFromExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.from(getSqlTableExpression().copy(config), getIndex());
     }

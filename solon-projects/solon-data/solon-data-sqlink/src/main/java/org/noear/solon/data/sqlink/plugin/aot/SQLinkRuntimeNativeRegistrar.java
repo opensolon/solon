@@ -32,7 +32,6 @@ import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,11 +39,9 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
-{
+public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
     @Override
-    public void register(AppContext context, RuntimeNativeMetadata metadata)
-    {
+    public void register(AppContext context, RuntimeNativeMetadata metadata) {
         //配置文件
         metadata.registerReflection(SQLinkProperties.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //空表
@@ -117,18 +114,14 @@ public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar
 //        }
 //    }
 
-    private void registerSqlType(RuntimeNativeMetadata metadata, List<Class<? extends SqlTypes<?>>> sqlTypes)
-    {
-        for (Class<? extends SqlTypes<?>> sqlType : sqlTypes)
-        {
+    private void registerSqlType(RuntimeNativeMetadata metadata, List<Class<? extends SqlTypes<?>>> sqlTypes) {
+        for (Class<? extends SqlTypes<?>> sqlType : sqlTypes) {
             metadata.registerReflection(sqlType, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
         }
     }
 
-    private void registerTypeHandler(RuntimeNativeMetadata metadata, List<Class<? extends ITypeHandler>> typeHandlers)
-    {
-        for (Class<? extends ITypeHandler> typeHandler : typeHandlers)
-        {
+    private void registerTypeHandler(RuntimeNativeMetadata metadata, List<Class<? extends ITypeHandler>> typeHandlers) {
+        for (Class<? extends ITypeHandler> typeHandler : typeHandlers) {
             metadata.registerReflection(typeHandler, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
         }
     }

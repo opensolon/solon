@@ -27,18 +27,14 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class SolonTransaction extends DefaultTransaction
-{
-    public SolonTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager)
-    {
-        super(isolationLevel,dataSource,manager);
+public class SolonTransaction extends DefaultTransaction {
+    public SolonTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager) {
+        super(isolationLevel, dataSource, manager);
     }
 
     @Override
-    public Connection getConnection() throws SQLException
-    {
-        if (connection == null)
-        {
+    public Connection getConnection() throws SQLException {
+        if (connection == null) {
             connection = TranUtils.getConnection(dataSource);
         }
         connection.setAutoCommit(false);

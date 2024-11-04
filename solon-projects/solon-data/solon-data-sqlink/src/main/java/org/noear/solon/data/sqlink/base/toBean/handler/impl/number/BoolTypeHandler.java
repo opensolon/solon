@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class BoolTypeHandler implements ITypeHandler<Boolean>
-{
+public class BoolTypeHandler implements ITypeHandler<Boolean> {
     @Override
-    public Boolean getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Boolean getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         boolean aBoolean = resultSet.getBoolean(index);
         return resultSet.wasNull() ? null : aBoolean;
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Boolean aBoolean) throws SQLException
-    {
-        if (aBoolean == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Boolean aBoolean) throws SQLException {
+        if (aBoolean == null) {
             preparedStatement.setNull(index, JDBCType.BOOLEAN.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setBoolean(index, aBoolean);
         }
     }

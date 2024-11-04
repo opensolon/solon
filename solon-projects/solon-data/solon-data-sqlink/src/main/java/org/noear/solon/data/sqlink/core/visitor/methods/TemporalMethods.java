@@ -24,10 +24,8 @@ import org.noear.solon.data.sqlink.base.expression.SqlOperator;
  * @author kiryu1223
  * @since 3.0
  */
-public class TemporalMethods
-{
-    public static ISqlExpression isAfter(IConfig config, ISqlExpression thiz, ISqlExpression that)
-    {
+public class TemporalMethods {
+    public static ISqlExpression isAfter(IConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.GT, thiz, that);
 //        switch (config.getDbType())
@@ -39,8 +37,7 @@ public class TemporalMethods
 //        }
     }
 
-    public static ISqlExpression isBefore(IConfig config, ISqlExpression thiz, ISqlExpression that)
-    {
+    public static ISqlExpression isBefore(IConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.LT, thiz, that);
 //        switch (config.getDbType())
@@ -52,8 +49,7 @@ public class TemporalMethods
 //        }
     }
 
-    public static ISqlExpression isEqual(IConfig config, ISqlExpression thiz, ISqlExpression that)
-    {
+    public static ISqlExpression isEqual(IConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.EQ, thiz, that);
 //        switch (config.getDbType())

@@ -26,8 +26,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Repeatable(SqlExtensionExpressions.class)
-public @interface SqlExtensionExpression
-{
+public @interface SqlExtensionExpression {
     DbType dbType() default DbType.Any;
 
     String template();

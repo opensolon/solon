@@ -21,8 +21,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public enum SqlTimeUnit implements ISqlKeywords
-{
+public enum SqlTimeUnit implements ISqlKeywords {
     YEAR,
     MONTH,
     WEEK,
@@ -36,8 +35,7 @@ public enum SqlTimeUnit implements ISqlKeywords
     ;
 
     @Override
-    public String getKeyword(IConfig config)
-    {
+    public String getKeyword(IConfig config) {
         return name();
     }
 }

@@ -21,8 +21,7 @@ package org.noear.solon.data.sqlink.base.annotation;
  * @author kiryu1223
  * @since 3.0
  */
-public enum RelationType
-{
+public enum RelationType {
     /**
      * 一对一
      */

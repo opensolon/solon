@@ -25,24 +25,20 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlOrderByExpression extends ISqlExpression
-{
+public interface ISqlOrderByExpression extends ISqlExpression {
     void addOrder(ISqlOrderExpression sqlOrder);
 
     List<ISqlOrderExpression> getSqlOrders();
 
-    default boolean isEmpty()
-    {
+    default boolean isEmpty() {
         return getSqlOrders().isEmpty();
     }
 
     @Override
-    default ISqlOrderByExpression copy(IConfig config)
-    {
+    default ISqlOrderByExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlOrderByExpression sqlOrderByExpression = factory.orderBy();
-        for (ISqlOrderExpression sqlOrder : getSqlOrders())
-        {
+        for (ISqlOrderExpression sqlOrder : getSqlOrders()) {
             sqlOrderByExpression.addOrder(sqlOrder.copy(config));
         }
         return sqlOrderByExpression;

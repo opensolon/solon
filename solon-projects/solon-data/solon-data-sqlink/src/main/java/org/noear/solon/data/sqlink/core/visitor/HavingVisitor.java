@@ -15,11 +15,11 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
+import io.github.kiryu1223.expressionTree.expressions.FieldSelectExpression;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlGroupByExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
-import io.github.kiryu1223.expressionTree.expressions.FieldSelectExpression;
 
 import java.util.Map;
 
@@ -27,19 +27,16 @@ import java.util.Map;
  * @author kiryu1223
  * @since 3.0
  */
-public class HavingVisitor extends SqlVisitor
-{
+public class HavingVisitor extends SqlVisitor {
     private final ISqlQueryableExpression queryable;
 
-    public HavingVisitor(IConfig config, ISqlQueryableExpression queryable)
-    {
+    public HavingVisitor(IConfig config, ISqlQueryableExpression queryable) {
         super(config);
         this.queryable = queryable;
     }
 
     @Override
-    public ISqlExpression visit(FieldSelectExpression fieldSelect)
-    {
+    public ISqlExpression visit(FieldSelectExpression fieldSelect) {
         if (ExpressionUtil.isGroupKey(parameters, fieldSelect)) // g.key
         {
             ISqlGroupByExpression groupBy = queryable.getGroupBy();
@@ -50,15 +47,13 @@ public class HavingVisitor extends SqlVisitor
             Map<String, ISqlExpression> columns = queryable.getGroupBy().getColumns();
             return columns.get(fieldSelect.getField().getName());
         }
-        else
-        {
+        else {
             return super.visit(fieldSelect);
         }
     }
 
     @Override
-    protected SqlVisitor getSelf()
-    {
+    protected SqlVisitor getSelf() {
         return new HavingVisitor(config, queryable);
     }
 }

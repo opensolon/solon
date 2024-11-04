@@ -21,15 +21,12 @@ import java.lang.reflect.Method;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkNotFoundPropertyException extends SQLinkException
-{
-    public SQLinkNotFoundPropertyException(Method method)
-    {
+public class SQLinkNotFoundPropertyException extends SQLinkException {
+    public SQLinkNotFoundPropertyException(Method method) {
         super(method.toGenericString());
     }
 
-    public SQLinkNotFoundPropertyException(String name)
-    {
+    public SQLinkNotFoundPropertyException(String name) {
         super(name);
     }
 }

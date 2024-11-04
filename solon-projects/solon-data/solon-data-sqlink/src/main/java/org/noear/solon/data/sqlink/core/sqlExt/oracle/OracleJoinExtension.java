@@ -27,20 +27,16 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleJoinExtension extends BaseSqlExtension
-{
+public class OracleJoinExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression separator = args.get(0);
         templates.add("(");
-        for (int i = 1; i < args.size(); i++)
-        {
+        for (int i = 1; i < args.size(); i++) {
             sqlExpressions.add(args.get(i));
-            if (i < args.size() - 1)
-            {
+            if (i < args.size() - 1) {
                 templates.add("||");
                 sqlExpressions.add(separator);
                 templates.add("||");

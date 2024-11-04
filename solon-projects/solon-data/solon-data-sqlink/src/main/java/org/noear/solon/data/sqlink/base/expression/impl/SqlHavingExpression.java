@@ -26,30 +26,25 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlHavingExpression implements ISqlHavingExpression
-{
+public class SqlHavingExpression implements ISqlHavingExpression {
     private final ISqlConditionsExpression conditions;
 
-    public SqlHavingExpression(ISqlConditionsExpression conditions)
-    {
+    public SqlHavingExpression(ISqlConditionsExpression conditions) {
         this.conditions = conditions;
     }
 
-    public void addCond(ISqlExpression condition)
-    {
+    public void addCond(ISqlExpression condition) {
         System.out.println(condition);
         conditions.addCondition(condition);
     }
 
     @Override
-    public ISqlConditionsExpression getConditions()
-    {
+    public ISqlConditionsExpression getConditions() {
         return conditions;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         if (isEmpty()) return "";
         return "HAVING " + getConditions().getSqlAndValue(config, values);
     }

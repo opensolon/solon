@@ -26,41 +26,34 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlUnaryExpression implements ISqlUnaryExpression
-{
+public class SqlUnaryExpression implements ISqlUnaryExpression {
     private final SqlOperator operator;
     private final ISqlExpression expression;
 
-    public SqlUnaryExpression(SqlOperator operator, ISqlExpression expression)
-    {
+    public SqlUnaryExpression(SqlOperator operator, ISqlExpression expression) {
         this.operator = operator;
         this.expression = expression;
     }
 
     @Override
-    public SqlOperator getOperator()
-    {
+    public SqlOperator getOperator() {
         return operator;
     }
 
     @Override
-    public ISqlExpression getExpression()
-    {
+    public ISqlExpression getExpression() {
         return expression;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         SqlOperator operator = getOperator();
         String temp = getExpression().getSqlAndValue(config, values);
         String res;
-        if (operator.isLeft())
-        {
+        if (operator.isLeft()) {
             res = operator.getOperator() + " " + temp;
         }
-        else
-        {
+        else {
             res = temp + " " + operator.getOperator();
         }
         return res;

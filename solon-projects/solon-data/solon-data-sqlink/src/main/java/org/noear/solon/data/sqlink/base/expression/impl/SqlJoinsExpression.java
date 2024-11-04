@@ -26,29 +26,24 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlJoinsExpression implements ISqlJoinsExpression
-{
+public class SqlJoinsExpression implements ISqlJoinsExpression {
     private final List<ISqlJoinExpression> joins = new ArrayList<>();
 
     @Override
-    public void addJoin(ISqlJoinExpression join)
-    {
+    public void addJoin(ISqlJoinExpression join) {
         joins.add(join);
     }
 
-    public List<ISqlJoinExpression> getJoins()
-    {
+    public List<ISqlJoinExpression> getJoins() {
         return joins;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         if (getJoins().isEmpty()) return "";
         List<String> strings = new ArrayList<>(getJoins().size());
-        for (ISqlJoinExpression join : getJoins())
-        {
-            strings.add(join.getSqlAndValue(config,values));
+        for (ISqlJoinExpression join : getJoins()) {
+            strings.add(join.getSqlAndValue(config, values));
         }
         return String.join(" ", strings);
     }

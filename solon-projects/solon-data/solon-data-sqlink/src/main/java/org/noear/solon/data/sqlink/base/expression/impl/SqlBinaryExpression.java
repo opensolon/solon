@@ -16,75 +16,75 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlBinaryExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
-import org.noear.solon.data.sqlink.base.expression.SqlOperator;
+import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.core.visitor.methods.StringMethods;
 
 import java.util.List;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isString;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlBinaryExpression implements ISqlBinaryExpression
-{
+public class SqlBinaryExpression implements ISqlBinaryExpression {
     private final SqlOperator operator;
     private final ISqlExpression left;
     private final ISqlExpression right;
 
-    public SqlBinaryExpression(SqlOperator operator, ISqlExpression left, ISqlExpression right)
-    {
+    public SqlBinaryExpression(SqlOperator operator, ISqlExpression left, ISqlExpression right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
     }
 
-    public SqlOperator getOperator()
-    {
+    public SqlOperator getOperator() {
         return operator;
     }
 
     @Override
-    public ISqlExpression getLeft()
-    {
+    public ISqlExpression getLeft() {
         return left;
     }
 
     @Override
-    public ISqlExpression getRight()
-    {
+    public ISqlExpression getRight() {
         return right;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         SqlOperator operator = getOperator();
         StringBuilder sb = new StringBuilder();
-        sb.append(getLeft().getSqlAndValue(config, values));
-        sb.append(" ");
-        // (= NULL) => (IS NULL)
-        if (operator == SqlOperator.EQ
-                && getRight() instanceof ISqlSingleValueExpression
-                && ((ISqlSingleValueExpression) getRight()).getValue() == null)
-        {
-            sb.append(SqlOperator.IS.getOperator());
+        if (operator == SqlOperator.PLUS
+                && (getLeft() instanceof ISqlSingleValueExpression && isString(((ISqlSingleValueExpression) getLeft()).getType()))
+                || (getRight() instanceof ISqlSingleValueExpression && isString(((ISqlSingleValueExpression) getRight()).getType()))
+        ) {
+            ISqlTemplateExpression concat = StringMethods.concat(config, getLeft(), getRight());
+            String sqlAndValue = concat.getSqlAndValue(config, values);
+            sb.append(sqlAndValue);
         }
-        else
-        {
-            sb.append(operator.getOperator());
-        }
-        sb.append(" ");
-        if (operator == SqlOperator.IN)
-        {
-            sb.append("(");
-            sb.append(getRight().getSqlAndValue(config, values));
-            sb.append(")");
-        }
-        else
-        {
-            sb.append(getRight().getSqlAndValue(config, values));
+        else {
+            sb.append(getLeft().getSqlAndValue(config, values));
+            sb.append(" ");
+            // (= NULL) => (IS NULL)
+            if (operator == SqlOperator.EQ
+                    && getRight() instanceof ISqlSingleValueExpression
+                    && ((ISqlSingleValueExpression) getRight()).getValue() == null) {
+                sb.append(SqlOperator.IS.getOperator());
+            }
+            else {
+                sb.append(operator.getOperator());
+            }
+            sb.append(" ");
+            if (operator == SqlOperator.IN) {
+                sb.append("(");
+                sb.append(getRight().getSqlAndValue(config, values));
+                sb.append(")");
+            }
+            else {
+                sb.append(getRight().getSqlAndValue(config, values));
+            }
         }
         return sb.toString();
     }

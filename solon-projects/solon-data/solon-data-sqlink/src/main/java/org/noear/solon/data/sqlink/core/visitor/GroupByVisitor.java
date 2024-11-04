@@ -15,9 +15,9 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
+import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
-import io.github.kiryu1223.expressionTree.expressions.*;
 
 import java.util.LinkedHashMap;
 
@@ -25,28 +25,21 @@ import java.util.LinkedHashMap;
  * @author kiryu1223
  * @since 3.0
  */
-public class GroupByVisitor extends SqlVisitor
-{
-    public GroupByVisitor(IConfig config)
-    {
+public class GroupByVisitor extends SqlVisitor {
+    public GroupByVisitor(IConfig config) {
         super(config);
     }
 
     @Override
-    public ISqlExpression visit(NewExpression newExpression)
-    {
+    public ISqlExpression visit(NewExpression newExpression) {
         BlockExpression classBody = newExpression.getClassBody();
-        if (classBody == null)
-        {
+        if (classBody == null) {
             return super.visit(newExpression);
         }
-        else
-        {
+        else {
             LinkedHashMap<String, ISqlExpression> contextMap = new LinkedHashMap<>();
-            for (Expression expression : classBody.getExpressions())
-            {
-                if (expression.getKind() == Kind.Variable)
-                {
+            for (Expression expression : classBody.getExpressions()) {
+                if (expression.getKind() == Kind.Variable) {
                     VariableExpression variableExpression = (VariableExpression) expression;
                     String name = variableExpression.getName();
                     ISqlExpression sqlExpression = visit(variableExpression.getInit());
@@ -58,8 +51,7 @@ public class GroupByVisitor extends SqlVisitor
     }
 
     @Override
-    protected GroupByVisitor getSelf()
-    {
+    protected GroupByVisitor getSelf() {
         return new GroupByVisitor(config);
     }
 }

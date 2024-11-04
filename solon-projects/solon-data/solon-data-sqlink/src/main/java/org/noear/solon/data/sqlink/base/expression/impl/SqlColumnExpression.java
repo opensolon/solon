@@ -26,32 +26,27 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlColumnExpression implements ISqlColumnExpression
-{
+public class SqlColumnExpression implements ISqlColumnExpression {
     private final PropertyMetaData propertyMetaData;
     private final int tableIndex;
 
-    public SqlColumnExpression(PropertyMetaData propertyMetaData, int tableIndex)
-    {
+    public SqlColumnExpression(PropertyMetaData propertyMetaData, int tableIndex) {
         this.propertyMetaData = propertyMetaData;
         this.tableIndex = tableIndex;
     }
 
     @Override
-    public PropertyMetaData getPropertyMetaData()
-    {
+    public PropertyMetaData getPropertyMetaData() {
         return propertyMetaData;
     }
 
     @Override
-    public int getTableIndex()
-    {
+    public int getTableIndex() {
         return tableIndex;
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         IDialect dbConfig = config.getDisambiguation();
         String t = "t" + getTableIndex();
         return dbConfig.disambiguation(t) + "." + dbConfig.disambiguation(getPropertyMetaData().getColumn());

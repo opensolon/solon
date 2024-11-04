@@ -15,12 +15,12 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
+import io.github.kiryu1223.expressionTree.expressions.BlockExpression;
+import io.github.kiryu1223.expressionTree.expressions.Expression;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetsExpression;
-import io.github.kiryu1223.expressionTree.expressions.BlockExpression;
-import io.github.kiryu1223.expressionTree.expressions.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,27 +29,21 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SetVisitor extends SqlVisitor
-{
-    public SetVisitor(IConfig config)
-    {
+public class SetVisitor extends SqlVisitor {
+    public SetVisitor(IConfig config) {
         super(config);
     }
 
-    public SetVisitor(IConfig config, int offset)
-    {
+    public SetVisitor(IConfig config, int offset) {
         super(config, offset);
     }
 
     @Override
-    public ISqlExpression visit(BlockExpression blockExpression)
-    {
-        List<ISqlSetExpression> sqlSetExpressions=new ArrayList<>();
-        for (Expression expression : blockExpression.getExpressions())
-        {
+    public ISqlExpression visit(BlockExpression blockExpression) {
+        List<ISqlSetExpression> sqlSetExpressions = new ArrayList<>();
+        for (Expression expression : blockExpression.getExpressions()) {
             ISqlExpression visit = visit(expression);
-            if(visit instanceof ISqlSetExpression)
-            {
+            if (visit instanceof ISqlSetExpression) {
                 sqlSetExpressions.add((ISqlSetExpression) visit);
             }
         }
@@ -59,8 +53,7 @@ public class SetVisitor extends SqlVisitor
     }
 
     @Override
-    protected SqlVisitor getSelf()
-    {
+    protected SqlVisitor getSelf() {
         return new SetVisitor(config);
     }
 }

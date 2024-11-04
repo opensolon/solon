@@ -15,45 +15,43 @@
  */
 package org.noear.solon.data.sqlink.core;
 
-import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
-import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
-import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
-import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
-import org.noear.solon.data.sqlink.core.dialect.*;
-import org.noear.solon.data.sqlink.core.include.h2.H2IncludeFactory;
-import org.noear.solon.data.sqlink.core.include.mysql.MySqlIncludeFactory;
-import org.noear.solon.data.sqlink.core.include.oracle.OracleIncludeFactory;
-import org.noear.solon.data.sqlink.core.include.sqlserver.SqlServerIncludeFactory;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
+import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
+import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
+import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
+import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
+import org.noear.solon.data.sqlink.core.dialect.*;
 import org.noear.solon.data.sqlink.core.expression.h2.H2ExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.mysql.MySqlExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.oracle.OracleExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.pgsql.PostgreSQLExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.sqlite.SqliteExpressionFactory;
 import org.noear.solon.data.sqlink.core.expression.sqlserver.SqlServerExpressionFactory;
+import org.noear.solon.data.sqlink.core.include.h2.H2IncludeFactory;
+import org.noear.solon.data.sqlink.core.include.mysql.MySqlIncludeFactory;
+import org.noear.solon.data.sqlink.core.include.oracle.OracleIncludeFactory;
+import org.noear.solon.data.sqlink.core.include.sqlserver.SqlServerIncludeFactory;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-class Config implements IConfig
-{
+class Config implements IConfig {
     private final Option option;
-    private final DbType dbType;
-    private final IDialect disambiguation;
+    private DbType dbType;
     private final TransactionManager transactionManager;
     private final DataSourceManager dataSourceManager;
     private final SqlSessionFactory sqlSessionFactory;
-    private final SqlExpressionFactory sqlExpressionFactory;
-    private final IncludeFactory includeFactory;
     private final BeanCreatorFactory beanCreatorFactory;
+    private IDialect disambiguation;
+    private SqlExpressionFactory sqlExpressionFactory;
+    private IncludeFactory includeFactory;
 
-    public Config(Option option, DbType dbType, TransactionManager transactionManager, DataSourceManager dataSourceManager, SqlSessionFactory sqlSessionFactory, BeanCreatorFactory beanCreatorFactory)
-    {
+    public Config(Option option, DbType dbType, TransactionManager transactionManager, DataSourceManager dataSourceManager, SqlSessionFactory sqlSessionFactory, BeanCreatorFactory beanCreatorFactory) {
         this.option = option;
         this.dbType = dbType;
         this.beanCreatorFactory = beanCreatorFactory;
@@ -67,43 +65,40 @@ class Config implements IConfig
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public DataSourceManager getDataSourceManager()
-    {
+    public DataSourceManager getDataSourceManager() {
         return dataSourceManager;
     }
 
-    public IDialect getDisambiguation()
-    {
+    public IDialect getDisambiguation() {
         return disambiguation;
     }
 
-    public DbType getDbType()
-    {
+    @Override
+    public void setDisambiguation(IDialect disambiguation) {
+        this.disambiguation = disambiguation;
+    }
+
+    public DbType getDbType() {
         return dbType;
     }
 
-    public boolean isIgnoreUpdateNoWhere()
-    {
+    public boolean isIgnoreUpdateNoWhere() {
         return option.isIgnoreUpdateNoWhere();
     }
 
-    public boolean isIgnoreDeleteNoWhere()
-    {
+    public boolean isIgnoreDeleteNoWhere() {
         return option.isIgnoreDeleteNoWhere();
     }
 
-    public boolean isPrintSql()
-    {
+    public boolean isPrintSql() {
         return option.isPrintSql();
     }
 
-    public TransactionManager getTransactionManager()
-    {
+    public TransactionManager getTransactionManager() {
         return transactionManager;
     }
 
-    public SqlSessionFactory getSqlSessionFactory()
-    {
+    public SqlSessionFactory getSqlSessionFactory() {
         return sqlSessionFactory;
     }
 
@@ -112,30 +107,31 @@ class Config implements IConfig
 //        return option.isPrintUseDs();
 //    }
 
-    public boolean isPrintBatch()
-    {
+    public boolean isPrintBatch() {
         return option.isPrintBatch();
     }
 
-    public SqlExpressionFactory getSqlExpressionFactory()
-    {
+    public SqlExpressionFactory getSqlExpressionFactory() {
         return sqlExpressionFactory;
     }
 
-    public IncludeFactory getIncludeFactory()
-    {
+    public IncludeFactory getIncludeFactory() {
         return includeFactory;
     }
 
-    public BeanCreatorFactory getFastCreatorFactory()
-    {
+    public BeanCreatorFactory getFastCreatorFactory() {
         return beanCreatorFactory;
     }
 
-    private IDialect getIDialectByDbType(DbType dbType)
-    {
-        switch (dbType)
-        {
+    public void setDbType(DbType dbType) {
+        this.dbType = dbType;
+        this.disambiguation = getIDialectByDbType(dbType);
+        this.sqlExpressionFactory = getSqlExpressionFactoryByDbType(dbType);
+        this.includeFactory = getIncludeFactoryByDbType(dbType);
+    }
+
+    private IDialect getIDialectByDbType(DbType dbType) {
+        switch (dbType) {
             case Any:
                 return new DefaultDialect();
             case MySQL:
@@ -155,10 +151,8 @@ class Config implements IConfig
         }
     }
 
-    public SqlExpressionFactory getSqlExpressionFactoryByDbType(DbType dbType)
-    {
-        switch (dbType)
-        {
+    public SqlExpressionFactory getSqlExpressionFactoryByDbType(DbType dbType) {
+        switch (dbType) {
             case Any:
             case MySQL:
                 return new MySqlExpressionFactory();
@@ -177,10 +171,8 @@ class Config implements IConfig
         }
     }
 
-    public IncludeFactory getIncludeFactoryByDbType(DbType dbType)
-    {
-        switch (dbType)
-        {
+    public IncludeFactory getIncludeFactoryByDbType(DbType dbType) {
+        switch (dbType) {
             case Any:
             case MySQL:
             case SQLite:

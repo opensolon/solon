@@ -22,6 +22,8 @@ import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.core.api.crud.read.QueryBase;
+import org.noear.solon.data.sqlink.core.api.page.DefaultPager;
+import org.noear.solon.data.sqlink.core.api.page.PagedResult;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
@@ -33,10 +35,8 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class GroupedQuery<Key, T> extends QueryBase
-{
-    public GroupedQuery(QuerySqlBuilder sqlBuilder)
-    {
+public class GroupedQuery<Key, T> extends QueryBase {
+    public GroupedQuery(QuerySqlBuilder sqlBuilder) {
         super(sqlBuilder);
     }
 
@@ -49,13 +49,11 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public GroupedQuery<Key, T> having(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, Boolean> func)
-    {
+    public GroupedQuery<Key, T> having(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public GroupedQuery<Key, T> having(ExprTree<Func1<Group<Key, T>, Boolean>> expr)
-    {
+    public GroupedQuery<Key, T> having(ExprTree<Func1<Group<Key, T>, Boolean>> expr) {
         having(expr.getTree());
         return this;
     }
@@ -72,13 +70,11 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param asc  是否为升序
      * @return this
      */
-    public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr, boolean asc)
-    {
+    public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr, boolean asc) {
         throw new NotCompiledException();
     }
 
-    public <R> GroupedQuery<Key, T> orderBy(ExprTree<Func1<Group<Key, T>, R>> expr, boolean asc)
-    {
+    public <R> GroupedQuery<Key, T> orderBy(ExprTree<Func1<Group<Key, T>, R>> expr, boolean asc) {
         orderBy(expr.getTree(), asc);
         return this;
     }
@@ -90,13 +86,11 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param expr 返回需要的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr)
-    {
+    public <R> GroupedQuery<Key, T> orderBy(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R> GroupedQuery<Key, T> orderBy(ExprTree<Func1<Group<Key, T>, R>> expr)
-    {
+    public <R> GroupedQuery<Key, T> orderBy(ExprTree<Func1<Group<Key, T>, R>> expr) {
         orderBy(expr, true);
         return this;
     }
@@ -110,8 +104,7 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param rows 需要返回的条数
      * @return this
      */
-    public GroupedQuery<Key, T> limit(long rows)
-    {
+    public GroupedQuery<Key, T> limit(long rows) {
         limit0(rows);
         return this;
     }
@@ -123,8 +116,7 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param rows   需要返回的条数
      * @return this
      */
-    public GroupedQuery<Key, T> limit(long offset, long rows)
-    {
+    public GroupedQuery<Key, T> limit(long offset, long rows) {
         limit0(offset, rows);
         return this;
     }
@@ -140,13 +132,11 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func1<Group<Key, T>, R> expr)
-    {
+    public <R extends Result> LQuery<? extends R> select(@Expr Func1<Group<Key, T>, R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func1<Group<Key, T>, R>> expr)
-    {
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func1<Group<Key, T>, R>> expr) {
         singleCheck(select(expr.getTree()));
         return new LQuery<>(boxedQuerySqlBuilder());
     }
@@ -158,18 +148,18 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param expr 返回一个值的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return 终结查询过程
      */
-    public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr)
-    {
+    public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func1<Group<Key, T>, R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R> EndQuery<R> endSelect(ExprTree<Func1<Group<Key, T>, R>> expr)
-    {
+    public <R> EndQuery<R> endSelect(ExprTree<Func1<Group<Key, T>, R>> expr) {
         select(expr.getTree());
         return new EndQuery<>(boxedQuerySqlBuilder());
     }
 
     // endregion
+
+    // region [toAny]
 
     /**
      * 检查表中是否存在至少一条数据
@@ -177,8 +167,7 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @return boolean
      */
     @Override
-    public boolean any()
-    {
+    public boolean any() {
         return super.any();
     }
 
@@ -188,18 +177,42 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @return List
      */
     @Override
-    public List<? extends Key> toList()
-    {
+    public List<Key> toList() {
         return super.toList();
     }
+
+    /**
+     * 分页返回数据，无数据则返回空List
+     *
+     * @param pageIndex 页编号 默认1开始
+     * @param pageSize  页长度 默认大于等于1
+     * @return 分页数据
+     */
+    public PagedResult<Key> toPagedResult(long pageIndex, long pageSize) {
+        return toPagedResult0(pageIndex, pageSize, DefaultPager.instance);
+    }
+
+    /**
+     * 分页返回数据，无数据则返回空List
+     *
+     * @param pageIndex 页编号 默认1开始
+     * @param pageSize  页长度 默认大于等于1
+     * @return 分页数据
+     */
+    public PagedResult<Key> toPagedResult(int pageIndex, int pageSize) {
+        return toPagedResult((long) pageIndex, (long) pageSize);
+    }
+
+    // endregion
+
+    // region [OTHER]
 
     /**
      * 设置distinct
      *
      * @return this
      */
-    public GroupedQuery<Key, T> distinct()
-    {
+    public GroupedQuery<Key, T> distinct() {
         distinct0(true);
         return this;
     }
@@ -210,9 +223,10 @@ public class GroupedQuery<Key, T> extends QueryBase
      * @param condition 是否distinct
      * @return this
      */
-    public GroupedQuery<Key, T> distinct(boolean condition)
-    {
+    public GroupedQuery<Key, T> distinct(boolean condition) {
         distinct0(condition);
         return this;
     }
+
+    // endregion
 }

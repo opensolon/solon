@@ -29,21 +29,18 @@ import java.util.Map;
  * @author kiryu1223
  * @since 3.0
  */
-public class TypeHandlerManager
-{
+public class TypeHandlerManager {
     private static final Map<Type, ITypeHandler<?>> cache = new HashMap<>();
     private static final Map<Class<? extends ITypeHandler<?>>, ITypeHandler<?>> handlerCache = new HashMap<>();
     private static final UnKnowTypeHandler<?> unKnowTypeHandler = new UnKnowTypeHandler<>();
 
-    public static <T> void set(ITypeHandler<T> typeHandler)
-    {
+    public static <T> void set(ITypeHandler<T> typeHandler) {
         Type actualType = typeHandler.getGenericType();
         warpBaseType(actualType, typeHandler);
         cache.put(actualType, typeHandler);
     }
 
-    static
-    {
+    static {
         //varchar
         set(new CharTypeHandler());
         set(new StringTypeHandler());
@@ -72,66 +69,51 @@ public class TypeHandlerManager
         set(new URLTypeHandler());
     }
 
-    public static <T> ITypeHandler<T> get(Type type)
-    {
+    public static <T> ITypeHandler<T> get(Type type) {
         ITypeHandler<T> iTypeHandler = (ITypeHandler<T>) cache.get(type);
-        if (iTypeHandler == null)
-        {
+        if (iTypeHandler == null) {
             return (ITypeHandler<T>) unKnowTypeHandler;
         }
         return iTypeHandler;
     }
 
-    public static <T> ITypeHandler<T> getByHandlerType(Class<? extends ITypeHandler<T>> handlerType)
-    {
+    public static <T> ITypeHandler<T> getByHandlerType(Class<? extends ITypeHandler<T>> handlerType) {
         ITypeHandler<T> typeHandler = (ITypeHandler<T>) handlerCache.get(handlerType);
-        if (typeHandler == null)
-        {
-            try
-            {
+        if (typeHandler == null) {
+            try {
                 typeHandler = handlerType.newInstance();
                 handlerCache.put(handlerType, typeHandler);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
         return typeHandler;
     }
 
-    private static void warpBaseType(Type actualType, ITypeHandler<?> typeHandler)
-    {
-        if (actualType == Character.class)
-        {
+    private static void warpBaseType(Type actualType, ITypeHandler<?> typeHandler) {
+        if (actualType == Character.class) {
             cache.put(char.class, typeHandler);
         }
-        else if (actualType == Byte.class)
-        {
+        else if (actualType == Byte.class) {
             cache.put(byte.class, typeHandler);
         }
-        else if (actualType == Short.class)
-        {
+        else if (actualType == Short.class) {
             cache.put(short.class, typeHandler);
         }
-        else if (actualType == Integer.class)
-        {
+        else if (actualType == Integer.class) {
             cache.put(int.class, typeHandler);
         }
-        else if (actualType == Long.class)
-        {
+        else if (actualType == Long.class) {
             cache.put(long.class, typeHandler);
         }
-        else if (actualType == Float.class)
-        {
+        else if (actualType == Float.class) {
             cache.put(float.class, typeHandler);
         }
-        else if (actualType == Double.class)
-        {
+        else if (actualType == Double.class) {
             cache.put(double.class, typeHandler);
         }
-        else if (actualType == Boolean.class)
-        {
+        else if (actualType == Boolean.class) {
             cache.put(boolean.class, typeHandler);
         }
     }

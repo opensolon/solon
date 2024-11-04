@@ -22,20 +22,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kiryu1223
  * @since 3.0
  */
-public class BeanCreatorFactory
-{
+public class BeanCreatorFactory {
     private static final Map<Class<?>, AbsBeanCreator<?>> cache = new ConcurrentHashMap<>();
 
-    protected <T> AbsBeanCreator<T> create(Class<T> target)
-    {
+    protected <T> AbsBeanCreator<T> create(Class<T> target) {
         return new DefaultBeanCreator<>(target);
     }
 
-    public <T> AbsBeanCreator<T> get(Class<T> target)
-    {
+    public <T> AbsBeanCreator<T> get(Class<T> target) {
         AbsBeanCreator<T> creator = (AbsBeanCreator<T>) cache.get(target);
-        if (creator == null)
-        {
+        if (creator == null) {
             creator = create(target);
             cache.put(target, creator);
         }

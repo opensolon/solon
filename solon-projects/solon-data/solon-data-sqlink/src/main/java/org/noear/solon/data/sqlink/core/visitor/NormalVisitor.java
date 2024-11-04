@@ -22,21 +22,17 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public class NormalVisitor extends SqlVisitor
-{
-    public NormalVisitor(IConfig config)
-    {
+public class NormalVisitor extends SqlVisitor {
+    public NormalVisitor(IConfig config) {
         super(config);
     }
 
-    public NormalVisitor(IConfig config, int offset)
-    {
+    public NormalVisitor(IConfig config, int offset) {
         super(config, offset);
     }
 
     @Override
-    protected NormalVisitor getSelf()
-    {
+    protected NormalVisitor getSelf() {
         return new NormalVisitor(config);
     }
 }

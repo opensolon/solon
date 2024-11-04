@@ -22,17 +22,14 @@ import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFact
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlServerExpressionFactory extends DefaultSqlExpressionFactory
-{
+public class SqlServerExpressionFactory extends DefaultSqlExpressionFactory {
     @Override
-    public ISqlLimitExpression limit()
-    {
+    public ISqlLimitExpression limit() {
         return new SqlServerLimitExpression();
     }
 
     @Override
-    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit)
-    {
+    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         return new SqlServerQueryableExpression(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 }

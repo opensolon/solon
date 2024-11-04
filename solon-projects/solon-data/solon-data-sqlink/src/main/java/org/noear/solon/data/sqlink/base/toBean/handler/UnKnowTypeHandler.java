@@ -24,34 +24,26 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class UnKnowTypeHandler<T> implements ITypeHandler<T>
-{
+public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
     @Override
-    public T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
-        if (c.isEnum())
-        {
+    public T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+        if (c.isEnum()) {
             return (T) Enum.valueOf((Class<Enum>) c, resultSet.getString(index));
         }
-        else
-        {
+        else {
             return (T) resultSet.getObject(index, c);
         }
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException
-    {
-        if (value == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException {
+        if (value == null) {
             preparedStatement.setNull(index, JDBCType.NULL.getVendorTypeNumber());
         }
-        else if (value.getClass().isEnum())
-        {
+        else if (value.getClass().isEnum()) {
             preparedStatement.setString(index, value.toString());
         }
-        else
-        {
+        else {
             preparedStatement.setObject(index, value);
         }
     }

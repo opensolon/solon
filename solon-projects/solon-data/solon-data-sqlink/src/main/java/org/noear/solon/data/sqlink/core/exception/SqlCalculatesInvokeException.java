@@ -19,10 +19,8 @@ package org.noear.solon.data.sqlink.core.exception;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlCalculatesInvokeException extends RuntimeException
-{
-    public SqlCalculatesInvokeException()
-    {
+public class SqlCalculatesInvokeException extends RuntimeException {
+    public SqlCalculatesInvokeException() {
         super("SqlCalculate cannot be called from outside an expression");
     }
 }

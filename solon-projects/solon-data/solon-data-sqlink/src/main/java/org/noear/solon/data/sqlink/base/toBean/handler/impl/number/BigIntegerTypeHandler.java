@@ -28,24 +28,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class BigIntegerTypeHandler implements ITypeHandler<BigInteger>
-{
+public class BigIntegerTypeHandler implements ITypeHandler<BigInteger> {
     @Override
-    public BigInteger getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public BigInteger getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         BigDecimal decimal = resultSet.getBigDecimal(index);
         return decimal == null ? null : decimal.toBigInteger();
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, BigInteger bigInteger) throws SQLException
-    {
-        if (bigInteger == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, BigInteger bigInteger) throws SQLException {
+        if (bigInteger == null) {
             preparedStatement.setNull(index, JDBCType.BIGINT.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setBigDecimal(index, new BigDecimal(bigInteger));
         }
     }

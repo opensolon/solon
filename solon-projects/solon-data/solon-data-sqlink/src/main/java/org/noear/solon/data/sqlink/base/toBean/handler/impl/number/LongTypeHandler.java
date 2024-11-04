@@ -26,24 +26,19 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class LongTypeHandler implements ITypeHandler<Long>
-{
+public class LongTypeHandler implements ITypeHandler<Long> {
     @Override
-    public Long getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException
-    {
+    public Long getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
         long aLong = resultSet.getLong(index);
         return resultSet.wasNull() ? null : aLong;
     }
 
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, Long aLong) throws SQLException
-    {
-        if (aLong == null)
-        {
+    public void setValue(PreparedStatement preparedStatement, int index, Long aLong) throws SQLException {
+        if (aLong == null) {
             preparedStatement.setNull(index, JDBCType.BIGINT.getVendorTypeNumber());
         }
-        else
-        {
+        else {
             preparedStatement.setLong(index, aLong);
         }
     }

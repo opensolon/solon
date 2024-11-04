@@ -27,24 +27,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class BaseSqlExtension
-{
+public abstract class BaseSqlExtension {
     public abstract ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args);
 
     private static final Map<Class<? extends BaseSqlExtension>, BaseSqlExtension> sqlExtensionCache = new ConcurrentHashMap<>();
 
-    public static BaseSqlExtension getCache(Class<? extends BaseSqlExtension> c)
-    {
+    public static BaseSqlExtension getCache(Class<? extends BaseSqlExtension> c) {
         BaseSqlExtension baseSqlExtension = sqlExtensionCache.get(c);
-        if (baseSqlExtension == null)
-        {
-            try
-            {
+        if (baseSqlExtension == null) {
+            try {
                 baseSqlExtension = c.newInstance();
                 sqlExtensionCache.put(c, baseSqlExtension);
             }
-            catch (InstantiationException | IllegalAccessException e)
-            {
+            catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }

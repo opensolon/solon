@@ -26,8 +26,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlSelectExpression extends ISqlExpression
-{
+public interface ISqlSelectExpression extends ISqlExpression {
     List<ISqlExpression> getColumns();
 
     boolean isSingle();
@@ -45,12 +44,10 @@ public interface ISqlSelectExpression extends ISqlExpression
     void setTarget(Class<?> target);
 
     @Override
-    default ISqlSelectExpression copy(IConfig config)
-    {
+    default ISqlSelectExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<ISqlExpression> newColumns = new ArrayList<>(getColumns().size());
-        for (ISqlExpression column : getColumns())
-        {
+        for (ISqlExpression column : getColumns()) {
             newColumns.add(column.copy(config));
         }
         return factory.select(newColumns, getTarget(), isSingle(), isDistinct());

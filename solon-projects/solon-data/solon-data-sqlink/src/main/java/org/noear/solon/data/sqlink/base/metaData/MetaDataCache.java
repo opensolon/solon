@@ -24,28 +24,22 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kiryu1223
  * @since 3.0
  */
-public class MetaDataCache
-{
-    private MetaDataCache()
-    {
+public class MetaDataCache {
+    private MetaDataCache() {
     }
 
     private static final Map<Class<?>, MetaData> metaDataCache = new ConcurrentHashMap<>();
 
-    public static MetaData getMetaData(Class<?> c)
-    {
-        if (!metaDataCache.containsKey(c))
-        {
+    public static MetaData getMetaData(Class<?> c) {
+        if (!metaDataCache.containsKey(c)) {
             metaDataCache.put(c, new MetaData(c));
         }
         return metaDataCache.get(c);
     }
 
-    public static List<MetaData> getMetaData(List<Class<?>> c)
-    {
-        List<MetaData> metaDataList=new ArrayList<>(c.size());
-        for (Class<?> aClass : c)
-        {
+    public static List<MetaData> getMetaData(List<Class<?>> c) {
+        List<MetaData> metaDataList = new ArrayList<>(c.size());
+        for (Class<?> aClass : c) {
             metaDataList.add(getMetaData(aClass));
         }
         return metaDataList;

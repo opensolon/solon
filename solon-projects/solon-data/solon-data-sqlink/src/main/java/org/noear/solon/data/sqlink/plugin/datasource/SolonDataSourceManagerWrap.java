@@ -25,51 +25,45 @@ import java.sql.SQLException;
  * @author kiryu1223
  * @since 3.0
  */
-public class SolonDataSourceManagerWrap implements DataSourceManager
-{
+public class SolonDataSourceManagerWrap implements DataSourceManager {
     private DataSourceManager dataSourceManager;
 
     @Override
-    public Connection getConnection() throws SQLException
-    {
+    public Connection getConnection() throws SQLException {
         return dataSourceManager.getConnection();
     }
 
     @Override
-    public DataSource getDataSource()
-    {
+    public DataSource getDataSource() {
         return dataSourceManager.getDataSource();
     }
 
-    @Override
-    public void useDs(String key)
-    {
-        dataSourceManager.useDs(key);
-    }
+//    @Override
+//    public void useDs(String key)
+//    {
+//        dataSourceManager.useDs(key);
+//    }
+//
+//    @Override
+//    public void useDefDs()
+//    {
+//        dataSourceManager.useDefDs();
+//    }
+//
+//    @Override
+//    public String getDsKey()
+//    {
+//        return dataSourceManager.getDsKey();
+//    }
 
-    @Override
-    public void useDefDs()
-    {
-        dataSourceManager.useDefDs();
-    }
-
-    @Override
-    public String getDsKey()
-    {
-        return dataSourceManager.getDsKey();
-    }
-
-    public void setDataSourceManager(DataSourceManager dataSourceManager)
-    {
-        if (hasDataSource())
-        {
+    public void setDataSourceManager(DataSourceManager dataSourceManager) {
+        if (hasDataSource()) {
             throw new RuntimeException("DataSourceManager not null");
         }
         this.dataSourceManager = dataSourceManager;
     }
 
-    public boolean hasDataSource()
-    {
+    public boolean hasDataSource() {
         return dataSourceManager != null;
     }
 }

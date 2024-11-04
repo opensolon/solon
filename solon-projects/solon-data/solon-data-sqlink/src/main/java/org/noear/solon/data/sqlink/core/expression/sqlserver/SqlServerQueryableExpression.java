@@ -31,16 +31,13 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlServerQueryableExpression extends SqlQueryableExpression
-{
-    protected SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit)
-    {
+public class SqlServerQueryableExpression extends SqlQueryableExpression {
+    protected SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         super(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values)
-    {
+    public String getSqlAndValue(IConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
         makeSelect(strings, values, config);
         String fromSqlAndValue = from.getSqlAndValue(config, values);
@@ -55,8 +52,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression
         if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
         String orderBySqlAndValue = orderBy.getSqlAndValue(config, values);
         if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
-        if (!from.isEmptyTable() && limit.hasRowsAndOffset() && orderBy.isEmpty())
-        {
+        if (!from.isEmptyTable() && limit.hasRowsAndOffset() && orderBy.isEmpty()) {
             addOrder(strings, values, config);
         }
         String limitSqlAndValue = limit.getSqlAndValue(config, values);
@@ -64,12 +60,10 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression
         return String.join(" ", strings);
     }
 
-    private void addOrder(List<String> strings, List<Object> values, IConfig config)
-    {
+    private void addOrder(List<String> strings, List<Object> values, IConfig config) {
         MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
         PropertyMetaData primary = metaData.getPrimary();
-        if (primary == null)
-        {
+        if (primary == null) {
             throw new SQLinkLimitNotFoundOrderByException(DbType.SQLServer);
         }
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
@@ -78,22 +72,18 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression
         strings.add(sqlOrderByExpression.getSqlAndValue(config, values));
     }
 
-    private void makeSelect(List<String> strings, List<Object> values, IConfig config)
-    {
+    private void makeSelect(List<String> strings, List<Object> values, IConfig config) {
         List<String> result = new ArrayList<>();
         result.add("SELECT");
-        if (select.isDistinct())
-        {
+        if (select.isDistinct()) {
             result.add("DISTINCT");
         }
-        if (!from.isEmptyTable() && limit.onlyHasRows())
-        {
+        if (!from.isEmptyTable() && limit.onlyHasRows()) {
             result.add("TOP(" + limit.getRows() + ")");
         }
         List<ISqlExpression> columns = select.getColumns();
         List<String> columnsStr = new ArrayList<>(columns.size());
-        for (ISqlExpression sqlExpression : columns)
-        {
+        for (ISqlExpression sqlExpression : columns) {
             columnsStr.add(sqlExpression.getSqlAndValue(config, values));
         }
         result.add(String.join(",", columnsStr));

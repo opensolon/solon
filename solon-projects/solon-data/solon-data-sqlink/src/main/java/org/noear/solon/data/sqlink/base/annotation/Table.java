@@ -28,12 +28,12 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Table
-{
+public @interface Table {
     /**
      * 所属
      */
     String schema() default "";
+
     /**
      * 数据库表名
      */

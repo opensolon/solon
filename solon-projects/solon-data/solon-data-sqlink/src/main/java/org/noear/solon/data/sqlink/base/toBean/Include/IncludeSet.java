@@ -25,45 +25,37 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class IncludeSet
-{
+public class IncludeSet {
     private final ISqlColumnExpression columnExpression;
     private final ISqlExpression cond;
     private final List<IncludeSet> includeSets = new ArrayList<>();
 
-    public IncludeSet(ISqlColumnExpression columnExpression, ISqlExpression cond)
-    {
+    public IncludeSet(ISqlColumnExpression columnExpression, ISqlExpression cond) {
         this.columnExpression = columnExpression;
         this.cond = cond;
     }
 
-    public IncludeSet(ISqlColumnExpression columnExpression)
-    {
-        this(columnExpression,null);
+    public IncludeSet(ISqlColumnExpression columnExpression) {
+        this(columnExpression, null);
     }
 
-    public ISqlColumnExpression getColumnExpression()
-    {
+    public ISqlColumnExpression getColumnExpression() {
         return columnExpression;
     }
 
-    public ISqlExpression getCond()
-    {
+    public ISqlExpression getCond() {
         return cond;
     }
 
-    public boolean hasCond()
-    {
+    public boolean hasCond() {
         return cond != null;
     }
 
-    public List<IncludeSet> getIncludeSets()
-    {
+    public List<IncludeSet> getIncludeSets() {
         return includeSets;
     }
 
-    public IncludeSet getLastIncludeSet()
-    {
+    public IncludeSet getLastIncludeSet() {
         return includeSets.get(includeSets.size() - 1);
     }
 }

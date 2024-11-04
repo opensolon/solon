@@ -27,10 +27,8 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
  * @author kiryu1223
  * @since 3.0
  */
-public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
-{
-    public LDelete6(DeleteSqlBuilder sqlBuilder)
-    {
+public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase {
+    public LDelete6(DeleteSqlBuilder sqlBuilder) {
         super(sqlBuilder);
     }
 
@@ -45,13 +43,11 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> innerJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> innerJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> innerJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> innerJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
         join(JoinType.INNER, target, expr);
         return new LDelete7<>(getSqlBuilder());
     }
@@ -65,13 +61,11 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> leftJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> leftJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> leftJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> leftJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
         join(JoinType.LEFT, target, expr);
         return new LDelete7<>(getSqlBuilder());
     }
@@ -85,8 +79,7 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> rightJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> rightJoin(Class<Tn> target, @Expr Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
         throw new NotCompiledException();
     }
 
@@ -99,8 +92,7 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> rightJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> func)
-    {
+    public <Tn> LDelete7<T1, T2, T3, T4, T5, T6, Tn> rightJoin(Class<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> func) {
         join(JoinType.RIGHT, target, func);
         return new LDelete7<>(getSqlBuilder());
     }
@@ -115,13 +107,11 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param func 返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LDelete6<T1, T2, T3, T4, T5, T6> where(@Expr Func6<T1, T2, T3, T4, T5, T6, Boolean> func)
-    {
+    public LDelete6<T1, T2, T3, T4, T5, T6> where(@Expr Func6<T1, T2, T3, T4, T5, T6, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public LDelete6<T1, T2, T3, T4, T5, T6> where(ExprTree<Func6<T1, T2, T3, T4, T5, T6, Boolean>> expr)
-    {
+    public LDelete6<T1, T2, T3, T4, T5, T6> where(ExprTree<Func6<T1, T2, T3, T4, T5, T6, Boolean>> expr) {
         where(expr.getTree());
         return this;
     }
@@ -136,13 +126,11 @@ public class LDelete6<T1, T2, T3, T4, T5, T6> extends DeleteBase
      * @param <R>  指定表的类型
      * @return this
      */
-    public <R> LDelete6<T1, T2, T3, T4, T5, T6> selectDelete(@Expr(Expr.BodyType.Expr) Func6<T1, T2, T3, T4, T5, T6, R> func)
-    {
+    public <R> LDelete6<T1, T2, T3, T4, T5, T6> selectDelete(@Expr(Expr.BodyType.Expr) Func6<T1, T2, T3, T4, T5, T6, R> func) {
         throw new NotCompiledException();
     }
 
-    public <R> LDelete6<T1, T2, T3, T4, T5, T6> selectDelete(ExprTree<Func6<T1, T2, T3, T4, T5, T6, R>> expr)
-    {
+    public <R> LDelete6<T1, T2, T3, T4, T5, T6> selectDelete(ExprTree<Func6<T1, T2, T3, T4, T5, T6, R>> expr) {
         Class<?> returnType = expr.getTree().getReturnType();
         selectDeleteTable(returnType);
         return this;

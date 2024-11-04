@@ -21,11 +21,9 @@ import org.noear.solon.data.sqlink.base.IDialect;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleDialect implements IDialect
-{
+public class OracleDialect implements IDialect {
     @Override
-    public String disambiguation(String property)
-    {
+    public String disambiguation(String property) {
         return "\"" + property + "\"";
     }
 }

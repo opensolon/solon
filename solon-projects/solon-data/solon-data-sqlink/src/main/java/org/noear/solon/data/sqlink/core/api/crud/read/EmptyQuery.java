@@ -18,9 +18,9 @@ package org.noear.solon.data.sqlink.core.api.crud.read;
 import io.github.kiryu1223.expressionTree.delegate.Func0;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.core.api.Result;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 /**
  * 空表查询过程（用于数据库计算）
@@ -28,11 +28,9 @@ import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
  * @author kiryu1223
  * @since 3.0
  */
-public class EmptyQuery extends QueryBase
-{
-    public EmptyQuery(IConfig config)
-    {
-        super(config, Empty.class);
+public class EmptyQuery extends QueryBase {
+    public EmptyQuery(QuerySqlBuilder sqlBuilder) {
+        super(sqlBuilder);
     }
 
     /**
@@ -43,13 +41,11 @@ public class EmptyQuery extends QueryBase
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<R> select(@Expr Func0<R> expr)
-    {
+    public <R extends Result> LQuery<? extends R> select(@Expr Func0<R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R extends Result> LQuery<R> select(ExprTree<Func0<R>> expr)
-    {
+    public <R extends Result> LQuery<? extends R> select(ExprTree<Func0<R>> expr) {
         boolean single = select(expr.getTree());
         singleCheck(single);
         return new LQuery<>(boxedQuerySqlBuilder());
@@ -62,13 +58,11 @@ public class EmptyQuery extends QueryBase
      * @param expr lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return 终结查询过程
      */
-    public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func0<R> expr)
-    {
+    public <R> EndQuery<R> endSelect(@Expr(Expr.BodyType.Expr) Func0<R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R> EndQuery<R> endSelect(ExprTree<Func0<R>> expr)
-    {
+    public <R> EndQuery<R> endSelect(ExprTree<Func0<R>> expr) {
         select(expr.getTree());
         return new EndQuery<>(getSqlBuilder());
     }

@@ -30,56 +30,44 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class OracleAddOrSubDateExtension extends BaseSqlExtension
-{
+public class OracleAddOrSubDateExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args)
-    {
+    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
-        if (sqlFunc.getParameterCount() == 2)
-        {
+        if (sqlFunc.getParameterCount() == 2) {
             templates.add("(");
             sqlExpressions.add(args.get(0));
             ISqlExpression num = args.get(1);
-            if (num instanceof ISqlSingleValueExpression)
-            {
+            if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
-                if (sqlFunc.getName().equals("addDate"))
-                {
+                if (sqlFunc.getName().equals("addDate")) {
                     templates.add(" + INTERVAL '" + valueExpression.getValue() + "' DAY)");
                 }
-                else
-                {
+                else {
                     templates.add(" - INTERVAL '" + valueExpression.getValue() + "' DAY)");
                 }
             }
-            else
-            {
+            else {
                 throw new SQLinkIntervalException(DbType.Oracle);
             }
         }
-        else
-        {
+        else {
             templates.add("(");
             sqlExpressions.add(args.get(0));
             sqlExpressions.add(args.get(1));
             ISqlExpression num = args.get(2);
-            if (num instanceof ISqlSingleValueExpression)
-            {
+            if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
-                if (sqlFunc.getName().equals("addDate"))
-                {
+                if (sqlFunc.getName().equals("addDate")) {
                     templates.add(" + INTERVAL '" + valueExpression.getValue() + "' ");
                 }
-                else
-                {
+                else {
                     templates.add(" - INTERVAL '" + valueExpression.getValue() + "' ");
                 }
                 templates.add(")");
             }
-            else
-            {
+            else {
                 throw new SQLinkIntervalException(DbType.Oracle);
             }
         }
