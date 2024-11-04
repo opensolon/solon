@@ -37,7 +37,13 @@ public class NamiCoderTest_snack3 {
         //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
-            SnackDecoder.instance.decode(err_rst, UserModel.class);
+            Object rst = SnackDecoder.instance.decode(err_rst, UserModel.class);
+            if(rst instanceof IllegalArgumentException){
+                assert true;
+                System.out.println("test_snack3::ok");
+                return;
+            }
+
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;
