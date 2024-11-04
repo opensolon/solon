@@ -38,10 +38,9 @@ import java.lang.reflect.Type;
 public class JacksonDecoder implements Decoder {
     public static final JacksonDecoder instance = new JacksonDecoder();
 
+    private ObjectMapper mapper_type = new ObjectMapper();
 
-    ObjectMapper mapper_type = new ObjectMapper();
-
-    public JacksonDecoder(){
+    public JacksonDecoder() {
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -62,37 +61,20 @@ public class JacksonDecoder implements Decoder {
     }
 
     @Override
-    public <T> T decode(Result rst, Type type) {
-        String str = rst.bodyAsString();
-
-        Object returnVal = null;
-        try {
-            if (str == null) {
-                return (T) str;
-            }
-
-            if (str.contains("\"stackTrace\":[{")) {
-                returnVal = mapper_type.readValue(str, RuntimeException.class);
-            }else {
-                returnVal = mapper_type.readValue(str, new TypeReferenceImp(type));
-            }
-
-        } catch (Throwable ex) {
-            if (String.class == type) {
-                returnVal = str;
-            } else {
-                returnVal = ex;
-            }
+    public <T> T decode(Result rst, Type type) throws Exception {
+        if (rst.body().length == 0) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
+        String str = rst.bodyAsString();
+        if ("null".equals(str)) {
+            return null;
+        }
+
+        if (str.contains("\"stackTrace\":[{")) {
+            return (T) mapper_type.readValue(str, RuntimeException.class);
         } else {
-            return (T) returnVal;
+            return (T) mapper_type.readValue(str, new TypeReferenceImp(type));
         }
     }
 

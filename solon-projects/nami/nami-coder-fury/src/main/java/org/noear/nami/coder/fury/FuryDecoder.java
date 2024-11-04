@@ -40,26 +40,11 @@ public class FuryDecoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type type) {
-        Object returnVal = null;
-        try {
-            if (rst.body().length == 0) {
-                return null;
-            }
-
-            returnVal = FuryUtil.fury.deserialize(rst.body());
-        } catch (Throwable ex) {
-            returnVal = ex;
+        if (rst.body().length == 0) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
-        } else {
-            return (T) returnVal;
-        }
+        return (T) FuryUtil.fury.deserialize(rst.body());
     }
 
     @Override

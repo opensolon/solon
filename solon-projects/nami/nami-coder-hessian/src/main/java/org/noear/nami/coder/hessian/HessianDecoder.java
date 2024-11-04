@@ -23,6 +23,7 @@ import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
@@ -41,28 +42,17 @@ public class HessianDecoder implements Decoder {
 
 
     @Override
-    public <T> T decode(Result rst, Type type) {
-        Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
-
-        Object returnVal = null;
-        try {
-            if (rst.body().length == 0) {
-                return null;
-            }
-
-            returnVal = hi.readObject();
-        } catch (Throwable ex) {
-            returnVal = ex;
+    public <T> T decode(Result rst, Type type) throws IOException {
+        if (rst.body().length == 0) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
-        } else {
-            return (T) returnVal;
+        Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
+
+        try {
+            return (T) hi.readObject();
+        } finally {
+            hi.close();
         }
     }
 

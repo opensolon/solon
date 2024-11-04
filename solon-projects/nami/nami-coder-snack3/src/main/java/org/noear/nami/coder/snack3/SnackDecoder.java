@@ -35,32 +35,16 @@ public class SnackDecoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type type) {
+        if (rst.body().length == 0) {
+            return null;
+        }
+
         String str = rst.bodyAsString();
-
-        Object returnVal = null;
-        try {
-            if (str == null) {
-                return (T) str;
-            }
-            returnVal = ONode.deserialize(str, type);
-
-        } catch (Throwable ex) {
-            if (String.class == type) {
-                returnVal = str;
-            } else {
-                returnVal = ex;
-            }
+        if ("null".equals(str)) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
-        } else {
-            return (T) returnVal;
-        }
+        return ONode.deserialize(str, type);
     }
 
     @Override

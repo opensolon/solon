@@ -41,35 +41,19 @@ public class FastjsonDecoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type type) {
-        String str = rst.bodyAsString();
-
-        Object returnVal = null;
-        try {
-            if (str == null) {
-                return (T) str;
-            }
-
-            if (str.contains("\"stackTrace\":[{")) {
-                returnVal = JSON.parseObject(str, Throwable.class);
-            } else {
-                returnVal = JSON.parseObject(str, type);
-            }
-        } catch (Throwable ex) {
-            if (String.class == type) {
-                returnVal = str;
-            } else {
-                returnVal = ex;
-            }
+        if (rst.body().length == 0) {
+            return null;
         }
 
-        if (returnVal != null && returnVal instanceof Throwable) {
-            if (returnVal instanceof RuntimeException) {
-                throw (RuntimeException) returnVal;
-            } else {
-                throw new RuntimeException((Throwable) returnVal);
-            }
+        String str = rst.bodyAsString();
+        if ("null".equals(str)) {
+            return null;
+        }
+
+        if (str.contains("\"stackTrace\":[{")) {
+            return (T) JSON.parseObject(str, Throwable.class);
         } else {
-            return (T) returnVal;
+            return (T) JSON.parseObject(str, type);
         }
     }
 
