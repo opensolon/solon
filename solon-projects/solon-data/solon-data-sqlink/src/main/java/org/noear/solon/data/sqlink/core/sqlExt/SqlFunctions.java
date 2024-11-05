@@ -108,8 +108,9 @@ public class SqlFunctions {
     @SqlExtensionExpression(dbType = DbType.H2, template = "GROUP_CONCAT({property})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "GROUP_CONCAT({property})")
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property}) WITHIN GROUP (ORDER BY {property})")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},'')")
+    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},',')")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property})")
+    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,',')")
     public static String groupJoin(String property) {
         boom();
         return "";
@@ -120,6 +121,7 @@ public class SqlFunctions {
     @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property},{delimiter}) WITHIN GROUP (ORDER BY {property})")
     @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},{delimiter})")
     @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property},{delimiter})")
+    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,{delimiter})")
     public static <T> String groupJoin(String delimiter, T property) {
         boom();
         return "";
@@ -2013,6 +2015,8 @@ public class SqlFunctions {
 
     /**
      * 获取字节长度
+     * <p>
+     * <b><span style='color:red;'>特殊说明</span>：各数据库的字节长度计算方式不同，请根据实际情况选择。</b>
      */
     @SqlExtensionExpression(dbType = DbType.H2, template = "LENGTH({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "LENGTH({str})")
@@ -2278,6 +2282,8 @@ public class SqlFunctions {
 
     /**
      * 反转字符串
+     * <p>
+     * <b><span style='color:red;'>特殊说明</span>：oracle的REVERSE函数似乎只支持ASCII。</b>
      */
     @SqlExtensionExpression(dbType = DbType.H2, template = "REVERSE({str})")
     @SqlExtensionExpression(dbType = DbType.MySQL, template = "REVERSE({str})")
@@ -2342,7 +2348,7 @@ public class SqlFunctions {
     @SqlExtensionExpression(template = "CASE {when} END")
     public static <R> R Case(When<R> when) {
         boom();
-        return (R) new Object();
+        return when.getResult();
     }
 
     /**
@@ -2352,7 +2358,7 @@ public class SqlFunctions {
     @SqlExtensionExpression(template = "CASE {when} {rs} END")
     public static <R> R Case(When<R> when, When<R>... rs) {
         boom();
-        return (R) new Object();
+        return when.getResult();
     }
 
     /**
@@ -2361,7 +2367,7 @@ public class SqlFunctions {
     @SqlExtensionExpression(template = "CASE {when} ELSE {elsePart} END")
     public static <R> R Case(R elsePart, When<R> when) {
         boom();
-        return (R) new Object();
+        return when.getResult();
     }
 
     /**
@@ -2371,7 +2377,7 @@ public class SqlFunctions {
     @SqlExtensionExpression(template = "CASE {when} {rs} ELSE {elsePart} END", separator = " ")
     public static <R> R Case(R elsePart, When<R> when, When<R>... rs) {
         boom();
-        return (R) new Object();
+        return elsePart;
     }
 
     /**
@@ -2523,5 +2529,9 @@ public class SqlFunctions {
     }
 
     public static class When<R> {
+        public R getResult() {
+            boom();
+            return (R) new Object();
+        }
     }
 }

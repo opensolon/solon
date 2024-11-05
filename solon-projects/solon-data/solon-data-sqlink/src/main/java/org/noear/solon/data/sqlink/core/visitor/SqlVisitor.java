@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.*;
+import org.noear.solon.data.sqlink.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
@@ -24,7 +25,6 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
-import org.noear.solon.data.sqlink.core.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.core.exception.IllegalExpressionException;
 import org.noear.solon.data.sqlink.core.exception.SQLinkException;
 import org.noear.solon.data.sqlink.core.exception.SqlFuncExtNotFoundException;
@@ -103,28 +103,26 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
     public ISqlExpression visit(MethodCallExpression methodCall) {
         if (IAggregation.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             String name = methodCall.getMethod().getName();
+            List<Expression> args = methodCall.getArgs();
             switch (name) {
                 case "count":
-                    if (methodCall.getMethod().getParameterCount() == 0) {
-                        return factory.template(Collections.singletonList("COUNT(*)"), Collections.emptyList());
-                    }
+                    return AggregateMethods.count(config, args.isEmpty() ? null : visit(args.get(0)));
                 case "sum":
+                    return AggregateMethods.sum(config, visit(args.get(0)));
                 case "avg":
+                    return AggregateMethods.avg(config, visit(args.get(0)));
                 case "max":
+                    return AggregateMethods.max(config, visit(args.get(0)));
                 case "min":
-                    List<ISqlExpression> args = new ArrayList<>(methodCall.getArgs().size());
-                    for (Expression arg : methodCall.getArgs()) {
-                        args.add(visit(arg));
+                    return AggregateMethods.min(config, visit(args.get(0)));
+                case "groupConcat":
+                    List<ISqlExpression> visit = new ArrayList<>();
+                    for (Expression arg : args) {
+                        visit.add(visit(arg));
                     }
-                    List<String> strings = new ArrayList<>(args.size() + 1);
-                    strings.add(name.toUpperCase() + "(");
-                    for (int i = 0; i < args.size() - 1; i++) {
-                        strings.add(",");
-                    }
-                    strings.add(")");
-                    return factory.template(strings, args);
+                    return AggregateMethods.groupConcat(config, visit);
                 default:
-                    throw new IllegalExpressionException(methodCall);
+                    throw new SQLinkException("不支持的聚合函数:" + name);
             }
         }
         else if (ExpressionUtil.isSqlExtensionExpressionMethod(methodCall.getMethod())) {
