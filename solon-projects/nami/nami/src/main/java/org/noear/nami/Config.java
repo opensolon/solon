@@ -29,8 +29,8 @@ import java.util.function.Supplier;
  * */
 public class Config {
     public Config() {
-        encoder = Nami.defaultEncoder;
         decoder = Nami.defaultDecoder;
+        //encoder 不再强制初始化
     }
 
     /**
@@ -103,6 +103,22 @@ public class Config {
     public Encoder getEncoder() {
         return encoder;
     }
+
+    /**
+     * 获取编码器或默认（可以为Null）
+     * */
+    public Encoder getEncoderOrDefault() {
+        if (encoder == null) {
+            if (Nami.defaultEncoder == null) {
+                return NamiManager.getEncoderFirst();
+            } else {
+                return Nami.defaultEncoder;
+            }
+        } else {
+            return encoder;
+        }
+    }
+
     /**
      * 设置编码器
      * */

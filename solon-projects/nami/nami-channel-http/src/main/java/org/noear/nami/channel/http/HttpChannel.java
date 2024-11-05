@@ -78,21 +78,29 @@ public class HttpChannel extends ChannelBase implements Channel {
             if (encoder == null) {
                 String ct0 = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
 
-                if (ct0.length() == 0) {
-                    response = http.data(ctx.args).exec(ctx.action);
-                } else {
+                if (ct0.length() > 0) {
                     encoder = NamiManager.getEncoder(ct0);
                 }
-            } else {
-                encoder = ctx.config.getEncoder();
             }
-        }
 
-        if (response == null && encoder != null) {
-            byte[] bytes = encoder.encode(ctx.body);
+            //有 body 或者有 encoder；则用编码方式
+            if (ctx.bodyInited || encoder != null) {
+                if (encoder == null) {
+                    encoder = ctx.config.getEncoderOrDefault();
+                }
 
-            if (bytes != null) {
-                response = http.body(bytes, encoder.enctype()).exec(ctx.action);
+                if (encoder == null) {
+                    //有 body 的话，必须要有编译
+                    throw new IllegalArgumentException("There is no suitable decoder");
+                }
+
+                byte[] bytes = encoder.encode(ctx.body);
+
+                if (bytes != null) {
+                    response = http.body(bytes, encoder.enctype()).exec(ctx.action);
+                }
+            } else {
+                response = http.data(ctx.args).exec(ctx.action);
             }
         }
 

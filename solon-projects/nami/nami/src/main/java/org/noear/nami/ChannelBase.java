@@ -48,15 +48,11 @@ public abstract class ChannelBase implements Channel {
         if (ctx.config.getEncoder() == null) {
             String ct = ctx.config.getHeader(Constants.HEADER_CONTENT_TYPE);
 
-            if (ct == null) {
-                ct = ContentTypes.JSON_VALUE;
+            if (ct != null) {
+                ctx.config.setEncoder(NamiManager.getEncoder(ct));
             }
 
-            ctx.config.setEncoder(NamiManager.getEncoder(ct));
-
-            if (ctx.config.getEncoder() == null) {
-                ctx.config.setEncoder(NamiManager.getEncoderFirst());
-            }
+            //encoder 不再强制初始化
         }
     }
 }
