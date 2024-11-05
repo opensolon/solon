@@ -48,20 +48,18 @@ solon.data.sqlink:
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
+import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 //应用
 @Mapping("/demo")
 @Controller
-public class DemoController
-{
+public class DemoController {
     @Inject // or @Inject("main")
     SQLinkClient SQLinkClient;
 
     @Mapping("/hello")
-    public String hello(String name)
-    {
+    public String hello(String name) {
         // SELECT CONCAT_WS(' ','hello', {name})
         return SQLinkClient.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
     }
