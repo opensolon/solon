@@ -25,7 +25,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.DefaultTransactionManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
-import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
+import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 
 /**
  * @author kiryu1223

@@ -33,7 +33,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.sqlink.core.SQLink;
-import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
+import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.plugin.aot.SQLinkRuntimeNativeRegistrar;
 import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;

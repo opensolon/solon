@@ -18,7 +18,7 @@ package org.noear.solon.data.sqlink.core.visitor;
 import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
-import org.noear.solon.data.sqlink.core.api.crud.read.group.IGroup;
+import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
