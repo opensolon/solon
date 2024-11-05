@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.core.api;
+package org.noear.solon.data.sqlink.core.api.client;
 
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.base.IConfig;
@@ -35,10 +35,11 @@ import java.util.Collection;
  * @author kiryu1223
  * @since 3.0
  */
-public class Client {
+public class SQLinkClient
+{
     private final IConfig config;
 
-    public Client(IConfig config) {
+    public SQLinkClient(IConfig config) {
         this.config = config;
     }
 

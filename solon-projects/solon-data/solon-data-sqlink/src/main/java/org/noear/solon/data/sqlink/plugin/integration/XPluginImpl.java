@@ -33,7 +33,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.sqlink.core.SQLink;
-import org.noear.solon.data.sqlink.core.api.Client;
+import org.noear.solon.data.sqlink.core.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.plugin.aot.SQLinkRuntimeNativeRegistrar;
 import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
@@ -59,7 +59,7 @@ public class XPluginImpl implements Plugin {
         if (data.isEmpty()) {
             return;
         }
-        Map<String, Client> clients = new LinkedHashMap<>();
+        Map<String, SQLinkClient> clients = new LinkedHashMap<>();
         for (Map.Entry<String, Props> entry : data.entrySet()) {
             Props props = entry.getValue();
             SQLinkProperties properties = props.toBean(SQLinkProperties.class);
@@ -71,7 +71,7 @@ public class XPluginImpl implements Plugin {
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
             AotBeanCreatorFactory aotFastCreatorFactory = new AotBeanCreatorFactory();
-            Client client = SQLink.bootStrap()
+            SQLinkClient SQLinkClient = SQLink.bootStrap()
                     .setDataSourceManager(dataSourceManager)
                     .setTransactionManager(transactionManager)
                     .setSqlSessionFactory(sqlSessionFactory)
@@ -79,20 +79,20 @@ public class XPluginImpl implements Plugin {
                     .setOption(properties.bulidOption())
                     .build();
 
-            //BeanWrap wrap = context.wrap(entry.getKey(), client);
+            //BeanWrap wrap = context.wrap(entry.getKey(), SQLinkClient);
             //context.beanRegister(wrap, entry.getKey(), true);
-            clients.put(entry.getKey(), client);
-            IConfig config = client.getConfig();
+            clients.put(entry.getKey(), SQLinkClient);
+            IConfig config = SQLinkClient.getConfig();
 
             DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
         }
 
-        context.beanInjectorAdd(Inject.class, Client.class, (varHolder, inject) ->
+        context.beanInjectorAdd(Inject.class, SQLinkClient.class, (varHolder, inject) ->
         {
             varHolder.required(inject.required());
             String name = inject.value();
             if (name.isEmpty()) {
-                Optional<Client> first = clients.values().stream().findFirst();
+                Optional<SQLinkClient> first = clients.values().stream().findFirst();
                 varHolder.setValue(first.orElseThrow(RuntimeException::new));
             }
             else {
