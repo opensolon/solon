@@ -18,6 +18,7 @@ package org.noear.solon.cloud.gateway.route.handler;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
@@ -94,9 +95,34 @@ public class HttpRouteHandler implements RouteHandler {
                         callbackHandle(ctx, ar1, emitter);
                     });
                 } else {
-                    req1.sendStream(((ExBodyOfStream) exBody).getStream(), ar1 -> {
-                        callbackHandle(ctx, ar1, emitter);
-                    });
+                    ExBodyOfStream streamBody = (ExBodyOfStream) exBody;
+
+                    if (streamBody.getStream() instanceof HttpServerRequest) {
+                        HttpServerRequest requestBody = (HttpServerRequest) streamBody.getStream();
+
+                        if ("GET".equals(ctx.newRequest().getMethod())) {
+                            //GET 不采用 chunked
+                            requestBody.body().onComplete(ar -> {
+                                if (ar.succeeded()) {
+                                    req1.sendBuffer(ar.result(), ar1 -> {
+                                        callbackHandle(ctx, ar1, emitter);
+                                    });
+                                } else {
+                                    emitter.onError(new StatusException(ar.cause(), 400));
+                                }
+                            });
+                        } else {
+                            //使用 chunked
+                            req1.sendStream(requestBody, ar1 -> {
+                                callbackHandle(ctx, ar1, emitter);
+                            });
+                        }
+                    } else {
+                        //使用 chunked
+                        req1.sendStream(streamBody.getStream(), ar1 -> {
+                            callbackHandle(ctx, ar1, emitter);
+                        });
+                    }
                 }
             });
         } catch (Throwable ex) {

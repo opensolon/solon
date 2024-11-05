@@ -44,6 +44,7 @@
 * 优化 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 优化 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
 * 优化 nami http 请求，不再强制编码。仅当有 `@NamiBody` 注解，或指定编码器才编码（可兼容更多的后端框架）
+* 优化 solon-cloud-gateway GET 转发与 smart-http 的兼容
 * 
 * freemarker 升为 2.3.33
 * velocity 升为 2.4.1
