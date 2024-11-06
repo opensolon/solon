@@ -104,6 +104,11 @@ public class QuerySqlBuilder implements ISqlBuilder {
         change();
     }
 
+    public void addSelectColumn(ISqlExpression expression) {
+        queryable.addSelectColumn(expression);
+        change();
+    }
+
     public void setSelect(Class<?> c) {
         List<Class<?>> orderedClass = getOrderedClass();
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();

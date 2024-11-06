@@ -36,6 +36,7 @@ public interface ISqlSelectExpression extends ISqlExpression {
     boolean isDistinct();
 
     void setColumns(List<ISqlExpression> columns);
+    void addColumn(ISqlExpression column);
 
     void setSingle(boolean single);
 

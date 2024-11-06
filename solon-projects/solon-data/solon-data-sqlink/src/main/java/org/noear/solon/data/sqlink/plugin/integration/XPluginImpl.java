@@ -24,6 +24,7 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
@@ -33,13 +34,14 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.sqlink.core.SQLink;
-import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 import org.noear.solon.data.sqlink.plugin.aot.SQLinkRuntimeNativeRegistrar;
 import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
 import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManagerWrap;
 import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,20 +53,27 @@ import java.util.Optional;
  * @author kiryu1223
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
+public class XPluginImpl implements Plugin
+{
+    private static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
+
     @Override
-    public void start(AppContext context) throws Throwable {
-        System.out.println("SQLink启动");
+    public void start(AppContext context) throws Throwable
+    {
+        //log.info("SQLink启动");
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
-        if (data.isEmpty()) {
+        if (data.isEmpty())
+        {
             return;
         }
         Map<String, SQLinkClient> clients = new LinkedHashMap<>();
-        for (Map.Entry<String, Props> entry : data.entrySet()) {
+        for (Map.Entry<String, Props> entry : data.entrySet())
+        {
             Props props = entry.getValue();
             SQLinkProperties properties = props.toBean(SQLinkProperties.class);
             String dsName = entry.getKey();
-            if (dsName.isEmpty()) {
+            if (dsName.isEmpty())
+            {
                 continue;
             }
             DataSourceManager dataSourceManager = new SolonDataSourceManagerWrap();
@@ -91,11 +100,13 @@ public class XPluginImpl implements Plugin {
         {
             varHolder.required(inject.required());
             String name = inject.value();
-            if (name.isEmpty()) {
+            if (name.isEmpty())
+            {
                 Optional<SQLinkClient> first = clients.values().stream().findFirst();
                 varHolder.setValue(first.orElseThrow(RuntimeException::new));
             }
-            else {
+            else
+            {
                 varHolder.setValue(clients.get(name));
             }
         });
@@ -104,21 +115,26 @@ public class XPluginImpl implements Plugin {
         registerAot(context);
     }
 
-    private static void registerDataSource(BeanWrap beanWrap, IConfig config) {
+    private static void registerDataSource(BeanWrap beanWrap, IConfig config)
+    {
         SolonDataSourceManagerWrap sourceManagerWrap = (SolonDataSourceManagerWrap) config.getDataSourceManager();
         sourceManagerWrap.setDataSourceManager(new SolonDataSourceManager(beanWrap.get()));
-        try (Connection connection = sourceManagerWrap.getConnection()) {
+        try (Connection connection = sourceManagerWrap.getConnection())
+        {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DbType dbType = DbType.getByName(databaseProductName);
             config.setDbType(dbType);
         }
-        catch (SQLException e) {
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    private void registerAot(AppContext context) {
-        if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
+    private void registerAot(AppContext context)
+    {
+        if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class))
+        {
             context.wrapAndPut(SQLinkRuntimeNativeRegistrar.class, new SQLinkRuntimeNativeRegistrar());
         }
     }

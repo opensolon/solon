@@ -50,6 +50,8 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     void addOrder(ISqlOrderExpression order);
 
     void setSelect(ISqlSelectExpression newSelect);
+    void addSelectColumn(ISqlExpression expression);
+
 
     void setLimit(long offset, long rows);
 

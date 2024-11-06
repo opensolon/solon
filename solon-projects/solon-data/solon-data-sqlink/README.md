@@ -42,6 +42,41 @@ solon.data.sqlink:
     # dbType 默认mysql
 ```
 
+maven配置
+```xml
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-compiler.version}</version>
+            <configuration>
+                <!--必须要配置，否则不生效-->
+                <compilerArgs>
+                    <arg>-Xplugin:ExpressionTree</arg>
+                </compilerArgs>
+                <annotationProcessorPaths>
+                    <!--必须要配置，否则会有意外情况-->
+                    <path>
+                        <groupId>org.noear</groupId>
+                        <artifactId>solon-data-sqlink</artifactId>
+                        <version>${solon.version}</version>
+                    </path>
+                    <!-- lombok -->
+                    <!--<path>-->
+                    <!--    <groupId>org.projectlombok</groupId>-->
+                    <!--    <artifactId>lombok</artifactId>-->
+                    <!--    <version>${lombok.version}</version>-->
+                    <!--</path>-->
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+```
+
 #### 代码
 
 ```java

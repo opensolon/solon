@@ -100,6 +100,12 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         select.setColumns(newSelect.getColumns());
         select.setTarget(newSelect.getTarget());
         select.setSingle(newSelect.isSingle());
+        select.setDistinct(newSelect.isDistinct());
+    }
+
+    @Override
+    public void addSelectColumn(ISqlExpression expression) {
+        select.addColumn(expression);
     }
 
     public void setLimit(long offset, long rows) {

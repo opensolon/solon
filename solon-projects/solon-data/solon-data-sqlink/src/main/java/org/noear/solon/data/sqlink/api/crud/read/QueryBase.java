@@ -23,8 +23,6 @@ import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.ParameterExpression;
 import io.github.kiryu1223.expressionTree.util.ReflectUtil;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
-import org.noear.solon.data.sqlink.core.page.PagedResult;
-import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
@@ -36,6 +34,8 @@ import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
 import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.page.PagedResult;
+import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 import org.noear.solon.data.sqlink.core.visitor.GroupByVisitor;
@@ -73,10 +73,20 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected boolean any() {
+        //获取拷贝的查询对象
+        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(getConfig());
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryableCopy);
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        // SELECT 1
+        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
+        // LIMIT 1
+        querySqlBuilder.setLimit(0, 1);
+        //查询
         SqlSession session = getConfig().getSqlSessionFactory().getSession();
         List<Object> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
-        return session.executeQuery(f -> f.next(), "SELECT 1 FROM (" + sql + ") LIMIT 1", values);
+        String sql = querySqlBuilder.getSqlAndValue(values);
+        tryPrintSql(log, sql);
+        return session.executeQuery(f -> f.next(), sql, values);
     }
 
     protected <T> List<T> toList() {

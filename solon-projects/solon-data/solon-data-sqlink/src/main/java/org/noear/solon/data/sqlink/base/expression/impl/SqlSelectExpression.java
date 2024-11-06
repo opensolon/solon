@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class SqlSelectExpression implements ISqlSelectExpression {
     protected List<ISqlExpression> columns;
-    protected boolean distinct = false;
+    protected boolean distinct;
     protected Class<?> target;
     protected boolean isSingle;
 
@@ -46,6 +46,11 @@ public class SqlSelectExpression implements ISqlSelectExpression {
 
     public void setColumns(List<ISqlExpression> columns) {
         this.columns = columns;
+    }
+
+    @Override
+    public void addColumn(ISqlExpression column) {
+        columns.add(column);
     }
 
     @Override
