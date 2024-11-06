@@ -134,6 +134,16 @@ public class Solon {
      * 启动应用（全局只启动一个）
      *
      * @param source     主应用包（用于定制Bean所在包）
+     * @param initialize 实始化函数
+     */
+    public static SolonApp start(Class<?> source, ConsumerEx<SolonApp> initialize) {
+        return start(source, new String[0], initialize);
+    }
+
+    /**
+     * 启动应用（全局只启动一个）
+     *
+     * @param source     主应用包（用于定制Bean所在包）
      * @param args       启动参数
      * @param initialize 实始化函数
      */
@@ -214,37 +224,6 @@ public class Solon {
         LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
-    }
-
-
-    /**
-     * 启动应用区块（用于范围内测试）
-     *
-     * @since 3.0
-     */
-    @Preview("3.0")
-    public static SolonApp startBlock(ConsumerEx<SolonApp> initialize) {
-        //绑定类加载器（即替换当前线程[即主线程]的类加载器）
-        AppClassLoader.bindingThread();
-
-        //启动区域app
-        try {
-            SolonApp blockApp = new SolonApp(Solon.class, new NvMap().set("scanning", "0"));
-            appSet(blockApp);
-            blockApp.start(app -> {
-                app.enableHttp(false);
-
-                if (initialize != null) {
-                    initialize.accept(app);
-                }
-            });
-
-            return blockApp;
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
