@@ -33,6 +33,8 @@
 * 添加 solon AppContext:beanInterceptorHas 检测方法
 * 添加 solon AppContext:subWrapsOfType(baseType, callback, index) 方法
 * 添加 solon ClassUtil::findPublicMethods 缓存效果
+* 添加 solon-net-httputils 工厂扩展方式
+* 添加 solon-data-sqlutils 工厂扩展方式
 * 添加 solon 路由器二级索引排序支持
 * 添加 solon-parent checkstyle 编译可选配置？？？
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
@@ -52,6 +54,7 @@
 * snack3 升为 3.2.120
 * undertow 升为 2.2.37.Final
 * jetty 升为 9.4.56.v20240826
+* jackson 升为 2.18.1
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制

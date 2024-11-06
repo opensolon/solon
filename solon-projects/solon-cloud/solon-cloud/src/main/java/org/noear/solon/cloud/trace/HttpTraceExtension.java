@@ -17,7 +17,7 @@ package org.noear.solon.cloud.trace;
 
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.net.http.HttpExtension;
-import org.noear.solon.net.http.HttpExtensionManager;
+import org.noear.solon.net.http.HttpConfiguration;
 import org.noear.solon.net.http.HttpUtils;
 
 /**
@@ -31,7 +31,7 @@ public class HttpTraceExtension implements HttpExtension {
      * 注册扩展
      */
     public static void register() {
-        HttpExtensionManager.add(new HttpTraceExtension());
+        HttpConfiguration.addExtension(new HttpTraceExtension());
     }
 
     @Override

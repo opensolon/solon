@@ -18,6 +18,7 @@ package org.noear.solon.core.mvc;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Multipart;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Constants;
@@ -103,6 +104,7 @@ public class ActionDefault extends HandlerAide implements Action {
             //of method
             Produces producesAnno = method.getAnnotation(Produces.class);
             Consumes consumesAnno = method.getAnnotation(Consumes.class);
+            Multipart multipartAnno = method.getAnnotation(Multipart.class);
 
             if (producesAnno == null) {
                 mProduces = mapping.produces();
@@ -132,8 +134,17 @@ public class ActionDefault extends HandlerAide implements Action {
                 }
             }
 
+            if (multipartAnno == null) {
+                multipartAnno = bWrap.rawClz().getAnnotation(Multipart.class);
+            }
 
-            mMultipart = mapping.multipart();
+            //for Multipart
+            if (multipartAnno == null) {
+                mMultipart = mapping.multipart();
+            } else {
+                mMultipart = true;
+            }
+
             mName = Utils.annoAlias(mapping.value(), mapping.path());
         }
 
@@ -152,6 +163,7 @@ public class ActionDefault extends HandlerAide implements Action {
             for (Class<?> clz : method.getParameterTypes()) {
                 if (UploadedFile.class.isAssignableFrom(clz)) {
                     mMultipart = true;
+                    break;
                 }
             }
         }

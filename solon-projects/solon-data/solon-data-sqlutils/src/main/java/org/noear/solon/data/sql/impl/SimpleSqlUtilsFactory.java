@@ -13,37 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.http;
+package org.noear.solon.data.sql.impl;
 
-import java.util.Collection;
+import org.noear.solon.data.sql.SqlUtils;
+import org.noear.solon.data.sql.SqlUtilsFactory;
+
+import javax.sql.DataSource;
 
 /**
- * Http 扩展管理
+ * Sql 工具类工厂默认实现
  *
  * @author noear
- * @since 2.9
- * @deprecated 3.0
+ * @since 3.0
  */
-@Deprecated
-public class HttpExtensionManager {
-    /**
-     * 添加扩展
-     */
-    public static void add(HttpExtension extension) {
-        HttpConfiguration.addExtension(extension);
-    }
-
-    /**
-     * 移除扩展
-     */
-    public static void remove(HttpExtension extension) {
-        HttpConfiguration.removeExtension(extension);
-    }
-
-    /**
-     * 获取所有扩展
-     */
-    public static Collection<HttpExtension> getExtensions() {
-        return HttpConfiguration.getExtensions();
+public class SimpleSqlUtilsFactory implements SqlUtilsFactory {
+    @Override
+    public SqlUtils create(DataSource ds) {
+        assert ds != null;
+        return new SimpleSqlUtils(ds);
     }
 }

@@ -43,25 +43,27 @@ public @interface Mapping {
 
     /**
      * 路径
-     * */
+     */
     @Alias("value")
     String path() default "";
 
     /**
      * 请求方式
-     * */
+     */
     MethodType[] method() default {MethodType.ALL};
+
     /**
      * 指定处理请求的提交内容类型（主要考虑与Swagger的描述兼容）
-     * */
+     */
     String consumes() default "";
+
     /**
      * 指定返回的内容类型（主要考虑与Swagger的描述兼容）
-     * */
+     */
     String produces() default "";
 
     /**
      * 是否申明为多分片（否则为自动识别）
-     * */
+     */
     boolean multipart() default false;
 }

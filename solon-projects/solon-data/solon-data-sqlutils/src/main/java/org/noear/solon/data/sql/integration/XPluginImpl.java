@@ -20,7 +20,9 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlUtils;
+import org.noear.solon.data.sql.SqlUtilsFactory;
 
 /**
  * @author noear
@@ -30,6 +32,10 @@ public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.beanInjectorAdd(Inject.class, SqlUtils.class, this::doInject);
+
+        context.getBeanAsync(SqlUtilsFactory.class, bean -> {
+            SqlConfiguration.setFactory(bean);
+        });
     }
 
     void doInject(VarHolder vh, Inject anno) {
