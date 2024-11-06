@@ -15,36 +15,17 @@
  */
 package org.noear.solon.data.sql;
 
-import org.noear.solon.lang.Preview;
-
 import javax.sql.DataSource;
 
 /**
- * Sql 工具类（线程安全，可作为单例保存）
+ * Sql 工具类工厂
  *
  * @author noear
  * @since 3.0
- */
-@Preview("3.0")
-public interface SqlUtils {
-    static SqlUtils of(DataSource dataSource) {
-        return SqlConfiguration.getFactory().create(dataSource);
-    }
-
+ * */
+public interface SqlUtilsFactory {
     /**
-     * 执行代码
-     *
-     * @param sql  代码
-     * @param args 参数
+     * 创建 Sql 工具类
      */
-    SqlExecutor sql(String sql, Object... args);
-
-    /**
-     * 执行代码
-     *
-     * @param sqlSpec 代码申明
-     */
-    default SqlExecutor sql(SqlSpec sqlSpec) {
-        return sql(sqlSpec.getSql(), sqlSpec.getArgs());
-    }
+    SqlUtils create(DataSource ds);
 }

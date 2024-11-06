@@ -32,24 +32,17 @@ class CommandHolder implements Closeable {
     public PreparedStatement stmt = null;
     public ResultSet rsts = null;
 
-    private final SimpleSqlUtils _utils;
-
-    public CommandHolder(SimpleSqlUtils utils) {
-        _utils = utils;
-    }
-
-
     private MetaHolder metaHolder;
 
     public Row getRow() throws SQLException {
-        if(metaHolder == null){
+        if (metaHolder == null) {
             metaHolder = new MetaHolder(rsts.getMetaData());
         }
 
         Object[] values = new Object[metaHolder.size];
 
         for (int i = 1; i <= values.length; i++) {
-            values[i - 1] = _utils.getObject(this, i);
+            values[i - 1] = rsts.getObject(i);
         }
 
         return new SimpleRow(metaHolder, values);

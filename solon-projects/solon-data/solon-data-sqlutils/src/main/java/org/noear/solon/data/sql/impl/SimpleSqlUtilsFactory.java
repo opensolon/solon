@@ -13,38 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sql;
+package org.noear.solon.data.sql.impl;
 
-import org.noear.solon.lang.Preview;
+import org.noear.solon.data.sql.SqlUtils;
+import org.noear.solon.data.sql.SqlUtilsFactory;
 
 import javax.sql.DataSource;
 
 /**
- * Sql 工具类（线程安全，可作为单例保存）
+ * Sql 工具类工厂默认实现
  *
  * @author noear
  * @since 3.0
  */
-@Preview("3.0")
-public interface SqlUtils {
-    static SqlUtils of(DataSource dataSource) {
-        return SqlConfiguration.getFactory().create(dataSource);
-    }
-
-    /**
-     * 执行代码
-     *
-     * @param sql  代码
-     * @param args 参数
-     */
-    SqlExecutor sql(String sql, Object... args);
-
-    /**
-     * 执行代码
-     *
-     * @param sqlSpec 代码申明
-     */
-    default SqlExecutor sql(SqlSpec sqlSpec) {
-        return sql(sqlSpec.getSql(), sqlSpec.getArgs());
+public class SimpleSqlUtilsFactory implements SqlUtilsFactory {
+    @Override
+    public SqlUtils create(DataSource ds) {
+        assert ds != null;
+        return new SimpleSqlUtils(ds);
     }
 }

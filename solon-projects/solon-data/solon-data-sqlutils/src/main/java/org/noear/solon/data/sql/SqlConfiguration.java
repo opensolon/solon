@@ -15,36 +15,30 @@
  */
 package org.noear.solon.data.sql;
 
-import org.noear.solon.lang.Preview;
-
-import javax.sql.DataSource;
+import org.noear.solon.data.sql.impl.SimpleSqlUtilsFactory;
 
 /**
- * Sql 工具类（线程安全，可作为单例保存）
+ * Sql 配置类
  *
  * @author noear
  * @since 3.0
  */
-@Preview("3.0")
-public interface SqlUtils {
-    static SqlUtils of(DataSource dataSource) {
-        return SqlConfiguration.getFactory().create(dataSource);
+public class SqlConfiguration {
+    private static SqlUtilsFactory factory = new SimpleSqlUtilsFactory();
+
+    /**
+     * 获取工厂
+     */
+    public static SqlUtilsFactory getFactory() {
+        return factory;
     }
 
     /**
-     * 执行代码
-     *
-     * @param sql  代码
-     * @param args 参数
+     * 设置工厂
      */
-    SqlExecutor sql(String sql, Object... args);
-
-    /**
-     * 执行代码
-     *
-     * @param sqlSpec 代码申明
-     */
-    default SqlExecutor sql(SqlSpec sqlSpec) {
-        return sql(sqlSpec.getSql(), sqlSpec.getArgs());
+    public static void setFactory(SqlUtilsFactory factory) {
+        if (factory != null) {
+            SqlConfiguration.factory = factory;
+        }
     }
 }
