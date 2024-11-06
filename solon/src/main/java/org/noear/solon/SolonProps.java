@@ -52,7 +52,6 @@ public final class SolonProps extends Props {
     private final SolonApp app;
     private final NvMap args;
     private final boolean testing;
-    private final boolean scanning;
     private final List<PluginEntity> plugs = new ArrayList<>();
 
     private boolean isDebugMode;//是否为调试模式
@@ -80,8 +79,6 @@ public final class SolonProps extends Props {
         this.args = args;
         //1.2.测试隔离
         this.testing = args.containsKey("testing");
-        //1.3.是否扫描
-        this.scanning = (args.getInt("scanning", 1) ==1);
 
 
         //::: 开始加载
@@ -530,13 +527,6 @@ public final class SolonProps extends Props {
      */
     public boolean testing() {
         return testing;
-    }
-
-    /**
-     * 是否可扫描
-     */
-    public boolean scanning() {
-        return scanning;
     }
 
     /**
