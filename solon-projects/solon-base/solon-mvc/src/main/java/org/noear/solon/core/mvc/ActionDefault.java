@@ -135,6 +135,11 @@ public class ActionDefault extends HandlerAide implements Action {
             }
 
             if (multipartAnno == null) {
+                multipartAnno = bWrap.rawClz().getAnnotation(Multipart.class);
+            }
+
+            //for Multipart
+            if (multipartAnno == null) {
                 mMultipart = mapping.multipart();
             } else {
                 mMultipart = true;

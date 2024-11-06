@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 3.0
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Multipart {
