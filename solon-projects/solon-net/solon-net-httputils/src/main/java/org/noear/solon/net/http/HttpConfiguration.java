@@ -15,35 +15,52 @@
  */
 package org.noear.solon.net.http;
 
-import java.util.Collection;
+import org.noear.solon.net.http.impl.HttpUtilsFactoryDefault;
+
+import java.util.*;
 
 /**
- * Http 扩展管理
+ * Http 配置类
  *
  * @author noear
  * @since 2.9
- * @deprecated 3.0
  */
-@Deprecated
-public class HttpExtensionManager {
+public class HttpConfiguration {
+    private static Set<HttpExtension> extensions = new LinkedHashSet<>();
+    private static HttpUtilsFactory factory = new HttpUtilsFactoryDefault();
+
     /**
      * 添加扩展
      */
-    public static void add(HttpExtension extension) {
-        HttpConfiguration.addExtension(extension);
+    public static void addExtension(HttpExtension extension) {
+        extensions.add(extension);
     }
 
     /**
      * 移除扩展
      */
-    public static void remove(HttpExtension extension) {
-        HttpConfiguration.removeExtension(extension);
+    public static void removeExtension(HttpExtension extension) {
+        extensions.remove(extension);
     }
 
     /**
      * 获取所有扩展
      */
     public static Collection<HttpExtension> getExtensions() {
-        return HttpConfiguration.getExtensions();
+        return extensions;
+    }
+
+    /**
+     * 获取工厂
+     */
+    public static HttpUtilsFactory getFactory() {
+        return factory;
+    }
+
+    /**
+     * 设置工厂
+     */
+    public static void setFactory(HttpUtilsFactory factory) {
+        HttpConfiguration.factory = factory;
     }
 }

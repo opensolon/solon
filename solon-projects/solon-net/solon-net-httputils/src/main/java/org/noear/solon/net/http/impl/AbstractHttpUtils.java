@@ -100,7 +100,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
      * 初始化扩展
      */
     private void initExtension() {
-        for (HttpExtension ext : HttpExtensionManager.getExtensions()) {
+        for (HttpExtension ext : HttpConfiguration.getExtensions()) {
             ext.onInit(this, _url);
         }
     }

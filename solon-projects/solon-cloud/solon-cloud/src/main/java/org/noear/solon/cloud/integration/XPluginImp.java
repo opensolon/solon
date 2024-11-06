@@ -30,7 +30,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
-import org.noear.solon.net.http.HttpExtensionManager;
+import org.noear.solon.net.http.HttpConfiguration;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
@@ -114,7 +114,7 @@ public class XPluginImp implements Plugin {
         }
 
         //有些场景会排除掉 httpUtils
-        if (ClassUtil.hasClass(() -> HttpExtensionManager.class)) {
+        if (ClassUtil.hasClass(() -> HttpConfiguration.class)) {
             //注册 http 跟踪扩展
             HttpTraceExtension.register();
         }

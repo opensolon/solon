@@ -16,14 +16,10 @@
 package org.noear.solon.net.http;
 
 
-import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
-import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.lang.Preview;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
-import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,11 +62,7 @@ public interface HttpUtils {
      * 创建
      */
     static HttpUtils http(String url) {
-        if (ClassUtil.hasClass(() -> OkHttpClient.class)) {
-            return new OkHttpUtilsImpl(url);
-        } else {
-            return new JdkHttpUtilsImpl(url);
-        }
+        return HttpConfiguration.getFactory().http(url);
     }
 
     /**
