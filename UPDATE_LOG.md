@@ -52,6 +52,7 @@
 * snack3 升为 3.2.120
 * undertow 升为 2.2.37.Final
 * jetty 升为 9.4.56.v20240826
+* jackson 升为 2.18.1
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制
