@@ -15,7 +15,9 @@ public class GenericsTest {
 
     @Test
     public void main() throws Exception {
-        Solon.startBlock(app -> {
+        Solon.start(GenericsTest.class, app -> {
+            app.enableHttp(false);
+            app.enableScanning(false);
             app.context().beanScan(features.solon.generic2.GenericsTest.class);
         });
 

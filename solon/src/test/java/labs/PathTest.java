@@ -28,7 +28,9 @@ import org.noear.solon.annotation.Import;
 @Configuration
 public class PathTest {
     public static void main(String[] args) {
-        Solon.start(PathTest.class, new String[]{"-scanning=0"}, app -> {
+        Solon.start(PathTest.class, app -> {
+            app.enableHttp(false);
+            app.enableScanning(false);
             app.context().lifecycle(() -> {
                 app.context().subBeansOfType(String.class, bean -> {
                     System.out.println(bean);
