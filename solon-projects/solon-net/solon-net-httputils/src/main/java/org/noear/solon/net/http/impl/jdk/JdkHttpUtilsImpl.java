@@ -309,6 +309,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     /**
      * 补丁，增加新方法支持
      */
+    @SuppressWarnings("unchecked")
     private static void allowMethods(String... methods) {
         try {
             Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
