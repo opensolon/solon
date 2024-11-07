@@ -3,35 +3,34 @@ package features.solon.generic3;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AppContext;
 
 import java.util.List;
 import java.util.Map;
 
 @Configuration
 public class GenericsTest {
+    static AppContext appContext;
 
     @BeforeAll
     public static void bef() throws Exception {
-        Solon.start(GenericsTest.class, app -> {
-            app.enableHttp(false);
-            app.enableScanning(false);
-            app.context().beanScan(GenericsTest.class);
-        });
+        appContext = new AppContext();
+        appContext.beanScan(GenericsTest.class);
+        appContext.start();
     }
 
     @AfterAll
-    public static void aft(){
-        Solon.stopBlock();
+    public static void aft() {
+        appContext.stop();
     }
 
     @Test
-    public void test(){
-        GenericsTest self = Solon.context().getBean(GenericsTest.class);
+    public void test() {
+        GenericsTest self = appContext.getBean(GenericsTest.class);
 
         self.wxCallbackContext.check();
         self.fsCallbackContext.check();
