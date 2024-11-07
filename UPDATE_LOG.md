@@ -42,10 +42,11 @@
 * 修复 solon GenericUtil 在泛型变量名在传递过程中改名后，无法还原的问题。（不过，改名会有潜在问题）
 * 优化 solon AppContext.beanRegister name 注册时，增加泛型绑定。以简化泛型集合注入的条件
 * 优化 nami 简化编解码适配处理
+* 优化 nami 的 get 识别处理
+* 优化 nami http 请求，不再强制编码。仅当有 `@NamiBody` 注解，或指定编码器才编码（可兼容更多的后端框架）
 * 优化 solon BeanWrap.Proxy 接口简化
 * 优化 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 优化 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
-* 优化 nami http 请求，不再强制编码。仅当有 `@NamiBody` 注解，或指定编码器才编码（可兼容更多的后端框架）
 * 优化 solon-cloud-gateway GET 转发与 smart-http 的兼容
 * 
 * freemarker 升为 2.3.33
