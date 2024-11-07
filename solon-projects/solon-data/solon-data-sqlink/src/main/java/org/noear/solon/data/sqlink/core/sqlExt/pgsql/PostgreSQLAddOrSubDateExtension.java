@@ -20,22 +20,24 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
-import org.noear.solon.data.sqlink.core.exception.SQLinkIntervalException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkIntervalException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * PostgreSQL时间运算函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class PostgreSQLAddOrSubDateExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
-        boolean isPlus = sqlFunc.getName().equals("addDate");
+        boolean isPlus = method.getName().equals("addDate");
         if (isPlus) {
             templates.add("DATE_ADD(");
         }
@@ -43,14 +45,14 @@ public class PostgreSQLAddOrSubDateExtension extends BaseSqlExtension {
             templates.add("DATE_SUBTRACT(");
         }
         sqlExpressions.add(args.get(0));
-        if (sqlFunc.getParameterCount() == 2) {
+        if (method.getParameterCount() == 2) {
             ISqlExpression num = args.get(1);
             if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
                 templates.add(",INTERVAL '" + valueExpression.getValue() + "' DAY)");
             }
             else {
-                throw new SQLinkIntervalException(DbType.PostgreSQL);
+                throw new SqLinkIntervalException(DbType.PostgreSQL);
             }
         }
         else {
@@ -62,7 +64,7 @@ public class PostgreSQLAddOrSubDateExtension extends BaseSqlExtension {
                 templates.add(")");
             }
             else {
-                throw new SQLinkIntervalException(DbType.PostgreSQL);
+                throw new SqLinkIntervalException(DbType.PostgreSQL);
             }
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);

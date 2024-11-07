@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.core.exception;
 
 /**
+ * SQL运算符调用异常
+ *
  * @author kiryu1223
  * @since 3.0
  */

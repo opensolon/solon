@@ -15,14 +15,16 @@
  */
 package org.noear.solon.data.sqlink.core.exception;
 
-import org.noear.solon.data.sqlink.base.DbType;
+import io.github.kiryu1223.expressionTree.expressions.Expression;
 
 /**
+ * 不支持的表达式异常
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkIntervalException extends SQLinkException {
-    public SQLinkIntervalException(DbType type) {
-        super(type.name() + "下的date加减运算函数必须为字面量或者java引用（不可以是数据库字段引用）");
+public class SqLinkIllegalExpressionException extends SqLinkException {
+    public SqLinkIllegalExpressionException(Expression expression) {
+        super("Unsupported expression\n" + expression);
     }
 }

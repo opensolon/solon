@@ -18,7 +18,6 @@ package org.noear.solon.data.sqlink.core.sqlExt;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlTimeUnit;
-import org.noear.solon.data.sqlink.core.exception.SqlFunctionInvokeException;
 import org.noear.solon.data.sqlink.core.sqlExt.h2.H2CastExtension;
 import org.noear.solon.data.sqlink.core.sqlExt.mysql.MySqlCastExtension;
 import org.noear.solon.data.sqlink.core.sqlExt.mysql.MySqlDateTimeDiffExtension;
@@ -40,6 +39,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import static org.noear.solon.data.sqlink.core.exception.Winner.boom;
 
 /**
  * Sql函数
@@ -2494,15 +2495,9 @@ public class SqlFunctions {
 
     // endregion
 
-    private static void boom() {
-        if (win) // if win we win always
-        {
-            throw new SqlFunctionInvokeException();
-        }
-    }
-
-    private static final boolean win = true;
-
+    /**
+     * 请勿使用
+     */
     private static class Num extends Number {
         private Num() {
         }
@@ -2528,6 +2523,9 @@ public class SqlFunctions {
         }
     }
 
+    /**
+     * 请勿使用
+     */
     public static class When<R> {
         public R getResult() {
             boom();

@@ -19,7 +19,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.core.sqlBuilder.InsertSqlBuilder;
@@ -102,12 +102,12 @@ public abstract class InsertBase extends CRUD {
         MetaData metaData = MetaDataCache.getMetaData(getTableType());
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
-        for (PropertyMetaData propertyMetaData : metaData.getNotIgnorePropertys()) {
-            if (propertyMetaData.isPrimaryKey()) {
+        for (FieldMetaData fieldMetaData : metaData.getNotIgnorePropertys()) {
+            if (fieldMetaData.isPrimaryKey()) {
 
             }
             else {
-                tableFields.add(propertyMetaData.getColumn());
+                tableFields.add(fieldMetaData.getColumn());
                 tableValues.add("?");
             }
         }

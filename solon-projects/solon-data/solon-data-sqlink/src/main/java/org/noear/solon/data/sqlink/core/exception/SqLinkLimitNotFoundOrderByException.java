@@ -15,18 +15,16 @@
  */
 package org.noear.solon.data.sqlink.core.exception;
 
-import java.lang.reflect.Method;
+import org.noear.solon.data.sqlink.base.DbType;
 
 /**
+ * limit语句未声明orderBy异常
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkNotFoundPropertyException extends SQLinkException {
-    public SQLinkNotFoundPropertyException(Method method) {
-        super(method.toGenericString());
-    }
-
-    public SQLinkNotFoundPropertyException(String name) {
-        super(name);
+public class SqLinkLimitNotFoundOrderByException extends SqLinkException {
+    public SqLinkLimitNotFoundOrderByException(DbType dbType) {
+        super(dbType.name() + "数据库下进行的limit操作需要声明order by的字段，或者为表类指定一个主键");
     }
 }

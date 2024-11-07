@@ -25,8 +25,14 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlSetExpression extends ISqlExpression {
+    /**
+     * 获取列
+     */
     ISqlColumnExpression getColumn();
 
+    /**
+     * 获取值
+     */
     ISqlExpression getValue();
 
     @Override

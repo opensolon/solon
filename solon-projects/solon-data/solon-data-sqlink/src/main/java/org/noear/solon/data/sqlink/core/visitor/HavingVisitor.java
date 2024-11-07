@@ -24,6 +24,8 @@ import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import java.util.Map;
 
 /**
+ * having表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */

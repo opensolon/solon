@@ -22,5 +22,8 @@ package org.noear.solon.data.sqlink.base.expression;
  * @since 3.0
  */
 public interface ISqlTableExpression extends ISqlExpression {
+    /**
+     * 获取表类
+     */
     Class<?> getTableClass();
 }

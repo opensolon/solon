@@ -18,9 +18,14 @@ package org.noear.solon.data.sqlink.base.sqlExt;
 import org.noear.solon.data.sqlink.base.IConfig;
 
 /**
+ * SQL关键字
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface ISqlKeywords {
+    /**
+     * 获取关键字，将直接拼接到SQL
+     */
     String getKeyword(IConfig config);
 }

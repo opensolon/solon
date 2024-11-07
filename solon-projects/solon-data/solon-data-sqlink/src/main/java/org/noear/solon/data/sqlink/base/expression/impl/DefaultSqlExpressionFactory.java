@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,8 +32,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlColumnExpression column(PropertyMetaData propertyMetaData, int tableIndex) {
-        return new SqlColumnExpression(propertyMetaData, tableIndex);
+    public ISqlColumnExpression column(FieldMetaData fieldMetaData, int tableIndex) {
+        return new SqlColumnExpression(fieldMetaData, tableIndex);
     }
 
     @Override

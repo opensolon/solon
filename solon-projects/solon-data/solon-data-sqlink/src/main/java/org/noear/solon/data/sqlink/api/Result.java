@@ -17,15 +17,16 @@ package org.noear.solon.data.sqlink.api;
 
 import io.github.kiryu1223.expressionTree.expressions.annos.Getter;
 import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 匿名查询结果，请不要继承这个类
  * @author kiryu1223
  * @since 3.0
  */
@@ -37,7 +38,7 @@ public abstract class Result {
         try {
             List<String> strings = new ArrayList<>();
             MetaData metaData = MetaDataCache.getMetaData(this.getClass());
-            for (PropertyMetaData property : metaData.getPropertys()) {
+            for (FieldMetaData property : metaData.getPropertys()) {
                 strings.add(property.getProperty() + "=" + property.getGetter().invoke(this));
             }
             return "(" + String.join(",", strings) + ")";

@@ -20,6 +20,8 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import java.util.List;
 
 /**
+ * 新增语句构建器
+ *
  * @author kiryu1223
  * @since 3.0
  */

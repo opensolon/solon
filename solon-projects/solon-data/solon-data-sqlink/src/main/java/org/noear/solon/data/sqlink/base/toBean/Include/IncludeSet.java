@@ -22,12 +22,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 抓取器信息
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class IncludeSet {
+    /**
+     * 需要抓取的字段
+     */
     private final ISqlColumnExpression columnExpression;
+    /**
+     * 条件
+     */
     private final ISqlExpression cond;
+    /**
+     * 需要抓取的字段类型内部的需要抓取的字段
+     */
     private final List<IncludeSet> includeSets = new ArrayList<>();
 
     public IncludeSet(ISqlColumnExpression columnExpression, ISqlExpression cond) {
@@ -39,22 +50,37 @@ public class IncludeSet {
         this(columnExpression, null);
     }
 
+    /**
+     * 抓取的字段
+     */
     public ISqlColumnExpression getColumnExpression() {
         return columnExpression;
     }
 
+    /**
+     * 条件
+     */
     public ISqlExpression getCond() {
         return cond;
     }
 
+    /**
+     * 是否有条件
+     */
     public boolean hasCond() {
         return cond != null;
     }
 
+    /**
+     * 需要抓取的字段类型内部的需要抓取的字段
+     */
     public List<IncludeSet> getIncludeSets() {
         return includeSets;
     }
 
+    /**
+     * 获取最后一个内部需要的抓取
+     */
     public IncludeSet getLastIncludeSet() {
         return includeSets.get(includeSets.size() - 1);
     }

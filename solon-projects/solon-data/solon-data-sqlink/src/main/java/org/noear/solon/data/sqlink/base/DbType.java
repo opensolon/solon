@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 数据库类型
+ *
  * @author kiryu1223
  * @since 3.0
  */

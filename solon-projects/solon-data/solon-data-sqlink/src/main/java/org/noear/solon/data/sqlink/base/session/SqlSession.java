@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * SQL会话 (用于执行SQL语句)
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -30,11 +32,36 @@ public interface SqlSession {
         R invoke(T t) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException;
     }
 
+    /**
+     * 执行查询，并返回结果
+     *
+     * @param func   对ResultSet进行操作并且返回结果
+     * @param sql    sql语句
+     * @param values 参数
+     */
     <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<Object> values);
 
+    /**
+     * 执行插入，并返回影响行数
+     *
+     * @param sql    sql语句
+     * @param values 参数
+     */
     long executeInsert(String sql, List<Object> values);
 
+    /**
+     * 执行更新，并返回影响行数
+     *
+     * @param sql    sql语句
+     * @param values 参数
+     */
     long executeUpdate(String sql, List<Object> values);
 
+    /**
+     * 执行删除，并返回影响行数
+     *
+     * @param sql    sql语句
+     * @param values 参数
+     */
     long executeDelete(String sql, List<Object> values);
 }

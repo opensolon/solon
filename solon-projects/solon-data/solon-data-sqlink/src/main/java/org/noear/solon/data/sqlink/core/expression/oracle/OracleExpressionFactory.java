@@ -19,6 +19,8 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFactory;
 
 /**
+ * Oracle表达式工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */

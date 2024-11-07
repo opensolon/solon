@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * SqlServer对象抓取器
+ *
  * @author kiryu1223
  * @since 3.0
  */

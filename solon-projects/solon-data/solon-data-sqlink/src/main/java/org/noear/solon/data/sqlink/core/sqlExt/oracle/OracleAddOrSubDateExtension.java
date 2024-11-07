@@ -20,28 +20,30 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
-import org.noear.solon.data.sqlink.core.exception.SQLinkIntervalException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkIntervalException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Oracle时间运算函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class OracleAddOrSubDateExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
-        if (sqlFunc.getParameterCount() == 2) {
+        if (method.getParameterCount() == 2) {
             templates.add("(");
             sqlExpressions.add(args.get(0));
             ISqlExpression num = args.get(1);
             if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
-                if (sqlFunc.getName().equals("addDate")) {
+                if (method.getName().equals("addDate")) {
                     templates.add(" + INTERVAL '" + valueExpression.getValue() + "' DAY)");
                 }
                 else {
@@ -49,7 +51,7 @@ public class OracleAddOrSubDateExtension extends BaseSqlExtension {
                 }
             }
             else {
-                throw new SQLinkIntervalException(DbType.Oracle);
+                throw new SqLinkIntervalException(DbType.Oracle);
             }
         }
         else {
@@ -59,7 +61,7 @@ public class OracleAddOrSubDateExtension extends BaseSqlExtension {
             ISqlExpression num = args.get(2);
             if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
-                if (sqlFunc.getName().equals("addDate")) {
+                if (method.getName().equals("addDate")) {
                     templates.add(" + INTERVAL '" + valueExpression.getValue() + "' ");
                 }
                 else {
@@ -68,7 +70,7 @@ public class OracleAddOrSubDateExtension extends BaseSqlExtension {
                 templates.add(")");
             }
             else {
-                throw new SQLinkIntervalException(DbType.Oracle);
+                throw new SqLinkIntervalException(DbType.Oracle);
             }
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);

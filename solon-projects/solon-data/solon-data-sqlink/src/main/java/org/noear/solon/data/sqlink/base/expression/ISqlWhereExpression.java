@@ -24,13 +24,22 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlWhereExpression extends ISqlExpression {
+    /**
+     * 获取条件表达式
+     */
+    ISqlConditionsExpression getConditions();
+
+    /**
+     * 添加条件表达式
+     */
+    void addCondition(ISqlExpression condition);
+
+    /**
+     * 判断是否为空
+     */
     default boolean isEmpty() {
         return getConditions().isEmpty();
     }
-
-    ISqlConditionsExpression getConditions();
-
-    void addCondition(ISqlExpression condition);
 
     @Override
     default ISqlWhereExpression copy(IConfig config) {

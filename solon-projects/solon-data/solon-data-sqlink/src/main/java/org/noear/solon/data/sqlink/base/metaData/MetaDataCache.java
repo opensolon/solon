@@ -15,12 +15,12 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 元数据缓存
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -30,6 +30,10 @@ public class MetaDataCache {
 
     private static final Map<Class<?>, MetaData> metaDataCache = new ConcurrentHashMap<>();
 
+    /**
+     * 获取元数据
+     * @param c 元数据类型
+     */
     public static MetaData getMetaData(Class<?> c) {
         if (!metaDataCache.containsKey(c)) {
             metaDataCache.put(c, new MetaData(c));
@@ -37,7 +41,11 @@ public class MetaDataCache {
         return metaDataCache.get(c);
     }
 
-    public static List<MetaData> getMetaData(List<Class<?>> c) {
+    /**
+     * 获取多个元数据
+     * @param c 元数据类型集合
+     */
+    public static List<MetaData> getMetaData(Collection<Class<?>> c) {
         List<MetaData> metaDataList = new ArrayList<>(c.size());
         for (Class<?> aClass : c) {
             metaDataList.add(getMetaData(aClass));

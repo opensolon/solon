@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.base.session;
 
 /**
+ * SQL会话工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */

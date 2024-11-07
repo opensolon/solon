@@ -21,11 +21,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * SQL扩展表达式注解数组
+ *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface SqlExtensionExpressions {
+    /**
+     * 扩展表达式数组
+     */
     SqlExtensionExpression[] value();
 }

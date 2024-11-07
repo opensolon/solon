@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.core.exception;
 
 /**
+ * 重新编译异常
+ *
  * @author kiryu1223
  * @since 3.0
  */

@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.base.transaction;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 
 /**
+ * 默认事务控制器管理者
+ *
  * @author kiryu1223
  * @since 3.0
  */

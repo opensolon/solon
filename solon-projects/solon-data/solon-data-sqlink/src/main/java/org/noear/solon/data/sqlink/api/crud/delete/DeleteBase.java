@@ -69,7 +69,7 @@ public abstract class DeleteBase extends CRUD {
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         SqlSession session = config.getSqlSessionFactory().getSession();
-        return session.executeUpdate(sql, values);
+        return session.executeDelete(sql, values);
     }
 
     public String toSql() {
@@ -87,7 +87,7 @@ public abstract class DeleteBase extends CRUD {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression on = normalVisitor.visit(expr.getTree());
-        getSqlBuilder().addJoin(target, joinType, factory.table(target), on);
+        getSqlBuilder().addJoin(joinType, factory.table(target), on);
     }
 
     protected void selectDeleteTable(Class<?> c) {

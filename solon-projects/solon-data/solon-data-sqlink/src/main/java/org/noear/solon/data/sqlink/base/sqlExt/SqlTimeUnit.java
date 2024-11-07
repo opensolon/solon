@@ -18,19 +18,50 @@ package org.noear.solon.data.sqlink.base.sqlExt;
 import org.noear.solon.data.sqlink.base.IConfig;
 
 /**
+ * SQL时间单位
  * @author kiryu1223
  * @since 3.0
  */
 public enum SqlTimeUnit implements ISqlKeywords {
+    /**
+     * 年
+     */
     YEAR,
+    /**
+     * 月
+     */
     MONTH,
+    /**
+     * 周
+     */
     WEEK,
+    /**
+     * 天
+     */
     DAY,
+    /**
+     * 小时
+     */
     HOUR,
+    /**
+     * 分钟
+     */
     MINUTE,
+    /**
+     * 秒
+     */
     SECOND,
+    /**
+     * 毫秒
+     */
     MILLISECOND,
+    /**
+     * 微秒
+     */
     MICROSECOND,
+    /**
+     * 纳秒
+     */
     NANOSECOND,
     ;
 

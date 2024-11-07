@@ -42,6 +42,7 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
         if (getValue() == null) {
             return "NULL";
         }
+        // 如果是关键字，则直接返回字符串拼接到SQL
         else if (getValue() instanceof ISqlKeywords) {
             ISqlKeywords keywords = (ISqlKeywords) getValue();
             return keywords.getKeyword(config);
@@ -53,7 +54,7 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
     }
 
 //    @Override
-//    public String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, PropertyMetaData propertyMetaData)
+//    public String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, FieldMetaData propertyMetaData)
 //    {
 //        if (getValue() == null)
 //        {

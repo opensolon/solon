@@ -25,13 +25,19 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlSingleValueExpression extends ISqlValueExpression {
+    /**
+     * 获取值
+     */
     Object getValue();
 
+    /**
+     * 获取类型
+     */
     default Class<?> getType() {
         return getValue().getClass();
     }
 
-    //String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, PropertyMetaData propertyMetaData);
+    //String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, FieldMetaData propertyMetaData);
 
     @Override
     default ISqlSingleValueExpression copy(IConfig config) {

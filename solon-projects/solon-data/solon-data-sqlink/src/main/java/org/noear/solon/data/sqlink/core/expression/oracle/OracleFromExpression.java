@@ -23,6 +23,8 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlFromExpression;
 import java.util.List;
 
 /**
+ * Oracle From 表达式
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -33,7 +35,9 @@ public class OracleFromExpression extends SqlFromExpression {
 
     @Override
     public String getSqlAndValue(IConfig config, List<Object> values) {
-        if (isEmptyTable()) return "FROM \"DUAL\"";
+        // oracle 不支持 无 from 查询
+        // 所以我们要加上DUAL表
+        if (isEmptyTable()) return "FROM " + config.getDisambiguation().disambiguationTableName("DUAL");
         String sql;
         if (sqlTableExpression instanceof ISqlRealTableExpression) {
             sql = sqlTableExpression.getSqlAndValue(config, values);

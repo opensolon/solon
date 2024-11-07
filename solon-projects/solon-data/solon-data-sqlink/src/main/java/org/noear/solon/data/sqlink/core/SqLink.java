@@ -15,35 +15,53 @@
  */
 package org.noear.solon.data.sqlink.core;
 
+import org.noear.solon.data.sqlink.SqLinkClient;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
-import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
-import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.DefaultTransactionManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
-import org.noear.solon.data.sqlink.api.client.SQLinkClient;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLink {
-    private SQLink() {
+public class SqLink {
+    private SqLink() {
     }
 
-    private DbType dbType = DbType.MySQL;
+    /**
+     * 方言
+     */
     private IDialect dialect;
+    /**
+     * 配置
+     */
     private Option option = new Option();
+    /**
+     * 数据源管理器
+     */
     private DataSourceManager dataSourceManager;
+    /**
+     * 事务管理器
+     */
     private TransactionManager transactionManager;
+    /**
+     * 会话工厂
+     */
     private SqlSessionFactory sqlSessionFactory;
+    /**
+     * 对象创建器工厂
+     */
     private BeanCreatorFactory beanCreatorFactory;
 
-    public SQLinkClient build() {
+    /**
+     * 构建Client对象
+     */
+    public SqLinkClient build() {
         if (dataSourceManager == null) {
             throw new NullPointerException("dataSourceManager is null");
         }
@@ -56,53 +74,64 @@ public class SQLink {
         if (beanCreatorFactory == null) {
             beanCreatorFactory = new BeanCreatorFactory();
         }
-        Config config = new Config(option, dbType, transactionManager, dataSourceManager, sqlSessionFactory, beanCreatorFactory);
+        Config config = new Config(option, DbType.Any, transactionManager, dataSourceManager, sqlSessionFactory, beanCreatorFactory);
         if (dialect != null) {
             config.setDisambiguation(dialect);
         }
-        return new SQLinkClient(config);
+        return new SqLinkClient(config);
     }
 
-    public static SQLink bootStrap() {
-        return new SQLink();
+    /**
+     * 开始构建对象
+     */
+    public static SqLink bootStrap() {
+        return new SqLink();
     }
 
-    public SQLink setDataSourceManager(DataSourceManager dataSourceManager) {
+    /**
+     * 设置数据源管理器
+     */
+    public SqLink setDataSourceManager(DataSourceManager dataSourceManager) {
         this.dataSourceManager = dataSourceManager;
         return this;
     }
 
-    public SQLink setTransactionManager(TransactionManager transactionManager) {
+    /**
+     * 设置事务管理器
+     */
+    public SqLink setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
         return this;
     }
 
-    public SQLink setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+    /**
+     * 设置会话工厂
+     */
+    public SqLink setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
         return this;
     }
 
-    public SQLink setDbType(DbType dbType) {
-        this.dbType = dbType;
-        return this;
-    }
-
-    public SQLink setOption(Option option) {
+    /**
+     * 设置配置
+     */
+    public SqLink setOption(Option option) {
         this.option = option;
         return this;
     }
 
-    public SQLink setFastCreatorFactory(BeanCreatorFactory beanCreatorFactory) {
+    /**
+     * 设置对象创建器工厂
+     */
+    public SqLink setBeanCreatorFactory(BeanCreatorFactory beanCreatorFactory) {
         this.beanCreatorFactory = beanCreatorFactory;
         return this;
     }
 
-    public SQLink addTypeHandler(ITypeHandler<?> iTypeHandler) {
-        TypeHandlerManager.set(iTypeHandler);
-        return this;
-    }
-
-    public SQLink setDialect(IDialect dialect) {
+    /**
+     * 设置方言
+     */
+    public SqLink setDialect(IDialect dialect) {
         this.dialect = dialect;
         return this;
     }

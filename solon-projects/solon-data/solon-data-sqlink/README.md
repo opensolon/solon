@@ -39,7 +39,6 @@ solon.data.sqlink:
 ```yaml
 solon.data.sqlink:
   main:
-    # dbType 默认mysql
 ```
 
 maven配置
@@ -83,7 +82,7 @@ maven配置
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.data.sqlink.api.client.SQLinkClient;
+import org.noear.solon.data.sqlink.SqLinkClient;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 //应用
@@ -91,7 +90,7 @@ import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 @Controller
 public class DemoController {
     @Inject // or @Inject("main")
-    SQLinkClient SQLinkClient;
+    SqLinkClient SQLinkClient;
 
     @Mapping("/hello")
     public String hello(String name) {

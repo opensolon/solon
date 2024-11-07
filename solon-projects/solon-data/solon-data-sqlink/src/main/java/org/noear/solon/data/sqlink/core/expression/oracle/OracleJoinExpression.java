@@ -25,6 +25,8 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlJoinExpression;
 import java.util.List;
 
 /**
+ * Oracle Join 表达式
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -33,6 +35,7 @@ public class OracleJoinExpression extends SqlJoinExpression {
         super(joinType, joinTable, conditions, index);
     }
 
+    // oracle下表的别名不能加AS
     @Override
     public String getSqlAndValue(IConfig config, List<Object> values) {
         return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " t" + index + " ON " + conditions.getSqlAndValue(config, values);

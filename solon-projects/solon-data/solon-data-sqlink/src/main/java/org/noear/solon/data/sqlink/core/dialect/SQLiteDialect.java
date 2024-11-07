@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.core.dialect;
 import org.noear.solon.data.sqlink.base.IDialect;
 
 /**
+ * SQLite方言
+ *
  * @author kiryu1223
  * @since 3.0
  */

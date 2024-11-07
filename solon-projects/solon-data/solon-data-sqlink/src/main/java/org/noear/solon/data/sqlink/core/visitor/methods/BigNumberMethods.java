@@ -23,10 +23,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * BigNumber方法
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class BigDecimalMethods {
+public class BigNumberMethods {
+    /**
+     * 取模运算
+     */
     public static ISqlExpression remainder(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;

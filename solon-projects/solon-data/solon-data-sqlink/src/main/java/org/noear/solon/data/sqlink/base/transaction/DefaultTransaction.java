@@ -20,6 +20,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * 默认事务控制器
+ *
  * @author kiryu1223
  * @since 3.0
  */

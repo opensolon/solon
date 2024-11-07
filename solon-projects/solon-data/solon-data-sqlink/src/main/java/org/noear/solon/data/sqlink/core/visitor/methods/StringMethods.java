@@ -18,7 +18,7 @@ package org.noear.solon.data.sqlink.core.visitor.methods;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +26,16 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 字符串函数
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class StringMethods {
+
+    /**
+     * 数据库LIKE运算
+     */
     public static ISqlBinaryExpression contains(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -46,6 +52,10 @@ public class StringMethods {
         return factory.binary(SqlOperator.LIKE, left, function);
     }
 
+
+    /**
+     * 数据库LIKE左匹配运算
+     */
     public static ISqlBinaryExpression startsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -61,6 +71,9 @@ public class StringMethods {
         return factory.binary(SqlOperator.LIKE, left, factory.template(functions, args));
     }
 
+    /**
+     * 数据库LIKE右匹配运算
+     */
     public static ISqlBinaryExpression endsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -76,6 +89,9 @@ public class StringMethods {
         return factory.binary(SqlOperator.LIKE, left, factory.template(functions, args));
     }
 
+    /**
+     * 数据库字符串长度函数
+     */
     public static ISqlTemplateExpression length(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -98,18 +114,27 @@ public class StringMethods {
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
+    /**
+     * 数据库字符串转大写函数
+     */
     public static ISqlTemplateExpression toUpperCase(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("UPPER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
+    /**
+     * 数据库字符串转小写函数
+     */
     public static ISqlTemplateExpression toLowerCase(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("LOWER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
+    /**
+     * 数据库字符串拼接函数
+     */
     public static ISqlTemplateExpression concat(IConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -123,12 +148,18 @@ public class StringMethods {
         return factory.template(functions, Arrays.asList(left, right));
     }
 
+    /**
+     * 数据库字符串左右去空格函数
+     */
     public static ISqlTemplateExpression trim(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("TRIM(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
     }
 
+    /**
+     * 数据库判断字符串是否为空表达式
+     */
     public static ISqlExpression isEmpty(IConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         switch (config.getDbType()) {
@@ -147,6 +178,9 @@ public class StringMethods {
 //        }
     }
 
+    /**
+     * 数据库字符串查找索引函数
+     */
     public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -167,6 +201,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串查找索引函数
+     */
     public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr, ISqlExpression fromIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -195,6 +232,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串替换函数
+     */
     public static ISqlTemplateExpression replace(IConfig config, ISqlExpression thisStr, ISqlExpression oldStr, ISqlExpression newStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("REPLACE(", ",", ",", ")");
@@ -202,6 +242,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串截取函数
+     */
     public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -219,6 +262,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串截取函数
+     */
     public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex, ISqlExpression endIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -233,6 +279,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串连接函数
+     */
     public static ISqlTemplateExpression joinArray(IConfig config, ISqlExpression delimiter, List<ISqlExpression> elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = new ArrayList<>();
@@ -264,6 +313,9 @@ public class StringMethods {
         return factory.template(functions, sqlExpressions);
     }
 
+    /**
+     * 数据库字符串连接函数
+     */
     public static ISqlTemplateExpression joinList(IConfig config, ISqlExpression delimiter, ISqlExpression elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
@@ -291,7 +343,7 @@ public class StringMethods {
             }
         }
         else {
-            throw new SQLinkException("String.join()的第二个参数必须是java中能获取到的");
+            throw new SqLinkException("String.join()的第二个参数必须是java中能获取到的");
         }
         switch (config.getDbType()) {
             case Oracle:

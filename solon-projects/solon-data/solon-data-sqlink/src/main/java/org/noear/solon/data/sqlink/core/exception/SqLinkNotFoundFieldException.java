@@ -15,27 +15,20 @@
  */
 package org.noear.solon.data.sqlink.core.exception;
 
+import java.lang.reflect.Method;
+
 /**
+ * 找不到字段异常
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkException extends RuntimeException {
-    public SQLinkException() {
+public class SqLinkNotFoundFieldException extends SqLinkException {
+    public SqLinkNotFoundFieldException(Method method) {
+        super(method.toGenericString());
     }
 
-    public SQLinkException(String message) {
-        super(message);
-    }
-
-    public SQLinkException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public SQLinkException(Throwable cause) {
-        super(cause);
-    }
-
-    public SQLinkException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public SqLinkNotFoundFieldException(String name) {
+        super(name);
     }
 }

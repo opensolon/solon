@@ -28,10 +28,19 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlCollectedValueExpression extends ISqlValueExpression {
+    /**
+     * 获取集合值
+     */
     Collection<Object> getCollection();
 
+    /**
+     * 设置元素之间的分隔符
+     */
     void setDelimiter(String delimiter);
 
+    /**
+     * 元素之间的分隔符
+     */
     String getDelimiter();
 
     @Override

@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.toBean.build;
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.ISetterCaller;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
@@ -33,39 +33,62 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * 返回数据创建器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class ObjectBuilder<T> {
+    /**
+     * 结果集
+     */
     private final ResultSet resultSet;
+    /**
+     * 目标类型
+     */
     private final Class<T> target;
-    private final List<PropertyMetaData> propertyMetaDataList;
+    /**
+     * 属性元数据列表
+     */
+    private final List<FieldMetaData> fieldMetaDataList;
+    /**
+     * 是否是单列返回
+     */
     private final boolean isSingle;
+    /**
+     * 配置
+     */
     private final IConfig config;
-    //private final IResultSetValueGetter valueGetter;
 
-    public static <T> ObjectBuilder<T> start(ResultSet resultSet, Class<T> target, List<PropertyMetaData> propertyMetaDataList, boolean isSingle, IConfig config) {
-        return new ObjectBuilder<>(resultSet, target, propertyMetaDataList, isSingle, config);
+    /**
+     * 创建构建器
+     */
+    public static <T> ObjectBuilder<T> start(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, IConfig config) {
+        return new ObjectBuilder<>(resultSet, target, fieldMetaDataList, isSingle, config);
     }
 
-    private ObjectBuilder(ResultSet resultSet, Class<T> target, List<PropertyMetaData> propertyMetaDataList, boolean isSingle, IConfig config) {
+    private ObjectBuilder(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, IConfig config) {
         this.resultSet = resultSet;
         this.target = target;
-        this.propertyMetaDataList = propertyMetaDataList;
+        this.fieldMetaDataList = fieldMetaDataList;
         this.isSingle = isSingle;
         this.config = config;
         //this.valueGetter = config.getValueGetter();
     }
 
+    /**
+     * 创建Map[key,T]返回
+     * @param column key的列名
+     */
     public <Key> Map<Key, T> createMap(String column) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        AbsBeanCreator<T> beanCreator = config.getFastCreatorFactory().get(target);
+        AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
         Map<Key, T> hashMap = new HashMap<>();
         while (resultSet.next()) {
             T t = creator.get();
             Key key = null;
-            for (PropertyMetaData metaData : propertyMetaDataList) {
+            for (FieldMetaData metaData : fieldMetaDataList) {
                 Object value = convertValue(metaData, indexMap.get(metaData.getColumn()));
                 if (column.equals(metaData.getColumn())) {
                     key = (Key) value;
@@ -77,8 +100,12 @@ public class ObjectBuilder<T> {
         return hashMap;
     }
 
+    /**
+     * 创建Map[key,List[T]]返回
+     * @param keyColumn key的列名
+     */
     public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        AbsBeanCreator<T> beanCreator = config.getFastCreatorFactory().get(target);
+        AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
         // System.out.println(indexMap);
@@ -86,7 +113,7 @@ public class ObjectBuilder<T> {
         while (resultSet.next()) {
             T t = creator.get();
             Key key = null;
-            for (PropertyMetaData metaData : propertyMetaDataList) {
+            for (FieldMetaData metaData : fieldMetaDataList) {
                 String column = metaData.getColumn();
                 //System.out.println(column);
                 Object value = convertValue(metaData, indexMap.get(column));
@@ -109,8 +136,12 @@ public class ObjectBuilder<T> {
         return hashMap;
     }
 
-    public <Key> Map<Key, List<T>> createMapListByAnotherKey(PropertyMetaData anotherKeyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        AbsBeanCreator<T> beanCreator = config.getFastCreatorFactory().get(target);
+    /**
+     * 创建Map[key,List[T]]返回
+     * @param anotherKeyColumn key的元数据
+     */
+    public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+        AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
         int anotherKeyIndex = indexMap.get(anotherKeyColumn.getColumn());
@@ -119,7 +150,7 @@ public class ObjectBuilder<T> {
             T t = creator.get();
             //Key key = resultSet.getObject(anotherKeyColumn.getColumn(), (Class<? extends Key>) upperClass(anotherKeyColumn.getType()));
             Key key = (Key) convertValue(anotherKeyColumn, anotherKeyIndex);
-            for (PropertyMetaData metaData : propertyMetaDataList) {
+            for (FieldMetaData metaData : fieldMetaDataList) {
                 Object value = convertValue(metaData, indexMap.get(metaData.getColumn()));
                 if (value != null) metaData.getSetter().invoke(t, value);
 //                if (anotherKeyColumn.equals(metaData.getColumn()))
@@ -143,15 +174,23 @@ public class ObjectBuilder<T> {
         return hashMap;
     }
 
+    /**
+     * 创建List[T]返回
+     */
     public List<T> createList() throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+        // 如果是单列
         if (isSingle) {
             return getSingleList();
         }
+        // 如果是多列
         else {
             return getClassList();
         }
     }
 
+    /**
+     * 单列返回
+     */
     private List<T> getSingleList() throws SQLException, NoSuchFieldException, IllegalAccessException {
         List<T> list = new ArrayList<>();
         ITypeHandler<T> typeHandler = TypeHandlerManager.get(target);
@@ -162,14 +201,17 @@ public class ObjectBuilder<T> {
         return list;
     }
 
+    /**
+     * 多列返回
+     */
     private List<T> getClassList() throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-        AbsBeanCreator<T> beanCreator = config.getFastCreatorFactory().get(target);
+        AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
         List<T> list = new ArrayList<>();
         while (resultSet.next()) {
             T t = creator.get();
-            for (PropertyMetaData metaData : propertyMetaDataList) {
+            for (FieldMetaData metaData : fieldMetaDataList) {
                 Object value = convertValue(metaData, indexMap.get(metaData.getColumn()));
                 if (value != null) {
                     ISetterCaller<T> beanSetter = beanCreator.getBeanSetter(metaData.getProperty());
@@ -183,6 +225,9 @@ public class ObjectBuilder<T> {
         return list;
     }
 
+    /**
+     * 获取列的索引
+     */
     private Map<String, Integer> getIndexMap() throws SQLException {
         Map<String, Integer> indexMap = new HashMap<>();
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -193,7 +238,7 @@ public class ObjectBuilder<T> {
         return indexMap;
     }
 
-    private Object convertValue(PropertyMetaData metaData, int index) throws SQLException, NoSuchFieldException, IllegalAccessException {
+    private Object convertValue(FieldMetaData metaData, int index) throws SQLException, NoSuchFieldException, IllegalAccessException {
 //        if (metaData.hasConverter())
 //        {
 //            Class<?> type = metaData.getDbType();
@@ -208,6 +253,6 @@ public class ObjectBuilder<T> {
 //            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
 //            return typeHandler.getValue(resultSet, index, cast(type));
 //        }
-        return metaData.getTypeHandler().getValue(resultSet, index, metaData.getType());
+        return metaData.getTypeHandler().getValue(resultSet, index, metaData.getGenericType());
     }
 }

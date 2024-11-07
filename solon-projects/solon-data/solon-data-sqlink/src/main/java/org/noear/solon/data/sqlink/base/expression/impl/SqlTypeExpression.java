@@ -31,9 +31,4 @@ public class SqlTypeExpression implements ISqlTypeExpression {
     public Class<?> getType() {
         return type;
     }
-
-    @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
-        return type.getSimpleName();
-    }
 }

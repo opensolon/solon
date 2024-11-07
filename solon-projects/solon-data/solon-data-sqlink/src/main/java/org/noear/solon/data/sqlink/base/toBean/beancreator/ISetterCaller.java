@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.base.toBean.beancreator;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * 用来给LambdaMetafactory重写的
+ *
  * @author kiryu1223
  * @since 3.0
  */

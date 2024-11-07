@@ -27,12 +27,14 @@ import java.util.List;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
 
 /**
+ * H2类型转换函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class H2CastExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression expression = args.get(1);
@@ -40,6 +42,12 @@ public class H2CastExtension extends BaseSqlExtension {
         Class<?> type = typeExpression.getType();
         templates.add("CAST(");
         sqlExpressions.add(args.get(0));
+        String unit = getUnit(type);
+        templates.add(" AS " + unit + ")");
+        return config.getSqlExpressionFactory().template(templates, sqlExpressions);
+    }
+
+    private String getUnit(Class<?> type) {
         String unit;
         if (isChar(type) || isString(type)) {
             unit = "CHAR";
@@ -65,7 +73,6 @@ public class H2CastExtension extends BaseSqlExtension {
         else {
             throw new UnsupportedOperationException("不支持的Java类型:" + type.getName());
         }
-        templates.add(" AS " + unit + ")");
-        return config.getSqlExpressionFactory().template(templates, sqlExpressions);
+        return unit;
     }
 }

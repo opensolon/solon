@@ -17,18 +17,21 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * float类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class FloatTypeHandler implements ITypeHandler<Float> {
     @Override
-    public Float getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public Float getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         float aFloat = resultSet.getFloat(index);
         return resultSet.wasNull() ? null : aFloat;
     }

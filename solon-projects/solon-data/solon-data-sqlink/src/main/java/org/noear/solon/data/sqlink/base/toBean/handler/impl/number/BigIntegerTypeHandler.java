@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.JDBCType;
@@ -25,12 +26,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * BigInteger类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class BigIntegerTypeHandler implements ITypeHandler<BigInteger> {
     @Override
-    public BigInteger getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public BigInteger getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         BigDecimal decimal = resultSet.getBigDecimal(index);
         return decimal == null ? null : decimal.toBigInteger();
     }

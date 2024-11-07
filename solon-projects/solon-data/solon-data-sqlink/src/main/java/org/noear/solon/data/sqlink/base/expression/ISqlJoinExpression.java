@@ -24,12 +24,24 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlJoinExpression extends ISqlExpression {
+    /**
+     * 获取join类型
+     */
     JoinType getJoinType();
 
+    /**
+     * 获取join表
+     */
     ISqlTableExpression getJoinTable();
 
+    /**
+     * 获取join条件
+     */
     ISqlExpression getConditions();
 
+    /**
+     * 获取join的索引
+     */
     int getIndex();
 
     @Override

@@ -24,10 +24,19 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlHavingExpression extends ISqlExpression {
+    /**
+     * 获取条件
+     */
     ISqlConditionsExpression getConditions();
 
+    /**
+     * 添加条件
+     */
     void addCond(ISqlExpression condition);
 
+    /**
+     * 判断条件是否为空
+     */
     default boolean isEmpty() {
         return getConditions().isEmpty();
     }

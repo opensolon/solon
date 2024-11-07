@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.base.metaData;
 import org.noear.solon.data.sqlink.base.annotation.*;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
+import org.noear.solon.data.sqlink.core.exception.SqLinkNotFoundFieldException;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -32,15 +33,35 @@ import java.util.stream.Collectors;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
+ * 类型元数据
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class MetaData {
-    private final List<PropertyMetaData> propertys = new ArrayList<>();
+    /**
+     * 字段列表
+     */
+    private final List<FieldMetaData> propertys = new ArrayList<>();
+    /**
+     * 类型
+     */
     private final Class<?> type;
+    /**
+     * 构造函器
+     */
     private final Constructor<?> constructor;
+    /**
+     * 表名
+     */
     private final String tableName;
+    /**
+     * 模式
+     */
     private final String schema;
+    /**
+     * 是否为空from查询表
+     */
     private final boolean isEmptyTable;
 
     public MetaData(Class<?> type) {
@@ -76,7 +97,7 @@ public class MetaData {
                     }
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
-                propertys.add(new PropertyMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey));
+                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey));
             }
         }
         catch (NoSuchFieldException | NoSuchMethodException e) {
@@ -95,58 +116,112 @@ public class MetaData {
         }
     }
 
-    public List<PropertyMetaData> getPropertys() {
+    /**
+     * 获取所有字段
+     */
+    public List<FieldMetaData> getPropertys() {
         return propertys;
     }
 
-    public List<PropertyMetaData> getNotIgnorePropertys() {
+    /**
+     * 获取所有非忽略字段
+     */
+    public List<FieldMetaData> getNotIgnorePropertys() {
         return propertys.stream().filter(f -> !f.isIgnoreColumn()).collect(Collectors.toList());
     }
 
-    public PropertyMetaData getPropertyMetaDataByFieldName(String key) {
-        return propertys.stream().filter(f -> f.getProperty().equals(key)).findFirst().orElseThrow(() -> new RuntimeException(key));
+    /**
+     * 根据字段名获取字段元数据
+     *
+     * @param key 字段名
+     */
+    public FieldMetaData getFieldMetaDataByFieldName(String key) {
+        return propertys.stream().filter(f -> f.getProperty().equals(key)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(key));
     }
 
-    public PropertyMetaData getPropertyMetaDataByColumnName(String asName) {
-        return propertys.stream().filter(f -> f.getColumn().equals(asName)).findFirst().orElseThrow(() -> new RuntimeException(asName));
+    /**
+     * 根据列名获取字段元数据
+     *
+     * @param columnName 列名
+     */
+    public FieldMetaData getFieldMetaDataByColumnName(String columnName) {
+        return propertys.stream().filter(f -> f.getColumn().equals(columnName)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(columnName));
     }
 
-    public PropertyMetaData getPropertyMetaDataByGetter(Method getter) {
-        return getPropertyMetaDataByColumnName(getColumnNameByGetter(getter));
+    /**
+     * 根据getter获取字段元数据
+     *
+     * @param getter getter方法
+     */
+    public FieldMetaData getFieldMetaDataByGetter(Method getter) {
+        return getFieldMetaDataByColumnName(getColumnNameByGetter(getter));
     }
 
-    public PropertyMetaData getPropertyMetaDataBySetter(Method setter) {
-        return getPropertyMetaDataByColumnName(getColumnNameBySetter(setter));
+    /**
+     * 根据setter获取字段元数据
+     *
+     * @param setter setter方法
+     */
+    public FieldMetaData getFieldMetaDataBySetter(Method setter) {
+        return getFieldMetaDataByColumnName(getColumnNameBySetter(setter));
     }
 
+    /**
+     * 根据getter获取列名
+     *
+     * @param getter getter方法
+     */
     public String getColumnNameByGetter(Method getter) {
-        return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new RuntimeException(getter.toGenericString())).getColumn();
+        return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(getter)).getColumn();
     }
 
+    /**
+     * 根据setter获取列名
+     *
+     * @param setter setter方法
+     */
     public String getColumnNameBySetter(Method setter) {
-        return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new RuntimeException(setter.toGenericString())).getColumn();
+        return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(setter)).getColumn();
     }
 
-    public PropertyMetaData getPrimary() {
-        return propertys.stream().filter(f -> f.isPrimaryKey()).findFirst().orElse(null);
+    /**
+     * 获取主键的字段元数据
+     */
+    public FieldMetaData getPrimary() {
+        return propertys.stream().filter(f -> f.isPrimaryKey()).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(type + "找不到主键"));
     }
 
+    /**
+     * 获取实体类型
+     */
     public Class<?> getType() {
         return type;
     }
 
+    /**
+     * 获取表名
+     */
     public String getTableName() {
         return tableName;
     }
 
+    /**
+     * 获取模式
+     */
     public String getSchema() {
         return schema;
     }
 
+    /**
+     * 是否为空from表
+     */
     public boolean isEmptyTable() {
         return isEmptyTable;
     }
 
+    /**
+     * 获取构造函器
+     */
     public Constructor<?> getConstructor() {
         return constructor;
     }

@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.api.client;
+package org.noear.solon.data.sqlink;
 
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
+import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
+import org.noear.solon.data.sqlink.api.crud.read.Empty;
+import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
-import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
-import org.noear.solon.data.sqlink.api.crud.read.Empty;
-import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.Collection;
@@ -35,23 +35,12 @@ import java.util.Collection;
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkClient
-{
+public class SqLinkClient {
     private final IConfig config;
 
-    public SQLinkClient(IConfig config) {
+    public SqLinkClient(IConfig config) {
         this.config = config;
     }
-
-//    public void useDs(String key)
-//    {
-//        config.getDataSourceManager().useDs(key);
-//    }
-//
-//    public void useDefDs()
-//    {
-//        config.getDataSourceManager().useDefDs();
-//    }
 
     /**
      * 手动开始事务
@@ -142,7 +131,7 @@ public class SQLinkClient
         for (T t : ts) {
             return (Class<T>) t.getClass();
         }
-        throw new SQLinkException("insert内容为空");
+        throw new SqLinkException("insert内容为空");
     }
 
     public IConfig getConfig() {

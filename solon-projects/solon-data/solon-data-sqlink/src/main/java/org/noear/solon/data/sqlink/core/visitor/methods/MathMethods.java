@@ -25,10 +25,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 数学运算函数
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class MathMethods {
+    /**
+     * 数据库atan2函数
+     */
     public static ISqlTemplateExpression atan2(IConfig config, ISqlExpression arg1, ISqlExpression arg2) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
@@ -42,6 +47,9 @@ public class MathMethods {
         return factory.template(function, Arrays.asList(arg1, arg2));
     }
 
+    /**
+     * 数据库ceil函数
+     */
     public static ISqlTemplateExpression ceil(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
@@ -55,10 +63,12 @@ public class MathMethods {
         return factory.template(function, Collections.singletonList(arg));
     }
 
+    /**
+     * 数据库degrees函数
+     */
     public static ISqlTemplateExpression toDegrees(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        String s = "({a} * 180 / " + Math.PI + ")";
         switch (config.getDbType()) {
             case Oracle:
                 function = Arrays.asList("(", " * 180 / " + Math.PI + ")");
@@ -69,6 +79,9 @@ public class MathMethods {
         return factory.template(function, Collections.singletonList(arg));
     }
 
+    /**
+     * 数据库radians函数
+     */
     public static ISqlTemplateExpression toRadians(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
@@ -82,6 +95,9 @@ public class MathMethods {
         return factory.template(function, Collections.singletonList(arg));
     }
 
+    /**
+     * 数据库log函数
+     */
     public static ISqlTemplateExpression log(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
@@ -95,10 +111,12 @@ public class MathMethods {
         return factory.template(function, Collections.singletonList(arg));
     }
 
+    /**
+     * 数据库log10函数
+     */
     public static ISqlTemplateExpression log10(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        List<ISqlExpression> sqlExpressions;
         switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("LOG(", ",10)");
@@ -112,10 +130,12 @@ public class MathMethods {
         return factory.template(function, Collections.singletonList(arg));
     }
 
+    /**
+     * 数据库random函数
+     */
     public static ISqlTemplateExpression random(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        List<ISqlExpression> sqlExpressions;
         switch (config.getDbType()) {
             case Oracle:
                 function = Collections.singletonList("DBMS_RANDOM.VALUE");
@@ -132,10 +152,12 @@ public class MathMethods {
         return factory.template(function, Collections.emptyList());
     }
 
+    /**
+     * 数据库round函数
+     */
     public static ISqlTemplateExpression round(IConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
-        List<ISqlExpression> sqlExpressions;
         switch (config.getDbType()) {
             case SQLServer:
                 function = Arrays.asList("ROUND(", ",0)");

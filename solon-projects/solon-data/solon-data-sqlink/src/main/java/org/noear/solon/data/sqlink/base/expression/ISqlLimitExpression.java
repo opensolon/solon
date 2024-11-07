@@ -24,22 +24,43 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlLimitExpression extends ISqlExpression {
+    /**
+     * 获取偏移量
+     */
     long getOffset();
 
+    /**
+     * 获取行数
+     */
     long getRows();
 
+    /**
+     * 设置偏移量
+     */
     void setOffset(long offset);
 
+    /**
+     * 设置行数
+     */
     void setRows(long rows);
 
+    /**
+     * 是否只有行数
+     */
     default boolean onlyHasRows() {
         return getRows() > 0 && getOffset() <= 0;
     }
 
+    /**
+     * 是否有行数和偏移量
+     */
     default boolean hasRowsAndOffset() {
         return getRows() > 0 && getOffset() > 0;
     }
 
+    /**
+     * 是否有行数或偏移量
+     */
     default boolean hasRowsOrOffset() {
         return getRows() > 0 || getOffset() > 0;
     }

@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.IConfig;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
 /**
  * 字段表达式
@@ -25,8 +25,14 @@ import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
  * @since 3.0
  */
 public interface ISqlColumnExpression extends ISqlExpression {
-    PropertyMetaData getPropertyMetaData();
+    /**
+     * 获取字段元数据
+     */
+    FieldMetaData getPropertyMetaData();
 
+    /**
+     * 获取字段所在的表的索引
+     */
     int getTableIndex();
 
     @Override

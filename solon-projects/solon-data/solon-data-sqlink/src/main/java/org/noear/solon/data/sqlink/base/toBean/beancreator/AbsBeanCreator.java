@@ -20,12 +20,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /**
+ * 对象创建器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public abstract class AbsBeanCreator<T> {
+    /**
+     * 目标类型
+     */
     protected final Class<T> target;
+    /**
+     * 创建器
+     */
     protected final Supplier<T> supplier;
+    /**
+     * 字段设置器
+     */
     protected final Map<String, ISetterCaller<T>> setters = new ConcurrentHashMap<>();
 
     protected AbsBeanCreator(Class<T> target) {
@@ -33,19 +44,32 @@ public abstract class AbsBeanCreator<T> {
         this.supplier = initBeanCreator(target);
     }
 
+    /**
+     * 初始化对象创建器
+     */
     protected abstract Supplier<T> initBeanCreator(Class<T> target);
 
+    /**
+     * 初始化字段设置器
+     */
     protected abstract ISetterCaller<T> initBeanSetter(String property);
 
+    /**
+     * 获取对象创建器
+     */
     public Supplier<T> getBeanCreator() {
         return supplier;
     }
 
-    public ISetterCaller<T> getBeanSetter(String property) {
-        ISetterCaller<T> setterCaller = setters.get(property);
+    /**
+     * 根据字段名获取字段设置器
+     * @param fieldName 字段名
+     */
+    public ISetterCaller<T> getBeanSetter(String fieldName) {
+        ISetterCaller<T> setterCaller = setters.get(fieldName);
         if (setterCaller == null) {
-            setterCaller = initBeanSetter(property);
-            setters.put(property, setterCaller);
+            setterCaller = initBeanSetter(fieldName);
+            setters.put(fieldName, setterCaller);
         }
         return setterCaller;
     }

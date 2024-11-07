@@ -23,11 +23,19 @@ import java.sql.SQLException;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
+ * 特殊的SQL参数打包
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class SqlValue {
+    /**
+     * 值
+     */
     private final Object value;
+    /**
+     * 类型处理器
+     */
     private final ITypeHandler<?> typeHandler;
 
     public SqlValue(Object value, ITypeHandler<?> typeHandler) {
@@ -35,6 +43,9 @@ public class SqlValue {
         this.typeHandler = typeHandler;
     }
 
+    /**
+     * 设置参数
+     */
     public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException {
         typeHandler.setValue(preparedStatement, index, cast(value));
     }

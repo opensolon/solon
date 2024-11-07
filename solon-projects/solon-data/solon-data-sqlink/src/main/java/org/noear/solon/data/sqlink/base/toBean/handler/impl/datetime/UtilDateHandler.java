@@ -17,16 +17,19 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Date;
 
 /**
+ * java.util.Date类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class UtilDateHandler implements ITypeHandler<Date> {
     @Override
-    public Date getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public Date getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         Timestamp timestamp = resultSet.getTimestamp(index);
         return timestamp == null ? null : Date.from(timestamp.toInstant());
     }

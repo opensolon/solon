@@ -17,6 +17,12 @@ package org.noear.solon.data.sqlink.core.page;
 
 import java.util.List;
 
+/**
+ * 默认分页器
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public class DefaultPager implements Pager {
     public static final DefaultPager instance = new DefaultPager();
 

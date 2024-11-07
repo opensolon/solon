@@ -26,8 +26,14 @@ import java.sql.SQLException;
  * @since 3.0
  */
 public interface DataSourceManager {
+    /**
+     * 获取连接
+     */
     Connection getConnection() throws SQLException;
 
+    /**
+     * 获取数据源
+     */
     DataSource getDataSource();
 
 //    void useDs(String key);

@@ -16,14 +16,27 @@
 package org.noear.solon.data.sqlink.plugin.aot.data;
 
 /**
+ * 普通类数据记录（请勿使用）
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class NormalClassData extends ClassData {
+    /**
+     * 类名称
+     */
     private String name;
-
+    /**
+     * 所有公开构造函数
+     */
     protected boolean allPublicConstructors = true;
+    /**
+     * 所有私有字段
+     */
     protected boolean allDeclaredFields = true;
+    /**
+     * 所有公开方法
+     */
     protected boolean allPublicMethods = true;
 
     public NormalClassData(String name) {
@@ -31,34 +44,58 @@ public class NormalClassData extends ClassData {
         this.name = name;
     }
 
+    /**
+     * 获取类名称
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 设置类名称
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 是否所有公开构造函数
+     */
     public boolean isAllPublicConstructors() {
         return allPublicConstructors;
     }
 
+    /**
+     * 设置是否所有公开构造函数
+     */
     public void setAllPublicConstructors(boolean allPublicConstructors) {
         this.allPublicConstructors = allPublicConstructors;
     }
 
+    /**
+     * 是否所有私有字段
+     */
     public boolean isAllDeclaredFields() {
         return allDeclaredFields;
     }
 
+    /**
+     * 设置是否所有私有字段
+     */
     public void setAllDeclaredFields(boolean allDeclaredFields) {
         this.allDeclaredFields = allDeclaredFields;
     }
 
+    /**
+     * 是否所有公开方法
+     */
     public boolean isAllPublicMethods() {
         return allPublicMethods;
     }
 
+    /**
+     * 设置是否所有公开方法
+     */
     public void setAllPublicMethods(boolean allPublicMethods) {
         this.allPublicMethods = allPublicMethods;
     }

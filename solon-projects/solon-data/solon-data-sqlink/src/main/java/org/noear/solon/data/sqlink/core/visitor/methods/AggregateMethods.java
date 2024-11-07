@@ -25,10 +25,16 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 聚合函数
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class AggregateMethods {
+
+    /**
+     * COUNT
+     */
     public static ISqlTemplateExpression count(IConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlTemplateExpression templateExpression;
@@ -41,26 +47,41 @@ public class AggregateMethods {
         return templateExpression;
     }
 
+    /**
+     * SUM
+     */
     public static ISqlTemplateExpression sum(IConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("SUM(", ")"), Collections.singletonList(expression));
     }
 
+    /**
+     * AVG
+     */
     public static ISqlTemplateExpression avg(IConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("AVG(", ")"), Collections.singletonList(expression));
     }
 
+    /**
+     * MAX
+     */
     public static ISqlTemplateExpression max(IConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("MAX(", ")"), Collections.singletonList(expression));
     }
 
+    /**
+     * MIN
+     */
     public static ISqlTemplateExpression min(IConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("MIN(", ")"), Collections.singletonList(expression));
     }
 
+    /**
+     * GROUP_CONCAT
+     */
     public static ISqlTemplateExpression groupConcat(IConfig config, List<ISqlExpression> expressions) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> strings;

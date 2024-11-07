@@ -25,8 +25,8 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
-import org.noear.solon.data.sqlink.core.exception.IllegalExpressionException;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkIllegalExpressionException;
 import org.noear.solon.data.sqlink.core.exception.SqlFuncExtNotFoundException;
 import org.noear.solon.data.sqlink.core.visitor.methods.*;
 
@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.temporal.Temporal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,6 +44,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
+ * 表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -56,12 +59,15 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         this(config, 0);
     }
 
-    public SqlVisitor(IConfig config, int offset) {
+    protected SqlVisitor(IConfig config, int offset) {
         this.config = config;
         this.offset = offset;
         this.factory = config.getSqlExpressionFactory();
     }
 
+    /**
+     * lambda表达式解析
+     */
     @Override
     public ISqlExpression visit(LambdaExpression<?> lambda) {
         if (parameters == null) {
@@ -74,6 +80,9 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         }
     }
 
+    /**
+     * 赋值表达式解析
+     */
     @Override
     public ISqlExpression visit(AssignExpression assignExpression) {
         ISqlExpression left = visit(assignExpression.getLeft());
@@ -82,9 +91,12 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             ISqlExpression right = visit(assignExpression.getRight());
             return factory.set(sqlColumnExpression, right);
         }
-        throw new SQLinkException("表达式中不能出现非lambda入参为赋值对象的语句");
+        throw new SqLinkException("表达式中不能出现非lambda入参为赋值对象的语句");
     }
 
+    /**
+     * 字段访问表达式解析
+     */
     @Override
     public ISqlExpression visit(FieldSelectExpression fieldSelect) {
         if (ExpressionUtil.isProperty(parameters, fieldSelect)) {
@@ -92,15 +104,19 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             int index = parameters.indexOf(parameter) + offset;
             Field field = fieldSelect.getField();
             MetaData metaData = MetaDataCache.getMetaData(field.getDeclaringClass());
-            return factory.column(metaData.getPropertyMetaDataByFieldName(field.getName()), index);
+            return factory.column(metaData.getFieldMetaDataByFieldName(field.getName()), index);
         }
         else {
             return checkAndReturnValue(fieldSelect);
         }
     }
 
+    /**
+     * 方法调用表达式解析
+     */
     @Override
     public ISqlExpression visit(MethodCallExpression methodCall) {
+        // 分组对象的聚合函数
         if (IAggregation.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             String name = methodCall.getMethod().getName();
             List<Expression> args = methodCall.getArgs();
@@ -122,9 +138,10 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     }
                     return AggregateMethods.groupConcat(config, visit);
                 default:
-                    throw new SQLinkException("不支持的聚合函数:" + name);
+                    throw new SqLinkException("不支持的聚合函数:" + name);
             }
         }
+        // SQL扩展函数
         else if (ExpressionUtil.isSqlExtensionExpressionMethod(methodCall.getMethod())) {
             Method sqlFunction = methodCall.getMethod();
             SqlExtensionExpression sqlFuncExt = getSqlFuncExt(sqlFunction.getAnnotationsByType(SqlExtensionExpression.class));
@@ -150,7 +167,7 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                         Parameter targetParam = methodParameters.stream()
                                 .filter(f -> f.getName().equals(param))
                                 .findFirst()
-                                .orElseThrow(() -> new SQLinkException("无法在" + sqlFuncExt.template() + "中找到" + param));
+                                .orElseThrow(() -> new SqLinkException("无法在" + sqlFuncExt.template() + "中找到" + param));
                         int index = methodParameters.indexOf(targetParam);
 
                         // 如果是可变参数
@@ -170,7 +187,31 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return factory.template(strings, expressions);
             }
         }
-        else if (List.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+        // SQL运算符
+        else if (ExpressionUtil.isSqlOperatorMethod(methodCall.getMethod())) {
+            Method method = methodCall.getMethod();
+            List<Expression> args = methodCall.getArgs();
+            SqlOperatorMethod operatorMethod = method.getAnnotation(SqlOperatorMethod.class);
+            SqlOperator operator = operatorMethod.value();
+            if (operator == SqlOperator.BETWEEN) {
+                ISqlExpression thiz = visit(args.get(0));
+                ISqlExpression min = visit(args.get(1));
+                ISqlExpression max = visit(args.get(2));
+                return factory.binary(SqlOperator.BETWEEN, thiz, factory.binary(SqlOperator.AND, min, max));
+            }
+            else {
+                if (operator.isLeft() || operator == SqlOperator.POSTINC || operator == SqlOperator.POSTDEC) {
+                    return factory.unary(operator, visit(args.get(0)));
+                }
+                else {
+                    ISqlExpression left = visit(methodCall.getArgs().get(0));
+                    ISqlExpression right = visit(methodCall.getArgs().get(1));
+                    return factory.binary(operator, left, right);
+                }
+            }
+        }
+        // 集合的函数
+        else if (Collection.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             if (method.getName().equals("contains")) {
                 ISqlExpression left = visit(methodCall.getArgs().get(0));
@@ -182,6 +223,7 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return checkAndReturnValue(methodCall);
             }
         }
+        // 字符串的函数
         else if (String.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             if (Modifier.isStatic(method.getModifiers())) {
@@ -282,6 +324,7 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 }
             }
         }
+        // Math的函数
         else if (Math.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             switch (method.getName()) {
@@ -366,7 +409,9 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     return checkAndReturnValue(methodCall);
             }
         }
-        else if (BigDecimal.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+        // BigDecimal||BigInteger的函数
+        else if (BigDecimal.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())
+                || BigInteger.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             switch (method.getName()) {
                 case "add": {
@@ -401,13 +446,14 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     if (method.getParameterCount() == 1) {
                         ISqlExpression left = visit(methodCall.getExpr());
                         ISqlExpression right = visit(methodCall.getArgs().get(0));
-                        return BigDecimalMethods.remainder(config, left, right);
+                        return BigNumberMethods.remainder(config, left, right);
                     }
                 }
                 default:
                     return checkAndReturnValue(methodCall);
             }
         }
+        // 时间的函数
         else if (Temporal.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             switch (method.getName()) {
@@ -430,42 +476,21 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     return checkAndReturnValue(methodCall);
             }
         }
-        else if (ExpressionUtil.isSqlOperatorMethod(methodCall.getMethod())) {
-            Method method = methodCall.getMethod();
-            List<Expression> args = methodCall.getArgs();
-            SqlOperatorMethod operatorMethod = method.getAnnotation(SqlOperatorMethod.class);
-            SqlOperator operator = operatorMethod.value();
-            if (operator == SqlOperator.BETWEEN) {
-                ISqlExpression thiz = visit(args.get(0));
-                ISqlExpression min = visit(args.get(1));
-                ISqlExpression max = visit(args.get(2));
-                return factory.binary(SqlOperator.BETWEEN, thiz, factory.binary(SqlOperator.AND, min, max));
-            }
-            else {
-                if (operator.isLeft() || operator == SqlOperator.POSTINC || operator == SqlOperator.POSTDEC) {
-                    return factory.unary(operator, visit(args.get(0)));
-                }
-                else {
-                    ISqlExpression left = visit(methodCall.getArgs().get(0));
-                    ISqlExpression right = visit(methodCall.getArgs().get(1));
-                    return factory.binary(operator, left, right);
-                }
-            }
-        }
+        // 字段
         else if (ExpressionUtil.isProperty(parameters, methodCall)) {
             if (ExpressionUtil.isGetter(methodCall.getMethod())) {
                 ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
                 int index = parameters.indexOf(parameter) + offset;
                 Method getter = methodCall.getMethod();
                 MetaData metaData = MetaDataCache.getMetaData(getter.getDeclaringClass());
-                return factory.column(metaData.getPropertyMetaDataByGetter(getter), index);
+                return factory.column(metaData.getFieldMetaDataByGetter(getter), index);
             }
             else if (ExpressionUtil.isSetter(methodCall.getMethod())) {
                 ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
                 int index = parameters.indexOf(parameter) + offset;
                 Method setter = methodCall.getMethod();
                 MetaData metaData = MetaDataCache.getMetaData(setter.getDeclaringClass());
-                ISqlColumnExpression columnExpression = factory.column(metaData.getPropertyMetaDataBySetter(setter), index);
+                ISqlColumnExpression columnExpression = factory.column(metaData.getFieldMetaDataBySetter(setter), index);
                 ISqlExpression value = visit(methodCall.getArgs().get(0));
                 return factory.set(columnExpression, value);
             }
@@ -473,11 +498,15 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return checkAndReturnValue(methodCall);
             }
         }
+        // 值
         else {
             return checkAndReturnValue(methodCall);
         }
     }
 
+    /**
+     * 二元运算表达式解析
+     */
     @Override
     public ISqlExpression visit(BinaryExpression binary) {
         Expression left = binary.getLeft();
@@ -489,6 +518,9 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         );
     }
 
+    /**
+     * 一元运算表达式解析
+     */
     @Override
     public ISqlExpression visit(UnaryExpression unary) {
         return factory.unary(
@@ -497,6 +529,9 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         );
     }
 
+    /**
+     * 三元运算表达式解析
+     */
     @Override
     public ISqlExpression visit(ConditionalExpression conditional) {
         ISqlExpression cond = visit(conditional.getCondition());
@@ -505,48 +540,66 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         return LogicExpression.IfExpression(config, cond, truePart, falsePart);
     }
 
+    /**
+     * 括号表达式解析
+     */
     @Override
     public ISqlExpression visit(ParensExpression parens) {
         return factory.parens(visit(parens.getExpr()));
     }
 
+    /**
+     * 类表达式解析
+     */
     @Override
     public ISqlExpression visit(StaticClassExpression staticClass) {
         return factory.type(staticClass.getType());
     }
 
+    /**
+     * 常量表达式解析
+     */
     @Override
     public ISqlExpression visit(ConstantExpression constant) {
-        return factory.value(constant.getValue());
+        return factory.AnyValue(constant.getValue());
     }
 
+    /**
+     * 引用表达式解析
+     */
     @Override
     public ISqlExpression visit(ReferenceExpression reference) {
         return factory.AnyValue(reference.getValue());
     }
 
+    /**
+     * new表达式解析
+     */
     @Override
     public ISqlExpression visit(NewExpression newExpression) {
         return checkAndReturnValue(newExpression);
     }
 
+    /**
+     * 获得一个新的自己
+     */
     protected abstract SqlVisitor getSelf();
 
     protected ISqlValueExpression checkAndReturnValue(MethodCallExpression expression) {
         Method method = expression.getMethod();
         if (ExpressionUtil.isVoid(method.getReturnType()) || hasParameter(expression)) {
-            throw new IllegalExpressionException(expression);
+            throw new SqLinkIllegalExpressionException(expression);
         }
         return factory.AnyValue(expression.getValue());
     }
 
     protected ISqlValueExpression checkAndReturnValue(FieldSelectExpression expression) {
-        if (hasParameter(expression)) throw new IllegalExpressionException(expression);
+        if (hasParameter(expression)) throw new SqLinkIllegalExpressionException(expression);
         return factory.AnyValue(expression.getValue());
     }
 
     protected ISqlValueExpression checkAndReturnValue(NewExpression expression) {
-        if (hasParameter(expression)) throw new IllegalExpressionException(expression);
+        if (hasParameter(expression)) throw new SqLinkIllegalExpressionException(expression);
         return factory.AnyValue(expression.getValue());
     }
 

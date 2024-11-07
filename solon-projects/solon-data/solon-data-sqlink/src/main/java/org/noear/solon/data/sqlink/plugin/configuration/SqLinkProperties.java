@@ -24,7 +24,7 @@ import org.noear.solon.data.sqlink.core.Option;
  * @since 3.0
  */
 @Configuration
-public class SQLinkProperties {
+public class SqLinkProperties {
     private DbType dbType;
     private boolean printSql = true;
     private boolean printBatch = false;

@@ -26,18 +26,20 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlExpression {
+    /**
+     * 获取sql和参数
+     */
     String getSqlAndValue(IConfig config, List<Object> values);
 
+    /**
+     * 获取sql
+     */
     default String getSql(IConfig config) {
         return getSqlAndValue(config, null);
     }
 
     /**
      * 获取自己的拷贝
-     *
-     * @param config 运行时配置
-     * @param <T>    自身类型
-     * @return 自身的拷贝对象
      */
     <T extends ISqlExpression> T copy(IConfig config);
 }

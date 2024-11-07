@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.plugin.aot.data;
 
 /**
+ * 类数据记录（请勿使用）
+ *
  * @author kiryu1223
  * @since 3.0
  */

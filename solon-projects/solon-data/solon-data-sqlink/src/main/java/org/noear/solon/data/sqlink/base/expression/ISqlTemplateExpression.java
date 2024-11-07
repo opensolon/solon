@@ -27,14 +27,20 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlTemplateExpression extends ISqlExpression {
-    List<String> getFunctions();
+    /**
+     * 获取模板字符串列表
+     */
+    List<String> getTemplateStrings();
 
+    /**
+     * 获取需要填充的值的列表
+     */
     List<? extends ISqlExpression> getExpressions();
 
     @Override
     default ISqlTemplateExpression copy(IConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        List<String> newFunctions = new ArrayList<>(getFunctions());
+        List<String> newFunctions = new ArrayList<>(getTemplateStrings());
         List<? extends ISqlExpression> newExpressions = new ArrayList<>(getExpressions());
         return factory.template(newFunctions, newExpressions);
     }

@@ -24,10 +24,19 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlBinaryExpression extends ISqlExpression {
+    /**
+     * 左表达式
+     */
     ISqlExpression getLeft();
 
+    /**
+     * 右表达式
+     */
     ISqlExpression getRight();
 
+    /**
+     * SQL运算符
+     */
     SqlOperator getOperator();
 
     @Override

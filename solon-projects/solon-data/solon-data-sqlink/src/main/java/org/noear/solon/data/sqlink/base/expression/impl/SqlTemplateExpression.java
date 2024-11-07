@@ -35,7 +35,7 @@ public class SqlTemplateExpression implements ISqlTemplateExpression {
     }
 
     @Override
-    public List<String> getFunctions() {
+    public List<String> getTemplateStrings() {
         return functions;
     }
 
@@ -47,8 +47,8 @@ public class SqlTemplateExpression implements ISqlTemplateExpression {
     @Override
     public String getSqlAndValue(IConfig config, List<Object> values) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < getFunctions().size(); i++) {
-            String function = getFunctions().get(i);
+        for (int i = 0; i < getTemplateStrings().size(); i++) {
+            String function = getTemplateStrings().get(i);
             sb.append(function);
             if (i < getExpressions().size()) {
                 ISqlExpression expression = getExpressions().get(i);

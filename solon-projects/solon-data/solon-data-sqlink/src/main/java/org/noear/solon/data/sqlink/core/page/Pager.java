@@ -17,6 +17,17 @@ package org.noear.solon.data.sqlink.core.page;
 
 import java.util.List;
 
+/**
+ * 分页器
+ *
+ * @author kiryu1223
+ * @since 3.0
+ */
 public interface Pager {
+    /**
+     * 获取分页结果
+     * @param total 总数
+     * @param data 数据
+     */
     <T> PagedResult<T> getPagedResult(long total, List<T> data);
 }

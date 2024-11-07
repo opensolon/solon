@@ -18,14 +18,20 @@ package org.noear.solon.data.sqlink.base.expression;
 import org.noear.solon.data.sqlink.base.IConfig;
 
 /**
- * as表达式
+ * 别名表达式
  *
  * @author kiryu1223
  * @since 3.0
  */
 public interface ISqlAsExpression extends ISqlExpression {
+    /**
+     * 获取被别名包裹的表达式
+     */
     ISqlExpression getExpression();
 
+    /**
+     * 获取别名
+     */
     String getAsName();
 
     @Override

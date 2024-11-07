@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 更新语句构造器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -45,7 +47,14 @@ public class UpdateSqlBuilder implements ISqlBuilder {
         wheres = factory.where();
     }
 
-    public void addJoin(Class<?> target, JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
+    /**
+     * 添加关联表
+     *
+     * @param joinType 关联类型
+     * @param table    关联表
+     * @param on       关联条件
+     */
+    public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
@@ -55,18 +64,30 @@ public class UpdateSqlBuilder implements ISqlBuilder {
         joins.addJoin(join);
     }
 
+    /**
+     * 添加需要更新的列
+     */
     public void addSet(ISqlSetsExpression set) {
         sets.addSet(set.getSets());
     }
 
+    /**
+     * 添加需要更新的列
+     */
     public void addSet(ISqlSetExpression set) {
         sets.addSet(set);
     }
 
+    /**
+     * 添加条件
+     */
     public void addWhere(ISqlExpression where) {
         wheres.addCondition(where);
     }
 
+    /**
+     * 是否有条件
+     */
     public boolean hasWhere() {
         return !wheres.isEmpty();
     }
@@ -78,7 +99,7 @@ public class UpdateSqlBuilder implements ISqlBuilder {
 
     @Override
     public String getSqlAndValue(List<Object> values) {
-        return makeUpdate();
+        return makeUpdate(values);
     }
 
     public IConfig getConfig() {
@@ -86,22 +107,7 @@ public class UpdateSqlBuilder implements ISqlBuilder {
     }
 
     private String makeUpdate() {
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        IDialect dbConfig = config.getDisambiguation();
-        String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
-        StringBuilder sb = new StringBuilder();
-        sb.append(sql);
-        String joinsSqlAndValue = joins.getSql(config);
-        if (!joinsSqlAndValue.isEmpty()) {
-            sb.append(" ").append(joinsSqlAndValue);
-        }
-        String setsSqlAndValue = sets.getSql(config);
-        sb.append(" ").append(setsSqlAndValue);
-        String wheresSqlAndValue = wheres.getSql(config);
-        if (!wheresSqlAndValue.isEmpty()) {
-            sb.append(" ").append(wheresSqlAndValue);
-        }
-        return sb.toString();
+        return makeUpdate(null);
     }
 
     private String makeUpdate(List<Object> values) {

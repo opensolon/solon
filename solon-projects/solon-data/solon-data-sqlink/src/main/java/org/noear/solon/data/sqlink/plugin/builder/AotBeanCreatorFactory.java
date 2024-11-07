@@ -19,6 +19,8 @@ import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
 
 /**
+ * aot环境的对象创建器工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */
