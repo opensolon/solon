@@ -103,13 +103,13 @@ public class SmHttpServer implements ServerLifecycle {
         _config.threadNum(coreThreads);
 
         //这个是基于通讯层的。。。需要对 http 层和 ws 层分别定制
-        _config.setHttpIdleTimeout((int)props.getIdleTimeoutOrDefault());
+        _config.setHttpIdleTimeout(props.getIdleTimeoutOrDefault());
 
         if(enableWebSocket) {
             WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
             // WS 闲置超时
             if (wsProps.getIdleTimeout() > 0) {
-                _config.setWsIdleTimeout((int) wsProps.getIdleTimeout());
+                _config.setWsIdleTimeout(wsProps.getIdleTimeout());
             }
         }
 

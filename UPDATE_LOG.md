@@ -56,6 +56,8 @@
 * jetty 升为 9.4.56.v20240826
 * jackson 升为 2.18.1
 * asm 升为 9.7.1
+* smart-socket 升为 1.5.54
+* smart-http 升为 2.0
 
 ### v3.0.2
 * 添加 solon SerializerManager 及序列化可选注册机制
