@@ -208,7 +208,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
      */
     protected void setObject(PreparedStatement stmt, int columnIdx, Object val) throws SQLException {
         if (val == null) {
-            stmt.setNull(columnIdx, Types.VARCHAR);
+            stmt.setNull(columnIdx, Types.NULL);
         } else if (val instanceof java.util.Date) {
             if (val instanceof java.sql.Date) {
                 stmt.setDate(columnIdx, (java.sql.Date) val);
