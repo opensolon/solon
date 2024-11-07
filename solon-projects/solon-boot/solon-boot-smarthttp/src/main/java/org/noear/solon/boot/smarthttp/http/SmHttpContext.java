@@ -16,7 +16,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.boot.web.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextAsyncListener;
@@ -70,7 +69,7 @@ public class SmHttpContext extends WebContextBase {
 
         //文件上传需要
         if (isMultipartFormData()) {
-            DecodeUtils.decodeMultipart(this, _fileMap);
+            MultipartUtil.buildParamsAndFiles(this, _fileMap);
         }
     }
 
@@ -156,19 +155,13 @@ public class SmHttpContext extends WebContextBase {
         try {
             return super.body(charset);
         } catch (Exception e) {
-            throw DecodeUtils.status4xx(this, e);
+            throw MultipartUtil.status4xx(this, e);
         }
     }
 
-    private InputStream bodyAsStream;
-
     @Override
     public InputStream bodyAsStream() throws IOException {
-        if (bodyAsStream == null) {
-            bodyAsStream = new LimitedInputStream(_request.getInputStream(), ServerProps.request_maxBodySize);
-        }
-
-        return bodyAsStream;
+        return _request.getInputStream();
     }
 
     private MultiMap<String> _paramMap;
@@ -202,7 +195,7 @@ public class SmHttpContext extends WebContextBase {
                     _paramMap.holder(key).setValues(entry.getValue());
                 }
             } catch (Exception e) {
-                throw DecodeUtils.status4xx(this, e);
+                throw MultipartUtil.status4xx(this, e);
             }
         }
     }

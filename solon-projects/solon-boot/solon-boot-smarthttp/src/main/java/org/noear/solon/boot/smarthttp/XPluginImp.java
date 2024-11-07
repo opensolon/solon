@@ -21,6 +21,7 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.smarthttp.http.MultipartUtil;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
@@ -75,6 +76,7 @@ public final class XPluginImp implements Plugin {
 
         //初始化属性
         ServerProps.init();
+        MultipartUtil.init();
 
         HttpServerProps props = HttpServerProps.getInstance();
         final String _host = props.getHost();
