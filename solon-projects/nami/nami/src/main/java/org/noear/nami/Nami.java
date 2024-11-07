@@ -187,10 +187,6 @@ public class Nami {
             throw new NamiException(buf.toString());
         }
 
-        if (inv.body == null) {
-            inv.body = inv.args;
-        }
-
         log.trace("Nami call: {}", inv.url);
 
         return channel.call(inv);

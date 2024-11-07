@@ -38,7 +38,7 @@ public class HttpChannel extends ChannelBase implements Channel {
         //0.尝试重构url
         // a. GET 方法，统一用 query 参数
         // b. body 提交时，参数转到 query 上（有 NamiBody 的参数 已经从 args 移除了）
-        if ((is_get && ctx.args.size() > 0) || (ctx.bodyInited && ctx.args.size() > 0)) {
+        if ((is_get && ctx.args.size() > 0) || (ctx.body != null && ctx.args.size() > 0)) {
             StringBuilder sb = new StringBuilder(ctx.url);
             //如果URL中含有固定参数,应该用'&'添加参数
             sb.append(ctx.url.contains("?") ? "&" : "?");
@@ -71,7 +71,7 @@ public class HttpChannel extends ChannelBase implements Channel {
             response = http.exec(Constants.METHOD_GET);
         } else if (ctx.args.size() == 0 && ctx.body == null) {
             // 增强query时，已经将body的参数移除了，所以需要一起判断body也为空
-            response = http.exec(ctx.action);
+            response = http.exec(Constants.METHOD_GET);
         } else {
             if (encoder == null) {
                 String ct0 = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
@@ -82,7 +82,7 @@ public class HttpChannel extends ChannelBase implements Channel {
             }
 
             //有 body 或者有 encoder；则用编码方式
-            if (ctx.bodyInited || encoder != null) {
+            if (ctx.body != null || encoder != null) {
                 if (encoder == null) {
                     encoder = ctx.config.getEncoderOrDefault();
                 }
@@ -92,7 +92,7 @@ public class HttpChannel extends ChannelBase implements Channel {
                     throw new IllegalArgumentException("There is no suitable decoder");
                 }
 
-                byte[] bytes = encoder.encode(ctx.body);
+                byte[] bytes = encoder.encode(ctx.bodyOrArgs());
 
                 if (bytes != null) {
                     response = http.bodyRaw(bytes, encoder.enctype()).exec(ctx.action);
