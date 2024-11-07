@@ -15,11 +15,10 @@
  */
 package labs;
 
-
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Import;
+import org.noear.solon.core.AppContext;
 
 /**
  * @author noear 2022/12/2 created
@@ -28,13 +27,14 @@ import org.noear.solon.annotation.Import;
 @Configuration
 public class PathTest {
     public static void main(String[] args) {
-        Solon.start(PathTest.class, new String[]{"-scanning=0"}, app -> {
-            app.context().lifecycle(() -> {
-                app.context().subBeansOfType(String.class, bean -> {
-                    System.out.println(bean);
-                });
+        AppContext appContext = new AppContext();
+        appContext.lifecycle(() -> {
+            appContext.subBeansOfType(String.class, bean -> {
+                System.out.println(bean);
             });
         });
+        appContext.beanMake(PathTest.class);
+        appContext.start();
     }
 
     @Bean("str1")

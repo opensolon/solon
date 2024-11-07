@@ -68,7 +68,7 @@ public class SocketdChannel extends ChannelBase implements Channel {
 
         //2.构建消息
         ctx.headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
-        byte[] bytes = encoder.encode(ctx.body);
+        byte[] bytes = encoder.encode(ctx.bodyOrArgs());
         Entity request = new EntityDefault().metaMapPut(ctx.headers).dataSet(bytes);
 
         //3.获取会话

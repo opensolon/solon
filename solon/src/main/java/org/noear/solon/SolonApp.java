@@ -128,6 +128,7 @@ public class SolonApp extends RouterWrapper {
         //初始化配置
         _cfg = new SolonProps(this, args);
         _context = new AppContext(this, new AppClassLoader(AppClassLoader.global()), _cfg);
+        _enableScanning = ("0".equals(args.get("scanning")) == false); //不等于0，则启用扫描
 
         //初始化路由
         initRouter(this);
@@ -270,7 +271,7 @@ public class SolonApp extends RouterWrapper {
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
 
-        if (cfg().scanning()) {
+        if (enableScanning()) {
             LogUtil.global().info("App: Bean scanning");
         }
 
@@ -278,7 +279,7 @@ public class SolonApp extends RouterWrapper {
         beanImportTry();
 
         //2.2.通过源扫描bean
-        if (source() != null && cfg().scanning()) {
+        if (source() != null && enableScanning()) {
             context().beanScan(source());
         }
 
@@ -675,6 +676,26 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableCaching(boolean enable) {
         _enableCaching = enable;
+        return this;
+    }
+
+    private boolean _enableScanning = true;
+
+    /**
+     * 是否已启用扫描
+     */
+    public boolean enableScanning() {
+        //都为 true 则为 true
+        return _enableScanning;
+    }
+
+    /**
+     * 启用扫描
+     *
+     * @param enable 是否启用
+     */
+    public SolonApp enableScanning(boolean enable) {
+        _enableScanning = enable;
         return this;
     }
 

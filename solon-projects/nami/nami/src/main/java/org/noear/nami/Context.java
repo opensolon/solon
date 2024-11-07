@@ -66,12 +66,7 @@ public class Context {
     /**
      * 请求主体
      */
-    public Object body;
-
-    /**
-     * 请求主体有初始化过（@NameBody）
-     */
-    public final boolean bodyInited;
+    public final Object body;
 
 
     public Context(Config config, Object target, Method method, String action, String url, Object body) {
@@ -82,6 +77,13 @@ public class Context {
         this.url = url;
         this.uri = URI.create(url);
         this.body = body;
-        this.bodyInited = body != null;
+    }
+
+    public Object bodyOrArgs() {
+        if (body == null) {
+            return args;
+        } else {
+            return body;
+        }
     }
 }

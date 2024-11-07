@@ -13,31 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
+package org.noear.solon.net.http.integration;
 
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.net.http.HttpConfiguration;
+import org.noear.solon.net.http.HttpExtension;
+import org.noear.solon.net.http.HttpUtilsFactory;
 
 /**
  * @author noear
  * @since 3.0
  */
-public class SbeRender extends BytesSerializerRender {
-    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
-
-    /**
-     * 获取序列化器
-     */
+public class XPluginImpl implements Plugin {
     @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
-    }
+    public void start(AppContext context) throws Throwable {
+        context.getBeanAsync(HttpUtilsFactory.class, bean -> {
+            HttpConfiguration.setFactory(bean);
+        });
 
-    /**
-     * 获取渲染器名字
-     */
-    @Override
-    public String name() {
-        return this.getClass().getSimpleName();
+        context.subBeansOfType(HttpExtension.class, bean -> {
+            HttpConfiguration.addExtension(bean);
+        });
     }
 }

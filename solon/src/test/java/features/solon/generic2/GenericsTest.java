@@ -1,26 +1,36 @@
 package features.solon.generic2;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.AppContext;
 
 import java.util.List;
 import java.util.Map;
 
 @Configuration
 public class GenericsTest {
-    @Test
-    public void main() throws Exception {
-        Solon.startBlock(app -> {
-            app.context().beanScan(GenericsTest.class);
-        });
+    static AppContext appContext;
 
-        GenericsTest self = Solon.context().getBean(GenericsTest.class);
+    @BeforeAll
+    public static void bef() throws Exception {
+        appContext = new AppContext();
+        appContext.beanScan(GenericsTest.class);
+        appContext.start();
+    }
+
+    @AfterAll
+    public static void aft() {
+        appContext.stop();
+    }
+
+    @Test
+    public void test() {
+        GenericsTest self = appContext.getBean(GenericsTest.class);
 
         self.wxCallbackContext.check();
         self.fsCallbackContext.check();

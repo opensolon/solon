@@ -52,6 +52,10 @@ import java.util.stream.Collectors;
  * */
 public class AppContext extends BeanContainer {
 
+    public AppContext() {
+        this(Thread.currentThread().getContextClassLoader(), new Props());
+    }
+
     public AppContext(ClassLoader classLoader, Props props) {
         this(Solon.app(), classLoader, props);
     }
