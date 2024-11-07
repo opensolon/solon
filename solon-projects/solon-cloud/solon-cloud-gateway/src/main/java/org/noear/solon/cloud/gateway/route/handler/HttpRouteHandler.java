@@ -95,34 +95,10 @@ public class HttpRouteHandler implements RouteHandler {
                         callbackHandle(ctx, ar1, emitter);
                     });
                 } else {
-                    ExBodyOfStream streamBody = (ExBodyOfStream) exBody;
-
-                    if (streamBody.getStream() instanceof HttpServerRequest) {
-                        HttpServerRequest requestBody = (HttpServerRequest) streamBody.getStream();
-
-                        if ("GET".equals(ctx.newRequest().getMethod())) {
-                            //GET 不采用 chunked
-                            requestBody.body().onComplete(ar -> {
-                                if (ar.succeeded()) {
-                                    req1.sendBuffer(ar.result(), ar1 -> {
-                                        callbackHandle(ctx, ar1, emitter);
-                                    });
-                                } else {
-                                    emitter.onError(new StatusException(ar.cause(), 400));
-                                }
-                            });
-                        } else {
-                            //使用 chunked
-                            req1.sendStream(requestBody, ar1 -> {
-                                callbackHandle(ctx, ar1, emitter);
-                            });
-                        }
-                    } else {
-                        //使用 chunked
-                        req1.sendStream(streamBody.getStream(), ar1 -> {
-                            callbackHandle(ctx, ar1, emitter);
-                        });
-                    }
+                    //使用 chunked
+                    req1.sendStream(((ExBodyOfStream) exBody).getStream(), ar1 -> {
+                        callbackHandle(ctx, ar1, emitter);
+                    });
                 }
             });
         } catch (Throwable ex) {
