@@ -1,5 +1,7 @@
 package features.solon.generic3;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
@@ -13,19 +15,28 @@ import java.util.Map;
 @Configuration
 public class GenericsTest {
 
-    @Test
-    public void main() throws Exception {
+    @BeforeAll
+    public static void bef() throws Exception {
         Solon.start(GenericsTest.class, app -> {
             app.enableHttp(false);
             app.enableScanning(false);
-            app.context().beanScan(features.solon.generic2.GenericsTest.class);
+            app.context().beanScan(GenericsTest.class);
         });
+    }
 
-        features.solon.generic2.GenericsTest self = Solon.context().getBean(features.solon.generic2.GenericsTest.class);
+    @AfterAll
+    public static void aft(){
+        Solon.stopBlock();
+    }
+
+    @Test
+    public void test(){
+        GenericsTest self = Solon.context().getBean(GenericsTest.class);
 
         self.wxCallbackContext.check();
         self.fsCallbackContext.check();
     }
+
 
     @Inject
     private WxCallbackContext wxCallbackContext;
