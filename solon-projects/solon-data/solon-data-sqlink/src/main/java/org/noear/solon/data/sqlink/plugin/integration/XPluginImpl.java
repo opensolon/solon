@@ -58,10 +58,11 @@ public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
-        log.info("SQLink启动，共找到{}个配置", data.size());
+
         if (data.isEmpty()) {
             return;
         }
+        log.info("SQLink启动，共找到{}个配置", data.size());
 
         // 为每个配置创建一个Client，存到clients
         Map<String, SqLinkClient> clients = new LinkedHashMap<>();
