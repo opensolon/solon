@@ -185,7 +185,6 @@ public class RunnerUtils {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
 
             SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
-            testApp.staticize();
             //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
             testApp.startSimply(x -> {
                 //默认关闭 http（避免与已经存在的服务端口冲突）
@@ -209,7 +208,6 @@ public class RunnerUtils {
                 String[] args = argsAry.toArray(new String[argsAry.size()]);
 
                 SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
-                testApp.staticize();
                 //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
                 testApp.startSimply(x -> {
                     //默认关闭 http（避免与已经存在的服务端口冲突）
