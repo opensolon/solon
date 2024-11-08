@@ -55,26 +55,26 @@ import java.util.Map;
 public class XPluginImpl implements Plugin {
     private static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
 
+    // 为每个配置创建一个Client，存到clients
+    private Map<String, SqLink> clients = new LinkedHashMap<>();
+
     @Override
     public void start(AppContext context) throws Throwable {
+        // 获取配置（允许没有。即，可默认）
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
 
-        if (data.isEmpty()) {
-            return;
-        }
+        // 订阅数据源（相对之前方式，它支持动态扩充）
+        context.subWrapsOfType(DataSource.class, dsBw -> {
+            String dsName = dsBw.name();
+            Props dsProps = data.get(dsName);
 
-        log.info("SQLink启动，共找到{}个配置", data.size());
-
-        // 为每个配置创建一个Client，存到clients
-        Map<String, SqLink> clients = new LinkedHashMap<>();
-        for (Map.Entry<String, Props> entry : data.entrySet()) {
-            Props props = entry.getValue();
-            String dsName = entry.getKey();
-            if (dsName.isEmpty()) {
-                continue;
+            SqLinkProperties properties;
+            if (dsProps == null) {
+                properties = new SqLinkProperties(); //允许没有配置（即，可默认）
+            } else {
+                properties = dsProps.toBean(SqLinkProperties.class);
             }
 
-            SqLinkProperties properties = props.toBean(SqLinkProperties.class);
             DataSourceManager dataSourceManager = new SolonDataSourceManager();
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
@@ -88,30 +88,24 @@ public class XPluginImpl implements Plugin {
                     .setOption(properties.bulidOption())
                     .build();
 
-            clients.put(entry.getKey(), sqLink);
+            clients.put(dsName, sqLink);
             SqLinkConfig config = sqLink.getConfig();
 
             DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
-        }
 
-        // 设置注入
+        });
+
+
+        // 设置注入（相对之前方式，它支持动态扩充）
         context.beanInjectorAdd(Inject.class, SqLink.class, (varHolder, inject) -> {
             varHolder.required(inject.required());
-            String name = inject.value();
+            String dsName = inject.value();
 
-            if (name.isEmpty()) {
-                // 默认数据源注入
-                BeanWrap dsBw = context.getWrap(DataSource.class);
-                if (dsBw == null) {
-                    throw new IllegalStateException("Missing default data source configuration");
-                }
-
-                SqLink first = clients.get(dsBw.name());
-                varHolder.setValue(first);
-            } else {
-                // 按名称注入
-                varHolder.setValue(clients.get(name));
-            }
+            //确保有数据源存在（）
+            DsUtils.observeDs(context, dsName, dsBw -> {
+                SqLink sqLink = clients.get(dsBw.name());
+                varHolder.setValue(sqLink);
+            });
         });
 
         // 注册类型处理器
@@ -125,6 +119,7 @@ public class XPluginImpl implements Plugin {
     private static void registerDataSource(BeanWrap beanWrap, SqLinkConfig config) {
         SolonDataSourceManager solonDataSourceManager = (SolonDataSourceManager) config.getDataSourceManager();
         solonDataSourceManager.setDataSource(beanWrap.get());
+
         try (Connection connection = solonDataSourceManager.getConnection()) {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DbType dbType = DbType.getByName(databaseProductName);
