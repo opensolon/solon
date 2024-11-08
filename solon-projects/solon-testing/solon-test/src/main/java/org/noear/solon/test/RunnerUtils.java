@@ -17,10 +17,7 @@ package org.noear.solon.test;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.SolonTestApp;
-import org.noear.solon.Utils;
+import org.noear.solon.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
@@ -187,8 +184,12 @@ public class RunnerUtils {
         if (mainClz == klass) {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
 
-            SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
+            SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
+            testApp.staticize();
+            //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
             testApp.start(x -> {
+                //默认关闭 http（避免与已经存在的服务端口冲突）
+                x.enableHttp(false);
                 initDo(klass, x);
             });
 
@@ -207,8 +208,12 @@ public class RunnerUtils {
             } else {
                 String[] args = argsAry.toArray(new String[argsAry.size()]);
 
-                SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
+                SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
+                testApp.staticize();
+                //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
                 testApp.start(x -> {
+                    //默认关闭 http（避免与已经存在的服务端口冲突）
+                    x.enableHttp(false);
                     initDo(klass, x);
                 });
 

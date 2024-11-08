@@ -19,19 +19,38 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.ConsumerEx;
 
 /**
+ * 简单应用
+ *
  * @author noear
- * @since 1.12
+ * @since 3.0
  */
-public class SolonTestApp extends SolonApp {
-    public SolonTestApp(Class<?> source, NvMap args) throws Exception {
-        super(source, args.set("testing", "1"));
-        Solon.appSet(this);
+public class SimpleSolonApp extends SolonApp {
+    public SimpleSolonApp(Class<?> source, NvMap args) throws Exception {
+        super(source, args);
     }
 
+    /**
+     * 静态化
+     */
+    public SimpleSolonApp staticize() {
+        Solon.appSet(this);
+        return this;
+    }
+
+    /**
+     * 开始
+     */
     @Override
     public void start(ConsumerEx<SolonApp> initialize) throws Throwable {
-        //默认关闭 http（避免与已经存在的服务端口冲突）
-        enableHttp(false);
         super.start(initialize);
+    }
+
+    /**
+     * 停止（阻塞模式）
+     */
+    public void stopBlock() {
+        this.prestop();
+        this.stopping = true;
+        this.stop();
     }
 }
