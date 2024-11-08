@@ -17,15 +17,18 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 
 /**
+ * Timestamp类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class TimestampTypeHandler implements ITypeHandler<Timestamp> {
     @Override
-    public Timestamp getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public Timestamp getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         return resultSet.getTimestamp(index);
     }
 

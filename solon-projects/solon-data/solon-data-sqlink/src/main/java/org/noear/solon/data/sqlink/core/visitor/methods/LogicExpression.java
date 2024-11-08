@@ -23,10 +23,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 逻辑运算
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class LogicExpression {
+    /**
+     * if表达式
+     */
     public static ISqlExpression IfExpression(IConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;

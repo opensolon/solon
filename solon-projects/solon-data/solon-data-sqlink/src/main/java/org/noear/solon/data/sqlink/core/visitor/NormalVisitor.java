@@ -19,6 +19,8 @@ package org.noear.solon.data.sqlink.core.visitor;
 import org.noear.solon.data.sqlink.base.IConfig;
 
 /**
+ * 普通的表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */

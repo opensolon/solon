@@ -21,12 +21,23 @@ import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import java.util.Collection;
 
 /**
+ * 导航数据
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class NavigateData {
+    /**
+     * 导航注解
+     */
     private final Navigate navigate;
+    /**
+     * 导航目标类型
+     */
     private final Class<?> navigateTargetType;
+    /**
+     * 导航目标集合类型
+     */
     private final Class<? extends Collection<?>> navigateCollectionType;
 
     public NavigateData(Navigate navigate, Class<?> navigateTargetType, Class<? extends Collection<?>> navigateCollectionType) {
@@ -35,39 +46,67 @@ public class NavigateData {
         this.navigateCollectionType = navigateCollectionType;
     }
 
-    public String getSelfPropertyName() {
+
+    /**
+     * 自己的字段名
+     */
+    public String getSelfFieldName() {
         return navigate.self();
     }
 
-    public String getTargetPropertyName() {
+    /**
+     * 目标字段名
+     */
+    public String getTargetFieldName() {
         return navigate.target();
     }
 
+    /**
+     * 关系类型
+     */
     public RelationType getRelationType() {
         return navigate.value();
     }
 
+    /**
+     * 导航目标类型
+     */
     public Class<?> getNavigateTargetType() {
         return navigateTargetType;
     }
 
+    /**
+     * 是否是集合
+     */
     public boolean isCollectionWrapper() {
         return navigateCollectionType != null;
     }
 
+    /**
+     * 集合类型
+     */
     public Class<? extends Collection<?>> getCollectionWrapperType() {
         return navigateCollectionType;
     }
 
+    /**
+     * 中间表的类型
+     */
     public Class<? extends IMappingTable> getMappingTableType() {
         return navigate.mappingTable();
     }
 
-    public String getSelfMappingPropertyName() {
+    /**
+     * 自身对应中间表的字段名
+     */
+    public String getSelfMappingFieldName() {
         return navigate.selfMapping();
     }
 
-    public String getTargetMappingPropertyName() {
+    /**
+     * 目标对应中间表的字段名
+     */
+    public String getTargetMappingFieldName() {
         return navigate.targetMapping();
     }
 }

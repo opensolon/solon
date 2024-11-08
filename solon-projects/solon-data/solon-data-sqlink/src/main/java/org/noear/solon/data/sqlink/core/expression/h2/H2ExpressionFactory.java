@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.core.expression.h2;
 import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFactory;
 
 /**
+ * H2表达式工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */

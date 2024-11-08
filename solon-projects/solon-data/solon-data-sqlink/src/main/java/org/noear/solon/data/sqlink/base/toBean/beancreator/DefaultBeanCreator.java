@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.beancreator;
 
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import sun.misc.Unsafe;
 
 import java.lang.invoke.*;
@@ -25,6 +25,8 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 /**
+ * 默认对象创建器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -97,24 +99,22 @@ public class DefaultBeanCreator<T> extends AbsBeanCreator<T> {
     }
 
     protected ISetterCaller<T> methodBeanSetter(String property) {
-        PropertyMetaData propertyMetaData = MetaDataCache.getMetaData(target).getPropertyMetaDataByFieldName(property);
-        Method setter = propertyMetaData.getSetter();
+        FieldMetaData fieldMetaData = MetaDataCache.getMetaData(target).getFieldMetaDataByFieldName(property);
+        Method setter = fieldMetaData.getSetter();
         return (t, v) -> setter.invoke(t, v);
     }
 
     protected ISetterCaller<T> methodHandleBeanSetter(String property) {
-        PropertyMetaData propertyMetaData = MetaDataCache.getMetaData(target).getPropertyMetaDataByFieldName(property);
-        Class<?> propertyType = propertyMetaData.getType();
+        FieldMetaData fieldMetaData = MetaDataCache.getMetaData(target).getFieldMetaDataByFieldName(property);
+        Class<?> propertyType = fieldMetaData.getType();
 
         MethodHandles.Lookup caller = MethodHandles.lookup();
-        Method writeMethod = propertyMetaData.getSetter();
+        Method writeMethod = fieldMetaData.getSetter();
         MethodType setter = MethodType.methodType(writeMethod.getReturnType(), propertyType);
 
         Class<?> lambdaPropertyType = upperClass(propertyType);
         String getFunName = writeMethod.getName();
         try {
-
-            //()->{bean.setxxx(propertyType)}
             MethodType instantiatedMethodType = MethodType.methodType(void.class, target, lambdaPropertyType);
             MethodHandle targetHandle = caller.findVirtual(target, getFunName, setter);
             MethodType samMethodType = MethodType.methodType(void.class, Object.class, Object.class);

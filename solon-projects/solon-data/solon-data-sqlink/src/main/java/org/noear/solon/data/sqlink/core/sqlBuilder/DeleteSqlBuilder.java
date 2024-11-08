@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 删除语句生成器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -48,7 +50,13 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         orderedClasses.add(target);
     }
 
-    public void addJoin(Class<?> target, JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
+    /**
+     * 添加关联表
+     * @param joinType 关联类型
+     * @param table 关联表
+     * @param on 关联条件
+     */
+    public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
@@ -59,10 +67,16 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         orderedClasses.add(table.getTableClass());
     }
 
+    /**
+     * 添加指定删除的表
+     */
     public void addExclude(Class<?> c) {
         excludes.add(orderedClasses.indexOf(c));
     }
 
+    /**
+     * 添加删除的where条件
+     */
     public void addWhere(ISqlExpression where) {
         wheres.addCondition(where);
     }
@@ -72,6 +86,9 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         return config;
     }
 
+    /**
+     * 是否有where条件
+     */
     public boolean hasWhere() {
         return !wheres.isEmpty();
     }

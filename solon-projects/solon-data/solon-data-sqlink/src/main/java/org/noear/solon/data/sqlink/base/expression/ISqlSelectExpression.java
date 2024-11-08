@@ -27,20 +27,49 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlSelectExpression extends ISqlExpression {
+    /**
+     * 获取需要返回的列
+     */
     List<ISqlExpression> getColumns();
 
+    /**
+     * 是否是单列查询
+     */
     boolean isSingle();
 
+    /**
+     * 获取目标类型
+     */
     Class<?> getTarget();
 
+    /**
+     * 是否是去重查询
+     */
     boolean isDistinct();
 
+    /**
+     * 设置需要返回的列
+     */
     void setColumns(List<ISqlExpression> columns);
 
+    /**
+     * 增加需要返回的列
+     */
+    void addColumn(ISqlExpression column);
+
+    /**
+     * 设置是否是单列查询
+     */
     void setSingle(boolean single);
 
+    /**
+     * 设置是否是去重查询
+     */
     void setDistinct(boolean distinct);
 
+    /**
+     * 设置目标类型
+     */
     void setTarget(Class<?> target);
 
     @Override

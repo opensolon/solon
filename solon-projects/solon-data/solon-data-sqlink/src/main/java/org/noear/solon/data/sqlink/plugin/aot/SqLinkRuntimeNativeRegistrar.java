@@ -30,20 +30,22 @@ import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Char;
 import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
-import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
+import org.noear.solon.data.sqlink.plugin.configuration.SqLinkProperties;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * solon环境下的aot配置
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
+public class SqLinkRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
     @Override
     public void register(AppContext context, RuntimeNativeMetadata metadata) {
         //配置文件
-        metadata.registerReflection(SQLinkProperties.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
+        metadata.registerReflection(SqLinkProperties.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //空表
         metadata.registerReflection(Empty.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
         //Group类

@@ -17,18 +17,21 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * short类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class ShortTypeHandler implements ITypeHandler<Short> {
     @Override
-    public Short getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public Short getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         short aShort = resultSet.getShort(index);
         return resultSet.wasNull() ? null : aShort;
     }

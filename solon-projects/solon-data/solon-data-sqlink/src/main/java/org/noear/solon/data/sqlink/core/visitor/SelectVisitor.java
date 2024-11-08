@@ -20,9 +20,9 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.core.visitor.methods.LogicExpression;
 
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGroupKey;
 
 /**
+ *  select表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -58,10 +60,10 @@ public class SelectVisitor extends SqlVisitor {
                 if (expression.getKind() == Kind.Variable) {
                     VariableExpression variable = (VariableExpression) expression;
                     String name = variable.getName();
-                    MetaData metaData = MetaDataCache.getMetaData(newExpression.getType());
                     Expression init = variable.getInit();
                     if (init != null) {
                         ISqlExpression context = visit(variable.getInit());
+                        // 某些数据库不支持直接返回bool类型，所以需要做一下包装
                         context = boxTheBool(variable.getInit(), context);
                         setAs(expressions, context, name);
                     }
@@ -116,7 +118,7 @@ public class SelectVisitor extends SqlVisitor {
 //                }
 //                else
 //                {
-//                    throw new IllegalExpressionException(blockExpression);
+//                    throw new SqLinkIllegalExpressionException(blockExpression);
 //                }
 //            }
 //            else if (expression instanceof MethodCallExpression)
@@ -127,7 +129,7 @@ public class SelectVisitor extends SqlVisitor {
 //                {
 //                    MetaData metaData = MetaDataCache.getMetaData(method.getDeclaringClass());
 //                    String name = metaData.getColumnNameBySetter(method);
-//                    //propertyMetaData.add(metaData.getPropertyMetaDataByFieldName(name));
+//                    //propertyMetaData.add(metaData.getFieldMetaDataByFieldName(name));
 //                    SqlExpression expr = visit(methodCall.getArgs().get(0));
 //                    setAs(expressions, expr, name);
 //                }
@@ -165,7 +167,7 @@ public class SelectVisitor extends SqlVisitor {
             MetaData metaData = MetaDataCache.getMetaData(type);
             //propertyMetaData.addAll(metaData.getColumns().values());
             List<ISqlExpression> expressions = new ArrayList<>();
-            for (PropertyMetaData pm : metaData.getNotIgnorePropertys()) {
+            for (FieldMetaData pm : metaData.getNotIgnorePropertys()) {
                 expressions.add(factory.column(pm, index));
             }
             return factory.select(expressions, parameter.getType());

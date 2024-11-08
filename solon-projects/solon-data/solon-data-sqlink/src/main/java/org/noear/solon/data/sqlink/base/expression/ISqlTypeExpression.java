@@ -16,6 +16,9 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
+
+import java.util.List;
 
 /**
  * 承载java类型，一般不调用他的getSql函数
@@ -24,7 +27,15 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlTypeExpression extends ISqlExpression {
+    /**
+     * 获取java类型
+     */
     Class<?> getType();
+
+    @Override
+    default String getSqlAndValue(IConfig config, List<Object> values) {
+        throw new SqLinkException("ISqlTypeExpression.getSqlAndValue should not be called");
+    }
 
     @Override
     default ISqlTypeExpression copy(IConfig config) {

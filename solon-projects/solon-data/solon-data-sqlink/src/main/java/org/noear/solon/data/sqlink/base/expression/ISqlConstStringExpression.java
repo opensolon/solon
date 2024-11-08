@@ -24,6 +24,9 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlConstStringExpression extends ISqlExpression {
+    /**
+     * 获取常量字符串
+     */
     String getString();
 
     @Override

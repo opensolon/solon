@@ -24,8 +24,14 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlUnaryExpression extends ISqlExpression {
+    /**
+     * SQL运算符
+     */
     SqlOperator getOperator();
 
+    /**
+     * 表达式
+     */
     ISqlExpression getExpression();
 
     @Override

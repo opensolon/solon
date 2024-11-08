@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 import static com.sun.jmx.mbeanserver.Util.cast;
 
 /**
+ * 对象抓取构建器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -53,48 +55,55 @@ public class IncludeBuilder<T> {
         this.session = session;
     }
 
+    /**
+     * 执行抓取
+     */
     public void include() throws InvocationTargetException, IllegalAccessException {
         MetaData targetClassMetaData = MetaDataCache.getMetaData(targetClass);
-        Map<PropertyMetaData, Map<Object, List<T>>> cache = new HashMap<>();
+        Map<FieldMetaData, Map<Object, List<T>>> cache = new HashMap<>();
 
         for (IncludeSet include : includes) {
             NavigateData navigateData = include.getColumnExpression().getPropertyMetaData().getNavigateData();
             Class<?> navigateTargetType = navigateData.getNavigateTargetType();
-            PropertyMetaData selfPropertyMetaData = targetClassMetaData.getPropertyMetaDataByFieldName(navigateData.getSelfPropertyName());
-            PropertyMetaData targetPropertyMetaData = MetaDataCache.getMetaData(navigateTargetType).getPropertyMetaDataByFieldName(navigateData.getTargetPropertyName());
-            PropertyMetaData includePropertyMetaData = include.getColumnExpression().getPropertyMetaData();
+            FieldMetaData selfFieldMetaData = targetClassMetaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+            FieldMetaData targetFieldMetaData = MetaDataCache.getMetaData(navigateTargetType).getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+            FieldMetaData includeFieldMetaData = include.getColumnExpression().getPropertyMetaData();
 
-            Map<Object, List<T>> sourcesMapList = cache.get(selfPropertyMetaData);
+            Map<Object, List<T>> sourcesMapList = cache.get(selfFieldMetaData);
             if (sourcesMapList == null) {
-                sourcesMapList = getMapList(selfPropertyMetaData);
-                cache.put(selfPropertyMetaData, sourcesMapList);
+                sourcesMapList = getMapList(selfFieldMetaData);
+                cache.put(selfFieldMetaData, sourcesMapList);
             }
 
             switch (navigateData.getRelationType()) {
+                // 一对一
                 case OneToOne:
-                    oneToOne(sourcesMapList, include, navigateData, selfPropertyMetaData, targetPropertyMetaData, includePropertyMetaData);
+                    oneToOne(sourcesMapList, include, navigateData, selfFieldMetaData, targetFieldMetaData, includeFieldMetaData);
                     break;
+                // 一对多
                 case OneToMany:
-                    oneToMany(sourcesMapList, include, navigateData, selfPropertyMetaData, targetPropertyMetaData, includePropertyMetaData);
+                    oneToMany(sourcesMapList, include, navigateData, selfFieldMetaData, targetFieldMetaData, includeFieldMetaData);
                     break;
+                // 多对一
                 case ManyToOne:
-                    manyToOne(sourcesMapList, include, navigateData, selfPropertyMetaData, targetPropertyMetaData, includePropertyMetaData);
+                    manyToOne(sourcesMapList, include, navigateData, selfFieldMetaData, targetFieldMetaData, includeFieldMetaData);
                     break;
+                // 多对多
                 case ManyToMany:
-                    manyToMany(sourcesMapList, include, navigateData, selfPropertyMetaData, targetPropertyMetaData, includePropertyMetaData);
+                    manyToMany(sourcesMapList, include, navigateData, selfFieldMetaData, targetFieldMetaData, includeFieldMetaData);
                     break;
             }
         }
     }
 
-    protected void oneToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, PropertyMetaData selfPropertyMetaData, PropertyMetaData targetPropertyMetaData, PropertyMetaData includePropertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected void oneToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         // 查询目标表
         ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
         // 包一层，并选择字段
         ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfPropertyMetaData, 0)), selfPropertyMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetPropertyMetaData, 0), warpQueryable));
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, 0)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, 0), warpQueryable));
 
         // 如果有额外条件就加入
         if (include.hasCond()) {
@@ -103,7 +112,7 @@ public class IncludeBuilder<T> {
             if (cond instanceof ISqlQueryableExpression) {
                 ISqlQueryableExpression queryableExpression = (ISqlQueryableExpression) cond;
                 // 替换
-                tempQueryable = warpItQueryable(tempQueryable, targetPropertyMetaData, navigateTargetType, queryableExpression);
+                tempQueryable = warpItQueryable(tempQueryable, targetFieldMetaData, navigateTargetType, queryableExpression);
             }
             // 简易条件
             else {
@@ -116,10 +125,10 @@ public class IncludeBuilder<T> {
 
         tryPrint(sql);
 
-        List<PropertyMetaData> mappingData = tempQueryable.getMappingData(config);
+        List<FieldMetaData> mappingData = tempQueryable.getMappingData();
         // 获取从表的map
         Map<Object, Object> objectMap = session.executeQuery(
-                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMap(targetPropertyMetaData.getColumn()),
+                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMap(targetFieldMetaData.getColumn()),
                 sql,
                 values
         );
@@ -128,20 +137,20 @@ public class IncludeBuilder<T> {
             Object key = objectEntry.getKey();
             Object value = objectEntry.getValue();
             for (T t : sourcesMapList.get(key)) {
-                includePropertyMetaData.getSetter().invoke(t, value);
+                includeFieldMetaData.getSetter().invoke(t, value);
             }
         }
         round(include, navigateTargetType, objectMap.values(), tempQueryable);
     }
 
-    protected void oneToMany(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, PropertyMetaData selfPropertyMetaData, PropertyMetaData targetPropertyMetaData, PropertyMetaData includePropertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected void oneToMany(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         // 查询目标表
         ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
         // 包一层，并选择字段
         ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfPropertyMetaData, 0)), selfPropertyMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetPropertyMetaData, 0), warpQueryable));
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, 0)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, 0), warpQueryable));
         // 如果有额外条件就加入
         if (include.hasCond()) {
             ISqlExpression cond = include.getCond();
@@ -149,7 +158,7 @@ public class IncludeBuilder<T> {
             if (cond instanceof ISqlQueryableExpression) {
                 ISqlQueryableExpression queryableExpression = (ISqlQueryableExpression) cond;
                 // 替换
-                tempQueryable = warpItQueryable(tempQueryable, targetPropertyMetaData, navigateTargetType, queryableExpression);
+                tempQueryable = warpItQueryable(tempQueryable, targetFieldMetaData, navigateTargetType, queryableExpression);
             }
             // 简易条件
             else {
@@ -162,10 +171,10 @@ public class IncludeBuilder<T> {
 
         tryPrint(sql);
 
-        List<PropertyMetaData> mappingData = tempQueryable.getMappingData(config);
+        List<FieldMetaData> mappingData = tempQueryable.getMappingData();
         // 查询从表数据，按key进行list归类的map构建
         Map<Object, List<Object>> targetMap = session.executeQuery(
-                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMapList(targetPropertyMetaData.getColumn()),
+                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMapList(targetFieldMetaData.getColumn()),
                 sql,
                 values
         );
@@ -176,24 +185,24 @@ public class IncludeBuilder<T> {
             List<Object> value = objectListEntry.getValue();
             for (T t : sourcesMapList.get(key)) {
                 if (isSet) {
-                    includePropertyMetaData.getSetter().invoke(t, new HashSet<>(value));
+                    includeFieldMetaData.getSetter().invoke(t, new HashSet<>(value));
                 }
                 else {
-                    includePropertyMetaData.getSetter().invoke(t, value);
+                    includeFieldMetaData.getSetter().invoke(t, value);
                 }
             }
         }
         round(include, navigateTargetType, targetMap.values(), tempQueryable);
     }
 
-    protected void manyToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, PropertyMetaData selfPropertyMetaData, PropertyMetaData targetPropertyMetaData, PropertyMetaData includePropertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected void manyToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         // 查询目标表
         ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
         // 包一层，并选择字段
         ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfPropertyMetaData, 0)), selfPropertyMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetPropertyMetaData, 0), warpQueryable));
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, 0)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, 0), warpQueryable));
         // 如果有额外条件就加入
         if (include.hasCond()) {
             ISqlExpression cond = include.getCond();
@@ -201,7 +210,7 @@ public class IncludeBuilder<T> {
             if (cond instanceof ISqlQueryableExpression) {
                 ISqlQueryableExpression queryableExpression = (ISqlQueryableExpression) cond;
                 // 替换
-                tempQueryable = warpItQueryable(tempQueryable, targetPropertyMetaData, navigateTargetType, queryableExpression);
+                tempQueryable = warpItQueryable(tempQueryable, targetFieldMetaData, navigateTargetType, queryableExpression);
             }
             // 简易条件
             else {
@@ -214,10 +223,10 @@ public class IncludeBuilder<T> {
 
         tryPrint(sql);
 
-        List<PropertyMetaData> mappingData = tempQueryable.getMappingData(config);
+        List<FieldMetaData> mappingData = tempQueryable.getMappingData();
         // 获取目标表的map
         Map<Object, Object> objectMap = session.executeQuery(
-                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMap(targetPropertyMetaData.getColumn()),
+                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMap(targetFieldMetaData.getColumn()),
                 sql,
                 values
         );
@@ -227,31 +236,31 @@ public class IncludeBuilder<T> {
             Object value = objectEntry.getValue();
             List<T> ts = sourcesMapList.get(key);
             for (T t : ts) {
-                includePropertyMetaData.getSetter().invoke(t, value);
+                includeFieldMetaData.getSetter().invoke(t, value);
             }
         }
         round(include, navigateTargetType, objectMap.values(), tempQueryable);
     }
 
-    protected void manyToMany(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, PropertyMetaData selfPropertyMetaData, PropertyMetaData targetPropertyMetaData, PropertyMetaData includePropertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected void manyToMany(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         Class<? extends IMappingTable> mappingTableType = navigateData.getMappingTableType();
         MetaData mappingTableMetadata = MetaDataCache.getMetaData(mappingTableType);
-        String selfMappingPropertyName = navigateData.getSelfMappingPropertyName();
-        PropertyMetaData selfMappingPropertyMetaData = mappingTableMetadata.getPropertyMetaDataByFieldName(selfMappingPropertyName);
-        String targetMappingPropertyName = navigateData.getTargetMappingPropertyName();
-        PropertyMetaData targetMappingPropertyMetaData = mappingTableMetadata.getPropertyMetaDataByFieldName(targetMappingPropertyName);
+        String selfMappingPropertyName = navigateData.getSelfMappingFieldName();
+        FieldMetaData selfMappingFieldMetaData = mappingTableMetadata.getFieldMetaDataByFieldName(selfMappingPropertyName);
+        String targetMappingPropertyName = navigateData.getTargetMappingFieldName();
+        FieldMetaData targetMappingFieldMetaData = mappingTableMetadata.getFieldMetaDataByFieldName(targetMappingPropertyName);
         // 查询目标表
         ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
         // join中间表
-        tempQueryable.addJoin(factory.join(JoinType.LEFT, factory.table(mappingTableType), factory.binary(SqlOperator.EQ, factory.column(targetPropertyMetaData, 0), factory.column(targetMappingPropertyMetaData, 1)), 1));
+        tempQueryable.addJoin(factory.join(JoinType.LEFT, factory.table(mappingTableType), factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, 0), factory.column(targetMappingFieldMetaData, 1)), 1));
         // 包一层，并选择字段
         ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfPropertyMetaData, 0)), selfPropertyMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(selfMappingPropertyMetaData, 1), warpQueryable));
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, 0)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(selfMappingFieldMetaData, 1), warpQueryable));
 
         // 增加上额外用于排序的字段
-        tempQueryable.getSelect().getColumns().add(factory.column(selfMappingPropertyMetaData, 1));
+        tempQueryable.getSelect().getColumns().add(factory.column(selfMappingFieldMetaData, 1));
 
         // 如果有额外条件就加入
         if (include.hasCond()) {
@@ -260,7 +269,7 @@ public class IncludeBuilder<T> {
             if (cond instanceof ISqlQueryableExpression) {
                 ISqlQueryableExpression queryableExpression = (ISqlQueryableExpression) cond;
                 // 替换
-                tempQueryable = warpItQueryable(tempQueryable, selfMappingPropertyMetaData, navigateTargetType, queryableExpression, factory.column(selfMappingPropertyMetaData, 0));
+                tempQueryable = warpItQueryable(tempQueryable, selfMappingFieldMetaData, navigateTargetType, queryableExpression, factory.column(selfMappingFieldMetaData, 0));
             }
             // 简易条件
             else {
@@ -274,10 +283,10 @@ public class IncludeBuilder<T> {
 
         tryPrint(sql);
 
-        List<PropertyMetaData> mappingData = tempQueryable.getMappingData(config);
-        //mappingData.add(selfMappingPropertyMetaData);
+        List<FieldMetaData> mappingData = tempQueryable.getMappingData();
+        //mappingData.add(selfMappingFieldMetaData);
         Map<Object, List<Object>> targetMap = session.executeQuery(
-                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMapListByAnotherKey(selfMappingPropertyMetaData),
+                r -> ObjectBuilder.start(r, cast(navigateTargetType), mappingData, false, config).createMapListByAnotherKey(selfMappingFieldMetaData),
                 sql,
                 values
         );
@@ -289,10 +298,10 @@ public class IncludeBuilder<T> {
             List<T> ts = sourcesMapList.get(key);
             for (T t : ts) {
                 if (isSet) {
-                    includePropertyMetaData.getSetter().invoke(t, new HashSet<>(value));
+                    includeFieldMetaData.getSetter().invoke(t, new HashSet<>(value));
                 }
                 else {
-                    includePropertyMetaData.getSetter().invoke(t, value);
+                    includeFieldMetaData.getSetter().invoke(t, value);
                 }
             }
         }
@@ -303,25 +312,25 @@ public class IncludeBuilder<T> {
 //            List<Object> targetValues = targetMap.get(key);
 //            for (T t : value)
 //            {
-//                includePropertyMetaData.getSetter().invoke(t, targetValues);
+//                includeFieldMetaData.getSetter().invoke(t, targetValues);
 //            }
 //        }
         round(include, navigateTargetType, targetMap.values(), tempQueryable);
     }
 
-    private <K> Map<K, T> getMap(PropertyMetaData propertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected <K> Map<K, T> getMap(FieldMetaData fieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Map<K, T> sourcesMap = new HashMap<>();
         for (T source : sources) {
-            K selfKey = (K) propertyMetaData.getGetter().invoke(source);
+            K selfKey = (K) fieldMetaData.getGetter().invoke(source);
             sourcesMap.put(selfKey, source);
         }
         return sourcesMap;
     }
 
-    private <K> Map<K, List<T>> getMapList(PropertyMetaData propertyMetaData) throws InvocationTargetException, IllegalAccessException {
+    protected <K> Map<K, List<T>> getMapList(FieldMetaData fieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Map<K, List<T>> sourcesMapList = new HashMap<>();
         for (T source : sources) {
-            K selfKey = (K) propertyMetaData.getGetter().invoke(source);
+            K selfKey = (K) fieldMetaData.getGetter().invoke(source);
             if (!sourcesMapList.containsKey(selfKey)) {
                 List<T> list = new ArrayList<>();
                 list.add(source);
@@ -334,11 +343,11 @@ public class IncludeBuilder<T> {
         return sourcesMapList;
     }
 
-    protected ISqlQueryableExpression warpItQueryable(ISqlQueryableExpression querySqlBuilder, PropertyMetaData targetPropertyMetaData, Class<?> navigateTargetType, ISqlQueryableExpression virtualTableContext) {
-        return warpItQueryable(querySqlBuilder, targetPropertyMetaData, navigateTargetType, virtualTableContext, null);
+    protected ISqlQueryableExpression warpItQueryable(ISqlQueryableExpression querySqlBuilder, FieldMetaData targetFieldMetaData, Class<?> navigateTargetType, ISqlQueryableExpression virtualTableContext) {
+        return warpItQueryable(querySqlBuilder, targetFieldMetaData, navigateTargetType, virtualTableContext, null);
     }
 
-    protected ISqlQueryableExpression warpItQueryable(ISqlQueryableExpression querySqlBuilder, PropertyMetaData targetPropertyMetaData, Class<?> navigateTargetType, ISqlQueryableExpression virtualTableContext, ISqlColumnExpression another) {
+    protected ISqlQueryableExpression warpItQueryable(ISqlQueryableExpression querySqlBuilder, FieldMetaData targetFieldMetaData, Class<?> navigateTargetType, ISqlQueryableExpression virtualTableContext, ISqlColumnExpression another) {
         ISqlOrderByExpression orderBy = virtualTableContext.getOrderBy();
         ISqlWhereExpression where = virtualTableContext.getWhere();
         ISqlLimitExpression limit = virtualTableContext.getLimit();
@@ -353,7 +362,7 @@ public class IncludeBuilder<T> {
         selects.add(factory.constString("t0.*"));
 
         List<ISqlExpression> rowNumberParams = new ArrayList<>();
-        rowNumberParams.add(factory.column(targetPropertyMetaData, 0));
+        rowNumberParams.add(factory.column(targetFieldMetaData, 0));
         rowNumberParams.addAll(orderBy.getSqlOrders());
         List<String> rowNumberFunction = new ArrayList<>();
         rowNumber(rowNumberFunction, rowNumberParams);
@@ -402,14 +411,14 @@ public class IncludeBuilder<T> {
         return window2;
     }
 
-    private void round(IncludeSet include, Class<?> navigateTargetType, Collection<?> sources, ISqlQueryableExpression main, Object... os) throws InvocationTargetException, IllegalAccessException {
+    protected void round(IncludeSet include, Class<?> navigateTargetType, Collection<?> sources, ISqlQueryableExpression main, Object... os) throws InvocationTargetException, IllegalAccessException {
         if (!include.getIncludeSets().isEmpty()) {
             IncludeFactory includeFactory = config.getIncludeFactory();
             includeFactory.getBuilder(config, session, cast(navigateTargetType), sources, include.getIncludeSets(), main).include();
         }
     }
 
-    private void round(IncludeSet include, Class<?> navigateTargetType, Collection<List<Object>> sources, ISqlQueryableExpression main) throws InvocationTargetException, IllegalAccessException {
+    protected void round(IncludeSet include, Class<?> navigateTargetType, Collection<List<Object>> sources, ISqlQueryableExpression main) throws InvocationTargetException, IllegalAccessException {
         if (!include.getIncludeSets().isEmpty()) {
             List<Object> collect = sources.stream().flatMap(o -> o.stream()).collect(Collectors.toList());
             IncludeFactory includeFactory = config.getIncludeFactory();

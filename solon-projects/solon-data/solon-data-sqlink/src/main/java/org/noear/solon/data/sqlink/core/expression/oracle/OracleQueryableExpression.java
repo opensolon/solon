@@ -21,13 +21,15 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
-import org.noear.solon.data.sqlink.core.exception.SQLinkLimitNotFoundOrderByException;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+import org.noear.solon.data.sqlink.core.exception.SqLinkLimitNotFoundOrderByException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Oracle查询表达式
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -79,9 +81,9 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
     private void limitAndOrderCheck(List<String> strings, List<Object> values, IConfig config) {
         if (limit.hasRowsOrOffset() && orderBy.isEmpty()) {
             MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
-            PropertyMetaData primary = metaData.getPrimary();
+            FieldMetaData primary = metaData.getPrimary();
             if (primary == null) {
-                throw new SQLinkLimitNotFoundOrderByException(DbType.Oracle);
+                throw new SqLinkLimitNotFoundOrderByException(DbType.Oracle);
             }
             SqlExpressionFactory factory = config.getSqlExpressionFactory();
             ISqlOrderByExpression sqlOrderByExpression = factory.orderBy();

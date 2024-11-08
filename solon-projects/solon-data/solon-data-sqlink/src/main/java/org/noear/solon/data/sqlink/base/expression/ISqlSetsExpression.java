@@ -28,10 +28,20 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlSetsExpression extends ISqlExpression {
+    /**
+     * 获取所有的set表达式
+     */
     List<ISqlSetExpression> getSets();
 
+    /**
+     * 添加一个set表达式
+     * @param sqlSetExpression
+     */
     void addSet(ISqlSetExpression sqlSetExpression);
 
+    /**
+     * 添加一组set表达式
+     */
     void addSet(Collection<ISqlSetExpression> set);
 
     @Override

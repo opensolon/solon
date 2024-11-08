@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * MySQL对象抓取器工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */

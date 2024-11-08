@@ -18,7 +18,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
 import java.util.List;
 
@@ -27,17 +27,17 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlColumnExpression implements ISqlColumnExpression {
-    private final PropertyMetaData propertyMetaData;
+    private final FieldMetaData fieldMetaData;
     private final int tableIndex;
 
-    public SqlColumnExpression(PropertyMetaData propertyMetaData, int tableIndex) {
-        this.propertyMetaData = propertyMetaData;
+    public SqlColumnExpression(FieldMetaData fieldMetaData, int tableIndex) {
+        this.fieldMetaData = fieldMetaData;
         this.tableIndex = tableIndex;
     }
 
     @Override
-    public PropertyMetaData getPropertyMetaData() {
-        return propertyMetaData;
+    public FieldMetaData getPropertyMetaData() {
+        return fieldMetaData;
     }
 
     @Override

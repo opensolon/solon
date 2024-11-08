@@ -87,7 +87,7 @@ public class UpdateBase extends CRUD {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression on = normalVisitor.visit(expr.getTree());
         ISqlTableExpression table = factory.table(target);
-        getSqlBuilder().addJoin(target, joinType, table, on);
+        getSqlBuilder().addJoin(joinType, table, on);
     }
 
     protected void set(LambdaExpression<?> lambda) {

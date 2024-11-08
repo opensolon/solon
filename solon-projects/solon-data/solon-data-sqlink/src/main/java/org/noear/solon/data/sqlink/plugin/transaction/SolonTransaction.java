@@ -24,6 +24,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * Solon环境下的事务
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -41,5 +43,4 @@ public class SolonTransaction extends DefaultTransaction {
         if (isolationLevel != null) connection.setTransactionIsolation(isolationLevel);
         return connection;
     }
-
 }

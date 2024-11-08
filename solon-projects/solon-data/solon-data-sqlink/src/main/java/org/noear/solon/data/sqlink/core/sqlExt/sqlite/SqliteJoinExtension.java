@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * SQLite join函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class SqliteJoinExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression separator = args.get(0);

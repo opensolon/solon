@@ -20,25 +20,27 @@ import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlTimeUnit;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * PostgreSQL时间运算函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression unit = args.get(0);
         ISqlExpression from = args.get(1);
         ISqlExpression to = args.get(2);
-        Class<?>[] parameterTypes = sqlFunc.getParameterTypes();
+        Class<?>[] parameterTypes = method.getParameterTypes();
         boolean isToIsString = parameterTypes[2] == String.class;
         boolean isFromIsString = parameterTypes[1] == String.class;
         String toString = isToIsString ? "::TIMESTAMP" : "";
@@ -110,7 +112,7 @@ public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension {
             }
         }
         else {
-            throw new SQLinkException("SqlTimeUnit必须为可求值的");
+            throw new SqLinkException("SqlTimeUnit必须为可求值的");
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);
     }

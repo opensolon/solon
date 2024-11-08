@@ -16,32 +16,28 @@
 package org.noear.solon.data.sqlink.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.delegate.Action1;
-import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
-import io.github.kiryu1223.expressionTree.expressions.Expression;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
-import io.github.kiryu1223.expressionTree.expressions.ParameterExpression;
-import io.github.kiryu1223.expressionTree.util.ReflectUtil;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
-import org.noear.solon.data.sqlink.core.page.PagedResult;
-import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
-import org.noear.solon.data.sqlink.core.exception.SQLinkException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
+import org.noear.solon.data.sqlink.core.page.PagedResult;
+import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
-import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 import org.noear.solon.data.sqlink.core.visitor.GroupByVisitor;
 import org.noear.solon.data.sqlink.core.visitor.HavingVisitor;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
 import org.noear.solon.data.sqlink.core.visitor.SelectVisitor;
+import org.noear.solon.data.sqlink.core.visitor.methods.AggregateMethods;
 import org.noear.solon.data.sqlink.core.visitor.methods.LogicExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,16 +69,26 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected boolean any() {
+        //获取拷贝的查询对象
+        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(getConfig());
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryableCopy);
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        // SELECT 1
+        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
+        // LIMIT 1
+        querySqlBuilder.setLimit(0, 1);
+        //查询
         SqlSession session = getConfig().getSqlSessionFactory().getSession();
         List<Object> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
-        return session.executeQuery(f -> f.next(), "SELECT 1 FROM (" + sql + ") LIMIT 1", values);
+        String sql = querySqlBuilder.getSqlAndValue(values);
+        tryPrintSql(log, sql);
+        return session.executeQuery(f -> f.next(), sql, values);
     }
 
     protected <T> List<T> toList() {
         IConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
-        List<PropertyMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
+        List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
         List<Object> values = new ArrayList<>();
 
         //long start = System.nanoTime();
@@ -192,7 +198,7 @@ public abstract class QueryBase extends CRUD {
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
         ISqlExpression where = normalVisitor.visit(lambda);
         int offset = sqlBuilder.getQueryable().getOrderedCount();
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(table, offset));
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(factory.table(table), offset)));
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true, false));
         querySqlBuilder.addWhere(where);
         ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
@@ -311,12 +317,12 @@ public abstract class QueryBase extends CRUD {
         ISqlExpression expression = normalVisitor.visit(lambda);
         if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            PropertyMetaData propertyMetaData = columnExpression.getPropertyMetaData();
+            FieldMetaData fieldMetaData = columnExpression.getPropertyMetaData();
             if (!columnExpression.getPropertyMetaData().hasNavigate()) {
                 throw new RuntimeException("include指定的字段需要被@Navigate修饰");
             }
             relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
-            Class<R> navigateTargetType = (Class<R>) propertyMetaData.getNavigateData().getNavigateTargetType();
+            Class<R> navigateTargetType = (Class<R>) fieldMetaData.getNavigateData().getNavigateTargetType();
             IncludeCond<R> temp = new IncludeCond<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(navigateTargetType)));
             action.invoke(temp);
             IncludeSet includeSet = new IncludeSet(columnExpression, temp.getSqlBuilder().getQueryable());
@@ -337,26 +343,26 @@ public abstract class QueryBase extends CRUD {
             case OneToOne:
             case ManyToOne:
                 if (navigateData.isCollectionWrapper()) {
-                    throw new SQLinkException(relationType + "不支持集合");
+                    throw new SqLinkException(relationType + "不支持集合");
                 }
                 break;
             case OneToMany:
                 if (!navigateData.isCollectionWrapper()) {
                     if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType()))) {
-                        throw new SQLinkException(relationType + "只支持List和Set");
+                        throw new SqLinkException(relationType + "只支持List和Set");
                     }
-                    throw new SQLinkException(relationType + "只支持集合");
+                    throw new SqLinkException(relationType + "只支持集合");
                 }
                 break;
             case ManyToMany:
                 if (navigateData.getMappingTableType() == IMappingTable.class
-                        || navigateData.getSelfMappingPropertyName().isEmpty()
-                        || navigateData.getTargetMappingPropertyName().isEmpty()) {
-                    throw new SQLinkException(relationType + "下@Navigate注解的midTable和SelfMapping和TargetMapping字段都不能为空");
+                        || navigateData.getSelfMappingFieldName().isEmpty()
+                        || navigateData.getTargetMappingFieldName().isEmpty()) {
+                    throw new SqLinkException(relationType + "下@Navigate注解的midTable和SelfMapping和TargetMapping字段都不能为空");
                 }
                 if (!navigateData.isCollectionWrapper()) {
                     if (!(List.class.isAssignableFrom(navigateData.getCollectionWrapperType()) || Set.class.isAssignableFrom(navigateData.getCollectionWrapperType()))) {
-                        throw new SQLinkException(relationType + "只支持List和Set");
+                        throw new SqLinkException(relationType + "只支持List和Set");
                     }
                     throw new RuntimeException(relationType + "只支持集合");
                 }
@@ -365,21 +371,12 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected <T> PagedResult<T> toPagedResult0(long pageIndex, long pageSize, Pager pager) {
-        LQuery<T> countQuery = new LQuery<>(boxedQuerySqlBuilder());
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        QuerySqlBuilder boxedQuerySqlBuilder = boxedQuerySqlBuilder();
         //SELECT COUNT(*) ...
-        long total = countQuery.endSelect(
-                ExprTree.<Func1<T, Long>>Expr(
-                        t -> SqlFunctions.count(),
-                        Expression.Lambda(
-                                Expression.MethodCall(
-                                        Expression.StaticClass(SqlFunctions.class),
-                                        ReflectUtil.getMethod(SqlFunctions.class, "count", new Class<?>[0]),
-                                        new Expression[0]),
-                                new ParameterExpression[0],
-                                Long.class
-                        )
-                )
-        ).toList().get(0);
+        boxedQuerySqlBuilder.setSelect(factory.select(Collections.singletonList(AggregateMethods.count(getConfig(), null)), long.class, true, false));
+        LQuery<Long> countQuery = new LQuery<>(boxedQuerySqlBuilder);
+        long total = countQuery.toList().get(0);
         QuerySqlBuilder dataQuerySqlBuilder = new QuerySqlBuilder(getConfig(), getSqlBuilder().getQueryable().copy(getConfig()));
         //拷贝Include
         dataQuerySqlBuilder.getIncludeSets().addAll(dataQuerySqlBuilder.getIncludeSets());

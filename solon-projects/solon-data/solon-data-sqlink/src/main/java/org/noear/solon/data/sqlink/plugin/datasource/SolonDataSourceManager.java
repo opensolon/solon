@@ -23,41 +23,40 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * Solon环境下的数据源管理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class SolonDataSourceManager implements DataSourceManager {
-    private final DataSource dataSource;
+    /**
+     * 数据源
+     */
+    private DataSource dataSource;
 
-    public SolonDataSourceManager(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SolonDataSourceManager() {
     }
 
+    /**
+     * 获取连接
+     */
     @Override
     public Connection getConnection() throws SQLException {
         return TranUtils.getConnection(getDataSource());
     }
 
+    /**
+     * 获取数据源
+     */
     @Override
     public DataSource getDataSource() {
         return dataSource;
     }
 
-//    @Override
-//    public void useDs(String key)
-//    {
-//
-//    }
-//
-//    @Override
-//    public void useDefDs()
-//    {
-//
-//    }
-//
-//    @Override
-//    public String getDsKey()
-//    {
-//        return "";
-//    }
+    /**
+     * 设置数据源
+     */
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

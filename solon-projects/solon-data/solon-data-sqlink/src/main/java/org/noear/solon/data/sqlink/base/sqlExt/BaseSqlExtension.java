@@ -24,14 +24,26 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * SQL扩展函数
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public abstract class BaseSqlExtension {
-    public abstract ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args);
+
+    /**
+     * 运行时生成需要的SQL表达式
+     * @param config 配置
+     * @param method 函数
+     * @param args 参数
+     */
+    public abstract ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args);
 
     private static final Map<Class<? extends BaseSqlExtension>, BaseSqlExtension> sqlExtensionCache = new ConcurrentHashMap<>();
 
+    /**
+     * 获取缓存
+     */
     public static BaseSqlExtension getCache(Class<? extends BaseSqlExtension> c) {
         BaseSqlExtension baseSqlExtension = sqlExtensionCache.get(c);
         if (baseSqlExtension == null) {

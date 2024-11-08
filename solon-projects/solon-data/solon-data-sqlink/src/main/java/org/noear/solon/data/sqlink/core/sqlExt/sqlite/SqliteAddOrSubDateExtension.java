@@ -20,7 +20,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
-import org.noear.solon.data.sqlink.core.exception.SQLinkIntervalException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkIntervalException;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -28,30 +28,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Sqlite时间运算函数扩展
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class SqliteAddOrSubDateExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method sqlFunc, List<ISqlExpression> args) {
+    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
-        boolean isPlus = sqlFunc.getName().equals("addDate");
-        if (sqlFunc.getParameterTypes()[0] == LocalDate.class) {
+        boolean isPlus = method.getName().equals("addDate");
+        if (method.getParameterTypes()[0] == LocalDate.class) {
             templates.add("DATE(");
         }
         else {
             templates.add("DATETIME(");
         }
         sqlExpressions.add(args.get(0));
-        if (sqlFunc.getParameterCount() == 2) {
+        if (method.getParameterCount() == 2) {
             ISqlExpression num = args.get(1);
             if (num instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression valueExpression = (ISqlSingleValueExpression) num;
                 templates.add(",'" + (isPlus ? "" : "-") + valueExpression.getValue() + " DAY')");
             }
             else {
-                throw new SQLinkIntervalException(DbType.SQLite);
+                throw new SqLinkIntervalException(DbType.SQLite);
             }
         }
         else {
@@ -63,7 +65,7 @@ public class SqliteAddOrSubDateExtension extends BaseSqlExtension {
                 templates.add("')");
             }
             else {
-                throw new SQLinkIntervalException(DbType.SQLite);
+                throw new SqLinkIntervalException(DbType.SQLite);
             }
         }
         return config.getSqlExpressionFactory().template(templates, sqlExpressions);

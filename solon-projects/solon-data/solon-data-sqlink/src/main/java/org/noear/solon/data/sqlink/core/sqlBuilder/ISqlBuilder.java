@@ -20,13 +20,24 @@ import org.noear.solon.data.sqlink.base.IConfig;
 import java.util.List;
 
 /**
+ * SQL构造器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface ISqlBuilder {
+    /**
+     * 获取配置
+     */
     IConfig getConfig();
 
+    /**
+     * 获取SQL
+     */
     String getSql();
 
+    /**
+     * 获取SQL和参数
+     */
     String getSqlAndValue(List<Object> values);
 }

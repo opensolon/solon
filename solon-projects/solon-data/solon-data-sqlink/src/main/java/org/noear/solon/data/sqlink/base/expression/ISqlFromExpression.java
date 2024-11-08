@@ -26,14 +26,23 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
  * @since 3.0
  */
 public interface ISqlFromExpression extends ISqlExpression {
+    /**
+     * 获取表表达式(可能是实体表也可能是虚拟表)
+     */
     ISqlTableExpression getSqlTableExpression();
 
+    /**
+     * 判断是否为无from查询
+     */
     default boolean isEmptyTable() {
         Class<?> tableClass = getSqlTableExpression().getTableClass();
         MetaData metaData = MetaDataCache.getMetaData(tableClass);
         return metaData.isEmptyTable();
     }
 
+    /**
+     * 获取表所在位置的索引
+     */
     int getIndex();
 
     @Override

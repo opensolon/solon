@@ -26,10 +26,19 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlOrderByExpression extends ISqlExpression {
+    /**
+     * 添加排序
+     */
     void addOrder(ISqlOrderExpression sqlOrder);
 
+    /**
+     * 获取排序
+     */
     List<ISqlOrderExpression> getSqlOrders();
 
+    /**
+     * 判断是否为空
+     */
     default boolean isEmpty() {
         return getSqlOrders().isEmpty();
     }

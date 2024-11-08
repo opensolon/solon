@@ -16,11 +16,28 @@
 package org.noear.solon.data.sqlink.core.exception;
 
 /**
+ * SqLink异常
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkInvalidOperationException extends SQLinkException {
-    public SQLinkInvalidOperationException(String message) {
+public class SqLinkException extends RuntimeException {
+    public SqLinkException() {
+    }
+
+    public SqLinkException(String message) {
         super(message);
+    }
+
+    public SqLinkException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SqLinkException(Throwable cause) {
+        super(cause);
+    }
+
+    public SqLinkException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

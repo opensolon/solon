@@ -26,6 +26,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 
 /**
+ * aot环境的对象创建器
+ *
  * @author kiryu1223
  * @since 3.0
  */

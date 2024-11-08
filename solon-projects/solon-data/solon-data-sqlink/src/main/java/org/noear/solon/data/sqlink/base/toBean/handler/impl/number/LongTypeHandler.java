@@ -17,18 +17,21 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.number;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * long类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class LongTypeHandler implements ITypeHandler<Long> {
     @Override
-    public Long getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public Long getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         long aLong = resultSet.getLong(index);
         return resultSet.wasNull() ? null : aLong;
     }

@@ -17,9 +17,9 @@ package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 
 import java.util.ArrayList;
@@ -104,6 +104,11 @@ public class QuerySqlBuilder implements ISqlBuilder {
         change();
     }
 
+    public void addSelectColumn(ISqlExpression expression) {
+        queryable.addSelectColumn(expression);
+        change();
+    }
+
     public void setSelect(Class<?> c) {
         List<Class<?>> orderedClass = getOrderedClass();
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
@@ -111,16 +116,16 @@ public class QuerySqlBuilder implements ISqlBuilder {
         List<ISqlExpression> expressions = new ArrayList<>();
         if (orderedClass.contains(c)) {
             int index = orderedClass.indexOf(c);
-            for (PropertyMetaData notIgnoreProperty : metaData.getNotIgnorePropertys()) {
+            for (FieldMetaData notIgnoreProperty : metaData.getNotIgnorePropertys()) {
                 expressions.add(factory.column(notIgnoreProperty, index));
             }
         }
         else {
-            for (PropertyMetaData sel : metaData.getNotIgnorePropertys()) {
+            for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
                 int index = 0;
                 GOTO:
                 for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
-                    for (PropertyMetaData noi : data.getNotIgnorePropertys()) {
+                    for (FieldMetaData noi : data.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
                             expressions.add(factory.column(sel, index));
                             break GOTO;
@@ -206,18 +211,18 @@ public class QuerySqlBuilder implements ISqlBuilder {
         return queryable.getOrderedClass();
     }
 
-    public List<PropertyMetaData> getMappingData() {
+    public List<FieldMetaData> getMappingData() {
         if (isChanged) {
-            return queryable.getMappingData(config);
+            return queryable.getMappingData();
         }
         else {
             ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
             if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getMappingData(config);
+                return queryable.getMappingData();
             }
             else {
                 ISqlQueryableExpression tableExpression = (ISqlQueryableExpression) sqlTableExpression;
-                return tableExpression.getMappingData(config);
+                return tableExpression.getMappingData();
             }
         }
     }

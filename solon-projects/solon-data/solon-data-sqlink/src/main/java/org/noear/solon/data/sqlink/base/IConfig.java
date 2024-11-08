@@ -23,37 +23,79 @@ import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
 /**
+ * 运行时配置
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface IConfig {
-    void setDbType(DbType dbType);
-
+    /**
+     * 获取表达式工厂
+     */
     SqlExpressionFactory getSqlExpressionFactory();
 
+    /**
+     * 获取数据库方言
+     */
     IDialect getDisambiguation();
 
+    /**
+     * 设置数据库方言
+     */
     void setDisambiguation(IDialect disambiguation);
 
+    /**
+     * 获取数据源管理器
+     */
     DataSourceManager getDataSourceManager();
 
+    /**
+     * 获取事务管理器
+     */
     TransactionManager getTransactionManager();
 
+    /**
+     * 获取会话工厂
+     */
     SqlSessionFactory getSqlSessionFactory();
 
+    /**
+     * 获取抓取器工厂
+     */
     IncludeFactory getIncludeFactory();
 
-    BeanCreatorFactory getFastCreatorFactory();
+    /**
+     * 获取对象创建器工厂
+     */
+    BeanCreatorFactory getBeanCreatorFactory();
 
+    /**
+     * 设置数据库类型
+     */
+    void setDbType(DbType dbType);
+
+    /**
+     * 获取数据库类型
+     */
     DbType getDbType();
 
+    /**
+     * 是否打印SQL
+     */
     boolean isPrintSql();
 
-    //boolean isPrintUseDs();
-
+    /**
+     * 是否打印批量SQL
+     */
     boolean isPrintBatch();
 
+    /**
+     * 是否忽略没有where的删除
+     */
     boolean isIgnoreDeleteNoWhere();
 
+    /**
+     * 是否忽略没有where的更新
+     */
     boolean isIgnoreUpdateNoWhere();
 }

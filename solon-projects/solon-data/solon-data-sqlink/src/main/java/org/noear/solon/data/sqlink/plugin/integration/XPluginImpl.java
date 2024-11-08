@@ -24,6 +24,7 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.sqlink.SqLinkClient;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
@@ -32,14 +33,14 @@ import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
-import org.noear.solon.data.sqlink.core.SQLink;
-import org.noear.solon.data.sqlink.api.client.SQLinkClient;
-import org.noear.solon.data.sqlink.plugin.aot.SQLinkRuntimeNativeRegistrar;
+import org.noear.solon.data.sqlink.core.SqLink;
+import org.noear.solon.data.sqlink.plugin.aot.SqLinkRuntimeNativeRegistrar;
 import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
-import org.noear.solon.data.sqlink.plugin.configuration.SQLinkProperties;
+import org.noear.solon.data.sqlink.plugin.configuration.SqLinkProperties;
 import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
-import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManagerWrap;
 import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -52,34 +53,39 @@ import java.util.Optional;
  * @since 3.0
  */
 public class XPluginImpl implements Plugin {
+    private static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
+
     @Override
     public void start(AppContext context) throws Throwable {
-        System.out.println("SQLink启动");
         Map<String, Props> data = context.cfg().getGroupedProp("solon.data.sqlink");
+
         if (data.isEmpty()) {
             return;
         }
-        Map<String, SQLinkClient> clients = new LinkedHashMap<>();
+        log.info("SQLink启动，共找到{}个配置", data.size());
+
+        // 为每个配置创建一个Client，存到clients
+        Map<String, SqLinkClient> clients = new LinkedHashMap<>();
         for (Map.Entry<String, Props> entry : data.entrySet()) {
             Props props = entry.getValue();
-            SQLinkProperties properties = props.toBean(SQLinkProperties.class);
+            SqLinkProperties properties = props.toBean(SqLinkProperties.class);
             String dsName = entry.getKey();
             if (dsName.isEmpty()) {
                 continue;
             }
-            DataSourceManager dataSourceManager = new SolonDataSourceManagerWrap();
+            DataSourceManager dataSourceManager = new SolonDataSourceManager();
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
             AotBeanCreatorFactory aotFastCreatorFactory = new AotBeanCreatorFactory();
-            SQLinkClient SQLinkClient = SQLink.bootStrap()
+            SqLinkClient SQLinkClient = SqLink.bootStrap()
                     .setDataSourceManager(dataSourceManager)
                     .setTransactionManager(transactionManager)
                     .setSqlSessionFactory(sqlSessionFactory)
-                    .setFastCreatorFactory(aotFastCreatorFactory)
+                    .setBeanCreatorFactory(aotFastCreatorFactory)
                     .setOption(properties.bulidOption())
                     .build();
 
-            //BeanWrap wrap = context.wrap(entry.getKey(), SQLinkClient);
+            //BeanWrap wrap = context.wrap(entry.getKey(), SqLinkClient);
             //context.beanRegister(wrap, entry.getKey(), true);
             clients.put(entry.getKey(), SQLinkClient);
             IConfig config = SQLinkClient.getConfig();
@@ -87,27 +93,34 @@ public class XPluginImpl implements Plugin {
             DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
         }
 
-        context.beanInjectorAdd(Inject.class, SQLinkClient.class, (varHolder, inject) ->
+        // 设置注入
+        context.beanInjectorAdd(Inject.class, SqLinkClient.class, (varHolder, inject) ->
         {
             varHolder.required(inject.required());
             String name = inject.value();
+            // 默认注入第一个
             if (name.isEmpty()) {
-                Optional<SQLinkClient> first = clients.values().stream().findFirst();
+                Optional<SqLinkClient> first = clients.values().stream().findFirst();
                 varHolder.setValue(first.orElseThrow(RuntimeException::new));
             }
+            // 按名称注入
             else {
                 varHolder.setValue(clients.get(name));
             }
         });
 
+        // 注册类型处理器
         context.getBeanAsync(ITypeHandler.class, TypeHandlerManager::set);
+
+        // 注册aot
         registerAot(context);
     }
 
+    // 获取数据源并且设置数据库类型
     private static void registerDataSource(BeanWrap beanWrap, IConfig config) {
-        SolonDataSourceManagerWrap sourceManagerWrap = (SolonDataSourceManagerWrap) config.getDataSourceManager();
-        sourceManagerWrap.setDataSourceManager(new SolonDataSourceManager(beanWrap.get()));
-        try (Connection connection = sourceManagerWrap.getConnection()) {
+        SolonDataSourceManager solonDataSourceManager = (SolonDataSourceManager) config.getDataSourceManager();
+        solonDataSourceManager.setDataSource(beanWrap.get());
+        try (Connection connection = solonDataSourceManager.getConnection()) {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DbType dbType = DbType.getByName(databaseProductName);
             config.setDbType(dbType);
@@ -117,9 +130,10 @@ public class XPluginImpl implements Plugin {
         }
     }
 
+    // 注册aot
     private void registerAot(AppContext context) {
         if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
-            context.wrapAndPut(SQLinkRuntimeNativeRegistrar.class, new SQLinkRuntimeNativeRegistrar());
+            context.wrapAndPut(SqLinkRuntimeNativeRegistrar.class, new SqLinkRuntimeNativeRegistrar());
         }
     }
 }

@@ -16,17 +16,35 @@
 package org.noear.solon.data.sqlink.base.transaction;
 
 /**
+ * 事务管理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface TransactionManager {
+    /**
+     * 获取事务控制器
+     * @param isolationLevel 事务隔离级别
+     */
     Transaction get(Integer isolationLevel);
 
+    /**
+     * 移除事务控制器
+     */
     void remove();
 
+    /**
+     * 获取当前事务控制器
+     */
     Transaction getCurTransaction();
 
+    /**
+     * 判断当前线程是否在事务中
+     */
     boolean currentThreadInTransaction();
 
+    /**
+     * 判断当前事务是否开启
+     */
     boolean isOpenTransaction();
 }

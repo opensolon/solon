@@ -22,6 +22,8 @@ import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import java.util.LinkedHashMap;
 
 /**
+ * 分组表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -30,6 +32,11 @@ public class GroupByVisitor extends SqlVisitor {
         super(config);
     }
 
+    /**
+     * 解析分组表达式
+     * @param newExpression
+     * @return
+     */
     @Override
     public ISqlExpression visit(NewExpression newExpression) {
         BlockExpression classBody = newExpression.getClassBody();

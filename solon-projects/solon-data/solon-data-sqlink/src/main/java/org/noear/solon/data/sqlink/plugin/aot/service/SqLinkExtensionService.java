@@ -48,16 +48,21 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * aot相关注册服务
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkExtensionService implements IExtensionService {
+public class SqLinkExtensionService implements IExtensionService {
     private static final String projectVersion = Solon.version();
     private FileObject aotConfig;
     private boolean aotTime;
-    private Set<String> AnonymousClassesName = new HashSet<>();
-    private Set<String> classesName = new HashSet<>();
+    private final Set<String> AnonymousClassesName = new HashSet<>();
+    private final Set<String> classesName = new HashSet<>();
 
+    /**
+     * 初始化
+     */
     @Override
     public void init(Context context) {
         checkAot(context);
@@ -70,12 +75,18 @@ public class SQLinkExtensionService implements IExtensionService {
         }
     }
 
+    /**
+     * 检查是否是aot环境
+     */
     private void checkAot(Context context) {
         Options options = Options.instance(context);
         String aot = options.get("-Aot");
         aotTime = aot != null;
     }
 
+    /**
+     * 创建反射信息注册文件
+     */
     private void createAotFile(Context context) throws IOException {
         Filer filer = JavacProcessingEnvironment.instance(context).getFiler();
         aotConfig = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/native-image/org/noear/solon/data/sqlink/" + projectVersion + "/reflect-config.json");
@@ -93,6 +104,9 @@ public class SQLinkExtensionService implements IExtensionService {
         writeData(event);
     }
 
+    /**
+     * 记录需要反射的类
+     */
     private void recodeClasses(TaskEvent event) {
         if (event.getKind() != TaskEvent.Kind.ANALYZE) return;
         CompilationUnitTree compilationUnit = event.getCompilationUnit();
@@ -197,8 +211,14 @@ public class SQLinkExtensionService implements IExtensionService {
         }
     }
 
+    /**
+     * 是否已经输出过
+     */
     private boolean isWrite = false;
 
+    /**
+     * 输出信息到反射注册文件
+     */
     private void writeData(TaskEvent event) throws IOException {
         if (event.getKind().name().equals("COMPILATION") && !isWrite) {
             isWrite = true;

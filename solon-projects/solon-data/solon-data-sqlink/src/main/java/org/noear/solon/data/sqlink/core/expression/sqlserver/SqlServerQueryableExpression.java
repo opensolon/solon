@@ -21,13 +21,15 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
-import org.noear.solon.data.sqlink.core.exception.SQLinkLimitNotFoundOrderByException;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+import org.noear.solon.data.sqlink.core.exception.SqLinkLimitNotFoundOrderByException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * SqlServer查询表达式
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -62,9 +64,9 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
 
     private void addOrder(List<String> strings, List<Object> values, IConfig config) {
         MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
-        PropertyMetaData primary = metaData.getPrimary();
+        FieldMetaData primary = metaData.getPrimary();
         if (primary == null) {
-            throw new SQLinkLimitNotFoundOrderByException(DbType.SQLServer);
+            throw new SqLinkLimitNotFoundOrderByException(DbType.SQLServer);
         }
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlOrderByExpression sqlOrderByExpression = factory.orderBy();

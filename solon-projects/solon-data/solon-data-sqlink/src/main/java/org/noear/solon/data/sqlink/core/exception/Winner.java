@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.core.exception;
 
 /**
+ * 报错工具（用于绕过idea的检查）
+ *
  * @author kiryu1223
  * @since 3.0
  */

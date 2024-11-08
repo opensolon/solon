@@ -16,54 +16,81 @@
 package org.noear.solon.data.sqlink.core;
 
 /**
+ * 配置项
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class Option {
+    /**
+     * 是否忽略没有条件的update
+     */
     private boolean ignoreUpdateNoWhere = false;
+    /**
+     * 是否忽略没有条件的delete
+     */
     private boolean ignoreDeleteNoWhere = false;
+    /**
+     * 是否打印sql
+     */
     private boolean printSql = true;
-    //private boolean printUseDs = false;
+    /**
+     * 是否打印批量sql
+     */
     private boolean printBatch = false;
 
+    /**
+     * 是否忽略没有条件的update
+     */
     public boolean isIgnoreUpdateNoWhere() {
         return ignoreUpdateNoWhere;
     }
 
+    /**
+     * 设置是否忽略没有条件的update
+     */
     public void setIgnoreUpdateNoWhere(boolean ignoreUpdateNoWhere) {
         this.ignoreUpdateNoWhere = ignoreUpdateNoWhere;
     }
 
+    /**
+     * 是否忽略没有条件的delete
+     */
     public boolean isIgnoreDeleteNoWhere() {
         return ignoreDeleteNoWhere;
     }
 
+    /**
+     * 设置是否忽略没有条件的delete
+     */
     public void setIgnoreDeleteNoWhere(boolean ignoreDeleteNoWhere) {
         this.ignoreDeleteNoWhere = ignoreDeleteNoWhere;
     }
 
+    /**
+     * 是否打印sql
+     */
     public boolean isPrintSql() {
         return printSql;
     }
 
+    /**
+     * 设置是否打印sql
+     */
     public void setPrintSql(boolean printSql) {
         this.printSql = printSql;
     }
 
-//    public boolean isPrintUseDs()
-//    {
-//        return printUseDs;
-//    }
-//
-//    public void setPrintUseDs(boolean printUseDs)
-//    {
-//        this.printUseDs = printUseDs;
-//    }
-
+    /**
+     * 是否打印批量sql
+     */
     public boolean isPrintBatch() {
         return printBatch;
     }
 
+    /**
+     * 设置是否打印批量sql
+     */
     public void setPrintBatch(boolean printBatch) {
         this.printBatch = printBatch;
     }

@@ -19,15 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 参数匹配器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class ParamMatcher {
     public List<String> bracesContent = new ArrayList<>();
     public List<String> remainder = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return bracesContent + "\n" + remainder;
-    }
 }

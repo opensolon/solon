@@ -26,10 +26,19 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlJoinsExpression extends ISqlExpression {
+    /**
+     * 添加join
+     */
     void addJoin(ISqlJoinExpression join);
 
+    /**
+     * 获取join
+     */
     List<ISqlJoinExpression> getJoins();
 
+    /**
+     * 判断是否为空
+     */
     default boolean isEmpty() {
         return getJoins().isEmpty();
     }

@@ -25,6 +25,9 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlParensExpression extends ISqlExpression {
+    /**
+     * 获取表达式
+     */
     ISqlExpression getExpression();
 
     @Override

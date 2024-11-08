@@ -15,23 +15,32 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.handler;
 
+import java.lang.reflect.Type;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * 默认类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
     @Override
-    public T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
-        if (c.isEnum()) {
-            return (T) Enum.valueOf((Class<Enum>) c, resultSet.getString(index));
+    public T getValue(ResultSet resultSet, int index, Type type) throws SQLException {
+        if (type instanceof Class<?>) {
+            Class<?> aClass = (Class<?>) type;
+            if (aClass.isEnum()) {
+                return (T) Enum.valueOf((Class<Enum>) type, resultSet.getString(index));
+            }
+            else {
+                return (T) resultSet.getObject(index, aClass);
+            }
         }
         else {
-            return (T) resultSet.getObject(index, c);
+            return (T) resultSet.getObject(index);
         }
     }
 

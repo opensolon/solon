@@ -16,12 +16,20 @@
 package org.noear.solon.data.sqlink.base;
 
 /**
+ * 数据库方言
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface IDialect {
+    /**
+     * 列名消歧义
+     */
     String disambiguation(String property);
 
+    /**
+     * 表名消歧义
+     */
     default String disambiguationTableName(String table) {
         return disambiguation(table);
     }

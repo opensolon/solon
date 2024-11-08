@@ -21,14 +21,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * group by表达式
+ * 分组表达式
  *
  * @author kiryu1223
  * @since 3.0
  */
 public interface ISqlGroupByExpression extends ISqlExpression {
+    /**
+     * 设置分组选择的字段
+     */
     void setColumns(LinkedHashMap<String, ISqlExpression> columns);
 
+    /**
+     * 获取分组选择的字段
+     *
+     * @return
+     */
     LinkedHashMap<String, ISqlExpression> getColumns();
 
     @Override

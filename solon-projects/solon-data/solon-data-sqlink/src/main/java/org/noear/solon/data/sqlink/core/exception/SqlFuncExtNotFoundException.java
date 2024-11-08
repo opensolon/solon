@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.core.exception;
 import org.noear.solon.data.sqlink.base.DbType;
 
 /**
+ * 没有找到SqlExtensionExpression注解异常
+ *
  * @author kiryu1223
  * @since 3.0
  */

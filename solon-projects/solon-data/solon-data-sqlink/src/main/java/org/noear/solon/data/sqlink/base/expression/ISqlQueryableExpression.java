@@ -16,9 +16,9 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.PropertyMetaData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,67 +36,129 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
         return factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
     }
 
-    @Override
-    Class<?> getTableClass();
-
+    /**
+     * 添加where条件
+     */
     void addWhere(ISqlExpression cond);
 
+    /**
+     * 添加join条件
+     */
     void addJoin(ISqlJoinExpression join);
 
+    /**
+     * 设置group by
+     * @param group
+     */
     void setGroup(ISqlGroupByExpression group);
 
+    /**
+     * 添加having条件
+     * @param cond
+     */
     void addHaving(ISqlExpression cond);
 
+    /**
+     * 添加orderBy列
+     * @param order
+     */
     void addOrder(ISqlOrderExpression order);
 
+    /**
+     * 设置select
+     * @param newSelect
+     */
     void setSelect(ISqlSelectExpression newSelect);
 
+    /**
+     * 添加select列
+     */
+    void addSelectColumn(ISqlExpression expression);
+
+    /**
+     * 设置limit
+     */
     void setLimit(long offset, long rows);
 
+    /**
+     * 设置是否去重
+     */
     void setDistinct(boolean distinct);
 
+    /**
+     * 获取from
+     */
     ISqlFromExpression getFrom();
 
+    /**
+     * 获取查询列数量（from + joins）
+     */
     int getOrderedCount();
 
+    /**
+     * 获取where
+     */
     ISqlWhereExpression getWhere();
 
+    /**
+     * 获取groupBy
+     */
     ISqlGroupByExpression getGroupBy();
 
+    /**
+     * 获取join
+     */
     ISqlJoinsExpression getJoins();
 
+    /**
+     * 获取select
+     */
     ISqlSelectExpression getSelect();
 
+    /**
+     * 获取orderBy
+     */
     ISqlOrderByExpression getOrderBy();
 
+    /**
+     * 获取limit
+     */
     ISqlLimitExpression getLimit();
 
+    /**
+     * 获取having
+     */
     ISqlHavingExpression getHaving();
 
+    /**
+     * 获取查询列的类（from + joins）
+     */
     List<Class<?>> getOrderedClass();
 
-    default List<PropertyMetaData> getMappingData(IConfig config) {
+    /**
+     * 获取映射的列
+     */
+    default List<FieldMetaData> getMappingData() {
         List<Class<?>> orderedClass = getOrderedClass();
-        SqlExpressionFactory factory = config.getSqlExpressionFactory();
         Class<?> target = getSelect().getTarget();
         MetaData metaData = MetaDataCache.getMetaData(target);
         if (orderedClass.contains(target)) {
             return metaData.getNotIgnorePropertys();
         }
         else {
-            List<PropertyMetaData> propertyMetaDataList = new ArrayList<>();
-            for (PropertyMetaData sel : metaData.getNotIgnorePropertys()) {
+            List<FieldMetaData> fieldMetaDataList = new ArrayList<>();
+            for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
                 GOTO:
                 for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
-                    for (PropertyMetaData noi : data.getNotIgnorePropertys()) {
+                    for (FieldMetaData noi : data.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
-                            propertyMetaDataList.add(sel);
+                            fieldMetaDataList.add(sel);
                             break GOTO;
                         }
                     }
                 }
             }
-            return propertyMetaDataList;
+            return fieldMetaDataList;
         }
     }
 }

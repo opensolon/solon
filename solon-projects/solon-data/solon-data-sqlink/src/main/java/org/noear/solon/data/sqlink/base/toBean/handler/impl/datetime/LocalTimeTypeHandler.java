@@ -17,16 +17,19 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.datetime;
 
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalTime;
 
 /**
+ * LocalTime类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public class LocalTimeTypeHandler implements ITypeHandler<LocalTime> {
     @Override
-    public LocalTime getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException {
+    public LocalTime getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         Time time = resultSet.getTime(index);
         return time == null ? null : time.toLocalTime();
     }

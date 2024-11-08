@@ -23,6 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * SQL运算符方法注解
+ *
  * @author kiryu1223
  * @since 3.0
  */

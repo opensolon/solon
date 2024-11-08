@@ -19,16 +19,25 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 对象创建器工厂
  * @author kiryu1223
  * @since 3.0
  */
 public class BeanCreatorFactory {
     private static final Map<Class<?>, AbsBeanCreator<?>> cache = new ConcurrentHashMap<>();
 
+    /**
+     * 创建对象创建器
+     * @param target 目标类型
+     */
     protected <T> AbsBeanCreator<T> create(Class<T> target) {
         return new DefaultBeanCreator<>(target);
     }
 
+    /**
+     * 获取对象创建器
+     * @param target 目标类型
+     */
     public <T> AbsBeanCreator<T> get(Class<T> target) {
         AbsBeanCreator<T> creator = (AbsBeanCreator<T>) cache.get(target);
         if (creator == null) {

@@ -21,6 +21,8 @@ import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.tran.TranUtils;
 
 /**
+ * Solon环境下的事务管理器
+ *
  * @author kiryu1223
  * @since 3.0
  */

@@ -119,7 +119,7 @@ class Config implements IConfig {
         return includeFactory;
     }
 
-    public BeanCreatorFactory getFastCreatorFactory() {
+    public BeanCreatorFactory getBeanCreatorFactory() {
         return beanCreatorFactory;
     }
 

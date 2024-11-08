@@ -24,8 +24,14 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public interface ISqlOrderExpression extends ISqlExpression {
+    /**
+     * 获取排序的目标
+     */
     ISqlExpression getExpression();
 
+    /**
+     * 是否为升序
+     */
     boolean isAsc();
 
     @Override

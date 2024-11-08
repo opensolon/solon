@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.base.toBean.beancreator;
 
 /**
+ * 用来给LambdaMetafactory重写的
+ *
  * @author kiryu1223
  * @since 3.0
  */

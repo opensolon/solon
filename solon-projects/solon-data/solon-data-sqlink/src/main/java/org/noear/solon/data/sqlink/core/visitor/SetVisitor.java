@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * set表达式解析器
+ *
  * @author kiryu1223
  * @since 3.0
  */

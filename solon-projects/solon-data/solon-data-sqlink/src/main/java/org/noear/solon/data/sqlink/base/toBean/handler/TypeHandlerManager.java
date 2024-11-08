@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 类型处理器管理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -34,6 +36,9 @@ public class TypeHandlerManager {
     private static final Map<Class<? extends ITypeHandler<?>>, ITypeHandler<?>> handlerCache = new HashMap<>();
     private static final UnKnowTypeHandler<?> unKnowTypeHandler = new UnKnowTypeHandler<>();
 
+    /**
+     * 设置处理器
+     */
     public static <T> void set(ITypeHandler<T> typeHandler) {
         Type actualType = typeHandler.getGenericType();
         warpBaseType(actualType, typeHandler);
@@ -69,6 +74,10 @@ public class TypeHandlerManager {
         set(new URLTypeHandler());
     }
 
+    /**
+     * 获取处理器, 获取失败时返回默认处理器
+     * @param type 目标类型
+     */
     public static <T> ITypeHandler<T> get(Type type) {
         ITypeHandler<T> iTypeHandler = (ITypeHandler<T>) cache.get(type);
         if (iTypeHandler == null) {
@@ -77,6 +86,10 @@ public class TypeHandlerManager {
         return iTypeHandler;
     }
 
+    /**
+     * 通过处理器类型获取处理器
+     * @param handlerType 处理器类型
+     */
     public static <T> ITypeHandler<T> getByHandlerType(Class<? extends ITypeHandler<T>> handlerType) {
         ITypeHandler<T> typeHandler = (ITypeHandler<T>) handlerCache.get(handlerType);
         if (typeHandler == null) {
@@ -91,6 +104,9 @@ public class TypeHandlerManager {
         return typeHandler;
     }
 
+    /**
+     * 封装基础类型
+     */
     private static void warpBaseType(Type actualType, ITypeHandler<?> typeHandler) {
         if (actualType == Character.class) {
             cache.put(char.class, typeHandler);

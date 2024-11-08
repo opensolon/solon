@@ -18,11 +18,13 @@ package org.noear.solon.data.sqlink.core.exception;
 import org.noear.solon.data.sqlink.base.DbType;
 
 /**
+ * 时间运算异常
+ *
  * @author kiryu1223
  * @since 3.0
  */
-public class SQLinkLimitNotFoundOrderByException extends SQLinkException {
-    public SQLinkLimitNotFoundOrderByException(DbType dbType) {
-        super(dbType.name() + "数据库下进行的limit操作需要声明order by的字段，或者为表类指定一个主键");
+public class SqLinkIntervalException extends SqLinkException {
+    public SqLinkIntervalException(DbType type) {
+        super(type.name() + "下的date加减运算函数必须为字面量或者java引用（不可以是数据库字段引用）");
     }
 }

@@ -16,6 +16,8 @@
 package org.noear.solon.data.sqlink.base.metaData;
 
 /**
+ * 中间表标记
+ *
  * @author kiryu1223
  * @since 3.0
  */

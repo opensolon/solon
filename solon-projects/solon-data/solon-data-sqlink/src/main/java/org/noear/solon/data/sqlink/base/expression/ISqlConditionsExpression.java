@@ -26,12 +26,22 @@ import java.util.List;
  * @since 3.0
  */
 public interface ISqlConditionsExpression extends ISqlExpression {
+    /**
+     * 获取条件表达式集合
+     */
     List<ISqlExpression> getConditions();
 
+    /**
+     * 添加条件表达式
+     * @param cond 条件表达式
+     */
     default void addCondition(ISqlExpression cond) {
         getConditions().add(cond);
     }
 
+    /**
+     * 判断是否为空
+     */
     default boolean isEmpty() {
         return getConditions().isEmpty();
     }

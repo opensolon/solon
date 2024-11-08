@@ -22,14 +22,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * 类型处理器
+ *
  * @author kiryu1223
  * @since 3.0
  */
 public interface ITypeHandler<T> {
-    T getValue(ResultSet resultSet, int index, Class<?> c) throws SQLException;
+    /**
+     * 获取值
+     * @param resultSet 结果集
+     * @param index 索引
+     * @param type 类型
+     */
+    T getValue(ResultSet resultSet, int index, Type type) throws SQLException;
 
+    /**
+     * 设置值
+     * @param preparedStatement 预处理语句
+     * @param index 索引
+     * @param value 值
+     */
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
+    /**
+     * 获取泛型类型
+     */
     default Type getGenericType() {
         Type[] genericInterfaces = this.getClass().getGenericInterfaces();
         for (Type genericInterface : genericInterfaces) {

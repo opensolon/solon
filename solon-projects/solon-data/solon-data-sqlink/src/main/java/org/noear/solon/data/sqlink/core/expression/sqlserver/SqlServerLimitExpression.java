@@ -21,6 +21,8 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlLimitExpression;
 import java.util.List;
 
 /**
+ * SqlServer Limit表达式
+ *
  * @author kiryu1223
  * @since 3.0
  */

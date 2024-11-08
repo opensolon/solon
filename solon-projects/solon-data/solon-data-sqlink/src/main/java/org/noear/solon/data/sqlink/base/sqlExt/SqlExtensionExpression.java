@@ -20,6 +20,8 @@ import org.noear.solon.data.sqlink.base.DbType;
 import java.lang.annotation.*;
 
 /**
+ * SQL扩展表达式注解
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -27,11 +29,23 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Repeatable(SqlExtensionExpressions.class)
 public @interface SqlExtensionExpression {
+    /**
+     * 数据库类型
+     */
     DbType dbType() default DbType.Any;
 
+    /**
+     * 字符串模板，占位符为{参数名1}，{参数名2}等，优先级小于extension
+     */
     String template();
 
+    /**
+     * 可变参数下用于分割参数的字符串
+     */
     String separator() default ",";
 
+    /**
+     * 动态扩展表达式类型，优先级大于template
+     */
     Class<? extends BaseSqlExtension> extension() default BaseSqlExtension.class;
 }

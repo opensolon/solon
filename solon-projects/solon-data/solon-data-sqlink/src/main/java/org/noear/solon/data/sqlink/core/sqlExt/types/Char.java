@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.core.sqlExt.types;
 import org.noear.solon.data.sqlink.base.IConfig;
 
 /**
+ * SQL char类型
+ *
  * @author kiryu1223
  * @since 3.0
  */

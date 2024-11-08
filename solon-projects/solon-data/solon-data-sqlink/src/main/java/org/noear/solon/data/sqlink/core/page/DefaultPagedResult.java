@@ -18,6 +18,8 @@ package org.noear.solon.data.sqlink.core.page;
 import java.util.List;
 
 /**
+ * 默认分页结果
+ *
  * @author kiryu1223
  * @since 3.0
  */
