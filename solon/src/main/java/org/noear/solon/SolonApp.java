@@ -62,7 +62,7 @@ public class SolonApp extends RouterWrapper {
     private final URL _sourceLocation;
     private final long _startupTime;
 
-    protected boolean stopping = false;
+    private boolean stopping = false;
 
     /**
      * 应用上下文
@@ -140,7 +140,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 启动
      */
-    protected void start(ConsumerEx<SolonApp> initialize) throws Throwable {
+    protected void startDo(ConsumerEx<SolonApp> initialize) throws Throwable {
         //1.0.打印构造时的告警
         if (_cfg.warns.size() > 0) {
             for (String warn : _cfg.warns) {
@@ -161,16 +161,20 @@ public class SolonApp extends RouterWrapper {
     /**
      * 预停止
      */
-    protected void prestop() {
+    protected void prestopDo() {
         this.cfg().plugs().forEach(p -> p.prestop());
         this.context().prestop();
         EventBus.publishTry(new AppPrestopEndEvent(this));
     }
 
+    protected void stoppingDo() {
+        this.stopping = true;
+    }
+
     /**
      * 停止
      */
-    protected void stop() {
+    protected void stopDo() {
         this.cfg().plugs().forEach(p -> p.stop());
         this.context().stop();
         EventBus.publishTry(new AppStopEndEvent(this));

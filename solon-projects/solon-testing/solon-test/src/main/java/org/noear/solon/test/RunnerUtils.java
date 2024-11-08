@@ -186,7 +186,7 @@ public class RunnerUtils {
 
             SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
             //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
-            testApp.startSimply(x -> {
+            testApp.start(x -> {
                 //默认关闭 http（避免与已经存在的服务端口冲突）
                 x.enableHttp(false);
                 initDo(klass, x);
@@ -209,7 +209,7 @@ public class RunnerUtils {
 
                 SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
                 //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
-                testApp.startSimply(x -> {
+                testApp.start(x -> {
                     //默认关闭 http（避免与已经存在的服务端口冲突）
                     x.enableHttp(false);
                     initDo(klass, x);

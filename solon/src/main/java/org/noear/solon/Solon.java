@@ -190,7 +190,7 @@ public class Solon {
             LogUtil.global().info("App: Start loading");//调整了打印时机
 
             //2.开始
-            app.start(initialize);
+            app.startDo(initialize);
 
         } catch (Throwable e) {
             //显示异常信息
@@ -292,7 +292,7 @@ public class Solon {
             LogUtil.global().info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
 
             //1.预停止
-            Solon.app().prestop();
+            Solon.app().prestopDo();
             LogUtil.global().info("App: Security to stop: 1/3 completed");
 
             //2.延时标停
@@ -305,7 +305,7 @@ public class Solon {
                 sleep0(delay1); //给发现服务留时间
             }
 
-            Solon.app().stopping = true; //http 503，lb 开始切流
+            Solon.app().stoppingDo(); //http 503，lb 开始切流
 
             //二段暂停
             if (delay2 > 0) {
@@ -315,15 +315,15 @@ public class Solon {
             LogUtil.global().info("App: Security to stop: 2/3 completed");
 
             //3.停止
-            Solon.app().stop();
+            Solon.app().stopDo();
             LogUtil.global().info("App: Security to stop: 3/3 completed");
         } else {
             //1.预停止
-            Solon.app().prestop();
+            Solon.app().prestopDo();
             //2.标停
-            Solon.app().stopping = true;
+            Solon.app().stoppingDo();
             //3.停止
-            Solon.app().stop();
+            Solon.app().stopDo();
         }
 
         LogUtil.global().info("App: Stopped");

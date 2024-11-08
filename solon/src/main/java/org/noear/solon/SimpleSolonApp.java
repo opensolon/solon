@@ -39,23 +39,23 @@ public class SimpleSolonApp extends SolonApp {
     /**
      * 简单开始
      */
-    public SimpleSolonApp startSimply(ConsumerEx<SolonApp> initialize) throws Throwable {
+    public SimpleSolonApp start(ConsumerEx<SolonApp> initialize) throws Throwable {
         //切换全局 app
         bakApp = Solon.app();
         Solon.appSet(this);
 
-        super.start(initialize);
+        super.startDo(initialize);
         return this;
     }
 
     /**
      * 简单停止（阻塞模式）
      */
-    public void stopSimply() {
+    public void stop() {
         try {
-            super.prestop();
-            super.stopping = true;
-            super.stop();
+            super.prestopDo();
+            super.stoppingDo();
+            super.stopDo();
         } finally {
             //恢复全局 app
             Solon.appSet(bakApp);
