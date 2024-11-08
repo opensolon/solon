@@ -25,12 +25,16 @@ import org.noear.solon.core.util.ConsumerEx;
  * @since 3.0
  */
 public class SimpleSolonApp extends SolonApp {
+    public SimpleSolonApp(Class<?> source, String... args) throws Exception {
+        super(source, NvMap.from(args));
+    }
+
     public SimpleSolonApp(Class<?> source, NvMap args) throws Exception {
         super(source, args);
     }
 
     /**
-     * 静态化
+     * 静态化（绑定到 Solon.app）
      */
     public SimpleSolonApp staticize() {
         Solon.appSet(this);
@@ -38,17 +42,17 @@ public class SimpleSolonApp extends SolonApp {
     }
 
     /**
-     * 开始
+     * 简单开始
      */
-    @Override
-    public void start(ConsumerEx<SolonApp> initialize) throws Throwable {
-        super.start(initialize);
+    public SimpleSolonApp startSimply(ConsumerEx<SolonApp> initialize) throws Throwable {
+        this.start(initialize);
+        return this;
     }
 
     /**
-     * 停止（阻塞模式）
+     * 简单停止（阻塞模式）
      */
-    public void stopBlock() {
+    public void stopSimply() {
         this.prestop();
         this.stopping = true;
         this.stop();
