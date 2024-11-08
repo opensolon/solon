@@ -42,11 +42,11 @@ import org.noear.solon.data.sqlink.integration.transaction.SolonTransactionManag
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author kiryu1223
@@ -62,22 +62,25 @@ public class XPluginImpl implements Plugin {
         if (data.isEmpty()) {
             return;
         }
+
         log.info("SQLink启动，共找到{}个配置", data.size());
 
         // 为每个配置创建一个Client，存到clients
         Map<String, SqLink> clients = new LinkedHashMap<>();
         for (Map.Entry<String, Props> entry : data.entrySet()) {
             Props props = entry.getValue();
-            SqLinkProperties properties = props.toBean(SqLinkProperties.class);
             String dsName = entry.getKey();
             if (dsName.isEmpty()) {
                 continue;
             }
+
+            SqLinkProperties properties = props.toBean(SqLinkProperties.class);
             DataSourceManager dataSourceManager = new SolonDataSourceManager();
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
             AotBeanCreatorFactory aotFastCreatorFactory = new AotBeanCreatorFactory();
-            SqLink SQLinkClient = new SqLinkBuilder()
+
+            SqLink sqLink = new SqLinkBuilder()
                     .setDataSourceManager(dataSourceManager)
                     .setTransactionManager(transactionManager)
                     .setSqlSessionFactory(sqlSessionFactory)
@@ -85,26 +88,28 @@ public class XPluginImpl implements Plugin {
                     .setOption(properties.bulidOption())
                     .build();
 
-            //BeanWrap wrap = context.wrap(entry.getKey(), SqLinkClient);
-            //context.beanRegister(wrap, entry.getKey(), true);
-            clients.put(entry.getKey(), SQLinkClient);
-            SqLinkConfig config = SQLinkClient.getConfig();
+            clients.put(entry.getKey(), sqLink);
+            SqLinkConfig config = sqLink.getConfig();
 
             DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
         }
 
         // 设置注入
-        context.beanInjectorAdd(Inject.class, SqLink.class, (varHolder, inject) ->
-        {
+        context.beanInjectorAdd(Inject.class, SqLink.class, (varHolder, inject) -> {
             varHolder.required(inject.required());
             String name = inject.value();
-            // 默认注入第一个
+
             if (name.isEmpty()) {
-                Optional<SqLink> first = clients.values().stream().findFirst();
-                varHolder.setValue(first.orElseThrow(RuntimeException::new));
-            }
-            // 按名称注入
-            else {
+                // 默认数据源注入
+                BeanWrap dsBw = context.getWrap(DataSource.class);
+                if (dsBw == null) {
+                    throw new IllegalStateException("Missing default data source configuration");
+                }
+
+                SqLink first = clients.get(dsBw.name());
+                varHolder.setValue(first);
+            } else {
+                // 按名称注入
                 varHolder.setValue(clients.get(name));
             }
         });
@@ -124,8 +129,7 @@ public class XPluginImpl implements Plugin {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DbType dbType = DbType.getByName(databaseProductName);
             config.setDbType(dbType);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
