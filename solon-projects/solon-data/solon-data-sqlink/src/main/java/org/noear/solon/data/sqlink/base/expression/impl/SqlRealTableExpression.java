@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -43,7 +43,7 @@ public class SqlRealTableExpression extends SqlTableExpression implements ISqlRe
     public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         String fullName = "";
         MetaData metaData = MetaDataCache.getMetaData(getTableClass());
-        IDialect dbConfig = config.getDisambiguation();
+        SqLinkDialect dbConfig = config.getDisambiguation();
         String schema = metaData.getSchema();
         if (!schema.isEmpty()) {
             fullName += dbConfig.disambiguationTableName(schema) + ".";

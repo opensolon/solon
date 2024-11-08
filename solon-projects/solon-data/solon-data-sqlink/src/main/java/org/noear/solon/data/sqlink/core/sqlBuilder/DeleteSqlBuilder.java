@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -137,7 +137,7 @@ public class DeleteSqlBuilder implements ISqlBuilder {
             }
             builder.append(String.join(",", strings));
         }
-        IDialect dbConfig = config.getDisambiguation();
+        SqLinkDialect dbConfig = config.getDisambiguation();
         MetaData metaData = MetaDataCache.getMetaData(target);
         return builder.append(" FROM ").append(dbConfig.disambiguationTableName(metaData.getTableName())).append(" AS t0").toString();
     }

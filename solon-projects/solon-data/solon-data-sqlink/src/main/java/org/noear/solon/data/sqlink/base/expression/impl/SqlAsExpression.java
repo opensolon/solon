@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlAsExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
@@ -47,7 +47,7 @@ public class SqlAsExpression implements ISqlAsExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
-        IDialect dialect = config.getDisambiguation();
+        SqLinkDialect dialect = config.getDisambiguation();
         return getExpression().getSqlAndValue(config, values) + " AS " + dialect.disambiguation(getAsName());
     }
 }

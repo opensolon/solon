@@ -17,7 +17,7 @@ package org.noear.solon.data.sqlink.core;
 
 import org.noear.solon.data.sqlink.SqLinkClient;
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -33,7 +33,7 @@ public class SqLinkBuilder {
     /**
      * 方言
      */
-    private IDialect dialect;
+    private SqLinkDialect dialect;
     /**
      * 配置
      */
@@ -121,7 +121,7 @@ public class SqLinkBuilder {
     /**
      * 设置方言
      */
-    public SqLinkBuilder setDialect(IDialect dialect) {
+    public SqLinkBuilder setDialect(SqLinkDialect dialect) {
         this.dialect = dialect;
         return this;
     }

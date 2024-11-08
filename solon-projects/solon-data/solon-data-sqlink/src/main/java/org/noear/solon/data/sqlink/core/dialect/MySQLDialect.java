@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.dialect;
 
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 
 /**
  * MySQL方言
@@ -23,7 +23,7 @@ import org.noear.solon.data.sqlink.base.IDialect;
  * @author kiryu1223
  * @since 3.0
  */
-public class MySQLDialect implements IDialect {
+public class MySQLDialect implements SqLinkDialect {
     @Override
     public String disambiguation(String property) {
         return "`" + property + "`";

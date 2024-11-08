@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -112,7 +112,7 @@ public class UpdateSqlBuilder implements ISqlBuilder {
 
     private String makeUpdate(List<Object> values) {
         MetaData metaData = MetaDataCache.getMetaData(target);
-        IDialect dbConfig = config.getDisambiguation();
+        SqLinkDialect dbConfig = config.getDisambiguation();
         String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
         List<String> sb = new ArrayList<>();
         sb.add(sql);

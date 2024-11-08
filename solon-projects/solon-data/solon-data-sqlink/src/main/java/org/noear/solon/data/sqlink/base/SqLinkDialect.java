@@ -21,7 +21,7 @@ package org.noear.solon.data.sqlink.base;
  * @author kiryu1223
  * @since 3.0
  */
-public interface IDialect {
+public interface SqLinkDialect {
     /**
      * 列名消歧义
      */

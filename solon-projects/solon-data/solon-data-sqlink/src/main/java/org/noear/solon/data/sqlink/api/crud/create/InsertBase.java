@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.api.crud.create;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
@@ -111,7 +111,7 @@ public abstract class InsertBase extends CRUD {
                 tableValues.add("?");
             }
         }
-        IDialect dialect = getSqlBuilder().getConfig().getDisambiguation();
+        SqLinkDialect dialect = getSqlBuilder().getConfig().getDisambiguation();
         return "INSERT INTO " + dialect.disambiguationTableName(metaData.getTableName()) + "(" + String.join(",", tableFields)
                 + ") VALUES(" + String.join(",", tableValues) + ")";
     }

@@ -37,12 +37,12 @@ public interface SqLinkConfig {
     /**
      * 获取数据库方言
      */
-    IDialect getDisambiguation();
+    SqLinkDialect getDisambiguation();
 
     /**
      * 设置数据库方言
      */
-    void setDisambiguation(IDialect disambiguation);
+    void setDisambiguation(SqLinkDialect disambiguation);
 
     /**
      * 获取数据源管理器

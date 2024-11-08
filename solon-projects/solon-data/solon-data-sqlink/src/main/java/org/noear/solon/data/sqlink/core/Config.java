@@ -17,7 +17,7 @@ package org.noear.solon.data.sqlink.core;
 
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -47,7 +47,7 @@ class Config implements SqLinkConfig {
     private final DataSourceManager dataSourceManager;
     private final SqlSessionFactory sqlSessionFactory;
     private final BeanCreatorFactory beanCreatorFactory;
-    private IDialect disambiguation;
+    private SqLinkDialect disambiguation;
     private SqlExpressionFactory sqlExpressionFactory;
     private IncludeFactory includeFactory;
 
@@ -69,12 +69,12 @@ class Config implements SqLinkConfig {
         return dataSourceManager;
     }
 
-    public IDialect getDisambiguation() {
+    public SqLinkDialect getDisambiguation() {
         return disambiguation;
     }
 
     @Override
-    public void setDisambiguation(IDialect disambiguation) {
+    public void setDisambiguation(SqLinkDialect disambiguation) {
         this.disambiguation = disambiguation;
     }
 
@@ -130,7 +130,7 @@ class Config implements SqLinkConfig {
         this.includeFactory = getIncludeFactoryByDbType(dbType);
     }
 
-    private IDialect getIDialectByDbType(DbType dbType) {
+    private SqLinkDialect getIDialectByDbType(DbType dbType) {
         switch (dbType) {
             case Any:
                 return new DefaultDialect();

@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.IDialect;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
@@ -47,7 +47,7 @@ public class SqlColumnExpression implements ISqlColumnExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
-        IDialect dbConfig = config.getDisambiguation();
+        SqLinkDialect dbConfig = config.getDisambiguation();
         String t = "t" + getTableIndex();
         return dbConfig.disambiguation(t) + "." + dbConfig.disambiguation(getPropertyMetaData().getColumn());
     }
