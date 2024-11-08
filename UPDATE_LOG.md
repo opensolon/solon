@@ -36,7 +36,7 @@
 * 添加 solon-net-httputils 工厂扩展方式
 * 添加 solon-data-sqlutils 工厂扩展方式
 * 添加 solon 路由器二级索引排序支持
-* 添加 solon-parent checkstyle 编译可选配置？？？
+* 添加 solon SimpleSolonApp 类，方便局部测试用
 * 修复 solon-docs-openapi2 分布式文档，地址转发出错的问题
 * 修复 solon-config-plus 配置注入与 HikariCP 6.0 的兼容问题
 * 修复 solon GenericUtil 在泛型变量名在传递过程中改名后，无法还原的问题。（不过，改名会有潜在问题）
