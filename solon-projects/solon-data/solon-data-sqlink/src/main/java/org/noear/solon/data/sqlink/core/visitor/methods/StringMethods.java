@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
@@ -36,7 +36,7 @@ public class StringMethods {
     /**
      * 数据库LIKE运算
      */
-    public static ISqlBinaryExpression contains(IConfig config, ISqlExpression left, ISqlExpression right) {
+    public static ISqlBinaryExpression contains(SqLinkConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         switch (config.getDbType()) {
@@ -56,7 +56,7 @@ public class StringMethods {
     /**
      * 数据库LIKE左匹配运算
      */
-    public static ISqlBinaryExpression startsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
+    public static ISqlBinaryExpression startsWith(SqLinkConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> args = Collections.singletonList(right);
@@ -74,7 +74,7 @@ public class StringMethods {
     /**
      * 数据库LIKE右匹配运算
      */
-    public static ISqlBinaryExpression endsWith(IConfig config, ISqlExpression left, ISqlExpression right) {
+    public static ISqlBinaryExpression endsWith(SqLinkConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> args = Collections.singletonList(right);
@@ -92,7 +92,7 @@ public class StringMethods {
     /**
      * 数据库字符串长度函数
      */
-    public static ISqlTemplateExpression length(IConfig config, ISqlExpression thiz) {
+    public static ISqlTemplateExpression length(SqLinkConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         switch (config.getDbType()) {
@@ -117,7 +117,7 @@ public class StringMethods {
     /**
      * 数据库字符串转大写函数
      */
-    public static ISqlTemplateExpression toUpperCase(IConfig config, ISqlExpression thiz) {
+    public static ISqlTemplateExpression toUpperCase(SqLinkConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("UPPER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
@@ -126,7 +126,7 @@ public class StringMethods {
     /**
      * 数据库字符串转小写函数
      */
-    public static ISqlTemplateExpression toLowerCase(IConfig config, ISqlExpression thiz) {
+    public static ISqlTemplateExpression toLowerCase(SqLinkConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("LOWER(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
@@ -135,7 +135,7 @@ public class StringMethods {
     /**
      * 数据库字符串拼接函数
      */
-    public static ISqlTemplateExpression concat(IConfig config, ISqlExpression left, ISqlExpression right) {
+    public static ISqlTemplateExpression concat(SqLinkConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         switch (config.getDbType()) {
@@ -151,7 +151,7 @@ public class StringMethods {
     /**
      * 数据库字符串左右去空格函数
      */
-    public static ISqlTemplateExpression trim(IConfig config, ISqlExpression thiz) {
+    public static ISqlTemplateExpression trim(SqLinkConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("TRIM(", ")");
         return factory.template(functions, Collections.singletonList(thiz));
@@ -160,7 +160,7 @@ public class StringMethods {
     /**
      * 数据库判断字符串是否为空表达式
      */
-    public static ISqlExpression isEmpty(IConfig config, ISqlExpression thiz) {
+    public static ISqlExpression isEmpty(SqLinkConfig config, ISqlExpression thiz) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         switch (config.getDbType()) {
             case SQLServer:
@@ -181,7 +181,7 @@ public class StringMethods {
     /**
      * 数据库字符串查找索引函数
      */
-    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr) {
+    public static ISqlTemplateExpression indexOf(SqLinkConfig config, ISqlExpression thisStr, ISqlExpression subStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
@@ -204,7 +204,7 @@ public class StringMethods {
     /**
      * 数据库字符串查找索引函数
      */
-    public static ISqlTemplateExpression indexOf(IConfig config, ISqlExpression thisStr, ISqlExpression subStr, ISqlExpression fromIndex) {
+    public static ISqlTemplateExpression indexOf(SqLinkConfig config, ISqlExpression thisStr, ISqlExpression subStr, ISqlExpression fromIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
@@ -235,7 +235,7 @@ public class StringMethods {
     /**
      * 数据库字符串替换函数
      */
-    public static ISqlTemplateExpression replace(IConfig config, ISqlExpression thisStr, ISqlExpression oldStr, ISqlExpression newStr) {
+    public static ISqlTemplateExpression replace(SqLinkConfig config, ISqlExpression thisStr, ISqlExpression oldStr, ISqlExpression newStr) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = Arrays.asList("REPLACE(", ",", ",", ")");
         List<ISqlExpression> sqlExpressions = Arrays.asList(thisStr, oldStr, newStr);
@@ -245,7 +245,7 @@ public class StringMethods {
     /**
      * 数据库字符串截取函数
      */
-    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex) {
+    public static ISqlTemplateExpression substring(SqLinkConfig config, ISqlExpression thisStr, ISqlExpression beginIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;
@@ -265,7 +265,7 @@ public class StringMethods {
     /**
      * 数据库字符串截取函数
      */
-    public static ISqlTemplateExpression substring(IConfig config, ISqlExpression thisStr, ISqlExpression beginIndex, ISqlExpression endIndex) {
+    public static ISqlTemplateExpression substring(SqLinkConfig config, ISqlExpression thisStr, ISqlExpression beginIndex, ISqlExpression endIndex) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions = Arrays.asList(thisStr, beginIndex, endIndex);
@@ -282,7 +282,7 @@ public class StringMethods {
     /**
      * 数据库字符串连接函数
      */
-    public static ISqlTemplateExpression joinArray(IConfig config, ISqlExpression delimiter, List<ISqlExpression> elements) {
+    public static ISqlTemplateExpression joinArray(SqLinkConfig config, ISqlExpression delimiter, List<ISqlExpression> elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>(1 + elements.size());
@@ -316,7 +316,7 @@ public class StringMethods {
     /**
      * 数据库字符串连接函数
      */
-    public static ISqlTemplateExpression joinList(IConfig config, ISqlExpression delimiter, ISqlExpression elements) {
+    public static ISqlTemplateExpression joinList(SqLinkConfig config, ISqlExpression delimiter, ISqlExpression elements) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> functions;
         List<ISqlExpression> sqlExpressions;

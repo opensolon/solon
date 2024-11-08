@@ -19,7 +19,7 @@ import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
@@ -64,7 +64,7 @@ public abstract class QueryBase extends CRUD {
         return sqlBuilder;
     }
 
-    protected IConfig getConfig() {
+    protected SqLinkConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
@@ -86,7 +86,7 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected <T> List<T> toList() {
-        IConfig config = getConfig();
+        SqLinkConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
         List<Object> values = new ArrayList<>();
@@ -150,7 +150,7 @@ public abstract class QueryBase extends CRUD {
             SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
             // 用于包装某些数据库不支持直接返回bool
             if (isBool(lambda.getReturnType())) {
-                IConfig config = getConfig();
+                SqLinkConfig config = getConfig();
                 switch (config.getDbType()) {
                     case SQLServer:
                     case Oracle:

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 常量字符串
@@ -30,7 +30,7 @@ public interface ISqlConstStringExpression extends ISqlExpression {
     String getString();
 
     @Override
-    default ISqlConstStringExpression copy(IConfig config) {
+    default ISqlConstStringExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.constString(getString());
     }

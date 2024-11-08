@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.core.visitor.methods.StringMethods;
 
@@ -53,7 +53,7 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         SqlOperator operator = getOperator();
         StringBuilder sb = new StringBuilder();
         if (operator == SqlOperator.PLUS

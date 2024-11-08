@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 实体table表达式
@@ -25,7 +25,7 @@ import org.noear.solon.data.sqlink.base.IConfig;
  */
 public interface ISqlRealTableExpression extends ISqlTableExpression {
     @Override
-    default ISqlRealTableExpression copy(IConfig config) {
+    default ISqlRealTableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.table(getTableClass());
     }

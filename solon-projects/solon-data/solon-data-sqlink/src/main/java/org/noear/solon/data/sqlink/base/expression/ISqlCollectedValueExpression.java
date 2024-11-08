@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public interface ISqlCollectedValueExpression extends ISqlValueExpression {
     String getDelimiter();
 
     @Override
-    default ISqlCollectedValueExpression copy(IConfig config) {
+    default ISqlCollectedValueExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<Object> newValues = new ArrayList<>(getCollection());
         ISqlCollectedValueExpression value = factory.value(newValues);

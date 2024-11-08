@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.api.crud.create;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -43,11 +43,11 @@ public abstract class InsertBase extends CRUD {
         return sqlBuilder;
     }
 
-    protected IConfig getConfig() {
+    protected SqLinkConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
-    public InsertBase(IConfig c) {
+    public InsertBase(SqLinkConfig c) {
         this.sqlBuilder = new InsertSqlBuilder(c);
     }
 
@@ -83,7 +83,7 @@ public abstract class InsertBase extends CRUD {
     protected abstract <T> Class<T> getTableType();
 
     private long objectsExecuteRows(List<Object> objects) {
-        IConfig config = getConfig();
+        SqLinkConfig config = getConfig();
         //List<SqlValue> sqlValues = new ArrayList<>();
         String sql = makeByObjects();
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());

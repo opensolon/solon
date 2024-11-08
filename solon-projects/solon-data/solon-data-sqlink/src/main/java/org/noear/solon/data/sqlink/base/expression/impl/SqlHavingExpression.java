@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlConditionsExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlHavingExpression;
@@ -44,7 +44,7 @@ public class SqlHavingExpression implements ISqlHavingExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (isEmpty()) return "";
         return "HAVING " + getConditions().getSqlAndValue(config, values);
     }

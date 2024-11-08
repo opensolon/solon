@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlLimitExpression;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class OracleLimitExpression extends SqlLimitExpression {
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (onlyHasRows()) {
             return String.format("FETCH NEXT %d ROWS ONLY", rows);
         }

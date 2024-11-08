@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -30,7 +30,7 @@ import java.util.List;
  * @since 3.0
  */
 public class QuerySqlBuilder implements ISqlBuilder {
-    private final IConfig config;
+    private final SqLinkConfig config;
     private final ISqlQueryableExpression queryable;
     private final List<IncludeSet> includeSets = new ArrayList<>();
     private boolean isChanged;
@@ -57,7 +57,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
 //        queryable = factory.queryable(factory.from(target, offset));
 //    }
 
-    public QuerySqlBuilder(IConfig config, ISqlQueryableExpression queryable) {
+    public QuerySqlBuilder(SqLinkConfig config, ISqlQueryableExpression queryable) {
         this.config = config;
         this.queryable = queryable;
     }
@@ -154,7 +154,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public IConfig getConfig() {
+    public SqLinkConfig getConfig() {
         return config;
     }
 

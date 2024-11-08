@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTemplateExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
@@ -35,7 +35,7 @@ public class AggregateMethods {
     /**
      * COUNT
      */
-    public static ISqlTemplateExpression count(IConfig config, ISqlExpression expression) {
+    public static ISqlTemplateExpression count(SqLinkConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlTemplateExpression templateExpression;
         if (expression == null) {
@@ -50,7 +50,7 @@ public class AggregateMethods {
     /**
      * SUM
      */
-    public static ISqlTemplateExpression sum(IConfig config, ISqlExpression expression) {
+    public static ISqlTemplateExpression sum(SqLinkConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("SUM(", ")"), Collections.singletonList(expression));
     }
@@ -58,7 +58,7 @@ public class AggregateMethods {
     /**
      * AVG
      */
-    public static ISqlTemplateExpression avg(IConfig config, ISqlExpression expression) {
+    public static ISqlTemplateExpression avg(SqLinkConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("AVG(", ")"), Collections.singletonList(expression));
     }
@@ -66,7 +66,7 @@ public class AggregateMethods {
     /**
      * MAX
      */
-    public static ISqlTemplateExpression max(IConfig config, ISqlExpression expression) {
+    public static ISqlTemplateExpression max(SqLinkConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("MAX(", ")"), Collections.singletonList(expression));
     }
@@ -74,7 +74,7 @@ public class AggregateMethods {
     /**
      * MIN
      */
-    public static ISqlTemplateExpression min(IConfig config, ISqlExpression expression) {
+    public static ISqlTemplateExpression min(SqLinkConfig config, ISqlExpression expression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.template(Arrays.asList("MIN(", ")"), Collections.singletonList(expression));
     }
@@ -82,7 +82,7 @@ public class AggregateMethods {
     /**
      * GROUP_CONCAT
      */
-    public static ISqlTemplateExpression groupConcat(IConfig config, List<ISqlExpression> expressions) {
+    public static ISqlTemplateExpression groupConcat(SqLinkConfig config, List<ISqlExpression> expressions) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> strings;
         List<ISqlExpression> args;

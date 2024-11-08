@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +45,7 @@ public interface ISqlSetsExpression extends ISqlExpression {
     void addSet(Collection<ISqlSetExpression> set);
 
     @Override
-    default ISqlSetsExpression copy(IConfig config) {
+    default ISqlSetsExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlSetsExpression newSets = factory.sets();
         for (ISqlSetExpression set : getSets()) {

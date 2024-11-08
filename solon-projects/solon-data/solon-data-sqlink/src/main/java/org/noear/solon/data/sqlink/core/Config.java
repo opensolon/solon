@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core;
 
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
@@ -40,7 +40,7 @@ import org.noear.solon.data.sqlink.core.include.sqlserver.SqlServerIncludeFactor
  * @author kiryu1223
  * @since 3.0
  */
-class Config implements IConfig {
+class Config implements SqLinkConfig {
     private final Option option;
     private DbType dbType;
     private final TransactionManager transactionManager;

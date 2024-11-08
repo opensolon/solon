@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.IDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -33,7 +33,7 @@ import java.util.Set;
  * @since 3.0
  */
 public class DeleteSqlBuilder implements ISqlBuilder {
-    private final IConfig config;
+    private final SqLinkConfig config;
     private final ISqlJoinsExpression joins;
     private final ISqlWhereExpression wheres;
     private final Class<?> target;
@@ -41,7 +41,7 @@ public class DeleteSqlBuilder implements ISqlBuilder {
     private final SqlExpressionFactory factory;
     private final List<Class<?>> orderedClasses = new ArrayList<>();
 
-    public DeleteSqlBuilder(IConfig config, Class<?> target) {
+    public DeleteSqlBuilder(SqLinkConfig config, Class<?> target) {
         this.config = config;
         this.target = target;
         factory = config.getSqlExpressionFactory();
@@ -82,7 +82,7 @@ public class DeleteSqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public IConfig getConfig() {
+    public SqLinkConfig getConfig() {
         return config;
     }
 

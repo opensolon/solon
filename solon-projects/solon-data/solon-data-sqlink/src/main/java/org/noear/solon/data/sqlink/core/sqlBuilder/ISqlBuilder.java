@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public interface ISqlBuilder {
     /**
      * 获取配置
      */
-    IConfig getConfig();
+    SqLinkConfig getConfig();
 
     /**
      * 获取SQL

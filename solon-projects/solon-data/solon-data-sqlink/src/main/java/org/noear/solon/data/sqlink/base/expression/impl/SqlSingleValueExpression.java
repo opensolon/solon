@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
 
@@ -38,7 +38,7 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (getValue() == null) {
             return "NULL";
         }

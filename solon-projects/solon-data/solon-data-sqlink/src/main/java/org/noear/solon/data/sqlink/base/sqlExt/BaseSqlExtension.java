@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.sqlExt;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
 import java.lang.reflect.Method;
@@ -37,7 +37,7 @@ public abstract class BaseSqlExtension {
      * @param method 函数
      * @param args 参数
      */
-    public abstract ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args);
+    public abstract ISqlExpression parse(SqLinkConfig config, Method method, List<ISqlExpression> args);
 
     private static final Map<Class<? extends BaseSqlExtension>, BaseSqlExtension> sqlExtensionCache = new ConcurrentHashMap<>();
 

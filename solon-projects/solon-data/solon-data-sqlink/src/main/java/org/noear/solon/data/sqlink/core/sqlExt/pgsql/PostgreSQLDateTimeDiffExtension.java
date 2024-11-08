@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlExt.pgsql;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class PostgreSQLDateTimeDiffExtension extends BaseSqlExtension {
     @Override
-    public ISqlExpression parse(IConfig config, Method method, List<ISqlExpression> args) {
+    public ISqlExpression parse(SqLinkConfig config, Method method, List<ISqlExpression> args) {
         List<String> templates = new ArrayList<>();
         List<ISqlExpression> sqlExpressions = new ArrayList<>();
         ISqlExpression unit = args.get(0);

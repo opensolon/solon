@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlExt.types;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * SQL varchar类型
@@ -31,7 +31,7 @@ public class Varchar extends SqlTypes<String> {
     }
 
     @Override
-    public String getKeyword(IConfig config) {
+    public String getKeyword(SqLinkConfig config) {
         switch (config.getDbType()) {
             case MySQL:
                 return "CHAR";

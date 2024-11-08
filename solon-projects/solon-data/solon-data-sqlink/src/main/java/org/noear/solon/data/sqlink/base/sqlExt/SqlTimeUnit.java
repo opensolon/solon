@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.sqlExt;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * SQL时间单位
@@ -66,7 +66,7 @@ public enum SqlTimeUnit implements ISqlKeywords {
     ;
 
     @Override
-    public String getKeyword(IConfig config) {
+    public String getKeyword(SqLinkConfig config) {
         return name();
     }
 }

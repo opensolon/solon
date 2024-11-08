@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.List;
 
@@ -29,17 +29,17 @@ public interface ISqlExpression {
     /**
      * 获取sql和参数
      */
-    String getSqlAndValue(IConfig config, List<Object> values);
+    String getSqlAndValue(SqLinkConfig config, List<Object> values);
 
     /**
      * 获取sql
      */
-    default String getSql(IConfig config) {
+    default String getSql(SqLinkConfig config) {
         return getSqlAndValue(config, null);
     }
 
     /**
      * 获取自己的拷贝
      */
-    <T extends ISqlExpression> T copy(IConfig config);
+    <T extends ISqlExpression> T copy(SqLinkConfig config);
 }

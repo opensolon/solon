@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 单个order（因为可能会指定升降序）
@@ -35,7 +35,7 @@ public interface ISqlOrderExpression extends ISqlExpression {
     boolean isAsc();
 
     @Override
-    default ISqlOrderExpression copy(IConfig config) {
+    default ISqlOrderExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.order(getExpression().copy(config), isAsc());
     }

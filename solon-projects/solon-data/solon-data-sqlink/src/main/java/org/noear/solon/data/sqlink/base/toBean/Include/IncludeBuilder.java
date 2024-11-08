@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.Include;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
@@ -37,7 +37,7 @@ import static com.sun.jmx.mbeanserver.Util.cast;
  */
 public class IncludeBuilder<T> {
     protected static final Logger log = LoggerFactory.getLogger(IncludeBuilder.class);
-    protected final IConfig config;
+    protected final SqLinkConfig config;
     protected final Class<T> targetClass;
     protected final Collection<T> sources;
     protected final List<IncludeSet> includes;
@@ -45,7 +45,7 @@ public class IncludeBuilder<T> {
     protected final SqlExpressionFactory factory;
     protected final SqlSession session;
 
-    public IncludeBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
+    public IncludeBuilder(SqLinkConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
         this.config = config;
         this.targetClass = targetClass;
         this.sources = sources;

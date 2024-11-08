@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ import java.util.List;
  * @since 3.0
  */
 public class InsertSqlBuilder implements ISqlBuilder {
-    private final IConfig config;
+    private final SqLinkConfig config;
 
-    public InsertSqlBuilder(IConfig config) {
+    public InsertSqlBuilder(SqLinkConfig config) {
         this.config = config;
     }
 
@@ -43,7 +43,7 @@ public class InsertSqlBuilder implements ISqlBuilder {
         return "";
     }
 
-    public IConfig getConfig() {
+    public SqLinkConfig getConfig() {
         return config;
     }
 }

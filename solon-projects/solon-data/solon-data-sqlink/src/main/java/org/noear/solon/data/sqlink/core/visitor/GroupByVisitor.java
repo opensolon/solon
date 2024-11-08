@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.*;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
 import java.util.LinkedHashMap;
@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
  * @since 3.0
  */
 public class GroupByVisitor extends SqlVisitor {
-    public GroupByVisitor(IConfig config) {
+    public GroupByVisitor(SqLinkConfig config) {
         super(config);
     }
 

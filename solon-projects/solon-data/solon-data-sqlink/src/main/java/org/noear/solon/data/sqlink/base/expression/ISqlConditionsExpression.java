@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public interface ISqlConditionsExpression extends ISqlExpression {
     }
 
     @Override
-    default ISqlConditionsExpression copy(IConfig config) {
+    default ISqlConditionsExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlConditionsExpression newConditions = factory.condition();
         for (ISqlExpression condition : getConditions()) {

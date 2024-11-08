@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         String t = "t" + getIndex();
         return getJoinType().getJoin() + " " + (getJoinTable() instanceof ISqlRealTableExpression ? getJoinTable().getSqlAndValue(config, values) : "(" + getJoinTable().getSqlAndValue(config, values) + ")") + " AS " + config.getDisambiguation().disambiguation(t) + " ON " + getConditions().getSqlAndValue(config, values);
     }

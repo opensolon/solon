@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public interface ISqlTemplateExpression extends ISqlExpression {
     List<? extends ISqlExpression> getExpressions();
 
     @Override
-    default ISqlTemplateExpression copy(IConfig config) {
+    default ISqlTemplateExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> newFunctions = new ArrayList<>(getTemplateStrings());
         List<? extends ISqlExpression> newExpressions = new ArrayList<>(getExpressions());

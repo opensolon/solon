@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTemplateExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
@@ -34,7 +34,7 @@ public class MathMethods {
     /**
      * 数据库atan2函数
      */
-    public static ISqlTemplateExpression atan2(IConfig config, ISqlExpression arg1, ISqlExpression arg2) {
+    public static ISqlTemplateExpression atan2(SqLinkConfig config, ISqlExpression arg1, ISqlExpression arg2) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -50,7 +50,7 @@ public class MathMethods {
     /**
      * 数据库ceil函数
      */
-    public static ISqlTemplateExpression ceil(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression ceil(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -66,7 +66,7 @@ public class MathMethods {
     /**
      * 数据库degrees函数
      */
-    public static ISqlTemplateExpression toDegrees(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression toDegrees(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -82,7 +82,7 @@ public class MathMethods {
     /**
      * 数据库radians函数
      */
-    public static ISqlTemplateExpression toRadians(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression toRadians(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -98,7 +98,7 @@ public class MathMethods {
     /**
      * 数据库log函数
      */
-    public static ISqlTemplateExpression log(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression log(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -114,7 +114,7 @@ public class MathMethods {
     /**
      * 数据库log10函数
      */
-    public static ISqlTemplateExpression log10(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression log10(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -133,7 +133,7 @@ public class MathMethods {
     /**
      * 数据库random函数
      */
-    public static ISqlTemplateExpression random(IConfig config) {
+    public static ISqlTemplateExpression random(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {
@@ -155,7 +155,7 @@ public class MathMethods {
     /**
      * 数据库round函数
      */
-    public static ISqlTemplateExpression round(IConfig config, ISqlExpression arg) {
+    public static ISqlTemplateExpression round(SqLinkConfig config, ISqlExpression arg) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         switch (config.getDbType()) {

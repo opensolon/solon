@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -39,7 +39,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
 //        if (!from.isEmptyTable() && (limit.onlyHasRows() || limit.hasRowsAndOffset()))
 //        {
@@ -78,7 +78,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
         return String.join(" ", strings);
     }
 
-    private void limitAndOrderCheck(List<String> strings, List<Object> values, IConfig config) {
+    private void limitAndOrderCheck(List<String> strings, List<Object> values, SqLinkConfig config) {
         if (limit.hasRowsOrOffset() && orderBy.isEmpty()) {
             MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
             FieldMetaData primary = metaData.getPrimary();

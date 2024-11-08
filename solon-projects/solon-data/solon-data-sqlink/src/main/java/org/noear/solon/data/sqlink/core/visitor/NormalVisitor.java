@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 普通的表达式解析器
@@ -25,11 +25,11 @@ import org.noear.solon.data.sqlink.base.IConfig;
  * @since 3.0
  */
 public class NormalVisitor extends SqlVisitor {
-    public NormalVisitor(IConfig config) {
+    public NormalVisitor(SqLinkConfig config) {
         super(config);
     }
 
-    public NormalVisitor(IConfig config, int offset) {
+    public NormalVisitor(SqLinkConfig config, int offset) {
         super(config, offset);
     }
 

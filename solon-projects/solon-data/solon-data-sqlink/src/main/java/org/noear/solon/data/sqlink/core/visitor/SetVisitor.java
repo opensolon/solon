@@ -17,7 +17,7 @@ package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.BlockExpression;
 import io.github.kiryu1223.expressionTree.expressions.Expression;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetsExpression;
@@ -32,11 +32,11 @@ import java.util.List;
  * @since 3.0
  */
 public class SetVisitor extends SqlVisitor {
-    public SetVisitor(IConfig config) {
+    public SetVisitor(SqLinkConfig config) {
         super(config);
     }
 
-    public SetVisitor(IConfig config, int offset) {
+    public SetVisitor(SqLinkConfig config, int offset) {
         super(config, offset);
     }
 

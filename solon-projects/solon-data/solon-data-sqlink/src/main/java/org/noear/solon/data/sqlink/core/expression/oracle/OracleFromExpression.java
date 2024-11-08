@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlFromExpression;
@@ -34,7 +34,7 @@ public class OracleFromExpression extends SqlFromExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         // oracle 不支持 无 from 查询
         // 所以我们要加上DUAL表
         if (isEmptyTable()) return "FROM " + config.getDisambiguation().disambiguationTableName("DUAL");

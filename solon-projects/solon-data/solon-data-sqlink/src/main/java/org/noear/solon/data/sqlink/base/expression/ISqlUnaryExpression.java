@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 一元运算表达式
@@ -35,7 +35,7 @@ public interface ISqlUnaryExpression extends ISqlExpression {
     ISqlExpression getExpression();
 
     @Override
-    default ISqlUnaryExpression copy(IConfig config) {
+    default ISqlUnaryExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.unary(getOperator(), getExpression().copy(config));
     }

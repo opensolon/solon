@@ -26,7 +26,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.sqlink.SqLinkClient;
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.session.DefaultSqlSessionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -88,7 +88,7 @@ public class XPluginImpl implements Plugin {
             //BeanWrap wrap = context.wrap(entry.getKey(), SqLinkClient);
             //context.beanRegister(wrap, entry.getKey(), true);
             clients.put(entry.getKey(), SQLinkClient);
-            IConfig config = SQLinkClient.getConfig();
+            SqLinkConfig config = SQLinkClient.getConfig();
 
             DsUtils.observeDs(context, dsName, beanWrap -> registerDataSource(beanWrap, config));
         }
@@ -117,7 +117,7 @@ public class XPluginImpl implements Plugin {
     }
 
     // 获取数据源并且设置数据库类型
-    private static void registerDataSource(BeanWrap beanWrap, IConfig config) {
+    private static void registerDataSource(BeanWrap beanWrap, SqLinkConfig config) {
         SolonDataSourceManager solonDataSourceManager = (SolonDataSourceManager) config.getDataSourceManager();
         solonDataSourceManager.setDataSource(beanWrap.get());
         try (Connection connection = solonDataSourceManager.getConnection()) {

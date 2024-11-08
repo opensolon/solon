@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlJoinExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlJoinsExpression;
 
@@ -39,7 +39,7 @@ public class SqlJoinsExpression implements ISqlJoinsExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (getJoins().isEmpty()) return "";
         List<String> strings = new ArrayList<>(getJoins().size());
         for (ISqlJoinExpression join : getJoins()) {

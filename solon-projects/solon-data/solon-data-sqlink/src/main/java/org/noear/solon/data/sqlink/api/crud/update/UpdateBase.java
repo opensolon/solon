@@ -17,7 +17,7 @@ package org.noear.solon.data.sqlink.api.crud.update;
 
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
@@ -39,7 +39,7 @@ public class UpdateBase extends CRUD {
 
     private final UpdateSqlBuilder sqlBuilder;
 
-    public UpdateBase(IConfig config, Class<?> target) {
+    public UpdateBase(SqLinkConfig config, Class<?> target) {
         this.sqlBuilder = new UpdateSqlBuilder(config, target);
     }
 
@@ -51,7 +51,7 @@ public class UpdateBase extends CRUD {
         return sqlBuilder;
     }
 
-    protected IConfig getConfig() {
+    protected SqLinkConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
@@ -65,7 +65,7 @@ public class UpdateBase extends CRUD {
      * @return 执行后的结果
      */
     public long executeRows() {
-        IConfig config = getConfig();
+        SqLinkConfig config = getConfig();
         checkHasWhere();
         List<Object> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);

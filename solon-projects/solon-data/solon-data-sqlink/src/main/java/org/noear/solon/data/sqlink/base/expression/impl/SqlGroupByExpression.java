@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlGroupByExpression;
 
@@ -39,7 +39,7 @@ public class SqlGroupByExpression implements ISqlGroupByExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (getColumns().isEmpty()) return "";
         List<String> strings = new ArrayList<>();
         for (ISqlExpression column : getColumns().values()) {

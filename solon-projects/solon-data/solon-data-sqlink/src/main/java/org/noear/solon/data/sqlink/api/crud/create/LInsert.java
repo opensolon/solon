@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.api.crud.create;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
@@ -28,7 +28,7 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 public class LInsert<T> extends InsertBase {
     private final Class<T> t;
 
-    public LInsert(IConfig c, Class<T> t) {
+    public LInsert(SqLinkConfig c, Class<T> t) {
         super(c);
         this.t = t;
     }

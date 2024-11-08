@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 
@@ -32,7 +32,7 @@ public class BigNumberMethods {
     /**
      * 取模运算
      */
-    public static ISqlExpression remainder(IConfig config, ISqlExpression left, ISqlExpression right) {
+    public static ISqlExpression remainder(SqLinkConfig config, ISqlExpression left, ISqlExpression right) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> sqlExpressions;

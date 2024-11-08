@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.Include;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 
@@ -38,5 +38,5 @@ public abstract class IncludeFactory {
      * @param includes 抓取信息
      * @param queryable 本次的查询表达式
      */
-    public abstract <T> IncludeBuilder<T> getBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable);
+    public abstract <T> IncludeBuilder<T> getBuilder(SqLinkConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable);
 }

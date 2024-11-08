@@ -19,7 +19,7 @@ import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 
@@ -30,7 +30,7 @@ import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
  * @since 3.0
  */
 public class LDelete<T> extends DeleteBase {
-    public LDelete(IConfig config, Class<T> c) {
+    public LDelete(SqLinkConfig config, Class<T> c) {
         super(config, c);
     }
 

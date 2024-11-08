@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlOrderByExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlOrderExpression;
 
@@ -40,7 +40,7 @@ public class SqlOrderByExpression implements ISqlOrderByExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (isEmpty()) return "";
         List<String> strings = new ArrayList<>(getSqlOrders().size());
         for (ISqlOrderExpression sqlOrder : getSqlOrders()) {

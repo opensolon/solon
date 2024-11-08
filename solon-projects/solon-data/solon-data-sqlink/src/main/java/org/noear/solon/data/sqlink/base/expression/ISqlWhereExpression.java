@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * where表达式
@@ -42,7 +42,7 @@ public interface ISqlWhereExpression extends ISqlExpression {
     }
 
     @Override
-    default ISqlWhereExpression copy(IConfig config) {
+    default ISqlWhereExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.where(getConditions().copy(config));
     }

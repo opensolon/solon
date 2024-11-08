@@ -22,7 +22,7 @@ import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
@@ -36,9 +36,9 @@ import java.util.Collection;
  * @since 3.0
  */
 public class SqLinkClient {
-    private final IConfig config;
+    private final SqLinkConfig config;
 
-    public SqLinkClient(IConfig config) {
+    public SqLinkClient(SqLinkConfig config) {
         this.config = config;
     }
 
@@ -134,7 +134,7 @@ public class SqLinkClient {
         throw new SqLinkException("insert内容为空");
     }
 
-    public IConfig getConfig() {
+    public SqLinkConfig getConfig() {
         return config;
     }
 }

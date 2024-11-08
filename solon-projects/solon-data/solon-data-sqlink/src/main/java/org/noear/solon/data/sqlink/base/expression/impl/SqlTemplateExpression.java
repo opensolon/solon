@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTemplateExpression;
 
@@ -45,7 +45,7 @@ public class SqlTemplateExpression implements ISqlTemplateExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < getTemplateStrings().size(); i++) {
             String function = getTemplateStrings().get(i);

@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.api.crud.delete;
 
 import org.noear.solon.data.sqlink.api.crud.CRUD;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
@@ -40,7 +40,7 @@ public abstract class DeleteBase extends CRUD {
 
     private final DeleteSqlBuilder sqlBuilder;
 
-    public DeleteBase(IConfig config, Class<?> target) {
+    public DeleteBase(SqLinkConfig config, Class<?> target) {
         this.sqlBuilder = new DeleteSqlBuilder(config, target);
     }
 
@@ -52,7 +52,7 @@ public abstract class DeleteBase extends CRUD {
         return sqlBuilder;
     }
 
-    public IConfig getConfig() {
+    public SqLinkConfig getConfig() {
         return sqlBuilder.getConfig();
     }
 
@@ -62,7 +62,7 @@ public abstract class DeleteBase extends CRUD {
      * @return 执行后的结果
      */
     public long executeRows() {
-        IConfig config = getConfig();
+        SqLinkConfig config = getConfig();
         checkHasWhere();
         List<Object> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);

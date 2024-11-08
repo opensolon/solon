@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlFromExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
@@ -46,7 +46,7 @@ public class SqlFromExpression implements ISqlFromExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         if (isEmptyTable()) return "";
         String sql;
         if (getSqlTableExpression() instanceof ISqlRealTableExpression) {

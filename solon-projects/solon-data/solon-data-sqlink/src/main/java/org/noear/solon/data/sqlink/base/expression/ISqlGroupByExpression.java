@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public interface ISqlGroupByExpression extends ISqlExpression {
     LinkedHashMap<String, ISqlExpression> getColumns();
 
     @Override
-    default ISqlGroupByExpression copy(IConfig config) {
+    default ISqlGroupByExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlGroupByExpression groupByExpression = factory.groupBy();
         for (Map.Entry<String, ISqlExpression> entry : getColumns().entrySet()) {

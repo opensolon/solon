@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.include.oracle;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
@@ -32,7 +32,7 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleIncludeBuilder<T> extends IncludeBuilder<T> {
-    public OracleIncludeBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
+    public OracleIncludeBuilder(SqLinkConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
         super(config, session, targetClass, sources, includes, queryable);
     }
 

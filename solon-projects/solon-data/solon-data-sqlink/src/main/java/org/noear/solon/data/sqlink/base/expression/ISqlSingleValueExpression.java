@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 
 /**
@@ -40,7 +40,7 @@ public interface ISqlSingleValueExpression extends ISqlValueExpression {
     //String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, FieldMetaData propertyMetaData);
 
     @Override
-    default ISqlSingleValueExpression copy(IConfig config) {
+    default ISqlSingleValueExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.value(getValue());
     }

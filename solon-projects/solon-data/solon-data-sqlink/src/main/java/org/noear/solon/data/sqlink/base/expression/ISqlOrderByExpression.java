@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public interface ISqlOrderByExpression extends ISqlExpression {
     }
 
     @Override
-    default ISqlOrderByExpression copy(IConfig config) {
+    default ISqlOrderByExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlOrderByExpression sqlOrderByExpression = factory.orderBy();
         for (ISqlOrderExpression sqlOrder : getSqlOrders()) {

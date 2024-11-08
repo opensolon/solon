@@ -28,7 +28,7 @@ import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
  * @author kiryu1223
  * @since 3.0
  */
-public interface IConfig {
+public interface SqLinkConfig {
     /**
      * 获取表达式工厂
      */

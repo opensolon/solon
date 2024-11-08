@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlConditionsExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 
@@ -35,7 +35,7 @@ public class SqlConditionsExpression implements ISqlConditionsExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         List<String> whereStr = new ArrayList<>(getConditions().size());
         for (ISqlExpression expression : getConditions()) {
             whereStr.add(expression.getSqlAndValue(config, values));

@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * set表达式
@@ -36,7 +36,7 @@ public interface ISqlSetExpression extends ISqlExpression {
     ISqlExpression getValue();
 
     @Override
-    default ISqlSetExpression copy(IConfig config) {
+    default ISqlSetExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.set(getColumn().copy(config), getValue().copy(config));
     }

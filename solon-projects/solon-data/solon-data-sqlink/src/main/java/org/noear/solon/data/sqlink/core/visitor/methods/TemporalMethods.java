@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.expression.SqlOperator;
@@ -31,7 +31,7 @@ public class TemporalMethods {
     /**
      * 左时间大于右时间表达式
      */
-    public static ISqlExpression isAfter(IConfig config, ISqlExpression thiz, ISqlExpression that) {
+    public static ISqlExpression isAfter(SqLinkConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.GT, thiz, that);
     }
@@ -39,7 +39,7 @@ public class TemporalMethods {
     /**
      * 左时间小于右时间表达式
      */
-    public static ISqlExpression isBefore(IConfig config, ISqlExpression thiz, ISqlExpression that) {
+    public static ISqlExpression isBefore(SqLinkConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.LT, thiz, that);
     }
@@ -47,7 +47,7 @@ public class TemporalMethods {
     /**
      * 左时间等于右时间表达式
      */
-    public static ISqlExpression isEqual(IConfig config, ISqlExpression thiz, ISqlExpression that) {
+    public static ISqlExpression isEqual(SqLinkConfig config, ISqlExpression thiz, ISqlExpression that) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(SqlOperator.EQ, thiz, that);
     }

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
         strings.add(getSelect().getSqlAndValue(config, values));
         String fromSqlAndValue = getFrom().getSqlAndValue(config, values);

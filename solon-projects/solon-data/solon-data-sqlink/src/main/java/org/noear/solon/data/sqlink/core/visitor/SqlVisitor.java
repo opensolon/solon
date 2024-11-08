@@ -18,7 +18,7 @@ package org.noear.solon.data.sqlink.core.visitor;
 import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -51,15 +51,15 @@ import java.util.stream.Collectors;
  */
 public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
     protected List<ParameterExpression> parameters;
-    protected final IConfig config;
+    protected final SqLinkConfig config;
     protected final int offset;
     protected final SqlExpressionFactory factory;
 
-    protected SqlVisitor(IConfig config) {
+    protected SqlVisitor(SqLinkConfig config) {
         this(config, 0);
     }
 
-    protected SqlVisitor(IConfig config, int offset) {
+    protected SqlVisitor(SqLinkConfig config, int offset) {
         this.config = config;
         this.offset = offset;
         this.factory = config.getSqlExpressionFactory();

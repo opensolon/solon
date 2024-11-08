@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.include.sqlserver;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
@@ -32,7 +32,7 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlServerIncludeBuilder<T> extends IncludeBuilder<T> {
-    public SqlServerIncludeBuilder(IConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
+    public SqlServerIncludeBuilder(SqLinkConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable) {
         super(config, session, targetClass, sources, includes, queryable);
     }
 

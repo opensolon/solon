@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.*;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
@@ -42,7 +42,7 @@ public class SelectVisitor extends SqlVisitor {
     private final ISqlQueryableExpression queryable;
     //private boolean useUnNameClassOrNotFirst = false;
 
-    public SelectVisitor(IConfig config, ISqlQueryableExpression queryable) {
+    public SelectVisitor(SqLinkConfig config, ISqlQueryableExpression queryable) {
         super(config);
         this.queryable = queryable;
     }

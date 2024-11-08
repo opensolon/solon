@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.visitor.methods;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 
@@ -32,7 +32,7 @@ public class LogicExpression {
     /**
      * if表达式
      */
-    public static ISqlExpression IfExpression(IConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart) {
+    public static ISqlExpression IfExpression(SqLinkConfig config, ISqlExpression cond, ISqlExpression truePart, ISqlExpression falsePart) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<String> function;
         List<ISqlExpression> args = Arrays.asList(cond, truePart, falsePart);

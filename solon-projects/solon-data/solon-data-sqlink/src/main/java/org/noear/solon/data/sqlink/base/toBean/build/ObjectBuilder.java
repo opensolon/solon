@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.toBean.build;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.ISetterCaller;
@@ -58,16 +58,16 @@ public class ObjectBuilder<T> {
     /**
      * 配置
      */
-    private final IConfig config;
+    private final SqLinkConfig config;
 
     /**
      * 创建构建器
      */
-    public static <T> ObjectBuilder<T> start(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, IConfig config) {
+    public static <T> ObjectBuilder<T> start(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, SqLinkConfig config) {
         return new ObjectBuilder<>(resultSet, target, fieldMetaDataList, isSingle, config);
     }
 
-    private ObjectBuilder(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, IConfig config) {
+    private ObjectBuilder(ResultSet resultSet, Class<T> target, List<FieldMetaData> fieldMetaDataList, boolean isSingle, SqLinkConfig config) {
         this.resultSet = resultSet;
         this.target = target;
         this.fieldMetaDataList = fieldMetaDataList;

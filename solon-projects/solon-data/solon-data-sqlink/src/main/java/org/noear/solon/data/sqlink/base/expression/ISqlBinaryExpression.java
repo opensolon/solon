@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 二元运算表达式
@@ -40,7 +40,7 @@ public interface ISqlBinaryExpression extends ISqlExpression {
     SqlOperator getOperator();
 
     @Override
-    default ISqlBinaryExpression copy(IConfig config) {
+    default ISqlBinaryExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.binary(getOperator(), getLeft().copy(config), getRight().copy(config));
     }

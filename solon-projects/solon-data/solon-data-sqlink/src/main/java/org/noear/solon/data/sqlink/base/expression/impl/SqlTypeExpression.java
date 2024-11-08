@@ -15,10 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlTypeExpression;
-
-import java.util.List;
 
 public class SqlTypeExpression implements ISqlTypeExpression {
     private final Class<?> type;

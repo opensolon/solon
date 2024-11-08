@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.FieldSelectExpression;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlGroupByExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
@@ -32,7 +32,7 @@ import java.util.Map;
 public class HavingVisitor extends SqlVisitor {
     private final ISqlQueryableExpression queryable;
 
-    public HavingVisitor(IConfig config, ISqlQueryableExpression queryable) {
+    public HavingVisitor(SqLinkConfig config, ISqlQueryableExpression queryable) {
         super(config);
         this.queryable = queryable;
     }

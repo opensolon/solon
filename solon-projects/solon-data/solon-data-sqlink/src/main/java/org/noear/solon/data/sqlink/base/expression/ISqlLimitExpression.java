@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * limit表达式
@@ -66,7 +66,7 @@ public interface ISqlLimitExpression extends ISqlExpression {
     }
 
     @Override
-    default ISqlLimitExpression copy(IConfig config) {
+    default ISqlLimitExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.limit(getOffset(), getRows());
     }

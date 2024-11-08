@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core.sqlExt.types;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * SQL char类型
@@ -31,7 +31,7 @@ public class Char extends SqlTypes<Character> {
     }
 
     @Override
-    public String getKeyword(IConfig config) {
+    public String getKeyword(SqLinkConfig config) {
         switch (config.getDbType()) {
             case MySQL:
                 return "CHAR(1)";

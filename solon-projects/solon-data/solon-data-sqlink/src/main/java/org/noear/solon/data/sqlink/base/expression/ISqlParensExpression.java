@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * 括号表达式
@@ -31,7 +31,7 @@ public interface ISqlParensExpression extends ISqlExpression {
     ISqlExpression getExpression();
 
     @Override
-    default ISqlParensExpression copy(IConfig config) {
+    default ISqlParensExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.parens(getExpression().copy(config));
     }

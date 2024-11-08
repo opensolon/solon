@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.api.crud;
 
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.slf4j.Logger;
 
 /**
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
  * @since 3.0
  */
 public abstract class CRUD {
-    protected abstract IConfig getConfig();
+    protected abstract SqLinkConfig getConfig();
 
     /**
      * 获取Sql语句

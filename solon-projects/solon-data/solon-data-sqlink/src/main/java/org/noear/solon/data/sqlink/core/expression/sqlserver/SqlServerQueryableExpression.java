@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.core.expression.sqlserver;
 
 import org.noear.solon.data.sqlink.base.DbType;
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -39,7 +39,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>();
         makeSelect(strings, values, config);
         String fromSqlAndValue = from.getSqlAndValue(config, values);
@@ -62,7 +62,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
         return String.join(" ", strings);
     }
 
-    private void addOrder(List<String> strings, List<Object> values, IConfig config) {
+    private void addOrder(List<String> strings, List<Object> values, SqLinkConfig config) {
         MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
         FieldMetaData primary = metaData.getPrimary();
         if (primary == null) {
@@ -74,7 +74,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
         strings.add(sqlOrderByExpression.getSqlAndValue(config, values));
     }
 
-    private void makeSelect(List<String> strings, List<Object> values, IConfig config) {
+    private void makeSelect(List<String> strings, List<Object> values, SqLinkConfig config) {
         List<String> result = new ArrayList<>();
         result.add("SELECT");
         if (select.isDistinct()) {

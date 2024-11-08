@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public interface ISqlSelectExpression extends ISqlExpression {
     void setTarget(Class<?> target);
 
     @Override
-    default ISqlSelectExpression copy(IConfig config) {
+    default ISqlSelectExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         List<ISqlExpression> newColumns = new ArrayList<>(getColumns().size());
         for (ISqlExpression column : getColumns()) {

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * having表达式
@@ -42,7 +42,7 @@ public interface ISqlHavingExpression extends ISqlExpression {
     }
 
     @Override
-    default ISqlHavingExpression copy(IConfig config) {
+    default ISqlHavingExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlHavingExpression having = factory.having();
         ISqlConditionsExpression conditions = getConditions();

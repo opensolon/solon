@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression.impl;
 
-import org.noear.solon.data.sqlink.base.IConfig;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSelectExpression;
 
@@ -81,7 +81,7 @@ public class SqlSelectExpression implements ISqlSelectExpression {
     }
 
     @Override
-    public String getSqlAndValue(IConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
         List<String> strings = new ArrayList<>(getColumns().size());
         for (ISqlExpression sqlExpression : getColumns()) {
             strings.add(sqlExpression.getSqlAndValue(config, values));
