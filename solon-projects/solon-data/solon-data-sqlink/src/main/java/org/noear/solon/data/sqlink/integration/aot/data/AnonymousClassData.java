@@ -13,88 +13,88 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.aot.data;
+package org.noear.solon.data.sqlink.integration.aot.data;
 
 /**
- * 普通类数据记录（请勿使用）
+ * 匿名类数据记录（请勿使用）
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class NormalClassData extends ClassData {
+public class AnonymousClassData extends ClassData {
     /**
-     * 类名称
+     * 匿名类名称
      */
     private String name;
     /**
-     * 所有公开构造函数
+     * 是否使用unsafe创建
      */
-    protected boolean allPublicConstructors = true;
+    private boolean unsafeAllocated = true;
     /**
      * 所有私有字段
      */
-    protected boolean allDeclaredFields = true;
+    private boolean allDeclaredFields = true;
     /**
      * 所有公开方法
      */
-    protected boolean allPublicMethods = true;
+    private boolean allPublicMethods = true;
 
-    public NormalClassData(String name) {
+    public AnonymousClassData(String name) {
         super(name);
         this.name = name;
     }
 
     /**
-     * 获取类名称
+     * 匿名类名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置类名称
+     * 设置匿名类名称
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * 是否所有公开构造函数
+     * 是否使用unsafe创建
      */
-    public boolean isAllPublicConstructors() {
-        return allPublicConstructors;
+    public boolean isUnsafeAllocated() {
+        return unsafeAllocated;
     }
 
     /**
-     * 设置是否所有公开构造函数
+     * 设置是否使用unsafe创建
      */
-    public void setAllPublicConstructors(boolean allPublicConstructors) {
-        this.allPublicConstructors = allPublicConstructors;
+    public void setUnsafeAllocated(boolean unsafeAllocated) {
+        this.unsafeAllocated = unsafeAllocated;
     }
 
     /**
-     * 是否所有私有字段
+     * 是否使用所有字段
      */
     public boolean isAllDeclaredFields() {
         return allDeclaredFields;
     }
 
     /**
-     * 设置是否所有私有字段
+     * 设置是否使用所有字段
      */
     public void setAllDeclaredFields(boolean allDeclaredFields) {
         this.allDeclaredFields = allDeclaredFields;
     }
 
     /**
-     * 是否所有公开方法
+     * 是否使用所有方法
      */
     public boolean isAllPublicMethods() {
         return allPublicMethods;
     }
 
     /**
-     * 设置是否所有公开方法
+     * 设置是否使用所有方法
      */
     public void setAllPublicMethods(boolean allPublicMethods) {
         this.allPublicMethods = allPublicMethods;

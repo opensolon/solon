@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.builder;
-
-import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
-import org.noear.solon.data.sqlink.base.toBean.beancreator.BeanCreatorFactory;
+package org.noear.solon.data.sqlink.integration.aot.data;
 
 /**
- * aot环境的对象创建器工厂
+ * 类数据记录（请勿使用）
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class AotBeanCreatorFactory extends BeanCreatorFactory {
-    @Override
-    protected <T> AbsBeanCreator<T> create(Class<T> target) {
-        return new AotFastCreator<>(target);
+public abstract class ClassData {
+    public ClassData(String name) {
+
     }
 }

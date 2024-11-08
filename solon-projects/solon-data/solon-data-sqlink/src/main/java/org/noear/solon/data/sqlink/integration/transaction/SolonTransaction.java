@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.datasource;
+package org.noear.solon.data.sqlink.integration.transaction;
 
-import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
+import org.noear.solon.data.sqlink.base.transaction.DefaultTransaction;
+import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
@@ -23,40 +24,23 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Solon环境下的数据源管理器
+ * Solon环境下的事务
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class SolonDataSourceManager implements DataSourceManager {
-    /**
-     * 数据源
-     */
-    private DataSource dataSource;
-
-    public SolonDataSourceManager() {
+public class SolonTransaction extends DefaultTransaction {
+    public SolonTransaction(Integer isolationLevel, DataSource dataSource, TransactionManager manager) {
+        super(isolationLevel, dataSource, manager);
     }
 
-    /**
-     * 获取连接
-     */
     @Override
     public Connection getConnection() throws SQLException {
-        return TranUtils.getConnection(getDataSource());
-    }
-
-    /**
-     * 获取数据源
-     */
-    @Override
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    /**
-     * 设置数据源
-     */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+        if (connection == null) {
+            connection = TranUtils.getConnection(dataSource);
+        }
+        connection.setAutoCommit(false);
+        if (isolationLevel != null) connection.setTransactionIsolation(isolationLevel);
+        return connection;
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.aot.service;
+package org.noear.solon.data.sqlink.integration.aot.service;
 
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.Tree;
@@ -33,9 +33,9 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
-import org.noear.solon.data.sqlink.plugin.aot.data.AnonymousClassData;
-import org.noear.solon.data.sqlink.plugin.aot.data.ClassData;
-import org.noear.solon.data.sqlink.plugin.aot.data.NormalClassData;
+import org.noear.solon.data.sqlink.integration.aot.data.AnonymousClassData;
+import org.noear.solon.data.sqlink.integration.aot.data.ClassData;
+import org.noear.solon.data.sqlink.integration.aot.data.NormalClassData;
 
 import javax.annotation.processing.Filer;
 import javax.tools.FileObject;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.builder;
+package org.noear.solon.data.sqlink.integration.builder;
 
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.integration;
+package org.noear.solon.data.sqlink.integration;
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
@@ -34,11 +34,11 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 import org.noear.solon.data.sqlink.core.SqLinkBuilder;
-import org.noear.solon.data.sqlink.plugin.aot.SqLinkRuntimeNativeRegistrar;
-import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
-import org.noear.solon.data.sqlink.plugin.configuration.SqLinkProperties;
-import org.noear.solon.data.sqlink.plugin.datasource.SolonDataSourceManager;
-import org.noear.solon.data.sqlink.plugin.transaction.SolonTransactionManager;
+import org.noear.solon.data.sqlink.integration.aot.SqLinkRuntimeNativeRegistrar;
+import org.noear.solon.data.sqlink.integration.builder.AotBeanCreatorFactory;
+import org.noear.solon.data.sqlink.integration.configuration.SqLinkProperties;
+import org.noear.solon.data.sqlink.integration.datasource.SolonDataSourceManager;
+import org.noear.solon.data.sqlink.integration.transaction.SolonTransactionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.aot;
+package org.noear.solon.data.sqlink.integration.aot;
 
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
@@ -30,7 +30,7 @@ import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Char;
 import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
 import org.noear.solon.data.sqlink.core.sqlExt.types.Varchar;
-import org.noear.solon.data.sqlink.plugin.configuration.SqLinkProperties;
+import org.noear.solon.data.sqlink.integration.configuration.SqLinkProperties;
 
 import java.util.Arrays;
 import java.util.List;

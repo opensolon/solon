@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.plugin.configuration;
+package org.noear.solon.data.sqlink.integration.configuration;
 
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.data.sqlink.base.DbType;
