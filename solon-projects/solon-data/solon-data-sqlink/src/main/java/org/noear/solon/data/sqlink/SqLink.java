@@ -23,6 +23,7 @@ import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
+import org.noear.solon.lang.Preview;
 
 import java.util.Collection;
 
@@ -32,6 +33,7 @@ import java.util.Collection;
  * @author kiryu1223
  * @since 3.0
  */
+@Preview("3.0")
 public interface SqLink {
 
     /**
