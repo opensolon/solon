@@ -29,10 +29,7 @@ import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqLink {
-    private SqLink() {
-    }
-
+public class SqLinkBuilder {
     /**
      * 方言
      */
@@ -82,16 +79,9 @@ public class SqLink {
     }
 
     /**
-     * 开始构建对象
-     */
-    public static SqLink bootStrap() {
-        return new SqLink();
-    }
-
-    /**
      * 设置数据源管理器
      */
-    public SqLink setDataSourceManager(DataSourceManager dataSourceManager) {
+    public SqLinkBuilder setDataSourceManager(DataSourceManager dataSourceManager) {
         this.dataSourceManager = dataSourceManager;
         return this;
     }
@@ -99,7 +89,7 @@ public class SqLink {
     /**
      * 设置事务管理器
      */
-    public SqLink setTransactionManager(TransactionManager transactionManager) {
+    public SqLinkBuilder setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
         return this;
     }
@@ -107,7 +97,7 @@ public class SqLink {
     /**
      * 设置会话工厂
      */
-    public SqLink setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+    public SqLinkBuilder setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
         return this;
     }
@@ -115,7 +105,7 @@ public class SqLink {
     /**
      * 设置配置
      */
-    public SqLink setOption(Option option) {
+    public SqLinkBuilder setOption(Option option) {
         this.option = option;
         return this;
     }
@@ -123,7 +113,7 @@ public class SqLink {
     /**
      * 设置对象创建器工厂
      */
-    public SqLink setBeanCreatorFactory(BeanCreatorFactory beanCreatorFactory) {
+    public SqLinkBuilder setBeanCreatorFactory(BeanCreatorFactory beanCreatorFactory) {
         this.beanCreatorFactory = beanCreatorFactory;
         return this;
     }
@@ -131,7 +121,7 @@ public class SqLink {
     /**
      * 设置方言
      */
-    public SqLink setDialect(IDialect dialect) {
+    public SqLinkBuilder setDialect(IDialect dialect) {
         this.dialect = dialect;
         return this;
     }

@@ -33,7 +33,7 @@ import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
-import org.noear.solon.data.sqlink.core.SqLink;
+import org.noear.solon.data.sqlink.core.SqLinkBuilder;
 import org.noear.solon.data.sqlink.plugin.aot.SqLinkRuntimeNativeRegistrar;
 import org.noear.solon.data.sqlink.plugin.builder.AotBeanCreatorFactory;
 import org.noear.solon.data.sqlink.plugin.configuration.SqLinkProperties;
@@ -77,7 +77,7 @@ public class XPluginImpl implements Plugin {
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
             AotBeanCreatorFactory aotFastCreatorFactory = new AotBeanCreatorFactory();
-            SqLinkClient SQLinkClient = SqLink.bootStrap()
+            SqLinkClient SQLinkClient = new SqLinkBuilder()
                     .setDataSourceManager(dataSourceManager)
                     .setTransactionManager(transactionManager)
                     .setSqlSessionFactory(sqlSessionFactory)
