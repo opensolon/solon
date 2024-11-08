@@ -24,7 +24,7 @@ import org.noear.solon.core.Props;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.data.datasource.DsUtils;
-import org.noear.solon.data.sqlink.SqLinkClient;
+import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
@@ -65,7 +65,7 @@ public class XPluginImpl implements Plugin {
         log.info("SQLink启动，共找到{}个配置", data.size());
 
         // 为每个配置创建一个Client，存到clients
-        Map<String, SqLinkClient> clients = new LinkedHashMap<>();
+        Map<String, SqLink> clients = new LinkedHashMap<>();
         for (Map.Entry<String, Props> entry : data.entrySet()) {
             Props props = entry.getValue();
             SqLinkProperties properties = props.toBean(SqLinkProperties.class);
@@ -77,7 +77,7 @@ public class XPluginImpl implements Plugin {
             TransactionManager transactionManager = new SolonTransactionManager(dataSourceManager);
             SqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(dataSourceManager, transactionManager);
             AotBeanCreatorFactory aotFastCreatorFactory = new AotBeanCreatorFactory();
-            SqLinkClient SQLinkClient = new SqLinkBuilder()
+            SqLink SQLinkClient = new SqLinkBuilder()
                     .setDataSourceManager(dataSourceManager)
                     .setTransactionManager(transactionManager)
                     .setSqlSessionFactory(sqlSessionFactory)
@@ -94,13 +94,13 @@ public class XPluginImpl implements Plugin {
         }
 
         // 设置注入
-        context.beanInjectorAdd(Inject.class, SqLinkClient.class, (varHolder, inject) ->
+        context.beanInjectorAdd(Inject.class, SqLink.class, (varHolder, inject) ->
         {
             varHolder.required(inject.required());
             String name = inject.value();
             // 默认注入第一个
             if (name.isEmpty()) {
-                Optional<SqLinkClient> first = clients.values().stream().findFirst();
+                Optional<SqLink> first = clients.values().stream().findFirst();
                 varHolder.setValue(first.orElseThrow(RuntimeException::new));
             }
             // 按名称注入

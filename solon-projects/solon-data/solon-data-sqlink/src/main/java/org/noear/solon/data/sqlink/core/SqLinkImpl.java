@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink;
+package org.noear.solon.data.sqlink.core;
 
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
+import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.Empty;
@@ -30,15 +31,15 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import java.util.Collection;
 
 /**
- * 发起数据库操作的对象
+ * 发起数据库操作接口实现
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class SqLinkClient {
+ class SqLinkImpl implements SqLink {
     private final SqLinkConfig config;
 
-    public SqLinkClient(SqLinkConfig config) {
+    SqLinkImpl(SqLinkConfig config) {
         this.config = config;
     }
 
@@ -48,6 +49,7 @@ public class SqLinkClient {
      * @param isolationLevel 事务级别
      * @return 事务对象
      */
+    @Override
     public Transaction beginTransaction(Integer isolationLevel) {
         return config.getTransactionManager().get(isolationLevel);
     }
@@ -57,6 +59,7 @@ public class SqLinkClient {
      *
      * @return 事务对象
      */
+    @Override
     public Transaction beginTransaction() {
         return beginTransaction(null);
     }
@@ -68,6 +71,7 @@ public class SqLinkClient {
      * @param <T> 数据类类型
      * @return 查询过程对象
      */
+    @Override
     public <T> LQuery<T> query(@Recode Class<T> c) {
         return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c)));
     }
@@ -77,6 +81,7 @@ public class SqLinkClient {
      *
      * @return 查询过程对象
      */
+    @Override
     public EmptyQuery queryEmptyTable() {
         return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class)));
     }
@@ -88,6 +93,7 @@ public class SqLinkClient {
      * @param <T> 数据类类型
      * @return 新增过程对象
      */
+    @Override
     public <T> ObjectInsert<T> insert(@Recode T t) {
         ObjectInsert<T> objectInsert = new ObjectInsert<>(config, (Class<T>) t.getClass());
         return objectInsert.insert(t);
@@ -100,6 +106,7 @@ public class SqLinkClient {
      * @param <T> 数据类类型
      * @return 新增过程对象
      */
+    @Override
     public <T> ObjectInsert<T> insert(@Recode Collection<T> ts) {
         ObjectInsert<T> objectInsert = new ObjectInsert<>(config, getType(ts));
         return objectInsert.insert(ts);
@@ -112,6 +119,7 @@ public class SqLinkClient {
      * @param <T> 数据类类型
      * @return 更新过程对象
      */
+    @Override
     public <T> LUpdate<T> update(@Recode Class<T> c) {
         return new LUpdate<>(config, c);
     }
@@ -127,14 +135,16 @@ public class SqLinkClient {
         return new LDelete<>(config, c);
     }
 
+
+    @Override
+    public SqLinkConfig getConfig() {
+        return config;
+    }
+
     private <T> Class<T> getType(Collection<T> ts) {
         for (T t : ts) {
             return (Class<T>) t.getClass();
         }
         throw new SqLinkException("insert内容为空");
-    }
-
-    public SqLinkConfig getConfig() {
-        return config;
     }
 }

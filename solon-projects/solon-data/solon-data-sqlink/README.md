@@ -82,7 +82,7 @@ maven配置
 
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.data.sqlink.SqLinkClient;
+import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 //应用
@@ -90,12 +90,12 @@ import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 @Controller
 public class DemoController {
     @Inject // or @Inject("main")
-    SqLinkClient SQLinkClient;
+    SqLink sqLink;
 
     @Mapping("/hello")
     public String hello(String name) {
         // SELECT CONCAT_WS(' ','hello', {name})
-        return SQLinkClient.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
+        return sqLink.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
     }
 }
 ```

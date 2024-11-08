@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core;
 
-import org.noear.solon.data.sqlink.SqLinkClient;
+import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
@@ -58,7 +58,7 @@ public class SqLinkBuilder {
     /**
      * 构建Client对象
      */
-    public SqLinkClient build() {
+    public SqLink build() {
         if (dataSourceManager == null) {
             throw new NullPointerException("dataSourceManager is null");
         }
@@ -75,7 +75,7 @@ public class SqLinkBuilder {
         if (dialect != null) {
             config.setDisambiguation(dialect);
         }
-        return new SqLinkClient(config);
+        return new SqLinkImpl(config);
     }
 
     /**
