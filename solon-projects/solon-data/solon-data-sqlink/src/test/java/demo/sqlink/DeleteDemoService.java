@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.sqlink;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.data.sqlink.SqLink;;
-import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
+import org.noear.solon.data.sqlink.SqLink;
 
-/**
- * @author noear 2024/11/8 created
- */
 @Component
-public class DemoService {
+public class DeleteDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;
 
-    public String hello(String name) {
-        // SELECT CONCAT_WS(' ','hello', {name})
-        return sqLink.queryEmptyTable().endSelect(() -> SqlFunctions.join(" ", "hello", name)).first();
-    }
+
 }
