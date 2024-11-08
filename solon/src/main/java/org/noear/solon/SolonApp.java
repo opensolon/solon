@@ -36,7 +36,7 @@ import java.util.function.Consumer;
 
 
 /**
- * 应用管理中心
+ * 应用
  *
  * <pre><code>
  * @SolonMain
@@ -248,7 +248,7 @@ public class SolonApp extends RouterWrapper {
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            if (Solon.cfg().isDebugMode()) {
+            if (this.cfg().isDebugMode()) {
                 LogUtil.global().info("App: plugin init: " + plugs.get(i).getClassName());
             }
             plugs.get(i).init(context());
@@ -293,7 +293,7 @@ public class SolonApp extends RouterWrapper {
         });
 
         //3.1.尝试设置 context-path
-        if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
+        if (Utils.isNotEmpty(this.cfg().serverContextPath())) {
             filterIfAbsent(Constants.FT_IDX_CONTEXT_PATH, new ContextPathFilter());
         }
 
@@ -522,7 +522,7 @@ public class SolonApp extends RouterWrapper {
                 //40x,50x...
                 try {
                     if (doStatus(x) == false) {
-                        if (Solon.cfg().isDebugMode()) {
+                        if (this.cfg().isDebugMode()) {
                             x.output(ex);
                         }
                     }
