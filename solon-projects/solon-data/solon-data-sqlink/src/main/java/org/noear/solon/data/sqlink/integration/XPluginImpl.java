@@ -116,7 +116,7 @@ public class XPluginImpl implements Plugin {
     }
 
     // 获取数据源并且设置数据库类型
-    private static void registerDataSource(BeanWrap beanWrap, SqLinkConfig config) {
+    private void registerDataSource(BeanWrap beanWrap, SqLinkConfig config) {
         SolonDataSourceManager solonDataSourceManager = (SolonDataSourceManager) config.getDataSourceManager();
         solonDataSourceManager.setDataSource(beanWrap.get());
 

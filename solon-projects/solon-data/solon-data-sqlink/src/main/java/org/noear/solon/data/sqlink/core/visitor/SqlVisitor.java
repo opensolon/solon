@@ -20,6 +20,7 @@ import org.noear.solon.data.sqlink.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
@@ -490,7 +491,12 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 int index = parameters.indexOf(parameter) + offset;
                 Method setter = methodCall.getMethod();
                 MetaData metaData = MetaDataCache.getMetaData(setter.getDeclaringClass());
-                ISqlColumnExpression columnExpression = factory.column(metaData.getFieldMetaDataBySetter(setter), index);
+                FieldMetaData fieldMetaData = metaData.getFieldMetaDataBySetter(setter);
+                // 忽略字段
+                if (fieldMetaData.isIgnoreColumn()) {
+                    return null;
+                }
+                ISqlColumnExpression columnExpression = factory.column(fieldMetaData, index);
                 ISqlExpression value = visit(methodCall.getArgs().get(0));
                 return factory.set(columnExpression, value);
             }

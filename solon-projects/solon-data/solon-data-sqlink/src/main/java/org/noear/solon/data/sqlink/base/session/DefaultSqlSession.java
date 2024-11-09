@@ -15,10 +15,13 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.annotation.OnInsertDefaultValue;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
+import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
@@ -38,10 +41,12 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
  * @since 3.0
  */
 public class DefaultSqlSession implements SqlSession {
+    protected final SqLinkConfig config;
     protected final DataSourceManager dataSourceManager;
     protected final TransactionManager transactionManager;
 
-    public DefaultSqlSession(DataSourceManager dataSourceManager, TransactionManager transactionManager) {
+    public DefaultSqlSession(SqLinkConfig config, DataSourceManager dataSourceManager, TransactionManager transactionManager) {
+        this.config = config;
         this.dataSourceManager = dataSourceManager;
         this.transactionManager = transactionManager;
     }
@@ -157,7 +162,7 @@ public class DefaultSqlSession implements SqlSession {
         }
     }
 
-    protected long executeUpdate(Connection connection, String sql, Collection<Object> values, Object... o) {
+    protected long executeUpdate(Connection connection, String sql, Collection<Object> values) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setObjects(preparedStatement, values);
             return preparedStatement.executeUpdate();
@@ -245,18 +250,38 @@ public class DefaultSqlSession implements SqlSession {
 //        }
 //    }
 
-    protected static void setObjectsByEntity(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException, InvocationTargetException, IllegalAccessException {
+    protected void setObjectsByEntity(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException, InvocationTargetException, IllegalAccessException {
         boolean batch = values.size() > 1;
         for (Object value : values) {
             int index = 1;
             MetaData metaData = MetaDataCache.getMetaData(value.getClass());
             for (FieldMetaData fieldMetaData : metaData.getNotIgnorePropertys()) {
-                if (fieldMetaData.isPrimaryKey()) {
-
+                ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
+                Object fieldValue = fieldMetaData.getGetter().invoke(value);
+                OnInsertDefaultValue onInsert = fieldMetaData.getOnInsertDefaultValues();
+                if (onInsert != null) {
+                    switch (onInsert.strategy()) {
+                        case DataBase:
+                            // 交给数据库
+                            break;
+                        case Static:
+                            if (fieldValue == null) {
+                                typeHandler.setStringValue(preparedStatement, index++, onInsert.value());
+                            }
+                            else {
+                                typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
+                            }
+                            break;
+                        case Dynamic:
+                            if (fieldValue == null) {
+                                fieldValue = DynamicGenerator.get(onInsert.dynamic()).generate(config, fieldMetaData);
+                            }
+                            typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
+                            break;
+                    }
                 }
                 else {
-                    ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
-                    typeHandler.setValue(preparedStatement, index++, cast(fieldMetaData.getGetter().invoke(value)));
+                    typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
                 }
             }
             if (batch) {

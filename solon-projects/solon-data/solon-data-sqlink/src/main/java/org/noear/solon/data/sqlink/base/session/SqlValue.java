@@ -37,16 +37,30 @@ public class SqlValue {
      * 类型处理器
      */
     private final ITypeHandler<?> typeHandler;
+    /**
+     * 是否是字符串参数
+     */
+    private final boolean isDefaultStringValue;
 
     public SqlValue(Object value, ITypeHandler<?> typeHandler) {
+        this(value, typeHandler, false);
+    }
+
+    public SqlValue(Object value, ITypeHandler<?> typeHandler, boolean isDefaultStringValue) {
         this.value = value;
         this.typeHandler = typeHandler;
+        this.isDefaultStringValue = isDefaultStringValue;
     }
 
     /**
      * 设置参数
      */
     public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException {
-        typeHandler.setValue(preparedStatement, index, cast(value));
+        if (isDefaultStringValue) {
+            typeHandler.setStringValue(preparedStatement, index, value.toString());
+        }
+        else {
+            typeHandler.setValue(preparedStatement, index, cast(value));
+        }
     }
 }

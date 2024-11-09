@@ -15,14 +15,38 @@
  */
 package demo.sqlink;
 
+import demo.sqlink.model.User;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
+
+import java.util.Arrays;
 
 @Component
 public class InsertDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;
 
+    // 插入一条
+    public long insert(String username, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        return sqLink.insert(user).executeRows();
+    }
 
+    // 插入多条
+    public long batchInsert() {
+        User user1 = new User();
+        user1.setUsername("SOLON");
+        user1.setPassword("aaa");
+        User user2 = new User();
+        user2.setUsername("noear");
+        user2.setPassword("bbb");
+        User user3 = new User();
+        user3.setUsername("没有耳朵");
+        user3.setPassword("ccc");
+        return sqLink.insert(Arrays.asList(user1, user2, user3)).executeRows();
+        // or sqLink.insert(user1).insert(user2).insert(user3).executeRows();
+    }
 }

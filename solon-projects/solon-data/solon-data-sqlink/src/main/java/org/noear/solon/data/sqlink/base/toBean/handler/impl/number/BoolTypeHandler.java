@@ -45,4 +45,10 @@ public class BoolTypeHandler implements ITypeHandler<Boolean> {
             preparedStatement.setBoolean(index, aBoolean);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Boolean b = Boolean.valueOf(value);
+        setValue(preparedStatement, index, b);
+    }
 }

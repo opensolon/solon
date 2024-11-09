@@ -41,4 +41,10 @@ public class DateTypeHandler implements ITypeHandler<Date> {
             preparedStatement.setDate(index, date);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Date date = Date.valueOf(value);
+        setValue(preparedStatement, index, date);
+    }
 }

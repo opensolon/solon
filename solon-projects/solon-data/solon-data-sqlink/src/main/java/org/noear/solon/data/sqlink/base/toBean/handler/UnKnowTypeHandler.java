@@ -56,4 +56,9 @@ public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
             preparedStatement.setObject(index, value);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        setValue(preparedStatement, index, (T) value);
+    }
 }

@@ -30,19 +30,30 @@ import java.sql.SQLException;
 public interface ITypeHandler<T> {
     /**
      * 获取值
+     *
      * @param resultSet 结果集
-     * @param index 索引
-     * @param type 类型
+     * @param index     索引
+     * @param type      类型
      */
     T getValue(ResultSet resultSet, int index, Type type) throws SQLException;
 
     /**
      * 设置值
+     *
      * @param preparedStatement 预处理语句
-     * @param index 索引
-     * @param value 值
+     * @param index             索引
+     * @param value             值
      */
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
+
+    /**
+     * 字符串参数设置值（用于给@DefaultValue的字符串参数调用）
+     *
+     * @param preparedStatement 预处理语句
+     * @param index             索引
+     * @param value             字符串值
+     */
+    void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException;
 
     /**
      * 获取泛型类型

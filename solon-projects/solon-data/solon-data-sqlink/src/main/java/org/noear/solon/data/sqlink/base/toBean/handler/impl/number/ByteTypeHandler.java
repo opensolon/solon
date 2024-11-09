@@ -45,4 +45,10 @@ public class ByteTypeHandler implements ITypeHandler<Byte> {
             preparedStatement.setByte(index, aByte);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Byte b = Byte.valueOf(value);
+        setValue(preparedStatement, index, b);
+    }
 }

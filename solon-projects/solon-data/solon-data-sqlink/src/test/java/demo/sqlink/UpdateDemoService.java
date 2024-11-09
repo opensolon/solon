@@ -15,15 +15,32 @@
  */
 package demo.sqlink;
 
+import demo.sqlink.model.User;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
-import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 @Component
 public class UpdateDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;
 
+    // 根据id更新email
+    public void updateEmailById(int id, String newEmail) {
+        sqLink.update(User.class)
+                .set(u -> u.setEmail(newEmail))
+                .where(u -> u.getId() == id)
+                .executeRows();
+    }
 
+    // 根据id更新name和email
+    public void updateNameAndEmailById(int id, String newName, String newEmail) {
+        sqLink.update(User.class)
+                .set(u -> {
+                    u.setEmail(newEmail);
+                    u.setUsername(newName);
+                })
+                .where(u -> u.getId() == id)
+                .executeRows();
+    }
 }
