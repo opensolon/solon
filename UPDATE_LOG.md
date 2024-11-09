@@ -47,12 +47,12 @@
 * 优化 solon BeanWrap.Proxy 接口简化
 * 优化 solon BeanWrap:nameSet, indexSet, tagSet, typedSet 改为 public，并由 isDoned() 控制是否可修改
 * 优化 solon-view 渲染器的 app.shared 绑定，移到插件 start 时处理。避免热插拨时带入了不同 classloader 的类
-* 优化 solon-cloud-gateway GET 转发与 smart-http 的兼容
 * 
 * freemarker 升为 2.3.33
 * velocity 升为 2.4.1
 * redisson 升为 3.37.0
 * snack3 升为 3.2.120
+* wood 升为 1.3.13
 * undertow 升为 2.2.37.Final
 * jetty 升为 9.4.56.v20240826
 * jackson 升为 2.18.1
