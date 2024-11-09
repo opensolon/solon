@@ -45,4 +45,10 @@ public class FloatTypeHandler implements ITypeHandler<Float> {
             preparedStatement.setFloat(index, aFloat);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Float aFloat = Float.valueOf(value);
+        setValue(preparedStatement, index, aFloat);
+    }
 }

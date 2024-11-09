@@ -45,4 +45,9 @@ public class CharTypeHandler implements ITypeHandler<Character> {
             preparedStatement.setString(index, character.toString());
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        setValue(preparedStatement, index, value.charAt(0));
+    }
 }

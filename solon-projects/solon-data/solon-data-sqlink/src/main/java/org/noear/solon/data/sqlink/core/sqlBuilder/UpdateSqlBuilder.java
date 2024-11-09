@@ -17,12 +17,18 @@ package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.annotation.OnUpdateDefaultValue;
 import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 更新语句构造器
@@ -120,12 +126,45 @@ public class UpdateSqlBuilder implements ISqlBuilder {
         if (!joinsSqlAndValue.isEmpty()) {
             sb.add(joinsSqlAndValue);
         }
-        String setsSqlAndValue = sets.getSqlAndValue(config, values);
-        sb.add(setsSqlAndValue);
+        StringBuilder setsSqlAndValue = new StringBuilder(sets.getSqlAndValue(config, values));
+        setDefaultValues(values, metaData, setsSqlAndValue);
+        sb.add(setsSqlAndValue.toString());
         String wheresSqlAndValue = wheres.getSqlAndValue(config, values);
         if (!wheresSqlAndValue.isEmpty()) {
             sb.add(wheresSqlAndValue);
         }
         return String.join(" ", sb);
+    }
+
+    private void setDefaultValues(List<Object> values, MetaData metaData, StringBuilder sb) {
+        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getPropertyMetaData()).collect(Collectors.toSet());
+        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
+        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
+            OnUpdateDefaultValue onUpdate = fieldMetaData.getOnUpdateDefaultValues();
+            if (!fieldMetaDataSet.contains(fieldMetaData) && onUpdate != null) {
+                switch (onUpdate.strategy()) {
+                    case DataBase:
+                        // 交给数据库
+                        break;
+                    case Static: {
+                        ISqlColumnExpression column = factory.column(fieldMetaData);
+                        String columnSql = column.getSql(config);
+                        SqlValue sqlValue = new SqlValue(onUpdate.value(), fieldMetaData.getTypeHandler(), true);
+                        sb.append(",").append(columnSql).append(" = ?");
+                        values.add(sqlValue);
+                    }
+                    break;
+                    case Dynamic: {
+                        ISqlColumnExpression column = factory.column(fieldMetaData);
+                        String columnSql = column.getSql(config);
+                        DynamicGenerator generator = DynamicGenerator.get(onUpdate.dynamic());
+                        SqlValue sqlValue = new SqlValue(generator.generate(config, fieldMetaData), fieldMetaData.getTypeHandler());
+                        sb.append(",").append(columnSql).append(" = ?");
+                        values.add(sqlValue);
+                    }
+                    break;
+                }
+            }
+        }
     }
 }

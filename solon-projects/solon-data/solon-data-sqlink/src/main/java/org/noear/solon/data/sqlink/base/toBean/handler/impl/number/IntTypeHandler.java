@@ -45,4 +45,10 @@ public class IntTypeHandler implements ITypeHandler<Integer> {
             preparedStatement.setInt(index, integer);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Integer i = Integer.valueOf(value);
+        setValue(preparedStatement, index, i);
+    }
 }

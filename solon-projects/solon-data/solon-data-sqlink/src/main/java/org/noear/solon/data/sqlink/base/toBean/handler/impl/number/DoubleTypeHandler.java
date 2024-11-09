@@ -46,4 +46,10 @@ public class DoubleTypeHandler implements ITypeHandler<Double> {
             preparedStatement.setDouble(index, aDouble);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Double aDouble = Double.valueOf(value);
+        setValue(preparedStatement, index, aDouble);
+    }
 }

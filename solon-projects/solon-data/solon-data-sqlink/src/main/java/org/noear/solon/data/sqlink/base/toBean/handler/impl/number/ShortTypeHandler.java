@@ -45,4 +45,10 @@ public class ShortTypeHandler implements ITypeHandler<Short> {
             preparedStatement.setShort(index, aShort);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Short aShort = Short.valueOf(value);
+        setValue(preparedStatement, index, aShort);
+    }
 }

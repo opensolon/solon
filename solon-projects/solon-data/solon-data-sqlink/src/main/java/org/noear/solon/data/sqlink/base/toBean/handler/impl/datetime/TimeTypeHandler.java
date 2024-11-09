@@ -41,4 +41,10 @@ public class TimeTypeHandler implements ITypeHandler<Time> {
             preparedStatement.setTime(index, time);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Time time = Time.valueOf(value);
+        setValue(preparedStatement, index, time);
+    }
 }

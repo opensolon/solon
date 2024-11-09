@@ -45,4 +45,10 @@ public class BigDecimalTypeHandler implements ITypeHandler<BigDecimal> {
             preparedStatement.setBigDecimal(index, bigDecimal);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        BigDecimal bigDecimal = new BigDecimal(value);
+        setValue(preparedStatement, index, bigDecimal);
+    }
 }

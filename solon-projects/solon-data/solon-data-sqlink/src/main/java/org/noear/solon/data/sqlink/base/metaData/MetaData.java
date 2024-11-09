@@ -84,6 +84,8 @@ public class MetaData {
                 NavigateData navigateData = null;
                 Navigate navigate = field.getAnnotation(Navigate.class);
                 boolean isPrimaryKey = column != null && column.primaryKey();
+                OnInsertDefaultValue onInsert = field.getAnnotation(OnInsertDefaultValue.class);
+                OnUpdateDefaultValue onUpdate = field.getAnnotation(OnUpdateDefaultValue.class);
                 if (navigate != null) {
                     Class<?> navigateTargetType;
                     if (Collection.class.isAssignableFrom(field.getType())) {
@@ -97,7 +99,7 @@ public class MetaData {
                     }
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
-                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey));
+                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, onInsert, onUpdate));
             }
         }
         catch (NoSuchFieldException | NoSuchMethodException e) {
@@ -154,7 +156,7 @@ public class MetaData {
      * @param getter getter方法
      */
     public FieldMetaData getFieldMetaDataByGetter(Method getter) {
-        return getFieldMetaDataByColumnName(getColumnNameByGetter(getter));
+        return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(getter));
     }
 
     /**
@@ -163,7 +165,7 @@ public class MetaData {
      * @param setter setter方法
      */
     public FieldMetaData getFieldMetaDataBySetter(Method setter) {
-        return getFieldMetaDataByColumnName(getColumnNameBySetter(setter));
+        return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(setter));
     }
 
     /**

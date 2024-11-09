@@ -44,4 +44,9 @@ public class StringTypeHandler implements ITypeHandler<String> {
             preparedStatement.setString(index, s);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        setValue(preparedStatement, index, value);
+    }
 }

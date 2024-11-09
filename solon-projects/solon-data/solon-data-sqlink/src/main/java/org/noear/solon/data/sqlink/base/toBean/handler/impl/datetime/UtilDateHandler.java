@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.lang.reflect.Type;
 import java.sql.*;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -42,5 +43,11 @@ public class UtilDateHandler implements ITypeHandler<Date> {
         else {
             preparedStatement.setTimestamp(index, Timestamp.from(date.toInstant()));
         }
+    }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Date date = Date.from(Instant.parse(value));
+        setValue(preparedStatement, index, date);
     }
 }

@@ -45,4 +45,10 @@ public class LongTypeHandler implements ITypeHandler<Long> {
             preparedStatement.setLong(index, aLong);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Long aLong = Long.valueOf(value);
+        setValue(preparedStatement, index, aLong);
+    }
 }

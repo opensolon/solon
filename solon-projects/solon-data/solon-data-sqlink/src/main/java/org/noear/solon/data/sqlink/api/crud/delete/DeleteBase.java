@@ -68,7 +68,7 @@ public abstract class DeleteBase extends CRUD {
         String sql = sqlBuilder.getSqlAndValue(values);
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
         return session.executeDelete(sql, values);
     }
 

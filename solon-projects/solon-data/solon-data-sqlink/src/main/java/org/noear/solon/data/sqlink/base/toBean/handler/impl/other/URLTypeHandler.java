@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.base.toBean.handler.impl.other;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
@@ -43,6 +44,17 @@ public class URLTypeHandler implements ITypeHandler<URL> {
         }
         else {
             preparedStatement.setURL(index, value);
+        }
+    }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        try {
+            URL url = new URL(value);
+            setValue(preparedStatement, index, url);
+        }
+        catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

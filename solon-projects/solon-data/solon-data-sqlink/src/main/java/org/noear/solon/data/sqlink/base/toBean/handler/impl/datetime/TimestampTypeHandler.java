@@ -41,4 +41,10 @@ public class TimestampTypeHandler implements ITypeHandler<Timestamp> {
             preparedStatement.setTimestamp(index, timestamp);
         }
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        Timestamp timestamp = Timestamp.valueOf(value);
+        setValue(preparedStatement, index, timestamp);
+    }
 }

@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.session;
+package org.noear.solon.data.sqlink.base.generate;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+
+import java.util.UUID;
 
 /**
- * SQL会话工厂
+ * UUID生成器
  *
  * @author kiryu1223
  * @since 3.0
  */
-public interface SqlSessionFactory {
-    SqlSession getSession(SqLinkConfig config);
+public class UUIDGenerator extends DynamicGenerator {
+    @Override
+    public Object generate(SqLinkConfig config, FieldMetaData fieldMetaData) {
+        return UUID.randomUUID().toString();
+    }
 }

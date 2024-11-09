@@ -78,7 +78,7 @@ public abstract class QueryBase extends CRUD {
         // LIMIT 1
         querySqlBuilder.setLimit(0, 1);
         //查询
-        SqlSession session = getConfig().getSqlSessionFactory().getSession();
+        SqlSession session = getConfig().getSqlSessionFactory().getSession(getConfig());
         List<Object> values = new ArrayList<>();
         String sql = querySqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
@@ -98,7 +98,7 @@ public abstract class QueryBase extends CRUD {
         //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
 
         //long start2 = System.nanoTime();
         List<T> ts = session.executeQuery(

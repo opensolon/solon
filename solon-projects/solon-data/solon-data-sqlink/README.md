@@ -8,7 +8,7 @@ solon.dataSources:
     class: "com.zaxxer.hikari.HikariDataSource"
     jdbcUrl: "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;IGNORECASE=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE"
     driverClassName: "org.h2.Driver"
-  sub!: # 数据源名称
+  sub: # 数据源名称
     class: "com.zaxxer.hikari.HikariDataSource"
     jdbcUrl: "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;IGNORECASE=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE"
     driverClassName: "org.h2.Driver"

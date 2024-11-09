@@ -15,6 +15,7 @@
  */
 package demo.sqlink;
 
+import demo.sqlink.model.User;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
@@ -24,5 +25,32 @@ public class DeleteDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;
 
+    // 根据id删除
+    public long deleteById(int id) {
+        return sqLink.delete(User.class)
+                .where(u -> u.getId() == id)
+                .executeRows();
+    }
 
+    // 根据name删除
+    public long deleteByName(String name) {
+        return sqLink.delete(User.class)
+                .where(u -> u.getUsername() == name)
+                .executeRows();
+    }
+
+    // 根据id和name删除
+    public long deleteByName(int id, String name) {
+        return sqLink.delete(User.class)
+                .where(u -> u.getId() == id && u.getUsername() == name)
+                .executeRows();
+    }
+
+    // 删除所有错误的邮箱
+    public long deleteByBadEmail() {
+        return sqLink.delete(User.class)
+                // NOT (email LIKE CONCAT('%','@','%'))
+                .where(u -> !u.getEmail().contains("@"))
+                .executeRows();
+    }
 }

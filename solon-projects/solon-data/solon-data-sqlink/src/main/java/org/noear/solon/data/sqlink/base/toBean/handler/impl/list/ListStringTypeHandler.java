@@ -40,4 +40,10 @@ public class ListStringTypeHandler implements ITypeHandler<List<String>> {
     public void setValue(PreparedStatement preparedStatement, int index, List<String> strings) throws SQLException {
         preparedStatement.setString(index, String.join(",", strings));
     }
+
+    @Override
+    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+        List<String> stringList = Arrays.stream(value.split(",")).collect(Collectors.toList());
+        setValue(preparedStatement, index, stringList);
+    }
 }

@@ -15,13 +15,15 @@
  */
 package org.noear.solon.data.sqlink.api.crud.create;
 
+import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.annotation.GenerateStrategy;
+import org.noear.solon.data.sqlink.base.annotation.OnInsertDefaultValue;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
-import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.core.sqlBuilder.InsertSqlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +90,7 @@ public abstract class InsertBase extends CRUD {
         String sql = makeByObjects();
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
         if (objects.size() > 1) {
             tryPrintBatch(log, objects.size());
         }
@@ -103,10 +105,9 @@ public abstract class InsertBase extends CRUD {
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
         for (FieldMetaData fieldMetaData : metaData.getNotIgnorePropertys()) {
-            if (fieldMetaData.isPrimaryKey()) {
-
-            }
-            else {
+            OnInsertDefaultValue onInsert = fieldMetaData.getOnInsertDefaultValues();
+            // 如果不是数据库生成策略，则添加
+            if (onInsert == null || onInsert.strategy() != GenerateStrategy.DataBase) {
                 tableFields.add(fieldMetaData.getColumn());
                 tableValues.add("?");
             }

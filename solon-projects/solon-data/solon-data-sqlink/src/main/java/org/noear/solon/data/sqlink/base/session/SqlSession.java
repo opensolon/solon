@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +30,7 @@ import java.util.List;
  * @since 3.0
  */
 public interface SqlSession {
+
     interface Function<T, R> {
         R invoke(T t) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException;
     }

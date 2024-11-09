@@ -13,16 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.session;
-
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
+package org.noear.solon.data.sqlink.base.annotation;
 
 /**
- * SQL会话工厂
+ * 默认值生成策略
  *
  * @author kiryu1223
  * @since 3.0
  */
-public interface SqlSessionFactory {
-    SqlSession getSession(SqLinkConfig config);
+public enum GenerateStrategy {
+    /**
+     * 由数据库生成
+     */
+    DataBase,
+    /**
+     * 静态值
+     */
+    Static,
+    /**
+     * 动态值
+     */
+    Dynamic,
 }
