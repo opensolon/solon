@@ -57,6 +57,7 @@
 * undertow 升为 2.2.37.Final
 * jetty 升为 9.4.56.v20240826
 * java-websocket 升为 1.5.7
+* java-websocket-ns 升为 1.2
 * jackson 升为 2.18.1
 * asm 升为 9.7.1
 * smart-socket 升为 1.5.54
