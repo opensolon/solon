@@ -172,7 +172,7 @@
         <graphql-java.version>18.7</graphql-java.version>
         <graphql-java-tools.version>13.1.1</graphql-java-tools.version>
 
-        <java-websocket.version>1.5.3</java-websocket.version>
+        <java-websocket.version>1.5.7</java-websocket.version>
         <java-websocket-ns.version>1.0</java-websocket-ns.version>
         <dromara-plugins.version>0.1.3</dromara-plugins.version>
 
