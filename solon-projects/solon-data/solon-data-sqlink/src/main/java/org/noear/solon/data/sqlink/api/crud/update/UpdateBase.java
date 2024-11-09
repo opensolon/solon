@@ -21,6 +21,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
 import org.noear.solon.data.sqlink.core.visitor.SetVisitor;
@@ -67,12 +68,12 @@ public class UpdateBase extends CRUD {
     public long executeRows() {
         SqLinkConfig config = getConfig();
         checkHasWhere();
-        List<Object> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
+        List<SqlValue> sqlValues = new ArrayList<>();
+        String sql = sqlBuilder.getSqlAndValue(sqlValues);
         //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession(config);
-        return session.executeUpdate(sql, values);
+        SqlSession session = config.getSqlSessionFactory().getSession();
+        return session.executeUpdate(sql, sqlValues);
     }
 
     private void checkHasWhere() {

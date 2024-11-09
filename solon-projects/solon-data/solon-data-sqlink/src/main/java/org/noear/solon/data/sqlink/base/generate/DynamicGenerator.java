@@ -38,9 +38,6 @@ public abstract class DynamicGenerator {
 
     private static final Map<Class<? extends DynamicGenerator>, DynamicGenerator> cache = new ConcurrentHashMap<>();
 
-    /**
-     * 获取缓存
-     */
     public static DynamicGenerator get(Class<? extends DynamicGenerator> c) {
         DynamicGenerator generator = cache.get(c);
         if (generator == null) {

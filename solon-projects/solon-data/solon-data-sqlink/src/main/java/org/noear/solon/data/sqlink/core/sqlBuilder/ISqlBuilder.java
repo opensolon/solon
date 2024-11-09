@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -39,5 +40,5 @@ public interface ISqlBuilder {
     /**
      * 获取SQL和参数
      */
-    String getSqlAndValue(List<Object> values);
+    String getSqlAndValue(List<SqlValue> values);
 }

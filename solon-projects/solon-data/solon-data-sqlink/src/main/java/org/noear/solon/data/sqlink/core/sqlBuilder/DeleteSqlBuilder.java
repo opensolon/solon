@@ -20,6 +20,7 @@ import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -110,7 +111,7 @@ public class DeleteSqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values) {
+    public String getSqlAndValue(List<SqlValue> values) {
         List<String> strings = new ArrayList<>(3);
         String sql = makeDelete();
         strings.add(sql);

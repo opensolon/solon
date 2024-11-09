@@ -112,7 +112,7 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlCollectedValueExpression value(Collection<Object> value) {
+    public ISqlCollectedValueExpression value(Collection<?> value) {
         return new SqlCollectedValueExpression(value);
     }
 

@@ -20,6 +20,7 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 
 import java.util.ArrayList;
@@ -173,7 +174,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values) {
+    public String getSqlAndValue(List<SqlValue> values) {
         if (isChanged) {
             return queryable.getSqlAndValue(config, values);
         }

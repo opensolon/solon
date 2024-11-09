@@ -22,6 +22,7 @@ import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.exception.SqLinkLimitNotFoundOrderByException;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         List<String> strings = new ArrayList<>();
         makeSelect(strings, values, config);
         String fromSqlAndValue = from.getSqlAndValue(config, values);

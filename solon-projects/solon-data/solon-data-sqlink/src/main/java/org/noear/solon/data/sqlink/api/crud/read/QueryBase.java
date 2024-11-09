@@ -26,6 +26,7 @@ import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
@@ -43,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
 import java.util.*;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
@@ -78,18 +80,18 @@ public abstract class QueryBase extends CRUD {
         // LIMIT 1
         querySqlBuilder.setLimit(0, 1);
         //查询
-        SqlSession session = getConfig().getSqlSessionFactory().getSession(getConfig());
-        List<Object> values = new ArrayList<>();
+        SqlSession session = getConfig().getSqlSessionFactory().getSession();
+        List<SqlValue> values = new ArrayList<>();
         String sql = querySqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        return session.executeQuery(f -> f.next(), sql, values);
+        return session.executeQuery(ResultSet::next, sql, values);
     }
 
     protected <T> List<T> toList() {
         SqLinkConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
 
         //long start = System.nanoTime();
         String sql = sqlBuilder.getSqlAndValue(values);
@@ -98,7 +100,7 @@ public abstract class QueryBase extends CRUD {
         //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
-        SqlSession session = config.getSqlSessionFactory().getSession(config);
+        SqlSession session = config.getSqlSessionFactory().getSession();
 
         //long start2 = System.nanoTime();
         List<T> ts = session.executeQuery(

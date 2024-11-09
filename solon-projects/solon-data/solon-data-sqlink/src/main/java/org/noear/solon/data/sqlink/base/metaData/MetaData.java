@@ -16,6 +16,9 @@
 package org.noear.solon.data.sqlink.base.metaData;
 
 import org.noear.solon.data.sqlink.base.annotation.*;
+import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
+import org.noear.solon.data.sqlink.base.intercept.NoInterceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.core.exception.SqLinkNotFoundFieldException;
@@ -84,8 +87,15 @@ public class MetaData {
                 NavigateData navigateData = null;
                 Navigate navigate = field.getAnnotation(Navigate.class);
                 boolean isPrimaryKey = column != null && column.primaryKey();
-                OnInsertDefaultValue onInsert = field.getAnnotation(OnInsertDefaultValue.class);
-                OnUpdateDefaultValue onUpdate = field.getAnnotation(OnUpdateDefaultValue.class);
+                InsertDefaultValue insertDefaultValue = field.getAnnotation(InsertDefaultValue.class);
+                UpdateDefaultValue updateDefaultValue = field.getAnnotation(UpdateDefaultValue.class);
+                OnInsert onInsert = field.getAnnotation(OnInsert.class);
+                Interceptor<?> insertInterceptor = (onInsert == null || onInsert.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onInsert.value()));
+                OnUpdate onUpdate = field.getAnnotation(OnUpdate.class);
+                Interceptor<?> updateInterceptor = (onUpdate == null || onUpdate.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onUpdate.value()));
+                OnSelect onSelect = field.getAnnotation(OnSelect.class);
+                Interceptor<?> selectPutInterceptor = (onSelect == null || onSelect.put() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onSelect.put()));
+                Interceptor<?> selectGetInterceptor = (onSelect == null || onSelect.get() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onSelect.get()));
                 if (navigate != null) {
                     Class<?> navigateTargetType;
                     if (Collection.class.isAssignableFrom(field.getType())) {
@@ -99,7 +109,7 @@ public class MetaData {
                     }
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
-                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, onInsert, onUpdate));
+                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, insertDefaultValue, updateDefaultValue, insertInterceptor, updateInterceptor, selectPutInterceptor, selectGetInterceptor));
             }
         }
         catch (NoSuchFieldException | NoSuchMethodException e) {

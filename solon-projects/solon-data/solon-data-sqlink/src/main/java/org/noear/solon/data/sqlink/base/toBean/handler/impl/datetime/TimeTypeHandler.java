@@ -43,8 +43,7 @@ public class TimeTypeHandler implements ITypeHandler<Time> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        Time time = Time.valueOf(value);
-        setValue(preparedStatement, index, time);
+    public Time castStringToTarget(String value) {
+        return Time.valueOf(value);
     }
 }

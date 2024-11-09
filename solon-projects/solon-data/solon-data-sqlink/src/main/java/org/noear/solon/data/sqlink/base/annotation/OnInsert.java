@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.annotation;
 
-import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,26 +23,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 更新时默认值注解
+ * 插入时，值进入typeHandler之前的时机
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface OnUpdateDefaultValue {
+public @interface OnInsert {
     /**
-     * 生成策略
+     * 拦截器
      */
-    GenerateStrategy strategy();
-
-    /**
-     * 静态值
-     */
-    String value() default "";
-
-    /**
-     * 动态值生成器
-     */
-    Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
+    Class<? extends Interceptor<?>> value();
 }

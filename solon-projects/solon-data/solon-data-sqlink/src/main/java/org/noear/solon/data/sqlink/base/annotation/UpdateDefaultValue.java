@@ -17,22 +17,23 @@ package org.noear.solon.data.sqlink.base.annotation;
 
 import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
 
-import java.lang.annotation.*;
-import java.sql.Savepoint;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * 插入时默认值注解
+ * 更新时默认值注解
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface OnInsertDefaultValue {
+public @interface UpdateDefaultValue
+{
     /**
      * 生成策略
-     * <p>
-     * <b>注意：在选择数据库生成策略情况下，插入时无论该字段是否有值，都会被忽略</b>
      */
     GenerateStrategy strategy();
 

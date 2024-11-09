@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class InsertSqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values) {
+    public String getSqlAndValue(List<SqlValue> values) {
         return "";
     }
 

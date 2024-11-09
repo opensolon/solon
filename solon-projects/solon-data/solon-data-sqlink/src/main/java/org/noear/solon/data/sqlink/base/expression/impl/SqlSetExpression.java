@@ -46,18 +46,18 @@ public class SqlSetExpression implements ISqlSetExpression {
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         String set = getColumn().getSqlAndValue(config, values) + " = ";
         FieldMetaData fieldMetaData = getColumn().getPropertyMetaData();
         if (fieldMetaData.isUseTypeHandler() && getValue() instanceof ISqlValueExpression) {
             if (getValue() instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
-                values.add(new SqlValue(sqlSingleValueExpression.getValue(), fieldMetaData.getTypeHandler()));
+                values.add(new SqlValue(sqlSingleValueExpression.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnSelectPut()));
                 return set + "?";
             }
             else {
                 ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) getValue();
-                values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), fieldMetaData.getTypeHandler()));
+                values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnSelectPut()));
                 return set + "?";
             }
         }

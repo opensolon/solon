@@ -19,11 +19,14 @@ import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.annotation.GenerateStrategy;
-import org.noear.solon.data.sqlink.base.annotation.OnInsertDefaultValue;
+import org.noear.solon.data.sqlink.base.annotation.InsertDefaultValue;
+import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.core.sqlBuilder.InsertSqlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +64,7 @@ public abstract class InsertBase extends CRUD {
     public long executeRows() {
         List<Object> objects = getObjects();
         if (!objects.isEmpty()) {
-            return objectsExecuteRows(objects);
+            return objectsExecuteRows();
         }
         else {
             return 0;
@@ -69,9 +72,8 @@ public abstract class InsertBase extends CRUD {
     }
 
     public String toSql() {
-        List<Object> objects = getObjects();
-        if (!objects.isEmpty()) {
-            return makeByObjects();
+        if (!getObjects().isEmpty()) {
+            return makeByObjects(MetaDataCache.getMetaData(getTableType()).getNotIgnorePropertys(), null);
         }
         else {
             return sqlBuilder.getSql();
@@ -84,32 +86,68 @@ public abstract class InsertBase extends CRUD {
 
     protected abstract <T> Class<T> getTableType();
 
-    private long objectsExecuteRows(List<Object> objects) {
+    private long objectsExecuteRows() {
+        MetaData metaData = MetaDataCache.getMetaData(getTableType());
+        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
         SqLinkConfig config = getConfig();
-        //List<SqlValue> sqlValues = new ArrayList<>();
-        String sql = makeByObjects();
+        List<SqlValue> sqlValues = new ArrayList<>();
+        String sql = makeByObjects(notIgnorePropertys, sqlValues);
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession(config);
-        if (objects.size() > 1) {
-            tryPrintBatch(log, objects.size());
+        SqlSession session = config.getSqlSessionFactory().getSession();
+
+        if (getObjects().size() > 1) {
+            tryPrintBatch(log, getObjects().size());
         }
         else {
-            tryPrintNoBatch(log, objects.size());
+            tryPrintNoBatch(log, getObjects().size());
         }
-        return session.executeInsert(sql, objects);
+
+        return session.executeInsert(sql, sqlValues, notIgnorePropertys.size());
     }
 
-    private String makeByObjects() {
+    private String makeByObjects(List<FieldMetaData> notIgnorePropertys, List<SqlValue> sqlValues) {
         MetaData metaData = MetaDataCache.getMetaData(getTableType());
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
-        for (FieldMetaData fieldMetaData : metaData.getNotIgnorePropertys()) {
-            OnInsertDefaultValue onInsert = fieldMetaData.getOnInsertDefaultValues();
+        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
+            InsertDefaultValue insertDefaultValue = fieldMetaData.getInsertDefaultValue();
             // 如果不是数据库生成策略，则添加
-            if (onInsert == null || onInsert.strategy() != GenerateStrategy.DataBase) {
+            if (insertDefaultValue == null || insertDefaultValue.strategy() != GenerateStrategy.DataBase) {
                 tableFields.add(fieldMetaData.getColumn());
                 tableValues.add("?");
+            }
+        }
+        if (sqlValues != null) {
+            for (Object object : getObjects()) {
+                for (FieldMetaData fieldMetaData : notIgnorePropertys) {
+                    Object value = fieldMetaData.getValueByObject(object);
+                    ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
+                    InsertDefaultValue onInsert = fieldMetaData.getInsertDefaultValue();
+                    if (onInsert != null) {
+                        switch (onInsert.strategy()) {
+                            case DataBase:
+                                // 交给数据库
+                                break;
+                            case Static:
+                                if (value == null) {
+                                    value = typeHandler.castStringToTarget(onInsert.value());
+                                }
+                                sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                                break;
+                            case Dynamic:
+                                if (value == null) {
+                                    DynamicGenerator generator = DynamicGenerator.get(onInsert.dynamic());
+                                    value = generator.generate(getConfig(), fieldMetaData);
+                                }
+                                sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                                break;
+                        }
+                    }
+                    else {
+                        sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                    }
+                }
             }
         }
         SqLinkDialect dialect = getSqlBuilder().getConfig().getDisambiguation();

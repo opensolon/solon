@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.toBean.build;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.ISetterCaller;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
  * 返回数据创建器
@@ -78,6 +81,7 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,T]返回
+     *
      * @param column key的列名
      */
     public <Key> Map<Key, T> createMap(String column) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
@@ -102,6 +106,7 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,List[T]]返回
+     *
      * @param keyColumn key的列名
      */
     public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
@@ -138,6 +143,7 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,List[T]]返回
+     *
      * @param anotherKeyColumn key的元数据
      */
     public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
@@ -253,6 +259,9 @@ public class ObjectBuilder<T> {
 //            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
 //            return typeHandler.getValue(resultSet, index, cast(type));
 //        }
-        return metaData.getTypeHandler().getValue(resultSet, index, metaData.getGenericType());
+        ITypeHandler<?> typeHandler = metaData.getTypeHandler();
+        Object value = typeHandler.getValue(resultSet, index, metaData.getGenericType());
+        Interceptor<?> onSelectGet = metaData.getOnSelectGet();
+        return onSelectGet.doIntercept(cast(value));
     }
 }

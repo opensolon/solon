@@ -13,34 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.expression;
+package org.noear.solon.data.sqlink.base.annotation;
 
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * sql表达式基类
+ * 更新时，值进入typeHandler之前的时机
  *
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlExpression {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface OnUpdate {
     /**
-     * 获取sql和参数
+     * 拦截器
      */
-    String getSqlAndValue(SqLinkConfig config, List<SqlValue> values);
-
-    /**
-     * 获取sql
-     */
-    default String getSql(SqLinkConfig config) {
-        return getSqlAndValue(config, null);
-    }
-
-    /**
-     * 获取自己的拷贝
-     */
-    <T extends ISqlExpression> T copy(SqLinkConfig config);
+    Class<? extends Interceptor<?>> value();
 }

@@ -268,8 +268,7 @@ public interface SqlExpressionFactory {
     default ISqlValueExpression AnyValue(Object value) {
         // 如果是集合就返回集合值表达式
         if (value instanceof Collection<?>) {
-            Collection<Object> objects = (Collection<Object>) value;
-            return value(objects);
+            return value((Collection<?>) value);
         }
         // 否则就返回单个值表达式
         else {
@@ -289,7 +288,7 @@ public interface SqlExpressionFactory {
      *
      * @param value 值集合
      */
-    ISqlCollectedValueExpression value(Collection<Object> value);
+    ISqlCollectedValueExpression value(Collection<?> value);
 
     /**
      * 创建模板表达式

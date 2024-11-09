@@ -16,6 +16,7 @@
 package demo.sqlink.model;
 
 import org.noear.solon.data.sqlink.base.annotation.*;
+import org.noear.solon.data.sqlink.base.intercept.NoInterceptor;
 
 import java.time.LocalDateTime;
 
@@ -25,15 +26,15 @@ public class User {
     // 主键
     @Column(primaryKey = true)
     // 插入时默认值，来自数据库
-    @OnInsertDefaultValue(strategy = GenerateStrategy.DataBase)
+    @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private long id;
     private String username;
     private String password;
     private String email;
     @Column("update_time")
     // 插入与更新时默认值，来自数据库
-    @OnInsertDefaultValue(strategy = GenerateStrategy.DataBase)
-    @OnUpdateDefaultValue(strategy = GenerateStrategy.DataBase)
+    @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
+    @UpdateDefaultValue(strategy = GenerateStrategy.DataBase)
     private LocalDateTime updateTime;
 
     public long getId() {

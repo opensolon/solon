@@ -20,6 +20,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
@@ -64,12 +65,12 @@ public abstract class DeleteBase extends CRUD {
     public long executeRows() {
         SqLinkConfig config = getConfig();
         checkHasWhere();
-        List<Object> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
+        List<SqlValue> sqlValues = new ArrayList<>();
+        String sql = sqlBuilder.getSqlAndValue(sqlValues);
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession(config);
-        return session.executeDelete(sql, values);
+        SqlSession session = config.getSqlSessionFactory().getSession();
+        return session.executeDelete(sql, sqlValues);
     }
 
     public String toSql() {

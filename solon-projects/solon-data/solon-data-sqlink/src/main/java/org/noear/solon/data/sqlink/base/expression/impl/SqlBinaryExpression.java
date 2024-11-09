@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.visitor.methods.StringMethods;
 
 import java.util.List;
@@ -53,12 +54,12 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         SqlOperator operator = getOperator();
         StringBuilder sb = new StringBuilder();
         if (operator == SqlOperator.PLUS
-                && (getLeft() instanceof ISqlSingleValueExpression && isString(((ISqlSingleValueExpression) getLeft()).getType()))
-                || (getRight() instanceof ISqlSingleValueExpression && isString(((ISqlSingleValueExpression) getRight()).getType()))
+                && (getLeft() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getLeft()).getValue() != null && isString(((ISqlSingleValueExpression) getLeft()).getType()))
+                || (getRight() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getRight()).getValue() != null && isString(((ISqlSingleValueExpression) getRight()).getType()))
         ) {
             ISqlTemplateExpression concat = StringMethods.concat(config, getLeft(), getRight());
             String sqlAndValue = concat.getSqlAndValue(config, values);
