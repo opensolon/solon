@@ -13,33 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.generate;
+package org.noear.solon.data.sqlink.base.intercept;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 动态生成器
+ * 拦截器
  *
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class DynamicGenerator {
-    /**
-     * 动态生成
-     *
-     * @param config        配置
-     * @param fieldMetaData 字段元数据
-     */
-    public abstract Object generate(SqLinkConfig config, FieldMetaData fieldMetaData);
+public abstract class Interceptor<T> {
+    public abstract T doIntercept(T value, SqLinkConfig config);
 
-    private static final Map<Class<? extends DynamicGenerator>, DynamicGenerator> cache = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends Interceptor<?>>, Interceptor<?>> cache = new ConcurrentHashMap<>();
 
-    public static DynamicGenerator get(Class<? extends DynamicGenerator> c) {
-        DynamicGenerator generator = cache.get(c);
+    public static <T> Interceptor<T> get(Class<? extends Interceptor<T>> c) {
+        Interceptor<?> generator = cache.get(c);
         if (generator == null) {
             try {
                 generator = c.newInstance();
@@ -49,6 +42,6 @@ public abstract class DynamicGenerator {
                 throw new RuntimeException(e);
             }
         }
-        return generator;
+        return (Interceptor<T>) generator;
     }
 }

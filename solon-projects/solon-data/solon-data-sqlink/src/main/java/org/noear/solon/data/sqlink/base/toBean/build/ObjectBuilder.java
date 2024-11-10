@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.toBean.build;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.AbsBeanCreator;
 import org.noear.solon.data.sqlink.base.toBean.beancreator.ISetterCaller;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
  * 返回数据创建器
@@ -78,9 +81,10 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,T]返回
+     *
      * @param column key的列名
      */
-    public <Key> Map<Key, T> createMap(String column) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, T> createMap(String column) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -102,9 +106,10 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,List[T]]返回
+     *
      * @param keyColumn key的列名
      */
-    public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -138,9 +143,10 @@ public class ObjectBuilder<T> {
 
     /**
      * 创建Map[key,List[T]]返回
+     *
      * @param anotherKeyColumn key的元数据
      */
-    public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -191,7 +197,7 @@ public class ObjectBuilder<T> {
     /**
      * 单列返回
      */
-    private List<T> getSingleList() throws SQLException, NoSuchFieldException, IllegalAccessException {
+    private List<T> getSingleList() throws SQLException {
         List<T> list = new ArrayList<>();
         ITypeHandler<T> typeHandler = TypeHandlerManager.get(target);
         while (resultSet.next()) {
@@ -238,21 +244,10 @@ public class ObjectBuilder<T> {
         return indexMap;
     }
 
-    private Object convertValue(FieldMetaData metaData, int index) throws SQLException, NoSuchFieldException, IllegalAccessException {
-//        if (metaData.hasConverter())
-//        {
-//            Class<?> type = metaData.getDbType();
-//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-//            Object value = typeHandler.getValue(resultSet, index, cast(type));
-//            IConverter<?, ?> converter = metaData.getConverter();
-//            return converter.toJava(cast(value), metaData);
-//        }
-//        else
-//        {
-//            Type type = metaData.isGenericType() ? metaData.getGenericType() : metaData.getType();
-//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-//            return typeHandler.getValue(resultSet, index, cast(type));
-//        }
-        return metaData.getTypeHandler().getValue(resultSet, index, metaData.getGenericType());
+    private Object convertValue(FieldMetaData metaData, int index) throws SQLException {
+        ITypeHandler<?> typeHandler = metaData.getTypeHandler();
+        Object value = typeHandler.getValue(resultSet, index, metaData.getGenericType());
+        Interceptor<?> onSelectGet = metaData.getOnGet();
+        return onSelectGet.doIntercept(cast(value), config);
     }
 }

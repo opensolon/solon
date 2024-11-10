@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSetsExpression;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class SqlSetsExpression implements ISqlSetsExpression {
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         List<String> strings = new ArrayList<>(getSets().size());
         for (ISqlSetExpression expression : getSets()) {
             strings.add(expression.getSqlAndValue(config, values));

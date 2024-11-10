@@ -49,8 +49,7 @@ public class BigIntegerTypeHandler implements ITypeHandler<BigInteger> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        BigInteger bigInteger = new BigInteger(value);
-        setValue(preparedStatement, index, bigInteger);
+    public BigInteger castStringToTarget(String value) {
+        return new BigInteger(value);
     }
 }

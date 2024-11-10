@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.core.page;
+package org.noear.solon.data.sqlink.base.intercept;
 
-import java.util.List;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
- * 分页器
+ * 用于标记为无拦截器
  *
  * @author kiryu1223
  * @since 3.0
  */
-public interface Pager {
-    /**
-     * 获取分页结果
-     *
-     * @param total 总数
-     * @param data  数据
-     */
-    <T> PagedResult<T> getPagedResult(long total, List<T> data);
+public class NoInterceptor extends Interceptor<Void> {
+    @Override
+    public Void doIntercept(Void value, SqLinkConfig config) {
+        return value;
+    }
 }

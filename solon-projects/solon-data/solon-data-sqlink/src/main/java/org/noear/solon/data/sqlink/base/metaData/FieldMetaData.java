@@ -15,15 +15,11 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-import org.noear.solon.data.sqlink.base.annotation.OnInsertDefaultValue;
-import org.noear.solon.data.sqlink.base.annotation.OnUpdateDefaultValue;
+import org.noear.solon.data.sqlink.base.annotation.InsertDefaultValue;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.lang.reflect.*;
 import java.util.Objects;
 
 /**
@@ -33,6 +29,10 @@ import java.util.Objects;
  * @since 3.0
  */
 public class FieldMetaData {
+    /**
+     * 是否不为空
+     */
+    private final boolean notNull;
     /**
      * 字段名
      */
@@ -84,19 +84,25 @@ public class FieldMetaData {
     /**
      * 新增时默认值
      */
-    private final OnInsertDefaultValue onInsertDefaultValues;
+    private final InsertDefaultValue insertDefaultValue;
     /**
-     * 更新时默认值
+     * 进入时拦截器
      */
-    private final OnUpdateDefaultValue onUpdateDefaultValues;
+    private final Interceptor<?> OnPut;
+    /**
+     * 获取时拦截器
+     */
+    private final Interceptor<?> OnGet;
 
-    public FieldMetaData(String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey, OnInsertDefaultValue onInsertDefaultValues, OnUpdateDefaultValue onUpdateDefaultValues) {
+    public FieldMetaData(boolean notNull, String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey, InsertDefaultValue insertDefaultValue, Interceptor<?> onPut, Interceptor<?> onGet) {
+        this.notNull = notNull;
         this.property = property;
         this.column = column;
         this.ignoreColumn = ignoreColumn;
         this.isPrimaryKey = isPrimaryKey;
-        this.onInsertDefaultValues = onInsertDefaultValues;
-        this.onUpdateDefaultValues = onUpdateDefaultValues;
+        this.insertDefaultValue = insertDefaultValue;
+        OnPut = onPut;
+        OnGet = onGet;
         getter.setAccessible(true);
         this.getter = getter;
         setter.setAccessible(true);
@@ -217,15 +223,35 @@ public class FieldMetaData {
     /**
      * 新增时默认值
      */
-    public OnInsertDefaultValue getOnInsertDefaultValues() {
-        return onInsertDefaultValues;
+    public InsertDefaultValue getInsertDefaultValue() {
+        return insertDefaultValue;
+    }
+
+    public Interceptor<?> getOnPut() {
+        return OnPut;
+    }
+
+    public Interceptor<?> getOnGet() {
+        return OnGet;
     }
 
     /**
-     * 更新时默认值
+     * 是否不为空
      */
-    public OnUpdateDefaultValue getOnUpdateDefaultValues() {
-        return onUpdateDefaultValues;
+    public boolean isNotNull() {
+        return notNull;
+    }
+
+    /**
+     * 反射获取值
+     */
+    public <T> T getValueByObject(Object o) {
+        try {
+            return (T) getter.invoke(o);
+        }
+        catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -233,11 +259,11 @@ public class FieldMetaData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FieldMetaData that = (FieldMetaData) o;
-        return isGenericType == that.isGenericType && useTypeHandler == that.useTypeHandler && ignoreColumn == that.ignoreColumn && isPrimaryKey == that.isPrimaryKey && Objects.equals(property, that.property) && Objects.equals(column, that.column) && Objects.equals(getter, that.getter) && Objects.equals(setter, that.setter) && Objects.equals(field, that.field) && Objects.equals(typeHandler, that.typeHandler) && Objects.equals(navigateData, that.navigateData) && Objects.equals(genericType, that.genericType) && Objects.equals(onInsertDefaultValues, that.onInsertDefaultValues) && Objects.equals(onUpdateDefaultValues, that.onUpdateDefaultValues);
+        return notNull == that.notNull && isGenericType == that.isGenericType && useTypeHandler == that.useTypeHandler && ignoreColumn == that.ignoreColumn && isPrimaryKey == that.isPrimaryKey && Objects.equals(property, that.property) && Objects.equals(column, that.column) && Objects.equals(getter, that.getter) && Objects.equals(setter, that.setter) && Objects.equals(field, that.field) && Objects.equals(typeHandler, that.typeHandler) && Objects.equals(navigateData, that.navigateData) && Objects.equals(genericType, that.genericType) && Objects.equals(insertDefaultValue, that.insertDefaultValue) && Objects.equals(OnPut, that.OnPut) && Objects.equals(OnGet, that.OnGet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(property, column, getter, setter, field, isGenericType, useTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, genericType, onInsertDefaultValues, onUpdateDefaultValues);
+        return Objects.hash(notNull, property, column, getter, setter, field, isGenericType, useTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, genericType, insertDefaultValue, OnPut, OnGet);
     }
 }

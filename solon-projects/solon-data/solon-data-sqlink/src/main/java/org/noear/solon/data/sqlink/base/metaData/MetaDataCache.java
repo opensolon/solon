@@ -32,6 +32,7 @@ public class MetaDataCache {
 
     /**
      * 获取元数据
+     *
      * @param c 元数据类型
      */
     public static MetaData getMetaData(Class<?> c) {
@@ -43,6 +44,7 @@ public class MetaDataCache {
 
     /**
      * 获取多个元数据
+     *
      * @param c 元数据类型集合
      */
     public static List<MetaData> getMetaData(Collection<Class<?>> c) {

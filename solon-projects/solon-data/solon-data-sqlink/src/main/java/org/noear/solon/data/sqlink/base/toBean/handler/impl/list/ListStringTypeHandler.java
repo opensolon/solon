@@ -42,8 +42,7 @@ public class ListStringTypeHandler implements ITypeHandler<List<String>> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        List<String> stringList = Arrays.stream(value.split(",")).collect(Collectors.toList());
-        setValue(preparedStatement, index, stringList);
+    public List<String> castStringToTarget(String value) {
+        return Arrays.stream(value.split(",")).collect(Collectors.toList());
     }
 }

@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlCollectedValueExpression;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,15 +28,15 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlCollectedValueExpression implements ISqlCollectedValueExpression {
-    private final Collection<Object> collection;
+    private final Collection<?> collection;
     private String delimiter = ",";
 
-    public SqlCollectedValueExpression(Collection<Object> collection) {
+    public SqlCollectedValueExpression(Collection<?> collection) {
         this.collection = collection;
     }
 
     @Override
-    public Collection<Object> getCollection() {
+    public Collection<?> getCollection() {
         return collection;
     }
 
@@ -50,11 +51,11 @@ public class SqlCollectedValueExpression implements ISqlCollectedValueExpression
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         List<String> strings = new ArrayList<>(getCollection().size());
         for (Object obj : getCollection()) {
             strings.add("?");
-            if (values != null) values.add(obj);
+            if (values != null) values.add(new SqlValue(obj));
         }
         return String.join(getDelimiter(), strings);
     }

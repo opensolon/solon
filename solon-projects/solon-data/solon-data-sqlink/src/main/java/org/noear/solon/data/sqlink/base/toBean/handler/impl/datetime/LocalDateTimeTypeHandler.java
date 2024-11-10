@@ -45,8 +45,7 @@ public class LocalDateTimeTypeHandler implements ITypeHandler<LocalDateTime> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        LocalDateTime localDateTime = LocalDateTime.parse(value);
-        setValue(preparedStatement, index, localDateTime);
+    public LocalDateTime castStringToTarget(String value) {
+        return LocalDateTime.parse(value);
     }
 }

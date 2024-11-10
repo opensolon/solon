@@ -21,6 +21,7 @@ import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlJoinExpression;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class OracleJoinExpression extends SqlJoinExpression {
 
     // oracle下表的别名不能加AS
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " t" + index + " ON " + conditions.getSqlAndValue(config, values);
     }
 }

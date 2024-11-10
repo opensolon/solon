@@ -17,13 +17,13 @@ package org.noear.solon.data.sqlink.core.sqlBuilder;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
-import org.noear.solon.data.sqlink.base.annotation.OnUpdateDefaultValue;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +104,8 @@ public class UpdateSqlBuilder implements ISqlBuilder {
     }
 
     @Override
-    public String getSqlAndValue(List<Object> values) {
-        return makeUpdate(values);
+    public String getSqlAndValue(List<SqlValue> sqlValues) {
+        return makeUpdate(sqlValues);
     }
 
     public SqLinkConfig getConfig() {
@@ -116,55 +116,55 @@ public class UpdateSqlBuilder implements ISqlBuilder {
         return makeUpdate(null);
     }
 
-    private String makeUpdate(List<Object> values) {
+    private String makeUpdate(List<SqlValue> sqlValues) {
         MetaData metaData = MetaDataCache.getMetaData(target);
         SqLinkDialect dbConfig = config.getDisambiguation();
         String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
         List<String> sb = new ArrayList<>();
         sb.add(sql);
-        String joinsSqlAndValue = joins.getSqlAndValue(config, values);
+        String joinsSqlAndValue = joins.getSqlAndValue(config, sqlValues);
         if (!joinsSqlAndValue.isEmpty()) {
             sb.add(joinsSqlAndValue);
         }
-        StringBuilder setsSqlAndValue = new StringBuilder(sets.getSqlAndValue(config, values));
-        setDefaultValues(values, metaData, setsSqlAndValue);
-        sb.add(setsSqlAndValue.toString());
-        String wheresSqlAndValue = wheres.getSqlAndValue(config, values);
+        String sqlAndValue = sets.getSqlAndValue(config, sqlValues);
+        sb.add(sqlAndValue);
+        String wheresSqlAndValue = wheres.getSqlAndValue(config, sqlValues);
         if (!wheresSqlAndValue.isEmpty()) {
             sb.add(wheresSqlAndValue);
         }
         return String.join(" ", sb);
     }
 
-    private void setDefaultValues(List<Object> values, MetaData metaData, StringBuilder sb) {
-        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getPropertyMetaData()).collect(Collectors.toSet());
-        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
-        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
-            OnUpdateDefaultValue onUpdate = fieldMetaData.getOnUpdateDefaultValues();
-            if (!fieldMetaDataSet.contains(fieldMetaData) && onUpdate != null) {
-                switch (onUpdate.strategy()) {
-                    case DataBase:
-                        // 交给数据库
-                        break;
-                    case Static: {
-                        ISqlColumnExpression column = factory.column(fieldMetaData);
-                        String columnSql = column.getSql(config);
-                        SqlValue sqlValue = new SqlValue(onUpdate.value(), fieldMetaData.getTypeHandler(), true);
-                        sb.append(",").append(columnSql).append(" = ?");
-                        values.add(sqlValue);
-                    }
-                    break;
-                    case Dynamic: {
-                        ISqlColumnExpression column = factory.column(fieldMetaData);
-                        String columnSql = column.getSql(config);
-                        DynamicGenerator generator = DynamicGenerator.get(onUpdate.dynamic());
-                        SqlValue sqlValue = new SqlValue(generator.generate(config, fieldMetaData), fieldMetaData.getTypeHandler());
-                        sb.append(",").append(columnSql).append(" = ?");
-                        values.add(sqlValue);
-                    }
-                    break;
-                }
-            }
-        }
-    }
+//    private void setDefaultValues(List<SqlValue> values, MetaData metaData, StringBuilder sb) {
+//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getPropertyMetaData()).collect(Collectors.toSet());
+//        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
+//        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
+//            ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
+//            UpdateDefaultValue onUpdate = fieldMetaData.getUpdateDefaultValue();
+//            if (!fieldMetaDataSet.contains(fieldMetaData) && onUpdate != null) {
+//                switch (onUpdate.strategy()) {
+//                    case DataBase:
+//                        // 交给数据库
+//                        break;
+//                    case Static: {
+//                        ISqlColumnExpression column = factory.column(fieldMetaData);
+//                        String columnSql = column.getSql(config);
+//                        SqlValue sqlValue = new SqlValue(typeHandler.castStringToTarget(onUpdate.value()), typeHandler,fieldMetaData.getOnUpdate());
+//                        sb.append(",").append(columnSql).append(" = ?");
+//                        values.add(sqlValue);
+//                    }
+//                    break;
+//                    case Dynamic: {
+//                        ISqlColumnExpression column = factory.column(fieldMetaData);
+//                        String columnSql = column.getSql(config);
+//                        DynamicGenerator generator = DynamicGenerator.get(onUpdate.dynamic());
+//                        SqlValue sqlValue = new SqlValue(generator.generate(config, fieldMetaData), typeHandler,fieldMetaData.getOnUpdate());
+//                        sb.append(",").append(columnSql).append(" = ?");
+//                        values.add(sqlValue);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//    }
 }

@@ -46,8 +46,7 @@ public class UtilDateHandler implements ITypeHandler<Date> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        Date date = Date.from(Instant.parse(value));
-        setValue(preparedStatement, index, date);
+    public Date castStringToTarget(String value) {
+        return Date.from(Instant.parse(value));
     }
 }

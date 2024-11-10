@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 对象创建器工厂
+ *
  * @author kiryu1223
  * @since 3.0
  */
@@ -28,6 +29,7 @@ public class BeanCreatorFactory {
 
     /**
      * 创建对象创建器
+     *
      * @param target 目标类型
      */
     protected <T> AbsBeanCreator<T> create(Class<T> target) {
@@ -36,6 +38,7 @@ public class BeanCreatorFactory {
 
     /**
      * 获取对象创建器
+     *
      * @param target 目标类型
      */
     public <T> AbsBeanCreator<T> get(Class<T> target) {

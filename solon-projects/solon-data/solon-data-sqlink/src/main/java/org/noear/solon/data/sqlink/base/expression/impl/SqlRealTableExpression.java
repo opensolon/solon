@@ -20,6 +20,7 @@ import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class SqlRealTableExpression extends SqlTableExpression implements ISqlRe
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         String fullName = "";
         MetaData metaData = MetaDataCache.getMetaData(getTableClass());
         SqLinkDialect dbConfig = config.getDisambiguation();

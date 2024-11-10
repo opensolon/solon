@@ -35,7 +35,6 @@ public interface ISqlSetsExpression extends ISqlExpression {
 
     /**
      * 添加一个set表达式
-     * @param sqlSetExpression
      */
     void addSet(ISqlSetExpression sqlSetExpression);
 

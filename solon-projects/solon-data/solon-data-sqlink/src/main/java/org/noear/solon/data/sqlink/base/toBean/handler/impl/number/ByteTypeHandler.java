@@ -47,8 +47,7 @@ public class ByteTypeHandler implements ITypeHandler<Byte> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        Byte b = Byte.valueOf(value);
-        setValue(preparedStatement, index, b);
+    public Byte castStringToTarget(String value) {
+        return Byte.valueOf(value);
     }
 }
