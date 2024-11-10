@@ -17,7 +17,9 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
+import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 
 import java.util.List;
 
@@ -29,7 +31,7 @@ import java.util.List;
 public class SqlSingleValueExpression extends SqlValueExpression implements ISqlSingleValueExpression {
     private final Object value;
 
-    SqlSingleValueExpression(Object value) {
+    public SqlSingleValueExpression(Object value) {
         this.value = value;
     }
 
@@ -38,7 +40,7 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         if (getValue() == null) {
             return "NULL";
         }
@@ -48,7 +50,7 @@ public class SqlSingleValueExpression extends SqlValueExpression implements ISql
             return keywords.getKeyword(config);
         }
         else {
-            if (values != null) values.add(getValue());
+            if (values != null) values.add(new SqlValue(getValue()));
             return "?";
         }
     }

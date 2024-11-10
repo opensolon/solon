@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * SQL时间单位
+ *
  * @author kiryu1223
  * @since 3.0
  */

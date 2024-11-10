@@ -47,8 +47,7 @@ public class FloatTypeHandler implements ITypeHandler<Float> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        Float aFloat = Float.valueOf(value);
-        setValue(preparedStatement, index, aFloat);
+    public Float castStringToTarget(String value) {
+        return Float.valueOf(value);
     }
 }

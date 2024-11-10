@@ -31,7 +31,7 @@ public interface ISqlCollectedValueExpression extends ISqlValueExpression {
     /**
      * 获取集合值
      */
-    Collection<Object> getCollection();
+    Collection<?> getCollection();
 
     /**
      * 设置元素之间的分隔符

@@ -24,6 +24,7 @@ package org.noear.solon.data.sqlink.base.transaction;
 public interface TransactionManager {
     /**
      * 获取事务控制器
+     *
      * @param isolationLevel 事务隔离级别
      */
     Transaction get(Integer isolationLevel);

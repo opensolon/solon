@@ -48,10 +48,9 @@ public class URLTypeHandler implements ITypeHandler<URL> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
+    public URL castStringToTarget(String value) {
         try {
-            URL url = new URL(value);
-            setValue(preparedStatement, index, url);
+            return new URL(value);
         }
         catch (MalformedURLException e) {
             throw new RuntimeException(e);

@@ -34,6 +34,7 @@ public class GroupByVisitor extends SqlVisitor {
 
     /**
      * 解析分组表达式
+     *
      * @param newExpression
      * @return
      */

@@ -15,6 +15,8 @@
  */
 package demo.sqlink.model;
 
+import demo.sqlink.interceptor.Base64Decryption;
+import demo.sqlink.interceptor.Base64Encryption;
 import org.noear.solon.data.sqlink.base.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,15 +27,17 @@ public class User {
     // 主键
     @Column(primaryKey = true)
     // 插入时默认值，来自数据库
-    @OnInsertDefaultValue(strategy = GenerateStrategy.DataBase)
+    @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private long id;
     private String username;
+    //加解密密码
+    @OnPut(Base64Encryption.class)
+    @OnGet(Base64Decryption.class)
     private String password;
     private String email;
     @Column("update_time")
     // 插入与更新时默认值，来自数据库
-    @OnInsertDefaultValue(strategy = GenerateStrategy.DataBase)
-    @OnUpdateDefaultValue(strategy = GenerateStrategy.DataBase)
+    @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private LocalDateTime updateTime;
 
     public long getId() {

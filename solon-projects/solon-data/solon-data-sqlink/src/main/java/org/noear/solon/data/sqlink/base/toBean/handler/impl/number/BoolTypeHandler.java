@@ -47,8 +47,7 @@ public class BoolTypeHandler implements ITypeHandler<Boolean> {
     }
 
     @Override
-    public void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException {
-        Boolean b = Boolean.valueOf(value);
-        setValue(preparedStatement, index, b);
+    public Boolean castStringToTarget(String value) {
+        return Boolean.valueOf(value);
     }
 }

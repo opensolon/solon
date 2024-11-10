@@ -16,14 +16,7 @@
 package org.noear.solon.data.sqlink.base.session;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.annotation.OnInsertDefaultValue;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
-import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
-import org.noear.solon.data.sqlink.base.metaData.MetaData;
-import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
-import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 import org.noear.solon.data.sqlink.base.transaction.TransactionManager;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,9 +25,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
-
-import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
  * @author kiryu1223
@@ -51,10 +41,10 @@ public class DefaultSqlSession implements SqlSession {
         this.transactionManager = transactionManager;
     }
 
-    public <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<Object> values) {
+    public <R> R executeQuery(Function<ResultSet, R> func, String sql, Collection<SqlValue> sqlValues) {
         if (!transactionManager.currentThreadInTransaction()) {
             try (Connection connection = dataSourceManager.getConnection()) {
-                return executeQuery(connection, func, sql, values);
+                return executeQuery(connection, func, sql, sqlValues);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -69,7 +59,7 @@ public class DefaultSqlSession implements SqlSession {
                 else {
                     connection = dataSourceManager.getConnection();
                 }
-                return executeQuery(connection, func, sql, values);
+                return executeQuery(connection, func, sql, sqlValues);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -77,9 +67,9 @@ public class DefaultSqlSession implements SqlSession {
         }
     }
 
-    private <R> R executeQuery(Connection connection, Function<ResultSet, R> func, String sql, Collection<Object> values) {
+    private <R> R executeQuery(Connection connection, Function<ResultSet, R> func, String sql, Collection<SqlValue> sqlValues) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            setObjects(preparedStatement, values);
+            setObjects(preparedStatement, sqlValues);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return func.invoke(resultSet);
             }
@@ -90,10 +80,10 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public long executeInsert(String sql, List<Object> values) {
+    public long executeInsert(String sql, Collection<SqlValue> sqlValues, int length) {
         if (!transactionManager.currentThreadInTransaction()) {
             try (Connection connection = dataSourceManager.getConnection()) {
-                return executeInsert(connection, sql, values);
+                return executeInsert(connection, sql, sqlValues, length);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -108,7 +98,7 @@ public class DefaultSqlSession implements SqlSession {
                 else {
                     connection = dataSourceManager.getConnection();
                 }
-                return executeInsert(connection, sql, values);
+                return executeInsert(connection, sql, sqlValues, length);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -117,14 +107,14 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
-    public long executeDelete(String sql, List<Object> values) {
-        return executeUpdate(sql, values);
+    public long executeDelete(String sql, Collection<SqlValue> sqlValues) {
+        return executeUpdate(sql, sqlValues);
     }
 
-    public long executeUpdate(String sql, List<Object> values) {
+    public long executeUpdate(String sql, Collection<SqlValue> sqlValues) {
         if (!transactionManager.currentThreadInTransaction()) {
             try (Connection connection = dataSourceManager.getConnection()) {
-                return executeUpdate(connection, sql, values);
+                return executeUpdate(connection, sql, sqlValues);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -139,7 +129,7 @@ public class DefaultSqlSession implements SqlSession {
                 else {
                     connection = dataSourceManager.getConnection();
                 }
-                return executeUpdate(connection, sql, values);
+                return executeUpdate(connection, sql, sqlValues);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -147,14 +137,14 @@ public class DefaultSqlSession implements SqlSession {
         }
     }
 
-    protected long executeInsert(Connection connection, String sql, Collection<Object> values) {
+    protected long executeInsert(Connection connection, String sql, Collection<SqlValue> sqlValues, int length) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            setObjectsByEntity(preparedStatement, values);
-            if (values.size() == 1) {
-                return preparedStatement.executeUpdate();
+            boolean batch = setObjects(preparedStatement, sqlValues, length);
+            if (batch) {
+                return preparedStatement.executeBatch().length;
             }
             else {
-                return preparedStatement.executeBatch().length;
+                return preparedStatement.executeUpdate();
             }
         }
         catch (SQLException | InvocationTargetException | IllegalAccessException e) {
@@ -162,9 +152,9 @@ public class DefaultSqlSession implements SqlSession {
         }
     }
 
-    protected long executeUpdate(Connection connection, String sql, Collection<Object> values) {
+    protected long executeUpdate(Connection connection, String sql, Collection<SqlValue> sqlValues) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            setObjects(preparedStatement, values);
+            setObjects(preparedStatement, sqlValues);
             return preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
@@ -172,121 +162,24 @@ public class DefaultSqlSession implements SqlSession {
         }
     }
 
-    protected void setObjects(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException {
+    protected void setObjects(PreparedStatement preparedStatement, Collection<SqlValue> sqlValues) throws SQLException {
         int index = 1;
-        for (Object value : values) {
-            if (value instanceof SqlValue) {
-                SqlValue sqlValue = (SqlValue) value;
-                sqlValue.preparedStatementSetValue(preparedStatement, index++);
-            }
-            else {
-                TypeHandlerManager.get(value.getClass()).setValue(preparedStatement, index++, value);
-            }
+        for (SqlValue sqlValue : sqlValues) {
+            sqlValue.preparedStatementSetValue(config, preparedStatement, index++);
         }
     }
 
-//    protected void setObjectsIfNull(PreparedStatement preparedStatement, List<SqlValue> values) throws SQLException
-//    {
-//        for (int i = 1; i <= values.size(); i++)
-//        {
-//            SqlValue value = values.get(i - 1);
-//            Object o = value.getValues().get(0);
-//            if (o == null)
-//            {
-//                preparedStatement.setNull(i, convert(value.getType()));
-//            }
-//            else
-//            {
-//                preparedStatement.setObject(i, o);
-//            }
-//        }
-//    }
-
-//    protected static int convert(Class<?> type)
-//    {
-//        if (type == String.class)
-//        {
-//            return Types.VARCHAR;
-//        }
-//        else if (type == Integer.class || type == int.class)
-//        {
-//            return Types.INTEGER;
-//        }
-//        else if (type == Long.class || type == long.class)
-//        {
-//            return Types.BIGINT;
-//        }
-//        else if (type == Double.class || type == double.class)
-//        {
-//            return Types.DOUBLE;
-//        }
-//        else if (type == Float.class || type == float.class)
-//        {
-//            return Types.FLOAT;
-//        }
-//        else if (type == Boolean.class || type == boolean.class)
-//        {
-//            return Types.BOOLEAN;
-//        }
-//        else if (type == Date.class || type == LocalDate.class)
-//        {
-//            return Types.DATE;
-//        }
-//        else if (type == Time.class || type == LocalTime.class)
-//        {
-//            return Types.TIME;
-//        }
-//        else if (type == Timestamp.class || type == LocalDateTime.class)
-//        {
-//            return Types.TIMESTAMP;
-//        }
-//        else if (type == java.math.BigDecimal.class)
-//        {
-//            return Types.DECIMAL;
-//        }
-//        else
-//        {
-//            return Types.OTHER; // Default to OTHER type if not recognized
-//        }
-//    }
-
-    protected void setObjectsByEntity(PreparedStatement preparedStatement, Collection<Object> values) throws SQLException, InvocationTargetException, IllegalAccessException {
-        boolean batch = values.size() > 1;
-        for (Object value : values) {
-            int index = 1;
-            MetaData metaData = MetaDataCache.getMetaData(value.getClass());
-            for (FieldMetaData fieldMetaData : metaData.getNotIgnorePropertys()) {
-                ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
-                Object fieldValue = fieldMetaData.getGetter().invoke(value);
-                OnInsertDefaultValue onInsert = fieldMetaData.getOnInsertDefaultValues();
-                if (onInsert != null) {
-                    switch (onInsert.strategy()) {
-                        case DataBase:
-                            // 交给数据库
-                            break;
-                        case Static:
-                            if (fieldValue == null) {
-                                typeHandler.setStringValue(preparedStatement, index++, onInsert.value());
-                            }
-                            else {
-                                typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
-                            }
-                            break;
-                        case Dynamic:
-                            if (fieldValue == null) {
-                                fieldValue = DynamicGenerator.get(onInsert.dynamic()).generate(config, fieldMetaData);
-                            }
-                            typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
-                            break;
-                    }
-                }
-                else {
-                    typeHandler.setValue(preparedStatement, index++, cast(fieldValue));
-                }
-            }
-            if (batch) {
+    protected boolean setObjects(PreparedStatement preparedStatement, Collection<SqlValue> sqlValues, int length) throws SQLException, InvocationTargetException, IllegalAccessException {
+        int size = sqlValues.size();
+        boolean batch = size > length;
+        int index = 1;
+        for (SqlValue sqlValue : sqlValues) {
+            sqlValue.preparedStatementSetValue(config, preparedStatement, index++);
+            if (index > length && batch) {
+                index = 1;
                 preparedStatement.addBatch();
             }
         }
+        return batch;
     }
 }

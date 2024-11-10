@@ -47,13 +47,11 @@ public interface ITypeHandler<T> {
     void setValue(PreparedStatement preparedStatement, int index, T value) throws SQLException;
 
     /**
-     * 字符串参数设置值（用于给@DefaultValue的字符串参数调用）
+     * 转换字符串到对应的值
      *
-     * @param preparedStatement 预处理语句
-     * @param index             索引
-     * @param value             字符串值
+     * @param value 字符串值
      */
-    void setStringValue(PreparedStatement preparedStatement, int index, String value) throws SQLException;
+    T castStringToTarget(String value);
 
     /**
      * 获取泛型类型

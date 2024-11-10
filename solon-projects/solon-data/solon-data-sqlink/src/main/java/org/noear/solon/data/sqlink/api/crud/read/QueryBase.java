@@ -26,6 +26,7 @@ import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
@@ -43,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
 import java.util.*;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
@@ -69,27 +71,28 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected boolean any() {
+        SqLinkConfig config = getConfig();
         //获取拷贝的查询对象
-        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(getConfig());
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryableCopy);
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(config);
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, queryableCopy);
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
         // SELECT 1
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
         // LIMIT 1
         querySqlBuilder.setLimit(0, 1);
         //查询
-        SqlSession session = getConfig().getSqlSessionFactory().getSession(getConfig());
-        List<Object> values = new ArrayList<>();
+        SqlSession session = getConfig().getSqlSessionFactory().getSession(config);
+        List<SqlValue> values = new ArrayList<>();
         String sql = querySqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        return session.executeQuery(f -> f.next(), sql, values);
+        return session.executeQuery(ResultSet::next, sql, values);
     }
 
     protected <T> List<T> toList() {
         SqLinkConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
 
         //long start = System.nanoTime();
         String sql = sqlBuilder.getSqlAndValue(values);

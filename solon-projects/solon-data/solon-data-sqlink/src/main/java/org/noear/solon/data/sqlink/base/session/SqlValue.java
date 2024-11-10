@@ -15,7 +15,12 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,7 +28,7 @@ import java.sql.SQLException;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
 
 /**
- * 特殊的SQL参数打包
+ * SQL参数打包
  *
  * @author kiryu1223
  * @since 3.0
@@ -38,29 +43,24 @@ public class SqlValue {
      */
     private final ITypeHandler<?> typeHandler;
     /**
-     * 是否是字符串参数
+     * 拦截器
      */
-    private final boolean isDefaultStringValue;
+    private final Interceptor<?> interceptor;
 
-    public SqlValue(Object value, ITypeHandler<?> typeHandler) {
-        this(value, typeHandler, false);
+    public SqlValue(Object value) {
+        this(value, TypeHandlerManager.get(value.getClass()), DoNothingInterceptor.Instance);
     }
 
-    public SqlValue(Object value, ITypeHandler<?> typeHandler, boolean isDefaultStringValue) {
+    public SqlValue(Object value, ITypeHandler<?> typeHandler, Interceptor<?> interceptor) {
         this.value = value;
         this.typeHandler = typeHandler;
-        this.isDefaultStringValue = isDefaultStringValue;
+        this.interceptor = interceptor;
     }
 
     /**
-     * 设置参数
+     * 设置进sql
      */
-    public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException {
-        if (isDefaultStringValue) {
-            typeHandler.setStringValue(preparedStatement, index, value.toString());
-        }
-        else {
-            typeHandler.setValue(preparedStatement, index, cast(value));
-        }
+    public void preparedStatementSetValue(SqLinkConfig config, PreparedStatement preparedStatement, int index) throws SQLException {
+        typeHandler.setValue(preparedStatement, index, cast(interceptor.doIntercept(cast(value), config)));
     }
 }

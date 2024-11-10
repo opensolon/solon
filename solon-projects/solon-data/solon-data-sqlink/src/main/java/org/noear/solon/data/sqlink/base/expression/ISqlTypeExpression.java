@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface ISqlTypeExpression extends ISqlExpression {
     Class<?> getType();
 
     @Override
-    default String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    default String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         throw new SqLinkException("ISqlTypeExpression.getSqlAndValue should not be called");
     }
 

@@ -18,7 +18,6 @@ package org.noear.solon.data.sqlink.base.annotation;
 import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
 
 import java.lang.annotation.*;
-import java.sql.Savepoint;
 
 /**
  * 插入时默认值注解
@@ -28,7 +27,7 @@ import java.sql.Savepoint;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface OnInsertDefaultValue {
+public @interface InsertDefaultValue {
     /**
      * 生成策略
      * <p>
@@ -42,7 +41,7 @@ public @interface OnInsertDefaultValue {
     String value() default "";
 
     /**
-     * 动态值生成器
+     * 动态值
      */
     Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
 }

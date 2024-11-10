@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.build.ObjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,7 +121,7 @@ public class IncludeBuilder<T> {
             }
         }
 
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
         String sql = tempQueryable.getSqlAndValue(config, values);
 
         tryPrint(sql);
@@ -166,7 +167,7 @@ public class IncludeBuilder<T> {
             }
         }
 
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
         String sql = tempQueryable.getSqlAndValue(config, values);
 
         tryPrint(sql);
@@ -218,7 +219,7 @@ public class IncludeBuilder<T> {
             }
         }
 
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
         String sql = tempQueryable.getSqlAndValue(config, values);
 
         tryPrint(sql);
@@ -278,7 +279,7 @@ public class IncludeBuilder<T> {
         }
 
 
-        List<Object> values = new ArrayList<>();
+        List<SqlValue> values = new ArrayList<>();
         String sql = tempQueryable.getSqlAndValue(config, values);
 
         tryPrint(sql);

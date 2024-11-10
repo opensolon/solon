@@ -38,4 +38,9 @@ public @interface Column {
      * 数据库列名
      */
     String value() default "";
+
+    /**
+     * 是否不为空
+     */
+    boolean notNull() default false;
 }

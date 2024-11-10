@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlLimitExpression;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class SqlLimitExpression implements ISqlLimitExpression {
     }
 
     @Override
-    public String getSqlAndValue(SqLinkConfig config, List<Object> values) {
+    public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         if (getRows() > 0) {
             if (getOffset() > 0) {
                 return String.format("LIMIT %d OFFSET %d", getRows(), getOffset());
