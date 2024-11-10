@@ -17,7 +17,7 @@ package demo.sqlink.model;
 
 import demo.sqlink.interceptor.Base64Decryption;
 import demo.sqlink.interceptor.Base64Encryption;
-import org.noear.solon.data.sqlink.base.annotation.*;
+import org.noear.solon.data.sqlink.annotation.*;
 
 import java.time.LocalDateTime;
 
