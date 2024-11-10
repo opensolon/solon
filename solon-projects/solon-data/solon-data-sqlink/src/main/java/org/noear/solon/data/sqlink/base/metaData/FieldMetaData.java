@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-import org.noear.solon.data.sqlink.base.annotation.InsertDefaultValue;
+import org.noear.solon.data.sqlink.annotation.InsertDefaultValue;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 

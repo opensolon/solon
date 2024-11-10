@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.sqlink.base.metaData;
 
-import org.noear.solon.data.sqlink.base.annotation.Navigate;
-import org.noear.solon.data.sqlink.base.annotation.RelationType;
+import org.noear.solon.data.sqlink.annotation.Navigate;
+import org.noear.solon.data.sqlink.annotation.RelationType;
 
 import java.util.Collection;
 

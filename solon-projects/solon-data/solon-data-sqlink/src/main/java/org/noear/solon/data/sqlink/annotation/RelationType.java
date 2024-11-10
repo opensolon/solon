@@ -13,35 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
-
-import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
-
-import java.lang.annotation.*;
+package org.noear.solon.data.sqlink.annotation;
 
 /**
- * 插入时默认值注解
+ * 关联关系注解
  *
  * @author kiryu1223
  * @since 3.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface InsertDefaultValue {
+public enum RelationType {
     /**
-     * 生成策略
-     * <p>
-     * <b>注意：在选择数据库生成策略情况下，插入时无论该字段是否有值，都会被忽略</b>
+     * 一对一
      */
-    GenerateStrategy strategy();
-
+    OneToOne,
     /**
-     * 静态值
+     * 一对多
      */
-    String value() default "";
-
+    OneToMany,
     /**
-     * 动态值
+     * 多对一
      */
-    Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
+    ManyToOne,
+    /**
+     * 多对多
+     */
+    ManyToMany
 }

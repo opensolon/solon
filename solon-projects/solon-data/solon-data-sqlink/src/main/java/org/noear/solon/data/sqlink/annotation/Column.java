@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
-
-import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
+package org.noear.solon.data.sqlink.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,41 +21,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 导航注解，用于表之间的关联
+ * 数据库列注解
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Navigate {
+public @interface Column {
     /**
-     * 关联关系
+     * 是否为主键
      */
-    RelationType value();
+    boolean primaryKey() default false;
 
     /**
-     * 自身对应java字段名
+     * 数据库列名
      */
-    String self();
+    String value() default "";
 
     /**
-     * 目标对应java字段名
+     * 是否不为空
      */
-    String target();
-
-    /**
-     * 中间表，需要继承{@link IMappingTable}
-     */
-    Class<? extends IMappingTable> mappingTable() default IMappingTable.class;
-
-    /**
-     * self对应的mapping表java字段名
-     */
-    String selfMapping() default "";
-
-    /**
-     * target对应的mapping表java字段名
-     */
-    String targetMapping() default "";
+    boolean notNull() default false;
 }

@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
+package org.noear.solon.data.sqlink.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
+
+import java.lang.annotation.*;
 
 /**
- * 数据库列注解
+ * 插入时默认值注解
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Column {
+public @interface InsertDefaultValue {
     /**
-     * 是否为主键
+     * 生成策略
+     * <p>
+     * <b>注意：在选择数据库生成策略情况下，插入时无论该字段是否有值，都会被忽略</b>
      */
-    boolean primaryKey() default false;
+    GenerateStrategy strategy();
 
     /**
-     * 数据库列名
+     * 静态值
      */
     String value() default "";
 
     /**
-     * 是否不为空
+     * 动态值
      */
-    boolean notNull() default false;
+    Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
 }
