@@ -71,7 +71,7 @@ Solon v3.0.3
 | 更高的计算性价比 | 并发高 300%；内存省 50%                                      |
 | 更快的开发效率 | 代码少；入门快；调试重启快 10 倍                                    |
 | 更好的生产与部署体验 | 打包小 90%                                               |
-| 更大的兼容范围 | 非 java-ee 架构；同时支持 java8 ～ java22，graalvm native image |
+| 更大的兼容范围 | 非 java-ee 架构；同时支持 java8 ～ java23，graalvm native image |
 
 ## 主要代码仓库
 

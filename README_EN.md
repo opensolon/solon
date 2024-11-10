@@ -71,7 +71,7 @@ Built from scratch, with more flexible interface specifications and an open ecos
 | Better cost performance for computing resources   | 300% higher concurrency 50% memory savings                            |
 | Faster development productivity      | Less code; Quick to get started; Debug restarts are 10x faster     |
 | Better production and deployment experience   | Pack 90% smaller |
-| Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java22, graalvm native image                   |
+| Greater range of compatibility      | Non-java-ee architecture; It also supports java8 ~ java23, graalvm native image                   |
 
 
 ## Main code repository
