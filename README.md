@@ -57,7 +57,7 @@ Solon v3.0.3
 <hr />
 
 <p align="center">
-300% higher concurrency 50% memory savings Startup is 10 times faster. Packing 90% smaller; It also supports java8 ~ java22, native runtime.
+300% higher concurrency 50% memory savings Startup is 10 times faster. Packing 90% smaller; It also supports java8 ~ java23, native runtime.
 <br/>
 Built from scratch, with more flexible interface specifications and an open ecosystem
 </p>
