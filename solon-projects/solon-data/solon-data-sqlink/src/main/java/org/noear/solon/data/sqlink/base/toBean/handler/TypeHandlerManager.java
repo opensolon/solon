@@ -76,6 +76,7 @@ public class TypeHandlerManager {
 
     /**
      * 获取处理器, 获取失败时返回默认处理器
+     *
      * @param type 目标类型
      */
     public static <T> ITypeHandler<T> get(Type type) {
@@ -88,6 +89,7 @@ public class TypeHandlerManager {
 
     /**
      * 通过处理器类型获取处理器
+     *
      * @param handlerType 处理器类型
      */
     public static <T> ITypeHandler<T> getByHandlerType(Class<? extends ITypeHandler<T>> handlerType) {

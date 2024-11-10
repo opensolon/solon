@@ -36,7 +36,7 @@ import java.util.Collection;
  * @author kiryu1223
  * @since 3.0
  */
- class SqLinkImpl implements SqLink {
+class SqLinkImpl implements SqLink {
     private final SqLinkConfig config;
 
     SqLinkImpl(SqLinkConfig config) {

@@ -80,6 +80,7 @@ public class MetaData {
                 String property = descriptor.getName();
                 Field field = type.getDeclaredField(property);
                 Column column = field.getAnnotation(Column.class);
+                boolean notNull = column != null && column.notNull();
                 String columnStr = (column == null || column.value().isEmpty()) ? property : column.value();
                 UseTypeHandler useTypeHandler = field.getAnnotation(UseTypeHandler.class);
                 boolean isUseTypeHandler = useTypeHandler != null;
@@ -88,14 +89,12 @@ public class MetaData {
                 Navigate navigate = field.getAnnotation(Navigate.class);
                 boolean isPrimaryKey = column != null && column.primaryKey();
                 InsertDefaultValue insertDefaultValue = field.getAnnotation(InsertDefaultValue.class);
-                UpdateDefaultValue updateDefaultValue = field.getAnnotation(UpdateDefaultValue.class);
-                OnInsert onInsert = field.getAnnotation(OnInsert.class);
-                Interceptor<?> insertInterceptor = (onInsert == null || onInsert.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onInsert.value()));
-                OnUpdate onUpdate = field.getAnnotation(OnUpdate.class);
-                Interceptor<?> updateInterceptor = (onUpdate == null || onUpdate.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onUpdate.value()));
-                OnSelect onSelect = field.getAnnotation(OnSelect.class);
-                Interceptor<?> selectPutInterceptor = (onSelect == null || onSelect.put() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onSelect.put()));
-                Interceptor<?> selectGetInterceptor = (onSelect == null || onSelect.get() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onSelect.get()));
+                //UpdateDefaultValue updateDefaultValue = field.getAnnotation(UpdateDefaultValue.class);
+                OnPut onPut = field.getAnnotation(OnPut.class);
+                Interceptor<?> onPutInterceptor = (onPut == null || onPut.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onPut.value()));
+                OnGet onGet = field.getAnnotation(OnGet.class);
+                Interceptor<?> onGetInterceptor = (onGet == null || onGet.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onGet.value()));
+
                 if (navigate != null) {
                     Class<?> navigateTargetType;
                     if (Collection.class.isAssignableFrom(field.getType())) {
@@ -109,7 +108,7 @@ public class MetaData {
                     }
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
-                propertys.add(new FieldMetaData(property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, insertDefaultValue, updateDefaultValue, insertInterceptor, updateInterceptor, selectPutInterceptor, selectGetInterceptor));
+                propertys.add(new FieldMetaData(notNull, property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, insertDefaultValue, onPutInterceptor, onGetInterceptor));
             }
         }
         catch (NoSuchFieldException | NoSuchMethodException e) {

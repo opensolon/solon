@@ -71,7 +71,8 @@ public class XPluginImpl implements Plugin {
             SqLinkProperties properties;
             if (dsProps == null) {
                 properties = new SqLinkProperties(); //允许没有配置（即，可默认）
-            } else {
+            }
+            else {
                 properties = dsProps.toBean(SqLinkProperties.class);
             }
 
@@ -124,7 +125,8 @@ public class XPluginImpl implements Plugin {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DbType dbType = DbType.getByName(databaseProductName);
             config.setDbType(dbType);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

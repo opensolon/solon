@@ -63,7 +63,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
         return String.join(" ", strings);
     }
 
-    private void addOrder(List<String> strings, List<Object> values, SqLinkConfig config) {
+    private void addOrder(List<String> strings, List<SqlValue> values, SqLinkConfig config) {
         MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
         FieldMetaData primary = metaData.getPrimary();
         if (primary == null) {
@@ -75,7 +75,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
         strings.add(sqlOrderByExpression.getSqlAndValue(config, values));
     }
 
-    private void makeSelect(List<String> strings, List<Object> values, SqLinkConfig config) {
+    private void makeSelect(List<String> strings, List<SqlValue> values, SqLinkConfig config) {
         List<String> result = new ArrayList<>();
         result.add("SELECT");
         if (select.isDistinct()) {

@@ -9,21 +9,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 查询时，值进入typeHandler之前和值从typeHandler取出之后
+ * 数据库取出值时拦截器
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface OnSelect {
+public @interface OnGet {
     /**
-     * 参数进入typeHandler之前的时机
+     * SQL => typeHandler => interceptor => value
      */
-    Class<? extends Interceptor<?>> put() default NoInterceptor.class;
-
-    /**
-     * 值通过typeHandler取出之后的时机
-     */
-    Class<? extends Interceptor<?>> get() default NoInterceptor.class;
+    Class<? extends Interceptor<?>> value();
 }

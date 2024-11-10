@@ -23,16 +23,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 插入时，值进入typeHandler之前的时机
+ * 值到数据库时拦截
  *
  * @author kiryu1223
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface OnInsert {
+public @interface OnPut {
     /**
-     * 拦截器
+     * value => interceptor => typeHandler => SQL
      */
     Class<? extends Interceptor<?>> value();
 }

@@ -45,7 +45,7 @@ public class DefaultDataSourceManager implements DataSourceManager {
 
     @Override
     public DataSource getDataSource() {
-        return null;
+        return dataSource;
     }
 //    public DataSource getDataSource()
 //    {

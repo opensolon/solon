@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+
 /**
  * SQL会话工厂
  *
@@ -22,5 +24,5 @@ package org.noear.solon.data.sqlink.base.session;
  * @since 3.0
  */
 public interface SqlSessionFactory {
-    SqlSession getSession();
+    SqlSession getSession(SqLinkConfig config);
 }

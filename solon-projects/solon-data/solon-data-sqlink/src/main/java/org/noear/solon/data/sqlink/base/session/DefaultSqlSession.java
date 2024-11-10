@@ -31,10 +31,12 @@ import java.util.Collection;
  * @since 3.0
  */
 public class DefaultSqlSession implements SqlSession {
+    protected final SqLinkConfig config;
     protected final DataSourceManager dataSourceManager;
     protected final TransactionManager transactionManager;
 
-    public DefaultSqlSession(DataSourceManager dataSourceManager, TransactionManager transactionManager) {
+    public DefaultSqlSession(SqLinkConfig config, DataSourceManager dataSourceManager, TransactionManager transactionManager) {
+        this.config = config;
         this.dataSourceManager = dataSourceManager;
         this.transactionManager = transactionManager;
     }
@@ -163,7 +165,7 @@ public class DefaultSqlSession implements SqlSession {
     protected void setObjects(PreparedStatement preparedStatement, Collection<SqlValue> sqlValues) throws SQLException {
         int index = 1;
         for (SqlValue sqlValue : sqlValues) {
-            sqlValue.preparedStatementSetValue(preparedStatement,index++);
+            sqlValue.preparedStatementSetValue(config, preparedStatement, index++);
         }
     }
 
@@ -172,7 +174,7 @@ public class DefaultSqlSession implements SqlSession {
         boolean batch = size > length;
         int index = 1;
         for (SqlValue sqlValue : sqlValues) {
-            sqlValue.preparedStatementSetValue(preparedStatement, index++);
+            sqlValue.preparedStatementSetValue(config, preparedStatement, index++);
             if (index > length && batch) {
                 index = 1;
                 preparedStatement.addBatch();

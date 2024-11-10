@@ -22,6 +22,7 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
 import org.noear.solon.data.sqlink.core.visitor.SetVisitor;
@@ -66,20 +67,20 @@ public class UpdateBase extends CRUD {
      * @return 执行后的结果
      */
     public long executeRows() {
-        SqLinkConfig config = getConfig();
         checkHasWhere();
+        SqLinkConfig config = getConfig();
         List<SqlValue> sqlValues = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(sqlValues);
         //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
         return session.executeUpdate(sql, sqlValues);
     }
 
     private void checkHasWhere() {
         if (getConfig().isIgnoreUpdateNoWhere()) return;
         if (!sqlBuilder.hasWhere()) {
-            throw new RuntimeException("UPDATE没有条件");
+            throw new SqLinkException("UPDATE没有条件");
         }
     }
 

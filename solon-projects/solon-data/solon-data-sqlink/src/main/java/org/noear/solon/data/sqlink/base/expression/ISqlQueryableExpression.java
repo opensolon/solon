@@ -48,24 +48,28 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
 
     /**
      * 设置group by
+     *
      * @param group
      */
     void setGroup(ISqlGroupByExpression group);
 
     /**
      * 添加having条件
+     *
      * @param cond
      */
     void addHaving(ISqlExpression cond);
 
     /**
      * 添加orderBy列
+     *
      * @param order
      */
     void addOrder(ISqlOrderExpression order);
 
     /**
      * 设置select
+     *
      * @param newSelect
      */
     void setSelect(ISqlSelectExpression newSelect);

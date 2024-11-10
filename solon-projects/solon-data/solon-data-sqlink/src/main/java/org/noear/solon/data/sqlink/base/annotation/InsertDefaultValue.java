@@ -27,8 +27,7 @@ import java.lang.annotation.*;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface InsertDefaultValue
-{
+public @interface InsertDefaultValue {
     /**
      * 生成策略
      * <p>
@@ -42,7 +41,7 @@ public @interface InsertDefaultValue
     String value() default "";
 
     /**
-     * 动态值生成器
+     * 动态值
      */
     Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
 }

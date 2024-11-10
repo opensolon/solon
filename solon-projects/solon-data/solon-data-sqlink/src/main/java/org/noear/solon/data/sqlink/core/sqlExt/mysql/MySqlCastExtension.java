@@ -27,7 +27,7 @@ import java.util.List;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
 
 /**
- *  MySQl类型转换函数扩展
+ * MySQl类型转换函数扩展
  *
  * @author kiryu1223
  * @since 3.0

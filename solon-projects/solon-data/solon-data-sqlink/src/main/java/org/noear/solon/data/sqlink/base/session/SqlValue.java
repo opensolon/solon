@@ -15,8 +15,10 @@
  */
 package org.noear.solon.data.sqlink.base.session;
 
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 
@@ -58,7 +60,7 @@ public class SqlValue {
     /**
      * 设置进sql
      */
-    public void preparedStatementSetValue(PreparedStatement preparedStatement, int index) throws SQLException {
-        typeHandler.setValue(preparedStatement, index, cast(interceptor.doIntercept(cast(value))));
+    public void preparedStatementSetValue(SqLinkConfig config, PreparedStatement preparedStatement, int index) throws SQLException {
+        typeHandler.setValue(preparedStatement, index, cast(interceptor.doIntercept(cast(value), config)));
     }
 }

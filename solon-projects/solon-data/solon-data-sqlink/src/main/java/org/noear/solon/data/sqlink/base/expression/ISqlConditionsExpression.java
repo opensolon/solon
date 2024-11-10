@@ -33,6 +33,7 @@ public interface ISqlConditionsExpression extends ISqlExpression {
 
     /**
      * 添加条件表达式
+     *
      * @param cond 条件表达式
      */
     default void addCondition(ISqlExpression cond) {

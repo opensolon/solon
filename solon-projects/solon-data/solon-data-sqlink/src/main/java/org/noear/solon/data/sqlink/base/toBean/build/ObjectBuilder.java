@@ -84,7 +84,7 @@ public class ObjectBuilder<T> {
      *
      * @param column key的列名
      */
-    public <Key> Map<Key, T> createMap(String column) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, T> createMap(String column) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -109,7 +109,7 @@ public class ObjectBuilder<T> {
      *
      * @param keyColumn key的列名
      */
-    public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, List<T>> createMapList(String keyColumn) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -146,7 +146,7 @@ public class ObjectBuilder<T> {
      *
      * @param anotherKeyColumn key的元数据
      */
-    public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public <Key> Map<Key, List<T>> createMapListByAnotherKey(FieldMetaData anotherKeyColumn) throws SQLException, InvocationTargetException, IllegalAccessException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
@@ -197,7 +197,7 @@ public class ObjectBuilder<T> {
     /**
      * 单列返回
      */
-    private List<T> getSingleList() throws SQLException, NoSuchFieldException, IllegalAccessException {
+    private List<T> getSingleList() throws SQLException {
         List<T> list = new ArrayList<>();
         ITypeHandler<T> typeHandler = TypeHandlerManager.get(target);
         while (resultSet.next()) {
@@ -244,24 +244,10 @@ public class ObjectBuilder<T> {
         return indexMap;
     }
 
-    private Object convertValue(FieldMetaData metaData, int index) throws SQLException, NoSuchFieldException, IllegalAccessException {
-//        if (metaData.hasConverter())
-//        {
-//            Class<?> type = metaData.getDbType();
-//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-//            Object value = typeHandler.getValue(resultSet, index, cast(type));
-//            IConverter<?, ?> converter = metaData.getConverter();
-//            return converter.toJava(cast(value), metaData);
-//        }
-//        else
-//        {
-//            Type type = metaData.isGenericType() ? metaData.getGenericType() : metaData.getType();
-//            ITypeHandler<?> typeHandler = TypeHandlerManager.get(type);
-//            return typeHandler.getValue(resultSet, index, cast(type));
-//        }
+    private Object convertValue(FieldMetaData metaData, int index) throws SQLException {
         ITypeHandler<?> typeHandler = metaData.getTypeHandler();
         Object value = typeHandler.getValue(resultSet, index, metaData.getGenericType());
-        Interceptor<?> onSelectGet = metaData.getOnSelectGet();
-        return onSelectGet.doIntercept(cast(value));
+        Interceptor<?> onSelectGet = metaData.getOnGet();
+        return onSelectGet.doIntercept(cast(value), config);
     }
 }

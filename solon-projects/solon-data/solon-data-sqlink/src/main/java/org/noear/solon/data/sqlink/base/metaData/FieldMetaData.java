@@ -16,7 +16,6 @@
 package org.noear.solon.data.sqlink.base.metaData;
 
 import org.noear.solon.data.sqlink.base.annotation.InsertDefaultValue;
-import org.noear.solon.data.sqlink.base.annotation.UpdateDefaultValue;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
@@ -30,6 +29,10 @@ import java.util.Objects;
  * @since 3.0
  */
 public class FieldMetaData {
+    /**
+     * 是否不为空
+     */
+    private final boolean notNull;
     /**
      * 字段名
      */
@@ -83,37 +86,23 @@ public class FieldMetaData {
      */
     private final InsertDefaultValue insertDefaultValue;
     /**
-     * 更新时默认值
+     * 进入时拦截器
      */
-    private final UpdateDefaultValue updateDefaultValue;
+    private final Interceptor<?> OnPut;
     /**
-     * 插入拦截器
+     * 获取时拦截器
      */
-    private final Interceptor<?> OnInsert;
-    /**
-     * 更新拦截器
-     */
-    private final Interceptor<?> OnUpdate;
-    /**
-     * 查询参数注入拦截器
-     */
-    private final Interceptor<?> OnSelectPut;
-    /**
-     * 查询获取值后拦截器
-     */
-    private final Interceptor<?> OnSelectGet;
+    private final Interceptor<?> OnGet;
 
-    public FieldMetaData(String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey, InsertDefaultValue insertDefaultValue, UpdateDefaultValue updateDefaultValueDefaultValues, Interceptor<?> onInsert, Interceptor<?> onUpdate, Interceptor<?> onSelectPut, Interceptor<?> onSelectGet) {
+    public FieldMetaData(boolean notNull, String property, String column, Method getter, Method setter, Field field, boolean useTypeHandler, ITypeHandler<?> typeHandler, boolean ignoreColumn, NavigateData navigateData, boolean isPrimaryKey, InsertDefaultValue insertDefaultValue, Interceptor<?> onPut, Interceptor<?> onGet) {
+        this.notNull = notNull;
         this.property = property;
         this.column = column;
         this.ignoreColumn = ignoreColumn;
         this.isPrimaryKey = isPrimaryKey;
         this.insertDefaultValue = insertDefaultValue;
-        this.updateDefaultValue = updateDefaultValueDefaultValues;
-        OnInsert = onInsert;
-        OnUpdate = onUpdate;
-        OnSelectPut = onSelectPut;
-        OnSelectGet = onSelectGet;
+        OnPut = onPut;
+        OnGet = onGet;
         getter.setAccessible(true);
         this.getter = getter;
         setter.setAccessible(true);
@@ -238,41 +227,24 @@ public class FieldMetaData {
         return insertDefaultValue;
     }
 
-    /**
-     * 更新时默认值
-     */
-    public UpdateDefaultValue getUpdateDefaultValue() {
-        return updateDefaultValue;
+    public Interceptor<?> getOnPut() {
+        return OnPut;
+    }
+
+    public Interceptor<?> getOnGet() {
+        return OnGet;
     }
 
     /**
-     * 插入拦截器
+     * 是否不为空
      */
-    public Interceptor<?> getOnInsert() {
-        return OnInsert;
+    public boolean isNotNull() {
+        return notNull;
     }
 
     /**
-     * 更新拦截器
+     * 反射获取值
      */
-    public Interceptor<?> getOnUpdate() {
-        return OnUpdate;
-    }
-
-    /**
-     * 查询参数注入拦截器
-     */
-    public Interceptor<?> getOnSelectPut() {
-        return OnSelectPut;
-    }
-
-    /**
-     * 查询获取值后拦截器
-     */
-    public Interceptor<?> getOnSelectGet() {
-        return OnSelectGet;
-    }
-
     public <T> T getValueByObject(Object o) {
         try {
             return (T) getter.invoke(o);
@@ -287,11 +259,11 @@ public class FieldMetaData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FieldMetaData that = (FieldMetaData) o;
-        return isGenericType == that.isGenericType && useTypeHandler == that.useTypeHandler && ignoreColumn == that.ignoreColumn && isPrimaryKey == that.isPrimaryKey && Objects.equals(property, that.property) && Objects.equals(column, that.column) && Objects.equals(getter, that.getter) && Objects.equals(setter, that.setter) && Objects.equals(field, that.field) && Objects.equals(typeHandler, that.typeHandler) && Objects.equals(navigateData, that.navigateData) && Objects.equals(genericType, that.genericType) && Objects.equals(insertDefaultValue, that.insertDefaultValue) && Objects.equals(updateDefaultValue, that.updateDefaultValue) && Objects.equals(OnInsert, that.OnInsert) && Objects.equals(OnUpdate, that.OnUpdate) && Objects.equals(OnSelectPut, that.OnSelectPut) && Objects.equals(OnSelectGet, that.OnSelectGet);
+        return notNull == that.notNull && isGenericType == that.isGenericType && useTypeHandler == that.useTypeHandler && ignoreColumn == that.ignoreColumn && isPrimaryKey == that.isPrimaryKey && Objects.equals(property, that.property) && Objects.equals(column, that.column) && Objects.equals(getter, that.getter) && Objects.equals(setter, that.setter) && Objects.equals(field, that.field) && Objects.equals(typeHandler, that.typeHandler) && Objects.equals(navigateData, that.navigateData) && Objects.equals(genericType, that.genericType) && Objects.equals(insertDefaultValue, that.insertDefaultValue) && Objects.equals(OnPut, that.OnPut) && Objects.equals(OnGet, that.OnGet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(property, column, getter, setter, field, isGenericType, useTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, genericType, insertDefaultValue, updateDefaultValue, OnInsert, OnUpdate, OnSelectPut, OnSelectGet);
+        return Objects.hash(notNull, property, column, getter, setter, field, isGenericType, useTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, genericType, insertDefaultValue, OnPut, OnGet);
     }
 }

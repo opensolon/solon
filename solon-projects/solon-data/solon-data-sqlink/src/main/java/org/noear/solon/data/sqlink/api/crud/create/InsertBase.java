@@ -27,6 +27,7 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.InsertSqlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +95,7 @@ public abstract class InsertBase extends CRUD {
         String sql = makeByObjects(notIgnorePropertys, sqlValues);
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
 
         if (getObjects().size() > 1) {
             tryPrintBatch(log, getObjects().size());
@@ -107,6 +108,7 @@ public abstract class InsertBase extends CRUD {
     }
 
     private String makeByObjects(List<FieldMetaData> notIgnorePropertys, List<SqlValue> sqlValues) {
+        SqLinkDialect disambiguation = getConfig().getDisambiguation();
         MetaData metaData = MetaDataCache.getMetaData(getTableType());
         List<String> tableFields = new ArrayList<>();
         List<String> tableValues = new ArrayList<>();
@@ -114,7 +116,7 @@ public abstract class InsertBase extends CRUD {
             InsertDefaultValue insertDefaultValue = fieldMetaData.getInsertDefaultValue();
             // 如果不是数据库生成策略，则添加
             if (insertDefaultValue == null || insertDefaultValue.strategy() != GenerateStrategy.DataBase) {
-                tableFields.add(fieldMetaData.getColumn());
+                tableFields.add(disambiguation.disambiguation(fieldMetaData.getColumn()));
                 tableValues.add("?");
             }
         }
@@ -133,25 +135,28 @@ public abstract class InsertBase extends CRUD {
                                 if (value == null) {
                                     value = typeHandler.castStringToTarget(onInsert.value());
                                 }
-                                sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                                sqlValues.add(new SqlValue(value, typeHandler, fieldMetaData.getOnPut()));
                                 break;
                             case Dynamic:
                                 if (value == null) {
                                     DynamicGenerator generator = DynamicGenerator.get(onInsert.dynamic());
                                     value = generator.generate(getConfig(), fieldMetaData);
                                 }
-                                sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                                sqlValues.add(new SqlValue(value, typeHandler, fieldMetaData.getOnPut()));
                                 break;
                         }
                     }
                     else {
-                        sqlValues.add(new SqlValue(value, typeHandler,fieldMetaData.getOnInsert()));
+                        // 值为空同时设置了notNull且没有默认值注解的情况
+                        if (value == null && fieldMetaData.isNotNull()) {
+                            throw new SqLinkException(String.format("%s类的%s字段被设置为notnull，但是字段值为空且没有设置默认值注解", fieldMetaData.getParentType(), fieldMetaData.getProperty()));
+                        }
+                        sqlValues.add(new SqlValue(value, typeHandler, fieldMetaData.getOnPut()));
                     }
                 }
             }
         }
         SqLinkDialect dialect = getSqlBuilder().getConfig().getDisambiguation();
-        return "INSERT INTO " + dialect.disambiguationTableName(metaData.getTableName()) + "(" + String.join(",", tableFields)
-                + ") VALUES(" + String.join(",", tableValues) + ")";
+        return "INSERT INTO " + dialect.disambiguationTableName(metaData.getTableName()) + "(" + String.join(",", tableFields) + ") VALUES(" + String.join(",", tableValues) + ")";
     }
 }

@@ -71,16 +71,17 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected boolean any() {
+        SqLinkConfig config = getConfig();
         //获取拷贝的查询对象
-        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(getConfig());
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), queryableCopy);
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(config);
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, queryableCopy);
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
         // SELECT 1
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
         // LIMIT 1
         querySqlBuilder.setLimit(0, 1);
         //查询
-        SqlSession session = getConfig().getSqlSessionFactory().getSession();
+        SqlSession session = getConfig().getSqlSessionFactory().getSession(config);
         List<SqlValue> values = new ArrayList<>();
         String sql = querySqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
@@ -100,7 +101,7 @@ public abstract class QueryBase extends CRUD {
         //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
 
         //long start2 = System.nanoTime();
         List<T> ts = session.executeQuery(

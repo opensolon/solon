@@ -33,9 +33,10 @@ public abstract class BaseSqlExtension {
 
     /**
      * 运行时生成需要的SQL表达式
+     *
      * @param config 配置
      * @param method 函数
-     * @param args 参数
+     * @param args   参数
      */
     public abstract ISqlExpression parse(SqLinkConfig config, Method method, List<ISqlExpression> args);
 

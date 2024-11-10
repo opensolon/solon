@@ -63,13 +63,13 @@ public abstract class DeleteBase extends CRUD {
      * @return 执行后的结果
      */
     public long executeRows() {
-        SqLinkConfig config = getConfig();
         checkHasWhere();
+        SqLinkConfig config = getConfig();
         List<SqlValue> sqlValues = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(sqlValues);
         //tryPrintUseDs(log,config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
-        SqlSession session = config.getSqlSessionFactory().getSession();
+        SqlSession session = config.getSqlSessionFactory().getSession(config);
         return session.executeDelete(sql, sqlValues);
     }
 

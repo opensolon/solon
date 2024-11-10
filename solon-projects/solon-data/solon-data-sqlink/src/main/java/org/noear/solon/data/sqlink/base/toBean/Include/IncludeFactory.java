@@ -31,12 +31,13 @@ import java.util.List;
 public abstract class IncludeFactory {
     /**
      * 获取抓取器
-     * @param config 配置
-     * @param session 会话
+     *
+     * @param config      配置
+     * @param session     会话
      * @param targetClass 目标类
-     * @param sources 源对象集合
-     * @param includes 抓取信息
-     * @param queryable 本次的查询表达式
+     * @param sources     源对象集合
+     * @param includes    抓取信息
+     * @param queryable   本次的查询表达式
      */
     public abstract <T> IncludeBuilder<T> getBuilder(SqLinkConfig config, SqlSession session, Class<T> targetClass, Collection<T> sources, List<IncludeSet> includes, ISqlQueryableExpression queryable);
 }

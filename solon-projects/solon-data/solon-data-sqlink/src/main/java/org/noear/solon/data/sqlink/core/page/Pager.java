@@ -26,8 +26,9 @@ import java.util.List;
 public interface Pager {
     /**
      * 获取分页结果
+     *
      * @param total 总数
-     * @param data 数据
+     * @param data  数据
      */
     <T> PagedResult<T> getPagedResult(long total, List<T> data);
 }

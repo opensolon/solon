@@ -33,7 +33,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     }
 
     @Override
-    public SqlSession getSession() {
-        return new DefaultSqlSession(dataSourceManager, transactionManager);
+    public SqlSession getSession(SqLinkConfig config) {
+        return new DefaultSqlSession(config, dataSourceManager, transactionManager);
     }
 }

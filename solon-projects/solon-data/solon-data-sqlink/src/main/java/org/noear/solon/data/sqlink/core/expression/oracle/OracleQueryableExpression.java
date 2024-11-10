@@ -79,7 +79,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
         return String.join(" ", strings);
     }
 
-    private void limitAndOrderCheck(List<String> strings, List<Object> values, SqLinkConfig config) {
+    private void limitAndOrderCheck(List<String> strings, List<SqlValue> values, SqLinkConfig config) {
         if (limit.hasRowsOrOffset() && orderBy.isEmpty()) {
             MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
             FieldMetaData primary = metaData.getPrimary();

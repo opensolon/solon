@@ -83,6 +83,7 @@ public abstract class SqlAggregation6<T1, T2, T3, T4, T5, T6> implements IAggreg
 
     /**
      * 将同一分组中的多个值连接成一个字符串，使用逗号分隔
+     *
      * @param expr 选择的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      */
     public <R> String groupJoin(Func6<T1, T2, T3, T4, T5, T6, R> expr) {
@@ -92,10 +93,11 @@ public abstract class SqlAggregation6<T1, T2, T3, T4, T5, T6> implements IAggreg
 
     /**
      * 将同一分组中的多个值连接成一个字符串，并且使用指定的字符分隔
+     *
      * @param delimiter 分隔符
-     * @param expr 选择的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param expr      选择的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      */
-    public <R> String groupJoin(String delimiter,Func6<T1, T2, T3, T4, T5, T6, R> expr) {
+    public <R> String groupJoin(String delimiter, Func6<T1, T2, T3, T4, T5, T6, R> expr) {
         boom();
         return "";
     }

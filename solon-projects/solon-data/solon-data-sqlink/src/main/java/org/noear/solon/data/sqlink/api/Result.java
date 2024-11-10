@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * 匿名查询结果，请不要继承这个类
+ *
  * @author kiryu1223
  * @since 3.0
  */

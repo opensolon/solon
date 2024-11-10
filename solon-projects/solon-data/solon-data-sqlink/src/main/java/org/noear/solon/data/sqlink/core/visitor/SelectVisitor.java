@@ -33,7 +33,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGroupKey;
 
 /**
- *  select表达式解析器
+ * select表达式解析器
  *
  * @author kiryu1223
  * @since 3.0

@@ -53,9 +53,10 @@ public class DeleteSqlBuilder implements ISqlBuilder {
 
     /**
      * 添加关联表
+     *
      * @param joinType 关联类型
-     * @param table 关联表
-     * @param on 关联条件
+     * @param table    关联表
+     * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
         ISqlJoinExpression join = factory.join(
