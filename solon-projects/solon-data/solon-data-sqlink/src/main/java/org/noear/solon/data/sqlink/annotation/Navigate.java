@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
+package org.noear.solon.data.sqlink.annotation;
 
-import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,13 +23,41 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 指定使用的TypeHandler，此处指定的TypeHandler优先级高于根据类型匹配的
+ * 导航注解，用于表之间的关联
+ *
+ * @author kiryu1223
+ * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface UseTypeHandler {
+public @interface Navigate {
     /**
-     * 使用的TypeHandler的实现类（必须完全实现泛型）
+     * 关联关系
      */
-    Class<? extends ITypeHandler<?>> value();
+    RelationType value();
+
+    /**
+     * 自身对应java字段名
+     */
+    String self();
+
+    /**
+     * 目标对应java字段名
+     */
+    String target();
+
+    /**
+     * 中间表，需要继承{@link IMappingTable}
+     */
+    Class<? extends IMappingTable> mappingTable() default IMappingTable.class;
+
+    /**
+     * self对应的mapping表java字段名
+     */
+    String selfMapping() default "";
+
+    /**
+     * target对应的mapping表java字段名
+     */
+    String targetMapping() default "";
 }

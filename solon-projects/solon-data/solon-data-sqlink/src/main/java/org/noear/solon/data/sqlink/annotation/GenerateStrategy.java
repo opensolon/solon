@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
-
-import org.noear.solon.data.sqlink.base.intercept.Interceptor;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.noear.solon.data.sqlink.annotation;
 
 /**
- * 值到数据库时拦截
+ * 默认值生成策略
  *
  * @author kiryu1223
  * @since 3.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface OnPut {
+public enum GenerateStrategy {
     /**
-     * value => interceptor => typeHandler => SQL
+     * 由数据库生成
      */
-    Class<? extends Interceptor<?>> value();
+    DataBase,
+    /**
+     * 静态值
+     */
+    Static,
+    /**
+     * 动态值
+     */
+    Dynamic,
 }

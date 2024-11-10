@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.api.crud.read;
 
 
-import org.noear.solon.data.sqlink.base.annotation.EmptyTable;
+import org.noear.solon.data.sqlink.annotation.EmptyTable;
 
 /**
  * @author kiryu1223

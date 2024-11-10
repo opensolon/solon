@@ -13,29 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.annotation;
+package org.noear.solon.data.sqlink.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 
 /**
- * 关联关系注解
+ * 空表注解
  *
  * @author kiryu1223
  * @since 3.0
  */
-public enum RelationType {
-    /**
-     * 一对一
-     */
-    OneToOne,
-    /**
-     * 一对多
-     */
-    OneToMany,
-    /**
-     * 多对一
-     */
-    ManyToOne,
-    /**
-     * 多对多
-     */
-    ManyToMany
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface EmptyTable {
 }
