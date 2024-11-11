@@ -22,6 +22,9 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### v3.0.4
+* smart-http 升为 2.1
+
 ### v3.0.3
 * 新增 nami-coder-kryo 插件
 * 新增 solon-serialization-kryo 插件
