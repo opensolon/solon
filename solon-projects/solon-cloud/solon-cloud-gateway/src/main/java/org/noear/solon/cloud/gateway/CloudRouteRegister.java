@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  */
 public interface CloudRouteRegister {
     /**
-     * 登记路由
+     * 路由登记
      *
      * @param id      标识
      * @param builder 路由构建器
@@ -35,9 +35,16 @@ public interface CloudRouteRegister {
     CloudRouteRegister route(String id, Consumer<RouteSpec> builder);
 
     /**
-     * 登记路由
+     * 路由登记
      *
      * @param route 路由
      */
     CloudRouteRegister route(RouteSpec route);
+
+    /**
+     * 路由移除
+     *
+     * @param id 标识
+     */
+    CloudRouteRegister routeRemove(String id);
 }

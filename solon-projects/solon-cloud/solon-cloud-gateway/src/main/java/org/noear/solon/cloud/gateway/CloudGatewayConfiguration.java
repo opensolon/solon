@@ -98,6 +98,12 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
         return this;
     }
 
+    @Override
+    public CloudRouteRegister routeRemove(String id) {
+        routes.remove(id);
+        return this;
+    }
+
     /**
      * 查找路由记录
      *

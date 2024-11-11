@@ -25,5 +25,7 @@ public class DemoConfig {
     public void init(CloudRouteRegister register) {
         register.route("user-service", r -> r.path("/user/**").target("lb://user-service"))
                 .route("order-service", r -> r.path("/order/**").target("lb://order-service"));
+
+        register.routeRemove("user-service");
     }
 }
