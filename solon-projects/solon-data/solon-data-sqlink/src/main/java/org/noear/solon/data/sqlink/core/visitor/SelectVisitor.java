@@ -180,7 +180,7 @@ public class SelectVisitor extends SqlVisitor {
     protected void setAs(List<ISqlExpression> contexts, ISqlExpression expression, String name) {
         if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression sqlColumn = (ISqlColumnExpression) expression;
-            if (!sqlColumn.getPropertyMetaData().getColumn().equals(name)) {
+            if (!sqlColumn.getFieldMetaData().getColumn().equals(name)) {
                 contexts.add(factory.as(expression, name));
             }
             else {

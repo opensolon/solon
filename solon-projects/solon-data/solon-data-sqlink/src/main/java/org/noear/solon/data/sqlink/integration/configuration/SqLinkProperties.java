@@ -16,7 +16,7 @@
 package org.noear.solon.data.sqlink.integration.configuration;
 
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.data.sqlink.base.DbType;
+//import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.core.Option;
 
 /**
@@ -25,19 +25,19 @@ import org.noear.solon.data.sqlink.core.Option;
  */
 @Configuration
 public class SqLinkProperties {
-    private DbType dbType;
+    //private DbType dbType;
     private boolean printSql = true;
     private boolean printBatch = false;
     private boolean ignoreUpdateNoWhere = false;
     private boolean ignoreDeleteNoWhere = false;
 
-    public DbType getDbType() {
-        return dbType;
-    }
-
-    public void setDbType(DbType dbType) {
-        this.dbType = dbType;
-    }
+//    public DbType getDbType() {
+//        return dbType;
+//    }
+//
+//    public void setDbType(DbType dbType) {
+//        this.dbType = dbType;
+//    }
 
     public boolean isPrintSql() {
         return printSql;

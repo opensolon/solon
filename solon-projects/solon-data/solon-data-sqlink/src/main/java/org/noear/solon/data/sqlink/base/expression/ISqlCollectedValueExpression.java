@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,11 @@ public interface ISqlCollectedValueExpression extends ISqlValueExpression {
      * 元素之间的分隔符
      */
     String getDelimiter();
+
+    @Override
+    default boolean nouNull() {
+        return getCollection() != null;
+    }
 
     @Override
     default ISqlCollectedValueExpression copy(SqLinkConfig config) {

@@ -49,7 +49,7 @@ public class SqlSetExpression implements ISqlSetExpression {
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         String set = getColumn().getSqlAndValue(config, values) + " = ";
-        FieldMetaData fieldMetaData = getColumn().getPropertyMetaData();
+        FieldMetaData fieldMetaData = getColumn().getFieldMetaData();
         ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
         if (getValue() instanceof ISqlValueExpression) {
             if (getValue() instanceof ISqlSingleValueExpression) {

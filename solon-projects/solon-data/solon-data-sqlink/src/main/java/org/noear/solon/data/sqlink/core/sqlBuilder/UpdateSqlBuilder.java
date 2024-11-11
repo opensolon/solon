@@ -136,7 +136,7 @@ public class UpdateSqlBuilder implements ISqlBuilder {
     }
 
 //    private void setDefaultValues(List<SqlValue> values, MetaData metaData, StringBuilder sb) {
-//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getPropertyMetaData()).collect(Collectors.toSet());
+//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getFieldMetaData()).collect(Collectors.toSet());
 //        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
 //        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
 //            ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();

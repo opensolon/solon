@@ -287,10 +287,10 @@ public abstract class QueryBase extends CRUD {
         ISqlExpression expression = normalVisitor.visit(lambda);
         if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
+            if (!columnExpression.getFieldMetaData().hasNavigate()) {
                 throw new RuntimeException("include指定的字段需要被@Navigate修饰");
             }
-            relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
+            relationTypeCheck(columnExpression.getFieldMetaData().getNavigateData());
             IncludeSet includeSet;
             if (cond != null) {
                 NormalVisitor normalVisitor2 = new NormalVisitor(getConfig());
@@ -320,11 +320,11 @@ public abstract class QueryBase extends CRUD {
         ISqlExpression expression = normalVisitor.visit(lambda);
         if (expression instanceof ISqlColumnExpression) {
             ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            FieldMetaData fieldMetaData = columnExpression.getPropertyMetaData();
-            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
+            FieldMetaData fieldMetaData = columnExpression.getFieldMetaData();
+            if (!columnExpression.getFieldMetaData().hasNavigate()) {
                 throw new RuntimeException("include指定的字段需要被@Navigate修饰");
             }
-            relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
+            relationTypeCheck(columnExpression.getFieldMetaData().getNavigateData());
             Class<R> navigateTargetType = (Class<R>) fieldMetaData.getNavigateData().getNavigateTargetType();
             IncludeCond<R> temp = new IncludeCond<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(navigateTargetType)));
             action.invoke(temp);

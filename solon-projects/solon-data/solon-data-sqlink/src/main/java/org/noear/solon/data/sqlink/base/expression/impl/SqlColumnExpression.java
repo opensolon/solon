@@ -37,7 +37,7 @@ public class SqlColumnExpression implements ISqlColumnExpression {
     }
 
     @Override
-    public FieldMetaData getPropertyMetaData() {
+    public FieldMetaData getFieldMetaData() {
         return fieldMetaData;
     }
 
@@ -50,6 +50,6 @@ public class SqlColumnExpression implements ISqlColumnExpression {
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         SqLinkDialect dbConfig = config.getDisambiguation();
         String t = "t" + getTableIndex();
-        return dbConfig.disambiguation(t) + "." + dbConfig.disambiguation(getPropertyMetaData().getColumn());
+        return dbConfig.disambiguation(t) + "." + dbConfig.disambiguation(getFieldMetaData().getColumn());
     }
 }

@@ -28,6 +28,7 @@ import java.sql.SQLException;
  * @since 3.0
  */
 public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
+    public static final UnKnowTypeHandler<?> Instance = new UnKnowTypeHandler<>();
     @Override
     public T getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         if (type instanceof Class<?>) {

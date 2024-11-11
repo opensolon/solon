@@ -64,11 +64,11 @@ public class IncludeBuilder<T> {
         Map<FieldMetaData, Map<Object, List<T>>> cache = new HashMap<>();
 
         for (IncludeSet include : includes) {
-            NavigateData navigateData = include.getColumnExpression().getPropertyMetaData().getNavigateData();
+            NavigateData navigateData = include.getColumnExpression().getFieldMetaData().getNavigateData();
             Class<?> navigateTargetType = navigateData.getNavigateTargetType();
             FieldMetaData selfFieldMetaData = targetClassMetaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
             FieldMetaData targetFieldMetaData = MetaDataCache.getMetaData(navigateTargetType).getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
-            FieldMetaData includeFieldMetaData = include.getColumnExpression().getPropertyMetaData();
+            FieldMetaData includeFieldMetaData = include.getColumnExpression().getFieldMetaData();
 
             Map<Object, List<T>> sourcesMapList = cache.get(selfFieldMetaData);
             if (sourcesMapList == null) {
