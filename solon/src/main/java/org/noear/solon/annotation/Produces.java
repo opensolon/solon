@@ -18,7 +18,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 做为 @Mapping 的副词用，申明输出内容类型
+ * 做为 @Mapping 的副词用，申明支持 Multipart 输入
  *
  * @author noear
  * @since 1.7
