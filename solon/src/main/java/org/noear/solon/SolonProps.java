@@ -16,6 +16,7 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Import;
+import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.JavaUtil;
@@ -359,6 +360,12 @@ public final class SolonProps extends Props {
      */
     protected void plugsScan(List<ClassLoader> classLoaders) {
         List<String> excludeList = getList("solon.plugin.exclude");
+        SolonMain anno = app.source().getAnnotation(SolonMain.class);
+        if (anno != null) {
+            for (Class<?> clz : anno.exclude()) {
+                excludeList.add(clz.getName());
+            }
+        }
 
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置

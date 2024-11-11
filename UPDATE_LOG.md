@@ -23,6 +23,8 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.4
+
+* 添加 solon SolonMain.exclude 属性，排除插件
 * smart-http 升为 2.1
 
 ### v3.0.3

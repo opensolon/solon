@@ -15,6 +15,8 @@
  */
 package org.noear.solon.annotation;
 
+import org.noear.solon.core.Plugin;
+
 import java.lang.annotation.*;
 
 /**
@@ -36,5 +38,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SolonMain {
-
+    /**
+     * 排除插件
+     */
+    Class<? extends Plugin>[] exclude() default {};
 }
