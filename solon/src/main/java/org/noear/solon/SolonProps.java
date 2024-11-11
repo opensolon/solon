@@ -362,7 +362,7 @@ public final class SolonProps extends Props {
         List<String> excludeList = getList("solon.plugin.exclude");
         SolonMain anno = app.source().getAnnotation(SolonMain.class);
         if (anno != null) {
-            for (Class<?> clz : anno.exclude()) {
+            for (Class<?> clz : anno.pluginExclude()) {
                 excludeList.add(clz.getName());
             }
         }

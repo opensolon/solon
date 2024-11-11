@@ -24,7 +24,7 @@
 
 ### v3.0.4
 
-* 添加 solon SolonMain.exclude 属性，排除插件
+* 添加 solon SolonMain.pluginExclude 属性，排除插件
 * smart-http 升为 2.1
 
 ### v3.0.3

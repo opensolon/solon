@@ -39,7 +39,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface SolonMain {
     /**
-     * 排除插件
+     * 插件排除
      */
-    Class<? extends Plugin>[] exclude() default {};
+    Class<? extends Plugin>[] pluginExclude() default {};
 }
