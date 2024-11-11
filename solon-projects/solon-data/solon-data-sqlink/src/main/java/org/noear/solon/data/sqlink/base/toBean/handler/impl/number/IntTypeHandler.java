@@ -47,7 +47,7 @@ public class IntTypeHandler implements ITypeHandler<Integer> {
     }
 
     @Override
-    public Integer castStringToTarget(String value) {
+    public Integer castStringToTarget(String value, Type type) {
         return Integer.valueOf(value);
     }
 }

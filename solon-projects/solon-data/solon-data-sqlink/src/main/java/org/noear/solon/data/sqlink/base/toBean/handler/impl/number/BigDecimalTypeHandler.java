@@ -47,7 +47,7 @@ public class BigDecimalTypeHandler implements ITypeHandler<BigDecimal> {
     }
 
     @Override
-    public BigDecimal castStringToTarget(String value) {
+    public BigDecimal castStringToTarget(String value, Type type) {
         return new BigDecimal(value);
     }
 }

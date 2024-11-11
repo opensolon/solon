@@ -50,8 +50,9 @@ public interface ITypeHandler<T> {
      * 转换字符串到对应的值
      *
      * @param value 字符串值
+     * @param type 对应的类型
      */
-    T castStringToTarget(String value);
+    T castStringToTarget(String value, Type type);
 
     /**
      * 获取泛型类型

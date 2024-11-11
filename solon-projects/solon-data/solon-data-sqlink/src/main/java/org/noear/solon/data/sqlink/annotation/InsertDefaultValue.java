@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.annotation;
 
 import org.noear.solon.data.sqlink.base.generate.DynamicGenerator;
+import org.noear.solon.data.sqlink.base.generate.NoGenerator;
 
 import java.lang.annotation.*;
 
@@ -43,5 +44,5 @@ public @interface InsertDefaultValue {
     /**
      * 动态值
      */
-    Class<? extends DynamicGenerator> dynamic() default DynamicGenerator.class;
+    Class<? extends DynamicGenerator<?>> dynamic() default NoGenerator.class;
 }

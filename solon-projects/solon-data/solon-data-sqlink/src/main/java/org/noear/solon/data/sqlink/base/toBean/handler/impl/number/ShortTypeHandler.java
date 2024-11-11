@@ -47,7 +47,7 @@ public class ShortTypeHandler implements ITypeHandler<Short> {
     }
 
     @Override
-    public Short castStringToTarget(String value) {
+    public Short castStringToTarget(String value, Type type) {
         return Short.valueOf(value);
     }
 }

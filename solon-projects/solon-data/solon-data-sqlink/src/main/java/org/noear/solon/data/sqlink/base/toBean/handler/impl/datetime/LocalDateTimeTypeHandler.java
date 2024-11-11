@@ -45,7 +45,7 @@ public class LocalDateTimeTypeHandler implements ITypeHandler<LocalDateTime> {
     }
 
     @Override
-    public LocalDateTime castStringToTarget(String value) {
+    public LocalDateTime castStringToTarget(String value, Type type) {
         return LocalDateTime.parse(value);
     }
 }

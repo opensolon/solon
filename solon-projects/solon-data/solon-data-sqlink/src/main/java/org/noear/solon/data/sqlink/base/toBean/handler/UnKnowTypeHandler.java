@@ -29,6 +29,7 @@ import java.sql.SQLException;
  */
 public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
     public static final UnKnowTypeHandler<?> Instance = new UnKnowTypeHandler<>();
+
     @Override
     public T getValue(ResultSet resultSet, int index, Type type) throws SQLException {
         if (type instanceof Class<?>) {
@@ -59,7 +60,13 @@ public class UnKnowTypeHandler<T> implements ITypeHandler<T> {
     }
 
     @Override
-    public T castStringToTarget(String value) {
-        return (T) value;
+    public T castStringToTarget(String value, Type type) {
+        if (type instanceof Class<?>) {
+            Class<T> aClass = (Class<T>) type;
+            return aClass.cast(value);
+        }
+        else {
+            return (T) value;
+        }
     }
 }

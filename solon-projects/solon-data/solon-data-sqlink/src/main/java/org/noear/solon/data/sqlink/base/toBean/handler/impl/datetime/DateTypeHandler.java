@@ -43,7 +43,7 @@ public class DateTypeHandler implements ITypeHandler<Date> {
     }
 
     @Override
-    public Date castStringToTarget(String value) {
+    public Date castStringToTarget(String value, Type type) {
         return Date.valueOf(value);
     }
 }

@@ -15,8 +15,8 @@
  */
 package demo.sqlink.model;
 
-import demo.sqlink.interceptor.Base64Decryption;
-import demo.sqlink.interceptor.Base64Encryption;
+import demo.sqlink.interceptor.Decryption;
+import demo.sqlink.interceptor.Encryption;
 import org.noear.solon.data.sqlink.annotation.*;
 
 import java.time.LocalDateTime;
@@ -31,8 +31,8 @@ public class User {
     private long id;
     private String username;
     //加解密密码
-    @OnPut(Base64Encryption.class)
-    @OnGet(Base64Decryption.class)
+    @OnPut(Encryption.class)
+    @OnGet(Decryption.class)
     private String password;
     private String email;
     @Column("update_time")

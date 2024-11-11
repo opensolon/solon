@@ -43,7 +43,7 @@ public class TimestampTypeHandler implements ITypeHandler<Timestamp> {
     }
 
     @Override
-    public Timestamp castStringToTarget(String value) {
+    public Timestamp castStringToTarget(String value, Type type) {
         return Timestamp.valueOf(value);
     }
 }

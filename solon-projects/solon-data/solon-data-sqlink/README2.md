@@ -64,16 +64,16 @@ public class DemoService {
 
 ### 2.1 注解说明
 
-`Table`:数据库表注解
+`@Table`:数据库表注解
 
 | 特性     | 参数  | 参数类型   | 默认值 | 功能    |
 |--------|-----|--------|-----|-------|
 | value  | 表名  | String | 空   | 数据库表名 |
 | schema | 模式名 | String | 空   | 选择的模式 |
 
-`IgnoreColumn`：用于表示字段与表无关的注解（当你想要忽略某个字段）
+`@IgnoreColumn`：用于表示字段与表无关的注解（当你想要忽略某个字段）
 
-`Column`:列注解
+`@Column`:列注解
 
 | 特性         | 参数      | 参数类型   | 默认值   | 功能        |
 |------------|---------|--------|-------|-----------|
@@ -81,7 +81,7 @@ public class DemoService {
 | primaryKey | 是否为主键   | bool   | false | 是否是主键     |
 | notNull    | 是否非null | bool   | false | 是否NOTNULL |                 
 
-`Navigate`:用于表示关联关系的注解
+`@Navigate`:用于表示关联关系的注解
 
 | 字段            | 参数               | 类型                             | 默认值                 | 说明                                      |
 |---------------|------------------|--------------------------------|---------------------|-----------------------------------------|
@@ -92,13 +92,13 @@ public class DemoService {
 | selfMapping   | 选择的自身对应中间表的字段的名称 | String                         | 无                   | 多对多下必填,自身类对应的mappingTable表java字段名       |
 | targetMapping | 选择的目标对应中间表的字段的名称 | String                         | 无                   | 多对多下必填,目标类对应的mappingTable表java字段名       |
 
-`UseTypeHandler`:用于表示对字段使用指定的类型处理器
+`@UseTypeHandler`:用于表示对字段使用指定的类型处理器
 
 | 特性    | 参数                  | 参数类型                          | 默认值 | 功能             |
 |-------|---------------------|-------------------------------|-----|----------------|
 | value | 实现了ITypeHandler的类对象 | Class<? extends ITypeHandler> | 无   | 指定对该字段使用的类型处理器 |
 
-`InsertDefaultValue`:插入数据库时字段的默认值
+`@InsertDefaultValue`:插入数据库时字段的默认值
 
 | 特性       | 参数       | 参数类型                              | 默认值 | 功能                          |
 |----------|----------|-----------------------------------|-----|-----------------------------|
@@ -106,17 +106,168 @@ public class DemoService {
 | value    | 静态值      | String                            | 无   | 策略指定为静态值时使用                 |                    |
 | dynamic  | 动态值      | Class<? extends DynamicGenerator> | 无   | 策略指定为动态值时使用                 |
 
-`OnPut`:列字段相关的拦截注解
+`@OnPut`:列字段相关的拦截注解
 
 | 特性    | 参数     | 参数类型                         | 默认值 | 功能                    |
 |-------|--------|------------------------------|-----|-----------------------|
 | value | 拦截器类对象 | Class<? extends Interceptor> | 无   | 列字段相关的值进入数据库前触发拦截器的调用 |
 
-`OnGet`:列字段相关的拦截注解
+`@OnGet`:列字段相关的拦截注解
 
 | 特性    | 参数     | 参数类型                         | 默认值 | 功能                     |
 |-------|--------|------------------------------|-----|------------------------|
 | value | 拦截器类对象 | Class<? extends Interceptor> | 无   | 列字段相关的值从数据库取出后触发拦截器的调用 |
+
+### 2.2 自定义类型处理器
+
+需要继承`ITypeHandler<T>`并且完全实现泛型
+
+定义一个用来处理List<String>的类型处理器
+
+```java
+import org.noear.solon.annotation.Component;
+import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
+
+import java.lang.reflect.Type;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+// 加上@Component注解可以注册到容器里，这意味着全局的同类型字段都会调用这个类型处理器
+// 如果是用来给UseTypeHandler的话就不需要注册
+@Component
+public class ListStringTypeHandler implements ITypeHandler<List<String>> {
+
+    // 实现从ResultSet取出数据的逻辑
+    @Override
+    public List<String> getValue(ResultSet resultSet, int index, Type type) throws SQLException {
+        String string = resultSet.getString(index);
+        return Arrays.stream(string.split(",")).collect(Collectors.toList());
+    }
+
+    // 实现将数据填充到PreparedStatement的逻辑
+    @Override
+    public void setValue(PreparedStatement preparedStatement, int index, List<String> strings) throws SQLException {
+        preparedStatement.setString(index, String.join(",", strings));
+    }
+
+    // 实现将@InsertDefaultValue注解下的字符串值转换到实际的值的逻辑
+    @Override
+    public List<String> castStringToTarget(String value) {
+        return Arrays.stream(value.split(",")).collect(Collectors.toList());
+    }
+}
+```
+
+注意：支持替换框架内默认的类型处理(int,String...)
+
+### 2.3 自定义拦截器
+
+需要继承`Interceptor<T>`并且完全实现泛型
+
+定义一个需要给密码字段加密的拦截器
+
+```java
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
+
+public class Encryption extends Interceptor<String> {
+    @Override
+    public String doIntercept(String value, SqLinkConfig config) {
+        return encrypt(value);
+    }
+
+    private String encrypt(String password) {
+        // 加密逻辑
+    }
+}
+```
+
+再定义一个解密的拦截器
+
+```java
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.intercept.Interceptor;
+
+public class Decryption extends Interceptor<String> {
+    @Override
+    public String doIntercept(String value, SqLinkConfig config) {
+        return decrypt(value);
+    }
+
+    private String decrypt(String value) {
+        // 解密逻辑
+    }
+}
+```
+
+使用实例
+
+```java
+import demo.sqlink.interceptor.Encryption;
+import demo.sqlink.interceptor.Decryption;
+
+@Table("user")
+public class User {
+    private long id;
+    private String username;
+    @OnPut(Encryption.class)
+    @OnGet(Decryption.class)
+    private String password;
+}
+```
+
+### 2.4 默认值注解的使用
+
+`@InsertDefaultValue`注解可以在插入数据库时为没有值的字段提供默认值，有三种策列
+
++ 数据库提供
++ 字符串值
++ 动态生成器获取值
+
+选择数据库提供时会直接忽略这个字段（常用于自增主键）
+
+选择动态生成器需要继承`DynamicGenerator<T>`并且完全实现泛型
+
+定义一个uuid生成器
+```java
+package org.noear.solon.data.sqlink.base.generate;
+
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+
+import java.util.UUID;
+
+public class UUIDGenerator extends DynamicGenerator<String> {
+    @Override
+    public String generate(SqLinkConfig config, FieldMetaData fieldMetaData) {
+        return UUID.randomUUID().toString();
+    }
+}
+```
+
+使用实例
+
+```java
+import org.noear.solon.data.sqlink.annotation.GenerateStrategy;
+import org.noear.solon.data.sqlink.annotation.InsertDefaultValue;import org.noear.solon.data.sqlink.base.generate.UUIDGenerator;
+
+@Table("user")
+public class User {
+    // 数据库,假设这里是自增
+    @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
+    private long id;
+    // 静态值
+    @InsertDefaultValue(strategy = GenerateStrategy.Static,value = "新用户")
+    private String username;
+    // 动态值
+    @InsertDefaultValue(strategy = GenerateStrategy.Dynamic,dynamic = UUIDGenerator.class)
+    private String uuid;
+}
+```
 
 ### 3、查询操作
 

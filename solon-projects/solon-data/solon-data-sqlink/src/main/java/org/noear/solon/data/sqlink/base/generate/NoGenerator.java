@@ -18,17 +18,15 @@ package org.noear.solon.data.sqlink.base.generate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 
-import java.util.UUID;
-
 /**
- * UUID生成器
+ * 不生成器
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class UUIDGenerator extends DynamicGenerator<String> {
+public class NoGenerator extends DynamicGenerator<Void> {
     @Override
-    public String generate(SqLinkConfig config, FieldMetaData fieldMetaData) {
-        return UUID.randomUUID().toString();
+    public Void generate(SqLinkConfig config, FieldMetaData fieldMetaData) {
+        return null;
     }
 }

@@ -27,19 +27,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class DynamicGenerator {
+public abstract class DynamicGenerator<T> {
     /**
      * 动态生成
      *
      * @param config        配置
      * @param fieldMetaData 字段元数据
      */
-    public abstract Object generate(SqLinkConfig config, FieldMetaData fieldMetaData);
+    public abstract T generate(SqLinkConfig config, FieldMetaData fieldMetaData);
 
-    private static final Map<Class<? extends DynamicGenerator>, DynamicGenerator> cache = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends DynamicGenerator<?>>, DynamicGenerator<?>> cache = new ConcurrentHashMap<>();
 
-    public static DynamicGenerator get(Class<? extends DynamicGenerator> c) {
-        DynamicGenerator generator = cache.get(c);
+    public static <T> DynamicGenerator<T> get(Class<? extends DynamicGenerator<T>> c) {
+        DynamicGenerator<T> generator = (DynamicGenerator<T>) cache.get(c);
         if (generator == null) {
             try {
                 generator = c.newInstance();
