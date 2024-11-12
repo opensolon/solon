@@ -26,6 +26,7 @@
 
 * 添加 solon SolonMain.pluginExclude 属性，排除插件
 * smart-http 升为 2.1
+* snack3 升为 3.2.121
 
 ### v3.0.3
 * 新增 nami-coder-kryo 插件
