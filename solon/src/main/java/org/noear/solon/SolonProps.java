@@ -213,14 +213,9 @@ public final class SolonProps extends Props {
             for (String p1 : paths.split(",")) {
                 URL propUrl = null;
                 if (isName) {
-                    //支持带 classpath: 开头
-                    if (ResourceUtil.hasClasspath(p1)) {
-                        p1 = ResourceUtil.remSchema(p1);
-                    }
-
-                    propUrl = ResourceUtil.getResource(p1);
+                    propUrl = ResourceUtil.findResource(p1, false);
                 } else {
-                    propUrl = ResourceUtil.findResource(p1);
+                    propUrl = ResourceUtil.findResource(p1, true);
                 }
 
                 if (propUrl == null) {
