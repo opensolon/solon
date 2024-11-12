@@ -18,9 +18,9 @@ package org.noear.solon.data.sqlink.api.crud.read;
 import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
@@ -389,5 +389,24 @@ public abstract class QueryBase extends CRUD {
         long offset = (index - 1) * take;
         List<T> list = dataQuery.limit(offset, take).toList();
         return pager.getPagedResult(total, list);
+    }
+
+    public long count0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        List<ISqlExpression> expressionList;
+        if (lambda == null) {
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), null);
+            expressionList = Collections.singletonList(count);
+        }
+        else {
+            NormalVisitor normalVisitor = new NormalVisitor(getConfig());
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), normalVisitor.visit(lambda));
+            expressionList = Collections.singletonList(count);
+        }
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(expressionList, long.class, true, false));
+        LQuery<Long> longLQuery = new LQuery<>(copyQuerySqlBuilder);
+        return longLQuery.toList().get(0);
     }
 }

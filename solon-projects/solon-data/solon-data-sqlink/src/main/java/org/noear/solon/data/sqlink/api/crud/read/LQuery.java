@@ -22,12 +22,12 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.Result;
-import org.noear.solon.data.sqlink.core.page.DefaultPager;
-import org.noear.solon.data.sqlink.core.page.PagedResult;
-import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.page.DefaultPager;
+import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.util.*;
@@ -616,6 +616,31 @@ public class LQuery<T> extends QueryBase {
      */
     public PagedResult<T> toPagedResult(int pageIndex, int pageSize) {
         return toPagedResult((long) pageIndex, (long) pageSize);
+    }
+
+    // endregion
+
+    // region [AGGREGATE]
+
+    /**
+     * 聚合函数COUNT(*)
+     */
+    public long count() {
+        return count0(null);
+    }
+
+    /**
+     * 聚合函数COUNT(FIELD)<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     */
+    public <R> long count(Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R> long count(ExprTree<Func1<T, R>> expr) {
+        return count0(expr.getTree());
     }
 
     // endregion
