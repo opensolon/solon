@@ -135,25 +135,34 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
             }
         }
         else {
-            sb.append(getLeft().getSqlAndValue(config, sqlValues));
-            sb.append(" ");
-            // (= NULL) => (IS NULL)
-            if (operator == SqlOperator.EQ
-                    && getRight() instanceof ISqlSingleValueExpression
-                    && !((ISqlSingleValueExpression) getRight()).nouNull()) {
-                sb.append(SqlOperator.IS.getOperator());
+            if (operator == SqlOperator.PLUS
+                    && ((getLeft() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getLeft()).getValue() instanceof String)
+                    &&
+                    (getRight() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getRight()).getValue() instanceof String))) {
+                ISqlTemplateExpression concat = StringMethods.concat(config, getLeft(), getRight());
+                sb.append(concat.getSql(config));
             }
             else {
-                sb.append(operator.getOperator());
-            }
-            sb.append(" ");
-            if (operator == SqlOperator.IN) {
-                sb.append("(");
-                sb.append(getRight().getSqlAndValue(config, sqlValues));
-                sb.append(")");
-            }
-            else {
-                sb.append(getRight().getSqlAndValue(config, sqlValues));
+                sb.append(getLeft().getSqlAndValue(config, sqlValues));
+                sb.append(" ");
+                // (= NULL) => (IS NULL)
+                if (operator == SqlOperator.EQ
+                        && getRight() instanceof ISqlSingleValueExpression
+                        && !((ISqlSingleValueExpression) getRight()).nouNull()) {
+                    sb.append(SqlOperator.IS.getOperator());
+                }
+                else {
+                    sb.append(operator.getOperator());
+                }
+                sb.append(" ");
+                if (operator == SqlOperator.IN) {
+                    sb.append("(");
+                    sb.append(getRight().getSqlAndValue(config, sqlValues));
+                    sb.append(")");
+                }
+                else {
+                    sb.append(getRight().getSqlAndValue(config, sqlValues));
+                }
             }
         }
         return sb.toString();

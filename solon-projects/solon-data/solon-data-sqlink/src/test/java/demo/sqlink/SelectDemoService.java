@@ -16,6 +16,7 @@
 package demo.sqlink;
 
 import demo.sqlink.model.User;
+import demo.sqlink.vo.UserVo;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
@@ -43,6 +44,13 @@ public class SelectDemoService {
                 .first();
     }
 
+    // 根据名称和email查询一位用户
+    public User findByNameAndEmail(String name, String email) {
+        return sqLink.query(User.class)
+                .where(u -> u.getUsername() == name && u.getEmail() == email)
+                .first();
+    }
+
     // 根据名称查询模糊匹配用户
     public List<User> findByName(String name) {
         return sqLink.query(User.class)
@@ -60,5 +68,12 @@ public class SelectDemoService {
                     long id = u.getId();
                     String email = u.getEmail();
                 }).toList();
+    }
+
+    // 或者使用Vo返回
+    public List<UserVo> findUserVoByName(String name) {
+        return sqLink.query(User.class)
+                .where(u -> u.getUsername().startsWith(name))
+                .select(UserVo.class).toList();
     }
 }
