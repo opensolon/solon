@@ -15,15 +15,19 @@
  */
 package demo;
 
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.*;
 import org.noear.solon.cloud.gateway.CloudRouteRegister;
 
-@Configuration
+@Controller
 public class DemoConfig {
-    @Bean
-    public void init(CloudRouteRegister register) {
+    @Inject
+    CloudRouteRegister register;
+
+    @Mapping("test")
+    public void test() {
         register.route("user-service", r -> r.path("/user/**").target("lb://user-service"))
                 .route("order-service", r -> r.path("/order/**").target("lb://order-service"));
+
+        register.routeRemove("user-service");
     }
 }
