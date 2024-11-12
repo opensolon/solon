@@ -236,7 +236,17 @@ public class ResourceUtil {
      * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
      */
     public static URL findResource(String uri) {
-        return findResource(null, uri);
+        return findResource(null, uri, true);
+    }
+
+    /**
+     * 查找资源
+     *
+     * @param uri       资源地址（"classpath:demo.xxx" or "./demo.xxx"）
+     * @param defAsFile 没前缀时默认做为 file
+     */
+    public static URL findResource(String uri, boolean defAsFile) {
+        return findResource(null, uri, defAsFile);
     }
 
     /**
