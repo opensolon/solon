@@ -216,6 +216,10 @@ public final class SolonProps extends Props {
                     propUrl = ResourceUtil.findResource(p1, false);
                 } else {
                     propUrl = ResourceUtil.findResource(p1, true);
+                    if (propUrl == null) {
+                        //如果是外部文件没有，尝试找对应的内部文件
+                        propUrl = ResourceUtil.getResource(p1);
+                    }
                 }
 
                 if (propUrl == null) {
