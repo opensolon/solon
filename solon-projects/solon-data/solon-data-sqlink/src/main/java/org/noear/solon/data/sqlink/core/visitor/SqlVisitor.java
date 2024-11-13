@@ -23,6 +23,7 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.sqlExt.BaseSqlExtension;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
@@ -44,6 +45,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGetter;
 
 /**
  * 表达式解析器
@@ -213,11 +216,23 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             }
         }
         // 集合的流函数
-//        else if (Stream.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
-//            Method method = methodCall.getMethod();
-//            if (method.getName().equals("filter")) {
-//            }
-//        }
+        else if (Stream.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+            Method method = methodCall.getMethod();
+            if (method.getName().equals("anyMatch")) {
+                ISqlExpression visit = visit(methodCall.getExpr());
+                if (!(visit instanceof ISqlQueryableExpression)) {
+                    throw new SqLinkException("不支持的表达式:" + methodCall);
+                }
+                ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
+                ISqlExpression cond = visit(methodCall.getArgs().get(0));
+                queryable.addWhere(cond);
+                queryable.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
+                return factory.unary(SqlOperator.EXISTS, queryable);
+            }
+            else {
+                return checkAndReturnValue(methodCall);
+            }
+        }
         // 集合的函数
         else if (Collection.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
@@ -226,6 +241,43 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 ISqlExpression right = visit(methodCall.getExpr());
 
                 return factory.binary(SqlOperator.IN, left, right);
+            }
+            else if (method.getName().equals("stream")) {
+                if (isGetter(method)) {
+                    ISqlExpression visit = visit(methodCall.getExpr());
+                    // a.getItems().stream()
+                    if (visit instanceof ISqlColumnExpression) {
+                        ISqlColumnExpression columnExpression = (ISqlColumnExpression) visit;
+                        FieldMetaData fieldMetaData = columnExpression.getFieldMetaData();
+                        ISqlRealTableExpression table;
+                        ISqlWhereExpression where = null;
+                        //if(!fieldMetaData.hasNavigate()) throw new SqLinkException("包含导航的属性才能使用stream()方法");
+                        if (fieldMetaData.hasNavigate()) {
+                            NavigateData navigateData = fieldMetaData.getNavigateData();
+                            table = factory.table(navigateData.getNavigateTargetType());
+                            where = factory.where();
+                            ISqlConditionsExpression condition = factory.condition();
+                            MetaData metaData = MetaDataCache.getMetaData(navigateData.getNavigateTargetType());
+                            FieldMetaData targetFieldMetaData = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+                            FieldMetaData selfFieldMetaData = MetaDataCache.getMetaData(fieldMetaData.getParentType()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+                            condition.addCondition(factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, 1), factory.column(selfFieldMetaData)));
+                        }
+                        else {
+                            table = factory.table(fieldMetaData.getType());
+                        }
+                        ISqlQueryableExpression queryable = factory.queryable(factory.from(table, 1));
+                        if (where != null) {
+                            queryable.addWhere(where);
+                        }
+                        return queryable;
+                    }
+                    else {
+                        throw new SqLinkException("不支持的表达式:" + methodCall);
+                    }
+                }
+                else {
+                    return checkAndReturnValue(methodCall);
+                }
             }
             else {
                 return checkAndReturnValue(methodCall);
@@ -486,7 +538,7 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         }
         // 字段
         else if (ExpressionUtil.isProperty(parameters, methodCall)) {
-            if (ExpressionUtil.isGetter(methodCall.getMethod())) {
+            if (isGetter(methodCall.getMethod())) {
                 ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
                 int index = parameters.indexOf(parameter) + offset;
                 Method getter = methodCall.getMethod();
@@ -499,10 +551,6 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 Method setter = methodCall.getMethod();
                 MetaData metaData = MetaDataCache.getMetaData(setter.getDeclaringClass());
                 FieldMetaData fieldMetaData = metaData.getFieldMetaDataBySetter(setter);
-                // 忽略字段
-                if (fieldMetaData.isIgnoreColumn()) {
-                    return null;
-                }
                 ISqlColumnExpression columnExpression = factory.column(fieldMetaData, index);
                 ISqlExpression value = visit(methodCall.getArgs().get(0));
                 return factory.set(columnExpression, value);

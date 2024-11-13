@@ -175,6 +175,16 @@ public interface SqlExpressionFactory {
     /**
      * 创建查询表达式
      *
+     * @param select select表达式
+     * @param from   from表达式
+     */
+    default ISqlQueryableExpression queryable(ISqlSelectExpression select,ISqlFromExpression from) {
+        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+    }
+
+    /**
+     * 创建查询表达式
+     *
      * @param table 表表达式
      */
     default ISqlQueryableExpression queryable(ISqlTableExpression table) {
