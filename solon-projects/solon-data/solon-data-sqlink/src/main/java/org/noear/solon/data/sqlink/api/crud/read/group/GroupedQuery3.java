@@ -17,6 +17,8 @@ package org.noear.solon.data.sqlink.api.crud.read.group;
 
 
 import io.github.kiryu1223.expressionTree.delegate.Func1;
+import io.github.kiryu1223.expressionTree.delegate.Func2;
+import io.github.kiryu1223.expressionTree.delegate.Func3;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import org.noear.solon.data.sqlink.api.Result;
@@ -28,6 +30,7 @@ import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -228,5 +231,91 @@ public class GroupedQuery3<Key, T1, T2, T3> extends QueryBase {
         return this;
     }
 
+    // endregion
+
+    // region [AGGREGATE]
+
+    /**
+     * 聚合函数COUNT
+     */
+    public long count() {
+        return count0(null);
+    }
+
+    /**
+     * 聚合函数COUNT<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     */
+    public <R> long count(Func3<T1, T2, T3, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R> long count(ExprTree<Func3<T1, T2, T3, R>> expr) {
+        return count0(expr.getTree());
+    }
+
+
+    /**
+     * 聚合函数SUM
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)
+     */
+    public <R extends Number> R sum(Func3<T1, T2, T3, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R sum(ExprTree<Func3<T1, T2, T3, R>> expr) {
+        return sum0(expr.getTree());
+    }
+
+
+    /**
+     * 聚合函数AVG
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red))
+     */
+    public <R extends Number> BigDecimal avg(Func3<T1, T2, T3, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> BigDecimal avg(ExprTree<Func3<T1, T2, T3, R>> expr) {
+        return avg0(expr.getTree());
+    }
+
+    /**
+     * 聚合函数MAX
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
+     */
+    public <R extends Number> R max(Func3<T1, T2, T3, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R max(ExprTree<Func3<T1, T2, T3, R>> expr) {
+        return max0(expr.getTree());
+    }
+
+    /**
+     * 聚合函数MIN
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
+     */
+    public <R extends Number> R min(Func3<T1, T2, T3, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R min(ExprTree<Func3<T1, T2, T3, R>> expr) {
+        return min0(expr.getTree());
+    }
     // endregion
 }

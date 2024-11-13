@@ -37,6 +37,11 @@ public class SelectDemoService {
                 .first();
     }
 
+    // 统计email不为空的用户数量
+    public long findEmailNotNullUserCount() {
+        return sqLink.query(User.class).count(u -> u.getEmail() != null);
+    }
+
     // 根据id查询用户
     public User findById(long id) {
         return sqLink.query(User.class)
@@ -75,5 +80,12 @@ public class SelectDemoService {
         return sqLink.query(User.class)
                 .where(u -> u.getUsername().startsWith(name))
                 .select(UserVo.class).toList();
+    }
+
+    // 根据地区码查询用户
+    public List<User> findUserByAreaCode(String code) {
+        return sqLink.query(User.class)
+                .where(u -> u.getAreas().stream().anyMatch(a -> a.getCode() == code))
+                .toList();
     }
 }

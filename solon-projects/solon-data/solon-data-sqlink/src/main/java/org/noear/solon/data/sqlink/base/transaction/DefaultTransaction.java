@@ -92,7 +92,7 @@ public class DefaultTransaction implements Transaction {
         }
         autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        if (isolationLevel != null) connection.setTransactionIsolation(isolationLevel);
+        if (getIsolationLevel() != null) connection.setTransactionIsolation(isolationLevel);
         return connection;
     }
 }

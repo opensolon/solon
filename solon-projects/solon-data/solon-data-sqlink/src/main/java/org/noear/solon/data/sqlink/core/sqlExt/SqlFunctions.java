@@ -52,81 +52,81 @@ public class SqlFunctions {
 
     // region [聚合函数]
 
-    /**
-     * 聚合函数COUNT(*)
-     */
-    @SqlExtensionExpression(template = "COUNT(*)")
-    public static long count() {
-        boom();
-        return 0;
-    }
-
-    /**
-     * 聚合函数COUNT(t)
-     */
-    @SqlExtensionExpression(template = "COUNT({t})")
-    public static <T> long count(T t) {
-        boom();
-        return 0;
-    }
-
-    /**
-     * 聚合函数SUM(t)
-     */
-    @SqlExtensionExpression(template = "SUM({t})")
-    public static <T> BigDecimal sum(T t) {
-        boom();
-        return BigDecimal.ZERO;
-    }
-
-    /**
-     * 聚合函数AVG(t)
-     */
-    @SqlExtensionExpression(template = "AVG({t})")
-    public static <T extends Number> BigDecimal avg(T t) {
-        boom();
-        return BigDecimal.ZERO;
-    }
-
-    /**
-     * 聚合函数MIN(t)
-     */
-    @SqlExtensionExpression(template = "MIN({t})")
-    public static <T> T min(T t) {
-        boom();
-        return (T) new Object();
-    }
-
-    /**
-     * 聚合函数MAX(t)
-     */
-    @SqlExtensionExpression(template = "MAX({t})")
-    public static <T> T max(T t) {
-        boom();
-        return (T) new Object();
-    }
-
-    @SqlExtensionExpression(dbType = DbType.H2, template = "GROUP_CONCAT({property})")
-    @SqlExtensionExpression(dbType = DbType.MySQL, template = "GROUP_CONCAT({property})")
-    @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property}) WITHIN GROUP (ORDER BY {property})")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},',')")
-    @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property})")
-    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,',')")
-    public static String groupJoin(String property) {
-        boom();
-        return "";
-    }
-
-    @SqlExtensionExpression(dbType = DbType.H2, template = "GROUP_CONCAT({property} SEPARATOR {delimiter})")
-    @SqlExtensionExpression(dbType = DbType.MySQL, template = "GROUP_CONCAT({property} SEPARATOR {delimiter})")
-    @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property},{delimiter}) WITHIN GROUP (ORDER BY {property})")
-    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},{delimiter})")
-    @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property},{delimiter})")
-    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,{delimiter})")
-    public static <T> String groupJoin(String delimiter, T property) {
-        boom();
-        return "";
-    }
+//    /**
+//     * 聚合函数COUNT(*)
+//     */
+//    @SqlExtensionExpression(template = "COUNT(*)")
+//    public static long count() {
+//        boom();
+//        return 0;
+//    }
+//
+//    /**
+//     * 聚合函数COUNT(t)
+//     */
+//    @SqlExtensionExpression(template = "COUNT({t})")
+//    public static <T> long count(T t) {
+//        boom();
+//        return 0;
+//    }
+//
+//    /**
+//     * 聚合函数SUM(t)
+//     */
+//    @SqlExtensionExpression(template = "SUM({t})")
+//    public static <T> BigDecimal sum(T t) {
+//        boom();
+//        return BigDecimal.ZERO;
+//    }
+//
+//    /**
+//     * 聚合函数AVG(t)
+//     */
+//    @SqlExtensionExpression(template = "AVG({t})")
+//    public static <T extends Number> BigDecimal avg(T t) {
+//        boom();
+//        return BigDecimal.ZERO;
+//    }
+//
+//    /**
+//     * 聚合函数MIN(t)
+//     */
+//    @SqlExtensionExpression(template = "MIN({t})")
+//    public static <T> T min(T t) {
+//        boom();
+//        return (T) new Object();
+//    }
+//
+//    /**
+//     * 聚合函数MAX(t)
+//     */
+//    @SqlExtensionExpression(template = "MAX({t})")
+//    public static <T> T max(T t) {
+//        boom();
+//        return (T) new Object();
+//    }
+//
+//    @SqlExtensionExpression(dbType = DbType.H2, template = "GROUP_CONCAT({property})")
+//    @SqlExtensionExpression(dbType = DbType.MySQL, template = "GROUP_CONCAT({property})")
+//    @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property}) WITHIN GROUP (ORDER BY {property})")
+//    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},',')")
+//    @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property})")
+//    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,',')")
+//    public static String groupJoin(String property) {
+//        boom();
+//        return "";
+//    }
+//
+//    @SqlExtensionExpression(dbType = DbType.H2, template = "GROUP_CONCAT({property} SEPARATOR {delimiter})")
+//    @SqlExtensionExpression(dbType = DbType.MySQL, template = "GROUP_CONCAT({property} SEPARATOR {delimiter})")
+//    @SqlExtensionExpression(dbType = DbType.Oracle, template = "LISTAGG({property},{delimiter}) WITHIN GROUP (ORDER BY {property})")
+//    @SqlExtensionExpression(dbType = DbType.SQLServer, template = "STRING_AGG({property},{delimiter})")
+//    @SqlExtensionExpression(dbType = DbType.SQLite, template = "GROUP_CONCAT({property},{delimiter})")
+//    @SqlExtensionExpression(dbType = DbType.PostgreSQL, template = "STRING_AGG({property}::TEXT,{delimiter})")
+//    public static <T> String groupJoin(String delimiter, T property) {
+//        boom();
+//        return "";
+//    }
 
     // endregion
 

@@ -20,6 +20,7 @@ import demo.sqlink.interceptor.Encryption;
 import org.noear.solon.data.sqlink.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Table("user")
@@ -39,6 +40,7 @@ public class User {
     // 插入与更新时默认值，来自数据库
     @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private LocalDateTime updateTime;
+    private List<Area> areas;
 
     public long getId() {
         return id;
@@ -78,5 +80,13 @@ public class User {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Area> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(List<Area> areas) {
+        this.areas = areas;
     }
 }

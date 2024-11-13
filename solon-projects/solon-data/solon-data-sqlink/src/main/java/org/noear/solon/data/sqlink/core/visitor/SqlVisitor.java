@@ -43,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 表达式解析器
@@ -211,6 +212,12 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 }
             }
         }
+        // 集合的流函数
+//        else if (Stream.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+//            Method method = methodCall.getMethod();
+//            if (method.getName().equals("filter")) {
+//            }
+//        }
         // 集合的函数
         else if (Collection.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();

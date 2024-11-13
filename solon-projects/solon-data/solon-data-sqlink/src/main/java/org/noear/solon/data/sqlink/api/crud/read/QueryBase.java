@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.*;
 
@@ -391,22 +392,70 @@ public abstract class QueryBase extends CRUD {
         return pager.getPagedResult(total, list);
     }
 
-    public long count0(LambdaExpression<?> lambda) {
+    protected long count0(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        List<ISqlExpression> expressionList;
+        List<ISqlExpression> countList;
         if (lambda == null) {
             ISqlTemplateExpression count = AggregateMethods.count(getConfig(), null);
-            expressionList = Collections.singletonList(count);
+            countList = Collections.singletonList(count);
         }
         else {
             NormalVisitor normalVisitor = new NormalVisitor(getConfig());
             ISqlTemplateExpression count = AggregateMethods.count(getConfig(), normalVisitor.visit(lambda));
-            expressionList = Collections.singletonList(count);
+            countList = Collections.singletonList(count);
         }
         ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
         QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
-        copyQuerySqlBuilder.setSelect(factory.select(expressionList, long.class, true, false));
-        LQuery<Long> longLQuery = new LQuery<>(copyQuerySqlBuilder);
-        return longLQuery.toList().get(0);
+        copyQuerySqlBuilder.setSelect(factory.select(countList, long.class, true, false));
+        LQuery<Long> countQuery = new LQuery<>(copyQuerySqlBuilder);
+        return countQuery.toList().get(0);
+    }
+
+    protected <T extends Number> T sum0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
+        ISqlTemplateExpression sum = AggregateMethods.sum(getConfig(), normalVisitor.visit(lambda));
+        List<ISqlExpression> sumList = Collections.singletonList(sum);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(sumList, lambda.getReturnType(), true, false));
+        LQuery<T> sumQuery = new LQuery<>(copyQuerySqlBuilder);
+        return sumQuery.toList().get(0);
+    }
+
+    protected BigDecimal avg0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
+        ISqlTemplateExpression avg = AggregateMethods.avg(getConfig(), normalVisitor.visit(lambda));
+        List<ISqlExpression> avgList = Collections.singletonList(avg);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder avgQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        avgQuerySqlBuilder.setSelect(factory.select(avgList, BigDecimal.class, true, false));
+        LQuery<BigDecimal> avgQuery = new LQuery<>(avgQuerySqlBuilder);
+        return avgQuery.toList().get(0);
+    }
+
+    protected <T extends Number> T max0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
+        ISqlTemplateExpression max = AggregateMethods.max(getConfig(), normalVisitor.visit(lambda));
+        List<ISqlExpression> maxList = Collections.singletonList(max);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder maxQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        maxQuerySqlBuilder.setSelect(factory.select(maxList, lambda.getReturnType(), true, false));
+        LQuery<T> maxQuery = new LQuery<>(maxQuerySqlBuilder);
+        return maxQuery.toList().get(0);
+    }
+
+    protected <T extends Number> T min0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
+        ISqlTemplateExpression min = AggregateMethods.min(getConfig(), normalVisitor.visit(lambda));
+        List<ISqlExpression> minList = Collections.singletonList(min);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder minQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
+        LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
+        return minQuery.toList().get(0);
     }
 }
