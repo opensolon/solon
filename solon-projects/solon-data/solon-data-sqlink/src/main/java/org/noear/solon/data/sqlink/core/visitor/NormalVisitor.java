@@ -37,4 +37,9 @@ public class NormalVisitor extends SqlVisitor {
     protected NormalVisitor getSelf() {
         return new NormalVisitor(config);
     }
+
+    @Override
+    protected SqlVisitor getSelf(int offset) {
+        return new NormalVisitor(config,offset);
+    }
 }

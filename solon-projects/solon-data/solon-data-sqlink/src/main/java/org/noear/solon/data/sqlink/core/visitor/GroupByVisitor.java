@@ -32,11 +32,12 @@ public class GroupByVisitor extends SqlVisitor {
         super(config);
     }
 
+    public GroupByVisitor(SqLinkConfig config, int offset) {
+        super(config, offset);
+    }
+
     /**
      * 解析分组表达式
-     *
-     * @param newExpression
-     * @return
      */
     @Override
     public ISqlExpression visit(NewExpression newExpression) {
@@ -61,5 +62,10 @@ public class GroupByVisitor extends SqlVisitor {
     @Override
     protected GroupByVisitor getSelf() {
         return new GroupByVisitor(config);
+    }
+
+    @Override
+    protected SqlVisitor getSelf(int offset) {
+        return new GroupByVisitor(config, offset);
     }
 }

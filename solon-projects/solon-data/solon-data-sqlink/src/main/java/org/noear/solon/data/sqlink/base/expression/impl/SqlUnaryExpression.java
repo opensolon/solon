@@ -52,7 +52,12 @@ public class SqlUnaryExpression implements ISqlUnaryExpression {
         String temp = getExpression().getSqlAndValue(config, values);
         String res;
         if (operator.isLeft()) {
-            res = operator.getOperator() + " " + temp;
+            if (operator == SqlOperator.EXISTS) {
+                res = operator.getOperator() + " (" + temp + ")";
+            }
+            else {
+                res = operator.getOperator() + " " + temp;
+            }
         }
         else {
             res = temp + " " + operator.getOperator();

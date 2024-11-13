@@ -47,6 +47,11 @@ public class SelectVisitor extends SqlVisitor {
         this.queryable = queryable;
     }
 
+    public SelectVisitor(SqLinkConfig config, ISqlQueryableExpression queryable, int offset) {
+        super(config, offset);
+        this.queryable = queryable;
+    }
+
     @Override
     public ISqlExpression visit(NewExpression newExpression) {
         BlockExpression classBody = newExpression.getClassBody();
@@ -160,6 +165,11 @@ public class SelectVisitor extends SqlVisitor {
     }
 
     @Override
+    protected SqlVisitor getSelf(int offset) {
+        return new SelectVisitor(config, queryable, offset);
+    }
+
+    @Override
     public ISqlExpression visit(ParameterExpression parameter) {
         if (parameters.contains(parameter)) {
             Class<?> type = parameter.getType();
@@ -215,4 +225,6 @@ public class SelectVisitor extends SqlVisitor {
                 return result;
         }
     }
+
+
 }

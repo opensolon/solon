@@ -58,4 +58,9 @@ public class SetVisitor extends SqlVisitor {
     protected SqlVisitor getSelf() {
         return new SetVisitor(config);
     }
+
+    @Override
+    protected SqlVisitor getSelf(int offset) {
+        return new SetVisitor(config,offset);
+    }
 }

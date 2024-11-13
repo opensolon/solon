@@ -32,10 +32,7 @@ import org.noear.solon.data.sqlink.core.exception.SqLinkIllegalExpressionExcepti
 import org.noear.solon.data.sqlink.core.exception.SqlFuncExtNotFoundException;
 import org.noear.solon.data.sqlink.core.visitor.methods.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.temporal.Temporal;
@@ -57,7 +54,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGetter;
 public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
     protected List<ParameterExpression> parameters;
     protected final SqLinkConfig config;
-    protected final int offset;
+    protected int offset;
     protected final SqlExpressionFactory factory;
 
     protected SqlVisitor(SqLinkConfig config) {
@@ -80,7 +77,7 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             return visit(lambda.getBody());
         }
         else {
-            SqlVisitor self = getSelf();
+            SqlVisitor self = getSelf(offset);
             return self.visit(lambda);
         }
     }
@@ -224,7 +221,9 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     throw new SqLinkException("不支持的表达式:" + methodCall);
                 }
                 ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
+                offset++;
                 ISqlExpression cond = visit(methodCall.getArgs().get(0));
+                offset--;
                 queryable.addWhere(cond);
                 queryable.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
                 return factory.unary(SqlOperator.EXISTS, queryable);
@@ -243,40 +242,43 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return factory.binary(SqlOperator.IN, left, right);
             }
             else if (method.getName().equals("stream")) {
-                if (isGetter(method)) {
-                    ISqlExpression visit = visit(methodCall.getExpr());
-                    // a.getItems().stream()
-                    if (visit instanceof ISqlColumnExpression) {
-                        ISqlColumnExpression columnExpression = (ISqlColumnExpression) visit;
-                        FieldMetaData fieldMetaData = columnExpression.getFieldMetaData();
-                        ISqlRealTableExpression table;
-                        ISqlWhereExpression where = null;
-                        //if(!fieldMetaData.hasNavigate()) throw new SqLinkException("包含导航的属性才能使用stream()方法");
-                        if (fieldMetaData.hasNavigate()) {
-                            NavigateData navigateData = fieldMetaData.getNavigateData();
-                            table = factory.table(navigateData.getNavigateTargetType());
-                            where = factory.where();
-                            ISqlConditionsExpression condition = factory.condition();
-                            MetaData metaData = MetaDataCache.getMetaData(navigateData.getNavigateTargetType());
-                            FieldMetaData targetFieldMetaData = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
-                            FieldMetaData selfFieldMetaData = MetaDataCache.getMetaData(fieldMetaData.getParentType()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
-                            condition.addCondition(factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, 1), factory.column(selfFieldMetaData)));
-                        }
-                        else {
-                            table = factory.table(fieldMetaData.getType());
-                        }
-                        ISqlQueryableExpression queryable = factory.queryable(factory.from(table, 1));
-                        if (where != null) {
-                            queryable.addWhere(where);
-                        }
-                        return queryable;
+                ISqlExpression visit = visit(methodCall.getExpr());
+                // a.getItems().stream()
+                if (visit instanceof ISqlColumnExpression) {
+                    ISqlColumnExpression columnExpression = (ISqlColumnExpression) visit;
+                    FieldMetaData fieldMetaData = columnExpression.getFieldMetaData();
+                    ISqlRealTableExpression table;
+                    ISqlConditionsExpression condition = null;
+                    //if(!fieldMetaData.hasNavigate()) throw new SqLinkException("包含导航的属性才能使用stream()方法");
+                    if (fieldMetaData.hasNavigate()) {
+                        NavigateData navigateData = fieldMetaData.getNavigateData();
+                        table = factory.table(navigateData.getNavigateTargetType());
+                        condition = factory.condition();
+                        MetaData metaData = MetaDataCache.getMetaData(navigateData.getNavigateTargetType());
+                        FieldMetaData targetFieldMetaData = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+                        FieldMetaData selfFieldMetaData = MetaDataCache.getMetaData(fieldMetaData.getParentType()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+                        condition.addCondition(factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, 1), factory.column(selfFieldMetaData)));
                     }
                     else {
-                        throw new SqLinkException("不支持的表达式:" + methodCall);
+                        // todo:先糊弄一下
+                        Type genericType = fieldMetaData.getGenericType();
+                        if (genericType instanceof Class) {
+                            table = factory.table((Class<?>) genericType);
+                        }
+                        else {
+                            ParameterizedType type = (ParameterizedType) genericType;
+                            Type actualTypeArgument = type.getActualTypeArguments()[0];
+                            table = factory.table((Class<?>) actualTypeArgument);
+                        }
                     }
+                    ISqlQueryableExpression queryable = factory.queryable(factory.from(table, 1));
+                    if (condition != null) {
+                        queryable.addWhere(condition);
+                    }
+                    return queryable;
                 }
                 else {
-                    return checkAndReturnValue(methodCall);
+                    throw new SqLinkException("不支持的表达式:" + methodCall);
                 }
             }
             else {
@@ -645,6 +647,11 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
      * 获得一个新的自己
      */
     protected abstract SqlVisitor getSelf();
+
+    /**
+     * 获得一个新的自己
+     */
+    protected abstract SqlVisitor getSelf(int offset);
 
     protected ISqlValueExpression checkAndReturnValue(MethodCallExpression expression) {
         Method method = expression.getMethod();

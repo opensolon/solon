@@ -81,7 +81,9 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
             }
             if (valueExpression instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression singleValue = (ISqlSingleValueExpression) valueExpression;
-                sqlValues.add(new SqlValue(singleValue.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                if (sqlValues != null) {
+                    sqlValues.add(new SqlValue(singleValue.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                }
                 sb.append("?");
             }
             else {
@@ -92,14 +94,18 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
                     sb.append("(");
                     List<String> strings = new ArrayList<>(collection.size());
                     for (Object o : collection) {
-                        sqlValues.add(new SqlValue(o, fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                        if (sqlValues != null) {
+                            sqlValues.add(new SqlValue(o, fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                        }
                         strings.add("?");
                     }
                     sb.append(String.join(collectedValue.getDelimiter(), strings));
                     sb.append(")");
                 }
                 else {
-                    sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                    if (sqlValues != null) {
+                        sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                    }
                     sb.append("?");
                 }
             }
@@ -110,11 +116,15 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
             FieldMetaData fieldMetaData = sqlColumn.getFieldMetaData();
             if (valueExpression instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression singleValue = (ISqlSingleValueExpression) valueExpression;
-                sqlValues.add(new SqlValue(singleValue.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                if (sqlValues != null) {
+                    sqlValues.add(new SqlValue(singleValue.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                }
             }
             else {
                 ISqlCollectedValueExpression collectedValue = (ISqlCollectedValueExpression) valueExpression;
-                sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                if (sqlValues != null) {
+                    sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                }
             }
             if (operator == SqlOperator.PLUS && fieldMetaData.getType() == String.class && valueExpression instanceof ISqlSingleValueExpression && valueExpression.nouNull() && ((ISqlSingleValueExpression) valueExpression).getValue() instanceof String) {
                 ISqlTemplateExpression concat = StringMethods.concat(config, valueExpression, sqlColumn);

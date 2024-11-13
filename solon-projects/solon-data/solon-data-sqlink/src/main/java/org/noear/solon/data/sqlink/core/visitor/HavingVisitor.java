@@ -37,6 +37,12 @@ public class HavingVisitor extends SqlVisitor {
         this.queryable = queryable;
     }
 
+    public HavingVisitor(SqLinkConfig config, ISqlQueryableExpression queryable, int offset) {
+        super(config, offset);
+        this.queryable = queryable;
+    }
+
+
     @Override
     public ISqlExpression visit(FieldSelectExpression fieldSelect) {
         if (ExpressionUtil.isGroupKey(parameters, fieldSelect)) // g.key
@@ -57,5 +63,10 @@ public class HavingVisitor extends SqlVisitor {
     @Override
     protected SqlVisitor getSelf() {
         return new HavingVisitor(config, queryable);
+    }
+
+    @Override
+    protected SqlVisitor getSelf(int offset) {
+        return new HavingVisitor(config, queryable, offset);
     }
 }
