@@ -27,7 +27,14 @@ import java.util.Collection;
  * */
 public interface SessionState {
     /**
-     * 刷新SESSION状态
+     * 是否可替换
+     */
+    default boolean replaceable() {
+        return true;
+    }
+
+    /**
+     * 刷新SESSION状态（可续时）
      */
     default void sessionRefresh() {
     }
@@ -39,12 +46,14 @@ public interface SessionState {
     }
 
     /**
-     * 是否可替换
+     * 清除SESSION状态
      */
-    default boolean replaceable() {
-        return true;
-    }
+    void sessionClear();
 
+    /**
+     * 会话重置（清空数据，并变更会话ID）
+     * */
+    void sessionReset();
 
     /**
      * 获取SESSION_ID
@@ -60,7 +69,6 @@ public interface SessionState {
      * 获取SESSION键名集合
      * */
     Collection<String> sessionKeys();
-
 
     /**
      * 获取SESSION状态
@@ -83,16 +91,6 @@ public interface SessionState {
      * 移除SESSION状态
      */
     void sessionRemove(String key);
-
-    /**
-     * 清除SESSION状态
-     */
-    void sessionClear();
-
-    /**
-     * 会话重置（清空数据，并变更会话ID）
-     * */
-    void sessionReset();
 
     /**
      * 获取会话令牌（如： solon.extend.sessionstate.jwt 插件支持）
