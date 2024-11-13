@@ -62,7 +62,9 @@ public class PropsConverter {
         if (target == null) {
             return ClassWrap.get(targetClz).newBy(props);
         } else {
-            ClassWrap.get(target.getClass()).fill(target, props::getProperty);
+            if (props != null && props.size() > 0) {
+                ClassWrap.get(target.getClass()).fill(target, props::getProperty);
+            }
             return target;
         }
     }

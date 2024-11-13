@@ -58,7 +58,9 @@ public class PropsConverterExt extends PropsConverter {
             return ONode.loadObj(props, Feature.UseSetter).toObject(targetType);
         } else {
             //bindTo 可能会返回为 null
-            ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+            if (props != null && props.size() > 0) {
+                ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+            }
 
             return target;
         }
