@@ -83,6 +83,7 @@ public abstract class SessionStateBase implements SessionState {
 
         sid = Utils.guid();
         cookieSet(SessionProps.session_cookieName, sid);
+        ctx.cookieMap().put(SessionProps.session_cookieName, sid);
 
         return sid;
     }

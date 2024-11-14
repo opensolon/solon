@@ -674,12 +674,18 @@ public abstract class Context {
     /**
      * 获取 sessionState
      */
-    public SessionState sessionState() {
-        if (sessionState == null) {
+    public SessionState sessionState(boolean create) {
+        if (sessionState == null && create) {
             sessionState = Solon.app().chainManager().getSessionState(this);
         }
 
         return sessionState;
+    }
+    /**
+     * 获取 sessionState
+     */
+    public SessionState sessionState() {
+        return sessionState(true);
     }
 
     /**
