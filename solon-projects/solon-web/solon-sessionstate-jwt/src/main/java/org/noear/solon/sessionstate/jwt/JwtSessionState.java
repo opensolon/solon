@@ -44,21 +44,12 @@ public class JwtSessionState extends SessionStateBase {
             return "";
         }
 
-        String _sessionId = ctx.attrOrDefault("sessionId", null);
-
-        if (_sessionId == null) {
-            _sessionId = sessionIdGet(false);
-            ctx.attrSet("sessionId", _sessionId);
-        }
-
-        return _sessionId;
+        return sessionIdGet(false);
     }
 
     @Override
     public String sessionChangeId() {
-        sessionIdGet(true);
-        ctx.attrSet("sessionId", null);
-        return sessionId();
+        return sessionIdGet(true);
     }
 
     @Override
