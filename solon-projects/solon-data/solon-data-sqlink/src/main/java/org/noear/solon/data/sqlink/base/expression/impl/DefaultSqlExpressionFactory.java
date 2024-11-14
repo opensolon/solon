@@ -32,8 +32,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlColumnExpression column(FieldMetaData fieldMetaData, int tableIndex) {
-        return new SqlColumnExpression(fieldMetaData, tableIndex);
+    public ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName) {
+        return new SqlColumnExpression(fieldMetaData,tableAsName);
     }
 
     @Override

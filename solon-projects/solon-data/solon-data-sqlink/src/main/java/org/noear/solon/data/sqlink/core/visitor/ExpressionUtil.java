@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 表达式工具
@@ -49,10 +50,10 @@ public class ExpressionUtil {
     /**
      * 判断是否为属性表达式
      */
-    public static boolean isProperty(List<ParameterExpression> parameters, FieldSelectExpression fieldSelect) {
+    public static boolean isProperty(Map<ParameterExpression,String> parameters, FieldSelectExpression fieldSelect) {
         if (fieldSelect.getExpr().getKind() != Kind.Parameter) return false;
         ParameterExpression parameter = (ParameterExpression) fieldSelect.getExpr();
-        return parameters.contains(parameter);
+        return parameters.containsKey(parameter);
     }
 
     /**

@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.*;
+import org.noear.solon.data.sqlink.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.IAggregation;
 import org.noear.solon.data.sqlink.base.DbType;
@@ -54,19 +55,15 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isGetter;
  * @since 3.0
  */
 public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
-    protected List<ParameterExpression> parameters;
+    protected ArrayDeque<Map<ParameterExpression, String>> asNameMapDeque = new ArrayDeque<>();
+    protected final ISqlQueryableExpression queryableExpression;
     protected final SqLinkConfig config;
-    protected int offset;
     protected final SqlExpressionFactory factory;
 
-    protected SqlVisitor(SqLinkConfig config) {
-        this(config, 0);
-    }
-
-    protected SqlVisitor(SqLinkConfig config, int offset) {
+    protected SqlVisitor(SqLinkConfig config, ISqlQueryableExpression queryableExpression) {
         this.config = config;
-        this.offset = offset;
         this.factory = config.getSqlExpressionFactory();
+        this.queryableExpression = queryableExpression;
     }
 
     /**
@@ -74,13 +71,39 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
      */
     @Override
     public ISqlExpression visit(LambdaExpression<?> lambda) {
-        if (parameters == null) {
-            parameters = lambda.getParameters();
-            return visit(lambda.getBody());
+        asNameMapDeque.push(getAsNameMap(lambda.getParameters()));
+        ISqlExpression visit = visit(lambda.getBody());
+        asNameMapDeque.pop();
+        return visit;
+    }
+
+    protected Map<ParameterExpression, String> getAsNameMap(List<ParameterExpression> parameters) {
+        List<Class<?>> orderedClass = queryableExpression.getOrderedClass();
+        Map<ParameterExpression, String> parameterExpressionStringMap = new HashMap<>(parameters.size());
+        Set<String> asNameSet = new HashSet<>(parameters.size());
+        for (int i = 0; i < parameters.size(); i++) {
+            Class<?> aClass = orderedClass.get(i);
+            MetaData metaData = MetaDataCache.getMetaData(aClass);
+            String asName = metaData.getTableName().substring(0, 1).toLowerCase();
+            if (asNameSet.contains(asName)) {
+                asName = asName(asName, 1, asNameSet);
+            }
+            else {
+                asNameSet.add(asName);
+            }
+            parameterExpressionStringMap.put(parameters.get(i), asName);
+        }
+        return parameterExpressionStringMap;
+    }
+
+    protected String asName(String asName, int offset, Set<String> asNames) {
+        String newName = asName + offset;
+        if (asNames.contains(newName)) {
+            return asName(asName, offset + 1, asNames);
         }
         else {
-            SqlVisitor self = getSelf(offset);
-            return self.visit(lambda);
+            asNames.add(newName);
+            return newName;
         }
     }
 
@@ -103,12 +126,12 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
      */
     @Override
     public ISqlExpression visit(FieldSelectExpression fieldSelect) {
-        if (ExpressionUtil.isProperty(parameters, fieldSelect)) {
+        if (ExpressionUtil.isProperty(asNameMapDeque.peek(), fieldSelect)) {
             ParameterExpression parameter = (ParameterExpression) fieldSelect.getExpr();
-            int index = parameters.indexOf(parameter) + offset;
             Field field = fieldSelect.getField();
             MetaData metaData = MetaDataCache.getMetaData(field.getDeclaringClass());
-            return factory.column(metaData.getFieldMetaDataByFieldName(field.getName()), index);
+            Map<ParameterExpression, String> map = asNameMapDeque.peek();
+            return factory.column(metaData.getFieldMetaDataByFieldName(field.getName()), map.get(parameter));
         }
         else {
             return checkAndReturnValue(fieldSelect);
@@ -319,7 +342,8 @@ public abstract class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             }
         }
         // 子查询
-        else if (LQuery.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+        else if (LQuery.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())
+                || EndQuery.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             Method method = methodCall.getMethod();
             if (method.getName().equals("count")) {
                 offset++;

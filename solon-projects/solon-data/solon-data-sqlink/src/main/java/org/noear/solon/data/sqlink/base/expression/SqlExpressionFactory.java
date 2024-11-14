@@ -45,16 +45,16 @@ public interface SqlExpressionFactory {
      * @param fieldMetaData 字段元数据
      */
     default ISqlColumnExpression column(FieldMetaData fieldMetaData) {
-        return column(fieldMetaData, 0);
+        return column(fieldMetaData, null);
     }
 
     /**
      * 创建列表达式
      *
      * @param fieldMetaData 字段元数据
-     * @param tableIndex    表索引
+     * @param tableAsName   表别名
      */
-    ISqlColumnExpression column(FieldMetaData fieldMetaData, int tableIndex);
+    ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName);
 
     /**
      * 创建条件表达式
@@ -178,7 +178,7 @@ public interface SqlExpressionFactory {
      * @param select select表达式
      * @param from   from表达式
      */
-    default ISqlQueryableExpression queryable(ISqlSelectExpression select,ISqlFromExpression from) {
+    default ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from) {
         return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
@@ -353,8 +353,9 @@ public interface SqlExpressionFactory {
         MetaData metaData = MetaDataCache.getMetaData(target);
         List<FieldMetaData> property = metaData.getNotIgnorePropertys();
         List<ISqlExpression> columns = new ArrayList<>(property.size());
+        String as = metaData.getTableName().substring(0, 1).toLowerCase();
         for (FieldMetaData data : property) {
-            columns.add(column(data, 0));
+            columns.add(column(data, as));
         }
         return columns;
     }

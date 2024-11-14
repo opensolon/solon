@@ -29,11 +29,11 @@ import java.util.List;
  */
 public class SqlColumnExpression implements ISqlColumnExpression {
     private final FieldMetaData fieldMetaData;
-    private final int tableIndex;
+    private String tableAsName;
 
-    public SqlColumnExpression(FieldMetaData fieldMetaData, int tableIndex) {
+    public SqlColumnExpression(FieldMetaData fieldMetaData, String tableAsName) {
         this.fieldMetaData = fieldMetaData;
-        this.tableIndex = tableIndex;
+        this.tableAsName = tableAsName;
     }
 
     @Override
@@ -42,14 +42,24 @@ public class SqlColumnExpression implements ISqlColumnExpression {
     }
 
     @Override
-    public int getTableIndex() {
-        return tableIndex;
+    public String getTableAsName() {
+        return tableAsName;
+    }
+
+    @Override
+    public void setTableAsName(String tableAsName) {
+        this.tableAsName = tableAsName;
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        SqLinkDialect dbConfig = config.getDisambiguation();
-        String t = "t" + getTableIndex();
-        return dbConfig.disambiguation(t) + "." + dbConfig.disambiguation(getFieldMetaData().getColumn());
+        SqLinkDialect dialect = config.getDisambiguation();
+        String columnName = dialect.disambiguation(getFieldMetaData().getColumn());
+        if (tableAsName != null) {
+            return dialect.disambiguation(tableAsName) + "." + columnName;
+        }
+        else {
+            return columnName;
+        }
     }
 }
