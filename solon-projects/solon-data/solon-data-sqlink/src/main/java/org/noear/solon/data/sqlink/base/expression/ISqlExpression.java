@@ -42,5 +42,9 @@ public interface ISqlExpression {
     /**
      * 获取自己的拷贝
      */
-    <T extends ISqlExpression> T copy(SqLinkConfig config);
+    default <T extends ISqlExpression> T copy(SqLinkConfig config) {
+        return copy(config, null);
+    }
+
+    <T extends ISqlExpression> T copy(SqLinkConfig config, ISqlTableExpression tableExpression);
 }

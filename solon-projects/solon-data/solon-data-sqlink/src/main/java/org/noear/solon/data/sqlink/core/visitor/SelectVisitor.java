@@ -145,11 +145,11 @@ public class SelectVisitor extends SqlVisitor {
 
     @Override
     public ISqlExpression visit(FieldSelectExpression fieldSelect) {
-        if (isGroupKey(parameters, fieldSelect)) // g.key
+        if (queryable!=null&&isGroupKey(parameters, fieldSelect)) // g.key
         {
             return queryable.getGroupBy().getColumns().get("key");
         }
-        else if (isGroupKey(parameters, fieldSelect.getExpr())) // g.key.xxx
+        else if (queryable!=null&&isGroupKey(parameters, fieldSelect.getExpr())) // g.key.xxx
         {
             Map<String, ISqlExpression> columns = queryable.getGroupBy().getColumns();
             return columns.get(fieldSelect.getField().getName());

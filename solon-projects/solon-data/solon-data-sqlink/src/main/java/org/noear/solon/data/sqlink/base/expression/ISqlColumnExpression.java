@@ -30,13 +30,15 @@ public interface ISqlColumnExpression extends ISqlExpression {
      */
     FieldMetaData getFieldMetaData();
 
+    ISqlTableExpression getParent();
+
     /**
      * 获取字段所在的表的索引
      */
     int getTableIndex();
 
     @Override
-    default ISqlColumnExpression copy(SqLinkConfig config) {
+    default ISqlColumnExpression copy(SqLinkConfig config, ISqlTableExpression tableExpression) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         return factory.column(getFieldMetaData(), getTableIndex());
     }

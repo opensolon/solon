@@ -16,17 +16,16 @@
 package org.noear.solon.data.sqlink.api.crud.read.group;
 
 import io.github.kiryu1223.expressionTree.delegate.Func1;
-import io.github.kiryu1223.expressionTree.delegate.Func3;
 import io.github.kiryu1223.expressionTree.delegate.Func4;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.core.page.DefaultPager;
-import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.read.QueryBase;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.page.DefaultPager;
+import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.math.BigDecimal;
@@ -237,8 +236,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
     /**
      * 聚合函数COUNT
      */
-    public long count() {
-        return count0(null);
+    public List<Long> count() {
+        return groupByCount0(null);
     }
 
     /**
@@ -251,8 +250,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
         throw new NotCompiledException();
     }
 
-    public <R> long count(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
-        return count0(expr.getTree());
+    public <R> List<Long> count(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
+        return groupByCount0(expr.getTree());
     }
 
 
@@ -267,8 +266,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R sum(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
-        return sum0(expr.getTree());
+    public <R extends Number> List<R> sum(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
+        return groupBySum0(expr.getTree());
     }
 
 
@@ -283,8 +282,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
         throw new NotCompiledException();
     }
 
-    public <R extends Number> BigDecimal avg(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
-        return avg0(expr.getTree());
+    public <R extends Number> List<BigDecimal> avg(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
+        return groupByAvg0(expr.getTree());
     }
 
     /**
@@ -298,8 +297,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R max(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
-        return max0(expr.getTree());
+    public <R extends Number> List<R> max(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
+        return groupByMax0(expr.getTree());
     }
 
     /**
@@ -313,8 +312,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R min(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
-        return min0(expr.getTree());
+    public <R extends Number> List<R> min(ExprTree<Func4<T1, T2, T3, T4, R>> expr) {
+        return groupByMin0(expr.getTree());
     }
     // endregion
 }

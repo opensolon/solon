@@ -411,6 +411,25 @@ public abstract class QueryBase extends CRUD {
         return countQuery.toList().get(0);
     }
 
+    protected List<Long> groupByCount0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        List<ISqlExpression> countList;
+        if (lambda == null) {
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), null);
+            countList = Collections.singletonList(count);
+        }
+        else {
+            HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), havingVisitor.visit(lambda));
+            countList = Collections.singletonList(count);
+        }
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(countList, long.class, true, false));
+        LQuery<Long> countQuery = new LQuery<>(copyQuerySqlBuilder);
+        return countQuery.toList();
+    }
+
     protected <T extends Number> T sum0(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
@@ -421,6 +440,18 @@ public abstract class QueryBase extends CRUD {
         copyQuerySqlBuilder.setSelect(factory.select(sumList, lambda.getReturnType(), true, false));
         LQuery<T> sumQuery = new LQuery<>(copyQuerySqlBuilder);
         return sumQuery.toList().get(0);
+    }
+
+    protected <T extends Number> List<T> groupBySum0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression sum = AggregateMethods.sum(getConfig(), havingVisitor.visit(lambda));
+        List<ISqlExpression> sumList = Collections.singletonList(sum);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(sumList, lambda.getReturnType(), true, false));
+        LQuery<T> sumQuery = new LQuery<>(copyQuerySqlBuilder);
+        return sumQuery.toList();
     }
 
     protected BigDecimal avg0(LambdaExpression<?> lambda) {
@@ -435,6 +466,19 @@ public abstract class QueryBase extends CRUD {
         return avgQuery.toList().get(0);
     }
 
+    protected List<BigDecimal> groupByAvg0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression avg = AggregateMethods.avg(getConfig(), havingVisitor.visit(lambda));
+        List<ISqlExpression> avgList = Collections.singletonList(avg);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder avgQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        avgQuerySqlBuilder.setSelect(factory.select(avgList, BigDecimal.class, true, false));
+        LQuery<BigDecimal> avgQuery = new LQuery<>(avgQuerySqlBuilder);
+        return avgQuery.toList();
+    }
+
+
     protected <T extends Number> T max0(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
@@ -447,6 +491,18 @@ public abstract class QueryBase extends CRUD {
         return maxQuery.toList().get(0);
     }
 
+    protected <T extends Number> List<T> groupByMax0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression max = AggregateMethods.max(getConfig(), havingVisitor.visit(lambda));
+        List<ISqlExpression> maxList = Collections.singletonList(max);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder maxQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        maxQuerySqlBuilder.setSelect(factory.select(maxList, lambda.getReturnType(), true, false));
+        LQuery<T> maxQuery = new LQuery<>(maxQuerySqlBuilder);
+        return maxQuery.toList();
+    }
+
     protected <T extends Number> T min0(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NormalVisitor normalVisitor = new NormalVisitor(getConfig());
@@ -457,5 +513,17 @@ public abstract class QueryBase extends CRUD {
         minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
         LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
         return minQuery.toList().get(0);
+    }
+
+    protected <T extends Number> List<T> groupByMin0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression min = AggregateMethods.min(getConfig(), havingVisitor.visit(lambda));
+        List<ISqlExpression> minList = Collections.singletonList(min);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder minQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
+        LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
+        return minQuery.toList();
     }
 }

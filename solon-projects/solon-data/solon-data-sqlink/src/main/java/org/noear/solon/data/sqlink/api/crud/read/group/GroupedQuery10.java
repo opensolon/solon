@@ -236,8 +236,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
     /**
      * 聚合函数COUNT
      */
-    public long count() {
-        return count0(null);
+    public List<Long> count() {
+        return groupByCount0(null);
     }
 
     /**
@@ -250,8 +250,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
         throw new NotCompiledException();
     }
 
-    public <R> long count(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
-        return count0(expr.getTree());
+    public <R> List<Long> count(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        return groupByCount0(expr.getTree());
     }
 
 
@@ -266,8 +266,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R sum(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
-        return sum0(expr.getTree());
+    public <R extends Number> List<R> sum(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        return groupBySum0(expr.getTree());
     }
 
 
@@ -282,8 +282,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
         throw new NotCompiledException();
     }
 
-    public <R extends Number> BigDecimal avg(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
-        return avg0(expr.getTree());
+    public <R extends Number> List<BigDecimal> avg(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        return groupByAvg0(expr.getTree());
     }
 
     /**
@@ -297,8 +297,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R max(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
-        return max0(expr.getTree());
+    public <R extends Number> List<R> max(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        return groupByMax0(expr.getTree());
     }
 
     /**
@@ -312,8 +312,8 @@ public class GroupedQuery10<Key, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extend
         throw new NotCompiledException();
     }
 
-    public <R extends Number> R min(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
-        return min0(expr.getTree());
+    public <R extends Number> List<R> min(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        return groupByMin0(expr.getTree());
     }
     // endregion
 }
