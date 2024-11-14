@@ -35,25 +35,8 @@ class ScheduledStore {
 
 
     public void put(String block, String key, Object obj) {
-        Entity ent = _data.computeIfAbsent(block, k -> new Entity());
-        ent.futureDel();
-
+        Entity ent = _data.computeIfAbsent(block, k -> new Entity(k));
         ent.map.put(key, obj);
-
-        ent.future = RunUtil.delay(() -> {
-            _data.remove(block);
-        }, _defaultSeconds * 1000);
-    }
-
-    public void delay(String block) {
-        Entity ent = _data.get(block);
-        if (ent != null) {
-            ent.futureDel();
-
-            ent.future = RunUtil.delay(() -> {
-                _data.remove(block);
-            }, _defaultSeconds * 1000);
-        }
     }
 
     public Object get(String block, String key) {
@@ -84,21 +67,63 @@ class ScheduledStore {
     public void clear(String block) {
         Entity ent = _data.get(block);
         if (ent != null) {
-            ent.futureDel();
+            ent.invalid();
 
             _data.remove(block);
         }
     }
 
-    //存储实体
-    private static class Entity {
-        public Map<String, Object> map = new ConcurrentHashMap<>();
-        public Future future;
+    public long creationTime(String block) {
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            return ent.creationTime;
+        } else {
+            return 0L;
+        }
+    }
 
-        protected void futureDel() {
-            if (future != null) {
-                future.cancel(true);
-                future = null;
+    public long lastAccessTime(String block) {
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            return ent.lastAccessTime;
+        } else {
+            return 0L;
+        }
+    }
+
+    public void updateAccessedTime(String block) {
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            ent.lastAccessTime = System.currentTimeMillis();
+
+            ent.delay(_data, _defaultSeconds);
+        }
+    }
+
+    //存储实体
+    public static class Entity {
+        public final String block;
+        public final Map<String, Object> map = new ConcurrentHashMap<>();
+        public long creationTime = System.currentTimeMillis();
+        public long lastAccessTime = creationTime;
+        private Future _future;
+
+        public Entity(String block) {
+            this.block = block;
+        }
+
+        protected void delay(Map<String, Entity> data, int seconds) {
+            invalid();
+
+            _future = RunUtil.delay(() -> {
+                data.remove(block);
+            }, seconds * 1000);
+        }
+
+        protected void invalid() {
+            if (_future != null) {
+                _future.cancel(true);
+                _future = null;
             }
         }
     }
