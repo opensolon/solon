@@ -34,6 +34,16 @@ public interface SessionState {
     }
 
     /**
+     * 创建时间
+     */
+    long creationTime();
+
+    /**
+     * 最后访问时间
+     */
+    long lastAccessTime();
+
+    /**
      * 刷新SESSION状态（可续时）
      */
     default void sessionRefresh() {
@@ -52,7 +62,7 @@ public interface SessionState {
 
     /**
      * 会话重置（清空数据，并变更会话ID）
-     * */
+     */
     void sessionReset();
 
     /**
@@ -67,7 +77,7 @@ public interface SessionState {
 
     /**
      * 获取SESSION键名集合
-     * */
+     */
     Collection<String> sessionKeys();
 
     /**
@@ -94,7 +104,7 @@ public interface SessionState {
 
     /**
      * 获取会话令牌（如： solon.extend.sessionstate.jwt 插件支持）
-     * */
+     */
     default String sessionToken() {
         throw new UnsupportedOperationException();
     }

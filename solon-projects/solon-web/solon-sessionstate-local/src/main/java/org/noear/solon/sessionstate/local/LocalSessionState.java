@@ -38,18 +38,38 @@ public class LocalSessionState extends SessionStateBase {
     }
 
 
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
+    @Override
+    public long creationTime() {
+        return _store.creationTime(sessionId());
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return _store.lastAccessTime(sessionId());
+    }
+
+
     //
     // session control
     //
 
+    private String sessionId;
     @Override
     public String sessionId() {
-        return sessionIdGet(false);
+        if (sessionId == null) {
+            sessionId = sessionIdGet(false);
+        }
+        return sessionId;
     }
 
     @Override
     public String sessionChangeId() {
-        return sessionIdGet(true);
+        return sessionId = sessionIdGet(true);
     }
 
     @Override
@@ -92,13 +112,7 @@ public class LocalSessionState extends SessionStateBase {
         String sid = sessionIdPush();
 
         if (Utils.isEmpty(sid) == false) {
-            _store.delay(sessionId());
+            _store.updateAccessedTime(sessionId());
         }
-    }
-
-
-    @Override
-    public boolean replaceable() {
-        return false;
     }
 }

@@ -36,6 +36,16 @@ public class SessionStateEmpty implements SessionState {
     }
 
     @Override
+    public long creationTime() {
+        return 0L;
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return 0L;
+    }
+
+    @Override
     public String sessionId() {
         return null;
     }
