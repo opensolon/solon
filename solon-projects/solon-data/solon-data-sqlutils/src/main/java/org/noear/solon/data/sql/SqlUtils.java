@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.Solon;
 import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
@@ -29,6 +30,11 @@ import javax.sql.DataSource;
 public interface SqlUtils {
     static SqlUtils of(DataSource dataSource) {
         return SqlConfiguration.getFactory().create(dataSource);
+    }
+
+    static SqlUtils of(String dsName) {
+        DataSource ds = Solon.context().getBean(dsName);
+        return of(ds);
     }
 
     /**
