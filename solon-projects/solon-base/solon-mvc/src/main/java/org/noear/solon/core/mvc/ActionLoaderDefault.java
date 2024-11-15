@@ -119,11 +119,12 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
         }
 
         Handler handler = bw.raw();
-        Set<MethodType> v0 = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
-        if (v0.size() == 0) {
-            v0 = new HashSet<>(Arrays.asList(bMapping.method()));
+        Set<MethodType> mtSet = Solon.app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.annotationGet(t) != null);
+        if (mtSet.size() == 0) {
+            mtSet = new HashSet<>(Arrays.asList(bMapping.method()));
         }
-        slots.add(bMapping, v0, handler);
+
+        slots.add(bMapping, mtSet, bw.index(), handler);
     }
 
 

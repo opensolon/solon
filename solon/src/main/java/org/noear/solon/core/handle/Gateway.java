@@ -395,11 +395,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         ActionLoader uw = Solon.app().factoryManager().mvcFactory()
                 .createLoader(beanWp, bPath, remoting, this, allowActionMapping());
 
-        uw.load((expr, method, handler) -> {
+        uw.load((expr, method, index, handler) -> {
             if (path == null) {
-                addDo(expr, method, handler);
+                addDo(expr, method, index, handler);
             } else {
-                addDo(PathUtil.mergePath(path, expr), method, handler);
+                addDo(PathUtil.mergePath(path, expr), method, index, handler);
             }
         });
     }
@@ -408,14 +408,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加默认接口处理
      */
     public void add(Handler handler) {
-        addDo("", MethodType.ALL, handler);
+        addDo("", MethodType.ALL, 0, handler);
     }
 
     /**
      * 添加二级路径处理
      */
     public void add(String path, Handler handler) {
-        addDo(path, MethodType.ALL, handler);
+        addDo(path, MethodType.ALL, 0, handler);
     }
 
 
@@ -423,13 +423,13 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加二级路径处理
      */
     public void add(String path, MethodType method, Handler handler) {
-        addDo(path, method, handler);
+        addDo(path, method, 0, handler);
     }
 
     /**
      * 添加接口
      */
-    protected void addDo(String path, MethodType method, Handler handler) {
+    protected void addDo(String path, MethodType method, int index, Handler handler) {
         if (Utils.isEmpty(path) || "/".equals(path)) {
             mainDef = handler;
             return;
@@ -438,9 +438,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //addPath 已处理 path1= null 的情况
         if (allowPathMerging()) {
             String path2 = PathUtil.mergePath(mapping, path);
-            mainRouting.add(new RoutingDefault<>(path2, method, handler));
+            mainRouting.add(new RoutingDefault<>(path2, method, index, handler));
         } else {
-            mainRouting.add(new RoutingDefault<>(path, method, handler));
+            mainRouting.add(new RoutingDefault<>(path, method, index, handler));
         }
     }
 
