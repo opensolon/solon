@@ -162,6 +162,11 @@ public abstract class RouterWrapper implements HandlerSlots {
         _router.add(expr, method, handler);
     }
 
+    @Override
+    public void add(String expr, MethodType method, int index, Handler handler) {
+        _router.add(expr, method, index, handler);
+    }
+
     /**
      * 添加主体处理
      */
