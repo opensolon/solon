@@ -229,12 +229,16 @@ public class AppContext extends BeanContainer {
             //注册到容器
             beanRegister(bw, "", false);
 
-            app().router().add(bw);
+            if (app() != null) {
+                app().router().add(bw);
+            }
         });
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            app().router().add(bw);
+            if (app() != null) {
+                app().router().add(bw);
+            }
         });
 
         //注册 @Inject 注入器
@@ -409,6 +413,12 @@ public class AppContext extends BeanContainer {
             singletonHint = "EventListener";
         }
 
+        ///////////////////////
+
+        if (app() == null) {
+            return;
+        }
+
         //LoadBalance.Factory
         if (bw.raw() instanceof LoadBalance.Factory) {
             app().factoryManager().loadBalanceFactory(bw.raw());
@@ -420,16 +430,18 @@ public class AppContext extends BeanContainer {
             //不再支持 @Bean @Mapping fun() //v3.0
             Mapping mapping = bw.clz().getAnnotation(Mapping.class);
             if (mapping != null) {
-                Handler handler = bw.raw();
-                Set<MethodType> v0 = app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
-                if (v0.size() == 0) {
-                    v0 = new HashSet<>(Arrays.asList(mapping.method()));
-                }
+                app().router().add(bw);
 
-                String path = Utils.annoAlias(mapping.value(), mapping.path());
-                for (MethodType m1 : v0) {
-                    app().router().add(path, m1, bw.index(), handler);
-                }
+//                Handler handler = bw.raw();
+//                Set<MethodType> v0 = app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
+//                if (v0.size() == 0) {
+//                    v0 = new HashSet<>(Arrays.asList(mapping.method()));
+//                }
+//
+//                String path = Utils.annoAlias(mapping.value(), mapping.path());
+//                for (MethodType m1 : v0) {
+//                    app().router().add(path, m1, bw.index(), handler);
+//                }
                 singletonHint = "Handler";
             }
         }
