@@ -250,6 +250,16 @@ public class BeanWrap {
 
     /**
      * bean 原始对象（可能被代理的）
+     *
+     * @param type 用于约束泛型
+     * @since 3.0
+     */
+    public <T> T raw(Class<T> type) {
+        return raw(false);
+    }
+
+    /**
+     * bean 原始对象（可能被代理的）
      */
     public <T> T raw() {
         return raw(false);
