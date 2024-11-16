@@ -36,19 +36,19 @@ import java.util.*;
 public class SimpleSqlExecutor implements SqlExecutor {
     private final DataSource dataSource;
     private final String sql;
-    private final Object[] args;
+    private final Object[] argsDef;
     private final static DefaultBinder binderDef = new DefaultBinder();
 
     public SimpleSqlExecutor(DataSource dataSource, String sql, Object[] args) {
         this.dataSource = dataSource;
         this.sql = sql;
-        this.args = args;
+        this.argsDef = args;
     }
 
     @Override
     public <T> T queryValue() throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
@@ -62,7 +62,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
     @Override
     public <T> List<T> queryValueList() throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
 
             List<T> list = new ArrayList<>();
@@ -72,52 +72,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
             }
 
             return list.size() > 0 ? list : null;
-        }
-    }
-
-    @Deprecated
-    @Override
-    public Row queryRow() throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
-            holder.rsts = holder.stmt.executeQuery();
-
-            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
-            if (holder.rsts.next()) {
-                Object[] values = new Object[metaHolder.size];
-
-                for (int i = 1; i <= values.length; i++) {
-                    values[i - 1] = holder.rsts.getObject(i);
-                }
-
-                return new SimpleRow(metaHolder, values);
-            } else {
-                return null;
-            }
-        }
-    }
-
-    @Override
-    public RowList queryRowList() throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
-            holder.rsts = holder.stmt.executeQuery();
-
-            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
-            RowList rowList = new SimpleRowList();
-
-            while (holder.rsts.next()) {
-                Object[] values = new Object[metaHolder.size];
-
-                for (int i = 1; i <= values.length; i++) {
-                    values[i - 1] = holder.rsts.getObject(i);
-                }
-
-                SimpleRow row = new SimpleRow(metaHolder, values);
-                rowList.add(row);
-            }
-
-            return rowList.size() > 0 ? rowList : null;
         }
     }
 
@@ -131,9 +85,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
         return queryRowDo((r, t) -> converter);
     }
 
-    private  <T> T queryRowDo(RowConverterFactory<T> factory) throws SQLException {
+    private <T> T queryRowDo(RowConverterFactory<T> factory) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
 
             RowConverter<T> converter = factory.create(holder.rsts, null);
@@ -156,9 +110,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
         return queryRowListDo((r, t) -> converter);
     }
 
-    private  <T> List<T> queryRowListDo(RowConverterFactory<T> factory) throws SQLException {
+    private <T> List<T> queryRowListDo(RowConverterFactory<T> factory) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
 
             RowConverter<T> converter = factory.create(holder.rsts, null);
@@ -173,23 +127,18 @@ public class SimpleSqlExecutor implements SqlExecutor {
     }
 
     @Override
-    public RowIterator<Map<String,Object>> queryRowIterator(int fetchSize) throws SQLException {
-        return queryRowIteratorDo(fetchSize, (r, t) -> DefaultConverter.getInstance().create(r, Map.class));
-    }
-
-    @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, Class<T> tClass) throws SQLException {
         return queryRowIteratorDo(fetchSize, (r, t) -> DefaultConverter.getInstance().create(r, tClass));
     }
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        return queryRowIteratorDo(fetchSize, (r,t) -> converter);
+        return queryRowIteratorDo(fetchSize, (r, t) -> converter);
     }
 
-    private  <T> RowIterator<T> queryRowIteratorDo(int fetchSize, RowConverterFactory<T> factory) throws SQLException {
+    private <T> RowIterator<T> queryRowIteratorDo(int fetchSize, RowConverterFactory<T> factory) throws SQLException {
         CommandHolder holder = buildCommand(sql, false, true);
-        binderDef.setValues(holder.stmt, args);
+        binderDef.setValues(holder.stmt, argsDef);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
@@ -200,21 +149,20 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int update() throws SQLException {
+        return update(argsDef, binderDef);
+    }
+
+    @Override
+    public <S> int update(S args, StatementBinder<S> binder) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binder.setValues(holder.stmt, args);
             return holder.stmt.executeUpdate();
         }
     }
 
     @Override
     public int[] updateBatch(Collection<Object[]> argsList) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            for (Object[] args : argsList) {
-                binderDef.setValues(holder.stmt, args);
-                holder.stmt.addBatch();
-            }
-            return holder.stmt.executeBatch();
-        }
+        return updateBatch(argsList, binderDef);
     }
 
     @Override
@@ -230,8 +178,13 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
+        return updateReturnKey(argsDef, binderDef);
+    }
+
+    @Override
+    public <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, true, false)) {
-            binderDef.setValues(holder.stmt, args);
+            binder.setValues(holder.stmt, args);
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -285,6 +238,61 @@ public class SimpleSqlExecutor implements SqlExecutor {
             return dataSource.getConnection();
         } else {
             return TranUtils.getConnectionProxy(dataSource);
+        }
+    }
+
+
+    /**
+     * @deprecated 3.0
+     */
+    @Deprecated
+    @Override
+    public Row queryRow() throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, false, false)) {
+            binderDef.setValues(holder.stmt, argsDef);
+            holder.rsts = holder.stmt.executeQuery();
+
+            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
+
+            if (holder.rsts.next()) {
+                Object[] values = new Object[metaHolder.size];
+
+                for (int i = 1; i <= values.length; i++) {
+                    values[i - 1] = holder.rsts.getObject(i);
+                }
+
+                return new SimpleRow(metaHolder, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * @deprecated 3.0
+     */
+    @Deprecated
+    @Override
+    public RowList queryRowList() throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, false, false)) {
+            binderDef.setValues(holder.stmt, argsDef);
+            holder.rsts = holder.stmt.executeQuery();
+
+            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
+            RowList rowList = new SimpleRowList();
+
+            while (holder.rsts.next()) {
+                Object[] values = new Object[metaHolder.size];
+
+                for (int i = 1; i <= values.length; i++) {
+                    values[i - 1] = holder.rsts.getObject(i);
+                }
+
+                SimpleRow row = new SimpleRow(metaHolder, values);
+                rowList.add(row);
+            }
+
+            return rowList.size() > 0 ? rowList : null;
         }
     }
 }
