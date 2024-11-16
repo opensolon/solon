@@ -15,11 +15,15 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.data.sql.bound.RowConverter;
+import org.noear.solon.data.sql.bound.RowIterator;
+import org.noear.solon.data.sql.bound.StatementBinder;
 import org.noear.solon.lang.Nullable;
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sql 执行器
@@ -50,7 +54,23 @@ public interface SqlExecutor {
      * @return 行
      */
     @Nullable
-    Row queryRow() throws SQLException;
+    Map<String, Object> queryRow() throws SQLException;
+
+    /**
+     * 查询并获取行
+     *
+     * @return 值
+     */
+    @Nullable
+    <T> T queryRow(Class<T> tClass) throws SQLException;
+
+    /**
+     * 查询并获取行
+     *
+     * @return 值
+     */
+    @Nullable
+    <T> T queryRow(RowConverter<T> converter) throws SQLException;
 
     /**
      * 查询并获取行列表
@@ -58,14 +78,44 @@ public interface SqlExecutor {
      * @return 行列表
      */
     @Nullable
-    RowList queryRowList() throws SQLException;
+    List<Map<String, Object>> queryRowList() throws SQLException;
+
+    /**
+     * 查询并获取行列表
+     *
+     * @return 值列表
+     */
+    @Nullable
+    <T> List<T> queryRowList(Class<T> tClass) throws SQLException;
+
+    /**
+     * 查询并获取行列表
+     *
+     * @return 值列表
+     */
+    @Nullable
+    <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException;
 
     /**
      * 查询并获取行遍历器（流式读取）
      *
      * @return 行遍历器
      */
-    RowIterator queryRowIterator(int fetchSize) throws SQLException;
+    RowIterator<Map<String, Object>> queryRowIterator(int fetchSize) throws SQLException;
+
+    /**
+     * 查询并获取行遍历器（流式读取）
+     *
+     * @return 行遍历器
+     */
+    <T> RowIterator<T> queryRowIterator(int fetchSize, Class<T> tClass) throws SQLException;
+
+    /**
+     * 查询并获取行遍历器（流式读取）
+     *
+     * @return 行遍历器
+     */
+    <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException;
 
 
     /**
@@ -78,10 +128,19 @@ public interface SqlExecutor {
     /**
      * 批量更新（插入、或更新、或删除）
      *
+     * @param argsList 参数集合
      * @return 受影响行数组
      */
     int[] updateBatch(Collection<Object[]> argsList) throws SQLException;
 
+    /**
+     * 批量更新（插入、或更新、或删除）
+     *
+     * @param argsList 参数集合
+     * @param binder   绑定器
+     * @return 受影响行数组
+     */
+    <T> int[] updateBatch(Collection<T> argsList, StatementBinder<T> binder) throws SQLException;
 
     /**
      * 更新并返回主键

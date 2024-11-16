@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sql;
+package org.noear.solon.data.sql.bound;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -24,7 +24,7 @@ import java.util.Iterator;
  * @author noear
  * @since 3.0
  */
-public interface RowIterator extends Iterator<Row> , AutoCloseable {
+public interface RowIterator<T> extends Iterator<T> , AutoCloseable {
     /**
      * 关闭
      */

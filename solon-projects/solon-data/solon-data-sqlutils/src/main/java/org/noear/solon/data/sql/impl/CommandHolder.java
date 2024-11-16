@@ -16,7 +16,6 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.data.sql.Row;
 
 import java.io.Closeable;
 import java.sql.*;
@@ -28,25 +27,9 @@ import java.sql.*;
  * @since 3.0
  */
 class CommandHolder implements Closeable {
-    public Connection conn = null;
-    public PreparedStatement stmt = null;
-    public ResultSet rsts = null;
-
-    private MetaHolder metaHolder;
-
-    public Row getRow() throws SQLException {
-        if (metaHolder == null) {
-            metaHolder = new MetaHolder(rsts.getMetaData());
-        }
-
-        Object[] values = new Object[metaHolder.size];
-
-        for (int i = 1; i <= values.length; i++) {
-            values[i - 1] = rsts.getObject(i);
-        }
-
-        return new SimpleRow(metaHolder, values);
-    }
+    protected Connection conn = null;
+    protected PreparedStatement stmt = null;
+    protected ResultSet rsts = null;
 
     @Override
     public void close() {

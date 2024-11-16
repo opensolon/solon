@@ -17,18 +17,27 @@ package org.noear.solon.data.sql.impl;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
-import org.noear.solon.data.sql.Row;
+import org.noear.solon.data.sql.bound.RowConverter;
+import org.noear.solon.data.sql.bound.RowConverterFactory;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
+ * 默认转换工厂
+ *
  * @author noear
  * @since 3.0
  */
-public class DefaultConverter implements Row.Converter {
-    private static Row.Converter instance = new DefaultConverter();
+public class DefaultConverter implements RowConverterFactory<Object> {
+    private static RowConverterFactory instance = new DefaultConverter();
 
     static {
         if (Solon.app() != null) {
-            Solon.context().getBeanAsync(Row.Converter.class, bean -> {
+            Solon.context().getBeanAsync(RowConverterFactory.class, bean -> {
                 instance = bean;
             });
         }
@@ -37,24 +46,47 @@ public class DefaultConverter implements Row.Converter {
     /**
      * 获取实例
      */
-    public static Row.Converter getInstance() {
+    public static RowConverterFactory getInstance() {
         return instance;
     }
 
     /**
      * 设置实例
      */
-    public static void setInstance(Row.Converter instance) {
+    public static void setInstance(RowConverterFactory instance) {
         if (instance != null) {
             DefaultConverter.instance = instance;
         }
     }
 
-    /**
-     * 转换
-     */
     @Override
-    public Object convert(Row row, Class<?> type) {
-        return ONode.load(row.toMap()).toObject(type);
+    public RowConverter<Object> create(ResultSet rs, Class<?> tClass) throws SQLException {
+        return new RowConverterImpl(rs.getMetaData(), tClass);
+    }
+
+    private static class RowConverterImpl implements RowConverter<Object> {
+        private ResultSetMetaData metaData;
+        private Class<?> tClass;
+
+        public RowConverterImpl(ResultSetMetaData metaData, Class<?> tClass) {
+            this.metaData = metaData;
+            this.tClass = tClass;
+        }
+
+        @Override
+        public Object convert(ResultSet rs) throws SQLException {
+            Map<String, Object> map = new LinkedHashMap<>();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String name = metaData.getColumnName(i);
+                Object value = rs.getObject(i);
+                map.put(name, value);
+            }
+
+            if (Map.class == tClass) {
+                return map;
+            } else {
+                return ONode.load(map).toObject(tClass);
+            }
+        }
     }
 }
