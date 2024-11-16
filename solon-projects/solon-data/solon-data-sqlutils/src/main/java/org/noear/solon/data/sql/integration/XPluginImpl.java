@@ -24,8 +24,6 @@ import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.sql.SqlUtilsFactory;
 
-import javax.sql.DataSource;
-
 /**
  * @author noear
  * @since 3.0
@@ -44,7 +42,7 @@ public class XPluginImpl implements Plugin {
         vh.required(anno.required());
 
         DsUtils.observeDs(vh.context(), anno.value(), bw -> {
-            vh.setValue(SqlUtils.of(bw.raw(DataSource.class)));
+            vh.setValue(SqlUtils.of(bw.raw()));
         });
     }
 }

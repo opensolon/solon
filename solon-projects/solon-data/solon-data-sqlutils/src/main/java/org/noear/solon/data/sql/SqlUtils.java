@@ -32,8 +32,9 @@ public interface SqlUtils {
         return SqlConfiguration.getFactory().create(dataSource);
     }
 
-    static SqlUtils of(String dsName) {
+    static SqlUtils ofName(String dsName) {
         DataSource ds = Solon.context().getBean(dsName);
+        assert ds != null;
         return of(ds);
     }
 
