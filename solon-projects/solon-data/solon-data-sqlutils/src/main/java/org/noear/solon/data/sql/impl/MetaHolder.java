@@ -25,15 +25,15 @@ import java.util.Map;
  *
  * @author noear
  * @since 3.0
+ * @deprecated 3.0
  */
+@Deprecated
 class MetaHolder {
-    private final ResultSetMetaData meta;
     private final String[] names;
 
     public final int size;
 
     public MetaHolder(ResultSetMetaData meta) throws SQLException {
-        this.meta = meta;
         this.size = meta.getColumnCount();
         this.names = new String[size];
 

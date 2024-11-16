@@ -75,9 +75,50 @@ public class SimpleSqlExecutor implements SqlExecutor {
         }
     }
 
+    @Deprecated
     @Override
-    public Map<String,Object> queryRow() throws SQLException {
-        return queryRowDo((r, t) -> DefaultConverter.getInstance().create(r, Map.class));
+    public Row queryRow() throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, false, false)) {
+            binderDef.setValues(holder.stmt, args);
+            holder.rsts = holder.stmt.executeQuery();
+
+            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
+            if (holder.rsts.next()) {
+                Object[] values = new Object[metaHolder.size];
+
+                for (int i = 1; i <= values.length; i++) {
+                    values[i - 1] = holder.rsts.getObject(i);
+                }
+
+                return new SimpleRow(metaHolder, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    @Override
+    public RowList queryRowList() throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, false, false)) {
+            binderDef.setValues(holder.stmt, args);
+            holder.rsts = holder.stmt.executeQuery();
+
+            MetaHolder metaHolder = new MetaHolder(holder.rsts.getMetaData());
+            RowList rowList = new SimpleRowList();
+
+            while (holder.rsts.next()) {
+                Object[] values = new Object[metaHolder.size];
+
+                for (int i = 1; i <= values.length; i++) {
+                    values[i - 1] = holder.rsts.getObject(i);
+                }
+
+                SimpleRow row = new SimpleRow(metaHolder, values);
+                rowList.add(row);
+            }
+
+            return rowList.size() > 0 ? rowList : null;
+        }
     }
 
     @Override
@@ -103,11 +144,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
                 return null;
             }
         }
-    }
-
-    @Override
-    public List<Map<String,Object>> queryRowList() throws SQLException {
-        return queryRowListDo((r, t) -> DefaultConverter.getInstance().create(r, Map.class));
     }
 
     @Override
