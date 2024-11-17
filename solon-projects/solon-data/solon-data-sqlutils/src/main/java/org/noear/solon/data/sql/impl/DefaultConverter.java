@@ -60,21 +60,24 @@ public class DefaultConverter implements RowConverterFactory<Object> {
     }
 
     @Override
-    public RowConverter<Object> create(ResultSet rs, Class<?> tClass) throws SQLException {
-        return new RowConverterImpl(rs.getMetaData(), tClass);
+    public RowConverter<Object> create(Class<?> tClass) {
+        return new RowConverterImpl(tClass);
     }
 
     private static class RowConverterImpl implements RowConverter<Object> {
+        private final Class<?> tClass;
         private ResultSetMetaData metaData;
-        private Class<?> tClass;
 
-        public RowConverterImpl(ResultSetMetaData metaData, Class<?> tClass) {
-            this.metaData = metaData;
+        public RowConverterImpl(Class<?> tClass) {
             this.tClass = tClass;
         }
 
         @Override
         public Object convert(ResultSet rs) throws SQLException {
+            if (metaData == null) {
+                metaData = rs.getMetaData();
+            }
+
             Map<String, Object> map = new LinkedHashMap<>();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 String name = metaData.getColumnName(i);

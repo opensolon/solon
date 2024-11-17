@@ -17,7 +17,6 @@ package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.data.sql.bound.RowConverter;
-import org.noear.solon.data.sql.bound.RowConverterFactory;
 import org.noear.solon.data.sql.bound.RowIterator;
 import org.noear.solon.data.sql.bound.StatementBinder;
 import org.noear.solon.data.sql.*;
@@ -47,50 +46,24 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryValue() throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, argsDef);
-            holder.rsts = holder.stmt.executeQuery();
-
-            if (holder.rsts.next()) {
-                return (T) holder.rsts.getObject(1);
-            }
-
-            return null;
-        }
+        return (T) queryRow(rs -> rs.getObject(1));
     }
 
     @Override
     public <T> List<T> queryValueList() throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, argsDef);
-            holder.rsts = holder.stmt.executeQuery();
-
-            List<T> list = new ArrayList<>();
-
-            while (holder.rsts.next()) {
-                list.add((T) holder.rsts.getObject(1));
-            }
-
-            return list.size() > 0 ? list : null;
-        }
+        return (List<T>) queryRowList(rs -> rs.getObject(1));
     }
 
     @Override
     public <T> T queryRow(Class<T> tClass) throws SQLException {
-        return queryRowDo((r, t) -> (RowConverter<T>) DefaultConverter.getInstance().create(r, tClass));
+        return queryRow((RowConverter<T>) DefaultConverter.getInstance().create(tClass));
     }
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        return queryRowDo((r, t) -> converter);
-    }
-
-    private <T> T queryRowDo(RowConverterFactory<T> factory) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
             binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
-
-            RowConverter<T> converter = factory.create(holder.rsts, null);
 
             if (holder.rsts.next()) {
                 return converter.convert(holder.rsts);
@@ -102,20 +75,15 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(Class<T> tClass) throws SQLException {
-        return queryRowListDo((r, t) -> DefaultConverter.getInstance().create(r, tClass));
+        return queryRowList(DefaultConverter.getInstance().create(tClass));
     }
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        return queryRowListDo((r, t) -> converter);
-    }
-
-    private <T> List<T> queryRowListDo(RowConverterFactory<T> factory) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, false, false)) {
             binderDef.setValues(holder.stmt, argsDef);
             holder.rsts = holder.stmt.executeQuery();
 
-            RowConverter<T> converter = factory.create(holder.rsts, null);
             List<T> list = new ArrayList<>();
 
             while (holder.rsts.next()) {
@@ -128,21 +96,15 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, Class<T> tClass) throws SQLException {
-        return queryRowIteratorDo(fetchSize, (r, t) -> DefaultConverter.getInstance().create(r, tClass));
+        return queryRowIterator(fetchSize, DefaultConverter.getInstance().create(tClass));
     }
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        return queryRowIteratorDo(fetchSize, (r, t) -> converter);
-    }
-
-    private <T> RowIterator<T> queryRowIteratorDo(int fetchSize, RowConverterFactory<T> factory) throws SQLException {
         CommandHolder holder = buildCommand(sql, false, true);
         binderDef.setValues(holder.stmt, argsDef);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
-
-        RowConverter<T> converter = factory.create(holder.rsts, null);
 
         return new SimpleRowIterator(holder, converter);
     }

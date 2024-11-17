@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sql.bound;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -29,5 +28,5 @@ public interface RowConverterFactory<T> {
     /**
      * 创建
      */
-    RowConverter<T> create(ResultSet rs, Class<? extends T> tClass) throws SQLException;
+    RowConverter<T> create(Class<? extends T> tClass);
 }
