@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sql.impl;
 
+import org.noear.snack.ONode;
 import org.noear.solon.data.sql.Row;
 
 import java.util.LinkedHashMap;
@@ -25,7 +26,9 @@ import java.util.Map;
  *
  * @author noear
  * @since 3.0
+ * @deprecated 3.0
  */
+@Deprecated
 class SimpleRow implements Row {
     private final MetaHolder _metaHolder;
     private final Object[] _data;
@@ -87,21 +90,10 @@ class SimpleRow implements Row {
     /**
      * 转为 Bean
      *
-     * @param type      类型
-     * @param converter 转换器
-     */
-    @Override
-    public <T> T toBean(Class<T> type, Converter converter) {
-        return (T) converter.convert(this, type);
-    }
-
-    /**
-     * 转为 Bean
-     *
      * @param type 类型
      */
     @Override
     public <T> T toBean(Class<T> type) {
-        return toBean(type, DefaultConverter.getInstance());
+        return ONode.load(toMap()).toObject(type);
     }
 }

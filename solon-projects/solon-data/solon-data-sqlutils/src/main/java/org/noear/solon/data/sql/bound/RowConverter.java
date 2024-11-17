@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sql;
+package org.noear.solon.data.sql.bound;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
- * 行列表
+ * 行转换器
  *
  * @author noear
  * @since 3.0
- * @deprecated 3.0
  */
-@Deprecated
-public interface RowList extends List<Row> {
+@FunctionalInterface
+public interface RowConverter<T> {
     /**
-     * 转为 Map List
+     * 转换
      */
-    List<Map<String, Object>> toMapList() throws SQLException;
-
-    /**
-     * 转为 Bean List
-     *
-     * @param type 类型
-     */
-    <T> List<T> toBeanList(Class<T> type) throws SQLException;
+    T convert(ResultSet rs) throws SQLException;
 }

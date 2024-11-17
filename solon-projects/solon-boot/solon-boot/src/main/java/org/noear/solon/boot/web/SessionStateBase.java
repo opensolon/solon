@@ -89,12 +89,12 @@ public abstract class SessionStateBase implements SessionState {
     }
 
     protected String sessionIdPush() {
-        String skey = cookieGet(SessionProps.session_cookieName);
+        String sid = cookieGet(SessionProps.session_cookieName);
 
-        if (Utils.isNotEmpty(skey)) {
-            cookieSet(SessionProps.session_cookieName, skey);
+        if (Utils.isNotEmpty(sid)) {
+            cookieSet(SessionProps.session_cookieName, sid);
         }
 
-        return skey;
+        return sid;
     }
 }

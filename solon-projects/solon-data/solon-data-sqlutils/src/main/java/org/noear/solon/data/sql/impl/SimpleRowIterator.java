@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.sql.impl;
 
-import org.noear.solon.data.sql.Row;
-import org.noear.solon.data.sql.RowIterator;
+import org.noear.solon.data.sql.bound.RowConverter;
+import org.noear.solon.data.sql.bound.RowIterator;
 
 import java.sql.SQLException;
 
@@ -26,15 +26,17 @@ import java.sql.SQLException;
  * @author noear
  * @since 3.0
  */
-class SimpleRowIterator implements RowIterator {
+class SimpleRowIterator<T> implements RowIterator<T> {
     private final CommandHolder holder;
+    private final RowConverter<T> converter;
 
-    public SimpleRowIterator(CommandHolder holder) {
+    public SimpleRowIterator(CommandHolder holder, RowConverter<T> converter) {
         this.holder = holder;
+        this.converter = converter;
     }
 
     //当前行
-    private Row rowCurrent;
+    private T rowCurrent;
     //行号
     private int rowNum = 0;
 
@@ -42,7 +44,7 @@ class SimpleRowIterator implements RowIterator {
     public boolean hasNext() {
         try {
             if (holder.rsts.next()) {
-                rowCurrent = holder.getRow();
+                rowCurrent = converter.convert(holder.rsts);
                 rowNum++;
             } else {
                 rowCurrent = null;
@@ -55,7 +57,7 @@ class SimpleRowIterator implements RowIterator {
     }
 
     @Override
-    public Row next() {
+    public T next() {
         return rowCurrent;
     }
 

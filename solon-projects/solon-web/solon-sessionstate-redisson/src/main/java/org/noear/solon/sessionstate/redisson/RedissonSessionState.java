@@ -36,18 +36,38 @@ public class RedissonSessionState extends SessionStateBase {
         this.redisClient = RedissonSessionStateFactory.getInstance().redisClient();
     }
 
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
+    @Override
+    public long creationTime() {
+        return ctx.sessionAsLong(CREATION_TIME, 0L);
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+    }
+
     //
     // session control
     //
 
+    private String sessionId;
+
     @Override
     public String sessionId() {
-        return sessionIdGet(false);
+        if (sessionId == null) {
+            sessionId = sessionIdGet(false);
+        }
+        return sessionId;
     }
 
     @Override
     public String sessionChangeId() {
-        return sessionIdGet(true);
+        return sessionId = sessionIdGet(true);
     }
 
     @Override
@@ -97,14 +117,17 @@ public class RedissonSessionState extends SessionStateBase {
         String sid = sessionIdPush();
 
         if (Utils.isEmpty(sid) == false) {
+            long now = System.currentTimeMillis();
+
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
+            hash.put(LAST_ACCESS_TIME, now);
+            if (hash.containsKey(CREATION_TIME) == false) {
+                hash.put(CREATION_TIME, now);
+            }
         }
     }
 
-
-    @Override
-    public boolean replaceable() {
-        return false;
-    }
+    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
+    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
 }

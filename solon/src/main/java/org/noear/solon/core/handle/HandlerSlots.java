@@ -31,16 +31,23 @@ public interface HandlerSlots {
     /**
      * 添加主体处理
      */
-    void add(String expr, MethodType method, Handler handler);
+    void add(String expr, MethodType method, int index, Handler handler);
 
     /**
      * 添加主体处理
      */
-    default void add(Mapping mapping, Set<MethodType> methodTypes, Handler handler) {
+    default void add(String expr, MethodType method, Handler handler) {
+        add(expr, method, 0, handler);
+    }
+
+    /**
+     * 添加主体处理
+     */
+    default void add(Mapping mapping, Set<MethodType> methodTypes, int index, Handler handler) {
         String path = Utils.annoAlias(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {
-            add(path, m1, handler);
+            add(path, m1, index, handler);
         }
     }
 }

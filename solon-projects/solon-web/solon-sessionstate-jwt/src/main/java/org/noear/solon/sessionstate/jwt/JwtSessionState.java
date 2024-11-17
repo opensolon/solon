@@ -34,22 +34,47 @@ public class JwtSessionState extends SessionStateBase {
         super(ctx);
     }
 
+
+
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
+    @Override
+    public long creationTime() {
+        return ctx.sessionAsLong(CREATION_TIME, 0L);
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+    }
+
     //
     // session control
     //
-
+    private String sessionId;
     @Override
     public String sessionId() {
         if (SessionProp.session_jwt_allowUseHeader) {
             return "";
         }
 
-        return sessionIdGet(false);
+        if (sessionId != null) {
+            sessionId = sessionIdGet(false);
+        }
+
+        return sessionId;
     }
 
     @Override
     public String sessionChangeId() {
-        return sessionIdGet(true);
+        if (SessionProp.session_jwt_allowUseHeader) {
+            return "";
+        }
+
+        return sessionId = sessionIdGet(true);
     }
 
     @Override
@@ -137,8 +162,19 @@ public class JwtSessionState extends SessionStateBase {
             return;
         }
 
-        sessionIdPush();
+        String sid = sessionIdPush();
+
+        if (Utils.isEmpty(sid) == false) {
+            long now = System.currentTimeMillis();
+            sessionSet(LAST_ACCESS_TIME, now);
+            if (sessionGet(CREATION_TIME) == null) {
+                sessionSet(CREATION_TIME, now);
+            }
+        }
     }
+
+    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
+    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
 
     @Override
     public void sessionPublish() {
@@ -184,11 +220,6 @@ public class JwtSessionState extends SessionStateBase {
         }
 
         return sessionToken;
-    }
-
-    @Override
-    public boolean replaceable() {
-        return false;
     }
 
 

@@ -23,7 +23,9 @@ import java.util.Map;
  *
  * @author noear
  * @since 3.0
+ * @deprecated 3.0
  */
+@Deprecated
 public interface Row {
     /**
      * 行大小
@@ -71,29 +73,7 @@ public interface Row {
     /**
      * 转为 Bean
      *
-     * @param type      类型
-     * @param converter 转换器
-     */
-    <T> T toBean(Class<T> type, Row.Converter converter);
-
-    /**
-     * 转为 Bean
-     *
      * @param type 类型
      */
     <T> T toBean(Class<T> type);
-
-    /**
-     * 行转换器
-     */
-    @FunctionalInterface
-    static interface Converter {
-        /**
-         * 转换
-         *
-         * @param row  行
-         * @param type 类型
-         */
-        Object convert(Row row, Class<?> type);
-    }
 }

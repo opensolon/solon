@@ -15,7 +15,11 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.data.sql.bound.RowConverter;
+import org.noear.solon.data.sql.bound.RowIterator;
+import org.noear.solon.data.sql.bound.StatementBinder;
 import org.noear.solon.lang.Nullable;
+import org.noear.solon.lang.Preview;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -27,6 +31,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface SqlExecutor {
     /**
      * 查询并获取值
@@ -47,25 +52,51 @@ public interface SqlExecutor {
     /**
      * 查询并获取行
      *
-     * @return 行
+     * @param tClass Map.class or T.class
+     * @return 值
      */
     @Nullable
-    Row queryRow() throws SQLException;
+    <T> T queryRow(Class<T> tClass) throws SQLException;
+
+    /**
+     * 查询并获取行
+     *
+     * @return 值
+     */
+    @Nullable
+    <T> T queryRow(RowConverter<T> converter) throws SQLException;
 
     /**
      * 查询并获取行列表
      *
-     * @return 行列表
+     * @param tClass Map.class or T.class
+     * @return 值列表
      */
     @Nullable
-    RowList queryRowList() throws SQLException;
+    <T> List<T> queryRowList(Class<T> tClass) throws SQLException;
+
+    /**
+     * 查询并获取行列表
+     *
+     * @return 值列表
+     */
+    @Nullable
+    <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException;
+
+    /**
+     * 查询并获取行遍历器（流式读取）
+     *
+     * @param tClass Map.class or T.class
+     * @return 行遍历器
+     */
+    <T> RowIterator<T> queryRowIterator(int fetchSize, Class<T> tClass) throws SQLException;
 
     /**
      * 查询并获取行遍历器（流式读取）
      *
      * @return 行遍历器
      */
-    RowIterator queryRowIterator(int fetchSize) throws SQLException;
+    <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException;
 
 
     /**
@@ -78,10 +109,28 @@ public interface SqlExecutor {
     /**
      * 批量更新（插入、或更新、或删除）
      *
+     * @param args   参数
+     * @param binder 绑定器
+     * @return 受影响行数组
+     */
+    <S> int update(S args, StatementBinder<S> binder) throws SQLException;
+
+    /**
+     * 批量更新（插入、或更新、或删除）
+     *
+     * @param argsList 参数集合
      * @return 受影响行数组
      */
     int[] updateBatch(Collection<Object[]> argsList) throws SQLException;
 
+    /**
+     * 批量更新（插入、或更新、或删除）
+     *
+     * @param argsList 参数集合
+     * @param binder   绑定器
+     * @return 受影响行数组
+     */
+    <S> int[] updateBatch(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
 
     /**
      * 更新并返回主键
@@ -90,4 +139,35 @@ public interface SqlExecutor {
      */
     @Nullable
     <T> T updateReturnKey() throws SQLException;
+
+    /**
+     * 更新并返回主键
+     *
+     * @return 主键
+     */
+    @Nullable
+    <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException;
+
+
+    ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 查询并获取行
+     *
+     * @return 行
+     * @deprecated 3.0
+     */
+    @Deprecated
+    @Nullable
+    Row queryRow() throws SQLException;
+
+    /**
+     * 查询并获取行列表
+     *
+     * @return 行列表
+     * @deprecated 3.0
+     */
+    @Deprecated
+    @Nullable
+    RowList queryRowList() throws SQLException;
 }

@@ -37,18 +37,37 @@ public class JedisSessionState extends SessionStateBase {
         this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
     }
 
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
+    @Override
+    public long creationTime() {
+        return ctx.sessionAsLong(CREATION_TIME, 0L);
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+    }
+
     //
     // session control
     //
 
+    private String sessionId;
     @Override
     public String sessionId() {
-        return sessionIdGet(false);
+        if (sessionId == null) {
+            sessionId = sessionIdGet(false);
+        }
+        return sessionId;
     }
 
     @Override
     public String sessionChangeId() {
-        return sessionIdGet(true);
+        return sessionId = sessionIdGet(true);
     }
 
     @Override
@@ -108,13 +127,13 @@ public class JedisSessionState extends SessionStateBase {
         String sid = sessionIdPush();
 
         if (Utils.isEmpty(sid) == false) {
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).delay());
+            long now = System.currentTimeMillis();
+
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(LAST_ACCESS_TIME, now));
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashInit(CREATION_TIME, now));
         }
     }
 
-
-    @Override
-    public boolean replaceable() {
-        return false;
-    }
+    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
+    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
 }

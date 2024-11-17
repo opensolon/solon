@@ -28,7 +28,9 @@ import java.util.Map;
  *
  * @author noear
  * @since 3.0
+ * @deprecated 3.0
  */
+@Deprecated
 class SimpleRowList extends ArrayList<Row> implements RowList {
     /**
      * 转为 Map List
@@ -46,26 +48,15 @@ class SimpleRowList extends ArrayList<Row> implements RowList {
     /**
      * 转为 Bean List
      *
-     * @param type      类型
-     * @param converter 转换器
-     */
-    @Override
-    public <T> List<T> toBeanList(Class<T> type, Row.Converter converter) throws SQLException {
-        List<T> list = new ArrayList<>();
-        for (Row row : this) {
-            list.add(row.toBean(type, converter));
-        }
-
-        return list;
-    }
-
-    /**
-     * 转为 Bean List
-     *
      * @param type 类型
      */
     @Override
     public <T> List<T> toBeanList(Class<T> type) throws SQLException {
-        return toBeanList(type, DefaultConverter.getInstance());
+        List<T> list = new ArrayList<>();
+        for (Row row : this) {
+            list.add(row.toBean(type));
+        }
+
+        return list;
     }
 }
