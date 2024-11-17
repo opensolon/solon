@@ -40,13 +40,13 @@ public interface ISqlJoinExpression extends ISqlExpression {
     ISqlExpression getConditions();
 
     /**
-     * 获取join的索引
+     * 获取别名
      */
-    int getIndex();
+    String getAsName();
 
     @Override
     default ISqlJoinExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.join(getJoinType(), getJoinTable().copy(config), getConditions().copy(config), getIndex());
+        return factory.join(getJoinType(), getJoinTable().copy(config), getConditions().copy(config), getAsName());
     }
 }

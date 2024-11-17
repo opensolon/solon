@@ -27,6 +27,6 @@ public interface ISqlRealTableExpression extends ISqlTableExpression {
     @Override
     default ISqlRealTableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.table(getTableClass());
+        return factory.table(getMainTableClass());
     }
 }

@@ -41,6 +41,7 @@ public class User {
     @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private LocalDateTime updateTime;
     private List<Area> areas;
+    private Info info;
 
     public long getId() {
         return id;
@@ -88,5 +89,13 @@ public class User {
 
     public void setAreas(List<Area> areas) {
         this.areas = areas;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
 }

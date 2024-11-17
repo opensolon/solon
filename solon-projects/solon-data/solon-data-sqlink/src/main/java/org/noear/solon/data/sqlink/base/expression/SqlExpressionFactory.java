@@ -67,16 +67,16 @@ public interface SqlExpressionFactory {
      * @param sqlTable 表表达式
      */
     default ISqlFromExpression from(ISqlTableExpression sqlTable) {
-        return from(sqlTable, 0);
+        return from(sqlTable, null);
     }
 
     /**
      * 创建from表达式
      *
      * @param sqlTable 表表达式
-     * @param index    表索引
+     * @param asName   表别名
      */
-    ISqlFromExpression from(ISqlTableExpression sqlTable, int index);
+    ISqlFromExpression from(ISqlTableExpression sqlTable, String asName);
 
     /**
      * 创建分组group by表达式
@@ -105,9 +105,9 @@ public interface SqlExpressionFactory {
      * @param joinType   join类型
      * @param joinTable  join表
      * @param conditions join条件
-     * @param index      join索引
+     * @param asName     join别名
      */
-    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index);
+    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName);
 
     /**
      * 创建join集合表达式
@@ -160,7 +160,9 @@ public interface SqlExpressionFactory {
      * @param target 目标表
      */
     default ISqlQueryableExpression queryable(Class<?> target) {
-        return queryable(from(table(target), 0));
+        MetaData metaData = MetaDataCache.getMetaData(target);
+        String as = metaData.getTableName().substring(0, 1).toLowerCase();
+        return queryable(from(table(target), as));
     }
 
     /**
@@ -169,7 +171,7 @@ public interface SqlExpressionFactory {
      * @param from from表达式
      */
     default ISqlQueryableExpression queryable(ISqlFromExpression from) {
-        return queryable(select(from.getSqlTableExpression().getTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
     /**
@@ -188,7 +190,9 @@ public interface SqlExpressionFactory {
      * @param table 表表达式
      */
     default ISqlQueryableExpression queryable(ISqlTableExpression table) {
-        return queryable(from(table));
+        MetaData metaData = MetaDataCache.getMetaData(table.getMainTableClass());
+        String as = metaData.getTableName().substring(0, 1).toLowerCase();
+        return queryable(from(table, as));
     }
 
     /**

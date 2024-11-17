@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.api.crud.read.group;
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func4;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.EndQuery;
@@ -168,8 +169,8 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      * @return boolean
      */
     @Override
-    public boolean any() {
-        return super.any();
+    public boolean any0(LambdaExpression<?> lambdaExpression) {
+        return super.any0(lambdaExpression);
     }
 
     /**
@@ -234,6 +235,25 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
     // region [AGGREGATE]
 
     /**
+     * 检查表中是否存在至少一条数据
+     */
+    public boolean any() {
+        return any0(null);
+    }
+
+    /**
+     * 检查表中是否存在至少一条数据<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     */
+    public boolean any(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public boolean any(ExprTree<Func4<T1, T2, T3, T4, Boolean>> expr) {
+        return any0(expr.getTree());
+    }
+
+    /**
      * 聚合函数COUNT
      */
     public List<Long> count() {
@@ -246,7 +266,7 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      *
      * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      */
-    public <R> long count(Func4<T1, T2, T3, T4, R> func) {
+    public <R> List<Long> count(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, R> func) {
         throw new NotCompiledException();
     }
 
@@ -262,7 +282,7 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      *
      * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)
      */
-    public <R extends Number> R sum(Func4<T1, T2, T3, T4, R> func) {
+    public <R extends Number> List<R> sum(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, R> func) {
         throw new NotCompiledException();
     }
 
@@ -278,7 +298,7 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      *
      * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red))
      */
-    public <R extends Number> BigDecimal avg(Func4<T1, T2, T3, T4, R> func) {
+    public <R extends Number> List<BigDecimal> avg(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, R> func) {
         throw new NotCompiledException();
     }
 
@@ -293,7 +313,7 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      *
      * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
      */
-    public <R extends Number> R max(Func4<T1, T2, T3, T4, R> func) {
+    public <R extends Number> List<R> max(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, R> func) {
         throw new NotCompiledException();
     }
 
@@ -308,7 +328,7 @@ public class GroupedQuery4<Key, T1, T2, T3, T4> extends QueryBase {
      *
      * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
      */
-    public <R extends Number> R min(Func4<T1, T2, T3, T4, R> func) {
+    public <R extends Number> List<R> min(@Expr(Expr.BodyType.Expr) Func4<T1, T2, T3, T4, R> func) {
         throw new NotCompiledException();
     }
 

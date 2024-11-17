@@ -32,13 +32,13 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleJoinExpression extends SqlJoinExpression {
-    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index) {
-        super(joinType, joinTable, conditions, index);
+    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
+        super(joinType, joinTable, conditions, asName);
     }
 
     // oracle下表的别名不能加AS
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " t" + index + " ON " + conditions.getSqlAndValue(config, values);
+        return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " " + config.getDisambiguation().disambiguation(asName) + " ON " + conditions.getSqlAndValue(config, values);
     }
 }

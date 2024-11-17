@@ -48,6 +48,13 @@ public class AggregateMethods {
     }
 
     /**
+     * COUNT
+     */
+    public static ISqlTemplateExpression count(SqLinkConfig config) {
+        return count(config, null);
+    }
+
+    /**
      * SUM
      */
     public static ISqlTemplateExpression sum(SqLinkConfig config, ISqlExpression expression) {

@@ -29,13 +29,13 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     protected final JoinType joinType;
     protected final ISqlTableExpression joinTable;
     protected final ISqlExpression conditions;
-    protected final int index;
+    protected final String asName;
 
-    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index) {
+    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
         this.joinType = joinType;
         this.joinTable = joinTable;
         this.conditions = conditions;
-        this.index = index;
+        this.asName = asName;
     }
 
     @Override
@@ -54,13 +54,12 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     }
 
     @Override
-    public int getIndex() {
-        return index;
+    public String getAsName() {
+        return asName;
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        String t = "t" + getIndex();
-        return getJoinType().getJoin() + " " + (getJoinTable() instanceof ISqlRealTableExpression ? getJoinTable().getSqlAndValue(config, values) : "(" + getJoinTable().getSqlAndValue(config, values) + ")") + " AS " + config.getDisambiguation().disambiguation(t) + " ON " + getConditions().getSqlAndValue(config, values);
+        return getJoinType().getJoin() + " " + (getJoinTable() instanceof ISqlRealTableExpression ? getJoinTable().getSqlAndValue(config, values) : "(" + getJoinTable().getSqlAndValue(config, values) + ")") + " AS " + config.getDisambiguation().disambiguation(asName) + " ON " + getConditions().getSqlAndValue(config, values);
     }
 }

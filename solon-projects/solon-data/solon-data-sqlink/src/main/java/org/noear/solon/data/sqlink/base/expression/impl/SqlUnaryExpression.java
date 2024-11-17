@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.ISqlBinaryExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlUnaryExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlOperator;
@@ -49,14 +50,24 @@ public class SqlUnaryExpression implements ISqlUnaryExpression {
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         SqlOperator operator = getOperator();
-        String temp = getExpression().getSqlAndValue(config, values);
+        String temp = expression.getSqlAndValue(config, values);
         String res;
         if (operator.isLeft()) {
             if (operator == SqlOperator.EXISTS) {
                 res = operator.getOperator() + " (" + temp + ")";
             }
+            // 优化 NOT_NOT ...
+            else if (operator == SqlOperator.NOT && expression instanceof ISqlUnaryExpression
+                    && ((ISqlUnaryExpression) expression).getOperator() == SqlOperator.NOT) {
+                res = temp;
+            }
             else {
-                res = operator.getOperator() + " " + temp;
+                if (expression instanceof ISqlBinaryExpression) {
+                    res = operator.getOperator() + " (" + temp + ")";
+                }
+                else {
+                    res = operator.getOperator() + " " + temp;
+                }
             }
         }
         else {

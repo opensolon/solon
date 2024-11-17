@@ -62,7 +62,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> innerJoin(Class<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -80,7 +80,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> innerJoin(LQuery<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -98,7 +98,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> leftJoin(Class<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -116,7 +116,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> leftJoin(LQuery<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -134,7 +134,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> rightJoin(Class<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.RIGHT, target, expr);
+        join(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -152,7 +152,7 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
     }
 
     public <Tn> LQuery5<T1, T2, T3, T4, Tn> rightJoin(LQuery<Tn> target, ExprTree<Func5<T1, T2, T3, T4, Tn, Boolean>> expr) {
-        join(JoinType.RIGHT, target, expr);
+        join(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -192,73 +192,6 @@ public class LQuery4<T1, T2, T3, T4> extends QueryBase {
         return this;
     }
 
-    /**
-     * 等价于在where中调用exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery4<T1, T2, T3, T4> exists(Class<E> target, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery4<T1, T2, T3, T4> exists(Class<E> table, ExprTree<Func5<T1, T2, T3, T4, E, Boolean>> expr) {
-        exists(table, expr.getTree(), false);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery4<T1, T2, T3, T4> exists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery4<T1, T2, T3, T4> exists(LQuery<E> query, ExprTree<Func5<T1, T2, T3, T4, E, Boolean>> expr) {
-        exists(query, expr.getTree(), false);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用 not exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery4<T1, T2, T3, T4> notExists(Class<E> target, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery4<T1, T2, T3, T4> notExists(Class<E> table, ExprTree<Func5<T1, T2, T3, T4, E, Boolean>> expr) {
-        exists(table, expr.getTree(), true);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用 not exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery4<T1, T2, T3, T4> notExists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery4<T1, T2, T3, T4> notExists(LQuery<E> query, ExprTree<Func5<T1, T2, T3, T4, E, Boolean>> expr) {
-        exists(query, expr.getTree(), true);
-        return this;
-    }
     // endregion
 
     // region [ORDER BY]

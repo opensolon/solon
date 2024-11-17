@@ -175,15 +175,15 @@ public class ListStringTypeHandler implements ITypeHandler<List<String>> {
 
     // 实现从ResultSet取出数据的逻辑
     @Override
-    public List<String> getValue(ResultSet resultSet, int index, Type type) throws SQLException {
-        String string = resultSet.getString(index);
+    public List<String> getValue(ResultSet resultSet, int asName, Type type) throws SQLException {
+        String string = resultSet.getString(asName);
         return Arrays.stream(string.split(",")).collect(Collectors.toList());
     }
 
     // 实现将数据填充到PreparedStatement的逻辑
     @Override
-    public void setValue(PreparedStatement preparedStatement, int index, List<String> strings) throws SQLException {
-        preparedStatement.setString(index, String.join(",", strings));
+    public void setValue(PreparedStatement preparedStatement, int asName, List<String> strings) throws SQLException {
+        preparedStatement.setString(asName, String.join(",", strings));
     }
 
     // 实现将@InsertDefaultValue注解下的字符串值转换到实际的值的逻辑

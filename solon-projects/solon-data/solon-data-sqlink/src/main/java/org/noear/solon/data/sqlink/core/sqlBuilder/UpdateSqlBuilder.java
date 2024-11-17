@@ -61,11 +61,12 @@ public class UpdateSqlBuilder implements ISqlBuilder {
      * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
+        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
                 on,
-                1 + joins.getJoins().size()
+                as
         );
         joins.addJoin(join);
     }

@@ -80,7 +80,8 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression conditions) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        ISqlJoinExpression join = factory.join(joinType, table, conditions, queryable.getOrderedCount());
+        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
+        ISqlJoinExpression join = factory.join(joinType, table, conditions, as);
         queryable.addJoin(join);
         change();
     }
@@ -116,23 +117,22 @@ public class QuerySqlBuilder implements ISqlBuilder {
         MetaData metaData = MetaDataCache.getMetaData(c);
         List<ISqlExpression> expressions = new ArrayList<>();
         if (orderedClass.contains(c)) {
-            int index = orderedClass.indexOf(c);
+            String as = metaData.getTableName().substring(0, 1).toLowerCase();
             for (FieldMetaData notIgnoreProperty : metaData.getNotIgnorePropertys()) {
-                expressions.add(factory.column(notIgnoreProperty, index));
+                expressions.add(factory.column(notIgnoreProperty, as));
             }
         }
         else {
             for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
-                int index = 0;
                 GOTO:
                 for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
+                    String as = data.getTableName().substring(0, 1).toLowerCase();
                     for (FieldMetaData noi : data.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
-                            expressions.add(factory.column(sel, index));
+                            expressions.add(factory.column(sel, as));
                             break GOTO;
                         }
                     }
-                    index++;
                 }
             }
         }

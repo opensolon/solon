@@ -81,7 +81,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
 
     private void limitAndOrderCheck(List<String> strings, List<SqlValue> values, SqLinkConfig config) {
         if (limit.hasRowsOrOffset() && orderBy.isEmpty()) {
-            MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
+            MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getMainTableClass());
             FieldMetaData primary = metaData.getPrimary();
             if (primary == null) {
                 throw new SqLinkLimitNotFoundOrderByException(DbType.Oracle);

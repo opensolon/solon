@@ -24,9 +24,6 @@ import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 import java.util.List;
-import java.util.Objects;
-
-import static org.noear.solon.data.sqlink.core.SubQuery.subQuery;
 
 @Component
 public class SelectDemoService {
@@ -92,19 +89,11 @@ public class SelectDemoService {
                 .toList();
     }
 
-    // 查询没有指定地区码的用户
-    public List<User> findUserByHasNotAreaCode(String code) {
+    // 查询用户与他的前五个地址
+    public List<User> findUserByHasNotAreaCode(int id) {
         int count = 1000;
         return sqLink.query(User.class)
-//                .where(u -> u.getAreas()
-//                        .stream()
-//                        .filter(a -> a.getCode() == code)
-//                )
-                .where(u -> subQuery(u.getAreas())
-                        .where(a -> Objects.nonNull(a.getCode()))
-                        .endSelect(a -> a.getName())
-                        .toList().contains(u.getUsername())
-                )
+                .includes(user -> user.getAreas(), areas -> areas.limit(5))
                 .toList();
     }
 }

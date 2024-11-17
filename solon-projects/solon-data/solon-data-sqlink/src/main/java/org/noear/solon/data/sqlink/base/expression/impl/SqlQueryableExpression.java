@@ -73,7 +73,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
 
 
     @Override
-    public Class<?> getTableClass() {
+    public Class<?> getMainTableClass() {
         return select.getTarget();
     }
 
@@ -156,8 +156,8 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     public List<Class<?>> getOrderedClass() {
-        Class<?> tableClass = getTableClass();
-        List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getTableClass()).collect(Collectors.toList());
+        Class<?> tableClass = getMainTableClass();
+        List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
         collect.add(0, tableClass);
         return collect;
     }

@@ -19,16 +19,18 @@ import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,33 +43,33 @@ public class ExpressionUtil {
     /**
      * 判断是否为属性表达式
      */
-    public static boolean isProperty(List<ParameterExpression> parameters, MethodCallExpression methodCall) {
+    public static boolean isProperty(Map<ParameterExpression, String> asNameMap, MethodCallExpression methodCall) {
         if (methodCall.getExpr().getKind() != Kind.Parameter) return false;
         ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
-        return parameters.contains(parameter);
+        return asNameMap.containsKey(parameter);
     }
 
     /**
      * 判断是否为属性表达式
      */
-    public static boolean isProperty(Map<ParameterExpression,String> parameters, FieldSelectExpression fieldSelect) {
+    public static boolean isProperty(Map<ParameterExpression, String> asNameMap, FieldSelectExpression fieldSelect) {
         if (fieldSelect.getExpr().getKind() != Kind.Parameter) return false;
         ParameterExpression parameter = (ParameterExpression) fieldSelect.getExpr();
-        return parameters.containsKey(parameter);
+        return asNameMap.containsKey(parameter);
     }
 
     /**
      * 判断是否为分组键
      */
-    public static boolean isGroupKey(List<ParameterExpression> parameters, Expression expression) {
-        if (expression instanceof FieldSelectExpression) {
-            FieldSelectExpression fieldSelect = (FieldSelectExpression) expression;
-            Field field = fieldSelect.getField();
-            return fieldSelect.inParameters(parameters)
-                    && IGroup.class.isAssignableFrom(field.getDeclaringClass())
-                    && field.getName().equals("key");
-        }
-        return false;
+    public static boolean isGroupKey(Map<ParameterExpression, String> parameters, Expression expression) {
+        if (expression.getKind() != Kind.FieldSelect) return false;
+        FieldSelectExpression fieldSelect = (FieldSelectExpression) expression;
+        if (fieldSelect.getExpr().getKind() != Kind.Parameter) return false;
+        ParameterExpression parameter = (ParameterExpression) fieldSelect.getExpr();
+        Field field = fieldSelect.getField();
+        return parameters.containsKey(parameter)
+                && IGroup.class.isAssignableFrom(field.getDeclaringClass())
+                && field.getName().equals("key");
     }
 
     /**
@@ -126,14 +128,17 @@ public class ExpressionUtil {
         return (R) o;
     }
 
-//    public static <T> Class<T> getType(Type type, int index) {
-//        if (type instanceof ParameterizedType) {
-//            ParameterizedType pType = (ParameterizedType) type;
-//            Type dbType = pType.getActualTypeArguments()[index];
-//            return (Class<T>) dbType;
-//        }
-//        throw new RuntimeException(String.format("无法找到%s的第%s个泛型类型", type, index));
-//    }
+    public static Class<?> getTargetType(Type type) {
+        if (type instanceof Class) {
+            return (Class<?>) type;
+        }
+        else if (type instanceof ParameterizedType) {
+            ParameterizedType pType = (ParameterizedType) type;
+            Type dbType = pType.getActualTypeArguments()[0];
+            return (Class<?>) dbType;
+        }
+        throw new SqLinkException("无法获取集合的目标类型:" + type);
+    }
 
     /**
      * 是否为void类型

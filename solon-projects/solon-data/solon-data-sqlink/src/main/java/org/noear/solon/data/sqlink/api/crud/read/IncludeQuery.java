@@ -81,18 +81,6 @@ public class IncludeQuery<T, TPreviousProperty> extends LQuery<T> {
         throw new RuntimeException();
     }
 
-    /**
-     * 在抓取到的对象内再次选择字段进行抓取,并且设置复杂的过滤条件(取得的条数，排列规则，取得数据的限制条件)<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
-     * @param cond 复杂的过滤条件
-     * @return 抓取过程对象
-     */
-    public <TProperty> IncludeQuery<T, TProperty> thenIncludesByCond(@Expr(Expr.BodyType.Expr) Func1<TPreviousProperty, Collection<TProperty>> expr, Action1<IncludeCond<TProperty>> cond) {
-        throw new RuntimeException();
-    }
-
     public <TProperty> IncludeQuery<T, TProperty> thenInclude(ExprTree<Func1<TPreviousProperty, TProperty>> expr, ExprTree<Func1<TProperty, Boolean>> cond) {
         include(expr.getTree(), cond.getTree(), curIncludeSet.getIncludeSets());
         return new IncludeQuery<>(getSqlBuilder(), curIncludeSet.getLastIncludeSet());
@@ -110,11 +98,6 @@ public class IncludeQuery<T, TPreviousProperty> extends LQuery<T> {
 
     public <TProperty> IncludeQuery<T, TProperty> thenIncludes(ExprTree<Func1<TPreviousProperty, Collection<TProperty>>> expr) {
         include(expr.getTree(), null, curIncludeSet.getIncludeSets());
-        return new IncludeQuery<>(getSqlBuilder(), curIncludeSet.getLastIncludeSet());
-    }
-
-    public <TProperty> IncludeQuery<T, TProperty> thenIncludesByCond(ExprTree<Func1<TPreviousProperty, Collection<TProperty>>> expr, Action1<IncludeCond<TProperty>> action) {
-        includeByCond(expr.getTree(), action, curIncludeSet.getIncludeSets());
         return new IncludeQuery<>(getSqlBuilder(), curIncludeSet.getLastIncludeSet());
     }
 }
