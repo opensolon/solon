@@ -25,6 +25,15 @@
 ### v3.0.4
 
 * 添加 solon SolonMain.pluginExclude 属性，排除插件
+* 添加 solon Context::sessionState(create) 方法
+* 添加 solon ResourceUtil.findResource(uri,defAsFile) 方法
+* 添加 solon HandlerSlots.add(expr,method,index,handler) 方法
+* 添加 solon SessionState.creationTime, lastAccessTime 方法
+* 添加 solon-data-sqlutils SqlUtils:of(dsName) 方法
+* 添加 solon-cloud-gateway CloudRouteRegister:routeRemove
+* 优化 solon 外部配置加载处理，没有时，尝试在内部找资源文件
+* 优化 solon SessionState:sessionId 的保持处理（从 attr 转到 cookieMap；减少一道）
+* 优化 solon-data-sqlutils 接口设计，优化极限性能
 * smart-http 升为 2.1
 * snack3 升为 3.2.121
 

@@ -39,6 +39,16 @@ public class SocketdSessionState implements SessionState {
     }
 
     @Override
+    public long creationTime() {
+        return 0;
+    }
+
+    @Override
+    public long lastAccessTime() {
+        return 0;
+    }
+
+    @Override
     public String sessionId() {
         return session.sessionId();
     }
