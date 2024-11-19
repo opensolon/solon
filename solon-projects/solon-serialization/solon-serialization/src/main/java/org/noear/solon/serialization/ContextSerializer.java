@@ -62,6 +62,16 @@ public interface ContextSerializer<T> extends Serializer<T> {
      *
      * @param ctx    请求上下文
      * @param toType 目标类型
+     * @since 3.0
      */
     Object deserializeFromBody(Context ctx, @Nullable Type toType) throws IOException;
+
+    /**
+     * 反序列化从
+     *
+     * @param ctx 请求上下文
+     */
+    default Object deserializeFromBody(Context ctx) throws IOException {
+        return deserializeFromBody(ctx, null);
+    }
 }
