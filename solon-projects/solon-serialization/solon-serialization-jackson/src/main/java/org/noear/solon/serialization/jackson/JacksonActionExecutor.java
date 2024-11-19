@@ -117,7 +117,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeFromBody(ctx);
+        return serializer.deserializeFromBody(ctx, null);
     }
 
     /**

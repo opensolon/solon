@@ -14,10 +14,6 @@
     <artifactId>solon-serialization-kryo</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <sbe.tool.version>1.31.1</sbe.tool.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>

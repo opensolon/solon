@@ -48,11 +48,15 @@ public interface Serializer<T> {
 
     /**
      * 序列化
+     *
+     * @param fromObj 来源对象
      */
     T serialize(Object fromObj) throws IOException;
 
     /**
      * 反序列化
+     *
+     * @param toType 目标类型
      */
     Object deserialize(T data, Type toType) throws IOException;
 }

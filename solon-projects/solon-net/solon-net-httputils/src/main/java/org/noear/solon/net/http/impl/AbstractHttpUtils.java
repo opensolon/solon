@@ -17,7 +17,7 @@ package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
-import org.noear.solon.core.serialize.SerializerNames;
+import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;

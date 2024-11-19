@@ -20,6 +20,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -111,7 +112,7 @@ public class KryoBytesSerializer implements ContextSerializer<byte[]> {
     }
 
     @Override
-    public Object deserializeFromBody(Context ctx) throws IOException {
+    public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
         return deserialize(ctx.bodyAsBytes(), null);
     }
 }
