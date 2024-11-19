@@ -23,6 +23,7 @@ import org.apache.fury.resolver.AllowListChecker;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
@@ -165,7 +166,7 @@ public class FuryBytesSerializer implements ContextSerializer<byte[]> {
      * @param ctx 请求上下文
      */
     @Override
-    public Object deserializeFromBody(Context ctx) throws IOException {
+    public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
         return fury.deserialize(ctx.bodyAsBytes());
     }
 }

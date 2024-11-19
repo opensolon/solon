@@ -17,8 +17,10 @@ package org.noear.solon.serialization;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.lang.Nullable;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * 通用上下文接口序列化器
@@ -41,6 +43,13 @@ public interface ContextSerializer<T> extends Serializer<T> {
     String mimeType();
 
     /**
+     * 必须要 body
+     */
+    default boolean bodyRequired() {
+        return false;
+    }
+
+    /**
      * 序列化到
      *
      * @param ctx  请求上下文
@@ -51,7 +60,8 @@ public interface ContextSerializer<T> extends Serializer<T> {
     /**
      * 反序列化从
      *
-     * @param ctx 请求上下文
+     * @param ctx    请求上下文
+     * @param toType 目标类型
      */
-    Object deserializeFromBody(Context ctx) throws IOException;
+    Object deserializeFromBody(Context ctx, @Nullable Type toType) throws IOException;
 }

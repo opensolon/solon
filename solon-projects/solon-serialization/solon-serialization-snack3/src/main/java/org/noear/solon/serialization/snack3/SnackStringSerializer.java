@@ -20,6 +20,7 @@ import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class SnackStringSerializer implements ContextSerializer<String> {
 
     /**
      * 数据类型
-     * */
+     */
     @Override
     public Class<String> dataType() {
         return String.class;
@@ -144,7 +145,7 @@ public class SnackStringSerializer implements ContextSerializer<String> {
      * @param ctx 请求上下文
      */
     @Override
-    public Object deserializeFromBody(Context ctx) throws IOException {
+    public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
         String data = ctx.bodyNew();
 
         if (Utils.isNotEmpty(data)) {
