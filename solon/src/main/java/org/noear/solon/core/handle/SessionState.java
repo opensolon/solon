@@ -103,7 +103,7 @@ public interface SessionState {
     void sessionRemove(String key);
 
     /**
-     * 获取会话令牌（如： solon.extend.sessionstate.jwt 插件支持）
+     * 获取会话令牌（如： solon-web-sessionstate-jwt 插件支持）
      */
     default String sessionToken() {
         throw new UnsupportedOperationException();
