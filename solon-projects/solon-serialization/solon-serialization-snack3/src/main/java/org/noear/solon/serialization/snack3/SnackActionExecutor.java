@@ -74,7 +74,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeFromBody(ctx, null);
+        return serializer.deserializeFromBody(ctx);
     }
 
     /**
