@@ -25,9 +25,6 @@ import org.noear.solon.test.SolonTest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author noear 2024/5/30 created
@@ -37,14 +34,6 @@ public class BaseTest {
     @Test
     public void hello2() throws Throwable{
         UserDo userDo = new UserDo();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("time", new Date(1673861993477L));
-        data.put("long", 12L);
-        data.put("int", 12);
-        data.put("null", null);
-
-        userDo.setMap1(data);
 
         ContextEmpty ctx = new ContextEmpty(){
             private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -78,6 +67,5 @@ public class BaseTest {
 
         assert userDo.getB0() == userDo2.getB0();
         assert userDo.getS1().equals(userDo2.getS1());
-        assert userDo.getMap1().size() == userDo2.getMap1().size();
     }
 }

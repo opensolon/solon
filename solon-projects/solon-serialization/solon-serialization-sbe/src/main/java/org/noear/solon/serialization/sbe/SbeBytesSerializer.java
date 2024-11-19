@@ -57,7 +57,7 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
         if (fromObj instanceof SbeSerializable) {
             MutableDirectBuffer buffer = new ExpandableDirectByteBuffer(128);
             ((SbeSerializable) fromObj).writeBuffer(new SbeOutputBuffers(buffer));
-            return buffer.byteArray();
+            return buffer.byteBuffer().array();
         } else {
             throw new IllegalStateException("The parameter 'fromObj' is not of SbeWriteBuffer");
         }

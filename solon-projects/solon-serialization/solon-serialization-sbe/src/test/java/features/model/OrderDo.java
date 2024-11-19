@@ -15,12 +15,16 @@
  */
 package features.model;
 
+import org.noear.solon.serialization.sbe.io.SbeInputBuffers;
+import org.noear.solon.serialization.sbe.io.SbeOutputBuffers;
+import org.noear.solon.serialization.sbe.io.SbeSerializable;
+
 import java.io.Serializable;
 
 /**
  * @author noear 2023/8/16 created
  */
-public class OrderDo implements Serializable {
+public class OrderDo implements SbeSerializable {
     long orderId = 2;
 
     public void setOrderId(long orderId) {
@@ -29,5 +33,15 @@ public class OrderDo implements Serializable {
 
     public long getOrderId() {
         return orderId;
+    }
+
+    @Override
+    public void readBuffer(SbeInputBuffers in) {
+        orderId = in.readLong();
+    }
+
+    @Override
+    public void writeBuffer(SbeOutputBuffers out) {
+        out.writeLong(orderId);
     }
 }
