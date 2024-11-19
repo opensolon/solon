@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.serialize;
+package org.noear.solon.serialization;
 
 /**
  * 序列化方案名字（内部已适配的）
@@ -29,6 +29,7 @@ public interface SerializerNames {
     String AT_PROPERTIES = "@properties";
     String AT_FURY = "@fury";
     String AT_KRYO = "@kryo";
+    String AT_SBE = "@sbe";
     String AT_HESSIAN = "@hessian";
     String AT_PROTOBUF = "@protobuf";
 }
