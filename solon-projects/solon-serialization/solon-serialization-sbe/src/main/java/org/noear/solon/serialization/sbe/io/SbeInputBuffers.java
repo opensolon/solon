@@ -20,6 +20,9 @@ import org.agrona.DirectBuffer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Sbe 输入缓冲
@@ -170,5 +173,16 @@ public class SbeInputBuffers {
         }
 
         return chars;
+    }
+
+    public <K, V, M extends Map<K, V>> M readMap(final Supplier<M> mapSupplier,
+                                                 final Function<SbeInputBuffers, K> keyCreator,
+                                                 final Function<SbeInputBuffers, V> valCreator) {
+        final int length = readInt();
+        final M map = mapSupplier.get();
+        for (int i = 0; i < length; i++) {
+            map.put(keyCreator.apply(this), valCreator.apply(this));
+        }
+        return map;
     }
 }

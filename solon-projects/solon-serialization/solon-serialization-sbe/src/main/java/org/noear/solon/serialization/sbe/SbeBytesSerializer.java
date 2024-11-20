@@ -17,6 +17,7 @@ package org.noear.solon.serialization.sbe;
 
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
@@ -55,9 +56,12 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
     @Override
     public byte[] serialize(Object fromObj) throws IOException {
         if (fromObj instanceof SbeSerializable) {
-            MutableDirectBuffer buffer = new ExpandableDirectByteBuffer(128);
+            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
             ((SbeSerializable) fromObj).writeBuffer(new SbeOutputBuffers(buffer));
-            return buffer.byteBuffer().array();
+
+            byte[] bytes = new byte[buffer.capacity()];
+            buffer.getBytes(0, bytes);
+            return bytes;
         } else {
             throw new IllegalStateException("The parameter 'fromObj' is not of SbeWriteBuffer");
         }
@@ -67,8 +71,7 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
     public Object deserialize(byte[] data, Type toType) throws IOException {
         if (toType instanceof Class<?>) {
             if (SbeSerializable.class.isAssignableFrom((Class<?>) toType)) {
-                MutableDirectBuffer buffer = new ExpandableDirectByteBuffer(data.length);
-                buffer.wrap(data);
+                MutableDirectBuffer buffer = new UnsafeBuffer(data);
 
                 Object tmp = ClassUtil.newInstance((Class<?>) toType);
                 ((SbeSerializable) tmp).readBuffer(new SbeInputBuffers().wrap(buffer));

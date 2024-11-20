@@ -21,6 +21,8 @@ import org.agrona.MutableDirectBuffer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Sbe 输出冲缓
@@ -148,6 +150,18 @@ public class SbeOutputBuffers {
         final int size = collection.size();
         writeInt(size);
         collection.forEach(e -> e.writeBuffer(this));
+    }
+
+    public <K, V> void writeMap(final Map<K, V> map,
+                                final BiConsumer<SbeOutputBuffers, K> keyMarshaller,
+                                final BiConsumer<SbeOutputBuffers, V> valMarshaller) {
+        final int size = map.size();
+        writeInt(size);
+
+        map.forEach((k, v) -> {
+            keyMarshaller.accept(this, k);
+            valMarshaller.accept(this, v);
+        });
     }
 
     public void reset() {
