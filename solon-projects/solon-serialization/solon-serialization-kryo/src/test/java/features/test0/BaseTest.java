@@ -72,7 +72,7 @@ public class BaseTest {
         render.render(userDo, ctx);
 
         KryoBytesSerializer serializer = new KryoBytesSerializer();
-        UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx);
+        UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);
 

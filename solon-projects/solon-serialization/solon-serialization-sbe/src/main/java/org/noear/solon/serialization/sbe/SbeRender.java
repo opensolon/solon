@@ -13,22 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.serialize;
+package org.noear.solon.serialization.sbe;
+
+import org.noear.solon.serialization.BytesSerializerRender;
+import org.noear.solon.serialization.ContextSerializer;
 
 /**
- * 序列化方案名字（内部已适配的）
- *
  * @author noear
  * @since 3.0
- */
-public interface SerializerNames {
-    String AT_JSON = "@json";
-    String AT_JSON_TYPED = "@type_json";
-    String AT_XML = "@xml";
-    String AT_XML_TYPED = "@type_xml";
-    String AT_PROPERTIES = "@properties";
-    String AT_FURY = "@fury";
-    String AT_KRYO = "@kryo";
-    String AT_HESSIAN = "@hessian";
-    String AT_PROTOBUF = "@protobuf";
+ * */
+public class SbeRender extends BytesSerializerRender {
+    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
+
+    /**
+     * 获取序列化器
+     */
+    @Override
+    public ContextSerializer<byte[]> getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 获取渲染器名字
+     */
+    @Override
+    public String name() {
+        return this.getClass().getSimpleName();
+    }
 }

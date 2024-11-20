@@ -18,7 +18,7 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.core.serialize.SerializerNames;
+import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;

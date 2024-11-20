@@ -17,7 +17,7 @@ package org.noear.solon.serialization.protostuff;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.serialize.SerializerNames;
+import org.noear.solon.serialization.SerializerNames;
 
 /**
  * @author noear

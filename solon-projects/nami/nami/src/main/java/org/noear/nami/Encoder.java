@@ -23,6 +23,13 @@ package org.noear.nami;
  * */
 public interface Encoder {
     /**
+     * 必须要 body
+     */
+    default boolean bodyRequired() {
+        return false;
+    }
+
+    /**
      * 编码
      */
     String enctype();

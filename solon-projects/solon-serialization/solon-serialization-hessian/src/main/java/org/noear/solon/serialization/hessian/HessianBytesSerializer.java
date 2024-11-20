@@ -19,6 +19,7 @@ import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import com.alibaba.com.caucho.hessian.io.Hessian2Output;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -125,7 +126,7 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
      * @param ctx 请求上下文
      */
     @Override
-    public Object deserializeFromBody(Context ctx) throws IOException {
+    public Object deserializeFromBody(Context ctx, @Nullable Type bodyType) throws IOException {
         Hessian2Input hi = new Hessian2Input(ctx.bodyAsStream());
         return hi.readObject();
     }

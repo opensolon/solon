@@ -17,7 +17,7 @@ package org.noear.solon.serialization.fastjson;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.core.serialize.SerializerNames;
+import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**

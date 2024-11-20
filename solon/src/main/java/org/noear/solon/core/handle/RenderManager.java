@@ -16,7 +16,6 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.serialize.SerializerNames;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
 
@@ -303,7 +302,7 @@ public class RenderManager implements Render {
         }
 
         if (render == null) {
-            render = _mapping.get(SerializerNames.AT_JSON);
+            render = _mapping.get("@json");
         }
 
         return render;

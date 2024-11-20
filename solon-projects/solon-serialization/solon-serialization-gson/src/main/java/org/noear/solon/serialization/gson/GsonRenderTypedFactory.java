@@ -16,7 +16,7 @@
 package org.noear.solon.serialization.gson;
 
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.core.serialize.SerializerNames;
+import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
