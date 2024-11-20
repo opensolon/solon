@@ -35,7 +35,7 @@ import java.lang.reflect.Type;
  * @since  3.0
  */
 public class SbeBytesSerializer implements ContextSerializer<byte[]> {
-    private static final String label = "application/kryo";
+    private static final String label = "application/sbe";
 
 
     @Override

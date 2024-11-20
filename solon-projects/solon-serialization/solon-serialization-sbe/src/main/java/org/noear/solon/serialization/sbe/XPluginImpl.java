@@ -29,8 +29,8 @@ public class XPluginImpl implements Plugin {
         //::render
         SbeRender render = new SbeRender();
         context.wrapAndPut(SbeRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_KRYO,render);
-        context.app().serializerManager().register(SerializerNames.AT_KRYO, render.getSerializer());
+        context.app().renderManager().register(SerializerNames.AT_SBE,render);
+        context.app().serializerManager().register(SerializerNames.AT_SBE, render.getSerializer());
 
         //::actionExecutor
         //支持 kryo 内容类型执行
