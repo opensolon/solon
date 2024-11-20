@@ -33,7 +33,7 @@ public class XPluginImpl implements Plugin {
         context.app().serializerManager().register(SerializerNames.AT_SBE, render.getSerializer());
 
         //::actionExecutor
-        //支持 kryo 内容类型执行
+        //支持 sbe 内容类型执行
         SbeActionExecutor executor = new SbeActionExecutor();
         context.wrapAndPut(SbeActionExecutor.class, executor); //用于扩展
 
