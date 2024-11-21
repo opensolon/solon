@@ -71,6 +71,10 @@ public class App {
         System.out.println("resource[/]=" + App.class.getResource("/").getPath());
         System.out.println("resource[]=" + App.class.getResource("").getPath());
 
+        System.getenv().forEach((k, v) -> {
+            System.out.println("ENV: " + k + "=" + v);
+        });
+
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
