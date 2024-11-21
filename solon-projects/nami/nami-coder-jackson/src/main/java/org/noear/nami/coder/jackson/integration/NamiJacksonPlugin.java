@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.http;
+package org.noear.nami.coder.jackson.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.jackson.JacksonDecoder;
+import org.noear.nami.coder.jackson.JacksonEncoder;
+import org.noear.nami.coder.jackson.JacksonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear 2021/1/3 created
+ * @author noear
+ * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiJacksonPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.regIfAbsent("http", HttpChannel.instance);
-        NamiManager.regIfAbsent("https", HttpChannel.instance);
+        NamiManager.reg(JacksonDecoder.instance);
+        NamiManager.reg(JacksonEncoder.instance);
+        NamiManager.reg(JacksonTypeEncoder.instance);
     }
 }

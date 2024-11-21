@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.snack3;
+package org.noear.nami.coder.kryo.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.kryo.KryoDecoder;
+import org.noear.nami.coder.kryo.KryoEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear 2021/1/3 created
- * @since 1.2
+ * @author noear
+ * @since 3.0
  */
-public class XPluginImp implements Plugin {
+public class NamiKryoPlugin implements Plugin {
     @Override
-    public void start(AppContext context) {
-        NamiManager.reg(SnackDecoder.instance);
-        NamiManager.reg(SnackEncoder.instance);
-        NamiManager.reg(SnackTypeEncoder.instance);
+    public void start(AppContext context) throws Throwable {
+        NamiManager.reg(KryoDecoder.instance);
+        NamiManager.reg(KryoEncoder.instance);
     }
 }

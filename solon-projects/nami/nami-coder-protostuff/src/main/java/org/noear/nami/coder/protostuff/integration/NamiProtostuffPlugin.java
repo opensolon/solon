@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.http.hutool;
+package org.noear.nami.coder.protostuff.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.protostuff.ProtostuffDeoder;
+import org.noear.nami.coder.protostuff.ProtostuffEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
+ * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiProtostuffPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.regIfAbsent("http", HttpChannel.instance);
-        NamiManager.regIfAbsent("https", HttpChannel.instance);
+        NamiManager.reg(ProtostuffDeoder.instance);
+        NamiManager.reg(ProtostuffEncoder.instance);
     }
 }

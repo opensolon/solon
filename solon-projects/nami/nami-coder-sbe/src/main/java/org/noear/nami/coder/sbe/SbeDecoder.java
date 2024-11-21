@@ -44,6 +44,10 @@ public class SbeDecoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type clz) throws Throwable {
+        if (rst.body().length == 0) {
+            return null;
+        }
+
         return (T) serializer.deserialize(rst.body(), clz);
     }
 

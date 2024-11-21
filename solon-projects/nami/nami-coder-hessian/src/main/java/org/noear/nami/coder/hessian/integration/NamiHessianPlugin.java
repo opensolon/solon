@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.jackson;
+package org.noear.nami.coder.hessian.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.hessian.HessianDecoder;
+import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -23,11 +25,10 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiHessianPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(JacksonDecoder.instance);
-        NamiManager.reg(JacksonEncoder.instance);
-        NamiManager.reg(JacksonTypeEncoder.instance);
+        NamiManager.reg(HessianDecoder.instance);
+        NamiManager.reg(HessianEncoder.instance);
     }
 }
