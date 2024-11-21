@@ -28,6 +28,7 @@ public class ContentTypes {
     public static final String FURY_VALUE = "application/fury";
     public static final String KRYO_VALUE = "application/kryo";
     public static final String PROTOBUF_VALUE = "application/protobuf";
+    public static final String SBE_VALUE = "application/sbe";
     public static final String JSON_VALUE = "application/json";
     public static final String JSON_TYPE_VALUE = "application/json-type";
     public static final String FORM_URLENCODED_VALUE = "application/x-www-form-urlencoded";
@@ -37,6 +38,7 @@ public class ContentTypes {
     public static final String HESSIAN = "Content-Type=application/hessian";
     public static final String FURY = "Content-Type=application/fury";
     public static final String PROTOBUF = "Content-Type=application/protobuf";
+    public static final String SBE = "Content-Type=application/sbe";
     public static final String JSON = "Content-Type=application/json";
     public static final String JSON_TYPE = "Content-Type=application/json-type";
 
@@ -44,5 +46,6 @@ public class ContentTypes {
     public static final String HESSIAN_ACCEPT = "Accept=application/hessian";
     public static final String FURY_ACCEPT = "Accept=application/fury";
     public static final String PROTOBUF_ACCEPT = "Accept=application/protobuf";
+    public static final String SBE_ACCEPT = "Accept=application/sbe";
     public static final String JSON_ACCEPT = "Accept=application/json";
 }

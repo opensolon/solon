@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.fury;
+package org.noear.nami.coder.fury.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.fury.FuryDecoder;
+import org.noear.nami.coder.fury.FuryEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -23,7 +25,7 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.2
  */
-public class XPluginImpl implements Plugin {
+public class NamiFuryPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         NamiManager.reg(FuryDecoder.instance);

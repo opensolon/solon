@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.2
  * */
-public class XPluginImp implements Plugin {
+public class NamiPlugin implements Plugin {
     private Map<NamiClient, Object> cached = new ConcurrentHashMap<>();
 
     @Override

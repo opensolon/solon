@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.socketd;
+package org.noear.nami.coder.snack3.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack3.SnackEncoder;
+import org.noear.nami.coder.snack3.SnackTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear
- * @since 1.3
- * @since 2.6
+ * @author noear 2021/1/3 created
+ * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiSnackPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg("tcp", SocketdClientChannel.instance);
-        NamiManager.reg("udp", SocketdClientChannel.instance);
-        NamiManager.reg("ws", SocketdClientChannel.instance);
-        NamiManager.reg("wss", SocketdClientChannel.instance);
+        NamiManager.reg(SnackDecoder.instance);
+        NamiManager.reg(SnackEncoder.instance);
+        NamiManager.reg(SnackTypeEncoder.instance);
     }
 }

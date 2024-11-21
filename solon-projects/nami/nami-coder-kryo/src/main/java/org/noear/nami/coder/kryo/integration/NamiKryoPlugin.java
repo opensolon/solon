@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
+package org.noear.nami.coder.kryo.integration;
 
+import org.noear.nami.NamiManager;
+import org.noear.nami.coder.kryo.KryoDecoder;
+import org.noear.nami.coder.kryo.KryoEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.serialization.SerializerNames;
 
 /**
  * @author noear
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
+public class NamiKryoPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        //::render
-        SbeRender render = new SbeRender();
-        context.wrapAndPut(SbeRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_SBE,render);
-        context.app().serializerManager().register(SerializerNames.AT_SBE, render.getSerializer());
-
-        //::actionExecutor
-        //支持 sbe 内容类型执行
-        SbeActionExecutor executor = new SbeActionExecutor();
-        context.wrapAndPut(SbeActionExecutor.class, executor); //用于扩展
-
-        context.app().chainManager().addExecuteHandler(executor);
+        NamiManager.reg(KryoDecoder.instance);
+        NamiManager.reg(KryoEncoder.instance);
     }
 }

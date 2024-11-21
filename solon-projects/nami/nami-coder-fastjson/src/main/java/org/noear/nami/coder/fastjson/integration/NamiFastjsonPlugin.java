@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.fastjson2;
+package org.noear.nami.coder.fastjson.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.fastjson.FastjsonDecoder;
+import org.noear.nami.coder.fastjson.FastjsonEncoder;
+import org.noear.nami.coder.fastjson.FastjsonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 1.9
+ * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiFastjsonPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(Fastjson2Decoder.instance);
-        NamiManager.reg(Fastjson2Encoder.instance);
-        NamiManager.reg(Fastjson2TypeEncoder.instance);
+        NamiManager.reg(FastjsonDecoder.instance);
+        NamiManager.reg(FastjsonEncoder.instance);
+        NamiManager.reg(FastjsonTypeEncoder.instance);
     }
 }

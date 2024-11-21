@@ -98,7 +98,7 @@ public final class SolonProps extends Props {
             loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
-            loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
+            loadEnv(k -> k.indexOf('.') > 0);
 
             //4.2.加载环境配置(例：env=pro 或 env=debug)
             env = getArg("env");
@@ -113,7 +113,6 @@ public final class SolonProps extends Props {
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
             loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
         }
-
 
 
 

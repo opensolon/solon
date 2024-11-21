@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.protostuff;
+package org.noear.nami.coder.jackson.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.nami.coder.jackson.JacksonDecoder;
+import org.noear.nami.coder.jackson.JacksonEncoder;
+import org.noear.nami.coder.jackson.JacksonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -23,10 +26,11 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class NamiJacksonPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(ProtostuffDeoder.instance);
-        NamiManager.reg(ProtostuffEncoder.instance);
+        NamiManager.reg(JacksonDecoder.instance);
+        NamiManager.reg(JacksonEncoder.instance);
+        NamiManager.reg(JacksonTypeEncoder.instance);
     }
 }

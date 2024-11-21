@@ -79,7 +79,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      *
      * @param modules 配置模块
      */
-    public ObjectMapper newMapper(Module... modules) {
+    public ObjectMapper newMapper(com.fasterxml.jackson.databind.Module... modules) {
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

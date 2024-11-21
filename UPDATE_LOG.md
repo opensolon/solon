@@ -23,7 +23,8 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.4
-
+* 新增 nami-coder-sbe 插件
+* 新增 solon-serialization-sbe 插件
 * 添加 solon SolonMain.pluginExclude 属性，排除插件
 * 添加 solon Context::sessionState(create) 方法
 * 添加 solon ResourceUtil.findResource(uri,defAsFile) 方法
@@ -33,10 +34,12 @@
 * 添加 solon-cloud-gateway CloudRouteRegister:routeRemove
 * 优化 solon 外部配置加载处理，没有时，尝试在内部找资源文件
 * 优化 solon SessionState:sessionId 的保持处理（从 attr 转到 cookieMap；减少一道）
+* 优化 solon 带'.'的环境变量自动加载到应用属性里（之前只加载 'solon.'）
 * 优化 solon-data-sqlutils 接口设计，优化极限性能
 * smart-http 升为 2.1
 * snack3 升为 3.2.121
 * redisx 升为 1.6.8
+* lombok 升为 1.18.36
 
 ### v3.0.3
 * 新增 nami-coder-kryo 插件
