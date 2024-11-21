@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <ExpressionTree.version>1.4.9</ExpressionTree.version>
+        <ExpressionTree.version>1.5.0</ExpressionTree.version>
     </properties>
 
     <dependencies>

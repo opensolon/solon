@@ -250,7 +250,7 @@ public abstract class QueryBase extends CRUD {
         return new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(queryable));
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond, List<IncludeSet> includeSets) {
+    protected void include(LambdaExpression<?> lambda, ISqlExpression cond, List<IncludeSet> includeSets) {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlColumnExpression columnExpression = sqlVisitor.toColumn(lambda);
         if (!columnExpression.getFieldMetaData().hasNavigate()) {
@@ -260,8 +260,8 @@ public abstract class QueryBase extends CRUD {
         IncludeSet includeSet;
         if (cond != null) {
             SqlVisitor coVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
-            ISqlExpression condition = coVisitor.visit(cond);
-            includeSet = new IncludeSet(columnExpression, condition);
+            //ISqlExpression condition = coVisitor.visit(cond);
+            includeSet = new IncludeSet(columnExpression, cond);
         }
         else {
             includeSet = new IncludeSet(columnExpression);
@@ -269,7 +269,7 @@ public abstract class QueryBase extends CRUD {
         includeSets.add(includeSet);
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond) {
+    protected void include(LambdaExpression<?> lambda, ISqlExpression cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
 
