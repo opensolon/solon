@@ -33,6 +33,7 @@
         <module>../../solon-projects/nami/nami-coder-hessian</module>
         <module>../../solon-projects/nami/nami-coder-protostuff</module>
         <module>../../solon-projects/nami/nami-coder-kryo</module>
+        <module>../../solon-projects/nami/nami-coder-sbe</module>
 
 
         <module>../../solon-projects/nami_old/nami.channel.http.okhttp</module>

@@ -23,7 +23,8 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.4
-
+* 新增 nami-coder-sbe 插件
+* 新增 solon-serialization-sbe 插件
 * 添加 solon SolonMain.pluginExclude 属性，排除插件
 * 添加 solon Context::sessionState(create) 方法
 * 添加 solon ResourceUtil.findResource(uri,defAsFile) 方法
