@@ -44,12 +44,12 @@ public class SocketdChannel extends ChannelBase implements Channel {
      *
      * @param ctx 上下文
      * @return 调用结果
-     * */
+     */
     @Override
     public Result call(Context ctx) throws Throwable {
         pretreatment(ctx);
 
-        if(ctx.config.getDecoder() == null){
+        if (ctx.config.getDecoder() == null) {
             throw new IllegalArgumentException("There is no suitable decoder");
         }
 
@@ -58,12 +58,16 @@ public class SocketdChannel extends ChannelBase implements Channel {
 
         //1.确定编码器
         Encoder encoder = ctx.config.getEncoderOrDefault();
-        if(encoder == null){
+        if (encoder == null) {
             encoder = NamiManager.getEncoder(ContentTypes.JSON_VALUE);
         }
 
-        if(encoder == null){
+        if (encoder == null) {
             throw new IllegalArgumentException("There is no suitable encoder");
+        } else {
+            if (encoder.bodyRequired() && ctx.body == null) {
+                throw new NamiException("The encoder requires parameters with '@NamiBody'");
+            }
         }
 
         //2.构建消息

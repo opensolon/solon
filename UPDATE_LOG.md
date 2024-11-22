@@ -28,14 +28,18 @@
 * 添加 solon SolonMain.pluginExclude 属性，排除插件
 * 添加 solon Context::sessionState(create) 方法
 * 添加 solon ResourceUtil.findResource(uri,defAsFile) 方法
-* 添加 solon HandlerSlots.add(expr,method,index,handler) 方法
+* 添加 solon HandlerSlots.add(expr,method,index,handler) 方法，支持路由优先级排序
+* 添加 solon Context::sessionState(true) 方法
 * 添加 solon SessionState.creationTime, lastAccessTime 方法
-* 添加 solon-data-sqlutils SqlUtils:of(dsName) 方法
-* 添加 solon-cloud-gateway CloudRouteRegister:routeRemove
+* 添加 solon-data-sqlutils SqlUtils:ofName(dsName) 方法
+* 添加 solon-cloud-gateway CloudRouteRegister:routeRemove 方法
+* 添加 nami Encoder:bodyRequired() 方法，支持必须 body 请求的场景
 * 优化 solon 外部配置加载处理，没有时，尝试在内部找资源文件
+* 优化 solon Props.bindTo 性能
 * 优化 solon SessionState:sessionId 的保持处理（从 attr 转到 cookieMap；减少一道）
 * 优化 solon 带'.'的环境变量自动加载到应用属性里（之前只加载 'solon.'）
 * 优化 solon-data-sqlutils 接口设计，优化极限性能
+* 优化 solon AppContext 支持对 app 为 null 的过滤处理，强化无 app 的测试场景
 * smart-http 升为 2.1
 * snack3 升为 3.2.121
 * redisx 升为 1.6.8
