@@ -64,7 +64,7 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
     }
 
     private void addOrder(List<String> strings, List<SqlValue> values, SqLinkConfig config) {
-        MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getTableClass());
+        MetaData metaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getMainTableClass());
         FieldMetaData primary = metaData.getPrimary();
         if (primary == null) {
             throw new SqLinkLimitNotFoundOrderByException(DbType.SQLServer);

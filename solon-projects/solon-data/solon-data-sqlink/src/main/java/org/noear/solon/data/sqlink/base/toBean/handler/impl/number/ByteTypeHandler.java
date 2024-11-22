@@ -47,7 +47,7 @@ public class ByteTypeHandler implements ITypeHandler<Byte> {
     }
 
     @Override
-    public Byte castStringToTarget(String value) {
+    public Byte castStringToTarget(String value, Type type) {
         return Byte.valueOf(value);
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.api.crud.read;
 
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.core.page.DefaultPager;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
@@ -38,8 +39,8 @@ public class EndQuery<T> extends QueryBase {
      * @return boolean
      */
     @Override
-    public boolean any() {
-        return super.any();
+    public boolean any0(LambdaExpression<?> lambdaExpression) {
+        return super.any0(lambdaExpression);
     }
 
     /**

@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.core.visitor;
+package demo.sqlink.model;
 
+import org.noear.solon.data.sqlink.annotation.Table;
 
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
+@Table("area")
+public class Area {
+    private String name;
+    private String code;
 
-/**
- * 普通的表达式解析器
- *
- * @author kiryu1223
- * @since 3.0
- */
-public class NormalVisitor extends SqlVisitor {
-    public NormalVisitor(SqLinkConfig config) {
-        super(config);
+    public String getName() {
+        return name;
     }
 
-    public NormalVisitor(SqLinkConfig config, int offset) {
-        super(config, offset);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    protected NormalVisitor getSelf() {
-        return new NormalVisitor(config);
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

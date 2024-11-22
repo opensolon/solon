@@ -28,16 +28,15 @@ public interface ISqlColumnExpression extends ISqlExpression {
     /**
      * 获取字段元数据
      */
-    FieldMetaData getPropertyMetaData();
+    FieldMetaData getFieldMetaData();
 
-    /**
-     * 获取字段所在的表的索引
-     */
-    int getTableIndex();
+    void setTableAsName(String tableAsName);
+
+    String getTableAsName();
 
     @Override
     default ISqlColumnExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.column(getPropertyMetaData(), getTableIndex());
+        return factory.column(getFieldMetaData(), getTableAsName());
     }
 }

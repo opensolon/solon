@@ -47,7 +47,7 @@ public class LongTypeHandler implements ITypeHandler<Long> {
     }
 
     @Override
-    public Long castStringToTarget(String value) {
+    public Long castStringToTarget(String value, Type type) {
         return Long.valueOf(value);
     }
 }

@@ -22,14 +22,15 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.Result;
-import org.noear.solon.data.sqlink.core.page.DefaultPager;
-import org.noear.solon.data.sqlink.core.page.PagedResult;
-import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.page.DefaultPager;
+import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -67,7 +68,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> innerJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -85,7 +86,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> innerJoin(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -103,7 +104,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> leftJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -121,7 +122,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> leftJoin(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -139,7 +140,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> leftJoin(EndQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -157,7 +158,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> rightJoin(Class<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.RIGHT, target, expr);
+        join(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -175,7 +176,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <Tn> LQuery2<T, Tn> rightJoin(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
-        join(JoinType.RIGHT, target, expr);
+        join(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -212,74 +213,6 @@ public class LQuery<T> extends QueryBase {
 
     public LQuery<T> orWhere(ExprTree<Func1<T, Boolean>> expr) {
         orWhere(expr.getTree());
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery<T> exists(Class<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery<T> exists(Class<E> table, ExprTree<Func2<T, E, Boolean>> expr) {
-        exists(table, expr.getTree(), false);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery<T> exists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery<T> exists(LQuery<E> query, ExprTree<Func2<T, E, Boolean>> expr) {
-        exists(query, expr.getTree(), false);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用 not exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery<T> notExists(Class<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery<T> notExists(Class<E> table, ExprTree<Func2<T, E, Boolean>> expr) {
-        exists(table, expr.getTree(), true);
-        return this;
-    }
-
-    /**
-     * 等价于在where中调用 not exists<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param target 数据表类或查询过程
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @return this
-     */
-    public <E> LQuery<T> notExists(LQuery<E> target, @Expr(Expr.BodyType.Expr) Func2<T, E, Boolean> func) {
-        throw new NotCompiledException();
-    }
-
-    public <E> LQuery<T> notExists(LQuery<E> query, ExprTree<Func2<T, E, Boolean>> expr) {
-        exists(query, expr.getTree(), true);
         return this;
     }
 
@@ -395,7 +328,7 @@ public class LQuery<T> extends QueryBase {
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+    public <R> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
         throw new NotCompiledException();
     }
 
@@ -441,22 +374,22 @@ public class LQuery<T> extends QueryBase {
         return new IncludeQuery<>(getSqlBuilder());
     }
 
-    /**
-     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置简单的过滤条件<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
-     * @param cond 简单的过滤条件
-     * @return 抓取过程对象
-     */
-    public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> cond) {
-        throw new NotCompiledException();
-    }
-
-    public <R> IncludeQuery<T, R> include(ExprTree<Func1<T, R>> expr, ExprTree<Func1<R, Boolean>> cond) {
-        include(expr.getTree(), cond.getTree());
-        return new IncludeQuery<>(getSqlBuilder());
-    }
+//    /**
+//     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置简单的过滤条件<p>
+//     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+//     *
+//     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
+//     * @param then 简单的过滤条件
+//     * @return 抓取过程对象
+//     */
+//    public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> then) {
+//        throw new NotCompiledException();
+//    }
+//
+//    public <R> IncludeQuery<T, R> include(ExprTree<Func1<T, R>> expr, ExprTree<Func1<R, Boolean>> then) {
+//        include(expr.getTree(), then.getTree());
+//        return new IncludeQuery<>(getSqlBuilder());
+//    }
 
     /**
      * include的集合版本
@@ -473,29 +406,14 @@ public class LQuery<T> extends QueryBase {
     /**
      * include的集合版本
      */
-    public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> cond) {
+    public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, Action1<LQuery<R>> then) {
         throw new NotCompiledException();
     }
 
-    public <R> IncludeQuery<T, R> includes(ExprTree<Func1<T, Collection<R>>> expr, ExprTree<Func1<R, Boolean>> cond) {
-        include(expr.getTree(), cond.getTree());
-        return new IncludeQuery<>(getSqlBuilder());
-    }
-
-    /**
-     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置复杂的过滤条件(取得的条数，排列规则，取得数据的限制条件)<p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
-     * @param cond 复杂的过滤条件
-     * @return 抓取过程对象
-     */
-    public <R> IncludeQuery<T, R> includesByCond(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, Action1<IncludeCond<R>> cond) {
-        throw new NotCompiledException();
-    }
-
-    public <R> IncludeQuery<T, R> includesByCond(ExprTree<Func1<T, Collection<R>>> expr, Action1<IncludeCond<R>> action) {
-        includeByCond(expr.getTree(), action);
+    public <R> IncludeQuery<T, R> includes(ExprTree<Func1<T, Collection<R>>> expr, Action1<LQuery<R>> then) {
+        LQuery<R> lQuery=new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Object.class)));
+        then.invoke(lQuery);
+        include(expr.getTree(),lQuery.getSqlBuilder().getQueryable());
         return new IncludeQuery<>(getSqlBuilder());
     }
 
@@ -527,16 +445,6 @@ public class LQuery<T> extends QueryBase {
     //endregion
 
     // region [toAny]
-
-    /**
-     * 检查表中是否存在至少一条数据
-     *
-     * @return boolean
-     */
-    @Override
-    public boolean any() {
-        return super.any();
-    }
 
     /**
      * 返回一条数据，会调用各种数据库limit 1的具体实现，无数据则返回null
@@ -618,5 +526,110 @@ public class LQuery<T> extends QueryBase {
         return toPagedResult((long) pageIndex, (long) pageSize);
     }
 
+    // endregion
+
+    // region [FAST RETURN]
+
+    /**
+     * 检查表中是否存在至少一条数据
+     */
+    public boolean any() {
+        return any0(null);
+    }
+
+    /**
+     * 检查表中是否存在至少一条数据<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     */
+    public boolean any(@Expr(Expr.BodyType.Expr) Func1<T, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public boolean any(ExprTree<Func1<T, Boolean>> expr) {
+        return any0(expr.getTree());
+    }
+
+    /**
+     * 聚合函数COUNT
+     */
+    public long count() {
+        return count0(null);
+    }
+
+    /**
+     * 聚合函数COUNT<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     */
+    public <R> long count(@Expr(Expr.BodyType.Expr) Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R> long count(ExprTree<Func1<T, R>> expr) {
+        return count0(expr.getTree());
+    }
+
+
+    /**
+     * 聚合函数SUM
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)
+     */
+    public <R extends Number> R sum(@Expr(Expr.BodyType.Expr) Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R sum(ExprTree<Func1<T, R>> expr) {
+        return sum0(expr.getTree());
+    }
+
+
+    /**
+     * 聚合函数AVG
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red))
+     */
+    public <R extends Number> BigDecimal avg(@Expr(Expr.BodyType.Expr) Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> BigDecimal avg(ExprTree<Func1<T, R>> expr) {
+        return avg0(expr.getTree());
+    }
+
+    /**
+     * 聚合函数MAX
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
+     */
+    public <R extends Number> R max(@Expr(Expr.BodyType.Expr) Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R max(ExprTree<Func1<T, R>> expr) {
+        return max0(expr.getTree());
+    }
+
+    /**
+     * 聚合函数MIN
+     * <p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param func 返回需要统计的字段的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red)))
+     */
+    public <R extends Number> R min(@Expr(Expr.BodyType.Expr) Func1<T, R> func) {
+        throw new NotCompiledException();
+    }
+
+    public <R extends Number> R min(ExprTree<Func1<T, R>> expr) {
+        return min0(expr.getTree());
+    }
     // endregion
 }

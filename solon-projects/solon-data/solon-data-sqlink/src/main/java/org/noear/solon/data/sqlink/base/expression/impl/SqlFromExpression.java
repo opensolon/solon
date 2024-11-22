@@ -29,11 +29,11 @@ import java.util.List;
  */
 public class SqlFromExpression implements ISqlFromExpression {
     protected final ISqlTableExpression sqlTableExpression;
-    protected final int index;
+    protected String asName;
 
-    public SqlFromExpression(ISqlTableExpression sqlTableExpression, int index) {
+    public SqlFromExpression(ISqlTableExpression sqlTableExpression, String asName) {
         this.sqlTableExpression = sqlTableExpression;
-        this.index = index;
+        this.asName = asName;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class SqlFromExpression implements ISqlFromExpression {
     }
 
     @Override
-    public int getIndex() {
-        return index;
+    public String getAsName() {
+        return asName;
     }
 
     @Override
@@ -56,7 +56,11 @@ public class SqlFromExpression implements ISqlFromExpression {
         else {
             sql = "(" + getSqlTableExpression().getSqlAndValue(config, values) + ")";
         }
-        String t = "t" + getIndex();
-        return "FROM " + sql + " AS " + config.getDisambiguation().disambiguation(t);
+        if (asName != null) {
+            return "FROM " + sql + " AS " + config.getDisambiguation().disambiguation(asName);
+        }
+        else {
+            return "FROM " + sql;
+        }
     }
 }

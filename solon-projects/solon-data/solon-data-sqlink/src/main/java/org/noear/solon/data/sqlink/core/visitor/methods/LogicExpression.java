@@ -18,6 +18,7 @@ package org.noear.solon.data.sqlink.core.visitor.methods;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
+import org.noear.solon.data.sqlink.base.expression.SqlOperator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,4 +51,13 @@ public class LogicExpression {
         }
         return factory.template(function, args);
     }
+
+    /**
+     * 是否为空表达式
+     */
+    public static ISqlExpression notNullExpression(SqLinkConfig config, ISqlExpression expression) {
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        return factory.binary(SqlOperator.IS, expression, factory.unary(SqlOperator.NOT,factory.AnyValue(null)));
+    }
+
 }

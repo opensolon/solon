@@ -30,8 +30,8 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleFromExpression extends SqlFromExpression {
-    public OracleFromExpression(ISqlTableExpression sqlTableExpression, int index) {
-        super(sqlTableExpression, index);
+    public OracleFromExpression(ISqlTableExpression sqlTableExpression, String asName) {
+        super(sqlTableExpression, asName);
     }
 
     @Override
@@ -46,6 +46,6 @@ public class OracleFromExpression extends SqlFromExpression {
         else {
             sql = "(" + sqlTableExpression.getSqlAndValue(config, values) + ")";
         }
-        return "FROM " + sql + " t" + index;
+        return "FROM " + sql + " " + config.getDisambiguation().disambiguationTableName(asName);
     }
 }

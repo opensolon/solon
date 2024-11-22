@@ -16,6 +16,7 @@
 package demo.sqlink;
 
 import demo.sqlink.model.User;
+import demo.sqlink.vo.UserVo;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
@@ -36,10 +37,22 @@ public class SelectDemoService {
                 .first();
     }
 
+    // 统计email不为空的用户数量
+    public long findEmailNotNullUserCount() {
+        return sqLink.query(User.class).count(u -> u.getEmail() != null);
+    }
+
     // 根据id查询用户
     public User findById(long id) {
         return sqLink.query(User.class)
                 .where(user -> user.getId() == id)
+                .first();
+    }
+
+    // 根据名称和email查询一位用户
+    public User findByNameAndEmail(String name, String email) {
+        return sqLink.query(User.class)
+                .where(u -> u.getUsername() == name && u.getEmail() == email)
                 .first();
     }
 
@@ -60,5 +73,27 @@ public class SelectDemoService {
                     long id = u.getId();
                     String email = u.getEmail();
                 }).toList();
+    }
+
+    // 或者使用Vo返回
+    public List<UserVo> findUserVoByName(String name) {
+        return sqLink.query(User.class)
+                .where(u -> u.getUsername().startsWith(name))
+                .select(UserVo.class).toList();
+    }
+
+    // 根据地区码查询用户
+    public List<User> findUserByAreaCode(String code) {
+        return sqLink.query(User.class)
+                .where(u -> u.getAreas().stream().anyMatch(a -> a.getCode() == code))
+                .toList();
+    }
+
+    // 查询用户与他的前五个地址
+    public List<User> findUserByHasNotAreaCode(int id) {
+        int count = 1000;
+        return sqLink.query(User.class)
+                .includes(user -> user.getAreas(), areas -> areas.limit(5))
+                .toList();
     }
 }

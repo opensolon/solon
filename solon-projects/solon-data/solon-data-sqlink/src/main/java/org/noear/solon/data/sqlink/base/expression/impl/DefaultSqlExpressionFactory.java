@@ -32,8 +32,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlColumnExpression column(FieldMetaData fieldMetaData, int tableIndex) {
-        return new SqlColumnExpression(fieldMetaData, tableIndex);
+    public ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName) {
+        return new SqlColumnExpression(fieldMetaData,tableAsName);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlFromExpression from(ISqlTableExpression sqlTable, int index) {
-        return new SqlFromExpression(sqlTable, index);
+    public ISqlFromExpression from(ISqlTableExpression sqlTable, String asName) {
+        return new SqlFromExpression(sqlTable, asName);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, int index) {
-        return new SqlJoinExpression(joinType, joinTable, conditions, index);
+    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
+        return new SqlJoinExpression(joinType, joinTable, conditions, asName);
     }
 
     @Override

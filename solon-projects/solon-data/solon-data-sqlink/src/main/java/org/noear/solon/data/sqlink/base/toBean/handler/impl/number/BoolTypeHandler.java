@@ -47,7 +47,7 @@ public class BoolTypeHandler implements ITypeHandler<Boolean> {
     }
 
     @Override
-    public Boolean castStringToTarget(String value) {
+    public Boolean castStringToTarget(String value, Type type) {
         return Boolean.valueOf(value);
     }
 }

@@ -22,4 +22,6 @@ package org.noear.solon.data.sqlink.base.expression;
  * @since 3.0
  */
 public interface ISqlValueExpression extends ISqlExpression {
+
+    boolean nouNull();
 }

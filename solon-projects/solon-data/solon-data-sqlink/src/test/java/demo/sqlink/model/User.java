@@ -15,11 +15,12 @@
  */
 package demo.sqlink.model;
 
-import demo.sqlink.interceptor.Base64Decryption;
-import demo.sqlink.interceptor.Base64Encryption;
+import demo.sqlink.interceptor.Decryption;
+import demo.sqlink.interceptor.Encryption;
 import org.noear.solon.data.sqlink.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Table("user")
@@ -31,14 +32,16 @@ public class User {
     private long id;
     private String username;
     //加解密密码
-    @OnPut(Base64Encryption.class)
-    @OnGet(Base64Decryption.class)
+    @OnPut(Encryption.class)
+    @OnGet(Decryption.class)
     private String password;
     private String email;
     @Column("update_time")
     // 插入与更新时默认值，来自数据库
     @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private LocalDateTime updateTime;
+    private List<Area> areas;
+    private Info info;
 
     public long getId() {
         return id;
@@ -78,5 +81,21 @@ public class User {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Area> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(List<Area> areas) {
+        this.areas = areas;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
 }

@@ -35,19 +35,19 @@ public interface ISqlFromExpression extends ISqlExpression {
      * 判断是否为无from查询
      */
     default boolean isEmptyTable() {
-        Class<?> tableClass = getSqlTableExpression().getTableClass();
+        Class<?> tableClass = getSqlTableExpression().getMainTableClass();
         MetaData metaData = MetaDataCache.getMetaData(tableClass);
         return metaData.isEmptyTable();
     }
 
     /**
-     * 获取表所在位置的索引
+     * 获取表别名
      */
-    int getIndex();
+    String getAsName();
 
     @Override
     default ISqlFromExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.from(getSqlTableExpression().copy(config), getIndex());
+        return factory.from(getSqlTableExpression().copy(config), getAsName());
     }
 }

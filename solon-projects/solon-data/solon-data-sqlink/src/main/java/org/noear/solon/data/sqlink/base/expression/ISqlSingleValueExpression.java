@@ -16,6 +16,9 @@
 package org.noear.solon.data.sqlink.base.expression;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.session.SqlValue;
+
+import java.util.List;
 
 
 /**
@@ -30,14 +33,13 @@ public interface ISqlSingleValueExpression extends ISqlValueExpression {
      */
     Object getValue();
 
-    /**
-     * 获取类型
-     */
-    default Class<?> getType() {
-        return getValue().getClass();
+    @Override
+    default boolean nouNull() {
+        return getValue() != null;
     }
 
-    //String getSqlAndValue(IConfig config, List<Object> values, IConverter<?, ?> converter, FieldMetaData propertyMetaData);
+    @Override
+    String getSqlAndValue(SqLinkConfig config, List<SqlValue> values);
 
     @Override
     default ISqlSingleValueExpression copy(SqLinkConfig config) {

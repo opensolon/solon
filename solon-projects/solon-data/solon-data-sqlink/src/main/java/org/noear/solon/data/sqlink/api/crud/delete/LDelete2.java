@@ -48,7 +48,7 @@ public class LDelete2<T1, T2> extends DeleteBase {
     }
 
     public <Tn> LDelete3<T1, T2, Tn> innerJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return new LDelete3<>(getSqlBuilder());
     }
 
@@ -66,7 +66,7 @@ public class LDelete2<T1, T2> extends DeleteBase {
     }
 
     public <Tn> LDelete3<T1, T2, Tn> leftJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return new LDelete3<>(getSqlBuilder());
     }
 
@@ -88,12 +88,12 @@ public class LDelete2<T1, T2> extends DeleteBase {
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
      *
      * @param target 数据表类
-     * @param func   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param expr   返回bool的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @param <Tn>   join过来的表的类型
      * @return 泛型数量+1的删除过程对象
      */
-    public <Tn> LDelete3<T1, T2, Tn> rightJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> func) {
-        join(JoinType.RIGHT, target, func);
+    public <Tn> LDelete3<T1, T2, Tn> rightJoin(Class<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
+        join(JoinType.RIGHT, target, expr.getTree());
         return new LDelete3<>(getSqlBuilder());
     }
     //endregion

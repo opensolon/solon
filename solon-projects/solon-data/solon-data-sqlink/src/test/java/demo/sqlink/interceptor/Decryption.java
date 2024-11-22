@@ -5,14 +5,14 @@ import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 
 import java.util.Base64;
 
-public class Base64Encryption extends Interceptor<String> {
+public class Decryption extends Interceptor<String> {
     @Override
     public String doIntercept(String value, SqLinkConfig config) {
-        return encrypt(value);
+        return decrypt(value);
     }
 
-    private String encrypt(String password) {
-        // 加密逻辑
-        return Base64.getEncoder().encodeToString(password.getBytes());
+    private String decrypt(String value) {
+        // 解密逻辑
+        return new String(Base64.getDecoder().decode(value));
     }
 }

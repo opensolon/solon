@@ -48,7 +48,7 @@ public class LDelete3<T1, T2, T3> extends DeleteBase {
     }
 
     public <Tn> LDelete4<T1, T2, T3, Tn> innerJoin(Class<Tn> target, ExprTree<Func4<T1, T2, T3, Tn, Boolean>> expr) {
-        join(JoinType.INNER, target, expr);
+        join(JoinType.INNER, target, expr.getTree());
         return new LDelete4<>(getSqlBuilder());
     }
 
@@ -66,7 +66,7 @@ public class LDelete3<T1, T2, T3> extends DeleteBase {
     }
 
     public <Tn> LDelete4<T1, T2, T3, Tn> leftJoin(Class<Tn> target, ExprTree<Func4<T1, T2, T3, Tn, Boolean>> expr) {
-        join(JoinType.LEFT, target, expr);
+        join(JoinType.LEFT, target, expr.getTree());
         return new LDelete4<>(getSqlBuilder());
     }
 
@@ -84,7 +84,7 @@ public class LDelete3<T1, T2, T3> extends DeleteBase {
     }
 
     public <Tn> LDelete4<T1, T2, T3, Tn> rightJoin(Class<Tn> target, ExprTree<Func4<T1, T2, T3, Tn, Boolean>> expr) {
-        join(JoinType.RIGHT, target, expr);
+        join(JoinType.RIGHT, target, expr.getTree());
         return new LDelete4<>(getSqlBuilder());
     }
     //endregion

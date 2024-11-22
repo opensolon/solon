@@ -25,5 +25,5 @@ public interface ISqlTableExpression extends ISqlExpression {
     /**
      * 获取表类
      */
-    Class<?> getTableClass();
+    Class<?> getMainTableClass();
 }

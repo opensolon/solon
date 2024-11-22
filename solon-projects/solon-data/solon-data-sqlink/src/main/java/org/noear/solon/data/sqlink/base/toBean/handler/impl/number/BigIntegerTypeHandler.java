@@ -49,7 +49,7 @@ public class BigIntegerTypeHandler implements ITypeHandler<BigInteger> {
     }
 
     @Override
-    public BigInteger castStringToTarget(String value) {
+    public BigInteger castStringToTarget(String value, Type type) {
         return new BigInteger(value);
     }
 }

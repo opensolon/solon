@@ -48,7 +48,7 @@ public class DoubleTypeHandler implements ITypeHandler<Double> {
     }
 
     @Override
-    public Double castStringToTarget(String value) {
+    public Double castStringToTarget(String value, Type type) {
         return Double.valueOf(value);
     }
 }

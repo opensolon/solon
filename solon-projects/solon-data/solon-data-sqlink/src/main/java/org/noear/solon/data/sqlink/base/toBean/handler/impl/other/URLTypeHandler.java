@@ -48,7 +48,7 @@ public class URLTypeHandler implements ITypeHandler<URL> {
     }
 
     @Override
-    public URL castStringToTarget(String value) {
+    public URL castStringToTarget(String value, Type type) {
         try {
             return new URL(value);
         }

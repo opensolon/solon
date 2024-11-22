@@ -16,14 +16,14 @@
 package org.noear.solon.data.sqlink.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.delegate.Action1;
-import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
+import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
@@ -34,20 +34,15 @@ import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
-import org.noear.solon.data.sqlink.core.visitor.GroupByVisitor;
-import org.noear.solon.data.sqlink.core.visitor.HavingVisitor;
-import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
-import org.noear.solon.data.sqlink.core.visitor.SelectVisitor;
+import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.noear.solon.data.sqlink.core.visitor.methods.AggregateMethods;
-import org.noear.solon.data.sqlink.core.visitor.methods.LogicExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.*;
-
-import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.isBool;
 
 /**
  * @author kiryu1223
@@ -70,7 +65,7 @@ public abstract class QueryBase extends CRUD {
         return sqlBuilder.getConfig();
     }
 
-    protected boolean any() {
+    protected boolean any0(LambdaExpression<?> lambda) {
         SqLinkConfig config = getConfig();
         //获取拷贝的查询对象
         ISqlQueryableExpression queryableCopy = getSqlBuilder().getQueryable().copy(config);
@@ -80,6 +75,12 @@ public abstract class QueryBase extends CRUD {
         querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
         // LIMIT 1
         querySqlBuilder.setLimit(0, 1);
+        // WHERE ...
+        if (lambda != null) {
+            SqlVisitor sqlVisitor = new SqlVisitor(config, queryableCopy);
+            ISqlExpression cond = sqlVisitor.visit(lambda);
+            querySqlBuilder.addWhere(cond);
+        }
         //查询
         SqlSession session = getConfig().getSqlSessionFactory().getSession(config);
         List<SqlValue> values = new ArrayList<>();
@@ -93,24 +94,15 @@ public abstract class QueryBase extends CRUD {
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
         List<SqlValue> values = new ArrayList<>();
-
-        //long start = System.nanoTime();
         String sql = sqlBuilder.getSqlAndValue(values);
-        //System.out.println("本次toSql耗时" + (System.nanoTime() - start));
-
-        //tryPrintUseDs(log, config.getDataSourceManager().getDsKey());
         tryPrintSql(log, sql);
         Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession(config);
-
-        //long start2 = System.nanoTime();
         List<T> ts = session.executeQuery(
                 r -> ObjectBuilder.start(r, targetClass, mappingData, single, config).createList(),
                 sql,
                 values
         );
-        //System.out.println("本次toBean耗时" + (System.nanoTime() - start2));
-
         if (!sqlBuilder.getIncludeSets().isEmpty()) {
             try {
                 IncludeFactory includeFactory = config.getIncludeFactory();
@@ -143,26 +135,9 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected boolean select(LambdaExpression<?> lambda) {
-        SelectVisitor selectVisitor = new SelectVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression expression = selectVisitor.visit(lambda);
-        ISqlSelectExpression selectExpression;
-        if (expression instanceof ISqlSelectExpression) {
-            selectExpression = (ISqlSelectExpression) expression;
-        }
-        else {
-            SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-            // 用于包装某些数据库不支持直接返回bool
-            if (isBool(lambda.getReturnType())) {
-                SqLinkConfig config = getConfig();
-                switch (config.getDbType()) {
-                    case SQLServer:
-                    case Oracle:
-                        expression = LogicExpression.IfExpression(config, expression, factory.constString("1"), factory.constString("0"));
-                }
-            }
-            selectExpression = factory.select(Collections.singletonList(expression), lambda.getReturnType(), true, false);
-        }
-        sqlBuilder.setSelect(selectExpression);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlSelectExpression select = sqlVisitor.toSelect(lambda);
+        sqlBuilder.setSelect(select);
         return sqlBuilder.isSingle();
     }
 
@@ -170,93 +145,83 @@ public abstract class QueryBase extends CRUD {
         sqlBuilder.setSelect(c);
     }
 
-    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
+    protected void join(JoinType joinType, Class<?> target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression on = normalVisitor.visit(expr.getTree());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression on = sqlVisitor.visit(lambda);
         sqlBuilder.addJoin(joinType, factory.table(target), on);
     }
 
-    protected void join(JoinType joinType, QueryBase target, ExprTree<?> expr) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression on = normalVisitor.visit(expr.getTree());
+    protected void join(JoinType joinType, QueryBase target, LambdaExpression<?> lambda) {
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression on = sqlVisitor.visit(lambda);
         sqlBuilder.addJoin(joinType, target.getSqlBuilder().getQueryable(), on);
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression where = normalVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression where = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(where);
     }
 
     protected void orWhere(LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression where = normalVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression where = sqlVisitor.visit(lambda);
         sqlBuilder.addOrWhere(where);
     }
 
-    protected void exists(Class<?> table, LambdaExpression<?> lambda, boolean not) {
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression where = normalVisitor.visit(lambda);
-        int offset = sqlBuilder.getQueryable().getOrderedCount();
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(factory.table(table), offset)));
-        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true, false));
-        querySqlBuilder.addWhere(where);
-        ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
-        if (not) {
-            sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
-        }
-        else {
-            sqlBuilder.addWhere(exists);
-        }
-    }
-
-    protected void exists(QueryBase queryBase, LambdaExpression<?> lambda, boolean not) {
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression where = normalVisitor.visit(lambda);
-        ISqlQueryableExpression queryable = queryBase.getSqlBuilder().getQueryable();
-        int offset = sqlBuilder.getQueryable().getOrderedCount();
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, offset)));
-        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), queryable.getTableClass(), true, false));
-        querySqlBuilder.addWhere(where);
-        ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
-        if (not) {
-            sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
-        }
-        else {
-            sqlBuilder.addWhere(exists);
-        }
-    }
+//    protected void exists(Class<?> table, LambdaExpression<?> lambda, boolean not) {
+//        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+//        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getQueryable());
+//        ISqlExpression where = sqlVisitor.visit(lambda);
+//        int offset = sqlBuilder.getQueryable().getOrderedCount();
+//        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(factory.table(table), offset)));
+//        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), table, true, false));
+//        querySqlBuilder.addWhere(where);
+//        ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
+//        if (not) {
+//            sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
+//        }
+//        else {
+//            sqlBuilder.addWhere(exists);
+//        }
+//    }
+//
+//    protected void exists(QueryBase queryBase, LambdaExpression<?> lambda, boolean not) {
+//        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+//        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getQueryable());
+//        ISqlExpression where = sqlVisitor.visit(lambda);
+//        ISqlQueryableExpression queryable = queryBase.getSqlBuilder().getQueryable();
+//        int offset = sqlBuilder.getQueryable().getOrderedCount();
+//        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, offset)));
+//        querySqlBuilder.setSelect(factory.select(Collections.singletonList(factory.constString("1")), queryable.getTableClass(), true, false));
+//        querySqlBuilder.addWhere(where);
+//        ISqlUnaryExpression exists = factory.unary(SqlOperator.EXISTS, querySqlBuilder.getQueryable());
+//        if (not) {
+//            sqlBuilder.addWhere(factory.unary(SqlOperator.NOT, exists));
+//        }
+//        else {
+//            sqlBuilder.addWhere(exists);
+//        }
+//    }
 
     protected void groupBy(LambdaExpression<?> lambda) {
-        GroupByVisitor groupByVisitor = new GroupByVisitor(getConfig());
-        ISqlExpression expression = groupByVisitor.visit(lambda);
-        ISqlGroupByExpression group;
-        if (expression instanceof ISqlGroupByExpression) {
-            group = (ISqlGroupByExpression) expression;
-        }
-        else {
-            SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-            LinkedHashMap<String, ISqlExpression> map = new LinkedHashMap<>();
-            map.put("key", expression);
-            group = factory.groupBy(map);
-        }
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlGroupByExpression group = sqlVisitor.toGroup(lambda);
         sqlBuilder.setGroup(group);
     }
 
     protected void having(LambdaExpression<?> lambda) {
-        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression expression = havingVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addHaving(expression);
     }
 
     protected void orderBy(LambdaExpression<?> lambda, boolean asc) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        HavingVisitor havingVisitor = new HavingVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression expression = havingVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addOrder(factory.order(expression, asc));
     }
 
@@ -279,65 +244,37 @@ public abstract class QueryBase extends CRUD {
     }
 
     protected QuerySqlBuilder boxedQuerySqlBuilder() {
-        return new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(sqlBuilder.getQueryable()));
+        ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
+        Class<?> mainTableClass = queryable.getMainTableClass();
+        String as = MetaDataCache.getMetaData(mainTableClass).getTableName().substring(0, 1).toLowerCase();
+        return new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(queryable));
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond, List<IncludeSet> includeSets) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression expression = normalVisitor.visit(lambda);
-        if (expression instanceof ISqlColumnExpression) {
-            ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
-                throw new RuntimeException("include指定的字段需要被@Navigate修饰");
-            }
-            relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
-            IncludeSet includeSet;
-            if (cond != null) {
-                NormalVisitor normalVisitor2 = new NormalVisitor(getConfig());
-                ISqlExpression condition = normalVisitor2.visit(cond);
-                includeSet = new IncludeSet(columnExpression, condition);
-            }
-            else {
-                includeSet = new IncludeSet(columnExpression);
-            }
-            includeSets.add(includeSet);
+    protected void include(LambdaExpression<?> lambda, ISqlExpression cond, List<IncludeSet> includeSets) {
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlColumnExpression columnExpression = sqlVisitor.toColumn(lambda);
+        if (!columnExpression.getFieldMetaData().hasNavigate()) {
+            throw new RuntimeException("include指定的字段需要被@Navigate修饰");
+        }
+        relationTypeCheck(columnExpression.getFieldMetaData().getNavigateData());
+        IncludeSet includeSet;
+        if (cond != null) {
+            SqlVisitor coVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+            //ISqlExpression condition = coVisitor.visit(cond);
+            includeSet = new IncludeSet(columnExpression, cond);
         }
         else {
-            throw new RuntimeException("include需要指定一个字段");
+            includeSet = new IncludeSet(columnExpression);
         }
+        includeSets.add(includeSet);
     }
 
-    protected void include(LambdaExpression<?> lambda, LambdaExpression<?> cond) {
+    protected void include(LambdaExpression<?> lambda, ISqlExpression cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
 
     protected void include(LambdaExpression<?> lambda) {
         include(lambda, null, sqlBuilder.getIncludeSets());
-    }
-
-    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action, List<IncludeSet> includeSets) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression expression = normalVisitor.visit(lambda);
-        if (expression instanceof ISqlColumnExpression) {
-            ISqlColumnExpression columnExpression = (ISqlColumnExpression) expression;
-            FieldMetaData fieldMetaData = columnExpression.getPropertyMetaData();
-            if (!columnExpression.getPropertyMetaData().hasNavigate()) {
-                throw new RuntimeException("include指定的字段需要被@Navigate修饰");
-            }
-            relationTypeCheck(columnExpression.getPropertyMetaData().getNavigateData());
-            Class<R> navigateTargetType = (Class<R>) fieldMetaData.getNavigateData().getNavigateTargetType();
-            IncludeCond<R> temp = new IncludeCond<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(navigateTargetType)));
-            action.invoke(temp);
-            IncludeSet includeSet = new IncludeSet(columnExpression, temp.getSqlBuilder().getQueryable());
-            includeSets.add(includeSet);
-        }
-        else {
-            throw new RuntimeException("include需要指定一个字段");
-        }
-    }
-
-    protected <R> void includeByCond(LambdaExpression<?> lambda, Action1<IncludeCond<R>> action) {
-        includeByCond(lambda, action, sqlBuilder.getIncludeSets());
     }
 
     protected void relationTypeCheck(NavigateData navigateData) {
@@ -389,5 +326,140 @@ public abstract class QueryBase extends CRUD {
         long offset = (index - 1) * take;
         List<T> list = dataQuery.limit(offset, take).toList();
         return pager.getPagedResult(total, list);
+    }
+
+    protected long count0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        List<ISqlExpression> countList;
+        if (lambda == null) {
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig());
+            countList = Collections.singletonList(count);
+        }
+        else {
+            SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), sqlVisitor.visit(lambda));
+            countList = Collections.singletonList(count);
+        }
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(countList, long.class, true, false));
+        LQuery<Long> countQuery = new LQuery<>(copyQuerySqlBuilder);
+        return countQuery.toList().get(0);
+    }
+
+    protected List<Long> groupByCount0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        List<ISqlExpression> countList;
+        if (lambda == null) {
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig());
+            countList = Collections.singletonList(count);
+        }
+        else {
+            SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+            ISqlTemplateExpression count = AggregateMethods.count(getConfig(), sqlVisitor.visit(lambda));
+            countList = Collections.singletonList(count);
+        }
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(countList, long.class, true, false));
+        LQuery<Long> countQuery = new LQuery<>(copyQuerySqlBuilder);
+        return countQuery.toList();
+    }
+
+    protected <T extends Number> T sum0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression sum = AggregateMethods.sum(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> sumList = Collections.singletonList(sum);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(sumList, lambda.getReturnType(), true, false));
+        LQuery<T> sumQuery = new LQuery<>(copyQuerySqlBuilder);
+        return sumQuery.toList().get(0);
+    }
+
+    protected <T extends Number> List<T> groupBySum0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression sum = AggregateMethods.sum(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> sumList = Collections.singletonList(sum);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder copyQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        copyQuerySqlBuilder.setSelect(factory.select(sumList, lambda.getReturnType(), true, false));
+        LQuery<T> sumQuery = new LQuery<>(copyQuerySqlBuilder);
+        return sumQuery.toList();
+    }
+
+    protected BigDecimal avg0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression avg = AggregateMethods.avg(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> avgList = Collections.singletonList(avg);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder avgQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        avgQuerySqlBuilder.setSelect(factory.select(avgList, BigDecimal.class, true, false));
+        LQuery<BigDecimal> avgQuery = new LQuery<>(avgQuerySqlBuilder);
+        return avgQuery.toList().get(0);
+    }
+
+    protected List<BigDecimal> groupByAvg0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression avg = AggregateMethods.avg(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> avgList = Collections.singletonList(avg);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder avgQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        avgQuerySqlBuilder.setSelect(factory.select(avgList, BigDecimal.class, true, false));
+        LQuery<BigDecimal> avgQuery = new LQuery<>(avgQuerySqlBuilder);
+        return avgQuery.toList();
+    }
+
+
+    protected <T extends Number> T max0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression max = AggregateMethods.max(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> maxList = Collections.singletonList(max);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder maxQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        maxQuerySqlBuilder.setSelect(factory.select(maxList, lambda.getReturnType(), true, false));
+        LQuery<T> maxQuery = new LQuery<>(maxQuerySqlBuilder);
+        return maxQuery.toList().get(0);
+    }
+
+    protected <T extends Number> List<T> groupByMax0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression max = AggregateMethods.max(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> maxList = Collections.singletonList(max);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder maxQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        maxQuerySqlBuilder.setSelect(factory.select(maxList, lambda.getReturnType(), true, false));
+        LQuery<T> maxQuery = new LQuery<>(maxQuerySqlBuilder);
+        return maxQuery.toList();
+    }
+
+    protected <T extends Number> T min0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression min = AggregateMethods.min(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> minList = Collections.singletonList(min);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder minQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
+        LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
+        return minQuery.toList().get(0);
+    }
+
+    protected <T extends Number> List<T> groupByMin0(LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlTemplateExpression min = AggregateMethods.min(getConfig(), sqlVisitor.visit(lambda));
+        List<ISqlExpression> minList = Collections.singletonList(min);
+        ISqlQueryableExpression copy = sqlBuilder.getQueryable().copy(getConfig());
+        QuerySqlBuilder minQuerySqlBuilder = new QuerySqlBuilder(getConfig(), copy);
+        minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
+        LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
+        return minQuery.toList();
     }
 }

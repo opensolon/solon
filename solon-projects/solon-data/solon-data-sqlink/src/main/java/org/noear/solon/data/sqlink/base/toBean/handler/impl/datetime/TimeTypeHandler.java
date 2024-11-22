@@ -43,7 +43,7 @@ public class TimeTypeHandler implements ITypeHandler<Time> {
     }
 
     @Override
-    public Time castStringToTarget(String value) {
+    public Time castStringToTarget(String value, Type type) {
         return Time.valueOf(value);
     }
 }

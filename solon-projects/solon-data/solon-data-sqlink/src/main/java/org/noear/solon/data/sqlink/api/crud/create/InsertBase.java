@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
+
 /**
  * @author kiryu1223
  * @since 3.0
@@ -133,13 +135,13 @@ public abstract class InsertBase extends CRUD {
                                 break;
                             case Static:
                                 if (value == null) {
-                                    value = typeHandler.castStringToTarget(onInsert.value());
+                                    value = typeHandler.castStringToTarget(onInsert.value(),fieldMetaData.getGenericType());
                                 }
                                 sqlValues.add(new SqlValue(value, typeHandler, fieldMetaData.getOnPut()));
                                 break;
                             case Dynamic:
                                 if (value == null) {
-                                    DynamicGenerator generator = DynamicGenerator.get(onInsert.dynamic());
+                                    DynamicGenerator<?> generator = DynamicGenerator.get(cast(onInsert.dynamic()));
                                     value = generator.generate(getConfig(), fieldMetaData);
                                 }
                                 sqlValues.add(new SqlValue(value, typeHandler, fieldMetaData.getOnPut()));

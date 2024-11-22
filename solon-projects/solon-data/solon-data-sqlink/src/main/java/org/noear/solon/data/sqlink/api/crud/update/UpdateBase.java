@@ -24,8 +24,7 @@ import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
-import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
-import org.noear.solon.data.sqlink.core.visitor.SetVisitor;
+import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,15 +85,15 @@ public class UpdateBase extends CRUD {
 
     protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression on = normalVisitor.visit(expr.getTree());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlExpression on = sqlVisitor.visit(expr.getTree());
         ISqlTableExpression table = factory.table(target);
         getSqlBuilder().addJoin(joinType, table, on);
     }
 
     protected void set(LambdaExpression<?> lambda) {
-        SetVisitor setVisitor = new SetVisitor(getConfig());
-        ISqlExpression expression = setVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlExpression expression = sqlVisitor.visit(lambda);
         if (expression instanceof ISqlSetsExpression) {
             ISqlSetsExpression sqlSetsExpression = (ISqlSetsExpression) expression;
             sqlBuilder.addSet(sqlSetsExpression);
@@ -106,8 +105,8 @@ public class UpdateBase extends CRUD {
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression expression = normalVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);
     }
 }

@@ -47,7 +47,7 @@ public class FloatTypeHandler implements ITypeHandler<Float> {
     }
 
     @Override
-    public Float castStringToTarget(String value) {
+    public Float castStringToTarget(String value, Type type) {
         return Float.valueOf(value);
     }
 }

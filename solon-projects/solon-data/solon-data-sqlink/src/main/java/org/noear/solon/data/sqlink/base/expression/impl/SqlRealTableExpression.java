@@ -36,14 +36,14 @@ public class SqlRealTableExpression extends SqlTableExpression implements ISqlRe
     }
 
     @Override
-    public Class<?> getTableClass() {
+    public Class<?> getMainTableClass() {
         return tableClass;
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         String fullName = "";
-        MetaData metaData = MetaDataCache.getMetaData(getTableClass());
+        MetaData metaData = MetaDataCache.getMetaData(getMainTableClass());
         SqLinkDialect dbConfig = config.getDisambiguation();
         String schema = metaData.getSchema();
         if (!schema.isEmpty()) {

@@ -47,7 +47,7 @@ public class CharTypeHandler implements ITypeHandler<Character> {
     }
 
     @Override
-    public Character castStringToTarget(String value) {
+    public Character castStringToTarget(String value, Type type) {
         return value.charAt(0);
     }
 }

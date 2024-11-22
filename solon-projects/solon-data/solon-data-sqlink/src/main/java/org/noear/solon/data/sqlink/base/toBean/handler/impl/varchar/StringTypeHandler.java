@@ -46,7 +46,7 @@ public class StringTypeHandler implements ITypeHandler<String> {
     }
 
     @Override
-    public String castStringToTarget(String value) {
+    public String castStringToTarget(String value, Type type) {
         return value;
     }
 }

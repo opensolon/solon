@@ -32,7 +32,7 @@ public abstract class Interceptor<T> {
     private static final Map<Class<? extends Interceptor<?>>, Interceptor<?>> cache = new ConcurrentHashMap<>();
 
     public static <T> Interceptor<T> get(Class<? extends Interceptor<T>> c) {
-        Interceptor<?> generator = cache.get(c);
+        Interceptor<T> generator = (Interceptor<T>) cache.get(c);
         if (generator == null) {
             try {
                 generator = c.newInstance();
@@ -42,6 +42,6 @@ public abstract class Interceptor<T> {
                 throw new RuntimeException(e);
             }
         }
-        return (Interceptor<T>) generator;
+        return generator;
     }
 }

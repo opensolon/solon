@@ -61,11 +61,12 @@ public class UpdateSqlBuilder implements ISqlBuilder {
      * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
+        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
                 on,
-                1 + joins.getJoins().size()
+                as
         );
         joins.addJoin(join);
     }
@@ -136,7 +137,7 @@ public class UpdateSqlBuilder implements ISqlBuilder {
     }
 
 //    private void setDefaultValues(List<SqlValue> values, MetaData metaData, StringBuilder sb) {
-//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getPropertyMetaData()).collect(Collectors.toSet());
+//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getFieldMetaData()).collect(Collectors.toSet());
 //        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
 //        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
 //            ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();

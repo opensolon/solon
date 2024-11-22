@@ -42,7 +42,7 @@ public class ListStringTypeHandler implements ITypeHandler<List<String>> {
     }
 
     @Override
-    public List<String> castStringToTarget(String value) {
+    public List<String> castStringToTarget(String value, Type type) {
         return Arrays.stream(value.split(",")).collect(Collectors.toList());
     }
 }

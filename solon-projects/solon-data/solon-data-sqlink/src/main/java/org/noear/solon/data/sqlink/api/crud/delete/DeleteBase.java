@@ -23,9 +23,9 @@ import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
-import org.noear.solon.data.sqlink.core.visitor.NormalVisitor;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,10 +84,10 @@ public abstract class DeleteBase extends CRUD {
         }
     }
 
-    protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
+    protected void join(JoinType joinType, Class<?> target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression on = normalVisitor.visit(expr.getTree());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlExpression on = sqlVisitor.visit(lambda);
         getSqlBuilder().addJoin(joinType, factory.table(target), on);
     }
 
@@ -96,8 +96,8 @@ public abstract class DeleteBase extends CRUD {
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        NormalVisitor normalVisitor = new NormalVisitor(getConfig());
-        ISqlExpression expression = normalVisitor.visit(lambda);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);
     }
 }

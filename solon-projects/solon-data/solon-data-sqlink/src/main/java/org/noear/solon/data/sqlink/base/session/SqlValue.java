@@ -18,9 +18,9 @@ package org.noear.solon.data.sqlink.base.session;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
+import org.noear.solon.data.sqlink.base.toBean.handler.UnKnowTypeHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -48,7 +48,7 @@ public class SqlValue {
     private final Interceptor<?> interceptor;
 
     public SqlValue(Object value) {
-        this(value, TypeHandlerManager.get(value.getClass()), DoNothingInterceptor.Instance);
+        this(value, value == null ? UnKnowTypeHandler.Instance : TypeHandlerManager.get(value.getClass()), DoNothingInterceptor.Instance);
     }
 
     public SqlValue(Object value, ITypeHandler<?> typeHandler, Interceptor<?> interceptor) {
