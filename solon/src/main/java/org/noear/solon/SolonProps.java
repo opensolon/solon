@@ -212,8 +212,10 @@ public final class SolonProps extends Props {
             for (String p1 : paths.split(",")) {
                 URL propUrl = null;
                 if (isName) {
+                    //内部资源
                     propUrl = ResourceUtil.findResource(p1, false);
                 } else {
+                    //外部文件
                     propUrl = ResourceUtil.findResource(p1, true);
                     if (propUrl == null) {
                         //如果是外部文件没有，尝试找对应的内部文件
