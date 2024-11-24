@@ -360,23 +360,20 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return queryable;
             }
             else if (method.getName().equals("select")) {
+                throw new SqLinkException("过于复杂的表达式:" + methodCall);
+            }
+            else if (method.getName().equals("endSelect")) {
                 ISqlExpression visit = visit(methodCall.getExpr());
                 if (!(visit instanceof ISqlQueryableExpression)) {
                     throw new SqLinkException("不支持的表达式:" + methodCall);
                 }
                 ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
                 ISqlExpression select = visit(methodCall.getArgs().get(0));
-                if (select instanceof ISqlSelectExpression) {
-                    ISqlSelectExpression iSqlSelectExpression = (ISqlSelectExpression) select;
-                    queryable.setSelect(iSqlSelectExpression);
-                }
-                else {
-                    throw new SqLinkException(String.format("意外的sql表达式类型:%s 表达式为:%s", select.getClass(), methodCall));
-                }
+                queryable.setSelect(factory.select(Collections.singletonList(select), queryable.getMainTableClass()));
                 MetaData mainMetaDate = MetaDataCache.getMetaData(queryable.getMainTableClass());
                 String as = doGetAsName(mainMetaDate.getTableName().substring(0, 1).toLowerCase());
                 asNameSet.remove(as);
-                return factory.queryable(queryable);
+                return factory.queryable(queryable.getSelect(), factory.from(queryable, as));
             }
             else if (method.getName().equals("distinct")) {
 

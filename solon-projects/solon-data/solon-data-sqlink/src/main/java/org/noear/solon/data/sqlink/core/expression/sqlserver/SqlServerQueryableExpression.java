@@ -41,26 +41,31 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        List<String> strings = new ArrayList<>();
-        makeSelect(strings, values, config);
-        String fromSqlAndValue = from.getSqlAndValue(config, values);
-        if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
-        String joinsSqlAndValue = joins.getSqlAndValue(config, values);
-        if (!joinsSqlAndValue.isEmpty()) strings.add(joinsSqlAndValue);
-        String whereSqlAndValue = where.getSqlAndValue(config, values);
-        if (!whereSqlAndValue.isEmpty()) strings.add(whereSqlAndValue);
-        String groupBySqlAndValue = groupBy.getSqlAndValue(config, values);
-        if (!groupBySqlAndValue.isEmpty()) strings.add(groupBySqlAndValue);
-        String havingSqlAndValue = having.getSqlAndValue(config, values);
-        if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
-        String orderBySqlAndValue = orderBy.getSqlAndValue(config, values);
-        if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
-        if (!from.isEmptyTable() && limit.hasRowsAndOffset() && orderBy.isEmpty()) {
-            addOrder(strings, values, config);
+        if (!isChanged) {
+            return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
-        String limitSqlAndValue = limit.getSqlAndValue(config, values);
-        if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
-        return String.join(" ", strings);
+        else {
+            List<String> strings = new ArrayList<>();
+            makeSelect(strings, values, config);
+            String fromSqlAndValue = from.getSqlAndValue(config, values);
+            if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
+            String joinsSqlAndValue = joins.getSqlAndValue(config, values);
+            if (!joinsSqlAndValue.isEmpty()) strings.add(joinsSqlAndValue);
+            String whereSqlAndValue = where.getSqlAndValue(config, values);
+            if (!whereSqlAndValue.isEmpty()) strings.add(whereSqlAndValue);
+            String groupBySqlAndValue = groupBy.getSqlAndValue(config, values);
+            if (!groupBySqlAndValue.isEmpty()) strings.add(groupBySqlAndValue);
+            String havingSqlAndValue = having.getSqlAndValue(config, values);
+            if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
+            String orderBySqlAndValue = orderBy.getSqlAndValue(config, values);
+            if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
+            if (!from.isEmptyTable() && limit.hasRowsAndOffset() && orderBy.isEmpty()) {
+                addOrder(strings, values, config);
+            }
+            String limitSqlAndValue = limit.getSqlAndValue(config, values);
+            if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
+            return String.join(" ", strings);
+        }
     }
 
     private void addOrder(List<String> strings, List<SqlValue> values, SqLinkConfig config) {

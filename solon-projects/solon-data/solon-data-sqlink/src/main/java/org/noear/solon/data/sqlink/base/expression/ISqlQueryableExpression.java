@@ -75,11 +75,6 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     void setSelect(ISqlSelectExpression newSelect);
 
     /**
-     * 添加select列
-     */
-    void addSelectColumn(ISqlExpression expression);
-
-    /**
      * 设置limit
      */
     void setLimit(long offset, long rows);

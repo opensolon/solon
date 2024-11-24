@@ -36,6 +36,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     protected final ISqlHavingExpression having;
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
+    protected boolean isChanged;
 
     public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         this.select = select;
@@ -50,25 +51,30 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        List<String> strings = new ArrayList<>();
-        strings.add(getSelect().getSqlAndValue(config, values));
-        String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
-        if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
-        String joinsSqlAndValue = getJoins().getSqlAndValue(config, values);
-        if (!joinsSqlAndValue.isEmpty()) strings.add(joinsSqlAndValue);
-        String whereSqlAndValue = getWhere().getSqlAndValue(config, values);
-        if (!whereSqlAndValue.isEmpty()) strings.add(whereSqlAndValue);
-        String groupBySqlAndValue = getGroupBy().getSqlAndValue(config, values);
-        if (!groupBySqlAndValue.isEmpty()) strings.add(groupBySqlAndValue);
-        String havingSqlAndValue = getHaving().getSqlAndValue(config, values);
-        if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
-        String orderBySqlAndValue = getOrderBy().getSqlAndValue(config, values);
-        if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
-        if (!getFrom().isEmptyTable()) {
-            String limitSqlAndValue = getLimit().getSqlAndValue(config, values);
-            if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
+        if (!isChanged) {
+            return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
-        return String.join(" ", strings);
+        else {
+            List<String> strings = new ArrayList<>();
+            strings.add(getSelect().getSqlAndValue(config, values));
+            String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
+            if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
+            String joinsSqlAndValue = getJoins().getSqlAndValue(config, values);
+            if (!joinsSqlAndValue.isEmpty()) strings.add(joinsSqlAndValue);
+            String whereSqlAndValue = getWhere().getSqlAndValue(config, values);
+            if (!whereSqlAndValue.isEmpty()) strings.add(whereSqlAndValue);
+            String groupBySqlAndValue = getGroupBy().getSqlAndValue(config, values);
+            if (!groupBySqlAndValue.isEmpty()) strings.add(groupBySqlAndValue);
+            String havingSqlAndValue = getHaving().getSqlAndValue(config, values);
+            if (!havingSqlAndValue.isEmpty()) strings.add(havingSqlAndValue);
+            String orderBySqlAndValue = getOrderBy().getSqlAndValue(config, values);
+            if (!orderBySqlAndValue.isEmpty()) strings.add(orderBySqlAndValue);
+            if (!getFrom().isEmptyTable()) {
+                String limitSqlAndValue = getLimit().getSqlAndValue(config, values);
+                if (!limitSqlAndValue.isEmpty()) strings.add(limitSqlAndValue);
+            }
+            return String.join(" ", strings);
+        }
     }
 
 
@@ -79,22 +85,27 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
 
     public void addWhere(ISqlExpression cond) {
         where.addCondition(cond);
+        change();
     }
 
     public void addJoin(ISqlJoinExpression join) {
         joins.addJoin(join);
+        change();
     }
 
     public void setGroup(ISqlGroupByExpression group) {
         groupBy.setColumns(group.getColumns());
+        change();
     }
 
     public void addHaving(ISqlExpression cond) {
         having.addCond(cond);
+        change();
     }
 
     public void addOrder(ISqlOrderExpression order) {
         orderBy.addOrder(order);
+        change();
     }
 
     public void setSelect(ISqlSelectExpression newSelect) {
@@ -102,20 +113,18 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         select.setTarget(newSelect.getTarget());
         select.setSingle(newSelect.isSingle());
         select.setDistinct(newSelect.isDistinct());
-    }
-
-    @Override
-    public void addSelectColumn(ISqlExpression expression) {
-        select.addColumn(expression);
+        change();
     }
 
     public void setLimit(long offset, long rows) {
         limit.setOffset(offset);
         limit.setRows(rows);
+        change();
     }
 
     public void setDistinct(boolean distinct) {
         select.setDistinct(distinct);
+        change();
     }
 
     public ISqlFromExpression getFrom() {
@@ -160,5 +169,9 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
         collect.add(0, tableClass);
         return collect;
+    }
+
+    public void change() {
+        this.isChanged = true;
     }
 }

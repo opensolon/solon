@@ -106,11 +106,6 @@ public class QuerySqlBuilder implements ISqlBuilder {
         change();
     }
 
-    public void addSelectColumn(ISqlExpression expression) {
-        queryable.addSelectColumn(expression);
-        change();
-    }
-
     public void setSelect(Class<?> c) {
         List<Class<?>> orderedClass = getOrderedClass();
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
@@ -161,30 +156,12 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     @Override
     public String getSql() {
-        if (isChanged) {
-            return queryable.getSql(config);
-        }
-        else {
-            ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getSql(config);
-            }
-            return sqlTableExpression.getSql(config);
-        }
+        return queryable.getSql(config);
     }
 
     @Override
     public String getSqlAndValue(List<SqlValue> values) {
-        if (isChanged) {
-            return queryable.getSqlAndValue(config, values);
-        }
-        else {
-            ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getSqlAndValue(config, values);
-            }
-            return sqlTableExpression.getSqlAndValue(config, values);
-        }
+        return queryable.getSqlAndValue(config, values);
     }
 
 //    public String getSqlAndValueAndFirst(List<Object> values)
