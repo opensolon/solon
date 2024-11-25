@@ -152,6 +152,13 @@ public class SbeOutputBuffers {
         collection.forEach(e -> e.writeBuffer(this));
     }
 
+    public <T> void writeNullable(final T object, final BiConsumer<T, SbeOutputBuffers> marshaller) {
+        writeBoolean(object != null);
+        if (object != null) {
+            marshaller.accept(object, this);
+        }
+    }
+
     public <K, V> void writeMap(final Map<K, V> map,
                                 final BiConsumer<SbeOutputBuffers, K> keyMarshaller,
                                 final BiConsumer<SbeOutputBuffers, V> valMarshaller) {

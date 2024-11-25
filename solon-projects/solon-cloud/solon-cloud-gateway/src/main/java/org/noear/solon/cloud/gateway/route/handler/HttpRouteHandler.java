@@ -16,18 +16,13 @@
 package org.noear.solon.cloud.gateway.route.handler;
 
 import io.vertx.core.AsyncResult;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.RequestOptions;
-import io.vertx.ext.web.client.HttpRequest;
-import io.vertx.ext.web.client.HttpResponse;
-import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.client.WebClientOptions;
+import io.vertx.core.Future;
+import io.vertx.core.http.*;
 import io.vertx.solon.VertxHolder;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
 import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.cloud.gateway.route.RouteHandler;
@@ -45,17 +40,17 @@ import java.util.Map;
  * @since 2.9
  */
 public class HttpRouteHandler implements RouteHandler {
-    private WebClient httpClient;
+    private HttpClient httpClient;
 
     public HttpRouteHandler() {
-        WebClientOptions options = new WebClientOptions()
+        HttpClientOptions options = new HttpClientOptions()
                 .setMaxPoolSize(250)
                 .setConnectTimeout(1000 * 3) // milliseconds: 3s
                 .setIdleTimeout(60) // seconds: 60s
                 .setKeepAlive(true)
                 .setKeepAliveTimeout(60); // seconds: 60s
 
-        this.httpClient = WebClient.create(VertxHolder.getVertx(), options);
+        this.httpClient = VertxHolder.getVertx().createHttpClient(options);
     }
 
     @Override
@@ -67,11 +62,35 @@ public class HttpRouteHandler implements RouteHandler {
      * 处理
      */
     @Override
-    public Completable handle(ExContext ctx) {
+    public Completable handle(ExContext x) {
         try {
-            //构建请求
-            HttpRequest<Buffer> req1 = buildHttpRequest(ctx);
+            ExContextImpl ctx = (ExContextImpl)x;
+            ctx.rawRequest().pause();
 
+            //构建请求
+            Future<HttpClientRequest> req1 = buildHttpRequest(ctx);
+
+            return Completable.create(emitter -> {
+                req1.onComplete(ar -> {
+                    if (ar.succeeded()) {
+                        handleDo(ctx, ar.result(), emitter);
+                    } else {
+                        emitter.onError(ar.cause());
+                    }
+                });
+            });
+        } catch (Throwable ex) {
+            //如查出错，说明客户端发的数据有问题
+            if (ex instanceof StatusException) {
+                return Completable.error(ex);
+            } else {
+                return Completable.error(new StatusException(ex, 400));
+            }
+        }
+    }
+
+    public void handleDo(ExContext ctx, HttpClientRequest req1, CompletableEmitter emitter) {
+        try {
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
                 if (ExConstants.Host.equals(kv.getKey())) {
@@ -88,25 +107,25 @@ public class HttpRouteHandler implements RouteHandler {
 
             ExBody exBody = ctx.newRequest().getBody();
 
-            return Completable.create(emitter -> {
-                //同步 body（流复制）
-                if (exBody instanceof ExBodyOfBuffer) {
-                    req1.sendBuffer(((ExBodyOfBuffer) exBody).getBuffer(), ar1 -> {
-                        callbackHandle(ctx, ar1, emitter);
-                    });
-                } else {
-                    //使用 chunked
-                    req1.sendStream(((ExBodyOfStream) exBody).getStream(), ar1 -> {
-                        callbackHandle(ctx, ar1, emitter);
-                    });
-                }
-            });
+
+            //同步 body（流复制）
+            if (exBody instanceof ExBodyOfBuffer) {
+                req1.send(((ExBodyOfBuffer) exBody).getBuffer(), ar1 -> {
+                    callbackHandle(ctx, ar1, emitter);
+                });
+            } else {
+                //使用 chunked
+                req1.send(((ExBodyOfStream) exBody).getStream(), ar1 -> {
+                    callbackHandle(ctx, ar1, emitter);
+                });
+            }
+
         } catch (Throwable ex) {
             //如查出错，说明客户端发的数据有问题
             if (ex instanceof StatusException) {
-                return Completable.error(ex);
+                emitter.onError(ex);
             } else {
-                return Completable.error(new StatusException(ex, 400));
+                emitter.onError(new StatusException(ex, 400));
             }
         }
     }
@@ -114,7 +133,7 @@ public class HttpRouteHandler implements RouteHandler {
     /**
      * 构建 http 请求对象
      */
-    private HttpRequest<Buffer> buildHttpRequest(ExContext ctx) {
+    private Future<HttpClientRequest> buildHttpRequest(ExContext ctx) {
         RequestOptions requestOptions = new RequestOptions();
 
         //配置超时
@@ -125,17 +144,18 @@ public class HttpRouteHandler implements RouteHandler {
 
         //配置绝对地址
         requestOptions.setAbsoluteURI(ctx.targetNew() + ctx.newRequest().getPathAndQueryString());
+        requestOptions.setMethod(HttpMethod.valueOf(ctx.newRequest().getMethod()));
 
-        return httpClient.request(HttpMethod.valueOf(ctx.newRequest().getMethod()), requestOptions);
+        return httpClient.request(requestOptions);
     }
 
     /**
      * 请求回调处理
      */
-    private void callbackHandle(ExContext ctx, AsyncResult<HttpResponse<Buffer>> ar, CompletableEmitter subscriber) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpClientResponse> ar, CompletableEmitter subscriber) {
         try {
             if (ar.succeeded()) {
-                HttpResponse<Buffer> resp1 = ar.result();
+                HttpClientResponse resp1 = ar.result();
 
                 //code
                 ctx.newResponse().status(resp1.statusCode());
@@ -143,8 +163,8 @@ public class HttpRouteHandler implements RouteHandler {
                 for (Map.Entry<String, String> kv : resp1.headers()) {
                     ctx.newResponse().headerAdd(kv.getKey(), kv.getValue());
                 }
-                //body 输出（流复制） //有可能网络已关闭
-                ctx.newResponse().body(resp1.body());
+
+                ctx.newResponse().body(resp1);
 
                 subscriber.onComplete();
             } else {

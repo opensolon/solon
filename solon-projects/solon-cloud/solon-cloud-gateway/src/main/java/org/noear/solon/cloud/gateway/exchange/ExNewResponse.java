@@ -16,7 +16,10 @@
 package org.noear.solon.cloud.gateway.exchange;
 
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.streams.ReadStream;
 import org.noear.solon.boot.web.Constants;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.core.util.MultiMap;
 
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.List;
 public class ExNewResponse {
     private int status = 200;
     private MultiMap<String> headers = new MultiMap<>();
-    private Buffer body;
+    private ExBody body;
 
     public void status(int code) {
         this.status = code;
@@ -80,10 +83,22 @@ public class ExNewResponse {
     }
 
     /**
-     * 配置主体
+     * 配置主体（方便用户修改）
+     *
+     * @param body 主体数据
      */
     public ExNewResponse body(Buffer body) {
-        this.body = body;
+        this.body = new ExBodyOfBuffer(body);
+        return this;
+    }
+
+    /**
+     * 配置主体（实现流式转发）
+     *
+     * @param body 主体数据
+     */
+    public ExNewResponse body(ReadStream<Buffer> body) {
+        this.body = new ExBodyOfStream(body);
         return this;
     }
 
@@ -104,7 +119,7 @@ public class ExNewResponse {
     /**
      * 获取主体
      */
-    public Buffer getBody() {
+    public ExBody getBody() {
         return body;
     }
 }

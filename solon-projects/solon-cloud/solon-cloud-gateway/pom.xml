@@ -39,6 +39,7 @@
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
