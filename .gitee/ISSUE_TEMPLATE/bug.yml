@@ -1,7 +1,7 @@
 name: 问题反馈
 description: 在使用中发现了本项目的问题
 title: "[问题]: "
-labels: [ "bug" ]
+labels: [ ]
 body:
     -   type: textarea
         attributes:
