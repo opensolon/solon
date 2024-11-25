@@ -24,7 +24,7 @@ package org.noear.solon.data.sqlink.base.expression;
 public enum SqlOperator {
     POS("+", true),                             // +
     NEG("-", true),                             // -
-    NOT("NOT", true),                             // !
+    NOT("NOT", true),                           // !
     COMPL("~", true),                           // ~
     PREINC("++", true),                         // ++ _
     PREDEC("--", true),                         // -- _
@@ -33,11 +33,11 @@ public enum SqlOperator {
 
 
     OR("OR"),                             // ||
-    AND("AND"),                            // &&
+    AND("AND"),                           // &&
     BITOR("|"),                           // |
     BITXOR("^"),                          // ^
     BITAND("&"),                          // &
-    EQ("="),                             // ==
+    EQ("="),                              // ==
     NE("<>"),                             // !=
     LT("<"),                              // <
     GT(">"),                              // >

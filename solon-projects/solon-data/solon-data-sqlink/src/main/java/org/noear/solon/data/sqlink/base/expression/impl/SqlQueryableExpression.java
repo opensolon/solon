@@ -172,6 +172,18 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     public void change() {
-        this.isChanged = true;
+        setChanged(true);
+    }
+
+    @Override
+    public boolean getChanged()
+    {
+        return isChanged;
+    }
+
+    @Override
+    public void setChanged(boolean changed)
+    {
+        this.isChanged = changed;
     }
 }

@@ -159,10 +159,8 @@ public interface SqlExpressionFactory {
      *
      * @param target 目标表
      */
-    default ISqlQueryableExpression queryable(Class<?> target) {
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        String as = metaData.getTableName().substring(0, 1).toLowerCase();
-        return queryable(from(table(target), as));
+    default ISqlQueryableExpression queryable(Class<?> target,String asName) {
+        return queryable(from(table(target), asName));
     }
 
     /**
@@ -189,10 +187,8 @@ public interface SqlExpressionFactory {
      *
      * @param table 表表达式
      */
-    default ISqlQueryableExpression queryable(ISqlTableExpression table) {
-        MetaData metaData = MetaDataCache.getMetaData(table.getMainTableClass());
-        String as = metaData.getTableName().substring(0, 1).toLowerCase();
-        return queryable(from(table, as));
+    default ISqlQueryableExpression queryable(ISqlTableExpression table,String asName) {
+        return queryable(from(table, asName));
     }
 
     /**

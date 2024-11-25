@@ -28,7 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.sun.jmx.mbeanserver.Util.cast;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
 
 /**
  * 对象抓取构建器
@@ -99,12 +100,15 @@ public class IncludeBuilder<T> {
 
     protected void oneToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
+
         // 查询目标表
-        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
+        String tempQueryAsName = getAsName(navigateTargetType);
+        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType, tempQueryAsName);
         // 包一层，并选择字段
-        ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryable.getFrom().getAsName())), selfFieldMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryable.getFrom().getAsName()), warpQueryable));
+        String warpQueryAsName = getAsName(queryable.getMainTableClass());
+        ISqlQueryableExpression warpQueryable = factory.queryable(queryable, warpQueryAsName);
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryAsName)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryAsName), warpQueryable));
 
         // 如果有额外条件就加入
         if (include.hasCond()) {
@@ -147,11 +151,13 @@ public class IncludeBuilder<T> {
     protected void oneToMany(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         // 查询目标表
-        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
+        String tempQueryAsName = getAsName(navigateTargetType);
+        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType, tempQueryAsName);
         // 包一层，并选择字段
-        ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryable.getFrom().getAsName())), selfFieldMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryable.getFrom().getAsName()), warpQueryable));
+        String warpQueryAsName = getAsName(queryable.getMainTableClass());
+        ISqlQueryableExpression warpQueryable = factory.queryable(queryable, warpQueryAsName);
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryAsName)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryAsName), warpQueryable));
         // 如果有额外条件就加入
         if (include.hasCond()) {
             ISqlExpression cond = include.getCond();
@@ -199,11 +205,13 @@ public class IncludeBuilder<T> {
     protected void manyToOne(Map<Object, List<T>> sourcesMapList, IncludeSet include, NavigateData navigateData, FieldMetaData selfFieldMetaData, FieldMetaData targetFieldMetaData, FieldMetaData includeFieldMetaData) throws InvocationTargetException, IllegalAccessException {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         // 查询目标表
-        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
+        String tempQueryAsName = getAsName(navigateTargetType);
+        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType, tempQueryAsName);
         // 包一层，并选择字段
-        ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
-        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryable.getFrom().getAsName())), selfFieldMetaData.getType(), true, false));
-        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryable.getFrom().getAsName()), warpQueryable));
+        String warpQueryAsName = getAsName(queryable.getMainTableClass());
+        ISqlQueryableExpression warpQueryable = factory.queryable(queryable, warpQueryAsName);
+        warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryAsName)), selfFieldMetaData.getType(), true, false));
+        tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(targetFieldMetaData, tempQueryAsName), warpQueryable));
         // 如果有额外条件就加入
         if (include.hasCond()) {
             ISqlExpression cond = include.getCond();
@@ -247,17 +255,20 @@ public class IncludeBuilder<T> {
         Class<?> navigateTargetType = navigateData.getNavigateTargetType();
         Class<? extends IMappingTable> mappingTableType = navigateData.getMappingTableType();
         MetaData mappingTableMetadata = MetaDataCache.getMetaData(mappingTableType);
-        String mappingTableAsName = mappingTableMetadata.getTableName().substring(0, 1).toLowerCase();
         String selfMappingPropertyName = navigateData.getSelfMappingFieldName();
         FieldMetaData selfMappingFieldMetaData = mappingTableMetadata.getFieldMetaDataByFieldName(selfMappingPropertyName);
         String targetMappingPropertyName = navigateData.getTargetMappingFieldName();
         FieldMetaData targetMappingFieldMetaData = mappingTableMetadata.getFieldMetaDataByFieldName(targetMappingPropertyName);
         // 查询目标表
-        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType);
+        String tempQueryAsName = getAsName(navigateTargetType);
+        ISqlQueryableExpression tempQueryable = factory.queryable(navigateTargetType, tempQueryAsName);
         // join中间表
-        tempQueryable.addJoin(factory.join(JoinType.LEFT, factory.table(mappingTableType), factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, tempQueryable.getFrom().getAsName()), factory.column(targetMappingFieldMetaData, mappingTableAsName)), mappingTableAsName));
+        String mappingTableAsName = getAsName(mappingTableType);
+        mappingTableAsName = mappingTableAsName.equals(tempQueryAsName) ? mappingTableAsName + 1 : mappingTableAsName;
+        tempQueryable.addJoin(factory.join(JoinType.LEFT, factory.table(mappingTableType), factory.binary(SqlOperator.EQ, factory.column(targetFieldMetaData, tempQueryAsName), factory.column(targetMappingFieldMetaData, mappingTableAsName)), mappingTableAsName));
         // 包一层，并选择字段
-        ISqlQueryableExpression warpQueryable = factory.queryable(queryable);
+        String warpQueryAsName = getAsName(queryable.getMainTableClass());
+        ISqlQueryableExpression warpQueryable = factory.queryable(queryable,warpQueryAsName);
         warpQueryable.setSelect(factory.select(Collections.singletonList(factory.column(selfFieldMetaData, warpQueryable.getFrom().getAsName())), selfFieldMetaData.getType(), true, false));
         tempQueryable.addWhere(factory.binary(SqlOperator.IN, factory.column(selfMappingFieldMetaData, mappingTableAsName), warpQueryable));
 
@@ -359,12 +370,13 @@ public class IncludeBuilder<T> {
             }
         }
         // 包装一下窗口查询
-        ISqlQueryableExpression window = factory.queryable(queryableExpression);
+        String windowAsName = getAsName(queryableExpression.getMainTableClass());
+        ISqlQueryableExpression window = factory.queryable(queryableExpression, windowAsName);
         List<ISqlExpression> selects = new ArrayList<>(2);
-        selects.add(factory.constString("t0.*"));
+        selects.add(factory.constString(window.getFrom().getAsName() + ".*"));
 
         List<ISqlExpression> rowNumberParams = new ArrayList<>();
-        rowNumberParams.add(factory.column(targetFieldMetaData, queryableExpression.getFrom().getAsName()));
+        rowNumberParams.add(factory.column(targetFieldMetaData, windowAsName));
         rowNumberParams.addAll(orderBy.getSqlOrders());
         List<String> rowNumberFunction = new ArrayList<>();
         rowNumber(rowNumberFunction, rowNumberParams);
@@ -373,7 +385,8 @@ public class IncludeBuilder<T> {
         selects.add(factory.as(factory.template(rowNumberFunction, rowNumberParams), rank));
         window.setSelect(factory.select(selects, navigateTargetType));
         // 最外层
-        ISqlQueryableExpression window2 = factory.queryable(window);
+        String window2AsName = getAsName(window.getMainTableClass());
+        ISqlQueryableExpression window2 = factory.queryable(window,window2AsName);
         if (another != null) {
             window2.getSelect().getColumns().add(another);
         }

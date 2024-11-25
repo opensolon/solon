@@ -247,7 +247,8 @@ public abstract class QueryBase extends CRUD {
         ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
         Class<?> mainTableClass = queryable.getMainTableClass();
         String as = MetaDataCache.getMetaData(mainTableClass).getTableName().substring(0, 1).toLowerCase();
-        return new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(queryable));
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, as)));
     }
 
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond, List<IncludeSet> includeSets) {
@@ -272,6 +273,7 @@ public abstract class QueryBase extends CRUD {
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
+
 
     protected void include(LambdaExpression<?> lambda) {
         include(lambda, null, sqlBuilder.getIncludeSets());

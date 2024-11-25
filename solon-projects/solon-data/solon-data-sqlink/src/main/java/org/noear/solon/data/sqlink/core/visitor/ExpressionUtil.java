@@ -17,6 +17,8 @@ package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
+import org.noear.solon.data.sqlink.base.metaData.MetaData;
+import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
@@ -274,5 +276,10 @@ public class ExpressionUtil {
         else {
             return c;
         }
+    }
+
+    public static String getAsName(Class<?> c) {
+        MetaData metaData = MetaDataCache.getMetaData(c);
+        return metaData.getTableName().substring(0, 1).toLowerCase();
     }
 }

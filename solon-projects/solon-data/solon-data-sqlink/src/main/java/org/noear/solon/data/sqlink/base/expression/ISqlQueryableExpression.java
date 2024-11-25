@@ -33,8 +33,20 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     @Override
     default ISqlQueryableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        queryableExpression.setChanged(getChanged());
+        return queryableExpression;
     }
+
+    /**
+     * 设置是否已经发生变化
+     */
+    void setChanged(boolean changed);
+
+    /**
+     * 获取是否已经发生变化
+     */
+    boolean getChanged();
 
     /**
      * 添加where条件

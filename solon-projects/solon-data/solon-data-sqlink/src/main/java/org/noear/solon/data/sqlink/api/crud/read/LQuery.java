@@ -365,56 +365,68 @@ public class LQuery<T> extends QueryBase {
      * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
      * @return 抓取过程对象
      */
-    public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+    public <R> LQuery<T> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
         throw new NotCompiledException();
     }
 
-    public <R> IncludeQuery<T, R> include(ExprTree<Func1<T, R>> expr) {
+    public <R> LQuery<T> include(ExprTree<Func1<T, R>> expr) {
         include(expr.getTree());
-        return new IncludeQuery<>(getSqlBuilder());
-    }
-
-//    /**
-//     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置简单的过滤条件<p>
-//     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-//     *
-//     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
-//     * @param then 简单的过滤条件
-//     * @return 抓取过程对象
-//     */
-//    public <R> IncludeQuery<T, R> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, @Expr(Expr.BodyType.Expr) Func1<R, Boolean> then) {
-//        throw new NotCompiledException();
-//    }
-//
-//    public <R> IncludeQuery<T, R> include(ExprTree<Func1<T, R>> expr, ExprTree<Func1<R, Boolean>> then) {
-//        include(expr.getTree(), then.getTree());
-//        return new IncludeQuery<>(getSqlBuilder());
-//    }
-
-    /**
-     * include的集合版本
-     */
-    public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr) {
-        throw new NotCompiledException();
-    }
-
-    public <R> IncludeQuery<T, R> includes(ExprTree<Func1<T, Collection<R>>> expr) {
-        include(expr.getTree());
-        return new IncludeQuery<>(getSqlBuilder());
+        return this;
     }
 
     /**
-     * include的集合版本
+     * 对象抓取器，会根据导航属性自动为选择的字段填充属性,并且设置简单的过滤条件<p>
+     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
+     *
+     * @param expr 返回需要抓取的字段的lambda表达式，这个字段需要被Navigate修饰
+     * @param then 简单的过滤条件
+     * @return 抓取过程对象
      */
-    public <R> IncludeQuery<T, R> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, Action1<LQuery<R>> then) {
+    public <R> LQuery<T> include(@Expr(Expr.BodyType.Expr) Func1<T, R> expr, Action1<LQuery<R>> then) {
         throw new NotCompiledException();
     }
 
-    public <R> IncludeQuery<T, R> includes(ExprTree<Func1<T, Collection<R>>> expr, Action1<LQuery<R>> then) {
-        LQuery<R> lQuery=new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Object.class)));
+    public <R> LQuery<T> include(ExprTree<Func1<T, R>> expr, Action1<LQuery<R>> then) {
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Empty.class)));
         then.invoke(lQuery);
-        include(expr.getTree(),lQuery.getSqlBuilder().getQueryable());
-        return new IncludeQuery<>(getSqlBuilder());
+        QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
+        include(expr.getTree(),sqlBuilder.getQueryable());
+        if (!sqlBuilder.getIncludeSets().isEmpty())
+        {
+            getSqlBuilder().getLastIncludeSet().getIncludeSets().addAll(sqlBuilder.getIncludeSets());
+        }
+        return this;
+    }
+
+    /**
+     * include的集合版本
+     */
+    public <R> LQuery<T> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> includes(ExprTree<Func1<T, Collection<R>>> expr) {
+        include(expr.getTree());
+        return this;
+    }
+
+    /**
+     * include的集合版本
+     */
+    public <R> LQuery<T> includes(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr, Action1<LQuery<R>> then) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> includes(ExprTree<Func1<T, Collection<R>>> expr, Action1<LQuery<R>> then) {
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Empty.class)));
+        then.invoke(lQuery);
+        QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
+        include(expr.getTree(),sqlBuilder.getQueryable());
+        if (!sqlBuilder.getIncludeSets().isEmpty())
+        {
+            getSqlBuilder().getLastIncludeSet().getIncludeSets().addAll(sqlBuilder.getIncludeSets());
+        }
+        return this;
     }
 
     // endregion
