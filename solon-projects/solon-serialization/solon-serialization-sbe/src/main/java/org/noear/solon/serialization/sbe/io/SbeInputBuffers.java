@@ -20,8 +20,11 @@ import org.agrona.DirectBuffer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 /**
@@ -173,6 +176,28 @@ public class SbeInputBuffers {
         }
 
         return chars;
+    }
+
+    public <T> T[] readArray(final Function<SbeInputBuffers, T> creator, final IntFunction<T[]> arrayCreator) {
+        final int length = readInt();
+        final T[] array = arrayCreator.apply(length);
+        for (int i = 0; i < length; i++) {
+            array[i] = creator.apply(this);
+        }
+        return array;
+    }
+
+    public <T> List<T> readList(final Function<SbeInputBuffers, T> creator) {
+        final int length = readInt();
+        final List<T> list = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            list.add(creator.apply(this));
+        }
+        return list;
+    }
+
+    public <T> T readNullable(final Function<SbeInputBuffers, T> creator) {
+        return readBoolean() ? creator.apply(this) : null;
     }
 
     public <K, V, M extends Map<K, V>> M readMap(final Supplier<M> mapSupplier,
