@@ -44,6 +44,8 @@
 * snack3 升为 3.2.121
 * redisx 升为 1.6.8
 * lombok 升为 1.18.36
+* vertx 升为 4.5.11
+* netty 升为 4.1.115.Final
 
 ### v3.0.3
 * 新增 nami-coder-kryo 插件
