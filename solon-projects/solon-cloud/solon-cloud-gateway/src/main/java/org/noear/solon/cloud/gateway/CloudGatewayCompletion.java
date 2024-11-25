@@ -86,10 +86,12 @@ public class CloudGatewayCompletion implements Subscriber<Void> {
         try {
             HttpServerResponse rawResponse = rawRequest.response();
 
-            rawResponse.setStatusCode(ctx.newResponse().getStatus());
+            if (rawResponse.headWritten() == false) {
+                rawResponse.setStatusCode(ctx.newResponse().getStatus());
 
-            for (KeyValues<String> kv : ctx.newResponse().getHeaders()) {
-                rawResponse.putHeader(kv.getKey(), kv.getValues());
+                for (KeyValues<String> kv : ctx.newResponse().getHeaders()) {
+                    rawResponse.putHeader(kv.getKey(), kv.getValues());
+                }
             }
 
             if (rawResponse.ended() == false) {

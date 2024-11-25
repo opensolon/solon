@@ -51,6 +51,10 @@ public class ExContextImpl implements ExContext {
         this.attrMap = new HashMap<>();
     }
 
+    public HttpServerRequest rawRequest(){
+        return rawRequest;
+    }
+
 
     /**
      * 属性获取
