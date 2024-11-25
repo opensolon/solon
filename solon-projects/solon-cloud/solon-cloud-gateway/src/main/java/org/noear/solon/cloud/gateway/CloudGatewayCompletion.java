@@ -18,6 +18,8 @@ package org.noear.solon.cloud.gateway;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
+import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.KeyValues;
 import org.reactivestreams.Subscriber;
@@ -96,7 +98,13 @@ public class CloudGatewayCompletion implements Subscriber<Void> {
 
             if (rawResponse.ended() == false) {
                 if (ctx.newResponse().getBody() != null) {
-                    rawResponse.end(ctx.newResponse().getBody());
+                    if (ctx.newResponse().getBody() instanceof ExBodyOfStream) {
+                        ExBodyOfStream exBody = (ExBodyOfStream) ctx.newResponse().getBody();
+                        rawResponse.send(exBody.getStream());
+                    } else {
+                        ExBodyOfBuffer exBody = (ExBodyOfBuffer) ctx.newResponse().getBody();
+                        rawResponse.send(exBody.getBuffer());
+                    }
                 } else {
                     rawResponse.end();
                 }

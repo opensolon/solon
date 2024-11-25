@@ -17,7 +17,6 @@ package org.noear.solon.cloud.gateway.route.handler;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.solon.VertxHolder;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
@@ -27,7 +26,6 @@ import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.cloud.gateway.route.RouteHandler;
-import org.noear.solon.core.util.KeyValue;
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableEmitter;
 import org.noear.solon.core.exception.StatusException;
@@ -91,7 +89,7 @@ public class HttpRouteHandler implements RouteHandler {
         }
     }
 
-    public void handleDo(ExContextImpl ctx, HttpClientRequest req1, CompletableEmitter emitter) {
+    public void handleDo(ExContext ctx, HttpClientRequest req1, CompletableEmitter emitter) {
         try {
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
@@ -154,7 +152,7 @@ public class HttpRouteHandler implements RouteHandler {
     /**
      * 请求回调处理
      */
-    private void callbackHandle(ExContextImpl ctx, AsyncResult<HttpClientResponse> ar, CompletableEmitter subscriber) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpClientResponse> ar, CompletableEmitter subscriber) {
         try {
             if (ar.succeeded()) {
                 HttpClientResponse resp1 = ar.result();
@@ -166,28 +164,9 @@ public class HttpRouteHandler implements RouteHandler {
                     ctx.newResponse().headerAdd(kv.getKey(), kv.getValue());
                 }
 
-                //resp
-                ctx.rawRequest().response().setStatusCode(resp1.statusCode());
-                for(KeyValues<String> kv : ctx.newResponse().getHeaders()) {
-                    ctx.rawRequest().response().putHeader(kv.getKey(), kv.getValues());
-                }
-                ctx.newResponse().getHeaders().clear();
+                ctx.newResponse().body(resp1);
 
-                //body 输出（流复制） //有可能网络已关闭
-                resp1.bodyHandler(buffer -> {
-                    ctx.rawRequest().response().write(buffer);
-                });
-
-                resp1.end(resp1Ar -> {
-                    if (resp1Ar.succeeded()) {
-                        subscriber.onComplete();
-                    } else {
-                        subscriber.onError(resp1Ar.cause());
-                    }
-                });
-
-                //ctx.newResponse().body(resp1.body());
-                //subscriber.onComplete();
+                subscriber.onComplete();
             } else {
                 subscriber.onError(ar.cause());
             }
