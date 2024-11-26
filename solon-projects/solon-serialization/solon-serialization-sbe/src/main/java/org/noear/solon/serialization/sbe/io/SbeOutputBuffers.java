@@ -139,6 +139,13 @@ public class SbeOutputBuffers {
         }
     }
 
+    public <T extends SbeSerializable> void writeObject(final T object) {
+        writeBoolean(object != null);
+        if (object != null) {
+            object.writeBuffer(this);
+        }
+    }
+
     public <T extends SbeSerializable> void writeArray(final T[] array) {
         writeInt(array.length);
         for (int i = 0; i < array.length; i++) {
