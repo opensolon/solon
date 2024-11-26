@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.api.crud.update;
 
 import io.github.kiryu1223.expressionTree.delegate.Action9;
+import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func10;
 import io.github.kiryu1223.expressionTree.delegate.Func9;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
@@ -93,20 +94,21 @@ public class LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> extends UpdateBase {
     //region [SET]
 
     /**
-     * 为需要更新的字段赋值
+     * 选择需要更新的字段和值
      * <p><b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
      *
-     * @param action lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param func 需要更新的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> set(@Expr Action9<T1, T2, T3, T4, T5, T6, T7, T8, T9> action) {
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> set(@Expr(Expr.BodyType.Expr) Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> func, R value) {
         throw new NotCompiledException();
     }
 
-    public LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> set(ExprTree<Action9<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expr) {
-        set(expr.getTree());
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> set(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> func, R value) {
+        set(func.getTree(), value);
         return this;
     }
+    
     //endregion
 
     //region [WHERE]

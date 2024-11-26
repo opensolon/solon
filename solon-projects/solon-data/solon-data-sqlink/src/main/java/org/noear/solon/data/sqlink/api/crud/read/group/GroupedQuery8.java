@@ -135,7 +135,7 @@ public class GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBas
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<? extends R> select(@Expr Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr) {
+    public <R extends Result> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr) {
         throw new NotCompiledException();
     }
 

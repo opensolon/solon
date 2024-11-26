@@ -28,7 +28,7 @@ public class UpdateDemoService {
     // 根据id更新email
     public void updateEmailById(int id, String newEmail) {
         sqLink.update(User.class)
-                .set(u -> u.setEmail(newEmail))
+                .set(u -> u.getEmail(), newEmail)
                 .where(u -> u.getId() == id)
                 .executeRows();
     }
@@ -36,10 +36,8 @@ public class UpdateDemoService {
     // 根据id更新name和email
     public void updateNameAndEmailById(int id, String newName, String newEmail) {
         sqLink.update(User.class)
-                .set(u -> {
-                    u.setEmail(newEmail);
-                    u.setUsername(newName);
-                })
+                .set(u -> u.getEmail(), newEmail)
+                .set(u -> u.getUsername(), newName)
                 .where(u -> u.getId() == id)
                 .executeRows();
     }
