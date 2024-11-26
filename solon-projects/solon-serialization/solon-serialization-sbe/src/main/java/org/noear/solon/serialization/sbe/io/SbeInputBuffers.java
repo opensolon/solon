@@ -178,6 +178,10 @@ public class SbeInputBuffers {
         return chars;
     }
 
+    public <T> T readObject(final Function<SbeInputBuffers, T> creator) {
+        return readBoolean() ? creator.apply(this) : null;
+    }
+
     public <T> T[] readArray(final Function<SbeInputBuffers, T> creator, final IntFunction<T[]> arrayCreator) {
         final int length = readInt();
         final T[] array = arrayCreator.apply(length);
