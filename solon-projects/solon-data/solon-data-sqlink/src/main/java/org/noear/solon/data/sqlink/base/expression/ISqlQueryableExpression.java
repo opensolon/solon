@@ -150,6 +150,22 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
      * 获取映射的列
      */
     default List<FieldMetaData> getMappingData() {
+        if (getChanged()) {
+            return getMappingData0();
+        }
+        else {
+            ISqlTableExpression sqlTableExpression = getFrom().getSqlTableExpression();
+            if (sqlTableExpression instanceof ISqlRealTableExpression) {
+                return getMappingData0();
+            }
+            else {
+                ISqlQueryableExpression tableExpression = (ISqlQueryableExpression) sqlTableExpression;
+                return tableExpression.getMappingData();
+            }
+        }
+    }
+
+    default List<FieldMetaData> getMappingData0() {
         List<Class<?>> orderedClass = getOrderedClass();
         Class<?> target = getSelect().getTarget();
         MetaData metaData = MetaDataCache.getMetaData(target);

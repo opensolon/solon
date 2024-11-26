@@ -65,15 +65,6 @@ public interface SqlExpressionFactory {
      * 创建from表达式
      *
      * @param sqlTable 表表达式
-     */
-    default ISqlFromExpression from(ISqlTableExpression sqlTable) {
-        return from(sqlTable, null);
-    }
-
-    /**
-     * 创建from表达式
-     *
-     * @param sqlTable 表表达式
      * @param asName   表别名
      */
     ISqlFromExpression from(ISqlTableExpression sqlTable, String asName);

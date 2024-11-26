@@ -107,7 +107,7 @@ class IncludeQuery<T, TPreviousProperty> extends LQuery<T>
 
     public <TProperty> IncludeQuery<T, TProperty> thenIncludes(ExprTree<Func1<TPreviousProperty, Collection<TProperty>>> expr, Action1<LQuery<TProperty>> cond)
     {
-        LQuery<TProperty> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Object.class)));
+        LQuery<TProperty> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class,"empty")));
         cond.invoke(lQuery);
         include(expr.getTree(), lQuery.getSqlBuilder().getQueryable(), curIncludeSet.getIncludeSets());
         return new IncludeQuery<>(getSqlBuilder(), curIncludeSet.getLastIncludeSet());

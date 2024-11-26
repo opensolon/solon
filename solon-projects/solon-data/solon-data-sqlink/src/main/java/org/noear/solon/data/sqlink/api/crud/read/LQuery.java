@@ -387,12 +387,11 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <R> LQuery<T> include(ExprTree<Func1<T, R>> expr, Action1<LQuery<R>> then) {
-        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Empty.class)));
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class, "empty")));
         then.invoke(lQuery);
         QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
-        include(expr.getTree(),sqlBuilder.getQueryable());
-        if (!sqlBuilder.getIncludeSets().isEmpty())
-        {
+        include(expr.getTree(), sqlBuilder.getQueryable());
+        if (!sqlBuilder.getIncludeSets().isEmpty()) {
             getSqlBuilder().getLastIncludeSet().getIncludeSets().addAll(sqlBuilder.getIncludeSets());
         }
         return this;
@@ -418,12 +417,11 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <R> LQuery<T> includes(ExprTree<Func1<T, Collection<R>>> expr, Action1<LQuery<R>> then) {
-        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(),getConfig().getSqlExpressionFactory().queryable(Empty.class)));
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class, "empty")));
         then.invoke(lQuery);
         QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
-        include(expr.getTree(),sqlBuilder.getQueryable());
-        if (!sqlBuilder.getIncludeSets().isEmpty())
-        {
+        include(expr.getTree(), sqlBuilder.getQueryable());
+        if (!sqlBuilder.getIncludeSets().isEmpty()) {
             getSqlBuilder().getLastIncludeSet().getIncludeSets().addAll(sqlBuilder.getIncludeSets());
         }
         return this;
