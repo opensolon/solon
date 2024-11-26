@@ -315,11 +315,6 @@ public class LQuery<T> extends QueryBase {
         return super.select(r);
     }
 
-//    public LQuery<T> select()
-//    {
-//        return new LQuery<>(boxedQuerySqlBuilder());
-//    }
-
     /**
      * 设置select<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -328,7 +323,7 @@ public class LQuery<T> extends QueryBase {
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+    public <R extends Result> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
         throw new NotCompiledException();
     }
 
