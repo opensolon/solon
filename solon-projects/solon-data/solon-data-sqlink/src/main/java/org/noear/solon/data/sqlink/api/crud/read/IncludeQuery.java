@@ -25,12 +25,12 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import java.util.Collection;
 
 /**
- * 抓取过程对象
+ * 抓取过程对象(暂时不能用)
  *
  * @author kiryu1223
  * @since 3.0
  */
-public class IncludeQuery<T, TPreviousProperty> extends LQuery<T>
+class IncludeQuery<T, TPreviousProperty> extends LQuery<T>
 {
     private final IncludeSet curIncludeSet;
 
@@ -107,7 +107,7 @@ public class IncludeQuery<T, TPreviousProperty> extends LQuery<T>
 
     public <TProperty> IncludeQuery<T, TProperty> thenIncludes(ExprTree<Func1<TPreviousProperty, Collection<TProperty>>> expr, Action1<LQuery<TProperty>> cond)
     {
-        LQuery<TProperty> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Object.class)));
+        LQuery<TProperty> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class,"empty")));
         cond.invoke(lQuery);
         include(expr.getTree(), lQuery.getSqlBuilder().getQueryable(), curIncludeSet.getIncludeSets());
         return new IncludeQuery<>(getSqlBuilder(), curIncludeSet.getLastIncludeSet());

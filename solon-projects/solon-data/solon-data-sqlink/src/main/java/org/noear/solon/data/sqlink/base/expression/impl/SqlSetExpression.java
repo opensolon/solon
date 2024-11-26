@@ -19,6 +19,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.util.List;
@@ -54,8 +55,15 @@ public class SqlSetExpression implements ISqlSetExpression {
         if (getValue() instanceof ISqlValueExpression) {
             if (getValue() instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
-                values.add(new SqlValue(sqlSingleValueExpression.getValue(), typeHandler, fieldMetaData.getOnPut()));
-                return set + "?";
+                Object value1 = sqlSingleValueExpression.getValue();
+                if (value1 instanceof ISqlKeywords) {
+                    ISqlKeywords iSqlKeywords = (ISqlKeywords) value1;
+                    return set + iSqlKeywords.getKeyword(config);
+                }
+                else {
+                    values.add(new SqlValue(value1, typeHandler, fieldMetaData.getOnPut()));
+                    return set + "?";
+                }
             }
             else {
                 ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) getValue();

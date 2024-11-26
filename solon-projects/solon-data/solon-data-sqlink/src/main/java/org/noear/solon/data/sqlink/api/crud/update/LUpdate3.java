@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.api.crud.update;
 
+import io.github.kiryu1223.expressionTree.delegate.Func1;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
@@ -91,22 +92,23 @@ public class LUpdate3<T1, T2, T3> extends UpdateBase {
     //endregion
 
     //region [SET]
-
+    
     /**
-     * 为需要更新的字段赋值
+     * 选择需要更新的字段和值
      * <p><b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
      *
-     * @param action lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
+     * @param func 需要更新的字段(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
      * @return this
      */
-    public LUpdate3<T1, T2, T3> set(@Expr Action3<T1, T2, T3> action) {
+    public <R> LUpdate3<T1, T2, T3> set(@Expr(Expr.BodyType.Expr) Func3<T1, T2, T3, R> func, R value) {
         throw new NotCompiledException();
     }
 
-    public LUpdate3<T1, T2, T3> set(ExprTree<Action3<T1, T2, T3>> expr) {
-        set(expr.getTree());
+    public <R> LUpdate3<T1, T2, T3> set(ExprTree<Func3<T1, T2, T3, R>> func, R value) {
+        set(func.getTree(), value);
         return this;
     }
+    
     //endregion
 
     //region [WHERE]

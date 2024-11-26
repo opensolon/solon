@@ -33,8 +33,20 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     @Override
     default ISqlQueryableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        queryableExpression.setChanged(getChanged());
+        return queryableExpression;
     }
+
+    /**
+     * 设置是否已经发生变化
+     */
+    void setChanged(boolean changed);
+
+    /**
+     * 获取是否已经发生变化
+     */
+    boolean getChanged();
 
     /**
      * 添加where条件
@@ -73,11 +85,6 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
      * @param newSelect
      */
     void setSelect(ISqlSelectExpression newSelect);
-
-    /**
-     * 添加select列
-     */
-    void addSelectColumn(ISqlExpression expression);
 
     /**
      * 设置limit
@@ -143,6 +150,22 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
      * 获取映射的列
      */
     default List<FieldMetaData> getMappingData() {
+        if (getChanged()) {
+            return getMappingData0();
+        }
+        else {
+            ISqlTableExpression sqlTableExpression = getFrom().getSqlTableExpression();
+            if (sqlTableExpression instanceof ISqlRealTableExpression) {
+                return getMappingData0();
+            }
+            else {
+                ISqlQueryableExpression tableExpression = (ISqlQueryableExpression) sqlTableExpression;
+                return tableExpression.getMappingData();
+            }
+        }
+    }
+
+    default List<FieldMetaData> getMappingData0() {
         List<Class<?>> orderedClass = getOrderedClass();
         Class<?> target = getSelect().getTarget();
         MetaData metaData = MetaDataCache.getMetaData(target);

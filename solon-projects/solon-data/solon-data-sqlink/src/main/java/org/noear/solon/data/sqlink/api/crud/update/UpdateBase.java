@@ -17,10 +17,10 @@ package org.noear.solon.data.sqlink.api.crud.update;
 
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
+import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
-import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
@@ -91,17 +91,11 @@ public class UpdateBase extends CRUD {
         getSqlBuilder().addJoin(joinType, table, on);
     }
 
-    protected void set(LambdaExpression<?> lambda) {
+    protected void set(LambdaExpression<?> left, Object value) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
-        ISqlExpression expression = sqlVisitor.visit(lambda);
-        if (expression instanceof ISqlSetsExpression) {
-            ISqlSetsExpression sqlSetsExpression = (ISqlSetsExpression) expression;
-            sqlBuilder.addSet(sqlSetsExpression);
-        }
-        else if (expression instanceof ISqlSetExpression) {
-            ISqlSetExpression sqlSetExpression = (ISqlSetExpression) expression;
-            sqlBuilder.addSet(sqlSetExpression);
-        }
+        ISqlColumnExpression column = sqlVisitor.toColumn(left);
+        sqlBuilder.addSet(factory.set(column, factory.AnyValue(value)));
     }
 
     protected void where(LambdaExpression<?> lambda) {

@@ -295,7 +295,7 @@ public class LQuery2<T1, T2> extends QueryBase {
      * @param <R>  Result
      * @return 基于Result类型的新查询过程对象
      */
-    public <R extends Result> LQuery<? extends R> select(@Expr Func2<T1, T2, R> expr) {
+    public <R extends Result> LQuery<? extends R> select(@Expr(Expr.BodyType.Expr) Func2<T1, T2, R> expr) {
         throw new NotCompiledException();
     }
 

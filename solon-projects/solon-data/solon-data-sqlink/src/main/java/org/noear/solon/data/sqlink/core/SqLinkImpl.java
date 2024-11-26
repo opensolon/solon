@@ -27,6 +27,7 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.Collection;
 
@@ -73,7 +74,8 @@ class SqLinkImpl implements SqLink {
      */
     @Override
     public <T> LQuery<T> query(@Recode Class<T> c) {
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c)));
+        String asName = ExpressionUtil.getAsName(c);
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c,asName)));
     }
 
     /**
@@ -83,7 +85,7 @@ class SqLinkImpl implements SqLink {
      */
     @Override
     public EmptyQuery queryEmptyTable() {
-        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class)));
+        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class,"")));
     }
 
     /**

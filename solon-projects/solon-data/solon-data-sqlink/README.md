@@ -1,4 +1,5 @@
 ```xml
+
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>solon-data-sqlink</artifactId>
@@ -32,6 +33,7 @@ solon.dataSources:
 配置maven
 
 ```xml
+
 <build>
     <plugins>
         <plugin>
@@ -265,6 +267,7 @@ public class User {
 选择动态生成器需要继承`DynamicGenerator<T>`并且完全实现泛型
 
 定义一个uuid生成器
+
 ```java
 package org.noear.solon.data.sqlink.base.generate;
 
@@ -285,7 +288,8 @@ public class UUIDGenerator extends DynamicGenerator<String> {
 
 ```java
 import org.noear.solon.data.sqlink.annotation.GenerateStrategy;
-import org.noear.solon.data.sqlink.annotation.InsertDefaultValue;import org.noear.solon.data.sqlink.base.generate.UUIDGenerator;
+import org.noear.solon.data.sqlink.annotation.InsertDefaultValue;
+import org.noear.solon.data.sqlink.base.generate.UUIDGenerator;
 
 @Table("user")
 public class User {
@@ -293,10 +297,10 @@ public class User {
     @InsertDefaultValue(strategy = GenerateStrategy.DataBase)
     private long id;
     // 静态值
-    @InsertDefaultValue(strategy = GenerateStrategy.Static,value = "新用户")
+    @InsertDefaultValue(strategy = GenerateStrategy.Static, value = "新用户")
     private String username;
     // 动态值
-    @InsertDefaultValue(strategy = GenerateStrategy.Dynamic,dynamic = UUIDGenerator.class)
+    @InsertDefaultValue(strategy = GenerateStrategy.Dynamic, dynamic = UUIDGenerator.class)
     private String uuid;
 }
 ```
@@ -333,7 +337,7 @@ import java.util.Arrays;
 
 @Component
 public class InsertDemoService {
-    @Inject 
+    @Inject
     SqLink sqLink;
 
     // 插入一条
@@ -378,7 +382,7 @@ public class UpdateDemoService {
     public void updateEmailById(int id, String newEmail) {
         // UPDATE user SET email = {newEmail} WHERE id = {id}
         sqLink.update(User.class)
-                .set(u -> u.setEmail(newEmail))
+                .set(u -> u.getEmail(), newEmail)
                 .where(u -> u.getId() == id)
                 .executeRows();
     }
@@ -387,10 +391,8 @@ public class UpdateDemoService {
     public void updateNameAndEmailById(int id, String newName, String newEmail) {
         // UPDATE user SET email = {newEmail}, username = {newName} WHERE id = {id}
         sqLink.update(User.class)
-                .set(u -> {
-                    u.setEmail(newEmail);
-                    u.setUsername(newName);
-                })
+                .set(u -> u.getEmail(), newEmail)
+                .set(u -> u.getUsername(), newName)
                 .where(u -> u.getId() == id)
                 .executeRows();
     }
@@ -494,5 +496,130 @@ public class SelectDemoService {
 }
 ```
 
+### 4.对象化查询(进阶功能)
 
+> 注意：需要先正确进行导航属性的配置后才能正常工作
 
+定义一个员工类
+
+```java
+
+@Data
+@Table("employees")
+public class Employee {
+    // 员工编号
+    @Column(value = "emp_no", primaryKey = true)
+    private int number;
+    // 出生日期
+    @Column("birth_date")
+    private LocalDate birthDay;
+    @Column("first_name")
+    private String firstName;
+    @Column("last_name")
+    private String lastName;
+    // 性别
+    private Gender gender;
+    // 入职日期
+    @Column("hire_date")
+    private LocalDate hireDay;
+    // 与工资的关系的配置（一对多，员工一，工资多）（员工的number字段对应到工资的empNumber字段）
+    @Navigate(value = RelationType.OneToMany, self = "number", target = "empNumber")
+    private List<Salary> salaries;
+}
+```
+
+定义一个工资类
+
+```java
+
+@Data
+@Table(value = "salaries")
+public class Salary {
+    // 员工编号
+    @Column(value = "emp_no", primaryKey = true)
+    private int empNumber;
+    // 工资
+    private int salary;
+    // 什么日期开始
+    @Column("from_date")
+    private LocalDate from;
+    // 什么日期结束
+    @Column("to_date")
+    private LocalDate to;
+    // 与员工的关系的配置（多对一，工资多，员工一）（工资的empNumber字段对应到员工的number字段）
+    @Navigate(value = RelationType.ManyToOne, self = "empNumber", target = "number")
+    private Employee employee;
+}
+```
+
+`对象抓取器（include）`
+
+获取一个员工和他的工资
+
+```java
+Employee first = sqLink.query(Employee.class)
+        .includes(e -> e.getSalaries())
+        .first();
+```
+
+获取一个员工和他的前五条工资
+
+```java
+Employee first = sqLink.query(Employee.class)
+        .includes(e -> e.getSalaries(), then -> then.limit(5))
+        .first();
+```
+
+获取一个员工和他80000以上的工资
+
+```java
+Employee first = sqLink.query(Employee.class)
+                .includes(e -> e.getSalaries(), then -> then.where(e -> e.getSalary() > 80000))
+                .first();
+```
+
+`基于关联关系查询`
+
+查询所有历史工资有过大于10w的员工
+```java
+List<Employee> employees = sqLink.query(Employee.class)
+                .where(e -> subQuery(e.getSalaries()).any(s -> s.getSalary() > 100000))
+                // 或者
+                //.where(e -> subQuery(e.getSalaries()).where(s->s.getSalary()>100000).any())
+                .toList();
+
+// SELECT 
+//    `e`.`birth_date`,
+//    `e`.`first_name`,
+//    `e`.`gender`,
+//    `e`.`hire_date`,
+//    `e`.`last_name`,
+//    `e`.`emp_no` FROM 
+//    `employees` AS `e` 
+// WHERE 
+//    EXISTS (
+//    SELECT 1 FROM `salaries` AS `s` WHERE `s`.`emp_no` = `e`.`emp_no` AND `s`.`salary` > ?
+// )
+```
+
+查询目前工资大于10w的员工 ~~用于优化~~
+```java
+List<Employee> employees = sqLink.query(Employee.class)
+                .where(e -> subQuery(e.getSalaries()).any(s -> s.getSalary() > 100000 && s.getTo().isEqual(LocalDate.of(9999, 1, 1))))
+                // 或者
+                //.where(e -> subQuery(e.getSalaries()).where(s -> s.getSalary() > 100000 && s.getTo().isEqual(LocalDate.of(9999, 1, 1))).any())
+                .toList();
+
+// SELECT 
+//    `e`.`birth_date`,
+//    `e`.`first_name`,
+//    `e`.`gender`,
+//    `e`.`hire_date`,
+//    `e`.`last_name`,
+//    `e`.`emp_no` FROM 
+//    `employees` AS `e` 
+// WHERE 
+//    EXISTS (
+//    SELECT 1 FROM `salaries` AS `s` WHERE `s`.`emp_no` = `e`.`emp_no` AND `s`.`salary` > ? AND `s`.`to_date` = ?
+// )
+```

@@ -22,9 +22,14 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
 
 /**
  * @author kiryu1223
@@ -34,7 +39,6 @@ public class QuerySqlBuilder implements ISqlBuilder {
     private final SqLinkConfig config;
     private final ISqlQueryableExpression queryable;
     private final List<IncludeSet> includeSets = new ArrayList<>();
-    private boolean isChanged;
 
 //    public QuerySqlBuilder(IConfig config, Class<?> target, int offset)
 //    {
@@ -65,7 +69,6 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     public void addWhere(ISqlExpression cond) {
         queryable.addWhere(cond);
-        change();
     }
 
     public void addOrWhere(ISqlExpression cond) {
@@ -80,35 +83,44 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression conditions) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
-        ISqlJoinExpression join = factory.join(joinType, table, conditions, as);
+        String asName = getAsName(table.getMainTableClass());
+        asName = doGetAsName(asName);
+        ISqlJoinExpression join = factory.join(joinType, table, conditions, asName);
         queryable.addJoin(join);
-        change();
+    }
+
+    private String doGetAsName(String as) {
+        Set<String> asNames = new HashSet<>();
+        String asName = queryable.getFrom().getAsName();
+        asNames.add(asName);
+        queryable.getJoins().getJoins().forEach(join -> asNames.add(join.getAsName()));
+        return doGetAsName(asNames, as, 0);
+    }
+
+    private String doGetAsName(Set<String> asNameSet,String as, int offset) {
+        String next = offset == 0 ? as : as + offset;
+        if (asNameSet.contains(next)) {
+            return doGetAsName(asNameSet,as, offset + 1);
+        }
+        else {
+            return next;
+        }
     }
 
     public void setGroup(ISqlGroupByExpression group) {
         queryable.setGroup(group);
-        change();
     }
 
     public void addHaving(ISqlExpression cond) {
         queryable.addHaving(cond);
-        change();
     }
 
     public void addOrder(ISqlOrderExpression order) {
         queryable.addOrder(order);
-        change();
     }
 
     public void setSelect(ISqlSelectExpression select) {
         queryable.setSelect(select);
-        change();
-    }
-
-    public void addSelectColumn(ISqlExpression expression) {
-        queryable.addSelectColumn(expression);
-        change();
     }
 
     public void setSelect(Class<?> c) {
@@ -137,21 +149,14 @@ public class QuerySqlBuilder implements ISqlBuilder {
             }
         }
         queryable.setSelect(factory.select(expressions, c));
-        change();
     }
 
     public void setLimit(long offset, long rows) {
         queryable.setLimit(offset, rows);
-        change();
     }
 
     public void setDistinct(boolean distinct) {
         queryable.setDistinct(distinct);
-        change();
-    }
-
-    private void change() {
-        isChanged = true;
     }
 
     @Override
@@ -161,30 +166,12 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     @Override
     public String getSql() {
-        if (isChanged) {
-            return queryable.getSql(config);
-        }
-        else {
-            ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getSql(config);
-            }
-            return sqlTableExpression.getSql(config);
-        }
+        return queryable.getSql(config);
     }
 
     @Override
     public String getSqlAndValue(List<SqlValue> values) {
-        if (isChanged) {
-            return queryable.getSqlAndValue(config, values);
-        }
-        else {
-            ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getSqlAndValue(config, values);
-            }
-            return sqlTableExpression.getSqlAndValue(config, values);
-        }
+        return queryable.getSqlAndValue(config, values);
     }
 
 //    public String getSqlAndValueAndFirst(List<Object> values)
@@ -213,19 +200,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
     }
 
     public List<FieldMetaData> getMappingData() {
-        if (isChanged) {
-            return queryable.getMappingData();
-        }
-        else {
-            ISqlTableExpression sqlTableExpression = queryable.getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
-                return queryable.getMappingData();
-            }
-            else {
-                ISqlQueryableExpression tableExpression = (ISqlQueryableExpression) sqlTableExpression;
-                return tableExpression.getMappingData();
-            }
-        }
+        return queryable.getMappingData();
     }
 
     public boolean isSingle() {
