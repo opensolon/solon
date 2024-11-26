@@ -15,8 +15,6 @@
  */
 package org.noear.solon.data.sql.bound;
 
-import java.sql.SQLException;
-
 /**
  * 行转换器工厂
  *
