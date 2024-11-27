@@ -24,6 +24,7 @@ import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
@@ -88,7 +89,9 @@ public class WsServer extends WebSocketServer {
         ServerHandshakeBuilder tmp = super.onWebsocketHandshakeReceivedAsServer(conn, draft, request);
 
         //添加子协议支持
-        String path = URI.create(request.getResourceDescriptor()).getPath();
+        String url = DecodeUtils.rinseUrl(request.getResourceDescriptor());
+        String path = URI.create(url).getPath();
+
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             String reqProtocols = Utils.annoAlias(request.getFieldValue(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL), "");

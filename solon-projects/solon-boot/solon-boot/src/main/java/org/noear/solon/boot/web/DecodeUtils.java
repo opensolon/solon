@@ -251,6 +251,37 @@ public class DecodeUtils {
         }
     }
 
+    //////////////////////
+
+
+    /**
+     * 清洗 url
+     * */
+    public static String rinseUrl(String url) {
+        int idx = url.indexOf("://");
+
+        if (idx < 0) {
+            idx = url.indexOf("//");
+        } else {
+            idx = url.indexOf("//", idx + 4);
+        }
+
+        if (idx < 0) {
+            return url;
+        } else {
+            if (idx > 0) {
+                String head = url.substring(0, idx);
+                String content = url.substring(idx);
+
+                content = Utils.trimDuplicates(content, '/');
+
+                return head + content;
+            } else {
+                return Utils.trimDuplicates(url, '/');
+            }
+        }
+    }
+
 
     //////////////////////
 

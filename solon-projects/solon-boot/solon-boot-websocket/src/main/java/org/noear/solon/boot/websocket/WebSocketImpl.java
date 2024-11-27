@@ -15,6 +15,7 @@
  */
 package org.noear.solon.boot.websocket;
 
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 
@@ -34,7 +35,9 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     public WebSocketImpl(org.java_websocket.WebSocket real) {
         this.real = real;
-        this.init(URI.create(real.getResourceDescriptor()));
+        String url = DecodeUtils.rinseUrl(real.getResourceDescriptor());
+
+        this.init(URI.create(url));
     }
 
     @Override
