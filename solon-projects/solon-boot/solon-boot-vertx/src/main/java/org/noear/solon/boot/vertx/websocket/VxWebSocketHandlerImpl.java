@@ -19,6 +19,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.ServerWebSocket;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketBase;
@@ -40,7 +41,7 @@ public class VxWebSocketHandlerImpl implements Handler<ServerWebSocket> {
 
     public void subProtocolCapable(HttpServerRequest req) {
         //添加子协议支持
-        String path = req.path();
+        String path = DecodeUtils.rinseUri(req.path());
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             Collection<String> requestProtocols = req.headers().getAll(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL);
