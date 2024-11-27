@@ -178,8 +178,13 @@ public class SbeInputBuffers {
         return chars;
     }
 
-    public <T> T readObject(final Function<SbeInputBuffers, T> creator) {
-        return readBoolean() ? creator.apply(this) : null;
+    public <T extends SbeSerializable> T readObject(Function<SbeInputBuffers, T> creator) {
+        if (readBoolean()) {// 检查对象是否存在
+            T object = creator.apply(this);// 通过 Function 反序列化对象
+            object.readBuffer(this);
+            return object;
+        }
+        return null;
     }
 
     public <T> T[] readArray(final Function<SbeInputBuffers, T> creator, final IntFunction<T[]> arrayCreator) {
