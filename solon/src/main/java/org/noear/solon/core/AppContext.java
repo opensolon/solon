@@ -598,7 +598,7 @@ public class AppContext extends BeanContainer {
         }
 
         for (FieldWrap fw : clzWrap.getStaticFieldWraps()) { //静态
-            if (fw.getAnnoS().length > 0 && fw.getValue(null, true) == null) {
+            if (fw.getAnnoS().length > 0) {
                 fwList.add(fw);
             }
         }
