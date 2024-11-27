@@ -39,6 +39,7 @@
 * 优化 solon SessionState:sessionId 的保持处理（从 attr 转到 cookieMap；减少一道）
 * 优化 solon 带'.'的环境变量自动加载到应用属性里（之前只加载 'solon.'）
 * 优化 solon AppContext 支持对 app 为 null 的过滤处理，强化无 app 的测试场景
+* 优化 solon-boot-websocket 对 "//" resourceDescriptor 的兼容性
 * 优化 solon-data-sqlutils 接口设计，优化极限性能
 * 优化 solon-cloud-gateway 改为流响应模式，节省内存驻留、并支持 sse 代理
 * smart-http 升为 2.1
