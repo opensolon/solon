@@ -19,6 +19,7 @@ import io.undertow.websockets.WebSocketConnectionCallback;
 import io.undertow.websockets.core.*;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
 
@@ -30,7 +31,8 @@ public class UtWsConnectionCallback implements WebSocketConnectionCallback {
 
     public void onHandshake(WebSocketHttpExchange exchange) {
         //添加子协议支持
-        String path = URI.create(exchange.getRequestURI()).getPath();
+        String uri = DecodeUtils.rinseUri(exchange.getRequestURI());
+        String path = URI.create(uri).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             String protocols = subProtocolCapable.getSubProtocols(exchange.getRequestHeaders().get(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL));

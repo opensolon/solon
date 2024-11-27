@@ -17,6 +17,7 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketBase;
 
@@ -34,7 +35,9 @@ public class WebSocketImpl extends WebSocketBase {
 
     public WebSocketImpl(WebSocketChannel real) {
         this.real = real;
-        this.init(URI.create(real.getUrl()));
+        String uri = DecodeUtils.rinseUri(real.getUrl());
+
+        this.init(URI.create(uri));
     }
 
     @Override
