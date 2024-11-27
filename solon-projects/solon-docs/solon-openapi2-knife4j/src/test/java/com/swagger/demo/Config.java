@@ -62,8 +62,19 @@ public class Config {
                 .globalResult(Result.class)
                 .globalResponseInData(true)
                 .apis("com.swagger.demo.controller.app");
-                //.securityDefinitionInHeader("token");
+        //.securityDefinitionInHeader("token");
 
+    }
+
+    /**
+     * 基于代码构建
+     */
+    @Bean("appApi2")
+    public DocDocket appApi2() {
+        return new DocDocket()
+                .groupName("app2端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .apis("com.swagger.demo.controller.app2");
     }
 
     /**
@@ -80,14 +91,14 @@ public class Config {
                 .vendorExtensions("TOKEN", "xxx")
                 .globalParams(new HeaderParameter().name("token").required(true))
                 .apis("com.swagger.demo.controller.api2");
-                //.securityDefinitionInHeader("token");
+        //.securityDefinitionInHeader("token");
 
     }
 
     /**
      * 基于代码构建
      */
-    @Bean("removeApi")
+//    @Bean("removeApi")
     public DocDocket removeApi() {
         return new DocDocket()
                 .groupName("removeApi端接口")
@@ -98,7 +109,7 @@ public class Config {
     }
 
     //    @Bean("appApi")
-    public DocDocket appApi2() {
+    public DocDocket appApi_2() {
         return new DocDocket()
                 .groupName("app端接口")
                 .info(new ApiInfo().title("在线文档")
@@ -110,7 +121,7 @@ public class Config {
                 .globalResponseInData(true)
                 .globalResult(Result.class)
                 .apis("com.swagger.demo.controller.app");
-                //.securityDefinitionInHeader("token");
+        //.securityDefinitionInHeader("token");
 
     }
 }

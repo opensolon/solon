@@ -42,6 +42,7 @@
 * 优化 solon-boot-websocket 对 "//" resourceDescriptor 的兼容性
 * 优化 solon-data-sqlutils 接口设计，优化极限性能
 * 优化 solon-cloud-gateway 改为流响应模式，节省内存驻留、并支持 sse 代理
+* 修复 solon-docs-openapi2 部分泛型响应体无法识别的问题
 * smart-http 升为 2.1
 * snack3 升为 3.2.121
 * redisx 升为 1.6.8

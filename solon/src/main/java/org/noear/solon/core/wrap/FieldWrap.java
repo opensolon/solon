@@ -119,6 +119,14 @@ public class FieldWrap {
         return typeWrap;
     }
 
+    public TypeWrap typeWrapOf(Type genericInfo) {
+        if (genericInfo == null || genericInfo == ownerClz) {
+            return getTypeWrap();
+        } else {
+            return new TypeWrap(genericInfo, field.getType(), field.getGenericType());
+        }
+    }
+
     /**
      * 获取类型
      */

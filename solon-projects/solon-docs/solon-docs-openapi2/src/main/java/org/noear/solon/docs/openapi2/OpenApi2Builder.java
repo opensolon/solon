@@ -799,8 +799,9 @@ public class OpenApi2Builder {
                 String propName = fw.getName();
 
                 ApiModelProperty propAnno = fw.getField().getAnnotation(ApiModelProperty.class);
+                TypeWrap fwTypeWrap = fw.typeWrapOf(type);
 
-                parseSwaggerModelProperty(type, modelName, propertyList, propName, fw.getType(), fw.getGenericType(), propAnno);
+                parseSwaggerModelProperty(type, modelName, propertyList, propName, fwTypeWrap.getType(), fwTypeWrap.getGenericType(), propAnno);
             }
         }
 

@@ -33,7 +33,7 @@ public class TypeWrap {
     private ParameterizedType genericType;
     private boolean invalid;
 
-    public TypeWrap(Class<?> genericInfo, Class<?> type, Type genericType) {
+    public TypeWrap(Type genericInfo, Class<?> type, Type genericType) {
         this.type = type;
 
         if (type == Void.class) {
