@@ -89,8 +89,8 @@ public class WsServer extends WebSocketServer {
         ServerHandshakeBuilder tmp = super.onWebsocketHandshakeReceivedAsServer(conn, draft, request);
 
         //添加子协议支持
-        String url = DecodeUtils.rinseUrl(request.getResourceDescriptor());
-        String path = URI.create(url).getPath();
+        String uri = DecodeUtils.rinseUri(request.getResourceDescriptor());
+        String path = URI.create(uri).getPath();
 
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {

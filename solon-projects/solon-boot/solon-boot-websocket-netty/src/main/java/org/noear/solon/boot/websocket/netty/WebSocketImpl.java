@@ -19,6 +19,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 
@@ -36,7 +37,9 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     public WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
-        this.init(URI.create(real.attr(WsServerHandler.ResourceDescriptorKey).get()));
+        String uri = DecodeUtils.rinseUri(real.attr(WsServerHandler.ResourceDescriptorKey).get());
+
+        this.init(URI.create(uri));
     }
 
     @Override

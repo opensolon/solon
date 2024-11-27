@@ -255,29 +255,29 @@ public class DecodeUtils {
 
 
     /**
-     * 清洗 url
+     * 清洗 uri
      * */
-    public static String rinseUrl(String url) {
-        int idx = url.indexOf("://");
+    public static String rinseUri(String uri) {
+        int idx = uri.indexOf("://");
 
         if (idx < 0) {
-            idx = url.indexOf("//");
+            idx = uri.indexOf("//");
         } else {
-            idx = url.indexOf("//", idx + 4);
+            idx = uri.indexOf("//", idx + 4);
         }
 
         if (idx < 0) {
-            return url;
+            return uri;
         } else {
             if (idx > 0) {
-                String head = url.substring(0, idx);
-                String content = url.substring(idx);
+                String head = uri.substring(0, idx);
+                String content = uri.substring(idx);
 
                 content = Utils.trimDuplicates(content, '/');
 
                 return head + content;
             } else {
-                return Utils.trimDuplicates(url, '/');
+                return Utils.trimDuplicates(uri, '/');
             }
         }
     }

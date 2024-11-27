@@ -35,9 +35,9 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     public WebSocketImpl(org.java_websocket.WebSocket real) {
         this.real = real;
-        String url = DecodeUtils.rinseUrl(real.getResourceDescriptor());
+        String uri = DecodeUtils.rinseUri(real.getResourceDescriptor());
 
-        this.init(URI.create(url));
+        this.init(URI.create(uri));
     }
 
     @Override
