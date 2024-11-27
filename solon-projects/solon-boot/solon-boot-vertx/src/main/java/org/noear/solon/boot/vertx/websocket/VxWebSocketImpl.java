@@ -17,6 +17,7 @@ package org.noear.solon.boot.vertx.websocket;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
@@ -36,9 +37,21 @@ public class VxWebSocketImpl extends WebSocketTimeoutBase {
 
     public VxWebSocketImpl(ServerWebSocket real) {
         this.real = real;
-        String uri = DecodeUtils.rinseUri(real.path());
+        String uri = buildUri(real);
 
         this.init(URI.create(uri));
+    }
+
+    public String buildUri(ServerWebSocket req) {
+        if (Utils.isEmpty(req.query())) {
+            return DecodeUtils.rinseUri(req.uri());
+        } else {
+            if (req.uri().contains("?")) {
+                return DecodeUtils.rinseUri(req.uri());
+            } else {
+                return DecodeUtils.rinseUri(req.uri()) + "?" + req.query();
+            }
+        }
     }
 
     @Override
