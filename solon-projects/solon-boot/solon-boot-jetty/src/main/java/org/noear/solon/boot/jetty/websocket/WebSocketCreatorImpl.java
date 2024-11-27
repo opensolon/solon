@@ -19,6 +19,7 @@ import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
 
@@ -34,7 +35,7 @@ public class WebSocketCreatorImpl implements WebSocketCreator {
     @Override
     public Object createWebSocket(ServletUpgradeRequest servletUpgradeRequest, ServletUpgradeResponse servletUpgradeResponse) {
         //添加子协议支持
-        String path = servletUpgradeRequest.getRequestURI().getPath();
+        String path = DecodeUtils.rinseUri(servletUpgradeRequest.getRequestURI().getPath());
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             String protocols = subProtocolCapable.getSubProtocols(servletUpgradeRequest.getSubProtocols());

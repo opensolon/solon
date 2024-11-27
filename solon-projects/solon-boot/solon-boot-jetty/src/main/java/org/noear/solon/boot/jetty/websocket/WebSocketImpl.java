@@ -16,11 +16,13 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Future;
 
@@ -33,7 +35,9 @@ public class WebSocketImpl extends WebSocketBase {
 
     public WebSocketImpl(Session real) {
         this.real = real;
-        this.init(real.getUpgradeRequest().getRequestURI());
+        String uri = DecodeUtils.rinseUri(real.getUpgradeRequest().getRequestURI().toString());
+
+        this.init(URI.create(uri));
     }
 
     @Override
