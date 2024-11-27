@@ -16,6 +16,7 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocket;
@@ -47,7 +48,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
         super.willHeaderComplete(request, response);
 
         //添加子协议支持
-        String path = URI.create(request.getRequestURL()).getPath();
+        String uri = DecodeUtils.rinseUri(request.getRequestURL());
+        String path = URI.create(uri).getPath();
         SubProtocolCapable subProtocolCapable = webSocketRouter.getSubProtocol(path);
         if (subProtocolCapable != null) {
             String protocols = subProtocolCapable.getSubProtocols(request.getHeaders(SubProtocolCapable.SEC_WEBSOCKET_PROTOCOL));

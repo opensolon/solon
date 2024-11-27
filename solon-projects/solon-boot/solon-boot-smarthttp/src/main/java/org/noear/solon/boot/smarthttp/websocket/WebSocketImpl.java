@@ -16,6 +16,7 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.smartboot.http.server.WebSocketRequest;
@@ -38,17 +39,19 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     public WebSocketImpl(WebSocketRequest request) {
         this.request = ((WebSocketRequestImpl) request);
         this.real = this.request.getResponse();
-        this.init(buildUri(request));
+        String uri = buildUri(request);
+
+        this.init(URI.create(uri));
     }
 
-    public URI buildUri(WebSocketRequest req) {
+    public String buildUri(WebSocketRequest req) {
         if (Utils.isEmpty(req.getQueryString())) {
-            return URI.create(req.getRequestURL());
+            return DecodeUtils.rinseUri(req.getRequestURL());
         } else {
             if (req.getRequestURL().contains("?")) {
-                return URI.create(req.getRequestURL());
+                return DecodeUtils.rinseUri(req.getRequestURL());
             } else {
-                return URI.create(req.getRequestURL() + "?" + req.getQueryString());
+                return DecodeUtils.rinseUri(req.getRequestURL()) + "?" + req.getQueryString();
             }
         }
     }
