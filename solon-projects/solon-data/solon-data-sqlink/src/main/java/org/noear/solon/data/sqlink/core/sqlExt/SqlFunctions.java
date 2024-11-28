@@ -35,7 +35,6 @@ import org.noear.solon.data.sqlink.core.sqlExt.sqlite.SqliteJoinExtension;
 import org.noear.solon.data.sqlink.core.sqlExt.sqlserver.SQLServerCastExtension;
 import org.noear.solon.data.sqlink.core.sqlExt.types.SqlTypes;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

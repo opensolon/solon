@@ -15,8 +15,6 @@
  */
 package org.noear.solon.data.sqlink.api.crud.update;
 
-import io.github.kiryu1223.expressionTree.delegate.Action9;
-import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func10;
 import io.github.kiryu1223.expressionTree.delegate.Func9;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;

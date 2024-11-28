@@ -22,7 +22,6 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
-import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;

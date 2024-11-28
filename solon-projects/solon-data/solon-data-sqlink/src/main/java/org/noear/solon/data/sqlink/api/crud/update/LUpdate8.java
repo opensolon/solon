@@ -15,11 +15,9 @@
  */
 package org.noear.solon.data.sqlink.api.crud.update;
 
-import io.github.kiryu1223.expressionTree.delegate.Func1;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
-import io.github.kiryu1223.expressionTree.delegate.Action8;
 import io.github.kiryu1223.expressionTree.delegate.Func8;
 import io.github.kiryu1223.expressionTree.delegate.Func9;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;

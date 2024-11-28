@@ -18,7 +18,6 @@ package org.noear.solon.data.sqlink.api.crud.read.group;
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func6;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
-import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.EndQuery;

@@ -23,7 +23,6 @@ import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
-import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.slf4j.Logger;
