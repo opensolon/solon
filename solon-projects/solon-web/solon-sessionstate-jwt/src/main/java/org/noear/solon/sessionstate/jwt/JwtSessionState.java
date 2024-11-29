@@ -18,6 +18,7 @@ package org.noear.solon.sessionstate.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
@@ -43,12 +44,12 @@ public class JwtSessionState extends SessionStateBase {
 
     @Override
     public long creationTime() {
-        return ctx.sessionAsLong(CREATION_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_CREATION_TIME, 0L);
     }
 
     @Override
     public long lastAccessTime() {
-        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_LAST_ACCESS_TIME, 0L);
     }
 
     //
@@ -61,7 +62,7 @@ public class JwtSessionState extends SessionStateBase {
             return "";
         }
 
-        if (sessionId != null) {
+        if (sessionId == null) {
             sessionId = sessionIdGet(false);
         }
 
@@ -166,19 +167,24 @@ public class JwtSessionState extends SessionStateBase {
 
         if (Utils.isEmpty(sid) == false) {
             long now = System.currentTimeMillis();
-            sessionSet(LAST_ACCESS_TIME, now);
-            if (sessionGet(CREATION_TIME) == null) {
-                sessionSet(CREATION_TIME, now);
+
+            if (sessionGet(ServerConstants.SESSION_CREATION_TIME) == null) {
+                sessionSet(ServerConstants.SESSION_CREATION_TIME, now);
             }
         }
     }
 
-    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
-    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
-
     @Override
     public void sessionPublish() {
         if (SessionProp.session_jwt_allowAutoIssue) {
+            String sid = sessionId();
+
+            if (Utils.isEmpty(sid) == false) {
+                long now = System.currentTimeMillis();
+
+                sessionSet(ServerConstants.SESSION_LAST_ACCESS_TIME, now);
+            }
+
             String token = sessionToken();
 
             if (Utils.isNotEmpty(token)) {

@@ -17,6 +17,7 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.serialize.Serializer;
@@ -45,12 +46,12 @@ public class JedisSessionState extends SessionStateBase {
 
     @Override
     public long creationTime() {
-        return ctx.sessionAsLong(CREATION_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_CREATION_TIME, 0L);
     }
 
     @Override
     public long lastAccessTime() {
-        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_LAST_ACCESS_TIME, 0L);
     }
 
     //
@@ -132,7 +133,7 @@ public class JedisSessionState extends SessionStateBase {
             long now = System.currentTimeMillis();
 
             String json = serializer.serialize(now);
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashInit(CREATION_TIME, json));
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashInit(ServerConstants.SESSION_CREATION_TIME, json));
         }
     }
 
@@ -144,10 +145,7 @@ public class JedisSessionState extends SessionStateBase {
             long now = System.currentTimeMillis();
 
             String json = serializer.serialize(now);
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(LAST_ACCESS_TIME, json));
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(ServerConstants.SESSION_LAST_ACCESS_TIME, json));
         }
     }
-
-    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
-    final static String CREATION_TIME = "SESSION_LAST_CREATION_TIME";
 }

@@ -16,6 +16,7 @@
 package org.noear.solon.sessionstate.redisson;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.redisson.api.RMapCache;
@@ -44,12 +45,12 @@ public class RedissonSessionState extends SessionStateBase {
 
     @Override
     public long creationTime() {
-        return ctx.sessionAsLong(CREATION_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_CREATION_TIME, 0L);
     }
 
     @Override
     public long lastAccessTime() {
-        return ctx.sessionAsLong(LAST_ACCESS_TIME, 0L);
+        return ctx.sessionAsLong(ServerConstants.SESSION_LAST_ACCESS_TIME, 0L);
     }
 
     //
@@ -119,7 +120,7 @@ public class RedissonSessionState extends SessionStateBase {
 
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
-            hash.putIfAbsent(CREATION_TIME, now);
+            hash.putIfAbsent(ServerConstants.SESSION_CREATION_TIME, now);
         }
     }
 
@@ -132,10 +133,7 @@ public class RedissonSessionState extends SessionStateBase {
 
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
-            hash.put(LAST_ACCESS_TIME, now);
+            hash.put(ServerConstants.SESSION_LAST_ACCESS_TIME, now);
         }
     }
-
-    final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
-    final static String CREATION_TIME = "SESSION_LAST_CREATION_TIME";
 }

@@ -20,6 +20,10 @@ package org.noear.solon.boot;
  * @since 1.6
  */
 public interface ServerConstants {
+    String SESSION_LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
+    String SESSION_CREATION_TIME = "SESSION_CREATION_TIME";
+
+
     String SERVER_SSL_KEY_STORE = "server.ssl.keyStore";
     String SERVER_SSL_KEY_TYPE = "server.ssl.keyType";
     String SERVER_SSL_KEY_PASSWORD = "server.ssl.keyPassword";
@@ -29,7 +33,7 @@ public interface ServerConstants {
     String SERVER_HTTP_GZIP_MIMETYPES = "server.http.gzip.mimeTypes";
 
     String SERVER_REQUEST_MAXHEADERSIZE = "server.request.maxHeaderSize";
-    String SERVER_REQUEST_MAXBODYSIZE ="server.request.maxBodySize";
+    String SERVER_REQUEST_MAXBODYSIZE = "server.request.maxBodySize";
     String SERVER_REQUEST_MAXFILESIZE = "server.request.maxFileSize";
     String SERVER_REQUEST_USETEMPFILE = "server.request.useTempfile";
     String SERVER_REQUEST_USERAWPATH = "server.request.useRawpath";
