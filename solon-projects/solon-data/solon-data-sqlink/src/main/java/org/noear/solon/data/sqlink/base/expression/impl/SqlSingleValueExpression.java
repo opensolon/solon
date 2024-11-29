@@ -19,7 +19,6 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlSingleValueExpression;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.sqlExt.ISqlKeywords;
-import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
 
 import java.util.List;
 

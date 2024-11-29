@@ -15,7 +15,6 @@
  */
 package org.noear.solon.data.sqlink.api.crud.read;
 
-import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
