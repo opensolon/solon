@@ -44,10 +44,11 @@
 * 优化 solon-cloud-gateway 改为流响应模式，节省内存驻留、并支持 sse 代理
 * 优化 solon 静态字段注入，取消有默认值则不注入的限制条件
 * 修复 solon-docs-openapi2 部分泛型响应体无法识别的问题
-* smart-http 升为 2.1
 * snack3 升为 3.2.121
+* wood 升为 1.3.15
 * redisx 升为 1.6.8
 * lombok 升为 1.18.36
+* smart-http 升为 2.1
 * vertx 升为 4.5.11
 * netty 升为 4.1.115.Final
 
