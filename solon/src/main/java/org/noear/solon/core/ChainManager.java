@@ -24,6 +24,7 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.lang.Nullable;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -342,7 +343,7 @@ public class ChainManager {
      *
      * @since 3.0
      * */
-    public void refreshSessionState(Context c) {
+    public void refreshSessionState(Context c) throws IOException {
         if (_sessionStateUpdated) {
             //替代 bef("**", MethodType.HTTP, ...)
             c.sessionState().sessionRefresh();

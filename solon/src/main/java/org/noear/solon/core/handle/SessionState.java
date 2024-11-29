@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.handle;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -46,13 +47,15 @@ public interface SessionState {
     /**
      * 刷新SESSION状态（可续时）
      */
-    default void sessionRefresh() {
+    default void sessionRefresh() throws IOException {
+        //init
     }
 
     /**
      * 发布SESSION状态(类似jwt)
      */
-    default void sessionPublish() {
+    default void sessionPublish() throws IOException {
+        //post
     }
 
     /**

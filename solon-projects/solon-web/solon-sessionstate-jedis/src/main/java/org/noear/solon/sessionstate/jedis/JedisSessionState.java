@@ -21,6 +21,7 @@ import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.serialize.Serializer;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -57,6 +58,7 @@ public class JedisSessionState extends SessionStateBase {
     //
 
     private String sessionId;
+
     @Override
     public String sessionId() {
         if (sessionId == null) {
@@ -123,17 +125,29 @@ public class JedisSessionState extends SessionStateBase {
     }
 
     @Override
-    public void sessionRefresh() {
+    public void sessionRefresh() throws IOException {
         String sid = sessionIdPush();
 
         if (Utils.isEmpty(sid) == false) {
             long now = System.currentTimeMillis();
 
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(LAST_ACCESS_TIME, now));
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashInit(CREATION_TIME, now));
+            String json = serializer.serialize(now);
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashInit(CREATION_TIME, json));
+        }
+    }
+
+    @Override
+    public void sessionPublish() throws IOException {
+        String sid = sessionId();
+
+        if (Utils.isEmpty(sid) == false) {
+            long now = System.currentTimeMillis();
+
+            String json = serializer.serialize(now);
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(LAST_ACCESS_TIME, json));
         }
     }
 
     final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
-    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
+    final static String CREATION_TIME = "SESSION_LAST_CREATION_TIME";
 }
