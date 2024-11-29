@@ -39,7 +39,7 @@ public class RedissonSessionStateFactory implements SessionStateFactory {
     private RedissonSessionStateFactory() {
         Properties prop = Solon.cfg().getProp("server.session.state.redis");
 
-        if (prop.size() < 4) {
+        if (prop.size() < 1) {
             System.err.println("Error configuration: solon.session.state.redis");
             return;
         }

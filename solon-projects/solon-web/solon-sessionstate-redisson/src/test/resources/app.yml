@@ -1,0 +1,7 @@
+
+server.session:
+  timeout: 7200
+  cookieDomain: "solon.noear.org"
+  state.redis:
+    server: "localhost:6379"
+    password: "123456"

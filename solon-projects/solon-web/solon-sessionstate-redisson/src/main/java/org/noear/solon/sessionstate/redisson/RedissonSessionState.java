@@ -21,6 +21,7 @@ import org.noear.solon.core.handle.Context;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
@@ -74,13 +75,10 @@ public class RedissonSessionState extends SessionStateBase {
     public Collection<String> sessionKeys() {
         RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
         return hash.keySet();
-        //return redisClient.openAndGet((ru) -> ru.key(sessionId()).hashGetAllKeys());
     }
 
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
-        //String json = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
-
         RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
         return (T) hash.get(key);
     }
@@ -121,13 +119,23 @@ public class RedissonSessionState extends SessionStateBase {
 
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
+            hash.putIfAbsent(CREATION_TIME, now);
+        }
+    }
+
+    @Override
+    public void sessionPublish() throws IOException {
+        String sid = sessionId();
+
+        if (Utils.isEmpty(sid) == false) {
+            long now = System.currentTimeMillis();
+
+            RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
+            hash.expire(_expiry, TimeUnit.SECONDS);
             hash.put(LAST_ACCESS_TIME, now);
-            if (hash.containsKey(CREATION_TIME) == false) {
-                hash.put(CREATION_TIME, now);
-            }
         }
     }
 
     final static String LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";
-    final static String CREATION_TIME = "SESSION_LAST_ACCESS_TIME";
+    final static String CREATION_TIME = "SESSION_LAST_CREATION_TIME";
 }
