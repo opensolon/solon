@@ -74,7 +74,7 @@ class ScheduledStore {
     }
 
     public long creationTime(String block) {
-        Entity ent = _data.get(block);
+        Entity ent = _data.computeIfAbsent(block, k -> new Entity(k));
         if (ent != null) {
             return ent.creationTime;
         } else {

@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
+import java.io.IOException;
 import java.util.Collection;
 
 
@@ -109,10 +110,15 @@ public class LocalSessionState extends SessionStateBase {
 
     @Override
     public void sessionRefresh() {
-        String sid = sessionIdPush();
+        sessionIdPush();
+    }
+
+    @Override
+    public void sessionPublish() throws IOException {
+        String sid = sessionId();
 
         if (Utils.isEmpty(sid) == false) {
-            _store.updateAccessedTime(sessionId());
+            _store.updateAccessedTime(sid);
         }
     }
 }

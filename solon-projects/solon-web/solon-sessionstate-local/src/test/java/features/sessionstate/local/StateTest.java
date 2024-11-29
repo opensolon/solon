@@ -1,4 +1,4 @@
-package features.sessionstate.redisson;
+package features.sessionstate.local;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.test.HttpTester;

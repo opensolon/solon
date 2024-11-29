@@ -17,14 +17,12 @@ public class StateTest extends HttpTester {
         StateDo rst = path("/").cookie("SOLONID", sid).getAs(StateDo.class);
         System.out.println(rst);
 
-        assert rst.t2 >= rst.t1;
-
         Thread.sleep(1000);
 
         StateDo rst2 = path("/").cookie("SOLONID", sid).getAs(StateDo.class);
         System.out.println(rst2);
 
-        assert rst2.t2 >= rst2.t1;
+        assert rst2.t2 > rst2.t1;
         assert rst.t1 == rst2.t1;
     }
 }
