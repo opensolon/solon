@@ -40,6 +40,7 @@ public class JdkHttpResponseImpl implements HttpResponse {
     private final HttpURLConnection http;
     private final int statusCode;
     private final MultiMap<String> headers;
+    private MultiMap<String> cookies;
     private final InputStream body;
 
     public JdkHttpResponseImpl(JdkHttpUtilsImpl utils, HttpURLConnection http) throws IOException {
@@ -64,6 +65,25 @@ public class JdkHttpResponseImpl implements HttpResponse {
         body = new JdkInputStreamWrapper(http, inputStream);
     }
 
+    private MultiMap<String> cookiesInit() {
+        if (cookies == null) {
+            cookies = new MultiMap<>();
+
+            List<String> kvAry = headers("Set-Cookie");
+            for (String kvStr : kvAry) {
+                int eqIdx = kvStr.indexOf("=");
+                int smIdx = kvStr.indexOf(";", eqIdx);
+
+                String key = kvStr.substring(0, eqIdx);
+                String value = smIdx > 0 ? kvStr.substring(eqIdx + 1, smIdx) : kvStr.substring(eqIdx + 1);
+
+                cookies.add(key, value);
+            }
+        }
+
+        return cookies;
+    }
+
     @Override
     public Collection<String> headerNames() {
         return headers.keySet();
@@ -81,6 +101,21 @@ public class JdkHttpResponseImpl implements HttpResponse {
     @Override
     public List<String> headers(String name) {
         return headers.getAll(name);
+    }
+
+    @Override
+    public Collection<String> cookieNames() {
+        return cookiesInit().keySet();
+    }
+
+    @Override
+    public String cookie(String name) {
+        return cookiesInit().get(name);
+    }
+
+    @Override
+    public List<String> cookies(String name) {
+        return cookiesInit().getAll(name);
     }
 
     @Override

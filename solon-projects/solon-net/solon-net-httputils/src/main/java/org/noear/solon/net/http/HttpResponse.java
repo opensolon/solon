@@ -46,6 +46,21 @@ public interface HttpResponse extends Closeable {
     List<String> headers(String name);
 
     /**
+     * 获取饼名
+     */
+    Collection<String> cookieNames();
+
+    /**
+     * 获取饼值
+     */
+    String cookie(String name);
+
+    /**
+     * 获取饼值数组
+     */
+    List<String> cookies(String name);
+
+    /**
      * 获取内容长度
      */
     Long contentLength();

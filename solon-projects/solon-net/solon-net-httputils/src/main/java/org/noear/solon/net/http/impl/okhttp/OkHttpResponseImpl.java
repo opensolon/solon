@@ -16,6 +16,7 @@
 package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Response;
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
 
@@ -35,10 +36,30 @@ import java.util.List;
 public class OkHttpResponseImpl implements HttpResponse {
     private final OkHttpUtilsImpl utils;
     private final Response response;
+    private MultiMap<String> cookies;
 
     public OkHttpResponseImpl(OkHttpUtilsImpl utils, Response response) {
         this.utils = utils;
         this.response = response;
+    }
+
+    private MultiMap<String> cookiesInit() {
+        if (cookies == null) {
+            cookies = new MultiMap<>();
+
+            List<String> kvAry = headers("Set-Cookie");
+            for (String kvStr : kvAry) {
+                int eqIdx = kvStr.indexOf("=");
+                int smIdx = kvStr.indexOf(";", eqIdx);
+
+                String key = kvStr.substring(0, eqIdx);
+                String value = smIdx > 0 ? kvStr.substring(eqIdx + 1, smIdx) : kvStr.substring(eqIdx + 1);
+
+                cookies.add(key, value);
+            }
+        }
+
+        return cookies;
     }
 
     @Override
@@ -54,6 +75,21 @@ public class OkHttpResponseImpl implements HttpResponse {
     @Override
     public List<String> headers(String name) {
         return response.headers(name);
+    }
+
+    @Override
+    public Collection<String> cookieNames() {
+        return cookiesInit().keySet();
+    }
+
+    @Override
+    public String cookie(String name) {
+        return cookiesInit().get(name);
+    }
+
+    @Override
+    public List<String> cookies(String name) {
+        return cookiesInit().getAll(name);
     }
 
     @Override
