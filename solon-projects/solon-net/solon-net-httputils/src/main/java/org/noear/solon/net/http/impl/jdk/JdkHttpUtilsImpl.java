@@ -47,6 +47,7 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 3.0
  */
+@SuppressWarnings("unchecked")
 public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     static final Set<String> METHODS_NOBODY;
 
@@ -309,7 +310,6 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
     /**
      * 补丁，增加新方法支持
      */
-    @SuppressWarnings("unchecked")
     private static void allowMethods(String... methods) {
         try {
             Field methodsField = HttpURLConnection.class.getDeclaredField("methods");

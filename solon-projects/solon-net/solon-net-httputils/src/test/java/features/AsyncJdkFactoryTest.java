@@ -2,10 +2,8 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpResponse;
-import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.HttpUtilsFactory;
 import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
 
 import java.util.concurrent.CompletableFuture;
 
