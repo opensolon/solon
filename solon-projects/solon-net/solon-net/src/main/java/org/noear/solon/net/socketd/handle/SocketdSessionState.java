@@ -45,7 +45,7 @@ public class SocketdSessionState implements SessionState {
 
     @Override
     public long lastAccessTime() {
-        return 0;
+        return session.liveTime();
     }
 
     @Override
