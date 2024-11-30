@@ -54,6 +54,7 @@ public final class SolonProps extends Props {
     private final NvMap args;
     private final boolean testing;
     private final List<PluginEntity> plugs = new ArrayList<>();
+    private final List<String> plugsScanExcluded = new ArrayList<>();
 
     private boolean isDebugMode;//是否为调试模式
     private boolean isDriftMode;//是否为漂移模式（如k8s环境下,ip会不断变化）
@@ -191,6 +192,9 @@ public final class SolonProps extends Props {
         if (JavaUtil.JAVA_MAJOR_VERSION >= 21) {
             enabledVirtualThreads = getBool("solon.threads.virtual.enabled", false);
         }
+
+        //9. 插件排除
+        plugsScanExcluded.addAll(getList("solon.plugin.exclude"));
     }
 
     private void importPropsTry(Class<?> source) {
@@ -359,24 +363,25 @@ public final class SolonProps extends Props {
      * 插件扫描
      */
     protected void plugsScan(List<ClassLoader> classLoaders) {
-        List<String> excludeList = getList("solon.plugin.exclude");
-        SolonMain anno = app.source().getAnnotation(SolonMain.class);
-        if (anno != null) {
-            for (Class<?> clz : anno.pluginExclude()) {
-                excludeList.add(clz.getName());
-            }
-        }
-
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, excludeList, plugs::add);
+            PluginUtil.scanPlugins(classLoader, plugsScanExcluded, plugs::add);
         }
 
         //扫描主配置
-        PluginUtil.findPlugins(AppClassLoader.global(), this, excludeList, plugs::add);
+        PluginUtil.findPlugins(AppClassLoader.global(), this, plugsScanExcluded, plugs::add);
 
         //插件排序
         plugsSort();
+    }
+
+    /**
+     * 插件扫描排除
+     *
+     * @since 3.0
+     * */
+    protected void plugsScanExclude(String className) {
+        plugsScanExcluded.add(className);
     }
 
     /**

@@ -460,6 +460,24 @@ public class SolonApp extends RouterWrapper {
         cfg().plugsSort();
     }
 
+    /**
+     * 插件排除
+     *
+     * @since 3.0
+     */
+    public void pluginExclude(Class<?> pluginClz) {
+        pluginExclude(pluginClz.getName());
+    }
+
+    /**
+     * 插件排除
+     *
+     * @since 3.0
+     */
+    public void pluginExclude(String pluginClzName) {
+        cfg().plugsScanExclude(pluginClzName);
+    }
+
 
     /**
      * 处理器获取
