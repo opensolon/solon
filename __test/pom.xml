@@ -143,6 +143,10 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami-coder-sbe</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami-coder-protostuff</artifactId>
         </dependency>
         <dependency>
@@ -354,7 +358,10 @@
             <artifactId>solon-serialization-fury</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-serialization-sbe</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
