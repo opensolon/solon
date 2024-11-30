@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.4-M2
+Solon v3.0.4-RC
 </h1>
 <p align="center">
 	<strong>Java "ecological" application development framework, restraint, simple, efficient, open, ecological!</strong>
