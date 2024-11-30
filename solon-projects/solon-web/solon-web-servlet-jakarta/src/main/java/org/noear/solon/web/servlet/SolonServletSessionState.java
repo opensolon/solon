@@ -37,12 +37,12 @@ public class SolonServletSessionState implements SessionState {
 
     @Override
     public long creationTime() {
-        return 0;
+        return _request.getSession().getCreationTime();
     }
 
     @Override
     public long lastAccessTime() {
-        return 0;
+        return _request.getSession().getLastAccessedTime();
     }
 
     @Override
