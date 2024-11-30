@@ -799,7 +799,7 @@ public class OpenApi2Builder {
                 String propName = fw.getName();
 
                 ApiModelProperty propAnno = fw.getField().getAnnotation(ApiModelProperty.class);
-                TypeWrap fwTypeWrap = fw.typeWrapOf(type);
+                TypeWrap fwTypeWrap = fw.typeWrapOf(type); //如果是返回类型，它的泛型需要借签 type
 
                 parseSwaggerModelProperty(type, modelName, propertyList, propName, fwTypeWrap.getType(), fwTypeWrap.getGenericType(), propAnno);
             }
