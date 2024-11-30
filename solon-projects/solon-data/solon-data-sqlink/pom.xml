@@ -50,11 +50,19 @@
                 <version>${maven-compiler.version}</version>
                 <configuration>
                     <parameters>true</parameters>
-                    <compilerArguments>
-                        <bootclasspath>
-                            ${java.home}/lib/rt.jar${path.separator}${java.home}/lib/jce.jar${path.separator}${java.home}/../lib/tools.jar
-                        </bootclasspath>
-                    </compilerArguments>
+<!--                    <compilerArguments>-->
+<!--                        <bootclasspath>-->
+<!--                            ${java.home}/lib/rt.jar${path.separator}${java.home}/lib/jce.jar${path.separator}${java.home}/../lib/tools.jar-->
+<!--                        </bootclasspath>-->
+<!--                    </compilerArguments>-->
+<!--                    <compilerArgs>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>-->
+<!--                        <arg>&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>-->
+<!--                    </compilerArgs>-->
                 </configuration>
             </plugin>
         </plugins>
