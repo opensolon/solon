@@ -157,6 +157,74 @@ public class ClassWrap {
         return methods;
     }
 
+    private List<Method> publicMethods;
+    public Collection<Method> findPublicMethods() {
+        if (publicMethods == null) {
+            publicMethods = new ArrayList<>();
+
+            //最终会弃用这部分（临时过度）
+            for (Method m1 : this.getDeclaredMethods()) {
+                if (Modifier.isPublic(m1.getModifiers()) == false) {
+                    //非 public
+                    publicMethods.add(m1);
+                }
+            }
+
+            for (Method m1 : this.getMethods()) {
+                //全 public
+                publicMethods.add(m1);
+            }
+        }
+
+        return publicMethods;
+    }
+
+    public Method findPublicMethod(String name, Class<?>... parameterTypes) throws NoSuchMethodException {
+        String internedName = name.intern();
+
+        for (Method m1 : this.getDeclaredMethods()) {
+            if (m1.getParameterCount() == parameterTypes.length && m1.getName() == internedName) {
+                if (parameterTypes.length == 0) {
+                    return m1;
+                } else {
+                    if (Arrays.equals(m1.getParameterTypes(), parameterTypes)) {
+                        return m1;
+                    }
+                }
+            }
+        }
+
+        for (Method m1 : this.getMethods()) {
+            if (m1.getParameterCount() == parameterTypes.length && m1.getName() == internedName) {
+                if (parameterTypes.length == 0) {
+                    return m1;
+                } else {
+                    if (Arrays.equals(m1.getParameterTypes(), parameterTypes)) {
+                        return m1;
+                    }
+                }
+            }
+        }
+
+        throw new NoSuchMethodException(_clz.getName() + "." + name + argumentTypesToString(parameterTypes));
+    }
+
+    private static String argumentTypesToString(Class<?>[] argTypes) {
+        StringBuilder buf = new StringBuilder();
+        buf.append("(");
+        if (argTypes != null) {
+            for (int i = 0; i < argTypes.length; i++) {
+                if (i > 0) {
+                    buf.append(", ");
+                }
+                Class<?> c = argTypes[i];
+                buf.append((c == null) ? "null" : c.getName());
+            }
+        }
+        buf.append(")");
+        return buf.toString();
+    }
+
     /**
      * 新建实例
      *

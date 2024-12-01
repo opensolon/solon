@@ -20,9 +20,7 @@ import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -255,22 +253,6 @@ public class ClassUtil {
      * 查找 method
      */
     public static Collection<Method> findPublicMethods(Class<?> clz) {
-        List<Method> methods = new ArrayList<>();
-        ClassWrap classWrap = ClassWrap.get(clz);
-
-        //最终会弃用这部分（临时过度）
-        for (Method m1 : classWrap.getDeclaredMethods()) {
-            if (Modifier.isPublic(m1.getModifiers()) == false) {
-                //非 public
-                methods.add(m1);
-            }
-        }
-
-        for (Method m1 : classWrap.getMethods()) {
-            //全 public
-            methods.add(m1);
-        }
-
-        return methods;
+        return ClassWrap.get(clz).findPublicMethods();
     }
 }
