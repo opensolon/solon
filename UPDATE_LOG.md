@@ -24,7 +24,7 @@
 
 ### v3.0.4
 * 新增 nami-coder-sbe 插件
-* 新增 solon-serialization-sbe 插件
+* 新增 solon-serialization-abc 插件
 * 添加 solon SolonApp:pluginExclude 方法，排除插件加载
 * 添加 solon ResourceUtil.findResource(uri,defAsFile) 方法
 * 添加 solon HandlerSlots.add(expr,method,index,handler) 方法，支持路由优先级排序

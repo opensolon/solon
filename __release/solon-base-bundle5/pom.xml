@@ -28,7 +28,7 @@
         <module>../../solon-projects/solon-serialization/solon-serialization-protostuff</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-properties</module>
         <module>../../solon-projects/solon-serialization/solon-serialization-kryo</module>
-        <module>../../solon-projects/solon-serialization/solon-serialization-sbe</module>
+        <module>../../solon-projects/solon-serialization/solon-serialization-abc</module>
 
 
         <module>../../solon-projects/solon-serialization_old/solon.serialization</module>

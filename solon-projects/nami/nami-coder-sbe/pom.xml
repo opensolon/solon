@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-serialization-sbe</artifactId>
+            <artifactId>solon-serialization-abc</artifactId>
         </dependency>
     </dependencies>
 
