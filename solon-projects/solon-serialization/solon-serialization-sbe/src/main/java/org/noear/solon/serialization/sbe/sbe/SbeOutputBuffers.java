@@ -17,7 +17,7 @@ package org.noear.solon.serialization.sbe.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.MutableDirectBuffer;
-import org.noear.solon.serialization.sbe.io.BytesWriter;
+import org.noear.solon.serialization.sbe.io.BytesOutput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,7 +31,7 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 3.0
  * */
-public class SbeOutputBuffers implements BytesWriter {
+public class SbeOutputBuffers implements BytesOutput {
     private final MutableDirectBuffer buffer;
     private int currentOffset = 0;
 

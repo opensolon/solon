@@ -20,9 +20,9 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
-import org.noear.solon.serialization.sbe.io.BytesReader;
+import org.noear.solon.serialization.sbe.io.BytesInput;
 import org.noear.solon.serialization.sbe.io.BytesSerializable;
-import org.noear.solon.serialization.sbe.io.BytesWriter;
+import org.noear.solon.serialization.sbe.io.BytesOutput;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -54,7 +54,7 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
     public byte[] serialize(Object fromObj) throws IOException {
         if (fromObj instanceof BytesSerializable) {
             BytesSerializable bs =  ((BytesSerializable) fromObj);
-            BytesWriter bw = bs.serializeFactory().createWriter();
+            BytesOutput bw = bs.serializeFactory().createOutput();
             bs.serializeWrite(bw);
             return bw.toBytes();
 //            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
@@ -73,7 +73,7 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
         if (toType instanceof Class<?>) {
             if (BytesSerializable.class.isAssignableFrom((Class<?>) toType)) {
                 BytesSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
-                BytesReader br = tmp.serializeFactory().createReader(data);
+                BytesInput br = tmp.serializeFactory().createInput(data);
                 tmp.serializeRead(br);
 
                 return tmp;

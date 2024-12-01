@@ -17,7 +17,7 @@ package org.noear.solon.serialization.sbe.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.DirectBuffer;
-import org.noear.solon.serialization.sbe.io.BytesReader;
+import org.noear.solon.serialization.sbe.io.BytesInput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 3.0
  * */
-public class SbeInputBuffers implements BytesReader {
+public class SbeInputBuffers implements BytesInput {
     private DirectBuffer buffer;
     private int currentOffset = 0;
 

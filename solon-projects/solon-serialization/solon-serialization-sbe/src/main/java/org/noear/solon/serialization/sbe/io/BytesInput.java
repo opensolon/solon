@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.sbe;
-
-import org.noear.solon.serialization.sbe.io.BytesFactory;
-import org.noear.solon.serialization.sbe.io.BytesSerializable;
+package org.noear.solon.serialization.sbe.io;
 
 /**
- * Sbe 可序列化定制接口
+ * Bytes 输入
  *
  * @author noear
  * @since 3.0
- * */
-public interface SbeSerializable extends BytesSerializable<SbeInputBuffers,SbeOutputBuffers> {
-    @Override
-    default BytesFactory<SbeInputBuffers, SbeOutputBuffers> serializeFactory(){
-        return SbeFactory.getInstance();
-    }
+ */
+public interface BytesInput {
 }
