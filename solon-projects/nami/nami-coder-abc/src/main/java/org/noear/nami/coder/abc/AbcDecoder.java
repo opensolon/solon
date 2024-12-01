@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.sbe;
+package org.noear.nami.coder.abc;
 
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
@@ -28,8 +28,8 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 3.0
  */
-public class SbeDecoder implements Decoder {
-    public static final SbeDecoder instance = new SbeDecoder();
+public class AbcDecoder implements Decoder {
+    public static final AbcDecoder instance = new AbcDecoder();
 
     private final SbeBytesSerializer serializer = new SbeBytesSerializer();
 
@@ -39,7 +39,7 @@ public class SbeDecoder implements Decoder {
 
     @Override
     public String enctype() {
-        return ContentTypes.SBE_VALUE;
+        return ContentTypes.ABC_VALUE;
     }
 
     @Override
@@ -54,6 +54,6 @@ public class SbeDecoder implements Decoder {
     @Override
     public void pretreatment(Context ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_SBE);
-        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.SBE_VALUE);
+        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.ABC_VALUE);
     }
 }

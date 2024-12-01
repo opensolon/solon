@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.sbe.integration;
+package org.noear.nami.coder.abc.integration;
 
 import org.noear.nami.NamiManager;
-import org.noear.nami.coder.sbe.SbeDecoder;
-import org.noear.nami.coder.sbe.SbeEncoder;
+import org.noear.nami.coder.abc.AbcDecoder;
+import org.noear.nami.coder.abc.AbcEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -25,10 +25,10 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 3.0
  */
-public class NamiSbePlugin implements Plugin {
+public class NamiAbcPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(SbeDecoder.instance);
-        NamiManager.reg(SbeEncoder.instance);
+        NamiManager.reg(AbcDecoder.instance);
+        NamiManager.reg(AbcEncoder.instance);
     }
 }

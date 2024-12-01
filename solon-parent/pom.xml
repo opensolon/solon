@@ -877,7 +877,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>nami-coder-sbe</artifactId>
+                <artifactId>nami-coder-abc</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

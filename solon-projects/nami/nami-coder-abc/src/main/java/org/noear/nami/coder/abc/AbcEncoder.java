@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.sbe;
+package org.noear.nami.coder.abc;
 
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
@@ -24,8 +24,8 @@ import org.noear.solon.serialization.sbe.SbeBytesSerializer;
  * @author noear
  * @since 3.0
  */
-public class SbeEncoder implements Encoder {
-    public static final SbeEncoder instance = new SbeEncoder();
+public class AbcEncoder implements Encoder {
+    public static final AbcEncoder instance = new AbcEncoder();
 
     private final SbeBytesSerializer serializer = new SbeBytesSerializer();
 
@@ -40,7 +40,7 @@ public class SbeEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return ContentTypes.SBE_VALUE;
+        return ContentTypes.ABC_VALUE;
     }
 
     @Override
