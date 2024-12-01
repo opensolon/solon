@@ -68,14 +68,16 @@ class BeanWrapLifecycle implements LifecycleBean {
             return false;
         }
 
+        ClassWrap clzWrap = ClassWrap.get(bw.rawClz());
+
         //按名字找（优先）
         try {
             if (Utils.isNotEmpty(initMethodName)) {
-                initMethod = bw.rawClz().getDeclaredMethod(initMethodName);
+                initMethod = clzWrap.findPublicMethod(initMethodName);
             }
 
             if (Utils.isNotEmpty(destroyMethodName)) {
-                destroyMethod = bw.rawClz().getDeclaredMethod(destroyMethodName);
+                destroyMethod = clzWrap.findPublicMethod(destroyMethodName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -87,7 +89,7 @@ class BeanWrapLifecycle implements LifecycleBean {
             //如果不是 jdk 的类（否则没必要）
             if (bw.rawClz().getName().startsWith("java.") == false) {
                 //找查注解函数
-                for (Method m : ClassWrap.get(bw.rawClz()).getDeclaredMethods()) {
+                for (Method m : clzWrap.findPublicMethods()) {
                     Init initAnno = m.getAnnotation(Init.class);
                     if (initAnno != null) {
                         if (m.getParameters().length == 0) {
