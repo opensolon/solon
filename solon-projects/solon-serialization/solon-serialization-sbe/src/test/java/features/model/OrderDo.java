@@ -15,11 +15,9 @@
  */
 package features.model;
 
-import org.noear.solon.serialization.sbe.io.SbeInputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeOutputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeSerializable;
-
-import java.io.Serializable;
+import org.noear.solon.serialization.sbe.sbe.SbeInputBuffers;
+import org.noear.solon.serialization.sbe.sbe.SbeOutputBuffers;
+import org.noear.solon.serialization.sbe.sbe.SbeSerializable;
 
 /**
  * @author noear 2023/8/16 created
@@ -36,12 +34,12 @@ public class OrderDo implements SbeSerializable {
     }
 
     @Override
-    public void readBuffer(SbeInputBuffers in) {
+    public void serializeRead(SbeInputBuffers in) {
         orderId = in.readLong();
     }
 
     @Override
-    public void writeBuffer(SbeOutputBuffers out) {
+    public void serializeWrite(SbeOutputBuffers out) {
         out.writeLong(orderId);
     }
 }

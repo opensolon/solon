@@ -15,17 +15,14 @@
  */
 package org.noear.solon.serialization.sbe;
 
-import org.agrona.ExpandableDirectByteBuffer;
-import org.agrona.MutableDirectBuffer;
-import org.agrona.concurrent.UnsafeBuffer;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
-import org.noear.solon.serialization.sbe.io.SbeInputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeOutputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeSerializable;
+import org.noear.solon.serialization.sbe.io.BytesReader;
+import org.noear.solon.serialization.sbe.io.BytesSerializable;
+import org.noear.solon.serialization.sbe.io.BytesWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -55,13 +52,17 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
 
     @Override
     public byte[] serialize(Object fromObj) throws IOException {
-        if (fromObj instanceof SbeSerializable) {
-            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
-            ((SbeSerializable) fromObj).writeBuffer(new SbeOutputBuffers(buffer));
-
-            byte[] bytes = new byte[buffer.capacity()];
-            buffer.getBytes(0, bytes);
-            return bytes;
+        if (fromObj instanceof BytesSerializable) {
+            BytesSerializable bs =  ((BytesSerializable) fromObj);
+            BytesWriter bw = bs.serializeFactory().createWriter();
+            bs.serializeWrite(bw);
+            return bw.toBytes();
+//            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
+//            ((SbeSerializable) fromObj).writeBuffer(new SbeOutputBuffers(buffer));
+//
+//            byte[] bytes = new byte[buffer.capacity()];
+//            buffer.getBytes(0, bytes);
+//            return bytes;
         } else {
             throw new IllegalStateException("The parameter 'fromObj' is not of SbeWriteBuffer");
         }
@@ -70,11 +71,11 @@ public class SbeBytesSerializer implements ContextSerializer<byte[]> {
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         if (toType instanceof Class<?>) {
-            if (SbeSerializable.class.isAssignableFrom((Class<?>) toType)) {
-                MutableDirectBuffer buffer = new UnsafeBuffer(data);
+            if (BytesSerializable.class.isAssignableFrom((Class<?>) toType)) {
+                BytesSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
+                BytesReader br = tmp.serializeFactory().createReader(data);
+                tmp.serializeRead(br);
 
-                Object tmp = ClassUtil.newInstance((Class<?>) toType);
-                ((SbeSerializable) tmp).readBuffer(new SbeInputBuffers().wrap(buffer));
                 return tmp;
             } else {
                 throw new IllegalStateException("The parameter 'toType' is not of SbeReadBuffer");

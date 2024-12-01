@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.io;
+package org.noear.solon.serialization.sbe.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.DirectBuffer;
+import org.noear.solon.serialization.sbe.io.BytesReader;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 3.0
  * */
-public class SbeInputBuffers {
+public class SbeInputBuffers implements BytesReader {
     private DirectBuffer buffer;
     private int currentOffset = 0;
 
@@ -181,7 +182,7 @@ public class SbeInputBuffers {
     public <T extends SbeSerializable> T readObject(Function<SbeInputBuffers, T> creator) {
         if (readBoolean()) {// 检查对象是否存在
             T object = creator.apply(this);// 通过 Function 反序列化对象
-            object.readBuffer(this);
+            object.serializeRead(this);
             return object;
         }
         return null;

@@ -34,6 +34,8 @@ public class BaseTest {
     @Test
     public void hello2() throws Throwable{
         UserDo userDo = new UserDo();
+        userDo.setN1(12L);
+        userDo.setS1("test2");
 
         ContextEmpty ctx = new ContextEmpty(){
             private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -67,5 +69,6 @@ public class BaseTest {
 
         assert userDo.getB0() == userDo2.getB0();
         assert userDo.getS1().equals(userDo2.getS1());
+        assert userDo.getN1().equals(userDo2.getN1());
     }
 }

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.io;
+package org.noear.solon.serialization.sbe.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.MutableDirectBuffer;
+import org.noear.solon.serialization.sbe.io.BytesWriter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,12 +31,19 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 3.0
  * */
-public class SbeOutputBuffers {
+public class SbeOutputBuffers implements BytesWriter {
     private final MutableDirectBuffer buffer;
     private int currentOffset = 0;
 
     public SbeOutputBuffers(final MutableDirectBuffer buffer) {
         this.buffer = buffer;
+    }
+
+    @Override
+    public byte[] toBytes() {
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.getBytes(0, bytes);
+        return bytes;
     }
 
     public void writeInt(final int intValue) {
@@ -142,21 +150,21 @@ public class SbeOutputBuffers {
     public <T extends SbeSerializable> void writeObject(final T object) {
         writeBoolean(object != null);
         if (object != null) {
-            object.writeBuffer(this);
+            object.serializeWrite(this);
         }
     }
 
     public <T extends SbeSerializable> void writeArray(final T[] array) {
         writeInt(array.length);
         for (int i = 0; i < array.length; i++) {
-            array[i].writeBuffer(this);
+            array[i].serializeWrite(this);
         }
     }
 
     public <T extends SbeSerializable> void writeList(final List<SbeSerializable> collection) {
         final int size = collection.size();
         writeInt(size);
-        collection.forEach(e -> e.writeBuffer(this));
+        collection.forEach(e -> e.serializeWrite(this));
     }
 
     public <T> void writeNullable(final T object, final BiConsumer<T, SbeOutputBuffers> marshaller) {

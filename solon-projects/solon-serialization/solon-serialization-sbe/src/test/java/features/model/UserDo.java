@@ -18,9 +18,9 @@ package features.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.noear.solon.serialization.sbe.io.SbeInputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeOutputBuffers;
-import org.noear.solon.serialization.sbe.io.SbeSerializable;
+import org.noear.solon.serialization.sbe.sbe.SbeInputBuffers;
+import org.noear.solon.serialization.sbe.sbe.SbeOutputBuffers;
+import org.noear.solon.serialization.sbe.sbe.SbeSerializable;
 
 
 /**
@@ -44,7 +44,7 @@ public class UserDo implements SbeSerializable {
     Double d1 = 1.0D;
 
     @Override
-    public void readBuffer(SbeInputBuffers in) {
+    public void serializeRead(SbeInputBuffers in) {
         s0 = in.readString();
         s1 = in.readString();
         b0 = in.readBoolean();
@@ -57,7 +57,7 @@ public class UserDo implements SbeSerializable {
     }
 
     @Override
-    public void writeBuffer(SbeOutputBuffers out) {
+    public void serializeWrite(SbeOutputBuffers out) {
         out.writeString(s0);
         out.writeString(s1);
         out.writeBoolean(b0);
