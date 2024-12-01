@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.sbe;
+package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
-import org.noear.solon.serialization.sbe.io.BytesFactory;
+import org.noear.solon.serialization.abc.io.BytesFactory;
 
 /**
  * Sbe 序列化工厂

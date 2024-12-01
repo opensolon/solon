@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.sbe;
+package org.noear.solon.serialization.abc.sbe;
 
-import org.noear.solon.serialization.sbe.io.BytesFactory;
-import org.noear.solon.serialization.sbe.io.BytesSerializable;
+import org.noear.solon.serialization.abc.io.BytesFactory;
+import org.noear.solon.serialization.abc.io.BytesSerializable;
 
 /**
  * Sbe 可序列化定制接口

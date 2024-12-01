@@ -1,7 +1,7 @@
 package features.genetic;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.serialization.sbe.SbeBytesSerializer;
+import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class GeneticTest {
 
         ///////////////////////
 
-        SbeBytesSerializer serializer = new SbeBytesSerializer();
+        AbcBytesSerializer serializer = new AbcBytesSerializer();
         byte[] data = serializer.serialize(dataRaw);
         System.out.println(data);
 

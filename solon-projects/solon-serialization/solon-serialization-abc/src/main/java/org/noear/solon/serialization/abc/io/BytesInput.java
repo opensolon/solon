@@ -13,31 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
-
-import org.noear.solon.serialization.BytesSerializerRender;
-import org.noear.solon.serialization.ContextSerializer;
+package org.noear.solon.serialization.abc.io;
 
 /**
+ * Bytes 输入
+ *
  * @author noear
  * @since 3.0
- * */
-public class SbeRender extends BytesSerializerRender {
-    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
-
-    /**
-     * 获取序列化器
-     */
-    @Override
-    public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
-    }
-
-    /**
-     * 获取渲染器名字
-     */
-    @Override
-    public String name() {
-        return this.getClass().getSimpleName();
-    }
+ */
+public interface BytesInput {
 }

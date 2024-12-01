@@ -18,7 +18,7 @@ package org.noear.nami.coder.abc;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
-import org.noear.solon.serialization.sbe.SbeBytesSerializer;
+import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
 /**
  * @author noear
@@ -27,9 +27,9 @@ import org.noear.solon.serialization.sbe.SbeBytesSerializer;
 public class AbcEncoder implements Encoder {
     public static final AbcEncoder instance = new AbcEncoder();
 
-    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
+    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
 
-    public SbeBytesSerializer getSerializer() {
+    public AbcBytesSerializer getSerializer() {
         return serializer;
     }
 

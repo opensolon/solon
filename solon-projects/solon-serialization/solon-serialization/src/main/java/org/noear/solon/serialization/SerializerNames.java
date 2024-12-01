@@ -29,7 +29,7 @@ public interface SerializerNames {
     String AT_PROPERTIES = "@properties";
     String AT_FURY = "@fury";
     String AT_KRYO = "@kryo";
-    String AT_SBE = "@sbe";
+    String AT_ABC = "@abc";
     String AT_HESSIAN = "@hessian";
     String AT_PROTOBUF = "@protobuf";
 }

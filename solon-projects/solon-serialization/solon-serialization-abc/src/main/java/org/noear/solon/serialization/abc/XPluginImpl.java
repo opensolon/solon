@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
+package org.noear.solon.serialization.abc;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -27,15 +27,15 @@ public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         //::render
-        SbeRender render = new SbeRender();
-        context.wrapAndPut(SbeRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_SBE,render);
-        context.app().serializerManager().register(SerializerNames.AT_SBE, render.getSerializer());
+        AbcRender render = new AbcRender();
+        context.wrapAndPut(AbcRender.class, render); //用于扩展
+        context.app().renderManager().register(SerializerNames.AT_ABC,render);
+        context.app().serializerManager().register(SerializerNames.AT_ABC, render.getSerializer());
 
         //::actionExecutor
         //支持 sbe 内容类型执行
-        SbeActionExecutor executor = new SbeActionExecutor();
-        context.wrapAndPut(SbeActionExecutor.class, executor); //用于扩展
+        AbcActionExecutor executor = new AbcActionExecutor();
+        context.wrapAndPut(AbcActionExecutor.class, executor); //用于扩展
 
         context.app().chainManager().addExecuteHandler(executor);
     }

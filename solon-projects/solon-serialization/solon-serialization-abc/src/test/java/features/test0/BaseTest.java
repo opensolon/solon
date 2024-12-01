@@ -18,8 +18,8 @@ package features.test0;
 import features.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.serialization.sbe.SbeBytesSerializer;
-import org.noear.solon.serialization.sbe.SbeRender;
+import org.noear.solon.serialization.abc.AbcBytesSerializer;
+import org.noear.solon.serialization.abc.AbcRender;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
@@ -59,10 +59,10 @@ public class BaseTest {
             }
         };
 
-        SbeRender render = new SbeRender();
+        AbcRender render = new AbcRender();
         render.render(userDo, ctx);
 
-        SbeBytesSerializer serializer = new SbeBytesSerializer();
+        AbcBytesSerializer serializer = new AbcBytesSerializer();
         UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);

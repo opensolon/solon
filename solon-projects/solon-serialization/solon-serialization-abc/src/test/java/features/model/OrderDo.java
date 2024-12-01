@@ -15,9 +15,9 @@
  */
 package features.model;
 
-import org.noear.solon.serialization.sbe.sbe.SbeInputBuffers;
-import org.noear.solon.serialization.sbe.sbe.SbeOutputBuffers;
-import org.noear.solon.serialization.sbe.sbe.SbeSerializable;
+import org.noear.solon.serialization.abc.sbe.SbeInputBuffers;
+import org.noear.solon.serialization.abc.sbe.SbeOutputBuffers;
+import org.noear.solon.serialization.abc.sbe.SbeSerializable;
 
 /**
  * @author noear 2023/8/16 created

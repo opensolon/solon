@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.io;
+package org.noear.solon.serialization.abc.io;
 
 /**
  * Bytes 输出

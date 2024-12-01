@@ -18,9 +18,9 @@ package features.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.noear.solon.serialization.sbe.sbe.SbeInputBuffers;
-import org.noear.solon.serialization.sbe.sbe.SbeOutputBuffers;
-import org.noear.solon.serialization.sbe.sbe.SbeSerializable;
+import org.noear.solon.serialization.abc.sbe.SbeInputBuffers;
+import org.noear.solon.serialization.abc.sbe.SbeOutputBuffers;
+import org.noear.solon.serialization.abc.sbe.SbeSerializable;
 
 
 /**

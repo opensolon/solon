@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.io;
+package org.noear.solon.serialization.abc.io;
 
 /**
- * Bytes 可序列化定制接口
+ * Bytes 序列化工厂
  *
  * @author noear
  * @since 3.0
  */
-public interface BytesSerializable<I extends BytesInput, O extends BytesOutput> {
+public interface BytesFactory<I extends BytesInput, O extends BytesOutput> {
     /**
-     * 序列化工厂
+     * 创建输入器
      */
-    BytesFactory<I, O> serializeFactory();
+    I createInput(byte[] bytes);
 
     /**
-     * 序列化读取
+     * 创建输出器
      */
-    void serializeRead(I in);
-
-    /**
-     * 序列化写入
-     */
-    void serializeWrite(O out);
+    O createOutput();
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.sbe;
+package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.DirectBuffer;
-import org.noear.solon.serialization.sbe.io.BytesInput;
+import org.noear.solon.serialization.abc.io.BytesInput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

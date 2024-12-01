@@ -20,7 +20,7 @@ import org.noear.nami.Decoder;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
-import org.noear.solon.serialization.sbe.SbeBytesSerializer;
+import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
 import java.lang.reflect.Type;
 
@@ -31,9 +31,9 @@ import java.lang.reflect.Type;
 public class AbcDecoder implements Decoder {
     public static final AbcDecoder instance = new AbcDecoder();
 
-    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
+    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
 
-    public SbeBytesSerializer getSerializer() {
+    public AbcBytesSerializer getSerializer() {
         return serializer;
     }
 

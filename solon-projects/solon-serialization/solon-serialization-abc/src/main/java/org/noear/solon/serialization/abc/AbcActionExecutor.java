@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
+package org.noear.solon.serialization.abc;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
@@ -24,13 +24,13 @@ import org.noear.solon.core.wrap.ParamWrap;
  * @author noear
  * @since 3.0
  * */
-public class SbeActionExecutor extends ActionExecuteHandlerDefault {
-    private final SbeBytesSerializer serializer = new SbeBytesSerializer();
+public class AbcActionExecutor extends ActionExecuteHandlerDefault {
+    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
 
     /**
      * 获取序列化接口
      */
-    public SbeBytesSerializer getSerializer() {
+    public AbcBytesSerializer getSerializer() {
         return serializer;
     }
 

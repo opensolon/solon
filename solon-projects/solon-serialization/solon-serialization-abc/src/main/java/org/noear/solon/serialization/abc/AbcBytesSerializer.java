@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe;
+package org.noear.solon.serialization.abc;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
-import org.noear.solon.serialization.sbe.io.BytesInput;
-import org.noear.solon.serialization.sbe.io.BytesSerializable;
-import org.noear.solon.serialization.sbe.io.BytesOutput;
+import org.noear.solon.serialization.abc.io.BytesInput;
+import org.noear.solon.serialization.abc.io.BytesSerializable;
+import org.noear.solon.serialization.abc.io.BytesOutput;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,8 +31,8 @@ import java.lang.reflect.Type;
  * @author noear
  * @since  3.0
  */
-public class SbeBytesSerializer implements ContextSerializer<byte[]> {
-    private static final String label = "application/sbe";
+public class AbcBytesSerializer implements ContextSerializer<byte[]> {
+    private static final String label = "application/abc";
 
 
     @Override

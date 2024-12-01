@@ -13,22 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.sbe.io;
+package org.noear.solon.serialization.abc;
+
+import org.noear.solon.serialization.BytesSerializerRender;
+import org.noear.solon.serialization.ContextSerializer;
 
 /**
- * Bytes 序列化工厂
- *
  * @author noear
  * @since 3.0
- */
-public interface BytesFactory<I extends BytesInput, O extends BytesOutput> {
-    /**
-     * 创建输入器
-     */
-    I createInput(byte[] bytes);
+ * */
+public class AbcRender extends BytesSerializerRender {
+    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
 
     /**
-     * 创建输出器
+     * 获取序列化器
      */
-    O createOutput();
+    @Override
+    public ContextSerializer<byte[]> getSerializer() {
+        return serializer;
+    }
+
+    /**
+     * 获取渲染器名字
+     */
+    @Override
+    public String name() {
+        return this.getClass().getSimpleName();
+    }
 }
