@@ -20,9 +20,9 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
-import org.noear.solon.serialization.abc.io.BytesInput;
-import org.noear.solon.serialization.abc.io.BytesSerializable;
-import org.noear.solon.serialization.abc.io.BytesOutput;
+import org.noear.solon.serialization.abc.io.AbcInput;
+import org.noear.solon.serialization.abc.io.AbcSerializable;
+import org.noear.solon.serialization.abc.io.AbcOutput;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -52,9 +52,9 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
 
     @Override
     public byte[] serialize(Object fromObj) throws IOException {
-        if (fromObj instanceof BytesSerializable) {
-            BytesSerializable bs =  ((BytesSerializable) fromObj);
-            BytesOutput bw = bs.serializeFactory().createOutput();
+        if (fromObj instanceof AbcSerializable) {
+            AbcSerializable bs =  ((AbcSerializable) fromObj);
+            AbcOutput bw = bs.serializeFactory().createOutput();
             bs.serializeWrite(bw);
             return bw.toBytes();
 //            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
@@ -71,9 +71,9 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         if (toType instanceof Class<?>) {
-            if (BytesSerializable.class.isAssignableFrom((Class<?>) toType)) {
-                BytesSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
-                BytesInput br = tmp.serializeFactory().createInput(data);
+            if (AbcSerializable.class.isAssignableFrom((Class<?>) toType)) {
+                AbcSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
+                AbcInput br = tmp.serializeFactory().createInput(data);
                 tmp.serializeRead(br);
 
                 return tmp;

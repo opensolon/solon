@@ -16,10 +16,19 @@
 package org.noear.solon.serialization.abc.io;
 
 /**
- * Bytes 输入
+ * Bytes 序列化工厂
  *
  * @author noear
  * @since 3.0
  */
-public interface BytesInput {
+public interface AbcFactory<I extends AbcInput, O extends AbcOutput> {
+    /**
+     * 创建输入器
+     */
+    I createInput(byte[] bytes);
+
+    /**
+     * 创建输出器
+     */
+    O createOutput();
 }

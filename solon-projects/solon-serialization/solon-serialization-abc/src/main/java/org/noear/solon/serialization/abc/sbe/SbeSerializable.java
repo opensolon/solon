@@ -15,8 +15,8 @@
  */
 package org.noear.solon.serialization.abc.sbe;
 
-import org.noear.solon.serialization.abc.io.BytesFactory;
-import org.noear.solon.serialization.abc.io.BytesSerializable;
+import org.noear.solon.serialization.abc.io.AbcFactory;
+import org.noear.solon.serialization.abc.io.AbcSerializable;
 
 /**
  * Sbe 可序列化定制接口
@@ -24,9 +24,9 @@ import org.noear.solon.serialization.abc.io.BytesSerializable;
  * @author noear
  * @since 3.0
  * */
-public interface SbeSerializable extends BytesSerializable<SbeInputBuffers,SbeOutputBuffers> {
+public interface SbeSerializable extends AbcSerializable<SbeInput, SbeOutput> {
     @Override
-    default BytesFactory<SbeInputBuffers, SbeOutputBuffers> serializeFactory(){
+    default AbcFactory<SbeInput, SbeOutput> serializeFactory(){
         return SbeFactory.getInstance();
     }
 }

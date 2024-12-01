@@ -17,7 +17,7 @@ package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.DirectBuffer;
-import org.noear.solon.serialization.abc.io.BytesInput;
+import org.noear.solon.serialization.abc.io.AbcInput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,15 +34,15 @@ import java.util.function.Supplier;
  * @author noear
  * @since 3.0
  * */
-public class SbeInputBuffers implements BytesInput {
+public class SbeInput implements AbcInput {
     private DirectBuffer buffer;
     private int currentOffset = 0;
 
-    public SbeInputBuffers wrap(final DirectBuffer buffer) {
+    public SbeInput wrap(final DirectBuffer buffer) {
         return this.wrap(buffer, 0);
     }
 
-    public SbeInputBuffers wrap(final DirectBuffer buffer, final int offset) {
+    public SbeInput wrap(final DirectBuffer buffer, final int offset) {
         this.buffer = buffer;
         this.currentOffset = offset;
         return this;
@@ -179,7 +179,7 @@ public class SbeInputBuffers implements BytesInput {
         return chars;
     }
 
-    public <T extends SbeSerializable> T readObject(Function<SbeInputBuffers, T> creator) {
+    public <T extends SbeSerializable> T readObject(Function<SbeInput, T> creator) {
         if (readBoolean()) {// 检查对象是否存在
             T object = creator.apply(this);// 通过 Function 反序列化对象
             object.serializeRead(this);
@@ -188,7 +188,7 @@ public class SbeInputBuffers implements BytesInput {
         return null;
     }
 
-    public <T> T[] readArray(final Function<SbeInputBuffers, T> creator, final IntFunction<T[]> arrayCreator) {
+    public <T> T[] readArray(final Function<SbeInput, T> creator, final IntFunction<T[]> arrayCreator) {
         final int length = readInt();
         final T[] array = arrayCreator.apply(length);
         for (int i = 0; i < length; i++) {
@@ -197,7 +197,7 @@ public class SbeInputBuffers implements BytesInput {
         return array;
     }
 
-    public <T> List<T> readList(final Function<SbeInputBuffers, T> creator) {
+    public <T> List<T> readList(final Function<SbeInput, T> creator) {
         final int length = readInt();
         final List<T> list = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
@@ -206,13 +206,13 @@ public class SbeInputBuffers implements BytesInput {
         return list;
     }
 
-    public <T> T readNullable(final Function<SbeInputBuffers, T> creator) {
+    public <T> T readNullable(final Function<SbeInput, T> creator) {
         return readBoolean() ? creator.apply(this) : null;
     }
 
     public <K, V, M extends Map<K, V>> M readMap(final Supplier<M> mapSupplier,
-                                                 final Function<SbeInputBuffers, K> keyCreator,
-                                                 final Function<SbeInputBuffers, V> valCreator) {
+                                                 final Function<SbeInput, K> keyCreator,
+                                                 final Function<SbeInput, V> valCreator) {
         final int length = readInt();
         final M map = mapSupplier.get();
         for (int i = 0; i < length; i++) {

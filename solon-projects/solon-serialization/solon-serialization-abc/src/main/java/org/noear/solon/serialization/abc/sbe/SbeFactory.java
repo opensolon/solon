@@ -18,7 +18,7 @@ package org.noear.solon.serialization.abc.sbe;
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
-import org.noear.solon.serialization.abc.io.BytesFactory;
+import org.noear.solon.serialization.abc.io.AbcFactory;
 
 /**
  * Sbe 序列化工厂
@@ -26,22 +26,22 @@ import org.noear.solon.serialization.abc.io.BytesFactory;
  * @author noear
  * @since 3.0
  * */
-public class SbeFactory implements BytesFactory<SbeInputBuffers,SbeOutputBuffers> {
+public class SbeFactory implements AbcFactory<SbeInput, SbeOutput> {
     public static final SbeFactory instance = new SbeFactory();
 
-    public static BytesFactory<SbeInputBuffers, SbeOutputBuffers> getInstance() {
+    public static AbcFactory<SbeInput, SbeOutput> getInstance() {
         return instance;
     }
 
     @Override
-    public SbeInputBuffers createInput(byte[] bytes) {
+    public SbeInput createInput(byte[] bytes) {
         MutableDirectBuffer buffer = new UnsafeBuffer(bytes);
-        return new SbeInputBuffers().wrap(buffer);
+        return new SbeInput().wrap(buffer);
     }
 
     @Override
-    public SbeOutputBuffers createOutput() {
+    public SbeOutput createOutput() {
         ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
-        return new SbeOutputBuffers(buffer);
+        return new SbeOutput(buffer);
     }
 }

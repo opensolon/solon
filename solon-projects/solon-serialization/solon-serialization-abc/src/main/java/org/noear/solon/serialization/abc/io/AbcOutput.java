@@ -16,24 +16,11 @@
 package org.noear.solon.serialization.abc.io;
 
 /**
- * Bytes 可序列化定制接口
+ * Bytes 输出
  *
  * @author noear
  * @since 3.0
  */
-public interface BytesSerializable<I extends BytesInput, O extends BytesOutput> {
-    /**
-     * 序列化工厂
-     */
-    BytesFactory<I, O> serializeFactory();
-
-    /**
-     * 序列化读取
-     */
-    void serializeRead(I in);
-
-    /**
-     * 序列化写入
-     */
-    void serializeWrite(O out);
+public interface AbcOutput {
+    byte[] toBytes();
 }

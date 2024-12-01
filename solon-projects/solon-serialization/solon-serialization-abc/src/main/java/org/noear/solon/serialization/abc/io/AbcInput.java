@@ -16,11 +16,10 @@
 package org.noear.solon.serialization.abc.io;
 
 /**
- * Bytes 输出
+ * Bytes 输入
  *
  * @author noear
  * @since 3.0
  */
-public interface BytesOutput {
-    byte[] toBytes();
+public interface AbcInput {
 }

@@ -17,7 +17,7 @@ package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.MutableDirectBuffer;
-import org.noear.solon.serialization.abc.io.BytesOutput;
+import org.noear.solon.serialization.abc.io.AbcOutput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,11 +31,11 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 3.0
  * */
-public class SbeOutputBuffers implements BytesOutput {
+public class SbeOutput implements AbcOutput {
     private final MutableDirectBuffer buffer;
     private int currentOffset = 0;
 
-    public SbeOutputBuffers(final MutableDirectBuffer buffer) {
+    public SbeOutput(final MutableDirectBuffer buffer) {
         this.buffer = buffer;
     }
 
@@ -167,7 +167,7 @@ public class SbeOutputBuffers implements BytesOutput {
         collection.forEach(e -> e.serializeWrite(this));
     }
 
-    public <T> void writeNullable(final T object, final BiConsumer<T, SbeOutputBuffers> marshaller) {
+    public <T> void writeNullable(final T object, final BiConsumer<T, SbeOutput> marshaller) {
         writeBoolean(object != null);
         if (object != null) {
             marshaller.accept(object, this);
@@ -175,8 +175,8 @@ public class SbeOutputBuffers implements BytesOutput {
     }
 
     public <K, V> void writeMap(final Map<K, V> map,
-                                final BiConsumer<SbeOutputBuffers, K> keyMarshaller,
-                                final BiConsumer<SbeOutputBuffers, V> valMarshaller) {
+                                final BiConsumer<SbeOutput, K> keyMarshaller,
+                                final BiConsumer<SbeOutput, V> valMarshaller) {
         final int size = map.size();
         writeInt(size);
 
