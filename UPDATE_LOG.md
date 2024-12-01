@@ -48,7 +48,7 @@
 * wood 升为 1.3.15
 * redisx 升为 1.6.8
 * lombok 升为 1.18.36
-* smart-http 升为 2.1
+* smart-http 升为 2.3
 * vertx 升为 4.5.11
 * netty 升为 4.1.115.Final
 

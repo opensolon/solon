@@ -95,7 +95,7 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public String protocol() {
-        return _request.getProtocol();
+        return _request.getProtocol().getProtocol();
     }
 
     private URI _uri;
