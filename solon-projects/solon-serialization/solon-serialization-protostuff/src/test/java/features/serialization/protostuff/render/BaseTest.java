@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.serialization.abc.test0;
+package features.serialization.protostuff.render;
 
-import features.serialization.abc.model.UserDo;
+import features.serialization.protostuff.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.serialization.abc.AbcBytesSerializer;
-import org.noear.solon.serialization.abc.AbcRender;
+import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
+import org.noear.solon.serialization.protostuff.ProtostuffRender;
 import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayOutputStream;
@@ -32,13 +32,14 @@ import java.io.OutputStream;
 @SolonTest
 public class BaseTest {
     @Test
-    public void hello2() throws Throwable{
+    public void hello2() throws Throwable {
         UserDo userDo = new UserDo();
         userDo.setN1(12L);
         userDo.setS1("test2");
 
-        ContextEmpty ctx = new ContextEmpty(){
+        ContextEmpty ctx = new ContextEmpty() {
             private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
             @Override
             public OutputStream outputStream() {
                 return outputStream;
@@ -48,7 +49,7 @@ public class BaseTest {
             public void output(byte[] bytes) {
                 try {
                     outputStream().write(bytes);
-                }catch (IOException e){
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -59,11 +60,11 @@ public class BaseTest {
             }
         };
 
-        AbcRender render = new AbcRender();
+        ProtostuffRender render = new ProtostuffRender();
         render.render(userDo, ctx);
 
-        AbcBytesSerializer serializer = new AbcBytesSerializer();
-        UserDo userDo2 = (UserDo)serializer.deserializeFromBody(ctx, UserDo.class);
+        ProtostuffBytesSerializer serializer = ProtostuffBytesSerializer.getInstance();
+        UserDo userDo2 = (UserDo) serializer.deserializeFromBody(ctx, UserDo.class);
 
         System.out.println(userDo2);
 
