@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.serialization.abc.model;
+package features.serialization.abc.sbe.render;
 
 import lombok.Getter;
 import lombok.Setter;

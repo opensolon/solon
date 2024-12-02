@@ -17,7 +17,6 @@ package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.MutableDirectBuffer;
-import org.noear.solon.serialization.abc.io.AbcOutput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,7 +30,7 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 3.0
  * */
-public class SbeOutput implements AbcOutput {
+public class SbeOutput {
     private final MutableDirectBuffer buffer;
     private int currentOffset = 0;
 
@@ -39,7 +38,6 @@ public class SbeOutput implements AbcOutput {
         this.buffer = buffer;
     }
 
-    @Override
     public byte[] toBytes() {
         byte[] bytes = new byte[buffer.capacity()];
         buffer.getBytes(0, bytes);

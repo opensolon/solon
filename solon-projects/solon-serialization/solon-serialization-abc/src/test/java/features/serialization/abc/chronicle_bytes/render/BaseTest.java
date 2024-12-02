@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.serialization.abc.render;
+package features.serialization.abc.chronicle_bytes.render;
 
-import features.serialization.abc.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;

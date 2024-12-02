@@ -20,9 +20,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
-import org.noear.solon.serialization.abc.io.AbcInput;
 import org.noear.solon.serialization.abc.io.AbcSerializable;
-import org.noear.solon.serialization.abc.io.AbcOutput;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -66,9 +64,9 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
     public byte[] serialize(Object fromObj) throws IOException {
         if (fromObj instanceof AbcSerializable) {
             AbcSerializable bs = ((AbcSerializable) fromObj);
-            AbcOutput out = bs.serializeFactory().createOutput();
+            Object out = bs.serializeFactory().createOutput();
             bs.serializeWrite(out);
-            return out.toBytes();
+            return bs.serializeFactory().extractBytes(out);
         } else {
             throw new IllegalStateException("The parameter 'fromObj' is not of AbcSerializable");
         }
@@ -79,7 +77,7 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
         if (toType instanceof Class<?>) {
             if (AbcSerializable.class.isAssignableFrom((Class<?>) toType)) {
                 AbcSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
-                AbcInput in = tmp.serializeFactory().createInput(data);
+                Object in = tmp.serializeFactory().createInput(data);
                 tmp.serializeRead(in);
 
                 return tmp;

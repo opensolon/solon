@@ -17,7 +17,6 @@ package org.noear.solon.serialization.abc.sbe;
 
 import org.agrona.BitUtil;
 import org.agrona.DirectBuffer;
-import org.noear.solon.serialization.abc.io.AbcInput;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,7 +33,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 3.0
  * */
-public class SbeInput implements AbcInput {
+public class SbeInput {
     private DirectBuffer buffer;
     private int currentOffset = 0;
 

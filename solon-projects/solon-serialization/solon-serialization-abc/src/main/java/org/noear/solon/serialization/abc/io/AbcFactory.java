@@ -21,7 +21,7 @@ package org.noear.solon.serialization.abc.io;
  * @author noear
  * @since 3.0
  */
-public interface AbcFactory<I extends AbcInput, O extends AbcOutput> {
+public interface AbcFactory<I,O> {
     /**
      * 创建输入器
      */
@@ -31,4 +31,9 @@ public interface AbcFactory<I extends AbcInput, O extends AbcOutput> {
      * 创建输出器
      */
     O createOutput();
+
+    /**
+     * 提取 bytes[]
+     */
+    byte[] extractBytes(O out);
 }

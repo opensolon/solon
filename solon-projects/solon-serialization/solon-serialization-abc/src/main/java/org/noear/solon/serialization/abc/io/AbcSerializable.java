@@ -21,7 +21,7 @@ package org.noear.solon.serialization.abc.io;
  * @author noear
  * @since 3.0
  */
-public interface AbcSerializable<I extends AbcInput, O extends AbcOutput> {
+public interface AbcSerializable<I,O> {
     /**
      * 序列化工厂
      */

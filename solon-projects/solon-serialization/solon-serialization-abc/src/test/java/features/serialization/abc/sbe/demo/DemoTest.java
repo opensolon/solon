@@ -1,4 +1,4 @@
-package features.serialization.abc.demo;
+package features.serialization.abc.sbe.demo;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;

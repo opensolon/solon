@@ -44,4 +44,9 @@ public class SbeFactory implements AbcFactory<SbeInput, SbeOutput> {
         ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
         return new SbeOutput(buffer);
     }
+
+    @Override
+    public byte[] extractBytes(SbeOutput out) {
+        return out.toBytes();
+    }
 }

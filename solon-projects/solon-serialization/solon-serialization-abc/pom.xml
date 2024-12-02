@@ -24,14 +24,15 @@
             <groupId>uk.co.real-logic</groupId>
             <artifactId>sbe-all</artifactId>
             <version>${sbe.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>net.openhft</groupId>
             <artifactId>chronicle-bytes</artifactId>
             <version>${chronicle-bytes.version}</version>
+            <optional>true</optional>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>

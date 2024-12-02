@@ -5,22 +5,25 @@ import net.openhft.chronicle.bytes.BytesIn;
 import net.openhft.chronicle.bytes.BytesOut;
 import org.noear.solon.serialization.abc.io.AbcFactory;
 
-public class ChrBytesFactory implements AbcFactory<ChrBytesInput, ChrBytesOutput> {
+public class ChrBytesFactory implements AbcFactory<BytesIn, BytesOut> {
     public static final ChrBytesFactory instance = new ChrBytesFactory();
 
-    public static AbcFactory<ChrBytesInput, ChrBytesOutput> getInstance() {
+    public static AbcFactory<BytesIn, BytesOut> getInstance() {
         return instance;
     }
 
     @Override
-    public ChrBytesInput createInput(byte[] bytes) {
-        BytesIn<byte[]> bytesIn = Bytes.wrapForRead(bytes);
-        return new ChrBytesInput(bytesIn);
+    public BytesIn createInput(byte[] bytes) {
+        return Bytes.wrapForRead(bytes);
     }
 
     @Override
-    public ChrBytesOutput createOutput() {
-        BytesOut<Void> bytesOut =  Bytes.allocateElasticDirect(128);
-        return new ChrBytesOutput(bytesOut);
+    public BytesOut createOutput() {
+        return Bytes.allocateElasticDirect(128);
+    }
+
+    @Override
+    public byte[] extractBytes(BytesOut out) {
+        return out.bytesForRead().toByteArray();
     }
 }
