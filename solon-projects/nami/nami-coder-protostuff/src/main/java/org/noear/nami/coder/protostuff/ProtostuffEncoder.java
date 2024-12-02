@@ -18,6 +18,9 @@ package org.noear.nami.coder.protostuff;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
+
+import java.io.IOException;
 
 /**
  * @author noear
@@ -27,16 +30,18 @@ public class ProtostuffEncoder implements Encoder {
     public static final ProtostuffEncoder instance = new ProtostuffEncoder();
 
     @Override
+    public boolean bodyRequired() {
+        return true;
+    }
+
+    @Override
     public String enctype() {
         return ContentTypes.PROTOBUF_VALUE;
     }
 
     @Override
-    public byte[] encode(Object obj) {
-        //
-        //两种可能：map 或者 entity
-        //
-        return ProtostuffUtil.serialize(obj);
+    public byte[] encode(Object obj) throws IOException {
+        return ProtostuffBytesSerializer.getInstance().serialize(obj);
     }
 
     @Override

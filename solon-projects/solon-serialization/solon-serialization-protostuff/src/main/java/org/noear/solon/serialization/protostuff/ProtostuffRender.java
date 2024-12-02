@@ -26,14 +26,12 @@ import org.noear.solon.serialization.ContextSerializer;
  * @since 2.8
  */
 public class ProtostuffRender extends BytesSerializerRender {
-    private final ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
-
     /**
      * 获取序列化器
      */
     @Override
     public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
+        return ProtostuffBytesSerializer.getInstance();
     }
 
     /**

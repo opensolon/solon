@@ -20,8 +20,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.util.Map;
-
 /**
  * Protostuff 动作执行器
  *
@@ -30,13 +28,11 @@ import java.util.Map;
  * @since 2.8
  */
 public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
-    private ProtostuffBytesSerializer serializer = new ProtostuffBytesSerializer();
-
     /**
      * 获取序列化接口
      */
     public ProtostuffBytesSerializer getSerializer() {
-        return serializer;
+        return ProtostuffBytesSerializer.getInstance();
     }
 
     /**
@@ -47,7 +43,7 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     public boolean matched(Context ctx, String mime) {
-        return serializer.matched(ctx, mime);
+        return getSerializer().matched(ctx, mime);
     }
 
     /**
@@ -58,7 +54,7 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return serializer.deserializeFromBody(ctx);
+        return null;
     }
 
     /**
@@ -83,21 +79,9 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
-        if (bodyObj == null) {
-            return null;
+        if (p.spec().isRequiredBody()) {
+            return getSerializer().deserializeFromBody(ctx, p.getType());
         } else {
-            if (p.spec().isRequiredBody()) {
-                return bodyObj;
-            }
-
-            if (bodyObj instanceof Map) {
-                Map<String, Object> tmp = (Map<String, Object>) bodyObj;
-
-                if (tmp.containsKey(p.spec().getName())) {
-                    return tmp.get(p.spec().getName());
-                }
-            }
-
             return null;
         }
     }

@@ -20,6 +20,7 @@ import org.noear.nami.Context;
 import org.noear.nami.common.Constants;
 import org.noear.nami.Result;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
 
 import java.lang.reflect.Type;
 
@@ -42,7 +43,7 @@ public class ProtostuffDeoder implements Decoder {
             return null;
         }
 
-        return ProtostuffUtil.deserialize(rst.body());
+        return (T) ProtostuffBytesSerializer.getInstance().deserialize(rst.body(), type);
     }
 
     @Override
