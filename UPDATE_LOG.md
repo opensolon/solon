@@ -34,6 +34,7 @@
 * 添加 solon-net-httputils HttpRespose.cookie 解析处理
 * 添加 solon-cloud-gateway CloudRouteRegister:routeRemove 方法
 * 添加 nami Encoder:bodyRequired() 方法，支持必须 body 请求的场景
+* 优化 solon `@Bean` initMethodName,destroyMethodName 支持自有或公有（之前只能自有）
 * 优化 solon 外部配置加载处理，没有时，尝试在内部找资源文件
 * 优化 solon Props.bindTo 性能
 * 优化 solon SessionState:sessionId 的保持处理（从 attr 转到 cookieMap；减少一道）
