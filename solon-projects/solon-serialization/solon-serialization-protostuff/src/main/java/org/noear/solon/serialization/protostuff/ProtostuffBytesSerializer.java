@@ -77,16 +77,16 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
      */
     @Override
     public byte[] serialize(Object obj) throws IOException {
+        if (obj == null) {
+            return new byte[0];
+        }
+
         LinkedBuffer buffer = LinkedBuffer.allocate();
 
         try {
             Schema schema = RuntimeSchema.getSchema(obj.getClass());
 
             return ProtostuffIOUtil.toByteArray(obj, schema, buffer);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         } finally {
             buffer.clear();
         }
@@ -101,16 +101,10 @@ public class ProtostuffBytesSerializer implements ContextSerializer<byte[]> {
     @Override
     public Object deserialize(byte[] data, Type toType) throws IOException {
         if (toType instanceof Class<?>) {
-            try {
-                Schema schema = RuntimeSchema.getSchema((Class<? extends Object>) toType);
-                Object tmp = schema.newMessage();
-                ProtostuffIOUtil.mergeFrom(data, tmp, schema);
-                return tmp;
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
+            Schema schema = RuntimeSchema.getSchema((Class<? extends Object>) toType);
+            Object tmp = schema.newMessage();
+            ProtostuffIOUtil.mergeFrom(data, tmp, schema);
+            return tmp;
         } else {
             throw new IllegalStateException("The parameter 'toType' is not Class");
         }
