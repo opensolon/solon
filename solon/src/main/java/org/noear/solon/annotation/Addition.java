@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 2.6
  */
-@Inherited //要可继承
+@Inherited //可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
