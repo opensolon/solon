@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.test0;
+package features.serialization.abc.test0;
 
-import features.model.UserDo;
+import features.serialization.abc.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;

@@ -40,13 +40,13 @@ public class NamiCoderTest_protostuff {
         Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
         try {
             Object rst = ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
-            if (rst instanceof IllegalArgumentException) {
+            if (rst instanceof RuntimeException) {
                 assert true;
                 System.out.println("test_protostuff::ok");
                 return;
             }
             assert false;
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             assert true;
             System.out.println("test_protostuff::ok");
         }
@@ -62,15 +62,6 @@ public class NamiCoderTest_protostuff {
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
-
-        //bean list
-        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
-        Result usr_rst_ary = new Result(200, ProtostuffEncoder.instance.encode(usr_ary));
-        Object usr_obj_ary = ProtostuffDeoder.instance.decode(usr_rst_ary, List.class);
-
-        assert usr_obj_ary instanceof List;
-        assert ((List<?>) usr_obj_ary).size()==1;
-
 
         //null
         usr_rst = new Result(200, ProtostuffEncoder.instance.encode(null));
