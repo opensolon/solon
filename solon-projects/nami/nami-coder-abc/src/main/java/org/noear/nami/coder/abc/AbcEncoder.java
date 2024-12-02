@@ -20,18 +20,14 @@ import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 3.0
  */
 public class AbcEncoder implements Encoder {
     public static final AbcEncoder instance = new AbcEncoder();
-
-    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
-
-    public AbcBytesSerializer getSerializer() {
-        return serializer;
-    }
 
     @Override
     public boolean bodyRequired() {
@@ -44,8 +40,8 @@ public class AbcEncoder implements Encoder {
     }
 
     @Override
-    public byte[] encode(Object obj) throws Throwable {
-        return serializer.serialize(obj);
+    public byte[] encode(Object obj) throws IOException {
+        return AbcBytesSerializer.getInstance().serialize(obj);
     }
 
     @Override

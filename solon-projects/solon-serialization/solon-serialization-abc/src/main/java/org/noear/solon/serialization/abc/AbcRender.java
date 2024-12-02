@@ -23,14 +23,12 @@ import org.noear.solon.serialization.ContextSerializer;
  * @since 3.0
  * */
 public class AbcRender extends BytesSerializerRender {
-    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
-
     /**
      * 获取序列化器
      */
     @Override
     public ContextSerializer<byte[]> getSerializer() {
-        return serializer;
+        return AbcBytesSerializer.getInstance();
     }
 
     /**

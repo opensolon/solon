@@ -33,7 +33,11 @@ import java.lang.reflect.Type;
  */
 public class AbcBytesSerializer implements ContextSerializer<byte[]> {
     private static final String label = "application/abc";
+    private static final AbcBytesSerializer instance = new AbcBytesSerializer();
 
+    public static AbcBytesSerializer getInstance() {
+        return instance;
+    }
 
     @Override
     public String mimeType() {
@@ -50,19 +54,21 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
         return true;
     }
 
+    /**
+     * 序列化器名字
+     */
+    @Override
+    public String name() {
+        return "abc-bytes";
+    }
+
     @Override
     public byte[] serialize(Object fromObj) throws IOException {
         if (fromObj instanceof AbcSerializable) {
-            AbcSerializable bs =  ((AbcSerializable) fromObj);
-            AbcOutput bw = bs.serializeFactory().createOutput();
-            bs.serializeWrite(bw);
-            return bw.toBytes();
-//            ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(128);
-//            ((SbeSerializable) fromObj).writeBuffer(new SbeOutputBuffers(buffer));
-//
-//            byte[] bytes = new byte[buffer.capacity()];
-//            buffer.getBytes(0, bytes);
-//            return bytes;
+            AbcSerializable bs = ((AbcSerializable) fromObj);
+            AbcOutput out = bs.serializeFactory().createOutput();
+            bs.serializeWrite(out);
+            return out.toBytes();
         } else {
             throw new IllegalStateException("The parameter 'fromObj' is not of SbeWriteBuffer");
         }
@@ -73,8 +79,8 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
         if (toType instanceof Class<?>) {
             if (AbcSerializable.class.isAssignableFrom((Class<?>) toType)) {
                 AbcSerializable tmp = ClassUtil.newInstance((Class<?>) toType);
-                AbcInput br = tmp.serializeFactory().createInput(data);
-                tmp.serializeRead(br);
+                AbcInput in = tmp.serializeFactory().createInput(data);
+                tmp.serializeRead(in);
 
                 return tmp;
             } else {

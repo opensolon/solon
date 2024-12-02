@@ -25,13 +25,11 @@ import org.noear.solon.core.wrap.ParamWrap;
  * @since 3.0
  * */
 public class AbcActionExecutor extends ActionExecuteHandlerDefault {
-    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
-
     /**
      * 获取序列化接口
      */
     public AbcBytesSerializer getSerializer() {
-        return serializer;
+        return AbcBytesSerializer.getInstance();
     }
 
     /**
@@ -42,7 +40,7 @@ public class AbcActionExecutor extends ActionExecuteHandlerDefault {
      */
     @Override
     public boolean matched(Context ctx, String mime) {
-        return serializer.matched(ctx, mime);
+        return getSerializer().matched(ctx, mime);
     }
 
     /**
@@ -78,7 +76,7 @@ public class AbcActionExecutor extends ActionExecuteHandlerDefault {
         }
 
         if (p.spec().isRequiredBody()) {
-            return serializer.deserializeFromBody(ctx, p.getType());
+            return getSerializer().deserializeFromBody(ctx, p.getType());
         } else {
             return null;
         }

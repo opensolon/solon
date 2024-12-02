@@ -31,24 +31,18 @@ import java.lang.reflect.Type;
 public class AbcDecoder implements Decoder {
     public static final AbcDecoder instance = new AbcDecoder();
 
-    private final AbcBytesSerializer serializer = new AbcBytesSerializer();
-
-    public AbcBytesSerializer getSerializer() {
-        return serializer;
-    }
-
     @Override
     public String enctype() {
         return ContentTypes.ABC_VALUE;
     }
 
     @Override
-    public <T> T decode(Result rst, Type clz) throws Throwable {
+    public <T> T decode(Result rst, Type type) throws Throwable {
         if (rst.body().length == 0) {
             return null;
         }
 
-        return (T) serializer.deserialize(rst.body(), clz);
+        return (T) AbcBytesSerializer.getInstance().deserialize(rst.body(), type);
     }
 
     @Override
