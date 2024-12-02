@@ -70,7 +70,7 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
             bs.serializeWrite(out);
             return out.toBytes();
         } else {
-            throw new IllegalStateException("The parameter 'fromObj' is not of SbeWriteBuffer");
+            throw new IllegalStateException("The parameter 'fromObj' is not of AbcSerializable");
         }
     }
 
@@ -84,7 +84,7 @@ public class AbcBytesSerializer implements ContextSerializer<byte[]> {
 
                 return tmp;
             } else {
-                throw new IllegalStateException("The parameter 'toType' is not of SbeReadBuffer");
+                throw new IllegalStateException("The parameter 'toType' is not of AbcSerializable");
             }
         } else {
             throw new IllegalStateException("The parameter 'toType' is not Class");
