@@ -21,9 +21,9 @@
         </dependency>
 
         <dependency>
-            <groupId>uk.co.real-logic</groupId>
-            <artifactId>sbe-all</artifactId>
-            <version>${sbe.version}</version>
+            <groupId>org.agrona</groupId>
+            <artifactId>agrona</artifactId>
+            <version>${agrona-sbe.version}</version>
             <optional>true</optional>
         </dependency>
 
