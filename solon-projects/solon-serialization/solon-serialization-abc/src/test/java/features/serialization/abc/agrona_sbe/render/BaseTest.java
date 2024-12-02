@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package features.serialization.abc.sbe.render;
+package features.serialization.abc.agrona_sbe.render;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.handle.ContextEmpty;

@@ -1,6 +1,8 @@
 package features.serialization.abc.chronicle_bytes.demo;
 
-import features.serialization.abc.chronicle_bytes.model.PersonDo;
+import net.openhft.chronicle.bytes.BytesIn;
+import net.openhft.chronicle.bytes.BytesOut;
+import net.openhft.chronicle.bytes.solon.ChrBytesSerializable;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
@@ -25,4 +27,25 @@ public class DemoTest {
         assert personDo.age == personDo2.age;
         assert personDo.height == personDo2.height;
     }
+
+    public static class PersonDo implements ChrBytesSerializable {
+        public String name;
+        public int age;
+        public double height;
+
+        @Override
+        public void serializeRead(BytesIn in) {
+            this.name = in.readUtf8();
+            this.age = in.readInt();
+            this.height = in.readDouble();
+        }
+
+        @Override
+        public void serializeWrite(BytesOut out) {
+            out.writeUtf8(this.name);
+            out.writeInt(this.age);
+            out.writeDouble(this.height);
+        }
+    }
+
 }

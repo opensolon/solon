@@ -20,10 +20,7 @@ import lombok.Setter;
 import lombok.ToString;
 import net.openhft.chronicle.bytes.BytesIn;
 import net.openhft.chronicle.bytes.BytesOut;
-import org.noear.solon.serialization.abc.chronicle.bytes.ChrBytesSerializable;
-import org.noear.solon.serialization.abc.sbe.SbeInput;
-import org.noear.solon.serialization.abc.sbe.SbeOutput;
-import org.noear.solon.serialization.abc.sbe.SbeSerializable;
+import net.openhft.chronicle.bytes.solon.ChrBytesSerializable;
 
 
 /**

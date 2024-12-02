@@ -1,10 +1,10 @@
-package features.serialization.abc.sbe.demo;
+package features.serialization.abc.agrona_sbe.demo;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
-import org.noear.solon.serialization.abc.sbe.SbeInput;
-import org.noear.solon.serialization.abc.sbe.SbeOutput;
-import org.noear.solon.serialization.abc.sbe.SbeSerializable;
+import org.agrona.sbe.solon.SbeInput;
+import org.agrona.sbe.solon.SbeOutput;
+import org.agrona.sbe.solon.SbeSerializable;
 
 /**
  * @author noear 2024/10/24 created

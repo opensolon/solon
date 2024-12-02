@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.abc.chronicle.bytes;
+package net.openhft.chronicle.bytes.solon;
 
 import net.openhft.chronicle.bytes.BytesIn;
 import net.openhft.chronicle.bytes.BytesOut;

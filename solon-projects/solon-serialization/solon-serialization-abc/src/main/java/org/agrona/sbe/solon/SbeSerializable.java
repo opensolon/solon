@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.abc.sbe;
+package org.agrona.sbe.solon;
 
 import org.noear.solon.serialization.abc.io.AbcFactory;
 import org.noear.solon.serialization.abc.io.AbcSerializable;
