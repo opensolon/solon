@@ -111,7 +111,7 @@ public class SbeInput {
     public long[] readLongArray() {
         final int length = readInt();
         final long[] longs = new long[length];
-        for (int i = 0; i < longs.length; i++) {
+        for (int i = 0; i < length; i++) {
             longs[i] = readLong();
         }
 
@@ -121,7 +121,7 @@ public class SbeInput {
     public int[] readIntArray() {
         final int length = readInt();
         final int[] ints = new int[length];
-        for (int i = 0; i < ints.length; i++) {
+        for (int i = 0; i < length; i++) {
             ints[i] = readInt();
         }
 
@@ -131,7 +131,7 @@ public class SbeInput {
     public float[] readFloatArray() {
         final int length = readInt();
         final float[] floats = new float[length];
-        for (int i = 0; i < floats.length; i++) {
+        for (int i = 0; i < length; i++) {
             floats[i] = readFloat();
         }
 
@@ -141,7 +141,7 @@ public class SbeInput {
     public double[] readDoubleArray() {
         final int length = readInt();
         final double[] doubles = new double[length];
-        for (int i = 0; i < doubles.length; i++) {
+        for (int i = 0; i < length; i++) {
             doubles[i] = readDouble();
         }
 
@@ -151,7 +151,7 @@ public class SbeInput {
     public short[] readShortArray() {
         final int length = readInt();
         final short[] shorts = new short[length];
-        for (int i = 0; i < shorts.length; i++) {
+        for (int i = 0; i < length; i++) {
             shorts[i] = readShort();
         }
 
@@ -161,7 +161,7 @@ public class SbeInput {
     public byte[] readByteArray() {
         final int length = readInt();
         final byte[] bytes = new byte[length];
-        for (int i = 0; i < bytes.length; i++) {
+        for (int i = 0; i < length; i++) {
             bytes[i] = readByte();
         }
 
@@ -171,7 +171,7 @@ public class SbeInput {
     public char[] readCharArray() {
         final int length = readInt();
         final char[] chars = new char[length];
-        for (int i = 0; i < chars.length; i++) {
+        for (int i = 0; i < length; i++) {
             chars[i] = readChar();
         }
 
