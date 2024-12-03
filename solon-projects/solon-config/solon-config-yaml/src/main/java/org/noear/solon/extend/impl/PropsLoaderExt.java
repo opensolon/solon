@@ -41,7 +41,7 @@ public class PropsLoaderExt extends PropsLoader {
             return false;
         }
 
-        return suffix.endsWith(".properties") || suffix.endsWith(".yml");
+        return suffix.endsWith(".properties") || suffix.endsWith(".yml") || suffix.endsWith(".yaml");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PropsLoaderExt extends PropsLoader {
             return tmp;
         }
 
-        if (fileName.endsWith(".yml")) {
+        if (fileName.endsWith(".yml") || fileName.endsWith(".yaml")) {
             if (Solon.app() != null && Solon.cfg().isDebugMode()) {
                 LogUtil.global().trace(fileName);
             }
@@ -87,19 +87,18 @@ public class PropsLoaderExt extends PropsLoader {
         int idx2 = text.indexOf(":");
 
         //有{开头
-        if(text.startsWith("{") && text.endsWith("}")){
-            PropertiesJson tmp  =new PropertiesJson();
+        if (text.startsWith("{") && text.endsWith("}")) {
+            PropertiesJson tmp = new PropertiesJson();
             tmp.loadJson(text);
             return tmp;
         }
 
         //有[开头
-        if(text.startsWith("[") && text.endsWith("]")){
-            PropertiesJson tmp  =new PropertiesJson();
+        if (text.startsWith("[") && text.endsWith("]")) {
+            PropertiesJson tmp = new PropertiesJson();
             tmp.loadJson(text);
             return tmp;
         }
-
 
 
         //有=
