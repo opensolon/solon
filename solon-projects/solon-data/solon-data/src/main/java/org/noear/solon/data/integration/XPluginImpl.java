@@ -23,6 +23,8 @@ import org.noear.solon.data.cache.interceptor.CacheInterceptor;
 import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.datasource.RoutingDataSource;
+import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
 import org.noear.solon.vault.VaultUtils;
 
@@ -37,6 +39,10 @@ public class XPluginImpl implements Plugin {
 
         //添加事务控制支持
         if (context.app().enableTransaction()) {
+            //添加数据源路由记录
+            TranManager.routing(RoutingDataSource.class, (r) -> r.determineCurrentTarget());
+
+            //添加注解支持
             context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
         }
 

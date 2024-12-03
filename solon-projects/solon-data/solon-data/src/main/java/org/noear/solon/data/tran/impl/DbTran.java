@@ -18,7 +18,7 @@ package org.noear.solon.data.tran.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.data.datasource.RoutingDataSource;
+import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.TranListener;
 import org.noear.solon.data.tran.TranListenerSet;
 import org.noear.solon.data.tran.TranNode;
@@ -59,9 +59,12 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     public Connection getConnection(DataSource ds) throws SQLException {
-        if (ds instanceof RoutingDataSource) {
+        //支持动态数据源
+        RoutingDataSourceMapping dsMapping = TranManager.routingGet(ds);
+
+        if (dsMapping != null) {
             //支持"深度"动态数据源事务管理
-            return getConnection(((RoutingDataSource) ds).determineCurrentTarget());
+            return getConnection(dsMapping.determineCurrentTarget(ds));
         } else {
             if (conMap.containsKey(ds)) {
                 return conMap.get(ds);
@@ -137,7 +140,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
         for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             try {
                 kv.getValue().rollback();
-            }catch (Throwable e) {
+            } catch (Throwable e) {
                 log.warn("Rollback failure", e);
             }
         }

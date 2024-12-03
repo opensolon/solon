@@ -16,7 +16,12 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.impl.DbTran;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 事务管理器
@@ -25,7 +30,30 @@ import org.noear.solon.data.tran.impl.DbTran;
  * @since 1.0
  * */
 public final class TranManager {
-    private static final ThreadLocal<DbTran> _tl_tran = FactoryManager.getGlobal().newThreadLocal(TranManager.class, false);
+    private static final Map<Class<?>, RoutingDataSourceMapping> DS_ROUTING = new HashMap<>();
+    private static final ThreadLocal<DbTran> TL_TRAN = FactoryManager.getGlobal().newThreadLocal(TranManager.class, false);
+
+    /**
+     * 路由记录登记
+     */
+    public static <T> void routing(Class<T> dsClz, RoutingDataSourceMapping<T> mapping) {
+        DS_ROUTING.put(dsClz, mapping);
+    }
+
+    /**
+     * 路由映射获取
+     */
+    public static RoutingDataSourceMapping routingGet(DataSource original) {
+        Class<?> originalClz = original.getClass();
+
+        for (Map.Entry<Class<?>, RoutingDataSourceMapping> entry : DS_ROUTING.entrySet()) {
+            if (entry.getKey().isAssignableFrom(originalClz)) {
+                return entry.getValue();
+            }
+        }
+
+        return null;
+    }
 
 
     /**
@@ -34,21 +62,21 @@ public final class TranManager {
      * @param tran 事务
      */
     public static void currentSet(DbTran tran) {
-        _tl_tran.set(tran);
+        TL_TRAN.set(tran);
     }
 
     /**
      * 获取当前事务
      */
     public static DbTran current() {
-        return _tl_tran.get();
+        return TL_TRAN.get();
     }
 
     /**
      * 移移当前事务
      */
     public static void currentRemove() {
-        _tl_tran.remove();
+        TL_TRAN.remove();
     }
 
 
