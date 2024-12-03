@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.4-RC
+Solon v3.0.4-RC2
 </h1>
 <p align="center">
 	<strong>Рама разработки приложений Java, ограниченная, лаконичная, эффективная, открытая, экологическая!</strong>
