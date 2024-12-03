@@ -15,12 +15,15 @@
  */
 package org.noear.solon.serialization.abc.io;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * Bytes 序列化工厂
  *
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface AbcFactory<I,O> {
     /**
      * 创建输入器

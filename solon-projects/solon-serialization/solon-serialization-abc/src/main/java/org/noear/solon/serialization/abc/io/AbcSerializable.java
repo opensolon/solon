@@ -15,12 +15,15 @@
  */
 package org.noear.solon.serialization.abc.io;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * Bytes 可序列化定制接口
  *
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface AbcSerializable<I,O> {
     /**
      * 序列化工厂
