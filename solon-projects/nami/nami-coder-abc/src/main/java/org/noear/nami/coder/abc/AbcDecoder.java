@@ -47,7 +47,7 @@ public class AbcDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_SBE);
+        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_ABC);
         ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.ABC_VALUE);
     }
 }

@@ -28,7 +28,7 @@ public class Constants {
     public static final String AT_HESSIAN = "@hessian";
     public static final String AT_FURY = "@fury";
     public static final String AT_KRYO = "@kryo";
-    public static final String AT_SBE = "@sbe";
+    public static final String AT_ABC = "@abc";
 
     public static final String METHOD_GET = "GET";
     public static final String METHOD_POST = "POST";
