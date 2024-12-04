@@ -19,7 +19,6 @@ import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import org.noear.nami.Decoder;
 import org.noear.nami.Context;
 import org.noear.nami.Result;
-import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 
 import java.io.ByteArrayInputStream;
@@ -58,7 +57,7 @@ public class HessianDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_HESSIAN);
-        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.HESSIAN_VALUE);
+        ctx.headers.put(ContentTypes.HEADER_SERIALIZATION, ContentTypes.AT_HESSIAN);
+        ctx.headers.put(ContentTypes.HEADER_ACCEPT, ContentTypes.HESSIAN_VALUE);
     }
 }

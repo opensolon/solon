@@ -42,10 +42,26 @@ public class ContentTypes {
     public static final String JSON = "Content-Type=application/json";
     public static final String JSON_TYPE = "Content-Type=application/json-type";
 
-
     public static final String HESSIAN_ACCEPT = "Accept=application/hessian";
     public static final String FURY_ACCEPT = "Accept=application/fury";
     public static final String PROTOBUF_ACCEPT = "Accept=application/protobuf";
     public static final String ABC_ACCEPT = "Accept=application/abc";
     public static final String JSON_ACCEPT = "Accept=application/json";
+
+
+    public static final String AT_TYPE_JSON = "@type_json";
+    public static final String AT_JSON = "@json";
+    public static final String AT_PROTOBUF = "@protobuf";
+    public static final String AT_HESSIAN = "@hessian";
+    public static final String AT_FURY = "@fury";
+    public static final String AT_KRYO = "@kryo";
+    public static final String AT_ABC = "@abc";
+
+
+    public static final String HEADER_SERIALIZATION = "X-Serialization";
+    public static final String HEADER_CONTENT_TYPE = "Content-Type";
+    public static final String HEADER_ACCEPT = "Accept";
+
+    public static final String METHOD_GET = "GET";
+    public static final String METHOD_POST = "POST";
 }

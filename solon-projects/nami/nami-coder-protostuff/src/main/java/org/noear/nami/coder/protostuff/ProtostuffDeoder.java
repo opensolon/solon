@@ -17,7 +17,6 @@ package org.noear.nami.coder.protostuff;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
 import org.noear.nami.Result;
 import org.noear.nami.common.ContentTypes;
 import org.noear.solon.serialization.protostuff.ProtostuffBytesSerializer;
@@ -48,7 +47,7 @@ public class ProtostuffDeoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_PROTOBUF);
-        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.PROTOBUF_VALUE);
+        ctx.headers.put(ContentTypes.HEADER_SERIALIZATION, ContentTypes.AT_PROTOBUF);
+        ctx.headers.put(ContentTypes.HEADER_ACCEPT, ContentTypes.PROTOBUF_VALUE);
     }
 }

@@ -17,7 +17,7 @@ package org.noear.nami.channel.http.hutool;
 
 import cn.hutool.http.HttpResponse;
 import org.noear.nami.*;
-import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.Charset;
 
@@ -32,7 +32,7 @@ public class HttpChannel extends ChannelBase implements Channel {
         pretreatment(ctx);
 
         //0.检测method
-        boolean is_get = Constants.METHOD_GET.equals(ctx.action);
+        boolean is_get = ContentTypes.METHOD_GET.equals(ctx.action);
         String url = ctx.url;
 
         //0.尝试重构url
@@ -68,13 +68,13 @@ public class HttpChannel extends ChannelBase implements Channel {
 
         //1.执行并返回
         if (is_get) {
-            response = http.exec(Constants.METHOD_GET);
+            response = http.exec(ContentTypes.METHOD_GET);
         } else if (ctx.args.size() == 0 && ctx.body == null) {
             // 增强query时，已经将body的参数移除了，所以需要一起判断body也为空
-            response = http.exec(Constants.METHOD_GET);
+            response = http.exec(ContentTypes.METHOD_GET);
         } else {
             if (encoder == null) {
-                String ct0 = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
+                String ct0 = ctx.headers.getOrDefault(ContentTypes.HEADER_CONTENT_TYPE, "");
 
                 if (ct0.length() > 0) {
                     encoder = NamiManager.getEncoder(ct0);

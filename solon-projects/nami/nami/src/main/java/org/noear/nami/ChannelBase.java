@@ -15,7 +15,6 @@
  */
 package org.noear.nami;
 
-import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 
 /**
@@ -32,7 +31,7 @@ public abstract class ChannelBase implements Channel {
      */
     protected void pretreatment(Context ctx) {
         if (ctx.config.getDecoder() == null) {
-            String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
+            String at = ctx.config.getHeader(ContentTypes.HEADER_ACCEPT);
 
             if (at == null) {
                 at = ContentTypes.JSON_VALUE;
@@ -46,7 +45,7 @@ public abstract class ChannelBase implements Channel {
         }
 
         if (ctx.config.getEncoder() == null) {
-            String ct = ctx.config.getHeader(Constants.HEADER_CONTENT_TYPE);
+            String ct = ctx.config.getHeader(ContentTypes.HEADER_CONTENT_TYPE);
 
             if (ct != null) {
                 ctx.config.setEncoder(NamiManager.getEncoder(ct));

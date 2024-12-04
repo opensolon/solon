@@ -15,7 +15,6 @@
  */
 package org.noear.nami;
 
-import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 
 import java.util.*;
@@ -38,7 +37,7 @@ public class Config {
      * */
     protected Config init() {
         if (decoder == null) {
-            String at = headers.get(Constants.HEADER_ACCEPT);
+            String at = headers.get(ContentTypes.HEADER_ACCEPT);
             if (at != null) {
                 decoder = NamiManager.getDecoder(at);
             }
@@ -49,7 +48,7 @@ public class Config {
         }
 
         if (encoder == null) {
-            String ct = headers.get(Constants.HEADER_CONTENT_TYPE);
+            String ct = headers.get(ContentTypes.HEADER_CONTENT_TYPE);
             if (ct != null) {
                 encoder = NamiManager.getEncoder(ct);
             }

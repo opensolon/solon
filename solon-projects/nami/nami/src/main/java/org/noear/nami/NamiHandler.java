@@ -180,7 +180,7 @@ public class NamiHandler implements InvocationHandler {
             args.remove(methodWrap.getBodyName());
 
             if (config.getEncoder() == null) {
-                headers.putIfAbsent(Constants.HEADER_CONTENT_TYPE, methodWrap.getBodyAnno().contentType());
+                headers.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, methodWrap.getBodyAnno().contentType());
             }
         }
 

@@ -18,7 +18,6 @@ package org.noear.nami.coder.abc;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
-import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 import org.noear.solon.serialization.abc.AbcBytesSerializer;
 
@@ -47,7 +46,7 @@ public class AbcDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_ABC);
-        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.ABC_VALUE);
+        ctx.headers.put(ContentTypes.HEADER_SERIALIZATION, ContentTypes.AT_ABC);
+        ctx.headers.put(ContentTypes.HEADER_ACCEPT, ContentTypes.ABC_VALUE);
     }
 }

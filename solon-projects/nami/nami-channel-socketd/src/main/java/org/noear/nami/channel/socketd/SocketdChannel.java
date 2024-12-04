@@ -16,7 +16,6 @@
 package org.noear.nami.channel.socketd;
 
 import org.noear.nami.*;
-import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
@@ -71,7 +70,7 @@ public class SocketdChannel extends ChannelBase implements Channel {
         }
 
         //2.构建消息
-        ctx.headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
+        ctx.headers.put(ContentTypes.HEADER_CONTENT_TYPE, encoder.enctype());
         byte[] bytes = encoder.encode(ctx.bodyOrArgs());
         Entity request = new EntityDefault().metaMapPut(ctx.headers).dataSet(bytes);
 

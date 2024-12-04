@@ -20,7 +20,9 @@ package org.noear.nami.common;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 3.0
  * */
+@Deprecated
 public class Constants {
     public static final String AT_TYPE_JSON = "@type_json";
     public static final String AT_JSON = "@json";
