@@ -16,10 +16,8 @@
 package features.nami;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.solon.test.SolonJUnit5Extension;
 
 import java.util.List;
 

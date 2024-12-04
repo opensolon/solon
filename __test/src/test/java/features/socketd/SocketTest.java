@@ -16,14 +16,12 @@
 package features.socketd;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.exception.SocketDException;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.entity.StringEntity;
 import org.noear.solon.Solon;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 

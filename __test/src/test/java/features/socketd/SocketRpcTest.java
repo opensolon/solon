@@ -16,13 +16,9 @@
 package features.socketd;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketdProxy;
-import org.noear.socketd.SocketD;
-import org.noear.socketd.transport.client.ClientSession;
 import org.noear.solon.Solon;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demoh_socketd.HelloRpcService;

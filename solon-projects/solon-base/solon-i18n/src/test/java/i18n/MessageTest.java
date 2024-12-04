@@ -16,12 +16,9 @@
 package i18n;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.i18n.I18nUtil;
-import org.noear.solon.i18n.LocaleUtil;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 
 import java.util.Locale;

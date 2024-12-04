@@ -23,7 +23,7 @@ import org.noear.nami.coder.hessian.HessianDecoder;
 import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.solon.test.SolonJUnit5Extension;
+import org.noear.nami.coder.snack3.SnackTypeEncoder;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -160,7 +160,7 @@ public class NamiAndRpcTest {
         UserService userService5 = Nami.builder()
                 .url("http://localhost:8080/demo5/user/")
                 .decoder(SnackDecoder.instance)
-                .encoder(SnackEncoder.instance)
+                .encoder(SnackTypeEncoder.instance)
                 .create(UserService.class);
 
         try {

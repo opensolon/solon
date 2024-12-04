@@ -18,8 +18,6 @@ package features;
 import org.noear.java_websocket.client.SimpleWebSocketClient;
 import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demof_websocket.WsDemoClient;

@@ -57,6 +57,7 @@ public class RpcTest implements Handler {
         int _port = 20000 + Solon.cfg().serverPort();
 
         RockApi client = Nami.builder().upstream(() -> "tcp://localhost:" + _port)
+                .decoder(SnackDecoder.instance)
                 .create(RockApi.class);
 
         return client.test1(12);
