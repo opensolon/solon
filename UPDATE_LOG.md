@@ -22,6 +22,9 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### v3.0.5
+* 优化 solon-proxy BeanProxy 增避免产生二次代理的处理
+
 ### v3.0.4
 * 新增 nami-coder-abc 插件
 * 新增 solon-serialization-abc 插件
