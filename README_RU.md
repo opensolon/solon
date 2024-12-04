@@ -46,7 +46,6 @@ Solon v3.0.4
 	</a>
 </p>
 
-<br/>
 
 ##### язык： Русский | [中文](README_CN.md)  | [English](README_EN.md) | [日本語](README_JP.md)
 
