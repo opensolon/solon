@@ -47,10 +47,6 @@ Solon v3.0.4
 </p>
 
 <br/>
-<p align="center">
-	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
-	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
-</p>
 
 ##### Language: English | [中文](README_CN.md) | [Русский](README_RU.md) | [日本語](README_JP.md)
 
