@@ -23,7 +23,7 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.5
-* 修复 solon-proxy BeanProxy 特别情况下可能产生重复代理的问题
+* 修复 solon BeanWrap 特殊情况下可能会重复代理的问题
 
 ### v3.0.4
 * 新增 nami-coder-abc 插件
