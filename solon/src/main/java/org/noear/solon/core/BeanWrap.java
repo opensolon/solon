@@ -173,8 +173,8 @@ public class BeanWrap {
     public void proxySet(BeanWrap.Proxy proxy) {
         this.proxy = proxy;
 
-        if (raw != null) {
-            //如果_raw存在，则进行代理转换
+        if (raw != null && raw == rawUnproxied) {
+            //如果_raw存在，则进行代理转换 //如果相等，说明未代理（否则已代理）
             raw = proxy.getProxy(this, raw);
         }
     }
@@ -366,14 +366,7 @@ public class BeanWrap {
             if (singleton) {
                 return (T) raw;
             } else {
-                Object bean = _new(); //如果是 interface ，则返回 _raw
-
-                //3.尝试代理转换
-                if (proxy != null) {
-                    bean = proxy.getProxy(this, bean);
-                }
-
-                return (T) bean;
+                return create();
             }
         }
     }

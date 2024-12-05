@@ -15,7 +15,6 @@
  */
 package org.noear.solon.proxy;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 
 import java.lang.reflect.InvocationHandler;
@@ -45,11 +44,6 @@ public class BeanProxy implements BeanWrap.Proxy {
      */
     @Override
     public Object getProxy(BeanWrap bw, Object bean) {
-        if (Utils.isProxyClass(bean.getClass())) {
-            //避免二次代理
-            return bean;
-        } else {
-            return new BeanInvocationHandler(handler, bw, bean).getProxy();
-        }
+        return new BeanInvocationHandler(handler, bw, bean).getProxy();
     }
 }
