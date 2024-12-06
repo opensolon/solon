@@ -27,6 +27,7 @@ import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.serialize.SerializerManager;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.RunUtil;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
@@ -178,6 +179,7 @@ public class SolonApp extends RouterWrapper {
         this.cfg().plugs().forEach(p -> p.stop());
         this.context().stop();
         EventBus.publishTry(new AppStopEndEvent(this));
+        RunUtil.shutdown();
     }
 
     /**
