@@ -33,7 +33,7 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
 
     @Override
     public ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName) {
-        return new SqlColumnExpression(fieldMetaData,tableAsName);
+        return new SqlColumnExpression(fieldMetaData, tableAsName);
     }
 
     @Override
@@ -149,5 +149,10 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     @Override
     public ISqlTypeExpression type(Class<?> c) {
         return new SqlTypeExpression(c);
+    }
+
+    @Override
+    public ISqlWithExpression with(ISqlQueryableExpression queryable, String name) {
+        return new SqlWithExpression(queryable, name);
     }
 }

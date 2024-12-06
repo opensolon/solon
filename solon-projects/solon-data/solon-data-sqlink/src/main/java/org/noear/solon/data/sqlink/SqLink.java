@@ -23,6 +23,12 @@ import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
+import org.noear.solon.data.sqlink.core.SqLinkImpl;
+import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.tuple.Tuple1;
+import org.noear.solon.data.sqlink.core.tuple.Tuple2;
+import org.noear.solon.data.sqlink.core.tuple.Tuple3;
+import org.noear.solon.data.sqlink.core.tuple.Tuple4;
 import org.noear.solon.lang.Preview;
 
 import java.util.Collection;
@@ -109,4 +115,12 @@ public interface SqLink {
      * 获取配置
      */
     SqLinkConfig getConfig();
+
+    <T> LQuery<Tuple1<T>> query(int... ins);
+
+    <T1,T2> LQuery<Tuple2<T1,T2>> query(byte... bytes);
+
+    <T1, T2, T3> LQuery<Tuple3<T1, T2, T3>> query(short... shorts);
+
+    <T1, T2, T3, T4> LQuery<Tuple4<T1, T2, T3, T4>> query(char... chars);
 }

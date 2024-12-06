@@ -337,6 +337,8 @@ public interface SqlExpressionFactory {
      */
     ISqlTypeExpression type(Class<?> c);
 
+    ISqlWithExpression with(ISqlQueryableExpression queryable, String name);
+
     /**
      * 将实体类转换为列表达式集合
      */
