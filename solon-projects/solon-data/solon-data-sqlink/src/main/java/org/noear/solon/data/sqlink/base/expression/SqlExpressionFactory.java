@@ -150,7 +150,7 @@ public interface SqlExpressionFactory {
      *
      * @param target 目标表
      */
-    default ISqlQueryableExpression queryable(Class<?> target,String asName) {
+    default ISqlQueryableExpression queryable(Class<?> target, String asName) {
         return queryable(from(table(target), asName));
     }
 
@@ -160,7 +160,7 @@ public interface SqlExpressionFactory {
      * @param from from表达式
      */
     default ISqlQueryableExpression queryable(ISqlFromExpression from) {
-        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit(), withs());
     }
 
     /**
@@ -170,7 +170,7 @@ public interface SqlExpressionFactory {
      * @param from   from表达式
      */
     default ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from) {
-        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit(), withs());
     }
 
     /**
@@ -178,7 +178,7 @@ public interface SqlExpressionFactory {
      *
      * @param table 表表达式
      */
-    default ISqlQueryableExpression queryable(ISqlTableExpression table,String asName) {
+    default ISqlQueryableExpression queryable(ISqlTableExpression table, String asName) {
         return queryable(from(table, asName));
     }
 
@@ -194,7 +194,7 @@ public interface SqlExpressionFactory {
      * @param orderBy 排序表达式
      * @param limit   limit表达式
      */
-    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit,ISqlWithsExpression withs);
+    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlWithsExpression withs);
 
     /**
      * 创建表表达式
@@ -340,6 +340,7 @@ public interface SqlExpressionFactory {
     ISqlWithExpression with(ISqlQueryableExpression queryable, String name);
 
     ISqlWithsExpression withs();
+
     /**
      * 将实体类转换为列表达式集合
      */
