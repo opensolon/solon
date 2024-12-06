@@ -194,7 +194,7 @@ public interface SqlExpressionFactory {
      * @param orderBy 排序表达式
      * @param limit   limit表达式
      */
-    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit);
+    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit,ISqlWithsExpression withs);
 
     /**
      * 创建表表达式
@@ -339,6 +339,7 @@ public interface SqlExpressionFactory {
 
     ISqlWithExpression with(ISqlQueryableExpression queryable, String name);
 
+    ISqlWithsExpression withs();
     /**
      * 将实体类转换为列表达式集合
      */

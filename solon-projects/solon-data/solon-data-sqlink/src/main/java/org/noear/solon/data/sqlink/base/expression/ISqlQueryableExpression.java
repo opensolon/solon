@@ -33,7 +33,7 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     @Override
     default ISqlQueryableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config),getWiths().copy(config));
         queryableExpression.setChanged(getChanged());
         return queryableExpression;
     }
@@ -145,6 +145,8 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
      * 获取查询列的类（from + joins）
      */
     List<Class<?>> getOrderedClass();
+
+    ISqlWithsExpression getWiths();
 
     /**
      * 获取映射的列

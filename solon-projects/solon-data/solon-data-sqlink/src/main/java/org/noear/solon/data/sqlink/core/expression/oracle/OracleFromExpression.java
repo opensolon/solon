@@ -16,8 +16,10 @@
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
+import org.noear.solon.data.sqlink.base.expression.ISqlWithExpression;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlFromExpression;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
@@ -39,13 +41,24 @@ public class OracleFromExpression extends SqlFromExpression {
         // oracle 不支持 无 from 查询
         // 所以我们要加上DUAL表
         if (isEmptyTable()) return "FROM " + config.getDisambiguation().disambiguationTableName("DUAL");
-        String sql;
-        if (sqlTableExpression instanceof ISqlRealTableExpression) {
-            sql = sqlTableExpression.getSqlAndValue(config, values);
+        StringBuilder builder = new StringBuilder();
+        if (sqlTableExpression instanceof ISqlWithExpression) {
+            ISqlWithExpression withExpression = (ISqlWithExpression) sqlTableExpression;
+            builder.append(withExpression.withTableName());
         }
         else {
-            sql = "(" + sqlTableExpression.getSqlAndValue(config, values) + ")";
+            builder.append(sqlTableExpression.getSqlAndValue(config, values));
         }
-        return "FROM " + sql + " " + config.getDisambiguation().disambiguationTableName(asName);
+
+        if (sqlTableExpression instanceof ISqlQueryableExpression) {
+            builder.insert(0, "(");
+            builder.append(")");
+        }
+        if (asName != null) {
+            return "FROM " + builder.toString() + config.getDisambiguation().disambiguation(asName);
+        }
+        else {
+            return "FROM " + builder.toString();
+        }
     }
 }

@@ -36,9 +36,10 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     protected final ISqlHavingExpression having;
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
+    protected final ISqlWithsExpression withs;
     protected boolean isChanged;
 
-    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlWithsExpression withs) {
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -47,6 +48,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         this.having = having;
         this.orderBy = orderBy;
         this.limit = limit;
+        this.withs = withs;
     }
 
     @Override
@@ -56,6 +58,8 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         }
         else {
             List<String> strings = new ArrayList<>();
+            String withsSqlAndValue = withs.getSqlAndValue(config, values);
+            if (!withsSqlAndValue.isEmpty()) strings.add(withsSqlAndValue);
             strings.add(getSelect().getSqlAndValue(config, values));
             String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
@@ -164,6 +168,11 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         return having;
     }
 
+    @Override
+    public ISqlWithsExpression getWiths() {
+        return withs;
+    }
+
     public List<Class<?>> getOrderedClass() {
         Class<?> tableClass = getMainTableClass();
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
@@ -176,14 +185,12 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     @Override
-    public boolean getChanged()
-    {
+    public boolean getChanged() {
         return isChanged;
     }
 
     @Override
-    public void setChanged(boolean changed)
-    {
+    public void setChanged(boolean changed) {
         this.isChanged = changed;
     }
 }
