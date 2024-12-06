@@ -24,7 +24,7 @@
 
 ### v3.0.5
 * 修复 solon BeanWrap 特殊情况下可能会重复代理的问题
-* 优化 solon war 部署时定时，调度任务线程池关闭处理
+* 修复 solon war 部署时，定时调度线程池不能关闭的问题
 
 ### v3.0.4
 * 新增 nami-coder-abc 插件
