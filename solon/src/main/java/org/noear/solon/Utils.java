@@ -538,6 +538,10 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
+        if (isEmpty(propS)) {
+            return obj;
+        }
+
         return PropsConverter.global().convert(propS, obj, null, null);
     }
 
