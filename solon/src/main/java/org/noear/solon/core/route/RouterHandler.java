@@ -86,9 +86,19 @@ public class RouterHandler implements Handler {
         }
 
         //提前获取主处理
-        Handler mainHandler = router.matchMain(x);
+        Result<Handler> result = router.matchMainAndStatus(x);
+
+        //转移状态
+        if (result.getData() != null) {
+            x.attrSet(Constants.ATTR_MAIN_HANDLER, result.getData());
+            x.attrSet(Constants.ATTR_MAIN_STATUS, 200);
+        } else {
+            //要补这个 set null（多次时，可以不断重置）
+            x.attrSet(Constants.ATTR_MAIN_HANDLER, null);
+            x.attrSet(Constants.ATTR_MAIN_STATUS, result.getCode());
+        }
 
         //执行
-        chainManager.doIntercept(x, mainHandler, this::handle1);
+        chainManager.doIntercept(x, result.getData(), this::handle1);
     }
 }

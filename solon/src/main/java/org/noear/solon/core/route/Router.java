@@ -73,9 +73,9 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path     路径
-     * @param method   方法
-     * @param handler  处理接口
+     * @param path    路径
+     * @param method  方法
+     * @param handler 处理接口
      */
     default void add(String path, MethodType method, Handler handler) {
         add(path, method, 0, handler);
@@ -84,10 +84,10 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path     路径
-     * @param method   方法
-     * @param index    顺序位
-     * @param handler  处理接口
+     * @param path    路径
+     * @param method  方法
+     * @param index   顺序位
+     * @param handler 处理接口
      */
     void add(String path, MethodType method, int index, Handler handler);
 
@@ -107,6 +107,14 @@ public interface Router {
     void add(String path, BeanWrap controllerWrap);
 
     /**
+     * 区配一个主处理，并获取状态（根据上下文）
+     *
+     * @param ctx 上下文
+     * @return 一个匹配的处理结果
+     */
+    Result<Handler> matchMainAndStatus(Context ctx);
+
+    /**
      * 区配一个主处理（根据上下文）
      *
      * @param ctx 上下文
@@ -124,7 +132,7 @@ public interface Router {
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
      *
-     * @param path     路径
+     * @param path 路径
      * @return 路径处理点的路由记录
      * @since 2.6
      */
