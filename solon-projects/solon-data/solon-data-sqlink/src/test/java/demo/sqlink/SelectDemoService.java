@@ -23,10 +23,13 @@ import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.core.SqLinkImpl;
+import org.noear.solon.data.sqlink.core.SubQuery;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 import org.noear.solon.data.sqlink.core.tuple.Tuple1;
 
 import java.util.List;
+
+import static org.noear.solon.data.sqlink.core.SubQuery.subQuery;
 
 @Component
 public class SelectDemoService {
@@ -88,7 +91,7 @@ public class SelectDemoService {
     // 根据地区码查询用户
     public List<User> findUserByAreaCode(String code) {
         return sqLink.query(User.class)
-                .where(u -> u.getAreas().stream().anyMatch(a -> a.getCode() == code))
+                .where(u -> subQuery(u.getAreas()).any(a -> a.getCode() == code))
                 .toList();
     }
 

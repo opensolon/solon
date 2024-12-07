@@ -69,6 +69,11 @@ public interface SqLink {
     <T> LQuery<T> query(@Recode Class<T> c);
 
     /**
+     * with查询
+     */
+    <T> LQuery<T> with(@Recode LQuery<T> query);
+
+    /**
      * 进行不包含表的查询
      *
      * @return 查询过程对象
@@ -115,12 +120,4 @@ public interface SqLink {
      * 获取配置
      */
     SqLinkConfig getConfig();
-
-    <T> LQuery<Tuple1<T>> query(int... ins);
-
-    <T1,T2> LQuery<Tuple2<T1,T2>> query(byte... bytes);
-
-    <T1, T2, T3> LQuery<Tuple3<T1, T2, T3>> query(short... shorts);
-
-    <T1, T2, T3, T4> LQuery<Tuple4<T1, T2, T3, T4>> query(char... chars);
 }

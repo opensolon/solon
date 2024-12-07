@@ -22,7 +22,6 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
-import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
@@ -33,6 +32,7 @@ import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.noear.solon.data.sqlink.core.visitor.methods.AggregateMethods;
 import org.slf4j.Logger;
@@ -41,7 +41,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author kiryu1223
@@ -245,7 +248,7 @@ public abstract class QueryBase extends CRUD {
     protected QuerySqlBuilder boxedQuerySqlBuilder() {
         ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
         Class<?> mainTableClass = queryable.getMainTableClass();
-        String as = MetaDataCache.getMetaData(mainTableClass).getTableName().substring(0, 1).toLowerCase();
+        String as = ExpressionUtil.getAsName(mainTableClass);
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, as)));
     }

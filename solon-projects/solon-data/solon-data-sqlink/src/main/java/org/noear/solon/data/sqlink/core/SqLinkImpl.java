@@ -82,6 +82,11 @@ public class SqLinkImpl implements SqLink {
         return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
     }
 
+    @Override
+    public <T> LQuery<T> with(LQuery<T> query) {
+        return query.with();
+    }
+
     /**
      * 进行不包含表的查询
      *

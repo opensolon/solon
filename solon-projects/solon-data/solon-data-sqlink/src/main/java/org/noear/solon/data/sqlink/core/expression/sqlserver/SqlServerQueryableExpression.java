@@ -35,17 +35,18 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlServerQueryableExpression extends SqlQueryableExpression {
-    protected SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+    public SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         super(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        if (!isChanged) {
+        if (!isChanged && from.getSqlTableExpression() instanceof ISqlQueryableExpression) {
             return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
         else {
             List<String> strings = new ArrayList<>();
+            tryWith(config, strings, values);
             makeSelect(strings, values, config);
             String fromSqlAndValue = from.getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);

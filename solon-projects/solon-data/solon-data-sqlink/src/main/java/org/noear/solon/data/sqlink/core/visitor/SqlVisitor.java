@@ -787,6 +787,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             }
         }
         else {
+            System.out.println(methodCall);
+            System.out.println(asNameMap);
             if (isProperty(asNameMap, methodCall)) {
                 if (isGetter(methodCall.getMethod())) {
                     ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();

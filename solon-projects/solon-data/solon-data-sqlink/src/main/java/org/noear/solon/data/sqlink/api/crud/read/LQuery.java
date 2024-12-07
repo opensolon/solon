@@ -24,11 +24,18 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
+import org.noear.solon.data.sqlink.base.expression.ISqlWithExpression;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
+import org.noear.solon.data.sqlink.base.metaData.MetaData;
+import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.page.DefaultPager;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -636,5 +643,21 @@ public class LQuery<T> extends QueryBase {
     public <R extends Number> R min(ExprTree<Func1<T, R>> expr) {
         return min0(expr.getTree());
     }
+    // endregion
+
+    // region [WITH]
+
+    public LQuery<T> with() {
+        SqLinkConfig config = getConfig();
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+        Class<?> target = queryable.getMainTableClass();
+        MetaData metaData = MetaDataCache.getMetaData(target);
+        String asName = ExpressionUtil.getAsName(target);
+        ISqlWithExpression with = factory.with(queryable, metaData.getTableName());
+        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, factory.queryable(factory.from(with, asName)));
+        return new LQuery<>(querySqlBuilder);
+    }
+
     // endregion
 }

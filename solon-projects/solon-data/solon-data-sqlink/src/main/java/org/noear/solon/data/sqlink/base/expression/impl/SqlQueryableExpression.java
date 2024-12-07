@@ -36,10 +36,10 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     protected final ISqlHavingExpression having;
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
-    protected final ISqlWithsExpression withs;
+    //protected final ISqlWithsExpression withs;
     protected boolean isChanged;
 
-    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlWithsExpression withs) {
+    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -48,18 +48,16 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         this.having = having;
         this.orderBy = orderBy;
         this.limit = limit;
-        this.withs = withs;
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        if (!isChanged) {
+        if (!isChanged && from.getSqlTableExpression() instanceof ISqlQueryableExpression) {
             return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
         else {
             List<String> strings = new ArrayList<>();
-            String withsSqlAndValue = withs.getSqlAndValue(config, values);
-            if (!withsSqlAndValue.isEmpty()) strings.add(withsSqlAndValue);
+            tryWith(config, strings, values);
             strings.add(getSelect().getSqlAndValue(config, values));
             String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
@@ -168,11 +166,6 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         return having;
     }
 
-    @Override
-    public ISqlWithsExpression getWiths() {
-        return withs;
-    }
-
     public List<Class<?>> getOrderedClass() {
         Class<?> tableClass = getMainTableClass();
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
@@ -192,5 +185,22 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     @Override
     public void setChanged(boolean changed) {
         this.isChanged = changed;
+    }
+
+    protected void tryWith(SqLinkConfig config, List<String> strings, List<SqlValue> values) {
+        ISqlTableExpression fromSqlTableExpression = from.getSqlTableExpression();
+        List<String> withs = new ArrayList<>(joins.getJoins().size() + 1);
+        if (fromSqlTableExpression instanceof ISqlWithExpression) {
+            withs.add(fromSqlTableExpression.getSqlAndValue(config, values));
+        }
+        for (ISqlJoinExpression join : joins.getJoins()) {
+            ISqlTableExpression joinTable = join.getJoinTable();
+            if (joinTable instanceof ISqlWithExpression) {
+                withs.add(joinTable.getSqlAndValue(config, values));
+            }
+        }
+        if (!withs.isEmpty()) {
+            strings.add("WITH " + String.join(",", withs));
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlWithExpression;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
@@ -29,6 +30,7 @@ public class SqlWithExpression implements ISqlWithExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        return name + " AS (" + queryable.getSqlAndValue(config, values) + ")";
+        SqLinkDialect disambiguation = config.getDisambiguation();
+        return disambiguation.disambiguationTableName(name) + " AS (" + queryable.getSqlAndValue(config, values) + ")";
     }
 }

@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
@@ -47,10 +48,11 @@ public class SqlFromExpression implements ISqlFromExpression {
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         if (isEmptyTable()) return "";
+        SqLinkDialect disambiguation = config.getDisambiguation();
         StringBuilder builder = new StringBuilder();
         if (sqlTableExpression instanceof ISqlWithExpression) {
             ISqlWithExpression withExpression = (ISqlWithExpression) sqlTableExpression;
-            builder.append(withExpression.withTableName());
+            builder.append(disambiguation.disambiguationTableName(withExpression.withTableName()));
         }
         else {
             builder.append(sqlTableExpression.getSqlAndValue(config, values));
@@ -62,10 +64,10 @@ public class SqlFromExpression implements ISqlFromExpression {
         }
 
         if (asName != null) {
-            return "FROM " + builder.toString() + " AS " + config.getDisambiguation().disambiguation(asName);
+            return "FROM " + builder + " AS " + disambiguation.disambiguation(asName);
         }
         else {
-            return "FROM " + builder.toString();
+            return "FROM " + builder;
         }
     }
 }

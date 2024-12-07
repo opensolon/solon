@@ -55,10 +55,10 @@ public class OracleFromExpression extends SqlFromExpression {
             builder.append(")");
         }
         if (asName != null) {
-            return "FROM " + builder.toString() + config.getDisambiguation().disambiguation(asName);
+            return "FROM " + builder + config.getDisambiguation().disambiguation(asName);
         }
         else {
-            return "FROM " + builder.toString();
+            return "FROM " + builder;
         }
     }
 }

@@ -19,9 +19,9 @@ import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlQueryableExpression;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.exception.SqLinkLimitNotFoundOrderByException;
 
@@ -35,13 +35,13 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleQueryableExpression extends SqlQueryableExpression {
-    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlWithsExpression withs) {
-        super(select, from, joins, where, groupBy, having, orderBy, limit, withs);
+    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+        super(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        if (!isChanged) {
+        if (!isChanged && from.getSqlTableExpression() instanceof ISqlQueryableExpression) {
             return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
         else {
@@ -50,9 +50,7 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
 //        {
 //            strings.add("SELECT * FROM (SELECT t.*,ROWNUM AS \"-ROWNUM-\" FROM (");
 //        }
-            String withsSqlAndValue = withs.getSqlAndValue(config, values);
-            if (!withsSqlAndValue.isEmpty()) strings.add(withsSqlAndValue);
-            strings.add(select.getSqlAndValue(config, values));
+            tryWith(config, strings, values);
             String fromSqlAndValue = from.getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
             String joinsSqlAndValue = joins.getSqlAndValue(config, values);

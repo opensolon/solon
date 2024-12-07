@@ -160,7 +160,7 @@ public interface SqlExpressionFactory {
      * @param from from表达式
      */
     default ISqlQueryableExpression queryable(ISqlFromExpression from) {
-        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit(), withs());
+        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
     /**
@@ -170,7 +170,7 @@ public interface SqlExpressionFactory {
      * @param from   from表达式
      */
     default ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from) {
-        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit(), withs());
+        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
     /**
@@ -194,7 +194,7 @@ public interface SqlExpressionFactory {
      * @param orderBy 排序表达式
      * @param limit   limit表达式
      */
-    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlWithsExpression withs);
+    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit);
 
     /**
      * 创建表表达式

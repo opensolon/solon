@@ -21,10 +21,15 @@ import org.noear.solon.data.sqlink.base.SqLinkConfig;
  * @author kiryu1223
  * @since 3.0
  */
-public interface ISqlWithExpression extends ISqlExpression {
+public interface ISqlWithExpression extends ISqlTableExpression {
     ISqlQueryableExpression getQueryable();
 
     String withTableName();
+
+    @Override
+    default Class<?> getMainTableClass() {
+        return getQueryable().getMainTableClass();
+    }
 
     @Override
     default ISqlWithExpression copy(SqLinkConfig config) {
