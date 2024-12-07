@@ -359,6 +359,16 @@ public class Utils {
     }
 
     /**
+     * 检查属性是否为空
+     *
+     * @param s 属性
+     */
+    public static <T> boolean isEmpty(Properties s) {
+        return s == null || s.size() == 0;
+    }
+
+
+    /**
      * 检查字符串是否为非空
      *
      * @param s 字符串
@@ -382,6 +392,15 @@ public class Utils {
      * @param s 集合
      */
     public static boolean isNotEmpty(Map s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查属性是否非空
+     *
+     * @param s 属性
+     */
+    public static boolean isNotEmpty(Properties s) {
         return !isEmpty(s);
     }
 
@@ -519,6 +538,10 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
+        if (isEmpty(propS)) {
+            return obj;
+        }
+
         return PropsConverter.global().convert(propS, obj, null, null);
     }
 

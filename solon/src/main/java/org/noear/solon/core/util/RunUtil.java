@@ -15,7 +15,6 @@
  */
 package org.noear.solon.core.util;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 import java.util.concurrent.*;
@@ -28,29 +27,15 @@ import java.util.function.Supplier;
  * @since 1.12
  */
 public class RunUtil {
-    /**
-     * 异步执行器（一般用于执行 @Async 注解任务）
-     */
-    private static ExecutorService asyncExecutor;
-    /**
-     * 调度执行器（一般用于延时任务）
-     */
-    private static ScheduledExecutorService scheduledExecutor;
 
-    static {
-        if (Solon.app() != null && Solon.cfg().isEnabledVirtualThreads()) {
-            asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
-        } else {
-            int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-            asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
-                    60L, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>(),
-                    new NamedThreadFactory("Solon-executor-"));
-        }
+    //////////
+    private static RunHolder runHolder = new RunHolder();
 
-        int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-        scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
-                new NamedThreadFactory("Solon-scheduledExecutor-"));
+    /**
+     * 关闭（再次调用时，可自动恢复）
+     */
+    public static void shutdown() {
+        runHolder.shutdown();
     }
 
     /**
@@ -65,22 +50,14 @@ public class RunUtil {
      * 设置调度执行器
      */
     public static void setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
-        if (scheduledExecutor != null) {
-            ScheduledExecutorService old = RunUtil.scheduledExecutor;
-            RunUtil.scheduledExecutor = scheduledExecutor;
-            old.shutdown();
-        }
+        runHolder.setScheduledExecutor(scheduledExecutor);
     }
 
     /**
      * 设置异步执行器
      */
     public static void setAsyncExecutor(ExecutorService asyncExecutor) {
-        if (asyncExecutor != null) {
-            ExecutorService old = RunUtil.asyncExecutor;
-            RunUtil.asyncExecutor = asyncExecutor;
-            old.shutdown();
-        }
+        runHolder.setAsyncExecutor(asyncExecutor);
     }
 
     /**
@@ -117,7 +94,7 @@ public class RunUtil {
      */
     @Deprecated
     public static Future<?> parallel(Runnable task) {
-        return asyncExecutor.submit(task);
+        return runHolder.getAsyncExecutor().submit(task);
     }
 
     /**
@@ -127,21 +104,21 @@ public class RunUtil {
      */
     @Deprecated
     public static <T> Future<T> parallel(Callable<T> task) {
-        return asyncExecutor.submit(task);
+        return runHolder.getAsyncExecutor().submit(task);
     }
 
     /**
      * 异步执行
      */
     public static CompletableFuture<Void> async(Runnable task) {
-        return CompletableFuture.runAsync(task, asyncExecutor);
+        return CompletableFuture.runAsync(task, runHolder.getAsyncExecutor());
     }
 
     /**
      * 异步执行
      */
     public static <U> CompletableFuture<U> async(Supplier<U> task) {
-        return CompletableFuture.supplyAsync(task, asyncExecutor);
+        return CompletableFuture.supplyAsync(task, runHolder.getAsyncExecutor());
     }
 
     /**
@@ -150,34 +127,34 @@ public class RunUtil {
     public static CompletableFuture<Void> asyncAndTry(RunnableEx task) {
         return CompletableFuture.runAsync(() -> {
             runAndTry(task);
-        }, asyncExecutor);
+        }, runHolder.getAsyncExecutor());
     }
 
     /**
      * 延迟执行
      */
     public static ScheduledFuture<?> delay(Runnable task, long millis) {
-        return scheduledExecutor.schedule(task, millis, TimeUnit.MILLISECONDS);
+        return runHolder.getScheduledExecutor().schedule(task, millis, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 延迟执行并重复
      */
     public static ScheduledFuture<?> delayAndRepeat(Runnable task, long millis) {
-        return scheduledExecutor.scheduleWithFixedDelay(task, 1000, millis, TimeUnit.MILLISECONDS);
+        return runHolder.getScheduledExecutor().scheduleWithFixedDelay(task, 1000, millis, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 定时任务
      */
     public static ScheduledFuture<?> scheduleAtFixedRate(Runnable task, long initialDelay, long millisPeriod) {
-        return scheduledExecutor.scheduleAtFixedRate(task, initialDelay, millisPeriod, TimeUnit.MILLISECONDS);
+        return runHolder.getScheduledExecutor().scheduleAtFixedRate(task, initialDelay, millisPeriod, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 定时任务
      */
     public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable task, long initialDelay, long millisDelay) {
-        return scheduledExecutor.scheduleWithFixedDelay(task, initialDelay, millisDelay, TimeUnit.MILLISECONDS);
+        return runHolder.getScheduledExecutor().scheduleWithFixedDelay(task, initialDelay, millisDelay, TimeUnit.MILLISECONDS);
     }
 }
