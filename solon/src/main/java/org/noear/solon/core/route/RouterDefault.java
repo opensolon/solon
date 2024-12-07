@@ -91,18 +91,7 @@ public class RouterDefault implements Router, HandlerSlots {
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
-        Result<Handler> result = table.matchOneAndStatus(pathNew, method);
-
-        if (result.getData() != null) {
-            ctx.attrSet(Constants.ATTR_MAIN_HANDLER, result.getData());
-            ctx.attrSet(Constants.ATTR_MAIN_STATUS, 200);
-        } else {
-            //要补这个 set null（多次时，可以不断重置）
-            ctx.attrSet(Constants.ATTR_MAIN_HANDLER, null);
-            ctx.attrSet(Constants.ATTR_MAIN_STATUS, result.getCode());
-        }
-
-        return result;
+        return table.matchOneAndStatus(pathNew, method);
     }
 
     @Override
@@ -110,7 +99,6 @@ public class RouterDefault implements Router, HandlerSlots {
         //不能从缓存里取，不然 pathNew 会有问题
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
-
 
         return table.matchOne(pathNew, method);
     }
