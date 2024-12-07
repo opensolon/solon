@@ -86,9 +86,9 @@ public class RouterHandler implements Handler {
         }
 
         //提前获取主处理
-        Handler mainHandler = router.matchMain(x);
+        Result<Handler> mainHandler = router.matchMainAndStatus(x);
 
         //执行
-        chainManager.doIntercept(x, mainHandler, this::handle1);
+        chainManager.doIntercept(x, mainHandler.getData(), this::handle1);
     }
 }

@@ -85,9 +85,8 @@ public class RouterDefault implements Router, HandlerSlots {
         }
     }
 
-
     @Override
-    public Handler matchMain(Context ctx) {
+    public Result<Handler> matchMainAndStatus(Context ctx) {
         //不能从缓存里取，不然 pathNew 会有问题
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
@@ -103,7 +102,17 @@ public class RouterDefault implements Router, HandlerSlots {
             ctx.attrSet(Constants.ATTR_MAIN_STATUS, result.getCode());
         }
 
-        return result.getData();
+        return result;
+    }
+
+    @Override
+    public Handler matchMain(Context ctx) {
+        //不能从缓存里取，不然 pathNew 会有问题
+        String pathNew = ctx.pathNew();
+        MethodType method = MethodTypeUtil.valueOf(ctx.method());
+
+
+        return table.matchOne(pathNew, method);
     }
 
 
