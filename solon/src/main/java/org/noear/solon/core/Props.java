@@ -456,6 +456,8 @@ public class Props extends Properties {
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Properties data) {
         if (data != null) {
@@ -466,6 +468,8 @@ public class Props extends Properties {
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Map<String, String> data) {
         if (data != null) {
@@ -476,6 +480,8 @@ public class Props extends Properties {
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Iterable<KeyValues<String>> data) {
         if (data != null) {
