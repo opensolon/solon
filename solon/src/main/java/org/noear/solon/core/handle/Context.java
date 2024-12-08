@@ -536,7 +536,7 @@ public abstract class Context {
      * 获取参数并转为Bean
      */
     public <T> T paramAsBean(Class<T> type) {
-        return PropsConverter.global().convert(new Props(paramMap()), type);
+        return PropsConverter.global().convert(new Props().addAll(paramMap()), type);
     }
 
     /**

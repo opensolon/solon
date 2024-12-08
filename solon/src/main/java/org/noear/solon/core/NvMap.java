@@ -138,6 +138,6 @@ public class NvMap extends IgnoreCaseMap<String> {
      * @since 2.9
      * */
     public <T> T toBean(Class<T> clz) {
-        return PropsConverter.global().convert(new Props(this), clz);
+        return PropsConverter.global().convert(new Props().addAll(this), clz);
     }
 }
