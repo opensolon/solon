@@ -27,6 +27,7 @@
 * 添加 solon Props:addAll 方法
 * 修复 solon BeanWrap 特殊情况下可能会重复代理的问题
 * 修复 solon war 部署时，定时调度线程池不能关闭的问题
+* smarthttp 升为 2.4
 
 ### v3.0.4
 * 新增 nami-coder-abc 插件
