@@ -250,7 +250,9 @@ public class Props extends Properties {
      * 绑定到一个类实例上
      */
     public <T> T bindTo(T obj) {
-        PropsConverter.global().convert(this, obj, null, null);
+        if (this.size() > 0) {
+            PropsConverter.global().convert(this, obj, null, null);
+        }
         return obj;
     }
 
