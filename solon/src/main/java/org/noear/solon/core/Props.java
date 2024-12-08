@@ -456,7 +456,9 @@ public class Props extends Properties {
      * 添加所有属性数据
      */
     public Props addAll(Properties data) {
-        super.putAll(defaults);
+        if (data != null) {
+            super.putAll(data);
+        }
         return this;
     }
 
@@ -464,7 +466,9 @@ public class Props extends Properties {
      * 添加所有属性数据
      */
     public Props addAll(Map<String, String> data) {
-        super.putAll(data);
+        if (data != null) {
+            super.putAll(data);
+        }
         return this;
     }
 
@@ -472,8 +476,10 @@ public class Props extends Properties {
      * 添加所有属性数据
      */
     public Props addAll(Iterable<KeyValues<String>> data) {
-        for (KeyValues<String> kv : data) {
-            super.put(kv.getKey(), kv.getFirstValue());
+        if (data != null) {
+            for (KeyValues<String> kv : data) {
+                super.put(kv.getKey(), kv.getFirstValue());
+            }
         }
         return this;
     }
