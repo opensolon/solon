@@ -59,7 +59,7 @@ public class XPluginImpl implements Plugin {
     }
 
     private void serverEndpointBuild(Class<?> clz, BeanWrap bw, ServerEndpoint anno) {
-        String path = anno.value();
+        String path = Solon.cfg().getByTmpl(anno.value()); //支持属性配置
         boolean registered = false;
 
 
