@@ -56,11 +56,21 @@ public class Props extends Properties {
         super(defaults);
     }
 
+    /**
+     * @see Props:addAll
+     * @deprecated 3.0
+     */
+    @Deprecated
     public Props(Map<String, String> data) {
         super();
         super.putAll(data);
     }
 
+    /**
+     * @see Props:addAll
+     * @deprecated 3.0
+     */
+    @Deprecated
     public Props(Iterable<KeyValues<String>> data) {
         super();
         for (KeyValues<String> kv : data) {
@@ -130,8 +140,8 @@ public class Props extends Properties {
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
-     * @param  useDef 是否使用默认值
+     * @param tml    模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param useDef 是否使用默认值
      */
     protected String getByTmpl(String tml, Properties props, String refKey, boolean useDef) {
         return PropUtil.getByTml(this, props, tml, refKey, useDef);
@@ -184,8 +194,8 @@ public class Props extends Properties {
 
     /**
      * 获取某项配置，并转为目标类型（如果没有，输出默认值）
-     * */
-    public  <T> T getOrDefault(String key, T def, Function<String, T> convert) {
+     */
+    public <T> T getOrDefault(String key, T def, Function<String, T> convert) {
         String temp = get(key);
         if (Utils.isEmpty(temp)) {
             return def;
@@ -210,7 +220,7 @@ public class Props extends Properties {
      * 转为换一个类实例
      *
      * @deprecated 2.9
-     * */
+     */
     @Deprecated
     public <T> T getBean(Class<T> clz) {
         return toBean(clz);
@@ -231,14 +241,14 @@ public class Props extends Properties {
      * 转为换一个类实例
      *
      * @since 2.9
-     * */
+     */
     public <T> T toBean(Class<T> clz) {
         return PropsConverter.global().convert(this, clz);
     }
 
     /**
      * 绑定到一个类实例上
-     * */
+     */
     public <T> T bindTo(T obj) {
         PropsConverter.global().convert(this, obj, null, null);
         return obj;
@@ -333,7 +343,7 @@ public class Props extends Properties {
      *
      * @param keyStarts key 的开始字符
      */
-    public Map<String,String> getMap(String keyStarts) {
+    public Map<String, String> getMap(String keyStarts) {
         Map<String, String> map = new LinkedHashMap<>();
         doFind(keyStarts, (key, val) -> { //相对旧版，减少一次 forEach
             if (key.startsWith(".")) {
@@ -438,6 +448,34 @@ public class Props extends Properties {
         if (key != null && value != null) {
             this.put(key, value);
         }
+    }
+
+    ////
+
+    /**
+     * 添加所有属性数据
+     */
+    public Props addAll(Properties data) {
+        super.putAll(defaults);
+        return this;
+    }
+
+    /**
+     * 添加所有属性数据
+     */
+    public Props addAll(Map<String, String> data) {
+        super.putAll(data);
+        return this;
+    }
+
+    /**
+     * 添加所有属性数据
+     */
+    public Props addAll(Iterable<KeyValues<String>> data) {
+        for (KeyValues<String> kv : data) {
+            super.put(kv.getKey(), kv.getFirstValue());
+        }
+        return this;
     }
 
     ////
@@ -592,14 +630,14 @@ public class Props extends Properties {
 
     /**
      * 完成
-     * */
-    public void complete(){
+     */
+    public void complete() {
         reviseDo(true);
     }
 
     /**
      * 校正（多文件加载后）
-     * */
+     */
     protected void reviseDo(boolean isEnd) {
         //如果加载完成还存在变量，则特殊处理
         if (tempPropMap.size() == 0) {
