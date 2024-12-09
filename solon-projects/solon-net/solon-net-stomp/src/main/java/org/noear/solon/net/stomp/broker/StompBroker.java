@@ -51,13 +51,15 @@ public class StompBroker implements WebSocketListenerSupplier {
             throw new IllegalArgumentException("Endpoint is not empty");
         }
 
+        String path = Solon.cfg().getByTmpl(serverEndpoint.value());
+
         //初始化
         brokerMedia = new StompBrokerMedia();
-        webSocketListener = new ToStompWebSocketListener(serverEndpoint.value(), brokerMedia);
+        webSocketListener = new ToStompWebSocketListener(path, brokerMedia);
 
         //注册到容器
-        BeanWrap bw = Solon.context().wrap(serverEndpoint.value(), brokerMedia.emitter);
-        Solon.context().putWrap(serverEndpoint.value(), bw);
+        BeanWrap bw = Solon.context().wrap(path, brokerMedia.emitter);
+        Solon.context().putWrap(path, bw);
         Solon.context().putWrap(StompEmitter.class, bw);
 
         //添加处理监听
