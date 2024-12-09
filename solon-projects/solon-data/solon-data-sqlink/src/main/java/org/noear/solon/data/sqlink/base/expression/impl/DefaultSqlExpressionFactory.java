@@ -82,8 +82,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
-        return new SqlQueryableExpression(select, from, joins, where, groupBy, having, orderBy, limit);
+    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression union) {
+        return new SqlQueryableExpression(select, from, joins, where, groupBy, having, orderBy, limit,union);
     }
 
     @Override
@@ -159,5 +159,15 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     @Override
     public ISqlWithsExpression withs() {
         return new SqlWithsExpression();
+    }
+
+    @Override
+    public ISqlUnionExpression union(ISqlQueryableExpression queryable, boolean all) {
+        return new SqlUnionExpression(queryable, all);
+    }
+
+    @Override
+    public ISqlUnionsExpression unions() {
+        return new SqlUnionsExpression();
     }
 }

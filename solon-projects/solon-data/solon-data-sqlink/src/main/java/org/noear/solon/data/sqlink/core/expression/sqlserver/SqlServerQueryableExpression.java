@@ -35,8 +35,8 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlServerQueryableExpression extends SqlQueryableExpression {
-    public SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
-        super(select, from, joins, where, groupBy, having, orderBy, limit);
+    public SqlServerQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression union) {
+        super(select, from, joins, where, groupBy, having, orderBy, limit, union);
     }
 
     @Override
@@ -46,6 +46,8 @@ public class SqlServerQueryableExpression extends SqlQueryableExpression {
         }
         else {
             List<String> strings = new ArrayList<>();
+            String unionsSqlAndValue = unions.getSqlAndValue(config, values);
+            if (!unionsSqlAndValue.isEmpty()) strings.add(unionsSqlAndValue);
             tryWith(config, strings, values);
             makeSelect(strings, values, config);
             String fromSqlAndValue = from.getSqlAndValue(config, values);

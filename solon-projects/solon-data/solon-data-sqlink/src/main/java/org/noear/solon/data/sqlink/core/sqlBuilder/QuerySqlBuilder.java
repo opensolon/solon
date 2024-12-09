@@ -118,6 +118,10 @@ public class QuerySqlBuilder implements ISqlBuilder {
         queryable.addOrder(order);
     }
 
+    public void addUnion(ISqlUnionExpression union) {
+        queryable.addUnion(union);
+    }
+
     public void setSelect(ISqlSelectExpression select) {
         queryable.setSelect(select);
     }

@@ -25,6 +25,7 @@
 ### v3.0.5
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部
 * 添加 solon Props:addAll 方法
+* 优化 solon ServerEndpoint 注解支持属性模板
 * 修复 solon BeanWrap 特殊情况下可能会重复代理的问题
 * 修复 solon war 部署时，定时调度线程池不能关闭的问题
 * smarthttp 升为 2.4

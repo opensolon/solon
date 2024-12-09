@@ -25,17 +25,17 @@ import org.noear.solon.data.sqlink.api.Result;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlWithExpression;
-import org.noear.solon.data.sqlink.base.expression.JoinType;
-import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
+import org.noear.solon.data.sqlink.base.expression.*;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.page.DefaultPager;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
+import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -51,6 +51,10 @@ public class LQuery<T> extends QueryBase {
 
     public LQuery(QuerySqlBuilder sqlBuilder) {
         super(sqlBuilder);
+    }
+
+    public LQuery(LQuery<T> query) {
+        super(query.boxedQuerySqlBuilder());
     }
 
     // endregion
@@ -97,6 +101,15 @@ public class LQuery<T> extends QueryBase {
         return joinNewQuery();
     }
 
+    public <Tn> LQuery2<T, Tn> innerJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery2<T, Tn> innerJoinWith(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
+        joinWith(JoinType.INNER, target, expr.getTree());
+        return joinNewQuery();
+    }
+
     /**
      * join表操作<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -130,6 +143,15 @@ public class LQuery<T> extends QueryBase {
 
     public <Tn> LQuery2<T, Tn> leftJoin(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
         join(JoinType.LEFT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
+    public <Tn> LQuery2<T, Tn> leftJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery2<T, Tn> leftJoinWith(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
+        joinWith(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -184,6 +206,15 @@ public class LQuery<T> extends QueryBase {
 
     public <Tn> LQuery2<T, Tn> rightJoin(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
         join(JoinType.RIGHT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
+    public <Tn> LQuery2<T, Tn> rightJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func2<T, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery2<T, Tn> rightJoinWith(LQuery<Tn> target, ExprTree<Func2<T, Tn, Boolean>> expr) {
+        joinWith(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -647,7 +678,7 @@ public class LQuery<T> extends QueryBase {
 
     // region [WITH]
 
-    public LQuery<T> with() {
+    public LQuery<T> asWith() {
         SqLinkConfig config = getConfig();
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
@@ -657,6 +688,59 @@ public class LQuery<T> extends QueryBase {
         ISqlWithExpression with = factory.with(queryable, metaData.getTableName());
         QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, factory.queryable(factory.from(with, asName)));
         return new LQuery<>(querySqlBuilder);
+    }
+
+    // endregion
+
+    // region [UNION]
+
+    public LQuery<T> union(LQuery<T> query, boolean all) {
+        union0(query, all);
+        return this;
+    }
+
+    public LQuery<T> union(LQuery<T> query) {
+        union(query, false);
+        return this;
+    }
+
+    public LQuery<T> unionAll(LQuery<T> query) {
+        union(query, true);
+        return this;
+    }
+
+    // endregion
+
+    // WITH "as_tree_cte"
+    // as
+    // (
+    // SELECT 0 as cte_level, a."Code", a."Name", a."ParentCode"
+    // FROM "Area" a
+    // WHERE (a."Name" = '中国')
+
+    // union all
+
+    // SELECT wct1.cte_level + 1 as cte_level, wct2."Code", wct2."Name", wct2."ParentCode"
+    // FROM "as_tree_cte" wct1
+    // INNER JOIN "Area" wct2 ON wct2."ParentCode" = wct1."Code"
+    // )
+    // SELECT a."Code", a."Name", a."ParentCode"
+    // FROM "as_tree_cte" a
+    // ORDER BY a."Code"
+
+    // region [CTE]
+    public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
+        throw new RuntimeException();
+    }
+
+    public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr) {
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), getSqlBuilder().getQueryable());
+        ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
+        FieldMetaData fieldMetaData = column.getFieldMetaData();
+        if (!fieldMetaData.hasNavigate()) {
+            throw new RuntimeException("asTreeCTE指定的字段需要被@Navigate修饰");
+        }
+        NavigateData navigateData = fieldMetaData.getNavigateData();
     }
 
     // endregion

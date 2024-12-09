@@ -20,9 +20,7 @@ import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
-import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
-import org.noear.solon.data.sqlink.base.metaData.NavigateData;
+import org.noear.solon.data.sqlink.base.metaData.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
@@ -158,6 +156,16 @@ public abstract class QueryBase extends CRUD {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlExpression on = sqlVisitor.visit(lambda);
         sqlBuilder.addJoin(joinType, target.getSqlBuilder().getQueryable(), on);
+    }
+
+    protected void joinWith(JoinType joinType, QueryBase target, LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = target.getSqlBuilder().getQueryable();
+        Class<?> targetClass = queryable.getMainTableClass();
+        MetaData metaData = MetaDataCache.getMetaData(targetClass);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression on = sqlVisitor.visit(lambda);
+        sqlBuilder.addJoin(joinType, factory.with(queryable, metaData.getTableName()), on);
     }
 
     protected void where(LambdaExpression<?> lambda) {
@@ -465,5 +473,10 @@ public abstract class QueryBase extends CRUD {
         minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
         LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
         return minQuery.toList();
+    }
+
+    protected void union0(QueryBase queryBase, boolean all) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        sqlBuilder.addUnion(factory.union(queryBase.getSqlBuilder().getQueryable(), all));
     }
 }

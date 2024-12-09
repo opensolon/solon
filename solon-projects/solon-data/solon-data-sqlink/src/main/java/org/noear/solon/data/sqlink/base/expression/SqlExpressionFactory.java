@@ -160,7 +160,7 @@ public interface SqlExpressionFactory {
      * @param from from表达式
      */
     default ISqlQueryableExpression queryable(ISqlFromExpression from) {
-        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit(), unions());
     }
 
     /**
@@ -170,7 +170,7 @@ public interface SqlExpressionFactory {
      * @param from   from表达式
      */
     default ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from) {
-        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select, from, Joins(), where(), groupBy(), having(), orderBy(), limit(), unions());
     }
 
     /**
@@ -194,7 +194,7 @@ public interface SqlExpressionFactory {
      * @param orderBy 排序表达式
      * @param limit   limit表达式
      */
-    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit);
+    ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression union);
 
     /**
      * 创建表表达式
@@ -229,7 +229,6 @@ public interface SqlExpressionFactory {
      * @param target     目标类
      * @param isSingle   是否为单列查询
      * @param isDistinct 是否为去重查询
-     * @return
      */
     ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target, boolean isSingle, boolean isDistinct);
 
@@ -252,7 +251,6 @@ public interface SqlExpressionFactory {
      *
      * @param column 需要set的列
      * @param value  需要set的值
-     * @return
      */
     ISqlSetExpression set(ISqlColumnExpression column, ISqlExpression value);
 
@@ -340,6 +338,10 @@ public interface SqlExpressionFactory {
     ISqlWithExpression with(ISqlQueryableExpression queryable, String name);
 
     ISqlWithsExpression withs();
+
+    ISqlUnionExpression union(ISqlQueryableExpression queryable, boolean all);
+
+    ISqlUnionsExpression unions();
 
     /**
      * 将实体类转换为列表达式集合

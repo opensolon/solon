@@ -23,12 +23,6 @@ import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
-import org.noear.solon.data.sqlink.core.SqLinkImpl;
-import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
-import org.noear.solon.data.sqlink.core.tuple.Tuple1;
-import org.noear.solon.data.sqlink.core.tuple.Tuple2;
-import org.noear.solon.data.sqlink.core.tuple.Tuple3;
-import org.noear.solon.data.sqlink.core.tuple.Tuple4;
 import org.noear.solon.lang.Preview;
 
 import java.util.Collection;
@@ -69,9 +63,14 @@ public interface SqLink {
     <T> LQuery<T> query(@Recode Class<T> c);
 
     /**
+     * 查询过程查询
+     */
+    <T> LQuery<T> query(@Recode LQuery<T> query);
+
+    /**
      * with查询
      */
-    <T> LQuery<T> with(@Recode LQuery<T> query);
+    <T> LQuery<T> with(@Recode LQuery<T> with);
 
     /**
      * 进行不包含表的查询

@@ -35,7 +35,6 @@ public class SqlHavingExpression implements ISqlHavingExpression {
     }
 
     public void addCond(ISqlExpression condition) {
-        System.out.println(condition);
         conditions.addCondition(condition);
     }
 

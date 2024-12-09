@@ -33,7 +33,7 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     @Override
     default ISqlQueryableExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config));
+        ISqlQueryableExpression queryableExpression = factory.queryable(getSelect().copy(config), getFrom().copy(config), getJoins().copy(config), getWhere().copy(config), getGroupBy().copy(config), getHaving().copy(config), getOrderBy().copy(config), getLimit().copy(config), getUnions().copy(config));
         queryableExpression.setChanged(getChanged());
         return queryableExpression;
     }
@@ -60,29 +60,26 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
 
     /**
      * 设置group by
-     *
-     * @param group
      */
     void setGroup(ISqlGroupByExpression group);
 
     /**
      * 添加having条件
-     *
-     * @param cond
      */
     void addHaving(ISqlExpression cond);
 
     /**
      * 添加orderBy列
-     *
-     * @param order
      */
     void addOrder(ISqlOrderExpression order);
 
     /**
+     * 添加union
+     */
+    void addUnion(ISqlUnionExpression union);
+
+    /**
      * 设置select
-     *
-     * @param newSelect
      */
     void setSelect(ISqlSelectExpression newSelect);
 
@@ -142,6 +139,11 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     ISqlHavingExpression getHaving();
 
     /**
+     * 获取union
+     */
+    ISqlUnionsExpression getUnions();
+
+    /**
      * 获取查询列的类（from + joins）
      */
     List<Class<?>> getOrderedClass();
@@ -155,7 +157,7 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
         }
         else {
             ISqlTableExpression sqlTableExpression = getFrom().getSqlTableExpression();
-            if (sqlTableExpression instanceof ISqlRealTableExpression) {
+            if (sqlTableExpression instanceof ISqlRealTableExpression || sqlTableExpression instanceof ISqlWithExpression) {
                 return getMappingData0();
             }
             else {

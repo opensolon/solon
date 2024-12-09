@@ -84,6 +84,15 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase {
         return joinNewQuery();
     }
 
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> innerJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> innerJoinWith(LQuery<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
+        joinWith(JoinType.INNER, target, expr.getTree());
+        return joinNewQuery();
+    }
+
     /**
      * join表操作<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -120,6 +129,15 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase {
         return joinNewQuery();
     }
 
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> leftJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> leftJoinWith(LQuery<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
+        joinWith(JoinType.LEFT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
     /**
      * join表操作<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -153,6 +171,15 @@ public class LQuery6<T1, T2, T3, T4, T5, T6> extends QueryBase {
 
     public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> rightJoin(LQuery<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
         join(JoinType.RIGHT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> rightJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery7<T1, T2, T3, T4, T5, T6, Tn> rightJoinWith(LQuery<Tn> target, ExprTree<Func7<T1, T2, T3, T4, T5, T6, Tn, Boolean>> expr) {
+        joinWith(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
 

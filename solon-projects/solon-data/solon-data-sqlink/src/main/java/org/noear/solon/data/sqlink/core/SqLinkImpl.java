@@ -83,8 +83,13 @@ public class SqLinkImpl implements SqLink {
     }
 
     @Override
+    public <T> LQuery<T> query(LQuery<T> query) {
+        return new LQuery<>(query);
+    }
+
+    @Override
     public <T> LQuery<T> with(LQuery<T> query) {
-        return query.with();
+        return query.asWith();
     }
 
     /**

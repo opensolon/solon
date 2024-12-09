@@ -28,7 +28,7 @@ import java.util.List;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlRealTableExpression extends SqlTableExpression implements ISqlRealTableExpression {
+public class SqlRealTableExpression implements ISqlRealTableExpression {
     private final Class<?> tableClass;
 
     SqlRealTableExpression(Class<?> tableClass) {

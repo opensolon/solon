@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlQueryableExpression extends SqlTableExpression implements ISqlQueryableExpression {
+public class SqlQueryableExpression implements ISqlQueryableExpression {
+
     protected final ISqlSelectExpression select;
     protected final ISqlFromExpression from;
     protected final ISqlJoinsExpression joins;
@@ -36,10 +37,10 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     protected final ISqlHavingExpression having;
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
-    //protected final ISqlWithsExpression withs;
+    protected final ISqlUnionsExpression unions;
     protected boolean isChanged;
 
-    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression unions) {
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -48,6 +49,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         this.having = having;
         this.orderBy = orderBy;
         this.limit = limit;
+        this.unions = unions;
     }
 
     @Override
@@ -57,6 +59,8 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         }
         else {
             List<String> strings = new ArrayList<>();
+            String unionsSqlAndValue = unions.getSqlAndValue(config, values);
+            if (!unionsSqlAndValue.isEmpty()) strings.add(unionsSqlAndValue);
             tryWith(config, strings, values);
             strings.add(getSelect().getSqlAndValue(config, values));
             String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
@@ -85,31 +89,43 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         return select.getTarget();
     }
 
+    @Override
     public void addWhere(ISqlExpression cond) {
         where.addCondition(cond);
         change();
     }
 
+    @Override
     public void addJoin(ISqlJoinExpression join) {
         joins.addJoin(join);
         change();
     }
 
+    @Override
     public void setGroup(ISqlGroupByExpression group) {
         groupBy.setColumns(group.getColumns());
         change();
     }
 
+    @Override
     public void addHaving(ISqlExpression cond) {
         having.addCond(cond);
         change();
     }
 
+    @Override
     public void addOrder(ISqlOrderExpression order) {
         orderBy.addOrder(order);
         change();
     }
 
+    @Override
+    public void addUnion(ISqlUnionExpression union) {
+        unions.addUnion(union);
+        change();
+    }
+
+    @Override
     public void setSelect(ISqlSelectExpression newSelect) {
         select.setColumns(newSelect.getColumns());
         select.setTarget(newSelect.getTarget());
@@ -118,45 +134,55 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         change();
     }
 
+    @Override
     public void setLimit(long offset, long rows) {
         limit.setOffset(offset);
         limit.setRows(rows);
         change();
     }
 
+    @Override
     public void setDistinct(boolean distinct) {
         select.setDistinct(distinct);
         change();
     }
 
+    @Override
     public ISqlFromExpression getFrom() {
         return from;
     }
 
+    @Override
     public int getOrderedCount() {
         return 1 + joins.getJoins().size();
     }
 
+    @Override
     public ISqlWhereExpression getWhere() {
         return where;
     }
 
+    @Override
     public ISqlGroupByExpression getGroupBy() {
         return groupBy;
     }
 
+    @Override
     public ISqlJoinsExpression getJoins() {
         return joins;
     }
 
+    @Override
     public ISqlSelectExpression getSelect() {
         return select;
     }
 
+    @Override
     public ISqlOrderByExpression getOrderBy() {
         return orderBy;
     }
 
+    @Override
     public ISqlLimitExpression getLimit() {
         return limit;
     }
@@ -164,6 +190,11 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     @Override
     public ISqlHavingExpression getHaving() {
         return having;
+    }
+
+    @Override
+    public ISqlUnionsExpression getUnions() {
+        return unions;
     }
 
     public List<Class<?>> getOrderedClass() {

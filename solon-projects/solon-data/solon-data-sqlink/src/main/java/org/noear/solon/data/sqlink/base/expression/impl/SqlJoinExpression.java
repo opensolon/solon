@@ -63,7 +63,8 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         StringBuilder builder = new StringBuilder();
         SqLinkDialect disambiguation = config.getDisambiguation();
-        builder.append(joinType.getJoin()).append(" ");
+        builder.append(joinType.getJoin());
+        builder.append(" ");
         if (joinTable instanceof ISqlRealTableExpression) {
             builder.append(joinTable.getSqlAndValue(config, values));
         }
@@ -77,6 +78,8 @@ public class SqlJoinExpression implements ISqlJoinExpression {
         if (getAsName() != null) {
             builder.append(" AS ").append(disambiguation.disambiguation(getAsName()));
         }
+        builder.append(" ON ");
+        builder.append(conditions.getSqlAndValue(config, values));
         return builder.toString();
     }
 }
