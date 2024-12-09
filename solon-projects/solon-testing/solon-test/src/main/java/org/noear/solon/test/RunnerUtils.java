@@ -126,6 +126,8 @@ public class RunnerUtils {
                 argsAry.addAll(Arrays.asList(anno.args()));
             }
 
+            argsAry.add("-testing=1");
+
             //添加调试模式
             if (anno.debug()) {
                 argsAry.add("-debug=1");
@@ -174,6 +176,7 @@ public class RunnerUtils {
             }
         } else {
             List<String> argsAry = new ArrayList<>();
+            argsAry.add("-testing=1");
             argsAry.add("-debug=1");
             return startDo(klass, argsAry, klass);
         }
@@ -184,8 +187,7 @@ public class RunnerUtils {
         if (mainClz == klass) {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
 
-            SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
-            //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
+            SimpleSolonApp testApp = new SimpleSolonApp(mainClz, args);
             testApp.start(x -> {
                 //默认关闭 http（避免与已经存在的服务端口冲突）
                 x.enableHttp(false);
@@ -207,8 +209,7 @@ public class RunnerUtils {
             } else {
                 String[] args = argsAry.toArray(new String[argsAry.size()]);
 
-                SimpleSolonApp testApp = new SimpleSolonApp(mainClz, NvMap.from(args).set("testing", "1"));
-                //SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
+                SimpleSolonApp testApp = new SimpleSolonApp(mainClz, args);
                 testApp.start(x -> {
                     //默认关闭 http（避免与已经存在的服务端口冲突）
                     x.enableHttp(false);
