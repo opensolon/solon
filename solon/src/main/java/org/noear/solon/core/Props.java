@@ -250,7 +250,9 @@ public class Props extends Properties {
      * 绑定到一个类实例上
      */
     public <T> T bindTo(T obj) {
-        PropsConverter.global().convert(this, obj, null, null);
+        if (this.size() > 0) {
+            PropsConverter.global().convert(this, obj, null, null);
+        }
         return obj;
     }
 
@@ -454,26 +456,38 @@ public class Props extends Properties {
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Properties data) {
-        super.putAll(defaults);
+        if (data != null) {
+            super.putAll(data);
+        }
         return this;
     }
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Map<String, String> data) {
-        super.putAll(data);
+        if (data != null) {
+            super.putAll(data);
+        }
         return this;
     }
 
     /**
      * 添加所有属性数据
+     *
+     * @since 3.0
      */
     public Props addAll(Iterable<KeyValues<String>> data) {
-        for (KeyValues<String> kv : data) {
-            super.put(kv.getKey(), kv.getFirstValue());
+        if (data != null) {
+            for (KeyValues<String> kv : data) {
+                super.put(kv.getKey(), kv.getFirstValue());
+            }
         }
         return this;
     }

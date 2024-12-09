@@ -374,7 +374,7 @@ public class HttpTest extends HttpTester {
     @Test
     public void test2k() throws IOException {
         assert path("/demo2/param/date?date=2018-11-11&date2=2019-11-11T11:11:11")
-                .get().equals("Sun Nov 11 00:00:00 CST 2018 # Mon Nov 11 11:11:11 CST 2019");
+                .get().equals("Sun Nov 11 00:00:00 GMT 2018 # Mon Nov 11 11:11:11 GMT 2019");
     }
 
     @Test
