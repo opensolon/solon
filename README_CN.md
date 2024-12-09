@@ -69,13 +69,6 @@ Solon v3.0.4
 | 更大的兼容范围 | 非 java-ee 架构；同时支持 java8 ～ java23，graalvm native image |
 
 
-## 加入到交流群：
-
-| QQ交流群：22200020                       | 微信交流群（申请时输入：Solon）                     |
-|---------------------------|----------------------------------------|
-| <img src="group_qq.png" width="120" />       | <img src="group_wx.png" width="120" /> 
-
-
 ## 主要代码仓库
 
 
