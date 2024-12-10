@@ -17,7 +17,6 @@ package org.noear.solon.data.sqlink.core.expression.sqlserver;
 
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFactory;
-import org.noear.solon.data.sqlink.core.expression.oracle.OracleQueryableExpression;
 
 /**
  * SqlServer表达工厂
@@ -32,7 +31,7 @@ public class SqlServerExpressionFactory extends DefaultSqlExpressionFactory {
     }
 
     @Override
-    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression union) {
-        return new SqlServerQueryableExpression(select, from, joins, where, groupBy, having, orderBy, limit, union);
+    public ISqlQueryableExpression queryable(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+        return new SqlServerQueryableExpression(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 }

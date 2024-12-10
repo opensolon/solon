@@ -35,8 +35,8 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleQueryableExpression extends SqlQueryableExpression {
-    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression union) {
-        super(select, from, joins, where, groupBy, having, orderBy, limit, union);
+    public OracleQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
+        super(select, from, joins, where, groupBy, having, orderBy, limit);
     }
 
     @Override
@@ -50,8 +50,6 @@ public class OracleQueryableExpression extends SqlQueryableExpression {
 //        {
 //            strings.add("SELECT * FROM (SELECT t.*,ROWNUM AS \"-ROWNUM-\" FROM (");
 //        }
-            String unionsSqlAndValue = unions.getSqlAndValue(config, values);
-            if (!unionsSqlAndValue.isEmpty()) strings.add(unionsSqlAndValue);
             tryWith(config, strings, values);
             String fromSqlAndValue = from.getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);

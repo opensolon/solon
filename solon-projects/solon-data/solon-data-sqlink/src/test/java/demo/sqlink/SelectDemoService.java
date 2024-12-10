@@ -21,11 +21,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.Result;
-import org.noear.solon.data.sqlink.api.crud.read.LQuery;
-import org.noear.solon.data.sqlink.core.SqLinkImpl;
-import org.noear.solon.data.sqlink.core.SubQuery;
 import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
-import org.noear.solon.data.sqlink.core.tuple.Tuple1;
 
 import java.util.List;
 
@@ -102,4 +98,14 @@ public class SelectDemoService {
                 .includes(user -> user.getAreas(), areas -> areas.limit(5))
                 .toList();
     }
+
+//    public List<User> lowerSql(int id) {
+//        return sqLink.execQuery(
+//                User.class,
+//                value -> MessageFormat.format("select * from user where id = {0} and name = {1}", value.iid, value.name),
+//                new SqlValues() {
+//                    int iid = id;
+//                    String name = "name";
+//                });
+//    }
 }

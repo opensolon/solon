@@ -19,9 +19,7 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
-import org.noear.solon.data.sqlink.api.crud.read.Empty;
-import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
-import org.noear.solon.data.sqlink.api.crud.read.LQuery;
+import org.noear.solon.data.sqlink.api.crud.read.*;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
@@ -90,6 +88,26 @@ public class SqLinkImpl implements SqLink {
     @Override
     public <T> LQuery<T> with(LQuery<T> query) {
         return query.asWith();
+    }
+
+    @Override
+    public <T> UnionQuery<T> union(LQuery<T> q1, LQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
+    }
+
+    @Override
+    public <T> UnionQuery<T> union(EndQuery<T> q1, EndQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
+    }
+
+    @Override
+    public <T> UnionQuery<T> unionAll(LQuery<T> q1, LQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, true);
+    }
+
+    @Override
+    public <T> UnionQuery<T> unionAll(EndQuery<T> q1, EndQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
     }
 
     /**

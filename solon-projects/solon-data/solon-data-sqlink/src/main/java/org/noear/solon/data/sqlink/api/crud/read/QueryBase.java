@@ -96,7 +96,7 @@ public abstract class QueryBase extends CRUD {
         List<SqlValue> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
+        Class<T> targetClass = sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession(config);
         List<T> ts = session.executeQuery(
                 r -> ObjectBuilder.start(r, targetClass, mappingData, single, config).createList(),
@@ -283,7 +283,6 @@ public abstract class QueryBase extends CRUD {
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
-
 
     protected void include(LambdaExpression<?> lambda) {
         include(lambda, null, sqlBuilder.getIncludeSets());
@@ -473,10 +472,5 @@ public abstract class QueryBase extends CRUD {
         minQuerySqlBuilder.setSelect(factory.select(minList, lambda.getReturnType(), true, false));
         LQuery<T> minQuery = new LQuery<>(minQuerySqlBuilder);
         return minQuery.toList();
-    }
-
-    protected void union0(QueryBase queryBase, boolean all) {
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        sqlBuilder.addUnion(factory.union(queryBase.getSqlBuilder().getQueryable(), all));
     }
 }

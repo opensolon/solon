@@ -37,10 +37,9 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
     protected final ISqlHavingExpression having;
     protected final ISqlOrderByExpression orderBy;
     protected final ISqlLimitExpression limit;
-    protected final ISqlUnionsExpression unions;
     protected boolean isChanged;
 
-    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit, ISqlUnionsExpression unions) {
+    public SqlQueryableExpression(ISqlSelectExpression select, ISqlFromExpression from, ISqlJoinsExpression joins, ISqlWhereExpression where, ISqlGroupByExpression groupBy, ISqlHavingExpression having, ISqlOrderByExpression orderBy, ISqlLimitExpression limit) {
         this.select = select;
         this.from = from;
         this.joins = joins;
@@ -49,7 +48,6 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
         this.having = having;
         this.orderBy = orderBy;
         this.limit = limit;
-        this.unions = unions;
     }
 
     @Override
@@ -59,8 +57,6 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
         }
         else {
             List<String> strings = new ArrayList<>();
-            String unionsSqlAndValue = unions.getSqlAndValue(config, values);
-            if (!unionsSqlAndValue.isEmpty()) strings.add(unionsSqlAndValue);
             tryWith(config, strings, values);
             strings.add(getSelect().getSqlAndValue(config, values));
             String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
@@ -116,12 +112,6 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
     @Override
     public void addOrder(ISqlOrderExpression order) {
         orderBy.addOrder(order);
-        change();
-    }
-
-    @Override
-    public void addUnion(ISqlUnionExpression union) {
-        unions.addUnion(union);
         change();
     }
 
@@ -190,11 +180,6 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
     @Override
     public ISqlHavingExpression getHaving() {
         return having;
-    }
-
-    @Override
-    public ISqlUnionsExpression getUnions() {
-        return unions;
     }
 
     public List<Class<?>> getOrderedClass() {

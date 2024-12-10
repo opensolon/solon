@@ -37,6 +37,7 @@ import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -569,6 +570,64 @@ public class LQuery<T> extends QueryBase {
         return toPagedResult((long) pageIndex, (long) pageSize);
     }
 
+    /**
+     * 返回树形数据(内存排序)
+     */
+    public List<T> toTreeList(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
+        throw new RuntimeException();
+    }
+
+    public List<T> toTreeList(ExprTree<Func1<T, Collection<T>>> expr) {
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), getSqlBuilder().getQueryable());
+        ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
+        FieldMetaData fieldMetaData = column.getFieldMetaData();
+        if (!fieldMetaData.hasNavigate()) {
+            throw new RuntimeException("toTreeList指定的字段需要被@Navigate修饰");
+        }
+        NavigateData navigateData = fieldMetaData.getNavigateData();
+        MetaData metaData = MetaDataCache.getMetaData(fieldMetaData.getParentType());
+        FieldMetaData parent = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+        FieldMetaData child = metaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+        return buildTree(toList(), child, parent, fieldMetaData, expr.getDelegate());
+    }
+
+    private List<T> buildTree(List<T> flatList, FieldMetaData child, FieldMetaData parent, FieldMetaData list, Func1<T, Collection<T>> func) {
+        // 用 Map 存储所有节点，以便快速查找
+        Map<Object, T> nodeMap = new HashMap<>();
+        List<T> rootNodes = new ArrayList<>();
+
+        // 将所有节点加入 Map
+        for (T node : flatList) {
+            nodeMap.put(child.getValueByObject(node), node);
+        }
+
+        // 构建树结构
+        for (T node : flatList) {
+            Object parentValue = parent.getValueByObject(node);
+            T parentNode = nodeMap.get(parentValue);
+            // 如果没有父节点，则将当前节点作为根节点
+            if (parentNode == null) {
+                rootNodes.add(node);
+            }
+            else {
+                Collection<T> collection = func.invoke(parentNode);
+                if (collection == null) {
+                    collection = new ArrayList<>();
+                    try {
+                        list.getSetter().invoke(parentNode, collection);
+                    }
+                    catch (InvocationTargetException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                collection.add(node);
+            }
+        }
+
+        return rootNodes;
+    }
+
+
     // endregion
 
     // region [FAST RETURN]
@@ -694,53 +753,70 @@ public class LQuery<T> extends QueryBase {
 
     // region [UNION]
 
-    public LQuery<T> union(LQuery<T> query, boolean all) {
-        union0(query, all);
-        return this;
+    protected UnionQuery<T> union(ISqlQueryableExpression query, boolean all) {
+        return new UnionQuery<>(getConfig(),this.getSqlBuilder().getQueryable(), query,all);
     }
 
-    public LQuery<T> union(LQuery<T> query) {
-        union(query, false);
-        return this;
+    public UnionQuery<T> union(LQuery<T> query, boolean all) {
+        return union(query.getSqlBuilder().getQueryable(),all);
     }
 
-    public LQuery<T> unionAll(LQuery<T> query) {
-        union(query, true);
-        return this;
+    public UnionQuery<T> union(LQuery<T> query) {
+        return union(query.getSqlBuilder().getQueryable(),false);
+    }
+
+    public UnionQuery<T> unionAll(LQuery<T> query) {
+        return union(query.getSqlBuilder().getQueryable(),true);
+    }
+
+    public UnionQuery<T> union(EndQuery<T> query, boolean all) {
+        return union(query.getSqlBuilder().getQueryable(),all);
+    }
+
+    public UnionQuery<T> union(EndQuery<T> query) {
+        return union(query.getSqlBuilder().getQueryable(),false);
+    }
+
+    public UnionQuery<T> unionAll(EndQuery<T> query) {
+        return union(query.getSqlBuilder().getQueryable(),true);
     }
 
     // endregion
 
-    // WITH "as_tree_cte"
-    // as
-    // (
-    // SELECT 0 as cte_level, a."Code", a."Name", a."ParentCode"
-    // FROM "Area" a
-    // WHERE (a."Name" = '中国')
-
-    // union all
-
-    // SELECT wct1.cte_level + 1 as cte_level, wct2."Code", wct2."Name", wct2."ParentCode"
-    // FROM "as_tree_cte" wct1
-    // INNER JOIN "Area" wct2 ON wct2."ParentCode" = wct1."Code"
-    // )
-    // SELECT a."Code", a."Name", a."ParentCode"
-    // FROM "as_tree_cte" a
-    // ORDER BY a."Code"
-
     // region [CTE]
-    public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
+
+    public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr, int level) {
         throw new RuntimeException();
     }
 
-    public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr) {
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), getSqlBuilder().getQueryable());
+    public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr, int level) {
+        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), queryable);
         ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
         FieldMetaData fieldMetaData = column.getFieldMetaData();
         if (!fieldMetaData.hasNavigate()) {
             throw new RuntimeException("asTreeCTE指定的字段需要被@Navigate修饰");
         }
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NavigateData navigateData = fieldMetaData.getNavigateData();
+        MetaData metaData = MetaDataCache.getMetaData(fieldMetaData.getParentType());
+        String parentId = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName()).getColumn();
+        String childId = metaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName()).getColumn();
+        ISqlSelectExpression select = queryable.getSelect().copy(getConfig());
+        String asName = queryable.getFrom().getAsName();
+        ISqlRecursionExpression recursion = factory.recursion(queryable, parentId, childId, level);
+        ISqlQueryableExpression newQuery = factory.queryable(select, factory.from(recursion, asName));
+        getSqlBuilder().setQueryable(newQuery);
+        // TODO INCLUDE
+        return this;
+    }
+
+    public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
+        throw new RuntimeException();
+    }
+
+    public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr) {
+        return asTreeCTE(expr, 0);
     }
 
     // endregion

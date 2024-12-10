@@ -7,7 +7,6 @@ import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class SqlUnionsExpression implements ISqlUnionsExpression {
 
@@ -28,11 +27,13 @@ public class SqlUnionsExpression implements ISqlUnionsExpression {
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         if (unions.isEmpty()) return "";
         List<String> strings = new ArrayList<>(unions.size());
-        // 反向遍历
-        for (int i = unions.size() - 1; i >= 0; i--) {
-            ISqlUnionExpression union = unions.get(i);
+        for (ISqlUnionExpression union : unions) {
             strings.add(union.getSqlAndValue(config, values));
         }
+//        for (int i = unions.size() - 1; i >= 0; i--) {
+//            ISqlUnionExpression union = unions.get(i);
+//            strings.add(union.getSqlAndValue(config, values));
+//        }
         return String.join(" ", strings);
     }
 }

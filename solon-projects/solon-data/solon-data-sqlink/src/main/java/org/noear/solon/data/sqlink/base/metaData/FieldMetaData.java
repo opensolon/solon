@@ -107,6 +107,7 @@ public class FieldMetaData {
         this.getter = getter;
         setter.setAccessible(true);
         this.setter = setter;
+        field.setAccessible(true);
         this.field = field;
         this.useTypeHandler = useTypeHandler;
         this.typeHandler = typeHandler;

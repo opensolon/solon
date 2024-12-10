@@ -36,7 +36,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
  */
 public class QuerySqlBuilder implements ISqlBuilder {
     private final SqLinkConfig config;
-    private final ISqlQueryableExpression queryable;
+    private ISqlQueryableExpression queryable;
     private final List<IncludeSet> includeSets = new ArrayList<>();
 
 //    public QuerySqlBuilder(IConfig config, Class<?> target, int offset)
@@ -116,10 +116,6 @@ public class QuerySqlBuilder implements ISqlBuilder {
 
     public void addOrder(ISqlOrderExpression order) {
         queryable.addOrder(order);
-    }
-
-    public void addUnion(ISqlUnionExpression union) {
-        queryable.addUnion(union);
     }
 
     public void setSelect(ISqlSelectExpression select) {
@@ -210,12 +206,16 @@ public class QuerySqlBuilder implements ISqlBuilder {
         return queryable.getSelect().isSingle();
     }
 
-    public Class<?> getTargetClass() {
-        return queryable.getSelect().getTarget();
+    public <T> Class<T> getTargetClass() {
+        return (Class<T>) queryable.getMainTableClass();
     }
 
     public ISqlQueryableExpression getQueryable() {
         return queryable;
+    }
+
+    public void setQueryable(ISqlQueryableExpression queryable) {
+        this.queryable = queryable;
     }
 
     public List<IncludeSet> getIncludeSets() {

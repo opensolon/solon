@@ -19,7 +19,9 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
+import org.noear.solon.data.sqlink.api.crud.read.EndQuery;
 import org.noear.solon.data.sqlink.api.crud.read.LQuery;
+import org.noear.solon.data.sqlink.api.crud.read.UnionQuery;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
@@ -73,6 +75,20 @@ public interface SqLink {
     <T> LQuery<T> with(@Recode LQuery<T> with);
 
     /**
+     * Union查询
+     */
+    <T> UnionQuery<T> union(LQuery<T> q1, LQuery<T> q2);
+
+    <T> UnionQuery<T> union(EndQuery<T> q1, EndQuery<T> q2);
+
+    /**
+     * UnionAll查询
+     */
+    <T> UnionQuery<T> unionAll(LQuery<T> q1, LQuery<T> q2);
+
+    <T> UnionQuery<T> unionAll(EndQuery<T> q1, EndQuery<T> q2);
+
+    /**
      * 进行不包含表的查询
      *
      * @return 查询过程对象
@@ -119,4 +135,20 @@ public interface SqLink {
      * 获取配置
      */
     SqLinkConfig getConfig();
+
+//    default <T, Value extends SqlValues> List<T> execQuery(Class<T> target, Func1<Value, String> func, Value values) {
+//        SqlSession session = getConfig().getSqlSessionFactory().getSession(getConfig());
+//        return session.executeQuery(resultSet -> {
+//            MetaData metaData = MetaDataCache.getMetaData(target);
+//            List<FieldMetaData> notIgnore = metaData.getNotIgnorePropertys();
+//            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+//            List<T> list = new ArrayList<>();
+//            while (resultSet.next()) {
+//                for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
+//
+//                }
+//            }
+//            return list;
+//        }, func.invoke(values), Collections.emptyList());
+//    }
 }

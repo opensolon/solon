@@ -28,7 +28,7 @@ public class SqlUnionExpression implements ISqlUnionExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        String union = " UNION" + (all ? " ALL" : "");
-        return queryable.getSqlAndValue(config, values) + union;
+        String union = "UNION" + (all ? " ALL " : " ");
+        return union + "(" + queryable.getSqlAndValue(config, values) + ")";
     }
 }

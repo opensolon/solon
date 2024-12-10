@@ -210,7 +210,7 @@ public class ObjectBuilder<T> {
     /**
      * 多列返回
      */
-    private List<T> getClassList() throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    private List<T> getClassList() throws SQLException, IllegalAccessException, InvocationTargetException {
         AbsBeanCreator<T> beanCreator = config.getBeanCreatorFactory().get(target);
         Supplier<T> creator = beanCreator.getBeanCreator();
         Map<String, Integer> indexMap = getIndexMap();
