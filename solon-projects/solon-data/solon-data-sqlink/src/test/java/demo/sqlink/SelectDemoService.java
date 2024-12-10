@@ -15,6 +15,7 @@
  */
 package demo.sqlink;
 
+import demo.sqlink.model.Area;
 import demo.sqlink.model.User;
 import demo.sqlink.vo.UserVo;
 import org.noear.solon.annotation.Component;
@@ -108,4 +109,11 @@ public class SelectDemoService {
 //                    String name = "name";
 //                });
 //    }
+
+    public List<Area> lowerSql(int id) {
+        return sqLink.query(User.class)
+                .selectMany(u -> u.getAreas())
+                .where(a -> a.getCode() == "shanghai")
+                .toList();
+    }
 }

@@ -388,6 +388,14 @@ public class LQuery<T> extends QueryBase {
         return new EndQuery<>(getSqlBuilder());
     }
 
+    public <R> LQuery<R> selectMany(@Expr(Expr.BodyType.Expr) Func1<T, Collection<R>> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<R> selectMany(ExprTree<Func1<T, Collection<R>>> expr) {
+
+    }
+
     // endregion
 
     // region [INCLUDE]
@@ -754,31 +762,31 @@ public class LQuery<T> extends QueryBase {
     // region [UNION]
 
     protected UnionQuery<T> union(ISqlQueryableExpression query, boolean all) {
-        return new UnionQuery<>(getConfig(),this.getSqlBuilder().getQueryable(), query,all);
+        return new UnionQuery<>(getConfig(), this.getSqlBuilder().getQueryable(), query, all);
     }
 
     public UnionQuery<T> union(LQuery<T> query, boolean all) {
-        return union(query.getSqlBuilder().getQueryable(),all);
+        return union(query.getSqlBuilder().getQueryable(), all);
     }
 
     public UnionQuery<T> union(LQuery<T> query) {
-        return union(query.getSqlBuilder().getQueryable(),false);
+        return union(query.getSqlBuilder().getQueryable(), false);
     }
 
     public UnionQuery<T> unionAll(LQuery<T> query) {
-        return union(query.getSqlBuilder().getQueryable(),true);
+        return union(query.getSqlBuilder().getQueryable(), true);
     }
 
     public UnionQuery<T> union(EndQuery<T> query, boolean all) {
-        return union(query.getSqlBuilder().getQueryable(),all);
+        return union(query.getSqlBuilder().getQueryable(), all);
     }
 
     public UnionQuery<T> union(EndQuery<T> query) {
-        return union(query.getSqlBuilder().getQueryable(),false);
+        return union(query.getSqlBuilder().getQueryable(), false);
     }
 
     public UnionQuery<T> unionAll(EndQuery<T> query) {
-        return union(query.getSqlBuilder().getQueryable(),true);
+        return union(query.getSqlBuilder().getQueryable(), true);
     }
 
     // endregion

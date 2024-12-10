@@ -42,6 +42,15 @@ import java.util.Map;
  * @since 3.0
  */
 public class ExpressionUtil {
+
+    public static boolean isEquals(MethodCallExpression methodCall) {
+        Method method = methodCall.getMethod();
+        if (method.getParameterCount() != 1) return false;
+        if (method.getParameterTypes()[0] != Object.class) return false;
+        if (method.getReturnType() != boolean.class) return false;
+        return method.getName().equals("equals");
+    }
+
     /**
      * 判断是否为属性表达式
      */

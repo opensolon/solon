@@ -786,6 +786,9 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 return checkAndReturnValue(methodCall);
             }
         }
+        else if (ExpressionUtil.isEquals(methodCall)) {
+            return factory.binary(SqlOperator.EQ, visit(methodCall.getExpr()), visit(methodCall.getArgs().get(0)));
+        }
         else {
             if (isProperty(asNameMap, methodCall)) {
                 if (isGetter(methodCall.getMethod())) {
