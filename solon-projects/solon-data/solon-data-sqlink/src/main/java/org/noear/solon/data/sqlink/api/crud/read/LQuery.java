@@ -31,6 +31,7 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.metaData.NavigateData;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.page.DefaultPager;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
@@ -393,7 +394,28 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <R> LQuery<R> selectMany(ExprTree<Func1<T, Collection<R>>> expr) {
+        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), queryable);
+        ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
+        FieldMetaData fieldMetaData = column.getFieldMetaData();
+        if (!fieldMetaData.hasNavigate()) {
+            throw new SqLinkException("selectMany指定的字段需要被@Navigate修饰");
+        }
+        NavigateData navigateData = fieldMetaData.getNavigateData();
+        Class<?> targetType = navigateData.getNavigateTargetType();
+        MetaData metaData = MetaDataCache.getMetaData(targetType);
+        FieldMetaData target = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+        FieldMetaData self = metaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        String asName = ExpressionUtil.getAsName(targetType);
 
+        // 获取父的拷贝，然后把select换成自己的字段
+        ISqlQueryableExpression copy = queryable.copy(getConfig());
+        copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())),copy.getMainTableClass()));
+
+        ISqlQueryableExpression newQuery = factory.queryable(targetType, asName);
+        newQuery.addWhere(factory.binary(SqlOperator.IN,factory.column(target,asName),copy));
+        return new LQuery<R>(new QuerySqlBuilder(getConfig(),newQuery));
     }
 
     // endregion
@@ -582,7 +604,7 @@ public class LQuery<T> extends QueryBase {
      * 返回树形数据(内存排序)
      */
     public List<T> toTreeList(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
-        throw new RuntimeException();
+        throw new NotCompiledException();
     }
 
     public List<T> toTreeList(ExprTree<Func1<T, Collection<T>>> expr) {
@@ -590,7 +612,7 @@ public class LQuery<T> extends QueryBase {
         ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
         FieldMetaData fieldMetaData = column.getFieldMetaData();
         if (!fieldMetaData.hasNavigate()) {
-            throw new RuntimeException("toTreeList指定的字段需要被@Navigate修饰");
+            throw new SqLinkException("toTreeList指定的字段需要被@Navigate修饰");
         }
         NavigateData navigateData = fieldMetaData.getNavigateData();
         MetaData metaData = MetaDataCache.getMetaData(fieldMetaData.getParentType());
@@ -794,7 +816,7 @@ public class LQuery<T> extends QueryBase {
     // region [CTE]
 
     public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr, int level) {
-        throw new RuntimeException();
+        throw new NotCompiledException();
     }
 
     public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr, int level) {
@@ -803,7 +825,7 @@ public class LQuery<T> extends QueryBase {
         ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
         FieldMetaData fieldMetaData = column.getFieldMetaData();
         if (!fieldMetaData.hasNavigate()) {
-            throw new RuntimeException("asTreeCTE指定的字段需要被@Navigate修饰");
+            throw new SqLinkException("asTreeCTE指定的字段需要被@Navigate修饰");
         }
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         NavigateData navigateData = fieldMetaData.getNavigateData();
@@ -820,7 +842,7 @@ public class LQuery<T> extends QueryBase {
     }
 
     public LQuery<T> asTreeCTE(@Expr(Expr.BodyType.Expr) Func1<T, Collection<T>> expr) {
-        throw new RuntimeException();
+        throw new NotCompiledException();
     }
 
     public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr) {
