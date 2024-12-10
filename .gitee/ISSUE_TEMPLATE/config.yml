@@ -1,5 +1,5 @@
 # 鼓励用户使用 Issue 模板（不允许用户创建空白 Issue）
-blank_issues_enabled: false
+blank_issues_enabled: true
 
 # 引导用户浏览相关文档
 contact_links:
