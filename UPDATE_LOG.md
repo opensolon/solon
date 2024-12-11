@@ -22,7 +22,7 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### v3.0.5
+### v3.0.4.1
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部
 * 添加 solon Props:addAll 方法
 * 添加 solon-security-validation 值类型支持检测，通过检测异常替代之前的类型校验失败
