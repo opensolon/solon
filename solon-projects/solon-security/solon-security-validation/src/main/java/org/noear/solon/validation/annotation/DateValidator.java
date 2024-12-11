@@ -41,6 +41,11 @@ public class DateValidator implements Validator<Date> {
         return anno.groups();
     }
 
+    @Override
+    public boolean supportValueType(Class<?> type) {
+        return String.class.isAssignableFrom(type);
+    }
+
     /**
      * 校验实体的字段
      * */

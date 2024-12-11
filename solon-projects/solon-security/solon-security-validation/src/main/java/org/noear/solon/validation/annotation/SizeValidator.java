@@ -40,6 +40,11 @@ public class SizeValidator implements Validator<Size> {
     }
 
     @Override
+    public boolean supportValueType(Class<?> type) {
+        return Collection.class.isAssignableFrom(type);
+    }
+
+    @Override
     public Result validateOfValue(Size anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof Collection == false) {
             return Result.failure();

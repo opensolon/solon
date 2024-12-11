@@ -40,6 +40,11 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
+    public boolean supportValueType(Class<?> type) {
+        return Number.class.isAssignableFrom(type);
+    }
+
+    @Override
     public Result validateOfValue(DecimalMin anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof Number == false) {
             return Result.failure();

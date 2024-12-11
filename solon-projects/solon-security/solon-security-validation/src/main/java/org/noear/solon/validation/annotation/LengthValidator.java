@@ -39,6 +39,11 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
+    public boolean supportValueType(Class<?> type) {
+        return String.class.isAssignableFrom(type);
+    }
+
+    @Override
     public Result validateOfValue(Length anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
             return Result.failure();
