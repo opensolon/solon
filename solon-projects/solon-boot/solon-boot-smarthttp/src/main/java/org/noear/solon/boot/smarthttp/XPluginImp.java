@@ -36,7 +36,7 @@ public final class XPluginImp implements Plugin {
 
 
     public static String solon_boot_ver() {
-        return "smart http 2.3/" + Solon.version();
+        return "smart http 2.4/" + Solon.version();
     }
 
     private SmHttpServerComb _server;
