@@ -48,7 +48,7 @@ public class EmailValidator implements Validator<Email> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return String.class.isAssignableFrom(type);
     }
 

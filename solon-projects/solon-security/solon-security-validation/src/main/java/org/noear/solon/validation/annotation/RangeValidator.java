@@ -41,7 +41,7 @@ public class RangeValidator implements Validator<Range> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return ClassUtil.isNumberType(type);
     }
 

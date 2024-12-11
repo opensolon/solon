@@ -44,7 +44,7 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return String.class.isAssignableFrom(type);
     }
 

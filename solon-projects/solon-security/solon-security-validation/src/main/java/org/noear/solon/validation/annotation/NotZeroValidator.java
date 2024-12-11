@@ -40,7 +40,7 @@ public class NotZeroValidator implements Validator<NotZero> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return ClassUtil.isNumberType(type);
     }
 

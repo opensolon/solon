@@ -40,7 +40,7 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return String.class.isAssignableFrom(type);
     }
 

@@ -40,7 +40,7 @@ public class SizeValidator implements Validator<Size> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return Collection.class.isAssignableFrom(type);
     }
 

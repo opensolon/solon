@@ -41,9 +41,9 @@ public interface Validator<T extends Annotation> {
 
 
     /**
-     * 支持值类型
+     * 是否支持值类型
      */
-    default boolean supportValueType(Class<?> type) {
+    default boolean isSupportValueType(Class<?> type) {
         return true;
     }
 

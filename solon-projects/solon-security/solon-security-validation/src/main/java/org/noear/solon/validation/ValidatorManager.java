@@ -22,7 +22,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
-import org.noear.solon.core.wrap.MethodKey;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
@@ -235,7 +234,7 @@ public class ValidatorManager {
         Validator valid = validMap.get(anno.annotationType());
 
         if (valid != null) {
-            if(valid.supportValueType(pw.getType()) == false) {
+            if(valid.isSupportValueType(pw.getType()) == false) {
                 throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pw.getName() + "' parameter as " + pw.getType().getSimpleName() + " type: " + inv.method().getMethod());
             }
 
@@ -352,7 +351,7 @@ public class ValidatorManager {
                         continue;
                     }
 
-                    if (valid.supportValueType(fw.getType()) == false) {
+                    if (valid.isSupportValueType(fw.getType()) == false) {
                         throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + fw.getName() + "' field as " + fw.getType().getSimpleName() + " type: " + cw.clz());
                     }
 

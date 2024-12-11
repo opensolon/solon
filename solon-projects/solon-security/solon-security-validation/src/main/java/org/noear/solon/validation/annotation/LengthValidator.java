@@ -39,7 +39,7 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return String.class.isAssignableFrom(type);
     }
 

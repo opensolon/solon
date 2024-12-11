@@ -41,7 +41,7 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
     }
 
     @Override
-    public boolean supportValueType(Class<?> type) {
+    public boolean isSupportValueType(Class<?> type) {
         return ClassUtil.isNumberType(type);
     }
 
