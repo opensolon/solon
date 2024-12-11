@@ -30,6 +30,17 @@ import java.util.Properties;
  * @since 2.2
  */
 public class ClassUtil {
+    /**
+     * 是否为数字类型
+     */
+    public static boolean isNumberType(Class<?> clz) {
+        if (clz.isPrimitive()) {
+            return clz == Byte.TYPE || clz == Short.TYPE || clz == Integer.TYPE ||
+                    clz == Long.TYPE || clz == Float.TYPE || clz == Double.TYPE;
+        }
+
+        return Number.class.isAssignableFrom(clz);
+    }
 
     /**
      * 是否存在某个类

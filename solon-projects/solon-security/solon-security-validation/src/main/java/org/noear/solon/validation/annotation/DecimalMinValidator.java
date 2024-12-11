@@ -18,6 +18,7 @@ package org.noear.solon.validation.annotation;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.validation.util.StringUtils;
 import org.noear.solon.validation.Validator;
 
@@ -41,7 +42,7 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
 
     @Override
     public boolean supportValueType(Class<?> type) {
-        return Number.class.isAssignableFrom(type);
+        return ClassUtil.isNumberType(type);
     }
 
     @Override

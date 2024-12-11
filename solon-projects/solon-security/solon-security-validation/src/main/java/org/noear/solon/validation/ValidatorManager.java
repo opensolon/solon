@@ -347,6 +347,10 @@ public class ValidatorManager {
                         continue;
                     }
 
+                    if (valid.supportValueType(fw.getType()) == false) {
+                        throw new IllegalStateException("'@" + anno.annotationType().getSimpleName() + "' nonsupport the " + fw.getType().getSimpleName() + " type: " + fw.getName());
+                    }
+
                     tmp.setLength(0);
                     Result rst = valid.validateOfValue(anno, fw.getValue(obj, true), tmp);
 
@@ -355,18 +359,18 @@ public class ValidatorManager {
                             rst.setDescription(cw.clz().getSimpleName() + "." + fw.getName());
                         }
 
-                        if (VALIDATE_ALL){
+                        if (VALIDATE_ALL) {
                             result.setCode(rst.getCode());
                             if (rst.getData() instanceof BeanValidateInfo) {
                                 list.add((BeanValidateInfo) rst.getData());
-                            }else if (rst.getData() instanceof Collection){
+                            } else if (rst.getData() instanceof Collection) {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
-                            }else {
+                            } else {
                                 rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
-                        }else {
+                        } else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
                                 rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                             }
