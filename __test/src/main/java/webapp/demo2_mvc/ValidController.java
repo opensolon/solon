@@ -211,4 +211,14 @@ public class ValidController {
     public String bean4_update(@Validated(UpdateModel.class) ValidModel4 model) {
         return "OK";
     }
+
+    @Mapping("err1")
+    public String err1(@Validated ValidModel5 model) {
+        return "OK";
+    }
+
+    @Mapping("err2")
+    public String err2(@Size String model) {
+        return "OK";
+    }
 }

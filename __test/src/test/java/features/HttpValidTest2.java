@@ -341,4 +341,14 @@ public class HttpValidTest2 extends HttpTester {
 
         assert path("/demo2/valid/bean2").bodyOfJson(node.toJson()).post().contains("field18");
     }
+
+    @Test
+    public void test_err1() throws IOException {
+        assert path("/demo2/valid/err1").bodyOfJson("{}").post().contains("OK") == false;
+    }
+
+    @Test
+    public void test_err2() throws IOException {
+        assert path("/demo2/valid/err2").get().contains("OK") == false;
+    }
 }

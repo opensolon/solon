@@ -22,6 +22,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
+import org.noear.solon.core.wrap.MethodKey;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
@@ -211,7 +212,7 @@ public class ValidatorManager {
             ParamWrap pw = inv.method().getParamWraps()[i];
 
             for (Annotation anno : pw.getParameter().getAnnotations()) {
-                validateOfValue0(pw.spec().getName(), anno, inv.args()[i], result, tmp);
+                validateOfValue0(pw.spec().getName(), anno, inv.args()[i], result, tmp, inv, pw);
             }
         }
 
@@ -230,10 +231,14 @@ public class ValidatorManager {
         }
     }
 
-    private static void validateOfValue0(String label, Annotation anno, Object val, Result<List<BeanValidateInfo>> result, StringBuilder tmp) {
+    private static void validateOfValue0(String label, Annotation anno, Object val, Result<List<BeanValidateInfo>> result, StringBuilder tmp, Invocation inv, ParamWrap pw) {
         Validator valid = validMap.get(anno.annotationType());
 
         if (valid != null) {
+            if(valid.supportValueType(pw.getType()) == false) {
+                throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pw.getName() + "' parameter as " + pw.getType().getSimpleName() + " type: " + inv.method().getMethod());
+            }
+
             tmp.setLength(0);
             Result rst = valid.validateOfValue(anno, val, tmp);
 
@@ -348,7 +353,7 @@ public class ValidatorManager {
                     }
 
                     if (valid.supportValueType(fw.getType()) == false) {
-                        throw new IllegalStateException("'@" + anno.annotationType().getSimpleName() + "' nonsupport the " + fw.getType().getSimpleName() + " type: " + fw.getName());
+                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + fw.getName() + "' field as " + fw.getType().getSimpleName() + " type: " + cw.clz());
                     }
 
                     tmp.setLength(0);
