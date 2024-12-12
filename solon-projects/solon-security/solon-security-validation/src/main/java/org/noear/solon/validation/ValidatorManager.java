@@ -211,7 +211,7 @@ public class ValidatorManager {
             ParamWrap pw = inv.method().getParamWraps()[i];
 
             for (Annotation anno : pw.getParameter().getAnnotations()) {
-                validateOfValue0(pw.spec().getName(), anno, inv.args()[i], result, tmp);
+                validateOfValue0(pw.spec().getName(), anno, inv.args()[i], result, tmp, inv, pw);
             }
         }
 
@@ -230,10 +230,14 @@ public class ValidatorManager {
         }
     }
 
-    private static void validateOfValue0(String label, Annotation anno, Object val, Result<List<BeanValidateInfo>> result, StringBuilder tmp) {
+    private static void validateOfValue0(String label, Annotation anno, Object val, Result<List<BeanValidateInfo>> result, StringBuilder tmp, Invocation inv, ParamWrap pw) {
         Validator valid = validMap.get(anno.annotationType());
 
         if (valid != null) {
+            if(valid.isSupportValueType(pw.getType()) == false) {
+                throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pw.getName() + "' parameter as " + pw.getType().getSimpleName() + " type: " + inv.method().getMethod());
+            }
+
             tmp.setLength(0);
             Result rst = valid.validateOfValue(anno, val, tmp);
 
@@ -347,6 +351,10 @@ public class ValidatorManager {
                         continue;
                     }
 
+                    if (valid.isSupportValueType(fw.getType()) == false) {
+                        throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + fw.getName() + "' field as " + fw.getType().getSimpleName() + " type: " + cw.clz());
+                    }
+
                     tmp.setLength(0);
                     Result rst = valid.validateOfValue(anno, fw.getValue(obj, true), tmp);
 
@@ -355,18 +363,18 @@ public class ValidatorManager {
                             rst.setDescription(cw.clz().getSimpleName() + "." + fw.getName());
                         }
 
-                        if (VALIDATE_ALL){
+                        if (VALIDATE_ALL) {
                             result.setCode(rst.getCode());
                             if (rst.getData() instanceof BeanValidateInfo) {
                                 list.add((BeanValidateInfo) rst.getData());
-                            }else if (rst.getData() instanceof Collection){
+                            } else if (rst.getData() instanceof Collection) {
                                 List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
                                 list.addAll(list2);
-                            }else {
+                            } else {
                                 rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                                 list.add((BeanValidateInfo) rst.getData());
                             }
-                        }else {
+                        } else {
                             if (rst.getData() instanceof BeanValidateInfo == false) {
                                 rst.setData(new BeanValidateInfo(fw.getName(), anno, valid.message(anno)));
                             }

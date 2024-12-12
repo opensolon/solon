@@ -18,6 +18,7 @@ package org.noear.solon.validation.annotation;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.validation.Validator;
 import org.noear.solon.validation.util.StringUtils;
 
@@ -37,6 +38,11 @@ public class RangeValidator implements Validator<Range> {
     @Override
     public Class<?>[] groups(Range anno) {
         return anno.groups();
+    }
+
+    @Override
+    public boolean isSupportValueType(Class<?> type) {
+        return ClassUtil.isNumberType(type);
     }
 
     @Override

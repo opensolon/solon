@@ -34,17 +34,26 @@ public interface Validator<T extends Annotation> {
 
     /**
      * 校验分组
-     * */
-    default Class<?>[] groups(T anno){return null;}
+     */
+    default Class<?>[] groups(T anno) {
+        return null;
+    }
 
+
+    /**
+     * 是否支持值类型
+     */
+    default boolean isSupportValueType(Class<?> type) {
+        return true;
+    }
 
     /**
      * 验证值
      *
      * @param anno 验证注解
-     * @param val 值
-     * @param tmp 临时字符构建器（用于构建 message；起到复用之效）
-     * @return  验证结果
+     * @param val  值
+     * @param tmp  临时字符构建器（用于构建 message；起到复用之效）
+     * @return 验证结果
      */
     default Result validateOfValue(T anno, Object val, StringBuilder tmp) {
         return Result.failure();
@@ -54,10 +63,10 @@ public interface Validator<T extends Annotation> {
     /**
      * 验证上下文
      *
-     * @param ctx 上下文
+     * @param ctx  上下文
      * @param anno 验证注解
      * @param name 参数名（可能没有）
-     * @param tmp 临时字符构建器（用于构建 message；起到复用之效）
+     * @param tmp  临时字符构建器（用于构建 message；起到复用之效）
      * @return 验证结果
      */
     Result validateOfContext(Context ctx, T anno, String name, StringBuilder tmp);

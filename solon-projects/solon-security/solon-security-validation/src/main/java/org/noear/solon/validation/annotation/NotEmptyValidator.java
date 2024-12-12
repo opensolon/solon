@@ -41,6 +41,12 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
+    public boolean isSupportValueType(Class<?> type) {
+        return String.class.isAssignableFrom(type)
+                || Collection.class.isAssignableFrom(type);
+    }
+
+    @Override
     public Result validateOfValue(NotEmpty anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof String) {
             String val = (String) val0;

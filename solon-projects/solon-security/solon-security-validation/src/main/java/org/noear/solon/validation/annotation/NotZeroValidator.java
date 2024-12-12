@@ -17,6 +17,7 @@ package org.noear.solon.validation.annotation;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.validation.util.StringUtils;
 import org.noear.solon.validation.Validator;
 
@@ -36,6 +37,11 @@ public class NotZeroValidator implements Validator<NotZero> {
     @Override
     public Class<?>[] groups(NotZero anno) {
         return anno.groups();
+    }
+
+    @Override
+    public boolean isSupportValueType(Class<?> type) {
+        return ClassUtil.isNumberType(type);
     }
 
     @Override

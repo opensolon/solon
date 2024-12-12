@@ -40,6 +40,11 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
+    public boolean isSupportValueType(Class<?> type) {
+        return String.class.isAssignableFrom(type);
+    }
+
+    @Override
     public Result validateOfValue(Numeric anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
             return Result.failure();
