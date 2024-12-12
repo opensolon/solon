@@ -175,4 +175,9 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     public ISqlRecursionExpression recursion(ISqlQueryableExpression queryable, String parentId, String childId, int level) {
         return new SqlRecursionExpression(queryable, parentId, childId, level);
     }
+
+    @Override
+    public ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where) {
+        return new SqlUpdateExpression(from, joins, sets, where);
+    }
 }

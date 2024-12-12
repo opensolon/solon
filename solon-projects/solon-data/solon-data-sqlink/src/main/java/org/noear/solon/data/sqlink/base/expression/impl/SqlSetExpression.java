@@ -49,30 +49,34 @@ public class SqlSetExpression implements ISqlSetExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        String set = getColumn().getSqlAndValue(config, values) + " = ";
-        FieldMetaData fieldMetaData = getColumn().getFieldMetaData();
+        String set = column.getSqlAndValue(config, values) + " = ";
+        FieldMetaData fieldMetaData = column.getFieldMetaData();
         ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
-        if (getValue() instanceof ISqlValueExpression) {
-            if (getValue() instanceof ISqlSingleValueExpression) {
-                ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) getValue();
+        if (value instanceof ISqlValueExpression) {
+            if (value instanceof ISqlSingleValueExpression) {
+                ISqlSingleValueExpression sqlSingleValueExpression = (ISqlSingleValueExpression) value;
                 Object value1 = sqlSingleValueExpression.getValue();
                 if (value1 instanceof ISqlKeywords) {
                     ISqlKeywords iSqlKeywords = (ISqlKeywords) value1;
                     return set + iSqlKeywords.getKeyword(config);
                 }
                 else {
-                    values.add(new SqlValue(value1, typeHandler, fieldMetaData.getOnPut()));
+                    if (values != null) {
+                        values.add(new SqlValue(value1, typeHandler, fieldMetaData.getOnPut()));
+                    }
                     return set + "?";
                 }
             }
             else {
-                ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) getValue();
-                values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), typeHandler, fieldMetaData.getOnPut()));
+                if (values != null) {
+                    ISqlCollectedValueExpression sqlCollectedValueExpression = (ISqlCollectedValueExpression) value;
+                    values.add(new SqlValue(sqlCollectedValueExpression.getCollection(), typeHandler, fieldMetaData.getOnPut()));
+                }
                 return set + "?";
             }
         }
         else {
-            return set + getValue().getSqlAndValue(config, values);
+            return set + value.getSqlAndValue(config, values);
         }
     }
 }

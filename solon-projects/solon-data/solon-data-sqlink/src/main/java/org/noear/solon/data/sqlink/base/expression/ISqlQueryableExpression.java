@@ -159,7 +159,7 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
 
     default List<FieldMetaData> getMappingData0() {
         List<Class<?>> orderedClass = getOrderedClass();
-        Class<?> target = getSelect().getTarget();
+        Class<?> target = getMainTableClass();
         MetaData metaData = MetaDataCache.getMetaData(target);
         if (orderedClass.contains(target)) {
             return metaData.getNotIgnorePropertys();
@@ -168,7 +168,7 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
             List<FieldMetaData> fieldMetaDataList = new ArrayList<>();
             for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
                 GOTO:
-                for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
+                for (MetaData data : MetaDataCache.getMetaData(orderedClass)) {
                     for (FieldMetaData noi : data.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
                             fieldMetaDataList.add(sel);

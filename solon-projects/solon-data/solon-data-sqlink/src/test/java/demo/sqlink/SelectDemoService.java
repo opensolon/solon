@@ -15,7 +15,6 @@
  */
 package demo.sqlink;
 
-import demo.sqlink.model.Area;
 import demo.sqlink.model.User;
 import demo.sqlink.vo.UserVo;
 import org.noear.solon.annotation.Component;
@@ -100,20 +99,11 @@ public class SelectDemoService {
                 .toList();
     }
 
-//    public List<User> lowerSql(int id) {
-//        return sqLink.execQuery(
-//                User.class,
-//                value -> MessageFormat.format("select * from user where id = {0} and name = {1}", value.iid, value.name),
-//                new SqlValues() {
-//                    int iid = id;
-//                    String name = "name";
-//                });
-//    }
-
-    public List<Area> lowerSql(int id) {
-        return sqLink.query(User.class)
-                .selectMany(u -> u.getAreas())
-                .where(a -> a.getCode() == "shanghai")
-                .toList();
+    // 查出目标用户然后删除
+    public void del(String code) {
+        long l = sqLink.query(User.class)
+                .where(u -> u.getEmail() == null)
+                .toDelete()
+                .executeRows();
     }
 }

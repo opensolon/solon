@@ -22,8 +22,10 @@ import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.Result;
+import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
+import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
@@ -34,13 +36,16 @@ import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.page.DefaultPager;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
+import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.buildTree;
 
 /**
  * 查询过程对象
@@ -53,10 +58,6 @@ public class LQuery<T> extends QueryBase {
 
     public LQuery(QuerySqlBuilder sqlBuilder) {
         super(sqlBuilder);
-    }
-
-    public LQuery(LQuery<T> query) {
-        super(query.boxedQuerySqlBuilder());
     }
 
     // endregion
@@ -403,19 +404,17 @@ public class LQuery<T> extends QueryBase {
         }
         NavigateData navigateData = fieldMetaData.getNavigateData();
         Class<?> targetType = navigateData.getNavigateTargetType();
-        MetaData metaData = MetaDataCache.getMetaData(targetType);
-        FieldMetaData target = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
-        FieldMetaData self = metaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
+        FieldMetaData target = MetaDataCache.getMetaData(targetType).getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
+        FieldMetaData self = MetaDataCache.getMetaData(queryable.getMainTableClass()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         String asName = ExpressionUtil.getAsName(targetType);
 
         // 获取父的拷贝，然后把select换成自己的字段
         ISqlQueryableExpression copy = queryable.copy(getConfig());
-        copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())),copy.getMainTableClass()));
-
+        copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())), copy.getMainTableClass()));
         ISqlQueryableExpression newQuery = factory.queryable(targetType, asName);
-        newQuery.addWhere(factory.binary(SqlOperator.IN,factory.column(target,asName),copy));
-        return new LQuery<R>(new QuerySqlBuilder(getConfig(),newQuery));
+        newQuery.addWhere(factory.binary(SqlOperator.IN, factory.column(target, asName), copy));
+        return new LQuery<>(new QuerySqlBuilder(getConfig(), newQuery));
     }
 
     // endregion
@@ -621,43 +620,6 @@ public class LQuery<T> extends QueryBase {
         return buildTree(toList(), child, parent, fieldMetaData, expr.getDelegate());
     }
 
-    private List<T> buildTree(List<T> flatList, FieldMetaData child, FieldMetaData parent, FieldMetaData list, Func1<T, Collection<T>> func) {
-        // 用 Map 存储所有节点，以便快速查找
-        Map<Object, T> nodeMap = new HashMap<>();
-        List<T> rootNodes = new ArrayList<>();
-
-        // 将所有节点加入 Map
-        for (T node : flatList) {
-            nodeMap.put(child.getValueByObject(node), node);
-        }
-
-        // 构建树结构
-        for (T node : flatList) {
-            Object parentValue = parent.getValueByObject(node);
-            T parentNode = nodeMap.get(parentValue);
-            // 如果没有父节点，则将当前节点作为根节点
-            if (parentNode == null) {
-                rootNodes.add(node);
-            }
-            else {
-                Collection<T> collection = func.invoke(parentNode);
-                if (collection == null) {
-                    collection = new ArrayList<>();
-                    try {
-                        list.getSetter().invoke(parentNode, collection);
-                    }
-                    catch (InvocationTargetException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                collection.add(node);
-            }
-        }
-
-        return rootNodes;
-    }
-
-
     // endregion
 
     // region [FAST RETURN]
@@ -767,17 +729,17 @@ public class LQuery<T> extends QueryBase {
 
     // region [WITH]
 
-    public LQuery<T> asWith() {
-        SqLinkConfig config = getConfig();
-        SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
-        Class<?> target = queryable.getMainTableClass();
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        String asName = ExpressionUtil.getAsName(target);
-        ISqlWithExpression with = factory.with(queryable, metaData.getTableName());
-        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, factory.queryable(factory.from(with, asName)));
-        return new LQuery<>(querySqlBuilder);
-    }
+//    public LQuery<T> asWith() {
+//        SqLinkConfig config = getConfig();
+//        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+//        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+//        Class<?> target = queryable.getMainTableClass();
+//        MetaData metaData = MetaDataCache.getMetaData(target);
+//        String asName = ExpressionUtil.getAsName(target);
+//        ISqlWithExpression with = factory.with(queryable, metaData.getTableName());
+//        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, factory.queryable(factory.from(with, asName)));
+//        return new LQuery<>(querySqlBuilder);
+//    }
 
     // endregion
 
@@ -847,6 +809,40 @@ public class LQuery<T> extends QueryBase {
 
     public LQuery<T> asTreeCTE(ExprTree<Func1<T, Collection<T>>> expr) {
         return asTreeCTE(expr, 0);
+    }
+
+    // endregion
+
+    // region [ANOTHER]
+
+    public LDelete<T> toDelete() {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+        MetaData metaData = MetaDataCache.getMetaData(queryable.getMainTableClass());
+        FieldMetaData primary = metaData.getPrimary();
+        DeleteSqlBuilder deleteSqlBuilder = new DeleteSqlBuilder(getConfig(), queryable.getMainTableClass());
+        ISqlQueryableExpression copy = queryable.copy(getConfig());
+        // 某些数据库不支持 a.xx in (select b.xx from b), 所以需要在外边包一层 a.xx in (select b.xx from (select * from b))
+        ISqlSelectExpression select = factory.select(Collections.singletonList(factory.column(primary, copy.getFrom().getAsName())), copy.getMainTableClass());
+        ISqlQueryableExpression warpQuery = factory.queryable(select, factory.from(copy, copy.getFrom().getAsName()));
+        warpQuery.setChanged(true);
+        deleteSqlBuilder.addWhere(factory.binary(SqlOperator.IN, factory.column(primary, deleteSqlBuilder.getFrom().getAsName()), warpQuery));
+        return new LDelete<>(deleteSqlBuilder);
+    }
+
+    public LUpdate<T> toUpdate() {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
+        MetaData metaData = MetaDataCache.getMetaData(queryable.getMainTableClass());
+        FieldMetaData primary = metaData.getPrimary();
+        ISqlUpdateExpression update = factory.update(queryable.getMainTableClass(), queryable.getFrom().getAsName());
+        ISqlQueryableExpression copy = queryable.copy(getConfig());
+        ISqlSelectExpression select = factory.select(Collections.singletonList(factory.column(primary, copy.getFrom().getAsName())), copy.getMainTableClass());
+        // 某些数据库不支持 a.xx in (select b.xx from b), 所以需要在外边包一层 a.xx in (select b.xx from (select * from b))
+        ISqlQueryableExpression warpQuery = factory.queryable(select, factory.from(copy, copy.getFrom().getAsName()));
+        warpQuery.setChanged(true);
+        update.addWhere(factory.binary(SqlOperator.IN, factory.column(primary, update.getFrom().getAsName()), warpQuery));
+        return new LUpdate<>(new UpdateSqlBuilder(getConfig(), update));
     }
 
     // endregion

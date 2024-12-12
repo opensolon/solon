@@ -22,9 +22,12 @@ import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.*;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 import org.noear.solon.data.sqlink.core.tuple.Tuple1;
 import org.noear.solon.data.sqlink.core.tuple.Tuple2;
 import org.noear.solon.data.sqlink.core.tuple.Tuple3;
@@ -78,16 +81,6 @@ public class SqLinkImpl implements SqLink {
     public <T> LQuery<T> query(@Recode Class<T> c) {
         String asName = ExpressionUtil.getAsName(c);
         return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
-    }
-
-    @Override
-    public <T> LQuery<T> query(LQuery<T> query) {
-        return new LQuery<>(query);
-    }
-
-    @Override
-    public <T> LQuery<T> with(LQuery<T> query) {
-        return query.asWith();
     }
 
     @Override
@@ -155,7 +148,8 @@ public class SqLinkImpl implements SqLink {
      */
     @Override
     public <T> LUpdate<T> update(@Recode Class<T> c) {
-        return new LUpdate<>(config, c);
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        return new LUpdate<>(new UpdateSqlBuilder(config, factory.update(c, ExpressionUtil.getAsName(c))));
     }
 
     /**
@@ -166,7 +160,7 @@ public class SqLinkImpl implements SqLink {
      * @return 删除过程对象
      */
     public <T> LDelete<T> delete(@Recode Class<T> c) {
-        return new LDelete<>(config, c);
+        return new LDelete<>(new DeleteSqlBuilder(config, c));
     }
 
 

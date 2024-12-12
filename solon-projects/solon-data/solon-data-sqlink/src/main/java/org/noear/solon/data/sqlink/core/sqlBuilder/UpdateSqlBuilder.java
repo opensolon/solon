@@ -33,19 +33,13 @@ import java.util.List;
  */
 public class UpdateSqlBuilder implements ISqlBuilder {
     private final SqLinkConfig config;
-    private final ISqlJoinsExpression joins;
-    private final ISqlSetsExpression sets;
-    private final ISqlWhereExpression wheres;
-    private final Class<?> target;
     private final SqlExpressionFactory factory;
+    private final ISqlUpdateExpression update;
 
-    public UpdateSqlBuilder(SqLinkConfig config, Class<?> target) {
+    public UpdateSqlBuilder(SqLinkConfig config, ISqlUpdateExpression update) {
         this.config = config;
-        this.target = target;
-        factory = config.getSqlExpressionFactory();
-        joins = factory.Joins();
-        sets = factory.sets();
-        wheres = factory.where();
+        this.update = update;
+        this.factory = config.getSqlExpressionFactory();
     }
 
     /**
@@ -63,104 +57,41 @@ public class UpdateSqlBuilder implements ISqlBuilder {
                 on,
                 as
         );
-        joins.addJoin(join);
-    }
-
-    /**
-     * 添加需要更新的列
-     */
-    public void addSet(ISqlSetsExpression set) {
-        sets.addSet(set.getSets());
+        update.addJoin(join);
     }
 
     /**
      * 添加需要更新的列
      */
     public void addSet(ISqlSetExpression set) {
-        sets.addSet(set);
+        update.addSet(set);
     }
 
     /**
      * 添加条件
      */
     public void addWhere(ISqlExpression where) {
-        wheres.addCondition(where);
+        update.addWhere(where);
     }
 
     /**
      * 是否有条件
      */
     public boolean hasWhere() {
-        return !wheres.isEmpty();
+        return !update.getWhere().isEmpty();
     }
 
     @Override
     public String getSql() {
-        return makeUpdate();
+        return getSqlAndValue(null);
     }
 
     @Override
     public String getSqlAndValue(List<SqlValue> sqlValues) {
-        return makeUpdate(sqlValues);
+        return update.getSqlAndValue(config, sqlValues);
     }
 
     public SqLinkConfig getConfig() {
         return config;
     }
-
-    private String makeUpdate() {
-        return makeUpdate(null);
-    }
-
-    private String makeUpdate(List<SqlValue> sqlValues) {
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        SqLinkDialect dbConfig = config.getDisambiguation();
-        String sql = "UPDATE " + dbConfig.disambiguationTableName(metaData.getTableName()) + " AS t0";
-        List<String> sb = new ArrayList<>();
-        sb.add(sql);
-        String joinsSqlAndValue = joins.getSqlAndValue(config, sqlValues);
-        if (!joinsSqlAndValue.isEmpty()) {
-            sb.add(joinsSqlAndValue);
-        }
-        String sqlAndValue = sets.getSqlAndValue(config, sqlValues);
-        sb.add(sqlAndValue);
-        String wheresSqlAndValue = wheres.getSqlAndValue(config, sqlValues);
-        if (!wheresSqlAndValue.isEmpty()) {
-            sb.add(wheresSqlAndValue);
-        }
-        return String.join(" ", sb);
-    }
-
-//    private void setDefaultValues(List<SqlValue> values, MetaData metaData, StringBuilder sb) {
-//        Set<FieldMetaData> fieldMetaDataSet = sets.getSets().stream().map(s -> s.getColumn().getFieldMetaData()).collect(Collectors.toSet());
-//        List<FieldMetaData> notIgnorePropertys = metaData.getNotIgnorePropertys();
-//        for (FieldMetaData fieldMetaData : notIgnorePropertys) {
-//            ITypeHandler<?> typeHandler = fieldMetaData.getTypeHandler();
-//            UpdateDefaultValue onUpdate = fieldMetaData.getUpdateDefaultValue();
-//            if (!fieldMetaDataSet.contains(fieldMetaData) && onUpdate != null) {
-//                switch (onUpdate.strategy()) {
-//                    case DataBase:
-//                        // 交给数据库
-//                        break;
-//                    case Static: {
-//                        ISqlColumnExpression column = factory.column(fieldMetaData);
-//                        String columnSql = column.getSql(config);
-//                        SqlValue sqlValue = new SqlValue(typeHandler.castStringToTarget(onUpdate.value()), typeHandler,fieldMetaData.getOnUpdate());
-//                        sb.append(",").append(columnSql).append(" = ?");
-//                        values.add(sqlValue);
-//                    }
-//                    break;
-//                    case Dynamic: {
-//                        ISqlColumnExpression column = factory.column(fieldMetaData);
-//                        String columnSql = column.getSql(config);
-//                        DynamicGenerator generator = DynamicGenerator.get(onUpdate.dynamic());
-//                        SqlValue sqlValue = new SqlValue(generator.generate(config, fieldMetaData), typeHandler,fieldMetaData.getOnUpdate());
-//                        sb.append(",").append(columnSql).append(" = ?");
-//                        values.add(sqlValue);
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
 }

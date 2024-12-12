@@ -345,6 +345,12 @@ public interface SqlExpressionFactory {
 
     ISqlRecursionExpression recursion(ISqlQueryableExpression queryable, String parentId, String childId, int level);
 
+    ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where);
+
+    default ISqlUpdateExpression update(Class<?> target, String asName) {
+        return update(from(table(target), asName), Joins(), sets(), where());
+    }
+
     /**
      * 将实体类转换为列表达式集合
      */

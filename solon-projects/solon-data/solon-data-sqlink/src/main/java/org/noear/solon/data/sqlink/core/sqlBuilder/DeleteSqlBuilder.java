@@ -21,6 +21,7 @@ import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,20 +36,22 @@ import java.util.Set;
  */
 public class DeleteSqlBuilder implements ISqlBuilder {
     private final SqLinkConfig config;
+    private final ISqlFromExpression from;
     private final ISqlJoinsExpression joins;
     private final ISqlWhereExpression wheres;
-    private final Class<?> target;
+    //private final Class<?> target;
     private final Set<Integer> excludes = new HashSet<>();
     private final SqlExpressionFactory factory;
-    private final List<Class<?>> orderedClasses = new ArrayList<>();
+    //private final List<Class<?>> orderedClasses = new ArrayList<>();
 
     public DeleteSqlBuilder(SqLinkConfig config, Class<?> target) {
         this.config = config;
-        this.target = target;
+        //this.target = target;
         factory = config.getSqlExpressionFactory();
-        joins = factory.Joins();
-        wheres = factory.where();
-        orderedClasses.add(target);
+        this.joins = factory.Joins();
+        this.wheres = factory.where();
+        this.from = factory.from(factory.table(target), ExpressionUtil.getAsName(target));
+        //orderedClasses.add(target);
     }
 
     /**
@@ -67,15 +70,15 @@ public class DeleteSqlBuilder implements ISqlBuilder {
                 as
         );
         joins.addJoin(join);
-        orderedClasses.add(table.getMainTableClass());
+        //orderedClasses.add(table.getMainTableClass());
     }
 
     /**
      * 添加指定删除的表
      */
-    public void addExclude(Class<?> c) {
-        excludes.add(orderedClasses.indexOf(c));
-    }
+//    public void addExclude(Class<?> c) {
+//        excludes.add(orderedClasses.indexOf(c));
+//    }
 
     /**
      * 添加删除的where条件
@@ -96,52 +99,27 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         return !wheres.isEmpty();
     }
 
+    public ISqlFromExpression getFrom() {
+        return from;
+    }
+
     @Override
     public String getSql() {
-        List<String> strings = new ArrayList<>(3);
-        String sql = makeDelete();
-        strings.add(sql);
-        String joinsSql = joins.getSql(config);
-        if (!joinsSql.isEmpty()) {
-            strings.add(joinsSql);
-        }
-        String wheresSql = wheres.getSql(config);
-        if (!wheresSql.isEmpty()) {
-            strings.add(wheresSql);
-        }
-        return String.join(" ", strings);
+        return getSqlAndValue(null);
     }
 
     @Override
     public String getSqlAndValue(List<SqlValue> values) {
-        List<String> strings = new ArrayList<>(3);
-        String sql = makeDelete();
-        strings.add(sql);
-        String joinsSql = joins.getSqlAndValue(config, values);
-        if (!joinsSql.isEmpty()) {
-            strings.add(joinsSql);
+        List<String> strings = new ArrayList<>();
+        strings.add("DELETE");
+        strings.add(from.getAsName());
+        strings.add(from.getSqlAndValue(config, values));
+        if (!joins.isEmpty()) {
+            strings.add(joins.getSqlAndValue(config, values));
         }
-        String wheresSql = wheres.getSqlAndValue(config, values);
-        if (!wheresSql.isEmpty()) {
-            strings.add(wheresSql);
+        if (!wheres.isEmpty()) {
+            strings.add(wheres.getSqlAndValue(config, values));
         }
         return String.join(" ", strings);
-    }
-
-    private String makeDelete() {
-        StringBuilder builder = new StringBuilder("DELETE");
-        if (!excludes.isEmpty()) {
-            builder.append(" ");
-            List<String> strings = new ArrayList<>(excludes.size());
-            for (int index : excludes) {
-                if (index != -1) {
-                    strings.add("t" + index);
-                }
-            }
-            builder.append(String.join(",", strings));
-        }
-        SqLinkDialect dbConfig = config.getDisambiguation();
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        return builder.append(" FROM ").append(dbConfig.disambiguationTableName(metaData.getTableName())).append(" AS t0").toString();
     }
 }

@@ -22,6 +22,7 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 
 /**
  * 更新过程对象
@@ -30,8 +31,8 @@ import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
  * @since 3.0
  */
 public class LUpdate<T> extends UpdateBase {
-    public LUpdate(SqLinkConfig config, Class<T> t) {
-        super(config, t);
+    public LUpdate(UpdateSqlBuilder updateSqlBuilder) {
+        super(updateSqlBuilder);
     }
 
     //region [JOIN]
@@ -106,6 +107,15 @@ public class LUpdate<T> extends UpdateBase {
 
     public <R> LUpdate<T> set(ExprTree<Func1<T, R>> func, R value) {
         set(func.getTree(), value);
+        return this;
+    }
+
+    public <R> LUpdate<T> set(@Expr(Expr.BodyType.Expr) Func1<T, R> func, Func1<T, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate<T> set(ExprTree<Func1<T, R>> func, ExprTree<Func1<T, R>> value) {
+        set(func.getTree(), value.getTree());
         return this;
     }
 

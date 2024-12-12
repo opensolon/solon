@@ -39,10 +39,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author kiryu1223
@@ -93,6 +90,9 @@ public abstract class QueryBase extends CRUD {
         SqLinkConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
+//        for (FieldMetaData mappingDatum : mappingData) {
+//            System.out.println(mappingDatum.getField());
+//        }
         List<SqlValue> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
@@ -121,7 +121,7 @@ public abstract class QueryBase extends CRUD {
         querySqlBuilder.getIncludeSets().addAll(getSqlBuilder().getIncludeSets());
         LQuery<T> lQuery = new LQuery<>(querySqlBuilder);
         lQuery.limit(1);
-        List<? extends T> list = lQuery.toList();
+        List<T> list = lQuery.toList();
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -220,6 +220,15 @@ public abstract class QueryBase extends CRUD {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlGroupByExpression group = sqlVisitor.toGroup(lambda);
         sqlBuilder.setGroup(group);
+        // 同时设置select以便直接返回grouper对象
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        LinkedHashMap<String, ISqlExpression> columns = group.getColumns();
+        List<ISqlExpression> values = new ArrayList<>(columns.size());
+        // 手动设置别名
+        for (Map.Entry<String, ISqlExpression> entry : columns.entrySet()) {
+            values.add(factory.as(entry.getValue(), entry.getKey()));
+        }
+        sqlBuilder.setSelect(factory.select(values, lambda.getReturnType()));
     }
 
     protected void having(LambdaExpression<?> lambda) {

@@ -28,6 +28,7 @@ import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -156,6 +157,15 @@ public class GroupedQuery<Key, T> extends QueryBase {
     public <R> EndQuery<R> endSelect(ExprTree<Func1<Group<Key, T>, R>> expr) {
         select(expr.getTree());
         return new EndQuery<>(boxedQuerySqlBuilder());
+    }
+
+    public <R> GroupedQuery<Key, T> includes(@Expr(Expr.BodyType.Expr) Func1<Key, Collection<R>> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery<Key, T> includes(ExprTree<Func1<Key, Collection<R>>> expr) {
+        include(expr.getTree());
+        return this;
     }
 
     // endregion

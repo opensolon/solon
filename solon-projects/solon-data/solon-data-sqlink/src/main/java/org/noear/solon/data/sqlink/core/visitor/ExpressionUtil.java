@@ -15,25 +15,24 @@
  */
 package org.noear.solon.data.sqlink.core.visitor;
 
+import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlExtensionExpression;
 import org.noear.solon.data.sqlink.base.sqlExt.SqlOperatorMethod;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 表达式工具
@@ -290,5 +289,41 @@ public class ExpressionUtil {
     public static String getAsName(Class<?> c) {
         MetaData metaData = MetaDataCache.getMetaData(c);
         return metaData.getTableName().substring(0, 1).toLowerCase();
+    }
+
+    public static <T> List<T> buildTree(List<T> flatList, FieldMetaData child, FieldMetaData parent, FieldMetaData list, Func1<T, Collection<T>> func) {
+        // 用 Map 存储所有节点，以便快速查找
+        Map<Object, T> nodeMap = new HashMap<>();
+        List<T> rootNodes = new ArrayList<>();
+
+        // 将所有节点加入 Map
+        for (T node : flatList) {
+            nodeMap.put(child.getValueByObject(node), node);
+        }
+
+        // 构建树结构
+        for (T node : flatList) {
+            Object parentValue = parent.getValueByObject(node);
+            T parentNode = nodeMap.get(parentValue);
+            // 如果没有父节点，则将当前节点作为根节点
+            if (parentNode == null) {
+                rootNodes.add(node);
+            }
+            else {
+                Collection<T> collection = func.invoke(parentNode);
+                if (collection == null) {
+                    collection = new ArrayList<>();
+                    try {
+                        list.getSetter().invoke(parentNode, collection);
+                    }
+                    catch (InvocationTargetException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                collection.add(node);
+            }
+        }
+
+        return rootNodes;
     }
 }

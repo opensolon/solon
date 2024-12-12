@@ -65,16 +65,6 @@ public interface SqLink {
     <T> LQuery<T> query(@Recode Class<T> c);
 
     /**
-     * 查询过程查询
-     */
-    <T> LQuery<T> query(@Recode LQuery<T> query);
-
-    /**
-     * with查询
-     */
-    <T> LQuery<T> with(@Recode LQuery<T> with);
-
-    /**
      * Union查询
      */
     <T> UnionQuery<T> union(LQuery<T> q1, LQuery<T> q2);

@@ -185,7 +185,7 @@ public class SqlQueryableExpression implements ISqlQueryableExpression {
     public List<Class<?>> getOrderedClass() {
         Class<?> tableClass = getMainTableClass();
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
-        collect.add(0, tableClass);
+        collect.add(0,tableClass);
         return collect;
     }
 

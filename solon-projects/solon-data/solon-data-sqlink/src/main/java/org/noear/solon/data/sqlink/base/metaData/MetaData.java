@@ -16,11 +16,13 @@
 package org.noear.solon.data.sqlink.base.metaData;
 
 import org.noear.solon.data.sqlink.annotation.*;
+import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.intercept.NoInterceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.exception.SqLinkNotFoundFieldException;
 
 import java.beans.BeanInfo;
@@ -41,8 +43,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.cast;
  * @author kiryu1223
  * @since 3.0
  */
-public class MetaData
-{
+public class MetaData {
     /**
      * 字段列表
      */
@@ -68,10 +69,8 @@ public class MetaData
      */
     private final boolean isEmptyTable;
 
-    public MetaData(Class<?> type)
-    {
-        try
-        {
+    public MetaData(Class<?> type) {
+        try {
             this.type = type;
 
             this.constructor = !type.isAnonymousClass() ? type.getConstructor() : null;
@@ -79,8 +78,7 @@ public class MetaData
             this.tableName = hasTableName(table) ? table.value() : type.isAnonymousClass() ? type.getSuperclass().getSimpleName() : type.getSimpleName();
             this.schema = table == null ? "" : table.schema();
             this.isEmptyTable = type.isAnnotationPresent(EmptyTable.class);
-            for (PropertyDescriptor descriptor : propertyDescriptors(type))
-            {
+            for (PropertyDescriptor descriptor : propertyDescriptors(type)) {
                 String property = descriptor.getName();
                 Field field = type.getDeclaredField(property);
                 Column column = field.getAnnotation(Column.class);
@@ -99,46 +97,52 @@ public class MetaData
                 OnGet onGet = field.getAnnotation(OnGet.class);
                 Interceptor<?> onGetInterceptor = (onGet == null || onGet.value() == NoInterceptor.class) ? DoNothingInterceptor.Instance : Interceptor.get(cast(onGet.value()));
 
-                if (navigate != null)
-                {
+                if (navigate != null) {
                     Class<?> navigateTargetType;
-                    if (Collection.class.isAssignableFrom(field.getType()))
-                    {
-                        Type genericType = field.getGenericType();
-                        navigateTargetType = (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
-                        navigateData = new NavigateData(navigate, navigateTargetType, (Class<? extends Collection<?>>) field.getType());
+                    if (Collection.class.isAssignableFrom(field.getType())) {
+                        Class<? extends Collection<?>> collectionType = (Class<? extends Collection<?>>) field.getType();
+                        if (type.isAnonymousClass()) {
+                            Class<?> aClass = navigate.targetType();
+                            if (aClass != Empty.class) {
+                                navigateTargetType = aClass;
+                                navigateData = new NavigateData(navigate, navigateTargetType, collectionType);
+                            }
+                            else {
+                                throw new SqLinkException("匿名类字段上的@Navigate注解的targetType不能为空:" + field);
+                            }
+                        }
+                        else {
+                            Type genericType = field.getGenericType();
+                            navigateTargetType = (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
+                            navigateData = new NavigateData(navigate, navigateTargetType, collectionType);
+                        }
                     }
-                    else
-                    {
+                    else {
                         navigateTargetType = field.getType();
                         navigateData = new NavigateData(navigate, navigateTargetType, null);
                     }
+
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
                 propertys.add(new FieldMetaData(notNull, property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, insertDefaultValue, onPutInterceptor, onGetInterceptor));
             }
         }
-        catch (NoSuchFieldException | NoSuchMethodException e)
-        {
+        catch (NoSuchFieldException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private boolean hasTableName(Table table)
-    {
+    private boolean hasTableName(Table table) {
         return table != null && !table.value().isEmpty();
     }
 
-    private PropertyDescriptor[] propertyDescriptors(Class<?> c)
-    {
-        try
-        {
+    private PropertyDescriptor[] propertyDescriptors(Class<?> c) {
+        try {
             BeanInfo beanInfo = Introspector.getBeanInfo(c, Object.class);
             return beanInfo.getPropertyDescriptors();
         }
-        catch (IntrospectionException e)
-        {
+        catch (IntrospectionException e) {
             throw new RuntimeException(e);
         }
     }
@@ -146,16 +150,14 @@ public class MetaData
     /**
      * 获取所有字段
      */
-    public List<FieldMetaData> getPropertys()
-    {
+    public List<FieldMetaData> getPropertys() {
         return propertys;
     }
 
     /**
      * 获取所有非忽略字段
      */
-    public List<FieldMetaData> getNotIgnorePropertys()
-    {
+    public List<FieldMetaData> getNotIgnorePropertys() {
         return propertys.stream().filter(f -> !f.isIgnoreColumn()).collect(Collectors.toList());
     }
 
@@ -164,8 +166,7 @@ public class MetaData
      *
      * @param key 字段名
      */
-    public FieldMetaData getFieldMetaDataByFieldName(String key)
-    {
+    public FieldMetaData getFieldMetaDataByFieldName(String key) {
         return propertys.stream().filter(f -> f.getProperty().equals(key)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(key));
     }
 
@@ -174,8 +175,7 @@ public class MetaData
      *
      * @param columnName 列名
      */
-    public FieldMetaData getFieldMetaDataByColumnName(String columnName)
-    {
+    public FieldMetaData getFieldMetaDataByColumnName(String columnName) {
         return propertys.stream().filter(f -> f.getColumn().equals(columnName)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(columnName));
     }
 
@@ -184,8 +184,7 @@ public class MetaData
      *
      * @param getter getter方法
      */
-    public FieldMetaData getFieldMetaDataByGetter(Method getter)
-    {
+    public FieldMetaData getFieldMetaDataByGetter(Method getter) {
         return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(getter));
     }
 
@@ -194,8 +193,7 @@ public class MetaData
      *
      * @param setter setter方法
      */
-    public FieldMetaData getFieldMetaDataBySetter(Method setter)
-    {
+    public FieldMetaData getFieldMetaDataBySetter(Method setter) {
         return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(setter));
     }
 
@@ -204,8 +202,7 @@ public class MetaData
      *
      * @param getter getter方法
      */
-    public String getColumnNameByGetter(Method getter)
-    {
+    public String getColumnNameByGetter(Method getter) {
         return propertys.stream().filter(f -> f.getGetter().equals(getter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(getter)).getColumn();
     }
 
@@ -214,56 +211,49 @@ public class MetaData
      *
      * @param setter setter方法
      */
-    public String getColumnNameBySetter(Method setter)
-    {
+    public String getColumnNameBySetter(Method setter) {
         return propertys.stream().filter(f -> f.getSetter().equals(setter)).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(setter)).getColumn();
     }
 
     /**
      * 获取主键的字段元数据
      */
-    public FieldMetaData getPrimary()
-    {
+    public FieldMetaData getPrimary() {
         return propertys.stream().filter(f -> f.isPrimaryKey()).findFirst().orElseThrow(() -> new SqLinkNotFoundFieldException(type + "找不到主键"));
     }
 
     /**
      * 获取实体类型
      */
-    public Class<?> getType()
-    {
+    public Class<?> getType() {
         return type;
     }
 
     /**
      * 获取表名
      */
-    public String getTableName()
-    {
+    public String getTableName() {
         return tableName;
     }
 
     /**
      * 获取模式
      */
-    public String getSchema()
-    {
+    public String getSchema() {
         return schema;
     }
 
     /**
      * 是否为空from表
      */
-    public boolean isEmptyTable()
-    {
+    public boolean isEmptyTable() {
         return isEmptyTable;
     }
 
     /**
      * 获取构造函器
      */
-    public Constructor<?> getConstructor()
-    {
+    public Constructor<?> getConstructor() {
         return constructor;
     }
 }

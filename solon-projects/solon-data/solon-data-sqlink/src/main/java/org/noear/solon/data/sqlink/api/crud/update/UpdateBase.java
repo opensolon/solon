@@ -40,10 +40,6 @@ public class UpdateBase extends CRUD {
 
     private final UpdateSqlBuilder sqlBuilder;
 
-    public UpdateBase(SqLinkConfig config, Class<?> target) {
-        this.sqlBuilder = new UpdateSqlBuilder(config, target);
-    }
-
     public UpdateBase(UpdateSqlBuilder sqlBuilder) {
         this.sqlBuilder = sqlBuilder;
     }
@@ -96,6 +92,14 @@ public class UpdateBase extends CRUD {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
         ISqlColumnExpression column = sqlVisitor.toColumn(left);
         sqlBuilder.addSet(factory.set(column, factory.AnyValue(value)));
+    }
+
+    protected void set(LambdaExpression<?> left, LambdaExpression<?> right) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        ISqlColumnExpression column = sqlVisitor.toColumn(left);
+        ISqlExpression value = sqlVisitor.visit(right);
+        sqlBuilder.addSet(factory.set(column, value));
     }
 
     protected void where(LambdaExpression<?> lambda) {
