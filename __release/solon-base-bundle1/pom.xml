@@ -24,6 +24,7 @@
         <module>../../solon-projects/solon-base/solon-hotplug</module>
 
         <module>../../solon-projects/solon-rx/solon-rx</module>
+        <module>../../solon-projects/solon-rx/solon-rx-r2dbc</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
         <module>../../solon-projects/solon-config/solon-config-plus</module>
