@@ -16,10 +16,8 @@
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
-import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlJoinExpression;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
@@ -39,6 +37,24 @@ public class OracleJoinExpression extends SqlJoinExpression {
     // oracle下表的别名不能加AS
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        return joinType.getJoin() + " " + (joinTable instanceof ISqlRealTableExpression ? joinTable.getSqlAndValue(config, values) : "(" + joinTable.getSqlAndValue(config, values) + ")") + " " + config.getDisambiguation().disambiguation(asName) + " ON " + conditions.getSqlAndValue(config, values);
+        StringBuilder builder = new StringBuilder();
+        SqLinkDialect disambiguation = config.getDisambiguation();
+        builder.append(joinType.getJoin()).append(" ");
+        if (joinTable instanceof ISqlRealTableExpression) {
+            builder.append(joinTable.getSqlAndValue(config, values));
+        }
+        else if (joinTable instanceof ISqlWithExpression) {
+            ISqlWithExpression table = (ISqlWithExpression) joinTable;
+            builder.append(disambiguation.disambiguationTableName(table.withTableName()));
+        }
+        else {
+            builder.append("(").append(joinTable.getSqlAndValue(config, values)).append(")");
+        }
+        if (getAsName() != null) {
+            builder.append(" ").append(disambiguation.disambiguation(getAsName())).append(" ");
+        }
+        builder.append(" ON ");
+        builder.append(conditions.getSqlAndValue(config, values));
+        return builder.toString();
     }
 }

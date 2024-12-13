@@ -16,6 +16,7 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
@@ -60,6 +61,25 @@ public class SqlJoinExpression implements ISqlJoinExpression {
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        return getJoinType().getJoin() + " " + (getJoinTable() instanceof ISqlRealTableExpression ? getJoinTable().getSqlAndValue(config, values) : "(" + getJoinTable().getSqlAndValue(config, values) + ")") + " AS " + config.getDisambiguation().disambiguation(asName) + " ON " + getConditions().getSqlAndValue(config, values);
+        StringBuilder builder = new StringBuilder();
+        SqLinkDialect disambiguation = config.getDisambiguation();
+        builder.append(joinType.getJoin());
+        builder.append(" ");
+        if (joinTable instanceof ISqlRealTableExpression) {
+            builder.append(joinTable.getSqlAndValue(config, values));
+        }
+        else if (joinTable instanceof ISqlWithExpression) {
+            ISqlWithExpression table = (ISqlWithExpression) joinTable;
+            builder.append(disambiguation.disambiguationTableName(table.withTableName()));
+        }
+        else {
+            builder.append("(").append(joinTable.getSqlAndValue(config, values)).append(")");
+        }
+        if (getAsName() != null) {
+            builder.append(" AS ").append(disambiguation.disambiguation(getAsName()));
+        }
+        builder.append(" ON ");
+        builder.append(conditions.getSqlAndValue(config, values));
+        return builder.toString();
     }
 }

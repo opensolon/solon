@@ -16,11 +16,13 @@
 package org.noear.solon.data.sqlink.base.metaData;
 
 import org.noear.solon.data.sqlink.annotation.*;
+import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.base.intercept.DoNothingInterceptor;
 import org.noear.solon.data.sqlink.base.intercept.Interceptor;
 import org.noear.solon.data.sqlink.base.intercept.NoInterceptor;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 import org.noear.solon.data.sqlink.base.toBean.handler.TypeHandlerManager;
+import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.exception.SqLinkNotFoundFieldException;
 
 import java.beans.BeanInfo;
@@ -73,7 +75,7 @@ public class MetaData {
 
             this.constructor = !type.isAnonymousClass() ? type.getConstructor() : null;
             Table table = type.getAnnotation(Table.class);
-            this.tableName = (table == null || table.value().isEmpty()) ? type.getSimpleName() : table.value();
+            this.tableName = hasTableName(table) ? table.value() : type.isAnonymousClass() ? type.getSuperclass().getSimpleName() : type.getSimpleName();
             this.schema = table == null ? "" : table.schema();
             this.isEmptyTable = type.isAnnotationPresent(EmptyTable.class);
             for (PropertyDescriptor descriptor : propertyDescriptors(type)) {
@@ -98,14 +100,28 @@ public class MetaData {
                 if (navigate != null) {
                     Class<?> navigateTargetType;
                     if (Collection.class.isAssignableFrom(field.getType())) {
-                        Type genericType = field.getGenericType();
-                        navigateTargetType = (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
-                        navigateData = new NavigateData(navigate, navigateTargetType, (Class<? extends Collection<?>>) field.getType());
+                        Class<? extends Collection<?>> collectionType = (Class<? extends Collection<?>>) field.getType();
+                        if (type.isAnonymousClass()) {
+                            Class<?> aClass = navigate.targetType();
+                            if (aClass != Empty.class) {
+                                navigateTargetType = aClass;
+                                navigateData = new NavigateData(navigate, navigateTargetType, collectionType);
+                            }
+                            else {
+                                throw new SqLinkException("匿名类字段上的@Navigate注解的targetType不能为空:" + field);
+                            }
+                        }
+                        else {
+                            Type genericType = field.getGenericType();
+                            navigateTargetType = (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
+                            navigateData = new NavigateData(navigate, navigateTargetType, collectionType);
+                        }
                     }
                     else {
                         navigateTargetType = field.getType();
                         navigateData = new NavigateData(navigate, navigateTargetType, null);
                     }
+
                 }
                 boolean ignoreColumn = field.getAnnotation(IgnoreColumn.class) != null || navigateData != null;
                 propertys.add(new FieldMetaData(notNull, property, columnStr, descriptor.getReadMethod(), descriptor.getWriteMethod(), field, isUseTypeHandler, typeHandler, ignoreColumn, navigateData, isPrimaryKey, insertDefaultValue, onPutInterceptor, onGetInterceptor));
@@ -115,6 +131,10 @@ public class MetaData {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private boolean hasTableName(Table table) {
+        return table != null && !table.value().isEmpty();
     }
 
     private PropertyDescriptor[] propertyDescriptors(Class<?> c) {

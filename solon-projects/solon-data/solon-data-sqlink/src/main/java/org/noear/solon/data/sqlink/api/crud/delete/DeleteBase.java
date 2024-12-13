@@ -40,10 +40,6 @@ public abstract class DeleteBase extends CRUD {
 
     private final DeleteSqlBuilder sqlBuilder;
 
-    public DeleteBase(SqLinkConfig config, Class<?> target) {
-        this.sqlBuilder = new DeleteSqlBuilder(config, target);
-    }
-
     public DeleteBase(DeleteSqlBuilder sqlBuilder) {
         this.sqlBuilder = sqlBuilder;
     }
@@ -91,7 +87,7 @@ public abstract class DeleteBase extends CRUD {
     }
 
     protected void selectDeleteTable(Class<?> c) {
-        getSqlBuilder().addExclude(c);
+        //getSqlBuilder().addExclude(c);
     }
 
     protected void where(LambdaExpression<?> lambda) {

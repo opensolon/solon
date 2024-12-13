@@ -150,7 +150,7 @@ public interface SqlExpressionFactory {
      *
      * @param target 目标表
      */
-    default ISqlQueryableExpression queryable(Class<?> target,String asName) {
+    default ISqlQueryableExpression queryable(Class<?> target, String asName) {
         return queryable(from(table(target), asName));
     }
 
@@ -178,7 +178,7 @@ public interface SqlExpressionFactory {
      *
      * @param table 表表达式
      */
-    default ISqlQueryableExpression queryable(ISqlTableExpression table,String asName) {
+    default ISqlQueryableExpression queryable(ISqlTableExpression table, String asName) {
         return queryable(from(table, asName));
     }
 
@@ -229,7 +229,6 @@ public interface SqlExpressionFactory {
      * @param target     目标类
      * @param isSingle   是否为单列查询
      * @param isDistinct 是否为去重查询
-     * @return
      */
     ISqlSelectExpression select(List<ISqlExpression> column, Class<?> target, boolean isSingle, boolean isDistinct);
 
@@ -252,7 +251,6 @@ public interface SqlExpressionFactory {
      *
      * @param column 需要set的列
      * @param value  需要set的值
-     * @return
      */
     ISqlSetExpression set(ISqlColumnExpression column, ISqlExpression value);
 
@@ -336,6 +334,22 @@ public interface SqlExpressionFactory {
      * @param c 类型
      */
     ISqlTypeExpression type(Class<?> c);
+
+    ISqlWithExpression with(ISqlQueryableExpression queryable, String name);
+
+    ISqlWithsExpression withs();
+
+    ISqlUnionExpression union(ISqlQueryableExpression queryable, boolean all);
+
+    ISqlUnionsExpression unions();
+
+    ISqlRecursionExpression recursion(ISqlQueryableExpression queryable, String parentId, String childId, int level);
+
+    ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where);
+
+    default ISqlUpdateExpression update(Class<?> target, String asName) {
+        return update(from(table(target), asName), Joins(), sets(), where());
+    }
 
     /**
      * 将实体类转换为列表达式集合

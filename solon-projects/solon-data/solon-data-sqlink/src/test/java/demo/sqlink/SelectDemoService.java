@@ -25,6 +25,8 @@ import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 import java.util.List;
 
+import static org.noear.solon.data.sqlink.core.SubQuery.subQuery;
+
 @Component
 public class SelectDemoService {
     @Inject // or @Inject("main")
@@ -85,7 +87,7 @@ public class SelectDemoService {
     // 根据地区码查询用户
     public List<User> findUserByAreaCode(String code) {
         return sqLink.query(User.class)
-                .where(u -> u.getAreas().stream().anyMatch(a -> a.getCode() == code))
+                .where(u -> subQuery(u.getAreas()).any(a -> a.getCode() == code))
                 .toList();
     }
 
@@ -95,5 +97,13 @@ public class SelectDemoService {
         return sqLink.query(User.class)
                 .includes(user -> user.getAreas(), areas -> areas.limit(5))
                 .toList();
+    }
+
+    // 查出目标用户然后删除
+    public void del(String code) {
+        long l = sqLink.query(User.class)
+                .where(u -> u.getEmail() == null)
+                .toDelete()
+                .executeRows();
     }
 }

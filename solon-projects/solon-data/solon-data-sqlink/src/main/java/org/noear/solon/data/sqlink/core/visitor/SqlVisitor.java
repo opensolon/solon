@@ -146,8 +146,12 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
      */
     @Override
     public ISqlExpression visit(MethodCallExpression methodCall) {
+        // equals
+        if (ExpressionUtil.isEquals(methodCall)) {
+            return factory.binary(SqlOperator.EQ, visit(methodCall.getExpr()), visit(methodCall.getArgs().get(0)));
+        }
         // 分组对象的聚合函数
-        if (IAggregation.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
+        else if (IAggregation.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             String name = methodCall.getMethod().getName();
             List<Expression> args = methodCall.getArgs();
             switch (name) {
@@ -233,9 +237,9 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 if (operator.isLeft() || operator == SqlOperator.POSTINC || operator == SqlOperator.POSTDEC) {
                     ISqlExpression visit = visit(args.get(0));
                     if (visit instanceof ISqlQueryableExpression) {
-                        visit= factory.unary(operator, visit);
+                        visit = factory.unary(operator, visit);
                     }
-                    return factory.unary(operator,visit);
+                    return factory.unary(operator, visit);
                 }
                 else {
                     ISqlExpression left = visit(methodCall.getArgs().get(0));
@@ -933,8 +937,11 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     if (expression.getKind() == Kind.Variable) {
                         VariableExpression variableExpression = (VariableExpression) expression;
                         String name = variableExpression.getName();
-                        ISqlExpression sqlExpression = visit(variableExpression.getInit());
-                        contextMap.put(name, sqlExpression);
+                        Expression init = variableExpression.getInit();
+                        if (init != null) {
+                            ISqlExpression sqlExpression = visit(init);
+                            contextMap.put(name, sqlExpression);
+                        }
                     }
                 }
                 return factory.groupBy(contextMap);

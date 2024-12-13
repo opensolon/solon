@@ -20,10 +20,7 @@ import org.noear.solon.data.sqlink.annotation.RelationType;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
-import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
-import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
-import org.noear.solon.data.sqlink.base.metaData.NavigateData;
+import org.noear.solon.data.sqlink.base.metaData.*;
 import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeFactory;
@@ -33,6 +30,7 @@ import org.noear.solon.data.sqlink.core.exception.SqLinkException;
 import org.noear.solon.data.sqlink.core.page.PagedResult;
 import org.noear.solon.data.sqlink.core.page.Pager;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.noear.solon.data.sqlink.core.visitor.methods.AggregateMethods;
 import org.slf4j.Logger;
@@ -92,10 +90,13 @@ public abstract class QueryBase extends CRUD {
         SqLinkConfig config = getConfig();
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
+//        for (FieldMetaData mappingDatum : mappingData) {
+//            System.out.println(mappingDatum.getField());
+//        }
         List<SqlValue> values = new ArrayList<>();
         String sql = sqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        Class<T> targetClass = (Class<T>) sqlBuilder.getTargetClass();
+        Class<T> targetClass = sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession(config);
         List<T> ts = session.executeQuery(
                 r -> ObjectBuilder.start(r, targetClass, mappingData, single, config).createList(),
@@ -120,7 +121,7 @@ public abstract class QueryBase extends CRUD {
         querySqlBuilder.getIncludeSets().addAll(getSqlBuilder().getIncludeSets());
         LQuery<T> lQuery = new LQuery<>(querySqlBuilder);
         lQuery.limit(1);
-        List<? extends T> list = lQuery.toList();
+        List<T> list = lQuery.toList();
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -155,6 +156,16 @@ public abstract class QueryBase extends CRUD {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlExpression on = sqlVisitor.visit(lambda);
         sqlBuilder.addJoin(joinType, target.getSqlBuilder().getQueryable(), on);
+    }
+
+    protected void joinWith(JoinType joinType, QueryBase target, LambdaExpression<?> lambda) {
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = target.getSqlBuilder().getQueryable();
+        Class<?> targetClass = queryable.getMainTableClass();
+        MetaData metaData = MetaDataCache.getMetaData(targetClass);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
+        ISqlExpression on = sqlVisitor.visit(lambda);
+        sqlBuilder.addJoin(joinType, factory.with(queryable, metaData.getTableName()), on);
     }
 
     protected void where(LambdaExpression<?> lambda) {
@@ -209,6 +220,15 @@ public abstract class QueryBase extends CRUD {
         SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
         ISqlGroupByExpression group = sqlVisitor.toGroup(lambda);
         sqlBuilder.setGroup(group);
+        // 同时设置select以便直接返回grouper对象
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        LinkedHashMap<String, ISqlExpression> columns = group.getColumns();
+        List<ISqlExpression> values = new ArrayList<>(columns.size());
+        // 手动设置别名
+        for (Map.Entry<String, ISqlExpression> entry : columns.entrySet()) {
+            values.add(factory.as(entry.getValue(), entry.getKey()));
+        }
+        sqlBuilder.setSelect(factory.select(values, lambda.getReturnType()));
     }
 
     protected void having(LambdaExpression<?> lambda) {
@@ -245,7 +265,7 @@ public abstract class QueryBase extends CRUD {
     protected QuerySqlBuilder boxedQuerySqlBuilder() {
         ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
         Class<?> mainTableClass = queryable.getMainTableClass();
-        String as = MetaDataCache.getMetaData(mainTableClass).getTableName().substring(0, 1).toLowerCase();
+        String as = ExpressionUtil.getAsName(mainTableClass);
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, as)));
     }
@@ -272,7 +292,6 @@ public abstract class QueryBase extends CRUD {
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond) {
         include(lambda, cond, sqlBuilder.getIncludeSets());
     }
-
 
     protected void include(LambdaExpression<?> lambda) {
         include(lambda, null, sqlBuilder.getIncludeSets());

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.annotation;
 
+import org.noear.solon.data.sqlink.api.crud.read.Empty;
 import org.noear.solon.data.sqlink.base.metaData.IMappingTable;
 
 import java.lang.annotation.ElementType;
@@ -35,6 +36,11 @@ public @interface Navigate {
      * 关联关系
      */
     RelationType value();
+
+    /**
+     * 目标类型(仅少数场合需要手动填写)
+     */
+    Class<?> targetType() default Empty.class;
 
     /**
      * 自身对应java字段名

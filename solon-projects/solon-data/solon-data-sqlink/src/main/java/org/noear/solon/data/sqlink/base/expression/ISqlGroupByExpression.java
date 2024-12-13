@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base.expression;
 
+import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 import java.util.LinkedHashMap;
@@ -39,12 +40,22 @@ public interface ISqlGroupByExpression extends ISqlExpression {
      */
     LinkedHashMap<String, ISqlExpression> getColumns();
 
+    Class<? extends Grouper> getGrouperType();
+    void setGrouperType(Class<? extends Grouper> grouperType);
+
+    default boolean hasColumns() {
+        return !getColumns().isEmpty();
+    }
+
     @Override
     default ISqlGroupByExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
         ISqlGroupByExpression groupByExpression = factory.groupBy();
-        for (Map.Entry<String, ISqlExpression> entry : getColumns().entrySet()) {
-            groupByExpression.getColumns().put(entry.getKey(), entry.getValue().copy(config));
+        if (hasColumns()) {
+            for (Map.Entry<String, ISqlExpression> entry : getColumns().entrySet()) {
+                groupByExpression.getColumns().put(entry.getKey(), entry.getValue().copy(config));
+            }
+            groupByExpression.setGrouperType(getGrouperType());
         }
         return groupByExpression;
     }

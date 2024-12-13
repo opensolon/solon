@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  * @author kiryu1223
  * @since 3.0
  */
-public class SqlQueryableExpression extends SqlTableExpression implements ISqlQueryableExpression {
+public class SqlQueryableExpression implements ISqlQueryableExpression {
+
     protected final ISqlSelectExpression select;
     protected final ISqlFromExpression from;
     protected final ISqlJoinsExpression joins;
@@ -51,11 +52,12 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
 
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
-        if (!isChanged) {
+        if (!isChanged && from.getSqlTableExpression() instanceof ISqlQueryableExpression) {
             return from.getSqlTableExpression().getSqlAndValue(config, values);
         }
         else {
             List<String> strings = new ArrayList<>();
+            tryWith(config, strings, values);
             strings.add(getSelect().getSqlAndValue(config, values));
             String fromSqlAndValue = getFrom().getSqlAndValue(config, values);
             if (!fromSqlAndValue.isEmpty()) strings.add(fromSqlAndValue);
@@ -83,31 +85,37 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         return select.getTarget();
     }
 
+    @Override
     public void addWhere(ISqlExpression cond) {
         where.addCondition(cond);
         change();
     }
 
+    @Override
     public void addJoin(ISqlJoinExpression join) {
         joins.addJoin(join);
         change();
     }
 
+    @Override
     public void setGroup(ISqlGroupByExpression group) {
         groupBy.setColumns(group.getColumns());
         change();
     }
 
+    @Override
     public void addHaving(ISqlExpression cond) {
         having.addCond(cond);
         change();
     }
 
+    @Override
     public void addOrder(ISqlOrderExpression order) {
         orderBy.addOrder(order);
         change();
     }
 
+    @Override
     public void setSelect(ISqlSelectExpression newSelect) {
         select.setColumns(newSelect.getColumns());
         select.setTarget(newSelect.getTarget());
@@ -116,45 +124,55 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
         change();
     }
 
+    @Override
     public void setLimit(long offset, long rows) {
         limit.setOffset(offset);
         limit.setRows(rows);
         change();
     }
 
+    @Override
     public void setDistinct(boolean distinct) {
         select.setDistinct(distinct);
         change();
     }
 
+    @Override
     public ISqlFromExpression getFrom() {
         return from;
     }
 
+    @Override
     public int getOrderedCount() {
         return 1 + joins.getJoins().size();
     }
 
+    @Override
     public ISqlWhereExpression getWhere() {
         return where;
     }
 
+    @Override
     public ISqlGroupByExpression getGroupBy() {
         return groupBy;
     }
 
+    @Override
     public ISqlJoinsExpression getJoins() {
         return joins;
     }
 
+    @Override
     public ISqlSelectExpression getSelect() {
         return select;
     }
 
+    @Override
     public ISqlOrderByExpression getOrderBy() {
         return orderBy;
     }
 
+    @Override
     public ISqlLimitExpression getLimit() {
         return limit;
     }
@@ -167,7 +185,7 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     public List<Class<?>> getOrderedClass() {
         Class<?> tableClass = getMainTableClass();
         List<Class<?>> collect = joins.getJoins().stream().map(j -> j.getJoinTable().getMainTableClass()).collect(Collectors.toList());
-        collect.add(0, tableClass);
+        collect.add(0,tableClass);
         return collect;
     }
 
@@ -176,14 +194,29 @@ public class SqlQueryableExpression extends SqlTableExpression implements ISqlQu
     }
 
     @Override
-    public boolean getChanged()
-    {
+    public boolean getChanged() {
         return isChanged;
     }
 
     @Override
-    public void setChanged(boolean changed)
-    {
+    public void setChanged(boolean changed) {
         this.isChanged = changed;
+    }
+
+    protected void tryWith(SqLinkConfig config, List<String> strings, List<SqlValue> values) {
+        ISqlTableExpression fromSqlTableExpression = from.getSqlTableExpression();
+        List<String> withs = new ArrayList<>(joins.getJoins().size() + 1);
+        if (fromSqlTableExpression instanceof ISqlWithExpression) {
+            withs.add(fromSqlTableExpression.getSqlAndValue(config, values));
+        }
+        for (ISqlJoinExpression join : joins.getJoins()) {
+            ISqlTableExpression joinTable = join.getJoinTable();
+            if (joinTable instanceof ISqlWithExpression) {
+                withs.add(joinTable.getSqlAndValue(config, values));
+            }
+        }
+        if (!withs.isEmpty()) {
+            strings.add("WITH " + String.join(",", withs));
+        }
     }
 }

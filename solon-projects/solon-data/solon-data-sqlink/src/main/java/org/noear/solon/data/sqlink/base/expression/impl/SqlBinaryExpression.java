@@ -64,21 +64,19 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
             FieldMetaData fieldMetaData = sqlColumn.getFieldMetaData();
             if (operator == SqlOperator.PLUS && fieldMetaData.getType() == String.class && valueExpression instanceof ISqlSingleValueExpression && valueExpression.nouNull() && ((ISqlSingleValueExpression) valueExpression).getValue() instanceof String) {
                 ISqlTemplateExpression concat = StringMethods.concat(config, sqlColumn, valueExpression);
-                sb.append(concat.getSql(config));
+                sb.append(concat.getSqlAndValue(config,sqlValues));
+                return sb.toString();
+            }
+            sb.append(sqlColumn.getSqlAndValue(config, sqlValues));
+            sb.append(" ");
+            if (operator == SqlOperator.EQ
+                    && !valueExpression.nouNull()) {
+                sb.append(SqlOperator.IS.getOperator());
             }
             else {
-                sb.append(sqlColumn.getSqlAndValue(config, sqlValues));
-                sb.append(" ");
-                if (operator == SqlOperator.EQ
-                        && !valueExpression.nouNull()) {
-                    sb.append(SqlOperator.IS.getOperator());
-                }
-                else {
-                    sb.append(operator.getOperator());
-                }
-                sb.append(" ");
-
+                sb.append(operator.getOperator());
             }
+            sb.append(" ");
             if (valueExpression instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression singleValue = (ISqlSingleValueExpression) valueExpression;
                 if (sqlValues != null) {
@@ -114,45 +112,62 @@ public class SqlBinaryExpression implements ISqlBinaryExpression {
             ISqlColumnExpression sqlColumn = (ISqlColumnExpression) getRight();
             ISqlValueExpression valueExpression = (ISqlValueExpression) getLeft();
             FieldMetaData fieldMetaData = sqlColumn.getFieldMetaData();
+            if (operator == SqlOperator.PLUS && fieldMetaData.getType() == String.class && valueExpression instanceof ISqlSingleValueExpression && valueExpression.nouNull() && ((ISqlSingleValueExpression) valueExpression).getValue() instanceof String) {
+                ISqlTemplateExpression concat = StringMethods.concat(config, valueExpression, sqlColumn);
+                sb.append(concat.getSqlAndValue(config,sqlValues));
+                return sb.toString();
+            }
             if (valueExpression instanceof ISqlSingleValueExpression) {
                 ISqlSingleValueExpression singleValue = (ISqlSingleValueExpression) valueExpression;
                 if (sqlValues != null) {
                     sqlValues.add(new SqlValue(singleValue.getValue(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
                 }
+                sb.append("?");
             }
             else {
                 ISqlCollectedValueExpression collectedValue = (ISqlCollectedValueExpression) valueExpression;
-                if (sqlValues != null) {
-                    sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
-                }
-            }
-            if (operator == SqlOperator.PLUS && fieldMetaData.getType() == String.class && valueExpression instanceof ISqlSingleValueExpression && valueExpression.nouNull() && ((ISqlSingleValueExpression) valueExpression).getValue() instanceof String) {
-                ISqlTemplateExpression concat = StringMethods.concat(config, valueExpression, sqlColumn);
-                sb.append(concat.getSql(config));
-            }
-            else {
-                sb.append("?");
-                sb.append(" ");
-                if (operator == SqlOperator.EQ
-                        && !valueExpression.nouNull()) {
-                    sb.append(SqlOperator.IS.getOperator());
+                if (operator == SqlOperator.IN) {
+                    Collection<?> collection = collectedValue.getCollection();
+                    sb.append("(");
+                    List<String> strings = new ArrayList<>(collection.size());
+                    for (Object o : collection) {
+                        if (sqlValues != null) {
+                            sqlValues.add(new SqlValue(o, fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                        }
+                        strings.add("?");
+                    }
+                    sb.append(String.join(collectedValue.getDelimiter(), strings));
+                    sb.append(")");
                 }
                 else {
-                    sb.append(operator.getOperator());
+                    if (sqlValues != null) {
+                        sqlValues.add(new SqlValue(collectedValue.getCollection(), fieldMetaData.getTypeHandler(), fieldMetaData.getOnPut()));
+                    }
+                    sb.append("?");
                 }
-                sb.append(" ");
-                sb.append(sqlColumn.getSqlAndValue(config, sqlValues));
             }
+            sb.append("?");
+            sb.append(" ");
+            if (operator == SqlOperator.EQ
+                    && !valueExpression.nouNull()) {
+                sb.append(SqlOperator.IS.getOperator());
+            }
+            else {
+                sb.append(operator.getOperator());
+            }
+            sb.append(" ");
+            sb.append(sqlColumn.getSqlAndValue(config, sqlValues));
         }
         else {
             if (operator == SqlOperator.PLUS
-                    && ((getLeft() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getLeft()).getValue() instanceof String)
-                    &&
-                    (getRight() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getRight()).getValue() instanceof String))) {
+                    && (((getLeft() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getLeft()).getValue() instanceof String || getLeft() instanceof ISqlColumnExpression && ((ISqlColumnExpression) getLeft()).getFieldMetaData().getType() == String.class))
+                    ||
+                    (getRight() instanceof ISqlSingleValueExpression && ((ISqlSingleValueExpression) getRight()).getValue() instanceof String || getRight() instanceof ISqlColumnExpression && ((ISqlColumnExpression) getRight()).getFieldMetaData().getType() == String.class)))
+            {
                 ISqlTemplateExpression concat = StringMethods.concat(config, getLeft(), getRight());
-                sb.append(concat.getSql(config));
+                sb.append(concat.getSqlAndValue(config, sqlValues));
             }
-            else {
+            else{
                 sb.append(getLeft().getSqlAndValue(config, sqlValues));
                 sb.append(" ");
                 // (= NULL) => (IS NULL)

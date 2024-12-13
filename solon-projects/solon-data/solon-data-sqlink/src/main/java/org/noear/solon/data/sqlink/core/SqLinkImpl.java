@@ -19,14 +19,19 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
 import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
-import org.noear.solon.data.sqlink.api.crud.read.Empty;
-import org.noear.solon.data.sqlink.api.crud.read.EmptyQuery;
-import org.noear.solon.data.sqlink.api.crud.read.LQuery;
+import org.noear.solon.data.sqlink.api.crud.read.*;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
 import org.noear.solon.data.sqlink.core.sqlBuilder.QuerySqlBuilder;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
+import org.noear.solon.data.sqlink.core.tuple.Tuple1;
+import org.noear.solon.data.sqlink.core.tuple.Tuple2;
+import org.noear.solon.data.sqlink.core.tuple.Tuple3;
+import org.noear.solon.data.sqlink.core.tuple.Tuple4;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.Collection;
@@ -37,7 +42,7 @@ import java.util.Collection;
  * @author kiryu1223
  * @since 3.0
  */
-class SqLinkImpl implements SqLink {
+public class SqLinkImpl implements SqLink {
     private final SqLinkConfig config;
 
     SqLinkImpl(SqLinkConfig config) {
@@ -75,7 +80,27 @@ class SqLinkImpl implements SqLink {
     @Override
     public <T> LQuery<T> query(@Recode Class<T> c) {
         String asName = ExpressionUtil.getAsName(c);
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c,asName)));
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
+    }
+
+    @Override
+    public <T> UnionQuery<T> union(LQuery<T> q1, LQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
+    }
+
+    @Override
+    public <T> UnionQuery<T> union(EndQuery<T> q1, EndQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
+    }
+
+    @Override
+    public <T> UnionQuery<T> unionAll(LQuery<T> q1, LQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, true);
+    }
+
+    @Override
+    public <T> UnionQuery<T> unionAll(EndQuery<T> q1, EndQuery<T> q2) {
+        return new UnionQuery<>(config, q1, q2, false);
     }
 
     /**
@@ -85,7 +110,7 @@ class SqLinkImpl implements SqLink {
      */
     @Override
     public EmptyQuery queryEmptyTable() {
-        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class,"")));
+        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class, "")));
     }
 
     /**
@@ -123,7 +148,8 @@ class SqLinkImpl implements SqLink {
      */
     @Override
     public <T> LUpdate<T> update(@Recode Class<T> c) {
-        return new LUpdate<>(config, c);
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        return new LUpdate<>(new UpdateSqlBuilder(config, factory.update(c, ExpressionUtil.getAsName(c))));
     }
 
     /**
@@ -134,7 +160,7 @@ class SqLinkImpl implements SqLink {
      * @return 删除过程对象
      */
     public <T> LDelete<T> delete(@Recode Class<T> c) {
-        return new LDelete<>(config, c);
+        return new LDelete<>(new DeleteSqlBuilder(config, c));
     }
 
 
@@ -148,5 +174,21 @@ class SqLinkImpl implements SqLink {
             return (Class<T>) t.getClass();
         }
         throw new SqLinkException("insert内容为空");
+    }
+
+    public <T> LQuery<Tuple1<T>> query(int... ins) {
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
+    }
+
+    public <T1, T2> LQuery<Tuple2<T1, T2>> query(byte... bytes) {
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
+    }
+
+    public <T1, T2, T3> LQuery<Tuple3<T1, T2, T3>> query(short... shorts) {
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
+    }
+
+    public <T1, T2, T3, T4> LQuery<Tuple4<T1, T2, T3, T4>> query(char... chars) {
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
     }
 }

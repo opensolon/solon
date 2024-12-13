@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.data.sqlink.base.expression.impl;
+package org.noear.solon.data.sqlink.base.expression;
 
-import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
 /**
  * @author kiryu1223
  * @since 3.0
  */
-public abstract class SqlTableExpression implements ISqlTableExpression {
-    public abstract Class<?> getMainTableClass();
+public interface ISqlWithExpression extends ISqlTableExpression {
+    ISqlQueryableExpression getQueryable();
+
+    String withTableName();
+
+    @Override
+    default Class<?> getMainTableClass() {
+        return getQueryable().getMainTableClass();
+    }
+
+    @Override
+    default ISqlWithExpression copy(SqLinkConfig config) {
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        return factory.with(getQueryable(), withTableName());
+    }
 }

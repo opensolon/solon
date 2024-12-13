@@ -40,6 +40,12 @@ public interface ISqlFromExpression extends ISqlExpression {
         return metaData.isEmptyTable();
     }
 
+    default String getTableName() {
+        Class<?> mainTableClass = getSqlTableExpression().getMainTableClass();
+        MetaData metaData = MetaDataCache.getMetaData(mainTableClass);
+        return metaData.getTableName();
+    }
+
     /**
      * 获取表别名
      */

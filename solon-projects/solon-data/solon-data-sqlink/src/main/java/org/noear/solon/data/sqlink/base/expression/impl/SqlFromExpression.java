@@ -16,9 +16,8 @@
 package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlFromExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
+import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.List;
@@ -49,18 +48,26 @@ public class SqlFromExpression implements ISqlFromExpression {
     @Override
     public String getSqlAndValue(SqLinkConfig config, List<SqlValue> values) {
         if (isEmptyTable()) return "";
-        String sql;
-        if (getSqlTableExpression() instanceof ISqlRealTableExpression) {
-            sql = getSqlTableExpression().getSqlAndValue(config, values);
+        SqLinkDialect disambiguation = config.getDisambiguation();
+        StringBuilder builder = new StringBuilder();
+        if (sqlTableExpression instanceof ISqlWithExpression) {
+            ISqlWithExpression withExpression = (ISqlWithExpression) sqlTableExpression;
+            builder.append(disambiguation.disambiguationTableName(withExpression.withTableName()));
         }
         else {
-            sql = "(" + getSqlTableExpression().getSqlAndValue(config, values) + ")";
+            builder.append(sqlTableExpression.getSqlAndValue(config, values));
         }
+
+        if (sqlTableExpression instanceof ISqlQueryableExpression) {
+            builder.insert(0, "(");
+            builder.append(")");
+        }
+
         if (asName != null) {
-            return "FROM " + sql + " AS " + config.getDisambiguation().disambiguation(asName);
+            return "FROM " + builder + " AS " + disambiguation.disambiguation(asName);
         }
         else {
-            return "FROM " + sql;
+            return "FROM " + builder;
         }
     }
 }

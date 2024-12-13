@@ -84,6 +84,15 @@ public class LQuery2<T1, T2> extends QueryBase {
         return joinNewQuery();
     }
 
+    public <Tn> LQuery3<T1, T2, Tn> innerJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func3<T1, T2, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery3<T1, T2, Tn> innerJoinWith(LQuery<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
+        joinWith(JoinType.INNER, target, expr.getTree());
+        return joinNewQuery();
+    }
+
     /**
      * join表操作<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -117,6 +126,15 @@ public class LQuery2<T1, T2> extends QueryBase {
 
     public <Tn> LQuery3<T1, T2, Tn> leftJoin(LQuery<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
         join(JoinType.LEFT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
+    public <Tn> LQuery3<T1, T2, Tn> leftJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func3<T1, T2, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery3<T1, T2, Tn> leftJoinWith(LQuery<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
+        joinWith(JoinType.LEFT, target, expr.getTree());
         return joinNewQuery();
     }
 
@@ -155,6 +173,16 @@ public class LQuery2<T1, T2> extends QueryBase {
         join(JoinType.RIGHT, target, expr.getTree());
         return joinNewQuery();
     }
+
+    public <Tn> LQuery3<T1, T2, Tn> rightJoinWith(LQuery<Tn> target, @Expr(Expr.BodyType.Expr) Func3<T1, T2, Tn, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public <Tn> LQuery3<T1, T2, Tn> rightJoinWith(LQuery<Tn> target, ExprTree<Func3<T1, T2, Tn, Boolean>> expr) {
+        joinWith(JoinType.RIGHT, target, expr.getTree());
+        return joinNewQuery();
+    }
+
     // endregion
 
     // region [WHERE]

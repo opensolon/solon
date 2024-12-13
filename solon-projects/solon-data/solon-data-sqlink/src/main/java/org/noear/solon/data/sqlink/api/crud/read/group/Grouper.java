@@ -17,6 +17,13 @@ package org.noear.solon.data.sqlink.api.crud.read.group;
 
 import io.github.kiryu1223.expressionTree.expressions.annos.Getter;
 import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
+import org.noear.solon.data.sqlink.base.metaData.MetaData;
+import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kiryu1223
@@ -25,4 +32,18 @@ import io.github.kiryu1223.expressionTree.expressions.annos.Setter;
 @Getter
 @Setter
 public abstract class Grouper {
+    @Override
+    public String toString() {
+        try {
+            List<String> strings = new ArrayList<>();
+            MetaData metaData = MetaDataCache.getMetaData(this.getClass());
+            for (FieldMetaData property : metaData.getPropertys()) {
+                strings.add(property.getProperty() + "=" + property.getGetter().invoke(this));
+            }
+            return "(" + String.join(",", strings) + ")";
+        }
+        catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

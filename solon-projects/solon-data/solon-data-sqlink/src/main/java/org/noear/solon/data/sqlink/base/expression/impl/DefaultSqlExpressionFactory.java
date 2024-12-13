@@ -33,7 +33,7 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
 
     @Override
     public ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName) {
-        return new SqlColumnExpression(fieldMetaData,tableAsName);
+        return new SqlColumnExpression(fieldMetaData, tableAsName);
     }
 
     @Override
@@ -149,5 +149,35 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     @Override
     public ISqlTypeExpression type(Class<?> c) {
         return new SqlTypeExpression(c);
+    }
+
+    @Override
+    public ISqlWithExpression with(ISqlQueryableExpression queryable, String name) {
+        return new SqlWithExpression(queryable, name);
+    }
+
+    @Override
+    public ISqlWithsExpression withs() {
+        return new SqlWithsExpression();
+    }
+
+    @Override
+    public ISqlUnionExpression union(ISqlQueryableExpression queryable, boolean all) {
+        return new SqlUnionExpression(queryable, all);
+    }
+
+    @Override
+    public ISqlUnionsExpression unions() {
+        return new SqlUnionsExpression();
+    }
+
+    @Override
+    public ISqlRecursionExpression recursion(ISqlQueryableExpression queryable, String parentId, String childId, int level) {
+        return new SqlRecursionExpression(queryable, parentId, childId, level);
+    }
+
+    @Override
+    public ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where) {
+        return new SqlUpdateExpression(from, joins, sets, where);
     }
 }

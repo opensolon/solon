@@ -22,11 +22,10 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
+import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
 
@@ -36,7 +35,7 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
  */
 public class QuerySqlBuilder implements ISqlBuilder {
     private final SqLinkConfig config;
-    private final ISqlQueryableExpression queryable;
+    private ISqlQueryableExpression queryable;
     private final List<IncludeSet> includeSets = new ArrayList<>();
 
 //    public QuerySqlBuilder(IConfig config, Class<?> target, int offset)
@@ -107,6 +106,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
     }
 
     public void setGroup(ISqlGroupByExpression group) {
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
         queryable.setGroup(group);
     }
 
@@ -137,7 +137,7 @@ public class QuerySqlBuilder implements ISqlBuilder {
             for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
                 GOTO:
                 for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
-                    String as = data.getTableName().substring(0, 1).toLowerCase();
+                    String as = ExpressionUtil.getAsName(data.getType());
                     for (FieldMetaData noi : data.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
                             expressions.add(factory.column(sel, as));
@@ -206,12 +206,16 @@ public class QuerySqlBuilder implements ISqlBuilder {
         return queryable.getSelect().isSingle();
     }
 
-    public Class<?> getTargetClass() {
-        return queryable.getSelect().getTarget();
+    public <T> Class<T> getTargetClass() {
+        return (Class<T>) queryable.getMainTableClass();
     }
 
     public ISqlQueryableExpression getQueryable() {
         return queryable;
+    }
+
+    public void setQueryable(ISqlQueryableExpression queryable) {
+        this.queryable = queryable;
     }
 
     public List<IncludeSet> getIncludeSets() {

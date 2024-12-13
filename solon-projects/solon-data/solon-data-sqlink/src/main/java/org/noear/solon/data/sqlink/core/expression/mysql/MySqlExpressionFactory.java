@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.core.expression.mysql;
 
+import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
+import org.noear.solon.data.sqlink.base.expression.ISqlRecursionExpression;
 import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFactory;
 
 /**
@@ -24,4 +26,9 @@ import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFact
  * @since 3.0
  */
 public class MySqlExpressionFactory extends DefaultSqlExpressionFactory {
+
+    @Override
+    public ISqlRecursionExpression recursion(ISqlQueryableExpression queryable, String parentId, String childId, int level) {
+        return new MySqlRecursionExpression(queryable, parentId, childId, level);
+    }
 }
