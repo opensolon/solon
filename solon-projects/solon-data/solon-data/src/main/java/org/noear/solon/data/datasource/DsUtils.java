@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class DsUtils {
-    private static final String[] DEFAULT_CLASS_PROP_NAMES = {"type", "dataSourceClassName"};
+    private static final String[] DEFAULT_CLASS_PROP_NAMES = {"@type", "type", "dataSourceClassName"};
 
     /**
      * 解析类型

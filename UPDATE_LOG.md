@@ -26,6 +26,7 @@
 
 * 新增 solon-rx-r2dbc 插件
 * 优化 solon ClassUtils.newInstance 异常类名显示
+* 优化 solon DataSourcs 配置添加 "@type" 属性申明支持（统一未来的配置类型申明风格）
 * snakc3 升为 3.2.122
 
 ### v3.0.5-SNAPSHOT
