@@ -25,9 +25,10 @@
 ### v3.0.5
 
 * 新增 solon-rx-r2dbc 插件
+* 优化 solon ClassUtils.newInstance 异常类名显示
 
 ### v3.0.4.1
-* 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部
+* 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
 * 添加 solon Props:addAll 方法
 * 添加 solon-security-validation 值类型支持检测，通过检测异常替代之前的类型校验失败
 * 优化 solon ServerEndpoint 注解支持属性模板

@@ -140,11 +140,7 @@ public class ClassUtil {
         if (clz == null) {
             return null;
         } else {
-            try {
-                return newInstance(clz, prop);
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
-            }
+            return newInstance(clz, prop);
         }
     }
 
@@ -172,7 +168,7 @@ public class ClassUtil {
                 return (T) clz.getConstructor(Properties.class).newInstance(prop);
             }
         } catch (Exception e) {
-            throw new ConstructionException(e);
+            throw new ConstructionException(clz.getName(), e);
         }
     }
 
@@ -188,7 +184,7 @@ public class ClassUtil {
             Constructor<?> constructor = clz.getDeclaredConstructor(types);
             return constructor.newInstance(args);
         } catch (Exception e) {
-            throw new ConstructionException(e);
+            throw new ConstructionException(clz.getName(), e);
         }
     }
 
@@ -199,10 +195,14 @@ public class ClassUtil {
      * @param args        参数
      */
     public static Object newInstance(Constructor constructor, Object[] args) {
+        if (constructor == null) {
+            throw new IllegalArgumentException("constructor is null");
+        }
+
         try {
             return constructor.newInstance(args);
         } catch (Exception e) {
-            throw new ConstructionException(e);
+            throw new ConstructionException(constructor.getDeclaringClass().getName(), e);
         }
     }
 
