@@ -26,11 +26,12 @@
 
 * 新增 solon-rx-r2dbc 插件
 * 优化 solon ClassUtils.newInstance 异常类名显示
+* 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
 * 优化 solon-data DataSources 的配置获取时机
 * snakc3 升为 3.2.122
 
-### v3.0.5-SNAPSHOT
+### v3.0.4.1
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
 * 添加 solon Props:addAll 方法
 * 添加 solon-security-validation 值类型支持检测，通过检测异常替代之前的类型校验失败
