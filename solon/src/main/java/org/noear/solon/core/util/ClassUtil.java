@@ -168,7 +168,7 @@ public class ClassUtil {
                 return (T) clz.getConstructor(Properties.class).newInstance(prop);
             }
         } catch (Exception e) {
-            throw new ConstructionException(clz.getName(), e);
+            throw new ConstructionException("Instantiation failure: " + clz.getName(), e);
         }
     }
 
@@ -184,7 +184,7 @@ public class ClassUtil {
             Constructor<?> constructor = clz.getDeclaredConstructor(types);
             return constructor.newInstance(args);
         } catch (Exception e) {
-            throw new ConstructionException(clz.getName(), e);
+            throw new ConstructionException("Instantiation failure: " + clz.getName(), e);
         }
     }
 
@@ -202,7 +202,7 @@ public class ClassUtil {
         try {
             return constructor.newInstance(args);
         } catch (Exception e) {
-            throw new ConstructionException(constructor.getDeclaringClass().getName(), e);
+            throw new ConstructionException("Instantiation failure: " + constructor.getDeclaringClass().getName(), e);
         }
     }
 
