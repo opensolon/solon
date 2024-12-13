@@ -64,14 +64,15 @@ public class XPluginImpl implements Plugin {
         }
 
         //自动构建数据源
-        Props props = context.cfg().getProp("solon.dataSources");
-        if (props.size() > 0) {
-            context.app().onEvent(AppPluginLoadEndEvent.class, e -> {
+        context.app().onEvent(AppPluginLoadEndEvent.class, e -> {
+            //不能提前获取，否则默认表达式或许未完成
+            Props props = context.cfg().getProp("solon.dataSources");
+            if (props.size() > 0) {
                 //支持 ENC() 加密符
                 VaultUtils.guard(props);
                 buildDataSource(context, props);
-            });
-        }
+            }
+        });
     }
 
     private void buildDataSource(AppContext context, Props props) {
