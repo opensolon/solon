@@ -26,6 +26,7 @@
 
 * 新增 solon-rx-r2dbc 插件
 * 优化 solon ClassUtils.newInstance 异常类名显示
+* snakc3 升为 3.2.122
 
 ### v3.0.5-SNAPSHOT
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
