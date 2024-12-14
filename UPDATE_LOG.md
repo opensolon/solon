@@ -29,6 +29,8 @@
 * 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
 * 优化 solon-data DataSources 的配置获取时机
+* 优化 solon-scheduling Async 异常提示（wran 级）
+* 优化 solon-scheduling Retry 拦截优先级到最里层（index 值最大）
 * snakc3 升为 3.2.122
 
 ### v3.0.4.1
