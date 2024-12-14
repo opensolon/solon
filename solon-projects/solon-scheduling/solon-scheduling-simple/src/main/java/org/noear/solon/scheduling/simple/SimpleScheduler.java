@@ -73,7 +73,7 @@ public class SimpleScheduler implements Lifecycle {
 
     /**
      * 是否开始
-     * */
+     */
     private boolean isStarted = false;
 
     /**
@@ -197,7 +197,11 @@ public class SimpleScheduler implements Lifecycle {
 
             jobHolder.handle(null);
         } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+            if (jobHolder.getSimpleName() != null) {
+                log.warn("Invoke failed: " + jobHolder.getSimpleName(), e);
+            } else {
+                log.warn("Invoke failed!", e);
+            }
         }
     }
 }
