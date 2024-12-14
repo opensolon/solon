@@ -41,7 +41,9 @@ public class AsyncExecutorDefault implements AsyncExecutor {
                 try {
                     inv.invoke();
                 } catch (Throwable e) {
-                    log.warn("Invoke failed: " + inv.method().getMethod(), e);
+                    String location = inv.getTargetClz().getName() + "#"+ inv.method().getMethod().getName();
+
+                    log.warn("Invoke failed: " + location, e);
                 }
             });
         }
