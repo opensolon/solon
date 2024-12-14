@@ -1,11 +1,8 @@
 package labs;
 
-import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import reactor.core.publisher.Mono;
+import org.noear.solon.rx.r2dbc.RxSqlUtils;
 
 /**
  * @author noear 2024/12/13 created
@@ -15,14 +12,11 @@ public class Demo {
         ConnectionFactory connectionFactory = ConnectionFactories
                 .get("r2dbc:h2:mem:///testdb");
 
-        Mono.from(connectionFactory.create())
-                .flatMapMany(connection -> connection
-                        .createStatement("SELECT firstname FROM PERSON WHERE age > $1")
-                        .bind("$1", 42)
-                        .execute())
-                .flatMap(result -> result
-                        .map((row, rowMetadata) -> row.get("firstname", String.class)))
-                .doOnNext(System.out::println)
+        RxSqlUtils sqlUtils = RxSqlUtils.of(connectionFactory);
+
+        sqlUtils.sql("SELECT firstname FROM PERSON WHERE age > ?", 42)
+                .queryValue()
+                .doOnNext(r -> System.out.println(r))
                 .subscribe();
     }
 }
