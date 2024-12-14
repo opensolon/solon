@@ -338,7 +338,7 @@ public class ActionDefault extends HandlerAide implements Action {
                     c.contentType(mProduces);
                 }
 
-                if (Void.class != method().getReturnType()) {
+                if (void.class != method().getReturnType()) {
                     //结果处理
                     ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
                     if (returnHandler == null) {
