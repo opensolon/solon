@@ -27,7 +27,7 @@ import org.noear.solon.scheduling.annotation.Retry;
  * @since 2.3
  */
 public class RetryInterceptor implements Interceptor {
-    AppContext appContext;
+    private AppContext appContext;
 
     public RetryInterceptor(AppContext aopContext) {
         this.appContext = aopContext;

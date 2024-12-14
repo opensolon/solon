@@ -29,7 +29,7 @@ import java.util.concurrent.Future;
  * @since 1.11
  */
 public class AsyncInterceptor implements Interceptor {
-    AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
+    private AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
 
     public AsyncInterceptor(AppContext context) {
         context.getBeanAsync(AsyncExecutor.class, bean -> {

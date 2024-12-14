@@ -46,7 +46,8 @@ public class XPluginImp implements Plugin {
         // @since 2.3
         Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
         if (enableRetryAnno != null) {
-            context.beanInterceptorAdd(Retry.class, new RetryInterceptor(context), Integer.MIN_VALUE);
+            //超大，越里面！
+            context.beanInterceptorAdd(Retry.class, new RetryInterceptor(context), Integer.MAX_VALUE);
         }
 
         //允许在外部手动构建，但是可能不会被启用
