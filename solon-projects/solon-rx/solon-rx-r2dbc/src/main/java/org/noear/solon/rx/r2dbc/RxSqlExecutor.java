@@ -100,6 +100,22 @@ public interface RxSqlExecutor {
     <S> Mono<Long> update(S args, RxStatementBinder<S> binder);
 
     /**
+     * 更新并返回主键
+     *
+     * @return 主键
+     */
+    @Nullable
+    <T> Mono<T> updateReturnKey() throws SQLException;
+
+    /**
+     * 更新并返回主键
+     *
+     * @return 主键
+     */
+    @Nullable
+    <T, S> Mono<T> updateReturnKey(S args, RxStatementBinder<S> binder) throws SQLException;
+
+    /**
      * 批量更新（插入、或更新、或删除）
      *
      * @param argsList 参数集合

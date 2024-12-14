@@ -26,6 +26,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 /**
@@ -53,7 +54,7 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public <T> Flux<T> queryValueList() {
-        return (Flux<T>) queryRowList((row, rowM)-> row.get(1));
+        return (Flux<T>) queryRowList((row, rowM) -> row.get(1));
     }
 
     @Override
@@ -95,6 +96,19 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     }
 
     @Override
+    public <T> Mono<T> updateReturnKey() throws SQLException {
+        return updateReturnKey(argsDef, binderDef);
+    }
+
+    @Override
+    public <T, S> Mono<T> updateReturnKey(S args, RxStatementBinder<S> binder) throws SQLException {
+        return (Mono<T>) Mono.from(getConnection())
+                .flatMapMany(conn -> binder.setValues(conn.createStatement(sql).returnGeneratedValues(), args).execute())
+                .flatMap(result -> result.map(r -> r.get(0)))
+                .singleOrEmpty();
+    }
+
+    @Override
     public Flux<Long> updateBatch(Collection<Object[]> argsList) {
         return updateBatch(argsList, binderDef);
     }
@@ -104,11 +118,11 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> {
                     Statement stmt = conn.createStatement(sql);
-                    for(T row : argsList) {
+                    for (T row : argsList) {
                         binder.setValues(stmt, row);
                         stmt.add();
                     }
-                   return stmt.execute();
+                    return stmt.execute();
                 })
                 .flatMap(result -> result.getRowsUpdated());
     }

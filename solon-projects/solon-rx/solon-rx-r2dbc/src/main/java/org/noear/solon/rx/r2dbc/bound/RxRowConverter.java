@@ -29,5 +29,5 @@ public interface RxRowConverter<T> {
     /**
      * 转换
      */
-    T convert(Row row, RowMetadata rowMetadata);
+    T convert(Row rs, RowMetadata metadata);
 }
