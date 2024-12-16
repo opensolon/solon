@@ -81,22 +81,59 @@ public class DsUtils {
         return typeClz;
     }
 
-    public static DataSource buildDs(Properties props) {
-        return buildDs(props, DEFAULT_CLASS_PROP_NAMES);
+    /**
+     * 属性转换为数据源
+     *
+     * @param props   属性
+     * @param typeClz 数据源类型
+     */
+    private static DataSource convertDo(Properties props, Class<?> typeClz) {
+        return (DataSource) PropsConverter.global().convert(props, typeClz);
     }
 
-    public static DataSource buildDs(Properties props, String[] classPropNames) {
-        Class<?> typeClz = resolveTypeOrDefault(props, null, classPropNames);
-
-        return buildDs(props, typeClz);
+    /**
+     * 构建一个数据源（从属性配置里，获取数据源类型）
+     *
+     * @param props 属性
+     */
+    public static DataSource buildDs(Properties props) {
+        return buildDs(props, null, DEFAULT_CLASS_PROP_NAMES);
     }
 
     /**
      * 构建一个数据源
+     *
+     * @param props 属性
+     *              * @param typeDef 类型默认
      */
-    public static DataSource buildDs(Properties props, Class<?> typeClz) {
-        return (DataSource) PropsConverter.global().convert(props, typeClz);
+    public static DataSource buildDs(Properties props, Class<?> typeDef) {
+        return buildDs(props, typeDef, DEFAULT_CLASS_PROP_NAMES);
     }
+
+    /**
+     * 构建一个数据源（从属性配置里，获取数据源类型）
+     *
+     * @param props         属性
+     * @param typePropNames 类型属性名
+     */
+    public static DataSource buildDs(Properties props, String[] typePropNames) {
+        return buildDs(props, null, typePropNames);
+    }
+
+    /**
+     * 构建一个数据源（从属性配置里，获取数据源类型）
+     *
+     * @param props         属性
+     * @param typeDef       类型默认
+     * @param typePropNames 类型属性名
+     * @since 3.0
+     */
+    public static DataSource buildDs(Properties props, Class<?> typeDef, String[] typePropNames) {
+        Class<?> typeClz = resolveTypeOrDefault(props, typeDef, typePropNames);
+
+        return convertDo(props, typeClz);
+    }
+
 
     /**
      * 构建数据源集合
@@ -151,7 +188,7 @@ public class DsUtils {
             if (kv.getValue().size() > 1) {
                 //超过1个属性以上的，才可能是数据源属性
                 Class<?> typeClz = resolveTypeOrDefault(kv.getValue(), typeDef, classPropNames);
-                DataSource source = buildDs(kv.getValue(), typeClz);
+                DataSource source = convertDo(kv.getValue(), typeClz);
                 dataSourceMap.put(kv.getKey(), source);
             }
         }
