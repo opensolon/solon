@@ -138,9 +138,6 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public void setValueDefault(Supplier supplier) {
         this.valDef = supplier;
-        if (context().isStarted()) {
-            commit();
-        }
     }
 
     /**

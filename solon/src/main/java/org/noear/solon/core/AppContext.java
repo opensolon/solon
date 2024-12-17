@@ -304,62 +304,64 @@ public class AppContext extends BeanContainer {
             return;
         }
 
-        if (Utils.isEmpty(name) && vh.getGenericType() != null) {
-            if (List.class == vh.getType()) {
-                //支持 List<Bean> 注入 //@since 3.0
-                Type tmp = vh.getGenericType().getActualTypeArguments()[0];
+        try {
+            if (Utils.isEmpty(name) && vh.getGenericType() != null) {
+                if (List.class == vh.getType()) {
+                    //支持 List<Bean> 注入 //@since 3.0
+                    Type tmp = vh.getGenericType().getActualTypeArguments()[0];
 
-                final String typeFilter; //过滤泛型
-                final Type type;
-                if (tmp instanceof ParameterizedType) {
-                    type = ((ParameterizedType) tmp).getRawType();
-                    typeFilter = tmp.getTypeName();
-                } else {
-                    type = tmp;
-                    typeFilter = null;
-                }
-
-                if (type instanceof Class) {
-                    if (vh.isField()) {
-                        vh.required(required);
+                    final String typeFilter; //过滤泛型
+                    final Type type;
+                    if (tmp instanceof ParameterizedType) {
+                        type = ((ParameterizedType) tmp).getRawType();
+                        typeFilter = tmp.getTypeName();
                     } else {
-                        vh.required(false);
-                        vh.setDependencyType((Class<?>) type);
+                        type = tmp;
+                        typeFilter = null;
                     }
-                    //设置默认值（放下面）
-                    vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
-                    return;
+
+                    if (type instanceof Class) {
+                        if (vh.isField()) {
+                            vh.required(required);
+                        } else {
+                            vh.required(false);
+                            vh.setDependencyType((Class<?>) type);
+                        }
+                        //设置默认值（放下面）
+                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
+                    }
+                } else if (Map.class == vh.getType()) {
+                    //支持 Map<String,Bean> 注入 //@since 3.0
+                    Type valTmp = vh.getGenericType().getActualTypeArguments()[1];
+
+                    Type keyType = vh.getGenericType().getActualTypeArguments()[0];
+                    Type valType;
+                    String valFilter;
+
+                    if (valTmp instanceof ParameterizedType) {
+                        valType = ((ParameterizedType) valTmp).getRawType();
+                        valFilter = valTmp.getTypeName();
+                    } else {
+                        valType = valTmp;
+                        valFilter = null;
+                    }
+
+
+                    if (String.class == keyType && valType instanceof Class) {
+                        if (vh.isField()) {
+                            vh.required(required);
+                        } else {
+                            vh.required(false);
+                            vh.setDependencyType((Class<?>) valType);
+                        }
+                        //设置默认值（放下面）
+                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
+                    }
                 }
             }
-
-            if (Map.class == vh.getType()) {
-                //支持 Map<String,Bean> 注入 //@since 3.0
-                Type valTmp = vh.getGenericType().getActualTypeArguments()[1];
-
-                Type keyType = vh.getGenericType().getActualTypeArguments()[0];
-                Type valType;
-                String valFilter;
-
-                if (valTmp instanceof ParameterizedType) {
-                    valType = ((ParameterizedType) valTmp).getRawType();
-                    valFilter = valTmp.getTypeName();
-                } else {
-                    valType = valTmp;
-                    valFilter = null;
-                }
-
-
-                if (String.class == keyType && valType instanceof Class) {
-                    if (vh.isField()) {
-                        vh.required(required);
-                    } else {
-                        vh.required(false);
-                        vh.setDependencyType((Class<?>) valType);
-                    }
-                    //设置默认值（放下面）
-                    vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
-                    return;
-                }
+        } finally {
+            if (isStarted()) {
+                vh.commit();
             }
         }
     }

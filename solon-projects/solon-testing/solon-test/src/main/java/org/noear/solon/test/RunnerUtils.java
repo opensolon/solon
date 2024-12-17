@@ -21,7 +21,6 @@ import org.noear.solon.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.runtime.NativeDetector;
