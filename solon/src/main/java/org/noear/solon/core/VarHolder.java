@@ -19,6 +19,7 @@ import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
+import java.util.function.Supplier;
 
 /**
  * 变量容器（主要在 BeanInjector 中使用）
@@ -57,7 +58,8 @@ public interface VarHolder {
     /**
      * 获取泛型（可能为 null）
      */
-    @Nullable ParameterizedType getGenericType();
+    @Nullable
+    ParameterizedType getGenericType();
 
     /**
      * 获取类型
@@ -80,14 +82,20 @@ public interface VarHolder {
     void setValue(Object val);
 
     /**
-     * 只是设置值
+     * 设置默认值
      */
-    void setValueOnly(Object val);
+    void setValueDefault(Supplier supplier);
 
     /**
      * 获取值
      */
     Object getValue();
+
+    /**
+     * 提交
+     */
+    default void commit() {
+    }
 
     /**
      * 是否为完成的（设置值后即为完成态）

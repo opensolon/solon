@@ -16,13 +16,13 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.function.Supplier;
 
 /**
  * 参数变量容器 临时对象
@@ -38,6 +38,7 @@ public class VarHolderOfParam implements VarHolder {
     private Class<?> dependencyType;
 
     private Object val;
+    private Supplier valDef;
     private boolean done;
     private boolean required = false;
 
@@ -135,19 +136,20 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     @Override
-    public void setValueOnly(Object val) {
-        this.val = val;
+    public void setValueDefault(Supplier supplier) {
+        this.valDef = supplier;
     }
 
     /**
      * 获取值
      */
     public Object getValue() {
-        if (val instanceof BeanWrap.Supplier) {
-            return ((BeanWrap.Supplier) val).get();
-        } else {
-            return val;
+        if (val == null) {
+            if (valDef != null) {
+                return valDef.get();
+            }
         }
+        return val;
     }
 
     /**

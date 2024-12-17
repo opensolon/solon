@@ -16,13 +16,13 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
+import java.util.function.Supplier;
 
 /**
  * 字段变量容器 临时对象
@@ -39,6 +39,7 @@ public class VarHolderOfField implements VarHolder {
     private Class<?> dependencyType;
 
     private Object val;
+    private Supplier valDef;
     private boolean required = false;
     private boolean done;
     private InjectGather gather;
@@ -121,10 +122,6 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public void setValue(Object val) {
         if (val != null) {
-            if (val instanceof BeanWrap.Supplier) {
-                val = ((BeanWrap.Supplier) val).get();
-            }
-
             fw.setValue(obj, val, true);
 
             ctx.aot().registerJdkProxyType(getType(), val);
@@ -139,8 +136,8 @@ public class VarHolderOfField implements VarHolder {
     }
 
     @Override
-    public void setValueOnly(Object val) {
-        setValue(val);
+    public void setValueDefault(Supplier supplier) {
+        valDef = supplier;
     }
 
     /**
@@ -148,7 +145,22 @@ public class VarHolderOfField implements VarHolder {
      * */
     @Override
     public Object getValue() {
+        if (val == null) {
+            if (valDef != null) {
+                return valDef.get();
+            }
+        }
         return val;
+    }
+
+    public void commit() {
+        if (isDone()) {
+            return;
+        }
+
+        if (valDef != null) {
+            setValue(valDef.get());
+        }
     }
 
 

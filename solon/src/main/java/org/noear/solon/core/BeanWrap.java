@@ -441,15 +441,4 @@ public class BeanWrap {
          */
         Object getProxy(BeanWrap bw, Object bean);
     }
-
-    /**
-     * Bean 提供者
-     *
-     * @author noear
-     * @since 2.7
-     */
-    @FunctionalInterface
-    public interface Supplier {
-        Object get();
-    }
 }

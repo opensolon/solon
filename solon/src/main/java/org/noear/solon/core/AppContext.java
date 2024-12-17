@@ -317,21 +317,16 @@ public class AppContext extends BeanContainer {
                 }
 
                 if (type instanceof Class) {
+                    vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
+
                     if (vh.isField()) {
                         vh.required(required);
                         lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            if (vh.isDone()) {
-                                return;
-                            }
-
-                            BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type, typeFilter);
-                            vh.setValue(beanListSupplier);
+                            vh.commit();
                         });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) type);
-                        BeanWrap.Supplier beanListSupplier = () -> this.getBeansOfType((Class<? extends Object>) type, typeFilter);
-                        vh.setValueOnly(beanListSupplier);
                     }
                     return;
                 }
@@ -355,21 +350,16 @@ public class AppContext extends BeanContainer {
 
 
                 if (String.class == keyType && valType instanceof Class) {
+                    vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
+
                     if (vh.isField()) {
                         vh.required(required);
                         lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            if (vh.isDone()) {
-                                return;
-                            }
-
-                            BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType, valFilter);
-                            vh.setValue(beanMapSupplier);
+                            vh.commit();
                         });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) valType);
-                        BeanWrap.Supplier beanMapSupplier = () -> this.getBeansMapOfType((Class<?>) valType, valFilter);
-                        vh.setValueOnly(beanMapSupplier);
                     }
                     return;
                 }
