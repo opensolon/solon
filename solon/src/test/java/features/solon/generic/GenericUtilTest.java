@@ -1,5 +1,6 @@
 package features.solon.generic;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.GenericUtil;
@@ -12,10 +13,13 @@ import java.util.Map;
  * @author noear 2024/10/30 created
  */
 public class GenericUtilTest {
+    @BeforeAll
+    public static void bef(){
+        Solon.start(GenericUtilTest.class, new String[0]);
+    }
+
     @Test
     public void case1() {
-        Solon.start(GenericUtilTest.class, new String[0]);
-
         DemoService demoService = Solon.context().getBean(DemoService.class);
         boolean isOk = demoService.getBaseMapper() != null;
 
