@@ -118,6 +118,15 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
     }
 
     /**
+     * 提交
+     */
+    public void commit() {
+        for (VarHolder p1 : vars) {
+            p1.commit();
+        }
+    }
+
+    /**
      * 检测
      */
     public void check() throws Throwable {

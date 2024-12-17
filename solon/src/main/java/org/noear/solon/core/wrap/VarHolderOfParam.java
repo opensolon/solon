@@ -138,6 +138,9 @@ public class VarHolderOfParam implements VarHolder {
     @Override
     public void setValueDefault(Supplier supplier) {
         this.valDef = supplier;
+        if (context().isStarted()) {
+            commit();
+        }
     }
 
     /**
@@ -150,6 +153,16 @@ public class VarHolderOfParam implements VarHolder {
             }
         }
         return val;
+    }
+
+    public void commit() {
+        if (isDone()) {
+            return;
+        }
+
+        if (valDef != null) {
+            setValue(valDef.get());
+        }
     }
 
     /**

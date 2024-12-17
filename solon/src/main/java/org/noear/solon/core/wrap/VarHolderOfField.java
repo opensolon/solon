@@ -54,7 +54,7 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 应用上下文
-     * */
+     */
     @Override
     public AppContext context() {
         return ctx;
@@ -62,7 +62,7 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 是否为字段
-     * */
+     */
     @Override
     public boolean isField() {
         return true;
@@ -70,7 +70,7 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 泛型（可能为null）
-     * */
+     */
     @Override
     public @Nullable ParameterizedType getGenericType() {
         return fw.getGenericType();
@@ -93,23 +93,23 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 获取字段类型
-     * */
+     */
     @Override
-    public Class<?> getType(){
+    public Class<?> getType() {
         return fw.getType();
     }
 
     /**
      * 获取所有注解
-     * */
+     */
     @Override
-    public Annotation[] getAnnoS(){
+    public Annotation[] getAnnoS() {
         return fw.getAnnoS();
     }
 
     /**
      * 获取完整名字
-     * */
+     */
     @Override
     public String getFullName() {
         return fw.getOwnerClz().getName() + "::" + fw.getName();
@@ -137,12 +137,15 @@ public class VarHolderOfField implements VarHolder {
 
     @Override
     public void setValueDefault(Supplier supplier) {
-        valDef = supplier;
+        this.valDef = supplier;
+        if (context().isStarted()) {
+            commit();
+        }
     }
 
     /**
      * 获取值
-     * */
+     */
     @Override
     public Object getValue() {
         if (val == null) {
@@ -166,14 +169,14 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 是否为完成的（设置值后即为完成态）
-     * */
+     */
     public boolean isDone() {
         return done;
     }
 
     /**
      * 是否必须
-     * */
+     */
     @Override
     public boolean required() {
         return required;
@@ -181,7 +184,7 @@ public class VarHolderOfField implements VarHolder {
 
     /**
      * 设定必须
-     * */
+     */
     @Override
     public void required(boolean required) {
         this.required = required;

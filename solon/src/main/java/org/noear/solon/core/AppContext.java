@@ -63,8 +63,11 @@ public class AppContext extends BeanContainer {
     public AppContext(SolonApp app, ClassLoader classLoader, Props props) {
         super(app, classLoader, props);
         initialize();
+        lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
+            this.startInjectReview(0);
+        });
         lifecycle(Constants.LF_IDX_PARAM_COLLECTION_INJECT, () -> {
-            this.startInjectReview(true);
+            this.startInjectReview(1);
         });
     }
 
@@ -317,17 +320,14 @@ public class AppContext extends BeanContainer {
                 }
 
                 if (type instanceof Class) {
-                    vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
-
                     if (vh.isField()) {
                         vh.required(required);
-                        lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            vh.commit();
-                        });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) type);
                     }
+                    //设置默认值（放下面）
+                    vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
                     return;
                 }
             }
@@ -350,17 +350,14 @@ public class AppContext extends BeanContainer {
 
 
                 if (String.class == keyType && valType instanceof Class) {
-                    vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
-
                     if (vh.isField()) {
                         vh.required(required);
-                        lifecycle(Constants.LF_IDX_FIELD_COLLECTION_INJECT, () -> {
-                            vh.commit();
-                        });
                     } else {
                         vh.required(false);
                         vh.setDependencyType((Class<?>) valType);
                     }
+                    //设置默认值（放下面）
+                    vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
                     return;
                 }
             }
@@ -1059,7 +1056,7 @@ public class AppContext extends BeanContainer {
             startBeanLifecycle();
 
             //开始注入审查 //支持自动排序
-            startInjectReview(false);
+            startInjectReview(2);
 
             //开始之后
             postStartBeanLifecycle();
@@ -1099,11 +1096,14 @@ public class AppContext extends BeanContainer {
     /**
      * 开始注入审查（支持自动排序）
      */
-    private void startInjectReview(boolean onlyMethod) throws Throwable {
+    private void startInjectReview(int sel) throws Throwable {
         //全部跑完后，检查注入情况
         List<InjectGather> gatherList = null;
 
-        if (onlyMethod) {
+        if (sel == 0) {
+            gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == false)
+                    .collect(Collectors.toList());
+        } else if (sel == 1) {
             gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false && g1.isMethod() == true)
                     .collect(Collectors.toList());
         } else {
@@ -1113,13 +1113,19 @@ public class AppContext extends BeanContainer {
 
 
         if (gatherList.size() > 0) {
-            for (InjectGather gather : gatherList) {
-                IndexUtil.buildGatherIndex(gather, gatherList);
-            }
+            if (sel > 0) {
+                for (InjectGather gather : gatherList) {
+                    IndexUtil.buildGatherIndex(gather, gatherList);
+                }
 
-            Collections.sort(gatherList);
-            for (InjectGather g1 : gatherList) {
-                g1.check();
+                Collections.sort(gatherList);
+                for (InjectGather g1 : gatherList) {
+                    g1.check();
+                }
+            } else {
+                for (InjectGather gather : gatherList) {
+                    gather.commit();
+                }
             }
         }
     }

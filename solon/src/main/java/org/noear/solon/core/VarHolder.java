@@ -94,8 +94,7 @@ public interface VarHolder {
     /**
      * 提交
      */
-    default void commit() {
-    }
+    void commit();
 
     /**
      * 是否为完成的（设置值后即为完成态）
