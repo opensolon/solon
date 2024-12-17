@@ -426,8 +426,8 @@ public class BeanWrap {
             if (lifecycle.check()) {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
 
-                if (singleton()) {
-                    LogUtil.global().warn("@Singleton (false) class are not recommended to use Lifecycle: " + rawClz().getName());
+                if (singleton() == false) {
+                    LogUtil.global().warn("Using lifecycle for non-singleton class is risky: " + rawClz().getName());
                 }
             }
         }
