@@ -76,7 +76,7 @@ public class XPluginImpl implements Plugin {
     }
 
     private void buildDataSource(AppContext context, Props props) {
-        Map<String, DataSource> dsmap = DsUtils.buildDsMap(props, null, new String[]{"@type", "class"});
+        Map<String, DataSource> dsmap = DsUtils.buildDsMap(props);
 
         if (dsmap.size() > 0) {
             for (Map.Entry<String, DataSource> kv : dsmap.entrySet()) {

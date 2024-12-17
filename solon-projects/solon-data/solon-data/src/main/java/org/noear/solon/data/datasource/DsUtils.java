@@ -34,17 +34,17 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class DsUtils {
-    private static final String[] DEFAULT_CLASS_PROP_NAMES = {"@type", "type", "dataSourceClassName"};
+    public static final String[] DEFAULT_CLASS_PROP_NAMES = {"@type", "type", "class", "dataSourceClassName"};
 
     /**
      * 解析类型
      */
-    private static Class<?> resolveTypeOrNull(Properties props, String[] classPropNames) {
+    private static Class<?> resolveTypeOrNull(Properties props, String[] typePropNames) {
         //@since 2.9 + dataSourceClassName
-        String typeStr = Utils.propertyOr(props, classPropNames);
+        String typeStr = Utils.propertyOr(props, typePropNames);
 
         if (Utils.isNotEmpty(typeStr)) {
-            Utils.propertyRemove(props, classPropNames);
+            Utils.propertyRemove(props, typePropNames);
 
             Class<?> typeClz = ClassUtil.loadClass(typeStr);
             if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
@@ -57,9 +57,9 @@ public class DsUtils {
         }
     }
 
-    private static Class<?> resolveTypeOrDefault(Properties props, Class<?> typeDef, String[] classPropNames) {
+    private static Class<?> resolveTypeOrDefault(Properties props, Class<?> typeDef, String[] typePropNames) {
         //@since 2.9 + dataSourceClassName
-        String typeStr = Utils.propertyOr(props, classPropNames);
+        String typeStr = Utils.propertyOr(props, typePropNames);
 
         Class<?> typeClz = null;
 
@@ -68,7 +68,7 @@ public class DsUtils {
             typeClz = typeDef;
         } else {
             //开始构建
-            Utils.propertyRemove(props, classPropNames);
+            Utils.propertyRemove(props, typePropNames);
 
             typeClz = ClassUtil.loadClass(typeStr);
         }
@@ -154,10 +154,10 @@ public class DsUtils {
     /**
      * 构建数据源集合
      */
-    public static Map<String, DataSource> buildDsMap(Properties props, String[] classPropNames) {
-        Class<?> typeClz = resolveTypeOrNull(props, classPropNames);
+    public static Map<String, DataSource> buildDsMap(Properties props, String[] typePropNames) {
+        Class<?> typeClz = resolveTypeOrNull(props, typePropNames);
 
-        return buildDsMap(props, typeClz, classPropNames);
+        return buildDsMap(props, typeClz, typePropNames);
     }
 
     /**
@@ -165,7 +165,7 @@ public class DsUtils {
      *
      * @param typeDef 默认数据源类型
      */
-    public static Map<String, DataSource> buildDsMap(Properties props, @Nullable Class<?> typeDef, String[] classPropNames) {
+    public static Map<String, DataSource> buildDsMap(Properties props, @Nullable Class<?> typeDef, String[] typePropNames) {
         //::检测配置
         Props rootProps;
         if (props instanceof Props) {
@@ -187,7 +187,7 @@ public class DsUtils {
         for (Map.Entry<String, Props> kv : groupProps.entrySet()) {
             if (kv.getValue().size() > 1) {
                 //超过1个属性以上的，才可能是数据源属性
-                Class<?> typeClz = resolveTypeOrDefault(kv.getValue(), typeDef, classPropNames);
+                Class<?> typeClz = resolveTypeOrDefault(kv.getValue(), typeDef, typePropNames);
                 DataSource source = convertDo(kv.getValue(), typeClz);
                 dataSourceMap.put(kv.getKey(), source);
             }
