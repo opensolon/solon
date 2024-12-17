@@ -295,81 +295,28 @@ public class ResourceUtil {
     //a.**.b //算包名
     //a.**.B //算类名
 
+
     /**
      * 扫描类
      *
      * @param clzExpr 类表达式（基于 import 表达式扩展）
+     * @deprecated 3.0
      */
+    @Deprecated
     public static Collection<Class<?>> scanClasses(String clzExpr) {
-        return scanClasses(AppClassLoader.global(), clzExpr);
+        return ClassUtil.scanClasses(clzExpr);
     }
 
     /**
      * 扫描类
      *
      * @param classLoader 类加载器
-     * @param clzExpr     类表达式（基于 import 表达式扩展）
+     * @param clzExpr     类名表达式（基于 import 表达式扩展）
+     * @deprecated 3.0
      */
+    @Deprecated
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
-        List<Class<?>> clzList = new ArrayList<>();
-
-
-        if (clzExpr.indexOf('*') < 0) {
-            if (clzExpr.endsWith(".class")) {
-                //说明是单个类
-                clzExpr = clzExpr.substring(0, clzExpr.length() - 6);
-
-                Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
-                if (clz != null) {
-                    clzList.add(clz);
-                }
-
-                return clzList;
-            } else {
-                int idx = clzExpr.lastIndexOf('.');
-                if (idx > 0 && Character.isLowerCase(clzExpr.charAt(idx + 1))) { //44=$ 97=a
-                    //开头为小写，算作是包名
-                    clzExpr = clzExpr + ".*";
-                } else {
-                    Class<?> clz = ClassUtil.loadClass(classLoader, clzExpr);
-                    if (clz != null) {
-                        clzList.add(clz);
-                    }
-
-                    return clzList;
-                }
-            }
-        }
-
-
-        //说明是一批类
-        if (clzExpr.endsWith(".class")) {
-            clzExpr = clzExpr.substring(0, clzExpr.length() - 6);
-        } else {
-            int idx = clzExpr.lastIndexOf('.');
-            if (idx > 0 && clzExpr.indexOf('*', idx) < 0) {
-                //.后面没带*，可能是包名
-                if (Character.isLowerCase(clzExpr.charAt(idx + 1))) { //44=$ 97=a
-                    //开头为小写，算作是包名
-                    clzExpr = clzExpr + ".*";
-                }
-            }
-        }
-
-        clzExpr = clzExpr.replace('.', '/');
-        clzExpr = clzExpr + ".class"; //查找时要带 class
-
-        ResourceUtil.scanResources(classLoader, clzExpr).forEach(name -> {
-            String className = name.substring(0, name.length() - 6);
-            className = className.replace('/', '.');
-
-            Class<?> clz = ClassUtil.loadClass(classLoader, className);
-            if (clz != null) {
-                clzList.add(clz);
-            }
-        });
-
-        return clzList;
+        return ClassUtil.scanClasses(classLoader, clzExpr);
     }
 
     //a.xml
