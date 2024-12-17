@@ -1,8 +1,7 @@
 package features.solon.generic;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.GenericUtil;
 
 import java.util.Arrays;
@@ -13,14 +12,12 @@ import java.util.Map;
  * @author noear 2024/10/30 created
  */
 public class GenericUtilTest {
-    @BeforeAll
-    public static void bef(){
-        Solon.start(GenericUtilTest.class, new String[0]);
-    }
-
     @Test
-    public void case1() {
-        DemoService demoService = Solon.context().getBean(DemoService.class);
+    public void case1() throws Exception {
+        AppContext appContext = new AppContext();
+        appContext.beanScan(GenericUtilTest.class);
+
+        DemoService demoService = appContext.getBean(DemoService.class);
         boolean isOk = demoService.getBaseMapper() != null;
 
         System.out.println(isOk ? "ok" : "not ok");
