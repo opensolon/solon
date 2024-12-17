@@ -24,6 +24,7 @@ import java.util.Set;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.LogUtil;
 
 /**
  * Bean 包装
@@ -424,6 +425,10 @@ public class BeanWrap {
             lifecycle = new BeanWrapLifecycle(this, initMethodName, destroyMethodName);
             if (lifecycle.check()) {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
+
+                if (singleton()) {
+                    LogUtil.global().warn("@Singleton (false) class are not recommended to use Lifecycle: " + rawClz().getName());
+                }
             }
         }
     }
