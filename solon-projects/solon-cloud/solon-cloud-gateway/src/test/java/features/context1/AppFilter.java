@@ -1,6 +1,5 @@
 package features.context1;
 
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
@@ -14,13 +13,7 @@ import org.noear.solon.rx.Completable;
  * @author noear 2024/12/18 created
  */
 @Component
-public class App implements CloudGatewayFilter {
-    public static void main(String[] args) {
-        Solon.start(App.class, new String[]{"-cfg=context1.yml"}, app -> {
-
-        });
-    }
-
+public class AppFilter implements CloudGatewayFilter {
     @Override
     public Completable doFilter(ExContext ctx, ExFilterChain chain) {
         try {

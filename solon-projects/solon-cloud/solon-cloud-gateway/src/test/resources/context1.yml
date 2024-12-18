@@ -1,4 +1,4 @@
-server.port: 8901
+server.port: 8079
 
 solon.app:
   name: h5-gateway
