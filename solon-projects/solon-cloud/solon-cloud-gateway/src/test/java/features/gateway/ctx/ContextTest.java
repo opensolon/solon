@@ -1,4 +1,4 @@
-package features.context1;
+package features.gateway.ctx;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ public class ContextTest extends HttpTester {
 
     @BeforeAll
     public static void bef() throws Throwable {
-        solonApp = new SimpleSolonApp(ContextTest.class, "--cfg=context1.yml");
+        solonApp = new SimpleSolonApp(ContextTest.class, "--cfg=ctx.yml");
         solonApp.start(null);
     }
 
