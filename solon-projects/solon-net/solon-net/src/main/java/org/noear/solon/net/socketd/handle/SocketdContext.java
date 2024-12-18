@@ -76,11 +76,6 @@ public class SocketdContext extends ContextEmpty {
     }
 
     @Override
-    public boolean isHeadersSent() {
-        return super.isHeadersSent();
-    }
-
-    @Override
     public Object request() {
         return _request;
     }

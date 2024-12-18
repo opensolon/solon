@@ -43,7 +43,7 @@ public class ContextEmpty extends Context {
 
     @Override
     public boolean isHeadersSent() {
-        return false;
+        return _headers_sent;
     }
 
     @Override
