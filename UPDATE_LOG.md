@@ -42,6 +42,7 @@
 * 优化 solon-scheduling Async 异常提示
 * 优化 solon-scheduling Retry 拦截优先级到最里层
 * 优化 solon-scheduling-simple 调用异常提示
+* 修复 solon-mvc 以实体接收时 `UploadedFile[]` 字段不能注入的问题
 * snakc3 升为 3.2.122
 
 ### v3.0.4.1

@@ -122,6 +122,18 @@ public class HttpUploadTest extends HttpTester {
     }
 
     @Test
+    public void upload_param_2_3() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        InputStream inputStream2 = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
+        assert path("/demo3/upload/f13_3")
+                .data("icons", "f1.mp4", inputStream, "video/mp4")
+                .data("icons", "f2.mp4", inputStream2, "video/mp4")
+                .data("userName", "noear")
+                .post().startsWith("noear-2");
+    }
+
+    @Test
     public void upload_param_f3() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
 

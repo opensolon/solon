@@ -109,6 +109,10 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 //如果是 UploadedFile
                 //
                 args.add(ctx.file(p.spec().getName()));
+            } else if (UploadedFile[].class == pt) {
+                //如果是 UploadedFile
+                //
+                args.add(ctx.fileValues(p.spec().getName()));
             } else {
                 Object tv = ctx.pull(pt);
 

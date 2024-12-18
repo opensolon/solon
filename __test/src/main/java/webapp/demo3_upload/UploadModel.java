@@ -23,4 +23,5 @@ import org.noear.solon.core.handle.UploadedFile;
 public class UploadModel {
     public String userName;
     public UploadedFile file;
+    public UploadedFile[] icons;
 }

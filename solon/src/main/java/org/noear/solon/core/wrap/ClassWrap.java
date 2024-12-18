@@ -331,10 +331,17 @@ public class ClassWrap {
                 Object val = ConvertUtil.to(fw.spec(), val0, ctx);
                 fw.setValue(bean, val);
             } else {
-                if (ctx != null && fw.getType() == UploadedFile.class) {
-                    UploadedFile file1 = ctx.file(key);
-                    if (file1 != null) {
-                        fw.setValue(bean, file1);
+                if (ctx != null) {
+                    if (fw.getType() == UploadedFile.class) {
+                        UploadedFile file1 = ctx.file(key);
+                        if (file1 != null) {
+                            fw.setValue(bean, file1);
+                        }
+                    } else if (fw.getType() == UploadedFile[].class) {
+                        UploadedFile[] files1 = ctx.fileValues(key);
+                        if (files1 != null) {
+                            fw.setValue(bean, files1);
+                        }
                     }
                 }
             }

@@ -111,7 +111,7 @@ public class UploadController {
 
     @Post
     @Mapping(path = "f13_2", multipart = true)
-    public String test_f13_s(UploadModel um) throws Exception {
+    public String test_f13_2(UploadModel um) throws Exception {
         if (um.userName == null) {
             return "userName is null";
         }
@@ -121,6 +121,20 @@ public class UploadController {
         }
 
         return um.userName + ": " + um.file.getName() + "- " + um.file.getContentSize();
+    }
+
+    @Post
+    @Mapping(path = "f13_3", multipart = true)
+    public String test_f13_3(UploadModel um) throws Exception {
+        if (um.userName == null) {
+            return "userName is null";
+        }
+
+        if (um.icons == null) {
+            return "icons is null";
+        }
+
+        return um.userName + "-" + um.icons.length;
     }
 
     //支持上传文件参数
