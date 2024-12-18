@@ -16,7 +16,9 @@
 package org.noear.solon.core.handle;
 
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.FactoryManager;
 
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
@@ -24,31 +26,35 @@ import org.noear.solon.SolonApp;
  * @see SolonApp#tryHandle(Context)
  * @author noear
  * @since 1.0
- * @deprecated 3.0
  * */
-@Deprecated
-public class ContextUtil {
-
-    public static final String contentTypeDef = "text/plain;charset=UTF-8";
+public class ContextHolder {
+    private final static ThreadLocal<Context> threadLocal = FactoryManager.getGlobal().newThreadLocal(ContextHolder.class, false);
 
     /**
      * 设置当前线程的上下文
-     */
-    public static void currentSet(Context ctx) {
-        ContextHolder.currentSet(ctx);
+     * */
+    public static void currentSet(Context context){
+        threadLocal.set(context);
     }
 
     /**
      * 移除当前线程的上下文
-     */
-    public static void currentRemove() {
-        ContextHolder.currentRemove();
+     * */
+    public static void currentRemove(){
+        threadLocal.remove();
     }
 
     /**
      * 获取当前线程的上下文
-     */
-    public static Context current() {
-        return ContextHolder.current();
+     * */
+    public static Context current(){
+        Context tmp = threadLocal.get();
+
+        if (tmp == null && Solon.cfg().testing()) {
+            tmp = new ContextEmpty();
+            threadLocal.set(tmp);
+        }
+
+        return tmp;
     }
 }

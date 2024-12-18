@@ -43,7 +43,7 @@ public abstract class Context {
      * 获取当前线程的上下文
      */
     public static Context current() {
-        return ContextUtil.current();
+        return ContextHolder.current();
     }
 
     private Locale locale;
@@ -808,7 +808,7 @@ public abstract class Context {
         contentTypeDoSet(contentType);
 
         //只记录非默认值
-        if (ContextUtil.contentTypeDef.equals(contentType) == false) {
+        if (Constants.HEADER_CONTENT_TYPE_DEF.equals(contentType) == false) {
             contentTypeNew = contentType;
         }
     }

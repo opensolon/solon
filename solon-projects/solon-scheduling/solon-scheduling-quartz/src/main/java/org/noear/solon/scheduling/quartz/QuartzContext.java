@@ -17,7 +17,7 @@ package org.noear.solon.scheduling.quartz;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
-import org.noear.solon.core.handle.ContextUtil;
+import org.noear.solon.core.handle.ContextHolder;
 import org.quartz.JobExecutionContext;
 
 import java.util.Map;
@@ -34,7 +34,7 @@ public class QuartzContext {
         Context ctx = Context.current(); //可能是从上层代理已生成, v1.11
         if (ctx == null) {
             ctx = new ContextEmpty();
-            ContextUtil.currentSet(ctx);
+            ContextHolder.currentSet(ctx);
         }
 
         //设置请求对象（mvc 时，可以被注入）

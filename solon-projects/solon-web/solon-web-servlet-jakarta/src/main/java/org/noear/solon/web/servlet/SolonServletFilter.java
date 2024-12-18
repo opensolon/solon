@@ -17,7 +17,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.ContextUtil;
+import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.core.handle.Handler;
 
 import jakarta.servlet.*;
@@ -55,7 +55,7 @@ public class SolonServletFilter implements Filter {
             Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
 
             try {
-                ContextUtil.currentSet(ctx);
+                ContextHolder.currentSet(ctx);
 
                 //过滤开始
                 doFilterStart(ctx);
@@ -64,7 +64,7 @@ public class SolonServletFilter implements Filter {
                 Solon.app().tryHandle(ctx);
 
                 //重新设置当前上下文（上面会清掉）
-                ContextUtil.currentSet(ctx);
+                ContextHolder.currentSet(ctx);
 
                 if (ctx.getHandled() == false) {
                     //如果未处理，则传递过滤链
@@ -78,7 +78,7 @@ public class SolonServletFilter implements Filter {
             } finally {
                 //过滤结束
                 doFilterEnd(ctx);
-                ContextUtil.currentRemove();
+                ContextHolder.currentRemove();
             }
 
         } else {

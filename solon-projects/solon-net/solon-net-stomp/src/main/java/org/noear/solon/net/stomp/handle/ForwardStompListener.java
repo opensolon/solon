@@ -17,7 +17,7 @@ package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ContextUtil;
+import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.net.stomp.*;
 import org.noear.solon.net.stomp.broker.impl.StompBrokerMedia;
@@ -85,14 +85,14 @@ public class ForwardStompListener implements StompListener {
 
         if (handler != null) {
             try {
-                ContextUtil.currentSet(ctx);
+                ContextHolder.currentSet(ctx);
                 handler.handle(ctx);
 
                 if (ctx.asyncStarted() == false) {
                     ctx.innerCommit();
                 }
             } finally {
-                ContextUtil.currentRemove();
+                ContextHolder.currentRemove();
             }
         }
     }

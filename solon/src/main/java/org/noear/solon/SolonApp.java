@@ -495,7 +495,7 @@ public class SolonApp extends RouterWrapper {
     public void tryHandle(Context x) {
         try {
             //设置当前线程上下文
-            ContextUtil.currentSet(x);
+            ContextHolder.currentSet(x);
 
             if (stopping) {
                 x.status(503);
@@ -558,7 +558,7 @@ public class SolonApp extends RouterWrapper {
             }
         } finally {
             //移除当前线程上下文
-            ContextUtil.currentRemove();
+            ContextHolder.currentRemove();
         }
     }
 

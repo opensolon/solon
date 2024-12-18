@@ -24,6 +24,8 @@ package org.noear.solon.core;
 public interface Constants {
     String PARM_UNDEFINED_VALUE = "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
+    String HEADER_CONTENT_TYPE_DEF = "text/plain;charset=UTF-8";
+
     //@since: 2.5
     String ATTR_CONTROLLER = "ATTR_CONTROLLER";
     String ATTR_MAIN_HANDLER = "ATTR_MAIN_HANDLER";
