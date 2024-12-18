@@ -26,9 +26,11 @@ public class App implements CloudGatewayFilter {
         try {
             Context ctx2 = ctx.toContext();
             ContextHolder.currentSet(ctx2);
-            filterBef(ctx2);
 
-            if (ctx2.getRendered() || ctx2.attr("output") != null) {
+            //经典处理
+            classicalHandle(ctx2);
+
+            if (ctx2.isHeadersSent()) {
                 ctx2.flush();
                 return Completable.complete();
             }
@@ -41,7 +43,7 @@ public class App implements CloudGatewayFilter {
         return chain.doFilter(ctx);
     }
 
-    private void filterBef(Context ctx) throws Throwable {
+    private void classicalHandle(Context ctx) throws Throwable {
         int s1 = ctx.paramAsInt("s", 0);
 
         if (s1 == 1) {

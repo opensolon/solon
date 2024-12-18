@@ -33,7 +33,8 @@
 * 添加 solon ClassUtil.scanClasses 方法
 * 添加 solon 非单例类使用生命周期时 warn 日志提醒
 * 添加 solon-cloud-gateway ExContext:toContext 方法
-* 添加 ContextHolder 替代 ContextUtil ，后者标为弃用
+* 添加 solon ContextHolder 替代 ContextUtil ，后者标为弃用
+* 添加 solon Context::isHeadersSent 方法，用于响应式转经典式后识别数据发送情况
 * 优化 solon ClassUtils.newInstance 异常类名显示
 * 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
