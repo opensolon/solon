@@ -64,6 +64,11 @@ public class JlHttpContext extends WebContextBase {
     }
 
     @Override
+    public boolean isHeadersSent() {
+        return _response.headersSent();
+    }
+
+    @Override
     public Object request() {
         return _request;
     }

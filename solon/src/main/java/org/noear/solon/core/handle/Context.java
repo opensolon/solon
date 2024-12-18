@@ -101,6 +101,11 @@ public abstract class Context {
     }
 
     /**
+     * 是否头部已发送
+     */
+    public abstract boolean isHeadersSent();
+
+    /**
      * 拉取
      */
     public Object pull(Class<?> clz) {
@@ -681,6 +686,7 @@ public abstract class Context {
 
         return sessionState;
     }
+
     /**
      * 获取 sessionState
      */

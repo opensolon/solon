@@ -42,6 +42,11 @@ public class ContextEmpty extends Context {
     private Object request = null;
 
     @Override
+    public boolean isHeadersSent() {
+        return false;
+    }
+
+    @Override
     public Object request() {
         return request;
     }
@@ -265,11 +270,19 @@ public class ContextEmpty extends Context {
         }
     }
 
+    private boolean _headers_sent;
+    protected void sendHandlers() {
+        if (_headers_sent == false) {
+            _headers_sent = true;
+        }
+    }
+
     private ByteArrayOutputStream outputStream = null;
 
     @Override
     public OutputStream outputStream() {
         if (outputStream == null) {
+            sendHandlers();
             outputStream = new ByteArrayOutputStream();
         }
 

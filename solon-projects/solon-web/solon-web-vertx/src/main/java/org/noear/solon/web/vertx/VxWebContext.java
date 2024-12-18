@@ -75,6 +75,11 @@ public class VxWebContext extends WebContextBase {
     }
 
     @Override
+    public boolean isHeadersSent() {
+        return _headers_sent;
+    }
+
+    @Override
     public Object request() {
         return _request;
     }

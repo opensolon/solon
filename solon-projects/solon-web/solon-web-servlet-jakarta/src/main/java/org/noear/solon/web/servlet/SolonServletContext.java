@@ -75,6 +75,11 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
+    public boolean isHeadersSent() {
+        return _headers_sent;
+    }
+
+    @Override
     public Object pull(Class<?> clz) {
         Object tmp = super.pull(clz);
 

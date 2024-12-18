@@ -75,6 +75,10 @@ public class SocketdContext extends ContextEmpty {
         return _request;
     }
 
+    @Override
+    public boolean isHeadersSent() {
+        return super.isHeadersSent();
+    }
 
     @Override
     public Object request() {
@@ -243,6 +247,8 @@ public class SocketdContext extends ContextEmpty {
     }
 
     private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {
+        sendHandlers();
+
         if (_request.isRequest() || _request.isSubscribe()) {
             _response.dataSet(dataStream);
             _session.replyEnd(_request, _response);
