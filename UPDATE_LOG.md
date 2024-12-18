@@ -32,7 +32,7 @@
 
 * 添加 solon ClassUtil.scanClasses 方法
 * 添加 solon 非单例类使用生命周期时 warn 日志提醒
-* 添加 solon-cloud-gateway ExContext:toContext 方法
+* 添加 solon-cloud-gateway ExContext:toContext 方法，可用于支持经典接口接入（比如，sa-token 签权）
 * 添加 solon ContextHolder 替代 ContextUtil ，后者标为弃用
 * 添加 solon Context::isHeadersSent 方法，用于响应式转经典式后识别数据发送情况
 * 优化 solon ClassUtils.newInstance 异常类名显示
