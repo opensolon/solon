@@ -9,6 +9,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
+import org.noear.solon.core.handle.Context;
 
 import java.net.URI;
 import java.util.Collections;
@@ -133,6 +134,11 @@ public class ExContextEmpty implements ExContext {
 
     @Override
     public ExNewResponse newResponse() {
+        return null;
+    }
+
+    @Override
+    public Context toContext() {
         return null;
     }
 }

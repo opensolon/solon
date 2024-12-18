@@ -21,6 +21,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.net.SocketAddress;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
+import org.noear.solon.core.handle.Context;
 
 import java.net.URI;
 import java.util.Set;
@@ -153,4 +154,9 @@ public interface ExContext {
      * 新的响应构建器
      */
     ExNewResponse newResponse();
+
+    /**
+     * 转为经典接口（不带 req-body）
+     */
+    Context toContext();
 }

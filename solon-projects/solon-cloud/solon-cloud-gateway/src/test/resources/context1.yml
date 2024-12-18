@@ -1,0 +1,18 @@
+server.port: 8901
+
+solon.app:
+  name: h5-gateway
+  group: gateway
+
+solon.cloud.gateway:
+  routes:
+    - id: "h5"
+      target: "https://h5.noear.org"
+      predicates:
+        - "Path=/**"
+      filters:
+        - "StripPrefix=1"
+
+solon.logging.logger:
+  root:
+    level: "INFO"

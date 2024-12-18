@@ -24,6 +24,8 @@ import io.vertx.core.net.SocketAddress;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
 import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.web.vertx.VxWebContext;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -51,7 +53,7 @@ public class ExContextImpl implements ExContext {
         this.attrMap = new HashMap<>();
     }
 
-    public HttpServerRequest rawRequest(){
+    public HttpServerRequest rawRequest() {
         return rawRequest;
     }
 
@@ -274,6 +276,13 @@ public class ExContextImpl implements ExContext {
         return rawRequest.body();
     }
 
+    /**
+     * 转为经典接口（不带 req-body）
+     */
+    @Override
+    public Context toContext() {
+        return new VxWebContext(rawRequest, null);
+    }
 
     ////////////////////////////////////////////////////
 
