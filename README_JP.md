@@ -77,7 +77,7 @@ Solon v3.0.5-M1
 |                                                 |                                        |
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,コードリポジトリです                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,コードリポジトリです                | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java17） | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java21） | 
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,コードリポジトリです          | 
 |                                                 |                                        |
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,プラグインのリポジトリです            | 

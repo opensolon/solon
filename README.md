@@ -79,7 +79,7 @@ Built from scratch, with more flexible interface specifications and an open ecos
 |                                                 |                                                           |
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Code repository                              | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,Code repository                              | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java17）               | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java21）               | 
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,Code repository                        | 
 |                                                 |                                                           |
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 

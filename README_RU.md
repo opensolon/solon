@@ -79,7 +79,7 @@ Solon v3.0.5-M1
 |                                                  |                                                     |
 | https://gitee.com/opensolon/solon-cloud          | Solon Cloud ,Кодовый склад                          | 
 | https://gitee.com/opensolon/solon-admin          | Solon Admin ,Кодовый склад                          | 
-| https://gitee.com/opensolon/solon-jakarta        | Solon Jakarta ,Кодовый склад（base java17）           | 
+| https://gitee.com/opensolon/solon-jakarta        | Solon Jakarta ,Кодовый склад（base java21）           | 
 | https://gitee.com/opensolon/solon-integration    | Solon Integration ,Кодовый склад                    | 
 |                                                  |                                                     |
 | https://gitee.com/opensolon/solon-gradle-plugin  | Solon Gradle ,Код плагина хранилища                 | 

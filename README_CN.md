@@ -79,7 +79,7 @@ Solon v3.0.5-M1
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,代码仓库                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,代码仓库                | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java17） | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java21） | 
 | https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 

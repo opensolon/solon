@@ -22,11 +22,16 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### v3.1.0
+
+* 定义 响应式过滤和拦截体系
+* 新增 solon-rx-r2dbc 插件
+* 优化 拦截体系与 rx 的兼容？
+
 ### v3.0.5
 
-* 新增 solon-rx-r2dbc 插件
 * 添加 solon ClassUtil.scanClasses 方法
-* 添加 非单例类使用生命周期时 warn 日志提醒
+* 添加 solon 非单例类使用生命周期时 warn 日志提醒
 * 优化 solon ClassUtils.newInstance 异常类名显示
 * 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
