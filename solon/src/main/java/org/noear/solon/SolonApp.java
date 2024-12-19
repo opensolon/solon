@@ -108,6 +108,13 @@ public class SolonApp extends RouterWrapper {
         return _cfg;
     }
 
+    /**
+     * 是否为主应用对象
+     * */
+    protected boolean isMain(){
+        return true;
+    }
+
     protected SolonApp(Class<?> source, NvMap args) throws Exception {
         //添加启动类检测
         if (source == null) {

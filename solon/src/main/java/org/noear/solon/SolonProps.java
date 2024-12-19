@@ -318,7 +318,7 @@ public final class SolonProps extends Props {
      */
     @Override
     public void loadAdd(Properties props) {
-        loadAddDo(props, testing == false, false);
+        loadAddDo(props, app.isMain() || testing == false, false);
     }
 
     /**

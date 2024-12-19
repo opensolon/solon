@@ -19,7 +19,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.ConsumerEx;
 
 /**
- * 简单应用
+ * 简单应用（临时应用对象）
  *
  * @author noear
  * @since 3.0
@@ -32,6 +32,11 @@ public class SimpleSolonApp extends SolonApp {
 
     public SimpleSolonApp(Class<?> source, NvMap args) throws Exception {
         super(source, args);
+    }
+
+    @Override
+    protected boolean isMain() {
+        return false;
     }
 
     private SolonApp bakApp;
