@@ -140,6 +140,9 @@ public interface Router {
 
     /**
      * 获取某个控制器的路由记录（管理用）
+     *
+     * @param controllerClz 控制器类
+     * @return 控制器处理点的路由记录
      */
     Collection<Routing<Handler>> getBy(Class<?> controllerClz);
 
