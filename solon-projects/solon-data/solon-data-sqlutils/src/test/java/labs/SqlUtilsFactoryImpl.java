@@ -1,6 +1,7 @@
 package labs;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.Solon;
+import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlExecutor;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.sql.SqlUtilsFactory;
@@ -11,8 +12,14 @@ import javax.sql.DataSource;
 /**
  * @author noear 2024/12/19 created
  */
-@Component
+
 public class SqlUtilsFactoryImpl implements SqlUtilsFactory {
+    public static void main(String[] args){
+        Solon.start(SqlUtilsFactoryImpl.class, args, app->{
+            SqlConfiguration.setFactory(new SqlUtilsFactoryImpl());
+        });
+    }
+
     @Override
     public SqlUtils create(DataSource ds) {
         return new SqlUtilsImpl(ds);
