@@ -81,6 +81,10 @@ public class UpdateSqlBuilder implements ISqlBuilder {
         return !update.getWhere().isEmpty();
     }
 
+    public boolean hasSet() {
+        return !update.getSets().isEmpty();
+    }
+
     @Override
     public String getSql() {
         return getSqlAndValue(null);

@@ -62,6 +62,7 @@ public class UpdateBase extends CRUD {
      * @return 执行后的结果
      */
     public long executeRows() {
+        checkHasSet();
         checkHasWhere();
         SqLinkConfig config = getConfig();
         List<SqlValue> sqlValues = new ArrayList<>();
@@ -70,6 +71,12 @@ public class UpdateBase extends CRUD {
         tryPrintSql(log, sql);
         SqlSession session = config.getSqlSessionFactory().getSession(config);
         return session.executeUpdate(sql, sqlValues);
+    }
+
+    private void checkHasSet() {
+        if (!sqlBuilder.hasSet()) {
+            throw new SqLinkException("SET为空");
+        }
     }
 
     private void checkHasWhere() {
