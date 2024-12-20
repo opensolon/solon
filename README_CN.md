@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.5-M1
+Solon v3.0.5-M2
 </h1>
 <p align="center">
 	<strong>面向全场景的 Java 应用开发框架：克制、高效、开放、生态</strong>
