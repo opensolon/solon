@@ -44,6 +44,7 @@
 * 优化 solon-scheduling-simple 调用异常提示
 * 修复 solon-mvc 以实体接收时 `UploadedFile[]` 字段不能注入的问题
 * snakc3 升为 3.2.122
+* redisx 升为 1.6.9
 
 ### v3.0.4.1
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
