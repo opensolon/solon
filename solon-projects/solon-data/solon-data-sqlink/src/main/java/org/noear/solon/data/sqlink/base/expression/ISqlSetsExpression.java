@@ -33,6 +33,11 @@ public interface ISqlSetsExpression extends ISqlExpression {
      */
     List<ISqlSetExpression> getSets();
 
+    default boolean isEmpty()
+    {
+        return getSets().isEmpty();
+    }
+
     /**
      * 添加一个set表达式
      */
