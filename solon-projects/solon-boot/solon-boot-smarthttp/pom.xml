@@ -26,7 +26,7 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.smartboot.http</groupId>
+            <groupId>org.noear</groupId>
             <artifactId>smart-http-server</artifactId>
             <version>${smarthttp.version}</version>
             <exclusions>
