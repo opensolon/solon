@@ -56,7 +56,7 @@
 * 优化 solon ServerEndpoint 注解支持属性模板
 * 优化 solon BeanWrap 增加重复代理的检测，避免特殊情况出现重复代理
 * 优化 solon RunUtils 线程池支持重复关闭与恢复，并与 SolonApp 停止事件绑定
-* 修复 solon.boot.smarthttp 在某些环境下会出 arraycopy 异常的问题
+* 修复 solon-boot-smarthttp 在某些环境下会出 arraycopy 异常的问题
 * smarthttp 升为 2.4
 
 ### v3.0.4
