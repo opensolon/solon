@@ -78,6 +78,7 @@
 
         <micrometer.version>1.11.1</micrometer.version>
         <opentracing.version>0.33.0</opentracing.version>
+        <opentelemetry.version>1.45.0</opentelemetry.version>
 
         <jaeger.version>1.8.1</jaeger.version>
         <brave.version>5.16.0</brave.version>

@@ -19,8 +19,9 @@
         <module>../../solon-projects/solon-cloud/solon-cloud</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-eventplus</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-gateway</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-tracing</module>
+        <module>../../solon-projects/solon-cloud/solon-cloud-telemetry</module>
         <module>../../solon-projects/solon-cloud/solon-cloud-metrics</module>
+        <module>../../solon-projects/solon-cloud/solon-cloud-tracing</module>
 
         <module>../../solon-projects/solon-web/solon-sessionstate-jedis</module>
         <module>../../solon-projects/solon-web/solon-sessionstate-local</module>
