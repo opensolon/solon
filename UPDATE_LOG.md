@@ -44,6 +44,7 @@
 * 优化 solon-scheduling Retry 拦截优先级到最里层
 * 优化 solon-scheduling-simple 调用异常提示
 * 修复 solon-mvc 以实体接收时 `UploadedFile[]` 字段不能注入的问题
+* 修复 solon-boot-smarthttp 会把默认时区设为 GMT 的问题
 * snakc3 升为 3.2.122
 * redisx 升为 1.6.9
 * smarthttp 升为 2.5
