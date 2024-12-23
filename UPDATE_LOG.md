@@ -37,6 +37,7 @@
 * 添加 solon Context::isHeadersSent 方法，用于响应式转经典式后识别数据发送情况
 * 添加 solon SolonApp::isMain 方法，用于在单元测试时识别是否可同步到 System 属性集
 * 优化 solon ClassUtils.newInstance 异常类名显示
+* 优化 solon InjectGather:isMethod 条件（仅方法，之前构造也算），让`@Bean`方法的检测先于组件的构造器
 * 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
 * 优化 solon-data DataSources 的配置获取时机
