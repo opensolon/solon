@@ -52,6 +52,7 @@
 * slf4j 升为 2.0.16
 * log4j 升为 2.24.3
 * jansi 升为 2.4.1
+* fury 升为 0.9.0
 
 ### v3.0.4.1
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
