@@ -18,6 +18,7 @@ package org.noear.solon.rx.r2dbc.impl;
 import io.r2dbc.spi.ConnectionFactory;
 import org.noear.solon.rx.r2dbc.RxSqlExecutor;
 import org.noear.solon.rx.r2dbc.RxSqlUtils;
+import org.noear.solon.rx.r2dbc.SqlConfiguration;
 
 /**
  * Sql 工具类简单实现
@@ -25,15 +26,15 @@ import org.noear.solon.rx.r2dbc.RxSqlUtils;
  * @author noear
  * @since 3.0
  */
-public class SimpleRxSqlUtils implements RxSqlUtils {
+public class DefaultRxSqlUtils implements RxSqlUtils {
     private final ConnectionFactory ds;
 
-    public SimpleRxSqlUtils(ConnectionFactory ds) {
+    public DefaultRxSqlUtils(ConnectionFactory ds) {
         this.ds = ds;
     }
 
     @Override
     public RxSqlExecutor sql(String sql, Object... args) {
-        return new SimpleRxSqlExecutor(ds, sql, args);
+        return SqlConfiguration.getFactory().create(ds, sql, args);
     }
 }

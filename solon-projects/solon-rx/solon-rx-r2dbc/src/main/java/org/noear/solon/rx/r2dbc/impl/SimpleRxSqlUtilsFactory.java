@@ -16,7 +16,7 @@
 package org.noear.solon.rx.r2dbc.impl;
 
 import io.r2dbc.spi.ConnectionFactory;
-import org.noear.solon.rx.r2dbc.RxSqlUtils;
+import org.noear.solon.rx.r2dbc.RxSqlExecutor;
 import org.noear.solon.rx.r2dbc.RxSqlUtilsFactory;
 
 /**
@@ -26,9 +26,9 @@ import org.noear.solon.rx.r2dbc.RxSqlUtilsFactory;
  * @since 3.0
  */
 public class SimpleRxSqlUtilsFactory implements RxSqlUtilsFactory {
+
     @Override
-    public RxSqlUtils create(ConnectionFactory ds) {
-        assert ds != null;
-        return new SimpleRxSqlUtils(ds);
+    public RxSqlExecutor create(ConnectionFactory ds, String sql, Object... args) {
+        return new SimpleRxSqlExecutor(ds, sql, args);
     }
 }

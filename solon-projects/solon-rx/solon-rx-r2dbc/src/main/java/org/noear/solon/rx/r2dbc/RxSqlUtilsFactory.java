@@ -16,6 +16,7 @@
 package org.noear.solon.rx.r2dbc;
 
 import io.r2dbc.spi.ConnectionFactory;
+import org.noear.solon.lang.Preview;
 
 /**
  * Sql 工具类工厂
@@ -23,9 +24,10 @@ import io.r2dbc.spi.ConnectionFactory;
  * @author noear
  * @since 3.0
  * */
+@Preview("3.0")
 public interface RxSqlUtilsFactory {
     /**
-     * 创建 Sql 工具类
+     * 创建 Sql 执行器
      */
-    RxSqlUtils create(ConnectionFactory ds);
+    RxSqlExecutor create(ConnectionFactory ds, String sql, Object... args);
 }

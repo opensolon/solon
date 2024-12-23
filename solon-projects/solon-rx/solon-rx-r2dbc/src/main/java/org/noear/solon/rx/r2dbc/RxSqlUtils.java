@@ -18,6 +18,7 @@ package org.noear.solon.rx.r2dbc;
 import io.r2dbc.spi.ConnectionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.lang.Preview;
+import org.noear.solon.rx.r2dbc.impl.DefaultRxSqlUtils;
 
 /**
  * Sql 工具类（线程安全，可作为单例保存）
@@ -27,14 +28,13 @@ import org.noear.solon.lang.Preview;
  */
 @Preview("3.0")
 public interface RxSqlUtils {
-    static RxSqlUtils of(ConnectionFactory dataSource) {
-        return SqlConfiguration.getFactory().create(dataSource);
+    static RxSqlUtils of(ConnectionFactory ds) {
+        assert ds != null;
+        return new DefaultRxSqlUtils(ds);
     }
 
     static RxSqlUtils ofName(String dsName) {
-        ConnectionFactory ds = Solon.context().getBean(dsName);
-        assert ds != null;
-        return of(ds);
+        return of(Solon.context().getBean(dsName));
     }
 
     /**
