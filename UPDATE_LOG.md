@@ -25,11 +25,11 @@
 ### v3.1.0
 
 * 定义 响应式过滤和拦截体系
-* 新增 solon-rx-r2dbc 插件
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.0.5
-
+* 新增 solon-data-rx-sqlutils 插件（基于 r2dbc 构建）
+  * 可配合 solon-web-rx 或者 solon-cloud-gateway 使用
 * 添加 solon ClassUtil.scanClasses 方法
 * 添加 solon 非单例类使用生命周期时 warn 日志提醒
 * 添加 solon-cloud-gateway ExContext:toContext 方法，可用于支持经典接口接入（比如，sa-token 签权）
