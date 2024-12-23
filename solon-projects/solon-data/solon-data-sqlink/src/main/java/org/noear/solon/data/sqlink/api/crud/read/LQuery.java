@@ -26,7 +26,6 @@ import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.group.GroupedQuery;
 import org.noear.solon.data.sqlink.api.crud.read.group.Grouper;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -241,6 +240,15 @@ public class LQuery<T> extends QueryBase {
         return this;
     }
 
+    public LQuery<T> whereIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LQuery<T> whereIf(boolean condition, ExprTree<Func1<T, Boolean>> expr) {
+        if (condition) where(expr.getTree());
+        return this;
+    }
+
     /**
      * 设置where条件，并且以or将多个where连接<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -254,6 +262,15 @@ public class LQuery<T> extends QueryBase {
 
     public LQuery<T> orWhere(ExprTree<Func1<T, Boolean>> expr) {
         orWhere(expr.getTree());
+        return this;
+    }
+
+    public LQuery<T> orWhereIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LQuery<T> orWhereIf(boolean condition, ExprTree<Func1<T, Boolean>> expr) {
+        if (condition) orWhere(expr.getTree());
         return this;
     }
 
@@ -294,6 +311,42 @@ public class LQuery<T> extends QueryBase {
         return this;
     }
 
+    public <R> LQuery<T> orderByDesc(@Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> orderByDesc(ExprTree<Func1<T, R>> expr) {
+        orderBy(expr, false);
+        return this;
+    }
+
+    public <R> LQuery<T> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, R> expr, boolean asc) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> orderByIf(boolean condition, ExprTree<Func1<T, R>> expr, boolean asc) {
+        if (condition) orderBy(expr.getTree(), asc);
+        return this;
+    }
+
+    public <R> LQuery<T> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> orderByIf(boolean condition, ExprTree<Func1<T, R>> expr) {
+        if (condition) orderBy(expr, true);
+        return this;
+    }
+
+    public <R> LQuery<T> orderByDescIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery<T> orderByDescIf(boolean condition, ExprTree<Func1<T, R>> expr) {
+        if (condition) orderBy(expr, false);
+        return this;
+    }
+
     // endregion
 
     // region [LIMIT]
@@ -318,6 +371,31 @@ public class LQuery<T> extends QueryBase {
      */
     public LQuery<T> limit(long offset, long rows) {
         limit0(offset, rows);
+        return this;
+    }
+
+    /**
+     * 获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public LQuery<T> limitIf(boolean condition, long rows) {
+        if (condition) limit0(rows);
+        return this;
+    }
+
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param offset    需要跳过的条数
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public LQuery<T> limitIf(boolean condition, long offset, long rows) {
+        if (condition) limit0(offset, rows);
         return this;
     }
 

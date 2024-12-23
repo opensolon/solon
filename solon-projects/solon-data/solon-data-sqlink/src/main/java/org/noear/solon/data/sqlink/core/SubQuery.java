@@ -20,7 +20,7 @@ import org.noear.solon.data.sqlink.api.crud.read.LQuery;
 import java.util.Collection;
 
 public class SubQuery<T> {
-    SubQuery() {
+    public SubQuery() {
     }
 
     public static <T> LQuery<T> subQuery(/*this*/ Collection<T> collection) {
