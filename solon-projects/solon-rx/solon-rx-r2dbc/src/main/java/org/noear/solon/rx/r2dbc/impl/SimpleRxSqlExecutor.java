@@ -26,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Sql 执行器简单实现
@@ -89,7 +90,7 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     @Override
     public <S> Mono<Long> update(S args, RxStatementBinder<S> binder) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
+                .flatMapMany(conn -> binder.setValues(conn.createStatement(sql), args).execute())
                 .flatMap(result -> result.getRowsUpdated())
                 .take(1)
                 .singleOrEmpty();
@@ -119,9 +120,14 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> {
                     Statement stmt = conn.createStatement(sql);
+                    int count = 0;
                     for (T row : argsList) {
+                        if (count > 0) {
+                            stmt.add();
+                        }
+
                         binder.setValues(stmt, row);
-                        stmt.add();
+                        count++;
                     }
                     return stmt.execute();
                 })

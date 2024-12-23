@@ -74,7 +74,7 @@ public class DefaultRxConverter implements RxRowConverterFactory<Object> {
         @Override
         public Object convert(Row row, RowMetadata metaData) {
             Map<String, Object> map = new LinkedHashMap<>();
-            for (int i = 1; i <= metaData.getColumnMetadatas().size(); i++) {
+            for (int i = 0; i < metaData.getColumnMetadatas().size(); i++) {
                 String name = metaData.getColumnMetadata(i).getName();
                 Object value = row.get(i);
                 map.put(name, value);
