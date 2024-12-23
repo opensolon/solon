@@ -23,6 +23,7 @@ import org.noear.solon.data.cache.interceptor.CacheInterceptor;
 import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
 import org.noear.solon.data.datasource.DsUtils;
+import org.noear.solon.data.datasource.R2dbcConnectionFactory;
 import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
@@ -87,19 +88,23 @@ public class XPluginImpl implements Plugin {
                     typed = true;
                 }
 
-                BeanWrap dsBw = context.wrap(name, kv.getValue(), typed);
+                if (kv.getValue() instanceof R2dbcConnectionFactory) {
+                    ((R2dbcConnectionFactory) kv.getValue()).register(context, name, typed);
+                } else {
+                    BeanWrap dsBw = context.wrap(name, kv.getValue(), typed);
 
-                //按名字注册
-                context.putWrap(name, dsBw);
-                if (typed) {
-                    //按类型注册
-                    context.putWrap(DataSource.class, dsBw);
+                    //按名字注册
+                    context.putWrap(name, dsBw);
+                    if (typed) {
+                        //按类型注册
+                        context.putWrap(DataSource.class, dsBw);
+                    }
+                    //对外发布
+                    context.wrapPublish(dsBw);
+
+                    //aot注册
+                    context.aot().registerEntityType(dsBw.rawClz(), null);
                 }
-                //对外发布
-                context.wrapPublish(dsBw);
-
-                //aot注册
-                context.aot().registerEntityType(dsBw.rawClz(), null);
             }
         }
     }

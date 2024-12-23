@@ -32,6 +32,13 @@
         </dependency>
 
         <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-spi</artifactId>
+            <version>${r2dbc.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>snack3</artifactId>
             <scope>provided</scope>
