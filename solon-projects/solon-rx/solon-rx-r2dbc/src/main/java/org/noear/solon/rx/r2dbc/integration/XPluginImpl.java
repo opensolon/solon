@@ -15,14 +15,18 @@
  */
 package org.noear.solon.rx.r2dbc.integration;
 
+import io.r2dbc.spi.ConnectionFactory;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.rx.r2dbc.SqlConfiguration;
 import org.noear.solon.rx.r2dbc.RxSqlUtils;
 import org.noear.solon.rx.r2dbc.RxSqlUtilsFactory;
+
+import java.util.function.Consumer;
 
 /**
  * @author noear
@@ -38,11 +42,25 @@ public class XPluginImpl implements Plugin {
         });
     }
 
-    void doInject(VarHolder vh, Inject anno) {
+    private void doInject(VarHolder vh, Inject anno) {
         vh.required(anno.required());
 
-        DsUtils.observeDs(vh.context(), anno.value(), bw -> {
+        this.observeDs(vh.context(), anno.value(), bw -> {
             vh.setValue(RxSqlUtils.of(bw.raw()));
         });
+    }
+
+    private void observeDs(AppContext context, String dsName, Consumer<BeanWrap> consumer) {
+        if (Utils.isEmpty(dsName)) {
+            context.getWrapAsync(ConnectionFactory.class, (dsBw) -> {
+                consumer.accept(dsBw);
+            });
+        } else {
+            context.getWrapAsync(dsName, (dsBw) -> {
+                if (dsBw.raw() instanceof ConnectionFactory) {
+                    consumer.accept(dsBw);
+                }
+            });
+        }
     }
 }

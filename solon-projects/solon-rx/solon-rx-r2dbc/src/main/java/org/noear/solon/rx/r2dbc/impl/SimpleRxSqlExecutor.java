@@ -18,7 +18,6 @@ package org.noear.solon.rx.r2dbc.impl;
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.Statement;
-import org.noear.solon.Solon;
 import org.noear.solon.rx.r2dbc.RxSqlExecutor;
 import org.noear.solon.rx.r2dbc.bound.RxRowConverter;
 import org.noear.solon.rx.r2dbc.bound.RxStatementBinder;
@@ -26,7 +25,6 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
 /**
@@ -48,13 +46,13 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     }
 
     @Override
-    public <T> Mono<T> queryValue() {
-        return (Mono<T>) queryRow((row, rowM) -> row.get(1));
+    public <T> Mono<T> queryValue(Class<T> tClass) {
+        return (Mono<T>) queryRow((row, rowM) -> row.get(0));
     }
 
     @Override
-    public <T> Flux<T> queryValueList() {
-        return (Flux<T>) queryRowList((row, rowM) -> row.get(1));
+    public <T> Flux<T> queryValueList(Class<T> tClass) {
+        return (Flux<T>) queryRowList((row, rowM) -> row.get(0));
     }
 
     @Override
@@ -67,7 +65,7 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
                 .flatMap(result -> result.map(converter::convert))
-                .singleOrEmpty();
+                .next();
     }
 
     @Override
@@ -92,20 +90,20 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
                 .flatMap(result -> result.getRowsUpdated())
-                .singleOrEmpty();
+                .next();
     }
 
     @Override
-    public <T> Mono<T> updateReturnKey() throws SQLException {
-        return updateReturnKey(argsDef, binderDef);
+    public <T> Mono<T> updateReturnKey(Class<T> tClass) {
+        return updateReturnKey(tClass, argsDef, binderDef);
     }
 
     @Override
-    public <T, S> Mono<T> updateReturnKey(S args, RxStatementBinder<S> binder) throws SQLException {
+    public <T, S> Mono<T> updateReturnKey(Class<T> tClass, S args, RxStatementBinder<S> binder) {
         return (Mono<T>) Mono.from(getConnection())
                 .flatMapMany(conn -> binder.setValues(conn.createStatement(sql).returnGeneratedValues(), args).execute())
                 .flatMap(result -> result.map(r -> r.get(0)))
-                .singleOrEmpty();
+                .elementAt(0, null);
     }
 
     @Override
@@ -135,11 +133,13 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
      * 获取连接（为转换提供重写机会）
      */
     protected Publisher<? extends Connection> getConnection() {
-        if (Solon.app() == null) {
-            return dataSource.create();
-        } else {
-            return null;
-            //return TranUtils.getConnectionProxy(dataSource);
-        }
+        return dataSource.create();
+
+//        if (Solon.app() == null) {
+//            return dataSource.create();
+//        } else {
+//            return null;
+//            //return TranUtils.getConnectionProxy(dataSource);
+//        }
     }
 }

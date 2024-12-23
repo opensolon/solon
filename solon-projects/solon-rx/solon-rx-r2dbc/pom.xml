@@ -14,10 +14,6 @@
     <artifactId>solon-rx-r2dbc</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <r2dbc.version>1.0.0.RELEASE</r2dbc.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>

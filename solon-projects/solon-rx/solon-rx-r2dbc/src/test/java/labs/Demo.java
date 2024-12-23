@@ -15,7 +15,7 @@ public class Demo {
         RxSqlUtils sqlUtils = RxSqlUtils.of(connectionFactory);
 
         sqlUtils.sql("SELECT firstname FROM PERSON WHERE age > ?", 42)
-                .queryValue()
+                .queryValue(String.class)
                 .doOnNext(r -> System.out.println(r))
                 .subscribe();
     }

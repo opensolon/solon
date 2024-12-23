@@ -22,7 +22,6 @@ import org.noear.solon.lang.Preview;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.sql.SQLException;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,7 @@ public interface RxSqlExecutor {
      * @return 值
      */
     @Nullable
-    <T> Mono<T> queryValue();
+    <T> Mono<T> queryValue(Class<T> tClass);
 
     /**
      * 查询并获取值列表
@@ -47,7 +46,7 @@ public interface RxSqlExecutor {
      * @return 值列表
      */
     @Nullable
-    <T> Flux<T> queryValueList();
+    <T> Flux<T> queryValueList(Class<T> tClass);
 
     /**
      * 查询并获取行
@@ -105,7 +104,7 @@ public interface RxSqlExecutor {
      * @return 主键
      */
     @Nullable
-    <T> Mono<T> updateReturnKey() throws SQLException;
+    <T> Mono<T> updateReturnKey(Class<T> tClass);
 
     /**
      * 更新并返回主键
@@ -113,7 +112,7 @@ public interface RxSqlExecutor {
      * @return 主键
      */
     @Nullable
-    <T, S> Mono<T> updateReturnKey(S args, RxStatementBinder<S> binder) throws SQLException;
+    <T, S> Mono<T> updateReturnKey(Class<T> tClass, S args, RxStatementBinder<S> binder);
 
     /**
      * 批量更新（插入、或更新、或删除）
