@@ -49,6 +49,7 @@
 * redisx 升为 1.6.9
 * redisson 升为 3.39.0
 * smarthttp 升为 2.5
+* mybatis-flex 升为 1.10.3
 * slf4j 升为 2.0.16
 * log4j 升为 2.24.3
 * jansi 升为 2.4.1
