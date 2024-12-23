@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.api.crud.read;
 
+import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func10;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
@@ -58,6 +59,15 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
         return this;
     }
 
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> whereIf(boolean condition, @Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> whereIf(boolean condition, ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean>> expr) {
+        if (condition) where(expr.getTree());
+        return this;
+    }
+
     /**
      * 设置where条件，并且以or将多个where连接<p>
      * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
@@ -73,6 +83,16 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
         orWhere(expr.getTree());
         return this;
     }
+
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orWhereIf(boolean condition, @Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orWhereIf(boolean condition, ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Boolean>> expr) {
+        if (condition) orWhere(expr.getTree());
+        return this;
+    }
+
 
     // endregion
 
@@ -110,6 +130,43 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
         orderBy(expr.getTree(), true);
         return this;
     }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByDesc(@Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByDesc(ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        orderBy(expr, false);
+        return this;
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr, boolean asc) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByIf(boolean condition, ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr, boolean asc) {
+        if (condition) orderBy(expr.getTree(), asc);
+        return this;
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByIf(boolean condition, ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        if (condition) orderBy(expr, true);
+        return this;
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByDescIf(boolean condition, @Expr(Expr.BodyType.Expr) Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> orderByDescIf(boolean condition, ExprTree<Func10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>> expr) {
+        if (condition) orderBy(expr, false);
+        return this;
+    }
+    
     // endregion
 
     // region [LIMIT]
@@ -136,6 +193,32 @@ public class LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> extends QueryBase
         limit0(offset, rows);
         return this;
     }
+
+    /**
+     * 获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param rows 需要返回的条数
+     * @return this
+     */
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> limitIf(boolean condition, long rows) {
+        if (condition) limit0(rows);
+        return this;
+    }
+
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param offset 需要跳过的条数
+     * @param rows   需要返回的条数
+     * @return this
+     */
+    public LQuery10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> limitIf(boolean condition, long offset, long rows) {
+        if (condition) limit0(offset, rows);
+        return this;
+    }
+
     // endregion
 
     // region [GROUP BY]

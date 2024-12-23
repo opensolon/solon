@@ -59,6 +59,16 @@ public class GroupedQuery2<Key, T1, T2> extends QueryBase {
         having(expr.getTree());
         return this;
     }
+
+    public GroupedQuery2<Key, T1, T2> havingIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group2<Key, T1, T2>, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public GroupedQuery2<Key, T1, T2> havingIf(boolean condition, ExprTree<Func1<Group2<Key, T1, T2>, Boolean>> expr) {
+        if (condition) having(expr.getTree());
+        return this;
+    }
+    
     // endregion
 
     // region [ORDER BY]
@@ -95,6 +105,43 @@ public class GroupedQuery2<Key, T1, T2> extends QueryBase {
         orderBy(expr, true);
         return this;
     }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByDesc(@Expr(Expr.BodyType.Expr) Func1<Group2<Key, T1, T2>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByDesc(ExprTree<Func1<Group2<Key, T1, T2>, R>> expr) {
+        orderBy(expr, false);
+        return this;
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group2<Key, T1, T2>, R> expr, boolean asc) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByIf(boolean condition, ExprTree<Func1<Group2<Key, T1, T2>, R>> expr, boolean asc) {
+        if (condition) orderBy(expr.getTree(), asc);
+        return this;
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group2<Key, T1, T2>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByIf(boolean condition, ExprTree<Func1<Group2<Key, T1, T2>, R>> expr) {
+        if (condition) orderBy(expr, true);
+        return this;
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByDescIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group2<Key, T1, T2>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery2<Key, T1, T2> orderByDescIf(boolean condition, ExprTree<Func1<Group2<Key, T1, T2>, R>> expr) {
+        if (condition) orderBy(expr, false);
+        return this;
+    }
+
     // endregion
 
     // region [LIMIT]
@@ -121,6 +168,32 @@ public class GroupedQuery2<Key, T1, T2> extends QueryBase {
         limit0(offset, rows);
         return this;
     }
+
+    /**
+     * 获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public GroupedQuery2<Key, T1, T2> limitIf(boolean condition, long rows) {
+        if (condition) limit0(rows);
+        return this;
+    }
+
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param offset    需要跳过的条数
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public GroupedQuery2<Key, T1, T2> limitIf(boolean condition, long offset, long rows) {
+        if (condition) limit0(offset, rows);
+        return this;
+    }
+
     // endregion
 
     // region [SELECT]

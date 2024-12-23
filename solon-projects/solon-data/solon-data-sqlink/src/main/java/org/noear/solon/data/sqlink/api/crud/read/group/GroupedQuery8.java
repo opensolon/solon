@@ -60,6 +60,15 @@ public class GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBas
         return this;
     }
 
+    public GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> havingIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> havingIf(boolean condition, ExprTree<Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, Boolean>> expr) {
+        if (condition) having(expr.getTree());
+        return this;
+    }
+    
     // endregion
 
     // region [ORDER BY]
@@ -96,6 +105,43 @@ public class GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBas
         orderBy(expr, true);
         return this;
     }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByDesc(@Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByDesc(ExprTree<Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R>> expr) {
+        orderBy(expr, false);
+        return this;
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr, boolean asc) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByIf(boolean condition, ExprTree<Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R>> expr, boolean asc) {
+        if (condition) orderBy(expr.getTree(), asc);
+        return this;
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByIf(boolean condition, ExprTree<Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R>> expr) {
+        if (condition) orderBy(expr, true);
+        return this;
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByDescIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R> expr) {
+        throw new NotCompiledException();
+    }
+
+    public <R> GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> orderByDescIf(boolean condition, ExprTree<Func1<Group8<Key, T1, T2, T3, T4, T5, T6, T7, T8>, R>> expr) {
+        if (condition) orderBy(expr, false);
+        return this;
+    }
+
     // endregion
 
     // region [LIMIT]
@@ -122,6 +168,32 @@ public class GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> extends QueryBas
         limit0(offset, rows);
         return this;
     }
+
+    /**
+     * 获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> limitIf(boolean condition, long rows) {
+        if (condition) limit0(rows);
+        return this;
+    }
+
+    /**
+     * 跳过指定数量条数据，再指定获取指定数量的数据
+     *
+     * @param condition 条件
+     * @param offset    需要跳过的条数
+     * @param rows      需要返回的条数
+     * @return this
+     */
+    public GroupedQuery8<Key, T1, T2, T3, T4, T5, T6, T7, T8> limitIf(boolean condition, long offset, long rows) {
+        if (condition) limit0(offset, rows);
+        return this;
+    }
+
     // endregion
 
     // region [SELECT]
