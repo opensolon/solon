@@ -15,6 +15,9 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.data.sql.impl.SimpleSqlExecutor;
+import org.noear.solon.data.sql.impl.SimpleSqlUtils;
+
 import javax.sql.DataSource;
 
 /**
@@ -26,6 +29,20 @@ import javax.sql.DataSource;
 public interface SqlUtilsFactory {
     /**
      * 创建 Sql 工具类
+     *
+     * @deprecated 3.0
      */
-    SqlUtils create(DataSource ds);
+    @Deprecated
+    default SqlUtils create(DataSource ds) {
+        return new SimpleSqlUtils(ds);
+    }
+
+    /**
+     * 创建 Sql 执行器
+     *
+     * @since 3.0
+     */
+    default SqlExecutor create(DataSource ds, String sql, Object... args) {
+        return new SimpleSqlExecutor(ds, sql, args);
+    }
 }

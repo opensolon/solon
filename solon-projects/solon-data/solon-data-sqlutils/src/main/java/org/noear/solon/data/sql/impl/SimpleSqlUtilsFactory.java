@@ -27,9 +27,5 @@ import javax.sql.DataSource;
  * @since 3.0
  */
 public class SimpleSqlUtilsFactory implements SqlUtilsFactory {
-    @Override
-    public SqlUtils create(DataSource ds) {
-        assert ds != null;
-        return new SimpleSqlUtils(ds);
-    }
+
 }

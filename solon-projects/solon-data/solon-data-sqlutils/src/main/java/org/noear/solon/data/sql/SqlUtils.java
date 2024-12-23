@@ -28,14 +28,13 @@ import javax.sql.DataSource;
  */
 @Preview("3.0")
 public interface SqlUtils {
-    static SqlUtils of(DataSource dataSource) {
-        return SqlConfiguration.getFactory().create(dataSource);
+    static SqlUtils of(DataSource ds) {
+        assert ds != null;
+        return SqlConfiguration.getFactory().create(ds);
     }
 
     static SqlUtils ofName(String dsName) {
-        DataSource ds = Solon.context().getBean(dsName);
-        assert ds != null;
-        return of(ds);
+        return of(Solon.context().getBean(dsName));
     }
 
     /**

@@ -34,6 +34,6 @@ public class SimpleSqlUtils implements SqlUtils {
 
     @Override
     public SqlExecutor sql(String sql, Object... args) {
-        return new SimpleSqlExecutor(ds, sql, args);
+        return SqlConfiguration.getFactory().create(ds, sql, args);
     }
 }
