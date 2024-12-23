@@ -40,6 +40,7 @@
 * 优化 solon-mvc Action 返回为 void，不作渲染处理
 * 优化 solon-data DsUtils 构建时支持 "@type" 属性申明（统一未来的配置类型申明风格）
 * 优化 solon-data DataSources 的配置获取时机
+* 优化 solon-data-sqlutils SqlUtilsFactory 接口设计
 * 优化 solon-scheduling Async 异常提示
 * 优化 solon-scheduling Retry 拦截优先级到最里层
 * 优化 solon-scheduling-simple 调用异常提示

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sql.impl;
 
-import org.noear.solon.data.sql.SqlUtils;
+import org.noear.solon.data.sql.SqlExecutor;
 import org.noear.solon.data.sql.SqlUtilsFactory;
 
 import javax.sql.DataSource;
@@ -28,4 +28,8 @@ import javax.sql.DataSource;
  */
 public class SimpleSqlUtilsFactory implements SqlUtilsFactory {
 
+    @Override
+    public SqlExecutor create(DataSource ds, String sql, Object... args) {
+        return new SimpleSqlExecutor(ds, sql, args);
+    }
 }

@@ -25,10 +25,10 @@ import javax.sql.DataSource;
  * @author noear
  * @since 3.0
  */
-public class SimpleSqlUtils implements SqlUtils {
+public class DefaultSqlUtils implements SqlUtils {
     private final DataSource ds;
 
-    public SimpleSqlUtils(DataSource ds) {
+    public DefaultSqlUtils(DataSource ds) {
         this.ds = ds;
     }
 
