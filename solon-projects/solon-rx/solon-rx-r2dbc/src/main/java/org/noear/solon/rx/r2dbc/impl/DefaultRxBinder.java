@@ -29,7 +29,7 @@ public class DefaultRxBinder implements RxStatementBinder<Object[]> {
     public Statement setValues(Statement stmt, Object[] args) {
         //单处理
         for (int i = 0; i < args.length; i++) {
-            setObject(stmt, i + 1, args[i]);
+            setObject(stmt, i, args[i]);
         }
 
         return stmt;
@@ -40,7 +40,7 @@ public class DefaultRxBinder implements RxStatementBinder<Object[]> {
      *
      * @param columnIdx 列顺位（从1开始）
      */
-    private void setObject(Statement stmt, int columnIdx, Object val) {
+    protected void setObject(Statement stmt, int columnIdx, Object val) {
         if (val == null) {
             stmt.bindNull(columnIdx, String.class);
         } else if (val instanceof java.util.Date) {

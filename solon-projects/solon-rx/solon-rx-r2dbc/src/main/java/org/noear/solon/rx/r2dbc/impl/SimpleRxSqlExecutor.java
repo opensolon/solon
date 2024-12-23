@@ -65,7 +65,8 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
                 .flatMap(result -> result.map(converter::convert))
-                .next();
+                .take(1)
+                .singleOrEmpty();
     }
 
     @Override
@@ -90,7 +91,8 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return Mono.from(getConnection())
                 .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
                 .flatMap(result -> result.getRowsUpdated())
-                .next();
+                .take(1)
+                .singleOrEmpty();
     }
 
     @Override
@@ -103,7 +105,8 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
         return (Mono<T>) Mono.from(getConnection())
                 .flatMapMany(conn -> binder.setValues(conn.createStatement(sql).returnGeneratedValues(), args).execute())
                 .flatMap(result -> result.map(r -> r.get(0)))
-                .elementAt(0, null);
+                .take(1)
+                .singleOrEmpty();
     }
 
     @Override
