@@ -47,7 +47,11 @@
 * 修复 solon-boot-smarthttp 会把默认时区设为 GMT 的问题
 * snakc3 升为 3.2.122
 * redisx 升为 1.6.9
+* redisson 升为 3.39.0
 * smarthttp 升为 2.5
+* slf4j 升为 2.0.16
+* log4j 升为 2.24.3
+* jansi 升为 2.4.1
 
 ### v3.0.4.1
 * 添加 solon Router:matchMainAndStatus 接口，并将 attr 处理移到外部（避免调用 Router:matchMain 地影响已有的 attr）
