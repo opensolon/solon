@@ -166,7 +166,7 @@
         <beetlsql.version>3.30.14-RELEASE</beetlsql.version>
         <sqltoy.version>5.6.34.jre8</sqltoy.version>
         <mybatis-flex.version>1.10.3</mybatis-flex.version>
-        <fastmybatis.version>3.0.12</fastmybatis.version>
+        <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.3</dbvisitor.version>
         <bean-searcher.version>4.3.2</bean-searcher.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>

@@ -51,7 +51,6 @@
 * smarthttp 升为 2.5
 * mybatis-flex 升为 1.10.3
 * sqltoy 升为 5.6.34.jre8
-* fastmybatis 升为 3.0.12
 * slf4j 升为 2.0.16
 * log4j 升为 2.24.3
 * jansi 升为 2.4.1
