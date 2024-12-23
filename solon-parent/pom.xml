@@ -414,7 +414,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-rx-r2dbc</artifactId>
+                <artifactId>solon-data-rx-sqlutils</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
