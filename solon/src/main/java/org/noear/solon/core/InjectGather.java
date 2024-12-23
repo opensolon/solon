@@ -61,7 +61,7 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
     }
 
     public boolean isMethod() {
-        return label > 0;
+        return label == 1;
     }
 
     public Class<?> getOutType() {
