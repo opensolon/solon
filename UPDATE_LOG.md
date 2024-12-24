@@ -49,6 +49,8 @@
 * 修复 solon-boot-smarthttp 会把默认时区设为 GMT 的问题
 * snakc3 升为 3.2.122
 * redisx 升为 1.6.9
+* socketd 升为 2.5.14
+* folkmq 升为 1.7.10
 * redisson 升为 3.39.0
 * smarthttp 升为 2.5
 * mybatis-flex 升为 1.10.3

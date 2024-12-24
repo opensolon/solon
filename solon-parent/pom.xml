@@ -41,10 +41,10 @@
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.3.16</wood.version>
         <redisx.version>1.6.9</redisx.version>
-        <socketd.version>2.5.13</socketd.version>
+        <socketd.version>2.5.14</socketd.version>
         <liquor.version>1.3.7</liquor.version>
 
-        <folkmq.version>1.7.9</folkmq.version>
+        <folkmq.version>1.7.10</folkmq.version>
         <water.version>2.15.1</water.version>
         <luffy.version>1.9.0</luffy.version>
 
