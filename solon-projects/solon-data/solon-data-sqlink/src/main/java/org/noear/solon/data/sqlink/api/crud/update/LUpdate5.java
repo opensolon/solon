@@ -15,13 +15,13 @@
  */
 package org.noear.solon.data.sqlink.api.crud.update;
 
-import org.noear.solon.data.sqlink.base.expression.JoinType;
-import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
-import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import io.github.kiryu1223.expressionTree.delegate.Func5;
 import io.github.kiryu1223.expressionTree.delegate.Func6;
-import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
+import org.noear.solon.data.sqlink.base.expression.JoinType;
+import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
+import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
 
 /**
  * @author kiryu1223
@@ -106,7 +106,34 @@ public class LUpdate5<T1, T2, T3, T4, T5> extends UpdateBase {
         set(func.getTree(), value);
         return this;
     }
-    
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setInDb(@Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, T5, R> func, Func5<T1, T2, T3, T4, T5, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setInDb(ExprTree<Func5<T1, T2, T3, T4, T5, R>> func, ExprTree<Func5<T1, T2, T3, T4, T5, R>> value) {
+        set(func.getTree(), value.getTree());
+        return this;
+    }
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setIf(boolean condition, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, T5, R> func, R value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setIf(boolean condition, ExprTree<Func5<T1, T2, T3, T4, T5, R>> func, R value) {
+        if (condition) set(func.getTree(), value);
+        return this;
+    }
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setInDbIf(boolean condition, @Expr(Expr.BodyType.Expr) Func5<T1, T2, T3, T4, T5, R> func, Func5<T1, T2, T3, T4, T5, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate5<T1, T2, T3, T4, T5> setInDbIf(boolean condition, ExprTree<Func5<T1, T2, T3, T4, T5, R>> func, ExprTree<Func5<T1, T2, T3, T4, T5, R>> value) {
+        if (condition) set(func.getTree(), value.getTree());
+        return this;
+    }
+
     //endregion
 
     //region [WHERE]
@@ -126,5 +153,15 @@ public class LUpdate5<T1, T2, T3, T4, T5> extends UpdateBase {
         where(expr.getTree());
         return this;
     }
+
+    public LUpdate5<T1, T2, T3, T4, T5> whereIf(boolean condition, @Expr Func5<T1, T2, T3, T4, T5, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LUpdate5<T1, T2, T3, T4, T5> whereIf(boolean condition, ExprTree<Func5<T1, T2, T3, T4, T5, Boolean>> expr) {
+        if (condition) where(expr.getTree());
+        return this;
+    }
+
     //endregion
 }

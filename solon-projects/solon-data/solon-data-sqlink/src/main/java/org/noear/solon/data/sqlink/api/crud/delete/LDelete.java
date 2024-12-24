@@ -19,7 +19,6 @@ import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
@@ -106,6 +105,15 @@ public class LDelete<T> extends DeleteBase {
 
     public LDelete<T> where(ExprTree<Func1<T, Boolean>> expr) {
         where(expr.getTree());
+        return this;
+    }
+
+    public LDelete<T> whereIf(boolean condition, @Expr Func1<T, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LDelete<T> whereIf(boolean condition, ExprTree<Func1<T, Boolean>> expr) {
+        if (condition) where(expr.getTree());
         return this;
     }
 
