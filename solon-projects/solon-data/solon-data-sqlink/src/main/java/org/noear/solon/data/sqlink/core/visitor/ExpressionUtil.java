@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.*;
+import org.noear.solon.data.sqlink.api.crud.read.IDynamicTable;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
@@ -41,6 +42,16 @@ import java.util.*;
  * @since 3.0
  */
 public class ExpressionUtil {
+
+    public static boolean isDynamicColumn(Method method) {
+//        if (methodCall.getExpr().getKind() != Kind.Parameter) return false;
+//        ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
+//        if (!asNameMap.containsKey(parameter)) return false;
+        String name = method.getName();
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        return IDynamicTable.class.isAssignableFrom(method.getDeclaringClass())
+                && name.equals("column") && parameterTypes.length == 1 && isString(parameterTypes[0]);
+    }
 
     public static boolean isEquals(MethodCallExpression methodCall) {
         Method method = methodCall.getMethod();

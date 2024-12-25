@@ -807,6 +807,9 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     ISqlExpression value = visit(methodCall.getArgs().get(0));
                     return factory.set(columnExpression, value);
                 }
+                else if (isDynamicColumn(methodCall.getMethod())) {
+
+                }
                 else {
                     return checkAndReturnValue(methodCall);
                 }
