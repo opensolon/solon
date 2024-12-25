@@ -83,7 +83,11 @@ public class DefaultSqlSession implements SqlSession {
     public long executeInsert(String sql, Collection<SqlValue> sqlValues, int length) {
         if (!transactionManager.currentThreadInTransaction()) {
             try (Connection connection = dataSourceManager.getConnection()) {
-                return executeInsert(connection, sql, sqlValues, length);
+                boolean autoCommit = connection.getAutoCommit();
+                connection.setAutoCommit(true);
+                long count = executeInsert(connection, sql, sqlValues, length);
+                connection.setAutoCommit(autoCommit);
+                return count;
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -114,7 +118,11 @@ public class DefaultSqlSession implements SqlSession {
     public long executeUpdate(String sql, Collection<SqlValue> sqlValues) {
         if (!transactionManager.currentThreadInTransaction()) {
             try (Connection connection = dataSourceManager.getConnection()) {
-                return executeUpdate(connection, sql, sqlValues);
+                boolean autoCommit = connection.getAutoCommit();
+                connection.setAutoCommit(true);
+                long count = executeUpdate(connection, sql, sqlValues);
+                connection.setAutoCommit(autoCommit);
+                return count;
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);

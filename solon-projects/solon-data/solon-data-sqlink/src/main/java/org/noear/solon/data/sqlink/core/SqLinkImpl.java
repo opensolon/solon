@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sqlink.core;
 
+import io.github.kiryu1223.expressionTree.delegate.Action1;
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
@@ -35,6 +37,7 @@ import org.noear.solon.data.sqlink.core.tuple.Tuple4;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * 发起数据库操作接口实现
@@ -80,7 +83,12 @@ public class SqLinkImpl implements SqLink {
     @Override
     public <T> LQuery<T> query(@Recode Class<T> c) {
         String asName = ExpressionUtil.getAsName(c);
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
+        LQuery<T> query = new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
+        Action1<LQuery<T>> onSelectByType = config.getAop().getOnSelectByType(c);
+        if (onSelectByType != null) {
+            onSelectByType.invoke(query);
+        }
+        return query;
     }
 
     @Override
