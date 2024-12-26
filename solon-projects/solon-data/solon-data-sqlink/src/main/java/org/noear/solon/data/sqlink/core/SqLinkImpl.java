@@ -15,8 +15,6 @@
  */
 package org.noear.solon.data.sqlink.core;
 
-import io.github.kiryu1223.expressionTree.delegate.Action1;
-import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.crud.create.ObjectInsert;
@@ -24,6 +22,7 @@ import org.noear.solon.data.sqlink.api.crud.delete.LDelete;
 import org.noear.solon.data.sqlink.api.crud.read.*;
 import org.noear.solon.data.sqlink.api.crud.update.LUpdate;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
+import org.noear.solon.data.sqlink.base.expression.AsName;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.transaction.Transaction;
 import org.noear.solon.data.sqlink.core.exception.SqLinkException;
@@ -37,7 +36,6 @@ import org.noear.solon.data.sqlink.core.tuple.Tuple4;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * 发起数据库操作接口实现
@@ -82,13 +80,8 @@ public class SqLinkImpl implements SqLink {
      */
     @Override
     public <T> LQuery<T> query(@Recode Class<T> c) {
-        String asName = ExpressionUtil.getAsName(c);
-        LQuery<T> query = new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, asName)));
-        Action1<LQuery<T>> onSelectByType = config.getAop().getOnSelectByType(c);
-        if (onSelectByType != null) {
-            onSelectByType.invoke(query);
-        }
-        return query;
+        String first = ExpressionUtil.getFirst(c);
+        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(c, new AsName(first))));
     }
 
     @Override
@@ -118,7 +111,7 @@ public class SqLinkImpl implements SqLink {
      */
     @Override
     public EmptyQuery queryEmptyTable() {
-        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class, "")));
+        return new EmptyQuery(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Empty.class, new AsName())));
     }
 
     /**
@@ -157,7 +150,8 @@ public class SqLinkImpl implements SqLink {
     @Override
     public <T> LUpdate<T> update(@Recode Class<T> c) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return new LUpdate<>(new UpdateSqlBuilder(config, factory.update(c, ExpressionUtil.getAsName(c))));
+        String first = ExpressionUtil.getFirst(c);
+        return new LUpdate<>(new UpdateSqlBuilder(config, factory.update(c,new AsName(first))));
     }
 
     /**
@@ -182,21 +176,5 @@ public class SqLinkImpl implements SqLink {
             return (Class<T>) t.getClass();
         }
         throw new SqLinkException("insert内容为空");
-    }
-
-    public <T> LQuery<Tuple1<T>> query(int... ins) {
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
-    }
-
-    public <T1, T2> LQuery<Tuple2<T1, T2>> query(byte... bytes) {
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
-    }
-
-    public <T1, T2, T3> LQuery<Tuple3<T1, T2, T3>> query(short... shorts) {
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
-    }
-
-    public <T1, T2, T3, T4> LQuery<Tuple4<T1, T2, T3, T4>> query(char... chars) {
-        return new LQuery<>(new QuerySqlBuilder(config, config.getSqlExpressionFactory().queryable(Tuple1.class, "")));
     }
 }

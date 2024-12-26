@@ -19,6 +19,10 @@ import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.*;
 import org.noear.solon.data.sqlink.api.crud.read.IDynamicTable;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
+import org.noear.solon.data.sqlink.base.expression.AsName;
+import org.noear.solon.data.sqlink.base.expression.ISqlFromExpression;
+import org.noear.solon.data.sqlink.base.expression.ISqlJoinsExpression;
+import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -64,7 +68,7 @@ public class ExpressionUtil {
     /**
      * 判断是否为属性表达式
      */
-    public static boolean isProperty(Map<ParameterExpression, String> asNameMap, MethodCallExpression methodCall) {
+    public static boolean isProperty(Map<ParameterExpression, AsName> asNameMap, MethodCallExpression methodCall) {
         if (methodCall.getExpr().getKind() != Kind.Parameter) return false;
         ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
         return asNameMap.containsKey(parameter);
@@ -73,7 +77,7 @@ public class ExpressionUtil {
     /**
      * 判断是否为属性表达式
      */
-    public static boolean isProperty(Map<ParameterExpression, String> asNameMap, FieldSelectExpression fieldSelect) {
+    public static boolean isProperty(Map<ParameterExpression, AsName> asNameMap, FieldSelectExpression fieldSelect) {
         if (fieldSelect.getExpr().getKind() != Kind.Parameter) return false;
         ParameterExpression parameter = (ParameterExpression) fieldSelect.getExpr();
         return asNameMap.containsKey(parameter);
@@ -82,7 +86,7 @@ public class ExpressionUtil {
     /**
      * 判断是否为分组键
      */
-    public static boolean isGroupKey(Map<ParameterExpression, String> parameters, Expression expression) {
+    public static boolean isGroupKey(Map<ParameterExpression, AsName> parameters, Expression expression) {
         if (expression.getKind() != Kind.FieldSelect) return false;
         FieldSelectExpression fieldSelect = (FieldSelectExpression) expression;
         if (fieldSelect.getExpr().getKind() != Kind.Parameter) return false;
@@ -297,9 +301,27 @@ public class ExpressionUtil {
         }
     }
 
-    public static String getAsName(Class<?> c) {
+    public static String getFirst(Class<?> c) {
         MetaData metaData = MetaDataCache.getMetaData(c);
         return metaData.getTableName().substring(0, 1).toLowerCase();
+    }
+
+    public static AsName doGetAsName(String as, ISqlFromExpression from, ISqlJoinsExpression joins) {
+        Set<String> asNames = new HashSet<>();
+        AsName asName = from.getAsName();
+        asNames.add(asName.getName());
+        joins.getJoins().forEach(join -> asNames.add(join.getAsName().getName()));
+        return doGetAsName0(asNames, as, 0);
+    }
+
+    private static AsName doGetAsName0(Set<String> asNameSet, String as, int offset) {
+        String next = offset == 0 ? as : as + offset;
+        if (asNameSet.contains(next)) {
+            return doGetAsName0(asNameSet, as, offset + 1);
+        }
+        else {
+            return new AsName(next);
+        }
     }
 
     public static <T> List<T> buildTree(List<T> flatList, FieldMetaData child, FieldMetaData parent, FieldMetaData list, Func1<T, Collection<T>> func) {

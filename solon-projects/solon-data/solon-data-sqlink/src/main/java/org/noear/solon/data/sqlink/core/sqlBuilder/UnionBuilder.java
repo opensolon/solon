@@ -84,4 +84,8 @@ public class UnionBuilder implements ISqlBuilder {
         }
         return String.join(" ", strings);
     }
+
+    public ISqlQueryableExpression getQueryable() {
+        return queryable;
+    }
 }

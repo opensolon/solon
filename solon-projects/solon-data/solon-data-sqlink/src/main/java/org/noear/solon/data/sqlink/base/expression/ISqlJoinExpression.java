@@ -42,7 +42,7 @@ public interface ISqlJoinExpression extends ISqlExpression {
     /**
      * 获取别名
      */
-    String getAsName();
+    AsName getAsName();
 
     @Override
     default ISqlJoinExpression copy(SqLinkConfig config) {

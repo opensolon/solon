@@ -98,7 +98,7 @@ public class UnionQuery<T> extends CRUD {
 
     public <R> UnionQuery<T> orderBy(ExprTree<Func1<T, R>> expr, boolean asc) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), unionBuilder.getQueryable());
         ISqlExpression expression = sqlVisitor.visit(expr.getTree());
         unionBuilder.addOrder(factory.order(expression, asc));
         return this;

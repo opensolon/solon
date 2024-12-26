@@ -88,7 +88,7 @@ public class UpdateBase extends CRUD {
 
     protected void join(JoinType joinType, Class<?> target, ExprTree<?> expr) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getUpdate());
         ISqlExpression on = sqlVisitor.visit(expr.getTree());
         ISqlTableExpression table = factory.table(target);
         getSqlBuilder().addJoin(joinType, table, on);
@@ -96,21 +96,21 @@ public class UpdateBase extends CRUD {
 
     protected void set(LambdaExpression<?> left, Object value) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getUpdate());
         ISqlColumnExpression column = sqlVisitor.toColumn(left);
         sqlBuilder.addSet(factory.set(column, factory.AnyValue(value)));
     }
 
     protected void set(LambdaExpression<?> left, LambdaExpression<?> right) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getUpdate());
         ISqlColumnExpression column = sqlVisitor.toColumn(left);
         ISqlExpression value = sqlVisitor.visit(right);
         sqlBuilder.addSet(factory.set(column, value));
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(),sqlBuilder.getUpdate());
         ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);
     }

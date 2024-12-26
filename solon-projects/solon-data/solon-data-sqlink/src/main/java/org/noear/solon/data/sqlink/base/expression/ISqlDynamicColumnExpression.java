@@ -1,9 +1,17 @@
 package org.noear.solon.data.sqlink.base.expression;
 
-public interface ISqlDynamicColumnExpression extends ISqlExpression {
-    void setTableAsName(String tableAsName);
+import org.noear.solon.data.sqlink.base.SqLinkConfig;
 
-    String getTableAsName();
+public interface ISqlDynamicColumnExpression extends ISqlExpression {
+    void setTableAsName(AsName tableAsName);
+
+    AsName getTableAsName();
 
     String getColumn();
+
+    @Override
+    default ISqlDynamicColumnExpression copy(SqLinkConfig config) {
+        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+        return factory.dynamicColumn(getColumn(), getTableAsName());
+    }
 }

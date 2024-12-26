@@ -81,7 +81,7 @@ public abstract class DeleteBase extends CRUD {
 
     protected void join(JoinType joinType, Class<?> target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getFrom(), sqlBuilder.getJoins());
         ISqlExpression on = sqlVisitor.visit(lambda);
         getSqlBuilder().addJoin(joinType, factory.table(target), on);
     }
@@ -91,7 +91,7 @@ public abstract class DeleteBase extends CRUD {
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getFrom(), sqlBuilder.getJoins());
         ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);
     }

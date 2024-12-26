@@ -16,10 +16,7 @@
 package org.noear.solon.data.sqlink.core.expression.oracle;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
-import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlRealTableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlTableExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlWithExpression;
+import org.noear.solon.data.sqlink.base.expression.*;
 import org.noear.solon.data.sqlink.base.expression.impl.SqlFromExpression;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
@@ -32,7 +29,7 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleFromExpression extends SqlFromExpression {
-    public OracleFromExpression(ISqlTableExpression sqlTableExpression, String asName) {
+    public OracleFromExpression(ISqlTableExpression sqlTableExpression, AsName asName) {
         super(sqlTableExpression, asName);
     }
 
@@ -55,7 +52,7 @@ public class OracleFromExpression extends SqlFromExpression {
             builder.append(")");
         }
         if (asName != null) {
-            return "FROM " + builder + config.getDisambiguation().disambiguation(asName);
+            return "FROM " + builder + config.getDisambiguation().disambiguation(asName.getName());
         }
         else {
             return "FROM " + builder;

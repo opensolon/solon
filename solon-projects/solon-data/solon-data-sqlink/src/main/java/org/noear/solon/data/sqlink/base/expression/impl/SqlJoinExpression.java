@@ -30,9 +30,9 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     protected final JoinType joinType;
     protected final ISqlTableExpression joinTable;
     protected final ISqlExpression conditions;
-    protected final String asName;
+    protected final AsName asName;
 
-    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
+    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName) {
         this.joinType = joinType;
         this.joinTable = joinTable;
         this.conditions = conditions;
@@ -55,7 +55,7 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     }
 
     @Override
-    public String getAsName() {
+    public AsName getAsName() {
         return asName;
     }
 
@@ -76,7 +76,7 @@ public class SqlJoinExpression implements ISqlJoinExpression {
             builder.append("(").append(joinTable.getSqlAndValue(config, values)).append(")");
         }
         if (getAsName() != null) {
-            builder.append(" AS ").append(disambiguation.disambiguation(getAsName()));
+            builder.append(" AS ").append(disambiguation.disambiguation(getAsName().getName()));
         }
         builder.append(" ON ");
         builder.append(conditions.getSqlAndValue(config, values));

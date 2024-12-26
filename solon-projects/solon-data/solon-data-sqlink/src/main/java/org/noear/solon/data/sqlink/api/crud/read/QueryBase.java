@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.annotation.RelationType;
+import org.noear.solon.data.sqlink.api.Filter;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
@@ -47,6 +48,8 @@ import java.util.*;
  */
 public abstract class QueryBase extends CRUD {
     public final static Logger log = LoggerFactory.getLogger(QueryBase.class);
+    protected final List<String> ignoreFilterIds = new ArrayList<>();
+    protected boolean ignoreFilterAll = false;
 
     private final QuerySqlBuilder sqlBuilder;
 
@@ -86,17 +89,31 @@ public abstract class QueryBase extends CRUD {
         return session.executeQuery(ResultSet::next, sql, values);
     }
 
+    protected String buildSqlAndValue(List<SqlValue> values) {
+        SqLinkConfig config = getConfig();
+        tryFilter(getConfig().getFilter(),sqlBuilder.getTargetClass());
+        return sqlBuilder.getSqlAndValue(values);
+    }
+
+    protected String buildSqlAndValue() {
+        return buildSqlAndValue(null);
+    }
+
+    protected <T> void tryFilter(Filter filter, Class<T> targetClass) {
+        if (this instanceof LQuery<?>) {
+            LQuery<T> lQuery = (LQuery<T>) this;
+            filter.invokeOnSelect(targetClass, lQuery, ignoreFilterIds, ignoreFilterAll);
+        }
+    }
+
     protected <T> List<T> toList() {
         SqLinkConfig config = getConfig();
+        Class<T> targetClass = sqlBuilder.getTargetClass();
+        List<SqlValue> values = new ArrayList<>();
+        String sql = buildSqlAndValue(values);
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
-//        for (FieldMetaData mappingDatum : mappingData) {
-//            System.out.println(mappingDatum.getField());
-//        }
-        List<SqlValue> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        Class<T> targetClass = sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession(config);
         List<T> ts = session.executeQuery(
                 r -> ObjectBuilder.start(r, targetClass, mappingData, single, config).createList(),
@@ -259,15 +276,15 @@ public abstract class QueryBase extends CRUD {
     }
 
     public String toSql() {
-        return sqlBuilder.getSql();
+        return buildSqlAndValue();
     }
 
     protected QuerySqlBuilder boxedQuerySqlBuilder() {
         ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
         Class<?> mainTableClass = queryable.getMainTableClass();
-        String as = ExpressionUtil.getAsName(mainTableClass);
+        String first = ExpressionUtil.getFirst(mainTableClass);
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, as)));
+        return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, new AsName(first))));
     }
 
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond, List<IncludeSet> includeSets) {

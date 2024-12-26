@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.core;
 
-import org.noear.solon.data.sqlink.api.Aop;
+import org.noear.solon.data.sqlink.api.Filter;
 import org.noear.solon.data.sqlink.base.DbType;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
@@ -48,7 +48,7 @@ class Config implements SqLinkConfig {
     private final DataSourceManager dataSourceManager;
     private final SqlSessionFactory sqlSessionFactory;
     private final BeanCreatorFactory beanCreatorFactory;
-    private final Aop aop = new Aop();
+    private final Filter filter = new Filter();
     private SqLinkDialect disambiguation;
     private SqlExpressionFactory sqlExpressionFactory;
     private IncludeFactory includeFactory;
@@ -192,7 +192,7 @@ class Config implements SqLinkConfig {
     }
 
     @Override
-    public Aop getAop() {
-        return aop;
+    public Filter getFilter() {
+        return filter;
     }
 }

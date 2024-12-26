@@ -54,7 +54,7 @@ public interface SqlExpressionFactory {
      * @param fieldMetaData 字段元数据
      * @param tableAsName   表别名
      */
-    ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName);
+    ISqlColumnExpression column(FieldMetaData fieldMetaData, AsName tableAsName);
 
     /**
      * 创建条件表达式
@@ -67,7 +67,7 @@ public interface SqlExpressionFactory {
      * @param sqlTable 表表达式
      * @param asName   表别名
      */
-    ISqlFromExpression from(ISqlTableExpression sqlTable, String asName);
+    ISqlFromExpression from(ISqlTableExpression sqlTable, AsName asName);
 
     /**
      * 创建分组group by表达式
@@ -98,7 +98,7 @@ public interface SqlExpressionFactory {
      * @param conditions join条件
      * @param asName     join别名
      */
-    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName);
+    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName);
 
     /**
      * 创建join集合表达式
@@ -150,7 +150,7 @@ public interface SqlExpressionFactory {
      *
      * @param target 目标表
      */
-    default ISqlQueryableExpression queryable(Class<?> target, String asName) {
+    default ISqlQueryableExpression queryable(Class<?> target, AsName asName) {
         return queryable(from(table(target), asName));
     }
 
@@ -160,7 +160,7 @@ public interface SqlExpressionFactory {
      * @param from from表达式
      */
     default ISqlQueryableExpression queryable(ISqlFromExpression from) {
-        return queryable(select(from.getSqlTableExpression().getMainTableClass()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
+        return queryable(select(from.getSqlTableExpression().getMainTableClass(),from.getAsName()), from, Joins(), where(), groupBy(), having(), orderBy(), limit());
     }
 
     /**
@@ -178,7 +178,7 @@ public interface SqlExpressionFactory {
      *
      * @param table 表表达式
      */
-    default ISqlQueryableExpression queryable(ISqlTableExpression table, String asName) {
+    default ISqlQueryableExpression queryable(ISqlTableExpression table, AsName asName) {
         return queryable(from(table, asName));
     }
 
@@ -208,8 +208,8 @@ public interface SqlExpressionFactory {
      *
      * @param target 目标类
      */
-    default ISqlSelectExpression select(Class<?> target) {
-        return select(getColumnByClass(target), target, false, false);
+    default ISqlSelectExpression select(Class<?> target,AsName asName) {
+        return select(getColumnByClass(target,asName), target, false, false);
     }
 
     /**
@@ -347,20 +347,22 @@ public interface SqlExpressionFactory {
 
     ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where);
 
-    default ISqlUpdateExpression update(Class<?> target, String asName) {
+    default ISqlUpdateExpression update(Class<?> target, AsName asName) {
         return update(from(table(target), asName), Joins(), sets(), where());
     }
+
+    ISqlDynamicColumnExpression dynamicColumn(String column, AsName tableAsName);
 
     /**
      * 将实体类转换为列表达式集合
      */
-    default List<ISqlExpression> getColumnByClass(Class<?> target) {
+    default List<ISqlExpression> getColumnByClass(Class<?> target,AsName asName) {
         MetaData metaData = MetaDataCache.getMetaData(target);
         List<FieldMetaData> property = metaData.getNotIgnorePropertys();
         List<ISqlExpression> columns = new ArrayList<>(property.size());
         String as = metaData.getTableName().substring(0, 1).toLowerCase();
         for (FieldMetaData data : property) {
-            columns.add(column(data, as));
+            columns.add(column(data, asName));
         }
         return columns;
     }

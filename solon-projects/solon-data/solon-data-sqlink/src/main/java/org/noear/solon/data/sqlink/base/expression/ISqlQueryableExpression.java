@@ -134,11 +134,6 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     ISqlHavingExpression getHaving();
 
     /**
-     * 获取查询列的类（from + joins）
-     */
-    List<Class<?>> getOrderedClass();
-
-    /**
      * 获取映射的列
      */
     default List<FieldMetaData> getMappingData() {
@@ -158,7 +153,11 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     }
 
     default List<FieldMetaData> getMappingData0() {
-        List<Class<?>> orderedClass = getOrderedClass();
+        List<Class<?>> orderedClass = new ArrayList<>(getJoins().getJoins().size() + 1);
+        orderedClass.add(getFrom().getSqlTableExpression().getMainTableClass());
+        for (ISqlJoinExpression join : getJoins().getJoins()) {
+            orderedClass.add(join.getJoinTable().getMainTableClass());
+        }
         Class<?> target = getMainTableClass();
         MetaData metaData = MetaDataCache.getMetaData(target);
         if (orderedClass.contains(target)) {

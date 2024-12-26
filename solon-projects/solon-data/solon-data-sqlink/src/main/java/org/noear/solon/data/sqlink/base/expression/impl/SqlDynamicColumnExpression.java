@@ -2,6 +2,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.expression.AsName;
 import org.noear.solon.data.sqlink.base.expression.ISqlDynamicColumnExpression;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
@@ -10,9 +11,9 @@ import java.util.List;
 
 public class SqlDynamicColumnExpression implements ISqlDynamicColumnExpression {
     private final String column;
-    private String tableAsName;
+    private AsName tableAsName;
 
-    public SqlDynamicColumnExpression(String column, String tableAsName) {
+    public SqlDynamicColumnExpression(String column, AsName tableAsName) {
         this.column = column;
         this.tableAsName = tableAsName;
     }
@@ -23,12 +24,12 @@ public class SqlDynamicColumnExpression implements ISqlDynamicColumnExpression {
     }
 
     @Override
-    public String getTableAsName() {
+    public AsName getTableAsName() {
         return tableAsName;
     }
 
     @Override
-    public void setTableAsName(String tableAsName) {
+    public void setTableAsName(AsName tableAsName) {
         this.tableAsName = tableAsName;
     }
 
@@ -37,7 +38,7 @@ public class SqlDynamicColumnExpression implements ISqlDynamicColumnExpression {
         SqLinkDialect dialect = config.getDisambiguation();
         String columnName = dialect.disambiguation(column);
         if (tableAsName != null) {
-            return dialect.disambiguation(tableAsName) + "." + columnName;
+            return dialect.disambiguation(tableAsName.getName()) + "." + columnName;
         }
         else {
             return columnName;

@@ -25,6 +25,9 @@ import org.noear.solon.data.sqlink.base.session.SqlValue;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.doGetAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
+
 /**
  * 更新语句构造器
  *
@@ -50,12 +53,13 @@ public class UpdateSqlBuilder implements ISqlBuilder {
      * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
-        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
+        String first = getFirst(table.getMainTableClass());
+        AsName asName = doGetAsName(first,update.getFrom(),update.getJoins());
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
                 on,
-                as
+                asName
         );
         update.addJoin(join);
     }
@@ -97,5 +101,9 @@ public class UpdateSqlBuilder implements ISqlBuilder {
 
     public SqLinkConfig getConfig() {
         return config;
+    }
+
+    public ISqlUpdateExpression getUpdate() {
+        return update;
     }
 }

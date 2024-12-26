@@ -19,6 +19,7 @@ import io.github.kiryu1223.expressionTree.delegate.Action1;
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
 import io.github.kiryu1223.expressionTree.expressions.annos.Recode;
 import org.noear.solon.data.sqlink.api.Result;
@@ -485,8 +486,8 @@ public class LQuery<T> extends QueryBase {
         FieldMetaData target = MetaDataCache.getMetaData(targetType).getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
         FieldMetaData self = MetaDataCache.getMetaData(queryable.getMainTableClass()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        String asName = ExpressionUtil.getAsName(targetType);
-
+        String first = ExpressionUtil.getFirst(targetType);
+        AsName asName = new AsName(first);
         // 获取父的拷贝，然后把select换成自己的字段
         ISqlQueryableExpression copy = queryable.copy(getConfig());
         copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())), copy.getMainTableClass()));
@@ -528,10 +529,13 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <R> LQuery<T> include(ExprTree<Func1<T, R>> expr, Action1<LQuery<R>> then) {
-        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class, "empty")));
+        LambdaExpression<Func1<T, R>> tree = expr.getTree();
+        Class<?> targetType =tree.getReturnType();
+        String first = ExpressionUtil.getFirst(targetType);
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(targetType, new AsName(first))));
         then.invoke(lQuery);
         QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
-        include(expr.getTree(), sqlBuilder.getQueryable());
+        include(tree, sqlBuilder.getQueryable());
         if (!sqlBuilder.getIncludeSets().isEmpty()) {
             getSqlBuilder().getLastIncludeSet().getIncludeSets().addAll(sqlBuilder.getIncludeSets());
         }
@@ -558,7 +562,11 @@ public class LQuery<T> extends QueryBase {
     }
 
     public <R> LQuery<T> includes(ExprTree<Func1<T, Collection<R>>> expr, Action1<LQuery<R>> then) {
-        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(Empty.class, "empty")));
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), getSqlBuilder().getQueryable());
+        ISqlColumnExpression column = sqlVisitor.toColumn(expr.getTree());
+        Class<?> targetType = ExpressionUtil.getTargetType(column.getFieldMetaData().getGenericType());
+        String first = ExpressionUtil.getFirst(targetType);
+        LQuery<R> lQuery = new LQuery<>(new QuerySqlBuilder(getConfig(), getConfig().getSqlExpressionFactory().queryable(targetType, new AsName(first))));
         then.invoke(lQuery);
         QuerySqlBuilder sqlBuilder = lQuery.getSqlBuilder();
         include(expr.getTree(), sqlBuilder.getQueryable());
@@ -813,7 +821,7 @@ public class LQuery<T> extends QueryBase {
 //        ISqlQueryableExpression queryable = getSqlBuilder().getQueryable();
 //        Class<?> target = queryable.getMainTableClass();
 //        MetaData metaData = MetaDataCache.getMetaData(target);
-//        String asName = ExpressionUtil.getAsName(target);
+//        String asName = ExpressionUtil.getFirst(target);
 //        ISqlWithExpression with = factory.with(queryable, metaData.getTableName());
 //        QuerySqlBuilder querySqlBuilder = new QuerySqlBuilder(config, factory.queryable(factory.from(with, asName)));
 //        return new LQuery<>(querySqlBuilder);
@@ -873,7 +881,7 @@ public class LQuery<T> extends QueryBase {
         String parentId = metaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName()).getColumn();
         String childId = metaData.getFieldMetaDataByFieldName(navigateData.getSelfFieldName()).getColumn();
         ISqlSelectExpression select = queryable.getSelect().copy(getConfig());
-        String asName = queryable.getFrom().getAsName();
+        AsName asName = queryable.getFrom().getAsName();
         ISqlRecursionExpression recursion = factory.recursion(queryable, parentId, childId, level);
         ISqlQueryableExpression newQuery = factory.queryable(select, factory.from(recursion, asName));
         getSqlBuilder().setQueryable(newQuery);
@@ -921,6 +929,20 @@ public class LQuery<T> extends QueryBase {
         warpQuery.setChanged(true);
         update.addWhere(factory.binary(SqlOperator.IN, factory.column(primary, update.getFrom().getAsName()), warpQuery));
         return new LUpdate<>(new UpdateSqlBuilder(getConfig(), update));
+    }
+
+    // endregion
+
+    // region [Filter]
+
+    public LQuery<T> DisableFilter(String filterId) {
+        ignoreFilterIds.add(filterId);
+        return this;
+    }
+
+    public LQuery<T> DisableFilterAll() {
+        ignoreFilterAll = true;
+        return this;
     }
 
     // endregion

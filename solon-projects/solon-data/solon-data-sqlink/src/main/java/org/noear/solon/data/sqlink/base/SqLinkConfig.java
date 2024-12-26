@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base;
 
-import org.noear.solon.data.sqlink.api.Aop;
+import org.noear.solon.data.sqlink.api.Filter;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -73,7 +73,7 @@ public interface SqLinkConfig {
     /**
      * 获取拦截器
      */
-    Aop getAop();
+    Filter getFilter();
 
     /**
      * 设置数据库类型
