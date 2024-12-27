@@ -497,10 +497,10 @@ public class Props extends Properties {
     /**
      * 加载配置（用于扩展加载）
      *
-     * @param name 资源名
+     * @param uri 资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx"）
      */
-    public void loadAdd(String name) {
-        loadAdd(ResourceUtil.getResource(classLoader, name));
+    public void loadAdd(String uri) {
+        loadAdd(ResourceUtil.findResource(uri, false));
     }
 
     public void loadAdd(Import anno) {
