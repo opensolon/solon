@@ -30,8 +30,8 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleJoinExpression extends SqlJoinExpression {
-    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName) {
-        super(joinType, joinTable, conditions, asName);
+    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        super(joinType, joinTable, asName);
     }
 
     // oracle下表的别名不能加AS

@@ -66,7 +66,12 @@ public class DeleteSqlBuilder implements ISqlBuilder {
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
         String first = getFirst(table.getMainTableClass());
-        AsName asName = doGetAsName(first,from,joins);
+        Set<String> stringSet = new HashSet<>(joins.getJoins().size() + 1);
+        stringSet.add(from.getAsName().getName());
+        for (ISqlJoinExpression join : joins.getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        AsName asName = doGetAsName(first, stringSet);
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,

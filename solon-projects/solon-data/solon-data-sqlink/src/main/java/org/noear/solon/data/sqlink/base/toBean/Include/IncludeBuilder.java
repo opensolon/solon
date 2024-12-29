@@ -373,7 +373,7 @@ public class IncludeBuilder<T> {
         AsName windowAsName = new AsName(getFirst(queryableExpression.getMainTableClass()));
         ISqlQueryableExpression window = factory.queryable(queryableExpression, windowAsName);
         List<ISqlExpression> selects = new ArrayList<>(2);
-        selects.add(factory.constString(window.getFrom().getAsName() + ".*"));
+        selects.add(factory.constString(window.getFrom().getAsName().getName() + ".*"));
 
         List<ISqlExpression> rowNumberParams = new ArrayList<>();
         rowNumberParams.add(factory.column(targetFieldMetaData, windowAsName));

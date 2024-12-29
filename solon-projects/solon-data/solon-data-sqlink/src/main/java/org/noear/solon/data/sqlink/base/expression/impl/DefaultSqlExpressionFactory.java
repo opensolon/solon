@@ -57,8 +57,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName) {
-        return new SqlJoinExpression(joinType, joinTable, conditions, asName);
+    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        return new SqlJoinExpression(joinType, joinTable, asName);
     }
 
     @Override

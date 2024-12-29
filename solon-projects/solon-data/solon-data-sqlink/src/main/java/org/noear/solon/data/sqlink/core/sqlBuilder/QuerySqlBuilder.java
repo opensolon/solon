@@ -81,13 +81,18 @@ public class QuerySqlBuilder implements ISqlBuilder {
         }
     }
 
-    public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression conditions) {
-        SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        String first = getFirst(table.getMainTableClass());
-        AsName asName = doGetAsName(first,queryable.getFrom(),queryable.getJoins());
-        ISqlJoinExpression join = factory.join(joinType, table, conditions, asName);
-        queryable.addJoin(join);
-    }
+//    public void addJoin(JoinType joinType, ISqlTableExpression table) {
+//        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+//        Set<String> stringSet = new HashSet<>(queryable.getJoins().getJoins().size() + 1);
+//        stringSet.add(queryable.getFrom().getAsName().getName());
+//        for (ISqlJoinExpression join : queryable.getJoins().getJoins()) {
+//            stringSet.add(join.getAsName().getName());
+//        }
+//        String first = getFirst(table.getMainTableClass());
+//        AsName asName = doGetAsName(first,stringSet);
+//        ISqlJoinExpression join = factory.join(joinType, table, asName);
+//        queryable.addJoin(join);
+//    }
 
     public void setGroup(ISqlGroupByExpression group) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();

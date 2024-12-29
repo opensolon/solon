@@ -17,12 +17,11 @@ package org.noear.solon.data.sqlink.core.visitor;
 
 import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.expressions.*;
-import org.noear.solon.data.sqlink.api.crud.read.IDynamicTable;
+import org.noear.solon.data.sqlink.api.crud.read.IDynamicColumn;
 import org.noear.solon.data.sqlink.api.crud.read.group.IGroup;
 import org.noear.solon.data.sqlink.base.expression.AsName;
 import org.noear.solon.data.sqlink.base.expression.ISqlFromExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlJoinsExpression;
-import org.noear.solon.data.sqlink.base.expression.ISqlQueryableExpression;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
@@ -53,7 +52,7 @@ public class ExpressionUtil {
 //        if (!asNameMap.containsKey(parameter)) return false;
         String name = method.getName();
         Class<?>[] parameterTypes = method.getParameterTypes();
-        return IDynamicTable.class.isAssignableFrom(method.getDeclaringClass())
+        return IDynamicColumn.class.isAssignableFrom(method.getDeclaringClass())
                 && name.equals("column") && parameterTypes.length == 1 && isString(parameterTypes[0]);
     }
 
@@ -306,11 +305,11 @@ public class ExpressionUtil {
         return metaData.getTableName().substring(0, 1).toLowerCase();
     }
 
-    public static AsName doGetAsName(String as, ISqlFromExpression from, ISqlJoinsExpression joins) {
-        Set<String> asNames = new HashSet<>();
-        AsName asName = from.getAsName();
-        asNames.add(asName.getName());
-        joins.getJoins().forEach(join -> asNames.add(join.getAsName().getName()));
+    public static AsName doGetAsName(String as, Set<String> asNames) {
+//        Set<String> asNames = new HashSet<>();
+//        AsName asName = from.getAsName();
+//        asNames.add(asName.getName());
+//        joins.getJoins().forEach(join -> asNames.add(join.getAsName().getName()));
         return doGetAsName0(asNames, as, 0);
     }
 

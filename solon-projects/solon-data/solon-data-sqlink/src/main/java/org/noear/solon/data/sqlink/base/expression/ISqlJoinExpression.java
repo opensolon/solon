@@ -38,6 +38,7 @@ public interface ISqlJoinExpression extends ISqlExpression {
      * 获取join条件
      */
     ISqlExpression getConditions();
+    void setConditions(ISqlExpression conditions);
 
     /**
      * 获取别名
@@ -47,6 +48,8 @@ public interface ISqlJoinExpression extends ISqlExpression {
     @Override
     default ISqlJoinExpression copy(SqLinkConfig config) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        return factory.join(getJoinType(), getJoinTable().copy(config), getConditions().copy(config), getAsName());
+        ISqlJoinExpression join = factory.join(getJoinType(), getJoinTable().copy(config), getAsName());
+        join.setConditions(getConditions().copy(config));
+        return join;
     }
 }

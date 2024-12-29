@@ -18,9 +18,11 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.ISqlSelectExpression;
+import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**

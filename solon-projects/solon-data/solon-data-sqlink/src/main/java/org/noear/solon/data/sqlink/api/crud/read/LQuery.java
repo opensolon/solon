@@ -486,11 +486,11 @@ public class LQuery<T> extends QueryBase {
         FieldMetaData target = MetaDataCache.getMetaData(targetType).getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
         FieldMetaData self = MetaDataCache.getMetaData(queryable.getMainTableClass()).getFieldMetaDataByFieldName(navigateData.getSelfFieldName());
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        String first = ExpressionUtil.getFirst(targetType);
-        AsName asName = new AsName(first);
+
+        AsName asName = new AsName(ExpressionUtil.getFirst(targetType));
         // 获取父的拷贝，然后把select换成自己的字段
         ISqlQueryableExpression copy = queryable.copy(getConfig());
-        copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())), copy.getMainTableClass()));
+        copy.setSelect(factory.select(Collections.singletonList(factory.column(self, copy.getFrom().getAsName())), self.getType()));
         ISqlQueryableExpression newQuery = factory.queryable(targetType, asName);
         newQuery.addWhere(factory.binary(SqlOperator.IN, factory.column(target, asName), copy));
         return new LQuery<>(new QuerySqlBuilder(getConfig(), newQuery));

@@ -57,13 +57,14 @@ import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.*;
  */
 public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
     protected Map<ParameterExpression, AsName> asNameMap = new HashMap<>();
-    protected ISqlQueryableExpression subQueryDeque;
-    //protected Set<String> asNameSet = new HashSet<>();
+    protected Deque<AsName> asNameDeque = new ArrayDeque<>();
     protected final SqLinkConfig config;
     protected final SqlExpressionFactory factory;
     protected final ISqlFromExpression fromExpression;
     protected final ISqlJoinsExpression joinsExpression;
     protected final ISqlGroupByExpression groupByExpression;
+    protected boolean isFirst = true;
+    protected boolean isGroup = false;
 
     public SqlVisitor(SqLinkConfig config, ISqlQueryableExpression sqlQueryableExpression) {
         this(config, sqlQueryableExpression.getFrom(), sqlQueryableExpression.getJoins(), sqlQueryableExpression.getGroupBy());
@@ -91,7 +92,9 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
     @Override
     public ISqlExpression visit(LambdaExpression<?> lambda) {
         List<ParameterExpression> parameters = lambda.getParameters();
-        if (asNameMap.isEmpty()) {
+        // 是否第一次进入或Group的聚合函数查询
+        if (isFirst || isGroup) {
+            isFirst = false;
             for (int i = 0; i < parameters.size(); i++) {
                 ParameterExpression parameter = parameters.get(i);
                 if (i == 0) {
@@ -107,9 +110,10 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
             }
             return visit;
         }
+        // 不是的话说明有子查询
         else {
             for (ParameterExpression parameter : parameters) {
-                asNameMap.put(parameter, subQueryDeque.getFrom().getAsName());
+                asNameMap.put(parameter, asNameDeque.peek());
             }
             ISqlExpression visit = visit(lambda.getBody());
             for (ParameterExpression parameter : parameters) {
@@ -182,23 +186,36 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         else if (IAggregation.class.isAssignableFrom(methodCall.getMethod().getDeclaringClass())) {
             String name = methodCall.getMethod().getName();
             List<Expression> args = methodCall.getArgs();
+            isGroup = true;
             switch (name) {
                 case "count":
-                    return AggregateMethods.count(config, args.isEmpty() ? null : visit(args.get(0)));
+                    ISqlTemplateExpression count = AggregateMethods.count(config, args.isEmpty() ? null : visit(args.get(0)));
+                    isGroup = false;
+                    return count;
                 case "sum":
-                    return AggregateMethods.sum(config, visit(args.get(0)));
+                    ISqlTemplateExpression sum = AggregateMethods.sum(config, visit(args.get(0)));
+                    isGroup = false;
+                    return sum;
                 case "avg":
-                    return AggregateMethods.avg(config, visit(args.get(0)));
+                    ISqlTemplateExpression avg = AggregateMethods.avg(config, visit(args.get(0)));
+                    isGroup = false;
+                    return avg;
                 case "max":
-                    return AggregateMethods.max(config, visit(args.get(0)));
+                    ISqlTemplateExpression max = AggregateMethods.max(config, visit(args.get(0)));
+                    isGroup = false;
+                    return max;
                 case "min":
-                    return AggregateMethods.min(config, visit(args.get(0)));
+                    ISqlTemplateExpression min = AggregateMethods.min(config, visit(args.get(0)));
+                    isGroup = false;
+                    return min;
                 case "groupConcat":
                     List<ISqlExpression> visit = new ArrayList<>();
                     for (Expression arg : args) {
                         visit.add(visit(arg));
                     }
-                    return AggregateMethods.groupConcat(config, visit);
+                    ISqlTemplateExpression iSqlTemplateExpression = AggregateMethods.groupConcat(config, visit);
+                    isGroup = false;
+                    return iSqlTemplateExpression;
                 default:
                     throw new SqLinkException("不支持的聚合函数:" + name);
             }
@@ -290,17 +307,18 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 ISqlExpression visit = visit(expression);
                 // subQuery(a.getItems())
                 if (visit instanceof ISqlColumnExpression) {
-                    ParameterExpression parameter = (ParameterExpression) methodCall.getExpr();
                     ISqlColumnExpression columnExpression = (ISqlColumnExpression) visit;
                     ISqlQueryableExpression query = columnToQuery(columnExpression);
-                    subQueryDeque=query;
+                    // 在子查询发起的地方压入
+                    asNameDeque.push(query.getFrom().getAsName());
                     return query;
                 }
                 // subQuery(a.getOrder().getItem()...getN())
                 else if (visit instanceof ISqlQueryableExpression) {
                     ISqlQueryableExpression queryableExpression = (ISqlQueryableExpression) visit;
                     ISqlQueryableExpression query = queryToQuery(queryableExpression, method);
-                    subQueryDeque=query;
+                    // 在子查询发起的地方压入
+                    asNameDeque.push(query.getFrom().getAsName());
                     return query;
                 }
                 else {
@@ -327,7 +345,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     column = visit(methodCall.getArgs().get(0));
                 }
                 queryable.setSelect(factory.select(Collections.singletonList(AggregateMethods.count(config, column)), long.class));
-
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return queryable;
             }
             else if (method.getName().equals("sum")) {
@@ -351,7 +370,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
                 ISqlExpression column = visit(methodCall.getArgs().get(0));
                 queryable.setSelect(factory.select(Collections.singletonList(AggregateMethods.avg(config, column)), BigDecimal.class));
-
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return queryable;
             }
             else if (method.getName().equals("min")) {
@@ -363,7 +383,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
                 ISqlExpression column = visit(methodCall.getArgs().get(0));
                 queryable.setSelect(factory.select(Collections.singletonList(AggregateMethods.min(config, column)), BigDecimal.class));
-
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return queryable;
             }
             else if (method.getName().equals("max")) {
@@ -375,7 +396,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 ISqlQueryableExpression queryable = (ISqlQueryableExpression) visit;
                 ISqlExpression column = visit(methodCall.getArgs().get(0));
                 queryable.setSelect(factory.select(Collections.singletonList(AggregateMethods.max(config, column)), BigDecimal.class));
-
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return queryable;
             }
             else if (method.getName().equals("any")) {
@@ -391,6 +413,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                     queryable.addWhere(cond);
                 }
                 queryable.setSelect(factory.select(Collections.singletonList(factory.constString("1")), int.class));
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return factory.unary(SqlOperator.EXISTS, queryable);
             }
             else if (method.getName().equals("where")) {
@@ -508,6 +532,8 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
                 if (!(visit instanceof ISqlQueryableExpression)) {
                     throw new SqLinkException("不支持的表达式:" + methodCall);
                 }
+                // 在终结的地方弹出
+                asNameDeque.pop();
                 return visit;
             }
             else {
@@ -1129,12 +1155,20 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         ISqlConditionsExpression condition = null;
         AsName mainTableAsName = columnExpression.getTableAsName();
         AsName subTableAsName;
+        Set<String> stringSet = new HashSet<>();
+        stringSet.add(fromExpression.getAsName().getName());
+        for (ISqlJoinExpression join : joinsExpression.getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        for (AsName asName : asNameDeque) {
+            stringSet.add(asName.getName());
+        }
         //String subTableAsName = doGetAsName(MetaDataCache.getMetaData(getTargetType(fieldMetaData.getGenericType())).getTableName().toLowerCase().substring(0, 1));
         if (fieldMetaData.hasNavigate()) {
             NavigateData navigateData = fieldMetaData.getNavigateData();
             Class<?> targetType = navigateData.getNavigateTargetType();
             table = factory.table(targetType);
-            subTableAsName = doGetAsName(getFirst(targetType), fromExpression, joinsExpression);
+            subTableAsName = doGetAsName(getFirst(targetType), stringSet);
             MetaData targetMetaData = MetaDataCache.getMetaData(targetType);
             condition = factory.condition();
             FieldMetaData targetFieldMetaData = targetMetaData.getFieldMetaDataByFieldName(navigateData.getTargetFieldName());
@@ -1144,7 +1178,7 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         else {
             Type genericType = fieldMetaData.getGenericType();
             table = factory.table(getTargetType(genericType));
-            subTableAsName = doGetAsName(getFirst(table.getMainTableClass()), fromExpression, joinsExpression);
+            subTableAsName = doGetAsName(getFirst(table.getMainTableClass()), stringSet);
         }
         ISqlQueryableExpression queryable = factory.queryable(factory.from(table, subTableAsName));
         if (condition != null) {
@@ -1173,7 +1207,15 @@ public class SqlVisitor extends ResultThrowVisitor<ISqlExpression> {
         left.setSelect(factory.select(Collections.singletonList(factory.column(leftFieldDate, leftAsName)), targetType));
 
         // 编写外层sql
-        AsName targetAs = doGetAsName(getFirst(targetType),fromExpression,joinsExpression);
+        Set<String> stringSet = new HashSet<>();
+        stringSet.add(fromExpression.getAsName().getName());
+        for (ISqlJoinExpression join : joinsExpression.getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        for (AsName asName : asNameDeque) {
+            stringSet.add(asName.getName());
+        }
+        AsName targetAs = doGetAsName(getFirst(targetType), stringSet);
         MetaData targetMetaData = MetaDataCache.getMetaData(targetType);
         ISqlQueryableExpression targetQuery = factory.queryable(factory.from(factory.table(targetType), targetAs));
         ISqlConditionsExpression condition = factory.condition();

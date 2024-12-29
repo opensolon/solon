@@ -95,10 +95,15 @@ public interface SqlExpressionFactory {
      *
      * @param joinType   join类型
      * @param joinTable  join表
-     * @param conditions join条件
      * @param asName     join别名
      */
-    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName);
+    ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, AsName asName);
+
+    default ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName) {
+        ISqlJoinExpression join = join(joinType, joinTable, asName);
+        join.setConditions(conditions);
+        return join;
+    }
 
     /**
      * 创建join集合表达式

@@ -31,8 +31,8 @@ public class OracleExpressionFactory extends DefaultSqlExpressionFactory {
     }
 
     @Override
-    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, AsName asName) {
-        return new OracleJoinExpression(joinType, joinTable, conditions, asName);
+    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        return new OracleJoinExpression(joinType, joinTable, asName);
     }
 
     @Override
