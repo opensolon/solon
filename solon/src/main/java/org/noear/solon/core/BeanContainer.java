@@ -28,6 +28,7 @@ import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.util.TypeMap;
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.exception.SolonException;
 
 import java.io.Closeable;
 import java.lang.annotation.Annotation;
@@ -346,7 +347,8 @@ public abstract class BeanContainer {
     //
     // bean 对内通知体系
     //
-    /////////////////////////
+
+    /// //////////////////////
 
     private Map<Object, Set<Consumer<BeanWrap>>> getBeanHashSubscribers(Object nameOrType) {
         if (nameOrType instanceof String) {
@@ -615,7 +617,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
-        return getBeansOfType(baseType, null);
+        return getBeansOfType(baseType, null, true);
     }
 
     /**
@@ -625,6 +627,17 @@ public abstract class BeanContainer {
      * @param geneticName 泛型名
      */
     public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName) {
+        return getBeansOfType(baseType, geneticName, true);
+    }
+
+    /**
+     * 获取某类型的 bean list
+     *
+     * @param baseType    基类
+     * @param geneticName 泛型名
+     * @param allowEmpty  允许空集合
+     */
+    public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName, boolean allowEmpty) {
         List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
         List<T> beans = new ArrayList<>();
 
@@ -636,6 +649,10 @@ public abstract class BeanContainer {
             beans.add(bw.get());
         }
 
+        if (allowEmpty == false && beans.isEmpty()) {
+            throw new SolonException("Not found List<" + baseType.getName() + ">");
+        }
+
         return beans;
     }
 
@@ -645,7 +662,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> Map<String, T> getBeansMapOfType(Class<T> baseType) {
-        return getBeansMapOfType(baseType, null);
+        return getBeansMapOfType(baseType, null, true);
     }
 
     /**
@@ -655,6 +672,17 @@ public abstract class BeanContainer {
      * @param geneticName 泛型名
      */
     public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName) {
+        return getBeansMapOfType(baseType, geneticName, true);
+    }
+
+    /**
+     * 获取某类型的 bean map
+     *
+     * @param baseType    基类
+     * @param geneticName 泛型名
+     * @param allowEmpty  允许空集合
+     */
+    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName, boolean allowEmpty) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
@@ -668,6 +696,10 @@ public abstract class BeanContainer {
                 }
             }
         });
+
+        if (allowEmpty == false && beanMap.isEmpty()) {
+            throw new SolonException("Not found Map<String," + baseType.getName() + ">");
+        }
 
         return beanMap;
     }
