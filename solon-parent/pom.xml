@@ -33,7 +33,7 @@
         <solon.version>3.0.6-SNAPSHOT</solon.version>
         <solon-cloud.version>3.0.5</solon-cloud.version>
         <solon-admin.version>3.0.5</solon-admin.version>
-        <solon-integration.version>3.0.5</solon-integration.version>
+        <solon-integration.version>3.0.6-SNAPSHOT</solon-integration.version>
 
         <solonx.version>1.1.0</solonx.version>
 
