@@ -338,20 +338,19 @@ public class ActionDefault extends HandlerAide implements Action {
                     c.contentType(mProduces);
                 }
 
-                if (void.class != method().getReturnType()) {
-                    //结果处理
-                    ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
-                    if (returnHandler == null) {
-                        returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
-                    }
 
-                    if (returnHandler != null) {
-                        //执行函数
-                        returnHandler.returnHandle(c, this, c.result);
-                    } else {
-                        //渲染
-                        renderDo(c.result, c);
-                    }
+                //结果处理
+                ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
+                if (returnHandler == null) {
+                    returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
+                }
+
+                if (returnHandler != null) {
+                    //执行函数
+                    returnHandler.returnHandle(c, this, c.result);
+                } else {
+                    //渲染
+                    renderDo(c.result, c);
                 }
             }
         } catch (Throwable e) {
@@ -420,8 +419,13 @@ public class ActionDefault extends HandlerAide implements Action {
 
 
         if (bRender == null) {
-            //没有代理时，跳过 DataThrowable
             if (obj instanceof DataThrowable) {
+                //没有代理时，跳过 DataThrowable
+                return;
+            }
+
+            if (obj == null && void.class == method().getReturnType()) {
+                //如果返回为空，且二次加载的结果为 null
                 return;
             }
 
