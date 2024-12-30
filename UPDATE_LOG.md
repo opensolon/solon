@@ -31,6 +31,7 @@
 ### v3.0.6
 
 * 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
+* 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * snack3 升为 3.2.123
 * mybatis 升为 3.5.17
 * mybatis-flex 升为 1.10.4
