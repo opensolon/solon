@@ -328,7 +328,7 @@ public class AppContext extends BeanContainer {
                             vh.setDependencyType((Class<?>) type);
                         }
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter, false));
+                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter, required));
                     }
                 } else if (Map.class == vh.getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
@@ -355,7 +355,7 @@ public class AppContext extends BeanContainer {
                             vh.setDependencyType((Class<?>) valType);
                         }
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter, false));
+                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter, required));
                     }
                 }
             }
