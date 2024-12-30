@@ -106,7 +106,34 @@ public class LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> extends UpdateBase {
         set(func.getTree(), value);
         return this;
     }
-    
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setInDb(@Expr(Expr.BodyType.Expr) Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> func, Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setInDb(ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> func, ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> value) {
+        set(func.getTree(), value.getTree());
+        return this;
+    }
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setIf(boolean condition, @Expr(Expr.BodyType.Expr) Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> func, R value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setIf(boolean condition, ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> func, R value) {
+        if (condition) set(func.getTree(), value);
+        return this;
+    }
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setInDbIf(boolean condition, @Expr(Expr.BodyType.Expr) Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> func, Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> setInDbIf(boolean condition, ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> func, ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>> value) {
+        if (condition) set(func.getTree(), value.getTree());
+        return this;
+    }
+
     //endregion
 
     //region [WHERE]
@@ -126,5 +153,15 @@ public class LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> extends UpdateBase {
         where(expr.getTree());
         return this;
     }
+
+    public LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> whereIf(boolean condition, @Expr Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LUpdate9<T1, T2, T3, T4, T5, T6, T7, T8, T9> whereIf(boolean condition, ExprTree<Func9<T1, T2, T3, T4, T5, T6, T7, T8, T9, Boolean>> expr) {
+        if (condition) where(expr.getTree());
+        return this;
+    }
+
     //endregion
 }

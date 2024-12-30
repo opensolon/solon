@@ -134,11 +134,6 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     ISqlHavingExpression getHaving();
 
     /**
-     * 获取查询列的类（from + joins）
-     */
-    List<Class<?>> getOrderedClass();
-
-    /**
      * 获取映射的列
      */
     default List<FieldMetaData> getMappingData() {
@@ -158,26 +153,35 @@ public interface ISqlQueryableExpression extends ISqlTableExpression {
     }
 
     default List<FieldMetaData> getMappingData0() {
-        List<Class<?>> orderedClass = getOrderedClass();
-        Class<?> target = getMainTableClass();
-        MetaData metaData = MetaDataCache.getMetaData(target);
-        if (orderedClass.contains(target)) {
-            return metaData.getNotIgnorePropertys();
-        }
-        else {
-            List<FieldMetaData> fieldMetaDataList = new ArrayList<>();
-            for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
-                GOTO:
-                for (MetaData data : MetaDataCache.getMetaData(orderedClass)) {
-                    for (FieldMetaData noi : data.getNotIgnorePropertys()) {
-                        if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
-                            fieldMetaDataList.add(sel);
-                            break GOTO;
-                        }
-                    }
-                }
-            }
-            return fieldMetaDataList;
-        }
+        MetaData metaData = MetaDataCache.getMetaData(getMainTableClass());
+        return metaData.getNotIgnorePropertys();
+//        List<Class<?>> orderedClass = new ArrayList<>(getJoins().getJoins().size() + 1);
+//        Class<?> mainTableClass = getFrom().getSqlTableExpression().getMainTableClass();
+//        System.out.println(mainTableClass);
+//        orderedClass.add(mainTableClass);
+//        for (ISqlJoinExpression join : getJoins().getJoins()) {
+//            orderedClass.add(join.getJoinTable().getMainTableClass());
+//        }
+//        Class<?> target = getMainTableClass();
+//        System.out.println(target);
+//        MetaData metaData = MetaDataCache.getMetaData(target);
+//        if (orderedClass.contains(target)) {
+//            return metaData.getNotIgnorePropertys();
+//        }
+//        else {
+//            List<FieldMetaData> fieldMetaDataList = new ArrayList<>();
+//            for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
+//                GOTO:
+//                for (MetaData data : MetaDataCache.getMetaData(orderedClass)) {
+//                    for (FieldMetaData noi : data.getNotIgnorePropertys()) {
+//                        if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
+//                            fieldMetaDataList.add(sel);
+//                            break GOTO;
+//                        }
+//                    }
+//                }
+//            }
+//            return fieldMetaDataList;
+//        }
     }
 }

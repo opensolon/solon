@@ -54,6 +54,7 @@ public class SqlRecursionExpression implements ISqlRecursionExpression {
     public int level() {
         return level;
     }
+
     // WITH "as_tree_cte" as (
     // SELECT 0 as cte_level, a."Code", a."Name", a."ParentCode"
     // FROM "Area" a
@@ -78,15 +79,17 @@ public class SqlRecursionExpression implements ISqlRecursionExpression {
         ISqlSelectExpression selectCopy = queryCopy.getSelect().copy(config);
         Class<?> mainTableClass = queryCopy.getMainTableClass();
         // SELECT ..., 0 as cte_level
+        AsName AsWct1 = new AsName("wct1");
+        AsName AsWct2 = new AsName("wct2");
         for (ISqlExpression column : selectCopy.getColumns()) {
             if (column instanceof ISqlColumnExpression) {
                 ISqlColumnExpression iSqlColumnExpression = (ISqlColumnExpression) column;
-                iSqlColumnExpression.setTableAsName("wct2");
+                iSqlColumnExpression.setTableAsName(AsWct2);
             }
         }
         // SELECT ..., wct1.cte_level + 1 as cte_level
-        ISqlQueryableExpression wct = factory.queryable(selectCopy, factory.from(factory.table(TreeCte.class), "wct1"));
-        wct.addJoin(factory.join(JoinType.INNER, factory.table(mainTableClass), factory.binary(SqlOperator.EQ, factory.constString(dialect.disambiguation("wct2")+"." + parentId), factory.constString(dialect.disambiguation("wct1")+"." + childId)), "wct2"));
+        ISqlQueryableExpression wct = factory.queryable(selectCopy, factory.from(factory.table(TreeCte.class), AsWct1));
+        wct.addJoin(factory.join(JoinType.INNER, factory.table(mainTableClass), factory.binary(SqlOperator.EQ, factory.constString(dialect.disambiguation("wct2")+"." + parentId), factory.constString(dialect.disambiguation("wct1")+"." + childId)), AsWct2));
         tryLevel(config, queryCopy.getSelect(), wct.getSelect(), wct.getWhere());
         List<String> templates = new ArrayList<>();
         String s = recursionKeyword();

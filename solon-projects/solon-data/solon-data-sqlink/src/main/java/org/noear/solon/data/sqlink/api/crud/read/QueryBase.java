@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.api.crud.read;
 
 import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.annotation.RelationType;
+import org.noear.solon.data.sqlink.api.Filter;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.*;
@@ -41,12 +42,17 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.*;
 
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.doGetAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
+
 /**
  * @author kiryu1223
  * @since 3.0
  */
 public abstract class QueryBase extends CRUD {
     public final static Logger log = LoggerFactory.getLogger(QueryBase.class);
+    protected final List<String> ignoreFilterIds = new ArrayList<>();
+    protected boolean ignoreFilterAll = false;
 
     private final QuerySqlBuilder sqlBuilder;
 
@@ -86,17 +92,31 @@ public abstract class QueryBase extends CRUD {
         return session.executeQuery(ResultSet::next, sql, values);
     }
 
+    protected String buildSqlAndValue(List<SqlValue> values) {
+        SqLinkConfig config = getConfig();
+        tryFilter(getConfig().getFilter(),sqlBuilder.getTargetClass());
+        return sqlBuilder.getSqlAndValue(values);
+    }
+
+    protected String buildSqlAndValue() {
+        return buildSqlAndValue(null);
+    }
+
+    protected <T> void tryFilter(Filter filter, Class<T> targetClass) {
+        if (this instanceof LQuery<?>) {
+            LQuery<T> lQuery = (LQuery<T>) this;
+            filter.invokeOnSelect(targetClass, lQuery, ignoreFilterIds, ignoreFilterAll);
+        }
+    }
+
     protected <T> List<T> toList() {
         SqLinkConfig config = getConfig();
+        Class<T> targetClass = sqlBuilder.getTargetClass();
+        List<SqlValue> values = new ArrayList<>();
+        String sql = buildSqlAndValue(values);
         boolean single = sqlBuilder.isSingle();
         List<FieldMetaData> mappingData = single ? Collections.emptyList() : sqlBuilder.getMappingData();
-//        for (FieldMetaData mappingDatum : mappingData) {
-//            System.out.println(mappingDatum.getField());
-//        }
-        List<SqlValue> values = new ArrayList<>();
-        String sql = sqlBuilder.getSqlAndValue(values);
         tryPrintSql(log, sql);
-        Class<T> targetClass = sqlBuilder.getTargetClass();
         SqlSession session = config.getSqlSessionFactory().getSession(config);
         List<T> ts = session.executeQuery(
                 r -> ObjectBuilder.start(r, targetClass, mappingData, single, config).createList(),
@@ -147,25 +167,54 @@ public abstract class QueryBase extends CRUD {
 
     protected void join(JoinType joinType, Class<?> target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression on = sqlVisitor.visit(lambda);
-        sqlBuilder.addJoin(joinType, factory.table(target), on);
+        ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
+        Set<String> stringSet = new HashSet<>(queryable.getJoins().getJoins().size() + 1);
+        stringSet.add(queryable.getFrom().getAsName().getName());
+        for (ISqlJoinExpression join : queryable.getJoins().getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        String first = getFirst(target);
+        AsName asName = doGetAsName(first,stringSet);
+        ISqlJoinExpression join = factory.join(joinType, factory.table(target), asName);
+        queryable.addJoin(join);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), queryable);
+        ISqlExpression cond = sqlVisitor.visit(lambda);
+        join.setConditions(cond);
     }
 
     protected void join(JoinType joinType, QueryBase target, LambdaExpression<?> lambda) {
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression on = sqlVisitor.visit(lambda);
-        sqlBuilder.addJoin(joinType, target.getSqlBuilder().getQueryable(), on);
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
+        Set<String> stringSet = new HashSet<>(queryable.getJoins().getJoins().size() + 1);
+        stringSet.add(queryable.getFrom().getAsName().getName());
+        for (ISqlJoinExpression join : queryable.getJoins().getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        String first = getFirst(target.getSqlBuilder().getTargetClass());
+        AsName asName = doGetAsName(first,stringSet);
+        ISqlJoinExpression join = factory.join(joinType, target.getSqlBuilder().getQueryable(), asName);
+        queryable.addJoin(join);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), queryable);
+        ISqlExpression cond = sqlVisitor.visit(lambda);
+        join.setConditions(cond);
     }
 
     protected void joinWith(JoinType joinType, QueryBase target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        ISqlQueryableExpression queryable = target.getSqlBuilder().getQueryable();
-        Class<?> targetClass = queryable.getMainTableClass();
-        MetaData metaData = MetaDataCache.getMetaData(targetClass);
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getQueryable());
-        ISqlExpression on = sqlVisitor.visit(lambda);
-        sqlBuilder.addJoin(joinType, factory.with(queryable, metaData.getTableName()), on);
+        ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
+        Set<String> stringSet = new HashSet<>(queryable.getJoins().getJoins().size() + 1);
+        stringSet.add(queryable.getFrom().getAsName().getName());
+        for (ISqlJoinExpression join : queryable.getJoins().getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        String first = getFirst(target.getSqlBuilder().getTargetClass());
+        AsName asName = doGetAsName(first,stringSet);
+        MetaData metaData = MetaDataCache.getMetaData(target.getSqlBuilder().getTargetClass());
+        ISqlJoinExpression join = factory.join(joinType, factory.with(target.getSqlBuilder().getQueryable(),metaData.getTableName()), asName);
+        queryable.addJoin(join);
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), queryable);
+        ISqlExpression cond = sqlVisitor.visit(lambda);
+        join.setConditions(cond);
     }
 
     protected void where(LambdaExpression<?> lambda) {
@@ -259,15 +308,15 @@ public abstract class QueryBase extends CRUD {
     }
 
     public String toSql() {
-        return sqlBuilder.getSql();
+        return buildSqlAndValue();
     }
 
     protected QuerySqlBuilder boxedQuerySqlBuilder() {
         ISqlQueryableExpression queryable = sqlBuilder.getQueryable();
         Class<?> mainTableClass = queryable.getMainTableClass();
-        String as = ExpressionUtil.getAsName(mainTableClass);
+        String first = ExpressionUtil.getFirst(mainTableClass);
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, as)));
+        return new QuerySqlBuilder(getConfig(), factory.queryable(factory.from(queryable, new AsName(first))));
     }
 
     protected void include(LambdaExpression<?> lambda, ISqlExpression cond, List<IncludeSet> includeSets) {

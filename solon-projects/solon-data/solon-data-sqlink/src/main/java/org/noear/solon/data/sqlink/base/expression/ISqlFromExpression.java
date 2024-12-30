@@ -49,7 +49,7 @@ public interface ISqlFromExpression extends ISqlExpression {
     /**
      * 获取表别名
      */
-    String getAsName();
+    AsName getAsName();
 
     @Override
     default ISqlFromExpression copy(SqLinkConfig config) {

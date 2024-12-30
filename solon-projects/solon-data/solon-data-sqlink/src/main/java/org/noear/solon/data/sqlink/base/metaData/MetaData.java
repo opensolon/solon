@@ -72,12 +72,12 @@ public class MetaData {
     public MetaData(Class<?> type) {
         try {
             this.type = type;
-
-            this.constructor = !type.isAnonymousClass() ? type.getConstructor() : null;
+            this.constructor = (!type.isAnonymousClass() && !type.isInterface()) ? type.getConstructor() : null;
             Table table = type.getAnnotation(Table.class);
             this.tableName = hasTableName(table) ? table.value() : type.isAnonymousClass() ? type.getSuperclass().getSimpleName() : type.getSimpleName();
             this.schema = table == null ? "" : table.schema();
             this.isEmptyTable = type.isAnnotationPresent(EmptyTable.class);
+            if (type.isInterface()) return;
             for (PropertyDescriptor descriptor : propertyDescriptors(type)) {
                 String property = descriptor.getName();
                 Field field = type.getDeclaredField(property);

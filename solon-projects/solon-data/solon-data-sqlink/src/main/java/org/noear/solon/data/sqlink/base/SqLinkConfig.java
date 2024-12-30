@@ -15,6 +15,7 @@
  */
 package org.noear.solon.data.sqlink.base;
 
+import org.noear.solon.data.sqlink.api.Filter;
 import org.noear.solon.data.sqlink.base.dataSource.DataSourceManager;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
 import org.noear.solon.data.sqlink.base.session.SqlSessionFactory;
@@ -68,6 +69,11 @@ public interface SqLinkConfig {
      * 获取对象创建器工厂
      */
     BeanCreatorFactory getBeanCreatorFactory();
+
+    /**
+     * 获取拦截器
+     */
+    Filter getFilter();
 
     /**
      * 设置数据库类型

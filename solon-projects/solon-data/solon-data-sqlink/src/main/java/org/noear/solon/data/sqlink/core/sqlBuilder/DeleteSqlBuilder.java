@@ -18,7 +18,6 @@ package org.noear.solon.data.sqlink.core.sqlBuilder;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
 import org.noear.solon.data.sqlink.base.expression.*;
-import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
@@ -27,6 +26,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.doGetAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
 
 /**
  * 删除语句生成器
@@ -50,7 +52,8 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         factory = config.getSqlExpressionFactory();
         this.joins = factory.Joins();
         this.wheres = factory.where();
-        this.from = factory.from(factory.table(target), ExpressionUtil.getAsName(target));
+        String first = getFirst(target);
+        this.from = factory.from(factory.table(target), new AsName(first));
         //orderedClasses.add(target);
     }
 
@@ -62,15 +65,20 @@ public class DeleteSqlBuilder implements ISqlBuilder {
      * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
-        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
+        String first = getFirst(table.getMainTableClass());
+        Set<String> stringSet = new HashSet<>(joins.getJoins().size() + 1);
+        stringSet.add(from.getAsName().getName());
+        for (ISqlJoinExpression join : joins.getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        AsName asName = doGetAsName(first, stringSet);
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
                 on,
-                as
+                asName
         );
         joins.addJoin(join);
-        //orderedClasses.add(table.getMainTableClass());
     }
 
     /**
@@ -103,6 +111,10 @@ public class DeleteSqlBuilder implements ISqlBuilder {
         return from;
     }
 
+    public ISqlJoinsExpression getJoins() {
+        return joins;
+    }
+
     @Override
     public String getSql() {
         return getSqlAndValue(null);
@@ -110,9 +122,10 @@ public class DeleteSqlBuilder implements ISqlBuilder {
 
     @Override
     public String getSqlAndValue(List<SqlValue> values) {
+        SqLinkDialect disambiguation = config.getDisambiguation();
         List<String> strings = new ArrayList<>();
         strings.add("DELETE");
-        strings.add(from.getAsName());
+        strings.add(disambiguation.disambiguation(from.getAsName().getName()));
         strings.add(from.getSqlAndValue(config, values));
         if (!joins.isEmpty()) {
             strings.add(joins.getSqlAndValue(config, values));

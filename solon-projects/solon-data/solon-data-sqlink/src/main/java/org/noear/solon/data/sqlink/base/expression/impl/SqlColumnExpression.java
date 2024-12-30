@@ -17,6 +17,7 @@ package org.noear.solon.data.sqlink.base.expression.impl;
 
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.SqLinkDialect;
+import org.noear.solon.data.sqlink.base.expression.AsName;
 import org.noear.solon.data.sqlink.base.expression.ISqlColumnExpression;
 import org.noear.solon.data.sqlink.base.metaData.FieldMetaData;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
@@ -29,9 +30,9 @@ import java.util.List;
  */
 public class SqlColumnExpression implements ISqlColumnExpression {
     private final FieldMetaData fieldMetaData;
-    private String tableAsName;
+    private AsName tableAsName;
 
-    public SqlColumnExpression(FieldMetaData fieldMetaData, String tableAsName) {
+    public SqlColumnExpression(FieldMetaData fieldMetaData, AsName tableAsName) {
         this.fieldMetaData = fieldMetaData;
         this.tableAsName = tableAsName;
     }
@@ -42,12 +43,12 @@ public class SqlColumnExpression implements ISqlColumnExpression {
     }
 
     @Override
-    public String getTableAsName() {
+    public AsName getTableAsName() {
         return tableAsName;
     }
 
     @Override
-    public void setTableAsName(String tableAsName) {
+    public void setTableAsName(AsName tableAsName) {
         this.tableAsName = tableAsName;
     }
 
@@ -56,7 +57,7 @@ public class SqlColumnExpression implements ISqlColumnExpression {
         SqLinkDialect dialect = config.getDisambiguation();
         String columnName = dialect.disambiguation(getFieldMetaData().getColumn());
         if (tableAsName != null) {
-            return dialect.disambiguation(tableAsName) + "." + columnName;
+            return dialect.disambiguation(tableAsName.getName()) + "." + columnName;
         }
         else {
             return columnName;

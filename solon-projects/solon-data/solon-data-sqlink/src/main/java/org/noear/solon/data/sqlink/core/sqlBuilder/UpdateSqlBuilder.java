@@ -23,7 +23,12 @@ import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.doGetAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
 
 /**
  * 更新语句构造器
@@ -50,12 +55,18 @@ public class UpdateSqlBuilder implements ISqlBuilder {
      * @param on       关联条件
      */
     public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression on) {
-        String as = MetaDataCache.getMetaData(table.getMainTableClass()).getTableName().substring(0, 1).toLowerCase();
+        String first = getFirst(table.getMainTableClass());
+        Set<String> stringSet = new HashSet<>(update.getJoins().getJoins().size() + 1);
+        stringSet.add(update.getFrom().getAsName().getName());
+        for (ISqlJoinExpression join : update.getJoins().getJoins()) {
+            stringSet.add(join.getAsName().getName());
+        }
+        AsName asName = doGetAsName(first,stringSet);
         ISqlJoinExpression join = factory.join(
                 joinType,
                 table,
                 on,
-                as
+                asName
         );
         update.addJoin(join);
     }
@@ -97,5 +108,9 @@ public class UpdateSqlBuilder implements ISqlBuilder {
 
     public SqLinkConfig getConfig() {
         return config;
+    }
+
+    public ISqlUpdateExpression getUpdate() {
+        return update;
     }
 }

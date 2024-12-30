@@ -15,15 +15,15 @@
  */
 package org.noear.solon.data.sqlink.api.crud.delete;
 
+import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.api.crud.CRUD;
 import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.ISqlExpression;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.base.expression.SqlExpressionFactory;
+import org.noear.solon.data.sqlink.base.session.SqlSession;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.core.sqlBuilder.DeleteSqlBuilder;
-import org.noear.solon.data.sqlink.base.session.SqlSession;
-import io.github.kiryu1223.expressionTree.expressions.LambdaExpression;
 import org.noear.solon.data.sqlink.core.visitor.SqlVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +81,7 @@ public abstract class DeleteBase extends CRUD {
 
     protected void join(JoinType joinType, Class<?> target, LambdaExpression<?> lambda) {
         SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getFrom(), sqlBuilder.getJoins());
         ISqlExpression on = sqlVisitor.visit(lambda);
         getSqlBuilder().addJoin(joinType, factory.table(target), on);
     }
@@ -91,7 +91,7 @@ public abstract class DeleteBase extends CRUD {
     }
 
     protected void where(LambdaExpression<?> lambda) {
-        SqlVisitor sqlVisitor = new SqlVisitor(getConfig());
+        SqlVisitor sqlVisitor = new SqlVisitor(getConfig(), sqlBuilder.getFrom(), sqlBuilder.getJoins());
         ISqlExpression expression = sqlVisitor.visit(lambda);
         sqlBuilder.addWhere(expression);
     }

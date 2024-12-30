@@ -115,24 +115,15 @@ public class LDelete2<T1, T2> extends DeleteBase {
         where(func.getTree());
         return this;
     }
-    // endregion
 
-    /**
-     * 设置需要delete的表，默认只delete第一张表，多次调用可以delete多个表
-     * <p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param func 返回指定表的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @param <R>  指定表的类型
-     * @return this
-     */
-    public <R> LDelete2<T1, T2> selectDelete(@Expr(Expr.BodyType.Expr) Func2<T1, T2, R> func) {
+    public LDelete2<T1, T2> whereIf(boolean condition, @Expr Func2<T1, T2, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <R> LDelete2<T1, T2> selectDelete(ExprTree<Func2<T1, T2, R>> func) {
-        Class<?> returnType = func.getTree().getReturnType();
-        selectDeleteTable(returnType);
+    public LDelete2<T1, T2> whereIf(boolean condition, ExprTree<Func2<T1, T2, Boolean>> expr) {
+        if (condition) where(expr.getTree());
         return this;
     }
+
+    // endregion
 }

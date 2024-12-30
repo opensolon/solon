@@ -26,13 +26,13 @@ import org.noear.solon.data.sqlink.base.expression.impl.DefaultSqlExpressionFact
  */
 public class OracleExpressionFactory extends DefaultSqlExpressionFactory {
     @Override
-    public ISqlFromExpression from(ISqlTableExpression sqlTable, String asName) {
+    public ISqlFromExpression from(ISqlTableExpression sqlTable, AsName asName) {
         return new OracleFromExpression(sqlTable, asName);
     }
 
     @Override
-    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
-        return new OracleJoinExpression(joinType, joinTable, conditions, asName);
+    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        return new OracleJoinExpression(joinType, joinTable, asName);
     }
 
     @Override

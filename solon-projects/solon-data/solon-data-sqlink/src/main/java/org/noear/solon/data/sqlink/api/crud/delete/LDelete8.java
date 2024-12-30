@@ -106,24 +106,15 @@ public class LDelete8<T1, T2, T3, T4, T5, T6, T7, T8> extends DeleteBase {
         where(expr.getTree());
         return this;
     }
-    // endregion
 
-    /**
-     * 设置需要delete的表，默认只delete第一张表，多次调用可以delete多个表
-     * <p>
-     * <b>注意：此函数的ExprTree[func类型]版本为真正被调用的函数
-     *
-     * @param func 返回指定表的lambda表达式(强制要求参数为<b>lambda表达式</b>，不可以是<span style='color:red;'>方法引用</span>以及<span style='color:red;'>匿名对象</span>)
-     * @param <R>  指定表的类型
-     * @return this
-     */
-    public <R> LDelete8<T1, T2, T3, T4, T5, T6, T7, T8> selectDelete(@Expr(Expr.BodyType.Expr) Func8<T1, T2, T3, T4, T5, T6, T7, T8, R> func) {
+    public LDelete8<T1, T2, T3, T4, T5, T6, T7, T8> whereIf(boolean condition, @Expr Func8<T1, T2, T3, T4, T5, T6, T7, T8, Boolean> func) {
         throw new NotCompiledException();
     }
 
-    public <R> LDelete8<T1, T2, T3, T4, T5, T6, T7, T8> selectDelete(ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, R>> expr) {
-        Class<?> returnType = expr.getTree().getReturnType();
-        selectDeleteTable(returnType);
+    public LDelete8<T1, T2, T3, T4, T5, T6, T7, T8> whereIf(boolean condition, ExprTree<Func8<T1, T2, T3, T4, T5, T6, T7, T8, Boolean>> expr) {
+        if (condition) where(expr.getTree());
         return this;
     }
+
+    // endregion
 }
