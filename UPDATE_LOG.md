@@ -27,6 +27,14 @@
 * 定义 响应式过滤和拦截体系
 * 优化 拦截体系与 rx 的兼容？
 
+
+### v3.0.6
+
+* 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
+* snack3 升为 3.2.123
+* mybatis 升为 3.5.17
+* mybatis-flex 升为 1.10.4
+
 ### v3.0.5
 * 新增 solon-data-rx-sqlutils 插件（基于 r2dbc 构建）
   * 可配合 solon-web-rx 或者 solon-cloud-gateway 使用
