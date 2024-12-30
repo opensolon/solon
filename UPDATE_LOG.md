@@ -36,6 +36,7 @@
 * snack3 升为 3.2.123
 * mybatis 升为 3.5.17
 * mybatis-flex 升为 1.10.4
+* smarthttp 升为 2.5.1
 
 ### v3.0.5
 * 新增 solon-data-rx-sqlutils 插件（基于 r2dbc 构建）
