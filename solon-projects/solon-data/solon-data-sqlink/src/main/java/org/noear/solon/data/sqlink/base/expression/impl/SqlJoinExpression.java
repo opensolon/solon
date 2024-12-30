@@ -29,13 +29,12 @@ import java.util.List;
 public class SqlJoinExpression implements ISqlJoinExpression {
     protected final JoinType joinType;
     protected final ISqlTableExpression joinTable;
-    protected final ISqlExpression conditions;
-    protected final String asName;
+    protected ISqlExpression conditions;
+    protected final AsName asName;
 
-    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
+    protected SqlJoinExpression(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
         this.joinType = joinType;
         this.joinTable = joinTable;
-        this.conditions = conditions;
         this.asName = asName;
     }
 
@@ -55,7 +54,12 @@ public class SqlJoinExpression implements ISqlJoinExpression {
     }
 
     @Override
-    public String getAsName() {
+    public void setConditions(ISqlExpression conditions) {
+        this.conditions = conditions;
+    }
+
+    @Override
+    public AsName getAsName() {
         return asName;
     }
 
@@ -76,10 +80,12 @@ public class SqlJoinExpression implements ISqlJoinExpression {
             builder.append("(").append(joinTable.getSqlAndValue(config, values)).append(")");
         }
         if (getAsName() != null) {
-            builder.append(" AS ").append(disambiguation.disambiguation(getAsName()));
+            builder.append(" AS ").append(disambiguation.disambiguation(getAsName().getName()));
         }
-        builder.append(" ON ");
-        builder.append(conditions.getSqlAndValue(config, values));
+        if (conditions != null) {
+            builder.append(" ON ");
+            builder.append(conditions.getSqlAndValue(config, values));
+        }
         return builder.toString();
     }
 }

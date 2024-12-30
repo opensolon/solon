@@ -19,7 +19,6 @@ import io.github.kiryu1223.expressionTree.delegate.Func1;
 import io.github.kiryu1223.expressionTree.delegate.Func2;
 import io.github.kiryu1223.expressionTree.expressions.ExprTree;
 import io.github.kiryu1223.expressionTree.expressions.annos.Expr;
-import org.noear.solon.data.sqlink.base.SqLinkConfig;
 import org.noear.solon.data.sqlink.base.expression.JoinType;
 import org.noear.solon.data.sqlink.core.exception.NotCompiledException;
 import org.noear.solon.data.sqlink.core.sqlBuilder.UpdateSqlBuilder;
@@ -110,14 +109,33 @@ public class LUpdate<T> extends UpdateBase {
         return this;
     }
 
-    public <R> LUpdate<T> set(@Expr(Expr.BodyType.Expr) Func1<T, R> func, Func1<T, R> value) {
+    public <R> LUpdate<T> setInDb(@Expr(Expr.BodyType.Expr) Func1<T, R> func, Func1<T, R> value) {
         throw new NotCompiledException();
     }
 
-    public <R> LUpdate<T> set(ExprTree<Func1<T, R>> func, ExprTree<Func1<T, R>> value) {
+    public <R> LUpdate<T> setInDb(ExprTree<Func1<T, R>> func, ExprTree<Func1<T, R>> value) {
         set(func.getTree(), value.getTree());
         return this;
     }
+
+    public <R> LUpdate<T> setIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, R> func, R value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate<T> setIf(boolean condition, ExprTree<Func1<T, R>> func, R value) {
+        if (condition) set(func.getTree(), value);
+        return this;
+    }
+
+    public <R> LUpdate<T> setInDbIf(boolean condition, @Expr(Expr.BodyType.Expr) Func1<T, R> func, Func1<T, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate<T> setInDbIf(boolean condition, ExprTree<Func1<T, R>> func, ExprTree<Func1<T, R>> value) {
+        if (condition) set(func.getTree(), value.getTree());
+        return this;
+    }
+
 
     //endregion
 
@@ -136,6 +154,15 @@ public class LUpdate<T> extends UpdateBase {
 
     public LUpdate<T> where(ExprTree<Func1<T, Boolean>> expr) {
         where(expr.getTree());
+        return this;
+    }
+
+    public LUpdate<T> whereIf(boolean condition, @Expr Func1<T, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LUpdate<T> whereIf(boolean condition, ExprTree<Func1<T, Boolean>> expr) {
+        if (condition) where(expr.getTree());
         return this;
     }
 

@@ -22,12 +22,14 @@ import org.noear.solon.data.sqlink.base.metaData.MetaData;
 import org.noear.solon.data.sqlink.base.metaData.MetaDataCache;
 import org.noear.solon.data.sqlink.base.session.SqlValue;
 import org.noear.solon.data.sqlink.base.toBean.Include.IncludeSet;
-import org.noear.solon.data.sqlink.core.visitor.ExpressionUtil;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.doGetAsName;
+import static org.noear.solon.data.sqlink.core.visitor.ExpressionUtil.getFirst;
 
 /**
  * @author kiryu1223
@@ -79,31 +81,18 @@ public class QuerySqlBuilder implements ISqlBuilder {
         }
     }
 
-    public void addJoin(JoinType joinType, ISqlTableExpression table, ISqlExpression conditions) {
-        SqlExpressionFactory factory = config.getSqlExpressionFactory();
-        String asName = getAsName(table.getMainTableClass());
-        asName = doGetAsName(asName);
-        ISqlJoinExpression join = factory.join(joinType, table, conditions, asName);
-        queryable.addJoin(join);
-    }
-
-    private String doGetAsName(String as) {
-        Set<String> asNames = new HashSet<>();
-        String asName = queryable.getFrom().getAsName();
-        asNames.add(asName);
-        queryable.getJoins().getJoins().forEach(join -> asNames.add(join.getAsName()));
-        return doGetAsName(asNames, as, 0);
-    }
-
-    private String doGetAsName(Set<String> asNameSet,String as, int offset) {
-        String next = offset == 0 ? as : as + offset;
-        if (asNameSet.contains(next)) {
-            return doGetAsName(asNameSet,as, offset + 1);
-        }
-        else {
-            return next;
-        }
-    }
+//    public void addJoin(JoinType joinType, ISqlTableExpression table) {
+//        SqlExpressionFactory factory = config.getSqlExpressionFactory();
+//        Set<String> stringSet = new HashSet<>(queryable.getJoins().getJoins().size() + 1);
+//        stringSet.add(queryable.getFrom().getAsName().getName());
+//        for (ISqlJoinExpression join : queryable.getJoins().getJoins()) {
+//            stringSet.add(join.getAsName().getName());
+//        }
+//        String first = getFirst(table.getMainTableClass());
+//        AsName asName = doGetAsName(first,stringSet);
+//        ISqlJoinExpression join = factory.join(joinType, table, asName);
+//        queryable.addJoin(join);
+//    }
 
     public void setGroup(ISqlGroupByExpression group) {
         SqlExpressionFactory factory = config.getSqlExpressionFactory();
@@ -123,24 +112,41 @@ public class QuerySqlBuilder implements ISqlBuilder {
     }
 
     public void setSelect(Class<?> c) {
-        List<Class<?>> orderedClass = getOrderedClass();
-        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
         MetaData metaData = MetaDataCache.getMetaData(c);
+        SqlExpressionFactory factory = getConfig().getSqlExpressionFactory();
+        ISqlFromExpression from = queryable.getFrom();
+        ISqlJoinsExpression joins = queryable.getJoins();
         List<ISqlExpression> expressions = new ArrayList<>();
-        if (orderedClass.contains(c)) {
-            String as = metaData.getTableName().substring(0, 1).toLowerCase();
+        if (from.getSqlTableExpression().getMainTableClass() == c) {
             for (FieldMetaData notIgnoreProperty : metaData.getNotIgnorePropertys()) {
-                expressions.add(factory.column(notIgnoreProperty, as));
+                expressions.add(factory.column(notIgnoreProperty, from.getAsName()));
+            }
+        }
+        else if (joins.getJoins().stream().anyMatch(join -> join.getJoinTable().getMainTableClass() == c)) {
+            for (ISqlJoinExpression join : joins.getJoins()) {
+                if (join.getJoinTable().getMainTableClass() == c) {
+                    for (FieldMetaData notIgnoreProperty : metaData.getNotIgnorePropertys()) {
+                        expressions.add(factory.column(notIgnoreProperty, join.getAsName()));
+                    }
+                    break;
+                }
             }
         }
         else {
+            GOTO:
             for (FieldMetaData sel : metaData.getNotIgnorePropertys()) {
-                GOTO:
-                for (MetaData data : MetaDataCache.getMetaData(getOrderedClass())) {
-                    String as = ExpressionUtil.getAsName(data.getType());
-                    for (FieldMetaData noi : data.getNotIgnorePropertys()) {
+                MetaData mainTableMetaData = MetaDataCache.getMetaData(from.getSqlTableExpression().getMainTableClass());
+                for (FieldMetaData noi : mainTableMetaData.getNotIgnorePropertys()) {
+                    if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
+                        expressions.add(factory.column(sel, from.getAsName()));
+                        break GOTO;
+                    }
+                }
+                for (ISqlJoinExpression join : joins.getJoins()) {
+                    MetaData joinTableMetaData = MetaDataCache.getMetaData(join.getJoinTable().getMainTableClass());
+                    for (FieldMetaData noi : joinTableMetaData.getNotIgnorePropertys()) {
                         if (noi.getColumn().equals(sel.getColumn()) && noi.getType().equals(sel.getType())) {
-                            expressions.add(factory.column(sel, as));
+                            expressions.add(factory.column(sel, join.getAsName()));
                             break GOTO;
                         }
                     }
@@ -193,10 +199,6 @@ public class QuerySqlBuilder implements ISqlBuilder {
 //            }
 //        }
 //    }
-
-    public List<Class<?>> getOrderedClass() {
-        return queryable.getOrderedClass();
-    }
 
     public List<FieldMetaData> getMappingData() {
         return queryable.getMappingData();

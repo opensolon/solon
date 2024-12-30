@@ -30,9 +30,9 @@ public interface ISqlColumnExpression extends ISqlExpression {
      */
     FieldMetaData getFieldMetaData();
 
-    void setTableAsName(String tableAsName);
+    void setTableAsName(AsName tableAsName);
 
-    String getTableAsName();
+    AsName getTableAsName();
 
     @Override
     default ISqlColumnExpression copy(SqLinkConfig config) {

@@ -28,9 +28,9 @@ import java.util.List;
  */
 public class SqlFromExpression implements ISqlFromExpression {
     protected final ISqlTableExpression sqlTableExpression;
-    protected String asName;
+    protected AsName asName;
 
-    public SqlFromExpression(ISqlTableExpression sqlTableExpression, String asName) {
+    public SqlFromExpression(ISqlTableExpression sqlTableExpression, AsName asName) {
         this.sqlTableExpression = sqlTableExpression;
         this.asName = asName;
     }
@@ -41,7 +41,7 @@ public class SqlFromExpression implements ISqlFromExpression {
     }
 
     @Override
-    public String getAsName() {
+    public AsName getAsName() {
         return asName;
     }
 
@@ -64,7 +64,7 @@ public class SqlFromExpression implements ISqlFromExpression {
         }
 
         if (asName != null) {
-            return "FROM " + builder + " AS " + disambiguation.disambiguation(asName);
+            return "FROM " + builder + " AS " + disambiguation.disambiguation(asName.getName());
         }
         else {
             return "FROM " + builder;

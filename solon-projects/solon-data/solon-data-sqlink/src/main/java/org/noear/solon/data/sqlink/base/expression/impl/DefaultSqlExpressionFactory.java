@@ -32,7 +32,7 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlColumnExpression column(FieldMetaData fieldMetaData, String tableAsName) {
+    public ISqlColumnExpression column(FieldMetaData fieldMetaData, AsName tableAsName) {
         return new SqlColumnExpression(fieldMetaData, tableAsName);
     }
 
@@ -42,7 +42,7 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlFromExpression from(ISqlTableExpression sqlTable, String asName) {
+    public ISqlFromExpression from(ISqlTableExpression sqlTable, AsName asName) {
         return new SqlFromExpression(sqlTable, asName);
     }
 
@@ -57,8 +57,8 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     }
 
     @Override
-    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
-        return new SqlJoinExpression(joinType, joinTable, conditions, asName);
+    public ISqlJoinExpression join(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        return new SqlJoinExpression(joinType, joinTable, asName);
     }
 
     @Override
@@ -179,5 +179,10 @@ public class DefaultSqlExpressionFactory implements SqlExpressionFactory {
     @Override
     public ISqlUpdateExpression update(ISqlFromExpression from, ISqlJoinsExpression joins, ISqlSetsExpression sets, ISqlWhereExpression where) {
         return new SqlUpdateExpression(from, joins, sets, where);
+    }
+
+    @Override
+    public ISqlDynamicColumnExpression dynamicColumn(String column, AsName tableAsName) {
+        return new SqlDynamicColumnExpression(column, tableAsName);
     }
 }

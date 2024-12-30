@@ -30,8 +30,8 @@ import java.util.List;
  * @since 3.0
  */
 public class OracleJoinExpression extends SqlJoinExpression {
-    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, ISqlExpression conditions, String asName) {
-        super(joinType, joinTable, conditions, asName);
+    protected OracleJoinExpression(JoinType joinType, ISqlTableExpression joinTable, AsName asName) {
+        super(joinType, joinTable, asName);
     }
 
     // oracle下表的别名不能加AS
@@ -51,7 +51,7 @@ public class OracleJoinExpression extends SqlJoinExpression {
             builder.append("(").append(joinTable.getSqlAndValue(config, values)).append(")");
         }
         if (getAsName() != null) {
-            builder.append(" ").append(disambiguation.disambiguation(getAsName())).append(" ");
+            builder.append(" ").append(disambiguation.disambiguation(getAsName().getName())).append(" ");
         }
         builder.append(" ON ");
         builder.append(conditions.getSqlAndValue(config, values));

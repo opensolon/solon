@@ -107,6 +107,33 @@ public class LUpdate2<T1, T2> extends UpdateBase {
         return this;
     }
 
+    public <R> LUpdate2<T1, T2> setInDb(@Expr(Expr.BodyType.Expr) Func2<T1, T2, R> func, Func2<T1, T2, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate2<T1, T2> setInDb(ExprTree<Func2<T1, T2, R>> func, ExprTree<Func2<T1, T2, R>> value) {
+        set(func.getTree(), value.getTree());
+        return this;
+    }
+
+    public <R> LUpdate2<T1, T2> setIf(boolean condition, @Expr(Expr.BodyType.Expr) Func2<T1, T2, R> func, R value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate2<T1, T2> setIf(boolean condition, ExprTree<Func2<T1, T2, R>> func, R value) {
+        if (condition) set(func.getTree(), value);
+        return this;
+    }
+
+    public <R> LUpdate2<T1, T2> setInDbIf(boolean condition, @Expr(Expr.BodyType.Expr) Func2<T1, T2, R> func, Func2<T1, T2, R> value) {
+        throw new NotCompiledException();
+    }
+
+    public <R> LUpdate2<T1, T2> setInDbIf(boolean condition, ExprTree<Func2<T1, T2, R>> func, ExprTree<Func2<T1, T2, R>> value) {
+        if (condition) set(func.getTree(), value.getTree());
+        return this;
+    }
+
     //endregion
 
     //region [WHERE]
@@ -126,5 +153,15 @@ public class LUpdate2<T1, T2> extends UpdateBase {
         where(expr.getTree());
         return this;
     }
+
+    public LUpdate2<T1, T2> whereIf(boolean condition, @Expr Func2<T1, T2, Boolean> func) {
+        throw new NotCompiledException();
+    }
+
+    public LUpdate2<T1, T2> whereIf(boolean condition, ExprTree<Func2<T1, T2, Boolean>> expr) {
+        if (condition) where(expr.getTree());
+        return this;
+    }
+
     //endregion
 }
