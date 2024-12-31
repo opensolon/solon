@@ -112,7 +112,22 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public String getFullName() {
-        return fw.getOwnerClz().getName() + "::" + fw.getName();
+        Class<?> declClz = fw.getField().getDeclaringClass();
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("'").append(fw.getName()).append("'");
+
+
+        buf.append("\r\n\tat ").append(declClz.getName())
+                .append(".").append(fw.getName())
+                .append("(").append(declClz.getSimpleName()).append(".java:0)");
+
+
+        if (declClz != fw.getOwnerClz()) {
+            buf.append("\r\n\tat ").append(fw.getOwnerClz().getName());
+        }
+
+        return buf.toString();
     }
 
 
@@ -159,7 +174,10 @@ public class VarHolderOfField implements VarHolder {
         }
 
         if (valDef != null) {
-            setValue(valDef.get());
+            Object tmp = valDef.get();
+            if (tmp != null) {
+                setValue(tmp);
+            }
         }
     }
 
@@ -185,5 +203,14 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public void required(boolean required) {
         this.required = required;
+    }
+
+    @Override
+    public String toString() {
+        if (fw.getGenericType() == null) {
+            return fw.getName() + ":" + fw.getType().getTypeName();
+        } else {
+            return fw.getName() + ":" + fw.getGenericType().getTypeName();
+        }
     }
 }

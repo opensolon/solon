@@ -20,6 +20,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class GenericsTestConfig {
         @Inject
         protected List<SocialEventCallback<E, S>> socialEventCallbacks;
 
-        @Inject
+        @Inject(required = false)
         protected Map<String, SocialEventCallback<E, S>> socialEventCallbackMap;
 
         /**
@@ -73,6 +74,10 @@ public class GenericsTestConfig {
          * socialEventCallbackMap.size() == 1
          */
         public void check() {
+            if (socialEventCallbackMap == null) {
+                socialEventCallbackMap = new HashMap<>();
+            }
+
             System.out.println("socialEventCallbacks: 2, " + socialEventCallbacks.size());
             System.out.println("socialEventCallbackMap: 0, " + socialEventCallbackMap.size());
 
@@ -91,10 +96,10 @@ public class GenericsTestConfig {
 
     @Configuration
     public static class TestConfig {
-         static List<SocialEventCallback<WxEvent, String>> v1;
-         static Map<String, SocialEventCallback<WxEvent, String>> v2;
+        static List<SocialEventCallback<WxEvent, String>> v1;
+        static Map<String, SocialEventCallback<WxEvent, String>> v2;
 
-        public static void check(){
+        public static void check() {
             System.out.println("v1: 2, " + v1.size());
             assert v1.size() == 2; //为 2
 
@@ -110,10 +115,9 @@ public class GenericsTestConfig {
         }
 
         @Bean
-        public void test2(Map<String, SocialEventCallback<WxEvent, String>> v2) {
+        public void test2(@Inject(required = false) Map<String, SocialEventCallback<WxEvent, String>> v2) {
             this.v2 = v2;
-            System.out.println("v2: 0, " + v2.size());
-            assert v2.size() == 0; //为 0, 因为都没有名字
+            assert v2 == null; //因为都没有名字
         }
     }
 }

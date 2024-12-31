@@ -321,14 +321,12 @@ public class AppContext extends BeanContainer {
                     }
 
                     if (type instanceof Class) {
-                        if (vh.isField()) {
-                            vh.required(required);
-                        } else {
-                            vh.required(false);
+                        if (vh.isField() == false) {
                             vh.setDependencyType((Class<?>) type);
                         }
+                        vh.required(required);
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter, required));
+                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter, true));
                     }
                 } else if (Map.class == vh.getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
@@ -348,14 +346,12 @@ public class AppContext extends BeanContainer {
 
 
                     if (String.class == keyType && valType instanceof Class) {
-                        if (vh.isField()) {
-                            vh.required(required);
-                        } else {
-                            vh.required(false);
+                        if (vh.isField() == false) {
                             vh.setDependencyType((Class<?>) valType);
                         }
+                        vh.required(required);
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter, required));
+                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter, true));
                     }
                 }
             }

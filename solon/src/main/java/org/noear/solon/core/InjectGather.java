@@ -142,6 +142,9 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
             }
 
             for (VarHolder p1 : vars) {
+                //尝试提交
+                p1.commit();
+
                 if (p1.isDone() == false && p1.required()) {
                     if (label == 1) {
                         throw new InjectionException("Method param injection failed: " + p1.getFullName());

@@ -117,9 +117,15 @@ public class VarHolderOfParam implements VarHolder {
     @Override
     public String getFullName() {
         Executable e = pw.getParameter().getDeclaringExecutable();
-        return e.toString() + " - '" + pw.getParameter().getName() + "'";
 
-        //return e.getDeclaringClass().getName() + "::" + e.getName();
+        Class<?> clz = e.getDeclaringClass();
+
+        if (e instanceof Method) {
+            Method m = (Method) e;
+            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + clz.getName() + "." + m.getName() + "(" + clz.getSimpleName() + ".java:0)";
+        } else {
+            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + clz.getName() + "(" + clz.getSimpleName() + ".java:10)";
+        }
     }
 
     /**
@@ -158,7 +164,10 @@ public class VarHolderOfParam implements VarHolder {
         }
 
         if (valDef != null) {
-            setValue(valDef.get());
+            Object tmp = valDef.get();
+            if (tmp != null) {
+                setValue(tmp);
+            }
         }
     }
 
@@ -183,5 +192,14 @@ public class VarHolderOfParam implements VarHolder {
     @Override
     public void required(boolean required) {
         this.required = required;
+    }
+
+    @Override
+    public String toString() {
+        if (pw.getGenericType() == null) {
+            return pw.getName() + ":" + pw.getType().getTypeName();
+        } else {
+            return pw.getName() + ":" + pw.getGenericType().getTypeName();
+        }
     }
 }
