@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.6-SNAPSHOT
+Solon v3.0.6-M1
 </h1>
 <p align="center">
 	<strong>Рамки разработки приложений Java, ориентированные на полную сцену: сдержанность, эффективность, открытость, экология</strong>

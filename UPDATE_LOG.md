@@ -31,6 +31,7 @@
 ### v3.0.6
 
 * 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
+* 优化 solon bean 集合注入时，增加是否为空的检测支持
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 solon-mvc Action 返回为 void 的情况，当二次加工后仍为 null 时，不作渲染处理//要被两种情况的单测
 * snack3 升为 3.2.123
