@@ -282,6 +282,27 @@ public class ResourceUtil {
         }
     }
 
+    public static URL findResourceOrFile(ClassLoader classLoader, String uri) {
+        if (hasClasspath(uri)) {
+            //classpath:..
+            return getResource(classLoader, remSchema(uri));
+        }
+
+        if (hasFile(uri)) {
+            //file:..
+            return getResourceByFile(remSchema(uri));
+        }
+
+        //选找外部，再找内部
+        URL tmp = getResourceByFile(uri);
+
+        if (tmp != null) {
+            return tmp;
+        } else {
+            return getResource(classLoader, uri);
+        }
+    }
+
 
     //A.class
     //a.*.class

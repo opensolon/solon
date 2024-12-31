@@ -500,7 +500,7 @@ public class Props extends Properties {
      * @param uri 资源地址（"classpath:demo.xxx" or "file:./demo.xxx" or "./demo.xxx"）
      */
     public void loadAdd(String uri) {
-        loadAdd(ResourceUtil.findResource(uri, false));
+        loadAdd(ResourceUtil.findResourceOrFile(classLoader, uri));
     }
 
     public void loadAdd(Import anno) {
@@ -510,12 +510,12 @@ public class Props extends Properties {
 
         for (String uri : anno.profiles()) {
             uri = getByTmpl(uri);
-            loadAdd(ResourceUtil.findResource(classLoader, uri));
+            loadAdd(ResourceUtil.findResourceOrFile(classLoader, uri));
         }
 
         for (String uri : anno.profilesIfAbsent()) {
             uri = getByTmpl(uri);
-            loadAddIfAbsent(ResourceUtil.findResource(classLoader, uri));
+            loadAddIfAbsent(ResourceUtil.findResourceOrFile(classLoader, uri));
         }
     }
 

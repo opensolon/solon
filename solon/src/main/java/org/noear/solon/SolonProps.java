@@ -132,15 +132,15 @@ public final class SolonProps extends Props {
         for (String loadKey : loadKeyMap.values()) {
             if (loadKey.contains("*")) {
                 for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
-                    addConfig(loadKey0, true, sysPropOrg);
+                    addConfig(loadKey0,  sysPropOrg);
                 }
             } else {
-                addConfig(loadKey, true, sysPropOrg);
+                addConfig(loadKey, sysPropOrg);
             }
         }
 
         //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
-        addConfig(getArg("config.add"), false, sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
+        addConfig(getArg("config.add"),  sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 
         //5.初始化模式状态
@@ -210,21 +210,10 @@ public final class SolonProps extends Props {
         }
     }
 
-    private void addConfig(String paths, boolean isName, Properties sysPropOrg) {
+    private void addConfig(String paths, Properties sysPropOrg) {
         if (Utils.isNotEmpty(paths)) {
             for (String p1 : paths.split(",")) {
-                URL propUrl = null;
-                if (isName) {
-                    //内部资源
-                    propUrl = ResourceUtil.findResource(p1, false);
-                } else {
-                    //外部文件
-                    propUrl = ResourceUtil.findResource(p1, true);
-                    if (propUrl == null) {
-                        //如果是外部文件没有，尝试找对应的内部文件
-                        propUrl = ResourceUtil.getResource(p1);
-                    }
-                }
+                URL propUrl = ResourceUtil.findResourceOrFile(null, p1);
 
                 if (propUrl == null) {
                     //打印提醒
