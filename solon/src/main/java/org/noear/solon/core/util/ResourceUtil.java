@@ -363,15 +363,17 @@ public class ResourceUtil {
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
         List<String> paths = new ArrayList<>();
 
-        boolean onlyFile = false;
+        boolean fileMode = false;
         if (hasFile(resExpr)) {
             //文件模式
             resExpr = remSchema(resExpr);
-            onlyFile = true;
+            fileMode = true;
         } else if (hasClasspath(resExpr)) {
             //类路径模式
             resExpr = remSchema(resExpr);
+        }
 
+        if (fileMode == false) {
             if (resExpr.startsWith("/")) {
                 resExpr = resExpr.substring(1);
             }
@@ -427,7 +429,7 @@ public class ResourceUtil {
 
         Pattern pattern = Pattern.compile(expr);
 
-        ScanUtil.scan(classLoader, dir, onlyFile, n -> {
+        ScanUtil.scan(classLoader, dir, fileMode, n -> {
                     //进行后缀过滤，相对比较快
                     if (sufIdx2 > 0) {
                         return n.endsWith(suf2);

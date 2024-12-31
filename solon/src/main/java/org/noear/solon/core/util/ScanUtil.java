@@ -75,10 +75,10 @@ public class ScanUtil {
      *
      * @param classLoader 类加载器
      * @param path        路径
-     * @param onlyFile    纯文件模式
+     * @param fileMode    文件模式
      * @param filter      过滤条件
      */
-    public static Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
-        return global.scan(classLoader, path, onlyFile, filter);
+    public static Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
+        return global.scan(classLoader, path, fileMode, filter);
     }
 }
