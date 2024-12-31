@@ -34,7 +34,7 @@
 * 优化 solon `solon.config.load`、`solon.config.add`、`Props:loadAdd(uri)` 三者的处理逻辑
 * 优化 solon bean 集合注入时，增加是否为空的检测支持和异常提醒
 * 优化 solon 注入失败时的日志定位（支持类级定位）
-* 优化 solon 扫描能力本地文件目录扫描//要补单测
+* 优化 solon 扫描能力本地文件目录扫描
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 solon-mvc Action 返回为 void 的情况，当二次加工后仍为 null 时，不作渲染处理
 * snack3 升为 3.2.123

@@ -371,10 +371,10 @@ public class ResourceUtil {
         } else if (hasClasspath(resExpr)) {
             //类路径模式
             resExpr = remSchema(resExpr);
-        }
 
-        if (resExpr.startsWith("/")) {
-            resExpr = resExpr.substring(1);
+            if (resExpr.startsWith("/")) {
+                resExpr = resExpr.substring(1);
+            }
         }
 
         int xinIdx = resExpr.indexOf('*');
@@ -386,7 +386,7 @@ public class ResourceUtil {
         //确定没有星号的起始目录
         int dirIdx = resExpr.indexOf('/');
 
-        if (dirIdx < 1 || dirIdx > xinIdx) {
+        if (dirIdx < 0 || dirIdx > xinIdx) {
             throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " + resExpr);
         }
 

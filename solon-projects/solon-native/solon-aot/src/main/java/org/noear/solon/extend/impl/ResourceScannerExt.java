@@ -33,10 +33,10 @@ import java.util.function.Predicate;
 public class ResourceScannerExt extends ResourceScanner {
 
     @Override
-    public Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
-        Set<String> urls = super.scan(classLoader, path, onlyFile, filter);
+    public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
+        Set<String> urls = super.scan(classLoader, path, fileMode, filter);
 
-        if (onlyFile == false) {
+        if (fileMode == false) {
             //3.native image
             if (NativeDetector.inNativeImage()) {
                 GraalvmUtil.scanResource(path, filter, urls);

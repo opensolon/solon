@@ -44,15 +44,16 @@ public class ResourceScanner {
      *
      * @param classLoader 类加载器
      * @param path        路径
+     * @param fileMode    文件模式
      * @param filter      过滤条件
      */
-    public Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
+    public Set<String> scan(ClassLoader classLoader, String path, boolean fileMode, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
 
         try {
-            if (onlyFile) {
+            if (fileMode) {
                 URL root = Utils.getFile(path).toURI().toURL();
-                scanDo(root, path, filter, urls);
+                scanDo(root, path, fileMode, filter, urls);
             } else {
                 if (classLoader == null) {
                     return urls;
@@ -64,7 +65,7 @@ public class ResourceScanner {
                 //2.资源遍历
                 while (roots.hasMoreElements()) {
                     //3.尝试扫描
-                    scanDo(roots.nextElement(), path, filter, urls);
+                    scanDo(roots.nextElement(), path, fileMode, filter, urls);
                 }
             }
         } catch (IOException e) {
@@ -74,12 +75,12 @@ public class ResourceScanner {
         return urls;
     }
 
-    protected void scanDo(URL url, String path, Predicate<String> filter, Set<String> urls) throws IOException {
+    protected void scanDo(URL url, String path, boolean fileMode, Predicate<String> filter, Set<String> urls) throws IOException {
         if ("file".equals(url.getProtocol())) {
             //3.1.找到文件
             //
             String fp = URLDecoder.decode(url.getFile(), Solon.encoding());
-            doScanByFile(new File(fp), path, filter, urls);
+            doScanByFile(new File(fp), path, fileMode, filter, urls);
         } else if ("jar".equals(url.getProtocol())) {
             //3.2.找到jar包
             //
@@ -95,7 +96,7 @@ public class ResourceScanner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    protected void doScanByFile(File dir, String path, Predicate<String> filter, Set<String> urls) {
+    protected void doScanByFile(File dir, String path, boolean fileMode, Predicate<String> filter, Set<String> urls) {
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {
             return;
@@ -109,9 +110,9 @@ public class ResourceScanner {
                 String p2 = path + "/" + f.getName();
                 // 如果是目录 则继续扫描
                 if (f.isDirectory()) {
-                    doScanByFile(f, p2, filter, urls);
+                    doScanByFile(f, p2, fileMode, filter, urls);
                 } else {
-                    if (p2.startsWith("/")) {
+                    if (p2.startsWith("/") && fileMode == false) {
                         urls.add(p2.substring(1));
                     } else {
                         urls.add(p2);
