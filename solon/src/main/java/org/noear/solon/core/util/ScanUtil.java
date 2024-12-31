@@ -42,7 +42,7 @@ public class ScanUtil {
 
     /**
      * 设置扫描器（用户层扩展）
-     * */
+     */
     public static void setScanner(ResourceScanner scanner) {
         if (scanner != null) {
             ScanUtil.global = scanner;
@@ -63,10 +63,22 @@ public class ScanUtil {
      * 扫描路径下的的资源（path 扫描路径）
      *
      * @param classLoader 类加载器
-     * @param path   路径
-     * @param filter 过滤条件
+     * @param path        路径
+     * @param filter      过滤条件
      */
     public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
-        return global.scan(classLoader, path, filter);
+        return global.scan(classLoader, path, false, filter);
+    }
+
+    /**
+     * 扫描路径下的的资源（path 扫描路径）
+     *
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param onlyFile    纯文件模式
+     * @param filter      过滤条件
+     */
+    public static Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
+        return global.scan(classLoader, path, onlyFile, filter);
     }
 }

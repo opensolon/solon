@@ -16,6 +16,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -45,25 +46,30 @@ public class ResourceScanner {
      * @param path        路径
      * @param filter      过滤条件
      */
-    public Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
+    public Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
 
-        if (classLoader == null) {
-            return urls;
-        }
-
         try {
-            //1.查找资源
-            Enumeration<URL> roots = ResourceUtil.getResources(classLoader, path);
+            if (onlyFile) {
+                URL root = Utils.getFile(path).toURI().toURL();
+                scanDo(root, path, filter, urls);
+            } else {
+                if (classLoader == null) {
+                    return urls;
+                }
 
-            //2.资源遍历
-            while (roots.hasMoreElements()) {
-                //3.尝试扫描
-                scanDo(roots.nextElement(), path, filter, urls);
+                //1.查找资源
+                Enumeration<URL> roots = ResourceUtil.getResources(classLoader, path);
+
+                //2.资源遍历
+                while (roots.hasMoreElements()) {
+                    //3.尝试扫描
+                    scanDo(roots.nextElement(), path, filter, urls);
+                }
             }
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
 
         return urls;
     }

@@ -131,8 +131,20 @@ public final class SolonProps extends Props {
 
         for (String loadKey : loadKeyMap.values()) {
             if (loadKey.contains("*")) {
-                for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
-                    addConfig(loadKey0,  sysPropOrg);
+                if (ResourceUtil.hasClasspath(loadKey)) {
+                    // classpath:
+                    for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
+                        addConfig(ResourceUtil.TAG_classpath + loadKey0, sysPropOrg);
+                    }
+                } else if (ResourceUtil.hasFile(loadKey)) {
+                    // file:
+                    for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
+                        addConfig(ResourceUtil.TAG_file + loadKey0, sysPropOrg);
+                    }
+                } else {
+                    for (String loadKey0 : ResourceUtil.scanResources(loadKey)) {
+                        addConfig(loadKey0, sysPropOrg);
+                    }
                 }
             } else {
                 addConfig(loadKey, sysPropOrg);

@@ -33,17 +33,19 @@ import java.util.function.Predicate;
 public class ResourceScannerExt extends ResourceScanner {
 
     @Override
-    public Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
-        Set<String> urls = super.scan(classLoader, path, filter);
+    public Set<String> scan(ClassLoader classLoader, String path, boolean onlyFile, Predicate<String> filter) {
+        Set<String> urls = super.scan(classLoader, path, onlyFile, filter);
 
-        //3.native image
-        if (NativeDetector.inNativeImage()) {
-            GraalvmUtil.scanResource(path, filter, urls);
-            if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().info("Native: Resource scan: " + urls.size() + ", path: " + path);
+        if (onlyFile == false) {
+            //3.native image
+            if (NativeDetector.inNativeImage()) {
+                GraalvmUtil.scanResource(path, filter, urls);
+                if (Solon.cfg().isDebugMode()) {
+                    LogUtil.global().info("Native: Resource scan: " + urls.size() + ", path: " + path);
+                }
+
+                return urls;
             }
-
-            return urls;
         }
 
         return urls;
