@@ -30,7 +30,7 @@ import java.util.Enumeration;
  */
 @SolonTest(App.class)
 public class ResourceFileTest {
-    static final String file_root_dir = "file:/Users/noear/WORK/work_github/noear/solon/__test/target/classes/";
+    public static final String file_root_dir = "file:/Users/noear/WORK/work_github/noear/solon/__test/target/classes/";
 
     @Test
     public void scanResources() {
@@ -81,6 +81,31 @@ public class ResourceFileTest {
     @Test
     public void findResource() throws IOException {
         URL url = ResourceUtil.findResource(file_root_dir + "app.yml");
+        assert url != null;
+        System.out.println(url);
+    }
+
+    @Test
+    public void findResourceOrFile1() {
+        URL url = ResourceUtil.findResourceOrFile(null, "classpath:app.yml");
+        assert url != null;
+        System.out.println(url);
+
+        url = ResourceUtil.findResourceOrFile(null, "classpath:/app.yml");
+        assert url != null;
+        System.out.println(url);
+    }
+
+    @Test
+    public void findResourceOrFile2() {
+        URL url = ResourceUtil.findResourceOrFile(null, file_root_dir + "app.yml");
+        assert url != null;
+        System.out.println(url);
+    }
+
+    @Test
+    public void findResourceOrFile3() {
+        URL url = ResourceUtil.findResourceOrFile(null, "app.yml");
         assert url != null;
         System.out.println(url);
     }
