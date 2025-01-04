@@ -42,6 +42,7 @@
 * mybatis-flex 升为 1.10.4
 * smarthttp 升为 2.5.1，修复 ws idle 超时问题
 * logback 升为 1.3.15
+* solonx 升为 1.1.3
 
 ### v3.0.5
 * 新增 solon-data-rx-sqlutils 插件（基于 r2dbc 构建）
