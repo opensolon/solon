@@ -986,20 +986,6 @@ public abstract class BeanContainer {
                 getWrapAsync(vh.getGenericType().getTypeName(), (bw) -> {
                     vh.setValue(bw.get());
                 });
-
-                //补尝处理
-                if (Iterable.class.isAssignableFrom(vh.getType()) == false
-                        && Map.class.isAssignableFrom(vh.getType()) == false) {
-
-                    lifecycle(() -> {
-                        if (vh.isDone() == false) {
-                            BeanWrap bw = getWrap(vh.getType());
-                            if (bw != null) {
-                                vh.setValue(bw.get());
-                            }
-                        }
-                    });
-                }
             } else {
                 getWrapAsync(vh.getType(), (bw) -> {
                     vh.setValue(bw.get());
