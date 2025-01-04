@@ -94,7 +94,7 @@ public class CaffeineCacheService implements CacheService {
 
     @Override
     public void remove(String key) {
-        client.put(key, null);
+        client.invalidate(key);
     }
 
     @Override
