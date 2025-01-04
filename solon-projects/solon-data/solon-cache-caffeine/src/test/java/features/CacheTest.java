@@ -16,8 +16,11 @@
 package features;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.cache.caffeine.CaffeineCacheService;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.LocalCacheService;
+
+import java.util.Properties;
 
 /**
  * @author noear 2022/2/21 created
@@ -25,7 +28,9 @@ import org.noear.solon.data.cache.LocalCacheService;
 public class CacheTest {
     @Test
     public void case1() {
-        CacheService cacheService = new LocalCacheService();
+        Properties props = new Properties();
+        props.setProperty("keyHeader", "test");
+        CacheService cacheService = new CaffeineCacheService(props);
 
         cacheService.store("1", "world", 100);
 
