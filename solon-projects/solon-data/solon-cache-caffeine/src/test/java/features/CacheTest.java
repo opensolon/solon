@@ -18,7 +18,6 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.cache.caffeine.CaffeineCacheService;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.LocalCacheService;
 
 import java.util.Properties;
 
