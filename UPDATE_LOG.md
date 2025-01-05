@@ -31,6 +31,7 @@
 ### v3.0.6
 
 * 添加 solon ScanUtil 对本地文件目录的扫描支持
+* 增强 solon-proxy ProxyUtil 工具实用性
 * 调整 solon `solon.config.load`、`solon.config.add`、`Props:loadAdd(uri)` 统一三者的处理逻辑
 * 优化 solon 注入失败时的日志定位（支持类级定位）
 * 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
