@@ -15,161 +15,60 @@
  */
 package org.noear.solon.proxy;
 
-import org.noear.solon.Utils;
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.proxy.aot.AotProxy;
+import org.noear.solon.proxy.asm.AsmProxy;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Modifier;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Predicate;
+import java.lang.reflect.Proxy;
 
 /**
- * 代理工具
+ * 代理工具（增强基础代理能力）
  *
  * @author noear
  * @since 1.5
  * @since 2.1
+ * @since 3.0
  * */
 public class ProxyUtil {
     /**
-     * 绑定代理
+     * 构建代理实例
      *
-     * @param name  注册名字
-     * @param typed 注册类型（当 name 不为空时才有效；否则都算 true）
+     * @param clazz   类
+     * @param handler 调用处理
      */
-    public static boolean binding(BeanWrap bw, String name, boolean typed) {
-        if (bw.proxy() instanceof ProxyUtil) {
-            return false;
+    public static <T> T newProxyInstance(Class<T> clazz, InvocationHandler handler) {
+        return newProxyInstance(Solon.context(), clazz, handler);
+    }
+
+    /**
+     * 构建代理实例
+     *
+     * @param context 应用上下文
+     * @param clazz   类
+     * @param handler 调用处理
+     */
+    public static <T> T newProxyInstance(AppContext context, Class<T> clazz, InvocationHandler handler) {
+        assert context != null;
+        assert clazz != null;
+
+        if (clazz.isInterface()) {
+            return (T) Proxy.newProxyInstance(context.getClassLoader(), new Class[]{clazz}, handler);
         } else {
-            if (bw.clz().isInterface()) {
-                throw new IllegalStateException("Interfaces are not supported as proxy components: " + bw.clz().getName());
+            Object proxy = null;
+            //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
+            if (NativeDetector.isNotAotRuntime()) {
+                proxy = AotProxy.newProxyInstance(context, handler, clazz, new Object[0]);
             }
 
-            int modifier = bw.clz().getModifiers();
-            if (Modifier.isFinal(modifier)) {
-                throw new IllegalStateException("Final classes are not supported as proxy components: " + bw.clz().getName());
+            if (proxy == null) {
+                //支持 ASM（兼容旧的包，不支持 Graalvm Native  打包）
+                proxy = AsmProxy.newProxyInstance(context, handler, clazz, null, new Object[0]);
             }
 
-            if (Modifier.isAbstract(modifier)) {
-                throw new IllegalStateException("Abstract classes are not supported as proxy components: " + bw.clz().getName());
-            }
-
-            if (Modifier.isPublic(modifier) == false) {
-                throw new IllegalStateException("Not public classes are not supported as proxy components: " + bw.clz().getName());
-            }
-
-            bw.proxySet(BeanProxy.getGlobal());
-
-            //特定能力接口交付
-            bw.context().beanDeliver(bw);
-
-            //注册到容器
-            bw.context().beanRegister(bw, name, typed);
-
-            return true;
+            return (T) proxy;
         }
-    }
-
-    /**
-     * 绑定代理
-     */
-    public static boolean binding(BeanWrap bw) {
-        return binding(bw, "", false);
-    }
-
-
-    /////////////////////////////////////////////
-
-    private static Set<Class<?>> tryAttachCached = new HashSet<>();
-
-    /**
-     * 为类，系上拦截代理
-     *
-     * @param appContext 应用上下文
-     * @param targetClz  目标类
-     * @param handler    调用处理
-     * @since 1.6
-     */
-    public static void attach(AppContext appContext, Class<?> targetClz, InvocationHandler handler) {
-        attach(appContext, targetClz, null, handler);
-    }
-
-    /**
-     * 为类，系上拦截代理
-     *
-     * @param appContext 应用上下文
-     * @param targetClz  目标类
-     * @param targetObj  目标对象
-     * @param handler    调用处理
-     * @since 1.6
-     */
-    public static void attach(AppContext appContext, Class<?> targetClz, Object targetObj, InvocationHandler handler) {
-        if (targetClz.isAnnotation() || targetClz.isInterface() || targetClz.isEnum() || targetClz.isPrimitive()) {
-            return;
-        }
-
-        //去重处理
-        if (tryAttachCached.contains(targetClz)) {
-            return;
-        } else {
-            tryAttachCached.add(targetClz);
-        }
-
-        appContext.wrapAndPut(targetClz, targetObj).proxySet(new BeanProxy(handler));
-    }
-
-    /**
-     * 为搜索的类，系上拦截代理
-     *
-     * @param appContext  应用上下文
-     * @param basePackage 基础包名
-     * @param handler     拦截代理
-     */
-    public static void attachByScan(AppContext appContext, String basePackage, InvocationHandler handler) {
-        attachByScan(appContext, basePackage, null, handler);
-    }
-
-
-    /**
-     * 为搜索的类，系上拦截代理
-     *
-     * @param appContext  应用上下文
-     * @param basePackage 基础包名
-     * @param filter      过滤器
-     * @param handler     拦截代理
-     */
-    public static void attachByScan(AppContext appContext, String basePackage, Predicate<String> filter, InvocationHandler handler) {
-        if (Utils.isEmpty(basePackage)) {
-            return;
-        }
-
-        if (appContext == null) {
-            return;
-        }
-
-        if (filter == null) {
-            filter = (s) -> true;
-        }
-
-        String dir = basePackage.replace('.', '/');
-
-        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ScanUtil.scan(appContext.getClassLoader(), dir, n -> n.endsWith(".class"))
-                .stream()
-                .sorted(Comparator.comparing(s -> s.length()))
-                .filter(filter)
-                .forEach(name -> {
-                    String className = name.substring(0, name.length() - 6);
-
-                    Class<?> clz = ClassUtil.loadClass(appContext.getClassLoader(), className.replace("/", "."));
-                    if (clz != null) {
-                        attach(appContext, clz, handler);
-                    }
-                });
     }
 }
