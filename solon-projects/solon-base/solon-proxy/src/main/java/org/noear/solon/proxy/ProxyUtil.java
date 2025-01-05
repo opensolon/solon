@@ -17,6 +17,7 @@ package org.noear.solon.proxy;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.proxy.asm.AsmProxy;
@@ -33,6 +34,17 @@ import java.lang.reflect.Proxy;
  * @since 3.0
  * */
 public class ProxyUtil {
+    /**
+     * 构建代理实例
+     */
+    public static <T> T newProxyInstance(BeanWrap bw) {
+        if (bw.proxy() == null) {
+            bw.proxySet(BeanProxy.getGlobal());
+        }
+
+        return bw.get();
+    }
+
     /**
      * 构建代理实例
      *
