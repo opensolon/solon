@@ -38,7 +38,7 @@
 * 优化 solon bean 集合注入时，增加是否为空的检测支持和异常提醒
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 solon-mvc Action 返回为 void 的情况，当二次加工后仍为 null 时，不作渲染处理
-* snack3 升为 3.2.123
+* snack3 升为 3.2.124
 * mybatis 升为 3.5.17
 * mybatis-flex 升为 1.10.4
 * smarthttp 升为 2.5.1，修复 ws idle 超时问题
