@@ -872,7 +872,18 @@ public class AppContext extends BeanContainer {
                 wrapPublish(m_bw);
             }
         } catch (Throwable ex) {
-            throw new IllegalStateException("Build bean of method failed: " + mWrap.getMethod(), ex);
+            Class<?> declClz = mWrap.getDeclaringClz();
+            Class<?> fileClz = declClz;
+            if(declClz.isMemberClass()){
+                fileClz = declClz.getEnclosingClass();
+            }
+
+            StringBuilder buf = new StringBuilder();
+            buf.append("Build bean of method failed: \r\n\tat ");
+            buf.append(declClz.getName()).append(".");
+            buf.append(mWrap.getName()).append("(").append(fileClz.getSimpleName()).append(".java:0)");
+
+            throw new IllegalStateException(buf.toString(), ex);
         }
     }
 
