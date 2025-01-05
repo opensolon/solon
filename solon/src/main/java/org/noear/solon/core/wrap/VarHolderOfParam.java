@@ -118,13 +118,17 @@ public class VarHolderOfParam implements VarHolder {
     public String getFullName() {
         Executable e = pw.getParameter().getDeclaringExecutable();
 
-        Class<?> clz = e.getDeclaringClass();
+        Class<?> declClz = e.getDeclaringClass();
+        Class<?> fileClz = declClz;
+        if(declClz.isMemberClass()){
+            fileClz = declClz.getEnclosingClass();
+        }
 
         if (e instanceof Method) {
             Method m = (Method) e;
-            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + clz.getName() + "." + m.getName() + "(" + clz.getSimpleName() + ".java:0)";
+            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + declClz.getName() + "." + m.getName() + "(" + fileClz.getSimpleName() + ".java:0)";
         } else {
-            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + clz.getName() + "(" + clz.getSimpleName() + ".java:10)";
+            return "'" + pw.getParameter().getName() + "'" + "\r\n\tat " + declClz.getName() + "(" + fileClz.getSimpleName() + ".java:10)";
         }
     }
 

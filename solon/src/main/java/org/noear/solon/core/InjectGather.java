@@ -108,8 +108,10 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
 
                 try {
                     onDone.accept(args.toArray());
+                } catch (RuntimeException ex) {
+                    throw ex;
                 } catch (Throwable ex) {
-                    throw new RuntimeException(ex);
+                    throw new IllegalStateException(ex);
                 }
             }
         } finally {

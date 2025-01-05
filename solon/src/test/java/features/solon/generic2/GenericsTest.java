@@ -115,7 +115,7 @@ public class GenericsTest {
 
         @Bean
         public void test2(@Inject(required = false) Map<String, SocialEventCallback<WxEvent, String>> v2) {
-            assert v2 == null; //为 0（因为没有 name）
+            assert v2.size() == 0; //为 0（因为没有 name）
         }
     }
 }

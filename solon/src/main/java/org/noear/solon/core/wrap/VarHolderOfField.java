@@ -113,6 +113,10 @@ public class VarHolderOfField implements VarHolder {
     @Override
     public String getFullName() {
         Class<?> declClz = fw.getField().getDeclaringClass();
+        Class<?> fileClz = declClz;
+        if(declClz.isMemberClass()){
+            fileClz = declClz.getEnclosingClass();
+        }
 
         StringBuilder buf = new StringBuilder();
         buf.append("'").append(fw.getName()).append("'");
@@ -120,7 +124,7 @@ public class VarHolderOfField implements VarHolder {
 
         buf.append("\r\n\tat ").append(declClz.getName())
                 .append(".").append(fw.getName())
-                .append("(").append(declClz.getSimpleName()).append(".java:0)");
+                .append("(").append(fileClz.getSimpleName()).append(".java:0)");
 
 
         if (declClz != fw.getOwnerClz()) {
