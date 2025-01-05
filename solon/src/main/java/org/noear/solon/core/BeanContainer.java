@@ -28,7 +28,6 @@ import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.util.TypeMap;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.exception.SolonException;
 
 import java.io.Closeable;
 import java.lang.annotation.Annotation;
@@ -617,7 +616,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
-        return getBeansOfType(baseType, null, false);
+        return getBeansOfType(baseType, null);
     }
 
     /**
@@ -627,17 +626,6 @@ public abstract class BeanContainer {
      * @param geneticName 泛型名
      */
     public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName) {
-        return getBeansOfType(baseType, geneticName, false);
-    }
-
-    /**
-     * 获取某类型的 bean list
-     *
-     * @param baseType    基类
-     * @param geneticName 泛型名
-     * @param emptyAsNull 如果空则输出null
-     */
-    public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName, boolean emptyAsNull) {
         List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
         List<T> beans = new ArrayList<>();
 
@@ -649,10 +637,6 @@ public abstract class BeanContainer {
             beans.add(bw.get());
         }
 
-        if (emptyAsNull && beans.isEmpty()) {
-            return null;
-        }
-
         return beans;
     }
 
@@ -662,7 +646,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> Map<String, T> getBeansMapOfType(Class<T> baseType) {
-        return getBeansMapOfType(baseType, null, false);
+        return getBeansMapOfType(baseType, null);
     }
 
     /**
@@ -672,17 +656,6 @@ public abstract class BeanContainer {
      * @param geneticName 泛型名
      */
     public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName) {
-        return getBeansMapOfType(baseType, geneticName, false);
-    }
-
-    /**
-     * 获取某类型的 bean map
-     *
-     * @param baseType    基类
-     * @param geneticName 泛型名
-     * @param emptyAsNull 如果空则输出null
-     */
-    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName, boolean emptyAsNull) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
@@ -696,10 +669,6 @@ public abstract class BeanContainer {
                 }
             }
         });
-
-        if (emptyAsNull && beanMap.isEmpty()) {
-            return null;
-        }
 
         return beanMap;
     }
