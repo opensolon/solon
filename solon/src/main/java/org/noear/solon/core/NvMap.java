@@ -125,7 +125,7 @@ public class NvMap extends IgnoreCaseMap<String> {
     /**
      * 转为换一个类实例
      *
-     * @deprecated 2.9
+     * @deprecated 2.9 {@link #toBean(Class<?>)}
      * */
     @Deprecated
     public <T> T getBean(Class<T> clz) {

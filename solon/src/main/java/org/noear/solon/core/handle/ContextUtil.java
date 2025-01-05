@@ -24,7 +24,7 @@ import org.noear.solon.SolonApp;
  * @see SolonApp#tryHandle(Context)
  * @author noear
  * @since 1.0
- * @deprecated 3.0
+ * @deprecated 3.0 {@link ContextHolder}
  * */
 @Deprecated
 public class ContextUtil {

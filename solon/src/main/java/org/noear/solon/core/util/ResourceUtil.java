@@ -321,7 +321,7 @@ public class ResourceUtil {
      * 扫描类
      *
      * @param clzExpr 类表达式（基于 import 表达式扩展）
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link ClassUtil#scanClasses(String)}
      */
     @Deprecated
     public static Collection<Class<?>> scanClasses(String clzExpr) {
@@ -333,7 +333,7 @@ public class ResourceUtil {
      *
      * @param classLoader 类加载器
      * @param clzExpr     类名表达式（基于 import 表达式扩展）
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link ClassUtil#scanClasses(ClassLoader,String)}
      */
     @Deprecated
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {

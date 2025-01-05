@@ -20,7 +20,7 @@ package org.noear.solon.core;
  *
  * @author noear
  * @since 2.7
- * @deprecated 3.0
+ * @deprecated 3.0 {@link Constants}
  */
 @Deprecated
 public interface LifecycleIndex {

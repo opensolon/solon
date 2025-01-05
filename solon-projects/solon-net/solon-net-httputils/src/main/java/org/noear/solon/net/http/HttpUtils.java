@@ -342,7 +342,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #body(String,String)}
      */
     @Deprecated
     default HttpUtils bodyTxt(String txt, String contentType) {
@@ -353,7 +353,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #bodyOfTxt(String)}
      */
     @Deprecated
     default HttpUtils bodyTxt(String txt) {
@@ -364,7 +364,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #bodyOfJson(String)}
      */
     @Deprecated
     default HttpUtils bodyJson(String txt) {
@@ -376,7 +376,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #body(byte[],String)}
      */
     @Deprecated
     default HttpUtils bodyRaw(byte[] bytes, String contentType) {
@@ -387,7 +387,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #body(byte[])}
      */
     @Deprecated
     default HttpUtils bodyRaw(byte[] bytes) {
@@ -398,7 +398,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #body(InputStream)}
      */
     @Deprecated
     default HttpUtils bodyRaw(InputStream raw) {
@@ -409,7 +409,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #body(byte[],String)}
      */
     @Deprecated
     default HttpUtils bodyRaw(InputStream raw, String contentType) {

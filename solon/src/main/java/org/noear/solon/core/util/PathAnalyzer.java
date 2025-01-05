@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @author noear
  * @since 1.0
- * @deprecated 3.0
+ * @deprecated 3.0 {@link PathMatcher}
  * */
 @Deprecated
 public class PathAnalyzer {

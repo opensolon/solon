@@ -30,7 +30,7 @@ import org.noear.solon.core.event.EventBus;
  */
 public class CloudLoadBalance implements LoadBalance {
     /**
-     * @deprecated 2.9
+     * @deprecated 2.9 {@link CloudManager#register(CloudLoadStrategy)}
      */
     @Deprecated
     public static void setStrategy(CloudLoadStrategy strategy) {

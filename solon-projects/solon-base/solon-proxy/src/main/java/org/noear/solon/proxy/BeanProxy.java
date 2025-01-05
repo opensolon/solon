@@ -30,7 +30,7 @@ public class BeanProxy implements BeanWrap.Proxy {
         return global;
     }
 
-    InvocationHandler handler;
+    private InvocationHandler handler;
 
     private BeanProxy() {
     }

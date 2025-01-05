@@ -20,7 +20,7 @@ package org.noear.nami.common;
  *
  * @author noear
  * @since 1.0
- * @deprecated 3.0
+ * @deprecated 3.0 {@link ContentTypes}
  * */
 @Deprecated
 public class Constants {

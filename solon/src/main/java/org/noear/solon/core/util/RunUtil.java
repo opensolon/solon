@@ -90,7 +90,7 @@ public class RunUtil {
     /**
      * 并行执行
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #async(Runnable)}
      */
     @Deprecated
     public static Future<?> parallel(Runnable task) {
@@ -100,7 +100,7 @@ public class RunUtil {
     /**
      * 并行执行
      *
-     * @deprecated 3.0
+     * @deprecated 3.0 {@link #async(Runnable)}
      */
     @Deprecated
     public static <T> Future<T> parallel(Callable<T> task) {
