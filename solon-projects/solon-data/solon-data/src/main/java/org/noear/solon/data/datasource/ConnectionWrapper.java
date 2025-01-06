@@ -291,9 +291,7 @@ public class ConnectionWrapper implements Connection {
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
         try {
             real.setNetworkTimeout(executor, milliseconds);
-        } catch (SQLFeatureNotSupportedException e) {
-            //有些驱动不支持这个特性
-        } catch (Error e) {
+        } catch (Throwable e) {
             //有些驱动不支持这个特性
         }
     }
@@ -302,9 +300,7 @@ public class ConnectionWrapper implements Connection {
     public int getNetworkTimeout() throws SQLException {
         try {
             return real.getNetworkTimeout();
-        } catch (SQLFeatureNotSupportedException e) {
-            //有些驱动不支持这个特性
-        } catch (Error e) {
+        } catch (Throwable e) {
             //有些驱动不支持这个特性
         }
 
