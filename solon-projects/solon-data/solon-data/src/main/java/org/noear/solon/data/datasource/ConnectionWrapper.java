@@ -289,12 +289,26 @@ public class ConnectionWrapper implements Connection {
 
     @Override
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-        real.setNetworkTimeout(executor, milliseconds);
+        try {
+            real.setNetworkTimeout(executor, milliseconds);
+        } catch (SQLFeatureNotSupportedException e) {
+            //有些驱动不支持这个特性
+        } catch (Error e) {
+            //有些驱动不支持这个特性
+        }
     }
 
     @Override
     public int getNetworkTimeout() throws SQLException {
-        return real.getNetworkTimeout();
+        try {
+            return real.getNetworkTimeout();
+        } catch (SQLFeatureNotSupportedException e) {
+            //有些驱动不支持这个特性
+        } catch (Error e) {
+            //有些驱动不支持这个特性
+        }
+
+        return 0;
     }
 
     @Override
