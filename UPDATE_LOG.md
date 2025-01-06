@@ -34,6 +34,7 @@
 * 增强 solon-proxy ProxyUtil 工具实用性
 * 调整 solon `solon.config.load`、`solon.config.add`、`Props:loadAdd(uri)` 统一三者的处理逻辑
 * 优化 solon 注入失败时的日志定位（支持类级定位）
+* 优化 IoUtil.transferTo 添加 out.flush 自动处理
 * 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
 * 优化 solon bean 集合注入时，增加是否为空的检测支持和异常提醒
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
