@@ -99,6 +99,8 @@ public class IoUtil {
             out.write(buf, 0, len);
         }
 
+        out.flush();
+
         return out;
     }
     
@@ -136,6 +138,8 @@ public class IoUtil {
                 }
             }
         }
+
+        out.flush();
 
         return out;
     }

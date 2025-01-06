@@ -130,7 +130,6 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                     try (OutputStream out = _builder.getOutputStream();
                          InputStream ins = _bodyRaw.getContent()) {
                         IoUtil.transferTo(ins, out);
-                        out.flush();
                     }
                 } else {
                     if (_multipart) {
@@ -204,7 +203,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             writer.append(CRLF).flush();
 
             try (InputStream ins = value.fileStream.getContent()) {
-                IoUtil.transferTo(ins, out).flush();
+                IoUtil.transferTo(ins, out);
             }
 
             writer.append(CRLF).flush();

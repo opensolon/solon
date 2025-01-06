@@ -177,7 +177,6 @@ public class OutputUtils {
         //支持 gzip
         GZIPOutputStream gzipOut = ctx.outputStreamAsGzip();
         IoUtil.transferTo(stream, gzipOut);
-        gzipOut.flush();
     }
 
     /**
