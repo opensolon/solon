@@ -1,7 +1,7 @@
 package proxy2;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.proxy.asm.AsmProxy;
+import org.noear.solon.proxy.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ public class Demo1 {
         AppContext appContext = new AppContext();
         InvocationHandler invocationHandler = new InvocationHandlerImpl(new Demo1());
 
-        Demo1 demo1Proxy = (Demo1) AsmProxy.newProxyInstance(appContext, invocationHandler, Demo1.class);
+        Demo1 demo1Proxy = ProxyUtil.newProxyInstance(appContext, Demo1.class, invocationHandler);
 
         System.out.println(demo1Proxy.test());
     }
