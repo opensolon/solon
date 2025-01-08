@@ -30,12 +30,15 @@ import java.util.Properties;
  *
  * @author noear
  * @since 1.11
+ * @deprecated 3.0 {@link org.noear.solon.data.datasource.DsUtils}
  */
+@Deprecated
 public class DynamicDsUtils {
     /**
      * 构建数据源字典
      *
      * @param props 配置
+     * @deprecated 3.0 {@link org.noear.solon.data.datasource.DsUtils#buildDsMap(Properties)}
      */
     public static Map<String, DataSource> buildDsMap(Properties props) {
         //::类型
@@ -60,6 +63,7 @@ public class DynamicDsUtils {
      *
      * @param props   配置
      * @param typeClz 数据源类型
+     * @deprecated 3.0 {@link org.noear.solon.data.datasource.DsUtils#buildDsMap(Properties,Class<?>)}
      */
     public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeClz) {
         //::数据源构建
