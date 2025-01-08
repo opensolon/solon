@@ -33,6 +33,7 @@ import java.io.Closeable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.*;
 
@@ -51,7 +52,7 @@ public abstract class BeanContainer {
     //类加载器（热插拨时，会有独立的类加载器）
     private final ClassLoader classLoader;
     //附件
-    private Map<Class<?>, Object> attachs = new HashMap<>();
+    private Map<Class<?>, Object> attachs = new ConcurrentHashMap<>();
     //AOT收集器
     private final AotCollector aot = new AotCollector();
 
@@ -109,25 +110,13 @@ public abstract class BeanContainer {
      * @since 2.9
      */
     public <T> T attachOf(Class<T> clz, Supplier<T> supplier) {
-        T tmp = (T) attachs.get(clz);
-        if (tmp == null) {
-            SYNC_LOCK.lock();
-
-            try {
-                tmp = (T) attachs.get(clz);
-                if (tmp == null) {
-                    tmp = supplier.get();
-                    //加到附件
-                    attachs.put(clz, tmp);
-                    //同时注册到容器
-                    wrapAndPut(clz, tmp);
-                }
-            } finally {
-                SYNC_LOCK.unlock();
-            }
-        }
-
-        return tmp;
+        return (T) attachs.computeIfAbsent(clz, k -> {
+            //获取附件
+            T tmp = supplier.get();
+            //同时注册到容器
+            wrapAndPut(k, tmp);
+            return tmp;
+        });
     }
 
     /**
