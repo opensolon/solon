@@ -15,6 +15,7 @@
  */
 package org.noear.solon.boot.prop.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 
@@ -25,22 +26,13 @@ import org.noear.solon.boot.ServerConstants;
  * @since 1.8
  */
 public class WebSocketServerProps extends BaseServerProps {
-    private static WebSocketServerProps instance;
-
     public static WebSocketServerProps getInstance() {
-        if (instance == null) {
-            instance = new WebSocketServerProps(10000);
-        }
-
-        return instance;
+        return Solon.context().attachOf(WebSocketServerProps.class, () -> new WebSocketServerProps(10000));
     }
 
     public WebSocketServerProps(int portBase) {
         super(ServerConstants.SIGNAL_WEBSOCKET, portBase);
     }
-
-
-
 
     /**
      * 构建 server url

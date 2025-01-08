@@ -15,6 +15,7 @@
  */
 package org.noear.solon.boot.prop.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerConstants;
 
 /**
@@ -24,14 +25,8 @@ import org.noear.solon.boot.ServerConstants;
  * @since 1.8
  */
 public class SocketServerProps extends BaseServerProps {
-    private static SocketServerProps instance;
-
     public static SocketServerProps getInstance() {
-        if (instance == null) {
-            instance = new SocketServerProps(20000);
-        }
-
-        return instance;
+        return Solon.context().attachOf(SocketServerProps.class, () -> new SocketServerProps(20000));
     }
 
     public SocketServerProps(int portBase) {

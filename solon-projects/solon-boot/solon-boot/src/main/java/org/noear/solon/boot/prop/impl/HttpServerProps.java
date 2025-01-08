@@ -15,6 +15,7 @@
  */
 package org.noear.solon.boot.prop.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 
@@ -25,14 +26,8 @@ import org.noear.solon.boot.ServerConstants;
  * @since 1.8
  */
 public class HttpServerProps extends BaseServerProps {
-    private static HttpServerProps instance;
-
     public static HttpServerProps getInstance() {
-        if (instance == null) {
-            instance = new HttpServerProps();
-        }
-
-        return instance;
+        return Solon.context().attachOf(HttpServerProps.class, HttpServerProps::new);
     }
 
     public HttpServerProps() {
