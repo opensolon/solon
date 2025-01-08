@@ -20,4 +20,14 @@ public class GatewayTest extends HttpTester {
     public void gateway_hello() throws Exception {
         assert "hello".equals(path("/test/hello").get());
     }
+
+    @Test
+    public void gateway_h5() throws Exception {
+        assert path("/www/h5/").get().contains("H5浏览器");
+    }
+
+    @Test
+    public void gateway_solon() throws Exception {
+        assert path("/www/").get().contains("Solon官网");
+    }
 }

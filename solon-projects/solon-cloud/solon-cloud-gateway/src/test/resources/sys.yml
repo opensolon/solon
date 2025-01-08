@@ -12,6 +12,18 @@ solon.cloud.gateway:
         - "Path=/test/**"
       filters:
         - "StripPrefix=1"
+    - id: "w1"
+      target: "https://h5.noear.org"
+      predicates:
+        - "Path=/www/h5/**"
+      filters:
+        - "StripPrefix=2"
+    - id: "w2"
+      target: "https://solon.noear.org"
+      predicates:
+        - "Path=/www/**"
+      filters:
+        - "StripPrefix=1"
 
 solon.logging.logger:
   root:
