@@ -52,6 +52,7 @@
 * thymeleaf 升为 3.1.3.RELEASE
 * beetl 升为 3.19.0.RELEASE
 * logback 升为 1.3.15
+* junit5 升为 5.11.4
 * solonx 升为 1.1.3
 
 ### v3.0.5

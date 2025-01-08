@@ -108,7 +108,7 @@
         <chronicle-bytes.version>2.27ea0</chronicle-bytes.version>
 
         <junit4.version>4.13.2</junit4.version>
-        <junit5.version>5.11.0</junit5.version>
+        <junit5.version>5.11.4</junit5.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
 
