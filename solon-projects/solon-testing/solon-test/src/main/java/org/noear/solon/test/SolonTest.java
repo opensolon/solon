@@ -69,6 +69,11 @@ public @interface SolonTest {
     boolean scanning() default true;
 
     /**
+     * 是否启用 http
+     */
+    boolean enableHttp() default false;
+
+    /**
      * 是否为 aot 运行
      */
     boolean isAot() default false;

@@ -9,16 +9,8 @@ import org.noear.solon.test.SolonTest;
 /**
  * @author noear 2024/12/18 created
  */
-@SolonTest
+@SolonTest(args = "--cfg=ctx.yml", enableHttp = true)
 public class ContextTest extends HttpTester {
-    static SimpleSolonApp solonApp;
-
-    @BeforeAll
-    public static void bef() throws Throwable {
-        solonApp = new SimpleSolonApp(ContextTest.class, "--cfg=ctx.yml");
-        solonApp.start(null);
-    }
-
     @Test
     public void case1() throws Exception {
         int code = path("/").data("s", "1").execAsCode("GET");
