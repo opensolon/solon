@@ -115,9 +115,9 @@ public class Route implements Comparable<Route> {
                 return 0;
             } else {
                 if (this.depth > o.depth) { //默认：越深越优
-                    return 1;
-                } else {
                     return -1;
+                } else {
+                    return 1;
                 }
             }
         } else if (this.index < o.index) { //越小越前
