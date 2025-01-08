@@ -29,21 +29,22 @@
 
 
 ### v3.0.6
-
 * 添加 solon ScanUtil 对本地文件目录的扫描支持
-* 增强 solon-proxy ProxyUtil 工具实用性
-* 调整 solon `solon.config.load`、`solon.config.add`、`Props:loadAdd(uri)` 统一三者的处理逻辑
+* 调整 solon-proxy ProxyUtil 增强工具实用性
+* 调整 solon `Props:loadAdd(name)` 改为 `Props:loadAdd(uri)`，支持表达式
+* 调整 solon `solon.config.load`、`solon.config.add`、`Props:loadAdd(uri)` 统一规范格式与处理逻辑（同时支持内部与外部）
 * 优化 solon 注入失败时的日志定位（支持类级定位）
 * 优化 IoUtil.transferTo 添加 out.flush 自动处理
-* 优化 solon Props:loadAdd(name) 改为 loadAdd(uri)，支持表达式
-* 优化 solon bean 集合注入时，增加是否为空的检测支持和异常提醒
+* 优化 solon bean 集合注入处理
 * 优化 solon-data ConnectionWrapper 添加 getNetworkTimeout 异常过滤（有些驱动不支持此接口）
 * 优化 solon-mvc Action 返回为 void 的情况，当二次加工后仍为 null 时，不作渲染处理
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 mybatis-solon-plugin SolonManagedTransaction getTimeout 添加异常过滤（有些驱动不支持此接口）
 * snack3 升为 3.2.124
 * mybatis 升为 3.5.17
+* mybatis-plus 升为 3.5.9
 * mybatis-flex 升为 1.10.4
+* sqltoy 升为 5.6.37.jre8
 * smarthttp 升为 2.5.1，修复 ws idle 超时问题
 * logback 升为 1.3.15
 * solonx 升为 1.1.3
