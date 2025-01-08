@@ -40,21 +40,21 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      */
     @Override
     public void add(Routing<T> routing) {
-        int index = 0;
+        int level = 0;
 
         if (routing.path().indexOf('{') >= 0) {
-            index = 1;
+            level = 1;
         }
 
         if (routing.path().indexOf('*') >= 0) {
-            index = 2;
+            level = 2;
         }
 
-        RankEntity<Routing<T>> entity = new RankEntity<>(routing, index, routing.index(), false);
+        RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
 
         table.add(entity);
 
-        if (index != 0 || routing.index() != 0) {
+        if (level != 0 || routing.index() != 0) {
             //有 * 号的 或有 index 的；排序下
             Collections.sort(table);
         }
