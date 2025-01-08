@@ -20,7 +20,6 @@ import org.junit.jupiter.api.extension.TestInstanceFactory;
 import org.junit.jupiter.api.extension.TestInstanceFactoryContext;
 import org.junit.jupiter.api.extension.TestInstantiationException;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.util.ClassUtil;
 
 /**
  * @author noear
@@ -40,10 +39,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
             }
 
             //create
-            Object tmp = ClassUtil.newInstance(klass);
-            tmp = RunnerUtils.initTestTarget(appContext, tmp);
-
-            return tmp;
+            return RunnerUtils.initTestTarget(appContext, klass);
         } catch (Throwable e) {
             throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName(), e);
         }

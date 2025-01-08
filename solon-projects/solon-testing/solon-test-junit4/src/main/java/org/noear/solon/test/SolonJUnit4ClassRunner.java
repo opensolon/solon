@@ -36,10 +36,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             }
 
             //create
-            Object tmp = super.createTest();
-            tmp = RunnerUtils.initTestTarget(appContext, tmp);
-
-            return tmp;
+            return RunnerUtils.initTestTarget(appContext, klass);
         } catch (Exception e) {
             throw e;
         } catch (Throwable e) {

@@ -80,22 +80,23 @@ public class RunnerUtils {
     /**
      * 初始化测试目标类
      */
-    public static Object initTestTarget(AppContext appContext, Object tmp) {
-        //注入
-        appContext.beanInject(tmp);
-        //构建临时包装（用于支持提取操作）
-        BeanWrap beanWrap = new BeanWrap(appContext, tmp.getClass(), tmp);
-        //尝试提取操作和代理
-        appContext.beanExtractOrProxy(beanWrap);
-        if (beanWrap.proxy() != null) {
-            //如果有代理，把代理也注入下
-            appContext.beanInject(beanWrap.raw());
+    public static Object initTestTarget(AppContext appContext, Class<?> klass) {
+        //create
+        BeanWrap testWrap = appContext.getWrap(klass);
+        if (testWrap == null) {
+            testWrap = appContext.beanMake(klass);
+
+            if (testWrap == null) {
+                testWrap = appContext.wrapAndPut(klass);
+            }
         }
-        //重新获取bean
-        tmp = beanWrap.get();
 
+        if (testWrap.proxy() != null) {
+            //如果有代理，把代理也注入下
+            appContext.beanInject(testWrap.raw());
+        }
 
-        return tmp;
+        return testWrap.raw();
     }
 
 
