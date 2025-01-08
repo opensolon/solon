@@ -41,6 +41,7 @@
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 mybatis-solon-plugin SolonManagedTransaction getTimeout 添加异常过滤（有些驱动不支持此接口）
 * snack3 升为 3.2.124
+* snakeyaml 升为 2.3
 * mybatis 升为 3.5.17
 * mybatis-plus 升为 3.5.9
 * mybatis-flex 升为 1.10.4

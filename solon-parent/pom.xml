@@ -89,7 +89,7 @@
         <brave-opentracing.version>1.0.0</brave-opentracing.version>
 
 
-        <snakeyaml.version>2.2</snakeyaml.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
 
         <swagger.version>1.6.11</swagger.version>
         <swagger2.version>2.1.13</swagger2.version>
