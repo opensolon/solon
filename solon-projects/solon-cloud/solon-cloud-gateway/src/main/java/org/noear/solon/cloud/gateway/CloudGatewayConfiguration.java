@@ -21,10 +21,7 @@ import org.noear.solon.cloud.gateway.route.RouteSpec;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -111,7 +108,7 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
      */
     public Route routeFind(ExContext ctx) {
         List<Route> routeList = new ArrayList<>(routes.values());
-        routeList.sort(Comparator.comparingInt(r -> r.getIndex()));
+        Collections.sort(routeList);
 
         for (Route route : routeList) {
             if (route.matched(ctx)) {

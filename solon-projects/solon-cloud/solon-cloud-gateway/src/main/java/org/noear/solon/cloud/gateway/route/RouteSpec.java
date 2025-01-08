@@ -18,6 +18,7 @@ package org.noear.solon.cloud.gateway.route;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExPredicate;
 import org.noear.solon.cloud.gateway.properties.TimeoutProperties;
+import org.noear.solon.cloud.gateway.route.predicate.PathPredicateFactory;
 import org.noear.solon.core.util.RankEntity;
 
 import java.net.URI;
@@ -30,7 +31,7 @@ import java.util.Comparator;
  * @author noear
  * @since 2.9
  */
-public class RouteSpec extends Route{
+public class RouteSpec extends Route {
     public RouteSpec(String id) {
         super(id);
     }
@@ -103,6 +104,10 @@ public class RouteSpec extends Route{
     public RouteSpec predicate(ExPredicate predicate) {
         if (predicate != null) {
             this.predicates.add(predicate);
+
+            if (predicate instanceof PathPredicateFactory.PathPredicate) {
+                this.depth = ((PathPredicateFactory.PathPredicate) predicate).depth();
+            }
         }
 
         return this;

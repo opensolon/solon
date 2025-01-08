@@ -52,6 +52,13 @@ public class PathPredicateFactory implements RoutePredicateFactory {
             rule = PathMatcher.get(config);
         }
 
+        /**
+         * 获取路径常量深度
+         */
+        public int depth() {
+            return rule.depth();
+        }
+
         @Override
         public boolean test(ExContext ctx) {
             return rule.matches(ctx.rawPath());

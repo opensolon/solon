@@ -32,9 +32,10 @@ import java.util.List;
  * @author noear
  * @since 2.9
  */
-public class Route {
+public class Route implements Comparable<Route> {
     protected final String id;
-    protected int index;
+    protected int index; //路由序位
+    protected int depth; //路径深度
     protected URI target;
     protected List<ExPredicate> predicates = new ArrayList<>();
     protected List<RankEntity<ExFilter>> filters = new ArrayList<>();
@@ -105,5 +106,24 @@ public class Route {
      */
     public TimeoutProperties getTimeout() {
         return timeout;
+    }
+
+    @Override
+    public int compareTo(Route o) {
+        if (this.index == o.index) {
+            if (this.depth == o.depth) {
+                return 0;
+            } else {
+                if (this.depth > o.depth) { //默认：越深越优
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        } else if (this.index < o.index) { //越小越前
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

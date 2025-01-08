@@ -76,7 +76,7 @@ public class PathMatcher {
 
     private Pattern pattern;
     private Pattern patternNoStart;
-
+    private int depth;
 
     public PathMatcher(String expr, boolean caseSensitive) {
         if (caseSensitive) {
@@ -92,6 +92,33 @@ public class PathMatcher {
                 patternNoStart = Pattern.compile(exprCompile(expr, false), Pattern.CASE_INSENSITIVE);
             }
         }
+
+        String[] exprFragments = expr.split("/");
+        for (int i = 0; i < exprFragments.length; ++i) {
+            if (depthIndexOf(exprFragments[i]) < 0) {
+                depth++;
+            } else {
+                break;
+            }
+        }
+    }
+
+    private static int depthIndexOf(String str) {
+        for (int j = 0; j < str.length(); ++j) {
+            char c = str.charAt(j);
+            if (c == '{' || c == '*') {
+                return j;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * 获取路径常量深度
+     */
+    public int depth() {
+        return depth;
     }
 
     /**
