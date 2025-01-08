@@ -46,6 +46,9 @@
 * mybatis-flex 升为 1.10.4
 * sqltoy 升为 5.6.37.jre8
 * smarthttp 升为 2.5.1，修复 ws idle 超时问题
+* freemarker 升为 2.3.34
+* thymeleaf 升为 3.1.3.RELEASE
+* beetl 升为 3.19.0.RELEASE
 * logback 升为 1.3.15
 * solonx 升为 1.1.3
 
