@@ -170,7 +170,7 @@
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.3</dbvisitor.version>
         <bean-searcher.version>4.3.2</bean-searcher.version>
-        <mybatis-plus.version>3.5.9</mybatis-plus.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
 
         <liteflow.version>2.12.4</liteflow.version>
         <forest.version>1.5.36</forest.version>
