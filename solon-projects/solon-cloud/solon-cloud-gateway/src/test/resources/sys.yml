@@ -21,7 +21,7 @@ solon.cloud.gateway:
     - id: "w2"
       target: "https://solon.noear.org"
       predicates:
-        - "Path=/www/**"
+        - "Path=/www/**,/ZZZ/**"
       filters:
         - "StripPrefix=1"
 

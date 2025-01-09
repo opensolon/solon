@@ -30,4 +30,9 @@ public class GatewayTest extends HttpTester {
     public void gateway_solon() throws Exception {
         assert path("/www/").get().contains("Solon官网");
     }
+
+    @Test
+    public void gateway_solon2() throws Exception {
+        assert path("/ZZZ/").get().contains("Solon官网");
+    }
 }

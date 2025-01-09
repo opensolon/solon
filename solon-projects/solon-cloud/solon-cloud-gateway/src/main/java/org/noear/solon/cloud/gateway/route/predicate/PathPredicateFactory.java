@@ -21,6 +21,9 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.route.RoutePredicateFactory;
 import org.noear.solon.core.util.PathMatcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 路由 Path 匹配检测器
  *
@@ -39,29 +42,48 @@ public class PathPredicateFactory implements RoutePredicateFactory {
     }
 
     public static class PathPredicate implements ExPredicate {
-        private PathMatcher rule;
+        private final List<PathMatcher> rules;
+        private int depthMin;
 
         /**
-         * @param config (Path=/demo/**)
+         * @param config (Path=/demo/**) | (Path=/demo/**,/test/**)
          */
         public PathPredicate(String config) {
             if (Utils.isBlank(config)) {
                 throw new IllegalArgumentException("PathPredicate config cannot be blank");
             }
 
-            rule = PathMatcher.get(config);
+            rules = new ArrayList<>();
+            for (String path : config.split(",")) {
+                String trimmedPath = path.trim();
+
+                if (trimmedPath.length() > 0) {
+                    PathMatcher rule = PathMatcher.get(trimmedPath);
+                    rules.add(rule);
+
+                    if (depthMin == 0 || depthMin > rule.depth()) {
+                        depthMin = rule.depth(); //用最浅的作代表
+                    }
+                }
+            }
         }
 
         /**
          * 获取路径常量深度
          */
         public int depth() {
-            return rule.depth();
+            return depthMin;
         }
 
         @Override
         public boolean test(ExContext ctx) {
-            return rule.matches(ctx.rawPath());
+            for (PathMatcher rule : rules) {
+                if (rule.matches(ctx.rawPath())) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
