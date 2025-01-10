@@ -175,7 +175,7 @@ public class Element {
     }
 
     /**
-     * 条件；condition:'m.user_id,>,12,A;m,F,$ssss(m),E'
+     * 条件；condition:'[{l:"m.user_id",op:">",r:"12",ct:"A"},{l:"m",op:"F",r:"$sss(m)",ct:"E"}]' //m.user_id,>,12,A;m,F,$ssss(m),E
      */
     public Condition condition() {
         if (condition == null) {
@@ -186,7 +186,7 @@ public class Element {
     }
 
     /**
-     * 任务列表；tast:'F,tag_fun1;R,tag_rule1'
+     * 任务列表；task:'F,tag_fun1;R,tag_rule1'
      */
     public List<Task> tasks() {
         if (tasks == null) {

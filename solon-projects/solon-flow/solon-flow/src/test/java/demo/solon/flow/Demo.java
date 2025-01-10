@@ -15,8 +15,8 @@ public class Demo {
         chain.addNode("n1", "n1", ElementType.start, null);
         chain.addNode("n2", "n2", ElementType.execute, "F,1+1");
         chain.addNode("n3", "n3", ElementType.stop, null);
-        chain.addLine("l1", "l1", "n1", "n2", null);
-        chain.addLine("l2", "l2", "n2", "n3", null);
+        chain.addLine("l1", "l1", "n1", "n2");
+        chain.addLine("l2", "l2", "n2", "n3");
 
         ChainExecutor chainExecutor = new ChainExecutor();
         chainExecutor.exec(chain, new ChainContextImpl());

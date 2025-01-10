@@ -57,6 +57,13 @@ public class Chain {
     /**
      * 添加线
      */
+    public void addLine(String id, String name, String prveId, String nextId) {
+        addElement(id, name, ElementType.line, prveId, nextId, null, null);
+    }
+
+    /**
+     * 添加线
+     */
     public void addLine(String id, String name, String prveId, String nextId, String conditions) {
         addElement(id, name, ElementType.line, prveId, nextId, conditions, null);
     }

@@ -14,6 +14,9 @@ public class ChainContextImpl implements ChainContext {
 
     @Override
     public boolean conditionHandle(Condition condition) throws Exception {
+        System.out.println(condition.expr());
+        System.out.println(condition.items());
+
         return true;
     }
 
