@@ -199,7 +199,7 @@ public class Element {
      */
     public Condition condition() {
         if (condition == null) {
-            condition = new Condition(conditionExpr);
+            condition = new Condition(this, conditionExpr);
         }
 
         return condition;
@@ -210,7 +210,7 @@ public class Element {
      */
     public Task task() {
         if (task == null) {
-            task = new Task(taskExpr);
+            task = new Task(this, taskExpr);
         }
 
         return task;

@@ -18,28 +18,34 @@ package org.noear.solon.flow.core;
 import java.util.List;
 
 /**
- * 链执行器
+ * 流执行器
  *
  * @author noear
  * @since 3.0
  * */
-public class ChainExecutor {
+public class FlowExecutor {
+    private final FlowDriver driver;
+
+    public FlowExecutor(FlowDriver driver) {
+        this.driver = driver;
+    }
+
     /**
      * 执行
      */
-    public void exec(ChainDriver driver, Chain chain) throws Exception {
-        exec(driver, chain, null, -1);
+    public void exec(FlowContext context, Chain chain) throws Exception {
+        exec(context, chain, null, -1);
     }
 
     /**
      * 执行
      *
-     * @param driver 驱动器
+     * @param context 上下文
      * @param chain   链
      * @param startId 开始Id
      * @param depth   执行深度
      */
-    public void exec(ChainDriver driver, Chain chain, String startId, int depth) throws Exception {
+    public void exec(FlowContext context, Chain chain, String startId, int depth) throws Exception {
         Element start;
         if (startId == null) {
             start = chain.start();
@@ -49,28 +55,28 @@ public class ChainExecutor {
 
         assert start != null;
 
-        node_run(driver, start, depth);
+        node_run(context, start, depth);
     }
 
     /**
      * 检查条件
      */
-    private boolean condition_check(ChainDriver driver, Element line, Condition condition) throws Exception {
-        return driver.handleCondition(line, condition);
+    private boolean condition_check(FlowContext context, Condition condition) throws Exception {
+        return driver.handleCondition(context, condition);
     }
 
     /**
      * 执行任务
      */
-    private void task_exec(ChainDriver driver, Element node, Task task) throws Exception {
-        driver.handleTask(node, task);
+    private void task_exec(FlowContext context, Task task) throws Exception {
+        driver.handleTask(context, task);
     }
 
     /**
      * 运行节点
      */
-    private void node_run(ChainDriver driver, Element node, int depth) throws Exception {
-        if (driver.isInterrupt()) { //如果取消，就不再执行了
+    private void node_run(FlowContext context, Element node, int depth) throws Exception {
+        if (context.isInterrupt()) { //如果中断，就不再执行了
             return;
         }
 
@@ -83,7 +89,7 @@ public class ChainExecutor {
 
         switch (node.type()) {
             case start: {
-                node_run(driver, node.nextNode(), depth);
+                node_run(context, node.nextNode(), depth);
             }
             break;
             case stop: {
@@ -91,21 +97,21 @@ public class ChainExecutor {
             }
             break;
             case execute: {
-                task_exec(driver, node, node.task());
+                task_exec(context, node.task());
 
-                node_run(driver, node.nextNode(), depth);
+                node_run(context, node.nextNode(), depth);
             }
             break;
             case exclusive: {
-                exclusive_run(driver, node, depth);
+                exclusive_run(context, node, depth);
             }
             break;
             case parallel: {
-                parallel_run(driver, node, depth);
+                parallel_run(context, node, depth);
             }
             break;
             case converge: {
-                converge_run(driver, node, depth);
+                converge_run(context, node, depth);
             }
             break;
         }
@@ -114,41 +120,41 @@ public class ChainExecutor {
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainDriver driver, Element node, int depth) throws Exception {
+    private void exclusive_run(FlowContext context, Element node, int depth) throws Exception {
         List<Element> lines = node.nextLines();
         Element def_line = null;
         for (Element l : lines) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(driver, l, l.condition())) {
-                    node_run(driver, l.nextNode(), depth);
+                if (condition_check(context, l.condition())) {
+                    node_run(context, l.nextNode(), depth);
                     return;
                 }
             }
         }
 
-        node_run(driver, def_line.nextNode(), depth);
+        node_run(context, def_line.nextNode(), depth);
     }
 
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainDriver driver, Element node, int depth) throws Exception {
+    private void parallel_run(FlowContext context, Element node, int depth) throws Exception {
         for (Element n : node.nextNodes()) {
-            node_run(driver, n, depth);
+            node_run(context, n, depth);
         }
     }
 
     /**
      * 运行汇聚网关//起到等待和卡位的作用；
      */
-    private void converge_run(ChainDriver driver, Element node, int depth) throws Exception {
-        int count = driver.counterIncr(node.id());//运行次数累计
+    private void converge_run(FlowContext context, Element node, int depth) throws Exception {
+        int count = context.counterIncr(node.id());//运行次数累计
         if (node.prveLines().size() > count) { //等待所有支线计数完成
             return;
         }
 
-        node_run(driver, node.nextNode(), depth); //然后到下一个节点
+        node_run(context, node.nextNode(), depth); //然后到下一个节点
     }
 }

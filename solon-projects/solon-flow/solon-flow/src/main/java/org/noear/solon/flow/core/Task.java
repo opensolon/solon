@@ -24,7 +24,8 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Task {
-    private String expr;
+    private final Element element;
+    private final String expr;
 
     /**
      * 附件（按需定制使用）
@@ -35,8 +36,16 @@ public class Task {
     /**
      * @param taskExpr 任务表达式
      */
-    public Task(String taskExpr) {
+    public Task(Element element, String taskExpr) {
+        this.element = element;
         this.expr = taskExpr;
+    }
+
+    /**
+     * 所属节点
+     * */
+    public Element node() {
+        return element;
     }
 
     /**

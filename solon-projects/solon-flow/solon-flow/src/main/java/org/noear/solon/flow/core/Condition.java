@@ -25,6 +25,7 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Condition {
+    private final Element element;
     private final String expr;
 
     /**
@@ -35,8 +36,16 @@ public class Condition {
     /**
      * @param conditionsExpr 条件表达式
      */
-    public Condition(String conditionsExpr) {
+    public Condition(Element element, String conditionsExpr) {
+        this.element = element;
         this.expr = conditionsExpr;
+    }
+
+    /**
+     * 所属线
+     */
+    public Element line() {
+        return element;
     }
 
     /**

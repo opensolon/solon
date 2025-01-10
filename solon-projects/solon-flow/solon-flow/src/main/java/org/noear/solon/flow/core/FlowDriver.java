@@ -16,34 +16,19 @@
 package org.noear.solon.flow.core;
 
 /**
- * 链驱动器
+ * 流驱动器
  *
  * @author noear
  * @since 3.0
  * */
-public interface ChainDriver {
-    /**
-     * 是否中断
-     */
-    boolean isInterrupt();
-
-    /**
-     * 计数获取
-     */
-    int counterGet(String id);
-
-    /**
-     * 计数增量
-     */
-    int counterIncr(String id);
-
+public interface FlowDriver {
     /**
      * 处理连线条件
      */
-    boolean handleCondition(Element line, Condition condition) throws Exception;
+    boolean handleCondition(FlowContext context, Condition condition) throws Exception;
 
     /**
      * 处理执行任务
      */
-    void handleTask(Element node, Task task) throws Exception;
+    void handleTask(FlowContext context, Task task) throws Exception;
 }
