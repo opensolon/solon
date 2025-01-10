@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow;
+package org.noear.solon.flow.core;
 
 /**
  * 元系类型：0开始，1线，2执行节点，3排他网关，4并行网关，5汇聚网关，9结束

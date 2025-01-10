@@ -13,16 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow;
+package org.noear.solon.flow.core;
+
+import java.util.List;
 
 /**
- * 执行任务类型
+ * 链上下文
  *
  * @author noear
  * @since 3.0
  * */
-public class TaskType {
-    public static final int rule = 0; //R, 规则
-    public static final int function = 1; //F, 函数
-    public static final int actor = 2; //A, 参与者
+public interface ChainContext {
+    /**
+     * 是否取消执行
+     */
+    boolean is_cancel();
+
+    /**
+     * 条件处理
+     */
+    boolean condition_handle(Condition condition) throws Exception;
+
+    /**
+     * 任务处理
+     */
+    void task_handle(List<Task> tasks) throws Exception;
 }

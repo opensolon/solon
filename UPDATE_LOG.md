@@ -28,6 +28,7 @@
 
 
 ### v3.0.6
+* 新增 solon-flow 插件
 * 添加 solon ScanUtil 对本地文件目录的扫描支持
 * 调整 solon-proxy ProxyUtil 增强工具实用性
 * 调整 solon `Props:loadAdd(name)` 改为 `Props:loadAdd(uri)`，支持表达式

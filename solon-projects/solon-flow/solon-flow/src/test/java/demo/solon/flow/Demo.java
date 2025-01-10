@@ -1,9 +1,9 @@
 package demo.solon.flow;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.flow.ElementType;
-import org.noear.solon.flow.Chain;
-import org.noear.solon.flow.ChainExecutor;
+import org.noear.solon.flow.core.ElementType;
+import org.noear.solon.flow.core.Chain;
+import org.noear.solon.flow.core.ChainExecutor;
 
 /**
  * @author noear 2025/1/10 created

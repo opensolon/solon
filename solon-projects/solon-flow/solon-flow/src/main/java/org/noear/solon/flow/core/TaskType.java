@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow;
+package org.noear.solon.flow.core;
 
 /**
- * 执行任务
+ * 执行任务类型
  *
  * @author noear
  * @since 3.0
  * */
-public class Task {
-    protected int _type;
-    protected String _content;
-
-    public int type() {
-        return _type;
-    }
-
-    public String content() {
-        return _content;
-    }
+public class TaskType {
+    public static final int rule = 0; //R, 规则
+    public static final int function = 1; //F, 函数
+    public static final int actor = 2; //A, 参与者
 }

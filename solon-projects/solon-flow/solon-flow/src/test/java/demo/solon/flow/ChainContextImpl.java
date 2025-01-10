@@ -1,9 +1,9 @@
 package demo.solon.flow;
 
-import org.noear.solon.flow.Condition;
-import org.noear.solon.flow.Task;
-import org.noear.solon.flow.TaskType;
-import org.noear.solon.flow.ChainContext;
+import org.noear.solon.flow.core.Condition;
+import org.noear.solon.flow.core.Task;
+import org.noear.solon.flow.core.TaskType;
+import org.noear.solon.flow.core.ChainContext;
 
 import java.util.List;
 
