@@ -45,7 +45,7 @@
 * snakeyaml 升为 2.3
 * mybatis 升为 3.5.17
 * mybatis-plus 升为 3.5.9
-* mybatis-flex 升为 1.10.4
+* mybatis-flex 升为 1.10.5
 * sqltoy 升为 5.6.37.jre8
 * guava 升为 33.4.0-jre
 * smarthttp 升为 2.5.1，修复 ws idle 超时问题
