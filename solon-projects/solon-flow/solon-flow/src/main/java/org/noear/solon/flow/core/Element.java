@@ -25,9 +25,9 @@ import java.util.Map;
 *
 * 0开始节点={id:1, type:0, title:'', }
 *
-* 1连接线段={id:2, type:1, title:'', prve:'1', next:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
+* 1连接线段={id:2, type:1, title:'', meta:{}, prveId:'1', nextId:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
 *
-* 2执行节点={id:3, type:2, title:'', task:'F,tag/fun1;R,tag/rule1'}
+* 2执行节点={id:3, type:2, title:'', meta:{}, task:'F,tag/fun1;R,tag/rule1'}
 *
 * 3排他网关={id:4, type:3, title:'', }
 * 4并行网关={id:5, type:4, title:'', }
