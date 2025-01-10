@@ -76,11 +76,11 @@ public class Chain {
     /**
      * 添加节点
      */
-    public void addNode(String id, String title, ElementType type, String tasks) {
+    public void addNode(String id, String title, ElementType type, String taskExpr) {
         //不能是线
         assert type != ElementType.line;
 
-        addElement(id, title, type, null, null, null, tasks);
+        addElement(id, title, type, null, null, null, taskExpr);
     }
 
     /**
@@ -93,15 +93,15 @@ public class Chain {
     /**
      * 添加线
      */
-    public void addLine(String id, String title, String prveId, String nextId, String conditions) {
-        addElement(id, title, ElementType.line, prveId, nextId, conditions, null);
+    public void addLine(String id, String title, String prveId, String nextId, String conditionExpr) {
+        addElement(id, title, ElementType.line, prveId, nextId, conditionExpr, null);
     }
 
     /**
      * 添加元素
      */
-    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, String conditions, String tasks) {
-        Element element = new Element(this, id, title, type, prveId, nextId, conditions, tasks);
+    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, String conditionExpr, String taskExpr) {
+        Element element = new Element(this, id, title, type, prveId, nextId, conditionExpr, taskExpr);
 
         elements.put(element.id(), element);
 
