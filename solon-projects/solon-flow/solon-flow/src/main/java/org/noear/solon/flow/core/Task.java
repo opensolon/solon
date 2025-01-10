@@ -22,14 +22,20 @@ package org.noear.solon.flow.core;
  * @since 3.0
  * */
 public class Task {
-    protected int _type;
-    protected String _content;
+    protected TaskType type;
+    protected String content;
 
-    public int type() {
-        return _type;
+    /**
+     * 类型
+     */
+    public TaskType type() {
+        return type;
     }
 
+    /**
+     * 内容
+     */
     public String content() {
-        return _content;
+        return content;
     }
 }

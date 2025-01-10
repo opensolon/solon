@@ -27,29 +27,31 @@ import java.util.Map;
  * @since 3.0
  * */
 public class Chain {
-    private Element _start;
-    private Map<String, Element> _elements = new HashMap<>();
+    private Element start;
+    private Map<String, Element> elements = new HashMap<>();
 
     /**
      * 获取起始节点
      */
     public Element start() {
-        return _start;
+        return start;
     }
 
     /**
      * 获取所有元素
      */
     public Map<String, Element> elements() {
-        return _elements;
+        return elements;
     }
 
     /**
      * 添加节点
      */
-    public void addNode(String id, String name, int type, String tasks) {
-        addElement(id, name, type, null, null, null, tasks);
+    public void addNode(String id, String name, ElementType type, String tasks) {
+        //不能是线
+        assert type != ElementType.line;
 
+        addElement(id, name, type, null, null, null, tasks);
     }
 
     /**
@@ -62,22 +64,22 @@ public class Chain {
     /**
      * 添加元素
      */
-    protected void addElement(String id, String name, int type, String prveId, String nextId, String conditions, String tasks) {
+    protected void addElement(String id, String name, ElementType type, String prveId, String nextId, String conditions, String tasks) {
         Element element = new Element(this);
 
-        element._conditions_str = conditions;
-        element._tasks_str = tasks;
+        element.conditionsExpr = conditions;
+        element.tasksExpr = tasks;
 
-        element._id = id;
-        element._name = name;
-        element._type = type;
-        element._prveId = prveId; //仅line才有
-        element._nextId = nextId; //仅line才有
+        element.id = id;
+        element.name = name;
+        element.type = type;
+        element.prveId = prveId; //仅line才有
+        element.nextId = nextId; //仅line才有
 
-        _elements.put(element.id(), element);
+        elements.put(element.id(), element);
 
-        if (type == 0) {
-            _start = element;
+        if (type == ElementType.start) {
+            start = element;
         }
 
     }

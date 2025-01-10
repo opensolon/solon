@@ -56,29 +56,29 @@ public class ChainExecutor {
         }
 
         switch (node.type()) {
-            case ElementType.start: {
+            case start: {
                 node_run(context, node.nextNode());
             }
             break;
-            case ElementType.stop: {
+            case stop: {
                 //无动作
             }
             break;
-            case ElementType.execute: {
+            case execute: {
                 task_exec(context, node.tasks());
 
                 node_run(context, node.nextNode());
             }
             break;
-            case ElementType.exclusive: {
+            case exclusive: {
                 exclusive_run(context, node);
             }
             break;
-            case ElementType.parallel: {
+            case parallel: {
                 parallel_run(context, node);
             }
             break;
-            case ElementType.converge: {
+            case converge: {
                 converge_run(context, node);
             }
             break;

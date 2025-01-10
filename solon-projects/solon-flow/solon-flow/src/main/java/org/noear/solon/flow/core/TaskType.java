@@ -21,8 +21,38 @@ package org.noear.solon.flow.core;
  * @author noear
  * @since 3.0
  * */
-public class TaskType {
-    public static final int rule = 0; //R, 规则
-    public static final int function = 1; //F, 函数
-    public static final int actor = 2; //A, 参与者
+public enum TaskType {
+    /**
+     * R, 规则
+     */
+    rule(0), //0:
+    /**
+     * F, 函数
+     */
+    function(1), //1:
+    /**
+     * A, 参与者
+     */
+    actor(2); //2:
+
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    TaskType(int code) {
+        this.code = code;
+    }
+
+    public static TaskType valueOf(int code) {
+        switch (code) {
+            case 1:
+                return function;
+            case 2:
+                return actor;
+            default:
+                return rule;
+        }
+    }
 }

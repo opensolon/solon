@@ -25,7 +25,7 @@ import java.util.List;
 *
 * 0开始节点={id:1, type:0, name:'', }
 * 1连线节点={id:2, type:1, name:'', prve:'1', next:'3', condition:'m.user_id,>,12,A;m,F,$ssss(m),E'}
-* 2执行节点={id:3, type:2, name:'', tast:'F,tag/fun1;R,tag/rule1'}
+* 2执行节点={id:3, type:2, name:'', task:'F,tag/fun1;R,tag/rule1'}
 * 3排他网关={id:4, type:3, name:'', }
 * 4并行网关={id:5, type:4, name:'', }
 * 5汇聚网关={id:6, type:5, name:'', }
@@ -40,160 +40,174 @@ import java.util.List;
  * @since 3.0
  * */
 public class Element {
-    private List<Element> _prveNodes, _nextNodes, _prveLines, _nextLines;
-    private Condition _condition;
-    private List<Task> _tasks;
-    private Chain _workflow;
+    private final Chain chain;
 
-    protected Element(Chain workflow) {
-        _workflow = workflow;
+    private List<Element> prveNodes, nextNodes, prveLines, nextLines;
+    private Condition condition;
+    private List<Task> tasks;
+
+    protected Element(Chain chain) {
+        this.chain = chain;
     }
 
-    protected String _conditions_str;
-    protected String _tasks_str;
+    protected String conditionsExpr;
+    protected String tasksExpr;
 
-    protected String _id;
-    protected int _type;      //元素类型
-    protected String _prveId; //仅line才有
-    protected String _nextId; //仅line才有
-    protected String _name;
+    protected String id;
+    protected String name;
+    protected ElementType type;      //元素类型
+    protected String prveId; //仅line才有
+    protected String nextId; //仅line才有
 
     public String id() {
-        return _id;
-    }
-
-    public int type() {
-        return _type;
-    }
-
-    public String prveId() {
-        return _prveId;
-    }
-
-    public String nextId() {
-        return _nextId;
+        return id;
     }
 
     public String name() {
-        return _name;
+        return name;
+    }
+
+    public ElementType type() {
+        return type;
+    }
+
+    /**
+     * 前一个节点Id（仅line才有）
+     */
+    public String prveId() {
+        return prveId;
+    }
+
+    /**
+     * 后一个节点Id（仅line才有）
+     */
+    public String nextId() {
+        return nextId;
     }
 
     public int counter;//计数器，用于计录运行次数
 
     /**
-     * 获取前面的节点
+     * 链
+     */
+    public Chain chain() {
+        return chain;
+    }
+
+    /**
+     * 前面的节点
      */
     public List<Element> prveNodes() {
-        if (_prveNodes == null) {
-            _prveNodes = new ArrayList<>();
+        if (prveNodes == null) {
+            prveNodes = new ArrayList<>();
 
             if ((type() == ElementType.start) == false) {
                 if (type() == ElementType.line) {
-                    _prveNodes.add(_workflow.selectById(prveId()));//by id query
+                    prveNodes.add(chain.selectById(prveId()));//by id query
                 } else {
                     List<Element> lines = prveLines();
                     lines.forEach(l -> {
-                        _prveNodes.add(_workflow.selectById(l.prveId()));//by id query
+                        prveNodes.add(chain.selectById(l.prveId()));//by id query
                     });
                 }
             }
         }
 
-        return _prveNodes;
+        return prveNodes;
     }
 
     /**
-     * 获取后面的节点
+     * 后面的节点
      */
     public List<Element> nextNodes() {
-        if (_nextNodes == null) {
-            _nextNodes = new ArrayList<>();
+        if (nextNodes == null) {
+            nextNodes = new ArrayList<>();
 
-            if ((_type == ElementType.stop) == false) {
+            if ((type == ElementType.stop) == false) {
                 if (type() == ElementType.line) {
-                    _nextNodes.add(_workflow.selectById(nextId()));//by id query
+                    nextNodes.add(chain.selectById(nextId()));//by id query
                 } else {
                     List<Element> lines = nextLines();
                     lines.forEach(l -> {
-                        _nextNodes.add(_workflow.selectById(l.nextId()));//by id query
+                        nextNodes.add(chain.selectById(l.nextId()));//by id query
                     });
                 }
             }
         }
 
-        return _nextNodes;
+        return nextNodes;
 
     }
 
     /**
-     * 获取后面的节点（一个）
+     * 后面的节点（一个）
      */
     public Element nextNode() {
         return nextNodes().get(0);
     }
 
     /**
-     * 获取前面的线
+     * 前面的线
      */
     public List<Element> prveLines() {
-        if (_prveLines == null) {
-            _prveLines = new ArrayList<>();
+        if (prveLines == null) {
+            prveLines = new ArrayList<>();
 
-            if ((_type == ElementType.start || _type == ElementType.line) == false) {
-                _prveLines = _workflow.selectByNextId(id());//by nextID
+            if ((type == ElementType.start || type == ElementType.line) == false) {
+                prveLines = chain.selectByNextId(id());//by nextID
             }
         }
 
-        return _prveLines;
+        return prveLines;
     }
 
     /**
-     * 获取后面的线
+     * 后面的线
      */
     public List<Element> nextLines() {
-        if (_nextLines == null) {
-            _nextLines = new ArrayList<>();
+        if (nextLines == null) {
+            nextLines = new ArrayList<>();
 
-            if ((_type == ElementType.stop || _type == ElementType.line) == false) {
-                _nextLines = _workflow.selectByPrveId(id());//by prveID
+            if ((type == ElementType.stop || type == ElementType.line) == false) {
+                nextLines = chain.selectByPrveId(id());//by prveID
             }
         }
 
-        return _nextLines;
+        return nextLines;
     }
 
     /**
-     * 获取条件；condition:'m.user_id,>,12,A;m,F,$ssss(m),E'
+     * 条件；condition:'m.user_id,>,12,A;m,F,$ssss(m),E'
      */
     public Condition condition() {
-        if (_condition == null) {
-            _condition = new Condition(name(), _conditions_str);
+        if (condition == null) {
+            condition = new Condition(name(), conditionsExpr);
         }
 
-        return _condition;
+        return condition;
     }
 
     /**
-     * 获取任务列表；tast:'F,tag_fun1;R,tag_rule1'
+     * 任务列表；tast:'F,tag_fun1;R,tag_rule1'
      */
     public List<Task> tasks() {
-        if (_tasks == null) {
-            _tasks = new ArrayList<>();
+        if (tasks == null) {
+            tasks = new ArrayList<>();
 
-            if (Utils.isEmpty(_tasks_str) == false) {
-                String ss[] = _tasks_str.split(";");
+            if (Utils.isEmpty(tasksExpr) == false) {
+                String ss[] = tasksExpr.split(";");
                 for (int i = 0, len = ss.length; i < len; i++) {
                     Task task = new Task();
                     String[] tt = ss[i].split(",");
 
-                    task._type = "F".equals(tt[0]) ? TaskType.function : TaskType.rule;
-                    task._content = tt[1];
+                    task.type = "F".equals(tt[0]) ? TaskType.function : TaskType.rule;
+                    task.content = tt[1];
 
-                    _tasks.add(task);
+                    tasks.add(task);
                 }
             }
         }
 
-        return _tasks;
+        return tasks;
     }
 }

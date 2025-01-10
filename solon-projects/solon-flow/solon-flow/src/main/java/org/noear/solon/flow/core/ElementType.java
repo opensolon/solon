@@ -21,33 +21,54 @@ package org.noear.solon.flow.core;
  * @author noear
  * @since 3.0
  * */
-public class ElementType {
+public enum ElementType {
     /**
      * 开始
      */
-    public static final int start = 0;
+    start(0), // 0;
     /**
      * 线
      */
-    public static final int line = 1;
+    line(1),// = 1;
     /**
      * 执行节点
      */
-    public static final int execute = 2;
+    execute(2),// = 2;
     /**
      * 排他网关
      */
-    public static final int exclusive = 3;
+    exclusive(3),// = 3;
     /**
      * 并行网关
      */
-    public static final int parallel = 4;
+    parallel(4),// = 4;
     /**
      * 汇聚网关
      */
-    public static final int converge = 5;
+    converge(5),// = 5;
     /**
      * 结束
      */
-    public static final int stop = 9;
+    stop(9);// = 9;
+
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    ElementType(int code) {
+        this.code = code;
+    }
+
+    public static ElementType valueOf(int code) {
+        ElementType[] values = ElementType.values();
+        for (ElementType v : values) {
+            if (v.code == code) {
+                return v;
+            }
+        }
+
+        return start;
+    }
 }

@@ -28,53 +28,68 @@ import java.util.List;
  * @since 3.0
  * */
 public class ConditionItem {
-    protected String _left; //左侧
-    protected String _operator;//运算符 //=，>，>=，<，<=，L(包含)，F(函数)
-    protected String _right; //右则
-    protected String _connect; //连接符 //'', '||', '&&'
+    /**
+     * 左侧
+     */
+    protected String left; //左侧
+    /**
+     * 运算符
+     */
+    protected String operator;//运算符 //=，>，>=，<，<=，L(包含)，F(函数)
+    /**
+     * 右则
+     */
+    protected String right; //右则
+    /**
+     * 连接符
+     */
+    protected String connect; //连接符 //'', '||', '&&'
 
 
-    public String left_js() {
-        if ("m".equals(_left) == false) {
-            return "m." + _left + "()";
+    public String leftAsJs() {
+        if ("m".equals(left) == false) {
+            return "m." + left + "()";
         } else {
-            return _left;
+            return left;
         }
     }
 
-    public String left_sql() {
-        if (_left.indexOf(".") > 0) {
-            return _left.split(" ")[0];
+    public String leftAsSql() {
+        if (left.indexOf(".") > 0) {
+            return left.split(" ")[0];
         } else {
-            return "m." + _left.split(" ")[0];
+            return "m." + left.split(" ")[0];
         }
     }
 
-    public String operator_js() {
-        if ("=".equals(_operator)) {
+    public String operatorAsJs() {
+        if ("=".equals(operator)) {
             return "==";
         } else {
-            return _operator;
+            return operator;
         }
     }
 
-    public String operator_sql() {
-        if ("==".equals(_operator)) {
+    public String operatorAsSql() {
+        if ("==".equals(operator)) {
             return "=";
         } else {
-            return _operator;
+            return operator;
         }
     }
 
     public String right() {
-        return _right;
+        return right;
     } //右则
 
     public String connect() {
-        return _connect;
+        return connect;
     } //连接符 //'', '||', '&&'
 
 
+    /**
+     * 解析
+     * */
     public static List<ConditionItem> parse(String expr) {
         List<ConditionItem> list = null;
 
@@ -88,18 +103,18 @@ public class ConditionItem {
                 d = oExpr.get(k);
                 ConditionItem cond = new ConditionItem();
 
-                cond._left = d.get("l").getString();
+                cond.left = d.get("l").getString();
 
-                if (Utils.isEmpty(cond._left)) {
+                if (Utils.isEmpty(cond.left)) {
                     continue;
                 }
 
-                cond._operator = d.get("op").getString();
-                cond._right = d.get("r").getString();
-                cond._connect = d.get("ct").getString();
+                cond.operator = d.get("op").getString();
+                cond.right = d.get("r").getString();
+                cond.connect = d.get("ct").getString();
 
-                if ("=".equals(cond._operator)) {
-                    cond._operator = "==";
+                if ("=".equals(cond.operator)) {
+                    cond.operator = "==";
                 }
 
                 list.add(cond);
