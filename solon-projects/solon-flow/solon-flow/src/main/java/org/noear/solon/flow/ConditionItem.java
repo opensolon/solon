@@ -50,44 +50,47 @@ public class ConditionItem {
         }
     }
 
-    public String operator_js(){
-        if("=".equals(_operator)){
+    public String operator_js() {
+        if ("=".equals(_operator)) {
             return "==";
-        }else{
-            return  _operator;
+        } else {
+            return _operator;
         }
     }
 
-    public String operator_sql(){
-        if("==".equals(_operator)){
+    public String operator_sql() {
+        if ("==".equals(_operator)) {
             return "=";
-        }else{
-            return  _operator;
+        } else {
+            return _operator;
         }
     }
 
-    public String right(){return _right;} //右则
-    public String connect(){return _connect;} //连接符 //'', '||', '&&'
+    public String right() {
+        return _right;
+    } //右则
+
+    public String connect() {
+        return _connect;
+    } //连接符 //'', '||', '&&'
 
 
-
-
-    public static List<ConditionItem> parse (String expr){
+    public static List<ConditionItem> parse(String expr) {
         List<ConditionItem> list = null;
 
-        if(Utils.isEmpty(expr) == false) {
+        if (Utils.isEmpty(expr) == false) {
             list = new ArrayList<>();
 
             ONode oExpr = ONode.load(expr);
 
             ONode d = null;
-            for(String k : oExpr.obj().keySet()){
+            for (String k : oExpr.obj().keySet()) {
                 d = oExpr.get(k);
                 ConditionItem cond = new ConditionItem();
 
                 cond._left = d.get("l").getString();
 
-                if(Utils.isEmpty(cond._left)){
+                if (Utils.isEmpty(cond._left)) {
                     continue;
                 }
 
@@ -95,7 +98,7 @@ public class ConditionItem {
                 cond._right = d.get("r").getString();
                 cond._connect = d.get("ct").getString();
 
-                if("=".equals(cond._operator)){
+                if ("=".equals(cond._operator)) {
                     cond._operator = "==";
                 }
 

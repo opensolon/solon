@@ -28,7 +28,7 @@ public class ChainExecutor {
      * 执行
      */
     public void exec(Chain chain, ChainContext context) throws Exception {
-        Node start = chain.start();
+        Element start = chain.start();
 
         node_run(context, start);
     }
@@ -43,42 +43,42 @@ public class ChainExecutor {
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, List<NodeTask> tasks) throws Exception {
+    private void task_exec(ChainContext context, List<Task> tasks) throws Exception {
         context.task_handle(tasks);
     }
 
     /**
      * 运行节点
      */
-    private void node_run(ChainContext context, Node node) throws Exception {
+    private void node_run(ChainContext context, Element node) throws Exception {
         if (context.is_cancel()) { //如果取消，就不再执行了
             return;
         }
 
         switch (node.type()) {
-            case NodeType.start: {
+            case ElementType.start: {
                 node_run(context, node.nextNode());
             }
             break;
-            case NodeType.stop: {
+            case ElementType.stop: {
                 //无动作
             }
             break;
-            case NodeType.execute: {
+            case ElementType.execute: {
                 task_exec(context, node.tasks());
 
                 node_run(context, node.nextNode());
             }
             break;
-            case NodeType.exclusive: {
+            case ElementType.exclusive: {
                 exclusive_run(context, node);
             }
             break;
-            case NodeType.parallel: {
+            case ElementType.parallel: {
                 parallel_run(context, node);
             }
             break;
-            case NodeType.converge: {
+            case ElementType.converge: {
                 converge_run(context, node);
             }
             break;
@@ -88,10 +88,10 @@ public class ChainExecutor {
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainContext context, Node node) throws Exception {
-        List<Node> lines = node.nextLines();
-        Node def_line = null;
-        for (Node l : lines) {
+    private void exclusive_run(ChainContext context, Element node) throws Exception {
+        List<Element> lines = node.nextLines();
+        Element def_line = null;
+        for (Element l : lines) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
@@ -108,8 +108,8 @@ public class ChainExecutor {
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainContext context, Node node) throws Exception {
-        for (Node n : node.nextNodes()) {
+    private void parallel_run(ChainContext context, Element node) throws Exception {
+        for (Element n : node.nextNodes()) {
             node_run(context, n);
         }
     }
@@ -117,7 +117,7 @@ public class ChainExecutor {
     /**
      * 运行汇聚网关//起到等待和卡位的作用；
      */
-    private void converge_run(ChainContext context, Node node) throws Exception {
+    private void converge_run(ChainContext context, Element node) throws Exception {
         node.counter++; //运行次数累计
         if (node.prveLines().size() > node.counter) { //等待所有支线计数完成
             return;

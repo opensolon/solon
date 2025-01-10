@@ -27,21 +27,21 @@ import java.util.Map;
  * @since 3.0
  * */
 public class Chain {
-    private Node _start;
-    private Map<String, Node> _nodes = new HashMap<>();
+    private Element _start;
+    private Map<String, Element> _elements = new HashMap<>();
 
     /**
      * 获取起始节点
      */
-    public Node start() {
+    public Element start() {
         return _start;
     }
 
     /**
-     * 获取所有节点
+     * 获取所有元素
      */
-    public Map<String, Node> nodes() {
-        return _nodes;
+    public Map<String, Element> elements() {
+        return _elements;
     }
 
     /**
@@ -56,42 +56,46 @@ public class Chain {
      * 添加线
      */
     public void addLine(String id, String name, String prveId, String nextId, String conditions) {
-        addElement(id, name, NodeType.line, prveId, nextId, conditions, null);
+        addElement(id, name, ElementType.line, prveId, nextId, conditions, null);
     }
 
     /**
      * 添加元素
      */
     protected void addElement(String id, String name, int type, String prveId, String nextId, String conditions, String tasks) {
-        Node node = new Node(this);
+        Element element = new Element(this);
 
-        node._conditions_str = conditions;
-        node._tasks_str = tasks;
+        element._conditions_str = conditions;
+        element._tasks_str = tasks;
 
-        node._id = id;
-        node._name = name;
-        node._type = type;
-        node._prveId = prveId; //仅line才有
-        node._nextId = nextId; //仅line才有
+        element._id = id;
+        element._name = name;
+        element._type = type;
+        element._prveId = prveId; //仅line才有
+        element._nextId = nextId; //仅line才有
 
-        _nodes.put(node.id(), node);
+        _elements.put(element.id(), element);
 
         if (type == 0) {
-            _start = node;
+            _start = element;
         }
 
     }
 
-    //查找一个节点
-    protected Node selectById(String id) {
-        return nodes().get(id);
+    /**
+     * 查找一个元素
+     */
+    public Element selectById(String id) {
+        return elements().get(id);
     }
 
-    //查找前面的节点
-    protected List<Node> selectByNextId(String id) {
-        List<Node> nodes = new ArrayList<>();
+    /**
+     * 查找前面的节点
+     */
+    public List<Element> selectByNextId(String id) {
+        List<Element> nodes = new ArrayList<>();
 
-        for (Node n : nodes().values()) {
+        for (Element n : elements().values()) {
             if (id.equals(n.nextId())) {
                 nodes.add(n);
             }
@@ -100,11 +104,13 @@ public class Chain {
         return nodes;
     }
 
-    //查找后面的节点
-    protected List<Node> selectByPrveId(String id) {
-        List<Node> nodes = new ArrayList<>();
+    /**
+     * 查找后面的节点
+     */
+    public List<Element> selectByPrveId(String id) {
+        List<Element> nodes = new ArrayList<>();
 
-        for (Node n : nodes().values()) {
+        for (Element n : elements().values()) {
             if (id.equals(n.prveId())) {
                 nodes.add(n);
             }

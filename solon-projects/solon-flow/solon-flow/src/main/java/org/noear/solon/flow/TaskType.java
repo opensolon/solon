@@ -16,7 +16,7 @@
 package org.noear.solon.flow;
 
 /**
- * 任务类型
+ * 执行任务类型
  *
  * @author noear
  * @since 3.0

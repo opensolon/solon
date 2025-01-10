@@ -16,15 +16,38 @@
 package org.noear.solon.flow;
 
 /**
- * 节点任务
+ * 元系类型：0开始，1线，2执行节点，3排他网关，4并行网关，5汇聚网关，9结束
  *
  * @author noear
  * @since 3.0
  * */
-public class NodeTask {
-    protected int _type;
-    protected String _content;
-
-    public int type(){return _type;}
-    public String content(){return _content;}
+public class ElementType {
+    /**
+     * 开始
+     */
+    public static final int start = 0;
+    /**
+     * 线
+     */
+    public static final int line = 1;
+    /**
+     * 执行节点
+     */
+    public static final int execute = 2;
+    /**
+     * 排他网关
+     */
+    public static final int exclusive = 3;
+    /**
+     * 并行网关
+     */
+    public static final int parallel = 4;
+    /**
+     * 汇聚网关
+     */
+    public static final int converge = 5;
+    /**
+     * 结束
+     */
+    public static final int stop = 9;
 }

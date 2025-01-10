@@ -1,7 +1,7 @@
 package demo.solon.flow;
 
 import org.noear.solon.flow.Condition;
-import org.noear.solon.flow.NodeTask;
+import org.noear.solon.flow.Task;
 import org.noear.solon.flow.TaskType;
 import org.noear.solon.flow.ChainContext;
 
@@ -19,8 +19,8 @@ public class ChainContextImpl implements ChainContext {
     }
 
     @Override
-    public void task_handle(List<NodeTask> tasks) throws Exception {
-        for (NodeTask t : tasks) {
+    public void task_handle(List<Task> tasks) throws Exception {
+        for (Task t : tasks) {
             if (t.type() == TaskType.function) {
                 System.out.println(t.content());
                 //RcRunner.runExpr(_context, t.content());

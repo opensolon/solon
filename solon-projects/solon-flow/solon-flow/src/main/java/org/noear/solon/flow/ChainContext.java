@@ -24,12 +24,18 @@ import java.util.List;
  * @since 3.0
  * */
 public interface ChainContext {
-    //是否取消流程
+    /**
+     * 是否取消执行
+     */
     boolean is_cancel();
 
-    //条件处理
+    /**
+     * 条件处理
+     */
     boolean condition_handle(Condition condition) throws Exception;
 
-    //任务处理
-    void task_handle(List<NodeTask> tasks) throws Exception;
+    /**
+     * 任务处理
+     */
+    void task_handle(List<Task> tasks) throws Exception;
 }
