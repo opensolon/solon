@@ -21,4 +21,14 @@ public class Demo {
         ChainExecutor chainExecutor = new ChainExecutor();
         chainExecutor.exec(chain, new ChainContextImpl());
     }
+
+    public void case2() throws Exception {
+        /**
+         * Chain{
+         *     Start:N->Execute:N->Line->Exclusive:N->(C)Line
+         *                                          ->(C)Line->Execute:N
+         * }
+         *
+         * */
+    }
 }

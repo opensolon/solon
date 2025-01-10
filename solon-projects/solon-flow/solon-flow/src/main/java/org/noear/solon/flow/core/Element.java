@@ -16,6 +16,7 @@
 package org.noear.solon.flow.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -149,7 +150,7 @@ public class Element {
      */
     public List<Element> prveLines() {
         if (prveLines == null) {
-            prveLines = new ArrayList<>();
+            prveLines = Collections.emptyList();
 
             if ((type == ElementType.start || type == ElementType.line) == false) {
                 prveLines = chain.selectByNextId(id());//by nextID
@@ -164,7 +165,7 @@ public class Element {
      */
     public List<Element> nextLines() {
         if (nextLines == null) {
-            nextLines = new ArrayList<>();
+            nextLines = Collections.emptyList();
 
             if ((type == ElementType.stop || type == ElementType.line) == false) {
                 nextLines = chain.selectByPrveId(id());//by prveID
