@@ -48,7 +48,7 @@ public class SimpleFlowDriver implements ChainDriver {
 
     @Override
     public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
-        return (boolean) Exprs.eval(condition.expr(), context.paramMap());
+        return (boolean) Exprs.eval(condition.expr(), context.params());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SimpleFlowDriver implements ChainDriver {
             //按脚本运行
             Map<String, Object> argsMap = new LinkedHashMap<>();
             argsMap.put("context", context);
-            argsMap.putAll(context.paramMap());
+            argsMap.putAll(context.params());
 
             CodeSpec codeSpec = new CodeSpec(task.expr());
             Object[] args = codeSpec.bind(argsMap);

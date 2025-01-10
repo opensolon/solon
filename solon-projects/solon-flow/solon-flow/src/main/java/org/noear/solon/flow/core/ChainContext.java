@@ -27,10 +27,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 3.0
  */
 public class ChainContext implements Serializable {
-    private final Map<String, AtomicInteger> counterMap = new LinkedHashMap<>();
-    private final Map<String, Object> paramMap = new LinkedHashMap<>();
-    private final Map<String, Object> attrMap = new LinkedHashMap<>();
+    //存放记数器（汇聚网关会用法）
+    private final Map<String, AtomicInteger> counters = new LinkedHashMap<>();
+    //存放执行参数
+    private final Map<String, Object> params = new LinkedHashMap<>();
+    //存放过程记录（可选）
+    private final Map<String, Object> attrs = new LinkedHashMap<>();
+    //控制执行中断（可选）
     private boolean interrupted = false;
+
+    /**
+     * 存放执行结果（可选）
+     */
+    public Object result;
 
     /**
      * 是否已中断
@@ -50,7 +59,7 @@ public class ChainContext implements Serializable {
      * 计数器获取
      */
     public int counterGet(String id) {
-        return counterMap.computeIfAbsent(id, k -> new AtomicInteger(0))
+        return counters.computeIfAbsent(id, k -> new AtomicInteger(0))
                 .get();
     }
 
@@ -58,56 +67,51 @@ public class ChainContext implements Serializable {
      * 计数器增量
      */
     public int counterIncr(String id) {
-        return counterMap.computeIfAbsent(id, k -> new AtomicInteger(0))
+        return counters.computeIfAbsent(id, k -> new AtomicInteger(0))
                 .incrementAndGet();
     }
 
     /**
      * 参数集合
      */
-    public Map<String, Object> paramMap() {
-        return paramMap;
+    public Map<String, Object> params() {
+        return params;
     }
 
     /**
      * 参数获取
      */
     public Object param(String key) {
-        return paramMap.get(key);
+        return params.get(key);
     }
 
     /**
      * 参数设置
      */
     public ChainContext paramSet(String key, Object value) {
-        paramMap.put(key, value);
+        params.put(key, value);
         return this;
     }
 
     /**
      * 属性集合
      */
-    public Map<String, Object> attrMap() {
-        return attrMap;
+    public Map<String, Object> attrs() {
+        return attrs;
     }
 
     /**
      * 属性获取
      */
     public Object attr(String key) {
-        return attrMap.get(key);
+        return attrs.get(key);
     }
 
     /**
      * 属性设置
      */
     public ChainContext attrSet(String key, Object value) {
-        attrMap.put(key, value);
+        attrs.put(key, value);
         return this;
     }
-
-    /**
-     * 结果
-     */
-    public Object result;
 }
