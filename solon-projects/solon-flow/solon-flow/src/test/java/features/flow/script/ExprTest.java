@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.core.Chain;
 import org.noear.solon.flow.core.ChainContext;
-import org.noear.solon.flow.core.FlowExecutor;
+import org.noear.solon.flow.core.FlowEngine;
 
 /**
  * @author noear 2025/1/11 created
@@ -14,7 +14,7 @@ public class ExprTest {
     public void expr1() throws Throwable {
         Chain chain = Chain.parse(ResourceUtil.getResourceAsString("expr1.json"));
 
-        FlowExecutor chainExecutor = new FlowExecutor();
+        FlowEngine chainExecutor = new FlowEngine();
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);

@@ -28,7 +28,7 @@ public class ScriptTest {
         chain.addLine("l3", "l3", "n3", "n4");
         chain.addLine("l4", "l4", "n4", "n5");
 
-        FlowExecutor chainExecutor = new FlowExecutor();
+        FlowEngine chainExecutor = new FlowEngine();
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);

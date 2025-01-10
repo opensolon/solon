@@ -40,7 +40,7 @@ public class ComTest {
         chain.addLine("l3", "l3", "n3", "n4");
         chain.addLine("l4", "l4", "n4", "n5");
 
-        FlowExecutor chainExecutor = new FlowExecutor();
+        FlowEngine flowEngine = new FlowEngine();
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);
@@ -49,7 +49,7 @@ public class ComTest {
 
         //完整执行
 
-        chainExecutor.exec(context, chain);
+        flowEngine.exec(context, chain);
 
         assert "n3".equals(context.result);
 
@@ -61,7 +61,7 @@ public class ComTest {
         context.paramSet("c", 14);
 
         //执行一层
-        chainExecutor.exec(context, chain, "n2", 1);
+        flowEngine.exec(context, chain, "n2", 1);
 
 
         assert "n2".equals(context.result);
@@ -74,7 +74,7 @@ public class ComTest {
 
         Chain chain = Chain.parse(ResourceUtil.getResourceAsString("com.json"));
 
-        FlowExecutor chainExecutor = new FlowExecutor();
+        FlowEngine flowEngine = new FlowEngine();
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);
@@ -83,7 +83,7 @@ public class ComTest {
 
         //完整执行
 
-        chainExecutor.exec(context, chain);
+        flowEngine.exec(context, chain);
         System.out.println("------------");
 
         context = new ChainContext();
@@ -92,6 +92,6 @@ public class ComTest {
         context.paramSet("c", 14);
 
         //执行一层
-        chainExecutor.exec(context, chain, "n2", 1);
+        flowEngine.exec(context, chain, "n2", 1);
     }
 }

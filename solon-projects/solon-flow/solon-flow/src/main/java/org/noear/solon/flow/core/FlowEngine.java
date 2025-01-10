@@ -18,12 +18,12 @@ package org.noear.solon.flow.core;
 import java.util.List;
 
 /**
- * 流执行器
+ * 流引擎
  *
  * @author noear
  * @since 3.0
  * */
-public class FlowExecutor {
+public class FlowEngine {
     /**
      * 执行
      */
