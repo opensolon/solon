@@ -18,6 +18,7 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -388,7 +389,7 @@ public class BeanWrap {
      * bean 新建对象
      */
     protected Object _new() throws ConstructionException {
-        if (clz.isInterface() || clz.isAnonymousClass()) {
+        if (clz.isInterface() || clz.isAnonymousClass() || Modifier.isAbstract(clz.getModifiers())) {
             return raw;
         }
 
