@@ -47,38 +47,38 @@ public class Chain {
     /**
      * 添加节点
      */
-    public void addNode(String id, String name, ElementType type, String tasks) {
+    public void addNode(String id, String title, ElementType type, String tasks) {
         //不能是线
         assert type != ElementType.line;
 
-        addElement(id, name, type, null, null, null, tasks);
+        addElement(id, title, type, null, null, null, tasks);
     }
 
     /**
      * 添加线
      */
-    public void addLine(String id, String name, String prveId, String nextId) {
-        addElement(id, name, ElementType.line, prveId, nextId, null, null);
+    public void addLine(String id, String title, String prveId, String nextId) {
+        addElement(id, title, ElementType.line, prveId, nextId, null, null);
     }
 
     /**
      * 添加线
      */
-    public void addLine(String id, String name, String prveId, String nextId, String conditions) {
-        addElement(id, name, ElementType.line, prveId, nextId, conditions, null);
+    public void addLine(String id, String title, String prveId, String nextId, String conditions) {
+        addElement(id, title, ElementType.line, prveId, nextId, conditions, null);
     }
 
     /**
      * 添加元素
      */
-    protected void addElement(String id, String name, ElementType type, String prveId, String nextId, String conditions, String tasks) {
+    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, String conditions, String tasks) {
         Element element = new Element(this);
 
         element.conditionExpr = conditions;
         element.taskExpr = tasks;
 
         element.id = id;
-        element.name = name;
+        element.title = title;
         element.type = type;
         element.prveId = prveId; //仅line才有
         element.nextId = nextId; //仅line才有

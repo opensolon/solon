@@ -22,13 +22,17 @@ import java.util.List;
 /*
 * 存储设计::
 *
-* 0开始节点={id:1, type:0, name:'', }
-* 1连线节点={id:2, type:1, name:'', prve:'1', next:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
-* 2执行节点={id:3, type:2, name:'', task:'F,tag/fun1;R,tag/rule1'}
-* 3排他网关={id:4, type:3, name:'', }
-* 4并行网关={id:5, type:4, name:'', }
-* 5汇聚网关={id:6, type:5, name:'', }
-* 9结束节点={id:7, type:6, name:'', }
+* 0开始节点={id:1, type:0, title:'', }
+*
+* 1连接线段={id:2, type:1, title:'', prve:'1', next:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
+*
+* 2执行节点={id:3, type:2, title:'', task:'F,tag/fun1;R,tag/rule1'}
+*
+* 3排他网关={id:4, type:3, title:'', }
+* 4并行网关={id:5, type:4, title:'', }
+* 5汇聚网关={id:6, type:5, title:'', }
+*
+* 9结束节点={id:7, type:6, title:'', }
 *
 * */
 
@@ -53,19 +57,28 @@ public class Element {
     protected String taskExpr;
 
     protected String id;
-    protected String name;
+    protected String title;
     protected ElementType type;      //元素类型
     protected String prveId; //仅line才有
     protected String nextId; //仅line才有
 
+    /**
+     * 标识
+     */
     public String id() {
         return id;
     }
 
-    public String name() {
-        return name;
+    /**
+     * 显示标题
+     */
+    public String title() {
+        return title;
     }
 
+    /**
+     * 类型
+     */
     public ElementType type() {
         return type;
     }
