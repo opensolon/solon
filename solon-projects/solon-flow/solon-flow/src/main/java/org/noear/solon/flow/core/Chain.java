@@ -74,8 +74,8 @@ public class Chain {
     protected void addElement(String id, String name, ElementType type, String prveId, String nextId, String conditions, String tasks) {
         Element element = new Element(this);
 
-        element.conditionsExpr = conditions;
-        element.tasksExpr = tasks;
+        element.conditionExpr = conditions;
+        element.taskExpr = tasks;
 
         element.id = id;
         element.name = name;

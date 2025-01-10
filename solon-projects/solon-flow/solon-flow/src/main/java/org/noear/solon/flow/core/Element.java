@@ -23,7 +23,7 @@ import java.util.List;
 * 存储设计::
 *
 * 0开始节点={id:1, type:0, name:'', }
-* 1连线元素={id:2, type:1, name:'', prve:'1', next:'3', condition:'m.user_id,>,12,A;m,F,$ssss(m),E'}
+* 1连线节点={id:2, type:1, name:'', prve:'1', next:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
 * 2执行节点={id:3, type:2, name:'', task:'F,tag/fun1;R,tag/rule1'}
 * 3排他网关={id:4, type:3, name:'', }
 * 4并行网关={id:5, type:4, name:'', }
@@ -43,14 +43,14 @@ public class Element {
 
     private List<Element> prveNodes, nextNodes, prveLines, nextLines;
     private Condition condition;
-    private List<Task> tasks;
+    private Task task;
 
     protected Element(Chain chain) {
         this.chain = chain;
     }
 
-    protected String conditionsExpr;
-    protected String tasksExpr;
+    protected String conditionExpr;
+    protected String taskExpr;
 
     protected String id;
     protected String name;
@@ -83,8 +83,6 @@ public class Element {
     public String nextId() {
         return nextId;
     }
-
-    public int counter;//计数器，用于计录运行次数
 
     /**
      * 链
@@ -176,24 +174,24 @@ public class Element {
     }
 
     /**
-     * 条件；condition:'[{l:"m.user_id",op:">",r:"12",ct:"A"},{l:"m",op:"F",r:"$sss(m)",ct:"E"}]' //m.user_id,>,12,A;m,F,$ssss(m),E
+     * 条件
      */
     public Condition condition() {
         if (condition == null) {
-            condition = new Condition(conditionsExpr);
+            condition = new Condition(conditionExpr);
         }
 
         return condition;
     }
 
     /**
-     * 任务列表；task:'F,tag_fun1;R,tag_rule1'
+     * 任务
      */
-    public List<Task> tasks() {
-        if (tasks == null) {
-            tasks = Task.parse(tasksExpr);
+    public Task task() {
+        if (task == null) {
+            task = new Task(taskExpr);
         }
 
-        return tasks;
+        return task;
     }
 }

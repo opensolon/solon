@@ -15,8 +15,6 @@
  */
 package org.noear.solon.flow.core;
 
-import java.util.Collection;
-
 /**
  * 链上下文
  *
@@ -30,12 +28,22 @@ public interface ChainContext {
     boolean isCancel();
 
     /**
-     * 条件处理
+     * 计数获取
      */
-    boolean conditionHandle(Condition condition) throws Exception;
+    int counterGet(String id);
 
     /**
-     * 任务处理
+     * 计数增量
      */
-    void taskHandle(Collection<Task> tasks) throws Exception;
+    void counterIncr(String id);
+
+    /**
+     * 处理条件
+     */
+    boolean handleCondition(Condition condition) throws Exception;
+
+    /**
+     * 处理任务
+     */
+    void handleTask(Task task) throws Exception;
 }

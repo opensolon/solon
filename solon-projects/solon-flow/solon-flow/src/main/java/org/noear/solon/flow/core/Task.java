@@ -17,9 +17,6 @@ package org.noear.solon.flow.core;
 
 import org.noear.solon.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 执行任务（表达式参考：'F,tag/fun1;R,tag/rule1'）
  *
@@ -27,44 +24,42 @@ import java.util.List;
  * @since 3.0
  * */
 public class Task {
-    private String type;
-    private String content;
+    private String expr;
+    private Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
+
 
     /**
-     * 类型（参考：'R'=rule,'F'=function,'A'=actor）
+     * @param taskExpr 任务表达式
      */
-    public String type() {
-        return type;
+    public Task(String taskExpr) {
+        this.expr = taskExpr;
     }
 
     /**
-     * 内容（参考：'tag/fun1' 或 'tag/rule1'）
+     * 表达式（示例："F:tag/fun1;R:tag/rule1" 或 "fun1()" 或 "[{t:'F',c:'tag/fun1'}]"）
      */
-    public String content() {
-        return content;
+    public String expr() {
+        return expr;
     }
 
     /**
-     * 解析
+     * 附件
      */
-    public static List<Task> parse(String expr) {
-        List<Task> list = new ArrayList<>();
+    public <T> T attachment() {
+        return (T) attachment;
+    }
 
-        if (Utils.isEmpty(expr) == false) {
-            String ss[] = expr.split(";");
-            for (int i = 0, len = ss.length; i < len; i++) {
-                Task task = new Task();
-                String[] tt = ss[i].split(",");
+    /**
+     * 附件
+     */
+    public <T> void attachment(T attachment) {
+        this.attachment = attachment;
+    }
 
-                assert tt.length == 2;
-
-                task.type = tt[0];
-                task.content = tt[1];
-
-                list.add(task);
-            }
-        }
-
-        return list;
+    /**
+     * 是否为空
+     */
+    public boolean isEmpty() {
+        return Utils.isEmpty(expr);
     }
 }

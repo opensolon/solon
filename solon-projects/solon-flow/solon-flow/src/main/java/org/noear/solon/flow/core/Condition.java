@@ -15,8 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
-import java.util.Collection;
-import java.util.List;
+import org.noear.solon.Utils;
+
 
 /**
  * 条件（一般用于分支条件）
@@ -25,35 +25,41 @@ import java.util.List;
  * @since 3.0
  * */
 public class Condition {
-    private String expr;
-    private List<ConditionItem> items = null;
-
-    /**
-     * 表达式
-     */
-    public String expr() {
-        return expr;
-    }
-
-    /**
-     * 条件项
-     */
-    public Collection<ConditionItem> items() {
-        return items;
-    }
+    private final String expr;
+    private Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
 
     /**
      * @param conditionsExpr 条件表达式
      */
     public Condition(String conditionsExpr) {
         this.expr = conditionsExpr;
-        this.items = ConditionItem.parse(conditionsExpr);
+    }
+
+    /**
+     * 表达式（示例："(a,>,12) and (b,=,1)" 或 "a=12 && b=1" 或 "[{l:'a',p:'>',r:'12'}...]"）
+     */
+    public String expr() {
+        return expr;
+    }
+
+    /**
+     * 附件
+     */
+    public <T> T attachment() {
+        return (T) attachment;
+    }
+
+    /**
+     * 附件
+     */
+    public <T> void attachment(T attachment) {
+        this.attachment = attachment;
     }
 
     /**
      * 是否为空
      */
     public boolean isEmpty() {
-        return items == null || items.size() == 0;
+        return Utils.isEmpty(expr);
     }
 }

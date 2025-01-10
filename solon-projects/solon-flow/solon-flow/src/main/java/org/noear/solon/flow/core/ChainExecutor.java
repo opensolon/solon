@@ -37,14 +37,14 @@ public class ChainExecutor {
      * 检查条件
      */
     private boolean condition_check(ChainContext context, Condition condition) throws Exception {
-        return context.conditionHandle(condition);
+        return context.handleCondition(condition);
     }
 
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, List<Task> tasks) throws Exception {
-        context.taskHandle(tasks);
+    private void task_exec(ChainContext context, Task task) throws Exception {
+        context.handleTask(task);
     }
 
     /**
@@ -65,7 +65,7 @@ public class ChainExecutor {
             }
             break;
             case execute: {
-                task_exec(context, node.tasks());
+                task_exec(context, node.task());
 
                 node_run(context, node.nextNode());
             }
@@ -118,8 +118,9 @@ public class ChainExecutor {
      * 运行汇聚网关//起到等待和卡位的作用；
      */
     private void converge_run(ChainContext context, Element node) throws Exception {
-        node.counter++; //运行次数累计
-        if (node.prveLines().size() > node.counter) { //等待所有支线计数完成
+
+        context.counterIncr(node.id(), 1);//运行次数累计
+        if (node.prveLines().size() > context.counterGet(node.id())) { //等待所有支线计数完成
             return;
         }
 
