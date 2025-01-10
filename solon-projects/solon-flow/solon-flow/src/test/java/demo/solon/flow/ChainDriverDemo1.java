@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ChainContextImpl implements ChainContext {
-    private final Map<String, Object> model;
+public class ChainDriverDemo1 implements ChainDriver {
+    private final Map<String, Object> context;
     private Map<String, AtomicInteger> counter = new HashMap<>();
 
-    public ChainContextImpl(Map<String, Object> model) {
-        this.model = model;
+    public ChainDriverDemo1(Map<String, Object> context) {
+        this.context = context;
     }
 
     @Override
-    public boolean isCancel() {
+    public boolean isInterrupt() {
         return false;
     }
 
@@ -35,13 +35,13 @@ public class ChainContextImpl implements ChainContext {
     @Override
     public boolean handleCondition(Element line, Condition condition) throws Exception {
         System.out.println(condition);
-        return (boolean) Exprs.eval(condition.expr(), model);
+        return (boolean) Exprs.eval(condition.expr(), context);
     }
 
     @Override
     public void handleTask(Element node, Task task) throws Exception {
         System.out.println(task);
-        Object rst = Exprs.eval(task.expr(), model);
+        Object rst = Exprs.eval(task.expr(), context);
         System.out.println("rst: " + rst);
     }
 }

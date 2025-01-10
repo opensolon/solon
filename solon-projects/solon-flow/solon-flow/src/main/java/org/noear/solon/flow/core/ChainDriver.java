@@ -16,16 +16,16 @@
 package org.noear.solon.flow.core;
 
 /**
- * 链上下文
+ * 链驱动器
  *
  * @author noear
  * @since 3.0
  * */
-public interface ChainContext {
+public interface ChainDriver {
     /**
-     * 是否取消执行
+     * 是否中断
      */
-    boolean isCancel();
+    boolean isInterrupt();
 
     /**
      * 计数获取

@@ -34,10 +34,10 @@ public class Demo {
 
         //完整执行
 
-        chainExecutor.exec(new ChainContextImpl(model), chain);
+        chainExecutor.exec(new ChainDriverDemo1(model), chain);
         System.out.println("------------");
 
         //执行一层
-        chainExecutor.exec(new ChainContextImpl(model), chain, "n2", 1);
+        chainExecutor.exec(new ChainDriverDemo1(model), chain, "n2", 1);
     }
 }
