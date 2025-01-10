@@ -20,8 +20,8 @@ public class SolonChainContext implements ChainContext {
     }
 
     @Override
-    public void counterIncr(String id, int number) {
-
+    public int counterIncr(String id) {
+        return 0;
     }
 
     @Override

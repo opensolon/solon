@@ -118,9 +118,8 @@ public class ChainExecutor {
      * 运行汇聚网关//起到等待和卡位的作用；
      */
     private void converge_run(ChainContext context, Element node) throws Exception {
-
-        context.counterIncr(node.id(), 1);//运行次数累计
-        if (node.prveLines().size() > context.counterGet(node.id())) { //等待所有支线计数完成
+        int count = context.counterIncr(node.id());//运行次数累计
+        if (node.prveLines().size() > count) { //等待所有支线计数完成
             return;
         }
 

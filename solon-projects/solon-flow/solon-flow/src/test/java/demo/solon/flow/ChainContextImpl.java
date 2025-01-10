@@ -23,8 +23,8 @@ public class ChainContextImpl implements ChainContext {
     }
 
     @Override
-    public void counterIncr(String id) {
-        counter.computeIfAbsent(id, k -> new AtomicInteger(0))
+    public int counterIncr(String id) {
+        return counter.computeIfAbsent(id, k -> new AtomicInteger(0))
                 .incrementAndGet();
     }
 
@@ -39,6 +39,4 @@ public class ChainContextImpl implements ChainContext {
     public void handleTask(Task task) throws Exception {
 
     }
-
-
 }

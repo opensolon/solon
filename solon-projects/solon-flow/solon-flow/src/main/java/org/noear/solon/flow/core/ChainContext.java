@@ -35,7 +35,7 @@ public interface ChainContext {
     /**
      * 计数增量
      */
-    void counterIncr(String id);
+    int counterIncr(String id);
 
     /**
      * 处理条件
