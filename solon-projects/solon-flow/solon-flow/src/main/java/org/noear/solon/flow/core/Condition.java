@@ -15,6 +15,7 @@
  */
 package org.noear.solon.flow.core;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,16 +25,8 @@ import java.util.List;
  * @since 3.0
  * */
 public class Condition {
-    private String name;
     private String expr;
     private List<ConditionItem> items = null;
-
-    /**
-     * 名字
-     */
-    public String name() {
-        return name;
-    }
 
     /**
      * 表达式
@@ -45,16 +38,14 @@ public class Condition {
     /**
      * 条件项
      */
-    public List<ConditionItem> items() {
+    public Collection<ConditionItem> items() {
         return items;
     }
 
     /**
-     * @param name           名字
      * @param conditionsExpr 条件表达式
      */
-    public Condition(String name, String conditionsExpr) {
-        this.name = name;
+    public Condition(String conditionsExpr) {
         this.expr = conditionsExpr;
         this.items = ConditionItem.parse(conditionsExpr);
     }

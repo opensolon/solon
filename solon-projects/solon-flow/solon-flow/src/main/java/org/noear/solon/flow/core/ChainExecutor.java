@@ -37,21 +37,21 @@ public class ChainExecutor {
      * 检查条件
      */
     private boolean condition_check(ChainContext context, Condition condition) throws Exception {
-        return context.condition_handle(condition);
+        return context.conditionHandle(condition);
     }
 
     /**
      * 执行任务
      */
     private void task_exec(ChainContext context, List<Task> tasks) throws Exception {
-        context.task_handle(tasks);
+        context.taskHandle(tasks);
     }
 
     /**
      * 运行节点
      */
     private void node_run(ChainContext context, Element node) throws Exception {
-        if (context.is_cancel()) { //如果取消，就不再执行了
+        if (context.isCancel()) { //如果取消，就不再执行了
             return;
         }
 

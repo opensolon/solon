@@ -4,7 +4,7 @@ import org.noear.solon.flow.core.ChainContext;
 import org.noear.solon.flow.core.Condition;
 import org.noear.solon.flow.core.Task;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author noear
@@ -12,17 +12,17 @@ import java.util.List;
  */
 public class SolonChainContext implements ChainContext {
     @Override
-    public boolean is_cancel() {
+    public boolean isCancel() {
         return false;
     }
 
     @Override
-    public boolean condition_handle(Condition condition) throws Exception {
+    public boolean conditionHandle(Condition condition) throws Exception {
         return false;
     }
 
     @Override
-    public void task_handle(List<Task> tasks) throws Exception {
+    public void taskHandle(Collection<Task> tasks) throws Exception {
 
     }
 }

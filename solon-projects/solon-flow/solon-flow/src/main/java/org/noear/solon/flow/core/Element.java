@@ -15,8 +15,6 @@
  */
 package org.noear.solon.flow.core;
 
-import org.noear.solon.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ import java.util.List;
 * 存储设计::
 *
 * 0开始节点={id:1, type:0, name:'', }
-* 1连线节点={id:2, type:1, name:'', prve:'1', next:'3', condition:'m.user_id,>,12,A;m,F,$ssss(m),E'}
+* 1连线元素={id:2, type:1, name:'', prve:'1', next:'3', condition:'m.user_id,>,12,A;m,F,$ssss(m),E'}
 * 2执行节点={id:3, type:2, name:'', task:'F,tag/fun1;R,tag/rule1'}
 * 3排他网关={id:4, type:3, name:'', }
 * 4并行网关={id:5, type:4, name:'', }
@@ -181,7 +179,7 @@ public class Element {
      */
     public Condition condition() {
         if (condition == null) {
-            condition = new Condition(name(), conditionsExpr);
+            condition = new Condition(conditionsExpr);
         }
 
         return condition;
@@ -192,20 +190,7 @@ public class Element {
      */
     public List<Task> tasks() {
         if (tasks == null) {
-            tasks = new ArrayList<>();
-
-            if (Utils.isEmpty(tasksExpr) == false) {
-                String ss[] = tasksExpr.split(";");
-                for (int i = 0, len = ss.length; i < len; i++) {
-                    Task task = new Task();
-                    String[] tt = ss[i].split(",");
-
-                    task.type = "F".equals(tt[0]) ? TaskType.function : TaskType.rule;
-                    task.content = tt[1];
-
-                    tasks.add(task);
-                }
-            }
+            tasks = Task.parse(tasksExpr);
         }
 
         return tasks;
