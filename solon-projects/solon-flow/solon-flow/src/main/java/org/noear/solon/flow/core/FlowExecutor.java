@@ -82,32 +82,58 @@ public class FlowExecutor {
         }
 
         switch (node.type()) {
-            case start: {
+            case start:
                 node_run(context, chain, node.nextNode(), depth);
-            }
-            break;
-            case stop: {
+                break;
+            case end:
                 //无动作
-            }
-            break;
+                break;
             case execute: {
+                //执行任务
                 task_exec(context, chain, node.task());
-
+                //转到下个节点
                 node_run(context, chain, node.nextNode(), depth);
+                break;
             }
-            break;
-            case exclusive: {
+
+            case inclusive:
+                inclusive_run(context, chain, node, depth);
+                break;
+            case exclusive:
                 exclusive_run(context, chain, node, depth);
-            }
-            break;
-            case parallel: {
+                break;
+            case parallel:
                 parallel_run(context, chain, node, depth);
-            }
-            break;
-            case converge: {
+                break;
+            case converge:
                 converge_run(context, chain, node, depth);
+                break;
+        }
+    }
+
+    /**
+     * 运行包容网关
+     */
+    private void inclusive_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
+        List<Element> lines = node.nextLines();
+        Element def_line = null;
+        boolean def_enabled = true;
+
+        for (Element l : lines) {
+            if (l.condition().isEmpty()) {
+                def_line = l;
+            } else {
+                if (condition_check(context, chain, l.condition())) {
+                    //执行所有满足条件（并禁用默认）
+                    def_enabled = false;
+                    node_run(context, chain, l.nextNode(), depth);
+                }
             }
-            break;
+        }
+
+        if (def_enabled && def_line != null) {
+            //如果有默认
+            node_run(context, chain, def_line.nextNode(), depth);
         }
     }
 
@@ -122,13 +148,17 @@ public class FlowExecutor {
                 def_line = l;
             } else {
                 if (condition_check(context, chain, l.condition())) {
+                    //执行第一个满足条件
                     node_run(context, chain, l.nextNode(), depth);
                     return;
                 }
             }
         }
 
-        node_run(context, chain, def_line.nextNode(), depth);
+        if (def_line != null) {
+            //如果有默认
+            node_run(context, chain, def_line.nextNode(), depth);
+        }
     }
 
     /**

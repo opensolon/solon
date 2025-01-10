@@ -6,7 +6,7 @@
     { "id": "n2", "type": "execute", "meta":{"a": 1,"b": []}, "task":"context.result=111 + a;"},
     { "id": "n3", "type": "execute", "task":"context.result=222 + b;"},
     { "id": "n4", "type": "execute", "task":"context.result=333 + c;"},
-    { "id": "n5", "type": "stop"},
+    { "id": "n5", "type": "end"},
     { "id": "l1", "type": "line", "prveId": "n1", "nextId": "n2"},
     { "id": "l2", "type": "line", "prveId": "n2", "nextId": "n3"},
     { "id": "l3", "type": "line", "prveId": "n3", "nextId": "n4"},

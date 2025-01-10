@@ -34,7 +34,7 @@ public class ComTest {
         chain.addNode("n2", "n2", ElementType.execute, new HashMap<>(), "@a");
         chain.addNode("n3", "n3", ElementType.execute,null, "@b");
         chain.addNode("n4", "n4", ElementType.execute,null, "@c");
-        chain.addNode("n5", "n5", ElementType.stop);
+        chain.addNode("n5", "n5", ElementType.end);
         chain.addLine("l1", "l1", "n1", "n2");
         chain.addLine("l2", "l2", "n2", "n3");
         chain.addLine("l3", "l3", "n3", "n4");

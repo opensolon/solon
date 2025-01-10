@@ -22,7 +22,7 @@ public class ScriptTest {
         chain.addNode("n2", "n2", ElementType.execute, null, "context.result=111 + a;");
         chain.addNode("n3", "n3", ElementType.execute, null, "context.result=222 + b;");
         chain.addNode("n4", "n4", ElementType.execute, null, "context.result=333 + c;");
-        chain.addNode("n5", "n5", ElementType.stop);
+        chain.addNode("n5", "n5", ElementType.end);
         chain.addLine("l1", "l1", "n1", "n2");
         chain.addLine("l2", "l2", "n2", "n3");
         chain.addLine("l3", "l3", "n3", "n4");

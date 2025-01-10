@@ -25,31 +25,35 @@ public enum ElementType {
     /**
      * 开始
      */
-    start(0), // 0;
+    start(0),
     /**
      * 线
      */
-    line(1),// = 1;
+    line(1),
     /**
      * 执行节点
      */
-    execute(2),// = 2;
+    execute(2),
+    /**
+     * 包容网关
+     */
+    inclusive(3),
     /**
      * 排他网关
      */
-    exclusive(3),// = 3;
+    exclusive(4),
     /**
      * 并行网关
      */
-    parallel(4),// = 4;
+    parallel(5),
     /**
      * 汇聚网关
      */
-    converge(5),// = 5;
+    converge(6),
     /**
      * 结束
      */
-    stop(9);// = 9;
+    end(9);
 
     private int code;
 

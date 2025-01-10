@@ -23,17 +23,18 @@ import java.util.Map;
 /*
 * 存储设计::
 *
-* 0开始节点={id:1, type:0, title:'', }
+* 0开始节点={id:n1, type:0, title:'', }
 *
-* 1连接线段={id:2, type:1, title:'', meta:{}, prveId:'1', nextId:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
+* 1连接线段={id:l1, type:1, title:'', meta:{}, prveId:'1', nextId:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
 *
-* 2执行节点={id:3, type:2, title:'', meta:{}, task:'F,tag/fun1;R,tag/rule1'}
+* 2执行节点={id:n2, type:2, title:'', meta:{}, task:'F,tag/fun1;R,tag/rule1'}
 *
-* 3排他网关={id:4, type:3, title:'', }
-* 4并行网关={id:5, type:4, title:'', }
-* 5汇聚网关={id:6, type:5, title:'', }
+* 3包容网关={id:n3, type:3, title:'', }
+* 4排他网关={id:n4, type:4, title:'', }
+* 5并行网关={id:n5, type:5, title:'', }
+* 6汇聚网关={id:n6, type:6, title:'', }
 *
-* 9结束节点={id:7, type:9, title:'', }
+* 9结束节点={id:n9, type:9, title:'', }
 * */
 
 /**
@@ -147,7 +148,7 @@ public class Element {
         if (nextNodes == null) {
             nextNodes = new ArrayList<>();
 
-            if ((type == ElementType.stop) == false) {
+            if ((type == ElementType.end) == false) {
                 if (type() == ElementType.line) {
                     nextNodes.add(chain.selectById(nextId()));//by id query
                 } else {
@@ -192,7 +193,7 @@ public class Element {
         if (nextLines == null) {
             nextLines = Collections.emptyList();
 
-            if ((type == ElementType.stop || type == ElementType.line) == false) {
+            if ((type == ElementType.end || type == ElementType.line) == false) {
                 nextLines = chain.selectByPrveId(id());//by prveID
             }
         }
