@@ -33,7 +33,7 @@ import java.util.Map;
 * 4并行网关={id:5, type:4, title:'', }
 * 5汇聚网关={id:6, type:5, title:'', }
 *
-* 9结束节点={id:7, type:6, title:'', }
+* 9结束节点={id:7, type:9, title:'', }
 * */
 
 /**
