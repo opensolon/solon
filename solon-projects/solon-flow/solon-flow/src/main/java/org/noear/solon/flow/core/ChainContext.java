@@ -15,19 +15,23 @@
  */
 package org.noear.solon.flow.core;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 流上下文
+ * 链上下文
  *
  * @author noear
  * @since 3.0
  */
 public class ChainContext {
-    private final Map<String, AtomicInteger> counterMap = new HashMap<>();
-    private final Map<String, Object> model = new HashMap<>();
+    private final Map<String, AtomicInteger> counterMap = new LinkedHashMap<>();
+    private final Map<String, Object> paramMap = new LinkedHashMap<>();
+
+    public ChainContext(){
+        paramMap.put("context", this);
+    }
 
     /**
      * 是否中断
@@ -53,17 +57,29 @@ public class ChainContext {
     }
 
     /**
-     * 模型
+     * 参数集合
      */
-    public Map<String, Object> model() {
-        return model;
+    public Map<String, Object> paramMap() {
+        return paramMap;
     }
 
     /**
-     * 模型设值
+     * 获取参数
+     */
+    public Object get(String key) {
+        return paramMap.get(key);
+    }
+
+    /**
+     * 设置参数
      */
     public ChainContext set(String key, Object value) {
-        model.put(key, value);
+        paramMap.put(key, value);
         return this;
     }
+
+    /**
+     * 结果
+     */
+    public Object result;
 }

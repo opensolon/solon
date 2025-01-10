@@ -17,6 +17,7 @@ package org.noear.solon.flow.driver;
 
 import org.noear.liquor.eval.Exprs;
 import org.noear.solon.Solon;
+import org.noear.solon.flow.TaskComponent;
 import org.noear.solon.flow.core.*;
 
 /**
@@ -28,17 +29,17 @@ import org.noear.solon.flow.core.*;
 public class ComponentFlowDriver implements ChainDriver {
     @Override
     public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
-        return (boolean) Exprs.eval(condition.expr(), context.model());
+        return (boolean) Exprs.eval(condition.expr(), context.paramMap());
     }
 
     @Override
-    public void handleTask(ChainContext context, Task task) throws Exception {
+    public void handleTask(ChainContext context, Task task) throws Throwable {
         TaskComponent component = Solon.context().getBean(task.expr());
 
         if (component == null) {
             throw new IllegalStateException("task '" + task.expr() + "' not exist");
         } else {
-            component.run(context.model());
+            component.run(context);
         }
     }
 }

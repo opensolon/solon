@@ -31,13 +31,13 @@ import org.noear.solon.flow.core.Task;
 public class ScriptFlowDriver implements ChainDriver {
     @Override
     public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
-        return (boolean) Exprs.eval(condition.expr(), context.model());
+        return (boolean) Exprs.eval(condition.expr(), context.paramMap());
     }
 
     @Override
-    public void handleTask(ChainContext context, Task task) throws Exception {
+    public void handleTask(ChainContext context, Task task) throws Throwable {
         CodeSpec codeSpec = new CodeSpec(task.expr());
-        Object[] args = codeSpec.bind(context.model());
+        Object[] args = codeSpec.bind(context.paramMap());
         Exprs.eval(codeSpec, args);
     }
 }

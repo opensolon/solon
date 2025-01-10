@@ -1,9 +1,8 @@
-package demo.solon.flow.case2;
+package demo.solon.flow.com;
 
 import org.noear.solon.annotation.Component;
-import org.noear.solon.flow.core.TaskComponent;
-
-import java.util.Map;
+import org.noear.solon.flow.core.ChainContext;
+import org.noear.solon.flow.TaskComponent;
 
 /**
  * @author noear 2025/1/11 created
@@ -12,7 +11,7 @@ import java.util.Map;
 @Component("a")
 public class ACom implements TaskComponent {
     @Override
-    public void run(Map<String, Object> model) throws Exception {
+    public void run(ChainContext context) {
         System.out.println("ACom");
     }
 }

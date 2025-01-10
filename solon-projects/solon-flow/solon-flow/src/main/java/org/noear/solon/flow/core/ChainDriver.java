@@ -25,10 +25,10 @@ public interface ChainDriver {
     /**
      * 处理连线条件
      */
-    boolean handleCondition(ChainContext context, Condition condition) throws Exception;
+    boolean handleCondition(ChainContext context, Condition condition) throws Throwable;
 
     /**
      * 处理执行任务
      */
-    void handleTask(ChainContext context, Task task) throws Exception;
+    void handleTask(ChainContext context, Task task) throws Throwable;
 }

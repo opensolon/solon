@@ -27,7 +27,7 @@ public class FlowExecutor {
     /**
      * 执行
      */
-    public void exec(ChainContext context, Chain chain) throws Exception {
+    public void exec(ChainContext context, Chain chain) throws Throwable {
         exec(context, chain, null, -1);
     }
 
@@ -39,7 +39,7 @@ public class FlowExecutor {
      * @param startId 开始Id
      * @param depth   执行深度
      */
-    public void exec(ChainContext context, Chain chain, String startId, int depth) throws Exception {
+    public void exec(ChainContext context, Chain chain, String startId, int depth) throws Throwable {
         Element start;
         if (startId == null) {
             start = chain.start();
@@ -55,21 +55,21 @@ public class FlowExecutor {
     /**
      * 检查条件
      */
-    private boolean condition_check(ChainContext context, Chain chain, Condition condition) throws Exception {
+    private boolean condition_check(ChainContext context, Chain chain, Condition condition) throws Throwable {
         return chain.driver().handleCondition(context, condition);
     }
 
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, Chain chain, Task task) throws Exception {
+    private void task_exec(ChainContext context, Chain chain, Task task) throws Throwable {
         chain.driver().handleTask(context, task);
     }
 
     /**
      * 运行节点
      */
-    private void node_run(ChainContext context, Chain chain, Element node, int depth) throws Exception {
+    private void node_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
         if (context.isInterrupt()) { //如果中断，就不再执行了
             return;
         }
@@ -114,7 +114,7 @@ public class FlowExecutor {
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainContext context, Chain chain, Element node, int depth) throws Exception {
+    private void exclusive_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
         List<Element> lines = node.nextLines();
         Element def_line = null;
         for (Element l : lines) {
@@ -134,7 +134,7 @@ public class FlowExecutor {
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainContext context, Chain chain, Element node, int depth) throws Exception {
+    private void parallel_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
         for (Element n : node.nextNodes()) {
             node_run(context, chain, n, depth);
         }
@@ -143,7 +143,7 @@ public class FlowExecutor {
     /**
      * 运行汇聚网关//起到等待和卡位的作用；
      */
-    private void converge_run(ChainContext context, Chain chain, Element node, int depth) throws Exception {
+    private void converge_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
         int count = context.counterIncr(node.id());//运行次数累计
         if (node.prveLines().size() > count) { //等待所有支线计数完成
             return;

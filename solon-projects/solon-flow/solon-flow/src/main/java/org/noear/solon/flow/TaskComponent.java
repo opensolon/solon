@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow.core;
+package org.noear.solon.flow;
 
-import java.util.Map;
+import org.noear.solon.flow.core.ChainContext;
 
 /**
  * 任务组件
@@ -27,5 +27,5 @@ public interface TaskComponent {
     /**
      * 运行
      */
-    void run(Map<String, Object> model) throws Exception;
+    void run(ChainContext context) throws Throwable;
 }

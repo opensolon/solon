@@ -1,26 +1,28 @@
-package demo.solon.flow.case2;
+package demo.solon.flow.script;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.core.*;
-import org.noear.solon.flow.driver.ComponentFlowDriver;
+import org.noear.solon.flow.driver.ScriptFlowDriver;
 
 /**
  * @author noear 2025/1/10 created
  */
-public class ComTest {
+public class ScriptTest {
     @Test
     public void case1() throws Throwable {
-        SimpleSolonApp solonApp = new SimpleSolonApp(ComTest.class);
-        solonApp.start(null);
-
-        Chain chain = new Chain("c1", "c1", new ComponentFlowDriver());
+        Chain chain = new Chain("c1", "c1", new ScriptFlowDriver(){
+            @Override
+            public void handleTask(ChainContext context, Task task) throws Throwable {
+                System.out.println(task);
+                super.handleTask(context, task);
+            }
+        });
 
         chain.addNode("n1", "n1", ElementType.start);
-        chain.addNode("n2", "n2", ElementType.execute, "a");
-        chain.addNode("n3", "n3", ElementType.execute, "b");
-        chain.addNode("n4", "n4", ElementType.execute, "c");
+        chain.addNode("n2", "n2", ElementType.execute, "111 + a");
+        chain.addNode("n3", "n3", ElementType.execute, "222 + b");
+        chain.addNode("n4", "n4", ElementType.execute, "333 + c");
         chain.addNode("n5", "n5", ElementType.stop);
         chain.addLine("l1", "l1", "n1", "n2");
         chain.addLine("l2", "l2", "n2", "n3");
@@ -50,10 +52,7 @@ public class ComTest {
 
     @Test
     public void case2() throws Throwable {
-        SimpleSolonApp solonApp = new SimpleSolonApp(ComTest.class);
-        solonApp.start(null);
-
-        Chain chain = Chain.parse(ResourceUtil.getResourceAsString("com.json"));
+        Chain chain = Chain.parse(ResourceUtil.getResourceAsString("expr.json"));
 
         FlowExecutor chainExecutor = new FlowExecutor();
 
