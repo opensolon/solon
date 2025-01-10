@@ -16,6 +16,7 @@
 package org.noear.solon.flow.core;
 
 import org.noear.snack.ONode;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +32,13 @@ import java.util.Map;
 public class Chain {
     private final String id;
     private final String title;
+    private final ChainDriver driver;
+
     private final Map<String, Element> elements = new HashMap<>();
 
     private transient Element start;
 
-    public Chain(String id, String title) {
+    public Chain(String id, String title, ChainDriver driver) {
         this.id = id;
 
         if (title == null) {
@@ -43,6 +46,8 @@ public class Chain {
         } else {
             this.title = title;
         }
+
+        this.driver = driver;
     }
 
     /**
@@ -57,6 +62,13 @@ public class Chain {
      */
     public String title() {
         return title;
+    }
+
+    /**
+     * 驱动器
+     * */
+    public ChainDriver driver() {
+        return driver;
     }
 
     /**
@@ -158,7 +170,15 @@ public class Chain {
 
     public static Chain parse(String json) {
         ONode oNode = ONode.load(json);
-        Chain chain = new Chain(oNode.get("id").getString(), oNode.get("title").getString());
+
+        String id = oNode.get("id").getString();
+        String title = oNode.get("id").getString();
+        ChainDriver driver = ClassUtil.tryInstance(oNode.get("driver").getString());
+
+        assert driver != null;
+
+        Chain chain = new Chain(id, title, driver);
+
         for (ONode n1 : oNode.get("elements").ary()) {
             ElementType type = ElementType.nameOf(n1.get("type").getString());
             if (type == ElementType.line) {

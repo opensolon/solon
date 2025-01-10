@@ -5,7 +5,6 @@ import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.core.*;
 import org.noear.solon.flow.driver.ComponentFlowDriver;
-import org.noear.solon.flow.driver.ScriptFlowDriver;
 
 /**
  * @author noear 2025/1/10 created
@@ -16,7 +15,7 @@ public class ComTest {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComTest.class);
         solonApp.start(null);
 
-        Chain chain = new Chain("c1", "c1");
+        Chain chain = new Chain("c1", "c1", new ComponentFlowDriver());
 
         chain.addNode("n1", "n1", ElementType.start);
         chain.addNode("n2", "n2", ElementType.execute, "a");
@@ -28,9 +27,9 @@ public class ComTest {
         chain.addLine("l3", "l3", "n3", "n4");
         chain.addLine("l4", "l4", "n4", "n5", "a=1 && b=1");
 
-        FlowExecutor chainExecutor = new FlowExecutor(new ComponentFlowDriver());
+        FlowExecutor chainExecutor = new FlowExecutor();
 
-        FlowContext context = new FlowContext();
+        ChainContext context = new ChainContext();
         context.set("a", 2);
         context.set("b", 3);
         context.set("c", 4);
@@ -40,7 +39,7 @@ public class ComTest {
         chainExecutor.exec(context, chain);
         System.out.println("------------");
 
-        context = new FlowContext();
+        context = new ChainContext();
         context.set("a", 12);
         context.set("b", 13);
         context.set("c", 14);
@@ -56,15 +55,9 @@ public class ComTest {
 
         Chain chain = Chain.parse(ResourceUtil.getResourceAsString("com.json"));
 
-        FlowExecutor chainExecutor = new FlowExecutor(new ComponentFlowDriver(){
-            @Override
-            public void handleTask(FlowContext context, Task task) throws Exception {
-                System.out.println(task);
-                super.handleTask(context, task);
-            }
-        });
+        FlowExecutor chainExecutor = new FlowExecutor();
 
-        FlowContext context = new FlowContext();
+        ChainContext context = new ChainContext();
         context.set("a", 2);
         context.set("b", 3);
         context.set("c", 4);
@@ -74,7 +67,7 @@ public class ComTest {
         chainExecutor.exec(context, chain);
         System.out.println("------------");
 
-        context = new FlowContext();
+        context = new ChainContext();
         context.set("a", 12);
         context.set("b", 13);
         context.set("c", 14);

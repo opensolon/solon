@@ -25,14 +25,14 @@ import org.noear.solon.flow.core.*;
  * @author noear
  * @since 3.0
  * */
-public class ComponentFlowDriver implements FlowDriver {
+public class ComponentFlowDriver implements ChainDriver {
     @Override
-    public boolean handleCondition(FlowContext context, Condition condition) throws Exception {
+    public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
         return (boolean) Exprs.eval(condition.expr(), context.model());
     }
 
     @Override
-    public void handleTask(FlowContext context, Task task) throws Exception {
+    public void handleTask(ChainContext context, Task task) throws Exception {
         TaskComponent component = Solon.context().getBean(task.expr());
 
         if (component == null) {

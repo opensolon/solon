@@ -18,8 +18,8 @@ package org.noear.solon.flow.driver;
 import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.solon.flow.core.Condition;
-import org.noear.solon.flow.core.FlowContext;
-import org.noear.solon.flow.core.FlowDriver;
+import org.noear.solon.flow.core.ChainContext;
+import org.noear.solon.flow.core.ChainDriver;
 import org.noear.solon.flow.core.Task;
 
 /**
@@ -28,14 +28,14 @@ import org.noear.solon.flow.core.Task;
  * @author noear
  * @since 3.0
  * */
-public class ScriptFlowDriver implements FlowDriver {
+public class ScriptFlowDriver implements ChainDriver {
     @Override
-    public boolean handleCondition(FlowContext context, Condition condition) throws Exception {
+    public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
         return (boolean) Exprs.eval(condition.expr(), context.model());
     }
 
     @Override
-    public void handleTask(FlowContext context, Task task) throws Exception {
+    public void handleTask(ChainContext context, Task task) throws Exception {
         CodeSpec codeSpec = new CodeSpec(task.expr());
         Object[] args = codeSpec.bind(context.model());
         Exprs.eval(codeSpec, args);

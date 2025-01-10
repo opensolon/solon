@@ -11,7 +11,13 @@ import org.noear.solon.flow.driver.ScriptFlowDriver;
 public class ScriptTest {
     @Test
     public void case1() throws Exception {
-        Chain chain = new Chain("c1", "c1");
+        Chain chain = new Chain("c1", "c1", new ScriptFlowDriver(){
+            @Override
+            public void handleTask(ChainContext context, Task task) throws Exception {
+                System.out.println(task);
+                super.handleTask(context, task);
+            }
+        });
 
         chain.addNode("n1", "n1", ElementType.start);
         chain.addNode("n2", "n2", ElementType.execute, "111 + a");
@@ -23,15 +29,9 @@ public class ScriptTest {
         chain.addLine("l3", "l3", "n3", "n4");
         chain.addLine("l4", "l4", "n4", "n5", "a=1 && b=1");
 
-        FlowExecutor chainExecutor = new FlowExecutor(new ScriptFlowDriver(){
-            @Override
-            public void handleTask(FlowContext context, Task task) throws Exception {
-                System.out.println(task);
-                super.handleTask(context, task);
-            }
-        });
+        FlowExecutor chainExecutor = new FlowExecutor();
 
-        FlowContext context = new FlowContext();
+        ChainContext context = new ChainContext();
         context.set("a", 2);
         context.set("b", 3);
         context.set("c", 4);
@@ -41,7 +41,7 @@ public class ScriptTest {
         chainExecutor.exec(context, chain);
         System.out.println("------------");
 
-        context = new FlowContext();
+        context = new ChainContext();
         context.set("a", 12);
         context.set("b", 13);
         context.set("c", 14);
@@ -54,15 +54,9 @@ public class ScriptTest {
     public void case2() throws Exception {
         Chain chain = Chain.parse(ResourceUtil.getResourceAsString("expr.json"));
 
-        FlowExecutor chainExecutor = new FlowExecutor(new ScriptFlowDriver(){
-            @Override
-            public void handleTask(FlowContext context, Task task) throws Exception {
-                System.out.println(task);
-                super.handleTask(context, task);
-            }
-        });
+        FlowExecutor chainExecutor = new FlowExecutor();
 
-        FlowContext context = new FlowContext();
+        ChainContext context = new ChainContext();
         context.set("a", 2);
         context.set("b", 3);
         context.set("c", 4);
@@ -72,7 +66,7 @@ public class ScriptTest {
         chainExecutor.exec(context, chain);
         System.out.println("------------");
 
-        context = new FlowContext();
+        context = new ChainContext();
         context.set("a", 12);
         context.set("b", 13);
         context.set("c", 14);

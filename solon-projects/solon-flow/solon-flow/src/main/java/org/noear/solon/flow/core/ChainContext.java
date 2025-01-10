@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author noear
  * @since 3.0
  */
-public class FlowContext {
+public class ChainContext {
     private final Map<String, AtomicInteger> counterMap = new HashMap<>();
     private final Map<String, Object> model = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class FlowContext {
     /**
      * 模型设值
      */
-    public FlowContext set(String key, Object value) {
+    public ChainContext set(String key, Object value) {
         model.put(key, value);
         return this;
     }
