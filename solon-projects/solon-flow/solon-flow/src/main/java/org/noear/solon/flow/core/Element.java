@@ -230,9 +230,9 @@ public class Element {
                     ", title='" + title + '\'' +
                     ", type=" + type +
                     ", meta=" + meta +
-                    ", prveId=" + prveId +
-                    ", nextId=" + nextId +
-                    ", conditionExpr=" + conditionExpr +
+                    ", prveId='" + prveId + '\'' +
+                    ", nextId='" + nextId + '\'' +
+                    ", conditionExpr='" + conditionExpr + '\'' +
                     '}';
 
         } else if (type == ElementType.execute) {
@@ -241,7 +241,7 @@ public class Element {
                     ", title='" + title + '\'' +
                     ", type=" + type +
                     ", meta=" + meta +
-                    ", taskExpr=" + taskExpr +
+                    ", taskExpr='" + taskExpr + '\'' +
                     '}';
         } else {
             return "{" +
