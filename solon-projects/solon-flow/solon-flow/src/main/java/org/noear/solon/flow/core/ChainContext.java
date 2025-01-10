@@ -38,12 +38,12 @@ public interface ChainContext {
     int counterIncr(String id);
 
     /**
-     * 处理条件
+     * 处理连线条件
      */
-    boolean handleCondition(Condition condition) throws Exception;
+    boolean handleCondition(Element line, Condition condition) throws Exception;
 
     /**
-     * 处理任务
+     * 处理执行任务
      */
-    void handleTask(Task task) throws Exception;
+    void handleTask(Element node, Task task) throws Exception;
 }

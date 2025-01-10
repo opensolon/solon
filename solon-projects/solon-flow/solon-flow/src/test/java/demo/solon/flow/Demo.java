@@ -19,7 +19,7 @@ public class Demo {
         chain.addLine("l2", "l2", "n2", "n3");
 
         ChainExecutor chainExecutor = new ChainExecutor();
-        chainExecutor.exec(chain, new ChainContextImpl());
+        chainExecutor.exec(new ChainContextImpl(), chain);
     }
 
     public void case2() throws Exception {

@@ -62,4 +62,9 @@ public class Condition {
     public boolean isEmpty() {
         return Utils.isEmpty(expr);
     }
+
+    @Override
+    public String toString() {
+        return expr;
+    }
 }

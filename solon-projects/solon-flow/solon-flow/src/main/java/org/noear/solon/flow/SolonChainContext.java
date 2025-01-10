@@ -2,6 +2,7 @@ package org.noear.solon.flow;
 
 import org.noear.solon.flow.core.ChainContext;
 import org.noear.solon.flow.core.Condition;
+import org.noear.solon.flow.core.Element;
 import org.noear.solon.flow.core.Task;
 
 /**
@@ -25,12 +26,12 @@ public class SolonChainContext implements ChainContext {
     }
 
     @Override
-    public boolean handleCondition(Condition condition) throws Exception {
+    public boolean handleCondition(Element line, Condition condition) throws Exception {
         return false;
     }
 
     @Override
-    public void handleTask(Task task) throws Exception {
+    public void handleTask(Element node, Task task) throws Exception {
 
     }
 
