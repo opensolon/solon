@@ -65,6 +65,14 @@ public class Chain {
         return elements;
     }
 
+
+    /**
+     * 添加节点
+     */
+    public void addNode(String id, String title, ElementType type) {
+        addNode(id, title, type, null);
+    }
+
     /**
      * 添加节点
      */
@@ -79,7 +87,7 @@ public class Chain {
      * 添加线
      */
     public void addLine(String id, String title, String prveId, String nextId) {
-        addElement(id, title, ElementType.line, prveId, nextId, null, null);
+        addLine(id, title, prveId, nextId, null);
     }
 
     /**

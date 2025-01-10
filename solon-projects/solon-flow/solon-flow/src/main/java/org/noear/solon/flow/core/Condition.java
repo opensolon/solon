@@ -26,7 +26,11 @@ import org.noear.solon.Utils;
  * */
 public class Condition {
     private final String expr;
-    private Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
+
+    /**
+     * 附件（按需定制使用）
+     */
+    public Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
 
     /**
      * @param conditionsExpr 条件表达式
@@ -40,20 +44,6 @@ public class Condition {
      */
     public String expr() {
         return expr;
-    }
-
-    /**
-     * 附件
-     */
-    public <T> T attachment() {
-        return (T) attachment;
-    }
-
-    /**
-     * 附件
-     */
-    public <T> void attachment(T attachment) {
-        this.attachment = attachment;
     }
 
     /**
