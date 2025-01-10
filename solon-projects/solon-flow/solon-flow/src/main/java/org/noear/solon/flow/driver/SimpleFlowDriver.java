@@ -27,7 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 组件流驱动器
+ * 简单的流驱动器
  *
  * @author noear
  * @since 3.0
