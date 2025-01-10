@@ -27,13 +27,13 @@ public class ChainContextImpl implements ChainContext {
     }
 
     @Override
-    public boolean handleCondition(Line line, Condition condition) throws Exception {
+    public boolean handleCondition(Element line, Condition condition) throws Exception {
         System.out.println(condition);
         return true;
     }
 
     @Override
-    public void handleTask(Node node, Task task) throws Exception {
+    public void handleTask(Element node, Task task) throws Exception {
         System.out.println(task);
     }
 }

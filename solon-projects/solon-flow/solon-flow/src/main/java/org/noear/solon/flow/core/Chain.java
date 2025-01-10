@@ -93,16 +93,7 @@ public class Chain {
      * 添加元素
      */
     protected void addElement(String id, String title, ElementType type, String prveId, String nextId, String conditions, String tasks) {
-        Element element = new Element(this);
-
-        element.conditionExpr = conditions;
-        element.taskExpr = tasks;
-
-        element.id = id;
-        element.title = title;
-        element.type = type;
-        element.prveId = prveId; //仅line才有
-        element.nextId = nextId; //仅line才有
+        Element element = new Element(this, id, title, type, prveId, nextId, conditions, tasks);
 
         elements.put(element.id(), element);
 

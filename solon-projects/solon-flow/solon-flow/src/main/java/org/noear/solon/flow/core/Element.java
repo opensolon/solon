@@ -41,25 +41,40 @@ import java.util.List;
  * @author noear
  * @since 3.0
  * */
-public class Element implements Node,Line{
+public class Element {
     private final Chain chain;
+    private final String id;
+    private final String title;
+    private final ElementType type;      //元素类型
+
+    private final String prveId; //仅line才有
+    private final String nextId; //仅line才有
+    private final String conditionExpr;
+
+    private final String taskExpr;
 
     private List<Element> prveNodes, nextNodes, prveLines, nextLines;
     private Condition condition;
     private Task task;
 
-    protected Element(Chain chain) {
+    protected Element(Chain chain, String id, String title, ElementType type, String prveId, String nextId, String conditionExpr, String taskExpr) {
         this.chain = chain;
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.prveId = prveId;
+        this.nextId = nextId;
+        this.conditionExpr = conditionExpr;
+        this.taskExpr = taskExpr;
     }
 
-    protected String conditionExpr;
-    protected String taskExpr;
 
-    protected String id;
-    protected String title;
-    protected ElementType type;      //元素类型
-    protected String prveId; //仅line才有
-    protected String nextId; //仅line才有
+    /**
+     * 所属链
+     */
+    public Chain chain() {
+        return chain;
+    }
 
     /**
      * 标识
@@ -96,12 +111,6 @@ public class Element implements Node,Line{
         return nextId;
     }
 
-    /**
-     * 链
-     */
-    public Chain chain() {
-        return chain;
-    }
 
     /**
      * 前面的节点
