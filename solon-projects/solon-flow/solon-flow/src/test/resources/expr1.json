@@ -10,6 +10,6 @@
     { "id": "l1", "type": "line", "prveId": "n1", "nextId": "n2"},
     { "id": "l2", "type": "line", "prveId": "n2", "nextId": "n3"},
     { "id": "l3", "type": "line", "prveId": "n3", "nextId": "n4"},
-    { "id": "l4", "type": "line", "prveId": "n4", "nextId": "n5", "condition": "a>1 && b>1"}
+    { "id": "l4", "type": "line", "prveId": "n4", "nextId": "n5"}
   ]
 }

@@ -1,4 +1,4 @@
-package demo.solon.flow.com;
+package features.flow.com;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
@@ -38,7 +38,7 @@ public class ComTest {
         chain.addLine("l1", "l1", "n1", "n2");
         chain.addLine("l2", "l2", "n2", "n3");
         chain.addLine("l3", "l3", "n3", "n4");
-        chain.addLine("l4", "l4", "n4", "n5", null,"a=1 && b=1");
+        chain.addLine("l4", "l4", "n4", "n5");
 
         FlowExecutor chainExecutor = new FlowExecutor();
 

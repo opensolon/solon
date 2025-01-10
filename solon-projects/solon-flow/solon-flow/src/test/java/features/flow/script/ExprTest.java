@@ -1,4 +1,4 @@
-package demo.solon.flow.script;
+package features.flow.script;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.ResourceUtil;
