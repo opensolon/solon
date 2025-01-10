@@ -42,7 +42,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  * */
-public class Element {
+public class Element implements Node,Line{
     private final Chain chain;
 
     private List<Element> prveNodes, nextNodes, prveLines, nextLines;

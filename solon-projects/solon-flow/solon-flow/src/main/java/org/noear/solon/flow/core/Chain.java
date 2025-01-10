@@ -27,8 +27,29 @@ import java.util.Map;
  * @since 3.0
  * */
 public class Chain {
+    private String id;
+    private String title;
     private Element start;
     private Map<String, Element> elements = new HashMap<>();
+
+    public Chain(String id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    /**
+     * 标识
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * 显示标题
+     */
+    public String title() {
+        return title;
+    }
 
     /**
      * 获取起始节点

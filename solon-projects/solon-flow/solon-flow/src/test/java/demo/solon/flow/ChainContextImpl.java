@@ -1,9 +1,6 @@
 package demo.solon.flow;
 
-import org.noear.solon.flow.core.Condition;
-import org.noear.solon.flow.core.Element;
-import org.noear.solon.flow.core.Task;
-import org.noear.solon.flow.core.ChainContext;
+import org.noear.solon.flow.core.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,13 +27,13 @@ public class ChainContextImpl implements ChainContext {
     }
 
     @Override
-    public boolean handleCondition(Element line, Condition condition) throws Exception {
+    public boolean handleCondition(Line line, Condition condition) throws Exception {
         System.out.println(condition);
         return true;
     }
 
     @Override
-    public void handleTask(Element node, Task task) throws Exception {
+    public void handleTask(Node node, Task task) throws Exception {
         System.out.println(task);
     }
 }

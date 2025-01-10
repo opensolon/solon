@@ -40,10 +40,10 @@ public interface ChainContext {
     /**
      * 处理连线条件
      */
-    boolean handleCondition(Element line, Condition condition) throws Exception;
+    boolean handleCondition(Line line, Condition condition) throws Exception;
 
     /**
      * 处理执行任务
      */
-    void handleTask(Element node, Task task) throws Exception;
+    void handleTask(Node node, Task task) throws Exception;
 }
