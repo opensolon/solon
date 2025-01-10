@@ -35,7 +35,6 @@
             <groupId>org.noear</groupId>
             <artifactId>liquor-eval</artifactId>
             <version>${liquor.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

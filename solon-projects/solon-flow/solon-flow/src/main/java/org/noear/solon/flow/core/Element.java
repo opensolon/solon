@@ -42,7 +42,8 @@ import java.util.List;
  * @since 3.0
  * */
 public class Element {
-    private final Chain chain;
+    private final transient Chain chain;
+
     private final String id;
     private final String title;
     private final ElementType type;      //元素类型
@@ -60,7 +61,13 @@ public class Element {
     protected Element(Chain chain, String id, String title, ElementType type, String prveId, String nextId, String conditionExpr, String taskExpr) {
         this.chain = chain;
         this.id = id;
-        this.title = title;
+
+        if (title == null) {
+            this.title = id;
+        } else {
+            this.title = title;
+        }
+
         this.type = type;
         this.prveId = prveId;
         this.nextId = nextId;

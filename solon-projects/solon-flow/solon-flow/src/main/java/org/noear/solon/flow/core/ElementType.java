@@ -61,10 +61,21 @@ public enum ElementType {
         this.code = code;
     }
 
-    public static ElementType valueOf(int code) {
+    public static ElementType codeOf(int code) {
         ElementType[] values = ElementType.values();
         for (ElementType v : values) {
             if (v.code == code) {
+                return v;
+            }
+        }
+
+        return start;
+    }
+
+    public static ElementType nameOf(String name) {
+        ElementType[] values = ElementType.values();
+        for (ElementType v : values) {
+            if (v.name().equals(name)) {
                 return v;
             }
         }

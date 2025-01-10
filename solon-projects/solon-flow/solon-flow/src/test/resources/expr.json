@@ -1,0 +1,14 @@
+{
+  "id": "c1",
+  "elements": [
+    { "id": "n1", "type": "start"},
+    { "id": "n2", "type": "execute", "task":"111 + a"},
+    { "id": "n3", "type": "execute", "task":"222 + b"},
+    { "id": "n4", "type": "execute", "task":"333 + c"},
+    { "id": "n5", "type": "stop"},
+    { "id": "l1", "type": "line", "prveId": "n1", "nextId": "n2"},
+    { "id": "l2", "type": "line", "prveId": "n2", "nextId": "n3"},
+    { "id": "l3", "type": "line", "prveId": "n3", "nextId": "n4"},
+    { "id": "l4", "type": "line", "prveId": "n4", "nextId": "n5", "condition": "a>1 && b>1"}
+  ]
+}
