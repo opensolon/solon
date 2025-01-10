@@ -30,12 +30,20 @@ public class ChainContext implements Serializable {
     private final Map<String, AtomicInteger> counterMap = new LinkedHashMap<>();
     private final Map<String, Object> paramMap = new LinkedHashMap<>();
     private final Map<String, Object> attrMap = new LinkedHashMap<>();
+    private boolean interrupted = false;
 
     /**
-     * 是否中断
+     * 是否已中断
      */
-    public boolean isInterrupt() {
-        return false;
+    public boolean isInterrupted() {
+        return interrupted;
+    }
+
+    /**
+     * 中断（执行中可中断流）
+     */
+    public void interrupt(boolean interrupted) {
+        this.interrupted = interrupted;
     }
 
     /**

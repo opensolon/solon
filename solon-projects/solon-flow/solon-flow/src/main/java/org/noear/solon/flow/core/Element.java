@@ -18,6 +18,7 @@ package org.noear.solon.flow.core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /*
 * 存储设计::
@@ -47,6 +48,7 @@ public class Element {
     private final String id;
     private final String title;
     private final ElementType type;      //元素类型
+    private final Map<String, Object> meta; //元信息
 
     private final String prveId; //仅line才有
     private final String nextId; //仅line才有
@@ -58,17 +60,14 @@ public class Element {
     private Condition condition;
     private Task task;
 
-    protected Element(Chain chain, String id, String title, ElementType type, String prveId, String nextId, String conditionExpr, String taskExpr) {
+    protected Element(Chain chain, String id, String title, ElementType type, Map<String, Object> meta, String prveId, String nextId, String conditionExpr, String taskExpr) {
         this.chain = chain;
+
         this.id = id;
-
-        if (title == null) {
-            this.title = id;
-        } else {
-            this.title = title;
-        }
-
+        this.title = (title == null ? id : title);
         this.type = type;
+        this.meta = meta;
+
         this.prveId = prveId;
         this.nextId = nextId;
         this.conditionExpr = conditionExpr;
@@ -221,5 +220,36 @@ public class Element {
         }
 
         return task;
+    }
+
+    @Override
+    public String toString() {
+        if (type == ElementType.line) {
+            return "{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", type=" + type +
+                    ", meta=" + meta +
+                    ", prveId=" + prveId +
+                    ", nextId=" + nextId +
+                    ", conditionExpr=" + conditionExpr +
+                    '}';
+
+        } else if (type == ElementType.execute) {
+            return "{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", type=" + type +
+                    ", meta=" + meta +
+                    ", taskExpr=" + taskExpr +
+                    '}';
+        } else {
+            return "{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", type=" + type +
+                    ", meta=" + meta +
+                    '}';
+        }
     }
 }

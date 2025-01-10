@@ -1,11 +1,11 @@
 {
   "id": "c1",
-  "driver": "org.noear.solon.flow.driver.ScriptFlowDriver",
+  "driver": "org.noear.solon.flow.driver.SimpleFlowDriver",
   "elements": [
     { "id": "n1", "type": "start"},
-    { "id": "n2", "type": "execute", "task":"111 + a"},
-    { "id": "n3", "type": "execute", "task":"222 + b"},
-    { "id": "n4", "type": "execute", "task":"333 + c"},
+    { "id": "n2", "type": "execute", "meta":{"a": 1,"b": []}, "task":"context.result=111 + a;"},
+    { "id": "n3", "type": "execute", "task":"context.result=222 + b;"},
+    { "id": "n4", "type": "execute", "task":"context.result=333 + c;"},
     { "id": "n5", "type": "stop"},
     { "id": "l1", "type": "line", "prveId": "n1", "nextId": "n2"},
     { "id": "l2", "type": "line", "prveId": "n2", "nextId": "n3"},

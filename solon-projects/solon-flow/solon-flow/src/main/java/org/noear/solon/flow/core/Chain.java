@@ -16,7 +16,9 @@
 package org.noear.solon.flow.core;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.flow.driver.SimpleFlowDriver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,18 +38,17 @@ public class Chain {
 
     private final Map<String, Element> elements = new HashMap<>();
 
-    private transient Element start;
+    private Element start;
+
+    public Chain(String id) {
+        this(id, null, null);
+    }
 
     public Chain(String id, String title, ChainDriver driver) {
         this.id = id;
+        this.title = (title == null ? id : title);
 
-        if (title == null) {
-            this.title = id;
-        } else {
-            this.title = title;
-        }
-
-        this.driver = driver;
+        this.driver = (driver == null ? SimpleFlowDriver.getInstance() : driver);
     }
 
     /**
@@ -66,7 +67,7 @@ public class Chain {
 
     /**
      * 驱动器
-     * */
+     */
     public ChainDriver driver() {
         return driver;
     }
@@ -90,38 +91,38 @@ public class Chain {
      * 添加节点
      */
     public void addNode(String id, String title, ElementType type) {
-        addNode(id, title, type, null);
+        addNode(id, title, type, null, null);
     }
 
     /**
      * 添加节点
      */
-    public void addNode(String id, String title, ElementType type, String taskExpr) {
+    public void addNode(String id, String title, ElementType type, Map<String, Object> meta, String taskExpr) {
         //不能是线
         assert type != ElementType.line;
 
-        addElement(id, title, type, null, null, null, taskExpr);
+        addElement(id, title, type, null, null, meta, null, taskExpr);
     }
 
     /**
      * 添加线
      */
     public void addLine(String id, String title, String prveId, String nextId) {
-        addLine(id, title, prveId, nextId, null);
+        addLine(id, title, prveId, nextId, null, null);
     }
 
     /**
      * 添加线
      */
-    public void addLine(String id, String title, String prveId, String nextId, String conditionExpr) {
-        addElement(id, title, ElementType.line, prveId, nextId, conditionExpr, null);
+    public void addLine(String id, String title, String prveId, String nextId, Map<String, Object> meta, String conditionExpr) {
+        addElement(id, title, ElementType.line, prveId, nextId, meta, conditionExpr, null);
     }
 
     /**
      * 添加元素
      */
-    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, String conditionExpr, String taskExpr) {
-        Element element = new Element(this, id, title, type, prveId, nextId, conditionExpr, taskExpr);
+    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, Map<String, Object> meta, String conditionExpr, String taskExpr) {
+        Element element = new Element(this, id, title, type, meta, prveId, nextId, conditionExpr, taskExpr);
 
         elements.put(element.id(), element);
 
@@ -173,9 +174,8 @@ public class Chain {
 
         String id = oNode.get("id").getString();
         String title = oNode.get("id").getString();
-        ChainDriver driver = ClassUtil.tryInstance(oNode.get("driver").getString());
-
-        assert driver != null;
+        String driverStr = oNode.get("driver").getString();
+        ChainDriver driver = (Utils.isEmpty(driverStr) ? null : ClassUtil.tryInstance(driverStr));
 
         Chain chain = new Chain(id, title, driver);
 
@@ -186,11 +186,13 @@ public class Chain {
                         n1.get("title").getString(),
                         n1.get("prveId").getString(),
                         n1.get("nextId").getString(),
+                        n1.get("meta").toObject(Map.class),
                         n1.get("condition").getString());
             } else {
                 chain.addNode(n1.get("id").getString(),
                         n1.get("title").getString(),
                         type,
+                        n1.get("meta").toObject(Map.class),
                         n1.get("task").getString());
             }
         }
