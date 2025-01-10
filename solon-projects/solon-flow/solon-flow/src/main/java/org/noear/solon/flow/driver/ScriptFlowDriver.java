@@ -22,6 +22,9 @@ import org.noear.solon.flow.core.ChainContext;
 import org.noear.solon.flow.core.ChainDriver;
 import org.noear.solon.flow.core.Task;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 脚本流驱动器
  *
@@ -36,8 +39,12 @@ public class ScriptFlowDriver implements ChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
+        Map<String, Object> argsMap = new LinkedHashMap<>();
+        argsMap.put("context", context);
+        argsMap.putAll(context.paramMap());
+
         CodeSpec codeSpec = new CodeSpec(task.expr());
-        Object[] args = codeSpec.bind(context.paramMap());
+        Object[] args = codeSpec.bind(argsMap);
         Exprs.eval(codeSpec, args);
     }
 }

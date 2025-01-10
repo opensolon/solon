@@ -37,7 +37,7 @@ public class ComponentFlowDriver implements ChainDriver {
         TaskComponent component = Solon.context().getBean(task.expr());
 
         if (component == null) {
-            throw new IllegalStateException("task '" + task.expr() + "' not exist");
+            throw new IllegalStateException("The task '" + task.expr() + "' not exist");
         } else {
             component.run(context);
         }

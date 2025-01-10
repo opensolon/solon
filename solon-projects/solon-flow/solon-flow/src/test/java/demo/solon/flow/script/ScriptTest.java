@@ -31,9 +31,9 @@ public class ScriptTest {
         FlowExecutor chainExecutor = new FlowExecutor();
 
         ChainContext context = new ChainContext();
-        context.set("a", 2);
-        context.set("b", 3);
-        context.set("c", 4);
+        context.paramSet("a", 2);
+        context.paramSet("b", 3);
+        context.paramSet("c", 4);
 
         //完整执行
 
@@ -41,9 +41,9 @@ public class ScriptTest {
         System.out.println("------------");
 
         context = new ChainContext();
-        context.set("a", 12);
-        context.set("b", 13);
-        context.set("c", 14);
+        context.paramSet("a", 12);
+        context.paramSet("b", 13);
+        context.paramSet("c", 14);
 
         //执行一层
         chainExecutor.exec(context, chain, "n2", 1);

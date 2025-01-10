@@ -15,6 +15,7 @@
  */
 package org.noear.solon.flow.core;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,13 +26,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author noear
  * @since 3.0
  */
-public class ChainContext {
+public class ChainContext implements Serializable {
     private final Map<String, AtomicInteger> counterMap = new LinkedHashMap<>();
     private final Map<String, Object> paramMap = new LinkedHashMap<>();
-
-    public ChainContext(){
-        paramMap.put("context", this);
-    }
+    private final Map<String, Object> attrMap = new LinkedHashMap<>();
 
     /**
      * 是否中断
@@ -64,17 +62,39 @@ public class ChainContext {
     }
 
     /**
-     * 获取参数
+     * 参数获取
      */
-    public Object get(String key) {
+    public Object param(String key) {
         return paramMap.get(key);
     }
 
     /**
-     * 设置参数
+     * 参数设置
      */
-    public ChainContext set(String key, Object value) {
+    public ChainContext paramSet(String key, Object value) {
         paramMap.put(key, value);
+        return this;
+    }
+
+    /**
+     * 属性集合
+     */
+    public Map<String, Object> attrMap() {
+        return attrMap;
+    }
+
+    /**
+     * 属性获取
+     */
+    public Object attr(String key) {
+        return attrMap.get(key);
+    }
+
+    /**
+     * 属性设置
+     */
+    public ChainContext attrSet(String key, Object value) {
+        attrMap.put(key, value);
         return this;
     }
 
