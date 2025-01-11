@@ -43,10 +43,6 @@ public enum NodeType {
      */
     parallel(4),
     /**
-     * 汇聚网关（等待）
-     */
-    converge(5),
-    /**
      * 结束
      */
     end(9);

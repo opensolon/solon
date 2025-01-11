@@ -67,6 +67,14 @@ public class ChainContext implements Serializable {
     }
 
     /**
+     * 计数器设置
+     */
+    public void counterSet(String id, int value) {
+        counters.computeIfAbsent(id, k -> new AtomicInteger(0))
+                .set(value);
+    }
+
+    /**
      * 计数器增量
      */
     public int counterIncr(String id) {

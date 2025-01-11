@@ -15,8 +15,10 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.Utils;
 import org.noear.solon.lang.Preview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,14 +64,20 @@ public class FlowEngine {
      * 检查条件
      */
     private boolean condition_check(ChainContext context, Chain chain, Condition condition) throws Throwable {
-        return chain.driver().handleCondition(context, condition);
+        if (Utils.isNotEmpty(condition.expr())) {
+            return chain.driver().handleCondition(context, condition);
+        } else {
+            return false;
+        }
     }
 
     /**
      * 执行任务
      */
     private void task_exec(ChainContext context, Chain chain, Task task) throws Throwable {
-        chain.driver().handleTask(context, task);
+        if (Utils.isNotEmpty(task.expr())) {
+            chain.driver().handleTask(context, task);
+        }
     }
 
     /**
@@ -89,6 +97,9 @@ public class FlowEngine {
 
         switch (node.type()) {
             case start:
+                //执行任务
+                task_exec(context, chain, node.task());
+                //转到下个节点
                 node_run(context, chain, node.nextNode(), depth);
                 break;
             case end:
@@ -111,9 +122,6 @@ public class FlowEngine {
             case parallel: //并行网关（全选）
                 parallel_run(context, chain, node, depth);
                 break;
-            case converge:
-                converge_run(context, chain, node, depth);
-                break;
         }
     }
 
@@ -121,23 +129,36 @@ public class FlowEngine {
      * 运行包容网关
      */
     private void inclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
-        List<Link> lines = node.nextLines();
-        Link def_line = null;
-        boolean def_enabled = true;
+        final String token_key = "$inclusive_size";
 
-        for (Link l : lines) {
+        //流入
+        int count = context.counterIncr(node.id());//运行次数累计
+        if (context.counterGet(token_key) > count) { //等待所有支线计数完成
+            return;
+        }
+
+        //流出
+        Link def_line = null;
+        List<Link> matched_lines = new ArrayList<>();
+
+        for (Link l : node.nextLines()) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
                 if (condition_check(context, chain, l.condition())) {
-                    //执行所有满足条件（并禁用默认）
-                    def_enabled = false;
-                    node_run(context, chain, l.nextNode(), depth);
+                    matched_lines.add(l);
                 }
             }
         }
 
-        if (def_enabled && def_line != null) {
+
+        context.counterSet(token_key, matched_lines.size());
+        if (matched_lines.size() > 0) {
+            //执行所有满足条件
+            for (Link l : matched_lines) {
+                node_run(context, chain, l.nextNode(), depth);
+            }
+        } else if (def_line != null) {
             //如果有默认
             node_run(context, chain, def_line.nextNode(), depth);
         }
@@ -171,20 +192,15 @@ public class FlowEngine {
      * 运行并行网关
      */
     private void parallel_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
-        for (Node n : node.nextNodes()) {
-            node_run(context, chain, n, depth);
-        }
-    }
-
-    /**
-     * 运行汇聚网关//起到等待和卡位的作用；
-     */
-    private void converge_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+        //流入
         int count = context.counterIncr(node.id());//运行次数累计
-        if (node.prveLines().size() > count) { //等待所有支线计数完成
+        if (node.prveLinesCount(null) > count) { //等待所有支线计数完成
             return;
         }
 
-        node_run(context, chain, node.nextNode(), depth); //然后到下一个节点
+        //流出
+        for (Node n : node.nextNodes()) {
+            node_run(context, chain, n, depth);
+        }
     }
 }

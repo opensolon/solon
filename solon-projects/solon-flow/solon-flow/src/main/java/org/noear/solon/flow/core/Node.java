@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.core.util.PredicateEx;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -146,6 +148,23 @@ public class Node {
         }
 
         return prveLines;
+    }
+
+    /**
+     * 前面的线数量
+     */
+    public int prveLinesCount(PredicateEx<Link> filter) throws Throwable {
+        if (filter == null) {
+            return prveLines().size();
+        } else {
+            int size = 0;
+            for (Link l : prveLines()) {
+                if (filter.test(l)) {
+                    size++;
+                }
+            }
+            return size;
+        }
     }
 
     /**

@@ -59,12 +59,39 @@ public class ScriptJsonTest {
         flowEngine.eval(context, chain);
         assert null == context.result;
 
+        context = new ChainContext();
         context.paramSet("day", 3);
         flowEngine.eval(context, chain);
         assert context.result.equals(3);
 
+        context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval(context, chain);
         assert context.result.equals(7);
+    }
+
+    @Test
+    public void case4_inclusive() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case4.json");
+
+        ChainContext context = new ChainContext();
+        context.paramSet("day", 1);
+        flowEngine.eval(context, chain);
+        assert context.result.equals(0);
+
+        context = new ChainContext();
+        context.paramSet("day", 3);
+        flowEngine.eval(context, chain);
+        assert context.result.equals(3);
+    }
+
+    @Test
+    public void case4_inclusive2() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case4.json");
+
+        ChainContext context = new ChainContext();
+        context.paramSet("day", 7);
+        flowEngine.eval(context, chain);
+        assert context.result.equals(10);
     }
 }
