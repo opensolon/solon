@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.lang.Preview;
+
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public class ChainContext implements Serializable {
     //存放记数器（汇聚网关会用法）
     private final Map<String, AtomicInteger> counters = new LinkedHashMap<>();

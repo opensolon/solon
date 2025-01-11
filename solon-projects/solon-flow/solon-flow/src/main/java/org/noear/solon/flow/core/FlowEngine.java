@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.lang.Preview;
+
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  * */
+@Preview("3.0")
 public class FlowEngine {
     /**
      * 评估

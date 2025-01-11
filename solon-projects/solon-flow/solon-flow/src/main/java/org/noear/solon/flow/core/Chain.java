@@ -21,6 +21,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
+import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +33,7 @@ import java.util.*;
  * @author noear
  * @since 3.0
  * */
+@Preview("3.0")
 public class Chain {
     private final String id;
     private final String title;

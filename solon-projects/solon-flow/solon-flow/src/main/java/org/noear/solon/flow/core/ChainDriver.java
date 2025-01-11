@@ -15,12 +15,15 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * 流驱动器
  *
  * @author noear
  * @since 3.0
  * */
+@Preview("3.0")
 public interface ChainDriver {
     /**
      * 处理连线条件
