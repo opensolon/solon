@@ -1,0 +1,17 @@
+<flow>
+    <tasks>
+        <task id="a" class="...."></task>
+    </tasks>
+    <chain id="c1" driver="org.noear.solon.flow.driver.SimpleFlowDriver">
+        <start id="n1">
+            <links>
+                <link toId="n2"/>
+            </links>
+        </start>
+        <execute id="n2">
+            <links>
+                <link toId="n3"/>
+            </links>
+        </execute>
+    </chain>
+</flow>

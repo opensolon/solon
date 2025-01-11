@@ -21,35 +21,31 @@ package org.noear.solon.flow.core;
  * @author noear
  * @since 3.0
  * */
-public enum ElementType {
+public enum NodeType {
     /**
      * 开始
      */
     start(0),
     /**
-     * 线
-     */
-    line(1),
-    /**
      * 执行节点
      */
-    execute(2),
+    execute(1),
     /**
-     * 包容网关
+     * 包容网关（多选）
      */
-    inclusive(3),
+    inclusive(2),
     /**
-     * 排他网关
+     * 排他网关（单选）
      */
-    exclusive(4),
+    exclusive(3),
     /**
-     * 并行网关
+     * 并行网关（全选）
      */
-    parallel(5),
+    parallel(4),
     /**
-     * 汇聚网关
+     * 汇聚网关（等待）
      */
-    converge(6),
+    converge(5),
     /**
      * 结束
      */
@@ -61,13 +57,13 @@ public enum ElementType {
         return code;
     }
 
-    ElementType(int code) {
+    NodeType(int code) {
         this.code = code;
     }
 
-    public static ElementType codeOf(int code) {
-        ElementType[] values = ElementType.values();
-        for (ElementType v : values) {
+    public static NodeType codeOf(int code) {
+        NodeType[] values = NodeType.values();
+        for (NodeType v : values) {
             if (v.code == code) {
                 return v;
             }
@@ -76,9 +72,9 @@ public enum ElementType {
         return start;
     }
 
-    public static ElementType nameOf(String name) {
-        ElementType[] values = ElementType.values();
-        for (ElementType v : values) {
+    public static NodeType nameOf(String name) {
+        NodeType[] values = NodeType.values();
+        for (NodeType v : values) {
             if (v.name().equals(name)) {
                 return v;
             }

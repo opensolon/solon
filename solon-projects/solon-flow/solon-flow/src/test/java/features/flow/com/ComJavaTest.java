@@ -6,15 +6,16 @@ import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.core.*;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
  * @author noear 2025/1/10 created
  */
-public class ComTest {
+public class ComJavaTest {
     @Test
     public void case1() throws Throwable {
-        SimpleSolonApp solonApp = new SimpleSolonApp(ComTest.class);
+        SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
         Chain chain = new Chain("c1", "c1", new SimpleFlowDriver(){
@@ -30,15 +31,11 @@ public class ComTest {
             }
         });
 
-        chain.addNode("n1", "n1", ElementType.start);
-        chain.addNode("n2", "n2", ElementType.execute, new HashMap<>(), "@a");
-        chain.addNode("n3", "n3", ElementType.execute,null, "@b");
-        chain.addNode("n4", "n4", ElementType.execute,null, "@c");
-        chain.addNode("n5", "n5", ElementType.end);
-        chain.addLine("l1", "l1", "n1", "n2");
-        chain.addLine("l2", "l2", "n2", "n3");
-        chain.addLine("l3", "l3", "n3", "n4");
-        chain.addLine("l4", "l4", "n4", "n5");
+        chain.addNode("n1", "n1", NodeType.start, Arrays.asList(new LinkDecl("n2")));
+        chain.addNode("n2", "n2", NodeType.execute, Arrays.asList(new LinkDecl("n3")), new HashMap<>(), "@a");
+        chain.addNode("n3", "n3", NodeType.execute, Arrays.asList(new LinkDecl("n4")), null, "@b");
+        chain.addNode("n4", "n4", NodeType.execute, Arrays.asList(new LinkDecl("n5")), null, "@c");
+        chain.addNode("n5", "n5", NodeType.end, null);
 
         FlowEngine flowEngine = new FlowEngine();
 
@@ -65,33 +62,5 @@ public class ComTest {
 
 
         assert "n2".equals(context.result);
-    }
-
-    @Test
-    public void case2() throws Throwable {
-        SimpleSolonApp solonApp = new SimpleSolonApp(ComTest.class);
-        solonApp.start(null);
-
-        Chain chain = Chain.parse(ResourceUtil.getResourceAsString("com.json"));
-
-        FlowEngine flowEngine = new FlowEngine();
-
-        ChainContext context = new ChainContext();
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
-
-        //完整执行
-
-        flowEngine.exec(context, chain);
-        System.out.println("------------");
-
-        context = new ChainContext();
-        context.paramSet("a", 12);
-        context.paramSet("b", 13);
-        context.paramSet("c", 14);
-
-        //执行一层
-        flowEngine.exec(context, chain, "n2", 1);
     }
 }

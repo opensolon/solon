@@ -9,10 +9,10 @@ import org.noear.solon.flow.core.FlowEngine;
 /**
  * @author noear 2025/1/11 created
  */
-public class ExprTest {
+public class ScriptJsonTest {
     @Test
-    public void expr1() throws Throwable {
-        Chain chain = Chain.parse(ResourceUtil.getResourceAsString("expr1.json"));
+    public void case1() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case1.json");
 
         FlowEngine chainExecutor = new FlowEngine();
 

@@ -171,6 +171,22 @@ public class ResourceUtil {
     }
 
     /**
+     * 获取资源并转为String
+     *
+     * @param url     资源地址
+     * @param charset 编码
+     */
+    public static String getResourceAsString(URL url, String charset) throws IOException {
+        if (url != null) {
+            try (InputStream in = url.openStream()) {
+                return IoUtil.transferToString(in, charset);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 获取资源并转为 InputStream
      *
      * @param name 内部资源名称
@@ -333,7 +349,7 @@ public class ResourceUtil {
      *
      * @param classLoader 类加载器
      * @param clzExpr     类名表达式（基于 import 表达式扩展）
-     * @deprecated 3.0 {@link ClassUtil#scanClasses(ClassLoader,String)}
+     * @deprecated 3.0 {@link ClassUtil#scanClasses(ClassLoader, String)}
      */
     @Deprecated
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {

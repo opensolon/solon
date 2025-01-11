@@ -16,14 +16,15 @@
 package org.noear.solon.flow.core;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * 链
@@ -36,9 +37,10 @@ public class Chain {
     private final String title;
     private final ChainDriver driver;
 
-    private final Map<String, Element> elements = new HashMap<>();
+    private final Map<String, Node> nodes = new HashMap<>();
+    private final List<Link> links = new ArrayList<>();
 
-    private Element start;
+    private Node start;
 
     public Chain(String id) {
         this(id, null, null);
@@ -75,58 +77,51 @@ public class Chain {
     /**
      * 获取起始节点
      */
-    public Element start() {
+    public Node start() {
         return start;
     }
 
     /**
      * 获取所有元素
      */
-    public Map<String, Element> elements() {
-        return elements;
+    public Map<String, Node> nodes() {
+        return Collections.unmodifiableMap(nodes);
+    }
+
+    /**
+     * 获取所有连接
+     */
+    public List<Link> links() {
+        return Collections.unmodifiableList(links);
     }
 
 
     /**
      * 添加节点
      */
-    public void addNode(String id, String title, ElementType type) {
-        addNode(id, title, type, null, null);
+    public void addNode(String id, String title, NodeType type, List<LinkDecl> linkDecls) {
+        addNode(id, title, type, linkDecls, null, null);
     }
 
     /**
      * 添加节点
      */
-    public void addNode(String id, String title, ElementType type, Map<String, Object> meta, String taskExpr) {
-        //不能是线
-        assert type != ElementType.line;
+    public void addNode(String id, String title, NodeType type, List<LinkDecl> linkDecls, Map<String, Object> meta, String taskExpr) {
+        List<Link> linkTmp = new ArrayList<>();
 
-        addElement(id, title, type, null, null, meta, null, taskExpr);
-    }
+        if (linkDecls != null) {
+            for (LinkDecl linkSpec : linkDecls) {
+                linkTmp.add(new Link(this, id, linkSpec));
+            }
+        }
 
-    /**
-     * 添加线
-     */
-    public void addLine(String id, String title, String prveId, String nextId) {
-        addLine(id, title, prveId, nextId, null, null);
-    }
+        links.addAll(linkTmp);
 
-    /**
-     * 添加线
-     */
-    public void addLine(String id, String title, String prveId, String nextId, Map<String, Object> meta, String conditionExpr) {
-        addElement(id, title, ElementType.line, prveId, nextId, meta, conditionExpr, null);
-    }
+        Node element = new Node(this, id, title, type, linkTmp, meta, taskExpr);
 
-    /**
-     * 添加元素
-     */
-    protected void addElement(String id, String title, ElementType type, String prveId, String nextId, Map<String, Object> meta, String conditionExpr, String taskExpr) {
-        Element element = new Element(this, id, title, type, meta, prveId, nextId, conditionExpr, taskExpr);
+        nodes.put(element.id(), element);
 
-        elements.put(element.id(), element);
-
-        if (type == ElementType.start) {
+        if (type == NodeType.start) {
             start = element;
         }
 
@@ -135,41 +130,18 @@ public class Chain {
     /**
      * 查找一个元素
      */
-    public Element selectById(String id) {
-        return elements().get(id);
+    public Node selectById(String id) {
+        return nodes.get(id);
     }
 
-    /**
-     * 查找前面的节点
-     */
-    public List<Element> selectByNextId(String id) {
-        List<Element> nodes = new ArrayList<>();
+    public static Chain parseByUri(String uri) throws IOException {
+        URL url = ResourceUtil.findResource(uri, false);
+        assert url != null;
 
-        for (Element n : elements().values()) {
-            if (id.equals(n.nextId())) {
-                nodes.add(n);
-            }
-        }
-
-        return nodes;
+        return parseByJson(ResourceUtil.getResourceAsString(url, Solon.encoding()));
     }
 
-    /**
-     * 查找后面的节点
-     */
-    public List<Element> selectByPrveId(String id) {
-        List<Element> nodes = new ArrayList<>();
-
-        for (Element n : elements().values()) {
-            if (id.equals(n.prveId())) {
-                nodes.add(n);
-            }
-        }
-
-        return nodes;
-    }
-
-    public static Chain parse(String json) {
+    public static Chain parseByJson(String json) {
         ONode oNode = ONode.load(json);
 
         String id = oNode.get("id").getString();
@@ -179,22 +151,25 @@ public class Chain {
 
         Chain chain = new Chain(id, title, driver);
 
-        for (ONode n1 : oNode.get("elements").ary()) {
-            ElementType type = ElementType.nameOf(n1.get("type").getString());
-            if (type == ElementType.line) {
-                chain.addLine(n1.get("id").getString(),
-                        n1.get("title").getString(),
-                        n1.get("prveId").getString(),
-                        n1.get("nextId").getString(),
-                        n1.get("meta").toObject(Map.class),
-                        n1.get("condition").getString());
-            } else {
-                chain.addNode(n1.get("id").getString(),
-                        n1.get("title").getString(),
-                        type,
-                        n1.get("meta").toObject(Map.class),
-                        n1.get("task").getString());
+        for (ONode n1 : oNode.get("nodes").ary()) {
+            NodeType type = NodeType.nameOf(n1.get("type").getString());
+            List<LinkDecl> linkDecls = new ArrayList<>();
+
+            for (ONode ls1 : n1.get("links").ary()) {
+                linkDecls.add(new LinkDecl(
+                        ls1.get("toId").getString(),
+                        ls1.get("title").getString(),
+                        ls1.get("meta").toObject(Map.class),
+                        n1.get("condition").getString()
+                ));
             }
+
+            chain.addNode(n1.get("id").getString(),
+                    n1.get("title").getString(),
+                    type,
+                    linkDecls,
+                    n1.get("meta").toObject(Map.class),
+                    n1.get("task").getString());
         }
 
         return chain;

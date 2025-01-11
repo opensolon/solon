@@ -25,7 +25,7 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Condition {
-    private final Element element;
+    private final Link link;
     private final String expr;
 
     /**
@@ -36,16 +36,16 @@ public class Condition {
     /**
      * @param conditionsExpr 条件表达式
      */
-    public Condition(Element element, String conditionsExpr) {
-        this.element = element;
+    public Condition(Link link, String conditionsExpr) {
+        this.link = link;
         this.expr = conditionsExpr;
     }
 
     /**
      * 所属线
      */
-    public Element line() {
-        return element;
+    public Link link() {
+        return link;
     }
 
     /**

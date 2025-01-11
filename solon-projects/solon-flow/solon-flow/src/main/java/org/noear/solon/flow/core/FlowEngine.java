@@ -40,7 +40,7 @@ public class FlowEngine {
      * @param depth   执行深度
      */
     public void exec(ChainContext context, Chain chain, String startId, int depth) throws Throwable {
-        Element start;
+        Node start;
         if (startId == null) {
             start = chain.start();
         } else {
@@ -69,7 +69,7 @@ public class FlowEngine {
     /**
      * 运行节点
      */
-    private void node_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
+    private void node_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
         if (context.isInterrupted()) { //如果中断，就不再执行了
             return;
         }
@@ -114,12 +114,12 @@ public class FlowEngine {
     /**
      * 运行包容网关
      */
-    private void inclusive_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
-        List<Element> lines = node.nextLines();
-        Element def_line = null;
+    private void inclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+        List<Link> lines = node.nextLines();
+        Link def_line = null;
         boolean def_enabled = true;
 
-        for (Element l : lines) {
+        for (Link l : lines) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
@@ -140,10 +140,10 @@ public class FlowEngine {
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
-        List<Element> lines = node.nextLines();
-        Element def_line = null;
-        for (Element l : lines) {
+    private void exclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+        List<Link> lines = node.nextLines();
+        Link def_line = null;
+        for (Link l : lines) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
@@ -164,8 +164,8 @@ public class FlowEngine {
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
-        for (Element n : node.nextNodes()) {
+    private void parallel_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+        for (Node n : node.nextNodes()) {
             node_run(context, chain, n, depth);
         }
     }
@@ -173,7 +173,7 @@ public class FlowEngine {
     /**
      * 运行汇聚网关//起到等待和卡位的作用；
      */
-    private void converge_run(ChainContext context, Chain chain, Element node, int depth) throws Throwable {
+    private void converge_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
         int count = context.counterIncr(node.id());//运行次数累计
         if (node.prveLines().size() > count) { //等待所有支线计数完成
             return;

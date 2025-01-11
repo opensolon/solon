@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.core.*;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
 
+import java.util.Arrays;
+
 /**
  * @author noear 2025/1/10 created
  */
-public class ScriptTest {
+public class ScriptJavaTest {
     @Test
     public void case1() throws Throwable {
         Chain chain = new Chain("c1", "c1", new SimpleFlowDriver() {
@@ -18,15 +20,11 @@ public class ScriptTest {
             }
         });
 
-        chain.addNode("n1", "n1", ElementType.start);
-        chain.addNode("n2", "n2", ElementType.execute, null, "context.result=111 + a;");
-        chain.addNode("n3", "n3", ElementType.execute, null, "context.result=222 + b;");
-        chain.addNode("n4", "n4", ElementType.execute, null, "context.result=333 + c;");
-        chain.addNode("n5", "n5", ElementType.end);
-        chain.addLine("l1", "l1", "n1", "n2");
-        chain.addLine("l2", "l2", "n2", "n3");
-        chain.addLine("l3", "l3", "n3", "n4");
-        chain.addLine("l4", "l4", "n4", "n5");
+        chain.addNode("n1", "n1", NodeType.start, Arrays.asList(new LinkDecl("n2")));
+        chain.addNode("n2", "n2", NodeType.execute, Arrays.asList(new LinkDecl("n3")), null, "context.result=111 + a;");
+        chain.addNode("n3", "n3", NodeType.execute, Arrays.asList(new LinkDecl("n4")), null, "context.result=222 + b;");
+        chain.addNode("n4", "n4", NodeType.execute,Arrays.asList(new LinkDecl("n5")),  null, "context.result=333 + c;");
+        chain.addNode("n5", "n5", NodeType.end, null);
 
         FlowEngine chainExecutor = new FlowEngine();
 

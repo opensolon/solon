@@ -1,0 +1,16 @@
+{
+  "id": "c1",
+  "driver": "org.noear.solon.flow.driver.SimpleFlowDriver",
+  "nodes": [
+    { "id": "n1", "type": "start", "links": [{"toId": "n2", "condition": "..."}]},
+    { "id": "n2", "type": "execute", "links": [{"toId": "n3"}], "meta":{"a": 1,"b": []}, "task":"context.result=111 + a;"},
+    { "id": "n3", "type": "execute", "links": [{"toId": "n4"}], "task":"context.result=222 + b;"},
+    { "id": "n4", "type": "execute", "links": [{"toId": "n5"}], "task":"context.result=333 + c;"},
+    { "id": "n5", "type": "end"}
+  ],
+  "$schema": {
+    "note": "架构参考（非数据）",
+    "params": "{a:int,b:int,c:long}",
+    "result": "boot"
+  }
+}

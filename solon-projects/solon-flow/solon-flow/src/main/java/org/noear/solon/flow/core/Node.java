@@ -25,7 +25,7 @@ import java.util.Map;
 *
 * 0开始节点={id:n1, type:0, title:'', }
 *
-* 1连接线段={id:l1, type:1, title:'', meta:{}, prveId:'1', nextId:'3', condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
+* 1连接线段={id:l1, type:1, title:'', prveId:'n1', nextId:'n2', meta:{}, condition:'(m.user_id,>,12) && (m,F,$ssss(m))'} //A=and,O=or,E=end
 *
 * 2执行节点={id:n2, type:2, title:'', meta:{}, task:'F,tag/fun1;R,tag/rule1'}
 *
@@ -43,35 +43,31 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  * */
-public class Element {
+public class Node {
     private final transient Chain chain;
 
     private final String id;
     private final String title;
-    private final ElementType type;      //元素类型
+    private final NodeType type;      //元素类型
     private final Map<String, Object> meta; //元信息
-
-    private final String prveId; //仅line才有
-    private final String nextId; //仅line才有
-    private final String conditionExpr;
+    private final List<Link> links;
 
     private final String taskExpr;
 
-    private List<Element> prveNodes, nextNodes, prveLines, nextLines;
+    private List<Node> prveNodes, nextNodes;
+    private List<Link> prveLines, nextLines;
     private Condition condition;
     private Task task;
 
-    protected Element(Chain chain, String id, String title, ElementType type, Map<String, Object> meta, String prveId, String nextId, String conditionExpr, String taskExpr) {
+    protected Node(Chain chain, String id, String title, NodeType type, List<Link> links, Map<String, Object> meta, String taskExpr) {
         this.chain = chain;
 
         this.id = id;
         this.title = (title == null ? id : title);
         this.type = type;
         this.meta = meta;
+        this.links = links;
 
-        this.prveId = prveId;
-        this.nextId = nextId;
-        this.conditionExpr = conditionExpr;
         this.taskExpr = taskExpr;
     }
 
@@ -100,40 +96,30 @@ public class Element {
     /**
      * 类型
      */
-    public ElementType type() {
+    public NodeType type() {
         return type;
     }
 
     /**
-     * 前一个节点Id（仅line才有）
+     * 连接
      */
-    public String prveId() {
-        return prveId;
-    }
-
-    /**
-     * 后一个节点Id（仅line才有）
-     */
-    public String nextId() {
-        return nextId;
+    public List<Link> links() {
+        return links;
     }
 
 
     /**
      * 前面的节点
      */
-    public List<Element> prveNodes() {
+    public List<Node> prveNodes() {
         if (prveNodes == null) {
             prveNodes = new ArrayList<>();
 
-            if ((type() == ElementType.start) == false) {
-                if (type() == ElementType.line) {
-                    prveNodes.add(chain.selectById(prveId()));//by id query
-                } else {
-                    List<Element> lines = prveLines();
-                    lines.forEach(l -> {
-                        prveNodes.add(chain.selectById(l.prveId()));//by id query
-                    });
+            if (type != NodeType.start) {
+                for (Link l : chain.links()) { //要从链处找
+                    if (id.equals(l.nextId())) {
+                        nextNodes.add(chain.selectById(l.prveId()));
+                    }
                 }
             }
         }
@@ -144,42 +130,40 @@ public class Element {
     /**
      * 后面的节点
      */
-    public List<Element> nextNodes() {
+    public List<Node> nextNodes() {
         if (nextNodes == null) {
             nextNodes = new ArrayList<>();
 
-            if ((type == ElementType.end) == false) {
-                if (type() == ElementType.line) {
-                    nextNodes.add(chain.selectById(nextId()));//by id query
-                } else {
-                    List<Element> lines = nextLines();
-                    lines.forEach(l -> {
-                        nextNodes.add(chain.selectById(l.nextId()));//by id query
-                    });
+            if (type != NodeType.end) {
+                for (Link l : this.links()) { //从自由处找
+                    nextNodes.add(chain.selectById(l.nextId()));
                 }
             }
         }
 
         return nextNodes;
-
     }
 
     /**
      * 后面的节点（一个）
      */
-    public Element nextNode() {
+    public Node nextNode() {
         return nextNodes().get(0);
     }
 
     /**
      * 前面的线
      */
-    public List<Element> prveLines() {
+    public List<Link> prveLines() {
         if (prveLines == null) {
-            prveLines = Collections.emptyList();
+            prveLines = new ArrayList<>();
 
-            if ((type == ElementType.start || type == ElementType.line) == false) {
-                prveLines = chain.selectByNextId(id());//by nextID
+            if (type != NodeType.start) {
+                for (Link l : chain.links()) {
+                    if (id.equals(l.nextId())) { //by nextID
+                        prveLines.add(l);
+                    }
+                }
             }
         }
 
@@ -189,27 +173,12 @@ public class Element {
     /**
      * 后面的线
      */
-    public List<Element> nextLines() {
-        if (nextLines == null) {
-            nextLines = Collections.emptyList();
-
-            if ((type == ElementType.end || type == ElementType.line) == false) {
-                nextLines = chain.selectByPrveId(id());//by prveID
-            }
+    public List<Link> nextLines() {
+        if (links == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableList(links);
         }
-
-        return nextLines;
-    }
-
-    /**
-     * 条件
-     */
-    public Condition condition() {
-        if (condition == null) {
-            condition = new Condition(this, conditionExpr);
-        }
-
-        return condition;
     }
 
     /**
@@ -225,24 +194,13 @@ public class Element {
 
     @Override
     public String toString() {
-        if (type == ElementType.line) {
+        if (type == NodeType.execute) {
             return "{" +
                     "id='" + id + '\'' +
                     ", title='" + title + '\'' +
                     ", type=" + type +
                     ", meta=" + meta +
-                    ", prveId='" + prveId + '\'' +
-                    ", nextId='" + nextId + '\'' +
-                    ", conditionExpr='" + conditionExpr + '\'' +
-                    '}';
-
-        } else if (type == ElementType.execute) {
-            return "{" +
-                    "id='" + id + '\'' +
-                    ", title='" + title + '\'' +
-                    ", type=" + type +
-                    ", meta=" + meta +
-                    ", taskExpr='" + taskExpr + '\'' +
+                    ", task='" + taskExpr + '\'' +
                     '}';
         } else {
             return "{" +
