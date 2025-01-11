@@ -381,7 +381,10 @@ public final class SolonProps extends Props {
      * @since 3.0
      * */
     protected void plugsScanExclude(String className) {
-        plugsScanExcluded.add(className);
+        if (className != null) {
+            plugsScanExcluded.add(className);
+            plugs.removeIf(pe -> className.equals(pe.getClassName()));
+        }
     }
 
     /**

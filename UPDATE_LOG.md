@@ -42,6 +42,7 @@
 * 优化 solon-cloud-gateway Path 断言，增加多路径支持
 * 优化 mybatis-solon-plugin 用 MybatisSessionTemplate 替换 MybatisMapperInterceptor
 * 优化 mybatis-solon-plugin SolonManagedTransaction getTimeout 添加异常过滤（有些驱动不支持此接口）
+* 修复 solon 启动时使用接口排除插件无效的问题
 * snack3 升为 3.2.124
 * snakeyaml 升为 2.3
 * mybatis 升为 3.5.17
