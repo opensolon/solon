@@ -67,6 +67,10 @@ class FlowEngineImpl implements FlowEngine {
      * 运行节点
      */
     private void node_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+        if(node == null) {
+            return;
+        }
+
         if (context.isInterrupted()) { //如果中断，就不再执行了
             return;
         }

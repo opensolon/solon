@@ -26,36 +26,13 @@ import java.util.Map;
  * @since 3.0
  */
 public class NodeDecl {
-    private final String id;
-    private String title;
-    private NodeType type;      //元素类型
-    private Map<String, Object> meta; //元信息
-    private List<LinkDecl> links = new ArrayList<>();
-    private String taskExpr;
+    protected final String id;
+    protected String title;
+    protected NodeType type;      //元素类型
+    protected Map<String, Object> meta; //元信息
+    protected List<LinkDecl> links = new ArrayList<>();
+    protected String task;
 
-    public String id() {
-        return id;
-    }
-
-    public String title() {
-        return title;
-    }
-
-    public NodeType type() {
-        return type;
-    }
-
-    public Map<String, Object> meta() {
-        return meta;
-    }
-
-    public List<LinkDecl> links() {
-        return links;
-    }
-
-    public String task() {
-        return taskExpr;
-    }
 
     /////////////////
 
@@ -83,8 +60,8 @@ public class NodeDecl {
         return link(new LinkDecl(toId));
     }
 
-    public NodeDecl task(String taskExpr) {
-        this.taskExpr = taskExpr;
+    public NodeDecl task(String task) {
+        this.task = task;
         return this;
     }
 }

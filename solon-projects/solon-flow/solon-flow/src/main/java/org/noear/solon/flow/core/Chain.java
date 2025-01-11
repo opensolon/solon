@@ -106,7 +106,7 @@ public class Chain {
     public void addNode(NodeDecl nodeDecl) {
         List<Link> linkAry = new ArrayList<>();
 
-        for (LinkDecl linkSpec : nodeDecl.links()) {
+        for (LinkDecl linkSpec : nodeDecl.links) {
             linkAry.add(new Link(this, id, linkSpec));
         }
 
@@ -114,7 +114,7 @@ public class Chain {
 
         Node node = new Node(this, nodeDecl, linkAry);
         nodes.put(node.id(), node);
-        if (nodeDecl.type() == NodeType.start) {
+        if (nodeDecl.type == NodeType.start) {
             start = node;
         }
     }

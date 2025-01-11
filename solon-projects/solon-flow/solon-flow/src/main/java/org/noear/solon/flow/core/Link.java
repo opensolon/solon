@@ -20,7 +20,7 @@ import org.noear.solon.Utils;
 import java.util.Map;
 
 /**
- * 连接
+ * 链接
  *
  * @author noear
  * @since 3.0
@@ -39,12 +39,18 @@ public class Link implements Comparable<Link> {
         this.decl = decl;
     }
 
+    /**
+     * 所属链
+     */
     public Chain chain() {
         return chain;
     }
 
+    /**
+     * 元信息
+     */
     public Map<String, Object> meta() {
-        return decl.meta();
+        return decl.meta;
     }
 
     /**
@@ -52,12 +58,11 @@ public class Link implements Comparable<Link> {
      */
     public Condition condition() {
         if (condition == null) {
-            condition = new Condition(this, decl.condition());
+            condition = new Condition(this, decl.condition);
         }
 
         return condition;
     }
-
 
     /**
      * 前面的节点Id
@@ -70,7 +75,7 @@ public class Link implements Comparable<Link> {
      * 后面的节点Id
      */
     public String nextId() {
-        return decl.toId();
+        return decl.toId;
     }
 
     /**
@@ -97,9 +102,9 @@ public class Link implements Comparable<Link> {
 
     @Override
     public int compareTo(Link o) {
-        if (this.decl.priority() > o.decl.priority()) {
+        if (this.decl.priority > o.decl.priority) {
             return -1; //大的在前
-        } else if (this.decl.priority() < o.decl.priority()) {
+        } else if (this.decl.priority < o.decl.priority) {
             return 1;
         } else {
             return 0;
@@ -111,21 +116,21 @@ public class Link implements Comparable<Link> {
         StringBuilder buf = new StringBuilder();
 
         buf.append("{");
-        buf.append("priority=").append(decl.priority());
+        buf.append("priority=").append(decl.priority);
 
-        if (Utils.isNotEmpty(decl.title())) {
-            buf.append(", title='").append(decl.title()).append('\'');
+        if (Utils.isNotEmpty(decl.title)) {
+            buf.append(", title='").append(decl.title).append('\'');
         }
 
         buf.append(", prveId='").append(prveId()).append('\'');
         buf.append(", nextId='").append(nextId()).append('\'');
 
-        if (Utils.isNotEmpty(decl.meta())) {
-            buf.append(", meta=").append(decl.meta());
+        if (Utils.isNotEmpty(decl.meta)) {
+            buf.append(", meta=").append(decl.meta);
         }
 
-        if (Utils.isNotEmpty(decl.condition())) {
-            buf.append(", condition=").append(decl.condition());
+        if (Utils.isNotEmpty(decl.condition)) {
+            buf.append(", condition=").append(decl.condition);
         }
 
         buf.append("}");

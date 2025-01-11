@@ -61,28 +61,28 @@ public class Node {
      * 标识
      */
     public String id() {
-        return decl.id();
+        return decl.id;
     }
 
     /**
      * 显示标题
      */
     public String title() {
-        return decl.title();
+        return decl.title;
     }
 
     /**
      * 类型
      */
     public NodeType type() {
-        return decl.type();
+        return decl.type;
     }
 
     /**
      * 元信息
      */
     public Map<String, Object> meta() {
-        return Collections.unmodifiableMap(decl.meta());
+        return Collections.unmodifiableMap(decl.meta);
     }
 
     /**
@@ -154,7 +154,11 @@ public class Node {
      * 后面的节点（一个）
      */
     public Node nextNode() {
-        return nextNodes().get(0);
+        if (nextNodes().size() > 0) {
+            return nextNodes().get(0);
+        } else {
+            return null;
+        }
     }
 
 
@@ -163,7 +167,7 @@ public class Node {
      */
     public Task task() {
         if (task == null) {
-            task = new Task(this, decl.task());
+            task = new Task(this, decl.task);
         }
 
         return task;
@@ -174,16 +178,16 @@ public class Node {
         StringBuilder buf = new StringBuilder();
 
         buf.append("{");
-        buf.append("id='").append(decl.id()).append('\'');
-        buf.append(", title='").append(decl.title()).append('\'');
-        buf.append(", type='").append(decl.type()).append('\'');
+        buf.append("id='").append(decl.id).append('\'');
+        buf.append(", title='").append(decl.title).append('\'');
+        buf.append(", type='").append(decl.type).append('\'');
 
-        if (Utils.isNotEmpty(decl.meta())) {
-            buf.append(", meta=").append(decl.meta());
+        if (Utils.isNotEmpty(decl.meta)) {
+            buf.append(", meta=").append(decl.meta);
         }
 
-        if (Utils.isNotEmpty(decl.task())) {
-            buf.append(", task=").append(decl.task());
+        if (Utils.isNotEmpty(decl.task)) {
+            buf.append(", task=").append(decl.task);
         }
 
         buf.append("}");

@@ -18,17 +18,20 @@ package org.noear.solon.flow.core;
 import java.util.Map;
 
 /**
- * 连接申明
+ * 链接申明
  *
  * @author noear
  * @since 3.0
  */
 public class LinkDecl {
-    private final String toId;
-    private String title;
-    private Map<String, Object> meta;
-    private String condition;
-    private int priority;
+    protected final String toId;
+    protected String title;
+    protected Map<String, Object> meta;
+    protected String condition;
+    /**
+     * 优先级（越大越高）
+     */
+    protected int priority;
 
     public LinkDecl(String toId) {
         this.toId = toId;
@@ -52,29 +55,6 @@ public class LinkDecl {
     public LinkDecl priority(int priority) {
         this.priority = priority;
         return this;
-    }
-
-    public String toId() {
-        return toId;
-    }
-
-    public String title() {
-        return title;
-    }
-
-    public Map<String, Object> meta() {
-        return meta;
-    }
-
-    public String condition() {
-        return condition;
-    }
-
-    /**
-     * 优先级（越大越高）
-     * */
-    public int priority() {
-        return priority;
     }
 
     @Override
