@@ -21,9 +21,9 @@ public class ScriptJavaTest {
         });
 
         chain.addNode(new NodeDecl("n1", NodeType.start).link(new LinkDecl("n2")));
-        chain.addNode(new NodeDecl("n2", NodeType.execute).link(new LinkDecl("n3")).task("context.result=111 + a;"));
-        chain.addNode(new NodeDecl("n3", NodeType.execute).link(new LinkDecl("n4")).task("context.result=222 + b;"));
-        chain.addNode(new NodeDecl("n4", NodeType.execute).link(new LinkDecl("n5")).task("context.result=333 + c;"));
+        chain.addNode(new NodeDecl("n2", NodeType.execute).task("context.result=111 + a;").link(new LinkDecl("n3")));
+        chain.addNode(new NodeDecl("n3", NodeType.execute).task("context.result=222 + b;").link(new LinkDecl("n4")));
+        chain.addNode(new NodeDecl("n4", NodeType.execute).task("context.result=333 + c;").link(new LinkDecl("n5")));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
         FlowEngine chainExecutor = new FlowEngine();

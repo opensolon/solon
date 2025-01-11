@@ -33,9 +33,9 @@ public class ComJavaTest {
 
 
         chain.addNode(new NodeDecl("n1", NodeType.start).link(new LinkDecl("n2")));
-        chain.addNode(new NodeDecl("n2", NodeType.execute).link(new LinkDecl("n3")).task("@a"));
-        chain.addNode(new NodeDecl("n3", NodeType.execute).link(new LinkDecl("n4")).task("@b"));
-        chain.addNode(new NodeDecl("n4", NodeType.execute).link(new LinkDecl("n5")).task("c"));
+        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").link(new LinkDecl("n3")));
+        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@b").link(new LinkDecl("n4")));
+        chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").link(new LinkDecl("n5")));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
         FlowEngine flowEngine = new FlowEngine();
