@@ -238,15 +238,13 @@ public class SolonApp extends RouterWrapper {
             });
         }
 
-
-        //2.尝试扫描插件
-        cfg().plugsScan(loaderList);
-
-
-        //3.运行自定义初始化
+        //2.运行自定义初始化（可能会有插件排除）
         if (initialize != null) {
             initialize.accept(this);
         }
+
+        //3.尝试扫描插件
+        cfg().plugsScan(loaderList);
     }
 
 
