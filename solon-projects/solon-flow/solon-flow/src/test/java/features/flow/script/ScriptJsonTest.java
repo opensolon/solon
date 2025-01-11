@@ -94,4 +94,14 @@ public class ScriptJsonTest {
         flowEngine.eval(context, chain);
         assert context.result.equals(10);
     }
+
+    @Test
+    public void case5_parallel() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case5.json");
+
+        ChainContext context = new ChainContext();
+        context.paramSet("day", 7);
+        flowEngine.eval(context, chain);
+        assert context.result.equals(10);
+    }
 }

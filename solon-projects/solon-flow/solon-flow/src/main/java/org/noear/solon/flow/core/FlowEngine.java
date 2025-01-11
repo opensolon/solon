@@ -97,22 +97,21 @@ public class FlowEngine {
 
         switch (node.type()) {
             case start:
-                //执行任务
+                //尝试执行任务（可能为空）
                 task_exec(context, chain, node.task());
                 //转到下个节点
                 node_run(context, chain, node.nextNode(), depth);
                 break;
             case end:
-                //无动作
+                //尝试执行任务（可能为空）
+                task_exec(context, chain, node.task());
                 break;
-            case execute: {
-                //执行任务
+            case execute:
+                //尝试执行任务（可能为空）
                 task_exec(context, chain, node.task());
                 //转到下个节点
                 node_run(context, chain, node.nextNode(), depth);
                 break;
-            }
-
             case inclusive: //包容网关（多选）
                 inclusive_run(context, chain, node, depth);
                 break;
@@ -194,9 +193,12 @@ public class FlowEngine {
     private void parallel_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
         //流入
         int count = context.counterIncr(node.id());//运行次数累计
-        if (node.prveLinesCount(null) > count) { //等待所有支线计数完成
+        if (node.prveLines().size() > count) { //等待所有支线计数完成
             return;
         }
+
+        //恢复计数
+        context.counterSet(node.id(), 0);
 
         //流出
         for (Node n : node.nextNodes()) {
