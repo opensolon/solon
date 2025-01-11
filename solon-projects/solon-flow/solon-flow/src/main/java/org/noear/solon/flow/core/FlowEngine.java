@@ -25,21 +25,24 @@ import java.util.List;
  * */
 public class FlowEngine {
     /**
-     * 执行
+     * 评估
+     *
+     * @param context 上下文
+     * @param chain   链
      */
-    public void exec(ChainContext context, Chain chain) throws Throwable {
-        exec(context, chain, null, -1);
+    public void eval(ChainContext context, Chain chain) throws Throwable {
+        eval(context, chain, null, -1);
     }
 
     /**
-     * 执行
+     * 评估
      *
      * @param context 上下文
      * @param chain   链
      * @param startId 开始Id
      * @param depth   执行深度
      */
-    public void exec(ChainContext context, Chain chain, String startId, int depth) throws Throwable {
+    public void eval(ChainContext context, Chain chain, String startId, int depth) throws Throwable {
         Node start;
         if (startId == null) {
             start = chain.start();
@@ -96,13 +99,13 @@ public class FlowEngine {
                 break;
             }
 
-            case inclusive:
+            case inclusive: //包容网关（多选）
                 inclusive_run(context, chain, node, depth);
                 break;
-            case exclusive:
+            case exclusive: //排他网关（单选）
                 exclusive_run(context, chain, node, depth);
                 break;
-            case parallel:
+            case parallel: //并行网关（全选）
                 parallel_run(context, chain, node, depth);
                 break;
             case converge:

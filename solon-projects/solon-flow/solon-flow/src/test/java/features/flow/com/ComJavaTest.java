@@ -2,17 +2,15 @@ package features.flow.com;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
-import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.core.*;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
-
-import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * @author noear 2025/1/10 created
  */
 public class ComJavaTest {
+    FlowEngine flowEngine = new FlowEngine();
+
     @Test
     public void case1() throws Throwable {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
@@ -38,8 +36,6 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkTo("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
-        FlowEngine flowEngine = new FlowEngine();
-
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);
         context.paramSet("b", 3);
@@ -47,7 +43,7 @@ public class ComJavaTest {
 
         //完整执行
 
-        flowEngine.exec(context, chain);
+        flowEngine.eval(context, chain);
 
         assert "n3".equals(context.result);
 
@@ -59,7 +55,7 @@ public class ComJavaTest {
         context.paramSet("c", 14);
 
         //执行一层
-        flowEngine.exec(context, chain, "n2", 1);
+        flowEngine.eval(context, chain, "n2", 1);
 
 
         assert "n2".equals(context.result);
