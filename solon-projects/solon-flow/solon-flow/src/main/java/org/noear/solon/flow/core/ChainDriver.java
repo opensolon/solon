@@ -18,7 +18,7 @@ package org.noear.solon.flow.core;
 import org.noear.solon.lang.Preview;
 
 /**
- * 流驱动器
+ * 链驱动器
  *
  * @author noear
  * @since 3.0

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 元素对象（节点或线）
+ * 节点
  *
  * @author noear
  * @since 3.0

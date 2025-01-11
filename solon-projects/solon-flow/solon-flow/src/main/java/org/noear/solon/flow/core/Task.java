@@ -18,7 +18,7 @@ package org.noear.solon.flow.core;
 import org.noear.solon.Utils;
 
 /**
- * 执行任务（表达式参考：'F,tag/fun1;R,tag/rule1'）
+ * 任务（表达式参考：'F,tag/fun1;R,tag/rule1'）
  *
  * @author noear
  * @since 3.0

@@ -16,7 +16,7 @@
 package org.noear.solon.flow.core;
 
 /**
- * 元系类型：0开始，1线，2执行节点，3排他网关，4并行网关，5汇聚网关，9结束
+ * 节点类型
  *
  * @author noear
  * @since 3.0
