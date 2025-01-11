@@ -57,26 +57,15 @@ public class ScriptJsonTest {
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 1);
-
-        //完整执行
         chainExecutor.exec(context, chain);
-
         assert null == context.result;
 
-         context = new ChainContext();
         context.paramSet("day", 3);
-
-        //完整执行
         chainExecutor.exec(context, chain);
-
         assert context.result.equals(3);
 
-        context = new ChainContext();
         context.paramSet("day", 7);
-
-        //完整执行
         chainExecutor.exec(context, chain);
-
         assert context.result.equals(7);
     }
 }
