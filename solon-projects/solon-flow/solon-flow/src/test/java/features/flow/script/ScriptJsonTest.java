@@ -13,7 +13,7 @@ public class ScriptJsonTest {
     FlowEngine chainExecutor = new FlowEngine();
 
     @Test
-    public void case1() throws Throwable {
+    public void case1_demo() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:script_case1.json");
 
         ChainContext context = new ChainContext();
@@ -24,8 +24,9 @@ public class ScriptJsonTest {
         //完整执行
         chainExecutor.exec(context, chain);
     }
+
     @Test
-    public void case2() throws Throwable {
+    public void case2_interrupt() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:script_case2.json");
 
         ChainContext context = new ChainContext();
@@ -48,5 +49,34 @@ public class ScriptJsonTest {
         //执行一层
         chainExecutor.exec(context, chain, "n2", 1);
         assert context.result.equals(123);
+    }
+
+    @Test
+    public void case3_exclusive() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case3.json");
+
+        ChainContext context = new ChainContext();
+        context.paramSet("day", 1);
+
+        //完整执行
+        chainExecutor.exec(context, chain);
+
+        assert null == context.result;
+
+         context = new ChainContext();
+        context.paramSet("day", 3);
+
+        //完整执行
+        chainExecutor.exec(context, chain);
+
+        assert context.result.equals(3);
+
+        context = new ChainContext();
+        context.paramSet("day", 7);
+
+        //完整执行
+        chainExecutor.exec(context, chain);
+
+        assert context.result.equals(7);
     }
 }
