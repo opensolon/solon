@@ -61,6 +61,10 @@ public class NodeDecl {
         return this;
     }
 
+    public NodeDecl linkTo(String toId) {
+        return link(new LinkDecl(toId));
+    }
+
     public NodeDecl task(String taskExpr) {
         this.taskExpr = taskExpr;
         return this;
