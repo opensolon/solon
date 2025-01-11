@@ -15,7 +15,11 @@
  */
 package org.noear.solon.flow.core;
 
+import java.util.Map;
+
 /**
+ * 连接
+ *
  * @author noear
  * @since 3.0
  */
@@ -37,8 +41,8 @@ public class Link {
         return chain;
     }
 
-    public LinkDecl decl() {
-        return decl;
+    public Map<String,Object> meta(){
+        return decl.meta();
     }
 
     public String prveId() {

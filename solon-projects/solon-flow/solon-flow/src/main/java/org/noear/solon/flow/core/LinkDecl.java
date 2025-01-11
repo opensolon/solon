@@ -18,11 +18,13 @@ package org.noear.solon.flow.core;
 import java.util.Map;
 
 /**
+ * 连接申明
+ *
  * @author noear
  * @since 3.0
  */
 public class LinkDecl {
-    private String toId;
+    private final String toId;
     private String title;
     private Map<String, Object> meta;
     private String condition;
@@ -31,11 +33,19 @@ public class LinkDecl {
         this.toId = toId;
     }
 
-    public LinkDecl(String toId, String title, Map<String, Object> meta, String condition) {
-        this.toId = toId;
+    public LinkDecl title(String title) {
         this.title = title;
+        return this;
+    }
+
+    public LinkDecl meta(Map<String, Object> meta) {
         this.meta = meta;
+        return this;
+    }
+
+    public LinkDecl condition(String condition) {
         this.condition = condition;
+        return this;
     }
 
     public String toId() {

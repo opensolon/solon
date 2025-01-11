@@ -99,29 +99,20 @@ public class Chain {
     /**
      * 添加节点
      */
-    public void addNode(String id, String title, NodeType type, List<LinkDecl> linkDecls) {
-        addNode(id, title, type, linkDecls, null, null);
-    }
-
-    /**
-     * 添加节点
-     */
-    public void addNode(String id, String title, NodeType type, List<LinkDecl> linkDecls, Map<String, Object> meta, String taskExpr) {
+    public void addNode(NodeDecl nodeDecl) {
         List<Link> linkTmp = new ArrayList<>();
 
-        if (linkDecls != null) {
-            for (LinkDecl linkSpec : linkDecls) {
-                linkTmp.add(new Link(this, id, linkSpec));
-            }
+        for (LinkDecl linkSpec : nodeDecl.links()) {
+            linkTmp.add(new Link(this, id, linkSpec));
         }
 
         links.addAll(linkTmp);
 
-        Node element = new Node(this, id, title, type, linkTmp, meta, taskExpr);
+        Node element = new Node(this, nodeDecl, linkTmp);
 
         nodes.put(element.id(), element);
 
-        if (type == NodeType.start) {
+        if (nodeDecl.type() == NodeType.start) {
             start = element;
         }
 
@@ -153,23 +144,21 @@ public class Chain {
 
         for (ONode n1 : oNode.get("nodes").ary()) {
             NodeType type = NodeType.nameOf(n1.get("type").getString());
-            List<LinkDecl> linkDecls = new ArrayList<>();
+
+            NodeDecl nodeDecl = new NodeDecl(n1.get("id").getString(), type);
+
+            nodeDecl.title(n1.get("title").getString());
+            nodeDecl.meta(n1.get("meta").toObject(Map.class));
+            nodeDecl.task(n1.get("task").getString());
 
             for (ONode ls1 : n1.get("links").ary()) {
-                linkDecls.add(new LinkDecl(
-                        ls1.get("toId").getString(),
-                        ls1.get("title").getString(),
-                        ls1.get("meta").toObject(Map.class),
-                        n1.get("condition").getString()
-                ));
+                nodeDecl.link(new LinkDecl(ls1.get("toId").getString())
+                        .title(ls1.get("title").getString())
+                        .meta(ls1.get("meta").toObject(Map.class))
+                        .condition(ls1.get("condition").getString()));
             }
 
-            chain.addNode(n1.get("id").getString(),
-                    n1.get("title").getString(),
-                    type,
-                    linkDecls,
-                    n1.get("meta").toObject(Map.class),
-                    n1.get("task").getString());
+            chain.addNode(nodeDecl);
         }
 
         return chain;
