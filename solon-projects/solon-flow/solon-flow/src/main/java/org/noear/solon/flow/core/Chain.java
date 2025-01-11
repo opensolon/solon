@@ -16,7 +16,6 @@
 package org.noear.solon.flow.core;
 
 import org.noear.snack.ONode;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -48,10 +47,13 @@ public class Chain {
         this(id, null, null);
     }
 
+    public Chain(String id, String title) {
+        this(id, title, null);
+    }
+
     public Chain(String id, String title, ChainDriver driver) {
         this.id = id;
         this.title = (title == null ? id : title);
-
         this.driver = (driver == null ? SimpleFlowDriver.getInstance() : driver);
     }
 
@@ -102,38 +104,46 @@ public class Chain {
      * 添加节点
      */
     public void addNode(NodeDecl nodeDecl) {
-        List<Link> linkTmp = new ArrayList<>();
+        List<Link> linkAry = new ArrayList<>();
 
         for (LinkDecl linkSpec : nodeDecl.links()) {
-            linkTmp.add(new Link(this, id, linkSpec));
+            linkAry.add(new Link(this, id, linkSpec));
         }
 
-        links.addAll(linkTmp);
+        links.addAll(linkAry);
 
-        Node element = new Node(this, nodeDecl, linkTmp);
-
-        nodes.put(element.id(), element);
-
+        Node node = new Node(this, nodeDecl, linkAry);
+        nodes.put(node.id(), node);
         if (nodeDecl.type() == NodeType.start) {
-            start = element;
+            start = node;
         }
-
     }
 
     /**
-     * 查找一个元素
+     * 获取节点
      */
-    public Node selectById(String id) {
+    public Node getNode(String id) {
         return nodes.get(id);
     }
 
+    /// ////////
+
+
+    /**
+     * 解析
+     */
     public static Chain parseByUri(String uri) throws IOException {
         URL url = ResourceUtil.findResource(uri, false);
-        assert url != null;
+        if (url == null) {
+            throw new IllegalArgumentException("Can't find resource: " + uri);
+        }
 
-        return parseByJson(ResourceUtil.getResourceAsString(url, Solon.encoding()));
+        return parseByJson(ResourceUtil.getResourceAsString(url));
     }
 
+    /**
+     * 解析
+     */
     public static Chain parseByJson(String json) {
         ONode oNode = ONode.load(json);
 
@@ -153,11 +163,11 @@ public class Chain {
             nodeDecl.meta(n1.get("meta").toObject(Map.class));
             nodeDecl.task(n1.get("task").getString());
 
-            for (ONode ls1 : n1.get("links").ary()) {
-                nodeDecl.link(new LinkDecl(ls1.get("toId").getString())
-                        .title(ls1.get("title").getString())
-                        .meta(ls1.get("meta").toObject(Map.class))
-                        .condition(ls1.get("condition").getString()));
+            for (ONode l1 : n1.get("links").ary()) {
+                nodeDecl.link(new LinkDecl(l1.get("toId").getString())
+                        .title(l1.get("title").getString())
+                        .meta(l1.get("meta").toObject(Map.class))
+                        .condition(l1.get("condition").getString()));
             }
 
             chain.addNode(nodeDecl);

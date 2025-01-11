@@ -8,7 +8,7 @@ import org.noear.solon.flow.core.*;
  * @author noear 2025/1/10 created
  */
 public class ComJsonTest {
-    FlowEngine flowEngine = new FlowEngine();
+    private FlowEngine flowEngine =  FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {

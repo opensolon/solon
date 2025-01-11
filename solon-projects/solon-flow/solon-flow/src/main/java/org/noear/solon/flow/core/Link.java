@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.Utils;
+
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  */
-public class Link {
+public class Link implements Comparable<Link> {
     private final Chain chain;
     private final String fromId;
     private final LinkDecl decl;
@@ -41,16 +43,8 @@ public class Link {
         return chain;
     }
 
-    public Map<String,Object> meta(){
+    public Map<String, Object> meta() {
         return decl.meta();
-    }
-
-    public String prveId() {
-        return fromId;
-    }
-
-    public String nextId() {
-        return decl.toId();
     }
 
     /**
@@ -64,12 +58,27 @@ public class Link {
         return condition;
     }
 
+
+    /**
+     * 前面的节点Id
+     */
+    public String prveId() {
+        return fromId;
+    }
+
+    /**
+     * 后面的节点Id
+     */
+    public String nextId() {
+        return decl.toId();
+    }
+
     /**
      * 前面的节点
      */
     public Node prveNode() {
         if (prveNode == null) {
-            prveNode = chain.selectById(prveId()); //by id query
+            prveNode = chain.getNode(prveId()); //by id query
         }
 
         return prveNode;
@@ -80,20 +89,47 @@ public class Link {
      */
     public Node nextNode() {
         if (nextNode == null) {
-            nextNode = chain.selectById(nextId()); //by id query
+            nextNode = chain.getNode(nextId()); //by id query
         }
 
         return nextNode;
     }
 
     @Override
+    public int compareTo(Link o) {
+        if (this.decl.priority() > o.decl.priority()) {
+            return -1; //大的在前
+        } else if (this.decl.priority() < o.decl.priority()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public String toString() {
-        return "{" +
-                "title='" + decl.title() + '\'' +
-                ", prveId='" + prveId() + '\'' +
-                ", prveId='" + prveId() + '\'' +
-                ", meta=" + decl.meta() +
-                ", condition='" + decl.condition() + '\'' +
-                '}';
+        StringBuilder buf = new StringBuilder();
+
+        buf.append("{");
+        buf.append("priority=").append(decl.priority());
+
+        if (Utils.isNotEmpty(decl.title())) {
+            buf.append(", title='").append(decl.title()).append('\'');
+        }
+
+        buf.append(", prveId='").append(prveId()).append('\'');
+        buf.append(", nextId='").append(nextId()).append('\'');
+
+        if (Utils.isNotEmpty(decl.meta())) {
+            buf.append(", meta=").append(decl.meta());
+        }
+
+        if (Utils.isNotEmpty(decl.condition())) {
+            buf.append(", condition=").append(decl.condition());
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }

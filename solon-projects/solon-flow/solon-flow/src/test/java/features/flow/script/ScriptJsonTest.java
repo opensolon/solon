@@ -9,7 +9,7 @@ import org.noear.solon.flow.core.FlowEngine;
  * @author noear 2025/1/11 created
  */
 public class ScriptJsonTest {
-    FlowEngine flowEngine = new FlowEngine();
+    private FlowEngine flowEngine =  FlowEngine.newInstance();
 
     @Test
     public void case1_demo() throws Throwable {

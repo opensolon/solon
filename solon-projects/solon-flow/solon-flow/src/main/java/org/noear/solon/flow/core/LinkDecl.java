@@ -28,6 +28,7 @@ public class LinkDecl {
     private String title;
     private Map<String, Object> meta;
     private String condition;
+    private int priority;
 
     public LinkDecl(String toId) {
         this.toId = toId;
@@ -48,6 +49,11 @@ public class LinkDecl {
         return this;
     }
 
+    public LinkDecl priority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+
     public String toId() {
         return toId;
     }
@@ -62,6 +68,13 @@ public class LinkDecl {
 
     public String condition() {
         return condition;
+    }
+
+    /**
+     * 优先级（越大越高）
+     * */
+    public int priority() {
+        return priority;
     }
 
     @Override

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.flow.core;
 
-import org.noear.solon.core.util.PredicateEx;
+import org.noear.solon.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,16 +32,21 @@ public class Node {
     private final transient Chain chain;
 
     private final NodeDecl decl;
-    private final List<Link> links;
+    private final List<Link> nextLinks = new ArrayList<>(); //as nextLinks
 
     private List<Node> prveNodes, nextNodes;
-    private List<Link> prveLines, nextLines;
+    private List<Link> prveLinks;
     private Task task;
 
     protected Node(Chain chain, NodeDecl decl, List<Link> links) {
         this.chain = chain;
         this.decl = decl;
-        this.links = links;
+
+        if (links != null) {
+            this.nextLinks.addAll(links);
+            //按优先级排序
+            Collections.sort(nextLinks);
+        }
     }
 
 
@@ -81,12 +86,33 @@ public class Node {
     }
 
     /**
-     * 连接
+     * 前面的链接
      */
-    public List<Link> links() {
-        return Collections.unmodifiableList(links);
+    public List<Link> prveLinks() {
+        if (prveLinks == null) {
+            prveLinks = new ArrayList<>();
+
+            if (type() != NodeType.start) {
+                for (Link l : chain.links()) {
+                    if (id().equals(l.nextId())) { //by nextID
+                        prveLinks.add(l);
+                    }
+                }
+
+                //按优先级排序
+                Collections.reverse(prveLinks);
+            }
+        }
+
+        return prveLinks;
     }
 
+    /**
+     * 后面的链接
+     */
+    public List<Link> nextLinks() {
+        return Collections.unmodifiableList(nextLinks);
+    }
 
     /**
      * 前面的节点
@@ -98,7 +124,7 @@ public class Node {
             if (type() != NodeType.start) {
                 for (Link l : chain.links()) { //要从链处找
                     if (id().equals(l.nextId())) {
-                        nextNodes.add(chain.selectById(l.prveId()));
+                        nextNodes.add(chain.getNode(l.prveId()));
                     }
                 }
             }
@@ -115,8 +141,8 @@ public class Node {
             nextNodes = new ArrayList<>();
 
             if (type() != NodeType.end) {
-                for (Link l : this.links()) { //从自由处找
-                    nextNodes.add(chain.selectById(l.nextId()));
+                for (Link l : this.nextLinks()) { //从自由处找
+                    nextNodes.add(chain.getNode(l.nextId()));
                 }
             }
         }
@@ -131,35 +157,6 @@ public class Node {
         return nextNodes().get(0);
     }
 
-    /**
-     * 前面的线
-     */
-    public List<Link> prveLines() {
-        if (prveLines == null) {
-            prveLines = new ArrayList<>();
-
-            if (type() != NodeType.start) {
-                for (Link l : chain.links()) {
-                    if (id().equals(l.nextId())) { //by nextID
-                        prveLines.add(l);
-                    }
-                }
-            }
-        }
-
-        return prveLines;
-    }
-
-    /**
-     * 后面的线
-     */
-    public List<Link> nextLines() {
-        if (links == null) {
-            return Collections.emptyList();
-        } else {
-            return Collections.unmodifiableList(links);
-        }
-    }
 
     /**
      * 任务
@@ -174,21 +171,23 @@ public class Node {
 
     @Override
     public String toString() {
-        if (type() == NodeType.execute) {
-            return "{" +
-                    "id='" + decl.id() + '\'' +
-                    ", title='" + decl.title() + '\'' +
-                    ", type=" + decl.type() +
-                    ", meta=" + decl.meta() +
-                    ", task='" + decl.task() + '\'' +
-                    '}';
-        } else {
-            return "{" +
-                    "id='" + decl.id() + '\'' +
-                    ", title='" + decl.title() + '\'' +
-                    ", type=" + decl.type() +
-                    ", meta=" + decl.meta() +
-                    '}';
+        StringBuilder buf = new StringBuilder();
+
+        buf.append("{");
+        buf.append("id='").append(decl.id()).append('\'');
+        buf.append(", title='").append(decl.title()).append('\'');
+        buf.append(", type='").append(decl.type()).append('\'');
+
+        if (Utils.isNotEmpty(decl.meta())) {
+            buf.append(", meta=").append(decl.meta());
         }
+
+        if (Utils.isNotEmpty(decl.task())) {
+            buf.append(", task=").append(decl.task());
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }

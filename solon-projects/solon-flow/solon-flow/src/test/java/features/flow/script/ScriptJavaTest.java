@@ -8,6 +8,8 @@ import org.noear.solon.flow.driver.SimpleFlowDriver;
  * @author noear 2025/1/10 created
  */
 public class ScriptJavaTest {
+    private FlowEngine flowEngine =  FlowEngine.newInstance();
+
     @Test
     public void case1() throws Throwable {
         Chain chain = new Chain("c1");
@@ -16,7 +18,6 @@ public class ScriptJavaTest {
         chain.addNode(new NodeDecl("n2", NodeType.execute).task("context.result=111 + a;").linkTo("n3"));
         chain.addNode(new NodeDecl("n3", NodeType.end));
 
-        FlowEngine flowEngine = new FlowEngine();
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);

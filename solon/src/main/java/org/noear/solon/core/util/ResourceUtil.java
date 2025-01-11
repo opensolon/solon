@@ -173,6 +173,15 @@ public class ResourceUtil {
     /**
      * 获取资源并转为String
      *
+     * @param url 资源地址
+     */
+    public static String getResourceAsString(URL url) throws IOException {
+        return getResourceAsString(url, Solon.encoding());
+    }
+
+    /**
+     * 获取资源并转为String
+     *
      * @param url     资源地址
      * @param charset 编码
      */

@@ -9,7 +9,7 @@ import org.noear.solon.flow.driver.SimpleFlowDriver;
  * @author noear 2025/1/10 created
  */
 public class ComJavaTest {
-    FlowEngine flowEngine = new FlowEngine();
+    private FlowEngine flowEngine =  FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {
