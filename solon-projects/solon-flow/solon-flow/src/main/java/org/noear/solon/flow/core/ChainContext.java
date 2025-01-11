@@ -51,8 +51,8 @@ public class ChainContext implements Serializable {
     /**
      * 中断（执行中可中断流）
      */
-    public void interrupt(boolean interrupted) {
-        this.interrupted = interrupted;
+    public void interrupt() {
+        this.interrupted = true;
     }
 
     /**

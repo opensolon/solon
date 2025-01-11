@@ -23,7 +23,7 @@ public class ComJavaTest {
             public void handleTask(ChainContext context, Task task) throws Throwable {
                 context.result = task.node().id();
                 if(task.node().id().equals("n3")) {
-                    context.interrupt(true);
+                    context.interrupt();
                 }
 
                 System.out.println(task.node());

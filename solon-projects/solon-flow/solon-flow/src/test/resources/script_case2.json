@@ -1,0 +1,11 @@
+{
+  "id": "c1",
+  "driver": "features.flow.script.Case2FlowDriver",
+  "nodes": [
+    { "id": "n1", "type": "start", "links": [{"toId": "n2"}]},
+    { "id": "n2", "type": "execute", "links": [{"toId": "n3"}], "task":"context.result=111 + a;"},
+    { "id": "n3", "type": "execute", "links": [{"toId": "n4"}], "task":"context.result=222 + b;"},
+    { "id": "n4", "type": "execute", "links": [{"toId": "n5"}], "task":"context.result=333 + c;"},
+    { "id": "n5", "type": "end"}
+  ]
+}
