@@ -1,0 +1,10 @@
+id: "c5"
+title: "请假审批"
+nodes:
+  - { id: "n1", type: "start", title: "发起人", meta: {"role": "employee"}, link: "n2", task: "context.result=0;"}
+  - { id: "n2", type: "parallel", link: ["n3","n4"] }
+  - { id: "n3", type: "execute", title: "主管批", meta: {"role": "lead"}, link: "n5", task: "context.result=((int)context.result)+3;"}
+  - { id: "n4", type: "execute", title: "部门经理批",meta: {"role": "boss"}, link: "n5", task: "context.result=((int)context.result)+7;"}
+  - { id: "n5", type: "parallel", link: "n6"}
+  - { id: "n6", type: "end"}
+

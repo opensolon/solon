@@ -1,0 +1,16 @@
+{
+  "id": "d2",
+  "title": "风控计算（评分风格）",
+  "nodes": [
+    { "id": "n1", "type": "start", "link": "n2"},
+    { "id": "n2", "type": "execute", "title": "基本信息安全分析", "link": "n3"},
+    { "id": "n3", "type": "exclusive", "title": "分流", "link": [
+      {"nextId": "n7", "title": "优质用户（评分90以上）", "condition": "user.score > 90"},
+      {"nextId": "n4", "title": "普通用户"}
+    ]},
+    { "id": "n4", "type": "execute", "title": "电商消费分析", "link": "n5"},
+    { "id": "n5", "type": "execute", "title": "黑名单检测", "link": "n6"},
+    { "id": "n6", "type": "execute", "title": "通讯录分析", "link": "n7"},
+    { "id": "n7", "type": "end"}
+  ]
+}

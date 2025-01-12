@@ -1,5 +1,5 @@
 {
-  "id": "c1",
+  "id": "m1",
   "nodes": [
     { "id": "n1", "type": "start", "link": "n2"},
     { "id": "n2", "type": "execute", "link": "n3", "meta":{"a": 1,"b": []}, "task":"@a"},
