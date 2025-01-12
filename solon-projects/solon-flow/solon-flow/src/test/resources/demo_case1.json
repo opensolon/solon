@@ -1,6 +1,6 @@
 {
   "id": "c1",
-  "title": "请假审批",
+  "title": "请假审批（审批风格）",
   "nodes": [
     { "id": "n1", "type": "start", "title":"发起人", "meta": {"role": "employee"}, "link": "n2"},
     { "id": "n2", "type": "exclusive", "link": [
