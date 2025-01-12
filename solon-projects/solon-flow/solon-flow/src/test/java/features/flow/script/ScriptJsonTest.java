@@ -100,7 +100,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case5_parallel() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:script_case5.json");
+        Chain chain = Chain.parseByUri("classpath:script_case5.yml");
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 7);
