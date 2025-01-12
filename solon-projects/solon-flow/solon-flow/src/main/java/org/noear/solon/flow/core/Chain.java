@@ -204,7 +204,7 @@ public class Chain {
      * 添加链接
      */
     private static void addLink(NodeDecl nodeDecl, ONode l1) {
-        nodeDecl.linkAdd(l1.get("toId").getString(), ld -> ld
+        nodeDecl.linkAdd(l1.get("nextId").getString(), ld -> ld
                 .title(l1.get("title").getString())
                 .meta(l1.get("meta").toObject(Map.class))
                 .condition(l1.get("condition").getString()));

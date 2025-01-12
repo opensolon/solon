@@ -27,15 +27,15 @@ import java.util.Map;
  */
 public class NodeLink implements Comparable<NodeLink> {
     private final Chain chain;
-    private final String fromId;
+    private final String prveId;
     private final NodeLinkDecl decl;
 
     private Node prveNode, nextNode;
     private Condition condition;
 
-    public NodeLink(Chain chain, String fromId, NodeLinkDecl decl) {
+    public NodeLink(Chain chain, String prveId, NodeLinkDecl decl) {
         this.chain = chain;
-        this.fromId = fromId;
+        this.prveId = prveId;
         this.decl = decl;
     }
 
@@ -68,14 +68,14 @@ public class NodeLink implements Comparable<NodeLink> {
      * 前面的节点Id
      */
     public String prveId() {
-        return fromId;
+        return prveId;
     }
 
     /**
      * 后面的节点Id
      */
     public String nextId() {
-        return decl.toId;
+        return decl.nextId;
     }
 
     /**

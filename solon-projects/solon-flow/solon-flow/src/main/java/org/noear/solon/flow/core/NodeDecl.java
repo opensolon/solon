@@ -78,8 +78,8 @@ public class NodeDecl {
     /**
      * 配置链接
      */
-    public NodeDecl linkAdd(String toId, Consumer<NodeLinkDecl> configure) {
-        NodeLinkDecl linkDecl = new NodeLinkDecl(toId);
+    public NodeDecl linkAdd(String nextId, Consumer<NodeLinkDecl> configure) {
+        NodeLinkDecl linkDecl = new NodeLinkDecl(nextId);
         if (configure != null) {
             configure.accept(linkDecl);
         }
@@ -90,8 +90,8 @@ public class NodeDecl {
     /**
      * 配置链接
      */
-    public NodeDecl linkAdd(String toId) {
-        return linkAdd(toId, null);
+    public NodeDecl linkAdd(String nextId) {
+        return linkAdd(nextId, null);
     }
 
     /**

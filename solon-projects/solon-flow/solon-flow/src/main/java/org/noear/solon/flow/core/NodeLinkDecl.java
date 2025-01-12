@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 3.0
  */
 public class NodeLinkDecl {
-    protected final String toId;
+    protected final String nextId;
     protected String title;
     protected Map<String, Object> meta;
     protected String condition;
@@ -37,10 +37,10 @@ public class NodeLinkDecl {
     protected int priority;
 
     /**
-     * @param toId 目标 id
+     * @param nextId 目标 id
      */
-    public NodeLinkDecl(String toId) {
-        this.toId = toId;
+    public NodeLinkDecl(String nextId) {
+        this.nextId = nextId;
     }
 
     /**
@@ -92,7 +92,7 @@ public class NodeLinkDecl {
         StringBuilder buf = new StringBuilder();
         buf.append("{");
 
-        buf.append("toId='").append(toId).append('\'');
+        buf.append("nextId='").append(nextId).append('\'');
 
         if (Utils.isNotEmpty(title)) {
             buf.append(", title='").append(title).append('\'');

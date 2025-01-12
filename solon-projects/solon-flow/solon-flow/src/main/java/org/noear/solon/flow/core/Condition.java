@@ -67,12 +67,12 @@ public class Condition {
     public String toString() {
         if (isEmpty()) {
             return "{" +
-                    "toId='" + link.nextId() + '\'' +
+                    "nextId='" + link.nextId() + '\'' +
                     ", description=null" +
                     '}';
         } else {
             return "{" +
-                    "toId='" + link.nextId() + '\'' +
+                    "nextId='" + link.nextId() + '\'' +
                     ", description='" + description + '\'' +
                     '}';
         }
