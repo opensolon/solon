@@ -15,6 +15,7 @@
  */
 package org.noear.solon.flow.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,25 +34,52 @@ public class NodeLinkDecl {
      */
     protected int priority;
 
+    /**
+     * @param toId 目标 id
+     */
     public NodeLinkDecl(String toId) {
         this.toId = toId;
     }
 
+    /**
+     * 配置标题
+     */
     public NodeLinkDecl title(String title) {
         this.title = title;
         return this;
     }
 
+    /**
+     * 配置元信息
+     */
     public NodeLinkDecl meta(Map<String, Object> meta) {
         this.meta = meta;
         return this;
     }
 
+    /**
+     * 配置元信息
+     */
+    public NodeLinkDecl metaPut(String key, Object value) {
+        if (meta == null) {
+            meta = new HashMap<>();
+        }
+
+        meta.put(key, value);
+        return this;
+    }
+
+    /**
+     * 配置条件
+     */
     public NodeLinkDecl condition(String condition) {
         this.condition = condition;
         return this;
     }
 
+    /**
+     * 配置优先级（越大越优）
+     */
     public NodeLinkDecl priority(int priority) {
         this.priority = priority;
         return this;

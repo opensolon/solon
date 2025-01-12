@@ -64,6 +64,9 @@ public class Condition {
 
     @Override
     public String toString() {
-        return expr;
+        return "{" +
+                "toId='" + link.nextId() + '\'' +
+                ", expr='" + expr + '\'' +
+                '}';
     }
 }

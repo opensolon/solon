@@ -16,6 +16,7 @@
 package org.noear.solon.flow.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -37,22 +38,47 @@ public class NodeDecl {
 
     /// //////////////
 
+    /**
+     * @param id   标识
+     * @param type 类型
+     */
     public NodeDecl(String id, NodeType type) {
         this.id = id;
         this.type = type;
     }
 
+    /**
+     * 配置标题
+     */
     public NodeDecl title(String title) {
         this.title = title;
         return this;
     }
 
+    /**
+     * 配置元信息
+     */
     public NodeDecl meta(Map<String, Object> meta) {
         this.meta = meta;
         return this;
     }
 
-    public NodeDecl link(String toId, Consumer<NodeLinkDecl> configure) {
+    /**
+     * 配置元信息
+     */
+    public NodeDecl metaPut(String key, Object value) {
+        if (meta == null) {
+            meta = new HashMap<>();
+        }
+
+        meta.put(key, value);
+        return this;
+    }
+
+    /**
+     * 配置链接
+     */
+    public NodeDecl linkAdd(String toId, Consumer<NodeLinkDecl> configure) {
         NodeLinkDecl linkDecl = new NodeLinkDecl(toId);
         if (configure != null) {
             configure.accept(linkDecl);
@@ -61,10 +87,16 @@ public class NodeDecl {
         return this;
     }
 
-    public NodeDecl link(String toId) {
-        return link(toId, null);
+    /**
+     * 配置链接
+     */
+    public NodeDecl linkAdd(String toId) {
+        return linkAdd(toId, null);
     }
 
+    /**
+     * 配置任务
+     */
     public NodeDecl task(String task) {
         this.task = task;
         return this;

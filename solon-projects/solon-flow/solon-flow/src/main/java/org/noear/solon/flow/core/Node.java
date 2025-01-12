@@ -179,8 +179,11 @@ public class Node {
 
         buf.append("{");
         buf.append("id='").append(decl.id).append('\'');
-        buf.append(", title='").append(decl.title).append('\'');
         buf.append(", type='").append(decl.type).append('\'');
+
+        if (Utils.isNotEmpty(decl.title)) {
+            buf.append(", title='").append(decl.title).append('\'');
+        }
 
         if (Utils.isNotEmpty(decl.meta)) {
             buf.append(", meta=").append(decl.meta);

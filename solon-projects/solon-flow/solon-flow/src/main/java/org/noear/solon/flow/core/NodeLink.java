@@ -117,13 +117,12 @@ public class NodeLink implements Comparable<NodeLink> {
 
         buf.append("{");
         buf.append("priority=").append(decl.priority);
+        buf.append(", prveId='").append(prveId()).append('\'');
+        buf.append(", nextId='").append(nextId()).append('\'');
 
         if (Utils.isNotEmpty(decl.title)) {
             buf.append(", title='").append(decl.title).append('\'');
         }
-
-        buf.append(", prveId='").append(prveId()).append('\'');
-        buf.append(", nextId='").append(nextId()).append('\'');
 
         if (Utils.isNotEmpty(decl.meta)) {
             buf.append(", meta=").append(decl.meta);

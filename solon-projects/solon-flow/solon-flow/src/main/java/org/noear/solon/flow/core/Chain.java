@@ -190,7 +190,7 @@ public class Chain {
                         addLink(nodeDecl, l1);
                     } else if (l1.isValue()) {
                         //单值模式
-                        nodeDecl.link(l1.getString());
+                        nodeDecl.linkAdd(l1.getString());
                     }
                 }
             } else if (linkNode.isObject()) {
@@ -198,7 +198,7 @@ public class Chain {
                 addLink(nodeDecl, linkNode);
             } else if (linkNode.isValue()) {
                 //单值模式（单个）
-                nodeDecl.link(linkNode.getString());
+                nodeDecl.linkAdd(linkNode.getString());
             }
 
             chain.addNode(nodeDecl);
@@ -208,7 +208,7 @@ public class Chain {
     }
 
     private static void addLink(NodeDecl nodeDecl, ONode l1) {
-        nodeDecl.link(l1.get("toId").getString(), ld -> ld
+        nodeDecl.linkAdd(l1.get("toId").getString(), ld -> ld
                 .title(l1.get("title").getString())
                 .meta(l1.get("meta").toObject(Map.class))
                 .condition(l1.get("condition").getString()));

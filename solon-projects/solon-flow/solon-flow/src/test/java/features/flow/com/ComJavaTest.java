@@ -1,5 +1,6 @@
 package features.flow.com;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.flow.core.*;
@@ -8,6 +9,7 @@ import org.noear.solon.flow.driver.SimpleFlowDriver;
 /**
  * @author noear 2025/1/10 created
  */
+@Slf4j
 public class ComJavaTest {
     private FlowEngine flowEngine =  FlowEngine.newInstance();
 
@@ -24,16 +26,15 @@ public class ComJavaTest {
                     context.interrupt();
                 }
 
-                System.out.println(task.node());
                 super.handleTask(context, task);
             }
         });
 
 
-        chain.addNode(new NodeDecl("n1", NodeType.start).link("n2"));
-        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").link("n3"));
-        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@b").link("n4"));
-        chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").link("n5"));
+        chain.addNode(new NodeDecl("n1", NodeType.start).linkAdd("n2"));
+        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").linkAdd("n3"));
+        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@b").linkAdd("n4"));
+        chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkAdd("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
         ChainContext context = new ChainContext();

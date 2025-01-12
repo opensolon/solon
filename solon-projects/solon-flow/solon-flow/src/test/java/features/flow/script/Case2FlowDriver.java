@@ -16,7 +16,7 @@ public class Case2FlowDriver extends SimpleFlowDriver {
             return;
         }
 
-        System.out.println(task);
+        System.out.println("task: "  + task);
 
         super.handleTask(context, task);
     }

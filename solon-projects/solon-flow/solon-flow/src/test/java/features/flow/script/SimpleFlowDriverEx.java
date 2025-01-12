@@ -10,7 +10,7 @@ import org.noear.solon.flow.driver.SimpleFlowDriver;
 public class SimpleFlowDriverEx extends SimpleFlowDriver {
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        System.out.println(task);
+        System.out.println("task: "  + task);
         super.handleTask(context, task);
     }
 }

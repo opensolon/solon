@@ -24,7 +24,7 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Task {
-    private final Node element;
+    private final Node node;
     private final String expr;
 
     /**
@@ -36,8 +36,8 @@ public class Task {
     /**
      * @param taskExpr 任务表达式
      */
-    public Task(Node element, String taskExpr) {
-        this.element = element;
+    public Task(Node node, String taskExpr) {
+        this.node = node;
         this.expr = taskExpr;
     }
 
@@ -45,7 +45,7 @@ public class Task {
      * 所属节点
      * */
     public Node node() {
-        return element;
+        return node;
     }
 
     /**
@@ -64,6 +64,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return expr;
+        return "{" +
+                "nodeId='" + node.id() + '\'' +
+                ", expr='" + expr + '\'' +
+                '}';
     }
 }
