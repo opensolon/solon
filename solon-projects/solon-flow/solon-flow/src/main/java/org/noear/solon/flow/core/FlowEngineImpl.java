@@ -73,6 +73,10 @@ class FlowEngineImpl implements FlowEngine {
             throw new IllegalArgumentException("The start node was not found.");
         }
 
+        if (context.engine == null) {
+            context.engine = this;
+        }
+
         node_run(context, chain, start, depth);
     }
 
@@ -158,8 +162,8 @@ class FlowEngineImpl implements FlowEngine {
         final String token_key = "$inclusive_size";
 
         //流入
-        int count = context.counterIncr(node.id());//运行次数累计
-        if (context.counterGet(token_key) > count) { //等待所有支线计数完成
+        int count = context.counter().incr(chain, node.id());//运行次数累计
+        if (context.counter().get(chain, token_key) > count) { //等待所有支线计数完成
             return;
         }
 
@@ -178,7 +182,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
 
-        context.counterSet(token_key, matched_lines.size());
+        context.counter().set(chain, token_key, matched_lines.size());
         if (matched_lines.size() > 0) {
             //执行所有满足条件
             for (NodeLink l : matched_lines) {
@@ -218,13 +222,13 @@ class FlowEngineImpl implements FlowEngine {
      */
     private void parallel_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
         //流入
-        int count = context.counterIncr(node.id());//运行次数累计
+        int count = context.counter().incr(chain, node.id());//运行次数累计
         if (node.prveLinks().size() > count) { //等待所有支线计数完成
             return;
         }
 
         //恢复计数
-        context.counterSet(node.id(), 0);
+        context.counter().set(chain, node.id(), 0);
 
         //流出
         for (Node n : node.nextNodes()) {

@@ -45,6 +45,13 @@ public class SimpleFlowDriver implements ChainDriver {
     /**
      * 是否为组件
      */
+    protected boolean isChain(String description) {
+        return description.startsWith("#");
+    }
+
+    /**
+     * 是否为组件
+     */
     protected boolean isComponent(String description) {
         return description.startsWith("@");
     }
@@ -79,7 +86,11 @@ public class SimpleFlowDriver implements ChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        if (isComponent(task.description())) {
+        if (isChain(task.description())) {
+            //调用其它链
+            String chainId = task.description().substring(1);
+            context.engine().eval(chainId, context);
+        } else if (isComponent(task.description())) {
             //按组件运行
             String beanName = task.description().substring(1);
             TaskComponent component = Solon.context().getBean(beanName);
