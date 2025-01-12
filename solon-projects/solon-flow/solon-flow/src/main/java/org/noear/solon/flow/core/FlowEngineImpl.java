@@ -19,6 +19,8 @@ import org.noear.solon.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 流引擎实现
@@ -27,6 +29,29 @@ import java.util.List;
  * @since 3.0
  */
 class FlowEngineImpl implements FlowEngine {
+    private Map<String, Chain> chainMap = new ConcurrentHashMap<>();
+
+    @Override
+    public void load(Chain chain) {
+        chainMap.put(chain.id(), chain);
+    }
+
+    /**
+     * 评估
+     *
+     * @param chainId 链
+     * @param context 上下文
+     */
+    @Override
+    public void eval(String chainId, ChainContext context) throws Throwable {
+        Chain chain = chainMap.get(chainId);
+        if (chain == null) {
+            throw new IllegalArgumentException("No chain found for id: " + chainId);
+        }
+
+        eval(chain, context);
+    }
+
     /**
      * 评估
      *

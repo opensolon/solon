@@ -33,6 +33,30 @@ public interface FlowEngine {
     }
 
     /**
+     * 加载
+     *
+     * @param chain 链
+     */
+    void load(Chain chain);
+
+    /**
+     * 评估
+     *
+     * @param chainId 链Id
+     */
+    default void eval(String chainId) throws Throwable {
+        eval(chainId, new ChainContext());
+    }
+
+    /**
+     * 评估
+     *
+     * @param chainId 链Id
+     * @param context 上下文
+     */
+    void eval(String chainId, ChainContext context) throws Throwable;
+
+    /**
      * 评估
      *
      * @param chain 链
