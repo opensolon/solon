@@ -18,6 +18,7 @@ package org.noear.solon.flow.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * 节点申明
@@ -30,11 +31,11 @@ public class NodeDecl {
     protected String title;
     protected NodeType type;      //元素类型
     protected Map<String, Object> meta; //元信息
-    protected List<LinkDecl> links = new ArrayList<>();
+    protected List<NodeLinkDecl> links = new ArrayList<>();
     protected String task;
 
 
-    /////////////////
+    /// //////////////
 
     public NodeDecl(String id, NodeType type) {
         this.id = id;
@@ -51,13 +52,17 @@ public class NodeDecl {
         return this;
     }
 
-    public NodeDecl link(LinkDecl link) {
-        this.links.add(link);
+    public NodeDecl link(String toId, Consumer<NodeLinkDecl> configure) {
+        NodeLinkDecl linkDecl = new NodeLinkDecl(toId);
+        if (configure != null) {
+            configure.accept(linkDecl);
+        }
+        this.links.add(linkDecl);
         return this;
     }
 
-    public NodeDecl linkTo(String toId) {
-        return link(new LinkDecl(toId));
+    public NodeDecl link(String toId) {
+        return link(toId, null);
     }
 
     public NodeDecl task(String task) {

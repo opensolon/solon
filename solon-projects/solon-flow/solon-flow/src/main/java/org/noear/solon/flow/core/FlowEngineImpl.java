@@ -124,10 +124,10 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //流出
-        Link def_line = null;
-        List<Link> matched_lines = new ArrayList<>();
+        NodeLink def_line = null;
+        List<NodeLink> matched_lines = new ArrayList<>();
 
-        for (Link l : node.nextLinks()) {
+        for (NodeLink l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
@@ -141,7 +141,7 @@ class FlowEngineImpl implements FlowEngine {
         context.counterSet(token_key, matched_lines.size());
         if (matched_lines.size() > 0) {
             //执行所有满足条件
-            for (Link l : matched_lines) {
+            for (NodeLink l : matched_lines) {
                 node_run(context, chain, l.nextNode(), depth);
             }
         } else if (def_line != null) {
@@ -154,8 +154,8 @@ class FlowEngineImpl implements FlowEngine {
      * 运行排他网关
      */
     private void exclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
-        Link def_line = null;
-        for (Link l : node.nextLinks()) {
+        NodeLink def_line = null;
+        for (NodeLink l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {

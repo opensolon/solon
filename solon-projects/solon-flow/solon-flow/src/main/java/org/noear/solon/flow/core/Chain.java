@@ -39,7 +39,7 @@ public class Chain {
     private final ChainDriver driver;
 
     private final Map<String, Node> nodes = new HashMap<>();
-    private final List<Link> links = new ArrayList<>();
+    private final List<NodeLink> links = new ArrayList<>();
 
     private Node start;
 
@@ -95,7 +95,7 @@ public class Chain {
     /**
      * 获取所有连接
      */
-    public List<Link> links() {
+    public List<NodeLink> links() {
         return Collections.unmodifiableList(links);
     }
 
@@ -104,10 +104,10 @@ public class Chain {
      * 添加节点
      */
     public void addNode(NodeDecl nodeDecl) {
-        List<Link> linkAry = new ArrayList<>();
+        List<NodeLink> linkAry = new ArrayList<>();
 
-        for (LinkDecl linkSpec : nodeDecl.links) {
-            linkAry.add(new Link(this, id, linkSpec));
+        for (NodeLinkDecl linkSpec : nodeDecl.links) {
+            linkAry.add(new NodeLink(this, id, linkSpec));
         }
 
         links.addAll(linkAry);
@@ -164,7 +164,7 @@ public class Chain {
             nodeDecl.task(n1.get("task").getString());
 
             for (ONode l1 : n1.get("links").ary()) {
-                nodeDecl.link(new LinkDecl(l1.get("toId").getString())
+                nodeDecl.link(l1.get("toId").getString(), ld -> ld
                         .title(l1.get("title").getString())
                         .meta(l1.get("meta").toObject(Map.class))
                         .condition(l1.get("condition").getString()));

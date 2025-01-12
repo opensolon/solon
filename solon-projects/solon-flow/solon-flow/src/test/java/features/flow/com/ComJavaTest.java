@@ -30,10 +30,10 @@ public class ComJavaTest {
         });
 
 
-        chain.addNode(new NodeDecl("n1", NodeType.start).linkTo("n2"));
-        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").linkTo("n3"));
-        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@b").linkTo("n4"));
-        chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkTo("n5"));
+        chain.addNode(new NodeDecl("n1", NodeType.start).link("n2"));
+        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").link("n3"));
+        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@b").link("n4"));
+        chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").link("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
         ChainContext context = new ChainContext();

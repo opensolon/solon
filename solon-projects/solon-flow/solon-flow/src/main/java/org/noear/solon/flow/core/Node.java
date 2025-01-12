@@ -32,13 +32,13 @@ public class Node {
     private final transient Chain chain;
 
     private final NodeDecl decl;
-    private final List<Link> nextLinks = new ArrayList<>(); //as nextLinks
+    private final List<NodeLink> nextLinks = new ArrayList<>(); //as nextLinks
 
     private List<Node> prveNodes, nextNodes;
-    private List<Link> prveLinks;
+    private List<NodeLink> prveLinks;
     private Task task;
 
-    protected Node(Chain chain, NodeDecl decl, List<Link> links) {
+    protected Node(Chain chain, NodeDecl decl, List<NodeLink> links) {
         this.chain = chain;
         this.decl = decl;
 
@@ -88,12 +88,12 @@ public class Node {
     /**
      * 前面的链接
      */
-    public List<Link> prveLinks() {
+    public List<NodeLink> prveLinks() {
         if (prveLinks == null) {
             prveLinks = new ArrayList<>();
 
             if (type() != NodeType.start) {
-                for (Link l : chain.links()) {
+                for (NodeLink l : chain.links()) {
                     if (id().equals(l.nextId())) { //by nextID
                         prveLinks.add(l);
                     }
@@ -110,7 +110,7 @@ public class Node {
     /**
      * 后面的链接
      */
-    public List<Link> nextLinks() {
+    public List<NodeLink> nextLinks() {
         return Collections.unmodifiableList(nextLinks);
     }
 
@@ -122,7 +122,7 @@ public class Node {
             prveNodes = new ArrayList<>();
 
             if (type() != NodeType.start) {
-                for (Link l : chain.links()) { //要从链处找
+                for (NodeLink l : chain.links()) { //要从链处找
                     if (id().equals(l.nextId())) {
                         nextNodes.add(chain.getNode(l.prveId()));
                     }
@@ -141,7 +141,7 @@ public class Node {
             nextNodes = new ArrayList<>();
 
             if (type() != NodeType.end) {
-                for (Link l : this.nextLinks()) { //从自由处找
+                for (NodeLink l : this.nextLinks()) { //从自由处找
                     nextNodes.add(chain.getNode(l.nextId()));
                 }
             }

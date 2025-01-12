@@ -25,15 +25,15 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  */
-public class Link implements Comparable<Link> {
+public class NodeLink implements Comparable<NodeLink> {
     private final Chain chain;
     private final String fromId;
-    private final LinkDecl decl;
+    private final NodeLinkDecl decl;
 
     private Node prveNode, nextNode;
     private Condition condition;
 
-    public Link(Chain chain, String fromId, LinkDecl decl) {
+    public NodeLink(Chain chain, String fromId, NodeLinkDecl decl) {
         this.chain = chain;
         this.fromId = fromId;
         this.decl = decl;
@@ -101,7 +101,7 @@ public class Link implements Comparable<Link> {
     }
 
     @Override
-    public int compareTo(Link o) {
+    public int compareTo(NodeLink o) {
         if (this.decl.priority > o.decl.priority) {
             return -1; //大的在前
         } else if (this.decl.priority < o.decl.priority) {

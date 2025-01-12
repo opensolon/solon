@@ -23,7 +23,7 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  */
-public class LinkDecl {
+public class NodeLinkDecl {
     protected final String toId;
     protected String title;
     protected Map<String, Object> meta;
@@ -33,26 +33,26 @@ public class LinkDecl {
      */
     protected int priority;
 
-    public LinkDecl(String toId) {
+    public NodeLinkDecl(String toId) {
         this.toId = toId;
     }
 
-    public LinkDecl title(String title) {
+    public NodeLinkDecl title(String title) {
         this.title = title;
         return this;
     }
 
-    public LinkDecl meta(Map<String, Object> meta) {
+    public NodeLinkDecl meta(Map<String, Object> meta) {
         this.meta = meta;
         return this;
     }
 
-    public LinkDecl condition(String condition) {
+    public NodeLinkDecl condition(String condition) {
         this.condition = condition;
         return this;
     }
 
-    public LinkDecl priority(int priority) {
+    public NodeLinkDecl priority(int priority) {
         this.priority = priority;
         return this;
     }

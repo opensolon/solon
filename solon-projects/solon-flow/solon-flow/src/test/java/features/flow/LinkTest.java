@@ -2,8 +2,8 @@ package features.flow;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.core.Chain;
-import org.noear.solon.flow.core.Link;
-import org.noear.solon.flow.core.LinkDecl;
+import org.noear.solon.flow.core.NodeLink;
+import org.noear.solon.flow.core.NodeLinkDecl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +16,11 @@ public class LinkTest {
     @Test
     public void case1(){
         Chain chain = new Chain("c1");
-        List<Link> links = new ArrayList<>();
+        List<NodeLink> links = new ArrayList<>();
 
-        links.add(new Link(chain, "n1", new LinkDecl("n2").priority(1)));
-        links.add(new Link(chain, "n1", new LinkDecl("n3").priority(3)));
-        links.add(new Link(chain, "n1", new LinkDecl("n4").priority(2)));
+        links.add(new NodeLink(chain, "n1", new NodeLinkDecl("n2").priority(1)));
+        links.add(new NodeLink(chain, "n1", new NodeLinkDecl("n3").priority(3)));
+        links.add(new NodeLink(chain, "n1", new NodeLinkDecl("n4").priority(2)));
 
         Collections.sort(links);
 

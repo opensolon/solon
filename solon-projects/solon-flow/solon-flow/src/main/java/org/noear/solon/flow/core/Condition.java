@@ -25,7 +25,7 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Condition {
-    private final Link link;
+    private final NodeLink link;
     private final String expr;
 
     /**
@@ -36,7 +36,7 @@ public class Condition {
     /**
      * @param conditionsExpr 条件表达式
      */
-    public Condition(Link link, String conditionsExpr) {
+    public Condition(NodeLink link, String conditionsExpr) {
         this.link = link;
         this.expr = conditionsExpr;
     }
@@ -44,7 +44,7 @@ public class Condition {
     /**
      * 所属线
      */
-    public Link link() {
+    public NodeLink link() {
         return link;
     }
 
