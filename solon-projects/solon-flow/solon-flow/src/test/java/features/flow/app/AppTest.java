@@ -1,8 +1,8 @@
 package features.flow.app;
 
 import org.junit.jupiter.api.Test;
+import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.flow.core.Chain;
 import org.noear.solon.flow.core.ChainContext;
 import org.noear.solon.flow.core.FlowEngine;
 import org.noear.solon.test.SolonTest;
@@ -47,5 +47,18 @@ public class AppTest {
         context.paramSet("day", 7);
         flowEngine.eval("c5", context);
         assert context.result.equals(10);
+
+        System.out.println(ONode.load(context).toJson());
+    }
+
+    @Test
+    public void context_test() {
+        String json = "{\"params\":{\"day\":7},\"result\":10,\"attrs\":{}}";
+        ChainContext context = ONode.load(json).toObject(ChainContext.class);
+
+        String json2 = ONode.load(context).toJson();
+        System.out.println(json2);
+
+        assert json2.equals(json);
     }
 }

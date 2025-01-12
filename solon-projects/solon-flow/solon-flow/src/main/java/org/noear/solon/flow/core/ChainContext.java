@@ -20,7 +20,6 @@ import org.noear.solon.lang.Preview;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 /**
@@ -31,28 +30,34 @@ import java.util.function.Function;
  */
 @Preview("3.0")
 public class ChainContext implements Serializable {
-    /**
-     * 存放执行参数
-     */
+    //存放执行参数
     private final Map<String, Object> params = new LinkedHashMap<>();
-    /**
-     * 存放执行结果（可选）
-     */
+    //存放执行结果（可选）
     public Object result;
-
-    /**
-     * 存放过程记数
-     */
-    private final Map<String, AtomicInteger> counters = new LinkedHashMap<>();
-    /**
-     * 存放过程属性（可选）
-     */
+    //存放过程属性（可选）
     private final Map<String, Object> attrs = new LinkedHashMap<>();
-    /**
-     * 控制过程中断（可选）
-     */
-    private boolean interrupted = false;
 
+    //控制过程计数
+    private transient final Counter counter = new Counter();
+    //控制过程中断（可选）
+    private transient boolean interrupted = false;
+
+    //当前流程引擎
+    protected FlowEngine engine;
+
+    /**
+     * 当前流程引擎
+     */
+    public FlowEngine engine() {
+        return engine;
+    }
+
+    /**
+     * 计数器
+     */
+    public Counter counter() {
+        return counter;
+    }
 
     /**
      * 是否已中断
@@ -68,29 +73,7 @@ public class ChainContext implements Serializable {
         this.interrupted = true;
     }
 
-    /**
-     * 计数器获取
-     */
-    public int counterGet(String id) {
-        return counters.computeIfAbsent(id, k -> new AtomicInteger(0))
-                .get();
-    }
-
-    /**
-     * 计数器设置
-     */
-    public void counterSet(String id, int value) {
-        counters.computeIfAbsent(id, k -> new AtomicInteger(0))
-                .set(value);
-    }
-
-    /**
-     * 计数器增量
-     */
-    public int counterIncr(String id) {
-        return counters.computeIfAbsent(id, k -> new AtomicInteger(0))
-                .incrementAndGet();
-    }
+    /// ////////
 
     /**
      * 参数集合
