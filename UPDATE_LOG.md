@@ -44,6 +44,7 @@
 * 优化 mybatis-solon-plugin SolonManagedTransaction getTimeout 添加异常过滤（有些驱动不支持此接口）
 * 修复 solon 启动时使用接口排除插件无效的问题
 * snack3 升为 3.2.124
+* fastjson2 升为 2.0.54
 * snakeyaml 升为 2.3
 * mybatis 升为 3.5.17
 * mybatis-plus 升为 3.5.9
