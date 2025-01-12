@@ -19,9 +19,10 @@ import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.flow.TaskComponent;
 import org.noear.solon.flow.core.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @since 3.0
  * */
 public class SimpleFlowDriver implements ChainDriver {
+    private static final Logger log = LoggerFactory.getLogger(SimpleFlowDriver.class);
     private static final SimpleFlowDriver instance = new SimpleFlowDriver();
 
     public static SimpleFlowDriver getInstance() {
@@ -48,12 +50,12 @@ public class SimpleFlowDriver implements ChainDriver {
 
     @Override
     public void onNodeBefore(ChainContext context, Node node) {
-
+        log.debug("on-node-before: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override
     public void onNodeAfter(ChainContext context, Node node) {
-
+        log.debug("on-node-after: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override

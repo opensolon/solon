@@ -29,8 +29,6 @@ import java.util.List;
  * @since 3.0
  */
 class FlowEngineImpl implements FlowEngine {
-    static final Logger log = LoggerFactory.getLogger(FlowEngineImpl.class);
-
     /**
      * 评估
      *
@@ -102,10 +100,6 @@ class FlowEngineImpl implements FlowEngine {
             return;
         } else {
             depth--;
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("node_run: chain={}, node={}", chain.id(), node);
         }
 
         //节点运行之前事件
