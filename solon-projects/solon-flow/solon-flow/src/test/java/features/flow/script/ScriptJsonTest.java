@@ -37,10 +37,13 @@ public class ScriptJsonTest {
 
         flowEngine.eval(chain, context);
         assert "n3".equals(context.result);
+    }
 
-        System.out.println("------------");
+    @Test
+    public void case2_interrupt2() throws Throwable {
+        Chain chain = Chain.parseByUri("classpath:script_case2.json");
 
-        context = new ChainContext();
+        ChainContext context = new ChainContext();
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);
