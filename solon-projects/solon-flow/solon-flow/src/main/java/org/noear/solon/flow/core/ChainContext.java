@@ -43,7 +43,7 @@ public class ChainContext implements Serializable {
     private transient boolean interrupted = false;
 
     //当前流程引擎
-    protected FlowEngine engine;
+    protected transient FlowEngine engine;
 
     /**
      * 当前流程引擎
