@@ -1,0 +1,8 @@
+{
+  "id": "c6",
+  "nodes": [
+    { "id": "n1", "type": "start", "link": "n2"},
+    { "id": "n2", "type": "execute", "link": "n3", "task":"#c62"},
+    { "id": "n3", "type": "end"}
+  ]
+}

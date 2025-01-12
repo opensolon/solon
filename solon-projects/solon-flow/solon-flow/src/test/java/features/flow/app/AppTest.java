@@ -21,6 +21,13 @@ public class AppTest {
     }
 
     @Test
+    public void case6() throws Throwable {
+        ChainContext context = new ChainContext();
+        flowEngine.eval("c6", context);
+        assert context.result.equals(112);
+    }
+
+    @Test
     public void case4_inclusive() throws Throwable {
         ChainContext context = new ChainContext();
         context.paramSet("day", 1);
