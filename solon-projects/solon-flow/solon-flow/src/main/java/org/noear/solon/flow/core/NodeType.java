@@ -69,16 +69,6 @@ public enum NodeType {
     }
 
     public static NodeType nameOf(String name) {
-        if ("exec".equals(name)) {
-            return NodeType.execute;
-        } else if ("inc".equals(name)) {
-            return NodeType.inclusive;
-        } else if ("excl".equals(name)) {
-            return NodeType.exclusive;
-        } else if ("par".equals(name)) {
-            return NodeType.parallel;
-        }
-
         NodeType[] values = NodeType.values();
         for (NodeType v : values) {
             if (v.name().equals(name)) {
