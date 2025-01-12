@@ -109,7 +109,8 @@ class FlowEngineImpl implements FlowEngine {
             return;
         }
 
-        if (context.isInterrupted()) { //如果中断，就不再执行了
+        //如果中断，就不再执行了
+        if (context.isInterrupted()) {
             return;
         }
 
@@ -122,6 +123,11 @@ class FlowEngineImpl implements FlowEngine {
 
         //节点运行之前事件
         chain.driver().onNodeBefore(context, node);
+
+        //如果中断，就不再执行了（onNodeBefore 可能会触发中断）
+        if (context.isInterrupted()) {
+            return;
+        }
 
         switch (node.type()) {
             case start:
