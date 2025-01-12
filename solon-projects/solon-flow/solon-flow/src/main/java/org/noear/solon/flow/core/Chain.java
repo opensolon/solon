@@ -139,19 +139,12 @@ public class Chain {
         }
 
         if (uri.endsWith(".json")) {
-            return parseByJson(ResourceUtil.getResourceAsString(url));
+            return parseByDom(ONode.load(ResourceUtil.getResourceAsString(url)));
         } else if (uri.endsWith(".yml") || uri.endsWith(".yaml") || uri.endsWith(".properties")) {
             return parseByProperties(Utils.loadProperties(url));
         } else {
             throw new IllegalArgumentException("File format is not supported: " + uri);
         }
-    }
-
-    /**
-     * 解析Json
-     */
-    public static Chain parseByJson(String json) {
-        return parseByDom(ONode.load(json));
     }
 
     /**
@@ -207,6 +200,9 @@ public class Chain {
         return chain;
     }
 
+    /**
+     * 添加链接
+     */
     private static void addLink(NodeDecl nodeDecl, ONode l1) {
         nodeDecl.linkAdd(l1.get("toId").getString(), ld -> ld
                 .title(l1.get("title").getString())

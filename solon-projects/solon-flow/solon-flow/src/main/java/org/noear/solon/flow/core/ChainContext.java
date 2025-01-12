@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 /**
  * 链上下文
@@ -30,19 +31,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Preview("3.0")
 public class ChainContext implements Serializable {
-    //存放记数器（汇聚网关会用法）
-    private final Map<String, AtomicInteger> counters = new LinkedHashMap<>();
-    //存放执行参数
+    /**
+     * 存放执行参数
+     */
     private final Map<String, Object> params = new LinkedHashMap<>();
-    //存放过程记录（可选）
-    private final Map<String, Object> attrs = new LinkedHashMap<>();
-    //控制执行中断（可选）
-    private boolean interrupted = false;
-
     /**
      * 存放执行结果（可选）
      */
     public Object result;
+
+    /**
+     * 存放过程记数
+     */
+    private final Map<String, AtomicInteger> counters = new LinkedHashMap<>();
+    /**
+     * 存放过程属性（可选）
+     */
+    private final Map<String, Object> attrs = new LinkedHashMap<>();
+    /**
+     * 控制过程中断（可选）
+     */
+    private boolean interrupted = false;
+
 
     /**
      * 是否已中断
@@ -116,6 +126,13 @@ public class ChainContext implements Serializable {
      */
     public Object attr(String key) {
         return attrs.get(key);
+    }
+
+    /**
+     * 属性获取
+     */
+    public <T> T attrIfAbsent(String key, Function<String, T> mappingFunction) {
+        return (T) attrs.computeIfAbsent(key, mappingFunction);
     }
 
     /**
