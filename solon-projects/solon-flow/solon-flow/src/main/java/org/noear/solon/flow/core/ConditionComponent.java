@@ -15,12 +15,15 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * 条件组件
  *
  * @author noear
  * @since 3.0
  */
+@Preview("3.0")
 public interface ConditionComponent {
     /**
      * 检测

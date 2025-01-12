@@ -1,0 +1,4 @@
+
+
+solon.flow:
+  - "classpath:flow/*"

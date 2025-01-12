@@ -15,13 +15,7 @@ public class ScriptJsonTest {
     public void case1_demo() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case1.json");
 
-        ChainContext context = new ChainContext();
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
-
-        //完整执行
-        flowEngine.eval(chain, context);
+        flowEngine.eval(chain);
     }
 
     @Test

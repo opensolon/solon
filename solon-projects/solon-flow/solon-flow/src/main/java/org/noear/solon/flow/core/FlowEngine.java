@@ -54,7 +54,19 @@ public interface FlowEngine {
      * @param chainId 链Id
      * @param context 上下文
      */
-    void eval(String chainId, ChainContext context) throws Throwable;
+    default void eval(String chainId, ChainContext context) throws Throwable {
+        eval(chainId, null, -1, context);
+    }
+
+    /**
+     * 评估
+     *
+     * @param chainId 链Id
+     * @param startId 开始Id
+     * @param depth   执行深度
+     * @param context 上下文
+     */
+    void eval(String chainId, String startId, int depth, ChainContext context) throws Throwable;
 
     /**
      * 评估
@@ -71,7 +83,9 @@ public interface FlowEngine {
      * @param chain   链
      * @param context 上下文
      */
-    void eval(Chain chain, ChainContext context) throws Throwable;
+    default void eval(Chain chain, ChainContext context) throws Throwable {
+        eval(chain, null, -1, context);
+    }
 
     /**
      * 评估

@@ -43,24 +43,13 @@ class FlowEngineImpl implements FlowEngine {
      * @param context 上下文
      */
     @Override
-    public void eval(String chainId, ChainContext context) throws Throwable {
+    public void eval(String chainId, String startId, int depth, ChainContext context) throws Throwable {
         Chain chain = chainMap.get(chainId);
         if (chain == null) {
             throw new IllegalArgumentException("No chain found for id: " + chainId);
         }
 
-        eval(chain, context);
-    }
-
-    /**
-     * 评估
-     *
-     * @param chain   链
-     * @param context 上下文
-     */
-    @Override
-    public void eval(Chain chain, ChainContext context) throws Throwable {
-        eval(chain, null, -1, context);
+        eval(chain, startId, depth, context);
     }
 
     /**
@@ -80,7 +69,9 @@ class FlowEngineImpl implements FlowEngine {
             start = chain.getNode(startId);
         }
 
-        assert start != null;
+        if (start == null) {
+            throw new IllegalArgumentException("The start node was not found.");
+        }
 
         node_run(context, chain, start, depth);
     }

@@ -56,9 +56,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit5.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
 
