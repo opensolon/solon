@@ -1,6 +1,27 @@
 
 solon-flow 提供一种低成本的流处理支持。支持 java 构建，json,yml,properties 配置
 
+使用示例:
+
+```java
+FlowEngine flowEngine =  FlowEngine.newInstance();
+
+flowEngine.load("classpath:script_case1.json")
+flowEngine.load("classpath:script_case2.json")
+flowEngine.load("classpath:script_case3.yml")
+
+
+flowEngine.eval("c1");
+flowEngine.eval("c1", new ChainContext());
+
+Chain chain = Chain.parseByUri("classpath:script_case1.json");
+
+//获取起始节点
+chain.start();
+//获取某个节点的后面节点
+chain.getNode("n2").nextNodes();
+```
+
 ### 1、配置字典
 
 Chain 配置属性
