@@ -2,8 +2,8 @@
   "id": "c1",
   "driver": "features.flow.script.SimpleFlowDriverEx",
   "nodes": [
-    { "id": "n1", "type": "start", "links": [{"toId": "n2"}]},
-    { "id": "n2", "type": "execute", "links": [{"toId": "n3"}], "task":"context.result=111 + a;"},
+    { "id": "n1", "type": "start", "link": "n2"},
+    { "id": "n2", "type": "execute", "link": "n3", "task":"context.result=111 + a;"},
     { "id": "n3", "type": "end"}
   ]
 }

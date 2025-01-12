@@ -163,16 +163,30 @@ public class Chain {
             nodeDecl.meta(n1.get("meta").toObject(Map.class));
             nodeDecl.task(n1.get("task").getString());
 
-            for (ONode l1 : n1.get("links").ary()) {
-                nodeDecl.link(l1.get("toId").getString(), ld -> ld
-                        .title(l1.get("title").getString())
-                        .meta(l1.get("meta").toObject(Map.class))
-                        .condition(l1.get("condition").getString()));
+            ONode linkNode = n1.get("link");
+            if (linkNode.isArray()) {
+                //数组模式（多个）
+                for (ONode l1 : linkNode.ary()) {
+                    addLink(nodeDecl, l1);
+                }
+            } else if (linkNode.isObject()) {
+                //对象模式（单个）
+                addLink(nodeDecl, linkNode);
+            } else if (linkNode.isValue()) {
+                //单值模式（单个）
+                nodeDecl.link(linkNode.getString());
             }
 
             chain.addNode(nodeDecl);
         }
 
         return chain;
+    }
+
+    private static void addLink(NodeDecl nodeDecl, ONode l1) {
+        nodeDecl.link(l1.get("toId").getString(), ld -> ld
+                .title(l1.get("title").getString())
+                .meta(l1.get("meta").toObject(Map.class))
+                .condition(l1.get("condition").getString()));
     }
 }
