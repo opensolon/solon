@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,11 +89,25 @@ public class NodeLinkDecl {
 
     @Override
     public String toString() {
-        return "LinkSpec{" +
-                "toId='" + toId + '\'' +
-                ", title='" + title + '\'' +
-                ", meta=" + meta +
-                ", condition='" + condition + '\'' +
-                '}';
+        StringBuilder buf = new StringBuilder();
+        buf.append("{");
+
+        buf.append("toId='").append(toId).append('\'');
+
+        if (Utils.isNotEmpty(title)) {
+            buf.append(", title='").append(title).append('\'');
+        }
+
+        if (Utils.isNotEmpty(condition)) {
+            buf.append(", condition='").append(condition).append('\'');
+        }
+
+        if (Utils.isNotEmpty(meta)) {
+            buf.append(", meta=").append(meta);
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }

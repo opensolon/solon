@@ -26,6 +26,16 @@ import org.noear.solon.lang.Preview;
 @Preview("3.0")
 public interface ChainDriver {
     /**
+     * 节点运行之前
+     */
+    void onNodeBefore(ChainContext context, Node node);
+
+    /**
+     * 节点运行之后
+     */
+    void onNodeAfter(ChainContext context, Node node);
+
+    /**
      * 处理连线条件
      */
     boolean handleCondition(ChainContext context, Condition condition) throws Throwable;

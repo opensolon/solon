@@ -185,12 +185,16 @@ public class Node {
             buf.append(", title='").append(decl.title).append('\'');
         }
 
-        if (Utils.isNotEmpty(decl.meta)) {
-            buf.append(", meta=").append(decl.meta);
+        if (Utils.isNotEmpty(decl.task)) {
+            buf.append(", task='").append(decl.task).append('\'');
         }
 
-        if (Utils.isNotEmpty(decl.task)) {
-            buf.append(", task=").append(decl.task);
+        if (Utils.isNotEmpty(decl.links)) {
+            buf.append(", link=").append(decl.links);
+        }
+
+        if (Utils.isNotEmpty(decl.meta)) {
+            buf.append(", meta=").append(decl.meta);
         }
 
         buf.append("}");

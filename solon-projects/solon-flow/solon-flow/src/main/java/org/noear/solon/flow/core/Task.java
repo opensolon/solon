@@ -25,7 +25,7 @@ import org.noear.solon.Utils;
  * */
 public class Task {
     private final Node node;
-    private final String expr;
+    private final String description;
 
     /**
      * 附件（按需定制使用）
@@ -34,16 +34,16 @@ public class Task {
 
 
     /**
-     * @param taskExpr 任务表达式
+     * @param description 任务描述
      */
-    public Task(Node node, String taskExpr) {
+    public Task(Node node, String description) {
         this.node = node;
-        this.expr = taskExpr;
+        this.description = description;
     }
 
     /**
      * 所属节点
-     * */
+     */
     public Node node() {
         return node;
     }
@@ -51,22 +51,29 @@ public class Task {
     /**
      * 表达式（示例："F:tag/fun1;R:tag/rule1" 或 "fun1()" 或 "[{t:'F',c:'tag/fun1'}]"）
      */
-    public String expr() {
-        return expr;
+    public String description() {
+        return description;
     }
 
     /**
      * 是否为空
      */
     public boolean isEmpty() {
-        return Utils.isEmpty(expr);
+        return Utils.isEmpty(description);
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "nodeId='" + node.id() + '\'' +
-                ", expr='" + expr + '\'' +
-                '}';
+        if (isEmpty()) {
+            return "{" +
+                    "nodeId='" + node.id() + '\'' +
+                    ", description=null" +
+                    '}';
+        } else {
+            return "{" +
+                    "nodeId='" + node.id() + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
+        }
     }
 }

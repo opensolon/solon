@@ -26,7 +26,7 @@ import org.noear.solon.Utils;
  * */
 public class Condition {
     private final NodeLink link;
-    private final String expr;
+    private final String description;
 
     /**
      * 附件（按需定制使用）
@@ -34,39 +34,47 @@ public class Condition {
     public Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
 
     /**
-     * @param conditionsExpr 条件表达式
+     * @param link        所属链接
+     * @param description 条件描述
      */
-    public Condition(NodeLink link, String conditionsExpr) {
+    public Condition(NodeLink link, String description) {
         this.link = link;
-        this.expr = conditionsExpr;
+        this.description = description;
     }
 
     /**
-     * 所属线
+     * 所属链接
      */
     public NodeLink link() {
         return link;
     }
 
     /**
-     * 表达式（示例："(a,>,12) and (b,=,1)" 或 "a=12 && b=1" 或 "[{l:'a',p:'>',r:'12'}...]"）
+     * 描述（示例："(a,>,12) and (b,=,1)" 或 "a=12 && b=1" 或 "[{l:'a',p:'>',r:'12'}...]"）
      */
-    public String expr() {
-        return expr;
+    public String description() {
+        return description;
     }
 
     /**
      * 是否为空
      */
     public boolean isEmpty() {
-        return Utils.isEmpty(expr);
+        return Utils.isEmpty(description);
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "toId='" + link.nextId() + '\'' +
-                ", expr='" + expr + '\'' +
-                '}';
+        if (isEmpty()) {
+            return "{" +
+                    "toId='" + link.nextId() + '\'' +
+                    ", description=null" +
+                    '}';
+        } else {
+            return "{" +
+                    "toId='" + link.nextId() + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
+        }
     }
 }
