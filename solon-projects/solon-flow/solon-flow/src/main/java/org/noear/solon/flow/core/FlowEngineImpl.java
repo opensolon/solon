@@ -122,7 +122,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //节点运行之前事件
-        chain.driver().onNodeBefore(context, node);
+        chain.driver().onNodeStart(context, node);
 
         //如果中断，就不再执行了（onNodeBefore 可能会触发中断）
         if (context.isInterrupted()) {
@@ -158,7 +158,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //节点运行之后事件
-        chain.driver().onNodeAfter(context, node);
+        chain.driver().onNodeEnd(context, node);
     }
 
     /**

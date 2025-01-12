@@ -57,13 +57,13 @@ public class SimpleFlowDriver implements ChainDriver {
     }
 
     @Override
-    public void onNodeBefore(ChainContext context, Node node) {
-        log.debug("on-node-before: chain={}, node={}", node.chain().id(), node);
+    public void onNodeStart(ChainContext context, Node node) {
+        log.debug("on-node-start: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override
-    public void onNodeAfter(ChainContext context, Node node) {
-        log.debug("on-node-after: chain={}, node={}", node.chain().id(), node);
+    public void onNodeEnd(ChainContext context, Node node) {
+        log.debug("on-node-end: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override
