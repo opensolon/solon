@@ -7,10 +7,5 @@
     { "id": "n3", "type": "execute", "link": "n4", "task":"@b"},
     { "id": "n4", "type": "execute", "link": "n5", "task":"@c"},
     { "id": "n5", "type": "end"}
-  ],
-  "$schema": {
-    "note": "架构参考（非数据）",
-    "params": "{a:int,b:int,c:long}",
-    "result": "boot"
-  }
+  ]
 }

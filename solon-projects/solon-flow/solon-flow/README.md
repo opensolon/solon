@@ -1,5 +1,5 @@
 
-
+solon-flow 提供一种低成本的流处理支持。支持 java 构建，json,yml,properties 配置
 
 ### 1、配置字典
 
@@ -15,14 +15,14 @@ Chain 配置属性
 
 Node 配置属性
 
-| 属性       | 数据类型                   | 描述                             |
-|----------|------------------------|--------------------------------|
-| id       | `String`                  | 标识（必要）                         |
-| type     | `NodeType`             | 节点类型（必要）                       |
-| title    | `String`               | 显示标题                           |
-| meta     | `Map<String,Object>`   | 元信息                            |
-| link     | `String`  or `List<Link>` | 链接（单个用 `String`，多个用 `List<Link>`） |
-| task     | `String`               | 任务描述                           |
+| 属性       | 数据类型                                          | 描述                |
+|----------|-----------------------------------------------|-------------------|
+| id       | `String`                                      | 标识（必要）            |
+| type     | `NodeType`                                    | 节点类型（必要）          |
+| title    | `String`                                      | 显示标题              |
+| meta     | `Map<String,Object>`                          | 元信息               |
+| link     | `String` or `Link` or `String[]`  or `Link[]` | 链接（支持单值、多值；简写、全写） |
+| task     | `String`                                      | 任务描述              |
 
 NodeLink 配置属性
 

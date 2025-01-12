@@ -130,7 +130,7 @@ public class Chain {
 
 
     /**
-     * 解析
+     * 解析文件
      */
     public static Chain parseByUri(String uri) throws IOException {
         URL url = ResourceUtil.findResource(uri, false);
@@ -138,15 +138,33 @@ public class Chain {
             throw new IllegalArgumentException("Can't find resource: " + uri);
         }
 
-        return parseByJson(ResourceUtil.getResourceAsString(url));
+        if (uri.endsWith(".json")) {
+            return parseByJson(ResourceUtil.getResourceAsString(url));
+        } else if (uri.endsWith(".yml") || uri.endsWith(".yaml") || uri.endsWith(".properties")) {
+            return parseByProperties(Utils.loadProperties(url));
+        } else {
+            throw new IllegalArgumentException("File format is not supported: " + uri);
+        }
     }
 
     /**
-     * 解析
+     * 解析Json
      */
     public static Chain parseByJson(String json) {
-        ONode oNode = ONode.load(json);
+        return parseByDom(ONode.load(json));
+    }
 
+    /**
+     * 解析属性
+     */
+    public static Chain parseByProperties(Properties properties) {
+        return parseByDom(ONode.load(properties));
+    }
+
+    /**
+     * 解析文档树
+     */
+    public static Chain parseByDom(ONode oNode) {
         String id = oNode.get("id").getString();
         String title = oNode.get("id").getString();
         String driverStr = oNode.get("driver").getString();
