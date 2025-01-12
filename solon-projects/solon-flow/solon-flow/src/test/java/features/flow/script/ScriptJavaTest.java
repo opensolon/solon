@@ -7,7 +7,7 @@ import org.noear.solon.flow.core.*;
  * @author noear 2025/1/10 created
  */
 public class ScriptJavaTest {
-    private FlowEngine flowEngine =  FlowEngine.newInstance();
+    private FlowEngine flowEngine = FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {
@@ -23,6 +23,6 @@ public class ScriptJavaTest {
         context.paramSet("b", 3);
         context.paramSet("c", 4);
 
-        flowEngine.eval(context, chain);
+        flowEngine.eval(chain, context);
     }
 }

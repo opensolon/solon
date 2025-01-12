@@ -8,7 +8,7 @@ import org.noear.solon.flow.core.*;
  * @author noear 2025/1/10 created
  */
 public class ComJsonTest {
-    private FlowEngine flowEngine =  FlowEngine.newInstance();
+    private FlowEngine flowEngine = FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {
@@ -24,7 +24,7 @@ public class ComJsonTest {
 
         //完整执行
 
-        flowEngine.eval(context, chain);
+        flowEngine.eval(chain, context);
         System.out.println("------------");
 
         context = new ChainContext();
@@ -33,6 +33,6 @@ public class ComJsonTest {
         context.paramSet("c", 14);
 
         //执行一层
-        flowEngine.eval(context, chain, "n2", 1);
+        flowEngine.eval(chain, "n2", 1, context);
     }
 }

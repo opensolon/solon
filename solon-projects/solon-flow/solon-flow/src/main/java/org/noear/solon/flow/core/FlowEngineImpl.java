@@ -16,8 +16,6 @@
 package org.noear.solon.flow.core;
 
 import org.noear.solon.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,24 +30,24 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 评估
      *
-     * @param context 上下文
      * @param chain   链
+     * @param context 上下文
      */
     @Override
-    public void eval(ChainContext context, Chain chain) throws Throwable {
-        eval(context, chain, null, -1);
+    public void eval(Chain chain, ChainContext context) throws Throwable {
+        eval(chain, null, -1, context);
     }
 
     /**
      * 评估
      *
-     * @param context 上下文
      * @param chain   链
      * @param startId 开始Id
      * @param depth   执行深度
+     * @param context 上下文
      */
     @Override
-    public void eval(ChainContext context, Chain chain, String startId, int depth) throws Throwable {
+    public void eval(Chain chain, String startId, int depth, ChainContext context) throws Throwable {
         Node start;
         if (startId == null) {
             start = chain.start();

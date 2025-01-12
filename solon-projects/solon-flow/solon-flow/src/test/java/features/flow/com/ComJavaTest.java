@@ -11,18 +11,18 @@ import org.noear.solon.flow.driver.SimpleFlowDriver;
  */
 @Slf4j
 public class ComJavaTest {
-    private FlowEngine flowEngine =  FlowEngine.newInstance();
+    private FlowEngine flowEngine = FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
-        Chain chain = new Chain("c1", "c1", new SimpleFlowDriver(){
+        Chain chain = new Chain("c1", "c1", new SimpleFlowDriver() {
             @Override
             public void handleTask(ChainContext context, Task task) throws Throwable {
                 context.result = task.node().id();
-                if(task.node().id().equals("n3")) {
+                if (task.node().id().equals("n3")) {
                     context.interrupt();
                 }
 
@@ -44,7 +44,7 @@ public class ComJavaTest {
 
         //完整执行
 
-        flowEngine.eval(context, chain);
+        flowEngine.eval(chain, context);
 
         assert "n3".equals(context.result);
 
@@ -56,7 +56,7 @@ public class ComJavaTest {
         context.paramSet("c", 14);
 
         //执行一层
-        flowEngine.eval(context, chain, "n2", 1);
+        flowEngine.eval(chain, "n2", 1, context);
 
 
         assert "n2".equals(context.result);

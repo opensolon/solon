@@ -27,7 +27,7 @@ import org.noear.solon.lang.Preview;
 public interface FlowEngine {
     /**
      * 新实例
-     * */
+     */
     static FlowEngine newInstance() {
         return new FlowEngineImpl();
     }
@@ -35,18 +35,27 @@ public interface FlowEngine {
     /**
      * 评估
      *
-     * @param context 上下文
-     * @param chain   链
+     * @param chain 链
      */
-    void eval(ChainContext context, Chain chain) throws Throwable;
+    default void eval(Chain chain) throws Throwable {
+        eval(chain, new ChainContext());
+    }
 
     /**
      * 评估
      *
+     * @param chain   链
      * @param context 上下文
+     */
+    void eval(Chain chain, ChainContext context) throws Throwable;
+
+    /**
+     * 评估
+     *
      * @param chain   链
      * @param startId 开始Id
      * @param depth   执行深度
+     * @param context 上下文
      */
-    void eval(ChainContext context, Chain chain, String startId, int depth) throws Throwable;
+    void eval(Chain chain, String startId, int depth, ChainContext context) throws Throwable;
 }
