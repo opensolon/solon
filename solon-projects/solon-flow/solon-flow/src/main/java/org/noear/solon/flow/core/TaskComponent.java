@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow;
-
-import org.noear.solon.flow.core.ChainContext;
+package org.noear.solon.flow.core;
 
 /**
  * 任务组件

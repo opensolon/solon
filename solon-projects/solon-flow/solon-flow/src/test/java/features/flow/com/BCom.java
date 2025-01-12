@@ -2,7 +2,7 @@ package features.flow.com;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.flow.TaskComponent;
+import org.noear.solon.flow.core.TaskComponent;
 import org.noear.solon.flow.core.ChainContext;
 
 /**

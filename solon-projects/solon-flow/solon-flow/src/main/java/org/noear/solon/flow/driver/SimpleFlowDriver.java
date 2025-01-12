@@ -19,7 +19,8 @@ import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
 import org.noear.solon.Solon;
-import org.noear.solon.flow.TaskComponent;
+import org.noear.solon.flow.core.ConditionComponent;
+import org.noear.solon.flow.core.TaskComponent;
 import org.noear.solon.flow.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,8 @@ public class SimpleFlowDriver implements ChainDriver {
     /**
      * 是否为组件
      */
-    protected boolean isComponent(Task task) {
-        return task.description().startsWith("@");
+    protected boolean isComponent(String description) {
+        return description.startsWith("@");
     }
 
     @Override
@@ -59,13 +60,26 @@ public class SimpleFlowDriver implements ChainDriver {
     }
 
     @Override
-    public boolean handleCondition(ChainContext context, Condition condition) throws Exception {
-        return (boolean) Exprs.eval(condition.description(), context.params());
+    public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
+        if (isComponent(condition.description())) {
+            //按组件运行
+            String beanName = condition.description().substring(1);
+            ConditionComponent component = Solon.context().getBean(beanName);
+
+            if (component == null) {
+                throw new IllegalStateException("The condition '" + beanName + "' not exist");
+            } else {
+                return component.test(context);
+            }
+        } else {
+            //按脚本运行
+            return (boolean) Exprs.eval(condition.description(), context.params());
+        }
     }
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        if (isComponent(task)) {
+        if (isComponent(task.description())) {
             //按组件运行
             String beanName = task.description().substring(1);
             TaskComponent component = Solon.context().getBean(beanName);
