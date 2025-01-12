@@ -107,7 +107,7 @@ public class Chain {
         List<NodeLink> linkAry = new ArrayList<>();
 
         for (NodeLinkDecl linkSpec : nodeDecl.links) {
-            linkAry.add(new NodeLink(this, id, linkSpec));
+            linkAry.add(new NodeLink(this, nodeDecl.id, linkSpec));
         }
 
         links.addAll(linkAry);
@@ -167,7 +167,13 @@ public class Chain {
             if (linkNode.isArray()) {
                 //数组模式（多个）
                 for (ONode l1 : linkNode.ary()) {
-                    addLink(nodeDecl, l1);
+                    if (l1.isObject()) {
+                        //对象模式
+                        addLink(nodeDecl, l1);
+                    } else if (l1.isValue()) {
+                        //单值模式
+                        nodeDecl.link(l1.getString());
+                    }
                 }
             } else if (linkNode.isObject()) {
                 //对象模式（单个）

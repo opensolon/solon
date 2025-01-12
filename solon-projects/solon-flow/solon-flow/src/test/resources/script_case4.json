@@ -11,7 +11,7 @@
     ] },
     { "id": "n3", "type": "execute", "title":"主管批", "meta": {"role": "lead"}, "link": "n5", "task": "context.result=((int)context.result)+3;"},
     { "id": "n4", "type": "execute", "title":"部门经理批","meta": {"role": "boss"}, "link": "n5", "task": "context.result=((int)context.result)+7;"},
-    { "id": "n5", "type": "inclusive", "link": [{"toId": "n6"}]},
+    { "id": "n5", "type": "inclusive", "link": "n6"},
     { "id": "n6", "type": "end"}
   ]
 }

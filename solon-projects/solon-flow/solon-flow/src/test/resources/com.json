@@ -2,10 +2,10 @@
   "id": "c1",
   "driver": "org.noear.solon.flow.driver.SimpleFlowDriver",
   "nodes": [
-    { "id": "n1", "type": "start", "link": {"toId": "n2"}},
-    { "id": "n2", "type": "execute", "link": {"toId": "n3"}, "meta":{"a": 1,"b": []}, "task":"@a"},
-    { "id": "n3", "type": "execute", "link": {"toId": "n4"}, "task":"@b"},
-    { "id": "n4", "type": "execute", "link": {"toId": "n5"}, "task":"@c"},
+    { "id": "n1", "type": "start", "link": "n2"},
+    { "id": "n2", "type": "execute", "link": "n3", "meta":{"a": 1,"b": []}, "task":"@a"},
+    { "id": "n3", "type": "execute", "link": "n4", "task":"@b"},
+    { "id": "n4", "type": "execute", "link": "n5", "task":"@c"},
     { "id": "n5", "type": "end"}
   ],
   "$schema": {

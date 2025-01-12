@@ -7,7 +7,7 @@ Chain 配置属性
 
 | 属性          | 数据类型         | 描述                       |
 |-------------|--------------|--------------------------|
-| id          | `int`          | 标识（必要）                       |
+| id          | `String`          | 标识（必要）                       |
 | title       | `String`       | 显示标题                     |
 | driver      | `ChainDriver`  | 驱动（缺省为 SimpleFlowDriver） |
 
@@ -17,11 +17,11 @@ Node 配置属性
 
 | 属性       | 数据类型                   | 描述                             |
 |----------|------------------------|--------------------------------|
-| id       | `int`                  | 标识（必要）                         |
+| id       | `String`                  | 标识（必要）                         |
 | type     | `NodeType`             | 节点类型（必要）                       |
 | title    | `String`               | 显示标题                           |
 | meta     | `Map<String,Object>`   | 元信息                            |
-| link     | `int`  or `List<Link>` | 链接（单个用 `int`，多个用 `List<Link>`） |
+| link     | `String`  or `List<Link>` | 链接（单个用 `String`，多个用 `List<Link>`） |
 | task     | `String`               | 任务描述                           |
 
 NodeLink 配置属性
@@ -29,7 +29,7 @@ NodeLink 配置属性
 
 | 属性        | 数据类型                 | 描述     |
 |-----------|----------------------|--------|
-| toId      | `int`                  | 标识（必要） |
+| toId      | `String`                  | 标识（必要） |
 | title     | `String`               | 显示标题   |
 | meta      | `Map<String,Object>` | 元信息    |
 | condition | `String`               | 条件描述   |

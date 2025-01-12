@@ -58,9 +58,8 @@ class FlowEngineImpl implements FlowEngine {
      * 执行任务
      */
     private void task_exec(ChainContext context, Chain chain, Task task) throws Throwable {
-        if (Utils.isNotEmpty(task.expr())) {
-            chain.driver().handleTask(context, task);
-        }
+        //起到触发事件的作用 //处理方会过滤空任务
+        chain.driver().handleTask(context, task);
     }
 
     /**
