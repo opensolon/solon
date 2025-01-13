@@ -24,6 +24,16 @@ public class ApproveChainDriver extends SimpleFlowDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
+        if (tryIfChainTask(context, task)) {
+            //如果跨链调用
+            return;
+        }
+
+        if (tryIfComponentTask(context, task)) {
+            //如果用组件运行
+            return;
+        }
+
         String instance_id = context.param("instance_id");
         String user_id = context.param("user_id");
         String role_id = context.param("role_id");
