@@ -36,7 +36,7 @@ public interface ChainDriver {
     void onNodeEnd(ChainContext context, Node node);
 
     /**
-     * 处理连线条件
+     * 处理链接条件
      */
     boolean handleCondition(ChainContext context, Condition condition) throws Throwable;
 
