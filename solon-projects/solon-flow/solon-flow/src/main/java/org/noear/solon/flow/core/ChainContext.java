@@ -34,7 +34,6 @@ public class ChainContext implements Serializable {
     private final Map<String, Object> params = new LinkedHashMap<>();
     //存放执行附件（可选）
     private Object attachment;
-
     //存放执行结果（可选）
     public Object result;
 

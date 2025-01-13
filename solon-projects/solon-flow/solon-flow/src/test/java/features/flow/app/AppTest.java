@@ -68,7 +68,7 @@ public class AppTest {
 
     @Test
     public void context_test() {
-        String json = "{\"params\":{\"day\":7},\"result\":10,\"attrs\":{}}";
+        String json = "{\"params\":{\"day\":7},\"result\":10}";
         ChainContext context = ONode.load(json).toObject(ChainContext.class);
 
         String json2 = ONode.load(context).toJson();
