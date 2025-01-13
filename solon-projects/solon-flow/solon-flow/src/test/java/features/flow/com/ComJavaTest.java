@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.flow.*;
-import org.noear.solon.flow.driver.SimpleFlowDriver;
+import org.noear.solon.flow.driver.SimpleChainDriver;
 
 /**
  * @author noear 2025/1/10 created
@@ -18,9 +18,9 @@ public class ComJavaTest {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
-        SimpleFlowDriver driver = new SimpleFlowDriver() {
+        SimpleChainDriver driver = new SimpleChainDriver() {
             @Override
-            public void handleTask(Context context, Task task) throws Throwable {
+            public void handleTask(ChainContext context, Task task) throws Throwable {
                 context.result = task.node().id();
                 if (task.node().id().equals("n3")) {
                     context.interrupt();
@@ -39,7 +39,7 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkAdd("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
-        Context context = new Context(driver);
+        ChainContext context = new ChainContext(driver);
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);
@@ -52,7 +52,7 @@ public class ComJavaTest {
 
         System.out.println("------------");
 
-        context = new Context(driver);
+        context = new ChainContext(driver);
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);

@@ -2,7 +2,7 @@ package features.flow.script;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.Chain;
-import org.noear.solon.flow.Context;
+import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 
 /**
@@ -22,7 +22,7 @@ public class ScriptJsonTest {
     public void case2_interrupt() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
 
-        Context context = new Context(new Case2FlowDriver());
+        ChainContext context = new ChainContext(new Case2FlowDriver());
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);
@@ -37,7 +37,7 @@ public class ScriptJsonTest {
     public void case2_interrupt2() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
 
-        Context context = new Context(new  Case2FlowDriver());
+        ChainContext context = new ChainContext(new Case2FlowDriver());
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);
@@ -51,17 +51,17 @@ public class ScriptJsonTest {
     public void case3_exclusive() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case3.json");
 
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 1);
         flowEngine.eval(chain, context);
         assert null == context.result;
 
-        context = new Context();
+        context = new ChainContext();
         context.paramSet("day", 3);
         flowEngine.eval(chain, context);
         assert context.result.equals(3);
 
-        context = new Context();
+        context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(7);
@@ -71,12 +71,12 @@ public class ScriptJsonTest {
     public void case4_inclusive() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case4.json");
 
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 1);
         flowEngine.eval(chain, context);
         assert context.result.equals(0);
 
-        context = new Context();
+        context = new ChainContext();
         context.paramSet("day", 3);
         flowEngine.eval(chain, context);
         assert context.result.equals(3);
@@ -86,7 +86,7 @@ public class ScriptJsonTest {
     public void case4_inclusive2() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case4.json");
 
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(10);
@@ -96,7 +96,7 @@ public class ScriptJsonTest {
     public void case5_parallel() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case5.yml");
 
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(10);

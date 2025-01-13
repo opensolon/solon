@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.flow.Context;
+import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 import org.noear.solon.test.SolonTest;
 
@@ -24,7 +24,7 @@ public class AppTest {
 
     @Test
     public void case6() throws Throwable {
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         flowEngine.eval("c6", context);
         assert context.result.equals(112);
 
@@ -33,13 +33,13 @@ public class AppTest {
 
     @Test
     public void case4_inclusive() throws Throwable {
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 1);
         flowEngine.eval("c4", context);
         assert context.result.equals(0);
         log.trace("counter: {}", context.counter());
 
-        context = new Context();
+        context = new ChainContext();
         context.paramSet("day", 3);
         flowEngine.eval("c4", context);
         assert context.result.equals(3);
@@ -48,7 +48,7 @@ public class AppTest {
 
     @Test
     public void case4_inclusive2() throws Throwable {
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval("c4", context);
         assert context.result.equals(10);
@@ -57,7 +57,7 @@ public class AppTest {
 
     @Test
     public void case5_parallel() throws Throwable {
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("day", 7);
         flowEngine.eval("c5", context);
         assert context.result.equals(10);
@@ -69,7 +69,7 @@ public class AppTest {
     @Test
     public void context_test() {
         String json = "{\"params\":{\"day\":7},\"result\":10}";
-        Context context = ONode.load(json).toObject(Context.class);
+        ChainContext context = ONode.load(json).toObject(ChainContext.class);
 
         String json2 = ONode.load(context).toJson();
         System.out.println(json2);

@@ -18,7 +18,7 @@ public class ScriptJavaTest {
         chain.addNode(new NodeDecl("n3", NodeType.end));
 
 
-        Context context = new Context();
+        ChainContext context = new ChainContext();
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);

@@ -1,15 +1,15 @@
 package features.flow.script;
 
-import org.noear.solon.flow.Context;
+import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.Task;
-import org.noear.solon.flow.driver.SimpleFlowDriver;
+import org.noear.solon.flow.driver.SimpleChainDriver;
 
 /**
  * @author noear 2025/1/11 created
  */
-public class Case2FlowDriver extends SimpleFlowDriver {
+public class Case2FlowDriver extends SimpleChainDriver {
     @Override
-    public void handleTask(Context context, Task task) throws Throwable {
+    public void handleTask(ChainContext context, Task task) throws Throwable {
         context.result = task.node().id();
         if(task.node().id().equals("n3")) {
             context.interrupt();

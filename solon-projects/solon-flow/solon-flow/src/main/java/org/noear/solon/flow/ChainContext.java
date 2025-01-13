@@ -15,7 +15,7 @@
  */
 package org.noear.solon.flow;
 
-import org.noear.solon.flow.driver.SimpleFlowDriver;
+import org.noear.solon.flow.driver.SimpleChainDriver;
 import org.noear.solon.lang.Preview;
 
 import java.io.Serializable;
@@ -23,13 +23,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 上下文
+ * 链上下文
  *
  * @author noear
  * @since 3.0
  */
 @Preview("3.0")
-public class Context implements Serializable {
+public class ChainContext implements Serializable {
     //存放执行参数
     private final Map<String, Object> params = new LinkedHashMap<>();
     //存放执行附件（可选）
@@ -42,18 +42,18 @@ public class Context implements Serializable {
     //控制过程中断（可选）
     private transient boolean interrupted = false;
     //链驱动器
-    private transient final FlowDriver driver;
+    private transient final ChainDriver driver;
 
     //当前流程引擎
     protected transient FlowEngine engine;
 
-    public Context() {
+    public ChainContext() {
         this(null);
     }
 
-    public Context(FlowDriver driver) {
+    public ChainContext(ChainDriver driver) {
         if (driver == null) {
-            this.driver = SimpleFlowDriver.getInstance();
+            this.driver = SimpleChainDriver.getInstance();
         } else {
             this.driver = driver;
         }
@@ -62,7 +62,7 @@ public class Context implements Serializable {
     /**
      * 当前驱动器
      */
-    public FlowDriver driver() {
+    public ChainDriver driver() {
         return driver;
     }
 
@@ -106,7 +106,7 @@ public class Context implements Serializable {
     /**
      * 参数设置
      */
-    public Context paramSet(String key, Object value) {
+    public ChainContext paramSet(String key, Object value) {
         params.put(key, value);
         return this;
     }
@@ -133,7 +133,7 @@ public class Context implements Serializable {
     /**
      * 附件设置
      */
-    public Context attachment(Object attachment) {
+    public ChainContext attachment(Object attachment) {
         this.attachment = attachment;
         return this;
     }

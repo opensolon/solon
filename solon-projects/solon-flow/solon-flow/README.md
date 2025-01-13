@@ -30,7 +30,6 @@ Chain 配置属性
 |-------------|--------------|--------------------------|
 | id          | `String`          | 标识（必要）                       |
 | title       | `String`       | 显示标题                     |
-| driver      | `ChainDriver`  | 驱动（缺省为 SimpleFlowDriver） |
 
 
 
