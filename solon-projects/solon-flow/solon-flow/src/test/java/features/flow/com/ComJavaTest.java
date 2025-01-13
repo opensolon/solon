@@ -18,7 +18,7 @@ public class ComJavaTest {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
-        Chain chain = new Chain("c1", "c1", new SimpleFlowDriver() {
+        SimpleFlowDriver driver = new SimpleFlowDriver() {
             @Override
             public void handleTask(ChainContext context, Task task) throws Throwable {
                 context.result = task.node().id();
@@ -28,7 +28,9 @@ public class ComJavaTest {
 
                 super.handleTask(context, task);
             }
-        });
+        };
+
+        Chain chain = new Chain("c1", "c1");
 
 
         chain.addNode(new NodeDecl("n1", NodeType.start).linkAdd("n2"));
@@ -37,7 +39,7 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkAdd("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
-        ChainContext context = new ChainContext();
+        ChainContext context = new ChainContext(driver);
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);
@@ -50,7 +52,7 @@ public class ComJavaTest {
 
         System.out.println("------------");
 
-        context = new ChainContext();
+        context = new ChainContext(driver);
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);

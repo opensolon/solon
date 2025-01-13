@@ -1,6 +1,5 @@
 {
   "id": "c2",
-  "driver": "features.flow.script.Case2FlowDriver",
   "nodes": [
     { "id": "n1", "type": "start", "link": "n2"},
     { "id": "n2", "type": "execute", "link": "n3", "task": "context.result=111 + a;"},

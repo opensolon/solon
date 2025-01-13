@@ -22,7 +22,7 @@ public class ScriptJsonTest {
     public void case2_interrupt() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
 
-        ChainContext context = new ChainContext();
+        ChainContext context = new ChainContext(new Case2FlowDriver());
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);
@@ -37,7 +37,7 @@ public class ScriptJsonTest {
     public void case2_interrupt2() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
 
-        ChainContext context = new ChainContext();
+        ChainContext context = new ChainContext(new  Case2FlowDriver());
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);

@@ -77,15 +77,15 @@ class FlowEngineImpl implements FlowEngine {
             context.engine = this;
         }
 
-        node_run(context, chain, start, depth);
+        node_run(context, start, depth);
     }
 
     /**
      * 检查条件
      */
-    private boolean condition_check(ChainContext context, Chain chain, Condition condition) throws Throwable {
+    private boolean condition_check(ChainContext context, Condition condition) throws Throwable {
         if (Utils.isNotEmpty(condition.description())) {
-            return chain.driver().handleCondition(context, condition);
+            return context.driver().handleCondition(context, condition);
         } else {
             return false;
         }
@@ -94,17 +94,17 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, Chain chain, Task task) throws Throwable {
+    private void task_exec(ChainContext context, Task task) throws Throwable {
         //起到触发事件的作用 //处理方会过滤空任务
         if (Utils.isNotEmpty(task.description())) {
-            chain.driver().handleTask(context, task);
+            context.driver().handleTask(context, task);
         }
     }
 
     /**
      * 运行节点
      */
-    private void node_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+    private void node_run(ChainContext context, Node node, int depth) throws Throwable {
         if (node == null) {
             return;
         }
@@ -122,7 +122,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //节点运行之前事件
-        chain.driver().onNodeStart(context, node);
+        context.driver().onNodeStart(context, node);
 
         //如果中断，就不再执行了（onNodeBefore 可能会触发中断）
         if (context.isInterrupted()) {
@@ -132,44 +132,44 @@ class FlowEngineImpl implements FlowEngine {
         switch (node.type()) {
             case start:
                 //尝试执行任务（可能为空）
-                task_exec(context, chain, node.task());
+                task_exec(context, node.task());
                 //转到下个节点
-                node_run(context, chain, node.nextNode(), depth);
+                node_run(context, node.nextNode(), depth);
                 break;
             case end:
                 //尝试执行任务（可能为空）
-                task_exec(context, chain, node.task());
+                task_exec(context, node.task());
                 break;
             case execute:
                 //尝试执行任务（可能为空）
-                task_exec(context, chain, node.task());
+                task_exec(context, node.task());
                 //转到下个节点
-                node_run(context, chain, node.nextNode(), depth);
+                node_run(context, node.nextNode(), depth);
                 break;
             case inclusive: //包容网关（多选）
-                inclusive_run(context, chain, node, depth);
+                inclusive_run(context, node, depth);
                 break;
             case exclusive: //排他网关（单选）
-                exclusive_run(context, chain, node, depth);
+                exclusive_run(context, node, depth);
                 break;
             case parallel: //并行网关（全选）
-                parallel_run(context, chain, node, depth);
+                parallel_run(context, node, depth);
                 break;
         }
 
         //节点运行之后事件
-        chain.driver().onNodeEnd(context, node);
+        context.driver().onNodeEnd(context, node);
     }
 
     /**
      * 运行包容网关
      */
-    private void inclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+    private void inclusive_run(ChainContext context, Node node, int depth) throws Throwable {
         final String token_key = "$inclusive_size";
 
         //流入
-        int count = context.counter().incr(chain, node.id());//运行次数累计
-        if (context.counter().get(chain, token_key) > count) { //等待所有支线计数完成
+        int count = context.counter().incr(node.chain(), node.id());//运行次数累计
+        if (context.counter().get(node.chain(), token_key) > count) { //等待所有支线计数完成
             return;
         }
 
@@ -181,37 +181,37 @@ class FlowEngineImpl implements FlowEngine {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, chain, l.condition())) {
+                if (condition_check(context, l.condition())) {
                     matched_lines.add(l);
                 }
             }
         }
 
 
-        context.counter().set(chain, token_key, matched_lines.size());
+        context.counter().set(node.chain(), token_key, matched_lines.size());
         if (matched_lines.size() > 0) {
             //执行所有满足条件
             for (NodeLink l : matched_lines) {
-                node_run(context, chain, l.nextNode(), depth);
+                node_run(context, l.nextNode(), depth);
             }
         } else if (def_line != null) {
             //如果有默认
-            node_run(context, chain, def_line.nextNode(), depth);
+            node_run(context, def_line.nextNode(), depth);
         }
     }
 
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+    private void exclusive_run(ChainContext context, Node node, int depth) throws Throwable {
         NodeLink def_line = null;
         for (NodeLink l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, chain, l.condition())) {
+                if (condition_check(context, l.condition())) {
                     //执行第一个满足条件
-                    node_run(context, chain, l.nextNode(), depth);
+                    node_run(context, l.nextNode(), depth);
                     return;
                 }
             }
@@ -219,26 +219,26 @@ class FlowEngineImpl implements FlowEngine {
 
         if (def_line != null) {
             //如果有默认
-            node_run(context, chain, def_line.nextNode(), depth);
+            node_run(context, def_line.nextNode(), depth);
         }
     }
 
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainContext context, Chain chain, Node node, int depth) throws Throwable {
+    private void parallel_run(ChainContext context, Node node, int depth) throws Throwable {
         //流入
-        int count = context.counter().incr(chain, node.id());//运行次数累计
+        int count = context.counter().incr(node.chain(), node.id());//运行次数累计
         if (node.prveLinks().size() > count) { //等待所有支线计数完成
             return;
         }
 
         //恢复计数
-        context.counter().set(chain, node.id(), 0);
+        context.counter().set(node.chain(), node.id(), 0);
 
         //流出
         for (Node n : node.nextNodes()) {
-            node_run(context, chain, n, depth);
+            node_run(context, n, depth);
         }
     }
 }

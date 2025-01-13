@@ -15,6 +15,7 @@
  */
 package org.noear.solon.flow.core;
 
+import org.noear.solon.flow.driver.SimpleFlowDriver;
 import org.noear.solon.lang.Preview;
 
 import java.io.Serializable;
@@ -41,15 +42,36 @@ public class ChainContext implements Serializable {
     private transient final Counter counter = new Counter();
     //控制过程中断（可选）
     private transient boolean interrupted = false;
+    //链驱动器
+    private transient final ChainDriver driver;
 
     //当前流程引擎
     protected transient FlowEngine engine;
+
+    public ChainContext() {
+        this(null);
+    }
+
+    public ChainContext(ChainDriver driver) {
+        if (driver == null) {
+            this.driver = SimpleFlowDriver.getInstance();
+        } else {
+            this.driver = driver;
+        }
+    }
 
     /**
      * 当前流程引擎
      */
     public FlowEngine engine() {
         return engine;
+    }
+
+    /**
+     * 当前驱动器
+     */
+    public ChainDriver driver() {
+        return driver;
     }
 
     /**

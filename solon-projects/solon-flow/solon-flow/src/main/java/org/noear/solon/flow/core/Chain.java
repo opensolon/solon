@@ -17,9 +17,7 @@ package org.noear.solon.flow.core;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.flow.driver.SimpleFlowDriver;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
@@ -36,7 +34,6 @@ import java.util.*;
 public class Chain {
     private final String id;
     private final String title;
-    private final ChainDriver driver;
 
     private final Map<String, Node> nodes = new HashMap<>();
     private final List<NodeLink> links = new ArrayList<>();
@@ -44,17 +41,12 @@ public class Chain {
     private Node start;
 
     public Chain(String id) {
-        this(id, null, null);
+        this(id, null);
     }
 
     public Chain(String id, String title) {
-        this(id, title, null);
-    }
-
-    public Chain(String id, String title, ChainDriver driver) {
         this.id = id;
         this.title = (title == null ? id : title);
-        this.driver = (driver == null ? SimpleFlowDriver.getInstance() : driver);
     }
 
     /**
@@ -69,13 +61,6 @@ public class Chain {
      */
     public String title() {
         return title;
-    }
-
-    /**
-     * 驱动器
-     */
-    public ChainDriver driver() {
-        return driver;
     }
 
     /**
@@ -160,10 +145,8 @@ public class Chain {
     public static Chain parseByDom(ONode oNode) {
         String id = oNode.get("id").getString();
         String title = oNode.get("id").getString();
-        String driverStr = oNode.get("driver").getString();
-        ChainDriver driver = (Utils.isEmpty(driverStr) ? null : ClassUtil.tryInstance(driverStr));
 
-        Chain chain = new Chain(id, title, driver);
+        Chain chain = new Chain(id, title);
 
         for (ONode n1 : oNode.get("nodes").ary()) {
             NodeType type = NodeType.nameOf(n1.get("type").getString());
