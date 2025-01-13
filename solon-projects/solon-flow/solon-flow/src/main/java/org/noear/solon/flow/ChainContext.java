@@ -32,8 +32,6 @@ import java.util.Map;
 public class ChainContext implements Serializable {
     //存放执行参数
     private final Map<String, Object> params = new LinkedHashMap<>();
-    //存放执行附件（可选）
-    private Object attachment;
     //存放执行结果（可选）
     public Object result;
 
@@ -41,9 +39,9 @@ public class ChainContext implements Serializable {
     private transient final Counter counter = new Counter();
     //控制过程中断（可选）
     private transient boolean interrupted = false;
-    //链驱动器
-    private transient final ChainDriver driver;
 
+    //链驱动器
+    protected transient final ChainDriver driver;
     //当前流程引擎
     protected transient FlowEngine engine;
 
@@ -57,13 +55,6 @@ public class ChainContext implements Serializable {
         } else {
             this.driver = driver;
         }
-    }
-
-    /**
-     * 当前驱动器
-     */
-    public ChainDriver driver() {
-        return driver;
     }
 
     /**
@@ -128,20 +119,5 @@ public class ChainContext implements Serializable {
         } else {
             return (T) tmp;
         }
-    }
-
-    /**
-     * 附件设置
-     */
-    public ChainContext attachment(Object attachment) {
-        this.attachment = attachment;
-        return this;
-    }
-
-    /**
-     * 附件
-     */
-    public <T> T attachment() {
-        return (T) attachment;
     }
 }

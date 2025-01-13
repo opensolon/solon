@@ -13,23 +13,17 @@ flowEngine.load("classpath:script_case3.yml")
 
 flowEngine.eval("c1");
 flowEngine.eval("c1", new ChainContext());
-
-Chain chain = Chain.parseByUri("classpath:script_case1.json");
-
-//获取起始节点
-chain.start();
-//获取某个节点的后面节点
-chain.getNode("n2").nextNodes();
 ```
 
 ### 1、配置字典
 
 Chain 配置属性
 
-| 属性          | 数据类型         | 描述                       |
-|-------------|--------------|--------------------------|
-| id          | `String`          | 标识（必要）                       |
-| title       | `String`       | 显示标题                     |
+| 属性    | 数据类型     | 描述     |
+|-------|----------|--------|
+| id    | `String` | 标识（必要） |
+| title | `String` | 显示标题   |
+| nodes | `Node[]` | 节点集合   |
 
 
 
@@ -40,19 +34,19 @@ Node 配置属性
 | id       | `String`                                      | 标识（必要）            |
 | type     | `NodeType`                                    | 节点类型（必要）          |
 | title    | `String`                                      | 显示标题              |
-| meta     | `Map<String,Object>`                          | 元信息               |
+| meta     | `Map[String,Object]`                          | 元信息               |
 | link     | `String` or `Link` or `String[]`  or `Link[]` | 链接（支持单值、多值；简写、全写） |
 | task     | `String`                                      | 任务描述              |
 
 NodeLink 配置属性
 
 
-| 属性        | 数据类型                 | 描述         |
-|-----------|----------------------|------------|
-| nextId      | `String`                  | 后面节点标识（必要） |
-| title     | `String`               | 显示标题       |
-| meta      | `Map<String,Object>` | 元信息        |
-| condition | `String`               | 条件描述       |
+| 属性         | 数据类型                 | 描述         |
+|------------|----------------------|------------|
+| nextId     | `String`             | 后面节点标识（必要） |
+| title      | `String`             | 显示标题       |
+| meta       | `Map[String,Object]` | 元信息        |
+| condition  | `String`             | 条件描述       |
 
 ### 2、节点类型（NodeType 成员）
 
@@ -65,16 +59,32 @@ NodeLink 配置属性
 | parallel    | 并行网关（全选） | /  | /    | `1...n` | `1...n` | 
 | end         | 结束       | 可有 | /    | `1...n` | `0`     | 
 
-### 3、任务与条件
+
+### 3、上下文接口（ChainContext）
+
+|                                            |     |       |
+|--------------------------------------------|-----|-------|
+| `counter()->Counter`                       |     | 计数器   |
+|                                            |     |       |
+| `isInterrupted()->bool`                    |     | 是否已中断 |
+| `interrupt()`                              |     | 中断    |
+|                                            |     |       |
+| `params()->Map`                            |     | 参数集合  |
+| `paramSet(String key, Object value)->self` |     | 参数设置  |
+| `param(String key)->T`                     |     | 参数获取  |
+| `paramOrDefault(key, def)->T`              |     | 参数默认  |
+
+
+### 4、任务与条件
 
 任务与条件的描述，采用开放格式（即没有格式约定）。格式由 ChainDriver 处理（或约定），使用哪个 ChainDriver 就采用哪个格式约定。就像 jdbc 的 Driver, mysql 和 pgsql 的语法即不同。
 
 格式参考1（SimpleFlowDriver 方案，框架内置）：
 
-|        | 示例                                                        | 
-|--------|-----------------------------------------------------------|
-| 任务描述   | `@a`（任务组件引用） 或者 `context.result=1;` （脚本风格） 或者 `#c12`（链引用） | 
-| 条件描述   | `@a`（条件组件引用） 或者 `user_id > 12`（脚本表达式风格）                   | 
+|        | 示例                                                          | 
+|--------|-------------------------------------------------------------|
+| 任务描述   | `@a`（任务组件风格） 或者 `context.result=1;` （脚本风格） 或者 `#c12`（链调用风格） | 
+| 条件描述   | `@a`（条件组件风格） 或者 `user_id > 12`（脚本表达式风格）                     | 
 
 
 格式参考2（RubberFlowDriver 方案）：

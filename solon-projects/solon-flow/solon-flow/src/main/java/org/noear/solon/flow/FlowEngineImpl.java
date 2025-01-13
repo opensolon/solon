@@ -85,7 +85,7 @@ class FlowEngineImpl implements FlowEngine {
      */
     private boolean condition_check(ChainContext context, Condition condition) throws Throwable {
         if (Utils.isNotEmpty(condition.description())) {
-            return context.driver().handleCondition(context, condition);
+            return context.driver.handleCondition(context, condition);
         } else {
             return false;
         }
@@ -97,7 +97,7 @@ class FlowEngineImpl implements FlowEngine {
     private void task_exec(ChainContext context, Task task) throws Throwable {
         //起到触发事件的作用 //处理方会过滤空任务
         if (Utils.isNotEmpty(task.description())) {
-            context.driver().handleTask(context, task);
+            context.driver.handleTask(context, task);
         }
     }
 
@@ -122,7 +122,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //节点运行之前事件
-        context.driver().onNodeStart(context, node);
+        context.driver.onNodeStart(context, node);
 
         //如果中断，就不再执行了（onNodeBefore 可能会触发中断）
         if (context.isInterrupted()) {
@@ -158,7 +158,7 @@ class FlowEngineImpl implements FlowEngine {
         }
 
         //节点运行之后事件
-        context.driver().onNodeEnd(context, node);
+        context.driver.onNodeEnd(context, node);
     }
 
     /**
