@@ -1,7 +1,7 @@
 package features.flow.script;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.flow.core.*;
+import org.noear.solon.flow.*;
 
 /**
  * @author noear 2025/1/10 created
@@ -18,7 +18,7 @@ public class ScriptJavaTest {
         chain.addNode(new NodeDecl("n3", NodeType.end));
 
 
-        ChainContext context = new ChainContext();
+        Context context = new Context();
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);

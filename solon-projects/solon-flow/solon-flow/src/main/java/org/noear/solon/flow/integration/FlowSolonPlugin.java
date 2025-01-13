@@ -18,8 +18,8 @@ package org.noear.solon.flow.integration;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.flow.core.Chain;
-import org.noear.solon.flow.core.FlowEngine;
+import org.noear.solon.flow.Chain;
+import org.noear.solon.flow.FlowEngine;
 
 import java.util.List;
 

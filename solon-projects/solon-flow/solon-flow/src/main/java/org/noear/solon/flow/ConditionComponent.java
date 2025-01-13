@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow.core;
+package org.noear.solon.flow;
 
 import org.noear.solon.lang.Preview;
 
@@ -28,5 +28,5 @@ public interface ConditionComponent {
     /**
      * 检测
      */
-    boolean test(ChainContext context, NodeLink link) throws Throwable;
+    boolean test(Context context, NodeLink link) throws Throwable;
 }

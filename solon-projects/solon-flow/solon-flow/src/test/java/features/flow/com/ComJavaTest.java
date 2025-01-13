@@ -3,7 +3,7 @@ package features.flow.com;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
-import org.noear.solon.flow.core.*;
+import org.noear.solon.flow.*;
 import org.noear.solon.flow.driver.SimpleFlowDriver;
 
 /**
@@ -20,7 +20,7 @@ public class ComJavaTest {
 
         SimpleFlowDriver driver = new SimpleFlowDriver() {
             @Override
-            public void handleTask(ChainContext context, Task task) throws Throwable {
+            public void handleTask(Context context, Task task) throws Throwable {
                 context.result = task.node().id();
                 if (task.node().id().equals("n3")) {
                     context.interrupt();
@@ -39,7 +39,7 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkAdd("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
-        ChainContext context = new ChainContext(driver);
+        Context context = new Context(driver);
         context.paramSet("a", 2);
         context.paramSet("b", 3);
         context.paramSet("c", 4);
@@ -52,7 +52,7 @@ public class ComJavaTest {
 
         System.out.println("------------");
 
-        context = new ChainContext(driver);
+        context = new Context(driver);
         context.paramSet("a", 12);
         context.paramSet("b", 13);
         context.paramSet("c", 14);

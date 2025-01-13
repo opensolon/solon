@@ -1,9 +1,9 @@
 package features.flow;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.flow.core.Chain;
-import org.noear.solon.flow.core.NodeLink;
-import org.noear.solon.flow.core.NodeLinkDecl;
+import org.noear.solon.flow.Chain;
+import org.noear.solon.flow.NodeLink;
+import org.noear.solon.flow.NodeLinkDecl;
 
 import java.util.ArrayList;
 import java.util.Collections;

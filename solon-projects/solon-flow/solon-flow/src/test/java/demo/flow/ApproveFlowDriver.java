@@ -1,29 +1,32 @@
 package demo.flow;
 
-import org.noear.solon.flow.core.*;
+import org.noear.solon.flow.Condition;
+import org.noear.solon.flow.Context;
+import org.noear.solon.flow.Node;
+import org.noear.solon.flow.Task;
 import org.noear.solon.flow.driver.*;
 
 /**
  * @author noear 2025/1/13 created
  */
-public class ApproveChainDriver extends SimpleFlowDriver {
+public class ApproveFlowDriver extends SimpleFlowDriver {
     @Override
-    public void onNodeStart(ChainContext context, Node node) {
+    public void onNodeStart(Context context, Node node) {
 
     }
 
     @Override
-    public void onNodeEnd(ChainContext context, Node node) {
+    public void onNodeEnd(Context context, Node node) {
 
     }
 
     @Override
-    public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
+    public boolean handleCondition(Context context, Condition condition) throws Throwable {
         return super.handleCondition(context, condition);
     }
 
     @Override
-    public void handleTask(ChainContext context, Task task) throws Throwable {
+    public void handleTask(Context context, Task task) throws Throwable {
         if (tryIfChainTask(context, task)) {
             //如果跨链调用
             return;

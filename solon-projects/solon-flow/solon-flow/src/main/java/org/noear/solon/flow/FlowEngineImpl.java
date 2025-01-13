@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow.core;
+package org.noear.solon.flow;
 
 import org.noear.solon.Utils;
 
@@ -43,7 +43,7 @@ class FlowEngineImpl implements FlowEngine {
      * @param context 上下文
      */
     @Override
-    public void eval(String chainId, String startId, int depth, ChainContext context) throws Throwable {
+    public void eval(String chainId, String startId, int depth, Context context) throws Throwable {
         Chain chain = chainMap.get(chainId);
         if (chain == null) {
             throw new IllegalArgumentException("No chain found for id: " + chainId);
@@ -61,7 +61,7 @@ class FlowEngineImpl implements FlowEngine {
      * @param context 上下文
      */
     @Override
-    public void eval(Chain chain, String startId, int depth, ChainContext context) throws Throwable {
+    public void eval(Chain chain, String startId, int depth, Context context) throws Throwable {
         Node start;
         if (startId == null) {
             start = chain.start();
@@ -83,7 +83,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 检查条件
      */
-    private boolean condition_check(ChainContext context, Condition condition) throws Throwable {
+    private boolean condition_check(Context context, Condition condition) throws Throwable {
         if (Utils.isNotEmpty(condition.description())) {
             return context.driver().handleCondition(context, condition);
         } else {
@@ -94,7 +94,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, Task task) throws Throwable {
+    private void task_exec(Context context, Task task) throws Throwable {
         //起到触发事件的作用 //处理方会过滤空任务
         if (Utils.isNotEmpty(task.description())) {
             context.driver().handleTask(context, task);
@@ -104,7 +104,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 运行节点
      */
-    private void node_run(ChainContext context, Node node, int depth) throws Throwable {
+    private void node_run(Context context, Node node, int depth) throws Throwable {
         if (node == null) {
             return;
         }
@@ -164,7 +164,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 运行包容网关
      */
-    private void inclusive_run(ChainContext context, Node node, int depth) throws Throwable {
+    private void inclusive_run(Context context, Node node, int depth) throws Throwable {
         final String token_key = "$inclusive_size";
 
         //流入
@@ -203,7 +203,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 运行排他网关
      */
-    private void exclusive_run(ChainContext context, Node node, int depth) throws Throwable {
+    private void exclusive_run(Context context, Node node, int depth) throws Throwable {
         NodeLink def_line = null;
         for (NodeLink l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
@@ -226,7 +226,7 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 运行并行网关
      */
-    private void parallel_run(ChainContext context, Node node, int depth) throws Throwable {
+    private void parallel_run(Context context, Node node, int depth) throws Throwable {
         //流入
         int count = context.counter().incr(node.chain(), node.id());//运行次数累计
         if (node.prveLinks().size() > count) { //等待所有支线计数完成

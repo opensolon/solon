@@ -19,9 +19,7 @@ import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
 import org.noear.solon.Solon;
-import org.noear.solon.flow.core.ConditionComponent;
-import org.noear.solon.flow.core.TaskComponent;
-import org.noear.solon.flow.core.*;
+import org.noear.solon.flow.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +32,7 @@ import java.util.Map;
  * @author noear
  * @since 3.0
  * */
-public class SimpleFlowDriver implements ChainDriver {
+public class SimpleFlowDriver implements FlowDriver {
     private static final Logger log = LoggerFactory.getLogger(SimpleFlowDriver.class);
     private static final SimpleFlowDriver instance = new SimpleFlowDriver();
 
@@ -57,17 +55,17 @@ public class SimpleFlowDriver implements ChainDriver {
     }
 
     @Override
-    public void onNodeStart(ChainContext context, Node node) {
+    public void onNodeStart(Context context, Node node) {
         log.debug("on-node-start: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override
-    public void onNodeEnd(ChainContext context, Node node) {
+    public void onNodeEnd(Context context, Node node) {
         log.debug("on-node-end: chain={}, node={}", node.chain().id(), node);
     }
 
     @Override
-    public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
+    public boolean handleCondition(Context context, Condition condition) throws Throwable {
         if (isComponent(condition.description())) {
             //按组件运行
             String beanName = condition.description().substring(1);
@@ -85,7 +83,7 @@ public class SimpleFlowDriver implements ChainDriver {
     }
 
     @Override
-    public void handleTask(ChainContext context, Task task) throws Throwable {
+    public void handleTask(Context context, Task task) throws Throwable {
         if (tryIfChainTask(context, task)) {
             return;
         }
@@ -100,7 +98,7 @@ public class SimpleFlowDriver implements ChainDriver {
     /**
      * 尝试如果是链则运行
      */
-    protected boolean tryIfChainTask(ChainContext context, Task task) throws Throwable {
+    protected boolean tryIfChainTask(Context context, Task task) throws Throwable {
         if (isChain(task.description())) {
             //调用其它链
             String chainId = task.description().substring(1);
@@ -114,7 +112,7 @@ public class SimpleFlowDriver implements ChainDriver {
     /**
      * 尝试如果是组件则运行
      */
-    protected boolean tryIfComponentTask(ChainContext context, Task task) throws Throwable {
+    protected boolean tryIfComponentTask(Context context, Task task) throws Throwable {
         if (isComponent(task.description())) {
             //按组件运行
             String beanName = task.description().substring(1);
@@ -135,7 +133,7 @@ public class SimpleFlowDriver implements ChainDriver {
     /**
      * 尝试作为脚本运行
      */
-    protected void tryAsScriptTask(ChainContext context, Task task) throws Throwable {
+    protected void tryAsScriptTask(Context context, Task task) throws Throwable {
         //按脚本运行
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);

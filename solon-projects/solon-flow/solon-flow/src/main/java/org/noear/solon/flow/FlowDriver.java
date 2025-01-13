@@ -13,20 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow.core;
+package org.noear.solon.flow;
 
 import org.noear.solon.lang.Preview;
 
 /**
- * 任务组件
+ * 流驱动器
  *
  * @author noear
  * @since 3.0
- */
+ * */
 @Preview("3.0")
-public interface TaskComponent {
+public interface FlowDriver {
     /**
-     * 运行
+     * 节点运行开始时
      */
-    void run(ChainContext context, Node node) throws Throwable;
+    void onNodeStart(Context context, Node node);
+
+    /**
+     * 节点运行结束时
+     */
+    void onNodeEnd(Context context, Node node);
+
+    /**
+     * 处理连线条件
+     */
+    boolean handleCondition(Context context, Condition condition) throws Throwable;
+
+    /**
+     * 处理执行任务
+     */
+    void handleTask(Context context, Task task) throws Throwable;
 }

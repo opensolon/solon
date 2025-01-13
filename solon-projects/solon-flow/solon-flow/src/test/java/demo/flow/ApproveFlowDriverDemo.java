@@ -1,21 +1,20 @@
 package demo.flow;
 
-import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.flow.core.ChainContext;
-import org.noear.solon.flow.core.FlowEngine;
-import org.noear.solon.flow.core.Node;
+import org.noear.solon.flow.Context;
+import org.noear.solon.flow.FlowEngine;
+import org.noear.solon.flow.Node;
 
 /**
  * @author noear 2025/1/13 created
  */
-public class ApproveChainDriverDemo {
+public class ApproveFlowDriverDemo {
     @Inject
     private FlowEngine flowEngine;
 
     public void demo() throws Throwable {
         //可以在链配置时指定，也可以在运行时指定
-        ChainContext context = new ChainContext(new ApproveChainDriver());
+        Context context = new Context(new ApproveFlowDriver());
 
         context.paramSet("instance_id", "123");
         context.paramSet("user_id", "123");

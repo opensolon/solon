@@ -1,6 +1,6 @@
 package demo.flow;
 
-import org.noear.solon.flow.core.Task;
+import org.noear.solon.flow.Task;
 
 /**
  * @author noear 2025/1/13 created
