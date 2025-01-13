@@ -21,7 +21,6 @@ import org.noear.solon.lang.Preview;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * 链上下文
@@ -33,10 +32,11 @@ import java.util.function.Function;
 public class ChainContext implements Serializable {
     //存放执行参数
     private final Map<String, Object> params = new LinkedHashMap<>();
+    //存放执行附件（可选）
+    private Object attachment;
+
     //存放执行结果（可选）
     public Object result;
-    //存放过程属性（可选）
-    private final Map<String, Object> attrs = new LinkedHashMap<>();
 
     //控制过程计数
     private transient final Counter counter = new Counter();
@@ -61,17 +61,17 @@ public class ChainContext implements Serializable {
     }
 
     /**
-     * 当前流程引擎
-     */
-    public FlowEngine engine() {
-        return engine;
-    }
-
-    /**
      * 当前驱动器
      */
     public ChainDriver driver() {
         return driver;
+    }
+
+    /**
+     * 当前流程引擎
+     */
+    public FlowEngine engine() {
+        return engine;
     }
 
     /**
@@ -105,13 +105,6 @@ public class ChainContext implements Serializable {
     }
 
     /**
-     * 参数获取
-     */
-    public Object param(String key) {
-        return params.get(key);
-    }
-
-    /**
      * 参数设置
      */
     public ChainContext paramSet(String key, Object value) {
@@ -120,31 +113,36 @@ public class ChainContext implements Serializable {
     }
 
     /**
-     * 属性集合
+     * 参数获取
      */
-    public Map<String, Object> attrs() {
-        return attrs;
+    public <T> T param(String key) {
+        return (T) params.get(key);
     }
 
     /**
-     * 属性获取
+     * 参数获取或默认
      */
-    public Object attr(String key) {
-        return attrs.get(key);
+    public <T> T paramOrDefault(String key, T def) {
+        Object tmp = params.get(key);
+        if (tmp == null) {
+            return def;
+        } else {
+            return (T) tmp;
+        }
     }
 
     /**
-     * 属性获取
+     * 附件设置
      */
-    public <T> T attrIfAbsent(String key, Function<String, T> mappingFunction) {
-        return (T) attrs.computeIfAbsent(key, mappingFunction);
-    }
-
-    /**
-     * 属性设置
-     */
-    public ChainContext attrSet(String key, Object value) {
-        attrs.put(key, value);
+    public ChainContext attachment(Object attachment) {
+        this.attachment = attachment;
         return this;
+    }
+
+    /**
+     * 附件
+     */
+    public <T> T attachment() {
+        return (T) attachment;
     }
 }

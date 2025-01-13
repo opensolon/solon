@@ -24,9 +24,9 @@ public class ApproveChainDriver extends SimpleFlowDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        String instance_id = (String) context.param("instance_id");
-        String user_id = (String) context.param("user_id");
-        String role_id = (String) context.param("role_id");
+        String instance_id = context.param("instance_id");
+        String user_id = context.param("user_id");
+        String role_id = context.param("role_id");
 
 
         String chain_id = task.node().chain().id();

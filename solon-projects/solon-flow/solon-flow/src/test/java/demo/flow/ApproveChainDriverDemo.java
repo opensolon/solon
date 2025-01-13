@@ -4,6 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.flow.core.ChainContext;
 import org.noear.solon.flow.core.FlowEngine;
+import org.noear.solon.flow.core.Node;
 
 /**
  * @author noear 2025/1/13 created
@@ -22,6 +23,9 @@ public class ApproveChainDriverDemo {
 
         flowEngine.eval("c12", context);
 
-        ONode oNode = (ONode) context.result;
+        //运行后，获取当前展示的节点
+        Node node = (Node) context.result;
+
+        //根据转点，展示界面
     }
 }
