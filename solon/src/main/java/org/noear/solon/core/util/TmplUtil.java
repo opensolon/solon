@@ -33,6 +33,14 @@ import java.util.regex.Pattern;
  * @since 2.8
  */
 public class TmplUtil {
+    /**
+     * 解析模板
+     *
+     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     *
+     * @param tmpl 模板
+     * @param inv  调用
+     */
     public static String parse(String tmpl, Invocation inv) {
         if (tmpl.indexOf('$') < 0) {
             return tmpl;
@@ -41,6 +49,15 @@ public class TmplUtil {
         return parse(tmpl, inv.argsAsMap());
     }
 
+    /**
+     * 解析模板
+     *
+     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     *
+     * @param tmpl 模板
+     * @param inv  调用
+     * @param rst  结果 （宏示例： ${.name}）
+     */
     public static String parse(String tmpl, Invocation inv, Object rst) {
         if (tmpl.indexOf('$') < 0) {
             return tmpl;
@@ -55,7 +72,7 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>name=${name},type={.type}</code></pre>
+     * <pre><code>${name}_${order.id}_${.type}</code></pre>
      *
      * @param tmpl  模板
      * @param model 数据模型
@@ -67,7 +84,7 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>name=${name},type={.type}</code></pre>
+     * <pre><code>${name}_${order.id}_${.type}</code></pre>
      *
      * @param tmpl    模板
      * @param checker 检测器（是否存在 key）
