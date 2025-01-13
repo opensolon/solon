@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.0.6-RC2
+Solon v3.0.6
 </h1>
 <p align="center">
 	<strong>全シーンに向けたJavaアプリケーション開発フレームワーク:抑制、高効率、開放、エコ</strong>
