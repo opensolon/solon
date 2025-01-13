@@ -2,6 +2,7 @@ package features.flow.com;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.flow.core.Node;
 import org.noear.solon.flow.core.TaskComponent;
 import org.noear.solon.flow.core.ChainContext;
 
@@ -12,7 +13,7 @@ import org.noear.solon.flow.core.ChainContext;
 @Component("a")
 public class ACom implements TaskComponent {
     @Override
-    public void run(ChainContext context) {
+    public void run(ChainContext context, Node node) {
         log.info("ACom");
     }
 }
