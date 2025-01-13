@@ -32,7 +32,7 @@ public class Counter {
      * 获取
      */
     protected int get(Chain chain, String key) {
-        return records.computeIfAbsent(chain.id() + "-" + key, k -> new AtomicInteger(0))
+        return records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .get();
     }
 
@@ -40,7 +40,7 @@ public class Counter {
      * 设置
      */
     protected void set(Chain chain, String key, int value) {
-        records.computeIfAbsent(chain.id() + "-" + key, k -> new AtomicInteger(0))
+        records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .set(value);
     }
 
@@ -48,7 +48,12 @@ public class Counter {
      * 增量
      */
     protected int incr(Chain chain, String key) {
-        return records.computeIfAbsent(chain.id() + "-" + key, k -> new AtomicInteger(0))
+        return records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .incrementAndGet();
+    }
+
+    @Override
+    public String toString() {
+        return records.toString();
     }
 }

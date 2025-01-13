@@ -1,5 +1,6 @@
 package features.flow.app;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
@@ -10,6 +11,7 @@ import org.noear.solon.test.SolonTest;
 /**
  * @author noear 2025/1/12 created
  */
+@Slf4j
 @SolonTest
 public class AppTest {
     @Inject
@@ -25,6 +27,8 @@ public class AppTest {
         ChainContext context = new ChainContext();
         flowEngine.eval("c6", context);
         assert context.result.equals(112);
+
+        log.trace("counter: {}", context.counter());
     }
 
     @Test
@@ -33,11 +37,13 @@ public class AppTest {
         context.paramSet("day", 1);
         flowEngine.eval("c4", context);
         assert context.result.equals(0);
+        log.trace("counter: {}", context.counter());
 
         context = new ChainContext();
         context.paramSet("day", 3);
         flowEngine.eval("c4", context);
         assert context.result.equals(3);
+        log.trace("counter: {}", context.counter());
     }
 
     @Test
@@ -46,6 +52,7 @@ public class AppTest {
         context.paramSet("day", 7);
         flowEngine.eval("c4", context);
         assert context.result.equals(10);
+        log.trace("counter: {}", context.counter());
     }
 
     @Test
@@ -55,7 +62,8 @@ public class AppTest {
         flowEngine.eval("c5", context);
         assert context.result.equals(10);
 
-        System.out.println(ONode.load(context).toJson());
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
     }
 
     @Test
