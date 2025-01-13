@@ -1,5 +1,5 @@
 
-solon-flow 提供一种低成本的流处理支持。支持 java 构建，json,yml,properties 配置
+solon-flow 提供一种低成本的开放流处理支持。支持 java 构建，json,yml,properties 配置
 
 使用示例:
 
@@ -62,17 +62,17 @@ NodeLink 配置属性
 
 ### 3、上下文接口（ChainContext）
 
-|                                            |     |       |
-|--------------------------------------------|-----|-------|
-| `counter()->Counter`                       |     | 计数器   |
-|                                            |     |       |
-| `isInterrupted()->bool`                    |     | 是否已中断 |
-| `interrupt()`                              |     | 中断    |
-|                                            |     |       |
-| `params()->Map`                            |     | 参数集合  |
-| `paramSet(String key, Object value)->self` |     | 参数设置  |
-| `param(String key)->T`                     |     | 参数获取  |
-| `paramOrDefault(key, def)->T`              |     | 参数默认  |
+|                                      | 数据类型                 |              |
+|--------------------------------------|----------------------|--------------|
+| `isInterrupted()`                    | `bool`               | 是否已中断        |
+| `interrupt()`                        |                      | 中断流转         |
+|                                      |                      |              |
+| `params()`                           | `Map<String,Object>` | 参数集合         |
+| `paramSet(String key, Object value)` | `self`               | 参数设置         |
+| `param(String key)`                  | `T`                  | 参数获取         |
+| `paramOrDefault(key, def)`           | `T`                  | 参数默认         |
+|                                      |                      |              |
+| `result`                             | `Object`             | 执行结果（执行中可赋值） |
 
 
 ### 4、任务与条件
