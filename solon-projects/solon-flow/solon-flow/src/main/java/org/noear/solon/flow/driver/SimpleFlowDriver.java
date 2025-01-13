@@ -76,7 +76,7 @@ public class SimpleFlowDriver implements ChainDriver {
             if (component == null) {
                 throw new IllegalStateException("The condition '" + beanName + "' not exist");
             } else {
-                return component.test(context);
+                return component.test(context, condition.link());
             }
         } else {
             //按脚本运行
@@ -98,7 +98,7 @@ public class SimpleFlowDriver implements ChainDriver {
             if (component == null) {
                 throw new IllegalStateException("The task '" + beanName + "' not exist");
             } else {
-                component.run(context);
+                component.run(context, task.node());
             }
         } else {
             //按脚本运行

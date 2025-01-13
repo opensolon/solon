@@ -28,5 +28,5 @@ public interface TaskComponent {
     /**
      * 运行
      */
-    void run(ChainContext context) throws Throwable;
+    void run(ChainContext context, Node node) throws Throwable;
 }
