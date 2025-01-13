@@ -35,7 +35,7 @@ Node 配置属性
 | type     | `NodeType`                                    | 节点类型（必要）          |
 | title    | `String`                                      | 显示标题              |
 | meta     | `Map[String,Object]`                          | 元信息               |
-| link     | `String` or `Link` or `String[]`  or `Link[]` | 链接（支持单值、多值；简写、全写） |
+| link     | `String` or `NodeLink` or `String[]`  or `NodeLink[]` | 链接（支持单值、多值；简写、全写） |
 | task     | `String`                                      | 任务描述              |
 
 NodeLink 配置属性
@@ -79,7 +79,7 @@ NodeLink 配置属性
 
 任务与条件的描述，采用开放格式（即没有格式约定）。格式由 ChainDriver 处理（或约定），使用哪个 ChainDriver 就采用哪个格式约定。就像 jdbc 的 Driver, mysql 和 pgsql 的语法即不同。
 
-格式参考1（SimpleFlowDriver 方案，框架内置）：
+格式参考1（SimpleChainDriver 方案，框架内置）：
 
 |        | 示例                                                          | 
 |--------|-------------------------------------------------------------|
