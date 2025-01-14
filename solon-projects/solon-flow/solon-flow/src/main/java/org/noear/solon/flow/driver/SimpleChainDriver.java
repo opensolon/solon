@@ -84,24 +84,24 @@ public class SimpleChainDriver implements ChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        if (tryIfChainTask(context, task)) {
+        if (tryIfChainTask(context, task, task.description())) {
             return;
         }
 
-        if (tryIfComponentTask(context, task)) {
+        if (tryIfComponentTask(context, task, task.description())) {
             return;
         }
 
-        tryAsScriptTask(context, task);
+        tryAsScriptTask(context, task, task.description());
     }
 
     /**
      * 尝试如果是链则运行
      */
-    protected boolean tryIfChainTask(ChainContext context, Task task) throws Throwable {
-        if (isChain(task.description())) {
+    protected boolean tryIfChainTask(ChainContext context, Task task, String description) throws Throwable {
+        if (isChain(description)) {
             //调用其它链
-            String chainId = task.description().substring(1);
+            String chainId = description.substring(1);
             context.engine().eval(chainId, context);
             return true;
         } else {
@@ -112,10 +112,10 @@ public class SimpleChainDriver implements ChainDriver {
     /**
      * 尝试如果是组件则运行
      */
-    protected boolean tryIfComponentTask(ChainContext context, Task task) throws Throwable {
-        if (isComponent(task.description())) {
+    protected boolean tryIfComponentTask(ChainContext context, Task task, String description) throws Throwable {
+        if (isComponent(description)) {
             //按组件运行
-            String beanName = task.description().substring(1);
+            String beanName = description.substring(1);
             TaskComponent component = Solon.context().getBean(beanName);
 
             if (component == null) {
@@ -133,13 +133,13 @@ public class SimpleChainDriver implements ChainDriver {
     /**
      * 尝试作为脚本运行
      */
-    protected void tryAsScriptTask(ChainContext context, Task task) throws Throwable {
+    protected void tryAsScriptTask(ChainContext context, Task task, String description) throws Throwable {
         //按脚本运行
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);
         argsMap.putAll(context.params());
 
-        CodeSpec codeSpec = new CodeSpec(task.description());
+        CodeSpec codeSpec = new CodeSpec(description);
         Object[] args = codeSpec.bind(argsMap);
         Scripts.eval(codeSpec, args);
     }
