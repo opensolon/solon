@@ -1,9 +1,11 @@
-package features.flow.script;
+package features.flow.cfg_script;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.*;
 
 /**
+ * 手动配装风格
+ *
  * @author noear 2025/1/10 created
  */
 public class ScriptJavaTest {

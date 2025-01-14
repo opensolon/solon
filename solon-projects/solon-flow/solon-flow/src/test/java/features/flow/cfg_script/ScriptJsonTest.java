@@ -1,4 +1,4 @@
-package features.flow.script;
+package features.flow.cfg_script;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.Chain;
@@ -6,6 +6,8 @@ import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 
 /**
+ * 手动配装风格
+ *
  * @author noear 2025/1/11 created
  */
 public class ScriptJsonTest {

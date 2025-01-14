@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 链接申明
+ * 连接申明
  *
  * @author noear
  * @since 3.0
  */
-public class NodeLinkDecl {
+public class LinkDecl {
     protected final String nextId;
     protected String title;
     protected Map<String, Object> meta;
@@ -39,14 +39,14 @@ public class NodeLinkDecl {
     /**
      * @param nextId 目标 id
      */
-    public NodeLinkDecl(String nextId) {
+    public LinkDecl(String nextId) {
         this.nextId = nextId;
     }
 
     /**
      * 配置标题
      */
-    public NodeLinkDecl title(String title) {
+    public LinkDecl title(String title) {
         this.title = title;
         return this;
     }
@@ -54,7 +54,7 @@ public class NodeLinkDecl {
     /**
      * 配置元信息
      */
-    public NodeLinkDecl meta(Map<String, Object> meta) {
+    public LinkDecl meta(Map<String, Object> meta) {
         this.meta = meta;
         return this;
     }
@@ -62,7 +62,7 @@ public class NodeLinkDecl {
     /**
      * 配置元信息
      */
-    public NodeLinkDecl metaPut(String key, Object value) {
+    public LinkDecl metaPut(String key, Object value) {
         if (meta == null) {
             meta = new HashMap<>();
         }
@@ -74,7 +74,7 @@ public class NodeLinkDecl {
     /**
      * 配置条件
      */
-    public NodeLinkDecl condition(String condition) {
+    public LinkDecl condition(String condition) {
         this.condition = condition;
         return this;
     }
@@ -82,7 +82,7 @@ public class NodeLinkDecl {
     /**
      * 配置优先级（越大越优）
      */
-    public NodeLinkDecl priority(int priority) {
+    public LinkDecl priority(int priority) {
         this.priority = priority;
         return this;
     }

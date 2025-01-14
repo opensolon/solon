@@ -20,20 +20,20 @@ import org.noear.solon.Utils;
 import java.util.Map;
 
 /**
- * 链接
+ * 连接
  *
  * @author noear
  * @since 3.0
  */
-public class NodeLink implements Comparable<NodeLink> {
+public class Link implements Comparable<Link> {
     private final Chain chain;
     private final String prveId;
-    private final NodeLinkDecl decl;
+    private final LinkDecl decl;
 
     private Node prveNode, nextNode;
     private Condition condition;
 
-    public NodeLink(Chain chain, String prveId, NodeLinkDecl decl) {
+    public Link(Chain chain, String prveId, LinkDecl decl) {
         this.chain = chain;
         this.prveId = prveId;
         this.decl = decl;
@@ -101,7 +101,7 @@ public class NodeLink implements Comparable<NodeLink> {
     }
 
     @Override
-    public int compareTo(NodeLink o) {
+    public int compareTo(Link o) {
         if (this.decl.priority > o.decl.priority) {
             return -1; //大的在前
         } else if (this.decl.priority < o.decl.priority) {

@@ -32,13 +32,13 @@ public class Node {
     private final transient Chain chain;
 
     private final NodeDecl decl;
-    private final List<NodeLink> nextLinks = new ArrayList<>(); //as nextLinks
+    private final List<Link> nextLinks = new ArrayList<>(); //as nextLinks
 
     private List<Node> prveNodes, nextNodes;
-    private List<NodeLink> prveLinks;
+    private List<Link> prveLinks;
     private Task task;
 
-    protected Node(Chain chain, NodeDecl decl, List<NodeLink> links) {
+    protected Node(Chain chain, NodeDecl decl, List<Link> links) {
         this.chain = chain;
         this.decl = decl;
 
@@ -86,14 +86,14 @@ public class Node {
     }
 
     /**
-     * 前面的链接
+     * 前面的连接（流入连接）
      */
-    public List<NodeLink> prveLinks() {
+    public List<Link> prveLinks() {
         if (prveLinks == null) {
             prveLinks = new ArrayList<>();
 
             if (type() != NodeType.start) {
-                for (NodeLink l : chain.links()) {
+                for (Link l : chain.links()) {
                     if (id().equals(l.nextId())) { //by nextID
                         prveLinks.add(l);
                     }
@@ -108,9 +108,9 @@ public class Node {
     }
 
     /**
-     * 后面的链接
+     * 后面的连接（流出连接）
      */
-    public List<NodeLink> nextLinks() {
+    public List<Link> nextLinks() {
         return Collections.unmodifiableList(nextLinks);
     }
 
@@ -122,7 +122,7 @@ public class Node {
             prveNodes = new ArrayList<>();
 
             if (type() != NodeType.start) {
-                for (NodeLink l : chain.links()) { //要从链处找
+                for (Link l : chain.links()) { //要从链处找
                     if (id().equals(l.nextId())) {
                         nextNodes.add(chain.getNode(l.prveId()));
                     }
@@ -141,7 +141,7 @@ public class Node {
             nextNodes = new ArrayList<>();
 
             if (type() != NodeType.end) {
-                for (NodeLink l : this.nextLinks()) { //从自由处找
+                for (Link l : this.nextLinks()) { //从自由处找
                     nextNodes.add(chain.getNode(l.nextId()));
                 }
             }

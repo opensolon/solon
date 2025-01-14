@@ -1,4 +1,4 @@
-package features.flow.script;
+package features.flow.cfg_script;
 
 import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.Task;

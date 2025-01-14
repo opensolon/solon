@@ -9,6 +9,8 @@ import org.noear.solon.flow.FlowEngine;
 import org.noear.solon.test.SolonTest;
 
 /**
+ * 自动装配风格
+ *
  * @author noear 2025/1/12 created
  */
 @Slf4j

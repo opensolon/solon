@@ -32,7 +32,7 @@ public class NodeDecl {
     protected String title;
     protected NodeType type;      //元素类型
     protected Map<String, Object> meta; //元信息
-    protected List<NodeLinkDecl> links = new ArrayList<>();
+    protected List<LinkDecl> links = new ArrayList<>();
     protected String task;
 
 
@@ -76,10 +76,12 @@ public class NodeDecl {
     }
 
     /**
-     * 配置链接
+     * 配置连接
+     *
+     * @param nextId 下个节点Id
      */
-    public NodeDecl linkAdd(String nextId, Consumer<NodeLinkDecl> configure) {
-        NodeLinkDecl linkDecl = new NodeLinkDecl(nextId);
+    public NodeDecl linkAdd(String nextId, Consumer<LinkDecl> configure) {
+        LinkDecl linkDecl = new LinkDecl(nextId);
         if (configure != null) {
             configure.accept(linkDecl);
         }
@@ -88,7 +90,9 @@ public class NodeDecl {
     }
 
     /**
-     * 配置链接
+     * 配置连接
+     *
+     * @param nextId 下个节点Id
      */
     public NodeDecl linkAdd(String nextId) {
         return linkAdd(nextId, null);

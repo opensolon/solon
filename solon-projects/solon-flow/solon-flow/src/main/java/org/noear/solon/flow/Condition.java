@@ -25,7 +25,7 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Condition {
-    private final NodeLink link;
+    private final Link link;
     private final String description;
 
     /**
@@ -34,18 +34,18 @@ public class Condition {
     public Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
 
     /**
-     * @param link        所属链接
+     * @param link        所属连接
      * @param description 条件描述
      */
-    public Condition(NodeLink link, String description) {
+    public Condition(Link link, String description) {
         this.link = link;
         this.description = description;
     }
 
     /**
-     * 所属链接
+     * 所属连接
      */
-    public NodeLink link() {
+    public Link link() {
         return link;
     }
 

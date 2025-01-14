@@ -1,4 +1,4 @@
-package features.flow.com;
+package features.flow.cfg_com;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -7,6 +7,8 @@ import org.noear.solon.flow.*;
 import org.noear.solon.flow.driver.SimpleChainDriver;
 
 /**
+ * 手动配装风格
+ *
  * @author noear 2025/1/10 created
  */
 @Slf4j

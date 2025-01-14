@@ -36,7 +36,7 @@ public class Chain {
     private final String title;
 
     private final Map<String, Node> nodes = new HashMap<>();
-    private final List<NodeLink> links = new ArrayList<>();
+    private final List<Link> links = new ArrayList<>();
 
     private Node start;
 
@@ -80,7 +80,7 @@ public class Chain {
     /**
      * 获取所有连接
      */
-    public List<NodeLink> links() {
+    public List<Link> links() {
         return Collections.unmodifiableList(links);
     }
 
@@ -89,10 +89,10 @@ public class Chain {
      * 添加节点
      */
     public void addNode(NodeDecl nodeDecl) {
-        List<NodeLink> linkAry = new ArrayList<>();
+        List<Link> linkAry = new ArrayList<>();
 
-        for (NodeLinkDecl linkSpec : nodeDecl.links) {
-            linkAry.add(new NodeLink(this, nodeDecl.id, linkSpec));
+        for (LinkDecl linkSpec : nodeDecl.links) {
+            linkAry.add(new Link(this, nodeDecl.id, linkSpec));
         }
 
         links.addAll(linkAry);
@@ -184,7 +184,7 @@ public class Chain {
     }
 
     /**
-     * 添加链接
+     * 添加连接
      */
     private static void addLink(NodeDecl nodeDecl, ONode l1) {
         nodeDecl.linkAdd(l1.get("nextId").getString(), ld -> ld

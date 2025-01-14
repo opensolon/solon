@@ -1,4 +1,4 @@
-package features.flow.com;
+package features.flow.cfg_com;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
@@ -7,6 +7,8 @@ import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 
 /**
+ * 手动配装风格
+ *
  * @author noear 2025/1/10 created
  */
 public class ComJsonTest {
