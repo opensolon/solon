@@ -84,15 +84,20 @@ public class SimpleChainDriver implements ChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        if (tryIfChainTask(context, task, task.description())) {
+        //如果 task.description 有加密，可以转码后传入
+        handleTaskDo(context, task, task.description());
+    }
+
+    protected void handleTaskDo(ChainContext context, Task task, String description) throws Throwable {
+        if (tryIfChainTask(context, task, description)) {
             return;
         }
 
-        if (tryIfComponentTask(context, task, task.description())) {
+        if (tryIfComponentTask(context, task, description)) {
             return;
         }
 
-        tryAsScriptTask(context, task, task.description());
+        tryAsScriptTask(context, task, description);
     }
 
     /**
