@@ -69,6 +69,14 @@ public class AppTest {
     }
 
     @Test
+    public void d2_test() throws Throwable {
+        ChainContext context = new ChainContext();
+        context.paramSet("score", 7);
+
+        flowEngine.eval("d2", context);
+    }
+
+    @Test
     public void context_test() {
         String json = "{\"params\":{\"day\":7},\"result\":10}";
         ChainContext context = ONode.load(json).toObject(ChainContext.class);
