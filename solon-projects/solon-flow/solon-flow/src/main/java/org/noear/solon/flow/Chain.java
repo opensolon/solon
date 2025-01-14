@@ -34,10 +34,10 @@ import java.util.*;
 public class Chain {
     private final String id;
     private final String title;
-
+    private final Map<String, Object> meta = new HashMap<>(); //元信息
     private final Map<String, Node> nodes = new HashMap<>();
-    private final List<Link> links = new ArrayList<>();
 
+    private final List<Link> links = new ArrayList<>();
     private Node start;
 
     public Chain(String id) {
@@ -61,6 +61,13 @@ public class Chain {
      */
     public String title() {
         return title;
+    }
+
+    /**
+     * 元信息
+     */
+    public Map<String, Object> meta() {
+        return this.meta;
     }
 
     /**
@@ -144,10 +151,17 @@ public class Chain {
      */
     public static Chain parseByDom(ONode oNode) {
         String id = oNode.get("id").getString();
-        String title = oNode.get("id").getString();
+        String title = oNode.get("title").getString();
 
         Chain chain = new Chain(id, title);
 
+        //元信息
+        Map metaTmp = oNode.get("meta").toObject(Map.class);
+        if(Utils.isNotEmpty(metaTmp)) {
+            chain.meta().putAll(metaTmp);
+        }
+
+        //节点
         for (ONode n1 : oNode.get("nodes").ary()) {
             NodeType type = NodeType.nameOf(n1.get("type").getString());
 
