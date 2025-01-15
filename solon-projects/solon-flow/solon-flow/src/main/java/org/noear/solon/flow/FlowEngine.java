@@ -33,11 +33,18 @@ public interface FlowEngine {
     }
 
     /**
-     * 加载
+     * 加载链
      *
      * @param chain 链
      */
     void load(Chain chain);
+
+    /**
+     * 卸载链
+     *
+     * @param chainId 链Id
+     */
+    void unload(String chainId);
 
     /**
      * 评估

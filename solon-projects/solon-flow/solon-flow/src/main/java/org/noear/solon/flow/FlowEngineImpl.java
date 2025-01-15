@@ -29,11 +29,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 3.0
  */
 class FlowEngineImpl implements FlowEngine {
-    private Map<String, Chain> chainMap = new ConcurrentHashMap<>();
+    protected final Map<String, Chain> chainMap = new ConcurrentHashMap<>();
 
     @Override
     public void load(Chain chain) {
         chainMap.put(chain.id(), chain);
+    }
+
+    @Override
+    public void unload(String chainId) {
+        chainMap.remove(chainId);
     }
 
     /**
