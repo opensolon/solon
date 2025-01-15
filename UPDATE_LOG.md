@@ -27,6 +27,12 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+
+### v3.0.7
+
+* 添加 solon-flow Chain:meta 配置
+* 添加 solon-flow FlowEngine:unload 接口
+
 ### v3.0.6
 * 新增 solon-flow 插件
 * 添加 solon ScanUtil 对本地文件目录的扫描支持
