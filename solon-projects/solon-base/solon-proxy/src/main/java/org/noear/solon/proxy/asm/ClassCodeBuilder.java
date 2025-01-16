@@ -492,7 +492,7 @@ public class ClassCodeBuilder {
                     "forName", "(Ljava/lang/String;)Ljava/lang/Class;", false);
             methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(Class.class),
                     "getMethods", "()[Ljava/lang/reflect/Method;", false);
-            methodVisitor.visitIntInsn(Opcodes.BIPUSH, value);
+            methodVisitor.visitIntInsn(Opcodes.SIPUSH, value);
             methodVisitor.visitInsn(Opcodes.AALOAD);
             methodVisitor.visitFieldInsn(Opcodes.PUTSTATIC, newClassInnerName,
                     METHOD_FIELD_PREFIX + key, Type.getDescriptor(Method.class));
@@ -507,7 +507,7 @@ public class ClassCodeBuilder {
                     "forName", "(Ljava/lang/String;)Ljava/lang/Class;", false);
             methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(Class.class),
                     "getDeclaredMethods", "()[Ljava/lang/reflect/Method;", false);
-            methodVisitor.visitIntInsn(Opcodes.BIPUSH, value);
+            methodVisitor.visitIntInsn(Opcodes.SIPUSH, value);
             methodVisitor.visitInsn(Opcodes.AALOAD);
             methodVisitor.visitFieldInsn(Opcodes.PUTSTATIC, newClassInnerName,
                     METHOD_FIELD_PREFIX + key, Type.getDescriptor(Method.class));
