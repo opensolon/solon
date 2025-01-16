@@ -31,6 +31,7 @@
 ### v3.0.7
 * 添加 solon-flow Chain:meta 配置
 * 添加 solon-flow FlowEngine:unload 接口
+* 修复 solon-proxy 当 ASM 的代理方法超过 128 个时会超界的问题
 
 ### v3.0.6
 * 新增 solon-flow 插件
