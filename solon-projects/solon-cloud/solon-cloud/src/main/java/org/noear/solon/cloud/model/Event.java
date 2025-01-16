@@ -17,6 +17,8 @@ package org.noear.solon.cloud.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 事件模型
@@ -32,6 +34,8 @@ public class Event implements Serializable {
     private String tags;
     private Date scheduled;
     private int times;
+    private Map<String, String> meta;
+
     private transient String channel;
     private transient int qos = 1;
     private transient boolean retained = false;
@@ -49,6 +53,14 @@ public class Event implements Serializable {
     public Event(String topic, String content) {
         this.topic = topic;
         this.content = content;
+    }
+
+    public Map<String, String> meta() {
+        if (meta == null) {
+            meta = new HashMap<>();
+        }
+
+        return meta;
     }
 
 
