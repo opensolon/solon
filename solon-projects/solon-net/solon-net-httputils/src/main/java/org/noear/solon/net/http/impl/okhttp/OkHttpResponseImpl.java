@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http.impl.okhttp;
 
+import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
@@ -99,12 +100,22 @@ public class OkHttpResponseImpl implements HttpResponse {
 
     @Override
     public String contentType() {
-        return response.body().contentType().type();
+        MediaType tmp = response.body().contentType();
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.type();
+        }
     }
 
     @Override
     public Charset contentEncoding() {
-        return response.body().contentType().charset();
+        MediaType tmp = response.body().contentType();
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.charset();
+        }
     }
 
     @Override
