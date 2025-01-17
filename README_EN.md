@@ -41,7 +41,7 @@ Solon v3.0.7-SNAPSHOT
     <a target="_blank" href='https://github.com/opensolon/solon/stargazers'>
 		<img src="https://img.shields.io/github/stars/opensolon/solon.svg?style=flat&logo=github" alt="github star"/>
 	</a>
-    <a target="_blank" href='https://gitcode.com/opensolon/solon/star'>
+    <a target="_blank" href='https://gitcode.com/opensolon/solon/stargazers'>
 		<img src='https://gitcode.com/opensolon/solon/star/badge.svg' alt='gitcode star'/>
 	</a>
 </p>
