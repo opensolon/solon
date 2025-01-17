@@ -19,7 +19,7 @@ public class ComJsonTest {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJsonTest.class);
         solonApp.start(null);
 
-        Chain chain = Chain.parseByUri("classpath:flow/com.json");
+        Chain chain = Chain.parseByUri("classpath:flow/com.chain.json");
 
         ChainContext context = new ChainContext();
         context.paramSet("a", 2);

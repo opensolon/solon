@@ -15,14 +15,14 @@ public class ScriptJsonTest {
 
     @Test
     public void case1_demo() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case1.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case1.chain.json");
 
         flowEngine.eval(chain);
     }
 
     @Test
     public void case2_interrupt() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
         ChainContext context = new ChainContext(new Case2FlowDriver());
         context.paramSet("a", 2);
@@ -37,7 +37,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case2_interrupt2() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case2.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
         ChainContext context = new ChainContext(new Case2FlowDriver());
         context.paramSet("a", 12);
@@ -51,7 +51,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case3_exclusive() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case3.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case3.chain.json");
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 1);
@@ -71,7 +71,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case4_inclusive() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case4.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case4.chain.json");
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 1);
@@ -86,7 +86,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case4_inclusive2() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case4.json");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case4.chain.json");
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 7);
@@ -96,7 +96,7 @@ public class ScriptJsonTest {
 
     @Test
     public void case5_parallel() throws Throwable {
-        Chain chain = Chain.parseByUri("classpath:flow/script_case5.yml");
+        Chain chain = Chain.parseByUri("classpath:flow/script_case5.chain.yml");
 
         ChainContext context = new ChainContext();
         context.paramSet("day", 7);
