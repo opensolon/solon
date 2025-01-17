@@ -1,0 +1,18 @@
+id: "d1"
+title: "合同审批（条件会签）"
+nodes:
+- { id: "s", type: "start", title: "发起人", meta: {role: "employee"}, link: "n1"}
+- { id: "n1", type: "execute", title: "主管批", meta: {role: "tl"}, link: "g1"}
+- { id: "g1-s", type: "inclusive", title: "会签" , link:[
+    {nextId: "n2", title: "10万以上", condition: "amount>=100000"}
+    {nextId: "n3", title: "50万以上", condition: "amount>=500000"}
+    {nextId: "n4", title: "90万以上", condition: "amount>=900000"}]}
+- { id: "n2", type: "execute", title: "本部门经理批", meta: {role: "dm"}, link: "g1-e"}
+- { id: "n3", type: "execute", title: "生产部经理批", meta: {role: "dm"}, link: "g1-e"}
+- { id: "n4", type: "execute", title: "财务部经理批", meta: {role: "dm"}, link: "g1-e"}
+- { id: "g1-e", type: "inclusive", link: "e"}
+- { id: "e", type: "end"}
+
+
+# tl: team leader; dm: department manager; vp: vice-president
+

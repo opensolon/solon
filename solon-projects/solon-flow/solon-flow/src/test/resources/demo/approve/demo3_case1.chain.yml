@@ -1,0 +1,17 @@
+id: "d1"
+title: "决议投票"
+nodes:
+- { id: "s", type: "start", title: "发起人", meta: {role: "biz"}, link: "n1"}
+- { id: "n1", type: "execute", title: "主管核查", meta: {role: "tl"}, link: "g1"}
+- { id: "g1-s", type: "parallel", title: "投票", meta: {timeout: "7d", default: "false"}, link:[
+    {nextId: "n2"}
+    {nextId: "n3"}
+    {nextId: "n4"}]}
+- { id: "n2", type: "execute", title: "本部门经投票", meta: {role: "dm"}, link: "g1-e"}
+- { id: "n3", type: "execute", title: "生产部经投票", meta: {role: "dm"}, link: "g1-e"}
+- { id: "n4", type: "execute", title: "财务部经投票", meta: {role: "dm"}, link: "g1-e"}
+- { id: "g1-e", type: "parallel", link: "n5"}
+- { id: "n5", type: "execute", title: "结果通知", meta: {cc: "vp"}, link: "e"}
+- { id: "e", type: "end"}
+
+# tl: team leader; dm: department manager; vp: vice-president; cc: Carbon Copy

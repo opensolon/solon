@@ -1,0 +1,14 @@
+id: "d1"
+title: "请假审批"
+nodes:
+- { id: "s", type: "start", title: "发起人", meta: {role: "employee"}, link: "n1"}
+- { id: "n1", type: "execute", title: "主管批", meta: {role: "tl"}, link: "g1"}
+- { id: "g1", type: "exclusive", link:[
+    {nextId: "e"},
+    {nextId: "n2", title: "3天以上", condition: "day>=3"}]}
+- { id: "n2", type: "execute", title: "部门经理批",meta: {role: "dm"}, link: "e"}
+- { id: "e", type: "end"}
+
+
+# tl: team leader; dm: department manager; vp: vice-president
+
