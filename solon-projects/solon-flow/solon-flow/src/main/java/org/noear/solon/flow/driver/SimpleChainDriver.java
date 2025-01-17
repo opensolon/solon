@@ -55,6 +55,8 @@ public class SimpleChainDriver implements ChainDriver {
         return description.startsWith("@");
     }
 
+    /// //////////////
+
     @Override
     public void onNodeStart(ChainContext context, Node node) {
         log.debug("on-node-start: chain={}, node={}", node.chain().id(), node);
@@ -65,27 +67,51 @@ public class SimpleChainDriver implements ChainDriver {
         log.debug("on-node-end: chain={}, node={}", node.chain().id(), node);
     }
 
+    /// //////////////
+
     @Override
     public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
-        if (isComponent(condition.description())) {
-            //按组件运行
-            String beanName = condition.description().substring(1);
-            ConditionComponent component = Solon.context().getBean(beanName);
+        //（不需要检测是否为空，引擎会把空条件作为默认，不会再传入）
 
-            if (component == null) {
-                throw new IllegalStateException("The condition '" + beanName + "' not exist");
-            } else {
-                return component.test(context, condition.link());
-            }
+        //如果 condition.description 有加密，可以转码后传入
+        return handleConditionDo(context, condition, condition.description());
+    }
+
+    protected boolean handleConditionDo(ChainContext context, Condition condition, String description) throws Throwable {
+        if (isComponent(description)) {
+            //按组件运行
+            return tryAsComponentCondition(context, condition, description);
         } else {
             //按脚本运行
-            return (boolean) Exprs.eval(condition.description(), context.params());
+            return tryAsScriptCondition(context, condition, description);
         }
     }
 
+    protected boolean tryAsComponentCondition(ChainContext context, Condition condition, String description) throws Throwable {
+        String beanName = description.substring(1);
+        ConditionComponent component = Solon.context().getBean(beanName);
+
+        if (component == null) {
+            throw new IllegalStateException("The condition '" + beanName + "' not exist");
+        } else {
+            return component.test(context, condition.link());
+        }
+    }
+
+    protected boolean tryAsScriptCondition(ChainContext context, Condition condition, String description) throws Throwable {
+        Map<String, Object> argsMap = new LinkedHashMap<>();
+        argsMap.put("context", context);
+        argsMap.put("link", condition.link());
+        argsMap.putAll(context.params());
+
+        return (boolean) Exprs.eval(description, argsMap);
+    }
+
+    /// //////////////
+
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        //默认过滤空任务
+        //默认过滤空任务（执行节点可能没有配置任务）
         if (Utils.isEmpty(task.description())) {
             return;
         }
@@ -95,49 +121,43 @@ public class SimpleChainDriver implements ChainDriver {
     }
 
     protected void handleTaskDo(ChainContext context, Task task, String description) throws Throwable {
-        if (tryIfChainTask(context, task, description)) {
+        if (isChain(description)) {
+            //如果跨链调用
+            tryAsChainTask(context, task, description);
             return;
         }
 
-        if (tryIfComponentTask(context, task, description)) {
+        if (isComponent(description)) {
+            //如果用组件运行
+            tryAsComponentTask(context, task, description);
             return;
         }
 
+        //默认按脚本运行
         tryAsScriptTask(context, task, description);
     }
 
     /**
      * 尝试如果是链则运行
      */
-    protected boolean tryIfChainTask(ChainContext context, Task task, String description) throws Throwable {
-        if (isChain(description)) {
-            //调用其它链
-            String chainId = description.substring(1);
-            context.engine().eval(chainId, context);
-            return true;
-        } else {
-            return false;
-        }
+    protected void tryAsChainTask(ChainContext context, Task task, String description) throws Throwable {
+        //调用其它链
+        String chainId = description.substring(1);
+        context.engine().eval(chainId, context);
     }
 
     /**
      * 尝试如果是组件则运行
      */
-    protected boolean tryIfComponentTask(ChainContext context, Task task, String description) throws Throwable {
-        if (isComponent(description)) {
-            //按组件运行
-            String beanName = description.substring(1);
-            TaskComponent component = Solon.context().getBean(beanName);
+    protected void tryAsComponentTask(ChainContext context, Task task, String description) throws Throwable {
+        //按组件运行
+        String beanName = description.substring(1);
+        TaskComponent component = Solon.context().getBean(beanName);
 
-            if (component == null) {
-                throw new IllegalStateException("The task component '" + beanName + "' not exist");
-            } else {
-                component.run(context, task.node());
-            }
-
-            return true;
+        if (component == null) {
+            throw new IllegalStateException("The task component '" + beanName + "' not exist");
         } else {
-            return false;
+            component.run(context, task.node());
         }
     }
 
@@ -148,6 +168,7 @@ public class SimpleChainDriver implements ChainDriver {
         //按脚本运行
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);
+        argsMap.put("node", task.node());
         argsMap.putAll(context.params());
 
         CodeSpec codeSpec = new CodeSpec(description);

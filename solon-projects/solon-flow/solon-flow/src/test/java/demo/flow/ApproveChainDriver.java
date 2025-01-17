@@ -27,13 +27,15 @@ public class ApproveChainDriver extends SimpleChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
-        if (tryIfChainTask(context, task, task.description())) {
+        if (isChain(task.description())) {
             //如果跨链调用
+            tryAsChainTask(context, task, task.description());
             return;
         }
 
-        if (tryIfComponentTask(context, task, task.description())) {
+        if (isComponent(task.description())) {
             //如果用组件运行
+            tryAsComponentTask(context, task, task.description());
             return;
         }
 
