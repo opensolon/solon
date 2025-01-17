@@ -19,6 +19,7 @@ import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.flow.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,11 @@ public class SimpleChainDriver implements ChainDriver {
 
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
+        //默认过滤空任务
+        if (Utils.isEmpty(task.description())) {
+            return;
+        }
+
         //如果 task.description 有加密，可以转码后传入
         handleTaskDo(context, task, task.description());
     }
