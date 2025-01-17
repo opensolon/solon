@@ -134,14 +134,10 @@ class FlowEngineImpl implements FlowEngine {
 
         switch (node.type()) {
             case start:
-                //尝试执行任务（可能为空）
-                task_exec(context, node.task());
                 //转到下个节点
                 node_run(context, node.nextNode(), depth);
                 break;
             case end:
-                //尝试执行任务（可能为空）
-                task_exec(context, node.task());
                 break;
             case execute:
                 //尝试执行任务（可能为空）
