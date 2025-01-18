@@ -94,14 +94,13 @@ public class SimpleChainDriver implements ChainDriver {
         if (component == null) {
             throw new IllegalStateException("The condition '" + beanName + "' not exist");
         } else {
-            return component.test(context, condition.link());
+            return component.test(context);
         }
     }
 
     protected boolean tryAsScriptCondition(ChainContext context, Condition condition, String description) throws Throwable {
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);
-        argsMap.put("link", condition.link());
         argsMap.putAll(context.params());
 
         return (boolean) Exprs.eval(description, argsMap);

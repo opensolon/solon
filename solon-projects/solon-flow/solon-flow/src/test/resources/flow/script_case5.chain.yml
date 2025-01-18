@@ -1,11 +1,11 @@
 id: "c5"
 title: "简单计算"
 nodes:
-  - { id: "n0", type: "start", link: "n1"}
-  - { id: "n1", title: "初始化", link: "n2", task: "context.result=0;"}
-  - { id: "n2", type: "parallel", link: ["n3","n4"] }
+  - { type: "start"}
+  - { title: "初始化", task: "context.result=0;"}
+  - { type: "parallel", link: ["n3","n4"] }
   - { id: "n3", link: "n5", task: "context.result=((int)context.result)+3;"}
   - { id: "n4", link: "n5", task: "context.result=((int)context.result)+7;"}
-  - { id: "n5", type: "parallel", link: "n6"}
-  - { id: "n6", type: "end"}
+  - { id: "n5", type: "parallel"}
+  - { type: "end"}
 

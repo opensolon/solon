@@ -33,6 +33,7 @@ public class NodeDecl {
     protected NodeType type;      //元素类型
     protected Map<String, Object> meta; //元信息
     protected List<LinkDecl> links = new ArrayList<>();
+    protected String when;
     protected String task;
 
 
@@ -96,6 +97,14 @@ public class NodeDecl {
      */
     public NodeDecl linkAdd(String nextId) {
         return linkAdd(nextId, null);
+    }
+
+    /**
+     * 配置任务条件
+     */
+    public NodeDecl when(String when) {
+        this.when = when;
+        return this;
     }
 
     /**

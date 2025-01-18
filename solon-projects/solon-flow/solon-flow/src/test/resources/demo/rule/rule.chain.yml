@@ -1,5 +1,5 @@
 id: "d1"
-title: "请假审批"
+title: "修改数据"
 nodes:
   - { type: "start"}
   - { task: "if(s.amount>=100){s.setScore(0);}"}

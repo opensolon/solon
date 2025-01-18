@@ -25,7 +25,6 @@ import org.noear.solon.Utils;
  * @since 3.0
  * */
 public class Condition {
-    private final Link link;
     private final String description;
 
     /**
@@ -34,19 +33,10 @@ public class Condition {
     public Object attachment;//如果做扩展解析，用作存储位；（不解析，定制性更强）
 
     /**
-     * @param link        所属连接
      * @param description 条件描述
      */
-    public Condition(Link link, String description) {
-        this.link = link;
+    public Condition(String description) {
         this.description = description;
-    }
-
-    /**
-     * 所属连接
-     */
-    public Link link() {
-        return link;
     }
 
     /**
@@ -67,13 +57,11 @@ public class Condition {
     public String toString() {
         if (isEmpty()) {
             return "{" +
-                    "nextId='" + link.nextId() + '\'' +
-                    ", description=null" +
+                    "description=null" +
                     '}';
         } else {
             return "{" +
-                    "nextId='" + link.nextId() + '\'' +
-                    ", description='" + description + '\'' +
+                    "description='" + description + '\'' +
                     '}';
         }
     }

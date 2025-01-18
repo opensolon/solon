@@ -36,6 +36,7 @@ public class Node {
 
     private List<Node> prveNodes, nextNodes;
     private List<Link> prveLinks;
+    private Condition when;
     private Task task;
 
     protected Node(Chain chain, NodeDecl decl, List<Link> links) {
@@ -161,6 +162,16 @@ public class Node {
         }
     }
 
+    /**
+     * 任务条件
+     */
+    public Condition when() {
+        if (when == null) {
+            when = new Condition(decl.when);
+        }
+
+        return when;
+    }
 
     /**
      * 任务
@@ -183,6 +194,10 @@ public class Node {
 
         if (Utils.isNotEmpty(decl.title)) {
             buf.append(", title='").append(decl.title).append('\'');
+        }
+
+        if (Utils.isNotEmpty(decl.when)) {
+            buf.append(", when='").append(decl.when).append('\'');
         }
 
         if (Utils.isNotEmpty(decl.task)) {

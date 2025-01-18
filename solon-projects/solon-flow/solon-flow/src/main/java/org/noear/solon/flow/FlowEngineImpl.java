@@ -15,6 +15,7 @@
  */
 package org.noear.solon.flow;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 
 import java.util.ArrayList;
@@ -88,20 +89,23 @@ class FlowEngineImpl implements FlowEngine {
     /**
      * 检查条件
      */
-    private boolean condition_check(ChainContext context, Condition condition) throws Throwable {
+    private boolean condition_check(ChainContext context, Condition condition, boolean def) throws Throwable {
         if (Utils.isNotEmpty(condition.description())) {
             return context.driver.handleCondition(context, condition);
         } else {
-            return false;
+            return def;
         }
     }
 
     /**
      * 执行任务
      */
-    private void task_exec(ChainContext context, Task task) throws Throwable {
-        //起到触发事件的作用 //处理方会“过滤”空任务
-        context.driver.handleTask(context, task);
+    private void task_exec(ChainContext context, Node node) throws Throwable {
+        //尝试检测条件；缺省为 true
+        if (condition_check(context, node.when(), true)) {
+            //起到触发事件的作用 //处理方会“过滤”空任务
+            context.driver.handleTask(context, node.task());
+        }
     }
 
     /**
@@ -141,7 +145,7 @@ class FlowEngineImpl implements FlowEngine {
                 break;
             case execute:
                 //尝试执行任务（可能为空）
-                task_exec(context, node.task());
+                task_exec(context, node);
                 //转到下个节点
                 node_run(context, node.nextNode(), depth);
                 break;
@@ -180,7 +184,7 @@ class FlowEngineImpl implements FlowEngine {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, l.condition())) {
+                if (condition_check(context, l.condition(), false)) {
                     matched_lines.add(l);
                 }
             }
@@ -208,7 +212,7 @@ class FlowEngineImpl implements FlowEngine {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, l.condition())) {
+                if (condition_check(context, l.condition(), false)) {
                     //执行第一个满足条件
                     node_run(context, l.nextNode(), depth);
                     return;

@@ -28,5 +28,5 @@ public interface ConditionComponent {
     /**
      * 检测
      */
-    boolean test(ChainContext context, Link link) throws Throwable;
+    boolean test(ChainContext context) throws Throwable;
 }
