@@ -11,7 +11,7 @@ public class Case2FlowDriver extends SimpleChainDriver {
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
         context.result = task.node().id();
-        if(task.node().id().equals("n3")) {
+        if(task.node().id().equals("n-3")) {
             context.interrupt();
             return;
         }

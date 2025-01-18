@@ -32,7 +32,7 @@ public class ScriptJsonTest {
         //完整执行
 
         flowEngine.eval(chain, context);
-        assert "n3".equals(context.result);
+        assert "n-3".equals(context.result);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ScriptJsonTest {
         context.paramSet("c", 14);
 
         //执行一层
-        flowEngine.eval(chain, "n2", 1, context);
+        flowEngine.eval(chain, "n-2", 1, context);
         assert context.result.equals(123);
     }
 

@@ -157,15 +157,25 @@ public class Chain {
 
         //元信息
         Map metaTmp = oNode.get("meta").toObject(Map.class);
-        if(Utils.isNotEmpty(metaTmp)) {
+        if (Utils.isNotEmpty(metaTmp)) {
             chain.meta().putAll(metaTmp);
         }
 
-        //节点
-        for (ONode n1 : oNode.get("nodes").ary()) {
-            NodeType type = NodeType.nameOf(n1.get("type").getString());
+        //节点（倒序加载，方便自动构建 link）
+        List<ONode> nodesTmp = oNode.get("nodes").ary();
+        NodeDecl nodesLat = null;
+        for (int i = nodesTmp.size(); i > 0; i--) {
+            ONode n1 = nodesTmp.get(i-1);
 
-            NodeDecl nodeDecl = new NodeDecl(n1.get("id").getString(), type);
+            //自动构建：如果没有时，生成 id
+            String n1_id = n1.get("id").getString();
+            if (Utils.isEmpty(n1_id)) {
+                n1_id = "n-" + i;
+            }
+
+            NodeType n1_type = NodeType.nameOf(n1.get("type").getString());
+
+            NodeDecl nodeDecl = new NodeDecl(n1_id, n1_type);
 
             nodeDecl.title(n1.get("title").getString());
             nodeDecl.meta(n1.get("meta").toObject(Map.class));
@@ -189,8 +199,14 @@ public class Chain {
             } else if (linkNode.isValue()) {
                 //单值模式（单个）
                 nodeDecl.linkAdd(linkNode.getString());
+            } else if (linkNode.isNull()) {
+                //自动构建：如果没有时，生成 link
+                if (nodesLat != null) {
+                    nodeDecl.linkAdd(nodesLat.id);
+                }
             }
 
+            nodesLat = nodeDecl;
             chain.addNode(nodeDecl);
         }
 

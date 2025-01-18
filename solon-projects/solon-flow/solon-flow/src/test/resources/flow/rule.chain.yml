@@ -1,0 +1,12 @@
+id: "d1"
+title: "请假审批"
+nodes:
+  - { type: "start"}
+  - { task: "if(s.amount>=100){s.setScore(0);}"}
+  - { task: "if(s.amount > 100 && s.amount <= 500){s.setScore(100);}"}
+  - { task: "if(s.amount > 500 && s.amount <= 1000){s.setScore(500);}"}
+  - { type: "end"}
+
+
+# tl: team leader; dm: department manager; vp: vice-president
+

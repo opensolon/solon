@@ -1,8 +1,8 @@
 {
   "id": "c1",
   "nodes": [
-    { "id": "n1", "type": "start", "link": "n2"},
-    { "id": "n2", "type": "execute", "link": "n3", "task":"context.result=111;"},
-    { "id": "n3", "type": "end"}
+    { "type": "start"},
+    { "task": "context.result=111;"},
+    { "type": "end"}
   ]
 }
