@@ -22,15 +22,9 @@ import org.noear.solon.data.cache.*;
 import org.noear.solon.data.cache.interceptor.CacheInterceptor;
 import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
-import org.noear.solon.data.datasource.DsUtils;
-import org.noear.solon.data.datasource.R2dbcConnectionFactory;
 import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
-import org.noear.solon.vault.VaultUtils;
-
-import javax.sql.DataSource;
-import java.util.Map;
 
 public class XPluginImpl implements Plugin {
     @Override
@@ -65,47 +59,6 @@ public class XPluginImpl implements Plugin {
         }
 
         //自动构建数据源
-        context.app().onEvent(AppPluginLoadEndEvent.class, e -> {
-            //不能提前获取，否则默认表达式或许未完成
-            Props props = context.cfg().getProp("solon.dataSources");
-            if (props.size() > 0) {
-                //支持 ENC() 加密符
-                VaultUtils.guard(props);
-                buildDataSource(context, props);
-            }
-        });
-    }
-
-    private void buildDataSource(AppContext context, Props props) {
-        Map<String, DataSource> dsmap = DsUtils.buildDsMap(props);
-
-        if (dsmap.size() > 0) {
-            for (Map.Entry<String, DataSource> kv : dsmap.entrySet()) {
-                boolean typed = false;
-                String name = kv.getKey();
-                if (name.endsWith("!")) {
-                    name = name.substring(0, name.length() - 1);
-                    typed = true;
-                }
-
-                if (kv.getValue() instanceof R2dbcConnectionFactory) {
-                    ((R2dbcConnectionFactory) kv.getValue()).register(context, name, typed);
-                } else {
-                    BeanWrap dsBw = context.wrap(name, kv.getValue(), typed);
-
-                    //按名字注册
-                    context.putWrap(name, dsBw);
-                    if (typed) {
-                        //按类型注册
-                        context.putWrap(DataSource.class, dsBw);
-                    }
-                    //对外发布
-                    context.wrapPublish(dsBw);
-
-                    //aot注册
-                    context.aot().registerEntityType(dsBw.rawClz(), null);
-                }
-            }
-        }
+        context.app().onEvent(AppPluginLoadEndEvent.class, new DataSourcesBuilder());
     }
 }
