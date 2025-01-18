@@ -8,8 +8,8 @@
       {"nextId": "n4", "title": "7天以上", "condition": "day>=7"},
       {"nextId": "n5", "title": "3天以内", "condition": "day<3"}
     ] },
-    { "id": "n3", "type": "execute", "title":"主管批", "meta": {"role": "lead"}, "link": "n5"},
-    { "id": "n4", "type": "execute", "title":"部门经理批","meta": {"role": "boss"}, "link": "n5"},
+    { "id": "n3", "title":"主管批", "meta": {"role": "lead"}, "link": "n5"},
+    { "id": "n4", "title":"部门经理批","meta": {"role": "boss"}, "link": "n5"},
     { "id": "n5", "type": "end"}
   ]
 }
