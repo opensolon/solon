@@ -27,6 +27,7 @@ public interface RockApi {
     Object test3();
     UserModel test4();
     List<UserModel> test5();
+    void test6(Integer a);
 
     Object testerror();
 

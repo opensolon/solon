@@ -81,6 +81,11 @@ public class RockService implements RockApi {
     }
 
     @Override
+    public void test6(Integer a) {
+
+    }
+
+    @Override
     public Object testerror() {
         throw new RuntimeException("我出错了");
     }
