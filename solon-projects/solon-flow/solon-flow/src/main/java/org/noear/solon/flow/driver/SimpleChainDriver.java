@@ -101,7 +101,7 @@ public class SimpleChainDriver implements ChainDriver {
     protected boolean tryAsScriptCondition(ChainContext context, Condition condition, String description) throws Throwable {
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);
-        argsMap.putAll(context.params());
+        argsMap.putAll(context.model());
 
         return (boolean) Exprs.eval(description, argsMap);
     }
@@ -168,7 +168,7 @@ public class SimpleChainDriver implements ChainDriver {
         Map<String, Object> argsMap = new LinkedHashMap<>();
         argsMap.put("context", context);
         argsMap.put("node", task.node());
-        argsMap.putAll(context.params());
+        argsMap.putAll(context.model());
 
         CodeSpec codeSpec = new CodeSpec(description);
         Object[] args = codeSpec.bind(argsMap);

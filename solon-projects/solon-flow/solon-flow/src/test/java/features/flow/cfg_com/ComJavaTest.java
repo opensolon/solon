@@ -42,9 +42,9 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
         ChainContext context = new ChainContext(driver);
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
+        context.put("a", 2);
+        context.put("b", 3);
+        context.put("c", 4);
 
         //完整执行
 
@@ -55,9 +55,9 @@ public class ComJavaTest {
         System.out.println("------------");
 
         context = new ChainContext(driver);
-        context.paramSet("a", 12);
-        context.paramSet("b", 13);
-        context.paramSet("c", 14);
+        context.put("a", 12);
+        context.put("b", 13);
+        context.put("c", 14);
 
         //执行一层
         flowEngine.eval(chain, "n2", 1, context);

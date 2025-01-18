@@ -36,13 +36,13 @@ public class AppTest {
     @Test
     public void case4_inclusive() throws Throwable {
         ChainContext context = new ChainContext();
-        context.paramSet("day", 1);
+        context.put("day", 1);
         flowEngine.eval("c4", context);
         assert context.result.equals(0);
         log.trace("counter: {}", context.counter());
 
         context = new ChainContext();
-        context.paramSet("day", 3);
+        context.put("day", 3);
         flowEngine.eval("c4", context);
         assert context.result.equals(3);
         log.trace("counter: {}", context.counter());
@@ -51,7 +51,7 @@ public class AppTest {
     @Test
     public void case4_inclusive2() throws Throwable {
         ChainContext context = new ChainContext();
-        context.paramSet("day", 7);
+        context.put("day", 7);
         flowEngine.eval("c4", context);
         assert context.result.equals(10);
         log.trace("counter: {}", context.counter());
@@ -60,7 +60,7 @@ public class AppTest {
     @Test
     public void case5_parallel() throws Throwable {
         ChainContext context = new ChainContext();
-        context.paramSet("day", 7);
+        context.put("day", 7);
         flowEngine.eval("c5", context);
         assert context.result.equals(10);
 
@@ -71,7 +71,7 @@ public class AppTest {
     @Test
     public void d2_test() throws Throwable {
         ChainContext context = new ChainContext();
-        context.paramSet("score", 7);
+        context.put("score", 7);
 
         flowEngine.eval("d2", context);
     }

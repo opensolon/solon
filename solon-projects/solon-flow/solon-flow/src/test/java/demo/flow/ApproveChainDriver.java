@@ -39,9 +39,9 @@ public class ApproveChainDriver extends SimpleChainDriver {
             return;
         }
 
-        String instance_id = context.param("instance_id");
-        String user_id = context.param("user_id");
-        String role_id = context.param("role_id");
+        String instance_id = context.get("instance_id");
+        String user_id = context.get("user_id");
+        String role_id = context.get("role_id");
 
 
         String chain_id = task.node().chain().id();

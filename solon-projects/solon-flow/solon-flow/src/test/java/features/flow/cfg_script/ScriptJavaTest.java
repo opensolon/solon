@@ -21,9 +21,9 @@ public class ScriptJavaTest {
 
 
         ChainContext context = new ChainContext();
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
+        context.put("a", 2);
+        context.put("b", 3);
+        context.put("c", 4);
 
         flowEngine.eval(chain, context);
     }

@@ -25,9 +25,9 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
         ChainContext context = new ChainContext(new Case2FlowDriver());
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
+        context.put("a", 2);
+        context.put("b", 3);
+        context.put("c", 4);
 
         //完整执行
 
@@ -40,9 +40,9 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
         ChainContext context = new ChainContext(new Case2FlowDriver());
-        context.paramSet("a", 12);
-        context.paramSet("b", 13);
-        context.paramSet("c", 14);
+        context.put("a", 12);
+        context.put("b", 13);
+        context.put("c", 14);
 
         //执行一层
         flowEngine.eval(chain, "n-2", 1, context);
@@ -54,17 +54,17 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case3.chain.json");
 
         ChainContext context = new ChainContext();
-        context.paramSet("day", 1);
+        context.put("day", 1);
         flowEngine.eval(chain, context);
         assert null == context.result;
 
         context = new ChainContext();
-        context.paramSet("day", 3);
+        context.put("day", 3);
         flowEngine.eval(chain, context);
         assert context.result.equals(3);
 
         context = new ChainContext();
-        context.paramSet("day", 7);
+        context.put("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(7);
     }
@@ -74,12 +74,12 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case4.chain.json");
 
         ChainContext context = new ChainContext();
-        context.paramSet("day", 1);
+        context.put("day", 1);
         flowEngine.eval(chain, context);
         assert context.result.equals(0);
 
         context = new ChainContext();
-        context.paramSet("day", 3);
+        context.put("day", 3);
         flowEngine.eval(chain, context);
         assert context.result.equals(3);
     }
@@ -89,7 +89,7 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case4.chain.json");
 
         ChainContext context = new ChainContext();
-        context.paramSet("day", 7);
+        context.put("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(10);
     }
@@ -99,7 +99,7 @@ public class ScriptJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/script_case5.chain.yml");
 
         ChainContext context = new ChainContext();
-        context.paramSet("day", 7);
+        context.put("day", 7);
         flowEngine.eval(chain, context);
         assert context.result.equals(10);
     }

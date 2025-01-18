@@ -30,8 +30,8 @@ import java.util.Map;
  */
 @Preview("3.0")
 public class ChainContext implements Serializable {
-    //存放执行参数
-    private final Map<String, Object> params = new LinkedHashMap<>();
+    //存放数据模型
+    private final Map<String, Object> model;
     //存放执行结果（可选）
     public Object result;
 
@@ -46,14 +46,28 @@ public class ChainContext implements Serializable {
     protected transient FlowEngine engine;
 
     public ChainContext() {
-        this(null);
+        this(null, null);
+    }
+
+    public ChainContext(Map<String, Object> model) {
+        this(null, model);
     }
 
     public ChainContext(ChainDriver driver) {
+        this(driver, null);
+    }
+
+    public ChainContext(ChainDriver driver, Map<String, Object> model) {
         if (driver == null) {
             this.driver = SimpleChainDriver.getInstance();
         } else {
             this.driver = driver;
+        }
+
+        if (model == null) {
+            this.model = new LinkedHashMap<>();
+        } else {
+            this.model = model;
         }
     }
 
@@ -88,36 +102,39 @@ public class ChainContext implements Serializable {
     /// ////////
 
     /**
-     * 参数集合
+     * 数据模型
      */
-    public Map<String, Object> params() {
-        return params;
+    public Map<String, Object> model() {
+        return model;
     }
 
     /**
-     * 参数设置
+     * 设置
      */
-    public ChainContext paramSet(String key, Object value) {
-        params.put(key, value);
+    public ChainContext put(String key, Object value) {
+        model.put(key, value);
         return this;
     }
 
     /**
-     * 参数获取
+     * 设置
      */
-    public <T> T param(String key) {
-        return (T) params.get(key);
+    public ChainContext putAll(Map<String, Object> model) {
+        model.putAll(model);
+        return this;
     }
 
     /**
-     * 参数获取或默认
+     * 获取
      */
-    public <T> T paramOrDefault(String key, T def) {
-        Object tmp = params.get(key);
-        if (tmp == null) {
-            return def;
-        } else {
-            return (T) tmp;
-        }
+    public <T> T get(String key) {
+        return (T) model.get(key);
+    }
+
+    /**
+     * 获取或默认
+     */
+    public <T> T getOrDefault(String key, T def) {
+        return (T) model.getOrDefault(key, def);
     }
 }

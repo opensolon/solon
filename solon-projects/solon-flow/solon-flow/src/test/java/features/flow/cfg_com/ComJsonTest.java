@@ -22,9 +22,9 @@ public class ComJsonTest {
         Chain chain = Chain.parseByUri("classpath:flow/com.chain.json");
 
         ChainContext context = new ChainContext();
-        context.paramSet("a", 2);
-        context.paramSet("b", 3);
-        context.paramSet("c", 4);
+        context.put("a", 2);
+        context.put("b", 3);
+        context.put("c", 4);
 
         //完整执行
 
@@ -32,9 +32,9 @@ public class ComJsonTest {
         System.out.println("------------");
 
         context = new ChainContext();
-        context.paramSet("a", 12);
-        context.paramSet("b", 13);
-        context.paramSet("c", 14);
+        context.put("a", 12);
+        context.put("b", 13);
+        context.put("c", 14);
 
         //执行一层
         flowEngine.eval(chain, "n2", 1, context);

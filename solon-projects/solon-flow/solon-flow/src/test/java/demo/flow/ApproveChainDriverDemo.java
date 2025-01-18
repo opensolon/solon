@@ -16,9 +16,9 @@ public class ApproveChainDriverDemo {
         //可以在链配置时指定，也可以在运行时指定
         ChainContext context = new ChainContext(new ApproveChainDriver());
 
-        context.paramSet("instance_id", "123");
-        context.paramSet("user_id", "123");
-        context.paramSet("role_id", "123");
+        context.put("instance_id", "123");
+        context.put("user_id", "123");
+        context.put("role_id", "123");
 
         flowEngine.eval("c12", context);
 
