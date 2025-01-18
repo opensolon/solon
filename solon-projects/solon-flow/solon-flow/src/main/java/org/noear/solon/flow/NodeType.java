@@ -65,7 +65,7 @@ public enum NodeType {
             }
         }
 
-        return start;
+        return execute;
     }
 
     public static NodeType nameOf(String name) {
@@ -76,6 +76,6 @@ public enum NodeType {
             }
         }
 
-        return start;
+        return execute;
     }
 }
