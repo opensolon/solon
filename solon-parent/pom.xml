@@ -31,7 +31,7 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.0.7-SNAPSHOT</solon.version>
-        <solon-cloud.version>3.0.6</solon-cloud.version>
+        <solon-cloud.version>3.0.7-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.0.6</solon-admin.version>
         <solon-integration.version>3.0.6</solon-integration.version>
         <solon-jakarta.version>3.0.6</solon-jakarta.version>
