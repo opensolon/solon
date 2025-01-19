@@ -32,6 +32,7 @@
 * 添加 solon-flow Chain:meta 配置
 * 添加 solon-flow FlowEngine:unload 接口
 * 添加 solon-cloud Cloud:Event 模型添加 meta（需要适配插件支持）
+* 调整 solon SolonApp:classLoader() 返回类型为 AppClassLoader 方便 e-spi 开发
 * 调整 solon-flow start、end 节点不再支持 task 配置，只允许 execute 节点带任务（职责清晰些）
 * 调整 solon-flow execute 节点任务为空时，也触发驱动器的任务处理事件（可适用审批型场景）
 * 调整 solon-flow NodeType 缺省解析改为 execute（之前为 start）
