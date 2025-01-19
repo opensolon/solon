@@ -53,6 +53,7 @@ import java.util.function.Consumer;
  */
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
+    private final AppClassLoader _classLoader;
     private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
     private final SerializerManager _serializerManager; //渲染管理器
@@ -120,22 +121,24 @@ public class SolonApp extends RouterWrapper {
         if (source == null) {
             throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
         }
-        _startupTime = System.currentTimeMillis();
-        _source = source;
-        _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
-        _converterManager = new ConverterManager();
-        _serializerManager = new SerializerManager();
-        _renderManager = new RenderManager();
-
 
         //添加启动类包名检测
         if (source.getPackage() == null || Utils.isEmpty(source.getPackage().getName())) {
             throw new IllegalStateException("The startup class is missing package: " + source.getName());
         }
 
+        _startupTime = System.currentTimeMillis();
+        _source = source;
+        _classLoader = new AppClassLoader(AppClassLoader.global());
+        _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
+        _converterManager = new ConverterManager();
+        _serializerManager = new SerializerManager();
+        _renderManager = new RenderManager();
+
+
         //初始化配置
         _cfg = new SolonProps(this, args);
-        _context = new AppContext(this, new AppClassLoader(AppClassLoader.global()), _cfg);
+        _context = new AppContext(this, _classLoader, _cfg);
         _enableScanning = ("0".equals(args.get("scanning")) == false); //不等于0，则启用扫描
 
         //初始化路由
@@ -373,8 +376,8 @@ public class SolonApp extends RouterWrapper {
     /**
      * 类加载器
      */
-    public ClassLoader classLoader() {
-        return context().getClassLoader();
+    public AppClassLoader classLoader() {
+        return _classLoader;
     }
 
     /**
