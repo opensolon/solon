@@ -77,6 +77,27 @@ public class AppTest {
     }
 
     @Test
+    public void r1_test() throws Throwable {
+        ChainContext context = new ChainContext();
+        Order order = new Order();
+
+        order.amount = 100;
+        context.put("s", order);
+        flowEngine.eval("r1", context);
+        assert order.getScore() == 0;
+
+        order.amount = 200;
+        context.put("s", order);
+        flowEngine.eval("r1", context);
+        assert order.getScore() == 100;
+
+        order.amount = 800;
+        context.put("s", order);
+        flowEngine.eval("r1", context);
+        assert order.getScore() == 500;
+    }
+
+    @Test
     public void context_test() {
         String json = "{\"model\":{\"day\":7},\"result\":10}";
         ChainContext context = ONode.load(json).toObject(ChainContext.class);

@@ -1,0 +1,12 @@
+id: "r1"
+title: "修改数据"
+nodes:
+  - { type: "start"}
+  - { when: "s.amount>=100", task: "s.setScore(0);"}
+  - { when: "s.amount > 100 && s.amount <= 500", task: "s.setScore(100);"}
+  - { when: "s.amount > 500 && s.amount <= 1000", task: "s.setScore(500);"}
+  - { type: "end"}
+
+
+# flowEngine.eval("d1", new Chanon)
+

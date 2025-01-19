@@ -179,6 +179,7 @@ public class Chain {
 
             nodeDecl.title(n1.get("title").getString());
             nodeDecl.meta(n1.get("meta").toObject(Map.class));
+            nodeDecl.when(n1.get("when").getString());
             nodeDecl.task(n1.get("task").getString());
 
             ONode linkNode = n1.get("link");
