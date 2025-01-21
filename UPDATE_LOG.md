@@ -39,6 +39,7 @@
 * 调整 solon-flow NodeType 缺省解析改为 execute（之前为 start）
 * 修复 solon-proxy 当 ASM 的代理方法超过 128 个时会超界的问题
 * 修复 solon-net-httputils 在空返回时 OkHttpResponseImpl:contentEncoding 会 nep 的问题
+* snack3 升为 3.2.125
 
 ### v3.0.6
 * 新增 solon-flow 插件
