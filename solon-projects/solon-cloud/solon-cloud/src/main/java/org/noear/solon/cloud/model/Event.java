@@ -63,6 +63,11 @@ public class Event implements Serializable {
         return meta;
     }
 
+    public Event metaPut(String key, String value) {
+        meta.put(key, value);
+        return this;
+    }
+
 
     /**
      * 获取事务
