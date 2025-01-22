@@ -30,6 +30,7 @@ import org.noear.solon.lang.Nullable;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
 import org.smartboot.http.server.impl.Request;
+import org.smartboot.socket.enhance.EnhanceAsynchronousChannelProvider;
 import org.smartboot.socket.extension.plugins.SslPlugin;
 
 import javax.net.ssl.SSLContext;
@@ -133,6 +134,10 @@ public class SmHttpServer implements ServerLifecycle {
 
         if (enableWebSocket) {
             server.webSocketHandler(new SmWebSocketHandleImpl());
+
+            // 解决smart http在websocket通信下不适配虚拟线程的问题
+            _config.group(new EnhanceAsynchronousChannelProvider(false)
+                    .openAsynchronousChannelGroup(props.newWorkExecutor("smarthttp-"), coreThreads));
         }
 
 
