@@ -55,6 +55,9 @@ public class Event implements Serializable {
         this.content = content;
     }
 
+    /**
+     * 元信息
+     */
     public Map<String, String> meta() {
         if (meta == null) {
             meta = new HashMap<>();
@@ -63,8 +66,12 @@ public class Event implements Serializable {
         return meta;
     }
 
+
+    /**
+     * 元信息推出
+     */
     public Event metaPut(String key, String value) {
-        meta.put(key, value);
+        meta().put(key, value);
         return this;
     }
 
