@@ -15,7 +15,6 @@ public class ThreadUtil {
      * @return boolean
      */
     public static boolean isVirtualThread() {
-        Thread thread = Thread.currentThread();
         try {
             Class<?> v = Class.forName("java.lang.BaseVirtualThread");
             Thread currentThread = Thread.currentThread();
