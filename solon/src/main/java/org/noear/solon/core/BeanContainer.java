@@ -420,6 +420,8 @@ public abstract class BeanContainer {
 
     /**
      * bean 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
+     *
+     * @since 3.0
      */
     public void beanPublish(BeanWrap wrap) {
         beanBasePublish(wrap);
