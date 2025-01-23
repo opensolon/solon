@@ -441,13 +441,15 @@ public final class SolonProps extends Props {
 
     /**
      * 获取应用包装主端口(默认:8080)
+     *
+     * @param useRaw 使用原始数据（否则没有时，使用 `serverPort` 值）
      */
-    public int serverWrapPort(boolean raw) {
+    public int serverWrapPort(boolean useRaw) {
         if (serverWrapPort == null) {
             serverWrapPort = getInt("server.wrapPort", 0);
         }
 
-        if (raw || serverWrapPort > 0) {
+        if (useRaw || serverWrapPort > 0) {
             return serverWrapPort;
         } else {
             return serverPort();
@@ -458,13 +460,15 @@ public final class SolonProps extends Props {
 
     /**
      * 获取应用包装主机
+     *
+     * @param useRaw 使用原始数据（否则没有时，使用 `serverHost` 值）
      */
-    public String serverWrapHost(boolean raw) {
+    public String serverWrapHost(boolean useRaw) {
         if (serverWrapHost == null) {
             serverWrapHost = get("server.wrapHost", "");
         }
 
-        if (raw || Utils.isNotEmpty(serverWrapHost)) {
+        if (useRaw || Utils.isNotEmpty(serverWrapHost)) {
             return serverWrapHost;
         } else {
             return serverHost();
