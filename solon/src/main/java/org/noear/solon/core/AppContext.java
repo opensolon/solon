@@ -298,7 +298,7 @@ public class AppContext extends BeanContainer {
         //单例，进行事件通知
         if (bw.singleton()) {
             //EventBus.publish(bw.raw()); //@deprecated
-            wrapPublish(bw);
+            beanPublish(bw);
         }
     }
 
@@ -881,7 +881,7 @@ public class AppContext extends BeanContainer {
                 }
 
                 //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-                wrapPublish(m_bw);
+                beanPublish(m_bw);
             }
         } catch (Throwable ex) {
             Class<?> declClz = mWrap.getDeclaringClz();

@@ -52,7 +52,7 @@ public class R2dbcConnectionFactory implements DataSource {
             context.putWrap(ConnectionFactory.class, dsBw);
         }
         //对外发布
-        context.wrapPublish(dsBw);
+        context.beanPublish(dsBw);
 
         //aot注册
         context.aot().registerEntityType(dsBw.rawClz(), null);

@@ -419,8 +419,18 @@ public abstract class BeanContainer {
     }
 
     /**
-     * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
+     * bean 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
      */
+    public void beanPublish(BeanWrap wrap) {
+        beanBasePublish(wrap);
+    }
+
+    /**
+     * wrap 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
+     * 
+     * @deprecated 3.0 {@link #beanPublish(BeanWrap)}
+     */
+    @Deprecated
     public void wrapPublish(BeanWrap wrap) {
         beanBasePublish(wrap);
     }

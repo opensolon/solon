@@ -67,7 +67,7 @@ public class DataSourcesBuilder implements EventListener<AppPluginLoadEndEvent> 
                         context.putWrap(DataSource.class, dsBw);
                     }
                     //对外发布
-                    context.wrapPublish(dsBw);
+                    context.beanPublish(dsBw);
 
                     //aot注册
                     context.aot().registerEntityType(dsBw.rawClz(), null);

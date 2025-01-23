@@ -55,7 +55,7 @@ public class XPluginImpl implements Plugin {
                 //按名字注册
                 context.putWrap(docDocket.getId(), docBw);
                 //对外发布
-                context.wrapPublish(docBw);
+                context.beanPublish(docBw);
             }
         }
 

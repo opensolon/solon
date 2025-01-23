@@ -50,7 +50,7 @@ public class PrometheusOpener implements MeterOpener {
             } else {
                 registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
                 BeanWrap beanWrap = appContext.wrapAndPut(PrometheusMeterRegistry.class, registry);
-                appContext.wrapPublish(beanWrap);
+                appContext.beanPublish(beanWrap);
             }
 
             return true;
