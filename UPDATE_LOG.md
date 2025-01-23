@@ -37,6 +37,7 @@
 * 调整 solon-flow start、end 节点不再支持 task 配置，只允许 execute 节点带任务（职责清晰些）
 * 调整 solon-flow execute 节点任务为空时，也触发驱动器的任务处理事件（可适用审批型场景）
 * 调整 solon-flow NodeType 缺省解析改为 execute（之前为 start）
+* 调整 Props::loadAddIfAbsent(String name) 为 loadAddIfAbsent(String uri)，保持与 loadAdd(uri) 相同逻辑
 * 修复 solon-proxy 当 ASM 的代理方法超过 128 个时会超界的问题
 * 修复 solon-net-httputils 在空返回时 OkHttpResponseImpl:contentEncoding 会 nep 的问题
 * snack3 升为 3.2.125
