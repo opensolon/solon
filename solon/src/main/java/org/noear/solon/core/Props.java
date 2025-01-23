@@ -100,6 +100,9 @@ public class Props extends Properties {
         return getProperty(key);
     }
 
+    /**
+     * 获取第一个非空的属性（尝试用多个key）
+     * */
     public String getByKeys(String... keys) {
         for (String key : keys) {
             String tmp = get(key);
@@ -542,10 +545,10 @@ public class Props extends Properties {
     /**
      * 加载配置（用于扩展加载）
      *
-     * @param name 资源名
+     * @param uri 资源名
      */
-    public void loadAddIfAbsent(String name) {
-        loadAddIfAbsent(ResourceUtil.getResource(classLoader, name));
+    public void loadAddIfAbsent(String uri) {
+        loadAddIfAbsent(ResourceUtil.findResourceOrFile(classLoader, uri));
     }
 
     /**
