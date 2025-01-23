@@ -37,7 +37,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 3.0
  * */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface BindProps {

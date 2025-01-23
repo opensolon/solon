@@ -190,7 +190,7 @@ public class AppContext extends BeanContainer {
             }
 
 
-            //尝试注入属性
+            //尝试注入属性 //ps:未来由 BindProps 注解替代
             beanInjectProperties(clz, bw.raw());
 
             //构建小饼
@@ -830,6 +830,12 @@ public class AppContext extends BeanContainer {
             Object raw = mWrap.invoke(bw.raw(), args);
 
             if (raw != null) {
+                //尝试绑定属性
+                BindProps bindProps = mWrap.getAnnotation(BindProps.class);
+                if (bindProps != null) {
+                    cfg().getProp(bindProps.prefix()).bindTo(raw);
+                }
+
                 Class<?> beanClz = mWrap.getReturnType();
                 Type beanGtp = mWrap.getGenericReturnType();
 

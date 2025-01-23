@@ -21,6 +21,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo8_config.DsModel;
+import webapp.demo8_config.DsModel2;
 import webapp.models.CfgItem;
 
 import java.util.List;
@@ -49,6 +50,9 @@ public class PropTest {
 
     @Inject
     DsModel dsModel;
+
+    @Inject
+    DsModel2 dsModel2;
 
     @Test
     public void test() {
@@ -112,9 +116,15 @@ public class PropTest {
     }
 
     @Test
-    public void test_bind(){
+    public void test_bind_clz(){
         assert dsModel.getUrl() !=null;
         assert dsModel.getUrl().contains("jdbc");
+    }
+
+    @Test
+    public void test_bind_mth(){
+        assert dsModel2.getUrl() !=null;
+        assert dsModel2.getUrl().contains("jdbc");
     }
 
     public void configLoad(){
