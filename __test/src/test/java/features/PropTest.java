@@ -20,6 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.demo8_config.DsModel;
 import webapp.models.CfgItem;
 
 import java.util.List;
@@ -45,6 +46,9 @@ public class PropTest {
 
     @Inject("${jdbc.name}")
     String jdbcName;
+
+    @Inject
+    DsModel dsModel;
 
     @Test
     public void test() {
@@ -105,6 +109,12 @@ public class PropTest {
         //单文件多环境测试
         assert "test".equals(Solon.cfg().get("envtest.name"));
         assert Solon.cfg().get("envtest.title") == null;
+    }
+
+    @Test
+    public void test_bind(){
+        assert dsModel.getUrl() !=null;
+        assert dsModel.getUrl().contains("jdbc");
     }
 
     public void configLoad(){

@@ -29,7 +29,7 @@ import webapp.App;
 public class AppContextTest {
     @Test
     public void put_del() {
-        AppContext context = new AppContext(new AppClassLoader(), new Props());
+        AppContext context = new AppContext();
         context.putWrap("test", context.wrapAndPut(String.class, "test"));
         assert context.getBean("test") != null;
 
