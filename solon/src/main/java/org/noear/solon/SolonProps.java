@@ -59,8 +59,8 @@ public final class SolonProps extends Props {
     private boolean isDriftMode;//是否为漂移模式（如k8s环境下,ip会不断变化）
     private boolean isFilesMode;//是否为文件模式
     private boolean isWhiteMode;//是否为名单模式（白名单模式）
-    private boolean isSetupMode;//是否为安装蕈式
-    private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
+    private boolean isSetupMode;//是否为安装模式
+    private boolean isAloneMode;//是否为独立模式（即独立运行模式）@deprecated
 
     private boolean enabledVirtualThreads = false; //solon.threads.virtual.enable: true
 
@@ -652,14 +652,20 @@ public final class SolonProps extends Props {
 
     /**
      * 是否为独立模式
+     *
+     * @deprecated 3.0
      */
+    @Deprecated
     public boolean isAloneMode() {
         return isAloneMode;
     }
 
     /**
      * 设置独立模式
+     *
+     * @deprecated
      */
+    @Deprecated
     public void isAloneMode(boolean value) {
         this.isAloneMode = value;
     }
