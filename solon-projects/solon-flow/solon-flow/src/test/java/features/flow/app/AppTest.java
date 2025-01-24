@@ -69,6 +69,91 @@ public class AppTest {
     }
 
     @Test
+    public void case7() throws Throwable {
+        ChainContext context;
+
+        context = new ChainContext();
+        context.put("day", 1);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(2);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 3);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(3);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 7);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(4);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 10);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(5);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 15);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(6);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 20);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(7);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+
+        //----------------
+
+        context = new ChainContext();
+        context.put("day", 30);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(8);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+    }
+
+    @Test
+    public void case7_2() throws Throwable {
+        ChainContext context = new ChainContext();
+        context.put("day", 30);
+        flowEngine.eval("c7", context);
+        assert context.result.equals(8);
+
+        log.trace("counter: {}", context.counter());
+        log.trace(ONode.load(context).toJson());
+    }
+
+    @Test
     public void d2_test() throws Throwable {
         ChainContext context = new ChainContext();
         context.put("score", 7);

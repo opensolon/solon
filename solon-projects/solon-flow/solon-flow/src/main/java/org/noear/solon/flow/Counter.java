@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 3.0
  */
 public class Counter {
-    private final Map<String, AtomicInteger> records = new LinkedHashMap<>();
+    private final Map<String, AtomicInteger> counts = new LinkedHashMap<>();
     private final Map<String, Stack<Integer>> stacks = new LinkedHashMap<>();
 
     /**
@@ -42,7 +42,7 @@ public class Counter {
      * 获取
      */
     protected int get(Chain chain, String key) {
-        return records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
+        return counts.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .get();
     }
 
@@ -50,7 +50,7 @@ public class Counter {
      * 设置
      */
     protected void set(Chain chain, String key, int value) {
-        records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
+        counts.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .set(value);
     }
 
@@ -58,12 +58,15 @@ public class Counter {
      * 增量
      */
     protected int incr(Chain chain, String key) {
-        return records.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
+        return counts.computeIfAbsent(chain.id() + "/" + key, k -> new AtomicInteger(0))
                 .incrementAndGet();
     }
 
     @Override
     public String toString() {
-        return records.toString();
+        return "{" +
+                "counts=" + counts +
+                ", stacks=" + stacks +
+                '}';
     }
 }
