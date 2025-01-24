@@ -4,7 +4,7 @@
 Solon v3.0.7
 </h1>
 <p align="center">
-	<strong>Java Application Development Framework for Full Scenario: Restrained, Efficient, Open, Ecological</strong>
+	<strong>Java enterprise application development framework for full scenario: Restrained, Efficient, Open, Ecological</strong>
     <br/>
     <strong>[OpenAtom foundation, incubation project]</strong>
 </p>
