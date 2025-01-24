@@ -19,7 +19,7 @@ import org.noear.solon.flow.driver.SimpleChainDriver;
 import org.noear.solon.lang.Preview;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -65,7 +65,7 @@ public class ChainContext implements Serializable {
         }
 
         if (model == null) {
-            this.model = new LinkedHashMap<>();
+            this.model = new HashMap<>();
         } else {
             this.model = model;
         }

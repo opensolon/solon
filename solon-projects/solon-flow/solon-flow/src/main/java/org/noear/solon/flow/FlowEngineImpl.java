@@ -15,12 +15,12 @@
  */
 package org.noear.solon.flow;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -168,15 +168,20 @@ class FlowEngineImpl implements FlowEngine {
      * 运行包容网关
      */
     private void inclusive_run(ChainContext context, Node node, int depth) throws Throwable {
-        final String token_key = "$inclusive_size";
+        Stack<Integer> inclusive_stack = context.counter().stack(node.chain(), "inclusive_run");
 
-        //流入
-        int count = context.counter().incr(node.chain(), node.id());//运行次数累计
-        if (context.counter().get(node.chain(), token_key) > count) { //等待所有支线计数完成
-            return;
+        //::流入
+        if(inclusive_stack.size() > 0) {
+            int start_size = inclusive_stack.peek();
+            int in_size = context.counter().incr(node.chain(), node.id());//运行次数累计
+            if (start_size > in_size) { //等待所有支线流入完成
+                return;
+            }
+
+            inclusive_stack.pop();
         }
 
-        //流出
+        //::流出
         Link def_line = null;
         List<Link> matched_lines = new ArrayList<>();
 
@@ -190,8 +195,9 @@ class FlowEngineImpl implements FlowEngine {
             }
         }
 
+        //记录流出数量
+        inclusive_stack.push(matched_lines.size());
 
-        context.counter().set(node.chain(), token_key, matched_lines.size());
         if (matched_lines.size() > 0) {
             //执行所有满足条件
             for (Link l : matched_lines) {
@@ -207,6 +213,7 @@ class FlowEngineImpl implements FlowEngine {
      * 运行排他网关
      */
     private void exclusive_run(ChainContext context, Node node, int depth) throws Throwable {
+        //::流出
         Link def_line = null;
         for (Link l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
@@ -230,7 +237,7 @@ class FlowEngineImpl implements FlowEngine {
      * 运行并行网关
      */
     private void parallel_run(ChainContext context, Node node, int depth) throws Throwable {
-        //流入
+        //::流入
         int count = context.counter().incr(node.chain(), node.id());//运行次数累计
         if (node.prveLinks().size() > count) { //等待所有支线计数完成
             return;
@@ -239,7 +246,7 @@ class FlowEngineImpl implements FlowEngine {
         //恢复计数
         context.counter().set(node.chain(), node.id(), 0);
 
-        //流出
+        //::流出
         for (Node n : node.nextNodes()) {
             node_run(context, n, depth);
         }

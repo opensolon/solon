@@ -17,6 +17,7 @@ package org.noear.solon.flow;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,6 +28,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Counter {
     private final Map<String, AtomicInteger> records = new LinkedHashMap<>();
+    private final Map<String, Stack<Integer>> stacks = new LinkedHashMap<>();
+
+    /**
+     * 记录栈
+     */
+    protected Stack<Integer> stack(Chain chain, String key) {
+        return stacks.computeIfAbsent(chain.id() + "/" + key, k -> new Stack<>());
+    }
+
 
     /**
      * 获取
