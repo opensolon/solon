@@ -29,10 +29,12 @@
 
 
 ### v3.0.7
+* 添加 solon BindProps 绑定属性注解，用于简化集合属性绑定及配置元信息APT生成
 * 添加 solon-flow Chain:meta 配置
 * 添加 solon-flow FlowEngine:unload 接口
 * 添加 solon-flow execute when 属性，方便做规则引擎应用
 * 添加 solon-cloud Cloud:Event 模型添加 meta（需要适配插件支持）
+* 添加 solon AppContext:beanPublish 用于替换 wrapPublish（旧名标为弃用）
 * 调整 solon SolonApp:classLoader() 返回类型为 AppClassLoader 方便 e-spi 开发
 * 调整 solon-flow start、end 节点不再支持 task 配置，只允许 execute 节点带任务（职责清晰些）
 * 调整 solon-flow execute 节点任务为空时，也触发驱动器的任务处理事件（可适用审批型场景）
