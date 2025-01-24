@@ -1,12 +1,12 @@
-id: "d1"
-title: "修改数据"
+id: "r1"
+title: "评分规则"
 nodes:
   - { type: "start"}
-  - { when: "s.amount>=100", task: "s.setScore(0);"}
-  - { when: "s.amount > 100 && s.amount <= 500", task: "s.setScore(100);"}
-  - { when: "s.amount > 500 && s.amount <= 1000", task: "s.setScore(500);"}
+  - { when: "order.getAmount() >= 100", task: "order.setScore(0);"}
+  - { when: "order.getAmount() > 100 && order.getAmount() <= 500", task: "order.setScore(100);"}
+  - { when: "order.getAmount() > 500 && order.getAmount() <= 1000", task: "order.setScore(500);"}
   - { type: "end"}
 
 
-# flowEngine.eval("d1", new Chanon)
+# flowEngine.eval("r1", new ChainContext().put("order", new Order()));
 

@@ -1,4 +1,4 @@
-package demo.flow;
+package demo.flow.approve;
 
 import org.noear.solon.flow.Task;
 
