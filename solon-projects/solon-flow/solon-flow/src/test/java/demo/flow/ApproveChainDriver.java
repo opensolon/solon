@@ -21,8 +21,8 @@ public class ApproveChainDriver extends SimpleChainDriver {
     }
 
     @Override
-    public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
-        return super.handleCondition(context, condition);
+    public boolean handleTest(ChainContext context, Condition condition) throws Throwable {
+        return super.handleTest(context, condition);
     }
 
     @Override

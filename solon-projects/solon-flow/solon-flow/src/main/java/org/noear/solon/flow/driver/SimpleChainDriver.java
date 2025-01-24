@@ -70,7 +70,7 @@ public class SimpleChainDriver implements ChainDriver {
     /// //////////////
 
     @Override
-    public boolean handleCondition(ChainContext context, Condition condition) throws Throwable {
+    public boolean handleTest(ChainContext context, Condition condition) throws Throwable {
         //（不需要检测是否为空，引擎会把空条件作为默认，不会再传入）
 
         //如果 condition.description 有加密，可以转码后传入
@@ -78,24 +78,8 @@ public class SimpleChainDriver implements ChainDriver {
     }
 
     protected boolean handleConditionDo(ChainContext context, Condition condition, String description) throws Throwable {
-        if (isComponent(description)) {
-            //按组件运行
-            return tryAsComponentCondition(context, condition, description);
-        } else {
-            //按脚本运行
-            return tryAsScriptCondition(context, condition, description);
-        }
-    }
-
-    protected boolean tryAsComponentCondition(ChainContext context, Condition condition, String description) throws Throwable {
-        String beanName = description.substring(1);
-        ConditionComponent component = Solon.context().getBean(beanName);
-
-        if (component == null) {
-            throw new IllegalStateException("The condition '" + beanName + "' not exist");
-        } else {
-            return component.test(context);
-        }
+        //按脚本运行
+        return tryAsScriptCondition(context, condition, description);
     }
 
     protected boolean tryAsScriptCondition(ChainContext context, Condition condition, String description) throws Throwable {

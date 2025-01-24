@@ -87,11 +87,11 @@ class FlowEngineImpl implements FlowEngine {
     }
 
     /**
-     * 检查条件
+     * 条件检测
      */
-    private boolean condition_check(ChainContext context, Condition condition, boolean def) throws Throwable {
+    private boolean condition_test(ChainContext context, Condition condition, boolean def) throws Throwable {
         if (Utils.isNotEmpty(condition.description())) {
-            return context.driver.handleCondition(context, condition);
+            return context.driver.handleTest(context, condition);
         } else {
             return def;
         }
@@ -102,7 +102,7 @@ class FlowEngineImpl implements FlowEngine {
      */
     private void task_exec(ChainContext context, Node node) throws Throwable {
         //尝试检测条件；缺省为 true
-        if (condition_check(context, node.when(), true)) {
+        if (condition_test(context, node.when(), true)) {
             //起到触发事件的作用 //处理方会“过滤”空任务
             context.driver.handleTask(context, node.task());
         }
@@ -196,7 +196,7 @@ class FlowEngineImpl implements FlowEngine {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, l.condition(), false)) {
+                if (condition_test(context, l.condition(), false)) {
                     matched_lines.add(l);
                 }
             }
@@ -229,7 +229,7 @@ class FlowEngineImpl implements FlowEngine {
             if (l.condition().isEmpty()) {
                 def_line = l;
             } else {
-                if (condition_check(context, l.condition(), false)) {
+                if (condition_test(context, l.condition(), false)) {
                     //执行第一个满足条件
                     node_run(context, l.nextNode(), depth);
                 }
