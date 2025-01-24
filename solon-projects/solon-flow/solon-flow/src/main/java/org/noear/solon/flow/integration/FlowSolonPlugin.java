@@ -19,6 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.flow.Chain;
+import org.noear.solon.flow.ChainDriver;
 import org.noear.solon.flow.FlowEngine;
 
 import java.util.List;
@@ -44,5 +45,9 @@ public class FlowSolonPlugin implements Plugin {
         }
 
         context.wrapAndPut(FlowEngine.class, flowEngine);
+
+        context.subWrapsOfType(ChainDriver.class, bw -> {
+            flowEngine.register(bw.name(), bw.raw());
+        });
     }
 }

@@ -34,6 +34,7 @@ import java.util.*;
 public class Chain {
     private final String id;
     private final String title;
+    private final String driver;
     private final Map<String, Object> meta = new HashMap<>(); //元信息
     private final Map<String, Node> nodes = new HashMap<>();
 
@@ -41,12 +42,17 @@ public class Chain {
     private Node start;
 
     public Chain(String id) {
-        this(id, null);
+        this(id, null, null);
     }
 
     public Chain(String id, String title) {
+        this(id, title, null);
+    }
+
+    public Chain(String id, String title, String driver) {
         this.id = id;
         this.title = (title == null ? id : title);
+        this.driver = (driver == null ? "" : driver);
     }
 
     /**
@@ -61,6 +67,13 @@ public class Chain {
      */
     public String title() {
         return title;
+    }
+
+    /**
+     * 驱动器
+     */
+    public String driver() {
+        return driver;
     }
 
     /**
@@ -152,8 +165,9 @@ public class Chain {
     public static Chain parseByDom(ONode oNode) {
         String id = oNode.get("id").getString();
         String title = oNode.get("title").getString();
+        String driver = oNode.get("driver").getString();
 
-        Chain chain = new Chain(id, title);
+        Chain chain = new Chain(id, title, driver);
 
         //元信息
         Map metaTmp = oNode.get("meta").toObject(Map.class);
@@ -165,7 +179,7 @@ public class Chain {
         List<ONode> nodesTmp = oNode.get("nodes").ary();
         NodeDecl nodesLat = null;
         for (int i = nodesTmp.size(); i > 0; i--) {
-            ONode n1 = nodesTmp.get(i-1);
+            ONode n1 = nodesTmp.get(i - 1);
 
             //自动构建：如果没有时，生成 id
             String n1_id = n1.get("id").getString();

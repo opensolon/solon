@@ -40,30 +40,14 @@ public class ChainContext implements Serializable {
     //控制过程中断（可选）
     private transient boolean interrupted = false;
 
-    //链驱动器
-    protected transient final ChainDriver driver;
     //当前流程引擎
     protected transient FlowEngine engine;
 
     public ChainContext() {
-        this(null, null);
+        this(null);
     }
 
     public ChainContext(Map<String, Object> model) {
-        this(null, model);
-    }
-
-    public ChainContext(ChainDriver driver) {
-        this(driver, null);
-    }
-
-    public ChainContext(ChainDriver driver, Map<String, Object> model) {
-        if (driver == null) {
-            this.driver = SimpleChainDriver.getInstance();
-        } else {
-            this.driver = driver;
-        }
-
         if (model == null) {
             this.model = new HashMap<>();
         } else {

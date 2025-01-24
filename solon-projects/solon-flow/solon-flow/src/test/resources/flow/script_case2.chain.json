@@ -1,5 +1,6 @@
 {
   "id": "c2",
+  "driver": "case2FlowDriver",
   "nodes": [
     { "type": "start"},
     { "task": "context.result=111 + a;"},

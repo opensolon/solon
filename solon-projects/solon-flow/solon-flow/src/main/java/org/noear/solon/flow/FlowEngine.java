@@ -32,12 +32,31 @@ public interface FlowEngine {
         return new FlowEngineImpl();
     }
 
+
+    /**
+     * 注册链驱动器
+     */
+    void register(String name, ChainDriver driver);
+
+    /**
+     * 注册默认链驱动器
+     */
+    default void register(ChainDriver driver) {
+        register("", driver);
+    }
+
+    /**
+     * 注销链驱动器
+     */
+    void unregister(String name);
+
     /**
      * 加载链
      *
      * @param chain 链
      */
     void load(Chain chain);
+
 
     /**
      * 卸载链

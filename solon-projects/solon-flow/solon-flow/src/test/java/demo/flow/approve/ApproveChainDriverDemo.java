@@ -14,12 +14,13 @@ public class ApproveChainDriverDemo {
 
     public void demo() throws Throwable {
         //可以在链配置时指定，也可以在运行时指定
-        ChainContext context = new ChainContext(new ApproveChainDriver());
+        ChainContext context = new ChainContext();
 
         context.put("instance_id", "i1");
         context.put("user_id", "u1");
         context.put("role_id", "r1");
 
+        flowEngine.register("", new ApproveChainDriver());
         flowEngine.eval("c12", context);
 
         //运行后，获取当前展示的节点

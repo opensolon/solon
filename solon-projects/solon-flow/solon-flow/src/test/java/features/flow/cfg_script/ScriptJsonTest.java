@@ -1,5 +1,6 @@
 package features.flow.cfg_script;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.ChainContext;
@@ -11,7 +12,12 @@ import org.noear.solon.flow.FlowEngine;
  * @author noear 2025/1/11 created
  */
 public class ScriptJsonTest {
-    private FlowEngine flowEngine = FlowEngine.newInstance();
+    private static FlowEngine flowEngine = FlowEngine.newInstance();
+
+    @BeforeAll
+    public static void before() {
+        flowEngine.register("case2FlowDriver", new Case2FlowDriver());
+    }
 
     @Test
     public void case1_demo() throws Throwable {
@@ -24,7 +30,7 @@ public class ScriptJsonTest {
     public void case2_interrupt() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
-        ChainContext context = new ChainContext(new Case2FlowDriver());
+        ChainContext context = new ChainContext();
         context.put("a", 2);
         context.put("b", 3);
         context.put("c", 4);
@@ -39,7 +45,7 @@ public class ScriptJsonTest {
     public void case2_interrupt2() throws Throwable {
         Chain chain = Chain.parseByUri("classpath:flow/script_case2.chain.json");
 
-        ChainContext context = new ChainContext(new Case2FlowDriver());
+        ChainContext context = new ChainContext();
         context.put("a", 12);
         context.put("b", 13);
         context.put("c", 14);

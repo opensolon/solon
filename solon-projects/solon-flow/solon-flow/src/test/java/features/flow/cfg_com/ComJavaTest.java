@@ -13,10 +13,11 @@ import org.noear.solon.flow.driver.SimpleChainDriver;
  */
 @Slf4j
 public class ComJavaTest {
-    private FlowEngine flowEngine = FlowEngine.newInstance();
 
     @Test
     public void case1() throws Throwable {
+        FlowEngine flowEngine = FlowEngine.newInstance();
+
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
@@ -32,6 +33,8 @@ public class ComJavaTest {
             }
         };
 
+        flowEngine.register(driver);
+
         Chain chain = new Chain("c1", "c1");
 
 
@@ -41,7 +44,7 @@ public class ComJavaTest {
         chain.addNode(new NodeDecl("n4", NodeType.execute).task("@c").linkAdd("n5"));
         chain.addNode(new NodeDecl("n5", NodeType.end));
 
-        ChainContext context = new ChainContext(driver);
+        ChainContext context = new ChainContext();
         context.put("a", 2);
         context.put("b", 3);
         context.put("c", 4);
@@ -54,7 +57,7 @@ public class ComJavaTest {
 
         System.out.println("------------");
 
-        context = new ChainContext(driver);
+        context = new ChainContext();
         context.put("a", 12);
         context.put("b", 13);
         context.put("c", 14);
