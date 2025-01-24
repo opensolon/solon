@@ -107,7 +107,7 @@ class FlowEngineImpl implements FlowEngine {
         ChainDriver driver = driverMap.get(chain.driver());
 
         if (driver == null) {
-            throw new IllegalArgumentException("No driver found for: " + chain.driver());
+            throw new IllegalArgumentException("No driver found for: '" + chain.driver() + "'");
         }
 
         node_run(driver, context, start, depth);
