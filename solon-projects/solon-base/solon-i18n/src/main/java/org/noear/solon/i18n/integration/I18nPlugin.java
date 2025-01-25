@@ -23,7 +23,7 @@ import org.noear.solon.i18n.annotation.I18n;
 /**
  * @author noear
  */
-public class XPluginImp implements Plugin {
+public class I18nPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         context.beanInterceptorAdd(I18n.class, I18nInterceptor.instance);
