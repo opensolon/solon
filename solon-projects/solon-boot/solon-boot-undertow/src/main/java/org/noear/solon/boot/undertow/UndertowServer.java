@@ -90,7 +90,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         builder.setIoThreads(props.getCoreThreads());
         builder.setWorkerThreads(props.getMaxThreads(props.isIoBound()));
 
-        if (enableHttp2) {
+        if (isEnableHttp2()) {
             builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
         }
 

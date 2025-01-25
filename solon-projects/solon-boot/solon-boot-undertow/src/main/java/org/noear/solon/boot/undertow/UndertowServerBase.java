@@ -25,6 +25,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.boot.undertow.integration.UndertowPlugin;
 import org.noear.solon.boot.web.SessionProps;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
@@ -46,9 +47,10 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
 
     protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
-    protected boolean enableHttp2 = false;
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
+
+    private boolean enableHttp2 = false;
 
     /**
      * 是否允许Ssl
@@ -66,6 +68,10 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     @Override
     public void enableHttp2(boolean enable) {
         this.enableHttp2 = enable;
+    }
+
+    public boolean isEnableHttp2(){
+        return enableHttp2;
     }
 
     /**
@@ -89,7 +95,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
         DeploymentInfo builder = new DeploymentInfo()
-                .setClassLoader(XPluginImp.class.getClassLoader())
+                .setClassLoader(UndertowPlugin.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
                 .setDefaultEncoding(ServerProps.request_encoding)

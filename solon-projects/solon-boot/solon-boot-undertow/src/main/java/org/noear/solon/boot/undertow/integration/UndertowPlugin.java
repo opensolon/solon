@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.undertow;
+package org.noear.solon.boot.undertow.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -21,6 +21,8 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.undertow.UndertowServer;
+import org.noear.solon.boot.undertow.UndertowServerAddJsp;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
@@ -30,7 +32,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-public final class XPluginImp implements Plugin {
+public final class UndertowPlugin implements Plugin {
     private static Signal _signal;
 
     public static Signal signal() {
@@ -96,7 +98,7 @@ public final class XPluginImp implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
-        if (_server.isSecure() && _server.enableHttp2) {
+        if (_server.isSecure() && _server.isEnableHttp2()) {
             connectorInfo += ";HTTP/2,[http/2]";
         }
         if (context.app().enableWebSocket()) {
