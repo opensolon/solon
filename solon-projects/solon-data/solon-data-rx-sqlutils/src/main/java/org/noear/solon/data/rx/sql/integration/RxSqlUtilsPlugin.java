@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 3.0
  */
-public class RxSqlPlugin implements Plugin {
+public class RxSqlUtilsPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.beanInjectorAdd(Inject.class, RxSqlUtils.class, this::doInject);
