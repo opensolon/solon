@@ -125,11 +125,11 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
      * 设置当前数据源名
      * */
     public void setCurrentKey(String name){
-        DynamicDsKey.setCurrent(name);
+        DynamicDsKey.use(name);
     }
 
     @Override
     public String determineCurrentKey() {
-        return DynamicDsKey.getCurrent();
+        return DynamicDsKey.current();
     }
 }

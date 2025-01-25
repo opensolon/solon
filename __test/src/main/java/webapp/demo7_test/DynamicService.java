@@ -27,23 +27,23 @@ import org.noear.solon.data.dynamicds.DynamicDsKey;
 public class DynamicService {
     @DynamicDs("db_rock1")
     public String test1() throws Exception {
-        System.out.println("ds===" + DynamicDsKey.getCurrent());
-        return DynamicDsKey.getCurrent();
+        System.out.println("ds===" + DynamicDsKey.current());
+        return DynamicDsKey.current();
     }
 
 
     @DynamicDs("db_rock2")
     @Mapping("/test2")
     public String test2() throws Exception {
-        System.out.println("ds===" + DynamicDsKey.getCurrent());
-        return DynamicDsKey.getCurrent();
+        System.out.println("ds===" + DynamicDsKey.current());
+        return DynamicDsKey.current();
     }
 
 
     @DynamicDs
     @Mapping("/test3")
     public String test3() throws Exception {
-        System.out.println("ds===" + DynamicDsKey.getCurrent());
-        return DynamicDsKey.getCurrent();
+        System.out.println("ds===" + DynamicDsKey.current());
+        return DynamicDsKey.current();
     }
 }

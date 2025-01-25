@@ -22,32 +22,53 @@ import org.noear.solon.core.FactoryManager;
  *
  * @author noear
  * @since 2.5
+ * @since 3.1
  */
 public class DynamicDsKey {
     static ThreadLocal<String> targetThreadLocal = FactoryManager.getGlobal().newThreadLocal(DynamicDsKey.class, false);
 
     /**
-     * 移除状态
+     * 移除 key
      */
     public static void remove() {
         targetThreadLocal.remove();
     }
 
     /**
-     * 获取当前
+     * 获取当前 key
      */
-    public static String getCurrent() {
+    public static String current() {
         return targetThreadLocal.get();
     }
 
     /**
-     * 设置当前
+     * 使用 key
      */
-    public static void setCurrent(String name) {
+    public static void use(String name) {
         if (name == null) {
             targetThreadLocal.remove();
         } else {
             targetThreadLocal.set(name);
         }
+    }
+
+    /**
+     * 获取当前 key
+     *
+     * @deprecated 3.1 {@link #current()}
+     */
+    @Deprecated
+    public static String getCurrent() {
+        return current();
+    }
+
+    /**
+     * 设置当前 key
+     *
+     * @deprecated 3.1 {@link #use(String)}
+     */
+    @Deprecated
+    public static void setCurrent(String name) {
+        use(name);
     }
 }

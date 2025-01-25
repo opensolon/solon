@@ -38,16 +38,16 @@ public class DynamicDsInterceptor implements Interceptor {
             return inv.invoke();
         } else {
             //备份
-            String backup = DynamicDsKey.getCurrent();
+            String backup = DynamicDsKey.current();
 
             try {
                 String dsName = TmplUtil.parse(anno.value(), inv);
 
-                DynamicDsKey.setCurrent(dsName);
+                DynamicDsKey.use(dsName);
                 return inv.invoke();
             } finally {
                 //还原
-                DynamicDsKey.setCurrent(backup);
+                DynamicDsKey.use(backup);
             }
         }
     }

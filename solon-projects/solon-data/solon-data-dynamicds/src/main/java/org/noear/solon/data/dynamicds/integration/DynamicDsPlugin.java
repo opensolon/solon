@@ -24,7 +24,7 @@ import org.noear.solon.data.dynamicds.DynamicDsInterceptor;
  * @author noear
  * @since 2.5
  */
-public class XPluginImpl implements Plugin {
+public class DynamicDsPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.beanInterceptorAdd(DynamicDs.class, new DynamicDsInterceptor(), 100);

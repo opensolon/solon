@@ -72,7 +72,7 @@ public class DemoDsTest {
         }
 
         public void getUserList2() {
-            DynamicDsKey.setCurrent("db_user_2"); //使用 db_user_2 源
+            DynamicDsKey.use("db_user_2"); //使用 db_user_2 源
             try {
                 userMapper.selectUserList();
             } finally {
