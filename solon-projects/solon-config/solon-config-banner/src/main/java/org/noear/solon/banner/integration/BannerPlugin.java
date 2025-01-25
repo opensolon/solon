@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.banner;
+package org.noear.solon.banner.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -28,10 +28,10 @@ import java.io.IOException;
  * @author pmg1991
  * @since 1.11
  * */
-public class XPluginImp implements Plugin {
+public class BannerPlugin implements Plugin {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
-	public XPluginImp() throws IOException {
+	public BannerPlugin() throws IOException {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {
