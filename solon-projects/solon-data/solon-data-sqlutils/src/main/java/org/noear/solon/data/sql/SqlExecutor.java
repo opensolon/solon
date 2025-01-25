@@ -147,27 +147,4 @@ public interface SqlExecutor {
      */
     @Nullable
     <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException;
-
-
-    ////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 查询并获取行
-     *
-     * @return 行
-     * @deprecated 3.0
-     */
-    @Deprecated
-    @Nullable
-    Row queryRow() throws SQLException;
-
-    /**
-     * 查询并获取行列表
-     *
-     * @return 行列表
-     * @deprecated 3.0
-     */
-    @Deprecated
-    @Nullable
-    RowList queryRowList() throws SQLException;
 }

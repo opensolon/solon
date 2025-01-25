@@ -28,7 +28,7 @@ import org.noear.solon.data.sql.SqlUtilsFactory;
  * @author noear
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
+public class SqlUtilsPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.beanInjectorAdd(Inject.class, SqlUtils.class, this::doInject);
