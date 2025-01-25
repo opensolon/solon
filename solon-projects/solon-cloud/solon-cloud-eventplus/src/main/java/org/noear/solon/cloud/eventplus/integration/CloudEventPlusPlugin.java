@@ -25,7 +25,7 @@ import org.noear.solon.core.Plugin;
  * @author iYarnFog
  * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class CloudEventPlusPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
