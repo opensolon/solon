@@ -26,7 +26,7 @@ import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
 
-public class XPluginImpl implements Plugin {
+public class DataPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //注册缓存工厂
