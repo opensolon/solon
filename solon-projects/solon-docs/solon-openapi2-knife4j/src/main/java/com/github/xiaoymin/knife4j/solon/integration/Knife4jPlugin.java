@@ -27,7 +27,7 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
  * @author noear
  * @since 2.2
  */
-public class XPluginImpl implements Plugin {
+public class Knife4jPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
@@ -46,7 +46,7 @@ public class XPluginImpl implements Plugin {
             }
 
             //注册控制器
-            context.app().add(uiPath, OpenApi2Controller.class);
+            context.app().add(uiPath, Knife4jController.class);
 
             //添加 auth
             context.subBeansOfType(DocDocket.class, bean -> {

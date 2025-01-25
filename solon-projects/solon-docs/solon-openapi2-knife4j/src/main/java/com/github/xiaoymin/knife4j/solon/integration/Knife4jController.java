@@ -28,7 +28,7 @@ import org.noear.solon.docs.openapi2.OpenApi2Utils;
  * @author noear
  * @since 2.3
  */
-public class OpenApi2Controller {
+public class Knife4jController {
     /**
      * swagger 获取分组信息
      */
