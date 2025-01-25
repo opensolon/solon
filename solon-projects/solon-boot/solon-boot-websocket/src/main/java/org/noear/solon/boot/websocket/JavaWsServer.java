@@ -40,17 +40,17 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public class WsServer extends WebSocketServer {
-    static final Logger log = LoggerFactory.getLogger(WsServer.class);
+public class JavaWsServer extends WebSocketServer {
+    static final Logger log = LoggerFactory.getLogger(JavaWsServer.class);
     static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
-    public WsServer(int port) {
+    public JavaWsServer(int port) {
         super(new InetSocketAddress(port));
     }
 
-    public WsServer(InetAddress address, int port) {
+    public JavaWsServer(InetAddress address, int port) {
         super(new InetSocketAddress(address, port));
     }
 

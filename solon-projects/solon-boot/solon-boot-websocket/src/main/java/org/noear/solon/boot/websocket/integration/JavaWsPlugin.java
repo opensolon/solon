@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.websocket;
+package org.noear.solon.boot.websocket.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.websocket.JavaWsServer;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 
 import java.net.Inet4Address;
 
-public class XPluginImp implements Plugin {
+public class JavaWsPlugin implements Plugin {
     private static Signal _signal;
 
     public static Signal signal() {
         return _signal;
     }
 
-    private WsServer _server = null;
+    private JavaWsServer _server = null;
 
     public static String solon_boot_ver() {
         return "org.java_websocket 1.5/" + Solon.version();
@@ -60,9 +61,9 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
         if (Utils.isEmpty(_host)) {
-            _server = new WsServer(_port);
+            _server = new JavaWsServer(_port);
         } else {
-            _server = new WsServer(Inet4Address.getByName(_host), _port);
+            _server = new JavaWsServer(Inet4Address.getByName(_host), _port);
         }
 
         _server.setReuseAddr(true); //重启时，端口可立即复用
