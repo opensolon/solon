@@ -20,7 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
-public class XPluginImpl implements Plugin {
+public class OpenApi2JavadocPlugin implements Plugin {
 
     /**
      * 启动
