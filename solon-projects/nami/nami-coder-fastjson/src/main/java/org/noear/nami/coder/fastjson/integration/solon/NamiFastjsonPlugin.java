@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.channel.socketd.integration;
+package org.noear.nami.coder.fastjson.integration.solon;
 
 import org.noear.nami.NamiManager;
-import org.noear.nami.channel.socketd.SocketdClientChannel;
+import org.noear.nami.coder.fastjson.FastjsonDecoder;
+import org.noear.nami.coder.fastjson.FastjsonEncoder;
+import org.noear.nami.coder.fastjson.FastjsonTypeEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 1.3
- * @since 2.6
+ * @since 1.2
  */
-public class NamiSocketdPlugin implements Plugin {
+public class NamiFastjsonPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg("tcp", SocketdClientChannel.instance);
-        NamiManager.reg("udp", SocketdClientChannel.instance);
-        NamiManager.reg("ws", SocketdClientChannel.instance);
-        NamiManager.reg("wss", SocketdClientChannel.instance);
+        NamiManager.reg(FastjsonDecoder.instance);
+        NamiManager.reg(FastjsonEncoder.instance);
+        NamiManager.reg(FastjsonTypeEncoder.instance);
     }
 }

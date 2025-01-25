@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.kryo.integration;
+package org.noear.nami.channel.socketd.integration.solon;
 
 import org.noear.nami.NamiManager;
-import org.noear.nami.coder.kryo.KryoDecoder;
-import org.noear.nami.coder.kryo.KryoEncoder;
+import org.noear.nami.channel.socketd.SocketdClientChannel;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 3.0
+ * @since 1.3
+ * @since 2.6
  */
-public class NamiKryoPlugin implements Plugin {
+public class NamiSocketdPlugin implements Plugin {
     @Override
-    public void start(AppContext context) throws Throwable {
-        NamiManager.reg(KryoDecoder.instance);
-        NamiManager.reg(KryoEncoder.instance);
+    public void start(AppContext context) {
+        NamiManager.reg("tcp", SocketdClientChannel.instance);
+        NamiManager.reg("udp", SocketdClientChannel.instance);
+        NamiManager.reg("ws", SocketdClientChannel.instance);
+        NamiManager.reg("wss", SocketdClientChannel.instance);
     }
 }

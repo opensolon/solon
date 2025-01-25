@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.fury.integration;
+package org.noear.nami.coder.fury.integration.solon;
 
 import org.noear.nami.NamiManager;
 import org.noear.nami.coder.fury.FuryDecoder;

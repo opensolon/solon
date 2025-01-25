@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.snack3.integration;
+package org.noear.nami.coder.abc.integration.solon;
 
 import org.noear.nami.NamiManager;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.nami.coder.snack3.SnackTypeEncoder;
+import org.noear.nami.coder.abc.AbcDecoder;
+import org.noear.nami.coder.abc.AbcEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear 2021/1/3 created
- * @since 1.2
+ * @author noear
+ * @since 3.0
  */
-public class NamiSnackPlugin implements Plugin {
+public class NamiAbcPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(SnackDecoder.instance);
-        NamiManager.reg(SnackEncoder.instance);
-        NamiManager.reg(SnackTypeEncoder.instance);
+        NamiManager.reg(AbcDecoder.instance);
+        NamiManager.reg(AbcEncoder.instance);
     }
 }

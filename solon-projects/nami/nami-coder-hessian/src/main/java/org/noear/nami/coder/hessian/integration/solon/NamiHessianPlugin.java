@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.nami.coder.fastjson2.integration;
+package org.noear.nami.coder.hessian.integration.solon;
 
 import org.noear.nami.NamiManager;
-import org.noear.nami.coder.fastjson2.Fastjson2Decoder;
-import org.noear.nami.coder.fastjson2.Fastjson2Encoder;
-import org.noear.nami.coder.fastjson2.Fastjson2TypeEncoder;
+import org.noear.nami.coder.hessian.HessianDecoder;
+import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 1.9
+ * @since 1.2
  */
-public class NamiFastjson2Plugin implements Plugin {
+public class NamiHessianPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        NamiManager.reg(Fastjson2Decoder.instance);
-        NamiManager.reg(Fastjson2Encoder.instance);
-        NamiManager.reg(Fastjson2TypeEncoder.instance);
+        NamiManager.reg(HessianDecoder.instance);
+        NamiManager.reg(HessianEncoder.instance);
     }
 }
