@@ -53,18 +53,6 @@ public class AuthUtil {
 
     /**
      * 添加鉴权适配器
-     *
-     * @deprecated 3.0
-     */
-    @Deprecated
-    public static void adapterAdd(AuthAdapterSupplier supplier) {
-        //绑定规则的路径前缀
-        supplier.adapter().pathPrefix(supplier.pathPrefix());
-        adapterAdd(supplier.adapter());
-    }
-
-    /**
-     * 添加鉴权适配器
      */
     public static void adapterAdd(AuthAdapter adapter) {
         if (Utils.isEmpty(adapter.pathPrefix())) {
@@ -75,16 +63,6 @@ public class AuthUtil {
             //排除，短的在后（用负数反一反）
             adapterList.sort(Comparator.comparingInt(e -> -e.pathPrefix().length()));
         }
-    }
-
-    /**
-     * 移除鉴权适配器
-     *
-     * @deprecated 3.0
-     */
-    @Deprecated
-    public static void adapterRemove(AuthAdapterSupplier supplier) {
-        adapterList.remove(supplier.adapter());
     }
 
     /**
