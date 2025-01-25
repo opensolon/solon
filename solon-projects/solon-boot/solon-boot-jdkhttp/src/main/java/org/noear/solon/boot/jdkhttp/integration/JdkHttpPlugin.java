@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.jdkhttp;
+package org.noear.solon.boot.jdkhttp.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.jdkhttp.JdkHttpServerComb;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
-public final class XPluginImp implements Plugin {
+public final class JdkHttpPlugin implements Plugin {
     private static Signal _signal;
 
     public static Signal signal() {
