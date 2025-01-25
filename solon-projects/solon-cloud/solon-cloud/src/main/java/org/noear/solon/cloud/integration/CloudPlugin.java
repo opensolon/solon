@@ -42,8 +42,8 @@ import org.noear.solon.cloud.model.Instance;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin {
-    public XPluginImp() {
+public class CloudPlugin implements Plugin {
+    public CloudPlugin() {
         //设置日志添加器（为了早点打印日志）
         AppenderManager.register("cloud", new CloudLogAppender());
     }
