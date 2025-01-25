@@ -24,7 +24,7 @@ import org.noear.solon.core.util.ClassUtil;
 
 import java.io.IOException;
 
-class JettyServer extends JettyServerBase implements ServerLifecycle {
+public class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected Server real = null;
 
     protected boolean enableWebSocket;

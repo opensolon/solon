@@ -17,7 +17,7 @@ package org.noear.solon.boot.jetty.http;
 
 import org.eclipse.jetty.http.MultiPartFormInputStream;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.jetty.XPluginImp;
+import org.noear.solon.boot.jetty.integration.JettyPlugin;
 import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.core.handle.Context;
 
@@ -53,7 +53,7 @@ public class JtHttpContextServletHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", JettyPlugin.solon_boot_ver());
         }
     }
 

@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.integration;
 
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.jetty.JettyServer;
+import org.noear.solon.boot.jetty.JettyServerAddJsp;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
@@ -31,7 +33,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-public final class XPluginImp implements Plugin {
+public final class JettyPlugin implements Plugin {
     private static Signal _signal;
 
     public static Signal signal() {

@@ -29,7 +29,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 
-class JettyServerAddJsp extends JettyServer {
+public class JettyServerAddJsp extends JettyServer {
 
     /**
      * 获取Server Handler
