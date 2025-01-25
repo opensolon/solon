@@ -27,7 +27,7 @@ import org.noear.solon.core.*;
  * @author noear
  * @since 2.9
  */
-public class XPluginImpl implements Plugin {
+public class CloudGatewayPlugin implements Plugin {
     private static final String SOLON_CLOUD_GATEWAY = "solon.cloud.gateway";
 
     @Override
@@ -44,7 +44,7 @@ public class XPluginImpl implements Plugin {
         CloudGatewayHandler cloudGateway = new CloudGatewayHandler(webHandlerSupplier.get());
 
         //替代 solon.boot.vertx 的默认处理
-        GatewayHandlerSupplier gatewayHandlerSupplier = new GatewayHandlerSupplier(cloudGateway);
+        CloudGatewayHandlerSupplier gatewayHandlerSupplier = new CloudGatewayHandlerSupplier(cloudGateway);
         context.wrapAndPut(VxHandlerSupplier.class, gatewayHandlerSupplier);
 
         //添加默认过滤器
@@ -78,7 +78,7 @@ public class XPluginImpl implements Plugin {
         });
 
         //加载配置（同步服务发现）
-        GatewayLocator gatewayLocator = new GatewayLocator(gatewayProperties, cloudGateway.getConfiguration());
+        CloudGatewayLocator gatewayLocator = new CloudGatewayLocator(gatewayProperties, cloudGateway.getConfiguration());
         context.lifecycle(-1, gatewayLocator);
     }
 }

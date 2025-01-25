@@ -35,11 +35,11 @@ import java.util.Collection;
  * @author noear
  * @since 2.9
  */
-public class GatewayLocator implements LifecycleBean {
+public class CloudGatewayLocator implements LifecycleBean {
     private final CloudRouteRegister routeRegister;
     private final GatewayProperties gatewayProperties;
 
-    public GatewayLocator(GatewayProperties gatewayProperties, CloudRouteRegister routeRegister) {
+    public CloudGatewayLocator(GatewayProperties gatewayProperties, CloudRouteRegister routeRegister) {
         this.routeRegister = routeRegister;
         this.gatewayProperties = gatewayProperties;
     }

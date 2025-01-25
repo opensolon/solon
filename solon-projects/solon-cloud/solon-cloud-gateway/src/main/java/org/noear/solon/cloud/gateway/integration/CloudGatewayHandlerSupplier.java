@@ -23,10 +23,10 @@ import org.noear.solon.cloud.gateway.CloudGatewayHandler;
  * @author noear
  * @since 2.9
  */
-public class GatewayHandlerSupplier implements VxHandlerSupplier {
+public class CloudGatewayHandlerSupplier implements VxHandlerSupplier {
     private final CloudGatewayHandler handler;
 
-    public GatewayHandlerSupplier(CloudGatewayHandler handler) {
+    public CloudGatewayHandlerSupplier(CloudGatewayHandler handler) {
         this.handler = handler;
     }
 
