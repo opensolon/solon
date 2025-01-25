@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.socketd;
+package org.noear.solon.boot.socketd.integration;
 
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.server.Server;
@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutorService;
  * @author noear
  * @since 2.6
  */
-public class XPluginImpl implements Plugin {
+public class SocketdPlugin implements Plugin {
     private List<Server> serverList = new ArrayList<>();
     private SocketdRouter socketdRouter;
     private ServerConfigHandler serverConfigHandler;
