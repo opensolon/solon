@@ -31,7 +31,7 @@ import org.noear.solon.docs.integration.properties.DocsProperties;
  * @author noear
  * @since 2.2
  */
-public class XPluginImpl implements Plugin {
+public class DocsPlugin implements Plugin {
     public static final String SOLON_DOCS = "solon.docs";
 
     @Override
