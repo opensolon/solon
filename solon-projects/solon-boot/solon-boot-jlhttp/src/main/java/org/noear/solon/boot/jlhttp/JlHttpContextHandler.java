@@ -17,6 +17,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.jlhttp.HTTPServer;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.jlhttp.integration.JlHttpPlugin;
 import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             ctx.contentType("text/plain;charset=UTF-8");
 
             if (ServerProps.output_meta) {
-                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+                ctx.headerSet("Solon-Boot", JlHttpPlugin.solon_boot_ver());
             }
 
             handler.handle(ctx);
