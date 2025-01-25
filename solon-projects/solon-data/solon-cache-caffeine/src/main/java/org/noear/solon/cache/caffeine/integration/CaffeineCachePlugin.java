@@ -24,7 +24,7 @@ import org.noear.solon.data.cache.CacheLib;
  * @author noear
  * @since 1.9
  */
-public class XPluginImp implements Plugin {
+public class CaffeineCachePlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         CacheFactory cacheFactory = new CaffeineCacheFactoryImpl();

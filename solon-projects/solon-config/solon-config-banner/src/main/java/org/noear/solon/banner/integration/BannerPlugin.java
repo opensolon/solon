@@ -29,7 +29,7 @@ import java.io.IOException;
  * @since 1.11
  * */
 public class BannerPlugin implements Plugin {
-	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
+	private String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	public BannerPlugin() throws IOException {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
