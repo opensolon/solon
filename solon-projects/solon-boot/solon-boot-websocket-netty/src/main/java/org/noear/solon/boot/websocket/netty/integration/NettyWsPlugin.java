@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.websocket.netty;
+package org.noear.solon.boot.websocket.netty.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.websocket.netty.NettyWsServer;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 
@@ -27,7 +28,7 @@ import org.noear.solon.core.util.LogUtil;
  * @author noear
  * @since 2.3
  */
-public class XPluginImpl implements Plugin {
+public class NettyWsPlugin implements Plugin {
 
     private static Signal _signal;
 
@@ -36,7 +37,7 @@ public class XPluginImpl implements Plugin {
     }
 
 
-    WsServer _server;
+    NettyWsServer _server;
 
     public static String solon_boot_ver() {
         return "netty-webscoket 4.1.75/" + Solon.version();
@@ -65,7 +66,7 @@ public class XPluginImpl implements Plugin {
 
         //========
 
-        _server = new WsServer(props);
+        _server = new NettyWsServer(props);
         _server.start(_host, _port);
 
 

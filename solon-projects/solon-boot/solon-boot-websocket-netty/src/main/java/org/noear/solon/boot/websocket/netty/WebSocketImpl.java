@@ -37,7 +37,7 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
 
     public WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
-        String uri = DecodeUtils.rinseUri(real.attr(WsServerHandler.ResourceDescriptorKey).get());
+        String uri = DecodeUtils.rinseUri(real.attr(NettyWsServerHandler.ResourceDescriptorKey).get());
 
         this.init(URI.create(uri));
     }

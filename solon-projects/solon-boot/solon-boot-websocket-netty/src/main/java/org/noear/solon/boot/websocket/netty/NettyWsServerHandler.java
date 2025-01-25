@@ -42,8 +42,8 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.3
  */
-public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
-    static final Logger log = LoggerFactory.getLogger(WsServerHandler.class);
+public class NettyWsServerHandler extends SimpleChannelInboundHandler<Object> {
+    static final Logger log = LoggerFactory.getLogger(NettyWsServerHandler.class);
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
     public static final AttributeKey<WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
