@@ -23,7 +23,7 @@ import org.noear.solon.data.cache.CacheLib;
  * @author noear
  * @since 1.6
  */
-public class XPluginImp implements Plugin {
+public class MemCachePlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         CacheLib.cacheFactoryAdd("memcached", new MemCacheFactoryImpl());

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.cache.jedis.integration;
+package org.noear.solon.cache.redisson.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -22,14 +22,14 @@ import org.noear.solon.data.cache.CacheLib;
 
 /**
  * @author noear
- * @since 1.6
+ * @since 1.7
  */
-public class XPluginImp implements Plugin {
+public class RedissonCachePlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        CacheFactory cacheFactory = new RedisCacheFactoryImpl();
+        CacheFactory cacheFactory = new RedissonCacheFactoryImpl();
 
         CacheLib.cacheFactoryAdd("redis", cacheFactory);
-        CacheLib.cacheFactoryAdd("jedis", cacheFactory);
+        CacheLib.cacheFactoryAdd("redisson", cacheFactory);
     }
 }
