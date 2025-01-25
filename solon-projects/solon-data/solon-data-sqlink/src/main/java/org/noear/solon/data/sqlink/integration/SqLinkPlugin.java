@@ -52,8 +52,8 @@ import java.util.Map;
  * @author kiryu1223
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
-    private static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
+public class SqLinkPlugin implements Plugin {
+    private static final Logger log = LoggerFactory.getLogger(SqLinkPlugin.class);
 
     // 为每个配置创建一个Client，存到clients
     private Map<String, SqLink> clients = new LinkedHashMap<>();
