@@ -16,7 +16,7 @@
 package org.noear.solon.boot.vertx.http;
 
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.vertx.XPluginImp;
+import org.noear.solon.boot.vertx.integration.VxHttpPlugin;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.vertx.VxWebHandler;
 
@@ -30,7 +30,7 @@ public class VxWebHandlerPlus extends VxWebHandler {
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", VxHttpPlugin.solon_boot_ver());
         }
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.vertx;
+package org.noear.solon.boot.vertx.integration;
 
 import io.vertx.core.Vertx;
 import io.vertx.solon.VertxHolder;
@@ -23,6 +23,7 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.vertx.VxHttpServerComb;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
@@ -31,7 +32,7 @@ import org.noear.solon.core.util.LogUtil;
  * @author noear
  * @since 2.9
  */
-public class XPluginImp implements Plugin {
+public class VxHttpPlugin implements Plugin {
     private static Signal _signal;
 
     public static Signal signal() {
