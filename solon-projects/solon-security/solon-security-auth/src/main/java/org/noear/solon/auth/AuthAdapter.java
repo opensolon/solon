@@ -15,8 +15,10 @@
  */
 package org.noear.solon.auth;
 
-import org.noear.solon.Solon;
 import org.noear.solon.auth.impl.AuthRuleImpl;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Filter;
+import org.noear.solon.core.handle.FilterChain;
 
 import java.util.Collection;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,8 +29,9 @@ import java.util.function.Consumer;
  *
  * @author noear
  * @since 1.4
+ * @since 3.1
  */
-public class AuthAdapter {
+public class AuthAdapter implements Filter {
     private String loginUrl;
     private String authRulePathPrefix;
     private AuthRuleHandler authRuleHandler;
@@ -92,9 +95,6 @@ public class AuthAdapter {
             if (authRuleHandler == null) {
                 authRuleHandler = new AuthRuleHandler();
                 authRuleHandler.setPathPrefix(authRulePathPrefix);
-
-                //@since 3.0
-                Solon.app().filter(authRuleHandler);
             }
 
             authRuleHandler.addRule(rule);
@@ -160,5 +160,17 @@ public class AuthAdapter {
     public AuthAdapter failure(AuthFailureHandler handler) {
         authFailure = handler;
         return this;
+    }
+
+    /**
+     * @since 3.1
+     * */
+    @Override
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        if (authRuleHandler != null) {
+            authRuleHandler.handle(ctx);
+        }
+
+        chain.doFilter(ctx);
     }
 }

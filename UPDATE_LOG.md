@@ -25,6 +25,7 @@
 
 * 定义 响应式过滤和拦截体系
 * 优化 拦截体系与 rx 的兼容？
+* 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 
 
 
