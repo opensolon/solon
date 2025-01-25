@@ -27,7 +27,7 @@ import org.noear.solon.health.detector.impl.*;
  * @author noear
  * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class DetectorPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //添加内部探测器
