@@ -26,7 +26,7 @@ import java.util.*;
  * @author noear
  * @since 2.4
  */
-public class MetricsController {
+public class CloudMetricsController {
     /**
      * 获取所有注册器（类名）
      * */

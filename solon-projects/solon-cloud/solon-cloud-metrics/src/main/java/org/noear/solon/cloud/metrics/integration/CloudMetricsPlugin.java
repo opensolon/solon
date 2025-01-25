@@ -40,8 +40,8 @@ import java.util.List;
  * @author bai
  * @since 2.4
  */
-public class XPluginImpl implements Plugin {
-    List<MeterOpener> meterOpeners = new ArrayList<>();
+public class CloudMetricsPlugin implements Plugin {
+    private List<MeterOpener> meterOpeners = new ArrayList<>();
 
     @Override
     public void start(AppContext context) {
@@ -69,7 +69,7 @@ public class XPluginImpl implements Plugin {
 
 
         //添加基础接口
-        context.app().add("/", MetricsController.class);
+        context.app().add("/", CloudMetricsController.class);
 
         //初始化公共标签
         forCommonTagsInit(context);
