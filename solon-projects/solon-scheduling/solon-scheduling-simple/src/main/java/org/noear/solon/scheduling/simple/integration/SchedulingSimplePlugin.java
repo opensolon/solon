@@ -27,7 +27,7 @@ import org.noear.solon.scheduling.simple.JobManager;
  * @author noear
  * @since 1.6
  */
-public class XPluginImpl implements Plugin {
+public class SchedulingSimplePlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         if (context.app().source().getAnnotation(EnableScheduling.class) == null) {

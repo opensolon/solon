@@ -27,7 +27,7 @@ import org.quartz.Scheduler;
 
 import java.lang.reflect.Method;
 
-public class XPluginImpl implements Plugin {
+public class SchedulingQuartzPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         if (context.app().source().getAnnotation(EnableScheduling.class) == null) {

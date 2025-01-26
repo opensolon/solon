@@ -32,7 +32,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 2.2
  */
-public class XPluginImp implements Plugin {
+public class SchedulingPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         Class<?> source = context.app().source();
