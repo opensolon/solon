@@ -32,6 +32,7 @@
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * snack3 升为 3.2.126
+* liquor 升为 1.3.8
 
 
 ### v3.0.7
