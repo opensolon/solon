@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.qos.logback.solon.integration;
+package org.apache.logging.log4j.solon.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -22,7 +22,8 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.6
  */
-public class XPluginImp extends LogIncubatorImpl implements Plugin {
+public class Log4j2Plugin extends LogIncubatorImpl implements Plugin {
+
     @Override
     public void start(AppContext context) throws Throwable {
         //容器加载完后，允许再次处理

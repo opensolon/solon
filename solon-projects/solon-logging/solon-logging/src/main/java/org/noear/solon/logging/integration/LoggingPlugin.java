@@ -31,8 +31,8 @@ import java.util.Properties;
  * @author noear
  * @since 1.3
  */
-public class XPluginImp implements Plugin {
-    public XPluginImp() {
+public class LoggingPlugin implements Plugin {
+    public LoggingPlugin() {
         AppenderManager.init();
     }
 
