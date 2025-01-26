@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.view.jsp;
+package org.noear.solon.view.jsp.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.view.jsp.JspRender;
 
-public class XPluginImp implements Plugin {
+public class ViewJspPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        if (ClassUtil.loadClass("jakarta.servlet.ServletResponse") == null) {
-            LogUtil.global().warn("View: jakarta.servlet.ServletResponse not exists! JspRender failed to load.");
+        if (ClassUtil.loadClass("javax.servlet.ServletResponse") == null) {
+            LogUtil.global().warn("View: javax.servlet.ServletResponse not exists! JspRender failed to load.");
             return;
         }
 

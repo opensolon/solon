@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.view.velocity;
+package org.noear.solon.view.enjoy.integration;
 
-import org.apache.velocity.runtime.directive.Directive;
+import com.jfinal.template.Directive;
 import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.view.velocity.tags.AuthPermissionsTag;
-import org.noear.solon.view.velocity.tags.AuthRolesTag;
+import org.noear.solon.view.enjoy.EnjoyDirectiveFactory;
+import org.noear.solon.view.enjoy.EnjoyRender;
+import org.noear.solon.view.enjoy.tags.AuthPermissionsTag;
+import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 
-public class XPluginImp implements Plugin {
-
+public class ViewEnjoyPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        VelocityRender render = new VelocityRender();
+        EnjoyRender render = new EnjoyRender();
 
         context.app().shared().forEach((k, v) -> {
             render.putVariable(k, v);
@@ -41,8 +43,8 @@ public class XPluginImp implements Plugin {
         context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
-                    if (v.raw() instanceof Directive) {
-                        render.putDirective(v.raw());
+                    if (Directive.class.isAssignableFrom(v.clz())) {
+                        render.putDirective(k.split(":")[1], new EnjoyDirectiveFactory(v));
                     }
                     return;
                 }
@@ -55,12 +57,12 @@ public class XPluginImp implements Plugin {
         });
 
         context.app().renderManager().register(null, render);
-        context.app().renderManager().register(".vm", render);
-        context.wrapAndPut(VelocityRender.class, render); //用于扩展
+        context.app().renderManager().register(".shtm", render);
+        context.wrapAndPut(EnjoyRender.class, render); //用于扩展
 
         if (ClassUtil.hasClass(() -> AuthUtil.class)) {
-            render.putDirective(new AuthPermissionsTag());
-            render.putDirective(new AuthRolesTag());
+            render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);
+            render.putDirective(AuthConstants.TAG_authRoles, AuthRolesTag.class);
         }
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.view.freemarker;
+package org.noear.solon.view.freemarker.integration;
 
 import freemarker.template.TemplateDirectiveModel;
 
@@ -23,10 +23,11 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.view.freemarker.FreemarkerRender;
 import org.noear.solon.view.freemarker.tags.AuthPermissionsTag;
 import org.noear.solon.view.freemarker.tags.AuthRolesTag;
 
-public class XPluginImp implements Plugin {
+public class ViewFreemarkerPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
