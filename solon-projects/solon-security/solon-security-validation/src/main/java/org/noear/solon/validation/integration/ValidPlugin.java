@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.validation;
+package org.noear.solon.validation.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.validation.BeanValidateInterceptor;
+import org.noear.solon.validation.ValidatorFailureHandler;
+import org.noear.solon.validation.ValidatorManager;
 import org.noear.solon.validation.annotation.*;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class XPluginImp implements Plugin {
+public class ValidPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         ValidatorManager.VALIDATE_ALL = Solon.cfg().getBool("solon.validation.validateAll", false);
