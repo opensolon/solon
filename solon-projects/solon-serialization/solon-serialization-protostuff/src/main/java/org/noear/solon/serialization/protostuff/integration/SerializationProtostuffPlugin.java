@@ -13,30 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.kryo;
+package org.noear.solon.serialization.protostuff.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.protostuff.ProtostuffActionExecutor;
+import org.noear.solon.serialization.protostuff.ProtostuffRender;
 
 /**
  * @author noear
- * @since 3.0
+ * @since 1.2
  */
-public class XPluginImpl implements Plugin {
+public class SerializationProtostuffPlugin implements Plugin {
     @Override
-    public void start(AppContext context) throws Throwable {
-        //::render
-        KryoRender render = new KryoRender();
-        context.wrapAndPut(KryoRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_KRYO,render);
-        context.app().serializerManager().register(SerializerNames.AT_KRYO, render.getSerializer());
+    public void start(AppContext context) {
+        ProtostuffRender render = new ProtostuffRender();
+        context.wrapAndPut(ProtostuffRender.class, render); //用于扩展
+        context.app().renderManager().register(SerializerNames.AT_PROTOBUF, render);
+        context.app().serializerManager().register(SerializerNames.AT_PROTOBUF, render.getSerializer());
 
-        //::actionExecutor
-        //支持 kryo 内容类型执行
-        KryoActionExecutor executor = new KryoActionExecutor();
-        context.wrapAndPut(KryoActionExecutor.class, executor); //用于扩展
-
+        //支持 protostuff 内容类型执行
+        ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
+        context.wrapAndPut(ProtostuffActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }
 }

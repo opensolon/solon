@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.abc;
+package org.noear.solon.serialization.abc.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.abc.AbcActionExecutor;
+import org.noear.solon.serialization.abc.AbcRender;
 
 /**
  * @author noear
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
+public class SerializationAbcPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         //::render

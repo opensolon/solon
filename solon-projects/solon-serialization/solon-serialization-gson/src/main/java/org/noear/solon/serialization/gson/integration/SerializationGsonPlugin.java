@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.gson;
+package org.noear.solon.serialization.gson.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.gson.GsonActionExecutor;
+import org.noear.solon.serialization.gson.GsonRenderFactory;
+import org.noear.solon.serialization.gson.GsonRenderTypedFactory;
 import org.noear.solon.serialization.prop.JsonProps;
 
-public class XPluginImp implements Plugin {
+public class SerializationGsonPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {

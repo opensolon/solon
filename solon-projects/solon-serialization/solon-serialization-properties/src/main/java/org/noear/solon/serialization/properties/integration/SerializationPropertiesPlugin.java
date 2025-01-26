@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.properties;
+package org.noear.solon.serialization.properties.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.properties.PropertiesActionExecutor;
+import org.noear.solon.serialization.properties.PropertiesRenderFactory;
 
-public class XPluginImpl implements Plugin {
+public class SerializationPropertiesPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //::renderFactory

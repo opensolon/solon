@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.serialization.fury;
+package org.noear.solon.serialization.hessian.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.serialization.SerializerNames;
+import org.noear.solon.serialization.hessian.HessianActionExecutor;
+import org.noear.solon.serialization.hessian.HessianRender;
 
-public class XPluginImpl implements Plugin {
+public class SerializationHessianPlugin implements Plugin {
 
     @Override
     public void start(AppContext context) {
         //::render
-        FuryRender render = new FuryRender();
-        context.wrapAndPut(FuryRender.class, render); //用于扩展
-        context.app().renderManager().register(SerializerNames.AT_FURY,render);
-        context.app().serializerManager().register(SerializerNames.AT_FURY, render.getSerializer());
+        HessianRender render = new HessianRender();
+        context.wrapAndPut(HessianRender.class, render); //用于扩展
+        context.app().renderManager().register(SerializerNames.AT_HESSIAN, render);
+        context.app().serializerManager().register(SerializerNames.AT_HESSIAN, render.getSerializer());
 
         //::actionExecutor
-        //支持 fury 内容类型执行
-        FuryActionExecutor executor = new FuryActionExecutor();
-        context.wrapAndPut(FuryActionExecutor.class, executor); //用于扩展
-
+        //支持 hessian 内容类型执行
+        HessianActionExecutor executor = new HessianActionExecutor();
+        context.wrapAndPut(HessianActionExecutor.class, executor); //用于扩展
         context.app().chainManager().addExecuteHandler(executor);
     }
 }
