@@ -32,7 +32,7 @@ import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
  * @author noear
  * @since 2.6
  */
-public class XPluginImpl implements Plugin {
+public class NetPlugin implements Plugin {
 
     private SocketdRouter socketdRouter;
     private WebSocketRouter webSocketRouter;

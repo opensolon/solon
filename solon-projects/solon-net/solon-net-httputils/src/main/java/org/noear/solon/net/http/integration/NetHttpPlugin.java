@@ -25,7 +25,7 @@ import org.noear.solon.net.http.HttpUtilsFactory;
  * @author noear
  * @since 3.0
  */
-public class XPluginImpl implements Plugin {
+public class NetHttpPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.getBeanAsync(HttpUtilsFactory.class, bean -> {
