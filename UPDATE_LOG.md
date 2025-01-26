@@ -31,6 +31,7 @@
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
+* snack3 升为 3.2.126
 
 
 ### v3.0.7
