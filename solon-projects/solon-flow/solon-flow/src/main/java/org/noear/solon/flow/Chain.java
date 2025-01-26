@@ -131,6 +131,26 @@ public class Chain {
         return nodes.get(id);
     }
 
+    /**
+     * 校验
+     */
+    public void check() {
+        //如果没有配置 start 节点
+        if (start == null) {
+            //找到没有流入链接的节点，作为开始节点
+            for (Node node : nodes.values()) {
+                if (Utils.isEmpty(node.prveLinks())) {
+                    start = node;
+                    break;
+                }
+            }
+        }
+
+        if (start == null) {
+            throw new IllegalStateException("No start node found");
+        }
+    }
+
     /// ////////
 
 
@@ -225,10 +245,8 @@ public class Chain {
             chain.addNode(nodeDecl);
         }
 
-        if (chain.start == null && nodesLat != null) {
-            //如果没有配置 start 节点，第一个节点自动为 start
-            chain.start = chain.nodes.get(nodesLat.id);
-        }
+        //校验结构
+        chain.check();
 
         return chain;
     }
