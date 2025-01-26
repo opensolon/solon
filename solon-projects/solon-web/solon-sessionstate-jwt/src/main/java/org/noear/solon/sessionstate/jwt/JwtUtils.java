@@ -95,8 +95,8 @@ public class JwtUtils {
             builder.setIssuer(Solon.cfg().appName());
         }
 
-        if (Utils.isNotEmpty(SessionProp.session_jwt_prefix)) {
-            return SessionProp.session_jwt_prefix + " " + builder.signWith(signKey).compact();
+        if (Utils.isNotEmpty(JwtSessionProps.getInstance().prefix)) {
+            return JwtSessionProps.getInstance().prefix + " " + builder.signWith(signKey).compact();
         } else {
             return builder.signWith(signKey).compact();
         }
@@ -122,8 +122,8 @@ public class JwtUtils {
             token = token.substring(TOKEN_HEADER.length()).trim();
         }
 
-        if (Utils.isNotEmpty(SessionProp.session_jwt_prefix) && token.startsWith(SessionProp.session_jwt_prefix)) {
-            token = token.substring(SessionProp.session_jwt_prefix.length()).trim();
+        if (Utils.isNotEmpty(JwtSessionProps.getInstance().prefix) && token.startsWith(JwtSessionProps.getInstance().prefix)) {
+            token = token.substring(JwtSessionProps.getInstance().prefix.length()).trim();
         }
 
         try {

@@ -19,7 +19,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.sessionstate.jwt.JwtSessionStateFactory;
-import org.noear.solon.sessionstate.jwt.SessionProp;
+import org.noear.solon.sessionstate.jwt.JwtSessionProps;
 
 /**
  * @author noear
@@ -37,7 +37,7 @@ public class SessionstateJwtPlugin implements Plugin {
             return;
         }
 
-        SessionProp.init();
+        JwtSessionProps.getInstance();
 
         context.app().chainManager().setSessionStateFactory(JwtSessionStateFactory.getInstance());
 
