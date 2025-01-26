@@ -28,7 +28,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  */
-public class FlowSolonPlugin implements Plugin {
+public class FlowPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         FlowEngine flowEngine = FlowEngine.newInstance();
