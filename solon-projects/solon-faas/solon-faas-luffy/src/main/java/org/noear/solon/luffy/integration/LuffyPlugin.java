@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.luffy.impl;
+package org.noear.solon.luffy.integration;
 
 import org.noear.luffy.dso.JtFun;
 import org.noear.luffy.dso.JtUtil;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.luffy.impl.JtRun;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class XPluginImpl implements Plugin {
+public class LuffyPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         context.app().sharedAdd("XFun", JtFun.g);
