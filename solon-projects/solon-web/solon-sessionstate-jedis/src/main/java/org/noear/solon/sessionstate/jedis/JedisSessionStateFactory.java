@@ -49,7 +49,7 @@ public class JedisSessionStateFactory implements SessionStateFactory {
 
     private RedisClient redisClient;
 
-    protected RedisClient redisClient() {
+    public RedisClient redisClient() {
         return redisClient;
     }
 

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.sessionstate.redisson;
+package org.noear.solon.sessionstate.jedis.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.sessionstate.jedis.JedisSessionStateFactory;
 
-public class XPluginImp implements Plugin {
+public class SessionstateJedisPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         if (context.app().enableSessionState() == false) {
@@ -27,9 +28,10 @@ public class XPluginImp implements Plugin {
         }
 
         if (context.app().chainManager().getSessionStateFactory().priority()
-                >= RedissonSessionStateFactory.SESSION_STATE_PRIORITY) {
+                >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
+
         /*
          *
          * server.session.state.redis:
@@ -40,11 +42,11 @@ public class XPluginImp implements Plugin {
          *
          * */
 
-        if (RedissonSessionStateFactory.getInstance().redisClient() == null) {
+        if (JedisSessionStateFactory.getInstance().redisClient() == null) {
             return;
         }
 
-        context.app().chainManager().setSessionStateFactory(RedissonSessionStateFactory.getInstance());
+        context.app().chainManager().setSessionStateFactory(JedisSessionStateFactory.getInstance());
 
         LogUtil.global().info("Session: Redis session state plugin is loaded");
     }

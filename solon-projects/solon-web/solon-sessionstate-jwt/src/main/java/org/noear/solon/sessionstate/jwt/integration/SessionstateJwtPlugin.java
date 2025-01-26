@@ -13,13 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.sessionstate.jedis;
+package org.noear.solon.sessionstate.jwt.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.sessionstate.jwt.JwtSessionStateFactory;
+import org.noear.solon.sessionstate.jwt.SessionProp;
 
-public class XPluginImp implements Plugin {
+/**
+ * @author noear
+ * @since 1.3
+ */
+public class SessionstateJwtPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         if (context.app().enableSessionState() == false) {
@@ -27,26 +33,14 @@ public class XPluginImp implements Plugin {
         }
 
         if (context.app().chainManager().getSessionStateFactory().priority()
-                >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
+                >= JwtSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
-        /*
-         *
-         * server.session.state.redis:
-         * server:
-         * password:
-         * db: 31
-         * maxTotal: 200
-         *
-         * */
+        SessionProp.init();
 
-        if (JedisSessionStateFactory.getInstance().redisClient() == null) {
-            return;
-        }
+        context.app().chainManager().setSessionStateFactory(JwtSessionStateFactory.getInstance());
 
-        context.app().chainManager().setSessionStateFactory(JedisSessionStateFactory.getInstance());
-
-        LogUtil.global().info("Session: Redis session state plugin is loaded");
+        LogUtil.global().info("Session: Jwt session state plugin is loaded");
     }
 }

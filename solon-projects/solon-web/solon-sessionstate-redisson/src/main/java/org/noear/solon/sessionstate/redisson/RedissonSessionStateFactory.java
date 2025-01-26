@@ -49,7 +49,7 @@ public class RedissonSessionStateFactory implements SessionStateFactory {
 
     private RedissonClient redisClient;
 
-    protected RedissonClient redisClient() {
+    public RedissonClient redisClient() {
         return redisClient;
     }
 

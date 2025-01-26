@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class XPluginImp implements Plugin {
+public class WebStaticfilesPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         //通过动态控制是否启用

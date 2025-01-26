@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.sessionstate.local;
+package org.noear.solon.web.sse.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 
-public class XPluginImp implements Plugin {
+/**
+ * @author noear
+ * @since 2.3
+ */
+public class WebSsePlugin implements Plugin {
     @Override
-    public void start(AppContext context) {
-        if (context.app().enableSessionState() == false) {
-            return;
-        }
-
-        if (context.app().chainManager().getSessionStateFactory().priority()
-                >= LocalSessionStateFactory.SESSION_STATE_PRIORITY) {
-            return;
-        }
-
-        context.app().chainManager().setSessionStateFactory(LocalSessionStateFactory.getInstance());
-
-        LogUtil.global().info("Session: Local session state plugin is loaded");
+    public void start(AppContext context) throws Throwable {
+        context.app().chainManager().addReturnHandler(new ActionReturnSseHandler());
     }
 }

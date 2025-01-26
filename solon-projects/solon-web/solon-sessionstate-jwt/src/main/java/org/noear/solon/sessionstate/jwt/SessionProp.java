@@ -17,7 +17,7 @@ package org.noear.solon.sessionstate.jwt;
 
 import org.noear.solon.Solon;
 
-class SessionProp {
+public class SessionProp {
     /**
      * 变量名
      * */
