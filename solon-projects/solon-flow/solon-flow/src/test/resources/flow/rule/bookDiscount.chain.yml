@@ -1,6 +1,5 @@
 id: "book_discount"
 nodes:
-  - type: "start"
   - title: "book_discount_1"
     when: "order.getOriginalPrice() < 100"
     task: |
@@ -16,4 +15,3 @@ nodes:
     task: |
       order.setRealPrice(order.getOriginalPrice() - 20);
       System.out.println("优惠20元");
-  - type: "end"

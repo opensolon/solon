@@ -1,8 +1,6 @@
 {
   "id": "c1",
   "nodes": [
-    { "type": "start"},
-    { "task": "context.result=111;"},
-    { "type": "end"}
+    { "task": "context.result=111;"}
   ]
 }

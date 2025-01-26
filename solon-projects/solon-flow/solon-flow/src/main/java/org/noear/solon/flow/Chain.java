@@ -225,6 +225,11 @@ public class Chain {
             chain.addNode(nodeDecl);
         }
 
+        if (chain.start == null && nodesLat != null) {
+            //如果没有配置 start 节点，第一个节点自动为 start
+            chain.start = chain.nodes.get(nodesLat.id);
+        }
+
         return chain;
     }
 
