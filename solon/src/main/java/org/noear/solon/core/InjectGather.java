@@ -158,6 +158,11 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
                 }
             }
 
+            if (done) {
+                //可能在 p1.commit() 后触发了完成事件
+                return;
+            }
+
             if (onDone != null && requireRun) {
                 //补触 onDone
                 List<Object> args = new ArrayList<>(vars.size());
