@@ -28,6 +28,7 @@
 
 
 ### v3.0.8
+* 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
 * 修复 solon 集合bean注入时，可能产生两次执行的问题
 * snack3 升为 3.2.126
 * liquor 1.3.8
