@@ -36,6 +36,15 @@ public class AppTest {
             };
         }
 
+        public LogAdapter logAdapter2() {
+            return new LogAdapter() {
+                @Override
+                public void log(String msg) {
+                    System.out.println(msg);
+                }
+            };
+        }
+
         @Bean
         public void logAdapterAry(List<LogAdapter> adapters) {
             count_l++;
