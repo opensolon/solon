@@ -99,20 +99,12 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
                 return;
             }
 
-            done = true;
-            if (onDone != null) {
-                List<Object> args = new ArrayList<>(vars.size());
-                for (VarHolder p1 : vars) {
-                    args.add(p1.getValue());
-                }
-
-                try {
-                    onDone.accept(args.toArray());
-                } catch (RuntimeException ex) {
-                    throw ex;
-                } catch (Throwable ex) {
-                    throw new IllegalStateException(ex);
-                }
+            try {
+                doneDo();
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
+                throw new IllegalStateException(ex);
             }
         } finally {
             Utils.locker().unlock();
@@ -158,18 +150,27 @@ public class InjectGather implements Runnable, Comparable<InjectGather> {
                 }
             }
 
-            if (onDone != null && requireRun) {
-                //补触 onDone
-                List<Object> args = new ArrayList<>(vars.size());
-                for (VarHolder p1 : vars) {
-                    args.add(p1.getValue());
-                }
-
-                done = true;
-                onDone.accept(args.toArray());
+            if (requireRun) {
+                doneDo();
             }
         } finally {
             Utils.locker().unlock();
+        }
+    }
+
+    private void doneDo() throws Throwable {
+        if (done) {
+            return;
+        }
+
+        done = true;
+
+        if (onDone != null) {
+            List<Object> args = new ArrayList<>(vars.size());
+            for (VarHolder p1 : vars) {
+                args.add(p1.getValue());
+            }
+            onDone.accept(args.toArray());
         }
     }
 
