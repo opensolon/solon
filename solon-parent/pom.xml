@@ -280,6 +280,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-sse</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cache-caffeine</artifactId>
                 <version>${solon.version}</version>
