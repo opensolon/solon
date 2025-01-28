@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 class ChatModelImpl implements ChatModel{
-    private ChatConfig config;
+    private final ChatConfig config;
     public ChatModelImpl(ChatConfig config) {
         this.config = config;
     }

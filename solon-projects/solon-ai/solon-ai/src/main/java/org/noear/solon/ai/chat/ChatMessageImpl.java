@@ -22,17 +22,17 @@ package org.noear.solon.ai.chat;
  * @since 3.1
  */
 class ChatMessageImpl implements ChatMessage {
-    private final ChatMessageType type;
+    private final ChatRole role;
     private final String content;
 
-    public ChatMessageImpl(ChatMessageType type, String content) {
-        this.type = type;
+    public ChatMessageImpl(ChatRole role, String content) {
+        this.role = role;
         this.content = content;
     }
 
     @Override
-    public ChatMessageType getType() {
-        return type;
+    public ChatRole getRole() {
+        return role;
     }
 
     @Override

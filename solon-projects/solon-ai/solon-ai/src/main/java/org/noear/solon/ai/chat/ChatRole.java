@@ -16,12 +16,22 @@
 package org.noear.solon.ai.chat;
 
 /**
- * 聊天消息类型
+ * 聊天角色
  *
  * @author noear
  * @since 3.1
  */
-public enum ChatMessageType {
+public enum ChatRole {
+    /**
+     * 系统
+     */
     SYSTEM,
-    USER
+    /**
+     * 用户
+     */
+    USER,
+    /**
+     * 助理
+     */
+    ASSISTANT,
 }

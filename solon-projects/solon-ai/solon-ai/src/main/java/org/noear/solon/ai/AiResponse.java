@@ -26,7 +26,7 @@ import org.noear.solon.lang.Preview;
 @Preview("3.1")
 public interface AiResponse {
     /**
-     * AI 获取消息
+     * 获取消息
      */
     AiMessage getMessage();
 }

@@ -24,13 +24,29 @@ import org.noear.solon.ai.AiMessage;
  * @since 3.1
  */
 public interface ChatMessage extends AiMessage {
-    ChatMessageType getType();
+    /**
+     * 获取角色
+     */
+    ChatRole getRole();
 
+    /**
+     * 构建系统消息
+     */
     static ChatMessage ofSystem(String content) {
-        return new ChatMessageImpl(ChatMessageType.SYSTEM, content);
+        return new ChatMessageImpl(ChatRole.SYSTEM, content);
     }
 
+    /**
+     * 构建用户消息
+     */
     static ChatMessage ofUser(String content) {
-        return new ChatMessageImpl(ChatMessageType.USER, content);
+        return new ChatMessageImpl(ChatRole.USER, content);
+    }
+
+    /**
+     * 构建助理消息
+     */
+    static ChatMessage ofAssistant(String content) {
+        return new ChatMessageImpl(ChatRole.ASSISTANT, content);
     }
 }

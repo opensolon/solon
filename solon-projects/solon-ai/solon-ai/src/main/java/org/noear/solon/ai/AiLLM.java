@@ -27,9 +27,18 @@ import java.util.function.Consumer;
  */
 @Preview("3.1")
 public interface AiLLM<T extends AiMessage, R extends AiResponse,S extends AiLLM> {
+    /**
+     * 提示语
+     */
     S prompt(T... messages);
 
+    /**
+     * 调用
+     */
     R call();
 
+    /**
+     * 流响应
+     */
     void stream(Consumer<R> consumer);
 }

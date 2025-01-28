@@ -25,9 +25,6 @@ import java.util.Properties;
  * @author noear
  * @since 3.1
  */
-public class ChatConfig implements AiConfig {
-    @Override
-    public Properties toProps() {
-        return null;
-    }
+public interface ChatConfig extends AiConfig {
+
 }

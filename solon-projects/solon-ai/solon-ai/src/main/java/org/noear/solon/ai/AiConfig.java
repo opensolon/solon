@@ -27,5 +27,23 @@ import java.util.Properties;
  */
 @Preview("3.1")
 public interface AiConfig {
+    /**
+     * 请求地址
+     */
+    String url();
+
+    /**
+     * 提供者
+     */
+    String provider();
+
+    /**
+     * 模型
+     */
+    String model();
+
+    /**
+     * 转为属性
+     */
     Properties toProps();
 }
