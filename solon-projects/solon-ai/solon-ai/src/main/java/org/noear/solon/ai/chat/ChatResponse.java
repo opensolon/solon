@@ -25,8 +25,9 @@ import org.noear.solon.ai.AiResponse;
  */
 public class ChatResponse implements AiResponse<ChatMessage> {
 
+
     @Override
-    public ChatMessage getMessage() {
+    public Iterable<ChatMessage> getMessages() {
         return null;
     }
 }
