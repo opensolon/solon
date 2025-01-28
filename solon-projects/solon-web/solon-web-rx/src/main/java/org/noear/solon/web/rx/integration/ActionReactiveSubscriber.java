@@ -15,7 +15,6 @@
  */
 package org.noear.solon.web.rx.integration;
 
-import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RunUtil;
@@ -23,9 +22,6 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Action 响应式订阅者
@@ -38,33 +34,15 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
-    private boolean isMultiple;
-    private boolean isStreamX;
-    private List<Object> list;
     private boolean isFirst;
 
-    public ActionReactiveSubscriber(Context ctx, Action action, boolean isMultiple) {
+    public ActionReactiveSubscriber(Context ctx, Action action) {
         this.ctx = ctx;
         this.action = action;
-        this.isMultiple = isMultiple;
-
-        if (ctx.contentTypeNew() != null) {
-            this.isStreamX = ctx.contentTypeNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE);
-        } else {
-            this.isStreamX = false;
-        }
-
-        if (isStreamX == false) {
-            this.list = new ArrayList<>();
-        }
     }
 
     private void request(Subscription subscription) {
-        if (isMultiple) {
-            subscription.request(Long.MAX_VALUE);
-        } else {
-            subscription.request(1);
-        }
+        subscription.request(Long.MAX_VALUE);
     }
 
     @Override
@@ -82,17 +60,13 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onNext(Object o) {
         try {
-            if (isStreamX) {
-                try {
-                    if (isFirst == false) {
-                        ctx.output("\n");
-                    }
-                    action.render(o, ctx, true);
-                } catch (Throwable e) {
-                    log.warn(e.getMessage(), e);
+            try {
+                if (isFirst == false) {
+                    ctx.output("\n");
                 }
-            } else {
-                list.add(o);
+                action.render(o, ctx, true);
+            } catch (Throwable e) {
+                log.warn(e.getMessage(), e);
             }
         } finally {
             isFirst = false;
@@ -114,21 +88,7 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onComplete() {
         if (ctx.asyncSupported()) {
-            try {
-                if (isStreamX == false) {
-                    if (isMultiple) {
-                        action.render(list, ctx, false);
-                    } else {
-                        if (list.size() > 0) {
-                            action.render(list.get(0), ctx, false);
-                        }
-                    }
-                }
-            } catch (Throwable e) {
-                log.warn(e.getMessage(), e);
-            } finally {
-                ctx.asyncComplete();
-            }
+            ctx.asyncComplete();
         }
     }
 }

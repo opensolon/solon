@@ -36,11 +36,16 @@ public class AppTest extends HttpTester {
 
     @Test
     public void test5() throws Exception {
-        assert 500 == path("/t1?").head();
+        assert path("/f3?name=d").get().equals("[\"Hello d\",\"hello2 d\"]");
     }
 
     @Test
     public void test6() throws Exception {
+        assert 500 == path("/t1?").head();
+    }
+
+    @Test
+    public void test7() throws Exception {
         assert 200 == path("/t2?").head();
     }
 }
