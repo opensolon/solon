@@ -23,6 +23,10 @@ import org.noear.solon.ai.AiResponse;
  * @author noear
  * @since 3.1
  */
-public interface ChatResponse extends AiResponse {
+public class ChatResponse implements AiResponse<ChatMessage> {
 
+    @Override
+    public ChatMessage getMessage() {
+        return null;
+    }
 }

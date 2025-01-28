@@ -2,6 +2,7 @@ package demo.ai;
 
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
+import org.noear.solon.ai.chat.ChatOptions;
 import org.noear.solon.ai.chat.ChatResponse;
 
 /**
@@ -13,11 +14,13 @@ public class DemoTest {
 
         //一次性返回
         {
-            ChatResponse resp = chatModel.prompt(ChatMessage.ofUser("xxx"))
+            ChatResponse resp = chatModel
+                    .prompt(ChatMessage.ofUser("xxx"))
+                    .options(ChatOptions.of().temperature(0.8F))
                     .call();
         }
 
-        //流返回
+        //流返回(sse)
         {
 
             chatModel.prompt(ChatMessage.ofUser("yyy"))

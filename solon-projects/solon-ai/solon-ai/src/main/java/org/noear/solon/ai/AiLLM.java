@@ -17,8 +17,6 @@ package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
-import java.util.function.Consumer;
-
 /**
  * AI 大语言模型
  *
@@ -26,19 +24,10 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 @Preview("3.1")
-public interface AiLLM<T extends AiMessage, R extends AiResponse,S extends AiLLM> {
+public interface AiLLM<Msg extends AiMessage, Req extends AiRequest> {
+
     /**
      * 提示语
      */
-    S prompt(T... messages);
-
-    /**
-     * 调用
-     */
-    R call();
-
-    /**
-     * 流响应
-     */
-    void stream(Consumer<R> consumer);
+    Req prompt(Msg... messages);
 }

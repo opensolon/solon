@@ -15,32 +15,21 @@
  */
 package org.noear.solon.ai.chat;
 
-import java.util.function.Consumer;
-
 /**
  * 聊天模型实现
  *
  * @author noear
  * @since 3.1
  */
-class ChatModelImpl implements ChatModel{
+class ChatModelImpl implements ChatModel {
     private final ChatConfig config;
+
     public ChatModelImpl(ChatConfig config) {
         this.config = config;
     }
 
     @Override
-    public ChatModel prompt(ChatMessage... messages) {
-        return null;
-    }
-
-    @Override
-    public ChatResponse call() {
-        return null;
-    }
-
-    @Override
-    public void stream(Consumer<ChatResponse> consumer) {
-
+    public ChatRequest prompt(ChatMessage... messages) {
+        return new ChatRequest(config, messages);
     }
 }

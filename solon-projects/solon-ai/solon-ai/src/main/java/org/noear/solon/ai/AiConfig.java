@@ -28,9 +28,19 @@ import java.util.Properties;
 @Preview("3.1")
 public interface AiConfig {
     /**
-     * 请求地址
+     * 接口地址
      */
-    String url();
+    String apiUrl();
+
+    /**
+     * 接口身份
+     */
+    String apiKey();
+
+    /**
+     * 接口密角
+     */
+    String apiSecret();
 
     /**
      * 提供者

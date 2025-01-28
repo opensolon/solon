@@ -23,7 +23,7 @@ import org.noear.solon.ai.AiLLM;
  * @author noear
  * @since 3.1
  */
-public interface ChatModel extends AiLLM<ChatMessage,ChatResponse, ChatModel> {
+public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
     static ChatModel of(ChatConfig config) {
         return new ChatModelImpl(config);
     }
