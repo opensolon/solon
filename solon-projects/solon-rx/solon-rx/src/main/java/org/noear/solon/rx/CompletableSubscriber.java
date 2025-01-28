@@ -15,20 +15,19 @@
  */
 package org.noear.solon.rx;
 
-import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 /**
- * 单体发射器
+ * 可完成的订阅者
  *
  * @author noear
- * @since 3.1
+ * @since 2.9
  */
-public interface BabaEmitter<T> {
-    void onError(Throwable cause);
+public interface CompletableSubscriber extends Subscriber<Void> {
+    default void onSubscribe(Subscription var1) {
+    }
 
-    void onComplete(Publisher<? extends T> publisher);
-
-    void onComplete(T result);
-
-    void onComplete();
+    default void onNext(Void var1) {
+    }
 }

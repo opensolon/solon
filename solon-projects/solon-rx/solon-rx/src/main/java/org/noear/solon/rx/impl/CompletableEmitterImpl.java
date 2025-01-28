@@ -15,24 +15,19 @@
  */
 package org.noear.solon.rx.impl;
 
-import org.noear.solon.rx.BabaEmitter;
-import org.reactivestreams.Publisher;
+import org.noear.solon.rx.CompletableEmitter;
 import org.reactivestreams.Subscriber;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 可完成的发射器实现
  *
  * @author noear
  * @since 2.9
- * @since 3.1
  */
-public class BabaEmitterImpl<T> implements BabaEmitter<T> {
-    private final Subscriber<T> subscriber;
-    private final AtomicBoolean completed = new AtomicBoolean(false);
+public class CompletableEmitterImpl implements CompletableEmitter {
+    private final Subscriber<? super Void> subscriber;
 
-    public BabaEmitterImpl(Subscriber<T> subscriber) {
+    public CompletableEmitterImpl(Subscriber<? super Void> subscriber) {
         this.subscriber = subscriber;
     }
 
@@ -42,24 +37,7 @@ public class BabaEmitterImpl<T> implements BabaEmitter<T> {
     }
 
     @Override
-    public void onComplete(Publisher<? extends T> publisher) {
-        if (completed.compareAndSet(false, true)) {
-            publisher.subscribe(subscriber);
-        }
-    }
-
-    @Override
-    public void onComplete(T result) {
-        if (completed.compareAndSet(false, true)) {
-            subscriber.onNext(result);
-            subscriber.onComplete();
-        }
-    }
-
-    @Override
     public void onComplete() {
-        if (completed.compareAndSet(false, true)) {
-            subscriber.onComplete();
-        }
+        subscriber.onComplete();
     }
 }

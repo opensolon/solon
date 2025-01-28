@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.rx;
+package org.noear.solon.rx.impl;
 
-import org.reactivestreams.Publisher;
+import org.noear.solon.rx.CompletableSubscriber;
 
 /**
- * 多体发射器
+ * 可完成的订阅者-简单实现
  *
  * @author noear
- * @since 3.1
+ * @since 2.9
  */
-public interface MamaEmitter<T> {
-    void onError(Throwable cause);
+public class CompletableSubscriberSimple implements CompletableSubscriber {
+    @Override
+    public void onError(Throwable throwable) {
 
-    void onNext(T item);
+    }
 
-    void onComplete(Publisher<? extends T> publisher);
+    @Override
+    public void onComplete() {
 
-    void onComplete();
+    }
 }
