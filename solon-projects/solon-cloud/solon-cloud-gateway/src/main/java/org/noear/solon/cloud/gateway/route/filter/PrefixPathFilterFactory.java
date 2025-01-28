@@ -20,7 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.Baba;
 
 /**
  * 添加前缀路径过滤器
@@ -56,7 +56,7 @@ public class PrefixPathFilterFactory implements RouteFilterFactory {
         }
 
         @Override
-        public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+        public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
             //目标路径重组
             String newPath = part + ctx.newRequest().getPath();
             ctx.newRequest().path(newPath);

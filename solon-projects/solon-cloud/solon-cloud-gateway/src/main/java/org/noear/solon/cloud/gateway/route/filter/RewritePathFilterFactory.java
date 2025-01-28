@@ -20,7 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.Baba;
 
 import java.util.regex.Pattern;
 
@@ -71,7 +71,7 @@ public class RewritePathFilterFactory implements RouteFilterFactory {
         }
 
         @Override
-        public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+        public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
             String path = ctx.newRequest().getPath();
 
             String newPath = pattern.matcher(path).replaceAll(replacement);

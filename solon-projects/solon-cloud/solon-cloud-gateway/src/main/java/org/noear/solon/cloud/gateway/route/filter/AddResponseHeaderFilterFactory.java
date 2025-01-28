@@ -20,8 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.CompletableSubscriber;
+import org.noear.solon.rx.Baba;
 
 /**
  * 添加响应头过滤器
@@ -67,21 +66,18 @@ public class AddResponseHeaderFilterFactory implements RouteFilterFactory {
         }
 
         @Override
-        public Completable doFilter(ExContext ctx, ExFilterChain chain) {
-            return Completable.create(emitter -> {
-                chain.doFilter(ctx).subscribe(new CompletableSubscriber() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        ctx.newResponse().headerAdd(name, value);
-                        emitter.onError(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        ctx.newResponse().headerAdd(name, value);
-                        emitter.onComplete();
-                    }
-                });
+        public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
+            return Baba.from(emitter -> {
+                chain.doFilter(ctx)
+                        .doOnComplete(() -> {
+                            ctx.newResponse().headerAdd(name, value);
+                            emitter.onComplete();
+                        })
+                        .doOnError(err -> {
+                            ctx.newResponse().headerAdd(name, value);
+                            emitter.onError(err);
+                        })
+                        .subscribe();
             });
         }
     }

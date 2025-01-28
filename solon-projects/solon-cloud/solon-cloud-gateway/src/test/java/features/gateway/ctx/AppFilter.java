@@ -7,7 +7,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextHolder;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.Baba;
 
 /**
  * @author noear 2024/12/18 created
@@ -15,7 +15,7 @@ import org.noear.solon.rx.Completable;
 @Component
 public class AppFilter implements CloudGatewayFilter {
     @Override
-    public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+    public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
         try {
             Context ctx2 = ctx.toContext();
             ContextHolder.currentSet(ctx2);
@@ -25,10 +25,10 @@ public class AppFilter implements CloudGatewayFilter {
 
             if (ctx2.isHeadersSent()) {
                 ctx2.flush();
-                return Completable.complete();
+                return Baba.complete();
             }
         } catch (Throwable ex) {
-            return Completable.error(ex);
+            return Baba.error(ex);
         } finally {
             ContextHolder.currentRemove();
         }

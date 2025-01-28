@@ -20,7 +20,7 @@ import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.cloud.gateway.route.RouteHandler;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.Baba;
 
 import java.net.URI;
 
@@ -37,7 +37,7 @@ public class LbRouteHandler implements RouteHandler {
     }
 
     @Override
-    public Completable handle(ExContext ctx) {
+    public Baba<Void> handle(ExContext ctx) {
         //构建新的目标
         URI targetUri = ctx.targetNew();
 

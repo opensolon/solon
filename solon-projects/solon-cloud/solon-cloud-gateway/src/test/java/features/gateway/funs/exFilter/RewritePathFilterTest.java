@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.impl.CompletableSubscriberSimple;
+import org.noear.solon.rx.Baba;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -31,80 +30,80 @@ import org.noear.solon.test.SolonTest;
 public class RewritePathFilterTest {
     @Test
     public void testValidConfig() {
-        ExFilter filter = RouteFactoryManager.buildFilter (
+        ExFilter filter = RouteFactoryManager.buildFilter(
                 "RewritePath=/red/?(?<segment>.*), /$\\{segment}");
 
         assert filter != null;
 
-        ExNewRequest newRequest = new ExNewRequest ();
-        newRequest.path ("/red/test");
-        filter.doFilter (new ExContextEmpty () {
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.path("/red/test");
+        filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete ()).subscribe (new CompletableSubscriberSimple ());
+        }, ctx -> Baba.complete()).subscribe();
 
-        assert "/test".equals (newRequest.getPath ());
+        assert "/test".equals(newRequest.getPath());
     }
 
 
     @Test
     public void testValidConfig1() {
-        ExFilter filter = RouteFactoryManager.buildFilter (
+        ExFilter filter = RouteFactoryManager.buildFilter(
                 "RewritePath=/(?<segment>.*), /$\\{segment}");
 
         assert filter != null;
 
-        ExNewRequest newRequest = new ExNewRequest ();
-        newRequest.path ("/test");
-        filter.doFilter (new ExContextEmpty () {
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.path("/test");
+        filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete ()).subscribe (new CompletableSubscriberSimple ());
+        }, ctx -> Baba.complete()).subscribe();
 
-        assert "/test".equals (newRequest.getPath ());
+        assert "/test".equals(newRequest.getPath());
     }
 
 
     @Test
     public void testValidConfig2() {
-        ExFilter filter = RouteFactoryManager.buildFilter (
+        ExFilter filter = RouteFactoryManager.buildFilter(
                 "RewritePath=/red/blue/(?<segment>.*), /$\\{segment}");
 
         assert filter != null;
 
-        ExNewRequest newRequest = new ExNewRequest ();
-        newRequest.path ("/red/blue/test");
-        filter.doFilter (new ExContextEmpty () {
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.path("/red/blue/test");
+        filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete ()).subscribe (new CompletableSubscriberSimple ());
+        }, ctx -> Baba.complete()).subscribe();
 
-        assert "/test".equals (newRequest.getPath ());
+        assert "/test".equals(newRequest.getPath());
     }
 
 
     @Test
     public void testValidConfig3() {
-        ExFilter filter = RouteFactoryManager.buildFilter (
+        ExFilter filter = RouteFactoryManager.buildFilter(
                 "RewritePath=/red/blue/?(?<segment>.*), /$\\{segment}");
 
         assert filter != null;
 
-        ExNewRequest newRequest = new ExNewRequest ();
-        newRequest.path ("/red/blue/test");
-        filter.doFilter (new ExContextEmpty () {
+        ExNewRequest newRequest = new ExNewRequest();
+        newRequest.path("/red/blue/test");
+        filter.doFilter(new ExContextEmpty() {
             @Override
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete ()).subscribe (new CompletableSubscriberSimple ());
+        }, ctx -> Baba.complete()).subscribe();
 
-        assert "/test".equals (newRequest.getPath ());
+        assert "/test".equals(newRequest.getPath());
     }
 }

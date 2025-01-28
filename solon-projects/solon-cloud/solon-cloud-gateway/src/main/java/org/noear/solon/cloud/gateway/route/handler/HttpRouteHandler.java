@@ -26,8 +26,8 @@ import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.cloud.gateway.route.RouteHandler;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.CompletableEmitter;
+import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.BabaEmitter;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.util.KeyValues;
 
@@ -62,7 +62,7 @@ public class HttpRouteHandler implements RouteHandler {
      * 处理
      */
     @Override
-    public Completable handle(ExContext x) {
+    public Baba<Void> handle(ExContext x) {
         try {
             ExContextImpl ctx = (ExContextImpl)x;
             ctx.rawRequest().pause();
@@ -70,7 +70,7 @@ public class HttpRouteHandler implements RouteHandler {
             //构建请求
             Future<HttpClientRequest> req1 = buildHttpRequest(ctx);
 
-            return Completable.create(emitter -> {
+            return Baba.create(emitter -> {
                 req1.onComplete(ar -> {
                     if (ar.succeeded()) {
                         handleDo(ctx, ar.result(), emitter);
@@ -82,14 +82,14 @@ public class HttpRouteHandler implements RouteHandler {
         } catch (Throwable ex) {
             //如查出错，说明客户端发的数据有问题
             if (ex instanceof StatusException) {
-                return Completable.error(ex);
+                return Baba.error(ex);
             } else {
-                return Completable.error(new StatusException(ex, 400));
+                return Baba.error(new StatusException(ex, 400));
             }
         }
     }
 
-    public void handleDo(ExContext ctx, HttpClientRequest req1, CompletableEmitter emitter) {
+    public void handleDo(ExContext ctx, HttpClientRequest req1, BabaEmitter<Void> emitter) {
         try {
             //同步 header
             for (KeyValues<String> kv : ctx.newRequest().getHeaders()) {
@@ -152,7 +152,7 @@ public class HttpRouteHandler implements RouteHandler {
     /**
      * 请求回调处理
      */
-    private void callbackHandle(ExContext ctx, AsyncResult<HttpClientResponse> ar, CompletableEmitter subscriber) {
+    private void callbackHandle(ExContext ctx, AsyncResult<HttpClientResponse> ar, BabaEmitter<Void> subscriber) {
         try {
             if (ar.succeeded()) {
                 HttpClientResponse resp1 = ar.result();

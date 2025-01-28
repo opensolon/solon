@@ -19,39 +19,35 @@ import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.CompletableSubscriber;
+import org.noear.solon.rx.Baba;
 
 //@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
-    public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+    public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
         String token = ctx.rawHeader("TOKEN");
         if (token == null) {
             ctx.newResponse().status(401);
-            return Completable.complete();
+            return Baba.complete();
         }
 
-        return Completable.create(emitter -> {
-            chain.doFilter(ctx).subscribe(new CompletableSubscriber() {
-                @Override
-                public void onError(Throwable e) {
-                    if (e instanceof StatusException) {
-                        StatusException se = (StatusException) e;
+        return Baba.create(emitter -> {
+            chain.doFilter(ctx)
+                    .doOnError(err -> {
+                        if (err instanceof StatusException) {
+                            StatusException se = (StatusException) err;
 
-                        ctx.newResponse().status(se.getCode());
+                            ctx.newResponse().status(se.getCode());
+                            emitter.onComplete();
+                        } else {
+                            ctx.newResponse().status(500);
+                            emitter.onComplete();
+                        }
+                    })
+                    .doOnComplete(() -> {
                         emitter.onComplete();
-                    } else {
-                        ctx.newResponse().status(500);
-                        emitter.onComplete();
-                    }
-                }
-
-                @Override
-                public void onComplete() {
-                    emitter.onComplete();
-                }
-            });
+                    })
+                    .subscribe();
         });
     }
 }

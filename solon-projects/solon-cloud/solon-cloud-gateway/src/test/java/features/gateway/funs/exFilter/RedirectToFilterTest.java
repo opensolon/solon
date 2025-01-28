@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewResponse;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.impl.CompletableSubscriberSimple;
+import org.noear.solon.rx.Baba;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -42,7 +41,7 @@ public class RedirectToFilterTest {
             public ExNewResponse newResponse() {
                 return newResponse;
             }
-        }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
+        }, ctx -> Baba.complete()).subscribe();
 
         assert newResponse.getStatus() == 301;
         assert "/app".equals(newResponse.getHeaders().get("Location"));

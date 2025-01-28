@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.impl.CompletableSubscriberSimple;
+import org.noear.solon.rx.Baba;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -43,7 +42,7 @@ public class PrefixPathFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Completable.complete()).subscribe(new CompletableSubscriberSimple());
+        }, ctx -> Baba.complete()).subscribe();
 
         assert "/app/test".equals(newRequest.getPath());
     }

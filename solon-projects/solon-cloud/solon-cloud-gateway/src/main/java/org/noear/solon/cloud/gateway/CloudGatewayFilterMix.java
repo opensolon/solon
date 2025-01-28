@@ -21,7 +21,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.rx.Baba;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public abstract class CloudGatewayFilterMix implements CloudGatewayFilter {
     }
 
     @Override
-    public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+    public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
         return new ExFilterChainImpl(filters, c -> doFilterDo(c, chain))
                 .doFilter(ctx);
     }
@@ -62,7 +62,7 @@ public abstract class CloudGatewayFilterMix implements CloudGatewayFilter {
     /**
      * 执行过滤
      */
-    public Completable doFilterDo(ExContext ctx, ExFilterChain chain) {
+    public Baba<Void> doFilterDo(ExContext ctx, ExFilterChain chain) {
         return chain.doFilter(ctx);
     }
 }
