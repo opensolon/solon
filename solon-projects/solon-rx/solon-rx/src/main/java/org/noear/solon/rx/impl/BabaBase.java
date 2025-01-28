@@ -11,6 +11,11 @@ import java.util.function.Function;
 public abstract class BabaBase<T> extends AbstractPublisher<T, Baba<T>> implements Baba<T> {
     @Override
     public <R> Baba<R> flatMap(Function<? super T, ? extends Publisher<? extends R>> mapper) {
-        return new BabaMapper<>(this, mapper);
+        return new BabaFlatMap<>(this, mapper);
+    }
+
+    @Override
+    public <R> Baba<R> map(Function<? super T, ? extends R> mapper) {
+        return new BabaMap<>(this, mapper);
     }
 }

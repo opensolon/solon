@@ -2,8 +2,8 @@ package org.noear.solon.rx.base;
 
 import org.reactivestreams.Publisher;
 
-import java.time.Duration;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * @author noear
@@ -18,4 +18,6 @@ public interface BasePublisher<T, Self extends BasePublisher> extends Publisher<
     Self doOnComplete(Runnable doOnComplete);
 
     void subscribe();
+
+    Self filter(Predicate<? super T> filter);
 }

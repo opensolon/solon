@@ -19,6 +19,8 @@ import java.util.function.Supplier;
 public interface Baba<T> extends BasePublisher<T, Baba<T>> {
     <R> Baba<R> flatMap(Function<? super T, ? extends Publisher<? extends R>> mapper);
 
+    <R> Baba<R> map(Function<? super T, ? extends R> mapper);
+
     /// ////////////
 
     static <T> Baba<T> from(Publisher<T> publisher) {

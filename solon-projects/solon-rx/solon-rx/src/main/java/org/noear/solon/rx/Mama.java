@@ -8,7 +8,6 @@ import org.reactivestreams.Publisher;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -20,6 +19,10 @@ import java.util.function.Function;
  */
 public interface Mama<T> extends BasePublisher<T, Mama<T>> {
     <R> Mama<R> flatMap(Function<? super T, ? extends Publisher<? extends R>> mapper);
+
+    <R> Mama<R> map(Function<? super T, ? extends R> mapper);
+
+    Baba<T> firstOrEmpty();
 
     Baba<List<T>> collectList();
 

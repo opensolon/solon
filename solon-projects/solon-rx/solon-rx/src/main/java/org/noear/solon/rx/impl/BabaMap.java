@@ -10,12 +10,12 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-public class BabaMapper<T,R> extends BabaBase<R> implements Subscriber<T> , Subscription {
+public class BabaMap<T,R> extends BabaBase<R> implements Subscriber<T> , Subscription {
     private final Publisher<T> publisher;
-    private final Function<? super T, ? extends Publisher<? extends R>> mapper;
+    private final Function<? super T, ? extends R> mapper;
 
 
-    public BabaMapper(Publisher<T> publisher, Function<? super T, ? extends Publisher<? extends R>> mapper) {
+    public BabaMap(Publisher<T> publisher, Function<? super T, ? extends R> mapper) {
         this.publisher = publisher;
         this.mapper = mapper;
     }
@@ -24,7 +24,6 @@ public class BabaMapper<T,R> extends BabaBase<R> implements Subscriber<T> , Subs
 
     private Subscriber<? super R> subscriber;
     private Subscription subscription;
-    private boolean hasNext = false;
 
     @Override
     public void subscribe(Subscriber<? super R> subscriber) {
@@ -40,14 +39,7 @@ public class BabaMapper<T,R> extends BabaBase<R> implements Subscriber<T> , Subs
 
     @Override
     public void onNext(T t) {
-        hasNext = true;
-
-        try {
-            Publisher<? extends R> r = mapper.apply(t);
-            r.subscribe(subscriber);
-        } catch (Throwable err) {
-            onError(err);
-        }
+        subscriber.onNext(mapper.apply(t));
     }
 
     @Override
@@ -57,9 +49,7 @@ public class BabaMapper<T,R> extends BabaBase<R> implements Subscriber<T> , Subs
 
     @Override
     public void onComplete() {
-        if (hasNext == false) {
-            subscriber.onComplete();
-        }
+        subscriber.onComplete();
     }
 
     @Override

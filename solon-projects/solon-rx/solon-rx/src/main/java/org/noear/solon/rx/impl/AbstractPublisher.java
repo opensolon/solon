@@ -3,12 +3,13 @@ package org.noear.solon.rx.impl;
 import org.noear.solon.rx.base.BasePublisher;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * @author noear
  * @since 3.1
  */
-public abstract class AbstractPublisher<T,R extends BasePublisher> implements BasePublisher<T, R> {
+public abstract class AbstractPublisher<T,Self extends BasePublisher> implements BasePublisher<T, Self> {
     private SubscriberBuilder<T> subscriberBuilder;
 
     protected SubscriberBuilder<T> subscriberBuilder() {
@@ -19,25 +20,37 @@ public abstract class AbstractPublisher<T,R extends BasePublisher> implements Ba
     }
 
     @Override
-    public R doOnNext(Consumer<? super T> doOnNext) {
+    public Self doOnNext(Consumer<? super T> doOnNext) {
         subscriberBuilder().doOnNext(doOnNext);
-        return (R) this;
+        return (Self) this;
     }
 
     @Override
-    public R doOnError(Consumer<Throwable> doOnError) {
+    public Self doOnError(Consumer<Throwable> doOnError) {
         subscriberBuilder().doOnError(doOnError);
-        return (R) this;
+        return (Self) this;
     }
 
     @Override
-    public R doOnComplete(Runnable doOnComplete) {
+    public Self doOnComplete(Runnable doOnComplete) {
         subscriberBuilder().doOnComplete(doOnComplete);
-        return (R) this;
+        return (Self) this;
     }
 
     @Override
     public void subscribe() {
         subscribe(subscriberBuilder());
+    }
+
+    private Predicate<? super T> filter;
+
+    protected Predicate<? super T> filter() {
+        return filter;
+    }
+
+    @Override
+    public Self filter(Predicate<? super T> filter) {
+        this.filter = filter;
+        return (Self) this;
     }
 }

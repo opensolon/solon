@@ -10,12 +10,12 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-public class MamaMapper<T,R> extends MamaBase<R> implements Subscriber<T> {
+public class MamaMap<T,R> extends MamaBase<R> implements Subscriber<T> , Subscription {
     private final Publisher<T> publisher;
-    private final Function<? super T, ? extends Publisher<? extends R>> mapper;
+    private final Function<? super T, ? extends R> mapper;
 
 
-    public MamaMapper(Publisher<T> publisher, Function<? super T, ? extends Publisher<? extends R>> mapper) {
+    public MamaMap(Publisher<T> publisher, Function<? super T, ? extends R> mapper) {
         this.publisher = publisher;
         this.mapper = mapper;
     }
@@ -23,7 +23,7 @@ public class MamaMapper<T,R> extends MamaBase<R> implements Subscriber<T> {
     /// //////////////
 
     private Subscriber<? super R> subscriber;
-    private boolean hasNext = false;
+    private Subscription subscription;
 
     @Override
     public void subscribe(Subscriber<? super R> subscriber) {
@@ -33,19 +33,13 @@ public class MamaMapper<T,R> extends MamaBase<R> implements Subscriber<T> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        subscriber.onSubscribe(subscription);
+        this.subscription = subscription;
+        subscriber.onSubscribe(this);
     }
 
     @Override
     public void onNext(T t) {
-        hasNext = true;
-
-        try {
-            Publisher<? extends R> r = mapper.apply(t);
-            r.subscribe(subscriber);
-        } catch (Throwable err) {
-            onError(err);
-        }
+        subscriber.onNext(mapper.apply(t));
     }
 
     @Override
@@ -55,8 +49,17 @@ public class MamaMapper<T,R> extends MamaBase<R> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        if (hasNext == false) {
-            subscriber.onComplete();
-        }
+        subscriber.onComplete();
+    }
+
+    @Override
+    public void request(long l) {
+        //只取一个
+        subscription.request(1L);
+    }
+
+    @Override
+    public void cancel() {
+        subscription.cancel();
     }
 }
