@@ -339,19 +339,8 @@ public class ActionDefault extends HandlerAide implements Action {
                 }
 
 
-                //结果处理
-                ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
-                if (returnHandler == null) {
-                    returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
-                }
-
-                if (returnHandler != null) {
-                    //执行函数
-                    returnHandler.returnHandle(c, this, c.result);
-                } else {
-                    //渲染
-                    renderDo(c.result, c);
-                }
+                //渲染
+                renderDo(c.result, c);
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
@@ -408,10 +397,24 @@ public class ActionDefault extends HandlerAide implements Action {
      * 执行渲染（便于重写）
      */
     protected void renderDo(Object obj, Context c, boolean allowMultiple) throws Throwable {
-        //
-        //可以通过before关掉render
-        //
+        //确认结果
         obj = bWrap.context().app().chainManager().postResult(c, obj);
+
+        //结果处理
+        if(obj != null) {
+            ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
+            if (returnHandler == null) {
+                returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, obj.getClass());
+            }
+
+            if (returnHandler != null) {
+                //执行函数
+                returnHandler.returnHandle(c, this, obj);
+                return;
+            }
+        }
+
+        /// /////////////////
 
         if (allowMultiple || c.getRendered() == false) {
             c.result = obj;

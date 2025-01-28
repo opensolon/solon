@@ -1,9 +1,9 @@
 package features.solon.injectcoll;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.core.AppContext;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,9 @@ public class AppTest {
 
     @Test
     public void case1() throws Exception {
-        Solon.start(AppTest.class, new String[0]);
+        AppContext appContext = new AppContext();
+        appContext.beanScan(AppTest.class);
+        appContext.start();
 
         //校验集合注入时，只运行一次
         assert count_l == 1;
