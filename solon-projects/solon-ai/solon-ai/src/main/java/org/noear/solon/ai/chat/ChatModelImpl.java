@@ -15,16 +15,32 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiLLM;
+import java.util.function.Consumer;
 
 /**
- * 聊天模型
+ * 聊天模型实现
  *
  * @author noear
  * @since 3.1
  */
-public interface ChatModel extends AiLLM<ChatMessage,ChatResponse, ChatModel> {
-    static ChatModel of(ChatConfig config) {
-        return new ChatModelImpl(config);
+class ChatModelImpl implements ChatModel{
+    private ChatConfig config;
+    public ChatModelImpl(ChatConfig config) {
+        this.config = config;
+    }
+
+    @Override
+    public ChatModel prompt(ChatMessage... messages) {
+        return null;
+    }
+
+    @Override
+    public ChatResponse call() {
+        return null;
+    }
+
+    @Override
+    public void stream(Consumer<ChatResponse> consumer) {
+
     }
 }

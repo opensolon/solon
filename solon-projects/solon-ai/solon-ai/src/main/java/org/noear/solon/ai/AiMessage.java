@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
+package org.noear.solon.ai;
 
-import org.noear.solon.ai.AiLLM;
+import org.noear.solon.lang.Preview;
 
 /**
- * 聊天模型
+ * AI 消息
  *
  * @author noear
  * @since 3.1
  */
-public interface ChatModel extends AiLLM<ChatMessage,ChatResponse, ChatModel> {
-    static ChatModel of(ChatConfig config) {
-        return new ChatModelImpl(config);
-    }
+@Preview("3.1")
+public interface AiMessage {
+    /**
+     * 获取内容
+     * */
+    String getContent();
 }

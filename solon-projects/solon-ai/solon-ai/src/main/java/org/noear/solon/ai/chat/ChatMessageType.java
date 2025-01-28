@@ -15,16 +15,13 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiLLM;
-
 /**
- * 聊天模型
+ * 聊天消息类型
  *
  * @author noear
  * @since 3.1
  */
-public interface ChatModel extends AiLLM<ChatMessage,ChatResponse, ChatModel> {
-    static ChatModel of(ChatConfig config) {
-        return new ChatModelImpl(config);
-    }
+public enum ChatMessageType {
+    SYSTEM,
+    USER
 }
