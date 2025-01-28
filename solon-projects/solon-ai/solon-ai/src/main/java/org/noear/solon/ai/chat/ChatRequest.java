@@ -1,6 +1,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiRequest;
+import org.reactivestreams.Publisher;
 
 import java.util.function.Consumer;
 
@@ -33,7 +34,8 @@ public class ChatRequest implements AiRequest<ChatOptions,ChatRequest, ChatRespo
     }
 
     @Override
-    public void stream(Consumer<ChatResponse> consumer) {
-
+    public Publisher<ChatResponse> stream() {
+        return null;
     }
+
 }

@@ -4,6 +4,7 @@ import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatOptions;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.reactivestreams.Publisher;
 
 /**
  * @author noear 2025/1/28 created
@@ -23,10 +24,9 @@ public class DemoTest {
         //流返回(sse)
         {
 
-            chatModel.prompt(ChatMessage.ofUser("yyy"))
-                    .stream(resp -> {
-
-                    });
+            Publisher<ChatResponse> publisher = chatModel
+                    .prompt(ChatMessage.ofUser("yyy"))
+                    .stream();
         }
     }
 }

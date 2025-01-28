@@ -1,5 +1,7 @@
 package org.noear.solon.ai;
 
+import org.reactivestreams.Publisher;
+
 import java.util.function.Consumer;
 
 /**
@@ -14,10 +16,10 @@ public interface AiRequest<O extends AiOptions, Req extends AiRequest, Resp exte
     /**
      * 调用
      */
-    Resp call();
+    Resp call() throws Throwable;
 
     /**
      * 流响应
      */
-    void stream(Consumer<Resp> consumer);
+    Publisher<Resp> stream();
 }
