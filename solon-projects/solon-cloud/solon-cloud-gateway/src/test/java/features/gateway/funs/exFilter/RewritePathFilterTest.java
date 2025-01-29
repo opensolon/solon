@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExNewRequest;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -42,7 +42,7 @@ public class RewritePathFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Baba.complete()).subscribe();
+        }, ctx -> Completable.complete()).subscribe();
 
         assert "/test".equals(newRequest.getPath());
     }
@@ -62,7 +62,7 @@ public class RewritePathFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Baba.complete()).subscribe();
+        }, ctx -> Completable.complete()).subscribe();
 
         assert "/test".equals(newRequest.getPath());
     }
@@ -82,7 +82,7 @@ public class RewritePathFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Baba.complete()).subscribe();
+        }, ctx -> Completable.complete()).subscribe();
 
         assert "/test".equals(newRequest.getPath());
     }
@@ -102,7 +102,7 @@ public class RewritePathFilterTest {
             public ExNewRequest newRequest() {
                 return newRequest;
             }
-        }, ctx -> Baba.complete()).subscribe();
+        }, ctx -> Completable.complete()).subscribe();
 
         assert "/test".equals(newRequest.getPath());
     }

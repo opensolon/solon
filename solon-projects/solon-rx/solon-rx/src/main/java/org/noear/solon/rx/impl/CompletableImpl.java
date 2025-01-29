@@ -29,10 +29,12 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class CompletableImpl implements Completable, Subscription {
+    private final SubscriberBuilder subscriberBuilder;
     private final Throwable cause;
     private Consumer<CompletableEmitter> emitterConsumer;
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
+        this.subscriberBuilder = new SubscriberBuilder();
         this.cause = cause;
         this.emitterConsumer = emitterConsumer;
     }
@@ -64,5 +66,23 @@ public class CompletableImpl implements Completable, Subscription {
     @Override
     public void cancel() {
 
+    }
+
+
+    @Override
+    public Completable doOnError(Consumer<Throwable> doOnError) {
+        subscriberBuilder.doOnError(doOnError);
+        return this;
+    }
+
+    @Override
+    public Completable doOnComplete(Runnable doOnComplete) {
+        subscriberBuilder.doOnComplete(doOnComplete);
+        return this;
+    }
+
+    @Override
+    public void subscribe() {
+        subscribe(subscriberBuilder);
     }
 }

@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.exchange;
 
 
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 
 /**
  * 交换过滤器链
@@ -31,5 +31,5 @@ public interface ExFilterChain {
      *
      * @param ctx 交换上下文
      */
-    Baba<Void> doFilter(ExContext ctx);
+    Completable doFilter(ExContext ctx);
 }

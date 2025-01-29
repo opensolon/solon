@@ -3,7 +3,6 @@ package demo.server;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.stomp.StompEmitter;
-import org.noear.solon.rx.Baba;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,16 +37,16 @@ public class ChatStompController {
         return map;
     }
 
-    @Message
-    @Mapping("/app/todoTask1/self")
-    //@To(".:/topic/todoTask1/s1")
-    public Baba<Map<String, Object>> app_self(Context ctx, @Body String text) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", text);
-        map.put("type", "收到2");
-
-        return Baba.just(map);
-    }
+//    @Message
+//    @Mapping("/app/todoTask1/self")
+//    //@To(".:/topic/todoTask1/s1")
+//    public Publisher<Map<String, Object>> app_self(Context ctx, @Body String text) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("data", text);
+//        map.put("type", "收到2");
+//
+//        return Completable.just(map);
+//    }
 
     @Message
     @Mapping("/app/todoTask1/error")

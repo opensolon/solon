@@ -16,7 +16,7 @@
 package org.noear.solon.cloud.gateway.exchange;
 
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 import org.noear.solon.core.util.RankEntity;
 
 import java.util.List;
@@ -53,10 +53,10 @@ public class ExFilterChainImpl implements ExFilterChain {
      * @param ctx 交换上下文
      */
     @Override
-    public Baba<Void> doFilter(ExContext ctx) {
+    public Completable doFilter(ExContext ctx) {
         if (filterList == null) {
             //一般用于测试
-            return Baba.complete();
+            return Completable.complete();
         }
 
         if (lastHandler == null) {

@@ -20,7 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 
 /**
  * 添加请求头过滤器
@@ -66,7 +66,7 @@ public class AddRequestHeaderFilterFactory implements RouteFilterFactory {
         }
 
         @Override
-        public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
+        public Completable doFilter(ExContext ctx, ExFilterChain chain) {
             ctx.newRequest().headerAdd(name, value);
             return chain.doFilter(ctx);
         }

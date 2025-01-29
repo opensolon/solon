@@ -22,7 +22,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilterChainImpl;
 import org.noear.solon.cloud.gateway.exchange.ExHandler;
 import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 import org.noear.solon.web.vertx.VxHandler;
 import org.noear.solon.core.exception.StatusException;
 
@@ -91,12 +91,12 @@ public class CloudGatewayHandler implements VxHandler {
     /**
      * 执行处理
      */
-    private Baba<Void> doHandle(ExContext ctx) {
+    private Completable doHandle(ExContext ctx) {
         ExContextImpl ctx2 = (ExContextImpl) ctx;
 
         if (ctx2.route() == null) {
             ctx.newResponse().status(404);
-            return Baba.complete();
+            return Completable.complete();
         } else {
             //根据架构查找路由处理器
             ExHandler handler = RouteFactoryManager.getHandler(ctx.targetNew().getScheme());
@@ -111,9 +111,9 @@ public class CloudGatewayHandler implements VxHandler {
             } catch (Throwable ex) {
                 //如果 buildUpstreamRequest 出错，说明请求体有问题
                 if (ex instanceof StatusException) {
-                    return Baba.error(ex);
+                    return Completable.error(ex);
                 } else {
-                    return Baba.error(new StatusException(ex, 400));
+                    return Completable.error(new StatusException(ex, 400));
                 }
             }
         }

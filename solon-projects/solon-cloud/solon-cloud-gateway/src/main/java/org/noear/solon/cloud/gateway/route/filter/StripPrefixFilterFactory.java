@@ -20,7 +20,7 @@ import org.noear.solon.cloud.gateway.exchange.ExFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.route.RouteFilterFactory;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +55,7 @@ public class StripPrefixFilterFactory implements RouteFilterFactory {
         }
 
         @Override
-        public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
+        public Completable doFilter(ExContext ctx, ExFilterChain chain) {
             //目标路径重组
             List<String> pathFragments = Arrays.asList(ctx.newRequest().getPath().split("/", -1));
             String newPath = "/" + String.join("/", pathFragments.subList(parts + 1, pathFragments.size()));

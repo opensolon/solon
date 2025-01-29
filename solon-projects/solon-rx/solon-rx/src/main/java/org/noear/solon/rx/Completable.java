@@ -27,6 +27,21 @@ import java.util.function.Consumer;
  * @since 2.0
  */
 public interface Completable extends Publisher<Void> {
+    /**
+     * 出错时
+     */
+    Completable doOnError(Consumer<Throwable> doOnError);
+
+    /**
+     * 完成时
+     */
+    Completable doOnComplete(Runnable doOnComplete);
+
+    /**
+     * 订阅
+     */
+    void subscribe();
+
     static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
         return new CompletableImpl(null, emitterConsumer);
     }

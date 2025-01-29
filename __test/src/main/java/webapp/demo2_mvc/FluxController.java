@@ -17,7 +17,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.rx.Baba;
+import reactor.core.publisher.Mono;
 
 /**
  * @author noear 2023/6/19 created
@@ -25,7 +25,7 @@ import org.noear.solon.rx.Baba;
 @Controller
 public class FluxController {
     @Mapping("/demo2/flux/")
-    public Baba<String> flux(String name) throws Exception {
-        return Baba.just("Hello " + name);
+    public Mono<String> flux(String name) throws Exception {
+        return Mono.just("Hello " + name);
     }
 }

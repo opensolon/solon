@@ -19,19 +19,19 @@ import org.noear.solon.cloud.gateway.CloudGatewayFilter;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.core.exception.StatusException;
-import org.noear.solon.rx.Baba;
+import org.noear.solon.rx.Completable;
 
 //@Component
 public class CloudGatewayFilterImpl implements CloudGatewayFilter {
     @Override
-    public Baba<Void> doFilter(ExContext ctx, ExFilterChain chain) {
+    public Completable doFilter(ExContext ctx, ExFilterChain chain) {
         String token = ctx.rawHeader("TOKEN");
         if (token == null) {
             ctx.newResponse().status(401);
-            return Baba.complete();
+            return Completable.complete();
         }
 
-        return Baba.create(emitter -> {
+        return Completable.create(emitter -> {
             chain.doFilter(ctx)
                     .doOnError(err -> {
                         if (err instanceof StatusException) {
