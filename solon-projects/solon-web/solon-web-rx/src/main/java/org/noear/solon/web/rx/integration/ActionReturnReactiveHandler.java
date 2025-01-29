@@ -15,10 +15,13 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.ClassUtil;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
 /**
  * Action 响应式返回处理
@@ -27,6 +30,12 @@ import org.reactivestreams.Publisher;
  * @since 2.3
  */
 public class ActionReturnReactiveHandler implements ActionReturnHandler {
+    private final boolean hasReactor;
+
+    public ActionReturnReactiveHandler() {
+        hasReactor = ClassUtil.hasClass(() -> Flux.class);
+    }
+
     @Override
     public boolean matched(Context ctx, Class<?> returnType) {
         return Publisher.class.isAssignableFrom(returnType);
@@ -37,6 +46,15 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
         if (result != null) {
             if (ctx.asyncSupported() == false) {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
+            }
+
+            if (hasReactor) {
+                //reactor 排除也不会出错
+                if (result instanceof Flux) {
+                    if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
+                        result = ((Flux) result).collectList();
+                    }
+                }
             }
 
             ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action));

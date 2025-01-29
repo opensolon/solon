@@ -1,4 +1,4 @@
-package demo.case2;
+package demo;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -22,13 +22,11 @@ public class AppRouterInterceptor implements RouterInterceptor {
     @Override
     public Object postResult(Context ctx, Object result) throws Throwable {
         //根据返回类型，构建 contentType
-        if (result instanceof Multi && ctx.acceptNew() != null) {
+        if (result instanceof Multi) {
             if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
                 return ((Multi) result).collect().asList().toMulti();
             }
-        }
-
-        if (result instanceof Uni) {
+        } else if (result instanceof Uni) {
             return ((Uni) result).toMulti();
         }
 

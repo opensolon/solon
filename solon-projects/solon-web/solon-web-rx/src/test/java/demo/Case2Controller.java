@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo.case2;
+package demo;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
@@ -30,11 +29,9 @@ import java.util.List;
 /**
  * @author noear 2023/6/19 created
  */
+@Mapping("case2")
 @Controller
-public class App {
-    public static void main(String[] args) {
-        Solon.start(App.class, args);
-    }
+public class Case2Controller {
 
     @Mapping("m1")
     public Uni<String> m1(String name) {

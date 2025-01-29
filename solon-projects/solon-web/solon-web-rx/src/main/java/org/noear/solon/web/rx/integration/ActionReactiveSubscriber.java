@@ -17,7 +17,6 @@ package org.noear.solon.web.rx.integration;
 
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.RunUtil;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -34,11 +33,12 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
-    private boolean isFirst;
+    private boolean firstLine;
 
     public ActionReactiveSubscriber(Context ctx, Action action) {
         this.ctx = ctx;
         this.action = action;
+        this.firstLine = true;
     }
 
     private void request(Subscription subscription) {
@@ -47,29 +47,30 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        isFirst = true;
-
-        //启动异步模式（-1 表示不超时）
         if (ctx.asyncStarted()) {
-            RunUtil.async(() -> request(subscription));
+            //如果已是异步
+            request(subscription);
         } else {
+            //如果不是，启动异步模式（-1 表示不超时）
             ctx.asyncStart(-1L, () -> request(subscription));
         }
     }
+
+    private static final byte[] CRLF = "\n".getBytes();
 
     @Override
     public void onNext(Object o) {
         try {
             try {
-                if (isFirst == false) {
-                    ctx.output("\n");
+                if (firstLine == false) {
+                    ctx.output(CRLF);
                 }
                 action.render(o, ctx, true);
             } catch (Throwable e) {
                 log.warn(e.getMessage(), e);
             }
         } finally {
-            isFirst = false;
+            firstLine = false;
         }
     }
 
