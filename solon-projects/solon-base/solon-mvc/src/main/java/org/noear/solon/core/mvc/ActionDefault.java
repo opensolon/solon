@@ -413,6 +413,14 @@ public class ActionDefault extends HandlerAide implements Action {
         //
         obj = bWrap.context().app().chainManager().postResult(c, obj);
 
+        if(obj != null) {
+            ActionReturnHandler returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, obj.getClass());
+            if (returnHandler != null) {
+                returnHandler.returnHandle(c, this, obj);
+                return;
+            }
+        }
+
         if (allowMultiple || c.getRendered() == false) {
             c.result = obj;
         }
