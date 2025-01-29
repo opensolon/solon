@@ -1,6 +1,6 @@
 package features;
 
-import demo.App;
+import demo.case2.App;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.test.HttpTester;
@@ -10,7 +10,7 @@ import org.noear.solon.test.SolonTest;
  * @author noear 2024/8/30 created
  */
 @SolonTest(value = App.class,args = "--server.port=7071")
-public class AppTest extends HttpTester {
+public class Case2AppTest extends HttpTester {
     @Test
     public void test1() throws Exception {
         assert path("/m1?name=d").get().equals("Hello d");

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.case1;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
@@ -21,8 +21,8 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.rx.Baba;
-import org.noear.solon.rx.Mama;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
@@ -37,36 +37,36 @@ public class App {
     }
 
     @Mapping("m1")
-    public Baba<String> m1(String name) {
-        return Baba.just("Hello " + name);
+    public Mono<String> m1(String name) {
+        return Mono.just("Hello " + name);
     }
 
     @Mapping("f1")
-    public Mama<String> f1(String name) {
-        return Mama.just("Hello " + name, "hello2 " + name);
+    public Flux<String> f1(String name) {
+        return Flux.just("Hello " + name, "hello2 " + name);
     }
 
     @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
     @Mapping("f2")
-    public Mama<String> f2(String name) {
-        return Mama.just("Hello " + name, "hello2 " + name);
+    public Flux<String> f2(String name) {
+        return Flux.just("Hello " + name, "hello2 " + name);
     }
 
     @Mapping("f3")
-    public Baba<List<String>> f3(String name) {
-        return Mama.just("Hello " + name, "hello2 " + name)
+    public Mono<List<String>> f3(String name) {
+        return Flux.just("Hello " + name, "hello2 " + name)
                 .collectList();
     }
 
     @Mapping("t1")
-    public Baba<Long> t1(Context ctx) {
+    public Mono<Long> t1(Context ctx) {
         ctx.asyncStart(100L, null);
-        return Baba.delay(Duration.ofMillis(500));
+        return Mono.delay(Duration.ofMillis(500));
     }
 
     @Mapping("t2")
-    public Baba<Long> t2(Context ctx) {
+    public Mono<Long> t2(Context ctx) {
         ctx.asyncStart(500L, null);
-        return Baba.delay(Duration.ofMillis(100));
+        return Mono.delay(Duration.ofMillis(100));
     }
 }
