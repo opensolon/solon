@@ -29,10 +29,10 @@ import reactor.core.publisher.Flux;
  * @author noear
  * @since 2.3
  */
-public class ActionReturnReactiveHandler implements ActionReturnHandler {
+public class ActionReturnRxHandler implements ActionReturnHandler {
     private final boolean hasReactor;
 
-    public ActionReturnReactiveHandler() {
+    public ActionReturnRxHandler() {
         hasReactor = ClassUtil.hasClass(() -> Flux.class);
     }
 
@@ -48,16 +48,25 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
-            if (hasReactor) {
-                //reactor 排除也不会出错
-                if (result instanceof Flux) {
-                    if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
-                        result = ((Flux) result).collectList();
-                    }
+            Publisher publisher = postPublisher(ctx, action, result);
+
+            publisher.subscribe(new ActionRxSubscriber(ctx, action));
+        }
+    }
+
+    /**
+     * 确认发布者
+     */
+    protected Publisher postPublisher(Context ctx, Action action, Object result) throws Throwable {
+        if (hasReactor) {
+            //reactor 排除也不会出错
+            if (result instanceof Flux) {
+                if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
+                    return ((Flux) result).collectList();
                 }
             }
-
-            ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action));
         }
+
+        return (Publisher) result;
     }
 }

@@ -28,14 +28,14 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 2.3
  */
-public class ActionReactiveSubscriber implements Subscriber {
-    static final Logger log = LoggerFactory.getLogger(ActionReactiveSubscriber.class);
+public class ActionRxSubscriber implements Subscriber {
+    static final Logger log = LoggerFactory.getLogger(ActionRxSubscriber.class);
 
     private Context ctx;
     private Action action;
     private boolean firstLine;
 
-    public ActionReactiveSubscriber(Context ctx, Action action) {
+    public ActionRxSubscriber(Context ctx, Action action) {
         this.ctx = ctx;
         this.action = action;
         this.firstLine = true;

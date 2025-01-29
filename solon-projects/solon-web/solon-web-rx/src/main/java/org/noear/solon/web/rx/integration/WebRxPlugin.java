@@ -25,6 +25,6 @@ import org.noear.solon.core.Plugin;
 public class WebRxPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        context.app().chainManager().addReturnHandler(new ActionReturnReactiveHandler());
+        context.app().chainManager().addReturnHandler(new ActionReturnRxHandler());
     }
 }
