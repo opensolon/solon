@@ -524,6 +524,7 @@ public class AppContext extends BeanContainer {
         }
 
         boolean enableProxy = false;
+        List<Map.Entry<Method, Annotation>> extraList = new ArrayList<>();
 
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
@@ -531,20 +532,9 @@ public class AppContext extends BeanContainer {
             for (Method m : clzWrap.getMethods()) { //只支持公有函数检查
                 for (Annotation a : m.getAnnotations()) {
                     if (tryExtract) {
-                        BeanExtractor be = beanExtractors.get(a.annotationType());
-
-                        //是否需要提取
-                        if (be != null) {
-                            try {
-                                be.doExtract(bw, m, a);
-                            } catch (Throwable e) {
-                                e = Utils.throwableUnwrap(e);
-                                if (e instanceof RuntimeException) {
-                                    throw (RuntimeException) e;
-                                } else {
-                                    throw new RuntimeException(e);
-                                }
-                            }
+                        if (beanExtractors.containsKey(a.annotationType())) {
+                            //有提取处理
+                            extraList.add(new AbstractMap.SimpleEntry<>(m, a));
                         }
                     }
 
@@ -557,12 +547,34 @@ public class AppContext extends BeanContainer {
             }
         }
 
+        //先尝试代理
         if (tryProxy) {
             //是否需要自动代理
             enableProxy = enableProxy || beanInterceptorHas(bw.clz());
 
             if (enableProxy) {
                 ProxyBinder.global().binding(bw);
+            }
+        }
+
+        //再尝试提取
+        for (Map.Entry<Method, Annotation> ma : extraList) {
+            Method m = ma.getKey();
+            Annotation a = ma.getValue();
+            BeanExtractor be = beanExtractors.get(a.annotationType());
+
+            //是否需要提取
+            if (be != null) {
+                try {
+                    be.doExtract(bw, m, a);
+                } catch (Throwable e) {
+                    e = Utils.throwableUnwrap(e);
+                    if (e instanceof RuntimeException) {
+                        throw (RuntimeException) e;
+                    } else {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
