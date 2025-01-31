@@ -1,0 +1,15 @@
+id: "DeliverFood"
+nodes:
+  - type: "start"
+  - type: "exclusive"
+    link:
+      - {nextId: "PressIntercom", title: "CheckResponse", condition: "UserResponded"}
+      - {nextId: "CallUser", title: "CheckCallResponse", condition: "CallAnswered"}
+      - {nextId: "LeaveInLocker"}
+  - {id: "PressIntercom", link: "CompleteDelivery"}
+  - {id: "CallUser", link: "CompleteDelivery"}
+  - {id: "LeaveInLocker", link: "CompleteDelivery"}
+  - {id: "CompleteDelivery", when: "IsAtDestination"}
+  - type: "end"
+
+# BehaviorTree
