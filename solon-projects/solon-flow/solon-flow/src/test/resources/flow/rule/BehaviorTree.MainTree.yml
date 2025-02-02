@@ -1,0 +1,63 @@
+id: "MainTree"
+nodes:
+  - type: "start"
+  - id: "begin"
+    type: "exclusive"
+    link:
+      - {nextId: "MoveToEnemy", title: "AttackEnemy", condition: "IsEnemyVisible"}
+      - {nextId: "CallUser", title: "CheckCallResponse", condition: "CallAnswered"}
+      - {nextId: "LeaveInLocker"}
+  - {id: "MoveToEnemy", meta: {distance: "2.0"}, link: "MeleeAttack"}
+  - {id: "MeleeAttack", when: "IsEnemyAlive", link: "ReturnToStart"}
+  - {id: "ReturnToStart", link: "begin"}
+  - {id: "CallUser", link: "xx"}
+  - {id: "LeaveInLocker", link: "xx"}
+  - {id: "CompleteDelivery", when: "IsAtDestination"}
+  - type: "end"
+
+
+# <!-- 行为树根节点 -->
+#<BehaviorTree ID="MainTree">
+#    <!-- 选择器节点：依次执行子节点，直到有一个子节点返回 Success -->
+#    <Selector>
+#
+#        <!-- 攻击敌人序列 -->
+#        <Sequence ID="AttackEnemy">
+#            <!-- 条件节点：检查是否有可见敌人 -->
+#            <Condition ID="IsEnemyVisible"/>
+#
+#            <!-- 移动到敌人附近 -->
+#            <Action ID="MoveToEnemy" distance="2.0"/>
+#
+#            <!-- 并行节点：同时执行攻击动作和持续检查敌人是否存活 -->
+#            <Parallel success_count="1">
+#                <!-- 攻击动作 -->
+#                <Action ID="MeleeAttack"/>
+#
+#                <!-- 持续检查敌人是否存活 -->
+#                <Condition ID="IsEnemyAlive"/>
+#            </Parallel>
+#
+#            <!-- 返回起始位置 -->
+#            <Action ID="ReturnToStart"/>
+#        </Sequence>
+#
+#        <!-- 巡逻序列 -->
+#        <Sequence ID="Patrol">
+#            <!-- 移动到巡逻点A -->
+#            <Action ID="MoveToPoint" point="A"/>
+#
+#            <!-- 等待5秒 -->
+#            <Wait duration="5"/>
+#
+#            <!-- 移动到巡逻点B -->
+#            <Action ID="MoveToPoint" point="B"/>
+#
+#            <!-- 重复执行 -->
+#            <Repeat count="-1"/> <!-- -1表示无限循环 -->
+#        </Sequence>
+#
+#        <!-- 保底动作：站立待命 -->
+#        <Action ID="Idle"/>
+#    </Selector>
+#</BehaviorTree>
