@@ -165,7 +165,7 @@ public class DefaultLogbackConfiguration {
         SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
         rollingPolicy.setContext(config.getContext());
         rollingPolicy.setFileNamePattern(resolve(config, "${FILE_LOG_ROLLING}"));
-        rollingPolicy.setMaxHistory(resolveInt(config, "${FILE_LOG_MAX_HISTORY}}"));
+        rollingPolicy.setMaxHistory(resolveInt(config, "${FILE_LOG_MAX_HISTORY}"));
         rollingPolicy.setMaxFileSize(resolveFileSize(config, "${FILE_LOG_MAX_FILE_SIZE}"));
 
         //rollingPolicy.setCleanHistoryOnStart(resolveBoolean(config, "${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}"));
