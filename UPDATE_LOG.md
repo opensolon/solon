@@ -28,7 +28,6 @@
 * 优化 拦截体系与 rx 的兼容？
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
-* 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
 * 优化 solon beanExtractOrProxy 内部改为先代理再提取，解决提取时对象未代理
 * 优化 solon-web-rx 结构设计，方便支持其它响应式框架(比如 mutiny)
 * 优化 solon-web-rx 可支持所有 reactivestreams 实现框架
@@ -36,8 +35,7 @@
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
-* 修复 solon 集合bean注入时，可能产生两次执行的问题
-* 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置失效的问题
+* 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.126
 * liquor 升为 1.3.8
 
