@@ -12,7 +12,7 @@ public class ChatFunctionDecl implements ChatFunction {
     private final String name;
     private final List<ChatFunctionParam> params;
     private String description;
-    private Function<Map<String,Object>, Object> handler;
+    private Function<Map<String, Object>, String> handler;
 
     public ChatFunctionDecl(String name) {
         this.name = name;
@@ -41,7 +41,8 @@ public class ChatFunctionDecl implements ChatFunction {
         return param(name, "float", description);
     }
 
-    public ChatFunctionDecl handle(Function<Map<String,Object>, Object> handler) {
+    public ChatFunctionDecl handle(Function<Map<String, Object>, String> handler) {
+        this.handler = handler;
         return this;
     }
 
@@ -61,7 +62,7 @@ public class ChatFunctionDecl implements ChatFunction {
     }
 
     @Override
-    public Object handle(Map<String, Object> args) {
+    public String handle(Map<String, Object> args) {
         return handler.apply(args);
     }
 }

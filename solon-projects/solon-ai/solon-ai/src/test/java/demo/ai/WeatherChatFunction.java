@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class WeatherChatFunction implements ChatFunction {
     @Inject
-    WeatherService weatherService;
+    //WeatherService weatherService;
 
     private List<ChatFunctionParam> params = new ArrayList<>();
     public WeatherChatFunction() {
@@ -39,8 +39,8 @@ public class WeatherChatFunction implements ChatFunction {
     }
 
     @Override
-    public Object handle(Map<String, Object> args) {
+    public String handle(Map<String, Object> args) {
         String location = (String) args.get("location");
-        return location + "的天气是" + weatherService.get(location);
+        return location + "的天气是";// + weatherService.get(location);
     }
 }
