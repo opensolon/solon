@@ -1,7 +1,5 @@
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiFunction;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +8,11 @@ import java.util.function.Function;
 /**
  * @author noear 2025/2/6 created
  */
-public class ChatFunctionDecl implements AiFunction<ChatFunctionParamDecl> {
+public class ChatFunctionDecl implements ChatFunction {
     private final String name;
-    private final List<ChatFunctionParamDecl> params;
+    private final List<ChatFunctionParam> params;
     private String description;
+    private Function<Map<String,Object>, Object> handler;
 
     public ChatFunctionDecl(String name) {
         this.name = name;
@@ -57,7 +56,12 @@ public class ChatFunctionDecl implements AiFunction<ChatFunctionParamDecl> {
     }
 
     @Override
-    public Iterable<ChatFunctionParamDecl> params() {
-        return params();
+    public Iterable<ChatFunctionParam> params() {
+        return params;
+    }
+
+    @Override
+    public Object handle(Map<String, Object> args) {
+        return handler.apply(args);
     }
 }

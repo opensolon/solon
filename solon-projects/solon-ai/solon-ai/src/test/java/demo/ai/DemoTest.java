@@ -1,6 +1,7 @@
 package demo.ai;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.ChainContext;
@@ -36,6 +37,7 @@ public class DemoTest {
     public void case1_2() throws IOException {
         //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
+                //.functionAdd(Solon.context().getBeanOrNew(WeatherChatFunction.class)) //方便组件模式构建
                 .functionAdd("get_weather", decl -> decl
                         .description("获取指定城市的天气情况")
                         .stringParam("location", "根据用户提到的地点推测城市")

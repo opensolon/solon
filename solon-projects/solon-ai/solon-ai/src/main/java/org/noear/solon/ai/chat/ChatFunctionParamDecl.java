@@ -5,7 +5,7 @@ import org.noear.solon.ai.AiFunctionParam;
 /**
  * @author noear 2025/2/6 created
  */
-public class ChatFunctionParamDecl implements AiFunctionParam {
+public class ChatFunctionParamDecl implements ChatFunctionParam {
     private final String name;
     private final String type;
     private final String description;

@@ -62,6 +62,11 @@ public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
         Builder headerAdd(String key, String value);
 
         /**
+         * 函数添加（方便组件模式）
+         */
+        Builder functionAdd(ChatFunction function);
+
+        /**
          * 函数添加
          */
         Builder functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder);
