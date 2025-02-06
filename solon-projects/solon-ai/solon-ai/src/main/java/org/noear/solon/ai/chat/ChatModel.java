@@ -16,7 +16,6 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiLLM;
-import org.noear.solon.ai.chat.impl.ChatModelDefault;
 
 /**
  * 聊天模型
@@ -25,6 +24,16 @@ import org.noear.solon.ai.chat.impl.ChatModelDefault;
  * @since 3.1
  */
 public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
+    /**
+     * 提示语
+     */
+    default ChatRequest prompt(String content) {
+        return prompt(ChatMessage.ofUser(content));
+    }
+
+    /**
+     * 开始构建
+     */
     static Builder of(String apiUrl) {
         return new ChatModelBuilderImpl(apiUrl);
     }
