@@ -17,6 +17,7 @@ package org.noear.solon.rx.impl;
 
 import org.noear.solon.rx.Completable;
 import org.noear.solon.rx.CompletableEmitter;
+import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -29,12 +30,12 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class CompletableImpl implements Completable, Subscription {
-    private final SubscriberBuilder subscriberBuilder;
+    private final SimpleSubscriber subscriberBuilder;
     private final Throwable cause;
     private Consumer<CompletableEmitter> emitterConsumer;
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
-        this.subscriberBuilder = new SubscriberBuilder();
+        this.subscriberBuilder = new SimpleSubscriber();
         this.cause = cause;
         this.emitterConsumer = emitterConsumer;
     }

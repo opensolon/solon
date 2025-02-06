@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
+package org.noear.solon.ai.chat.impl;
 
-import org.noear.solon.ai.AiResponse;
+import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.ChatResponse;
 
 /**
  * 聊天响应
@@ -23,6 +24,13 @@ import org.noear.solon.ai.AiResponse;
  * @author noear
  * @since 3.1
  */
-public interface ChatResponse extends AiResponse<ChatMessage> {
-    String getJson();
+public class ChatResponseDefault implements ChatResponse {
+    public String getJson(){
+        return null;
+    }
+
+    @Override
+    public Iterable<ChatMessage> getMessages() {
+        return null;
+    }
 }

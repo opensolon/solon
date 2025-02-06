@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.rx.impl;
+package org.noear.solon.rx;
 
 
 import org.reactivestreams.Subscriber;
@@ -27,28 +27,28 @@ import java.util.function.Consumer;
  * @author noear
  * @since 2.9
  */
-public class SubscriberBuilder<T> implements Subscriber<T> {
+public class SimpleSubscriber<T> implements Subscriber<T> {
     private Consumer<Long> doOnSubscribe;
     private Consumer<T> doOnNext;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
-    public SubscriberBuilder<T> doOnSubscribe(Consumer<Long> doOnSubscribe) {
+    public SimpleSubscriber<T> doOnSubscribe(Consumer<Long> doOnSubscribe) {
         this.doOnSubscribe = doOnSubscribe;
         return this;
     }
 
-    public SubscriberBuilder<T> doOnNext(Consumer<T> doOnNext) {
+    public SimpleSubscriber<T> doOnNext(Consumer<T> doOnNext) {
         this.doOnNext = doOnNext;
         return this;
     }
 
-    public SubscriberBuilder<T> doOnError(Consumer<Throwable> doOnError) {
+    public SimpleSubscriber<T> doOnError(Consumer<Throwable> doOnError) {
         this.doOnError = doOnError;
         return this;
     }
 
-    public SubscriberBuilder<T> doOnComplete(Runnable doOnComplete) {
+    public SimpleSubscriber<T> doOnComplete(Runnable doOnComplete) {
         this.doOnComplete = doOnComplete;
         return this;
     }

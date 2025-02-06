@@ -15,9 +15,8 @@
  */
 package org.noear.solon.ai;
 
+import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.Preview;
-
-import java.util.Properties;
 
 /**
  * AI 配置
@@ -38,11 +37,6 @@ public interface AiConfig {
     String apiKey();
 
     /**
-     * 接口密角
-     */
-    String apiSecret();
-
-    /**
      * 提供者
      */
     String provider();
@@ -53,7 +47,7 @@ public interface AiConfig {
     String model();
 
     /**
-     * 转为属性
+     * 请求头
      */
-    Properties toProps();
+    MultiMap<String> headers();
 }

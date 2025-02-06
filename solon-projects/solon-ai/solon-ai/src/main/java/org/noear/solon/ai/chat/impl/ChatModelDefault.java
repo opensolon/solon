@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
+package org.noear.solon.ai.chat.impl;
+
+import org.noear.solon.ai.chat.ChatConfig;
+import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.ChatModel;
+import org.noear.solon.ai.chat.ChatRequest;
 
 /**
  * 聊天模型实现
@@ -21,15 +26,15 @@ package org.noear.solon.ai.chat;
  * @author noear
  * @since 3.1
  */
-class ChatModelImpl implements ChatModel {
+public class ChatModelDefault implements ChatModel {
     private final ChatConfig config;
 
-    public ChatModelImpl(ChatConfig config) {
+    public ChatModelDefault(ChatConfig config) {
         this.config = config;
     }
 
     @Override
     public ChatRequest prompt(ChatMessage... messages) {
-        return new ChatRequest(config, messages);
+        return new ChatRequestDefault(config, messages);
     }
 }
