@@ -36,6 +36,7 @@ public class DemoTest {
     @Test
     public void case1_2() throws IOException {
         //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
+        //https://blog.csdn.net/star_nwe/article/details/140559454
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
                 //.functionAdd(Solon.context().getBeanOrNew(WeatherChatFunction.class)) //方便组件模式构建
                 .functionAdd("get_weather", decl -> decl
