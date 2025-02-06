@@ -17,6 +17,8 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiLLM;
 
+import java.util.function.Consumer;
+
 /**
  * 聊天模型
  *
@@ -39,14 +41,34 @@ public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
     }
 
     interface Builder {
+        /**
+         * 接口密钥
+         */
         Builder apiKey(String apiKey);
 
+        /**
+         * 提供者
+         */
         Builder provider(String provider);
 
+        /**
+         * 模型
+         */
         Builder model(String model);
 
+        /**
+         * 头信息添加
+         */
         Builder headerAdd(String key, String value);
 
+        /**
+         * 函数添加
+         */
+        Builder functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder);
+
+        /**
+         * 构建
+         */
         ChatModel build();
     }
 }

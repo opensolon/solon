@@ -33,6 +33,29 @@ public class DemoTest {
     }
 
     @Test
+    public void case1_2() throws IOException {
+        //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
+        ChatModel chatModel = ChatModel.of("http://localhost:8080")
+                .apiKey("sm-0aLe9LC3Yk6FYuKD")
+                .headerAdd("X-Demo","test")
+                .functionAdd("get_weather", decl -> decl
+                        .description("获取指定城市的天气情况")
+                        .paramAdd("location", "string", "根据用户提到的地点推测城市")
+                )
+                .build();
+
+        //一次性返回
+        ChatResponse resp = chatModel
+                .prompt(ChatMessage.ofUser("今天的杭州天气怎么样？", "get_weather"))
+                .call();
+
+        //打印消息
+        for (ChatMessage msg : resp.getMessages()) {
+            System.out.println(msg.getContent());
+        }
+    }
+
+    @Test
     public void case2() {
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
                 .provider("ollama")
@@ -78,7 +101,7 @@ public class DemoTest {
         FlowEngine flowEngine = FlowEngine.newInstance();
         flowEngine.load(Chain.parseByUri("classpath:flow/case4.yml"));
 
-        ChainContext ctx  = new ChainContext();
+        ChainContext ctx = new ChainContext();
         ctx.put("chatModel", chatModel);
 
         flowEngine.eval("ai-1");

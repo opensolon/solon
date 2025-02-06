@@ -24,10 +24,12 @@ package org.noear.solon.ai.chat;
 class ChatMessageImpl implements ChatMessage {
     private final ChatRole role;
     private final String content;
+    private final String[] tools;
 
-    public ChatMessageImpl(ChatRole role, String content) {
+    public ChatMessageImpl(ChatRole role, String content, String... tools) {
         this.role = role;
         this.content = content;
+        this.tools = tools;
     }
 
     @Override
