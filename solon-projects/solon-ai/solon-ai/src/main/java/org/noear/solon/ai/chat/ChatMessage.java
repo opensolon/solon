@@ -44,13 +44,6 @@ public interface ChatMessage extends AiMessage {
     }
 
     /**
-     * 构建用户消息
-     */
-    static ChatMessage ofUser(String content, String... tools) {
-        return new ChatMessageImpl(ChatRole.USER, content);
-    }
-
-    /**
      * 构建助理消息
      */
     static ChatMessage ofAssistant(String content) {

@@ -38,8 +38,8 @@ public class DemoTest {
         //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
         //https://blog.csdn.net/star_nwe/article/details/140559454
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
-                //.functionAdd(Solon.context().getBeanOrNew(WeatherChatFunction.class)) //方便组件模式构建
-                .functionAdd("get_weather", decl -> decl
+                //.globalFunctionAdd(Solon.context().getBeanOrNew(WeatherChatFunction.class)) //方便组件模式构建
+                .globalFunctionAdd("get_weather", decl -> decl
                         .description("获取指定城市的天气情况")
                         .stringParam("location", "根据用户提到的地点推测城市")
                         .handle(args -> {
@@ -51,7 +51,35 @@ public class DemoTest {
 
         //一次性返回
         ChatResponse resp = chatModel
-                .prompt(ChatMessage.ofUser("今天的杭州天气怎么样？", "get_weather"))
+                .prompt(ChatMessage.ofUser("今天的杭州天气怎么样？"))
+                .call();
+
+        //打印消息
+        for (ChatMessage msg : resp.getMessages()) {
+            System.out.println(msg.getContent());
+        }
+    }
+
+    @Test
+    public void case1_3() throws IOException {
+        //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
+        //https://blog.csdn.net/star_nwe/article/details/140559454
+        ChatModel chatModel = ChatModel.of("http://localhost:8080")
+                .build();
+
+        //一次性返回
+        ChatResponse resp = chatModel
+                .prompt(ChatMessage.ofUser("今天的杭州天气怎么样？"))
+                .options(o -> o
+                        //.functionAdd(Solon.context().getBeanOrNew(WeatherChatFunction.class)) //方便组件模式构建
+                        .functionAdd("get_weather", decl -> decl
+                                .description("获取指定城市的天气情况")
+                                .stringParam("location", "根据用户提到的地点推测城市")
+                                .handle(args -> {
+                                    String location = (String) args.get("location");
+                                    return location + "的天气是24c.";
+                                })
+                        ))
                 .call();
 
         //打印消息

@@ -35,12 +35,12 @@ public class ChatModelBuilderImpl implements ChatModel.Builder{
     }
 
     @Override
-    public ChatModel.Builder functionAdd(ChatFunction function) {
+    public ChatModel.Builder globalFunctionAdd(ChatFunction function) {
         return null;
     }
 
     @Override
-    public ChatModel.Builder functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
+    public ChatModel.Builder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
         return null;
     }
 

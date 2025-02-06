@@ -17,6 +17,8 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiOptions;
 
+import java.util.function.Consumer;
+
 /**
  * @author noear
  * @since 3.1
@@ -31,5 +33,13 @@ public class ChatOptions implements AiOptions {
     public ChatOptions temperature(float temperature) {
         this.temperature = temperature;
         return this;
+    }
+
+    public ChatOptions functionAdd(ChatFunction function) {
+        return null;
+    }
+
+    public ChatOptions functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
+        return null;
     }
 }
