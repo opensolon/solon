@@ -2,6 +2,8 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.chat.impl.ChatModelDefault;
 
+import java.util.function.Consumer;
+
 /**
  * @author noear 2025/2/6 created
  */
@@ -30,6 +32,11 @@ public class ChatModelBuilderImpl implements ChatModel.Builder{
     public ChatModel.Builder headerAdd(String key, String value) {
         config.headers.add(key, value);
         return this;
+    }
+
+    @Override
+    public ChatModel.Builder functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
+        return null;
     }
 
     public ChatModel build() {

@@ -4,6 +4,8 @@ import org.noear.solon.ai.AiFunction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author noear 2025/2/6 created
@@ -23,8 +25,24 @@ public class ChatFunctionDecl implements AiFunction<ChatFunctionParamDecl> {
         return this;
     }
 
-    public ChatFunctionDecl paramAdd(String name, String type, String description) {
+    public ChatFunctionDecl param(String name, String type, String description) {
         params.add(new ChatFunctionParamDecl(name, type, description));
+        return this;
+    }
+
+    public ChatFunctionDecl stringParam(String name, String description) {
+        return param(name, "string", description);
+    }
+
+    public ChatFunctionDecl intParam(String name, String description) {
+        return param(name, "int", description);
+    }
+
+    public ChatFunctionDecl floatParam(String name, String description) {
+        return param(name, "float", description);
+    }
+
+    public ChatFunctionDecl handle(Function<Map<String,Object>, Object> handler) {
         return this;
     }
 

@@ -36,11 +36,13 @@ public class DemoTest {
     public void case1_2() throws IOException {
         //过程参考：https://blog.csdn.net/owenc1/article/details/142812656
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
-                .apiKey("sm-0aLe9LC3Yk6FYuKD")
-                .headerAdd("X-Demo","test")
                 .functionAdd("get_weather", decl -> decl
                         .description("获取指定城市的天气情况")
-                        .paramAdd("location", "string", "根据用户提到的地点推测城市")
+                        .stringParam("location", "根据用户提到的地点推测城市")
+                        .handle(args -> {
+                            String location = (String) args.get("location");
+                            return location + "的天气是24c.";
+                        })
                 )
                 .build();
 
@@ -60,6 +62,7 @@ public class DemoTest {
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
                 .provider("ollama")
                 .model("deepseek-r1")
+                .headerAdd("X-Demo", "test")
                 .build();
 
         //流返回(sse)
