@@ -17,6 +17,9 @@ package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * AI 大语言模型
  *
@@ -25,9 +28,15 @@ import org.noear.solon.lang.Preview;
  */
 @Preview("3.1")
 public interface AiLLM<Msg extends AiMessage, Req extends AiRequest> {
+    /**
+     * 提示语
+     */
+    default Req prompt(Msg... messages) {
+        return prompt(Arrays.asList(messages));
+    }
 
     /**
      * 提示语
      */
-    Req prompt(Msg... messages);
+    Req prompt(List<Msg> messages);
 }

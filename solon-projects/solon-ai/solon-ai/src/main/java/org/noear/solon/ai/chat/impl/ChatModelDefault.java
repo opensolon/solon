@@ -20,6 +20,8 @@ import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatRequest;
 
+import java.util.List;
+
 /**
  * 聊天模型实现
  *
@@ -34,7 +36,7 @@ public class ChatModelDefault implements ChatModel {
     }
 
     @Override
-    public ChatRequest prompt(ChatMessage... messages) {
+    public ChatRequest prompt(List<ChatMessage> messages) {
         return new ChatRequestDefault(config, messages);
     }
 }

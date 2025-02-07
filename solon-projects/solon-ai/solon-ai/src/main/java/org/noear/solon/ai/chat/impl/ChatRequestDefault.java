@@ -18,6 +18,7 @@ package org.noear.solon.ai.chat.impl;
 import org.noear.solon.ai.chat.*;
 import org.reactivestreams.Publisher;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -28,10 +29,10 @@ public class ChatRequestDefault implements ChatRequest {
     private static final ChatOptions OPTIONS_DEFAULT = new ChatOptions();
 
     private final ChatConfig config;
-    private final ChatMessage[] messages;
+    private final List<ChatMessage> messages;
     private ChatOptions options;
 
-    public ChatRequestDefault(ChatConfig config, ChatMessage[] messages) {
+    public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
         this.config = config;
         this.messages = messages;
         this.options = OPTIONS_DEFAULT;
