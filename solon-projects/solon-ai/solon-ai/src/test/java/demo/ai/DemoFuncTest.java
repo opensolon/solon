@@ -39,9 +39,7 @@ public class DemoFuncTest {
                 .call();
 
         //打印消息
-        for (ChatMessage msg : resp.getMessages()) {
-            System.out.println(msg.getContent());
-        }
+        System.out.println(resp.getMessage().getContent());
     }
 
     @Test
@@ -67,9 +65,7 @@ public class DemoFuncTest {
                 .call();
 
         //打印消息
-        for (ChatMessage msg : resp.getMessages()) {
-            System.out.println(msg.getContent());
-        }
+        System.out.println(resp.getMessage().getContent());
     }
 
     @Test
@@ -92,8 +88,6 @@ public class DemoFuncTest {
                 .prompt(ChatMessage.ofUser("启动云主机，两分钟后告知我状态 172.18.26.11？"))
                 .call();
 
-        for (ChatMessage msg : resp.getMessages()) {
-            System.out.println(msg.getContent());
-        }
+        System.out.println(resp.getMessage().getContent());
     }
 }

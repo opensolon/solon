@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.snack.ONode;
 import org.noear.solon.ai.AiMessage;
 
 /**
@@ -28,6 +29,13 @@ public interface ChatMessage extends AiMessage {
      * 获取角色
      */
     ChatRole getRole();
+
+    static ChatMessage of(ONode oMessage) {
+        String role = oMessage.get("role").getString().toUpperCase();
+        String content = oMessage.get("content").getString();
+
+        return new ChatMessageImpl(ChatRole.valueOf(role), content);
+    }
 
     /**
      * 构建系统消息

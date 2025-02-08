@@ -24,5 +24,5 @@ import org.noear.solon.ai.AiResponse;
  * @since 3.1
  */
 public interface ChatResponse extends AiResponse<ChatMessage> {
-    String getJson();
+
 }

@@ -15,9 +15,17 @@
  */
 package org.noear.solon.ai.chat.impl;
 
+import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
+import org.noear.solon.net.http.HttpResponse;
+import org.noear.solon.net.http.HttpUtils;
+import org.noear.solon.rx.SimpleSubscription;
 import org.reactivestreams.Publisher;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -55,12 +63,73 @@ public class ChatRequestDefault implements ChatRequest {
     }
 
     @Override
-    public ChatResponse call() {
-        return null;
+    public ChatResponse call() throws IOException {
+        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
+
+        if (Utils.isNotEmpty(config.apiKey())) {
+            httpUtils.header("Authorization", "Bearer " + config.apiKey());
+        }
+
+        String reqJson = buildReqJson(false);
+
+        String respJson = httpUtils.bodyOfJson(reqJson).post();
+
+        return new ChatResponseDefault().load(respJson);
     }
 
     @Override
     public Publisher<ChatResponse> stream() {
-        return null;
+        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
+
+        if (Utils.isNotEmpty(config.apiKey())) {
+            httpUtils.header("Authorization", "Bearer " + config.apiKey());
+        }
+
+        String reqJson = buildReqJson(true);
+
+        return subscriber -> {
+            ChatResponseDefault response = new ChatResponseDefault();
+            try (HttpResponse resp = httpUtils.bodyOfJson(reqJson).exec("POST")) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()));
+                subscriber.onSubscribe(new SimpleSubscription()
+                        .onRequest((my, l) -> {
+                            try {
+                                while (l > 0) {
+                                    if (my.isCancelled()) {
+                                        break;
+                                    }
+
+                                    response.load(reader.readLine());
+                                    subscriber.onNext(response);
+
+                                    if (response.isDone()) {
+                                        subscriber.onComplete();
+                                        break;
+                                    } else {
+                                        l--;
+                                    }
+                                }
+                            } catch (Throwable err) {
+                                subscriber.onError(err);
+                            }
+                        }));
+
+            } catch (Throwable err) {
+                subscriber.onError(err);
+            }
+        };
+    }
+
+    private String buildReqJson(boolean stream) {
+        return new ONode().build(n -> {
+            n.set("stream", stream);
+            n.set("model", config.model());
+            n.getOrNew("messages").build(m -> {
+                for (ChatMessage msg : messages) {
+                    m.addNew().set("role", msg.getRole().name().toLowerCase())
+                            .set("content", msg.getContent());
+                }
+            });
+        }).toJson();
     }
 }

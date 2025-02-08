@@ -1,8 +1,9 @@
-package demo.ai;
+package features.ai;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
-import org.noear.solon.ai.chat.*;
+import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.ChatModel;
+import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
@@ -15,16 +16,16 @@ import java.io.IOException;
  * @author noear 2025/1/28 created
  */
 public class DemoTest {
+    private String apiUrl = "http://127.0.0.1:11434/api/chat";
     @Test
     public void case1() throws IOException {
-        ChatModel chatModel = ChatModel.of("http://localhost:8080")
-                .apiKey("sm-0aLe9LC3Yk6FYuKD")
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .model("llama3.2")
                 .build();
 
         //一次性返回
         ChatResponse resp = chatModel
-                .prompt("介绍下 solon 框架的插件扩展体系")
-                .options(o -> o.temperature(0.8F))
+                .prompt("hello")
                 .call();
 
         //打印消息
@@ -33,20 +34,20 @@ public class DemoTest {
 
     @Test
     public void case2() {
-        ChatModel chatModel = ChatModel.of("http://localhost:8080")
-                .provider("ollama")
-                .model("deepseek-r1")
-                .headerAdd("X-Demo", "test")
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .model("llama3.2")
                 .build();
 
         //流返回(sse)
         Publisher<ChatResponse> publisher = chatModel
-                .prompt("介绍下 solon 框架的插件扩展体系")
+                .prompt("hello")
                 .stream();
 
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
                     System.out.println(resp.getMessage().getContent());
+                }).doOnComplete(()->{
+                    System.out.println("::完成!");
                 }));
     }
 

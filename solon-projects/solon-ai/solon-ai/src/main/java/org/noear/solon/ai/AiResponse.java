@@ -28,5 +28,5 @@ public interface AiResponse<Msg extends AiMessage> {
     /**
      * 获取消息
      */
-    Iterable<Msg> getMessages();
+    Msg getMessage();
 }
