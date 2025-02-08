@@ -23,6 +23,7 @@ import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.sql.SqlUtilsFactory;
+import org.noear.solon.data.sql.bound.RowConverterFactory;
 
 /**
  * @author noear
@@ -35,6 +36,10 @@ public class SqlUtilsPlugin implements Plugin {
 
         context.getBeanAsync(SqlUtilsFactory.class, bean -> {
             SqlConfiguration.setFactory(bean);
+        });
+
+        context.getBeanAsync(RowConverterFactory.class, bean -> {
+            SqlConfiguration.setConverter(bean);
         });
     }
 

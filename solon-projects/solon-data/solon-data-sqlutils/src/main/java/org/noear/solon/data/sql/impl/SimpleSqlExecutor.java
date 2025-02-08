@@ -56,7 +56,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryRow(Class<T> tClass) throws SQLException {
-        return queryRow((RowConverter<T>) DefaultConverter.getInstance().create(tClass));
+        return queryRow((RowConverter<T>) SqlConfiguration.getConverter().create(tClass));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(Class<T> tClass) throws SQLException {
-        return queryRowList(DefaultConverter.getInstance().create(tClass));
+        return queryRowList(SqlConfiguration.getConverter().create(tClass));
     }
 
     @Override
@@ -96,7 +96,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, Class<T> tClass) throws SQLException {
-        return queryRowIterator(fetchSize, DefaultConverter.getInstance().create(tClass));
+        return queryRowIterator(fetchSize, SqlConfiguration.getConverter().create(tClass));
     }
 
     @Override

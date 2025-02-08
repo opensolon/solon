@@ -16,7 +16,6 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.snack.ONode;
-import org.noear.solon.Solon;
 import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 
@@ -33,32 +32,6 @@ import java.util.Map;
  * @since 3.0
  */
 public class DefaultConverter implements RowConverterFactory<Object> {
-    private static RowConverterFactory instance = new DefaultConverter();
-
-    static {
-        if (Solon.app() != null) {
-            Solon.context().getBeanAsync(RowConverterFactory.class, bean -> {
-                instance = bean;
-            });
-        }
-    }
-
-    /**
-     * 获取实例
-     */
-    public static RowConverterFactory getInstance() {
-        return instance;
-    }
-
-    /**
-     * 设置实例
-     */
-    public static void setInstance(RowConverterFactory instance) {
-        if (instance != null) {
-            DefaultConverter.instance = instance;
-        }
-    }
-
     @Override
     public RowConverter<Object> create(Class<?> tClass) {
         return new RowConverterImpl(tClass);

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.data.sql.bound.RowConverterFactory;
+import org.noear.solon.data.sql.impl.DefaultConverter;
 import org.noear.solon.data.sql.impl.SimpleSqlUtilsFactory;
 
 /**
@@ -39,6 +41,24 @@ public class SqlConfiguration {
     public static void setFactory(SqlUtilsFactory factory) {
         if (factory != null) {
             SqlConfiguration.factory = factory;
+        }
+    }
+
+    private static RowConverterFactory converter = new DefaultConverter();
+
+    /**
+     * 获取转换工厂
+     */
+    public static RowConverterFactory getConverter() {
+        return converter;
+    }
+
+    /**
+     * 设置转换工厂
+     */
+    public static void setConverter(RowConverterFactory converter) {
+        if (converter != null) {
+            SqlConfiguration.converter = converter;
         }
     }
 }
