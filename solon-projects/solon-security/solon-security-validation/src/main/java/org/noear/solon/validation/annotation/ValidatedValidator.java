@@ -15,7 +15,6 @@
  */
 package org.noear.solon.validation.annotation;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.BeanValidator;
@@ -31,10 +30,10 @@ public class ValidatedValidator implements Validator<Validated> {
 
     private BeanValidator validator = new BeanValidatorDefault();
 
-    public ValidatedValidator() {
-        Solon.context().getBeanAsync(BeanValidator.class, bean -> {
-            validator = bean;
-        });
+    public void setValidator(BeanValidator validator) {
+        if (validator != null) {
+            this.validator = validator;
+        }
     }
 
     @Override

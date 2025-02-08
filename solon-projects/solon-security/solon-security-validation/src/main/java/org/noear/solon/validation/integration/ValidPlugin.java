@@ -19,6 +19,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.validation.BeanValidateInterceptor;
+import org.noear.solon.validation.BeanValidator;
 import org.noear.solon.validation.ValidatorFailureHandler;
 import org.noear.solon.validation.ValidatorManager;
 import org.noear.solon.validation.annotation.*;
@@ -57,6 +58,11 @@ public class ValidPlugin implements Plugin {
         //NotBlacklistChecker
         context.getBeanAsync(NotBlacklistChecker.class, (bean) -> {
             ValidatorManager.setNotBlacklistChecker(bean);
+        });
+
+        //BeanValidator
+        context.getBeanAsync(BeanValidator.class, bean -> {
+            ValidatorManager.setBeanValidator(bean);
         });
     }
 }

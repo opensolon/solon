@@ -43,7 +43,7 @@ public class ValidatorManager {
 
     /**
      * 是否开启所有验证（默认：开启）
-     *
+     * <p>
      * 开启后，将对所有的验证注解进行逐一验证
      * 关闭后，只要有一个校验不通过，就会停止后续校验，直接返回错误
      */
@@ -75,6 +75,13 @@ public class ValidatorManager {
      */
     public static void setNotBlacklistChecker(NotBlacklistChecker checker) {
         NotBlacklistValidator.instance.setChecker(checker);
+    }
+
+    /**
+     * 设定实体验证器
+     */
+    public static void setBeanValidator(BeanValidator validator) {
+        ValidatedValidator.instance.setValidator(validator);
     }
 
     /**
@@ -154,7 +161,7 @@ public class ValidatorManager {
 
     /**
      * 移除某个类型的验证器
-     * */
+     */
     public static <T extends Annotation> Validator<T> get(Class<T> type) {
         return validMap.get(type);
     }
@@ -201,7 +208,7 @@ public class ValidatorManager {
 
     /**
      * 执行参数的验证处理
-     * */
+     */
     public static void validateOfInvocation(Invocation inv) throws Throwable {
         StringBuilder tmp = new StringBuilder();
         Result<List<BeanValidateInfo>> result = Result.succeed();
@@ -234,7 +241,7 @@ public class ValidatorManager {
         Validator valid = validMap.get(anno.annotationType());
 
         if (valid != null) {
-            if(valid.isSupportValueType(pw.getType()) == false) {
+            if (valid.isSupportValueType(pw.getType()) == false) {
                 throw new IllegalStateException("@" + anno.annotationType().getSimpleName() + " not support the '" + pw.getName() + "' parameter as " + pw.getType().getSimpleName() + " type: " + inv.method().getMethod());
             }
 

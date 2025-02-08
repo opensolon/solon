@@ -32,6 +32,7 @@
 * 优化 solon-web-rx 结构设计，方便支持其它响应式框架(比如 mutiny)
 * 优化 solon-web-rx 可支持所有 reactivestreams 实现框架
 * 优化 solon ActionReturnHandler 增加排序支持
+* 优化 solon-security-validation BeanValidator 的设定方式
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
