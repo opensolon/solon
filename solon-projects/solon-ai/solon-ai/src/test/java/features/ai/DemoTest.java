@@ -18,6 +18,7 @@ import java.io.IOException;
  */
 public class DemoTest {
     private String apiUrl = "http://127.0.0.1:11434/api/chat";
+
     @Test
     public void case1() throws IOException {
         ChatModel chatModel = ChatModel.of(apiUrl)
@@ -47,7 +48,7 @@ public class DemoTest {
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
                     System.out.println(resp.getMessage().getContent());
-                }).doOnComplete(()->{
+                }).doOnComplete(() -> {
                     System.out.println("::完成!");
                 }));
     }
@@ -70,14 +71,22 @@ public class DemoTest {
 
     @Test
     public void case4() throws Throwable {
-        ChatModel chatModel = ChatModel.of("http://localhost:8080").build();
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .model("llama3.2")
+                .globalFunctionAdd(new WeatherChatFunction())
+                .build();
 
-        FlowEngine flowEngine = FlowEngine.newInstance();
-        flowEngine.load(Chain.parseByUri("classpath:flow/case4.yml"));
+        //流返回(sse)
+        Publisher<ChatResponse> publisher = chatModel
+                .prompt("今天杭州的天气情况？")
+                .stream();
 
-        ChainContext ctx = new ChainContext();
-        ctx.put("chatModel", chatModel);
+        publisher.subscribe(new SimpleSubscriber<ChatResponse>()
+                .doOnNext(resp -> {
+                    System.out.println(resp.getMessage().getContent());
+                }).doOnComplete(() -> {
+                    System.out.println("::完成!");
+                }));
 
-        flowEngine.eval("ai-1");
     }
 }

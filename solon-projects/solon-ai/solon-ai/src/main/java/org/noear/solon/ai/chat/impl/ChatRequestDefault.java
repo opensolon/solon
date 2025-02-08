@@ -81,22 +81,7 @@ public class ChatRequestDefault implements ChatRequest {
 
         if (resp.getMessage().getToolCalls() != null) {
             messages.add(resp.getMessage());
-
-            for (ONode n1 : resp.getMessage().getToolCalls().ary()) {
-                ONode n1f = n1.get("function");
-                String name = n1f.get("name").getString();
-                Map<String, Object> args = new HashMap<>();
-                n1f.get("arguments").obj().forEach((k, v) -> {
-                    args.put(k, v.getString());
-                });
-
-                for (ChatFunction func : config.globalFunctions()) {
-                    if (name.equals(func.name())) {
-                        String content = func.handle(args);
-                        messages.add(ChatMessage.ofTool(name, content));
-                    }
-                }
-            }
+            buildToolCalls(resp.getMessage().getToolCalls());
 
             return call();
         } else {
@@ -127,6 +112,18 @@ public class ChatRequestDefault implements ChatRequest {
                                     }
 
                                     response.load(reader.readLine());
+
+                                    if (response.getMessage().getToolCalls() != null) {
+                                        messages.add(response.getMessage());
+                                        buildToolCalls(response.getMessage().getToolCalls());
+
+                                        //空读一行（流读取时，一行a）
+                                        reader.readLine();
+
+                                        stream().subscribe(subscriber);
+                                        return;
+                                    }
+
                                     subscriber.onNext(response);
 
                                     if (response.isDone()) {
@@ -145,6 +142,24 @@ public class ChatRequestDefault implements ChatRequest {
                 subscriber.onError(err);
             }
         };
+    }
+
+    private void buildToolCalls(ONode toolCalls){
+        for (ONode n1 : toolCalls.ary()) {
+            ONode n1f = n1.get("function");
+            String name = n1f.get("name").getString();
+            Map<String, Object> args = new HashMap<>();
+            n1f.get("arguments").obj().forEach((k, v) -> {
+                args.put(k, v.getString());
+            });
+
+            for (ChatFunction func : config.globalFunctions()) {
+                if (name.equals(func.name())) {
+                    String content = func.handle(args);
+                    messages.add(ChatMessage.ofTool(name, content));
+                }
+            }
+        }
     }
 
     private String buildReqJson(boolean stream) {
