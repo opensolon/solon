@@ -28,12 +28,12 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class SimpleSubscriber<T> implements Subscriber<T> {
-    private Consumer<Long> doOnSubscribe;
+    private Consumer<Subscription> doOnSubscribe;
     private Consumer<T> doOnNext;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
-    public SimpleSubscriber<T> doOnSubscribe(Consumer<Long> doOnSubscribe) {
+    public SimpleSubscriber<T> doOnSubscribe(Consumer<Subscription> doOnSubscribe) {
         this.doOnSubscribe = doOnSubscribe;
         return this;
     }
@@ -56,9 +56,9 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        subscription.request(Long.MAX_VALUE);
-
         if (doOnSubscribe != null) {
+            doOnSubscribe.accept(subscription);
+        } else {
             subscription.request(Long.MAX_VALUE);
         }
     }
