@@ -34,4 +34,8 @@ public enum ChatRole {
      * 助理
      */
     ASSISTANT,
+    /**
+     * 工具
+     */
+    TOOL,
 }

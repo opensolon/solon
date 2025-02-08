@@ -30,11 +30,19 @@ public interface ChatMessage extends AiMessage {
      */
     ChatRole getRole();
 
+    String getName();
+
+    /**
+     * 获取工具调用
+     */
+    ONode getToolCalls();
+
     static ChatMessage of(ONode oMessage) {
         String role = oMessage.get("role").getString().toUpperCase();
         String content = oMessage.get("content").getString();
+        ONode toolCalls = oMessage.getOrNull("tool_calls");
 
-        return new ChatMessageImpl(ChatRole.valueOf(role), content);
+        return new ChatMessageImpl(ChatRole.valueOf(role), content, toolCalls);
     }
 
     /**
@@ -56,5 +64,14 @@ public interface ChatMessage extends AiMessage {
      */
     static ChatMessage ofAssistant(String content) {
         return new ChatMessageImpl(ChatRole.ASSISTANT, content);
+    }
+
+    /**
+     * 构建工具消息
+     */
+    static ChatMessage ofTool(String name, String content) {
+        ChatMessageImpl tmp = new ChatMessageImpl(ChatRole.TOOL, content);
+        tmp.setName(name);
+        return tmp;
     }
 }

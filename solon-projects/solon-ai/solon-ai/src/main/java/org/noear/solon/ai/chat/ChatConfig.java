@@ -18,6 +18,9 @@ package org.noear.solon.ai.chat;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.core.util.MultiMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 聊天配置
  *
@@ -29,7 +32,8 @@ public class ChatConfig implements AiConfig {
     protected String apiKey;
     protected String provider;
     protected String model;
-    protected MultiMap<String> headers = new MultiMap<>();
+    protected final MultiMap<String> headers = new MultiMap<>();
+    protected final List<ChatFunction> globalFunctions = new ArrayList<>();
 
 
     @Override
@@ -55,5 +59,9 @@ public class ChatConfig implements AiConfig {
     @Override
     public MultiMap<String> headers() {
         return headers;
+    }
+
+    public List<ChatFunction> globalFunctions() {
+        return globalFunctions;
     }
 }

@@ -1,5 +1,6 @@
 package features.ai;
 
+import demo.ai.WeatherChatFunction;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
@@ -53,15 +54,14 @@ public class DemoTest {
 
     @Test
     public void case3() throws IOException {
-        ChatModel chatModel = ChatModel.of("http://localhost:8080").build();
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .model("llama3.2")
+                .globalFunctionAdd(new WeatherChatFunction())
+                .build();
 
         //历史提示语（记忆）
         ChatResponse resp = chatModel
-                .prompt(ChatMessage.ofSystem("欢迎使用 ..."),
-                        ChatMessage.ofUser("介绍下 solon 框架的插件扩展体系"),
-                        ChatMessage.ofAssistant("..."),
-                        ChatMessage.ofUser("..."))
-                .options(o -> o.temperature(0.8F))
+                .prompt("今天杭州的天气情况？")
                 .call();
 
         //打印消息

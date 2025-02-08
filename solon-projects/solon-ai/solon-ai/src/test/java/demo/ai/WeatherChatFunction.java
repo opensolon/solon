@@ -41,6 +41,6 @@ public class WeatherChatFunction implements ChatFunction {
     @Override
     public String handle(Map<String, Object> args) {
         String location = (String) args.get("location");
-        return location + "的天气是";// + weatherService.get(location);
+        return location + "的天气是晴24度";// + weatherService.get(location);
     }
 }

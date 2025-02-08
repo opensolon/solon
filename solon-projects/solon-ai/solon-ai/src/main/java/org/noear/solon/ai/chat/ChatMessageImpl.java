@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.snack.ONode;
+
 /**
  * 聊天消息实现
  *
@@ -22,14 +24,23 @@ package org.noear.solon.ai.chat;
  * @since 3.1
  */
 class ChatMessageImpl implements ChatMessage {
-    private final ChatRole role;
-    private final String content;
-    private final String[] tools;
+    private ChatRole role;
+    private String name;
+    private String content;
+    private transient ONode tool_calls;
 
-    public ChatMessageImpl(ChatRole role, String content, String... tools) {
+    public ChatMessageImpl(ChatRole role, String content, ONode tool_calls) {
         this.role = role;
         this.content = content;
-        this.tools = tools;
+        this.tool_calls = tool_calls;
+    }
+
+    public ChatMessageImpl(ChatRole role, String content) {
+        this(role, content, null);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -37,8 +48,16 @@ class ChatMessageImpl implements ChatMessage {
         return role;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String getContent() {
         return content;
+    }
+
+    public ONode getToolCalls() {
+        return tool_calls;
     }
 }

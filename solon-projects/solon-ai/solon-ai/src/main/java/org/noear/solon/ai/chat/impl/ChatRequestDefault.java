@@ -26,7 +26,10 @@ import org.reactivestreams.Publisher;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -42,7 +45,7 @@ public class ChatRequestDefault implements ChatRequest {
 
     public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
         this.config = config;
-        this.messages = messages;
+        this.messages = new ArrayList<>(messages);
         this.options = OPTIONS_DEFAULT;
     }
 
@@ -74,7 +77,31 @@ public class ChatRequestDefault implements ChatRequest {
 
         String respJson = httpUtils.bodyOfJson(reqJson).post();
 
-        return new ChatResponseDefault().load(respJson);
+        ChatResponseDefault resp = new ChatResponseDefault().load(respJson);
+
+        if (resp.getMessage().getToolCalls() != null) {
+            messages.add(resp.getMessage());
+
+            for (ONode n1 : resp.getMessage().getToolCalls().ary()) {
+                ONode n1f = n1.get("function");
+                String name = n1f.get("name").getString();
+                Map<String, Object> args = new HashMap<>();
+                n1f.get("arguments").obj().forEach((k, v) -> {
+                    args.put(k, v.getString());
+                });
+
+                for (ChatFunction func : config.globalFunctions()) {
+                    if (name.equals(func.name())) {
+                        String content = func.handle(args);
+                        messages.add(ChatMessage.ofTool(name, content));
+                    }
+                }
+            }
+
+            return call();
+        } else {
+            return resp;
+        }
     }
 
     @Override
@@ -124,12 +151,45 @@ public class ChatRequestDefault implements ChatRequest {
         return new ONode().build(n -> {
             n.set("stream", stream);
             n.set("model", config.model());
-            n.getOrNew("messages").build(m -> {
-                for (ChatMessage msg : messages) {
-                    m.addNew().set("role", msg.getRole().name().toLowerCase())
-                            .set("content", msg.getContent());
+            n.getOrNew("messages").build(n1 -> {
+                for (ChatMessage m1 : messages) {
+                    n1.addNew().build(n2 -> {
+                        n2.set("role", m1.getRole().name().toLowerCase());
+                        n2.set("content", m1.getContent());
+                        if (Utils.isNotEmpty(m1.getName())) {
+                            n2.set("name", m1.getName());
+                        }
+                    });
                 }
             });
+
+            if (config.globalFunctions().isEmpty() == false) {
+                n.getOrNew("tools").build(n1 -> {
+                    for (ChatFunction func : config.globalFunctions()) {
+                        n1.addNew().build(n2 -> {
+                            n2.set("type", "function");
+                            n2.getOrNew("function").build(n3 -> {
+                                n3.set("name", func.name());
+                                n3.set("description", func.description());
+                                n3.getOrNew("parameters").build(n4 -> {
+                                    n4.set("type", "object");
+                                    ONode n4r = n4.getOrNew("required").asArray();
+                                    n4.getOrNew("properties").build(n5 -> {
+                                        for (ChatFunctionParam p1 : func.params()) {
+                                            n5.getOrNew(p1.name()).build(n6 -> {
+                                                n6.set("type", p1.type());
+                                                n6.set("description", p1.description());
+                                            });
+                                            n4r.add(p1.name());
+                                        }
+                                    });
+                                });
+                            });
+                        });
+
+                    }
+                });
+            }
         }).toJson();
     }
 }

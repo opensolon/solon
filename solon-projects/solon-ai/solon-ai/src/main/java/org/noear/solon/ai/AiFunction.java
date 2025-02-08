@@ -24,5 +24,5 @@ public interface AiFunction<P extends AiFunctionParam> {
     /**
      * 处理
      */
-    Object handle(Map<String, Object> args);
+    String handle(Map<String, Object> args);
 }
