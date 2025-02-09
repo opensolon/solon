@@ -19,6 +19,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiException;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.noear.solon.ai.chat.message.AssistantChatMessage;
 
 /**
  * 聊天响应
@@ -28,7 +29,7 @@ import org.noear.solon.ai.chat.ChatResponse;
  */
 public class ChatResponseDefault implements ChatResponse {
     private AiException exception;
-    private ChatMessage message;
+    private AssistantChatMessage message;
     private String model;
     private String created_at;
     private String done_reason;
@@ -43,30 +44,54 @@ public class ChatResponseDefault implements ChatResponse {
     /**
      * 分析并加载数据
      */
-    public ChatResponseDefault resolve(String json) {
+    public boolean resolve(String json) {
+        if (json.startsWith("data:")) {
+            json = json.substring(6);
+        }
+
         //解析
         ONode oResp = ONode.load(json);
+
+        if (oResp.isObject() == false) {
+            return false;
+        }
 
         if (oResp.contains("error")) {
             this.exception = new AiException(oResp.get("error").getString());
         } else {
-            this.model = oResp.get("model").getString();
-            this.created_at = oResp.get("created_at").getString();
-            this.done = oResp.get("done").getBoolean();
-            this.message = ChatMessage.of(oResp.get("message"));
+            if (oResp.contains("choices")) {
+                this.model = oResp.get("model").getString();
+                this.created_at = oResp.get("created").getString();
 
-            if (done) {
-                this.done_reason = oResp.get("done_reason").getString();
-                this.total_duration = oResp.get("total_duration").getLong();
-                this.load_duration = oResp.get("load_duration").getLong();
-                this.prompt_eval_count = oResp.get("prompt_eval_count").getLong();
-                this.prompt_eval_duration = oResp.get("prompt_eval_duration").getLong();
-                this.eval_count = oResp.get("eval_count").getLong();
-                this.eval_duration = oResp.get("eval_duration").getLong();
+                ONode oChoice1 = oResp.get("choices").get(0);
+
+                if (oChoice1.contains("delta")) {
+                    this.message = ChatMessage.of(oChoice1.get("delta"));
+                } else {
+                    this.message = ChatMessage.of(oChoice1.get("message"));
+                }
+
+                this.done = oResp.contains("usage");
+                this.done_reason = oResp.get("finish_reason").getString();
+            } else {
+                this.model = oResp.get("model").getString();
+                this.created_at = oResp.get("created_at").getString();
+                this.done = oResp.get("done").getBoolean();
+                this.message = ChatMessage.of(oResp.get("message"));
+
+                if (done) {
+                    this.done_reason = oResp.get("done_reason").getString();
+                    this.total_duration = oResp.get("total_duration").getLong();
+                    this.load_duration = oResp.get("load_duration").getLong();
+                    this.prompt_eval_count = oResp.get("prompt_eval_count").getLong();
+                    this.prompt_eval_duration = oResp.get("prompt_eval_duration").getLong();
+                    this.eval_count = oResp.get("eval_count").getLong();
+                    this.eval_duration = oResp.get("eval_duration").getLong();
+                }
             }
         }
 
-        return this;
+        return true;
     }
 
     public String getModel() {
@@ -83,7 +108,7 @@ public class ChatResponseDefault implements ChatResponse {
     }
 
     @Override
-    public ChatMessage getMessage() {
+    public AssistantChatMessage getMessage() {
         return message;
     }
 

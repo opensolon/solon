@@ -28,16 +28,19 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 public class ChatOptions implements AiOptions {
-    public static final float TEMPERATURE_DEFAULT = 0.8F;
 
     public static ChatOptions of() {
         return new ChatOptions();
     }
 
-    private float temperature = TEMPERATURE_DEFAULT;
+    private Long max_tokens;
+    private Float temperature;
+    private Float top_p;
+    private Float top_k;
+    private Float frequency_penalty;
     private final List<ChatFunction> functions = new ArrayList<>();
 
-    public float temperature() {
+    public Float temperature() {
         return temperature;
     }
 

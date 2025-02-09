@@ -1,0 +1,5 @@
+solon:
+  logging:
+    logger:
+      root:
+        level: TRACE

@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiResponse;
+import org.noear.solon.ai.chat.message.AssistantChatMessage;
 
 /**
  * 聊天响应
@@ -23,6 +24,6 @@ import org.noear.solon.ai.AiResponse;
  * @author noear
  * @since 3.1
  */
-public interface ChatResponse extends AiResponse<ChatMessage> {
+public interface ChatResponse extends AiResponse<AssistantChatMessage> {
 
 }

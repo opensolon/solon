@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.rx.SimpleSubscriber;
+import org.noear.solon.test.SolonTest;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,26 +16,28 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @author noear 2025/1/28 created
  */
-public class DemoTest {
-    private static final Logger log = LoggerFactory.getLogger(DemoTest.class);
-    private static final String apiUrl = "http://127.0.0.1:11434/api/chat";
-    private static final String model = "llama3.2";//"llama3.2"; //deepseek-r1:1.5b;
+@SolonTest
+public class DeepSeekTest {
+    private static final Logger log = LoggerFactory.getLogger(DeepSeekTest.class);
+    private static final String apiUrl = "https://api.deepseek.com/chat/completions";
+    private static final String apkKey = "sk-9f4415ddc570496581897c22e3d41a54";
+    private static final String model = "deepseek-chat"; //deepseek-reasoner//deepseek-chat
 
     @Test
     public void case1() throws IOException {
-        ChatModel chatModel = ChatModel.of(apiUrl).model(model).build();
+        ChatModel chatModel = ChatModel.of(apiUrl).apiKey(apkKey).model(model).build();
 
         //一次性返回
         ChatResponse resp = chatModel.prompt("hello").call();
 
         //打印消息
-        log.info(resp.getMessage().getContent());
+        log.info(resp.getMessage().toString());
         assert resp.getMessage().getContent().contains("Hello");
     }
 
     @Test
     public void case2() throws Exception {
-        ChatModel chatModel = ChatModel.of(apiUrl).model(model).build();
+        ChatModel chatModel = ChatModel.of(apiUrl).apiKey(apkKey).model(model).build();
 
         //流返回
         Publisher<ChatResponse> publisher = chatModel.prompt("hello").stream();
@@ -42,7 +45,7 @@ public class DemoTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info(resp.getMessage().getContent());
+                    log.info(resp.getMessage().toString());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();
@@ -56,6 +59,7 @@ public class DemoTest {
     @Test
     public void case3() throws IOException {
         ChatModel chatModel = ChatModel.of(apiUrl)
+                .apiKey(apkKey)
                 .model(model)
                 .globalFunctionAdd(new WeatherChatFunction())
                 .build();
@@ -71,6 +75,7 @@ public class DemoTest {
     @Test
     public void case4() throws Throwable {
         ChatModel chatModel = ChatModel.of(apiUrl)
+                .apiKey(apkKey)
                 .model(model)
                 .build();
 

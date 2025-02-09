@@ -85,7 +85,8 @@ public class ChatRequestDefault implements ChatRequest {
             log.trace("ai-response: {}",respJson);
         }
 
-        ChatResponseDefault resp = new ChatResponseDefault().resolve(respJson);
+        ChatResponseDefault resp = new ChatResponseDefault();
+        resp.resolve(respJson);
 
         if (resp.getException() != null) {
             throw resp.getException();
@@ -140,35 +141,39 @@ public class ChatRequestDefault implements ChatRequest {
 
                         String respJson = reader.readLine();
 
+                        if(respJson == null) {
+                            break;
+                        }
+
                         if (log.isTraceEnabled()) {
                             log.trace("ai-response: {}",respJson);
                         }
 
-                        response.resolve(respJson);
+                        if(response.resolve(respJson)){
+                            if (response.getException() != null) {
+                                subscriber.onError(response.getException());
+                                return;
+                            }
 
-                        if (response.getException() != null) {
-                            subscriber.onError(response.getException());
-                            return;
-                        }
+                            if (response.getMessage().getToolCalls() != null) {
+                                messages.add(response.getMessage());
+                                parseToolCalls(response.getMessage().getToolCalls());
 
-                        if (response.getMessage().getToolCalls() != null) {
-                            messages.add(response.getMessage());
-                            parseToolCalls(response.getMessage().getToolCalls());
+                                //空读一行（流读取时，一行a）
+                                reader.readLine();
 
-                            //空读一行（流读取时，一行a）
-                            reader.readLine();
+                                stream().subscribe(subscriber);
+                                return;
+                            }
 
-                            stream().subscribe(subscriber);
-                            return;
-                        }
+                            subscriber.onNext(response);
 
-                        subscriber.onNext(response);
-
-                        if (response.isDone()) {
-                            subscriber.onComplete();
-                            break;
-                        } else {
-                            l--;
+                            if (response.isDone()) {
+                                subscriber.onComplete();
+                                break;
+                            } else {
+                                l--;
+                            }
                         }
                     }
                 } catch (Throwable err) {
@@ -180,17 +185,25 @@ public class ChatRequestDefault implements ChatRequest {
 
     private void parseToolCalls(ONode toolCalls) {
         for (ONode n1 : toolCalls.ary()) {
+            String callId = n1.get("id").getString();
+
             ONode n1f = n1.get("function");
             String name = n1f.get("name").getString();
+            ONode n1fArgs = n1f.get("arguments");
+            if(n1fArgs.isValue()){
+                //有可能是 json string
+                n1fArgs = ONode.loadStr(n1fArgs.getString());
+            }
+
             Map<String, Object> args = new HashMap<>();
-            n1f.get("arguments").obj().forEach((k, v) -> {
+            n1fArgs.obj().forEach((k, v) -> {
                 args.put(k, v.getString());
             });
 
             for (ChatFunction func : config.globalFunctions()) {
                 if (name.equals(func.name())) {
                     String content = func.handle(args);
-                    messages.add(ChatMessage.ofTool(name, content));
+                    messages.add(ChatMessage.ofTool(content, name, callId));
                 }
             }
         }
@@ -212,7 +225,7 @@ public class ChatRequestDefault implements ChatRequest {
         return new ONode().build(n -> {
             n.set("stream", stream);
 
-            if (options.temperature() != ChatOptions.TEMPERATURE_DEFAULT) {
+            if (options.temperature() != null) {
                 n.set("temperature", options.temperature());
             }
 
@@ -222,13 +235,7 @@ public class ChatRequestDefault implements ChatRequest {
 
             n.getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    n1.addNew().build(n2 -> {
-                        n2.set("role", m1.getRole().name().toLowerCase());
-                        n2.set("content", m1.getContent());
-                        if (Utils.isNotEmpty(m1.getName())) {
-                            n2.set("name", m1.getName());
-                        }
-                    });
+                    n1.add(m1.toRequestNode());
                 }
             });
 
