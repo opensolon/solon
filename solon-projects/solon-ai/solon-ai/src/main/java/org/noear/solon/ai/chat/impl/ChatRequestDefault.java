@@ -164,7 +164,9 @@ public class ChatRequestDefault implements ChatRequest {
                                 return;
                             }
 
-                            subscriber.onNext(resp);
+                            if (resp.getMessage() != null) {
+                                subscriber.onNext(resp);
+                            }
 
                             if (resp.isDone()) {
                                 subscriber.onComplete();
