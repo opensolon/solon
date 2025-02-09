@@ -15,9 +15,9 @@
  */
 package org.noear.solon.ai.chat.impl;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
+import org.noear.solon.ai.chat.message.AssistantChatMessage;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.rx.SimpleSubscription;
@@ -30,9 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -73,20 +71,20 @@ public class ChatRequestDefault implements ChatRequest {
     public ChatResponse call() throws IOException {
         HttpUtils httpUtils = buildReqHttp();
 
-        String reqJson = buildReqJson(false);
+        String reqJson = config.dialect().buildRequestJson(config, options, messages, false);
 
         if (log.isTraceEnabled()) {
-            log.trace("ai-request: {}",reqJson);
+            log.trace("ai-request: {}", reqJson);
         }
 
         String respJson = httpUtils.bodyOfJson(reqJson).post();
 
         if (log.isTraceEnabled()) {
-            log.trace("ai-response: {}",respJson);
+            log.trace("ai-response: {}", respJson);
         }
 
         ChatResponseDefault resp = new ChatResponseDefault();
-        resp.resolve(respJson);
+        config.dialect().resolveResponseJson(config, resp, respJson);
 
         if (resp.getException() != null) {
             throw resp.getException();
@@ -94,7 +92,7 @@ public class ChatRequestDefault implements ChatRequest {
 
         if (resp.getMessage().getToolCalls() != null) {
             messages.add(resp.getMessage());
-            parseToolCalls(resp.getMessage().getToolCalls());
+            buildToolMessage(resp.getMessage());
 
             return call();
         } else {
@@ -106,10 +104,10 @@ public class ChatRequestDefault implements ChatRequest {
     public Publisher<ChatResponse> stream() {
         HttpUtils httpUtils = buildReqHttp();
 
-        String reqJson = buildReqJson(true);
+        String reqJson = config.dialect().buildRequestJson(config, options, messages, true);
 
         if (log.isTraceEnabled()) {
-            log.trace("ai-request: {}",reqJson);
+            log.trace("ai-request: {}", reqJson);
         }
 
         return subscriber -> {
@@ -128,10 +126,10 @@ public class ChatRequestDefault implements ChatRequest {
         };
     }
 
-    private void parseResp(HttpResponse resp, Subscriber<? super ChatResponse> subscriber) throws IOException {
-        ChatResponseDefault response = new ChatResponseDefault();
+    private void parseResp(HttpResponse httpResp, Subscriber<? super ChatResponse> subscriber) throws IOException {
+        ChatResponseDefault resp = new ChatResponseDefault();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResp.body()))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
                 try {
                     while (l > 0) {
@@ -141,23 +139,23 @@ public class ChatRequestDefault implements ChatRequest {
 
                         String respJson = reader.readLine();
 
-                        if(respJson == null) {
+                        if (respJson == null) {
                             break;
                         }
 
                         if (log.isTraceEnabled()) {
-                            log.trace("ai-response: {}",respJson);
+                            log.trace("ai-response: {}", respJson);
                         }
 
-                        if(response.resolve(respJson)){
-                            if (response.getException() != null) {
-                                subscriber.onError(response.getException());
+                        if (config.dialect().resolveResponseJson(config, resp, respJson)) {
+                            if (resp.getException() != null) {
+                                subscriber.onError(resp.getException());
                                 return;
                             }
 
-                            if (response.getMessage().getToolCalls() != null) {
-                                messages.add(response.getMessage());
-                                parseToolCalls(response.getMessage().getToolCalls());
+                            if (resp.getMessage().getToolCalls() != null) {
+                                messages.add(resp.getMessage());
+                                buildToolMessage(resp.getMessage());
 
                                 //空读一行（流读取时，一行a）
                                 reader.readLine();
@@ -166,9 +164,9 @@ public class ChatRequestDefault implements ChatRequest {
                                 return;
                             }
 
-                            subscriber.onNext(response);
+                            subscriber.onNext(resp);
 
-                            if (response.isDone()) {
+                            if (resp.isDone()) {
                                 subscriber.onComplete();
                                 break;
                             } else {
@@ -183,28 +181,21 @@ public class ChatRequestDefault implements ChatRequest {
         }
     }
 
-    private void parseToolCalls(ONode toolCalls) {
-        for (ONode n1 : toolCalls.ary()) {
-            String callId = n1.get("id").getString();
+    private void buildToolMessage(AssistantChatMessage acm) {
+        if (Utils.isEmpty(acm.getToolCalls())) {
+            return;
+        }
 
-            ONode n1f = n1.get("function");
-            String name = n1f.get("name").getString();
-            ONode n1fArgs = n1f.get("arguments");
-            if(n1fArgs.isValue()){
-                //有可能是 json string
-                n1fArgs = ONode.loadStr(n1fArgs.getString());
+        for (ChatFunctionCall call : acm.getToolCalls()) {
+            ChatFunction func = config.globalFunction(call.name());
+
+            if (func == null) {
+                func = options.function(call.name());
             }
 
-            Map<String, Object> args = new HashMap<>();
-            n1fArgs.obj().forEach((k, v) -> {
-                args.put(k, v.getString());
-            });
-
-            for (ChatFunction func : config.globalFunctions()) {
-                if (name.equals(func.name())) {
-                    String content = func.handle(args);
-                    messages.add(ChatMessage.ofTool(content, name, callId));
-                }
+            if (func != null) {
+                String content = func.handle(call.arguments());
+                messages.add(ChatMessage.ofTool(content, call.name(), call.id()));
             }
         }
     }
@@ -219,65 +210,5 @@ public class ChatRequestDefault implements ChatRequest {
         httpUtils.headers(config.headers());
 
         return httpUtils;
-    }
-
-    private String buildReqJson(boolean stream) {
-        return new ONode().build(n -> {
-            n.set("stream", stream);
-
-            if (options.temperature() != null) {
-                n.set("temperature", options.temperature());
-            }
-
-            if (Utils.isNotEmpty(config.model())) {
-                n.set("model", config.model());
-            }
-
-            n.getOrNew("messages").build(n1 -> {
-                for (ChatMessage m1 : messages) {
-                    n1.add(m1.toRequestNode());
-                }
-            });
-
-            buildReqFunctionsJson(n, config.globalFunctions());
-            buildReqFunctionsJson(n, options.functions());
-        }).toJson();
-    }
-
-    private void buildReqFunctionsJson(ONode n, List<ChatFunction> funcs) {
-        if (Utils.isEmpty(funcs)) {
-            return;
-        }
-
-        n.getOrNew("tools").build(n1 -> {
-            for (ChatFunction func : funcs) {
-                n1.addNew().build(n2 -> {
-                    n2.set("type", "function");
-                    n2.getOrNew("function").build(n3 -> {
-                        n3.set("name", func.name());
-                        n3.set("description", func.description());
-                        n3.getOrNew("parameters").build(n4 -> {
-                            n4.set("type", "object");
-                            ONode n4r = n4.getOrNew("required").asArray();
-                            n4.getOrNew("properties").build(n5 -> {
-                                for (ChatFunctionParam p1 : func.params()) {
-                                    n5.getOrNew(p1.name()).build(n6 -> {
-                                        if (p1.type().isArray()) {
-                                            n6.set("type", "array");
-                                            n6.getOrNew("items").set("type", p1.typeAsString()); //todo:...要改
-                                        } else {
-                                            n6.set("type", p1.typeAsString());
-                                        }
-
-                                        n6.set("description", p1.description());
-                                    });
-                                    n4r.add(p1.name());
-                                }
-                            });
-                        });
-                    });
-                });
-            }
-        });
     }
 }

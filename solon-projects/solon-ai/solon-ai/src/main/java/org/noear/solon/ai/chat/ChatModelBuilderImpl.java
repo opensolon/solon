@@ -54,7 +54,7 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
 
     @Override
     public ChatModel.Builder globalFunctionAdd(ChatFunction function) {
-        config.globalFunctions.add(function);
+        config.globalFunctions.put(function.name(), function);
         return this;
     }
 
@@ -67,6 +67,8 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
     }
 
     public ChatModel build() {
+        config.dialect = ChatDialectManager.get(config.provider);
+
         return new ChatModelDefault(config);
     }
 }

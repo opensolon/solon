@@ -22,7 +22,7 @@ import org.noear.solon.ai.chat.message.SystemChatMessage;
 import org.noear.solon.ai.chat.message.ToolChatMessage;
 import org.noear.solon.ai.chat.message.UserChatMessage;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * 聊天消息
@@ -41,13 +41,13 @@ public interface ChatMessage extends AiMessage {
      */
     ONode toRequestNode();
 
-    static AssistantChatMessage of(ONode oMessage) {
-        //String role = oMessage.get("role").getString();
+    static AssistantChatMessage of(ChatConfig config, ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
-        ONode toolCalls = oMessage.getOrNull("tool_calls");
+        ONode toolCallsNode = oMessage.getOrNull("tool_calls");
+        List<ChatFunctionCall> toolCalls = config.dialect().parseToolCalls(config, toolCallsNode);
 
-        return new AssistantChatMessage(content, reasoning_content, toolCalls);
+        return new AssistantChatMessage(content, reasoning_content, toolCallsNode, toolCalls);
     }
 
     /**
@@ -68,7 +68,7 @@ public interface ChatMessage extends AiMessage {
      * 构建助理消息
      */
     static ChatMessage ofAssistant(String content) {
-        return new AssistantChatMessage(content, null, null);
+        return new AssistantChatMessage(content, null, null, null);
     }
 
     /**

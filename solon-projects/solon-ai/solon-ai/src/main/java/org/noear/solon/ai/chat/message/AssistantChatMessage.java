@@ -2,10 +2,14 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
+import org.noear.solon.ai.chat.ChatFunction;
+import org.noear.solon.ai.chat.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,11 +18,13 @@ import java.util.Map;
 public class AssistantChatMessage implements ChatMessage {
     private String content;
     private String reasoningContent;
-    private ONode toolCalls;
+    private List<ChatFunctionCall> toolCalls;
+    private ONode toolCallsNode;
 
-    public AssistantChatMessage(String content, String reasoningContent, ONode toolCalls) {
+    public AssistantChatMessage(String content, String reasoningContent, ONode toolCallsNode, List<ChatFunctionCall> toolCalls) {
         this.content = content;
         this.reasoningContent = reasoningContent;
+        this.toolCallsNode = toolCallsNode;
         this.toolCalls = toolCalls;
     }
 
@@ -36,7 +42,7 @@ public class AssistantChatMessage implements ChatMessage {
         return reasoningContent;
     }
 
-    public ONode getToolCalls() {
+    public List<ChatFunctionCall> getToolCalls() {
         return toolCalls;
     }
 
@@ -50,8 +56,8 @@ public class AssistantChatMessage implements ChatMessage {
             oNode.set("reasoning_content", reasoningContent);
         }
 
-        if(toolCalls != null) {
-            oNode.set("tool_calls", toolCalls);
+        if(toolCallsNode != null) {
+            oNode.set("tool_calls", toolCallsNode);
         }
 
         return oNode;
