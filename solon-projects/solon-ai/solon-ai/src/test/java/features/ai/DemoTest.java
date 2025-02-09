@@ -18,11 +18,12 @@ import java.io.IOException;
  */
 public class DemoTest {
     private String apiUrl = "http://127.0.0.1:11434/api/chat";
+    private String model = "deepseek-r1:1.5b";//"llama3.2";
 
     @Test
     public void case1() throws IOException {
         ChatModel chatModel = ChatModel.of(apiUrl)
-                .model("llama3.2")
+                .model(model)
                 .build();
 
         //一次性返回
@@ -32,12 +33,13 @@ public class DemoTest {
 
         //打印消息
         System.out.println(resp.getMessage().getContent());
+        assert resp.getMessage().getContent().contains("Hello");
     }
 
     @Test
     public void case2() {
         ChatModel chatModel = ChatModel.of(apiUrl)
-                .model("llama3.2")
+                .model(model)
                 .build();
 
         //流返回(sse)
@@ -56,7 +58,7 @@ public class DemoTest {
     @Test
     public void case3() throws IOException {
         ChatModel chatModel = ChatModel.of(apiUrl)
-                .model("llama3.2")
+                .model(model)
                 .globalFunctionAdd(new WeatherChatFunction())
                 .build();
 
@@ -72,20 +74,20 @@ public class DemoTest {
     @Test
     public void case4() throws Throwable {
         ChatModel chatModel = ChatModel.of(apiUrl)
-                .model("llama3.2")
-                .globalFunctionAdd(new WeatherChatFunction())
+                .model(model)
                 .build();
 
         //流返回(sse)
         Publisher<ChatResponse> publisher = chatModel
                 .prompt("今天杭州的天气情况？")
+                .options(o -> o.functionAdd(new WeatherChatFunction()))
                 .stream();
 
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
                     System.out.println(resp.getMessage().getContent());
-                }).doOnComplete(() -> {
-                    System.out.println("::完成!");
+                }).doOnError(err -> {
+                    err.printStackTrace();
                 }));
 
     }

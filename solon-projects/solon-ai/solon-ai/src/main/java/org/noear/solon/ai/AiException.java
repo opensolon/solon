@@ -15,28 +15,14 @@
  */
 package org.noear.solon.ai;
 
-import org.noear.solon.lang.Preview;
+import org.noear.solon.exception.SolonException;
 
 /**
- * AI 响应
- *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface AiResponse<Msg extends AiMessage> {
-    /**
-     * 获取异常
-     */
-    AiException getException();
-
-    /**
-     * 获取消息
-     */
-    Msg getMessage();
-
-    /**
-     * 是否完成
-     */
-    boolean isDone();
+public class AiException extends SolonException {
+    public AiException(String message) {
+        super(message);
+    }
 }

@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat.impl;
 
 import org.noear.snack.ONode;
+import org.noear.solon.ai.AiException;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatResponse;
 
@@ -26,6 +27,7 @@ import org.noear.solon.ai.chat.ChatResponse;
  * @since 3.1
  */
 public class ChatResponseDefault implements ChatResponse {
+    private AiException exception;
     private ChatMessage message;
     private String model;
     private String created_at;
@@ -38,23 +40,30 @@ public class ChatResponseDefault implements ChatResponse {
     private long eval_count;
     private long eval_duration;
 
-    public ChatResponseDefault load(String json) {
+    /**
+     * 分析并加载数据
+     */
+    public ChatResponseDefault resolve(String json) {
         //解析
         ONode oResp = ONode.load(json);
 
-        this.model = oResp.get("model").getString();
-        this.created_at = oResp.get("created_at").getString();
-        this.done = oResp.get("done").getBoolean();
-        this.message = ChatMessage.of(oResp.get("message"));
+        if (oResp.contains("error")) {
+            this.exception = new AiException(oResp.get("error").getString());
+        } else {
+            this.model = oResp.get("model").getString();
+            this.created_at = oResp.get("created_at").getString();
+            this.done = oResp.get("done").getBoolean();
+            this.message = ChatMessage.of(oResp.get("message"));
 
-        if (done) {
-            this.done_reason = oResp.get("done_reason").getString();
-            this.total_duration = oResp.get("total_duration").getLong();
-            this.load_duration = oResp.get("load_duration").getLong();
-            this.prompt_eval_count = oResp.get("prompt_eval_count").getLong();
-            this.prompt_eval_duration = oResp.get("prompt_eval_duration").getLong();
-            this.eval_count = oResp.get("eval_count").getLong();
-            this.eval_duration = oResp.get("eval_duration").getLong();
+            if (done) {
+                this.done_reason = oResp.get("done_reason").getString();
+                this.total_duration = oResp.get("total_duration").getLong();
+                this.load_duration = oResp.get("load_duration").getLong();
+                this.prompt_eval_count = oResp.get("prompt_eval_count").getLong();
+                this.prompt_eval_duration = oResp.get("prompt_eval_duration").getLong();
+                this.eval_count = oResp.get("eval_count").getLong();
+                this.eval_duration = oResp.get("eval_duration").getLong();
+            }
         }
 
         return this;
@@ -66,6 +75,11 @@ public class ChatResponseDefault implements ChatResponse {
 
     public String getCreatedAt() {
         return created_at;
+    }
+
+    @Override
+    public AiException getException() {
+        return exception;
     }
 
     @Override

@@ -77,11 +77,15 @@ public class ChatRequestDefault implements ChatRequest {
 
         String respJson = httpUtils.bodyOfJson(reqJson).post();
 
-        ChatResponseDefault resp = new ChatResponseDefault().load(respJson);
+        ChatResponseDefault resp = new ChatResponseDefault().resolve(respJson);
+
+        if(resp.getException() != null) {
+            throw resp.getException();
+        }
 
         if (resp.getMessage().getToolCalls() != null) {
             messages.add(resp.getMessage());
-            buildToolCalls(resp.getMessage().getToolCalls());
+            parseToolCalls(resp.getMessage().getToolCalls());
 
             return call();
         } else {
@@ -111,11 +115,19 @@ public class ChatRequestDefault implements ChatRequest {
                                         break;
                                     }
 
-                                    response.load(reader.readLine());
+                                    response.resolve(reader.readLine());
+
+                                    if(response.getException() != null) {
+                                        //空读一行（流读取时，一行a）
+                                        reader.readLine();
+
+                                        subscriber.onError(response.getException());
+                                        return;
+                                    }
 
                                     if (response.getMessage().getToolCalls() != null) {
                                         messages.add(response.getMessage());
-                                        buildToolCalls(response.getMessage().getToolCalls());
+                                        parseToolCalls(response.getMessage().getToolCalls());
 
                                         //空读一行（流读取时，一行a）
                                         reader.readLine();
@@ -144,7 +156,7 @@ public class ChatRequestDefault implements ChatRequest {
         };
     }
 
-    private void buildToolCalls(ONode toolCalls){
+    private void parseToolCalls(ONode toolCalls) {
         for (ONode n1 : toolCalls.ary()) {
             ONode n1f = n1.get("function");
             String name = n1f.get("name").getString();
@@ -165,7 +177,15 @@ public class ChatRequestDefault implements ChatRequest {
     private String buildReqJson(boolean stream) {
         return new ONode().build(n -> {
             n.set("stream", stream);
-            n.set("model", config.model());
+
+            if (options.temperature() != ChatOptions.TEMPERATURE_DEFAULT) {
+                n.set("temperature", options.temperature());
+            }
+
+            if (Utils.isNotEmpty(config.model())) {
+                n.set("model", config.model());
+            }
+
             n.getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
                     n1.addNew().build(n2 -> {
@@ -178,33 +198,39 @@ public class ChatRequestDefault implements ChatRequest {
                 }
             });
 
-            if (config.globalFunctions().isEmpty() == false) {
-                n.getOrNew("tools").build(n1 -> {
-                    for (ChatFunction func : config.globalFunctions()) {
-                        n1.addNew().build(n2 -> {
-                            n2.set("type", "function");
-                            n2.getOrNew("function").build(n3 -> {
-                                n3.set("name", func.name());
-                                n3.set("description", func.description());
-                                n3.getOrNew("parameters").build(n4 -> {
-                                    n4.set("type", "object");
-                                    ONode n4r = n4.getOrNew("required").asArray();
-                                    n4.getOrNew("properties").build(n5 -> {
-                                        for (ChatFunctionParam p1 : func.params()) {
-                                            n5.getOrNew(p1.name()).build(n6 -> {
-                                                n6.set("type", p1.type());
-                                                n6.set("description", p1.description());
-                                            });
-                                            n4r.add(p1.name());
-                                        }
+            buildReqFunctionsJson(n, config.globalFunctions());
+            buildReqFunctionsJson(n, options.functions());
+        }).toJson();
+    }
+
+    private void buildReqFunctionsJson(ONode n, List<ChatFunction> funcs) {
+        if (Utils.isEmpty(funcs)) {
+            return;
+        }
+
+        n.getOrNew("tools").build(n1 -> {
+            for (ChatFunction func : funcs) {
+                n1.addNew().build(n2 -> {
+                    n2.set("type", "function");
+                    n2.getOrNew("function").build(n3 -> {
+                        n3.set("name", func.name());
+                        n3.set("description", func.description());
+                        n3.getOrNew("parameters").build(n4 -> {
+                            n4.set("type", "object");
+                            ONode n4r = n4.getOrNew("required").asArray();
+                            n4.getOrNew("properties").build(n5 -> {
+                                for (ChatFunctionParam p1 : func.params()) {
+                                    n5.getOrNew(p1.name()).build(n6 -> {
+                                        n6.set("type", p1.type());
+                                        n6.set("description", p1.description());
                                     });
-                                });
+                                    n4r.add(p1.name());
+                                }
                             });
                         });
-
-                    }
+                    });
                 });
             }
-        }).toJson();
+        });
     }
 }

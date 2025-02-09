@@ -17,6 +17,8 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiOptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -24,11 +26,22 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 public class ChatOptions implements AiOptions {
+    public static final float TEMPERATURE_DEFAULT = 0.8F;
+
     public static ChatOptions of() {
         return new ChatOptions();
     }
 
-    private float temperature = 0.8f;
+    private float temperature = TEMPERATURE_DEFAULT;
+    private final List<ChatFunction> functions = new ArrayList<>();
+
+    public float temperature() {
+        return temperature;
+    }
+
+    public List<ChatFunction> functions() {
+        return functions;
+    }
 
     public ChatOptions temperature(float temperature) {
         this.temperature = temperature;
@@ -36,10 +49,14 @@ public class ChatOptions implements AiOptions {
     }
 
     public ChatOptions functionAdd(ChatFunction function) {
-        return null;
+        functions.add(function);
+        return this;
     }
 
     public ChatOptions functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
-        return null;
+        ChatFunctionDecl decl = new ChatFunctionDecl(name);
+        functionBuilder.accept(decl);
+        functionAdd(decl);
+        return this;
     }
 }
