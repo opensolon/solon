@@ -40,6 +40,9 @@ public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
         return new ChatModelBuilderImpl(apiUrl);
     }
 
+    /**
+     * 聊天模型构建器
+     */
     interface Builder {
         /**
          * 接口密钥

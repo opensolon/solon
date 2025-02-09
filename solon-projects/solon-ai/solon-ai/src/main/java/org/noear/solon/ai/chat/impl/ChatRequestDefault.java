@@ -18,6 +18,7 @@ package org.noear.solon.ai.chat.impl;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.rx.SimpleSubscription;
@@ -67,11 +68,7 @@ public class ChatRequestDefault implements ChatRequest {
 
     @Override
     public ChatResponse call() throws IOException {
-        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
-
-        if (Utils.isNotEmpty(config.apiKey())) {
-            httpUtils.header("Authorization", "Bearer " + config.apiKey());
-        }
+        HttpUtils httpUtils = buildReqHttp();
 
         String reqJson = buildReqJson(false);
 
@@ -79,7 +76,7 @@ public class ChatRequestDefault implements ChatRequest {
 
         ChatResponseDefault resp = new ChatResponseDefault().resolve(respJson);
 
-        if(resp.getException() != null) {
+        if (resp.getException() != null) {
             throw resp.getException();
         }
 
@@ -95,11 +92,7 @@ public class ChatRequestDefault implements ChatRequest {
 
     @Override
     public Publisher<ChatResponse> stream() {
-        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
-
-        if (Utils.isNotEmpty(config.apiKey())) {
-            httpUtils.header("Authorization", "Bearer " + config.apiKey());
-        }
+        HttpUtils httpUtils = buildReqHttp();
 
         String reqJson = buildReqJson(true);
 
@@ -117,7 +110,7 @@ public class ChatRequestDefault implements ChatRequest {
 
                                     response.resolve(reader.readLine());
 
-                                    if(response.getException() != null) {
+                                    if (response.getException() != null) {
                                         //空读一行（流读取时，一行a）
                                         reader.readLine();
 
@@ -174,6 +167,18 @@ public class ChatRequestDefault implements ChatRequest {
         }
     }
 
+    private HttpUtils buildReqHttp() {
+        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
+
+        if (Utils.isNotEmpty(config.apiKey())) {
+            httpUtils.header("Authorization", "Bearer " + config.apiKey());
+        }
+
+        httpUtils.headers(config.headers());
+
+        return httpUtils;
+    }
+
     private String buildReqJson(boolean stream) {
         return new ONode().build(n -> {
             n.set("stream", stream);
@@ -221,7 +226,13 @@ public class ChatRequestDefault implements ChatRequest {
                             n4.getOrNew("properties").build(n5 -> {
                                 for (ChatFunctionParam p1 : func.params()) {
                                     n5.getOrNew(p1.name()).build(n6 -> {
-                                        n6.set("type", p1.type());
+                                        if (p1.type().isArray()) {
+                                            n6.set("type", "array");
+                                            n6.getOrNew("items").set("type", p1.typeAsString()); //todo:...要改
+                                        } else {
+                                            n6.set("type", p1.typeAsString());
+                                        }
+
                                         n6.set("description", p1.description());
                                     });
                                     n4r.add(p1.name());

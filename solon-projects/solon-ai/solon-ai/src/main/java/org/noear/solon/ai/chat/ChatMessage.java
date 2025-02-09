@@ -30,6 +30,9 @@ public interface ChatMessage extends AiMessage {
      */
     ChatRole getRole();
 
+    /**
+     * 获取名字
+     */
     String getName();
 
     /**

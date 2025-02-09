@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class DemoTest {
     private static final String apiUrl = "http://127.0.0.1:11434/api/chat";
-    private static final String model = "deepseek-r1:1.5b";//"llama3.2";
+    private static final String model = "llama3.2";//"llama3.2"; //deepseek-r1:1.5b;
 
     @Test
     public void case1() throws IOException {

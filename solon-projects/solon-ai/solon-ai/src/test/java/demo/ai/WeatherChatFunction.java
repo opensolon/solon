@@ -20,7 +20,7 @@ public class WeatherChatFunction implements ChatFunction {
 
     private List<ChatFunctionParam> params = new ArrayList<>();
     public WeatherChatFunction() {
-        params.add(new ChatFunctionParamDecl("location", "string", "根据用户提到的地点推测城市"));
+        params.add(new ChatFunctionParamDecl("location", String.class, "根据用户提到的地点推测城市"));
     }
 
     @Override

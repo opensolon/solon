@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * 聊天选项
+ *
  * @author noear
  * @since 3.1
  */

@@ -48,6 +48,7 @@ class ChatMessageImpl implements ChatMessage {
         return role;
     }
 
+    @Override
     public String getName() {
         return name;
     }

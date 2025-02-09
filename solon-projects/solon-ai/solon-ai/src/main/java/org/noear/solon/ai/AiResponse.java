@@ -18,7 +18,7 @@ package org.noear.solon.ai;
 import org.noear.solon.lang.Preview;
 
 /**
- * AI 响应
+ * Ai 响应
  *
  * @author noear
  * @since 3.1

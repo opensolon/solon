@@ -15,14 +15,19 @@
  */
 package org.noear.solon.ai;
 
+import org.noear.solon.lang.Preview;
 import org.reactivestreams.Publisher;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 
 /**
- * @author noear 2025/1/28 created
+ * Ai 请求
+ *
+ * @author noear
+ * @since 3.1
  */
+@Preview("3.1")
 public interface AiRequest<O extends AiOptions, Req extends AiRequest, Resp extends AiResponse> {
     /**
      * 选项

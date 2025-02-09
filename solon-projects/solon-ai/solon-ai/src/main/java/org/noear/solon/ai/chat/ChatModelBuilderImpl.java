@@ -20,6 +20,8 @@ import org.noear.solon.ai.chat.impl.ChatModelDefault;
 import java.util.function.Consumer;
 
 /**
+ * 聊天模型构建器实现
+ *
  * @author noear
  * @since 3.1
  */

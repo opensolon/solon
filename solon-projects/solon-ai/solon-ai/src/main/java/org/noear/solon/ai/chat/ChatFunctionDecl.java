@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.ai.chat;
 
 import java.util.ArrayList;
@@ -6,7 +21,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * @author noear 2025/2/6 created
+ * @author noear
+ * @since 3.1
  */
 public class ChatFunctionDecl implements ChatFunction {
     private final String name;
@@ -24,21 +40,25 @@ public class ChatFunctionDecl implements ChatFunction {
         return this;
     }
 
-    public ChatFunctionDecl param(String name, String type, String description) {
+    public ChatFunctionDecl param(String name, Class<?> type, String description) {
+        if (type.isPrimitive() == false) {
+            throw new IllegalArgumentException("type must be primitive");
+        }
+
         params.add(new ChatFunctionParamDecl(name, type, description));
         return this;
     }
 
     public ChatFunctionDecl stringParam(String name, String description) {
-        return param(name, "string", description);
+        return param(name, String.class, description);
     }
 
     public ChatFunctionDecl intParam(String name, String description) {
-        return param(name, "int", description);
+        return param(name, int.class, description);
     }
 
     public ChatFunctionDecl floatParam(String name, String description) {
-        return param(name, "float", description);
+        return param(name, float.class, description);
     }
 
     public ChatFunctionDecl handle(Function<Map<String, Object>, String> handler) {

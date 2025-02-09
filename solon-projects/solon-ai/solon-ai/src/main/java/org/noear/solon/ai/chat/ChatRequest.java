@@ -18,6 +18,8 @@ package org.noear.solon.ai.chat;
 import org.noear.solon.ai.AiRequest;
 
 /**
+ * 聊天请求
+ *
  * @author noear
  * @since 3.1
  */

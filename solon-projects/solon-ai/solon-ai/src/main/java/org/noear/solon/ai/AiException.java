@@ -16,13 +16,25 @@
 package org.noear.solon.ai;
 
 import org.noear.solon.exception.SolonException;
+import org.noear.solon.lang.Preview;
 
 /**
+ * Ai 异常
+ *
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class AiException extends SolonException {
     public AiException(String message) {
         super(message);
+    }
+
+    public AiException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AiException(Throwable cause) {
+        super(cause);
     }
 }
