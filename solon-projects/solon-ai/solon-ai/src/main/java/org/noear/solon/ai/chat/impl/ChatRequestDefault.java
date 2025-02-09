@@ -18,11 +18,13 @@ package org.noear.solon.ai.chat.impl;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
-import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.rx.SimpleSubscription;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +40,7 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 public class ChatRequestDefault implements ChatRequest {
+    private static final Logger log = LoggerFactory.getLogger(ChatRequestDefault.class);
     private static final ChatOptions OPTIONS_DEFAULT = new ChatOptions();
 
     private final ChatConfig config;
@@ -72,7 +75,15 @@ public class ChatRequestDefault implements ChatRequest {
 
         String reqJson = buildReqJson(false);
 
+        if (log.isTraceEnabled()) {
+            log.trace("ai-request: {}",reqJson);
+        }
+
         String respJson = httpUtils.bodyOfJson(reqJson).post();
+
+        if (log.isTraceEnabled()) {
+            log.trace("ai-response: {}",respJson);
+        }
 
         ChatResponseDefault resp = new ChatResponseDefault().resolve(respJson);
 
@@ -96,57 +107,75 @@ public class ChatRequestDefault implements ChatRequest {
 
         String reqJson = buildReqJson(true);
 
+        if (log.isTraceEnabled()) {
+            log.trace("ai-request: {}",reqJson);
+        }
+
         return subscriber -> {
-            ChatResponseDefault response = new ChatResponseDefault();
-            try (HttpResponse resp = httpUtils.bodyOfJson(reqJson).exec("POST")) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()));
-                subscriber.onSubscribe(new SimpleSubscription()
-                        .onRequest((my, l) -> {
+            httpUtils.bodyOfJson(reqJson).execAsync("POST")
+                    .whenComplete((resp, err) -> {
+                        if (err == null) {
                             try {
-                                while (l > 0) {
-                                    if (my.isCancelled()) {
-                                        break;
-                                    }
-
-                                    response.resolve(reader.readLine());
-
-                                    if (response.getException() != null) {
-                                        //空读一行（流读取时，一行a）
-                                        reader.readLine();
-
-                                        subscriber.onError(response.getException());
-                                        return;
-                                    }
-
-                                    if (response.getMessage().getToolCalls() != null) {
-                                        messages.add(response.getMessage());
-                                        parseToolCalls(response.getMessage().getToolCalls());
-
-                                        //空读一行（流读取时，一行a）
-                                        reader.readLine();
-
-                                        stream().subscribe(subscriber);
-                                        return;
-                                    }
-
-                                    subscriber.onNext(response);
-
-                                    if (response.isDone()) {
-                                        subscriber.onComplete();
-                                        break;
-                                    } else {
-                                        l--;
-                                    }
-                                }
-                            } catch (Throwable err) {
-                                subscriber.onError(err);
+                                parseResp(resp, subscriber);
+                            } catch (IOException e) {
+                                subscriber.onError(e);
                             }
-                        }));
-
-            } catch (Throwable err) {
-                subscriber.onError(err);
-            }
+                        } else {
+                            subscriber.onError(err);
+                        }
+                    });
         };
+    }
+
+    private void parseResp(HttpResponse resp, Subscriber<? super ChatResponse> subscriber) throws IOException {
+        ChatResponseDefault response = new ChatResponseDefault();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()))) {
+            subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
+                try {
+                    while (l > 0) {
+                        if (subscription.isCancelled()) {
+                            break;
+                        }
+
+                        String respJson = reader.readLine();
+
+                        if (log.isTraceEnabled()) {
+                            log.trace("ai-response: {}",respJson);
+                        }
+
+                        response.resolve(respJson);
+
+                        if (response.getException() != null) {
+                            subscriber.onError(response.getException());
+                            return;
+                        }
+
+                        if (response.getMessage().getToolCalls() != null) {
+                            messages.add(response.getMessage());
+                            parseToolCalls(response.getMessage().getToolCalls());
+
+                            //空读一行（流读取时，一行a）
+                            reader.readLine();
+
+                            stream().subscribe(subscriber);
+                            return;
+                        }
+
+                        subscriber.onNext(response);
+
+                        if (response.isDone()) {
+                            subscriber.onComplete();
+                            break;
+                        } else {
+                            l--;
+                        }
+                    }
+                } catch (Throwable err) {
+                    subscriber.onError(err);
+                }
+            }));
+        }
     }
 
     private void parseToolCalls(ONode toolCalls) {
