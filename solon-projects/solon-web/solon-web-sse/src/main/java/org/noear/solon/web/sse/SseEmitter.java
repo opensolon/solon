@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Sse 发射器（操作界面）
@@ -34,6 +35,7 @@ public class SseEmitter {
     private SseEmitterHandler handler;
     protected Runnable onCompletion;
     protected Runnable onTimeout;
+    protected Function<SseEvent, SseEvent> onSendPost;
     protected Consumer<Throwable> onError;
     protected ConsumerEx<SseEmitter> onInited;
 
@@ -53,6 +55,14 @@ public class SseEmitter {
      */
     public SseEmitter onTimeout(Runnable onTimeout) {
         this.onTimeout = onTimeout;
+        return this;
+    }
+
+    /**
+     * 发送确认方法
+     */
+    public SseEmitter onSendPost(Function<SseEvent, SseEvent> onSendPost) {
+        this.onSendPost = onSendPost;
         return this;
     }
 
@@ -95,7 +105,13 @@ public class SseEmitter {
      * @param event 事件数据
      */
     public void send(SseEvent event) throws IOException {
-        handler.send(event);
+        if (onSendPost != null) {
+            event = onSendPost.apply(event);
+        }
+
+        if (event != null) {
+            handler.send(event);
+        }
     }
 
     /**
