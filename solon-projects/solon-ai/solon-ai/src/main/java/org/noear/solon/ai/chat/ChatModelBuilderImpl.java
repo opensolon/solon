@@ -77,7 +77,7 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
     }
 
     public ChatModel build() {
-        config.dialect = ChatDialectManager.get(config.provider);
+        config.dialect = ChatDialectManager.get(config);
 
         return new ChatModelDefault(config);
     }

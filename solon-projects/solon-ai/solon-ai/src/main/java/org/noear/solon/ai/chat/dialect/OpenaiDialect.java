@@ -37,8 +37,8 @@ public class OpenaiDialect extends AbstractDialect {
     }
 
     @Override
-    public String provider() {
-        return "openai";
+    public boolean matched(ChatConfig config) {
+        return false;
     }
 
     @Override

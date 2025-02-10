@@ -25,7 +25,10 @@ public class OllamaTest {
 
     @Test
     public void case1() throws IOException {
-        ChatModel chatModel = ChatModel.of(apiUrl).provider(provider).model(model).build();
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .provider(provider) //需要指定供应商，用于识别接口风格（也称为方言）
+                .model(model)
+                .build();
 
         //一次性返回
         ChatResponse resp = chatModel.prompt("hello").call();

@@ -17,9 +17,11 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.chat.dialect.OllamaDialect;
 import org.noear.solon.ai.chat.dialect.OpenaiDialect;
+import org.noear.solon.core.util.RankEntity;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 聊天方言管理
@@ -27,35 +29,44 @@ import java.util.Map;
  * @author noear
  */
 public class ChatDialectManager {
-    private static Map<String, ChatDialect> dialects = new HashMap<>();
+    private static List<RankEntity<ChatDialect>> dialects = new ArrayList<>();
 
     static {
         add(OllamaDialect.getInstance());
-        add(OpenaiDialect.instance());
     }
 
     /**
-     * 获取
+     * 获取方言
      */
-    public static ChatDialect get(String name) {
-        if (name == null) {
-            return OpenaiDialect.instance();
-        } else {
-            return dialects.getOrDefault(name, OpenaiDialect.instance());
+    public static ChatDialect get(ChatConfig config) {
+        for (RankEntity<ChatDialect> d : dialects) {
+            if (d.target.matched(config)) {
+                return d.target;
+            }
         }
+
+        return OpenaiDialect.instance();
     }
 
     /**
-     * 添加
+     * 添加方言
      */
     public static void add(ChatDialect dialect) {
-        dialects.put(dialect.provider(), dialect);
+        add(dialect, 0);
     }
 
     /**
-     * 移除
+     * 添加方言
      */
-    public static void remove(String name) {
-        dialects.remove(name);
+    public static void add(ChatDialect dialect, int index) {
+        dialects.add(new RankEntity<>(dialect, index));
+        Collections.sort(dialects);
+    }
+
+    /**
+     * 移除方言
+     */
+    public static void remove(ChatDialect dialect) {
+        dialects.removeIf(rankEntity -> rankEntity.target == dialect);
     }
 }

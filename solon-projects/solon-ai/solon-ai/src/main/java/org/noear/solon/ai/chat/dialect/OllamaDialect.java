@@ -37,8 +37,8 @@ public class OllamaDialect extends AbstractDialect {
     }
 
     @Override
-    public String provider() {
-        return "ollama";
+    public boolean matched(ChatConfig config) {
+        return "ollama".equals(config.provider());
     }
 
     @Override
