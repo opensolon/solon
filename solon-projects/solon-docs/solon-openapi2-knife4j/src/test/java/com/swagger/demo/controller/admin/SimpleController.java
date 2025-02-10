@@ -15,6 +15,7 @@
  */
 package com.swagger.demo.controller.admin;
 
+import com.swagger.demo.model.OrderType;
 import com.swagger.demo.model.ResultModelEx;
 import com.swagger.demo.model.bean.DeviceParamBean;
 import com.swagger.demo.model.dto.EquipDto;
@@ -25,16 +26,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.noear.snack.ONode;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
-import org.noear.solon.annotation.Put;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.docs.ApiEnum;
 import com.swagger.demo.model.ResultModel;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,16 +91,21 @@ public class SimpleController {
 
     @ApiOperation(value = "body接口参数Json", notes = "在body中提交JSON.注意body只支持一个json串. body提交多个json将失效", httpMethod = ApiEnum.METHOD_POST)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "paramA", value = "参数a", defaultValue = "1111"),
+            @ApiImplicitParam(name = "paramA", value = "参数a", defaultValue = "2024-01-01 00:00:00"),
             @ApiImplicitParam(name = "paramB", value = "参数b", defaultValue = "222"),
+            @ApiImplicitParam(name = "paramC", value = "参数c"),
             @ApiImplicitParam(name = "device", value = "网关附加数据JSON", dataTypeClass = DeviceParamBean.class, paramType = ApiEnum.PARAM_TYPE_BODY),
     })
     @ApiRes({
             @ApiResProperty(name = "resA", value = "返回值A", example = "hello word1"),
             @ApiResProperty(name = "resB", value = "返回值b", example = "hello word2"),
     })
-    @Mapping("test4")
-    public Map test4(String paramA, String paramB, String device) {
+    @Mapping("test4/${paramPath}")
+    public Map test4(@Param(defaultValue = "") Date paramA,
+                     String paramB,
+                     OrderType paramC,
+                     @Path Date paramPath,
+                     String device) {
         return new HashMap();
     }
 

@@ -15,6 +15,8 @@
  */
 package com.swagger.demo.model;
 
+import org.noear.snack.annotation.ONodeAttr;
+
 /**
  * @author noear 2023/9/3 created
  */
@@ -22,6 +24,7 @@ public enum OrderType {
     TYPE1(1, "a", "aaa"),
     TYPE2(2, "b", "bbb"),
     ;
+    @ONodeAttr
     int code;
     String name;
     String description;

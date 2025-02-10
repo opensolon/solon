@@ -404,8 +404,10 @@ public class OpenApi2Builder {
             if (paramHolder.isIgnore()) {
                 continue;
             }
-
-            String paramSchema = this.getParameterSchema(paramHolder);
+            String paramSchema = null;
+            if (isRequiredBody) {
+                paramSchema = this.getParameterSchema(paramHolder);
+            }
             String dataType = paramHolder.dataType();
 
             Parameter parameter;
@@ -976,7 +978,7 @@ public class OpenApi2Builder {
      */
     private String getParameterSchema(ParamHolder paramHolder) {
         Class<?> dataTypeClass = paramHolder.dataTypeClass();
-
+        String paramType = paramHolder.paramType();
         if (dataTypeClass != null) {
             if (dataTypeClass.isPrimitive()) {
                 return null;
