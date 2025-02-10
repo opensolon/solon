@@ -1,5 +1,6 @@
 package demo.ai;
 
+import features.ai.OllamaTest;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
@@ -9,6 +10,8 @@ import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -16,6 +19,7 @@ import java.io.IOException;
  * @author noear 2025/1/28 created
  */
 public class DemoFuncTest {
+    private static final Logger log = LoggerFactory.getLogger(DemoFuncTest.class);
 
     @Test
     public void case11() throws IOException {
@@ -39,7 +43,7 @@ public class DemoFuncTest {
                 .call();
 
         //打印消息
-        System.out.println(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 
     @Test
@@ -65,7 +69,7 @@ public class DemoFuncTest {
                 .call();
 
         //打印消息
-        System.out.println(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 
     @Test
@@ -88,6 +92,6 @@ public class DemoFuncTest {
                 .prompt(ChatMessage.ofUser("启动云主机，两分钟后告知我状态 172.18.26.11？"))
                 .call();
 
-        System.out.println(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 }

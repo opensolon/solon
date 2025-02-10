@@ -15,12 +15,13 @@
  */
 package org.noear.solon.ai.chat.impl;
 
-import org.noear.snack.ONode;
 import org.noear.solon.ai.AiException;
-import org.noear.solon.ai.chat.ChatConfig;
-import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.ChatChoice;
 import org.noear.solon.ai.chat.ChatResponse;
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.ai.chat.ChatUsage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 聊天响应
@@ -30,24 +31,13 @@ import org.noear.solon.ai.chat.message.AssistantChatMessage;
  */
 public class ChatResponseDefault implements ChatResponse {
     public AiException exception;
-    public AssistantChatMessage message;
+    public List<ChatChoice> choices = new ArrayList<>();
+    public ChatUsage usage;
     public String model;
-    public String created_at;
-    public String done_reason;
-    public boolean done;
-    public long total_duration;
-    public long load_duration;
-    public long prompt_eval_count;
-    public long prompt_eval_duration;
-    public long eval_count;
-    public long eval_duration;
+    public boolean finished;
 
     public String getModel() {
         return model;
-    }
-
-    public String getCreatedAt() {
-        return created_at;
     }
 
     @Override
@@ -56,39 +46,20 @@ public class ChatResponseDefault implements ChatResponse {
     }
 
     @Override
-    public AssistantChatMessage getMessage() {
-        return message;
+    public List<ChatChoice> getChoices() {
+        return choices;
     }
 
-    public String getDoneReason() {
-        return done_reason;
+    public ChatChoice getChoice(int index){
+        return choices.get(index);
     }
 
-    public boolean isDone() {
-        return done;
+    @Override
+    public ChatUsage getUsage() {
+        return usage;
     }
 
-    public long getTotalDuration() {
-        return total_duration;
-    }
-
-    public long getLoadDuration() {
-        return load_duration;
-    }
-
-    public long getPromptEvalCount() {
-        return prompt_eval_count;
-    }
-
-    public long getPromptEvalDuration() {
-        return prompt_eval_duration;
-    }
-
-    public long getEvalCount() {
-        return eval_count;
-    }
-
-    public long getEvalDuration() {
-        return eval_duration;
+    public boolean isFinished() {
+        return finished;
     }
 }

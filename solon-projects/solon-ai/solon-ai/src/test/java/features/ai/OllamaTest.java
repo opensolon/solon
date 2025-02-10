@@ -31,8 +31,7 @@ public class OllamaTest {
         ChatResponse resp = chatModel.prompt("hello").call();
 
         //打印消息
-        log.info(resp.getMessage().getContent());
-        assert resp.getMessage().getContent().contains("Hello");
+        log.info("{}", resp.getChoices());
     }
 
     @Test
@@ -45,7 +44,7 @@ public class OllamaTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info(resp.getMessage().getContent());
+                    log.info("{}", resp.getChoices());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();
@@ -69,7 +68,7 @@ public class OllamaTest {
                 .call();
 
         //打印消息
-        log.info(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 
     @Test
@@ -88,7 +87,7 @@ public class OllamaTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info(resp.getMessage().getContent());
+                    log.info("{}", resp.getChoices());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();

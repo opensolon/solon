@@ -41,13 +41,17 @@ public interface ChatMessage extends AiMessage {
      */
     ONode toRequestNode();
 
-    static AssistantChatMessage of(ChatConfig config, ONode oMessage) {
+    static AssistantChatMessage ofAssistant(ChatConfig config, ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
         List<ChatFunctionCall> toolCalls = config.dialect().parseToolCalls(config, toolCallsNode);
 
         return new AssistantChatMessage(content, reasoning_content, toolCallsNode, toolCalls);
+    }
+
+    static AssistantChatMessage ofAssistant(String content) {
+        return new AssistantChatMessage(content, null, null, null);
     }
 
     /**
@@ -62,13 +66,6 @@ public interface ChatMessage extends AiMessage {
      */
     static ChatMessage ofUser(String content) {
         return new UserChatMessage(content);
-    }
-
-    /**
-     * 构建助理消息
-     */
-    static ChatMessage ofAssistant(String content) {
-        return new AssistantChatMessage(content, null, null, null);
     }
 
     /**

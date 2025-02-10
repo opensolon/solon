@@ -1,12 +1,8 @@
 package org.noear.solon.ai.chat.message;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author noear 2025/2/9 created

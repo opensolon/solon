@@ -2,15 +2,11 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.ai.chat.ChatFunction;
 import org.noear.solon.ai.chat.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author noear 2025/2/9 created
@@ -56,7 +52,7 @@ public class AssistantChatMessage implements ChatMessage {
             oNode.set("reasoning_content", reasoningContent);
         }
 
-        if(toolCallsNode != null) {
+        if (toolCallsNode != null) {
             oNode.set("tool_calls", toolCallsNode);
         }
 
@@ -65,10 +61,25 @@ public class AssistantChatMessage implements ChatMessage {
 
     @Override
     public String toString() {
-        return "{" +
-                "role='" + getRole() + '\'' +
-                ",content='" + content + '\'' +
-                ",reasoningContent='" + reasoningContent + '\'' +
-                '}';
+        StringBuilder buf = new StringBuilder();
+        buf.append("{");
+
+        buf.append("role=").append(getRole().name().toLowerCase());
+
+        if (content != null) {
+            buf.append(", content='").append(content).append('\'');
+        }
+
+        if (reasoningContent != null) {
+            buf.append(", reasoning_content='").append(reasoningContent).append('\'');
+        }
+
+        if (toolCallsNode != null) {
+            buf.append(", tool_calls=").append(toolCallsNode);
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }

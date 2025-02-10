@@ -17,6 +17,8 @@ package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.List;
+
 /**
  * Ai 响应
  *
@@ -24,19 +26,24 @@ import org.noear.solon.lang.Preview;
  * @since 3.1
  */
 @Preview("3.1")
-public interface AiResponse<Msg extends AiMessage> {
+public interface AiResponse<Cho extends AiChoice, Usa extends AiUsage> {
     /**
      * 获取异常
      */
     AiException getException();
 
     /**
-     * 获取消息
+     * 获取选择
      */
-    Msg getMessage();
+    List<Cho> getChoices();
+
+    /**
+     * 获取使用情况
+     */
+    Usa getUsage();
 
     /**
      * 是否完成
      */
-    boolean isDone();
+    boolean isFinished();
 }

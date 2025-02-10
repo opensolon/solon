@@ -8,6 +8,8 @@ import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -15,6 +17,8 @@ import java.io.IOException;
  * @author noear 2025/1/28 created
  */
 public class DemoTest {
+    private static final Logger log = LoggerFactory.getLogger(DemoTest.class);
+
     @Test
     public void case1() throws IOException {
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
@@ -28,7 +32,7 @@ public class DemoTest {
                 .call();
 
         //打印消息
-        System.out.println(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 
     @Test
@@ -46,7 +50,7 @@ public class DemoTest {
 
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    System.out.println(resp.getMessage().getContent());
+                    log.info("{}", resp.getChoices());
                 }));
     }
 
@@ -64,7 +68,7 @@ public class DemoTest {
                 .call();
 
         //打印消息
-        System.out.println(resp.getMessage().getContent());
+        log.info("{}", resp.getChoices());
     }
 
     @Test

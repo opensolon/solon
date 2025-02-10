@@ -90,14 +90,17 @@ public class ChatRequestDefault implements ChatRequest {
             throw resp.getException();
         }
 
-        if (resp.getMessage().getToolCalls() != null) {
-            messages.add(resp.getMessage());
-            buildToolMessage(resp.getMessage());
+        if (Utils.isNotEmpty(resp.getChoices())) {
+            AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
+            if (choiceMessage.getToolCalls() != null) {
+                messages.add(choiceMessage);
+                buildToolMessage(choiceMessage);
 
-            return call();
-        } else {
-            return resp;
+                return call();
+            }
         }
+
+        return resp;
     }
 
     @Override
@@ -153,22 +156,25 @@ public class ChatRequestDefault implements ChatRequest {
                                 return;
                             }
 
-                            if (resp.getMessage().getToolCalls() != null) {
-                                messages.add(resp.getMessage());
-                                buildToolMessage(resp.getMessage());
+                            if(Utils.isNotEmpty(resp.getChoices())) {
+                                AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
+                                if (choiceMessage.getToolCalls() != null) {
+                                    messages.add(choiceMessage);
+                                    buildToolMessage(choiceMessage);
 
-                                //空读一行（流读取时，一行a）
-                                reader.readLine();
+                                    //空读一行（流读取时，一行a）
+                                    reader.readLine();
 
-                                stream().subscribe(subscriber);
-                                return;
+                                    stream().subscribe(subscriber);
+                                    return;
+                                }
+
+                                if (choiceMessage != null) {
+                                    subscriber.onNext(resp);
+                                }
                             }
 
-                            if (resp.getMessage() != null) {
-                                subscriber.onNext(resp);
-                            }
-
-                            if (resp.isDone()) {
+                            if (resp.isFinished()) {
                                 subscriber.onComplete();
                                 break;
                             } else {

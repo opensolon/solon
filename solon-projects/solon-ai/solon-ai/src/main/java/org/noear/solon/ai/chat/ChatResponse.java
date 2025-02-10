@@ -24,6 +24,6 @@ import org.noear.solon.ai.chat.message.AssistantChatMessage;
  * @author noear
  * @since 3.1
  */
-public interface ChatResponse extends AiResponse<AssistantChatMessage> {
+public interface ChatResponse extends AiResponse<ChatChoice, ChatUsage> {
 
 }
