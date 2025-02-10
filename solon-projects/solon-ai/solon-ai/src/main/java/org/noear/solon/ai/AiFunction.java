@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 3.1
  */
 @Preview("3.1")
-public interface AiFunction<P extends AiFunctionParam> {
+public interface AiFunction<P extends AiFunctionParam> extends AiTool{
     /**
      * 名字
      */

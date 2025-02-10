@@ -16,9 +16,10 @@
 package org.noear.solon.ai;
 
 /**
+ * Ai 工具
+ *
  * @author noear
  * @since 3.1
  */
-public interface AiDialect {
-    String provider();
+public interface AiTool {
 }
