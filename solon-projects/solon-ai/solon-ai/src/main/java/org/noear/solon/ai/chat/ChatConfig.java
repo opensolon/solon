@@ -21,7 +21,7 @@ import org.noear.solon.core.util.MultiMap;
 import java.util.*;
 
 /**
- * 聊天配置
+ * 聊天模型配置
  *
  * @author noear
  * @since 3.1

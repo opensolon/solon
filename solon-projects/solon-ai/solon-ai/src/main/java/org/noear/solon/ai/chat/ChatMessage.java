@@ -65,7 +65,14 @@ public interface ChatMessage extends AiMessage {
      * 构建用户消息
      */
     static ChatMessage ofUser(String content) {
-        return new UserChatMessage(content);
+        return new UserChatMessage(content, null);
+    }
+
+    /**
+     * 构建用户消息
+     */
+    static ChatMessage ofUser(String content, List<String> imageUrls) {
+        return new UserChatMessage(content, imageUrls);
     }
 
     /**
