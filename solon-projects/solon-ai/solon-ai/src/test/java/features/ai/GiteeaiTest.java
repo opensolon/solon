@@ -50,6 +50,7 @@ public class GiteeaiTest {
                     doneLatch.countDown();
                 }).doOnError(err -> {
                     err.printStackTrace();
+                    doneLatch.countDown();
                 }));
 
         doneLatch.await();
@@ -93,6 +94,7 @@ public class GiteeaiTest {
                     doneLatch.countDown();
                 }).doOnError(err -> {
                     err.printStackTrace();
+                    doneLatch.countDown();
                 }));
 
         doneLatch.await();

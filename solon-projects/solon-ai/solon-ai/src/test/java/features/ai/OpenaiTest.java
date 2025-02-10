@@ -94,6 +94,7 @@ public class OpenaiTest {
                     doneLatch.countDown();
                 }).doOnError(err -> {
                     err.printStackTrace();
+                    doneLatch.countDown();
                 }));
 
         doneLatch.await();

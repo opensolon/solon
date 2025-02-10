@@ -145,6 +145,10 @@ public class ChatRequestDefault implements ChatRequest {
                             break;
                         }
 
+                        if(respJson.length() == 0){
+                            continue;
+                        }
+
                         if (log.isTraceEnabled()) {
                             log.trace("ai-response: {}", respJson);
                         }

@@ -41,6 +41,11 @@ public class WeatherChatFunction implements ChatFunction {
     @Override
     public String handle(Map<String, Object> args) {
         String location = (String) args.get("location");
-        return location + "的天气是晴24度";// + weatherService.get(location);
+
+        if(location == null) {
+            throw new IllegalStateException("arguments location is null (Assistant recognition failure)");
+        }
+
+        return "24度";// + weatherService.get(location);
     }
 }
