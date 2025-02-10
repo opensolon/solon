@@ -46,7 +46,7 @@ public class ChatRequestDefault implements ChatRequest {
 
     public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
         this.config = config;
-        this.messages = new ArrayList<>(messages);
+        this.messages = messages;
         this.options = OPTIONS_DEFAULT;
     }
 

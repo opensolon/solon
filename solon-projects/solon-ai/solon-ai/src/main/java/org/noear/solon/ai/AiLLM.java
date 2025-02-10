@@ -17,6 +17,7 @@ package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public interface AiLLM<Msg extends AiMessage, Req extends AiRequest> {
      * 提示语
      */
     default Req prompt(Msg... messages) {
-        return prompt(Arrays.asList(messages));
+        return prompt(new ArrayList<>(Arrays.asList(messages)));
     }
 
     /**
