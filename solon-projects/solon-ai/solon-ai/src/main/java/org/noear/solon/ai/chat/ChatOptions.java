@@ -33,10 +33,13 @@ public class ChatOptions implements AiOptions {
     }
 
     private Long max_tokens;
+    private Long max_completion_tokens;
     private Float temperature;
     private Float top_p;
     private Float top_k;
     private Float frequency_penalty;
+    private Boolean store;
+
     private final Map<String, ChatFunction> functions = new LinkedHashMap<>();
 
     public Long max_tokens() {
@@ -45,6 +48,15 @@ public class ChatOptions implements AiOptions {
 
     public ChatOptions max_tokens(long max_tokens) {
         this.max_tokens = max_tokens;
+        return this;
+    }
+
+    public Long max_completion_tokens() {
+        return max_completion_tokens;
+    }
+
+    public ChatOptions max_completion_tokens(long max_completion_tokens) {
+        this.max_completion_tokens = max_completion_tokens;
         return this;
     }
 
@@ -81,6 +93,15 @@ public class ChatOptions implements AiOptions {
 
     public ChatOptions frequency_penalty(float frequency_penalty) {
         this.frequency_penalty = frequency_penalty;
+        return this;
+    }
+
+    public Boolean store() {
+        return store;
+    }
+
+    public ChatOptions store(boolean store) {
+        this.store = store;
         return this;
     }
 

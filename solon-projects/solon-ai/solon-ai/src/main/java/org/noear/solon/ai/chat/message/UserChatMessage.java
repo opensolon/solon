@@ -56,7 +56,9 @@ public class UserChatMessage implements ChatMessage {
         } else {
             oNode.getOrNew("content").build(n1 -> {
                 for (String imgUrl : imageUrls) {
-                    n1.addNew().set("type", "image_url").set("image_url", imgUrl);
+                    ONode n2 = n1.addNew();
+                    n2.set("type", "image_url");
+                    n2.getOrNew("image_url").set("url", imgUrl);
                 }
 
                 n1.addNew().set("type", "text").set("text", content);
