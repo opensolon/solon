@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 public class OpenaiTest {
     private static final Logger log = LoggerFactory.getLogger(OpenaiTest.class);
     private static final String apiUrl = "https://api.deepseek.com/chat/completions";
-    private static final String apkKey = "sk-9f4415ddc570496581897c22e3d41a54";
+    private static final String apkKey = "";
     private static final String model = "deepseek-chat"; //deepseek-reasoner//deepseek-chat
 
     @Test
