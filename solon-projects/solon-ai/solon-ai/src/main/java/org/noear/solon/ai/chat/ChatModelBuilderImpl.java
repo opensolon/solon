@@ -48,8 +48,8 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
         return this;
     }
 
-    public ChatModel.Builder headerAdd(String key, String value) {
-        config.headers.add(key, value);
+    public ChatModel.Builder headerSet(String key, String value) {
+        config.headers.put(key, value);
         return this;
     }
 

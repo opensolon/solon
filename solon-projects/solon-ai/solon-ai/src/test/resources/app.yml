@@ -1,4 +1,13 @@
+
+
+
 solon:
+  ai:
+    OllamaTest:
+      apiUrl: "http://127.0.0.1:11434/api/chat"
+      provider: "ollama"
+      model: "llama3.2"
+
   logging:
     logger:
       root:

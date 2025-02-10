@@ -32,10 +32,11 @@ public class ChatConfig implements AiConfig {
     protected String apiKey;
     protected String provider;
     protected String model;
-    protected ChatDialect dialect;
-    protected final MultiMap<String> headers = new MultiMap<>();
+    protected final Map<String, String> headers = new LinkedHashMap<>();
     protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
     protected Duration timeout = Duration.ofSeconds(30);
+
+    protected transient ChatDialect dialect;
 
 
     @Override
@@ -63,7 +64,7 @@ public class ChatConfig implements AiConfig {
     }
 
     @Override
-    public MultiMap<String> headers() {
+    public Map<String, String> headers() {
         return headers;
     }
 

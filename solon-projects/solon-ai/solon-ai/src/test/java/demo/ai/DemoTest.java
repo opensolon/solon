@@ -1,7 +1,6 @@
 package demo.ai;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.ChainContext;
@@ -40,7 +39,7 @@ public class DemoTest {
         ChatModel chatModel = ChatModel.of("http://localhost:8080")
                 .provider("ollama")
                 .model("deepseek-r1")
-                .headerAdd("X-Demo", "test")
+                .headerSet("X-Demo", "test")
                 .build();
 
         //流返回(sse)

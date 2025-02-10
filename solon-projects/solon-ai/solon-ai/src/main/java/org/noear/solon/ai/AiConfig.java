@@ -15,8 +15,9 @@
  */
 package org.noear.solon.ai;
 
-import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.lang.Preview;
+
+import java.util.Map;
 
 /**
  * AI 配置
@@ -49,5 +50,5 @@ public interface AiConfig {
     /**
      * 请求头
      */
-    MultiMap<String> headers();
+    Map<String, String> headers();
 }
