@@ -22,7 +22,7 @@ import org.noear.solon.ai.chat.ChatRole;
 
 /**
  * 聊天工具消息
- *
+ * 
  * @author noear
  * @since 3.1
  */

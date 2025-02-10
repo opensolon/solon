@@ -36,6 +36,11 @@ public class ChatResponseDefault implements ChatResponse {
     public String model;
     public boolean finished;
 
+    public void reset(){
+        this.exception = null;
+        this.choices.clear();
+    }
+
     public String getModel() {
         return model;
     }

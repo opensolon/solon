@@ -92,7 +92,7 @@ public class ChatRequestDefault implements ChatRequest {
 
         if (Utils.isNotEmpty(resp.getChoices())) {
             AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
-            if (choiceMessage.getToolCalls() != null) {
+            if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                 messages.add(choiceMessage);
                 buildToolMessage(choiceMessage);
 
@@ -150,6 +150,7 @@ public class ChatRequestDefault implements ChatRequest {
                             log.trace("ai-response: {}", respJson);
                         }
 
+                        resp.reset();
                         if (config.dialect().resolveResponseJson(config, resp, respJson)) {
                             if (resp.getException() != null) {
                                 subscriber.onError(resp.getException());
@@ -158,7 +159,7 @@ public class ChatRequestDefault implements ChatRequest {
 
                             if (Utils.isNotEmpty(resp.getChoices())) {
                                 AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
-                                if (choiceMessage.getToolCalls() != null) {
+                                if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                                     messages.add(choiceMessage);
                                     buildToolMessage(choiceMessage);
 

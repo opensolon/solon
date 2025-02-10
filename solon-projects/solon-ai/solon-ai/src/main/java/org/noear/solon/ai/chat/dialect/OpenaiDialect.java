@@ -54,10 +54,15 @@ public class OpenaiDialect extends AbstractDialect {
     public boolean resolveResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
+
+            if("[DONE]".equals(json)){ //不是数据结构
+                resp.finished=true;
+                return true;
+            }
         }
 
         //解析
-        ONode oResp = ONode.load(json, Feature.StringJsonToNode);
+        ONode oResp = ONode.load(json);
 
         if (oResp.isObject() == false) {
             return false;
@@ -68,7 +73,6 @@ public class OpenaiDialect extends AbstractDialect {
         } else {
             resp.model = oResp.get("model").getString();
             resp.finished = oResp.contains("usage");
-            resp.choices.clear();
 
             String finish_reason = oResp.get("finish_reason").getString();
             Date created = new Date(oResp.get("created").getLong() * 1000);
