@@ -18,6 +18,7 @@ package org.noear.solon.ai.chat;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.core.util.MultiMap;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -34,6 +35,7 @@ public class ChatConfig implements AiConfig {
     protected ChatDialect dialect;
     protected final MultiMap<String> headers = new MultiMap<>();
     protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
+    protected Duration timeout = Duration.ofSeconds(30);
 
 
     @Override
@@ -71,5 +73,9 @@ public class ChatConfig implements AiConfig {
 
     public ChatFunction globalFunction(String name) {
         return globalFunctions.get(name);
+    }
+
+    public Duration timeout() {
+        return timeout;
     }
 }

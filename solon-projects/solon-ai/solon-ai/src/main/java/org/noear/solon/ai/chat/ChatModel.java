@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiLLM;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
 /**
@@ -73,6 +74,11 @@ public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
          * 全局函数添加
          */
         Builder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder);
+
+        /**
+         * 超时
+         */
+        Builder timeout(Duration timeout);
 
         /**
          * 构建

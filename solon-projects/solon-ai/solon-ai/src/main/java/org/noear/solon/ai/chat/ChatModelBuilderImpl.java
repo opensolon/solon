@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.chat.impl.ChatModelDefault;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
 /**
@@ -63,6 +64,15 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
         ChatFunctionDecl decl = new ChatFunctionDecl(name);
         functionBuilder.accept(decl);
         globalFunctionAdd(decl);
+        return this;
+    }
+
+    @Override
+    public ChatModel.Builder timeout(Duration timeout) {
+        if (timeout != null) {
+            config.timeout = timeout;
+        }
+
         return this;
     }
 

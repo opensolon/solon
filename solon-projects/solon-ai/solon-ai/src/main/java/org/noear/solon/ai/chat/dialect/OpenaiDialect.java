@@ -16,10 +16,9 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
 import org.noear.solon.ai.AiException;
-import org.noear.solon.ai.chat.ChatChoice;
-import org.noear.solon.ai.chat.ChatConfig;
-import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.impl.ChatResponseDefault;
 
 import java.util.Date;
@@ -43,13 +42,22 @@ public class OpenaiDialect extends AbstractDialect {
     }
 
     @Override
+    protected void buildReqFunctionsJson(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
+        if (lastMessage.getRole() != ChatRole.TOOL) {
+            //如果是 tool ，后面不跟 funcs
+            buildReqFunctionsJsonDo(n, config.globalFunctions());
+            buildReqFunctionsJsonDo(n, options.functions());
+        }
+    }
+
+    @Override
     public boolean resolveResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
         }
 
         //解析
-        ONode oResp = ONode.load(json);
+        ONode oResp = ONode.load(json, Feature.StringJsonToNode);
 
         if (oResp.isObject() == false) {
             return false;

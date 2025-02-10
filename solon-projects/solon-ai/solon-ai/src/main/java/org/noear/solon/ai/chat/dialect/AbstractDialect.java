@@ -46,12 +46,17 @@ public abstract class AbstractDialect implements ChatDialect {
                 }
             });
 
-            buildReqFunctionsJson(n, config.globalFunctions());
-            buildReqFunctionsJson(n, options.functions());
+            ChatMessage lastMessage = messages.get(messages.size() - 1);
+            buildReqFunctionsJson(n, config, options, lastMessage);
         }).toJson();
     }
 
-    protected void buildReqFunctionsJson(ONode n, Collection<ChatFunction> funcs) {
+    protected void buildReqFunctionsJson(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
+        buildReqFunctionsJsonDo(n, config.globalFunctions());
+        buildReqFunctionsJsonDo(n, options.functions());
+    }
+
+    protected void buildReqFunctionsJsonDo(ONode n, Collection<ChatFunction> funcs) {
         if (Utils.isEmpty(funcs)) {
             return;
         }

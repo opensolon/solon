@@ -156,7 +156,7 @@ public class ChatRequestDefault implements ChatRequest {
                                 return;
                             }
 
-                            if(Utils.isNotEmpty(resp.getChoices())) {
+                            if (Utils.isNotEmpty(resp.getChoices())) {
                                 AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
                                 if (choiceMessage.getToolCalls() != null) {
                                     messages.add(choiceMessage);
@@ -209,7 +209,9 @@ public class ChatRequestDefault implements ChatRequest {
     }
 
     private HttpUtils buildReqHttp() {
-        HttpUtils httpUtils = HttpUtils.http(config.apiUrl());
+        HttpUtils httpUtils = HttpUtils
+                .http(config.apiUrl())
+                .timeout((int) config.timeout().getSeconds());
 
         if (Utils.isNotEmpty(config.apiKey())) {
             httpUtils.header("Authorization", "Bearer " + config.apiKey());
