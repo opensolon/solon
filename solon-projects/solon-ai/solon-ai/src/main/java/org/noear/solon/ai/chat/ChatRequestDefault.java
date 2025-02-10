@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat.impl;
+package org.noear.solon.ai.chat;
 
 import org.noear.solon.Utils;
-import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantChatMessage;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;

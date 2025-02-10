@@ -15,8 +15,6 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.chat.impl.ChatModelDefault;
-
 import java.time.Duration;
 import java.util.function.Consumer;
 
@@ -77,8 +75,6 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
     }
 
     public ChatModel build() {
-        config.dialect = ChatDialectManager.get(config);
-
         return new ChatModelDefault(config);
     }
 }

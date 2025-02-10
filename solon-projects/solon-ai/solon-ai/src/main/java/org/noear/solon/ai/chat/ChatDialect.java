@@ -17,7 +17,6 @@ package org.noear.solon.ai.chat;
 
 import org.noear.snack.ONode;
 import org.noear.solon.ai.AiDialect;
-import org.noear.solon.ai.chat.impl.ChatResponseDefault;
 
 import java.util.List;
 

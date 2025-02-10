@@ -16,10 +16,9 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
 import org.noear.solon.ai.AiException;
 import org.noear.solon.ai.chat.*;
-import org.noear.solon.ai.chat.impl.ChatResponseDefault;
+import org.noear.solon.ai.chat.ChatResponseDefault;
 
 import java.util.Date;
 

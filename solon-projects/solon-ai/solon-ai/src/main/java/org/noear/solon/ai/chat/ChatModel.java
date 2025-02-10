@@ -16,7 +16,6 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiLLM;
-import org.noear.solon.ai.chat.impl.ChatModelDefault;
 
 import java.time.Duration;
 import java.util.function.Consumer;
@@ -39,7 +38,6 @@ public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
      * 构建
      */
     static ChatModel of(ChatConfig config){
-        config.dialect = ChatDialectManager.get(config);
         return new ChatModelDefault(config);
     }
 
