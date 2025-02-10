@@ -39,9 +39,52 @@ public class ChatOptions implements AiOptions {
     private Float frequency_penalty;
     private final Map<String, ChatFunction> functions = new LinkedHashMap<>();
 
+    public Long max_tokens() {
+        return max_tokens;
+    }
+
+    public ChatOptions max_tokens(long max_tokens) {
+        this.max_tokens = max_tokens;
+        return this;
+    }
+
     public Float temperature() {
         return temperature;
     }
+
+    public ChatOptions temperature(float temperature) {
+        this.temperature = temperature;
+        return this;
+    }
+
+    public Float top_p() {
+        return top_p;
+    }
+
+    public ChatOptions top_p(float top_p) {
+        this.top_p = top_p;
+        return this;
+    }
+
+    public Float top_k() {
+        return top_k;
+    }
+
+    public ChatOptions top_k(float top_k) {
+        this.top_k = top_k;
+        return this;
+    }
+
+    public Float frequency_penalty() {
+        return frequency_penalty;
+    }
+
+    public ChatOptions frequency_penalty(float frequency_penalty) {
+        this.frequency_penalty = frequency_penalty;
+        return this;
+    }
+
+    /// ////////////
 
     public Collection<ChatFunction> functions() {
         return functions.values();
@@ -49,11 +92,6 @@ public class ChatOptions implements AiOptions {
 
     public ChatFunction function(String name) {
         return functions.get(name);
-    }
-
-    public ChatOptions temperature(float temperature) {
-        this.temperature = temperature;
-        return this;
     }
 
     public ChatOptions functionAdd(ChatFunction function) {

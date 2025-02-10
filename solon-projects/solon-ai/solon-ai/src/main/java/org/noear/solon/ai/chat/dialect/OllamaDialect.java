@@ -65,14 +65,14 @@ public class OllamaDialect extends AbstractDialect {
             resp.choices.clear();
             resp.choices.add(new ChatChoice(0, created, done_reason, ChatMessage.ofAssistant(config, oResp.get("message"))));
 
-//            if (resp.finished) {
-//                resp.total_duration = oResp.get("total_duration").getLong();
-//                resp.load_duration = oResp.get("load_duration").getLong();
-//                resp.prompt_eval_count = oResp.get("prompt_eval_count").getLong();
-//                resp.prompt_eval_duration = oResp.get("prompt_eval_duration").getLong();
-//                resp.eval_count = oResp.get("eval_count").getLong();
-//                resp.eval_duration = oResp.get("eval_duration").getLong();
-//            }
+            if (resp.finished) {
+                ChatUsageImpl usage = new ChatUsageImpl();
+                usage.promptTokens = oResp.get("prompt_eval_count").getLong();
+                usage.completionTokens = oResp.get("eval_count").getLong();
+                usage.totalTokens = usage.promptTokens + usage.completionTokens;
+
+                resp.usage = usage;
+            }
         }
 
         return true;

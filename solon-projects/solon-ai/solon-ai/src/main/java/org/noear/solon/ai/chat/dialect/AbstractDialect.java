@@ -32,10 +32,6 @@ public abstract class AbstractDialect implements ChatDialect {
         return new ONode().build(n -> {
             n.set("stream", stream);
 
-            if (options.temperature() != null) {
-                n.set("temperature", options.temperature());
-            }
-
             if (Utils.isNotEmpty(config.model())) {
                 n.set("model", config.model());
             }
@@ -45,6 +41,26 @@ public abstract class AbstractDialect implements ChatDialect {
                     n1.add(m1.toRequestNode());
                 }
             });
+
+            if(options.max_tokens() !=null){
+                n.set("max_tokens", options.max_tokens());
+            }
+
+            if (options.temperature() != null) {
+                n.set("temperature", options.temperature());
+            }
+
+            if(options.top_p() !=null){
+                n.set("top_p", options.top_p());
+            }
+
+            if(options.top_k() !=null){
+                n.set("top_k", options.top_k());
+            }
+
+            if(options.frequency_penalty() !=null){
+                n.set("frequency_penalty", options.frequency_penalty());
+            }
 
             ChatMessage lastMessage = messages.get(messages.size() - 1);
             buildReqFunctionsJson(n, config, options, lastMessage);

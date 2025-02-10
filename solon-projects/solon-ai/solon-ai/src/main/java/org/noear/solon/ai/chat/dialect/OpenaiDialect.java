@@ -54,8 +54,8 @@ public class OpenaiDialect extends AbstractDialect {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
-            if("[DONE]".equals(json)){ //不是数据结构
-                resp.finished=true;
+            if ("[DONE]".equals(json)) { //不是数据结构
+                resp.finished = true;
                 return true;
             }
         }
@@ -71,7 +71,6 @@ public class OpenaiDialect extends AbstractDialect {
             resp.exception = new AiException(oResp.get("error").get("message").getString());
         } else {
             resp.model = oResp.get("model").getString();
-            resp.finished = oResp.contains("usage");
 
             String finish_reason = oResp.get("finish_reason").getString();
             Date created = new Date(oResp.get("created").getLong() * 1000);
@@ -86,6 +85,16 @@ public class OpenaiDialect extends AbstractDialect {
                     //object=chat.completion
                     resp.choices.add(new ChatChoice(index, created, finish_reason, ChatMessage.ofAssistant(config, oChoice1.get("message"))));
                 }
+            }
+
+            ONode oUsage = oResp.getOrNull("usage");
+            if (oUsage != null) {
+                ChatUsageImpl usage = new ChatUsageImpl();
+                usage.promptTokens = oUsage.get("prompt_tokens").getLong();
+                usage.completionTokens = oUsage.get("completion_tokens").getLong();
+                usage.totalTokens = oUsage.get("total_tokens").getLong();
+
+                resp.usage = usage;
             }
         }
 
