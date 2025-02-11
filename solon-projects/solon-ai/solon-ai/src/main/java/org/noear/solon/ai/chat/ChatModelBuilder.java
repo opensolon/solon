@@ -28,10 +28,15 @@ import java.util.function.Consumer;
  * @since 3.1
  */
 public class ChatModelBuilder {
-    private ChatConfig config = new ChatConfig();
+    private final ChatConfig config;
 
     public ChatModelBuilder(String apiUrl) {
-        config.apiUrl = apiUrl;
+        this.config = new ChatConfig();
+        this.config.apiUrl = apiUrl;
+    }
+
+    public ChatModelBuilder(ChatConfig config) {
+        this.config = config;
     }
 
     public ChatModelBuilder apiKey(String apiKey) {

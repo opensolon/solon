@@ -3,7 +3,6 @@ package features.ai;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatConfig;
 import org.noear.solon.ai.chat.ChatModel;
-import org.noear.solon.ai.chat.ChatModelDefault;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -20,7 +19,8 @@ import java.io.IOException;
 public class App {
     @Bean
     public ChatModel build(@Inject("${solon.ai.OllamaTest}") ChatConfig config) {
-        return ChatModel.of(config);
+        return ChatModel.of(config)
+                .build();
     }
 
     @Inject

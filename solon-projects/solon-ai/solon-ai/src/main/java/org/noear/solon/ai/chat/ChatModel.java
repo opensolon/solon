@@ -55,8 +55,8 @@ public interface ChatModel {
     /**
      * 构建
      */
-    static ChatModel of(ChatConfig config) {
-        return new ChatModelDefault(config);
+    static ChatModelBuilder of(ChatConfig config) {
+        return new ChatModelBuilder(config);
     }
 
     /**
