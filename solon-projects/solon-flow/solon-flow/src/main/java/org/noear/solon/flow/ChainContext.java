@@ -15,25 +15,25 @@
  */
 package org.noear.solon.flow;
 
-import org.noear.solon.flow.driver.SimpleChainDriver;
+import org.noear.liquor.eval.Scripts;
 import org.noear.solon.lang.Preview;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 链上下文
+ * 链上下文（不支持序列化）
  *
  * @author noear
  * @since 3.0
  */
 @Preview("3.0")
-public class ChainContext implements Serializable {
+public class ChainContext {
     //存放数据模型
-    private final Map<String, Object> model;
+    private transient final Map<String, Object> model = new LinkedHashMap<>();
     //存放执行结果（可选）
-    public Object result;
+    public transient Object result;
 
     //控制过程计数
     private transient final Counter counter = new Counter();
@@ -48,10 +48,9 @@ public class ChainContext implements Serializable {
     }
 
     public ChainContext(Map<String, Object> model) {
-        if (model == null) {
-            this.model = new HashMap<>();
-        } else {
-            this.model = model;
+        this.model.put("context", this);
+        if (model != null) {
+            this.model.putAll(model);
         }
     }
 
@@ -60,6 +59,14 @@ public class ChainContext implements Serializable {
      */
     public FlowEngine engine() {
         return engine;
+    }
+
+    /**
+     * 运行脚本
+     */
+    public Object run(String script) throws InvocationTargetException {
+        //按脚本运行
+        return Scripts.eval(script, this.model());
     }
 
     /**
@@ -93,7 +100,7 @@ public class ChainContext implements Serializable {
     }
 
     /**
-     * 设置
+     * 推入
      */
     public ChainContext put(String key, Object value) {
         model.put(key, value);
@@ -101,7 +108,15 @@ public class ChainContext implements Serializable {
     }
 
     /**
-     * 设置
+     * 推入
+     */
+    public ChainContext putIfAbsent(String key, Object value) {
+        model.putIfAbsent(key, value);
+        return this;
+    }
+
+    /**
+     * 推入全部
      */
     public ChainContext putAll(Map<String, Object> model) {
         model.putAll(model);
@@ -120,5 +135,12 @@ public class ChainContext implements Serializable {
      */
     public <T> T getOrDefault(String key, T def) {
         return (T) model.getOrDefault(key, def);
+    }
+
+    /**
+     * 移除
+     */
+    public void remove(String key) {
+        model.remove(key);
     }
 }

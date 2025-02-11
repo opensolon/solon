@@ -26,6 +26,7 @@
 * 新增 solon-ai 插件
 * 定义 响应式过滤和拦截体系
 * 添加 solon Renderable 接口支持对象自渲染处理（支持 SseEvent 之类的实体自渲染）
+* 添加 solon-flow ChainContext:run(script) 接口（支持在脚本中运行动态脚本）
 * 优化 拦截体系与 rx 的兼容？
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index

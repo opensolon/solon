@@ -181,15 +181,4 @@ public class AppTest {
         flowEngine.eval("r1", context);
         assert order.getScore() == 500;
     }
-
-    @Test
-    public void context_test() {
-        String json = "{\"model\":{\"day\":7},\"result\":10}";
-        ChainContext context = ONode.load(json).toObject(ChainContext.class);
-
-        String json2 = ONode.load(context).toJson();
-        System.out.println(json2);
-
-        assert json2.equals(json);
-    }
 }
