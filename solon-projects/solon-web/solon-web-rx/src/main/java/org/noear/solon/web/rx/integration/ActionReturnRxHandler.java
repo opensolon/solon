@@ -61,7 +61,8 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
         if (hasReactor) {
             //reactor 排除也不会出错
             if (result instanceof Flux) {
-                if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
+                if (ctx.acceptNew().startsWith(MimeType.APPLICATION_JSON_VALUE) ||
+                        ctx.acceptNew().startsWith(MimeType.TEXT_JSON_VALUE)) {
                     return ((Flux) result).collectList();
                 }
             }
