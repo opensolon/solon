@@ -15,7 +15,6 @@
  */
 package org.noear.solon.flow.driver;
 
-import org.noear.liquor.eval.CodeSpec;
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
 import org.noear.solon.Solon;
@@ -23,9 +22,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.flow.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 简单的链驱动器
@@ -83,11 +79,7 @@ public class SimpleChainDriver implements ChainDriver {
     }
 
     protected boolean tryAsScriptCondition(ChainContext context, Condition condition, String description) throws Throwable {
-        Map<String, Object> argsMap = new LinkedHashMap<>();
-        argsMap.put("context", context);
-        argsMap.putAll(context.model());
-
-        return (boolean) Exprs.eval(description, argsMap);
+        return (boolean) Exprs.eval(description, context.model());
     }
 
     /// //////////////
@@ -149,13 +141,12 @@ public class SimpleChainDriver implements ChainDriver {
      */
     protected void tryAsScriptTask(ChainContext context, Task task, String description) throws Throwable {
         //按脚本运行
-        Map<String, Object> argsMap = new LinkedHashMap<>();
-        argsMap.put("context", context);
-        argsMap.put("node", task.node());
-        argsMap.putAll(context.model());
+        try {
+            context.put("node", task.node());
 
-        CodeSpec codeSpec = new CodeSpec(description);
-        Object[] args = codeSpec.bind(argsMap);
-        Scripts.eval(codeSpec, args);
+            Scripts.eval(description, context.model());
+        } finally {
+            context.remove("node");
+        }
     }
 }

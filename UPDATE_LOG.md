@@ -29,6 +29,7 @@
 
 ### v3.0.8
 * 添加 solon-flow FlowEngine:chains 方法
+* 添加 solon-flow ChainContext:run(script) 接口（支持在脚本中运行动态脚本）
 * 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
 * 修复 solon 集合bean注入时，可能产生两次执行的问题
 * 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置无效的问题
