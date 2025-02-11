@@ -52,11 +52,13 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
 
         RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
 
-        table.add(entity);
 
         if (level != 0 || routing.index() != 0) {
             //有 * 号的 或有 index 的；排序下
+            table.add(entity);
             Collections.sort(table);
+        } else {
+            table.add(0, entity);
         }
     }
 
