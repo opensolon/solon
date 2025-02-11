@@ -21,6 +21,7 @@ import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.web.sse.SseEmitter;
 import org.noear.solon.web.sse.SseEvent;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,9 +31,17 @@ import java.util.Map;
 public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
+
+    @Mapping("/sse/rx")
+    public Flux<SseEvent> sse_rx(String id) throws IOException {
+        return Flux.just(
+                new SseEvent().data("hello"),
+                new SseEvent().id(Utils.guid()).name("update").data("test"));
+    }
+
     @Mapping("/sse/{id}")
-    public SseEmitter sse(String id) {
-        return new SseEmitter(0L)
+    public SseEmitter sse(String id) throws IOException {
+        SseEmitter emitter = new SseEmitter(-1L)
                 .onCompletion(() -> {
                     emitterMap.remove(id);
                     System.out.println("::onCompletion");
@@ -40,8 +49,12 @@ public class SseDemoController {
                 })
                 .onError(e -> {
                     e.printStackTrace();
-                })
-                .onInited(e -> emitterMap.put(id, e));
+                });
+
+        emitterMap.put(id, emitter);
+        emitter.send("你好！");
+
+        return emitter;
     }
 
     @Mapping("/sse2/{id}")

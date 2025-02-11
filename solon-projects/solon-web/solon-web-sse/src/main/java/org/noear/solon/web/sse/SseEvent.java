@@ -86,7 +86,7 @@ public class SseEvent implements Renderable {
 
     @Override
     public void render(Context ctx) throws IOException {
-        if (ctx.isHeadersSent()) {
+        if (ctx.isHeadersSent() == false) {
             ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
         }
 
