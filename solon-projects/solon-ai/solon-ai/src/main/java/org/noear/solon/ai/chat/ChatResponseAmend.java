@@ -22,9 +22,9 @@ package org.noear.solon.ai.chat;
  * @since 3.1
  */
 public class ChatResponseAmend {
-    private ChatResponseImpl real;
+    private final ChatResponseDefault real;
 
-    public ChatResponseAmend(ChatResponseImpl real) {
+    public ChatResponseAmend(ChatResponseDefault real) {
         this.real = real;
     }
 

@@ -15,11 +15,10 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.chat.dialect.ChatDialectManager;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.lang.Preview;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,40 +28,18 @@ import java.util.List;
  * @since 3.1
  */
 @Preview("3.1")
-public interface ChatModel {
-    /**
-     * 提示语
-     */
-    ChatRequest prompt(List<ChatMessage> messages);
+public class ChatModelDefault implements ChatModel {
+    private final ChatConfig config;
 
-    /**
-     * 提示语
-     */
-    default ChatRequest prompt(ChatMessage... messages) {
-        return prompt(new ArrayList<>(Arrays.asList(messages)));
+    public ChatModelDefault(ChatConfig config) {
+        config.dialect = ChatDialectManager.select(config);
+        this.config = config;
     }
 
     /**
      * 提示语
      */
-    default ChatRequest prompt(String content) {
-        return prompt(ChatMessage.ofUser(content));
-    }
-
-
-    /// /////////////////////////////////
-
-    /**
-     * 构建
-     */
-    static ChatModel of(ChatConfig config) {
-        return new ChatModelDefault(config);
-    }
-
-    /**
-     * 开始构建
-     */
-    static ChatModelBuilder of(String apiUrl) {
-        return new ChatModelBuilder(apiUrl);
+    public ChatRequest prompt(List<ChatMessage> messages) {
+        return new ChatRequestDefault(config, messages);
     }
 }

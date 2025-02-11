@@ -75,6 +75,6 @@ public class ChatModelBuilder {
     }
 
     public ChatModel build() {
-        return new ChatModel(config);
+        return new ChatModelDefault(config);
     }
 }

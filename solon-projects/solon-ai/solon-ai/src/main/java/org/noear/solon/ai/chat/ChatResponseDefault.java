@@ -28,7 +28,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class ChatResponseImpl implements ChatResponse {
+public class ChatResponseDefault implements ChatResponse {
     protected final List<ChatChoice> choices = new ArrayList<>();
     protected ChatException error;
     protected ChatUsage usage;

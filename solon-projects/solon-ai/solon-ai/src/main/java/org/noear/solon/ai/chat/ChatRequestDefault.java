@@ -40,15 +40,15 @@ import java.util.function.Consumer;
  * @author noear
  * @since 3.1
  */
-public class ChatRequestImpl implements ChatRequest {
-    private static final Logger log = LoggerFactory.getLogger(ChatRequestImpl.class);
+public class ChatRequestDefault implements ChatRequest {
+    private static final Logger log = LoggerFactory.getLogger(ChatRequestDefault.class);
     private static final ChatOptions OPTIONS_DEFAULT = new ChatOptions();
 
     private final ChatConfig config;
     private final List<ChatMessage> messages;
     private ChatOptions options;
 
-    public ChatRequestImpl(ChatConfig config, List<ChatMessage> messages) {
+    public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
         this.config = config;
         this.messages = messages;
         this.options = OPTIONS_DEFAULT;
@@ -95,7 +95,7 @@ public class ChatRequestImpl implements ChatRequest {
             log.trace("ai-response: {}", respJson);
         }
 
-        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseImpl());
+        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseDefault());
         config.dialect().parseResponseJson(config, resp, respJson);
 
         if (resp.getReal().getError() != null) {
@@ -145,7 +145,7 @@ public class ChatRequestImpl implements ChatRequest {
     }
 
     private void parseResp(HttpResponse httpResp, Subscriber<? super ChatResponse> subscriber) throws IOException {
-        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseImpl());
+        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseDefault());
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResp.body()))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
