@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai;
 
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.lang.Preview;
 
 import java.util.List;
@@ -38,8 +39,9 @@ public interface AiResponse<Cho extends AiChoice, Usa extends AiUsage> {
     List<Cho> getChoices();
 
     /**
-     * 获取使用情况
+     * 获取使用情况（完成时，才会有使用情况）
      */
+    @Nullable
     Usa getUsage();
 
     /**

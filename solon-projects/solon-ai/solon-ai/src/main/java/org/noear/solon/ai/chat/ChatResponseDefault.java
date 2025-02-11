@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiException;
+import org.noear.solon.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +57,9 @@ public class ChatResponseDefault implements ChatResponse {
         return choices.get(index);
     }
 
+    //完成时，才会有使用情况
     @Override
-    public ChatUsage getUsage() {
+    public @Nullable ChatUsage getUsage() {
         return usage;
     }
 
