@@ -42,8 +42,6 @@
 * 调整 solon-web-rx 调整 Flux collectList 策略（默认为流输出；明确指定 json 时才做聚合输出）
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 测试 虚拟线程、异步、响应式并优化性能？？？
-* snack3 升为 3.2.126
-* liquor 升为 1.3.8
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
 * jetty 升为 9.4.57.v20241219
@@ -56,7 +54,7 @@
 * 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
 * 修复 solon-docs-openapi2 类型如果为自定义类型无法正确识别到 OpenApi Json.
 * snack3 升为 3.2.126
-* liquor 1.3.8
+* liquor 1.3.10
 
 ### v3.0.7
 * 添加 solon BindProps 绑定属性注解，用于简化集合属性绑定及配置元信息APT生成
