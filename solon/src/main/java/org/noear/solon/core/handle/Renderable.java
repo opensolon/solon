@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.serialize;
+package org.noear.solon.core.handle;
 
 /**
- * 可字符串化的（为渲染提供参考）
+ * 可自渲染的
  *
  * @author noear
  * @since 3.1
  */
-public interface Stringable {
+public interface Renderable {
+    /**
+     * 渲染
+     */
+    void render(Context ctx) throws Throwable;
 }
