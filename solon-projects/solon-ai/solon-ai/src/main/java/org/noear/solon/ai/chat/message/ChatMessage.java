@@ -36,35 +36,38 @@ public interface ChatMessage {
      * */
     String getContent();
 
-    static AssistantChatMessage ofAssistant(String content) {
-        return new AssistantChatMessage(content, null, null, null);
+
+    /// //////////////
+
+    static AssistantMessage ofAssistant(String content) {
+        return new AssistantMessage(content, null, null, null);
     }
 
     /**
      * 构建系统消息
      */
     static ChatMessage ofSystem(String content) {
-        return new SystemChatMessage(content);
+        return new SystemMessage(content);
     }
 
     /**
      * 构建用户消息
      */
     static ChatMessage ofUser(String content) {
-        return new UserChatMessage(content, null);
+        return new UserMessage(content, null);
     }
 
     /**
      * 构建用户消息
      */
     static ChatMessage ofUser(String content, List<String> imageUrls) {
-        return new UserChatMessage(content, imageUrls);
+        return new UserMessage(content, imageUrls);
     }
 
     /**
      * 构建工具消息
      */
     static ChatMessage ofTool(String content, String name, String id) {
-        return new ToolChatMessage(content, name, id);
+        return new ToolMessage(content, name, id);
     }
 }

@@ -15,28 +15,29 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
 
+import java.util.List;
+
 /**
- * 聊天工具消息
- * 
+ * 聊天用户消息
+ *
  * @author noear
  * @since 3.1
  */
-public class ToolChatMessage implements ChatMessage {
-    private String content;
-    private String name;
-    private String id;
+public class UserMessage implements ChatMessage {
+    private final String content;
+    private final List<String> imageUrls;
 
-    public ToolChatMessage(String content, String name, String id) {
+    public UserMessage(String content, List<String> imageUrls) {
         this.content = content;
-        this.name = name;
-        this.id = id;
+        this.imageUrls = imageUrls;
     }
 
     @Override
     public ChatRole getRole() {
-        return ChatRole.TOOL;
+        return ChatRole.USER;
     }
 
     @Override
@@ -44,36 +45,23 @@ public class ToolChatMessage implements ChatMessage {
         return content;
     }
 
-    public String getName() {
-        return name;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
-
-    public String getId() {
-        return id;
-    }
-
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("{");
-
-        buf.append(", role=").append(getRole().name().toLowerCase());
-
-        if (content != null) {
-            buf.append(", content='").append(content).append('\'');
+        if (Utils.isEmpty(imageUrls)) {
+            return "{" +
+                    "role='" + getRole() + '\'' +
+                    ",content='" + content + '\'' +
+                    '}';
+        } else {
+            return "{" +
+                    "role='" + getRole() + '\'' +
+                    ",content='" + content + '\'' +
+                    ",image_urls='" + imageUrls + '\'' +
+                    '}';
         }
-
-        if (name != null) {
-            buf.append(", name='").append(name).append('\'');
-        }
-
-        if (id != null) {
-            buf.append(", tool_call_id=").append(id);
-        }
-
-        buf.append("}");
-
-        return buf.toString();
     }
 }

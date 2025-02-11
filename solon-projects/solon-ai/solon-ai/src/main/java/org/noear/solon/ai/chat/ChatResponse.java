@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.lang.Preview;
 
@@ -34,9 +35,20 @@ public interface ChatResponse {
     ChatException getException();
 
     /**
-     * 获取选择
+     * 获取所有选择
      */
     List<ChatChoice> getChoices();
+
+    /**
+     * 是否有消息
+     */
+    boolean hasMessage();
+
+    /**
+     * 获取消息
+     */
+    @Nullable
+    AssistantMessage getMessage();
 
     /**
      * 获取使用情况（完成时，才会有使用情况）

@@ -27,13 +27,13 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public class AssistantChatMessage implements ChatMessage {
+public class AssistantMessage implements ChatMessage {
     private String content;
     private String reasoningContent;
     private List<ChatFunctionCall> toolCalls;
     private ONode toolCallsNode;
 
-    public AssistantChatMessage(String content, String reasoningContent, ONode toolCallsNode, List<ChatFunctionCall> toolCalls) {
+    public AssistantMessage(String content, String reasoningContent, ONode toolCallsNode, List<ChatFunctionCall> toolCalls) {
         this.content = content;
         this.reasoningContent = reasoningContent;
         this.toolCallsNode = toolCallsNode;

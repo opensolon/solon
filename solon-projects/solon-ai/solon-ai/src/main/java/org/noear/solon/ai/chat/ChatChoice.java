@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.ai.chat.message.AssistantMessage;
 
 import java.util.Date;
 
@@ -29,9 +29,9 @@ public class ChatChoice {
     private final int index;
     private final Date created;
     private final String finishReason;
-    private final AssistantChatMessage message;
+    private final AssistantMessage message;
 
-    public ChatChoice(int index, Date created, String finishReason, AssistantChatMessage message) {
+    public ChatChoice(int index, Date created, String finishReason, AssistantMessage message) {
         this.index = index;
         this.created = created;
         this.finishReason = finishReason;
@@ -50,7 +50,7 @@ public class ChatChoice {
         return finishReason;
     }
 
-    public AssistantChatMessage getMessage() {
+    public AssistantMessage getMessage() {
         return message;
     }
 

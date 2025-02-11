@@ -31,7 +31,7 @@ import java.util.*;
  */
 public abstract class AbstractDialect implements ChatDialect {
 
-    protected void buildChatMessageNodeDo(ONode oNode, AssistantChatMessage msg) {
+    protected void buildChatMessageNodeDo(ONode oNode, AssistantMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
         oNode.set("content", msg.getContent());
 
@@ -44,12 +44,12 @@ public abstract class AbstractDialect implements ChatDialect {
         }
     }
 
-    protected void buildChatMessageNodeDo(ONode oNode, SystemChatMessage msg) {
+    protected void buildChatMessageNodeDo(ONode oNode, SystemMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
         oNode.set("content", msg.getContent());
     }
 
-    protected void buildChatMessageNodeDo(ONode oNode, ToolChatMessage msg) {
+    protected void buildChatMessageNodeDo(ONode oNode, ToolMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
         oNode.set("content", msg.getContent());
 
@@ -62,7 +62,7 @@ public abstract class AbstractDialect implements ChatDialect {
         }
     }
 
-    protected void buildChatMessageNodeDo(ONode oNode, UserChatMessage msg) {
+    protected void buildChatMessageNodeDo(ONode oNode, UserMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
         if (Utils.isEmpty(msg.getImageUrls())) {
             oNode.set("content", msg.getContent());
@@ -81,14 +81,14 @@ public abstract class AbstractDialect implements ChatDialect {
 
     public ONode buildChatMessageNode(ChatMessage chatMessage) {
         ONode oNode = new ONode();
-        if (chatMessage instanceof AssistantChatMessage) {
-            buildChatMessageNodeDo(oNode, (AssistantChatMessage) chatMessage);
-        } else if (chatMessage instanceof SystemChatMessage) {
-            buildChatMessageNodeDo(oNode, (SystemChatMessage) chatMessage);
-        } else if (chatMessage instanceof ToolChatMessage) {
-            buildChatMessageNodeDo(oNode, (ToolChatMessage) chatMessage);
-        } else if (chatMessage instanceof UserChatMessage) {
-            buildChatMessageNodeDo(oNode, (UserChatMessage) chatMessage);
+        if (chatMessage instanceof AssistantMessage) {
+            buildChatMessageNodeDo(oNode, (AssistantMessage) chatMessage);
+        } else if (chatMessage instanceof SystemMessage) {
+            buildChatMessageNodeDo(oNode, (SystemMessage) chatMessage);
+        } else if (chatMessage instanceof ToolMessage) {
+            buildChatMessageNodeDo(oNode, (ToolMessage) chatMessage);
+        } else if (chatMessage instanceof UserMessage) {
+            buildChatMessageNodeDo(oNode, (UserMessage) chatMessage);
         } else {
             throw new IllegalArgumentException("Unsupported chat message type: " + chatMessage.getClass());
         }
@@ -215,12 +215,12 @@ public abstract class AbstractDialect implements ChatDialect {
         return toolCalls;
     }
 
-    protected AssistantChatMessage parseAssistantMessage(ONode oMessage) {
+    protected AssistantMessage parseAssistantMessage(ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
         List<ChatFunctionCall> toolCalls = parseToolCalls(toolCallsNode);
 
-        return new AssistantChatMessage(content, reasoning_content, toolCallsNode, toolCalls);
+        return new AssistantMessage(content, reasoning_content, toolCallsNode, toolCalls);
     }
 }

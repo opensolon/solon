@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.Utils;
+import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.lang.Nullable;
 
 import java.util.ArrayList;
@@ -27,13 +29,13 @@ import java.util.List;
  * @since 3.1
  */
 public class ChatResponseImpl implements ChatResponse {
+    public final List<ChatChoice> choices = new ArrayList<>();
     public ChatException exception;
-    public List<ChatChoice> choices = new ArrayList<>();
     public ChatUsage usage;
     public String model;
     public boolean finished;
 
-    public void reset(){
+    public void reset() {
         this.exception = null;
         this.choices.clear();
     }
@@ -52,8 +54,18 @@ public class ChatResponseImpl implements ChatResponse {
         return choices;
     }
 
-    public ChatChoice getChoice(int index){
-        return choices.get(index);
+    @Override
+    public boolean hasMessage() {
+        return Utils.isNotEmpty(choices);
+    }
+
+    @Override
+    public AssistantMessage getMessage() {
+        if (hasMessage()) {
+            return choices.get(0).getMessage();
+        } else {
+            return null;
+        }
     }
 
     //完成时，才会有使用情况
@@ -62,6 +74,7 @@ public class ChatResponseImpl implements ChatResponse {
         return usage;
     }
 
+    @Override
     public boolean isFinished() {
         return finished;
     }

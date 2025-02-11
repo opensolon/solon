@@ -23,10 +23,10 @@ import org.noear.solon.ai.chat.ChatRole;
  * @author noear
  * @since 3.1
  */
-public class SystemChatMessage implements ChatMessage {
+public class SystemMessage implements ChatMessage {
     private String content;
 
-    public SystemChatMessage(String content) {
+    public SystemMessage(String content) {
         this.content = content;
     }
 

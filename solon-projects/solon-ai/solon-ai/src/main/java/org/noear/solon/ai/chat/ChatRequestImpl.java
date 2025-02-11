@@ -18,7 +18,7 @@ package org.noear.solon.ai.chat;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
@@ -93,8 +93,8 @@ public class ChatRequestImpl implements ChatRequest {
             throw resp.getException();
         }
 
-        if (Utils.isNotEmpty(resp.getChoices())) {
-            AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
+        if (resp.hasMessage()) {
+            AssistantMessage choiceMessage = resp.getMessage();
             if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                 messages.add(choiceMessage);
                 buildToolMessage(choiceMessage);
@@ -164,8 +164,8 @@ public class ChatRequestImpl implements ChatRequest {
                                 return;
                             }
 
-                            if (Utils.isNotEmpty(resp.getChoices())) {
-                                AssistantChatMessage choiceMessage = resp.getChoice(0).getMessage();
+                            if (resp.hasMessage()) {
+                                AssistantMessage choiceMessage = resp.getMessage();
                                 if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                                     messages.add(choiceMessage);
                                     buildToolMessage(choiceMessage);
@@ -197,7 +197,7 @@ public class ChatRequestImpl implements ChatRequest {
         }
     }
 
-    private void buildToolMessage(AssistantChatMessage acm) {
+    private void buildToolMessage(AssistantMessage acm) {
         if (Utils.isEmpty(acm.getToolCalls())) {
             return;
         }
