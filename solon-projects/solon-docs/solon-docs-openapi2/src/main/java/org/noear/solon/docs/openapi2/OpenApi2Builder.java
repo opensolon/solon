@@ -405,7 +405,10 @@ public class OpenApi2Builder {
                 continue;
             }
 
-            String paramSchema = this.getParameterSchema(paramHolder);
+            String paramSchema = null;
+            if (isRequiredBody) {
+                paramSchema = this.getParameterSchema(paramHolder);
+            }
             String dataType = paramHolder.dataType();
 
             Parameter parameter;
