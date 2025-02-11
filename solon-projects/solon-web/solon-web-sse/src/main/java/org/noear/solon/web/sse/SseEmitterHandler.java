@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.sse;
 
+import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class SseEmitterHandler {
      * 开始
      */
     public void start() throws Throwable {
-        ctx.contentType("text/event-stream;charset=utf-8");
+        ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
         ctx.asyncListener(new AsyncListenerImpl(this));
         ctx.asyncStart(emitter.timeout, null);
 
@@ -66,8 +67,7 @@ public class SseEmitterHandler {
 
         SYNC_LOCK.lock();
         try {
-            ctx.output(event.toString());
-            ctx.flush();
+            event.render(ctx);
         } catch (IOException e) {
             stopOnError(e);
 

@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -32,7 +34,9 @@ import java.util.function.Function;
 public class SseEmitter {
     static final Logger log = LoggerFactory.getLogger(SseEmitter.class);
 
-    private SseEmitterHandler handler;
+    private SseEmitterHandler eventHandler;
+    private List<SseEvent> eventCached = new ArrayList<>();
+
     protected Runnable onCompletion;
     protected Runnable onTimeout;
     protected Function<SseEvent, SseEvent> onSendPost;
@@ -110,7 +114,12 @@ public class SseEmitter {
         }
 
         if (event != null) {
-            handler.send(event);
+            if (eventHandler == null) {
+                //如果未初始化事件处理，先缓存事件
+                eventCached.add(event);
+            } else {
+                eventHandler.send(event);
+            }
         }
     }
 
@@ -119,7 +128,7 @@ public class SseEmitter {
      */
     public void complete() {
         try {
-            handler.complete();
+            eventHandler.complete();
         } catch (IOException e) {
             log.warn(e.getMessage(), e);
         }
@@ -130,8 +139,14 @@ public class SseEmitter {
      * 初始化
      */
     protected void initialize(SseEmitterHandler handler) throws Throwable {
-        this.handler = handler;
+        this.eventHandler = handler;
 
+        //1.发送初始化之前的事件
+        for (SseEvent event : eventCached) {
+            eventHandler.send(event);
+        }
+
+        //2.开始初始化（一般也是发消息）
         if (onInited != null) {
             onInited.accept(this);
         }
