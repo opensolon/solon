@@ -34,7 +34,7 @@ public class OllamaTest {
         ChatResponse resp = chatModel.prompt("hello").call();
 
         //打印消息
-        log.info("{}", resp.getChoices());
+        log.info("{}", resp.getMessage());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class OllamaTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info("{}", resp.getChoices());
+                    log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();
@@ -71,7 +71,7 @@ public class OllamaTest {
                 .call();
 
         //打印消息
-        log.info("{}", resp.getChoices());
+        log.info("{}", resp.getMessage());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class OllamaTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info("{}", resp.getChoices());
+                    log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();

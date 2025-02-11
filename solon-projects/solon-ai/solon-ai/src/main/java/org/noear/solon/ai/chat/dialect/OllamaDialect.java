@@ -42,13 +42,15 @@ public class OllamaDialect extends AbstractDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseImpl resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponse resp0, String json) {
         //解析
         ONode oResp = ONode.load(json);
 
         if (oResp.isObject() == false) {
             return false;
         }
+
+        ChatResponseImpl resp = (ChatResponseImpl) resp0;
 
         if (oResp.contains("error")) {
             resp.exception = new ChatException(oResp.get("error").getString());

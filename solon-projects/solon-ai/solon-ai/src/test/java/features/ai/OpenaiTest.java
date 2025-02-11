@@ -32,7 +32,7 @@ public class OpenaiTest {
         ChatResponse resp = chatModel.prompt("hello").call();
 
         //打印消息
-        log.info("{}", resp.getChoices());
+        log.info("{}", resp.getMessage());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class OpenaiTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info("{}", resp.getChoices());
+                    log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();
@@ -69,7 +69,7 @@ public class OpenaiTest {
                 .call();
 
         //打印消息
-        log.info("{}", resp.getChoices());
+        log.info("{}", resp.getMessage());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class OpenaiTest {
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    log.info("{}", resp.getChoices());
+                    log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
                     doneLatch.countDown();

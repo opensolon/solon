@@ -40,28 +40,46 @@ public class AssistantMessage implements ChatMessage {
         this.toolCalls = toolCalls;
     }
 
+    /**
+     * 获取角色
+     */
     @Override
     public ChatRole getRole() {
         return ChatRole.ASSISTANT;
     }
 
+    /**
+     * 获取内容
+     */
     @Override
     public String getContent() {
         return content;
     }
 
+    /**
+     * 获取思考内容
+     */
     public String getReasoningContent() {
         return reasoningContent;
     }
 
+    /**
+     * 获取工具调用
+     */
     public List<ChatFunctionCall> getToolCalls() {
         return toolCalls;
     }
 
-    public ONode getToolCallsNode() {
+    /**
+     * 获取工具高用原始数据（需要回传）
+     */
+    public ONode getToolCallsRaw() {
         return toolCallsNode;
     }
 
+    /**
+     * 转为字符串
+     */
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();

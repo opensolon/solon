@@ -39,8 +39,8 @@ public abstract class AbstractDialect implements ChatDialect {
             oNode.set("reasoning_content", msg.getReasoningContent());
         }
 
-        if (msg.getToolCallsNode() != null) {
-            oNode.set("tool_calls", msg.getToolCallsNode());
+        if (msg.getToolCallsRaw() != null) {
+            oNode.set("tool_calls", msg.getToolCallsRaw());
         }
     }
 

@@ -16,9 +16,9 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.solon.ai.chat.ChatConfig;
+import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.chat.ChatOptions;
-import org.noear.solon.ai.chat.ChatResponseImpl;
 
 import java.util.List;
 
@@ -31,16 +31,23 @@ import java.util.List;
 public interface ChatDialect {
     /**
      * 匹配检测
+     *
+     * @param config 聊天配置
      */
     boolean matched(ChatConfig config);
 
     /**
      * 构建请求数据
+     *
+     * @param config  聊天配置
+     * @param options 聊天选项
      */
     String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream);
 
     /**
      * 分析响应数据
+     *
+     * @param config 聊天配置
      */
-    boolean parseResponseJson(ChatConfig config, ChatResponseImpl resp, String json);
+    boolean parseResponseJson(ChatConfig config, ChatResponse resp, String json);
 }
