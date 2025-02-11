@@ -34,7 +34,7 @@ public class ChatModel {
     private final ChatConfig config;
 
     public ChatModel(ChatConfig config) {
-        config.dialect = ChatDialectManager.get(config);
+        config.dialect = ChatDialectManager.select(config);
 
         this.config = config;
     }

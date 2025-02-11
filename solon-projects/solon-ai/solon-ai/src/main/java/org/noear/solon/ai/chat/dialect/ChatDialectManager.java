@@ -31,13 +31,13 @@ public class ChatDialectManager {
     private static List<RankEntity<ChatDialect>> dialects = new ArrayList<>();
 
     static {
-        add(OllamaDialect.getInstance());
+        register(OllamaDialect.getInstance());
     }
 
     /**
-     * 获取方言
+     * 选择方言
      */
-    public static ChatDialect get(ChatConfig config) {
+    public static ChatDialect select(ChatConfig config) {
         for (RankEntity<ChatDialect> d : dialects) {
             if (d.target.matched(config)) {
                 return d.target;
@@ -48,24 +48,24 @@ public class ChatDialectManager {
     }
 
     /**
-     * 添加方言
+     * 注册方言
      */
-    public static void add(ChatDialect dialect) {
-        add(dialect, 0);
+    public static void register(ChatDialect dialect) {
+        register(dialect, 0);
     }
 
     /**
-     * 添加方言
+     * 注册方言
      */
-    public static void add(ChatDialect dialect, int index) {
+    public static void register(ChatDialect dialect, int index) {
         dialects.add(new RankEntity<>(dialect, index));
         Collections.sort(dialects);
     }
 
     /**
-     * 移除方言
+     * 注销方言
      */
-    public static void remove(ChatDialect dialect) {
+    public static void unregister(ChatDialect dialect) {
         dialects.removeIf(rankEntity -> rankEntity.target == dialect);
     }
 }
