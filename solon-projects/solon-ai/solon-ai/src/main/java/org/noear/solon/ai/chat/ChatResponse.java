@@ -30,9 +30,15 @@ import java.util.List;
 @Preview("3.1")
 public interface ChatResponse {
     /**
-     * 获取异常
+     * 获取模型
      */
-    ChatException getException();
+    String getModel();
+
+    /**
+     * 获取错误
+     */
+    @Nullable
+    ChatException getError();
 
     /**
      * 获取所有选择

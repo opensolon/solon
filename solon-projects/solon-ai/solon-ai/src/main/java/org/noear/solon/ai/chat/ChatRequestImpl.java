@@ -54,6 +54,9 @@ public class ChatRequestImpl implements ChatRequest {
         this.options = OPTIONS_DEFAULT;
     }
 
+    /**
+     * 选项设置
+     */
     @Override
     public ChatRequest options(ChatOptions options) {
         if (options != null) {
@@ -63,6 +66,9 @@ public class ChatRequestImpl implements ChatRequest {
         return this;
     }
 
+    /**
+     * 选项配置
+     */
     @Override
     public ChatRequest options(Consumer<ChatOptions> optionsBuilder) {
         this.options = ChatOptions.of();
@@ -70,6 +76,9 @@ public class ChatRequestImpl implements ChatRequest {
         return this;
     }
 
+    /**
+     * 调用
+     */
     @Override
     public ChatResponse call() throws IOException {
         HttpUtils httpUtils = buildReqHttp();
@@ -86,15 +95,15 @@ public class ChatRequestImpl implements ChatRequest {
             log.trace("ai-response: {}", respJson);
         }
 
-        ChatResponseImpl resp = new ChatResponseImpl();
+        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseImpl());
         config.dialect().parseResponseJson(config, resp, respJson);
 
-        if (resp.getException() != null) {
-            throw resp.getException();
+        if (resp.getReal().getError() != null) {
+            throw resp.getReal().getError();
         }
 
-        if (resp.hasMessage()) {
-            AssistantMessage choiceMessage = resp.getMessage();
+        if (resp.getReal().hasMessage()) {
+            AssistantMessage choiceMessage = resp.getReal().getMessage();
             if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                 messages.add(choiceMessage);
                 buildToolMessage(choiceMessage);
@@ -103,9 +112,12 @@ public class ChatRequestImpl implements ChatRequest {
             }
         }
 
-        return resp;
+        return resp.getReal();
     }
 
+    /**
+     * 流响应
+     */
     @Override
     public Publisher<ChatResponse> stream() {
         HttpUtils httpUtils = buildReqHttp();
@@ -133,7 +145,7 @@ public class ChatRequestImpl implements ChatRequest {
     }
 
     private void parseResp(HttpResponse httpResp, Subscriber<? super ChatResponse> subscriber) throws IOException {
-        ChatResponseImpl resp = new ChatResponseImpl();
+        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseImpl());
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResp.body()))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
@@ -149,7 +161,7 @@ public class ChatRequestImpl implements ChatRequest {
                             break;
                         }
 
-                        if(respJson.length() == 0){
+                        if (respJson.length() == 0) {
                             continue;
                         }
 
@@ -159,13 +171,13 @@ public class ChatRequestImpl implements ChatRequest {
 
                         resp.reset();
                         if (config.dialect().parseResponseJson(config, resp, respJson)) {
-                            if (resp.getException() != null) {
-                                subscriber.onError(resp.getException());
+                            if (resp.getReal().getError() != null) {
+                                subscriber.onError(resp.getReal().getError());
                                 return;
                             }
 
-                            if (resp.hasMessage()) {
-                                AssistantMessage choiceMessage = resp.getMessage();
+                            if (resp.getReal().hasMessage()) {
+                                AssistantMessage choiceMessage = resp.getReal().getMessage();
                                 if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                                     messages.add(choiceMessage);
                                     buildToolMessage(choiceMessage);
@@ -178,7 +190,7 @@ public class ChatRequestImpl implements ChatRequest {
                                 }
 
                                 if (choiceMessage != null) {
-                                    subscriber.onNext(resp);
+                                    subscriber.onNext(resp.getReal());
                                 }
                             }
 

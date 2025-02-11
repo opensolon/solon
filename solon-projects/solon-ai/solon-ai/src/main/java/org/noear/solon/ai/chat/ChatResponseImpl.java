@@ -29,36 +29,47 @@ import java.util.List;
  * @since 3.1
  */
 public class ChatResponseImpl implements ChatResponse {
-    public final List<ChatChoice> choices = new ArrayList<>();
-    public ChatException exception;
-    public ChatUsage usage;
-    public String model;
-    public boolean finished;
+    protected final List<ChatChoice> choices = new ArrayList<>();
+    protected ChatException error;
+    protected ChatUsage usage;
+    protected String model;
+    protected boolean finished;
 
-    public void reset() {
-        this.exception = null;
-        this.choices.clear();
-    }
-
+    /**
+     * 获取模型
+     */
+    @Override
     public String getModel() {
         return model;
     }
 
+    /**
+     * 获取错误
+     */
     @Override
-    public ChatException getException() {
-        return exception;
+    public ChatException getError() {
+        return error;
     }
 
+    /**
+     * 获取所有选择
+     */
     @Override
     public List<ChatChoice> getChoices() {
         return choices;
     }
 
+    /**
+     * 是否有消息
+     */
     @Override
     public boolean hasMessage() {
         return Utils.isNotEmpty(choices);
     }
 
+    /**
+     * 获取消息
+     */
     @Override
     public AssistantMessage getMessage() {
         if (hasMessage()) {
@@ -68,12 +79,17 @@ public class ChatResponseImpl implements ChatResponse {
         }
     }
 
-    //完成时，才会有使用情况
+    /**
+     * 获取使用情况（完成时，才会有使用情况）
+     */
     @Override
     public @Nullable ChatUsage getUsage() {
         return usage;
     }
 
+    /**
+     * 是否完成
+     */
     @Override
     public boolean isFinished() {
         return finished;

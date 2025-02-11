@@ -18,7 +18,7 @@ package org.noear.solon.ai.chat.dialect;
 import org.noear.snack.ONode;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
-import org.noear.solon.ai.chat.ChatResponseImpl;
+import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
 
 import java.util.Date;
@@ -51,14 +51,12 @@ public class OpenaiDialect extends AbstractDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponse resp0, String json) {
-        ChatResponseImpl resp = (ChatResponseImpl) resp0;
-
+    public boolean parseResponseJson(ChatConfig config, ChatResponseAmend resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
             if ("[DONE]".equals(json)) { //不是数据结构
-                resp.finished = true;
+                resp.setFinished(true);
                 return true;
             }
         }
@@ -71,9 +69,9 @@ public class OpenaiDialect extends AbstractDialect {
         }
 
         if (oResp.contains("error")) {
-            resp.exception = new ChatException(oResp.get("error").get("message").getString());
+            resp.setError(new ChatException(oResp.get("error").get("message").getString()));
         } else {
-            resp.model = oResp.get("model").getString();
+            resp.setModel(oResp.get("model").getString());
 
             String finish_reason = oResp.get("finish_reason").getString();
             Date created = new Date(oResp.get("created").getLong() * 1000);
@@ -81,13 +79,13 @@ public class OpenaiDialect extends AbstractDialect {
             for (ONode oChoice1 : oResp.get("choices").ary()) {
                 int index = oChoice1.get("index").getInt();
 
-                if (oChoice1.contains("delta")) {
-                    //object=chat.completion.chunk
-                    resp.choices.add(new ChatChoice(index, created, finish_reason, parseAssistantMessage(oChoice1.get("delta"))));
-                } else {
-                    //object=chat.completion
-                    resp.choices.add(new ChatChoice(index, created, finish_reason, parseAssistantMessage(oChoice1.get("message"))));
+                AssistantMessage message1;
+                if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
+                    message1 = parseAssistantMessage(oChoice1.get("delta"));
+                } else { //object=chat.completion
+                    message1 = parseAssistantMessage(oChoice1.get("message"));
                 }
+                resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
             }
 
             ONode oUsage = oResp.getOrNull("usage");
@@ -96,7 +94,7 @@ public class OpenaiDialect extends AbstractDialect {
                 long completionTokens = oUsage.get("completion_tokens").getLong();
                 long totalTokens = oUsage.get("total_tokens").getLong();
 
-                resp.usage = new ChatUsage(promptTokens, completionTokens, totalTokens);
+                resp.setUsage(new ChatUsage(promptTokens, completionTokens, totalTokens));
             }
         }
 

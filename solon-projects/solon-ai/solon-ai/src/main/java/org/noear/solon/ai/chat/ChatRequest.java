@@ -30,12 +30,12 @@ import java.util.function.Consumer;
 @Preview("3.1")
 public interface ChatRequest {
     /**
-     * 选项
+     * 选项设置
      */
     ChatRequest options(ChatOptions options);
 
     /**
-     * 选项
+     * 选项配置
      */
     ChatRequest options(Consumer<ChatOptions> optionsBuilder);
 

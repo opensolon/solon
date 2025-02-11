@@ -35,14 +35,23 @@ public class ChatUsage {
         this.totalTokens = totalTokens;
     }
 
+    /**
+     * 获取提示语消耗令牌数
+     */
     public long promptTokens() {
         return promptTokens;
     }
 
+    /**
+     * 获取完成消耗令牌数
+     */
     public long completionTokens() {
         return completionTokens;
     }
 
+    /**
+     * 获取总消耗令牌数
+     */
     public long totalTokens() {
         return totalTokens;
     }
