@@ -16,6 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.serialize.Stringable;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
 
@@ -192,6 +193,11 @@ public class RenderManager implements Render {
     public void render(Object data, Context ctx) throws Throwable {
         if (data instanceof DataThrowable) {
             return;
+        }
+
+        //可字符串化的？转为字符串
+        if(data instanceof Stringable){
+            data = data.toString();
         }
 
         //如果是模型视图
