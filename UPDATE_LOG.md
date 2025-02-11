@@ -46,6 +46,7 @@
 * liquor 升为 1.3.8
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
+* jetty 升为 9.4.57.v20241219
 
 ### v3.0.8
 * 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
