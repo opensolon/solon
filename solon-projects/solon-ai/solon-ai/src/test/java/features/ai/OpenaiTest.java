@@ -16,7 +16,6 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @author noear 2025/1/28 created
  */
-@SolonTest
 public class OpenaiTest {
     //JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA
     private static final Logger log = LoggerFactory.getLogger(OpenaiTest.class);

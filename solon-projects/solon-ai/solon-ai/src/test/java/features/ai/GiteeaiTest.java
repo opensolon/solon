@@ -16,7 +16,6 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @author noear 2025/1/28 created
  */
-@SolonTest
 public class GiteeaiTest {
     private static final Logger log = LoggerFactory.getLogger(GiteeaiTest.class);
     private static final String apiUrl = "https://ai.gitee.com/v1/chat/completions";

@@ -16,7 +16,6 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @author noear 2025/1/28 created
  */
-@SolonTest
 public class OllamaTest {
     private static final Logger log = LoggerFactory.getLogger(OllamaTest.class);
     private static final String apiUrl = "http://127.0.0.1:11434/api/chat";
