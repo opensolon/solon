@@ -26,18 +26,21 @@
 * 新增 solon-ai 插件
 * 定义 响应式过滤和拦截体系
 * 添加 solon Renderable 接口支持对象自渲染处理（支持 SseEvent 之类的实体自渲染）
-* 调整 solon-web-sse SseEvent 实现 Renderable 自渲染接口，可以被直接返回
 * 优化 拦截体系与 rx 的兼容？
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon beanExtractOrProxy 内部改为先代理再提取，解决提取时对象未代理
 * 优化 solon-web-rx 结构设计，方便支持其它响应式框架(比如 mutiny)
 * 优化 solon-web-rx 可支持所有 reactivestreams 实现框架
+* 优化 solon-web-sse SseEmitter 添加事件缓存支持（初始化前就可发事件，之前不能）
 * 优化 solon ActionReturnHandler 增加排序支持
 * 优化 solon-security-validation BeanValidator 的设定方式
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
+* 调整 solon-web-sse SseEvent 实现 Renderable 自渲染接口，可以被直接返回
+* 调整 solon-web-rx 调整 Flux collectList 策略（默认为流输出；明确指定 json 时才做聚合输出）
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
+* 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.126
 * liquor 升为 1.3.8
