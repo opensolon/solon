@@ -15,7 +15,11 @@
  */
 package org.noear.solon.web.sse;
 
-import org.noear.solon.core.serialize.Stringable;
+import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Renderable;
+
+import java.io.IOException;
 
 /**
  * Sse 事件
@@ -23,7 +27,7 @@ import org.noear.solon.core.serialize.Stringable;
  * @author kongweiguang
  * @since 2.3
  */
-public class SseEvent implements Stringable {
+public class SseEvent implements Renderable {
 
     private final StringBuilder buf = new StringBuilder();
 
@@ -78,5 +82,15 @@ public class SseEvent implements Stringable {
     SseEvent append(String text) {
         this.buf.append(text);
         return this;
+    }
+
+    @Override
+    public void render(Context ctx) throws IOException {
+        if (ctx.isHeadersSent()) {
+            ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+        }
+
+        ctx.output(toString());
+        ctx.flush();
     }
 }
