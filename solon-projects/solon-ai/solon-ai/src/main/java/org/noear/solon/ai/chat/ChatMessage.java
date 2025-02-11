@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.snack.ONode;
 import org.noear.solon.ai.AiMessage;
 import org.noear.solon.ai.chat.message.AssistantChatMessage;
 import org.noear.solon.ai.chat.message.SystemChatMessage;
@@ -36,14 +35,6 @@ public interface ChatMessage extends AiMessage {
      */
     ChatRole getRole();
 
-    static AssistantChatMessage ofAssistant(ChatConfig config, ONode oMessage) {
-        String content = oMessage.get("content").getString();
-        String reasoning_content = oMessage.get("reasoning_content").getString();
-        ONode toolCallsNode = oMessage.getOrNull("tool_calls");
-        List<ChatFunctionCall> toolCalls = config.dialect().parseToolCalls(config, toolCallsNode);
-
-        return new AssistantChatMessage(content, reasoning_content, toolCallsNode, toolCalls);
-    }
 
     static AssistantChatMessage ofAssistant(String content) {
         return new AssistantChatMessage(content, null, null, null);

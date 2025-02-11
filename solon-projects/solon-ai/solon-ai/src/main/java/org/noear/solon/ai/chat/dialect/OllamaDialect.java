@@ -42,7 +42,7 @@ public class OllamaDialect extends AbstractDialect {
     }
 
     @Override
-    public boolean resolveResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         //解析
         ONode oResp = ONode.load(json);
 
@@ -63,7 +63,7 @@ public class OllamaDialect extends AbstractDialect {
             }
             Date created = DateUtil.parseTry(createdStr);
             resp.choices.clear();
-            resp.choices.add(new ChatChoice(0, created, done_reason, ChatMessage.ofAssistant(config, oResp.get("message"))));
+            resp.choices.add(new ChatChoice(0, created, done_reason, parseAssistantMessage(oResp.get("message"))));
 
             if (resp.finished) {
                 ChatUsageImpl usage = new ChatUsageImpl();

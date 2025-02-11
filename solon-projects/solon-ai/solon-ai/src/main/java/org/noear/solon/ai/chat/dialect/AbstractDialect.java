@@ -96,6 +96,48 @@ public abstract class AbstractDialect implements ChatDialect {
         return oNode;
     }
 
+    protected void buildReqFunctionsNode(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
+        buildReqFunctionsNodeDo(n, config.globalFunctions());
+        buildReqFunctionsNodeDo(n, options.functions());
+    }
+
+    protected void buildReqFunctionsNodeDo(ONode n, Collection<ChatFunction> funcs) {
+        if (Utils.isEmpty(funcs)) {
+            return;
+        }
+
+        n.getOrNew("tools").build(n1 -> {
+            for (ChatFunction func : funcs) {
+                n1.addNew().build(n2 -> {
+                    n2.set("type", "function");
+                    n2.getOrNew("function").build(n3 -> {
+                        n3.set("name", func.name());
+                        n3.set("description", func.description());
+                        n3.getOrNew("parameters").build(n4 -> {
+                            n4.set("type", "object");
+                            ONode n4r = n4.getOrNew("required").asArray();
+                            n4.getOrNew("properties").build(n5 -> {
+                                for (ChatFunctionParam p1 : func.params()) {
+                                    n5.getOrNew(p1.name()).build(n6 -> {
+                                        if (p1.type().isArray()) {
+                                            n6.set("type", "array");
+                                            n6.getOrNew("items").set("type", p1.typeAsString()); //todo:...要改
+                                        } else {
+                                            n6.set("type", p1.typeAsString());
+                                        }
+
+                                        n6.set("description", p1.description());
+                                    });
+                                    n4r.add(p1.name());
+                                }
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    }
+
     @Override
     public String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream) {
         return new ONode().build(n -> {
@@ -140,54 +182,11 @@ public abstract class AbstractDialect implements ChatDialect {
             }
 
             ChatMessage lastMessage = messages.get(messages.size() - 1);
-            buildReqFunctionsJson(n, config, options, lastMessage);
+            buildReqFunctionsNode(n, config, options, lastMessage);
         }).toJson();
     }
 
-    protected void buildReqFunctionsJson(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
-        buildReqFunctionsJsonDo(n, config.globalFunctions());
-        buildReqFunctionsJsonDo(n, options.functions());
-    }
-
-    protected void buildReqFunctionsJsonDo(ONode n, Collection<ChatFunction> funcs) {
-        if (Utils.isEmpty(funcs)) {
-            return;
-        }
-
-        n.getOrNew("tools").build(n1 -> {
-            for (ChatFunction func : funcs) {
-                n1.addNew().build(n2 -> {
-                    n2.set("type", "function");
-                    n2.getOrNew("function").build(n3 -> {
-                        n3.set("name", func.name());
-                        n3.set("description", func.description());
-                        n3.getOrNew("parameters").build(n4 -> {
-                            n4.set("type", "object");
-                            ONode n4r = n4.getOrNew("required").asArray();
-                            n4.getOrNew("properties").build(n5 -> {
-                                for (ChatFunctionParam p1 : func.params()) {
-                                    n5.getOrNew(p1.name()).build(n6 -> {
-                                        if (p1.type().isArray()) {
-                                            n6.set("type", "array");
-                                            n6.getOrNew("items").set("type", p1.typeAsString()); //todo:...要改
-                                        } else {
-                                            n6.set("type", p1.typeAsString());
-                                        }
-
-                                        n6.set("description", p1.description());
-                                    });
-                                    n4r.add(p1.name());
-                                }
-                            });
-                        });
-                    });
-                });
-            }
-        });
-    }
-
-    @Override
-    public List<ChatFunctionCall> parseToolCalls(ChatConfig config, ONode toolCallsNode) {
+    protected List<ChatFunctionCall> parseToolCalls(ONode toolCallsNode) {
         if (toolCallsNode == null) {
             return null;
         }
@@ -214,5 +213,14 @@ public abstract class AbstractDialect implements ChatDialect {
         }
 
         return toolCalls;
+    }
+
+    protected AssistantChatMessage parseAssistantMessage(ONode oMessage) {
+        String content = oMessage.get("content").getString();
+        String reasoning_content = oMessage.get("reasoning_content").getString();
+        ONode toolCallsNode = oMessage.getOrNull("tool_calls");
+        List<ChatFunctionCall> toolCalls = parseToolCalls(toolCallsNode);
+
+        return new AssistantChatMessage(content, reasoning_content, toolCallsNode, toolCalls);
     }
 }

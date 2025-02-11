@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.snack.ONode;
 import org.noear.solon.ai.AiDialect;
 
 import java.util.List;
@@ -28,9 +27,13 @@ import java.util.List;
  */
 public interface ChatDialect extends AiDialect {
 
+    /**
+     * 构建请求数据
+     * */
     String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream);
 
-    List<ChatFunctionCall> parseToolCalls(ChatConfig config,ONode toolCallsNode);
-
-    boolean resolveResponseJson(ChatConfig config, ChatResponseDefault resp, String json);
+    /**
+     * 分析响应数据
+     * */
+    boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json);
 }

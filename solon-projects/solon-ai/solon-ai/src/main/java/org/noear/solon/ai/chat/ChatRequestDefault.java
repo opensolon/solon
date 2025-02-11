@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -83,7 +82,7 @@ public class ChatRequestDefault implements ChatRequest {
         }
 
         ChatResponseDefault resp = new ChatResponseDefault();
-        config.dialect().resolveResponseJson(config, resp, respJson);
+        config.dialect().parseResponseJson(config, resp, respJson);
 
         if (resp.getException() != null) {
             throw resp.getException();
@@ -154,7 +153,7 @@ public class ChatRequestDefault implements ChatRequest {
                         }
 
                         resp.reset();
-                        if (config.dialect().resolveResponseJson(config, resp, respJson)) {
+                        if (config.dialect().parseResponseJson(config, resp, respJson)) {
                             if (resp.getException() != null) {
                                 subscriber.onError(resp.getException());
                                 return;

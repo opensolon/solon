@@ -41,16 +41,16 @@ public class OpenaiDialect extends AbstractDialect {
     }
 
     @Override
-    protected void buildReqFunctionsJson(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
+    protected void buildReqFunctionsNode(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
         if (lastMessage.getRole() != ChatRole.TOOL) {
             //如果是 tool ，后面不跟 funcs
-            buildReqFunctionsJsonDo(n, config.globalFunctions());
-            buildReqFunctionsJsonDo(n, options.functions());
+            buildReqFunctionsNodeDo(n, config.globalFunctions());
+            buildReqFunctionsNodeDo(n, options.functions());
         }
     }
 
     @Override
-    public boolean resolveResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
@@ -80,10 +80,10 @@ public class OpenaiDialect extends AbstractDialect {
 
                 if (oChoice1.contains("delta")) {
                     //object=chat.completion.chunk
-                    resp.choices.add(new ChatChoice(index, created, finish_reason, ChatMessage.ofAssistant(config, oChoice1.get("delta"))));
+                    resp.choices.add(new ChatChoice(index, created, finish_reason, parseAssistantMessage(oChoice1.get("delta"))));
                 } else {
                     //object=chat.completion
-                    resp.choices.add(new ChatChoice(index, created, finish_reason, ChatMessage.ofAssistant(config, oChoice1.get("message"))));
+                    resp.choices.add(new ChatChoice(index, created, finish_reason, parseAssistantMessage(oChoice1.get("message"))));
                 }
             }
 
