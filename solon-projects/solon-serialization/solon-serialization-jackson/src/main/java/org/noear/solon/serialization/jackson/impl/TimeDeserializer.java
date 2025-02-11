@@ -44,6 +44,10 @@ public class TimeDeserializer<T> extends JsonDeserializer<T> {
         try {
             Date date = DateUtil.parse(val);
 
+            if(date == null) {
+                return null;
+            }
+
             if (type == LocalDateTime.class) {
                 return (T) LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
             } else if (type == LocalDate.class) {
