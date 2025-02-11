@@ -17,6 +17,8 @@ package org.noear.solon.flow;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.Collection;
+
 /**
  * 流引擎
  *
@@ -62,13 +64,17 @@ public interface FlowEngine {
      */
     void load(Chain chain);
 
-
     /**
      * 卸载链
      *
      * @param chainId 链Id
      */
     void unload(String chainId);
+
+    /**
+     * 获取链集合
+     */
+    Collection<Chain> chains();
 
     /**
      * 评估

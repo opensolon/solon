@@ -18,10 +18,7 @@ package org.noear.solon.flow;
 import org.noear.solon.Utils;
 import org.noear.solon.flow.driver.SimpleChainDriver;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -61,6 +58,11 @@ class FlowEngineImpl implements FlowEngine {
     @Override
     public void unload(String chainId) {
         chainMap.remove(chainId);
+    }
+
+    @Override
+    public Collection<Chain> chains() {
+        return chainMap.values();
     }
 
     /**
