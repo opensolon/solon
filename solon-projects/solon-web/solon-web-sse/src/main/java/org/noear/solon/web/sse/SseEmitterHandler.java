@@ -66,7 +66,7 @@ public class SseEmitterHandler {
 
         SYNC_LOCK.lock();
         try {
-            ctx.output(event.build());
+            ctx.output(event.toString());
             ctx.flush();
         } catch (IOException e) {
             stopOnError(e);
