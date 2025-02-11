@@ -13,13 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
-
-import org.noear.solon.ai.AiFunctionParam;
+package org.noear.solon.ai.chat.functioncall;
 
 /**
  * @author noear
  * @since 3.1
  */
-public interface ChatFunctionParam extends AiFunctionParam {
+public interface ChatFunctionParam {
+    /**
+     * 名字
+     */
+    String name();
+
+    /**
+     * 类型
+     */
+    Class<?> type();
+
+    /**
+     * 字符串形态
+     */
+    default String typeAsString() {
+        if (type().isArray()) {
+            String tmp = type().getSimpleName().toLowerCase();
+            return tmp.substring(0, tmp.length() - 2); //int[]
+        } else {
+            return type().getSimpleName().toLowerCase();
+        }
+    }
+
+    /**
+     * 描述
+     */
+    String description();
 }

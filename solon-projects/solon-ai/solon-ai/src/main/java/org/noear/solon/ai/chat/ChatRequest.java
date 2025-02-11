@@ -15,7 +15,11 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiRequest;
+import org.noear.solon.lang.Preview;
+import org.reactivestreams.Publisher;
+
+import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * 聊天请求
@@ -23,7 +27,26 @@ import org.noear.solon.ai.AiRequest;
  * @author noear
  * @since 3.1
  */
-public interface ChatRequest extends AiRequest<ChatOptions, ChatRequest, ChatResponse> {
+@Preview("3.1")
+public interface ChatRequest {
+    /**
+     * 选项
+     */
+    ChatRequest options(ChatOptions options);
 
+    /**
+     * 选项
+     */
+    ChatRequest options(Consumer<ChatOptions> optionsBuilder);
+
+    /**
+     * 调用
+     */
+    ChatResponse call() throws IOException;
+
+    /**
+     * 流响应
+     */
+    Publisher<ChatResponse> stream();
 
 }

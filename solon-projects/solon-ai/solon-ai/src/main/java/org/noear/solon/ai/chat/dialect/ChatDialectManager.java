@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
+package org.noear.solon.ai.chat.dialect;
 
-import org.noear.solon.ai.chat.dialect.OllamaDialect;
-import org.noear.solon.ai.chat.dialect.OpenaiDialect;
+import org.noear.solon.ai.chat.ChatConfig;
 import org.noear.solon.core.util.RankEntity;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class ChatDialectManager {
     private static List<RankEntity<ChatDialect>> dialects = new ArrayList<>();
 
     static {
-        add(OllamaDialect.getInstance());
+        add(OllamaChatDialect.getInstance());
     }
 
     /**
@@ -45,7 +44,7 @@ public class ChatDialectManager {
             }
         }
 
-        return OpenaiDialect.instance();
+        return OpenaiChatDialect.instance();
     }
 
     /**

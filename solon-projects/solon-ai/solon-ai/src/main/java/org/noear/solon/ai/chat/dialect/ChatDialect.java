@@ -13,20 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai;
+package org.noear.solon.ai.chat.dialect;
 
-import org.noear.solon.lang.Preview;
+import org.noear.solon.ai.chat.ChatConfig;
+import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.chat.ChatOptions;
+import org.noear.solon.ai.chat.ChatResponseImpl;
+
+import java.util.List;
 
 /**
- * AI 消息
+ * 聊天方言
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface AiMessage {
+public interface ChatDialect {
     /**
-     * 获取内容
-     * */
-    String getContent();
+     * 匹配检测
+     */
+    boolean matched(ChatConfig config);
+
+    /**
+     * 构建请求数据
+     */
+    String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream);
+
+    /**
+     * 分析响应数据
+     */
+    boolean parseResponseJson(ChatConfig config, ChatResponseImpl resp, String json);
 }

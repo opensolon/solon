@@ -13,28 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai;
+package org.noear.solon.ai.chat.functioncall;
 
-import org.noear.solon.exception.SolonException;
-import org.noear.solon.lang.Preview;
+import java.util.Map;
 
 /**
- * Ai 异常
+ * 聊天函数调用
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public class AiException extends SolonException {
-    public AiException(String message) {
-        super(message);
+public class ChatFunctionCall {
+    private String id;
+    private String name;
+    private Map<String, Object> arguments;
+
+    public ChatFunctionCall(String id, String name, Map<String, Object> arguments) {
+        this.id = id;
+        this.name = name;
+        this.arguments = arguments;
     }
 
-    public AiException(String message, Throwable cause) {
-        super(message, cause);
+    public String id() {
+        return id;
     }
 
-    public AiException(Throwable cause) {
-        super(cause);
+    public String type() {
+        return "function";
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public Map<String, Object> arguments() {
+        return arguments;
     }
 }

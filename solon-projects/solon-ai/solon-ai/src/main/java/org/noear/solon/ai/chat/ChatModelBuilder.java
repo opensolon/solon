@@ -15,6 +15,9 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionDecl;
+
 import java.time.Duration;
 import java.util.function.Consumer;
 
@@ -24,49 +27,46 @@ import java.util.function.Consumer;
  * @author noear
  * @since 3.1
  */
-public class ChatModelBuilderImpl implements ChatModel.Builder {
+public class ChatModelBuilder {
     private ChatConfig config = new ChatConfig();
 
-    public ChatModelBuilderImpl(String apiUrl) {
+    public ChatModelBuilder(String apiUrl) {
         config.apiUrl = apiUrl;
     }
 
-    public ChatModel.Builder apiKey(String apiKey) {
+    public ChatModelBuilder apiKey(String apiKey) {
         config.apiKey = apiKey;
         return this;
     }
 
-    public ChatModel.Builder provider(String provider) {
+    public ChatModelBuilder provider(String provider) {
         config.provider = provider;
         return this;
     }
 
-    public ChatModel.Builder model(String model) {
+    public ChatModelBuilder model(String model) {
         config.model = model;
         return this;
     }
 
-    public ChatModel.Builder headerSet(String key, String value) {
+    public ChatModelBuilder headerSet(String key, String value) {
         config.headers.put(key, value);
         return this;
     }
 
-    @Override
-    public ChatModel.Builder globalFunctionAdd(ChatFunction function) {
+    public ChatModelBuilder globalFunctionAdd(ChatFunction function) {
         config.globalFunctions.put(function.name(), function);
         return this;
     }
 
-    @Override
-    public ChatModel.Builder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
+    public ChatModelBuilder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
         ChatFunctionDecl decl = new ChatFunctionDecl(name);
         functionBuilder.accept(decl);
         globalFunctionAdd(decl);
         return this;
     }
 
-    @Override
-    public ChatModel.Builder timeout(Duration timeout) {
+    public ChatModelBuilder timeout(Duration timeout) {
         if (timeout != null) {
             config.timeout = timeout;
         }
@@ -75,6 +75,6 @@ public class ChatModelBuilderImpl implements ChatModel.Builder {
     }
 
     public ChatModel build() {
-        return new ChatModelDefault(config);
+        return new ChatModel(config);
     }
 }

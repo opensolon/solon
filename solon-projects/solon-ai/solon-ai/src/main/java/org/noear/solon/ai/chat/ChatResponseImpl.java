@@ -15,20 +15,19 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiException;
 import org.noear.solon.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 聊天响应
+ * 聊天响应实现
  *
  * @author noear
  * @since 3.1
  */
-public class ChatResponseDefault implements ChatResponse {
-    public AiException exception;
+public class ChatResponseImpl implements ChatResponse {
+    public ChatException exception;
     public List<ChatChoice> choices = new ArrayList<>();
     public ChatUsage usage;
     public String model;
@@ -44,7 +43,7 @@ public class ChatResponseDefault implements ChatResponse {
     }
 
     @Override
-    public AiException getException() {
+    public ChatException getException() {
         return exception;
     }
 

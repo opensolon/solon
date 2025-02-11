@@ -13,39 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai;
+package org.noear.solon.ai.chat;
 
-import org.noear.solon.lang.Nullable;
+import org.noear.solon.exception.SolonException;
 import org.noear.solon.lang.Preview;
 
-import java.util.List;
-
 /**
- * Ai 响应
+ * Ai 异常
  *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public interface AiResponse<Cho extends AiChoice, Usa extends AiUsage> {
-    /**
-     * 获取异常
-     */
-    AiException getException();
+public class ChatException extends SolonException {
+    public ChatException(String message) {
+        super(message);
+    }
 
-    /**
-     * 获取选择
-     */
-    List<Cho> getChoices();
+    public ChatException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    /**
-     * 获取使用情况（完成时，才会有使用情况）
-     */
-    @Nullable
-    Usa getUsage();
-
-    /**
-     * 是否完成
-     */
-    boolean isFinished();
+    public ChatException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -1,15 +1,9 @@
 package demo.ai;
 
-import features.ai.OllamaTest;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
-import org.noear.solon.flow.Chain;
-import org.noear.solon.flow.ChainContext;
-import org.noear.solon.flow.FlowEngine;
-import org.noear.solon.rx.SimpleSubscriber;
-import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

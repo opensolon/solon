@@ -15,7 +15,9 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiOptions;
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionDecl;
+import org.noear.solon.lang.Preview;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -26,7 +28,8 @@ import java.util.function.Consumer;
  * @author noear
  * @since 3.1
  */
-public class ChatOptions implements AiOptions {
+@Preview("3.1")
+public class ChatOptions {
 
     public static ChatOptions of() {
         return new ChatOptions();

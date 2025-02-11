@@ -16,7 +16,10 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.Utils;
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
 import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.rx.SimpleSubscription;
@@ -32,18 +35,20 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * 聊天请求实现
+ *
  * @author noear
  * @since 3.1
  */
-public class ChatRequestDefault implements ChatRequest {
-    private static final Logger log = LoggerFactory.getLogger(ChatRequestDefault.class);
+public class ChatRequestImpl implements ChatRequest {
+    private static final Logger log = LoggerFactory.getLogger(ChatRequestImpl.class);
     private static final ChatOptions OPTIONS_DEFAULT = new ChatOptions();
 
     private final ChatConfig config;
     private final List<ChatMessage> messages;
     private ChatOptions options;
 
-    public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
+    public ChatRequestImpl(ChatConfig config, List<ChatMessage> messages) {
         this.config = config;
         this.messages = messages;
         this.options = OPTIONS_DEFAULT;
@@ -81,7 +86,7 @@ public class ChatRequestDefault implements ChatRequest {
             log.trace("ai-response: {}", respJson);
         }
 
-        ChatResponseDefault resp = new ChatResponseDefault();
+        ChatResponseImpl resp = new ChatResponseImpl();
         config.dialect().parseResponseJson(config, resp, respJson);
 
         if (resp.getException() != null) {
@@ -128,7 +133,7 @@ public class ChatRequestDefault implements ChatRequest {
     }
 
     private void parseResp(HttpResponse httpResp, Subscriber<? super ChatResponse> subscriber) throws IOException {
-        ChatResponseDefault resp = new ChatResponseDefault();
+        ChatResponseImpl resp = new ChatResponseImpl();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResp.body()))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
 
 /**

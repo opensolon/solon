@@ -19,7 +19,7 @@ import java.io.IOException;
 public class App {
     @Bean
     public ChatModel build(@Inject("${solon.ai.OllamaTest}") ChatConfig config) {
-        return ChatModel.of(config);
+        return new ChatModel(config);
     }
 
     @Inject

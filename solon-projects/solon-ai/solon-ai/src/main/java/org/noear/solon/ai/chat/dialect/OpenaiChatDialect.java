@@ -16,9 +16,10 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
-import org.noear.solon.ai.AiException;
+import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
-import org.noear.solon.ai.chat.ChatResponseDefault;
+import org.noear.solon.ai.chat.ChatResponseImpl;
+import org.noear.solon.ai.chat.message.ChatMessage;
 
 import java.util.Date;
 
@@ -28,10 +29,10 @@ import java.util.Date;
  * @author noear
  * @since 3.1
  */
-public class OpenaiDialect extends AbstractDialect {
-    private static final OpenaiDialect instance = new OpenaiDialect();
+public class OpenaiChatDialect extends AbstractDialect {
+    private static final OpenaiChatDialect instance = new OpenaiChatDialect();
 
-    public static OpenaiDialect instance() {
+    public static OpenaiChatDialect instance() {
         return instance;
     }
 
@@ -50,7 +51,7 @@ public class OpenaiDialect extends AbstractDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponseImpl resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
@@ -68,7 +69,7 @@ public class OpenaiDialect extends AbstractDialect {
         }
 
         if (oResp.contains("error")) {
-            resp.exception = new AiException(oResp.get("error").get("message").getString());
+            resp.exception = new ChatException(oResp.get("error").get("message").getString());
         } else {
             resp.model = oResp.get("model").getString();
 
@@ -89,12 +90,11 @@ public class OpenaiDialect extends AbstractDialect {
 
             ONode oUsage = oResp.getOrNull("usage");
             if (oUsage != null) {
-                ChatUsageImpl usage = new ChatUsageImpl();
-                usage.promptTokens = oUsage.get("prompt_tokens").getLong();
-                usage.completionTokens = oUsage.get("completion_tokens").getLong();
-                usage.totalTokens = oUsage.get("total_tokens").getLong();
+                long promptTokens = oUsage.get("prompt_tokens").getLong();
+                long completionTokens = oUsage.get("completion_tokens").getLong();
+                long totalTokens = oUsage.get("total_tokens").getLong();
 
-                resp.usage = usage;
+                resp.usage = new ChatUsage(promptTokens, completionTokens, totalTokens);
             }
         }
 

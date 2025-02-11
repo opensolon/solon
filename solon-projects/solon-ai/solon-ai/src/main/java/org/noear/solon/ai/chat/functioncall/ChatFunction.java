@@ -13,31 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai;
+package org.noear.solon.ai.chat.functioncall;
 
-import org.noear.solon.lang.Preview;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
- * AI 大语言模型
+ * 聊天函数
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface AiLLM<Msg extends AiMessage, Req extends AiRequest> {
+public interface ChatFunction {
     /**
-     * 提示语
+     * 名字
      */
-    default Req prompt(Msg... messages) {
-        return prompt(new ArrayList<>(Arrays.asList(messages)));
-    }
+    String name();
 
     /**
-     * 提示语
+     * 描述
      */
-    Req prompt(List<Msg> messages);
+    String description();
+
+    /**
+     * 参数
+     */
+    Iterable<ChatFunctionParam> params();
+
+    /**
+     * 处理
+     */
+    String handle(Map<String, Object> args);
 }

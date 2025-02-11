@@ -15,10 +15,13 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiLLM;
+import org.noear.solon.ai.chat.dialect.ChatDialectManager;
+import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.lang.Preview;
 
-import java.time.Duration;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 聊天模型
@@ -26,70 +29,44 @@ import java.util.function.Consumer;
  * @author noear
  * @since 3.1
  */
-public interface ChatModel extends AiLLM<ChatMessage, ChatRequest> {
-    /**
-     * 提示语
-     */
-    default ChatRequest prompt(String content) {
-        return prompt(ChatMessage.ofUser(content));
+@Preview("3.1")
+public class ChatModel {
+    private final ChatConfig config;
+
+    public ChatModel(ChatConfig config) {
+        config.dialect = ChatDialectManager.get(config);
+
+        this.config = config;
     }
 
     /**
-     * 构建
+     * 提示语
      */
-    static ChatModel of(ChatConfig config){
-        return new ChatModelDefault(config);
+    public ChatRequest prompt(List<ChatMessage> messages) {
+        return new ChatRequestImpl(config, messages);
     }
+
+    /**
+     * 提示语
+     */
+    public ChatRequest prompt(ChatMessage... messages) {
+        return prompt(new ArrayList<>(Arrays.asList(messages)));
+    }
+
+    /**
+     * 提示语
+     */
+    public ChatRequest prompt(String content) {
+        return prompt(ChatMessage.ofUser(content));
+    }
+
+
+    /// /////////////////////////////////
 
     /**
      * 开始构建
      */
-    static Builder of(String apiUrl) {
-        return new ChatModelBuilderImpl(apiUrl);
-    }
-
-    /**
-     * 聊天模型构建器
-     */
-    interface Builder {
-        /**
-         * 接口密钥
-         */
-        Builder apiKey(String apiKey);
-
-        /**
-         * 提供者
-         */
-        Builder provider(String provider);
-
-        /**
-         * 模型
-         */
-        Builder model(String model);
-
-        /**
-         * 头信息添加
-         */
-        Builder headerSet(String key, String value);
-
-        /**
-         * 全局函数添加（方便组件模式）
-         */
-        Builder globalFunctionAdd(ChatFunction function);
-
-        /**
-         * 全局函数添加
-         */
-        Builder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder);
-
-        /**
-         * 超时
-         */
-        Builder timeout(Duration timeout);
-
-        /**
-         * 构建
-         */
-        ChatModel build();
+    public static ChatModelBuilder of(String apiUrl) {
+        return new ChatModelBuilder(apiUrl);
     }
 }

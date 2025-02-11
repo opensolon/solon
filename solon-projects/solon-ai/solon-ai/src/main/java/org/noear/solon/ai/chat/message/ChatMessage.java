@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat;
+package org.noear.solon.ai.chat.message;
 
-import org.noear.solon.ai.AiMessage;
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
-import org.noear.solon.ai.chat.message.SystemChatMessage;
-import org.noear.solon.ai.chat.message.ToolChatMessage;
-import org.noear.solon.ai.chat.message.UserChatMessage;
+import org.noear.solon.ai.chat.ChatRole;
 
 import java.util.List;
 
@@ -29,12 +25,16 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public interface ChatMessage extends AiMessage {
+public interface ChatMessage {
     /**
      * 获取角色
      */
     ChatRole getRole();
 
+    /**
+     * 获取内容
+     * */
+    String getContent();
 
     static AssistantChatMessage ofAssistant(String content) {
         return new AssistantChatMessage(content, null, null, null);

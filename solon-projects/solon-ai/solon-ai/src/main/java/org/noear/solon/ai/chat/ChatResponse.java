@@ -15,8 +15,10 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiResponse;
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.lang.Nullable;
+import org.noear.solon.lang.Preview;
+
+import java.util.List;
 
 /**
  * 聊天响应
@@ -24,6 +26,26 @@ import org.noear.solon.ai.chat.message.AssistantChatMessage;
  * @author noear
  * @since 3.1
  */
-public interface ChatResponse extends AiResponse<ChatChoice, ChatUsage> {
+@Preview("3.1")
+public interface ChatResponse {
+    /**
+     * 获取异常
+     */
+    ChatException getException();
 
+    /**
+     * 获取选择
+     */
+    List<ChatChoice> getChoices();
+
+    /**
+     * 获取使用情况（完成时，才会有使用情况）
+     */
+    @Nullable
+    ChatUsage getUsage();
+
+    /**
+     * 是否完成
+     */
+    boolean isFinished();
 }

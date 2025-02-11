@@ -18,10 +18,10 @@ package org.noear.solon.ai.chat.dialect;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
-import org.noear.solon.ai.chat.message.AssistantChatMessage;
-import org.noear.solon.ai.chat.message.SystemChatMessage;
-import org.noear.solon.ai.chat.message.ToolChatMessage;
-import org.noear.solon.ai.chat.message.UserChatMessage;
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionParam;
+import org.noear.solon.ai.chat.message.*;
 
 import java.util.*;
 

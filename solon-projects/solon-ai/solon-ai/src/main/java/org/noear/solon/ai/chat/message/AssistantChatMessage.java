@@ -16,8 +16,7 @@
 package org.noear.solon.ai.chat.message;
 
 import org.noear.snack.ONode;
-import org.noear.solon.ai.chat.ChatFunctionCall;
-import org.noear.solon.ai.chat.ChatMessage;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatRole;
 
 import java.util.*;

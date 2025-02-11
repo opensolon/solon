@@ -2,6 +2,7 @@ package demo.ai;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.*;
+import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.FlowEngine;

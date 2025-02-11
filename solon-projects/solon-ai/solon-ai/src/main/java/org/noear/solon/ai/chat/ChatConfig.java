@@ -15,8 +15,8 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiConfig;
-import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.ai.chat.dialect.ChatDialect;
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
 
 import java.time.Duration;
 import java.util.*;
@@ -27,7 +27,7 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public class ChatConfig implements AiConfig {
+public class ChatConfig {
     protected String apiUrl;
     protected String apiKey;
     protected String provider;
@@ -38,18 +38,14 @@ public class ChatConfig implements AiConfig {
 
     protected transient ChatDialect dialect;
 
-
-    @Override
     public String apiUrl() {
         return apiUrl;
     }
 
-    @Override
     public String apiKey() {
         return apiKey;
     }
 
-    @Override
     public String provider() {
         return provider;
     }
@@ -58,12 +54,10 @@ public class ChatConfig implements AiConfig {
         return dialect;
     }
 
-    @Override
     public String model() {
         return model;
     }
 
-    @Override
     public Map<String, String> headers() {
         return headers;
     }

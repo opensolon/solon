@@ -1,8 +1,8 @@
 package demo.ai;
 
-import org.noear.solon.ai.chat.ChatFunction;
-import org.noear.solon.ai.chat.ChatFunctionParam;
-import org.noear.solon.ai.chat.ChatFunctionParamDecl;
+import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionParam;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionParamDecl;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 

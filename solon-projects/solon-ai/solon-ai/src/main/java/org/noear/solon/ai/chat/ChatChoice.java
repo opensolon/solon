@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.AiChoice;
 import org.noear.solon.ai.chat.message.AssistantChatMessage;
 
 import java.util.Date;
@@ -26,7 +25,7 @@ import java.util.Date;
  * @author noear
  * @since 3.1
  */
-public class ChatChoice implements AiChoice<AssistantChatMessage> {
+public class ChatChoice {
     private final int index;
     private final Date created;
     private final String finishReason;
@@ -39,7 +38,6 @@ public class ChatChoice implements AiChoice<AssistantChatMessage> {
         this.message = message;
     }
 
-    @Override
     public int index() {
         return index;
     }
@@ -52,7 +50,6 @@ public class ChatChoice implements AiChoice<AssistantChatMessage> {
         return finishReason;
     }
 
-    @Override
     public AssistantChatMessage getMessage() {
         return message;
     }
