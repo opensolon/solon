@@ -29,10 +29,10 @@ import java.util.Date;
  * @author noear
  * @since 3.1
  */
-public class OllamaChatDialect extends AbstractDialect {
-    private static OllamaChatDialect instance = new OllamaChatDialect();
+public class OllamaDialect extends AbstractDialect {
+    private static OllamaDialect instance = new OllamaDialect();
 
-    public static OllamaChatDialect getInstance() {
+    public static OllamaDialect getInstance() {
         return instance;
     }
 
