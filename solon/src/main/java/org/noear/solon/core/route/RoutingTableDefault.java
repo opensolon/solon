@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @since 1.0
  * */
 public class RoutingTableDefault<T> implements RoutingTable<T> {
-    private List<RankEntity<Routing<T>>> table = new ArrayList<>();
+    private LinkedList<RankEntity<Routing<T>>> table = new LinkedList<>();
 
 
     /**
@@ -52,13 +52,12 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
 
         RankEntity<Routing<T>> entity = new RankEntity<>(routing, level, routing.index(), false);
 
-
         if (level != 0 || routing.index() != 0) {
             //有 * 号的 或有 index 的；排序下
-            table.add(entity);
+            table.addLast(entity);
             Collections.sort(table);
         } else {
-            table.add(0, entity);
+            table.addFirst(entity);
         }
     }
 

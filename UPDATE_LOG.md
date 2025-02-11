@@ -40,7 +40,6 @@
 * 调整 solon-web-sse SseEvent 实现 Renderable 自渲染接口，可以被直接返回
 * 调整 solon-web-rx 调整 Flux collectList 策略（默认为流输出；明确指定 json 时才做聚合输出）
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
-* 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.126
 * liquor 升为 1.3.8
@@ -49,9 +48,12 @@
 * jetty 升为 9.4.57.v20241219
 
 ### v3.0.8
+* 添加 solon-flow FlowEngine:chains 方法
 * 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
 * 修复 solon 集合bean注入时，可能产生两次执行的问题
-* 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置失效的问题
+* 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置无效的问题
+* 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
+* 修复 solon-docs-openapi2 类型如果为自定义类型无法正确识别到 OpenApi Json.
 * snack3 升为 3.2.126
 * liquor 1.3.8
 
