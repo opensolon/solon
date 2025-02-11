@@ -18,6 +18,10 @@ package org.noear.solon.ai.chat.dialect;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.*;
+import org.noear.solon.ai.chat.message.AssistantChatMessage;
+import org.noear.solon.ai.chat.message.SystemChatMessage;
+import org.noear.solon.ai.chat.message.ToolChatMessage;
+import org.noear.solon.ai.chat.message.UserChatMessage;
 
 import java.util.*;
 
@@ -26,6 +30,71 @@ import java.util.*;
  * @since 3.1
  */
 public abstract class AbstractDialect implements ChatDialect {
+
+    protected void buildChatMessageNodeDo(ONode oNode, AssistantChatMessage msg) {
+        oNode.set("role", msg.getRole().name().toLowerCase());
+        oNode.set("content", msg.getContent());
+
+        if (Utils.isNotEmpty(msg.getReasoningContent())) {
+            oNode.set("reasoning_content", msg.getReasoningContent());
+        }
+
+        if (msg.getToolCallsNode() != null) {
+            oNode.set("tool_calls", msg.getToolCallsNode());
+        }
+    }
+
+    protected void buildChatMessageNodeDo(ONode oNode, SystemChatMessage msg) {
+        oNode.set("role", msg.getRole().name().toLowerCase());
+        oNode.set("content", msg.getContent());
+    }
+
+    protected void buildChatMessageNodeDo(ONode oNode, ToolChatMessage msg) {
+        oNode.set("role", msg.getRole().name().toLowerCase());
+        oNode.set("content", msg.getContent());
+
+        if (Utils.isNotEmpty(msg.getName())) {
+            oNode.set("name", msg.getName());
+        }
+
+        if (Utils.isNotEmpty(msg.getId())) {
+            oNode.set("tool_call_id", msg.getId());
+        }
+    }
+
+    protected void buildChatMessageNodeDo(ONode oNode, UserChatMessage msg) {
+        oNode.set("role", msg.getRole().name().toLowerCase());
+        if (Utils.isEmpty(msg.getImageUrls())) {
+            oNode.set("content", msg.getContent());
+        } else {
+            oNode.getOrNew("content").build(n1 -> {
+                for (String imgUrl : msg.getImageUrls()) {
+                    ONode n2 = n1.addNew();
+                    n2.set("type", "image_url");
+                    n2.getOrNew("image_url").set("url", imgUrl);
+                }
+
+                n1.addNew().set("type", "text").set("text", msg.getContent());
+            });
+        }
+    }
+
+    public ONode buildChatMessageNode(ChatMessage chatMessage) {
+        ONode oNode = new ONode();
+        if (chatMessage instanceof AssistantChatMessage) {
+            buildChatMessageNodeDo(oNode, (AssistantChatMessage) chatMessage);
+        } else if (chatMessage instanceof SystemChatMessage) {
+            buildChatMessageNodeDo(oNode, (SystemChatMessage) chatMessage);
+        } else if (chatMessage instanceof ToolChatMessage) {
+            buildChatMessageNodeDo(oNode, (ToolChatMessage) chatMessage);
+        } else if (chatMessage instanceof UserChatMessage) {
+            buildChatMessageNodeDo(oNode, (UserChatMessage) chatMessage);
+        } else {
+            throw new IllegalArgumentException("Unsupported chat message type: " + chatMessage.getClass());
+        }
+
+        return oNode;
+    }
 
     @Override
     public String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream) {
@@ -38,7 +107,7 @@ public abstract class AbstractDialect implements ChatDialect {
 
             n.getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    n1.add(m1.toRequestNode());
+                    n1.add(buildChatMessageNode(m1));
                 }
             });
 

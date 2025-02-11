@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.snack.ONode;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
 
@@ -40,14 +39,6 @@ public class SystemChatMessage implements ChatMessage {
     @Override
     public String getContent() {
         return content;
-    }
-
-    @Override
-    public ONode toRequestNode() {
-        ONode oNode = new ONode();
-        oNode.set("role", getRole().name().toLowerCase());
-        oNode.set("content", content);
-        return oNode;
     }
 
     @Override

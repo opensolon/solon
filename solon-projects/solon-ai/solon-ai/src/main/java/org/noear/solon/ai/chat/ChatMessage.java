@@ -36,11 +36,6 @@ public interface ChatMessage extends AiMessage {
      */
     ChatRole getRole();
 
-    /**
-     * 转为请求字典
-     */
-    ONode toRequestNode();
-
     static AssistantChatMessage ofAssistant(ChatConfig config, ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();

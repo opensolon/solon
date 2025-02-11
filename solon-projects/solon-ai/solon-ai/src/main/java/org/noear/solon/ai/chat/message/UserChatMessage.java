@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
@@ -47,24 +46,8 @@ public class UserChatMessage implements ChatMessage {
         return content;
     }
 
-    @Override
-    public ONode toRequestNode() {
-        ONode oNode = new ONode();
-        oNode.set("role", getRole().name().toLowerCase());
-        if (Utils.isEmpty(imageUrls)) {
-            oNode.set("content", content);
-        } else {
-            oNode.getOrNew("content").build(n1 -> {
-                for (String imgUrl : imageUrls) {
-                    ONode n2 = n1.addNew();
-                    n2.set("type", "image_url");
-                    n2.getOrNew("image_url").set("url", imgUrl);
-                }
-
-                n1.addNew().set("type", "text").set("text", content);
-            });
-        }
-        return oNode;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
     @Override

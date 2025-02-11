@@ -15,8 +15,6 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.snack.ONode;
-import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatMessage;
 import org.noear.solon.ai.chat.ChatRole;
 
@@ -55,23 +53,6 @@ public class ToolChatMessage implements ChatMessage {
         return id;
     }
 
-    @Override
-    public ONode toRequestNode() {
-        ONode oNode = new ONode();
-
-        oNode.set("role", getRole().name().toLowerCase());
-        oNode.set("content", content);
-
-        if (Utils.isNotEmpty(name)) {
-            oNode.set("name", name);
-        }
-
-        if (Utils.isNotEmpty(id)) {
-            oNode.set("tool_call_id", id);
-        }
-
-        return oNode;
-    }
 
     @Override
     public String toString() {
