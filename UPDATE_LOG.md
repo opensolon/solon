@@ -35,7 +35,7 @@
 * 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
 * 修复 solon-docs-openapi2 类型如果为自定义类型无法正确识别到 OpenApi Json.
 * snack3 升为 3.2.126
-* liquor 1.3.8
+* liquor 1.3.10
 
 ### v3.0.7
 * 添加 solon BindProps 绑定属性注解，用于简化集合属性绑定及配置元信息APT生成
