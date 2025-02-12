@@ -1,5 +1,7 @@
 package org.noear.solon.ai.rag;
 
+import org.noear.solon.ai.rag.loader.DocumentLoader;
+
 import java.util.List;
 
 /**
@@ -12,12 +14,12 @@ public class InMemoryRepository implements Repository {
     }
 
     @Override
-    public void addDocuments(List<Document> documents) {
+    public void load(DocumentLoader loader) {
 
     }
 
     @Override
-    public Object retrieve(String question) {
+    public State retrieve(String question) {
         return null;
     }
 }
