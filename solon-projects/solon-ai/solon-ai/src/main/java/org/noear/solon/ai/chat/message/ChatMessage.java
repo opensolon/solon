@@ -15,8 +15,16 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +33,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public interface ChatMessage {
+public interface ChatMessage extends Serializable {
     /**
      * 获取角色
      */
@@ -69,5 +77,64 @@ public interface ChatMessage {
      */
     static ChatMessage ofTool(String content, String name, String toolCallId) {
         return new ToolMessage(content, name, toolCallId);
+    }
+
+    /// //////////////////
+
+    /**
+     * 批量序列化为 ndjson
+     */
+    static String toNdjson(List<ChatMessage> messages) {
+        StringBuilder buf = new StringBuilder();
+        for (ChatMessage msg : messages) {
+            buf.append(toJson(msg)).append("\n");
+        }
+
+        return buf.toString();
+    }
+
+    /**
+     * 批量从 ndjson 反序列化为消息
+     */
+    static List<ChatMessage> fromNdjson(String ndjson) throws IOException {
+        List<ChatMessage> messages = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new StringReader(ndjson));
+
+        while (true) {
+            String json = reader.readLine();
+
+            if (Utils.isEmpty(json)) {
+                break;
+            } else {
+                messages.add(fromJson(json));
+            }
+        }
+
+        return messages;
+    }
+
+    /**
+     * 序列化为 json
+     */
+    static String toJson(ChatMessage message) {
+        return ONode.stringify(message, Feature.EnumUsingName);
+    }
+
+    /**
+     * 从 json 反序列化为消息
+     */
+    static ChatMessage fromJson(String json) {
+        ONode oNode = ONode.loadStr(json);
+        ChatRole role = ChatRole.valueOf(oNode.get("role").getString());
+
+        if (role == ChatRole.TOOL) {
+            return oNode.toObject(ToolMessage.class);
+        } else if (role == ChatRole.SYSTEM) {
+            return oNode.toObject(SystemMessage.class);
+        } else if (role == ChatRole.USER) {
+            return oNode.toObject(UserMessage.class);
+        } else {
+            return oNode.toObject(AssistantMessage.class);
+        }
     }
 }
