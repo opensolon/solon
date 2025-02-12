@@ -31,12 +31,12 @@ public class AssistantMessage implements ChatMessage {
     private String content;
     private String reasoningContent;
     private List<ChatFunctionCall> toolCalls;
-    private ONode toolCallsNode;
+    private ONode toolCallsRaw;
 
-    public AssistantMessage(String content, String reasoningContent, ONode toolCallsNode, List<ChatFunctionCall> toolCalls) {
+    public AssistantMessage(String content, String reasoningContent, ONode toolCallsRaw, List<ChatFunctionCall> toolCalls) {
         this.content = content;
         this.reasoningContent = reasoningContent;
-        this.toolCallsNode = toolCallsNode;
+        this.toolCallsRaw = toolCallsRaw;
         this.toolCalls = toolCalls;
     }
 
@@ -74,7 +74,7 @@ public class AssistantMessage implements ChatMessage {
      * 获取工具高用原始数据（需要回传）
      */
     public ONode getToolCallsRaw() {
-        return toolCallsNode;
+        return toolCallsRaw;
     }
 
     /**
@@ -95,8 +95,8 @@ public class AssistantMessage implements ChatMessage {
             buf.append(", reasoning_content='").append(reasoningContent).append('\'');
         }
 
-        if (toolCallsNode != null) {
-            buf.append(", tool_calls=").append(toolCallsNode);
+        if (toolCallsRaw != null) {
+            buf.append(", tool_calls=").append(toolCallsRaw);
         }
 
         buf.append("}");
