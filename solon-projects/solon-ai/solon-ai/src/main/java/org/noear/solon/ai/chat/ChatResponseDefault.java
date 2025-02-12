@@ -63,7 +63,7 @@ public class ChatResponseDefault implements ChatResponse {
      * 是否有消息
      */
     @Override
-    public boolean hasMessage() {
+    public boolean hasChoices() {
         return Utils.isNotEmpty(choices);
     }
 
@@ -72,7 +72,7 @@ public class ChatResponseDefault implements ChatResponse {
      */
     @Override
     public AssistantMessage getMessage() {
-        if (hasMessage()) {
+        if (hasChoices()) {
             return choices.get(0).getMessage();
         } else {
             return null;

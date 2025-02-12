@@ -102,7 +102,7 @@ public class ChatRequestDefault implements ChatRequest {
             throw resp.getReal().getError();
         }
 
-        if (resp.getReal().hasMessage()) {
+        if (resp.getReal().hasChoices()) {
             AssistantMessage choiceMessage = resp.getReal().getMessage();
             if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                 messages.add(choiceMessage);
@@ -176,7 +176,7 @@ public class ChatRequestDefault implements ChatRequest {
                                 return;
                             }
 
-                            if (resp.getReal().hasMessage()) {
+                            if (resp.getReal().hasChoices()) {
                                 AssistantMessage choiceMessage = resp.getReal().getMessage();
                                 if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                                     messages.add(choiceMessage);

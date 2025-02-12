@@ -41,14 +41,14 @@ public interface ChatResponse {
     ChatException getError();
 
     /**
+     * 是否有选择
+     */
+    boolean hasChoices();
+
+    /**
      * 获取所有选择
      */
     List<ChatChoice> getChoices();
-
-    /**
-     * 是否有消息
-     */
-    boolean hasMessage();
 
     /**
      * 获取消息
