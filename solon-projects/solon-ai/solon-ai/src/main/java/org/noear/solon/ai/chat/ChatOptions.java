@@ -30,103 +30,132 @@ import java.util.function.Consumer;
  */
 @Preview("3.1")
 public class ChatOptions {
+    public static final String MAX_TOKENS = "max_tokens";
+    public static final String MAX_COMPLETION_TOKENS = "max_completion_tokens";
+    public static final String TEMPERATURE = "temperature";
+    public static final String TOP_P = "top_p";
+    public static final String TOP_K = "top_k";
+    public static final String FREQUENCY_PENALTY = "frequency_penalty";
+    public static final String PRESENCE_PENALTY = "presence_penalty";
+
 
     public static ChatOptions of() {
         return new ChatOptions();
     }
 
-    private Long max_tokens;
-    private Long max_completion_tokens;
-    private Float temperature;
-    private Float top_p;
-    private Float top_k;
-    private Float frequency_penalty;
-    private Boolean store;
 
     private final Map<String, ChatFunction> functions = new LinkedHashMap<>();
-
-    public Long max_tokens() {
-        return max_tokens;
-    }
-
-    public ChatOptions max_tokens(long max_tokens) {
-        this.max_tokens = max_tokens;
-        return this;
-    }
-
-    public Long max_completion_tokens() {
-        return max_completion_tokens;
-    }
-
-    public ChatOptions max_completion_tokens(long max_completion_tokens) {
-        this.max_completion_tokens = max_completion_tokens;
-        return this;
-    }
-
-    public Float temperature() {
-        return temperature;
-    }
-
-    public ChatOptions temperature(float temperature) {
-        this.temperature = temperature;
-        return this;
-    }
-
-    public Float top_p() {
-        return top_p;
-    }
-
-    public ChatOptions top_p(float top_p) {
-        this.top_p = top_p;
-        return this;
-    }
-
-    public Float top_k() {
-        return top_k;
-    }
-
-    public ChatOptions top_k(float top_k) {
-        this.top_k = top_k;
-        return this;
-    }
-
-    public Float frequency_penalty() {
-        return frequency_penalty;
-    }
-
-    public ChatOptions frequency_penalty(float frequency_penalty) {
-        this.frequency_penalty = frequency_penalty;
-        return this;
-    }
-
-    public Boolean store() {
-        return store;
-    }
-
-    public ChatOptions store(boolean store) {
-        this.store = store;
-        return this;
-    }
+    private Map<String, Object> options = new LinkedHashMap<>();
 
     /// ////////////
 
+    /**
+     * 所有函数
+     */
     public Collection<ChatFunction> functions() {
         return functions.values();
     }
 
+    /**
+     * 函数获取
+     *
+     * @param name 函数名
+     */
     public ChatFunction function(String name) {
         return functions.get(name);
     }
 
+    /**
+     * 函数添加
+     */
     public ChatOptions functionAdd(ChatFunction function) {
         functions.put(function.name(), function);
         return this;
     }
 
+    /**
+     * 函数添加（构建形式）
+     */
     public ChatOptions functionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
         ChatFunctionDecl decl = new ChatFunctionDecl(name);
         functionBuilder.accept(decl);
         functionAdd(decl);
         return this;
+    }
+
+    /// ///////////////////////////////////
+
+
+    /**
+     * 所有选项
+     */
+    public Map<String, Object> options() {
+        return options;
+    }
+
+    /**
+     * 选项获取
+     */
+    public Object option(String key) {
+        return options.get(key);
+    }
+
+    /**
+     * 选项添加
+     */
+    public ChatOptions optionAdd(String key, Object val) {
+        options.put(key, val);
+        return this;
+    }
+
+    /// ///////////////////////////////////
+
+    /**
+     * 常用选项：最大提示语令牌数限制
+     */
+    public ChatOptions max_tokens(long max_tokens) {
+        return optionAdd(MAX_TOKENS, max_tokens);
+    }
+
+    /**
+     * 常用选项：最大完成令牌数限制
+     */
+    public ChatOptions max_completion_tokens(long max_completion_tokens) {
+        return optionAdd(MAX_COMPLETION_TOKENS, max_completion_tokens);
+    }
+
+    /**
+     * 常用选项：temperature 采样
+     */
+    public ChatOptions temperature(float temperature) {
+        return optionAdd(TEMPERATURE, temperature);
+    }
+
+    /**
+     * 常用选项：top_p 采样
+     */
+    public ChatOptions top_p(float top_p) {
+        return optionAdd(TOP_P, top_p);
+    }
+
+    /**
+     * 常用选项：top_k 采样
+     */
+    public ChatOptions top_k(float top_k) {
+        return optionAdd(TOP_K, top_k);
+    }
+
+    /**
+     * 常用选项：频率惩罚
+     */
+    public ChatOptions frequency_penalty(float frequency_penalty) {
+        return optionAdd(FREQUENCY_PENALTY, frequency_penalty);
+    }
+
+    /**
+     * 常用选项：存在惩罚
+     */
+    public ChatOptions presence_penalty(float frequency_penalty) {
+        return optionAdd(PRESENCE_PENALTY, frequency_penalty);
     }
 }

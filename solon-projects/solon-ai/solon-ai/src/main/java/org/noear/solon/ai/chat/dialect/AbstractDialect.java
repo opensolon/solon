@@ -163,32 +163,8 @@ public abstract class AbstractDialect implements ChatDialect {
                 }
             });
 
-            if (options.max_tokens() != null) {
-                n.set("max_tokens", options.max_tokens());
-            }
-
-            if (options.max_completion_tokens() != null) {
-                n.set("max_completion_tokens", options.max_completion_tokens());
-            }
-
-            if (options.temperature() != null) {
-                n.set("temperature", options.temperature());
-            }
-
-            if (options.top_p() != null) {
-                n.set("top_p", options.top_p());
-            }
-
-            if (options.top_k() != null) {
-                n.set("top_k", options.top_k());
-            }
-
-            if (options.frequency_penalty() != null) {
-                n.set("frequency_penalty", options.frequency_penalty());
-            }
-
-            if (options.store() != null) {
-                n.set("store", options.store());
+            for (Map.Entry<String, Object> kv : options.options().entrySet()) {
+                n.set(kv.getKey(), kv.getValue());
             }
 
             ChatMessage lastMessage = messages.get(messages.size() - 1);
