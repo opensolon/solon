@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.chat.message.AssistantMessage;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -25,11 +26,15 @@ import java.util.Date;
  * @author noear
  * @since 3.1
  */
-public class ChatChoice {
-    private final int index;
-    private final Date created;
-    private final String finishReason;
-    private final AssistantMessage message;
+public class ChatChoice implements Serializable {
+    private int index;
+    private Date created;
+    private String finishReason;
+    private AssistantMessage message;
+
+    public ChatChoice() {
+        //用于序列化
+    }
 
     public ChatChoice(int index, Date created, String finishReason, AssistantMessage message) {
         this.index = index;
