@@ -71,7 +71,17 @@ public abstract class AbstractDialect implements ChatDialect {
                 for (String imgUrl : msg.getImageUrls()) {
                     ONode n2 = n1.addNew();
                     n2.set("type", "image_url");
-                    n2.getOrNew("image_url").set("url", imgUrl);
+
+                    if (imgUrl.contains("://")) {
+                        //url
+                        n2.getOrNew("image_url").set("url", imgUrl);
+                    } else if (imgUrl.contains(",")) {
+                        //image base64
+                        n2.getOrNew("image_url").set("url", imgUrl);
+                    } else {
+                        //base64
+                        n2.getOrNew("image_url").set("url", "data:image/jpeg;base64," + imgUrl);
+                    }
                 }
 
                 n1.addNew().set("type", "text").set("text", msg.getContent());
