@@ -55,18 +55,18 @@ public abstract class AbstractDialect implements ChatDialect {
             oNode.set("name", msg.getName());
         }
 
-        if (Utils.isNotEmpty(msg.getId())) {
-            oNode.set("tool_call_id", msg.getId());
+        if (Utils.isNotEmpty(msg.getToolCallId())) {
+            oNode.set("tool_call_id", msg.getToolCallId());
         }
     }
 
     protected void buildChatMessageNodeDo(ONode oNode, UserMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
-        if (Utils.isEmpty(msg.getImageUrls())) {
+        if (Utils.isEmpty(msg.getImages())) {
             oNode.set("content", msg.getContent());
         } else {
             oNode.getOrNew("content").build(n1 -> {
-                for (String imgUrl : msg.getImageUrls()) {
+                for (String imgUrl : msg.getImages()) {
                     ONode n2 = n1.addNew();
                     n2.set("type", "image_url");
 

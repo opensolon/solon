@@ -26,12 +26,12 @@ import org.noear.solon.ai.chat.ChatRole;
 public class ToolMessage implements ChatMessage {
     private String content;
     private String name;
-    private String id;
+    private String toolCallId;
 
-    public ToolMessage(String content, String name, String id) {
+    public ToolMessage(String content, String name, String toolCallId) {
         this.content = content;
         this.name = name;
-        this.id = id;
+        this.toolCallId = toolCallId;
     }
 
     @Override
@@ -44,12 +44,18 @@ public class ToolMessage implements ChatMessage {
         return content;
     }
 
+    /**
+     * 函数名
+     */
     public String getName() {
         return name;
     }
 
-    public String getId() {
-        return id;
+    /**
+     * 工具调用标识
+     */
+    public String getToolCallId() {
+        return toolCallId;
     }
 
 
@@ -68,8 +74,8 @@ public class ToolMessage implements ChatMessage {
             buf.append(", name='").append(name).append('\'');
         }
 
-        if (id != null) {
-            buf.append(", tool_call_id=").append(id);
+        if (toolCallId != null) {
+            buf.append(", tool_call_id=").append(toolCallId);
         }
 
         buf.append("}");

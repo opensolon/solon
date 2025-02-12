@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class UserMessage implements ChatMessage {
     private final String content;
-    private final List<String> imageUrls;
+    private final List<String> images;
 
-    public UserMessage(String content, List<String> imageUrls) {
+    public UserMessage(String content, List<String> images) {
         this.content = content;
-        this.imageUrls = imageUrls;
+        this.images = images;
     }
 
     @Override
@@ -45,22 +45,25 @@ public class UserMessage implements ChatMessage {
         return content;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    /**
+     * 图片集合
+     */
+    public List<String> getImages() {
+        return images;
     }
 
     @Override
     public String toString() {
-        if (Utils.isEmpty(imageUrls)) {
+        if (Utils.isEmpty(images)) {
             return "{" +
                     "role='" + getRole() + '\'' +
-                    ",content='" + content + '\'' +
+                    ", content='" + content + '\'' +
                     '}';
         } else {
             return "{" +
                     "role='" + getRole() + '\'' +
-                    ",content='" + content + '\'' +
-                    ",image_urls='" + imageUrls + '\'' +
+                    ", content='" + content + '\'' +
+                    ", image_urls='" + images + '\'' +
                     '}';
         }
     }

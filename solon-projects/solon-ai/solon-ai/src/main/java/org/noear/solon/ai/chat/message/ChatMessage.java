@@ -33,7 +33,7 @@ public interface ChatMessage {
 
     /**
      * 获取内容
-     * */
+     */
     String getContent();
 
 
@@ -60,14 +60,14 @@ public interface ChatMessage {
     /**
      * 构建用户消息
      */
-    static ChatMessage ofUser(String content, List<String> imageUrls) {
-        return new UserMessage(content, imageUrls);
+    static ChatMessage ofUser(String content, List<String> images) {
+        return new UserMessage(content, images);
     }
 
     /**
      * 构建工具消息
      */
-    static ChatMessage ofTool(String content, String name, String id) {
-        return new ToolMessage(content, name, id);
+    static ChatMessage ofTool(String content, String name, String toolCallId) {
+        return new ToolMessage(content, name, toolCallId);
     }
 }
