@@ -1,4 +1,4 @@
-package features.ai;
+package features.ai.chat;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatConfig;
