@@ -49,7 +49,7 @@ public class AssistantMessage implements ChatMessage {
     }
 
     /**
-     * 获取内容
+     * 获取内容（为空时，表示在思考）
      */
     @Override
     public String getContent() {
