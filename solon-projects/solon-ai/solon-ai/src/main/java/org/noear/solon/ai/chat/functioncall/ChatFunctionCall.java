@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat.functioncall;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author noear
  * @since 3.1
  */
-public class ChatFunctionCall {
+public class ChatFunctionCall implements Serializable {
     private String id;
     private String name;
     private Map<String, Object> arguments;

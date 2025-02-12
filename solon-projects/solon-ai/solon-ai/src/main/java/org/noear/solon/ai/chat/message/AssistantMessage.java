@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.snack.ONode;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatRole;
 
@@ -28,12 +27,17 @@ import java.util.*;
  * @since 3.1
  */
 public class AssistantMessage implements ChatMessage {
+    private final ChatRole role = ChatRole.ASSISTANT;
     private String content;
     private String reasoningContent;
     private List<ChatFunctionCall> toolCalls;
-    private ONode toolCallsRaw;
+    private List<Map> toolCallsRaw;
 
-    public AssistantMessage(String content, String reasoningContent, ONode toolCallsRaw, List<ChatFunctionCall> toolCalls) {
+    public AssistantMessage() {
+        //用于序列化
+    }
+
+    public AssistantMessage(String content, String reasoningContent, List<Map> toolCallsRaw, List<ChatFunctionCall> toolCalls) {
         this.content = content;
         this.reasoningContent = reasoningContent;
         this.toolCallsRaw = toolCallsRaw;
@@ -45,7 +49,7 @@ public class AssistantMessage implements ChatMessage {
      */
     @Override
     public ChatRole getRole() {
-        return ChatRole.ASSISTANT;
+        return role;
     }
 
     /**
@@ -73,7 +77,7 @@ public class AssistantMessage implements ChatMessage {
     /**
      * 获取工具高用原始数据（需要回传）
      */
-    public ONode getToolCallsRaw() {
+    public List<Map> getToolCallsRaw() {
         return toolCallsRaw;
     }
 

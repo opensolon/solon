@@ -24,7 +24,12 @@ import org.noear.solon.ai.chat.ChatRole;
  * @since 3.1
  */
 public class SystemMessage implements ChatMessage {
+    private final ChatRole role = ChatRole.SYSTEM;
     private String content;
+
+    public SystemMessage() {
+        //用于序列化
+    }
 
     public SystemMessage(String content) {
         this.content = content;
@@ -32,7 +37,7 @@ public class SystemMessage implements ChatMessage {
 
     @Override
     public ChatRole getRole() {
-        return ChatRole.SYSTEM;
+        return role;
     }
 
     @Override

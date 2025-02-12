@@ -38,21 +38,4 @@ public enum ChatRole {
      * 助理
      */
     ASSISTANT;
-
-    static ChatRole of(String role) {
-        if (role == null) {
-            return ASSISTANT;
-        } else {
-            switch (role) {
-                case "system":
-                    return SYSTEM;
-                case "user":
-                    return USER;
-                case "tool":
-                    return TOOL;
-                default:
-                    return ASSISTANT;
-            }
-        }
-    }
 }

@@ -27,8 +27,13 @@ import java.util.List;
  * @since 3.1
  */
 public class UserMessage implements ChatMessage {
-    private final String content;
-    private final List<String> images;
+    private final ChatRole role = ChatRole.USER;
+    private String content;
+    private List<String> images;
+
+    public UserMessage() {
+        //用于序列化
+    }
 
     public UserMessage(String content, List<String> images) {
         this.content = content;
@@ -37,7 +42,7 @@ public class UserMessage implements ChatMessage {
 
     @Override
     public ChatRole getRole() {
-        return ChatRole.USER;
+        return role;
     }
 
     @Override

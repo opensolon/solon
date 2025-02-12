@@ -24,9 +24,14 @@ import org.noear.solon.ai.chat.ChatRole;
  * @since 3.1
  */
 public class ToolMessage implements ChatMessage {
+    private final ChatRole role = ChatRole.TOOL;
     private String content;
     private String name;
     private String toolCallId;
+
+    public ToolMessage() {
+        //用于序列化
+    }
 
     public ToolMessage(String content, String name, String toolCallId) {
         this.content = content;
@@ -36,7 +41,7 @@ public class ToolMessage implements ChatMessage {
 
     @Override
     public ChatRole getRole() {
-        return ChatRole.TOOL;
+        return role;
     }
 
     @Override

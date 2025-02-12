@@ -37,8 +37,8 @@ public abstract class AbstractDialect implements ChatDialect {
 
         //reasoning_content 不回传
 
-        if (msg.getToolCallsRaw() != null) {
-            oNode.set("tool_calls", msg.getToolCallsRaw());
+        if (Utils.isNotEmpty(msg.getToolCallsRaw())) {
+            oNode.set("tool_calls", ONode.load(msg.getToolCallsRaw()));
         }
     }
 
@@ -203,7 +203,13 @@ public abstract class AbstractDialect implements ChatDialect {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
+
+        List<Map> toolCallsRaw = null;
         List<ChatFunctionCall> toolCalls = parseToolCalls(toolCallsNode);
+
+        if (Utils.isNotEmpty(toolCalls)) {
+            toolCallsRaw = toolCallsNode.toObject(List.class);
+        }
 
         if (Utils.isEmpty(reasoning_content)) {
             //将 think 转到 reasoning_content
@@ -218,7 +224,7 @@ public abstract class AbstractDialect implements ChatDialect {
                         resp.reasoning = false;
                         reasoning_content = content.substring(7, thinkEnd);
                         content = content.substring(thinkEnd + 8);
-                    } else{
+                    } else {
                         //流式返回
                         reasoning_content = "";
                         content = "";
@@ -240,6 +246,6 @@ public abstract class AbstractDialect implements ChatDialect {
             }
         }
 
-        return new AssistantMessage(content, reasoning_content, toolCallsNode, toolCalls);
+        return new AssistantMessage(content, reasoning_content, toolCallsRaw, toolCalls);
     }
 }
