@@ -20,7 +20,7 @@ public class OllamaTest {
     private static final Logger log = LoggerFactory.getLogger(OllamaTest.class);
     private static final String apiUrl = "http://127.0.0.1:11434/api/chat";
     private static final String provider = "ollama";
-    private static final String model = "llama3.2";//"llama3.2"; //deepseek-r1:1.5b;
+    private static final String model = "deepseek-r1:1.5b";//"llama3.2"; //deepseek-r1:1.5b;
 
     @Test
     public void case1() throws IOException {

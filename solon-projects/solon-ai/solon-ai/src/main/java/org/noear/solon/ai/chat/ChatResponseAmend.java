@@ -29,6 +29,11 @@ public class ChatResponseAmend {
     }
 
     /**
+     * 思考中
+     * */
+    public boolean reasoning;
+
+    /**
      * 获取真实聊天响应
      */
     public ChatResponse getReal() {

@@ -81,9 +81,9 @@ public class OpenaiDialect extends AbstractDialect {
 
                 AssistantMessage message1;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
-                    message1 = parseAssistantMessage(oChoice1.get("delta"));
+                    message1 = parseAssistantMessage(resp, oChoice1.get("delta"));
                 } else { //object=chat.completion
-                    message1 = parseAssistantMessage(oChoice1.get("message"));
+                    message1 = parseAssistantMessage(resp, oChoice1.get("message"));
                 }
                 resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
             }

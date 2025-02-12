@@ -35,9 +35,7 @@ public abstract class AbstractDialect implements ChatDialect {
         oNode.set("role", msg.getRole().name().toLowerCase());
         oNode.set("content", msg.getContent());
 
-        if (Utils.isNotEmpty(msg.getReasoningContent())) {
-            oNode.set("reasoning_content", msg.getReasoningContent());
-        }
+        //reasoning_content 不回传
 
         if (msg.getToolCallsRaw() != null) {
             oNode.set("tool_calls", msg.getToolCallsRaw());
@@ -201,11 +199,46 @@ public abstract class AbstractDialect implements ChatDialect {
         return toolCalls;
     }
 
-    protected AssistantMessage parseAssistantMessage(ONode oMessage) {
+    protected AssistantMessage parseAssistantMessage(ChatResponseAmend resp, ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
         List<ChatFunctionCall> toolCalls = parseToolCalls(toolCallsNode);
+
+        if (Utils.isEmpty(reasoning_content)) {
+            //将 think 转到 reasoning_content
+            if (Utils.isNotEmpty(content)) {
+                if (content.startsWith("<think>")) {
+                    resp.reasoning = true;
+
+                    //可能马上结束的
+                    int thinkEnd = content.indexOf("</think>");
+                    if (thinkEnd > 0) {
+                        //单次返回
+                        resp.reasoning = false;
+                        reasoning_content = content.substring(7, thinkEnd);
+                        content = content.substring(thinkEnd + 8);
+                    } else{
+                        //流式返回
+                        reasoning_content = "";
+                        content = "";
+                    }
+                } else {
+                    if (resp.reasoning) {
+                        //流式返回
+                        int thinkEnd = content.indexOf("</think>");
+                        if (thinkEnd >= 0) { //可能是个开始符
+                            resp.reasoning = false;
+                            reasoning_content = "";
+                            content = "";
+                        } else {
+                            reasoning_content = content;
+                            content = "";
+                        }
+                    }
+                }
+            }
+        }
 
         return new AssistantMessage(content, reasoning_content, toolCallsNode, toolCalls);
     }

@@ -62,7 +62,7 @@ public class OllamaDialect extends AbstractDialect {
                 createdStr = createdStr.substring(0, createdStr.indexOf(".") + 4);
             }
             Date created = DateUtil.parseTry(createdStr);
-            AssistantMessage message1 = parseAssistantMessage(oResp.get("message"));
+            AssistantMessage message1 = parseAssistantMessage(resp, oResp.get("message"));
             resp.addChoice(new ChatChoice(0, created, done_reason, message1));
 
             if (resp.isFinished()) {
