@@ -209,7 +209,7 @@ public class ChatRequestDefault implements ChatRequest {
         }
     }
 
-    private void buildToolMessage(AssistantMessage acm) {
+    private void buildToolMessage(AssistantMessage acm) throws ChatException {
         if (Utils.isEmpty(acm.getToolCalls())) {
             return;
         }
@@ -222,8 +222,12 @@ public class ChatRequestDefault implements ChatRequest {
             }
 
             if (func != null) {
-                String content = func.handle(call.arguments());
-                messages.add(ChatMessage.ofTool(content, call.name(), call.id()));
+                try {
+                    String content = func.handle(call.arguments());
+                    messages.add(ChatMessage.ofTool(content, call.name(), call.id()));
+                } catch (Throwable ex) {
+                    throw new ChatException("The function call failed!", ex);
+                }
             }
         }
     }

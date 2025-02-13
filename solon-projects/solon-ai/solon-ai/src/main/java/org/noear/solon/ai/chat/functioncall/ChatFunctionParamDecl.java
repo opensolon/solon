@@ -22,11 +22,17 @@ package org.noear.solon.ai.chat.functioncall;
 public class ChatFunctionParamDecl implements ChatFunctionParam {
     private final String name;
     private final Class<?> type;
+    private final boolean required;
     private final String description;
 
     public ChatFunctionParamDecl(String name, Class<?> type, String description) {
+        this(name, type, true, description);
+    }
+
+    public ChatFunctionParamDecl(String name, Class<?> type, boolean required, String description) {
         this.name = name;
         this.type = type;
+        this.required = required;
         this.description = description;
     }
 
@@ -43,5 +49,10 @@ public class ChatFunctionParamDecl implements ChatFunctionParam {
     @Override
     public String description() {
         return description;
+    }
+
+    @Override
+    public boolean required() {
+        return required;
     }
 }

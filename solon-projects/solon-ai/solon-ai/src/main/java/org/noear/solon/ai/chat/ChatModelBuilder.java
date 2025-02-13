@@ -15,9 +15,12 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.annotation.FunctionMapping;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionDecl;
+import org.noear.solon.ai.chat.functioncall.MethodChatFunction;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.function.Consumer;
 
@@ -59,8 +62,25 @@ public class ChatModelBuilder {
         return this;
     }
 
-    public ChatModelBuilder globalFunctionAdd(ChatFunction function) {
-        config.globalFunctions.put(function.name(), function);
+    public ChatModelBuilder globalFunctionAdd(Object functionBean) {
+        if (functionBean instanceof ChatFunction) {
+            ChatFunction func = (ChatFunction) functionBean;
+            config.globalFunctions.put(func.name(), func);
+        } else {
+            int count = 0;
+            for (Method method : functionBean.getClass().getMethods()) {
+                if (method.isAnnotationPresent(FunctionMapping.class)) {
+                    MethodChatFunction func = new MethodChatFunction(functionBean, method);
+                    config.globalFunctions.put(func.name(), func);
+                    count++;
+                }
+            }
+
+            if (count == 0) {
+                throw new IllegalArgumentException("This functionBean is not ChatFunction");
+            }
+        }
+
         return this;
     }
 

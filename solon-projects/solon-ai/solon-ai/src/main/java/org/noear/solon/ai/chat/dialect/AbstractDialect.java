@@ -136,7 +136,10 @@ public abstract class AbstractDialect implements ChatDialect {
 
                                         n6.set("description", p1.description());
                                     });
-                                    n4r.add(p1.name());
+
+                                    if (p1.required()) {
+                                        n4r.add(p1.name());
+                                    }
                                 }
                             });
                         });

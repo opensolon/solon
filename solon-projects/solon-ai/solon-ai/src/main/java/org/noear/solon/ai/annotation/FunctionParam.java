@@ -13,34 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat.functioncall;
+package org.noear.solon.ai.annotation;
+
+import java.lang.annotation.*;
 
 /**
+ * 函数参数
+ *
  * @author noear
  * @since 3.1
  */
-public interface ChatFunctionParam {
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface FunctionParam {
     /**
      * 名字
      */
-    String name();
-
-    /**
-     * 类型
-     */
-    Class<?> type();
-
-    /**
-     * 字符串形态
-     */
-    default String typeAsString() {
-        if (type().isArray()) {
-            String tmp = type().getSimpleName().toLowerCase();
-            return tmp.substring(0, tmp.length() - 2); //int[]
-        } else {
-            return type().getSimpleName().toLowerCase();
-        }
-    }
+    String name() default "";
 
     /**
      * 描述
@@ -50,5 +40,5 @@ public interface ChatFunctionParam {
     /**
      * 是否必须
      */
-    boolean required();
+    boolean required() default true;
 }

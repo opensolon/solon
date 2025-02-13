@@ -42,5 +42,5 @@ public interface ChatFunction {
     /**
      * 处理
      */
-    String handle(Map<String, Object> args);
+    String handle(Map<String, Object> args) throws Throwable;
 }
