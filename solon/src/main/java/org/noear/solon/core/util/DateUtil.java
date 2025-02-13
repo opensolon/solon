@@ -30,7 +30,8 @@ import java.util.TimeZone;
  * @since 2.8
  */
 public class DateUtil {
-    private static final String FORMAT_29 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    private static final String FORMAT_29 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";//XXX: +08:00
+    private static final String FORMAT_27 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'";
     private static final String FORMAT_25 = "yyyy-MM-dd'T'HH:mm:ss+HH:mm";
     private static final String FORMAT_24_ISO08601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     private static final String FORMAT_23_a = "yyyy-MM-dd HH:mm:ss,SSS";
@@ -55,6 +56,18 @@ public class DateUtil {
     private static final String FORMAT_8_a = "HH:mm:ss";
     private static final String FORMAT_8_b = "yyyyMMdd";
 
+
+    /**
+     * 解析
+     */
+    public static Date parseTry(String val) {
+        try {
+            return parse(val);
+        } catch (ParseException ex) {
+            throw new IllegalArgumentException("Unsupported format: " + val, ex);
+        }
+    }
+
     /**
      * 解析
      */
@@ -71,6 +84,8 @@ public class DateUtil {
             if (val.charAt(26) == ':' && val.charAt(28) == '0') {
                 ft = FORMAT_29;
             }
+        } else if (len == 27) {
+            ft = FORMAT_27;
         } else if (len == 25) {
             ft = FORMAT_25;
         } else if (len == 24) {

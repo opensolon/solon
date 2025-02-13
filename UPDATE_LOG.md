@@ -35,6 +35,7 @@
 * 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置无效的问题
 * 修复 solon RoutingTableDefault 路由可能出现变量在前，常量在后的问题
 * 修复 solon-docs-openapi2 类型如果为自定义类型无法正确识别到 OpenApi Json.
+* 修复 solon-serialization-jackson TimeDeserializer 对空串解析异常的问题
 * snack3 升为 3.2.126
 * liquor 1.3.10
 
