@@ -2,7 +2,7 @@ package features;
 
 import demo.App;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.web.util.MimeType;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 

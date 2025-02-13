@@ -3,7 +3,7 @@ package demo;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.web.util.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.rx.integration.ActionReturnRxHandler;

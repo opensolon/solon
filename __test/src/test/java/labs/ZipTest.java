@@ -15,7 +15,6 @@
  */
 package labs;
 
-import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 

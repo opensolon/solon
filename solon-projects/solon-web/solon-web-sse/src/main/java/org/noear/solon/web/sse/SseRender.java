@@ -16,7 +16,7 @@
 package org.noear.solon.web.sse;
 
 import org.noear.solon.Solon;
-import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.web.util.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
 
