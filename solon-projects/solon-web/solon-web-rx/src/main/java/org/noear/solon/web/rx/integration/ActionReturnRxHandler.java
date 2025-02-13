@@ -51,7 +51,7 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
             boolean isStreaming = isStreaming(ctx);
             Publisher publisher = postPublisher(ctx, action, result, isStreaming);
 
-            publisher.subscribe(new ActionRxSubscriber(ctx, action));
+            publisher.subscribe(new ActionRxSubscriber(ctx, action, isStreaming));
         }
     }
 
