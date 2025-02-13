@@ -43,6 +43,7 @@
 * 修复 solon-serialization-jackson TimeDeserializer 对空串解析异常的问题
 * snack3 升为 3.2.126
 * liquor 1.3.10
+* smart-http 升为 2.5.2 修复 sse 流不能自动结束的问题
 
 ### v3.0.7
 * 添加 solon BindProps 绑定属性注解，用于简化集合属性绑定及配置元信息APT生成
