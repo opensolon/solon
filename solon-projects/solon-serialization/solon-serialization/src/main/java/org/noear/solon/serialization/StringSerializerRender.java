@@ -38,7 +38,7 @@ public class StringSerializerRender implements Render {
 
     /**
      * 是否类型化的
-     * */
+     */
     public boolean isTyped() {
         return typed;
     }
@@ -133,7 +133,10 @@ public class StringSerializerRender implements Render {
         if (data instanceof String && isTyped() == false) {
             ctx.output(text);
         } else {
-            ctx.contentType(serializer.mimeType());
+            if (ctx.contentTypeNew() == null) {
+                //如果没有设置过，用默认的 //如 ndjson 是在外面设定的
+                ctx.contentType(serializer.mimeType());
+            }
             ctx.output(text);
         }
     }
