@@ -40,6 +40,7 @@
 * 调整 solon-web-sse SseEvent 实现 Renderable 自渲染接口，可以被直接返回
 * 调整 solon-web-rx 调整 Flux collectList 策略（默认为流输出；明确指定 json 时才做聚合输出）
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
+* 修复 solon-serialization-jackson TimeDeserializer 对空串解析问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
