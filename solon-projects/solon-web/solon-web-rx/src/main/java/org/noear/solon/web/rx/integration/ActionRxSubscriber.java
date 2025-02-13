@@ -33,12 +33,12 @@ public class ActionRxSubscriber implements Subscriber {
 
     private Context ctx;
     private Action action;
-    private boolean firstLine;
+    private boolean isStreaming;
 
-    public ActionRxSubscriber(Context ctx, Action action) {
+    public ActionRxSubscriber(Context ctx, Action action, boolean isStreaming) {
         this.ctx = ctx;
         this.action = action;
-        this.firstLine = true;
+        this.isStreaming = isStreaming;
     }
 
     private void request(Subscription subscription) {
@@ -61,17 +61,14 @@ public class ActionRxSubscriber implements Subscriber {
     @Override
     public void onNext(Object o) {
         try {
-            try {
-                if (firstLine == false) {
-                    ctx.output(CRLF);
-                }
-                action.render(o, ctx, true);
+            action.render(o, ctx, true);
+
+            if (isStreaming) {
+                ctx.output(CRLF);
                 ctx.flush(); //流式输出，每次都要刷一下（避免缓存未输出）
-            } catch (Throwable e) {
-                log.warn(e.getMessage(), e);
             }
-        } finally {
-            firstLine = false;
+        } catch (Throwable e) {
+            log.warn(e.getMessage(), e);
         }
     }
 

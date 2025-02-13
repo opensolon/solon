@@ -66,6 +66,5 @@ public class SseRender implements Render {
         }
 
         ctx.output(renderAndReturn(data, ctx));
-        ctx.flush();
     }
 }
