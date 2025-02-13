@@ -35,6 +35,7 @@
 * 优化 solon-web-sse SseEmitter 添加事件缓存支持（初始化前就可发事件，之前不能）
 * 优化 solon-web-rx 结构设计，方便支持其它响应式框架(比如 mutiny)
 * 优化 solon-web-rx 可支持所有 reactivestreams 实现框架
+* 优化 solon beanExtractOrProxy 内部改为先代理再提取，解决提取时对象未代理
 * 调整 solon-web-rx 调整 Flux collectList 策略为由 mimeType 是否为流决定
 * 修复 solon 集合bean注入时，可能产生两次执行的问题
 * 修复 solon-logging-logback 的 "solon.logging.appender.file.maxHistory" 配置无效的问题
