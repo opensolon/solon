@@ -225,18 +225,21 @@ public class ChainManager {
 
     //===================
 
-    private final Map<Class<?>, ActionReturnHandler> returnHandlers = new LinkedHashMap<>();
+    private final List<RankEntity<ActionReturnHandler>> returnHandlers = new ArrayList<>();
 
     public void addReturnHandler(ActionReturnHandler e) {
-        if (e != null) {
-            returnHandlers.put(e.getClass(), e);
-        }
+        addReturnHandler(e, 0);
+    }
+
+    public void addReturnHandler(ActionReturnHandler e, int index) {
+        returnHandlers.add(new RankEntity<>(e, index));
+        Collections.sort(returnHandlers);
     }
 
     public ActionReturnHandler getReturnHandler(Context ctx, Class<?> returnType) {
-        for (ActionReturnHandler handler : returnHandlers.values()) {
-            if (handler.matched(ctx, returnType)) {
-                return handler;
+        for (RankEntity<ActionReturnHandler> entity : returnHandlers) {
+            if (entity.target.matched(ctx, returnType)) {
+                return entity.target;
             }
         }
 

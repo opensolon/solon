@@ -463,7 +463,7 @@ public class AppContext extends BeanContainer {
 
         //ActionReturnHandler
         if (bw.raw() instanceof ActionReturnHandler) {
-            app().chainManager().addReturnHandler(bw.raw());
+            app().chainManager().addReturnHandler(bw.raw(), bw.index());
             singletonHint = "ActionReturnHandler";
         }
 
