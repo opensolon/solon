@@ -66,6 +66,7 @@ public class ActionRxSubscriber implements Subscriber {
                     ctx.output(CRLF);
                 }
                 action.render(o, ctx, true);
+                ctx.flush(); //流式输出，每次都要刷一下（避免缓存未输出）
             } catch (Throwable e) {
                 log.warn(e.getMessage(), e);
             }

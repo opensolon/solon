@@ -48,21 +48,25 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
-            Publisher publisher = postPublisher(ctx, action, result);
+            boolean isStreaming = isStreaming(ctx);
+            Publisher publisher = postPublisher(ctx, action, result, isStreaming);
 
             publisher.subscribe(new ActionRxSubscriber(ctx, action));
         }
     }
 
+    protected boolean isStreaming(Context ctx) {
+        return MimeType.isStreaming(ctx.acceptNew());
+    }
+
     /**
      * 确认发布者
      */
-    protected Publisher postPublisher(Context ctx, Action action, Object result) throws Throwable {
+    protected Publisher postPublisher(Context ctx, Action action, Object result, boolean isStreaming) throws Throwable {
         if (hasReactor) {
             //reactor 排除也不会出错
             if (result instanceof Flux) {
-                if (ctx.acceptNew().startsWith(MimeType.APPLICATION_JSON_VALUE) ||
-                        ctx.acceptNew().startsWith(MimeType.TEXT_JSON_VALUE)) {
+                if (isStreaming == false) {
                     return ((Flux) result).collectList();
                 }
             }

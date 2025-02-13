@@ -15,6 +15,8 @@
  */
 package org.noear.solon.boot.web;
 
+import org.noear.solon.Utils;
+
 /**
  * Web 媒体类型
  *
@@ -49,4 +51,21 @@ public final class MimeType {
     public static final String TEXT_MARKDOWN_VALUE = "text/markdown";
     public static final String TEXT_PLAIN_VALUE = "text/plain";
     public static final String TEXT_XML_VALUE = "text/xml";
+
+    /**
+     * 是否为流类型
+     *
+     * @since 3.1
+     */
+    public static boolean isStreaming(String mimeType) {
+        if (Utils.isNotEmpty(mimeType)) {
+            if (mimeType.startsWith(APPLICATION_X_NDJSON_VALUE)) {
+                return true;
+            } else if (mimeType.contains("stream")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
