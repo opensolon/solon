@@ -77,6 +77,7 @@
         <netty.version>4.1.115.Final</netty.version>
         <reactor-core.version>3.6.9</reactor-core.version>
         <reactor-netty-http.version>1.1.22</reactor-netty-http.version>
+        <mutiny.version>1.10.0</mutiny.version>
 
 
         <micrometer.version>1.11.1</micrometer.version>

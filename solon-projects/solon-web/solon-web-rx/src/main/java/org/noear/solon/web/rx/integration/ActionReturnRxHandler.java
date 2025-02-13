@@ -15,9 +15,11 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.ClassUtil;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -27,7 +29,13 @@ import reactor.core.publisher.Flux;
  * @author noear
  * @since 2.3
  */
-public class ActionReturnReactiveHandler implements ActionReturnHandler {
+public class ActionReturnRxHandler implements ActionReturnHandler {
+    private final boolean hasReactor;
+
+    public ActionReturnRxHandler() {
+        hasReactor = ClassUtil.hasClass(() -> Flux.class);
+    }
+
     @Override
     public boolean matched(Context ctx, Class<?> returnType) {
         return Publisher.class.isAssignableFrom(returnType);
@@ -40,11 +48,26 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
+            Publisher publisher = postPublisher(ctx, action, result);
+
+            publisher.subscribe(new ActionRxSubscriber(ctx, action));
+        }
+    }
+
+    /**
+     * 确认发布者
+     */
+    protected Publisher postPublisher(Context ctx, Action action, Object result) throws Throwable {
+        if (hasReactor) {
+            //reactor 排除也不会出错
             if (result instanceof Flux) {
-                ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action, true));
-            } else {
-                ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action, false));
+                if (ctx.acceptNew().startsWith(MimeType.APPLICATION_JSON_VALUE) ||
+                        ctx.acceptNew().startsWith(MimeType.TEXT_JSON_VALUE)) {
+                    return ((Flux) result).collectList();
+                }
             }
         }
+
+        return (Publisher) result;
     }
 }

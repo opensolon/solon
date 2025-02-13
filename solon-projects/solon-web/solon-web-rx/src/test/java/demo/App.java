@@ -16,53 +16,12 @@
 package demo;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Produces;
-import org.noear.solon.boot.web.MimeType;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.RunUtil;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
-
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author noear 2023/6/19 created
  */
-@Controller
 public class App {
     public static void main(String[] args) {
         Solon.start(App.class, args);
-    }
-
-    @Mapping("m1")
-    public Mono<String> m1(String name) {
-        return Mono.just("Hello " + name);
-    }
-
-    @Mapping("f1")
-    public Flux<String> f1(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name);
-    }
-
-    @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
-    @Mapping("f2")
-    public Flux<String> f2(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name);
-    }
-
-    @Mapping("t1")
-    public Mono<Long> t1(Context ctx) {
-        ctx.asyncStart(100L, null);
-        return Mono.delay(Duration.ofMillis(500));
-    }
-
-    @Mapping("t2")
-    public Mono<Long> t2(Context ctx) {
-        ctx.asyncStart(500L, null);
-        return Mono.delay(Duration.ofMillis(100));
     }
 }
