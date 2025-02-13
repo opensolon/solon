@@ -19,8 +19,11 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Produces;
+import org.noear.solon.web.util.MimeType;
 import org.noear.solon.web.sse.SseEmitter;
 import org.noear.solon.web.sse.SseEvent;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,6 +32,23 @@ import java.util.Map;
 @Controller
 public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
+
+
+    @Produces(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE)
+    @Mapping("/sse/rx")
+    public Flux<SseEvent> sse_rx(String id) throws IOException {
+        return Flux.just(
+                new SseEvent().data("hello"),
+                new SseEvent().id(Utils.guid()).name("update").data("test"));
+    }
+
+    @Produces(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE)
+    @Mapping("/sse/rx2")
+    public Flux<User> sse_rx2() throws IOException {
+        return Flux.just(
+                new User("d1"),
+                new User("d2"));
+    }
 
     @Mapping("/sse/{id}")
     public SseEmitter sse(String id) throws IOException {
