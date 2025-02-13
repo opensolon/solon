@@ -22,7 +22,7 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 2.3
  */
-public class XPluginImpl implements Plugin {
+public class WebRxPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.app().chainManager().addReturnHandler(new ActionReturnRxHandler());
