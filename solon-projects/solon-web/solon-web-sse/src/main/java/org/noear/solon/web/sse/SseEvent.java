@@ -70,7 +70,7 @@ public class SseEvent {
 
     @Override
     public String toString() {
-        return buf + "\n";
+        return buf.toString();
     }
 
     SseEvent append(String text) {

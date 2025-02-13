@@ -50,6 +50,7 @@ public class SseEmitterHandler {
         emitter.initialize(this);
     }
 
+    private static final byte[] CRLF = "\n".getBytes();
 
     /**
      * 发送事件内容
@@ -67,7 +68,13 @@ public class SseEmitterHandler {
 
         SYNC_LOCK.lock();
         try {
-            SseRender.getInstance().render(event, ctx);
+            if (ctx.isHeadersSent() == false) {
+                ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+            }
+
+            ctx.output(event.toString());
+            ctx.output(CRLF);
+            ctx.flush();
         } catch (Throwable e) {
             stopOnError(e);
 
