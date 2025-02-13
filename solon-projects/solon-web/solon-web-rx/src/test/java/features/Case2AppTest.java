@@ -24,14 +24,14 @@ public class Case2AppTest extends HttpTester {
     @Test
     public void test3() throws Exception {
         assert path("/case2/f1?name=d").header("accept", MimeType.APPLICATION_X_NDJSON_VALUE).get().equals("Hello d\n" +
-                "hello2 d");
+                "hello2 d\n");
 
     }
 
     @Test
     public void test4() throws Exception {
         assert path("/case2/f2?name=d").get().equals("Hello d\n" +
-                "hello2 d");
+                "hello2 d\n");
     }
 
     @Test
