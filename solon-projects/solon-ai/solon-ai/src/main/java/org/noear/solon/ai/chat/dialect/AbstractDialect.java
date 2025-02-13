@@ -191,11 +191,7 @@ public abstract class AbstractDialect implements ChatDialect {
                 n1fArgs = ONode.loadStr(n1fArgs.getString());
             }
 
-            Map<String, Object> args = new HashMap<>();
-            n1fArgs.obj().forEach((k, v) -> {
-                args.put(k, v.getString());
-            });
-
+            Map<String, Object> args = n1fArgs.toObject(Map.class);
             toolCalls.add(new ChatFunctionCall(callId, name, args));
         }
 
