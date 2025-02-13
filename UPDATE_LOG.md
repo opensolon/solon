@@ -32,6 +32,7 @@
 * 添加 solon-flow FlowEngine:chains 方法
 * 添加 solon-flow ChainContext:run(script) 接口（支持在脚本中运行动态脚本）
 * 优化 solon-flow 简化模式可以没有 start,end 节点，自动识别出开始节点
+* 优化 solon ActionReturnHandler 增加排序支持
 * 优化 solon-web-sse SseEmitter 添加事件缓存支持（初始化前就可发事件，之前不能）
 * 优化 solon-web-rx 结构设计，方便支持其它响应式框架(比如 mutiny)
 * 优化 solon-web-rx 可支持所有 reactivestreams 实现框架
