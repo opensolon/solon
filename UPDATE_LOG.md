@@ -26,6 +26,7 @@
 * 新增 solon-ai 插件
 * 定义 响应式过滤和拦截体系
 * 添加 solon Renderable 接口支持对象自渲染处理（支持 SseEvent 之类的实体自渲染）
+* 添加 solon-web-sse SseRender 渲染器，支持 "text/event-stream" 的任意类型处理
 * 优化 拦截体系与 rx 的兼容？
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
@@ -40,6 +41,7 @@
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
+* smart-http 升为 2.5.2 修复 sse 流不能自动结束的问题
 * jetty 升为 9.4.57.v20241219
 
 ### v3.0.8

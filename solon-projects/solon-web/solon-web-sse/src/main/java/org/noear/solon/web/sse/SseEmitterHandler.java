@@ -67,11 +67,15 @@ public class SseEmitterHandler {
 
         SYNC_LOCK.lock();
         try {
-            event.render(ctx);
-        } catch (IOException e) {
+            SseRender.getInstance().render(event, ctx);
+        } catch (Throwable e) {
             stopOnError(e);
 
-            throw e;
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            } else {
+                throw new IOException(e);
+            }
         } finally {
             SYNC_LOCK.unlock();
         }

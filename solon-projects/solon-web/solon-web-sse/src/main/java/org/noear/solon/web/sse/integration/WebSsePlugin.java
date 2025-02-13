@@ -17,6 +17,7 @@ package org.noear.solon.web.sse.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.web.sse.SseRender;
 
 /**
  * @author noear
@@ -25,6 +26,7 @@ import org.noear.solon.core.Plugin;
 public class WebSsePlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
+        context.app().renderManager().register("@see", SseRender.getInstance());
         context.app().chainManager().addReturnHandler(new ActionReturnSseHandler());
     }
 }
