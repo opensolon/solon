@@ -1,6 +1,6 @@
 package features.ai.chat;
 
-import demo.ai.WeatherChatFunction;
+import demo.ai.Tools;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
@@ -61,7 +61,7 @@ public class OllamaStopTest {
         ChatModel chatModel = ChatModel.of(apiUrl)
                 .provider(provider)
                 .model(model)
-                .globalFunctionAdd(new WeatherChatFunction())
+                .globalFunctionAdd(new Tools())
                 .build();
 
         ChatResponse resp = chatModel
@@ -82,7 +82,7 @@ public class OllamaStopTest {
         //流返回(sse)
         Publisher<ChatResponse> publisher = chatModel
                 .prompt("今天杭州的天气情况？")
-                .options(o -> o.functionAdd(new WeatherChatFunction()))
+                .options(o -> o.functionAdd(new Tools()))
                 .stream();
 
         CountDownLatch doneLatch = new CountDownLatch(1);

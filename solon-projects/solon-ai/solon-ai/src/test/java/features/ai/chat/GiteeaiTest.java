@@ -1,6 +1,6 @@
 package features.ai.chat;
 
-import demo.ai.WeatherChatFunction;
+import demo.ai.Tools;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
@@ -55,15 +55,31 @@ public class GiteeaiTest {
     }
 
     @Test
-    public void case3() throws IOException {
+    public void case3_wather() throws IOException {
         ChatModel chatModel = ChatModel.of(apiUrl)
                 .apiKey(apkKey)
                 .model(model)
-                .globalFunctionAdd(new WeatherChatFunction())
+                .globalFunctionAdd(new Tools())
                 .build();
 
         ChatResponse resp = chatModel
                 .prompt("今天杭州的天气情况？")
+                .call();
+
+        //打印消息
+        log.info("{}", resp.getMessage());
+    }
+
+    @Test
+    public void case3_www() throws IOException {
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .apiKey(apkKey)
+                .model(model)
+                .globalFunctionAdd(new Tools())
+                .build();
+
+        ChatResponse resp = chatModel
+                .prompt("solon 框架的作者是谁？")
                 .call();
 
         //打印消息
@@ -80,7 +96,7 @@ public class GiteeaiTest {
         //流返回(sse)
         Publisher<ChatResponse> publisher = chatModel
                 .prompt("今天杭州的天气情况？")
-                .options(o -> o.functionAdd(new WeatherChatFunction()))
+                .options(o -> o.functionAdd(new Tools()))
                 .stream();
 
         CountDownLatch doneLatch = new CountDownLatch(1);

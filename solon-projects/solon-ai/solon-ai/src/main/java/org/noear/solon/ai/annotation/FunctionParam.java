@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 3.1
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FunctionParam {

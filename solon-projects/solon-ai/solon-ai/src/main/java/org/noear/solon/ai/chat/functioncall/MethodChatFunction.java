@@ -32,17 +32,23 @@ import java.util.Map;
 public class MethodChatFunction implements ChatFunction {
     private final Object target;
     private final Method method;
-    private final FunctionMapping methodAnno;
+    private final String description;
+    private final String name;
     private final List<ChatFunctionParam> params;
 
     public MethodChatFunction(Object target, Method method) {
         this.target = target;
         this.method = method;
-        this.methodAnno = method.getAnnotation(FunctionMapping.class);
+
+        FunctionMapping m1Anno = method.getAnnotation(FunctionMapping.class);
+        this.name = Utils.annoAlias(m1Anno.name(), method.getName());
+        this.description = m1Anno.description();
+
         this.params = new ArrayList<>();
 
         for (Parameter p1 : method.getParameters()) {
             FunctionParam p1Anno = p1.getAnnotation(FunctionParam.class);
+
             String name = Utils.annoAlias(p1Anno.name(), p1.getName());
             params.add(new ChatFunctionParamDecl(name, p1.getType(), p1Anno.required(), p1Anno.description()));
         }
@@ -50,12 +56,12 @@ public class MethodChatFunction implements ChatFunction {
 
     @Override
     public String name() {
-        return methodAnno.name();
+        return name;
     }
 
     @Override
     public String description() {
-        return methodAnno.description();
+        return description;
     }
 
     @Override
