@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.boot.web;
+package org.noear.solon.web.util;
 
 import org.noear.solon.Utils;
 
@@ -22,9 +22,8 @@ import org.noear.solon.Utils;
  *
  * @author noear
  * @since 1.10
- * @deprecated 3.1 {@link MimeType}
+ * @since 3.1
  */
-@Deprecated
 public final class MimeType {
     public static final String ALL_VALUE = "*/*";
     public static final String APPLICATION_ATOM_XML_VALUE = "application/atom+xml";
