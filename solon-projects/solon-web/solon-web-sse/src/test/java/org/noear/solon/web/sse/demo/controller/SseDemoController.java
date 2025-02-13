@@ -31,8 +31,8 @@ public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
     @Mapping("/sse/{id}")
-    public SseEmitter sse(String id) {
-        return new SseEmitter(0L)
+    public SseEmitter sse(String id) throws IOException {
+        SseEmitter emitter = new SseEmitter(-1L)
                 .onCompletion(() -> {
                     emitterMap.remove(id);
                     System.out.println("::onCompletion");
@@ -40,8 +40,12 @@ public class SseDemoController {
                 })
                 .onError(e -> {
                     e.printStackTrace();
-                })
-                .onInited(e -> emitterMap.put(id, e));
+                });
+
+        emitterMap.put(id, emitter);
+        emitter.send("你好！");
+
+        return emitter;
     }
 
     @Mapping("/sse2/{id}")

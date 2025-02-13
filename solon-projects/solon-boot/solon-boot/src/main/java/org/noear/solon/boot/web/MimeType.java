@@ -43,6 +43,7 @@ public final class MimeType {
     public static final String IMAGE_PNG_VALUE = "image/png";
     public static final String MULTIPART_FORM_DATA_VALUE = "multipart/form-data";
     public static final String TEXT_EVENT_STREAM_VALUE = "text/event-stream";
+    public static final String TEXT_EVENT_STREAM_UTF8_VALUE = "text/event-stream;charset=UTF-8";
     public static final String TEXT_HTML_VALUE = "text/html";
     public static final String TEXT_JSON_VALUE = "text/json";
     public static final String TEXT_MARKDOWN_VALUE = "text/markdown";

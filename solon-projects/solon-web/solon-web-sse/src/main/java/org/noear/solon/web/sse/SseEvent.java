@@ -15,15 +15,21 @@
  */
 package org.noear.solon.web.sse;
 
+import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Renderable;
+
+import java.io.IOException;
+
 /**
  * Sse 事件
  *
  * @author kongweiguang
  * @since 2.3
  */
-public class SseEvent {
+public class SseEvent implements Renderable {
 
-    private final StringBuilder sb = new StringBuilder();
+    private final StringBuilder buf = new StringBuilder();
 
     /**
      * 添加 SSE "id" 行.
@@ -57,15 +63,34 @@ public class SseEvent {
         return this;
     }
 
+
     /**
      * 构建为事件文本
-     * */
+     *
+     * @deprecated 3.1 {@link #toString()}
+     */
+    @Deprecated
     public String build() {
-        return append("\n").sb.toString();
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return buf + "\n";
     }
 
     SseEvent append(String text) {
-        this.sb.append(text);
+        this.buf.append(text);
         return this;
+    }
+
+    @Override
+    public void render(Context ctx) throws IOException {
+        if (ctx.isHeadersSent() == false) {
+            ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+        }
+
+        ctx.output(toString());
+        ctx.flush();
     }
 }
