@@ -194,12 +194,6 @@ public class RenderManager implements Render {
             return;
         }
 
-        //可自渲染的（优先处理）
-        if (data instanceof Renderable) {
-            ((Renderable) data).render(ctx);
-            return;
-        }
-
         //如果是模型视图
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
