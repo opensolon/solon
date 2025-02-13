@@ -15,12 +15,15 @@
  */
 package org.noear.solon.ai.rag;
 
+import org.noear.solon.lang.Preview;
+
 /**
- * 嵌入模型
+ * 嵌入模型（相当于翻译器）
  *
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public interface EmbeddingModel {
 
     static EmbeddingModel of(EmbeddingConfig config) {

@@ -15,27 +15,11 @@
  */
 package org.noear.solon.ai.rag;
 
-import org.noear.solon.ai.rag.loader.DocumentLoader;
-import org.noear.solon.lang.Preview;
-
 /**
+ * 重排模型
+ *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public class InMemoryRepository implements Repository {
-
-    public InMemoryRepository(EmbeddingModel embeddings) {
-
-    }
-
-    @Override
-    public void load(DocumentLoader loader) {
-
-    }
-
-    @Override
-    public State retrieve(String question) {
-        return null;
-    }
+public interface RerankingModel {
 }
