@@ -19,6 +19,7 @@ import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatRequest;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.rag.loader.DocumentLoader;
+import org.noear.solon.ai.rag.repository.Repository;
 import org.noear.solon.flow.FlowEngine;
 import org.noear.solon.lang.Preview;
 

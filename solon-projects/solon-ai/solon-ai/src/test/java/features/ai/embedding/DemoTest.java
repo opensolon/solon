@@ -5,9 +5,9 @@ import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.rag.*;
 import org.noear.solon.ai.rag.loader.PdfDocumentLoader;
+import org.noear.solon.ai.rag.repository.InMemoryRepository;
+import org.noear.solon.ai.rag.repository.Repository;
 import org.noear.solon.flow.FlowEngine;
-
-import java.util.List;
 
 /**
  * @author noear 2025/2/12 created

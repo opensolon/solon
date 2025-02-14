@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.rag.repository;
 
+import org.noear.solon.ai.rag.State;
 import org.noear.solon.ai.rag.loader.DocumentLoader;
 import org.noear.solon.lang.Preview;
 
