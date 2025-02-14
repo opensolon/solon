@@ -19,10 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
-import org.noear.solon.data.tran.TranListener;
-import org.noear.solon.data.tran.TranListenerSet;
-import org.noear.solon.data.tran.TranNode;
-import org.noear.solon.data.tran.TranManager;
+import org.noear.solon.data.tran.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -101,7 +98,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                 commit();
             }
         } catch (Throwable ex) {
-            if (parent == null) {
+            if (parent == null || meta.policy() == TranPolicy.nested) {
                 rollback();
             }
 

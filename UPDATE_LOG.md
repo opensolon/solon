@@ -32,6 +32,7 @@
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
+* 修复 solon-data nested 事务策略单独回滚失效的问题
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
