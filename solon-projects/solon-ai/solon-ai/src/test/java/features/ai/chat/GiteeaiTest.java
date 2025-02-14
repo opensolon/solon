@@ -4,6 +4,8 @@ import demo.ai.Tools;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.Prompts;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -80,6 +82,32 @@ public class GiteeaiTest {
 
         ChatResponse resp = chatModel
                 .prompt("solon 框架的作者是谁？")
+                .call();
+
+        //打印消息
+        log.info("{}", resp.getMessage());
+    }
+
+    @Test
+    public void case3_www_2() throws IOException {
+        ChatModel chatModel = ChatModel.of(apiUrl)
+                .apiKey(apkKey)
+                .model(model)
+                .build();
+
+        ChatResponse resp = chatModel
+                .prompt(Prompts.augment("solon 框架的作者是谁？", Document.builder()
+                        .title("概述")
+                        .url("https://solon.noear.org/article/about").build()))
+                .call();
+
+        //打印消息
+        log.info("{}", resp.getMessage());
+
+        resp = chatModel
+                .prompt(Prompts.augment("今天是几号？", Document.builder()
+                        .title("概述")
+                        .url("https://solon.noear.org/article/about").build()))
                 .call();
 
         //打印消息

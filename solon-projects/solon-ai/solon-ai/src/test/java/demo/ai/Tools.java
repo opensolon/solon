@@ -29,11 +29,11 @@ public class Tools {
             throw new IllegalStateException("arguments key is null (Assistant recognition failure)");
         }
 
-        return Prompts.augment(key, Document.builder()
-                .title("概述")
-                .url("https://solon.noear.org/article/about").build())
-                .getContent();
+//        return Prompts.augment(key, Document.builder()
+//                .title("概述")
+//                .url("https://solon.noear.org/article/about").build())
+//                .getContent();
 
-        //return HttpUtils.http("https://solon.noear.org/article/about?format=md").get();
+        return HttpUtils.http("https://solon.noear.org/article/about?format=md").get();
     }
 }

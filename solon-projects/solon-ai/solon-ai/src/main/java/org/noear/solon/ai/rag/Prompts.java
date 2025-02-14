@@ -41,6 +41,9 @@ public final class Prompts {
         return augment(question, Arrays.asList(context));
     }
 
+    /**
+     * 增强提示语
+     */
     public static ChatMessage augment(String question, List<Document> context) {
         return ChatMessage.ofUser(format(question, context));
     }
