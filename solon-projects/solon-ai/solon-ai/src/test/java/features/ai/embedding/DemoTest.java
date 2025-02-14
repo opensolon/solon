@@ -26,10 +26,10 @@ public class DemoTest {
         State response = repository.retrieve("神王世界的小草长啥样的？");
 
         //增强提示识
-        List<ChatMessage> messages = Prompts.augment(response);
+        ChatMessage message = Prompts.augment(response);
 
         //生成结果
-        chatModel.prompt(messages)
+        chatModel.prompt(message)
                 .call();
     }
 

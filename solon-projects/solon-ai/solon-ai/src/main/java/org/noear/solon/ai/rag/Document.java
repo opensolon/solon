@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.rag;
 
+import lombok.Builder;
+import lombok.Getter;
 import org.noear.solon.lang.Preview;
 
 /**
@@ -23,6 +25,37 @@ import org.noear.solon.lang.Preview;
  * @author noear
  * @since 3.1
  */
+@Builder
+@Getter
 @Preview("3.1")
-public interface Document {
+public class Document {
+    /**
+     * id
+     */
+    private String id;
+
+    /**
+     * 标题
+     */
+    private String title;
+
+    /**
+     * 网址
+     */
+    private String url;
+
+    /**
+     * 片段
+     */
+    private String snippet;
+
+    /**
+     * 摘要
+     */
+    private String summary;
+
+    /**
+     * 语言
+     */
+    private String language;
 }

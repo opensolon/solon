@@ -2,6 +2,8 @@ package demo.ai;
 
 import org.noear.solon.ai.annotation.FunctionMapping;
 import org.noear.solon.ai.annotation.FunctionParam;
+import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.Prompts;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.net.http.HttpUtils;
 
@@ -27,8 +29,11 @@ public class Tools {
             throw new IllegalStateException("arguments key is null (Assistant recognition failure)");
         }
 
-        String html = HttpUtils.http("https://solon.noear.org/article/about?format=md").get();
+        return Prompts.augment(key, Document.builder()
+                .title("概述")
+                .url("https://solon.noear.org/article/about").build())
+                .getContent();
 
-        return html;// + weatherService.get(location);
+        //return HttpUtils.http("https://solon.noear.org/article/about?format=md").get();
     }
 }
