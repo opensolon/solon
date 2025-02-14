@@ -151,16 +151,13 @@ public abstract class AbstractDialect implements ChatDialect {
             n6.set("type", "array");
             String typeItem = typeStr.substring(0, typeStr.length() - 2); //int[]
 
-            //todo:...可能要改
             n6.getOrNew("items").set("type", typeItem);
         } else if (p1.type().isEnum()) {
             n6.set("type", typeStr);
 
-            //todo:...可能要改
-            n6.getOrNew("items").getOrNew("type").build(n7 -> {
-                EnumSet enumItems = EnumSet.allOf((Class<Enum>) p1.type());
-                for (Object e : enumItems) {
-                    n7.add(((Enum) e).name());
+            n6.getOrNew("enum").build(n7 -> {
+                for (Object e : p1.type().getEnumConstants()) {
+                    n7.add(e.toString());
                 }
             });
         } else {
