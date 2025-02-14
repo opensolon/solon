@@ -26,7 +26,7 @@ public class ChatFunctionParamDecl implements ChatFunctionParam {
     private final String description;
 
     public ChatFunctionParamDecl(String name, Class<?> type, String description) {
-        this(name, type, true, description);
+        this(name, type, false, description);
     }
 
     public ChatFunctionParamDecl(String name, Class<?> type, boolean required, String description) {

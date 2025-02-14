@@ -40,5 +40,5 @@ public @interface FunctionParam {
     /**
      * 是否必须
      */
-    boolean required() default true;
+    boolean required() default false;
 }
