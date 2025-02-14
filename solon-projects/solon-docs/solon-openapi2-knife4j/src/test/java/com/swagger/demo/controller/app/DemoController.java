@@ -35,7 +35,7 @@ import java.util.Map;
  * @date: 2020/12/21
  */
 @Mapping("/demo")
-@Api(description = "app管理", tags = "示例")
+@Api(tags = "app管理")
 @Controller
 public class DemoController {
 

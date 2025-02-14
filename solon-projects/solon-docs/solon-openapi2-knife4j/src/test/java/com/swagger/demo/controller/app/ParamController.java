@@ -30,7 +30,7 @@ import java.util.Map;
  * @author noear 2023/5/25 created
  */
 @Mapping("/param")
-@Api(description = "参数测试", tags = "示例")
+@Api(tags = "参数测试")
 @Controller
 public class ParamController {
     @ApiOperation("框架类参数")
@@ -78,7 +78,7 @@ public class ParamController {
 
     @ApiOperation("实体参数")
     @Mapping("demo10")
-    public void demo10(DeviceParamBean bean) {
+    public void demo10(@Body DeviceParamBean bean) {
 
     }
 
