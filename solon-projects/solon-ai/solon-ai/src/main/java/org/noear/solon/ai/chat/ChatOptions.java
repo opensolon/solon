@@ -70,16 +70,28 @@ public class ChatOptions {
 
     /**
      * 函数添加
+     *
+     * @param functionObj 函数对象
      */
-    public ChatOptions functionAdd(Object functionBean) {
-        if (functionBean instanceof ChatFunction) {
-            ChatFunction func = (ChatFunction) functionBean;
+    public ChatOptions functionAdd(Object functionObj) {
+        return functionAdd(functionObj.getClass(), functionObj);
+    }
+
+    /**
+     * 函数添加
+     *
+     * @param functionClz 函数类（如果函数对象为代理时，必须传入原始类）
+     * @param functionObj 函数对象
+     */
+    public ChatOptions functionAdd(Class<?> functionClz, Object functionObj) {
+        if (functionObj instanceof ChatFunction) {
+            ChatFunction func = (ChatFunction) functionObj;
             functions.put(func.name(), func);
         } else {
             int count = 0;
-            for (Method method : functionBean.getClass().getMethods()) {
+            for (Method method : functionClz.getMethods()) {
                 if (method.isAnnotationPresent(FunctionMapping.class)) {
-                    MethodChatFunction func = new MethodChatFunction(functionBean, method);
+                    MethodChatFunction func = new MethodChatFunction(functionObj, method);
                     functions.put(func.name(), func);
                     count++;
                 }

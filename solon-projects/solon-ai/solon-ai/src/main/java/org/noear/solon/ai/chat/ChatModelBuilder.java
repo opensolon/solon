@@ -62,15 +62,30 @@ public class ChatModelBuilder {
         return this;
     }
 
-    public ChatModelBuilder globalFunctionAdd(Object functionBean) {
-        if (functionBean instanceof ChatFunction) {
-            ChatFunction func = (ChatFunction) functionBean;
+    /**
+     * 函数添加
+     *
+     * @param functionObj 函数对象
+     */
+    public ChatModelBuilder globalFunctionAdd(Object functionObj) {
+        return globalFunctionAdd(functionObj.getClass(), functionObj);
+    }
+
+    /**
+     * 函数添加
+     *
+     * @param functionClz 函数类（如果函数对象为代理时，必须传入原始类）
+     * @param functionObj 函数对象
+     */
+    public ChatModelBuilder globalFunctionAdd(Class<?> functionClz, Object functionObj) {
+        if (functionObj instanceof ChatFunction) {
+            ChatFunction func = (ChatFunction) functionObj;
             config.globalFunctions.put(func.name(), func);
         } else {
             int count = 0;
-            for (Method method : functionBean.getClass().getMethods()) {
+            for (Method method : functionClz.getMethods()) {
                 if (method.isAnnotationPresent(FunctionMapping.class)) {
-                    MethodChatFunction func = new MethodChatFunction(functionBean, method);
+                    MethodChatFunction func = new MethodChatFunction(functionObj, method);
                     config.globalFunctions.put(func.name(), func);
                     count++;
                 }
