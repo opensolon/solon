@@ -127,14 +127,7 @@ public abstract class AbstractDialect implements ChatDialect {
                             n4.getOrNew("properties").build(n5 -> {
                                 for (ChatFunctionParam p1 : func.params()) {
                                     n5.getOrNew(p1.name()).build(n6 -> {
-                                        if (p1.type().isArray()) {
-                                            n6.set("type", "array");
-                                            n6.getOrNew("items").set("type", p1.typeAsString()); //todo:...要改
-                                        } else {
-                                            n6.set("type", p1.typeAsString());
-                                        }
-
-                                        n6.set("description", p1.description());
+                                        buildReqFunctionParamNodeDo(p1, n6);
                                     });
 
                                     if (p1.required()) {
@@ -147,6 +140,34 @@ public abstract class AbstractDialect implements ChatDialect {
                 });
             }
         });
+    }
+
+    /**
+     * 字符串形态
+     */
+    protected void buildReqFunctionParamNodeDo(ChatFunctionParam p1, ONode n6) {
+        String typeStr = p1.type().getSimpleName().toLowerCase();
+        if (p1.type().isArray()) {
+            n6.set("type", "array");
+            String typeItem = typeStr.substring(0, typeStr.length() - 2); //int[]
+
+            //todo:...可能要改
+            n6.getOrNew("items").set("type", typeItem);
+        } else if (p1.type().isEnum()) {
+            n6.set("type", typeStr);
+
+            //todo:...可能要改
+            n6.getOrNew("items").getOrNew("type").build(n7 -> {
+                EnumSet enumItems = EnumSet.allOf((Class<Enum>) p1.type());
+                for (Object e : enumItems) {
+                    n7.add(((Enum) e).name());
+                }
+            });
+        } else {
+            n6.set("type", typeStr);
+        }
+
+        n6.set("description", p1.description());
     }
 
     @Override

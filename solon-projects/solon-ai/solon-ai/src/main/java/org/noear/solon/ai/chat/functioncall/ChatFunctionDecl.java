@@ -82,7 +82,7 @@ public class ChatFunctionDecl implements ChatFunction {
     }
 
     @Override
-    public String handle(Map<String, Object> args) {
+    public String handle(Map<String, Object> args) throws Throwable {
         return handler.apply(args);
     }
 }

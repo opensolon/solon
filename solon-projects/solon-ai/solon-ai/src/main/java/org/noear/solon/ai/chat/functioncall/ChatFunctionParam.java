@@ -31,18 +31,6 @@ public interface ChatFunctionParam {
     Class<?> type();
 
     /**
-     * 字符串形态
-     */
-    default String typeAsString() {
-        if (type().isArray()) {
-            String tmp = type().getSimpleName().toLowerCase();
-            return tmp.substring(0, tmp.length() - 2); //int[]
-        } else {
-            return type().getSimpleName().toLowerCase();
-        }
-    }
-
-    /**
      * 描述
      */
     String description();
