@@ -66,7 +66,7 @@ public final class Prompts {
             }
 
             if (Utils.isNotEmpty(d1.getSummary())) {
-                results.append("Content: ").append(d1.getSummary()).append("\n");
+                results.append("Summary: ").append(d1.getSummary()).append("\n");
             }
 
             if (Utils.isNotEmpty(d1.getSnippet())) {

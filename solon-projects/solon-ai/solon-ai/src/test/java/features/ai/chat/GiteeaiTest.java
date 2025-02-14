@@ -98,20 +98,9 @@ public class GiteeaiTest {
         ChatResponse resp = chatModel
                 .prompt(Prompts.augment("solon 框架的作者是谁？", Document.builder()
                         .title("概述")
+                        .summary("Solon 框架由杭州无耳科技有限公司（下属 Noear 团队）开发并开源。是新一代，Java 企业级应用开发框架。从零开始构建，有自主的标准规范与开放生态。近16万行代码。")
                         .url("https://solon.noear.org/article/about").build()))
                 .call();
-
-        //打印消息
-        log.info("{}", resp.getMessage());
-
-        resp = chatModel
-                .prompt(Prompts.augment("今天是几号？", Document.builder()
-                        .title("概述")
-                        .url("https://solon.noear.org/article/about").build()))
-                .call();
-
-        //打印消息
-        log.info("{}", resp.getMessage());
     }
 
     @Test
