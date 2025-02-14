@@ -445,11 +445,11 @@
                 <artifactId>solon-data-sqlutils</artifactId>
                 <version>${solon.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-data-sqlink</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.noear</groupId>-->
+<!--                <artifactId>solon-data-sqlink</artifactId>-->
+<!--                <version>${solon.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-data-dynamicds</artifactId>
