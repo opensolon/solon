@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.embedding;
 
 import org.noear.solon.lang.Preview;
 
 /**
- * 嵌入配置
- *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public class EmbeddingConfig {
-    protected String apiUrl;
-    protected String apiKey;
-    protected String provider;
-    protected String model;
+public class EmbeddingModelDefault implements EmbeddingModel {
+    private EmbeddingConfig config;
+    public EmbeddingModelDefault(EmbeddingConfig config) {
+        this.config = config;
+    }
 }

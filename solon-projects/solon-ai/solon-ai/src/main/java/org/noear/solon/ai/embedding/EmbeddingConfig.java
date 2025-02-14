@@ -13,20 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.embedding;
 
 import org.noear.solon.lang.Preview;
 
+import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * 嵌入模型（相当于翻译器）
+ * 嵌入配置
  *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public interface EmbeddingModel {
-
-    static EmbeddingModel of(EmbeddingConfig config) {
-        return new EmbeddingModelDefault(config);
-    }
+public class EmbeddingConfig {
+    protected String apiUrl;
+    protected String apiKey;
+    protected String provider;
+    protected String model;
+    protected final Map<String, String> headers = new LinkedHashMap<>();
+    protected Duration timeout = Duration.ofSeconds(30);
 }

@@ -3,6 +3,8 @@ package features.ai.embedding;
 import org.noear.solon.ai.chat.ChatConfig;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.embedding.EmbeddingConfig;
+import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.*;
 import org.noear.solon.ai.rag.loader.PdfDocumentLoader;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;

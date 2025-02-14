@@ -33,8 +33,9 @@ public class ChatConfig {
     protected String provider;
     protected String model;
     protected final Map<String, String> headers = new LinkedHashMap<>();
-    protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
     protected Duration timeout = Duration.ofSeconds(30);
+
+    protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
 
     protected transient ChatDialect dialect;
 
@@ -62,15 +63,15 @@ public class ChatConfig {
         return headers;
     }
 
+    public Duration timeout() {
+        return timeout;
+    }
+
     public Collection<ChatFunction> globalFunctions() {
         return globalFunctions.values();
     }
 
     public ChatFunction globalFunction(String name) {
         return globalFunctions.get(name);
-    }
-
-    public Duration timeout() {
-        return timeout;
     }
 }
