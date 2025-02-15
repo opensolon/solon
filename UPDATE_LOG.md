@@ -27,6 +27,10 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### v3.0.9
+* 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
+* 修复 solon-data nested 事务策略单独回滚失效的问题
+
 ### v3.0.8
 * 添加 solon-web-sse SseRender 渲染器，支持 "text/event-stream" 的任意类型处理
 * 添加 solon-flow FlowEngine:chains 方法
