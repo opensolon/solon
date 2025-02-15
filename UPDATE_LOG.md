@@ -29,7 +29,7 @@
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
-* 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKey 接口
+* 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题

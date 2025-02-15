@@ -160,12 +160,12 @@ public class SimpleSqlExecutor implements SqlExecutor {
     }
 
     @Override
-    public <T> List<T> updateBatchReturnKey(Collection<Object[]> argsList) throws SQLException {
-        return updateBatchReturnKey(argsList, binderDef);
+    public <T> List<T> updateBatchReturnKeys(Collection<Object[]> argsList) throws SQLException {
+        return updateBatchReturnKeys(argsList, binderDef);
     }
 
     @Override
-    public <T, S> List<T> updateBatchReturnKey(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
+    public <T, S> List<T> updateBatchReturnKeys(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
         try (CommandHolder holder = buildCommand(sql, true, false)) {
             for (S row : argsList) {
                 binder.setValues(holder.stmt, row);

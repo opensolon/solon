@@ -158,7 +158,7 @@ public interface SqlExecutor {
      * @param argsList 参数集合
      * @return 受影响行数组
      */
-    <T> List<T> updateBatchReturnKey(Collection<Object[]> argsList) throws SQLException;
+    <T> List<T> updateBatchReturnKeys(Collection<Object[]> argsList) throws SQLException;
 
 
     /**
@@ -168,5 +168,5 @@ public interface SqlExecutor {
      * @param binder   绑定器
      * @return 受影响行数组
      */
-    <T, S> List<T> updateBatchReturnKey(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
+    <T, S> List<T> updateBatchReturnKeys(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
 }
