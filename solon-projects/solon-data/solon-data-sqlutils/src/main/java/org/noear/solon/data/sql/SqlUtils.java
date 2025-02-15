@@ -16,10 +16,13 @@
 package org.noear.solon.data.sql;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.data.sql.impl.DefaultSqlUtils;
 import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Sql 工具类（线程安全，可作为单例保存）
@@ -36,6 +39,19 @@ public interface SqlUtils {
 
     static SqlUtils ofName(String dsName) {
         return of(Solon.context().getBean(dsName));
+    }
+
+    /**
+     * 初始化数据库
+     */
+    default void initDatabase(String scriptUri) throws IOException, SQLException {
+        String sql = ResourceUtil.findResourceAsString(scriptUri);
+
+        for (String s1 : sql.split(";")) {
+            if (s1.trim().length() > 10) {
+                this.sql(s1).update();
+            }
+        }
     }
 
     /**
