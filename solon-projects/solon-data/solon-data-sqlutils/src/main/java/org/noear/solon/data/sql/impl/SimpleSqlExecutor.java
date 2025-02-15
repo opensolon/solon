@@ -122,21 +122,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
         }
     }
 
-    @Override
-    public int[] updateBatch(Collection<Object[]> argsList) throws SQLException {
-        return updateBatch(argsList, binderDef);
-    }
-
-    @Override
-    public <T> int[] updateBatch(Collection<T> argsList, StatementBinder<T> binder) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            for (T row : argsList) {
-                binder.setValues(holder.stmt, row);
-                holder.stmt.addBatch();
-            }
-            return holder.stmt.executeBatch();
-        }
-    }
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
@@ -155,6 +140,46 @@ public class SimpleSqlExecutor implements SqlExecutor {
             } else {
                 return null;
             }
+        }
+    }
+
+    @Override
+    public int[] updateBatch(Collection<Object[]> argsList) throws SQLException {
+        return updateBatch(argsList, binderDef);
+    }
+
+    @Override
+    public <S> int[] updateBatch(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, false, false)) {
+            for (S row : argsList) {
+                binder.setValues(holder.stmt, row);
+                holder.stmt.addBatch();
+            }
+            return holder.stmt.executeBatch();
+        }
+    }
+
+    @Override
+    public <T> List<T> updateBatchReturnKey(Collection<Object[]> argsList) throws SQLException {
+        return updateBatchReturnKey(argsList, binderDef);
+    }
+
+    @Override
+    public <T, S> List<T> updateBatchReturnKey(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
+        try (CommandHolder holder = buildCommand(sql, true, false)) {
+            for (S row : argsList) {
+                binder.setValues(holder.stmt, row);
+                holder.stmt.addBatch();
+            }
+            holder.stmt.executeBatch();
+            holder.rsts = holder.stmt.getGeneratedKeys();
+
+            List<T> keyList = new ArrayList<>();
+            while (holder.rsts.next()) {
+                keyList.add((T) holder.rsts.getObject(1));
+            }
+
+            return keyList;
         }
     }
 

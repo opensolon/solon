@@ -98,6 +98,7 @@ public interface SqlExecutor {
      */
     <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException;
 
+    /// //////////////////////
 
     /**
      * 更新（插入、或更新、或删除）
@@ -114,6 +115,25 @@ public interface SqlExecutor {
      * @return 受影响行数组
      */
     <S> int update(S args, StatementBinder<S> binder) throws SQLException;
+
+
+    /**
+     * 更新并返回主键
+     *
+     * @return 主键
+     */
+    @Nullable
+    <T> T updateReturnKey() throws SQLException;
+
+    /**
+     * 更新并返回主键
+     *
+     * @return 主键
+     */
+    @Nullable
+    <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException;
+
+    /// //////////////////////
 
     /**
      * 批量更新（插入、或更新、或删除）
@@ -133,18 +153,20 @@ public interface SqlExecutor {
     <S> int[] updateBatch(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
 
     /**
-     * 更新并返回主键
+     * 批量更新并返回主键（插入、或更新、或删除）
      *
-     * @return 主键
+     * @param argsList 参数集合
+     * @return 受影响行数组
      */
-    @Nullable
-    <T> T updateReturnKey() throws SQLException;
+    <T> List<T> updateBatchReturnKey(Collection<Object[]> argsList) throws SQLException;
+
 
     /**
-     * 更新并返回主键
+     * 批量更新并返回主键（插入、或更新、或删除）
      *
-     * @return 主键
+     * @param argsList 参数集合
+     * @param binder   绑定器
+     * @return 受影响行数组
      */
-    @Nullable
-    <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException;
+    <T, S> List<T> updateBatchReturnKey(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
 }
