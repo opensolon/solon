@@ -34,6 +34,6 @@ public class DefaultSqlUtils implements SqlUtils {
 
     @Override
     public SqlExecutor sql(String sql, Object... args) {
-        return SqlConfiguration.getFactory().create(ds, sql, args);
+        return SqlConfiguration.getFactory().create(ds, sql).params(args);
     }
 }

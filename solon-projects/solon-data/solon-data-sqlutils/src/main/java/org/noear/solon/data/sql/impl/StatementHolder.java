@@ -26,7 +26,7 @@ import java.sql.*;
  * @author noear
  * @since 3.0
  */
-class CommandHolder implements Closeable {
+class StatementHolder implements Closeable {
     protected Connection conn = null;
     protected PreparedStatement stmt = null;
     protected ResultSet rsts = null;

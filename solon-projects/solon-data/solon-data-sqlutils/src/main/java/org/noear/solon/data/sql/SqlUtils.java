@@ -41,8 +41,7 @@ public interface SqlUtils {
     /**
      * 执行代码
      *
-     * @param sql  代码
-     * @param args 参数
+     * @param sql 代码
      */
     SqlExecutor sql(String sql, Object... args);
 

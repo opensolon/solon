@@ -13,9 +13,10 @@ import javax.sql.DataSource;
 @Component
 public class SqlUtilsFactoryImpl implements SqlUtilsFactory {
     @Override
-    public SqlExecutor create(DataSource ds, String sql, Object... args) {
+    public SqlExecutor create(DataSource ds, String sql) {
         //打印 sql
-        System.out.println(sql);
-        return new SimpleSqlExecutor(ds, sql, args);
+        return new SimpleSqlExecutor(ds, sql).onCommandPost(cmd -> {
+            System.out.println(cmd);
+        });
     }
 }

@@ -16,6 +16,7 @@
 package org.noear.solon.data.sql.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.data.sql.SqlCommand;
 import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowIterator;
 import org.noear.solon.data.sql.bound.StatementBinder;
@@ -25,6 +26,8 @@ import org.noear.solon.data.tran.TranUtils;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Sql 执行器简单实现
@@ -33,15 +36,45 @@ import java.util.*;
  * @since 3.0
  */
 public class SimpleSqlExecutor implements SqlExecutor {
-    private final DataSource dataSource;
-    private final String sql;
-    private final Object[] argsDef;
-    private final static DefaultBinder binderDef = new DefaultBinder();
+    private final static DefaultBinder DEFAULT_BINDER = new DefaultBinder();
 
-    public SimpleSqlExecutor(DataSource dataSource, String sql, Object[] args) {
+    private final DataSource dataSource;
+    private final String commandText;
+    private SqlCommand command;
+    private Consumer<SqlCommand> onCommandPost;
+
+    public SimpleSqlExecutor(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
-        this.sql = sql;
-        this.argsDef = args;
+        this.commandText = sql;
+    }
+
+    @Override
+    public SqlExecutor params(Object... args) {
+        this.command = new SqlCommand(commandText, args, DEFAULT_BINDER);
+        return this;
+    }
+
+    @Override
+    public <S> SqlExecutor params(S args, StatementBinder<S> binder) {
+        this.command = new SqlCommand(commandText, args, binder);
+        return this;
+    }
+
+    @Override
+    public SqlExecutor params(Collection<Object[]> argsList) {
+        this.command = new SqlCommand(commandText, argsList, DEFAULT_BINDER);
+        return this;
+    }
+
+    @Override
+    public <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier) {
+        this.command = new SqlCommand(commandText, argsList, binderSupplier.get());
+        return this;
+    }
+
+    public SqlExecutor onCommandPost(Consumer<SqlCommand> action) {
+        this.onCommandPost = action;
+        return this;
     }
 
     @Override
@@ -61,8 +94,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, argsDef);
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
@@ -80,8 +112,8 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binderDef.setValues(holder.stmt, argsDef);
+        try (StatementHolder holder = buildStatement(command, false, false)) {
+
             holder.rsts = holder.stmt.executeQuery();
 
             List<T> list = new ArrayList<>();
@@ -101,8 +133,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        CommandHolder holder = buildCommand(sql, false, true);
-        binderDef.setValues(holder.stmt, argsDef);
+        StatementHolder holder = buildStatement(command, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
@@ -111,27 +142,14 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int update() throws SQLException {
-        return update(argsDef, binderDef);
-    }
-
-    @Override
-    public <S> int update(S args, StatementBinder<S> binder) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            binder.setValues(holder.stmt, args);
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             return holder.stmt.executeUpdate();
         }
     }
 
-
     @Override
     public <T> T updateReturnKey() throws SQLException {
-        return updateReturnKey(argsDef, binderDef);
-    }
-
-    @Override
-    public <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, true, false)) {
-            binder.setValues(holder.stmt, args);
+        try (StatementHolder holder = buildStatement(command, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -144,33 +162,15 @@ public class SimpleSqlExecutor implements SqlExecutor {
     }
 
     @Override
-    public int[] updateBatch(Collection<Object[]> argsList) throws SQLException {
-        return updateBatch(argsList, binderDef);
-    }
-
-    @Override
-    public <S> int[] updateBatch(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, false, false)) {
-            for (S row : argsList) {
-                binder.setValues(holder.stmt, row);
-                holder.stmt.addBatch();
-            }
+    public int[] updateBatch() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             return holder.stmt.executeBatch();
         }
     }
 
     @Override
-    public <T> List<T> updateBatchReturnKeys(Collection<Object[]> argsList) throws SQLException {
-        return updateBatchReturnKeys(argsList, binderDef);
-    }
-
-    @Override
-    public <T, S> List<T> updateBatchReturnKeys(Collection<S> argsList, StatementBinder<S> binder) throws SQLException {
-        try (CommandHolder holder = buildCommand(sql, true, false)) {
-            for (S row : argsList) {
-                binder.setValues(holder.stmt, row);
-                holder.stmt.addBatch();
-            }
+    public <T> List<T> updateBatchReturnKeys() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, true, false)) {
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -188,30 +188,38 @@ public class SimpleSqlExecutor implements SqlExecutor {
     /**
      * 构建预处理
      */
-    protected CommandHolder buildCommand(String sql, boolean returnKeys, boolean isStream) throws SQLException {
-        CommandHolder holder = new CommandHolder();
+    protected StatementHolder buildStatement(SqlCommand command, boolean returnKeys, boolean isStream) throws SQLException {
+        //命令确认
+        if (onCommandPost != null) {
+            onCommandPost.accept(command);
+        }
+
+        StatementHolder holder = new StatementHolder();
         holder.conn = getConnection();
 
         if (isStream) {
             //流
-            if (sql.startsWith("{call")) {
-                holder.stmt = holder.conn.prepareCall(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            if (command.getSql().startsWith("{call")) {
+                holder.stmt = holder.conn.prepareCall(command.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             } else {
-                holder.stmt = holder.conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                holder.stmt = holder.conn.prepareStatement(command.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             }
         } else {
             if (returnKeys) {
                 //插入
-                holder.stmt = holder.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                holder.stmt = holder.conn.prepareStatement(command.getSql(), Statement.RETURN_GENERATED_KEYS);
             } else {
                 //其它
-                if (sql.startsWith("{call")) {
-                    holder.stmt = holder.conn.prepareCall(sql);
+                if (command.getSql().startsWith("{call")) {
+                    holder.stmt = holder.conn.prepareCall(command.getSql());
                 } else {
-                    holder.stmt = holder.conn.prepareStatement(sql);
+                    holder.stmt = holder.conn.prepareStatement(command.getSql());
                 }
             }
         }
+
+        //绑定参数
+        command.fill(holder.stmt);
 
         return holder;
     }

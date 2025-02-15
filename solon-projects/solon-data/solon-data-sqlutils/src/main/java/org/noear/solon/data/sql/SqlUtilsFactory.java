@@ -29,5 +29,5 @@ public interface SqlUtilsFactory {
      *
      * @since 3.0
      */
-    SqlExecutor create(DataSource ds, String sql, Object... args);
+    SqlExecutor create(DataSource ds, String sql);
 }

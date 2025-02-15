@@ -27,10 +27,10 @@ import java.sql.SQLException;
  * @since 3.0
  */
 class SimpleRowIterator<T> implements RowIterator<T> {
-    private final CommandHolder holder;
+    private final StatementHolder holder;
     private final RowConverter<T> converter;
 
-    public SimpleRowIterator(CommandHolder holder, RowConverter<T> converter) {
+    public SimpleRowIterator(StatementHolder holder, RowConverter<T> converter) {
         this.holder = holder;
         this.converter = converter;
     }

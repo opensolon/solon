@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 public class SimpleSqlUtilsFactory implements SqlUtilsFactory {
 
     @Override
-    public SqlExecutor create(DataSource ds, String sql, Object... args) {
-        return new SimpleSqlExecutor(ds, sql, args);
+    public SqlExecutor create(DataSource ds, String sql) {
+        return new SimpleSqlExecutor(ds, sql);
     }
 }

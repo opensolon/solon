@@ -24,6 +24,7 @@ import org.noear.solon.lang.Preview;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Sql 执行器
@@ -33,6 +34,29 @@ import java.util.List;
  */
 @Preview("3.0")
 public interface SqlExecutor {
+    /**
+     * 绑定参数
+     */
+    SqlExecutor params(Object... args);
+
+    /**
+     * 绑定参数
+     */
+    <S> SqlExecutor params(S args, StatementBinder<S> binder);
+
+    /**
+     * 绑定参数（用于批处理）
+     */
+    SqlExecutor params(Collection<Object[]> argsList);
+
+    /**
+     * 绑定参数（用于批处理）
+     */
+    <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier);
+
+
+    /// //////////////////////
+
     /**
      * 查询并获取值
      *
@@ -108,16 +132,6 @@ public interface SqlExecutor {
     int update() throws SQLException;
 
     /**
-     * 批量更新（插入、或更新、或删除）
-     *
-     * @param args   参数
-     * @param binder 绑定器
-     * @return 受影响行数组
-     */
-    <S> int update(S args, StatementBinder<S> binder) throws SQLException;
-
-
-    /**
      * 更新并返回主键
      *
      * @return 主键
@@ -125,48 +139,20 @@ public interface SqlExecutor {
     @Nullable
     <T> T updateReturnKey() throws SQLException;
 
-    /**
-     * 更新并返回主键
-     *
-     * @return 主键
-     */
-    @Nullable
-    <T, S> T updateReturnKey(S args, StatementBinder<S> binder) throws SQLException;
-
     /// //////////////////////
 
     /**
      * 批量更新（插入、或更新、或删除）
      *
-     * @param argsList 参数集合
      * @return 受影响行数组
      */
-    int[] updateBatch(Collection<Object[]> argsList) throws SQLException;
-
-    /**
-     * 批量更新（插入、或更新、或删除）
-     *
-     * @param argsList 参数集合
-     * @param binder   绑定器
-     * @return 受影响行数组
-     */
-    <S> int[] updateBatch(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
-
-    /**
-     * 批量更新并返回主键（插入、或更新、或删除）
-     *
-     * @param argsList 参数集合
-     * @return 受影响行数组
-     */
-    <T> List<T> updateBatchReturnKeys(Collection<Object[]> argsList) throws SQLException;
+    int[] updateBatch() throws SQLException;
 
 
     /**
      * 批量更新并返回主键（插入、或更新、或删除）
      *
-     * @param argsList 参数集合
-     * @param binder   绑定器
      * @return 受影响行数组
      */
-    <T, S> List<T> updateBatchReturnKeys(Collection<S> argsList, StatementBinder<S> binder) throws SQLException;
+    <T> List<T> updateBatchReturnKeys() throws SQLException;
 }
