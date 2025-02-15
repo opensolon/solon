@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 /**
  * Sql 执行器
@@ -32,6 +33,28 @@ import java.util.Collection;
  */
 @Preview("3.0")
 public interface RxSqlExecutor {
+    /**
+     * 绑定参数
+     */
+    RxSqlExecutor params(Object... args);
+
+    /**
+     * 绑定参数
+     */
+    <S> RxSqlExecutor params(S args, RxStatementBinder<S> binder);
+
+    /**
+     * 绑定参数（用于批处理）
+     */
+    RxSqlExecutor params(Collection<Object[]> argsList);
+
+    /**
+     * 绑定参数（用于批处理）
+     */
+    <S> RxSqlExecutor params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier);
+
+    /// /////////////////////////////
+
     /**
      * 查询并获取值
      *
@@ -90,15 +113,6 @@ public interface RxSqlExecutor {
     Mono<Long> update();
 
     /**
-     * 批量更新（插入、或更新、或删除）
-     *
-     * @param args   参数
-     * @param binder 绑定器
-     * @return 受影响行数组
-     */
-    <S> Mono<Long> update(S args, RxStatementBinder<S> binder);
-
-    /**
      * 更新并返回主键
      *
      * @return 主键
@@ -107,27 +121,9 @@ public interface RxSqlExecutor {
     <T> Mono<T> updateReturnKey(Class<T> tClass);
 
     /**
-     * 更新并返回主键
-     *
-     * @return 主键
-     */
-    @Nullable
-    <T, S> Mono<T> updateReturnKey(Class<T> tClass, S args, RxStatementBinder<S> binder);
-
-    /**
      * 批量更新（插入、或更新、或删除）
      *
-     * @param argsList 参数集合
      * @return 受影响行数组
      */
-    Flux<Long> updateBatch(Collection<Object[]> argsList);
-
-    /**
-     * 批量更新（插入、或更新、或删除）
-     *
-     * @param argsList 参数集合
-     * @param binder   绑定器
-     * @return 受影响行数组
-     */
-    <S> Flux<Long> updateBatch(Collection<S> argsList, RxStatementBinder<S> binder);
+    Flux<Long> updateBatch();
 }

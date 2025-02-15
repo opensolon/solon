@@ -29,5 +29,5 @@ public interface RxSqlUtilsFactory {
     /**
      * 创建 Sql 执行器
      */
-    RxSqlExecutor create(ConnectionFactory ds, String sql, Object... args);
+    RxSqlExecutor create(ConnectionFactory ds, String sql);
 }

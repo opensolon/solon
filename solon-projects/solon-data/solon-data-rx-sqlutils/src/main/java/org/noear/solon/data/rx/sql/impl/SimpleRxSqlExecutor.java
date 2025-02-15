@@ -17,7 +17,9 @@ package org.noear.solon.data.rx.sql.impl;
 
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactory;
+import io.r2dbc.spi.Result;
 import io.r2dbc.spi.Statement;
+import org.noear.solon.data.rx.sql.RxSqlCommand;
 import org.noear.solon.data.rx.sql.RxSqlExecutor;
 import org.noear.solon.data.rx.sql.bound.RxRowConverter;
 import org.noear.solon.data.rx.sql.bound.RxStatementBinder;
@@ -26,6 +28,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Sql 执行器简单实现
@@ -34,15 +38,44 @@ import java.util.Collection;
  * @since 3.0
  */
 public class SimpleRxSqlExecutor implements RxSqlExecutor {
+    private final static DefaultRxBinder DEFAULT_BINDER = new DefaultRxBinder();
     private final ConnectionFactory dataSource;
-    private final String sql;
-    private final Object[] argsDef;
-    private final static DefaultRxBinder binderDef = new DefaultRxBinder();
+    private final String commandText;
+    private RxSqlCommand command;
+    private Consumer<RxSqlCommand> onCommandPost;
 
-    public SimpleRxSqlExecutor(ConnectionFactory dataSource, String sql, Object[] args) {
+    public SimpleRxSqlExecutor(ConnectionFactory dataSource, String sql) {
         this.dataSource = dataSource;
-        this.sql = sql;
-        this.argsDef = args;
+        this.commandText = sql;
+    }
+
+    @Override
+    public RxSqlExecutor params(Object... args) {
+        this.command = new RxSqlCommand(commandText, args, DEFAULT_BINDER);
+        return this;
+    }
+
+    @Override
+    public <S> RxSqlExecutor params(S args, RxStatementBinder<S> binder) {
+        this.command = new RxSqlCommand(commandText, args, binder);
+        return this;
+    }
+
+    @Override
+    public RxSqlExecutor params(Collection<Object[]> argsList) {
+        this.command = new RxSqlCommand(commandText, argsList, DEFAULT_BINDER);
+        return this;
+    }
+
+    @Override
+    public <S> RxSqlExecutor params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier) {
+        this.command = new RxSqlCommand(commandText, argsList, binderSupplier.get());
+        return this;
+    }
+
+    public RxSqlExecutor onCommandPost(Consumer<RxSqlCommand> action) {
+        this.onCommandPost = action;
+        return this;
     }
 
     @Override
@@ -63,7 +96,7 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     @Override
     public <T> Mono<T> queryRow(RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.map(converter::convert))
                 .take(1)
                 .singleOrEmpty();
@@ -77,19 +110,14 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     @Override
     public <T> Flux<T> queryRowList(RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> binderDef.setValues(conn.createStatement(sql), argsDef).execute())
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.map(converter::convert));
     }
 
     @Override
     public Mono<Long> update() {
-        return update(argsDef, binderDef);
-    }
-
-    @Override
-    public <S> Mono<Long> update(S args, RxStatementBinder<S> binder) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> binder.setValues(conn.createStatement(sql), args).execute())
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.getRowsUpdated())
                 .take(1)
                 .singleOrEmpty();
@@ -97,44 +125,37 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public <T> Mono<T> updateReturnKey(Class<T> tClass) {
-        return updateReturnKey(tClass, argsDef, binderDef);
-    }
-
-    @Override
-    public <T, S> Mono<T> updateReturnKey(Class<T> tClass, S args, RxStatementBinder<S> binder) {
         return (Mono<T>) Mono.from(getConnection())
-                .flatMapMany(conn -> binder.setValues(conn.createStatement(sql).returnGeneratedValues(), args).execute())
+                .flatMapMany(conn -> buildStatement(conn, command, true))
                 .flatMap(result -> result.map(r -> r.get(0)))
                 .take(1)
                 .singleOrEmpty();
     }
 
     @Override
-    public Flux<Long> updateBatch(Collection<Object[]> argsList) {
-        return updateBatch(argsList, binderDef);
-    }
-
-    @Override
-    public <T> Flux<Long> updateBatch(Collection<T> argsList, RxStatementBinder<T> binder) {
+    public Flux<Long> updateBatch() {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> {
-                    Statement stmt = conn.createStatement(sql);
-                    int count = 0;
-                    for (T row : argsList) {
-                        if (count > 0) {
-                            stmt.add();
-                        }
-
-                        binder.setValues(stmt, row);
-                        count++;
-                    }
-                    return stmt.execute();
-                })
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.getRowsUpdated());
     }
 
 
-    /////////////////////
+    /// //////////////////
+
+    protected Publisher<? extends Result> buildStatement(Connection conn, RxSqlCommand command, boolean returnKeys) {
+        if (onCommandPost != null) {
+            onCommandPost.accept(command);
+        }
+
+        Statement stmt = conn.createStatement(command.getSql());
+
+        if (returnKeys) {
+            stmt.returnGeneratedValues();
+        }
+
+        command.fill(stmt);
+        return stmt.execute();
+    }
 
 
     /**

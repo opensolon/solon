@@ -35,6 +35,6 @@ public class DefaultRxSqlUtils implements RxSqlUtils {
 
     @Override
     public RxSqlExecutor sql(String sql, Object... args) {
-        return SqlConfiguration.getFactory().create(ds, sql, args);
+        return SqlConfiguration.getFactory().create(ds, sql).params(args);
     }
 }

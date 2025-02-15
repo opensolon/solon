@@ -28,7 +28,9 @@ import org.noear.solon.data.rx.sql.RxSqlUtilsFactory;
 public class SimpleRxSqlUtilsFactory implements RxSqlUtilsFactory {
 
     @Override
-    public RxSqlExecutor create(ConnectionFactory ds, String sql, Object... args) {
-        return new SimpleRxSqlExecutor(ds, sql, args);
+    public RxSqlExecutor create(ConnectionFactory ds, String sql) {
+        return new SimpleRxSqlExecutor(ds, sql).onCommandPost(cmd->{
+            System.out.println(cmd);
+        });
     }
 }
