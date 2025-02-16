@@ -27,6 +27,7 @@ public interface Filter {
      * 过滤
      *
      * @param ctx 上下文
+     * @param chain 过滤器调用链
      * */
     void doFilter(Context ctx, FilterChain chain) throws Throwable;
 }
