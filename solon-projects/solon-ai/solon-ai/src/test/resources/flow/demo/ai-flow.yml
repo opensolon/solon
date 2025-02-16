@@ -1,0 +1,54 @@
+id: demo1
+nodes:
+  - title: "开始"
+    type: start
+  - title: "文件提取"
+    meta.input: "file" # 可视界面的配置（通过元信息表示）
+    meta.output: "fileTxt"
+    task: |
+      import org.noear.solon.ai.loader.*;
+      
+      var loader = FileLoader.of(file);
+      var fileTxt = loader.load();
+      context.put(node.meta().get("meta.output"), fileTxt); //推入上下文（后续节点可用）
+  - title: "LLM"
+    meta.model: "Qwen/Qwen2.5-72B-Instruct" # 可视界面的配置（通过元信息表示）
+    meta.input: "fileTxt"
+    meta.messages:
+      - role: system
+        content: "#角色\n你是一个数据专家，删除数据的格式整理和转换\n\n#上下文\n${fileTxt}\n\n#任务\n提取csv格式的字符串"
+    task: |
+      import com.demo.ModelUtils; //根据业务封装，可快速获取配置的模型
+      import com.demo.MessageUtils; //根据业务封装，可快速构建消息
+             
+      var chatModel = ModelUtils.get(node.meta().get("model"));
+      var chatMessages = MessageUtils.get(node.meta().get("messages"), context);
+      var resp = chatModel.prompt(chatMessages).call();
+      context.put("resp", resp);
+  - title: "参数提取器"
+    meta.model: "Qwen/Qwen2.5-72B-Instruct" # 可视界面的配置（通过元信息表示）
+    meta.output: "csvData"
+    task: |
+      context.put(node.meta().get("meta.output"), resp.getMessage().getContent());
+  - title: "执行代码"
+    meta.input: "csvData"
+    task: |
+      import com.demo.DataUtils;
+      
+      String json = DataUtils.csvToJson(node.meta().get("meta.input"));  //转为 json 数据
+      String echatCode = DataUtils.jsonAsEchatCode(json); //转为 echat 图表代码
+      context.result = echatCode; //做为结果返回
+  - title: "结束"
+    type: end
+      
+#    @Mapping
+#    public void case4(UploadedFile attachment, String message) throws Throwable {
+#        FlowEngine flowEngine = FlowEngine.newInstance();
+#        flowEngine.load(Chain.parseByUri("classpath:flow/demo1.chain.yml"));
+#
+#        ChainContext ctx  = new ChainContext();
+#        ctx.put("file", attachment);
+#
+#        flowEngine.eval("demo1");
+#    }
+
