@@ -78,23 +78,16 @@ public class BeanWrap {
     /**
      * 是否为Null或者自来泛型
      */
-    public boolean isNullOrGenericFrom(ParameterizedType genericType) {
+    protected boolean isNullOrGenericFrom(ParameterizedType genericType) {
         if (genericType == null) {
             return true;
         } else {
-            return isGenericFrom(genericType);
-        }
-    }
+            if (genericList == null) {
+                return false;
+            }
 
-    /**
-     * 是否为自来泛型
-     */
-    public boolean isGenericFrom(ParameterizedType genericType) {
-        if (genericList == null || genericType == null) {
-            return false;
+            return genericList.contains(genericType.getTypeName());
         }
-
-        return genericList.contains(genericType.getTypeName());
     }
 
 

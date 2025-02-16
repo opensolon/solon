@@ -595,22 +595,14 @@ public abstract class BeanContainer {
     public void subWrapsOfType(Class<?> baseType, ParameterizedType genericType, Consumer<BeanWrap> callback, int index) {
         //获取现有的
         beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.rawClz())) {
-                if (genericType != null && bw.isGenericFrom(genericType) == false) {
-                    return;
-                }
-
+            if (baseType.isAssignableFrom(bw.rawClz()) && bw.isNullOrGenericFrom(genericType)) {
                 callback.accept(bw);
             }
         });
 
         //获取未来的
         beanBaseSubscribe((bw) -> {
-            if (baseType.isAssignableFrom(bw.rawClz())) {
-                if (genericType != null && bw.isGenericFrom(genericType) == false) {
-                    return;
-                }
-
+            if (baseType.isAssignableFrom(bw.rawClz()) && bw.isNullOrGenericFrom(genericType)) {
                 callback.accept(bw);
             }
         }, index);
@@ -653,14 +645,10 @@ public abstract class BeanContainer {
      * @param genericType 泛型
      */
     public <T> List<T> getBeansOfType(Class<T> baseType, ParameterizedType genericType) {
-        List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
+        List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()) && bw.isNullOrGenericFrom(genericType));
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
-            if (genericType != null && bw.isGenericFrom(genericType) == false) {
-                continue;
-            }
-
             beans.add(bw.get());
         }
 
@@ -686,11 +674,7 @@ public abstract class BeanContainer {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
-            if (baseType.isAssignableFrom(bw.rawClz())) {
-                if (genericType != null && bw.isGenericFrom(genericType) == false) {
-                    return;
-                }
-
+            if (baseType.isAssignableFrom(bw.rawClz()) && bw.isNullOrGenericFrom(genericType)) {
                 if (Utils.isNotEmpty(bw.name())) {
                     beanMap.put(bw.name(), bw.get());
                 }
