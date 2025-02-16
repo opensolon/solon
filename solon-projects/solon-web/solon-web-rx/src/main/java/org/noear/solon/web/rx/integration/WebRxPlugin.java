@@ -34,14 +34,12 @@ public class WebRxPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         RxChainManager<Context> chainManager = new RxChainManager<>();
-        ParameterizedType filterType = new ParameterizedTypeImpl(RxFilter.class, new Type[]{Context.class}, null);
+        ParameterizedType filterGenericType = new ParameterizedTypeImpl(RxFilter.class, new Type[]{Context.class});
 
         context.wrapAndPut("RxChainManager<Context>", chainManager);
 
-        context.subWrapsOfType(RxFilter.class, bw -> {
-            if (bw.isGenericFrom(filterType)) {
-                chainManager.addFilter(bw.get(), bw.index());
-            }
+        context.subWrapsOfType(RxFilter.class, filterGenericType, bw -> {
+            chainManager.addFilter(bw.get(), bw.index());
         });
 
         context.app().chainManager().addReturnHandler(new ActionReturnRxHandler());
