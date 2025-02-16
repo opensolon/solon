@@ -81,33 +81,39 @@ public class ParameterizedTypeImpl implements ParameterizedType {
                 Objects.hashCode(rawType);
     }
 
+    private String _string;
+
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        if (_string == null) {
+            StringBuilder buf = new StringBuilder();
 
-        if (ownerType != null) {
-            sb.append(ownerType.getTypeName());
+            if (ownerType != null) {
+                buf.append(ownerType.getTypeName());
 
-            sb.append("$");
+                buf.append("$");
 
-            if (ownerType instanceof ParameterizedTypeImpl) {
-                // Find simple name of nested type by removing the
-                // shared prefix with owner.
-                sb.append(rawType.getName().replace(((ParameterizedTypeImpl) ownerType).rawType.getName() + "$",
-                        ""));
+                if (ownerType instanceof ParameterizedTypeImpl) {
+                    // Find simple name of nested type by removing the
+                    // shared prefix with owner.
+                    buf.append(rawType.getName().replace(((ParameterizedTypeImpl) ownerType).rawType.getName() + "$",
+                            ""));
+                } else
+                    buf.append(rawType.getSimpleName());
             } else
-                sb.append(rawType.getSimpleName());
-        } else
-            sb.append(rawType.getName());
+                buf.append(rawType.getName());
 
-        if (actualTypeArguments != null) {
-            StringJoiner sj = new StringJoiner(", ", "<", ">");
-            sj.setEmptyValue("");
-            for (Type t : actualTypeArguments) {
-                sj.add(t.getTypeName());
+            if (actualTypeArguments != null) {
+                StringJoiner sj = new StringJoiner(", ", "<", ">");
+                sj.setEmptyValue("");
+                for (Type t : actualTypeArguments) {
+                    sj.add(t.getTypeName());
+                }
+                buf.append(sj);
             }
-            sb.append(sj.toString());
+
+            _string = buf.toString();
         }
 
-        return sb.toString();
+        return _string;
     }
 }
