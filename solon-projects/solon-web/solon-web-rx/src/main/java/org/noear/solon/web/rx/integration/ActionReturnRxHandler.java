@@ -15,12 +15,16 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.rx.handle.RxChainManager;
+import org.noear.solon.rx.handle.RxHandler;
 import org.noear.solon.web.util.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ClassUtil;
+
 import org.reactivestreams.Publisher;
+
 import reactor.core.publisher.Flux;
 
 /**
@@ -31,9 +35,11 @@ import reactor.core.publisher.Flux;
  */
 public class ActionReturnRxHandler implements ActionReturnHandler {
     private final boolean hasReactor;
+    private RxChainManager chainManager;
 
     public ActionReturnRxHandler() {
-        hasReactor = ClassUtil.hasClass(() -> Flux.class);
+        this.hasReactor = ClassUtil.hasClass(() -> Flux.class);
+        this.chainManager = RxChainManager.getInstance();
     }
 
     @Override
@@ -48,10 +54,27 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
+            //预处理
             boolean isStreaming = isStreaming(ctx);
             Publisher publisher = postPublisher(ctx, action, result, isStreaming);
 
-            publisher.subscribe(new ActionRxSubscriber(ctx, action, isStreaming));
+            //处理
+            RxHandler handler = new ActionRxHandler(action, publisher, isStreaming);
+            chainManager.doFilter(ctx, handler)
+                    .doOnError(err -> {
+                        try {
+                            ctx.status(500);
+                        } finally {
+                            //onComplete();
+                            if (ctx.asyncSupported()) {
+                                ctx.asyncComplete();
+                            }
+                        }
+                    }).doOnComplete(() -> {
+                        if (ctx.asyncSupported()) {
+                            ctx.asyncComplete();
+                        }
+                    }).subscribe();
         }
     }
 

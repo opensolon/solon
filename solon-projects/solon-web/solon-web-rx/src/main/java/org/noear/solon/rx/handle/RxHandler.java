@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.web.rx.integration;
+package org.noear.solon.rx.handle;
 
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.rx.handle.RxChainManager;
-import org.noear.solon.rx.handle.RxFilter;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.rx.Completable;
 
 /**
+ * 响应式处理器
+ *
  * @author noear
- * @since 2.3
+ * @since 3.1
  */
-public class WebRxPlugin implements Plugin {
-    @Override
-    public void start(AppContext context) throws Throwable {
-        RxChainManager chainManager = RxChainManager.getInstance();
-
-        context.subWrapsOfType(RxFilter.class, bw -> {
-            chainManager.addFilter(bw.get(), bw.index());
-        });
-
-        context.app().chainManager().addReturnHandler(new ActionReturnRxHandler());
-    }
+public interface RxHandler {
+    /**
+     * 处理
+     *
+     * @param ctx 上下文
+     */
+    Completable handle(Context ctx);
 }

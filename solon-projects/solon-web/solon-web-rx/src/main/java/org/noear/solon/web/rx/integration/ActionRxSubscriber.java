@@ -17,6 +17,7 @@ package org.noear.solon.web.rx.integration;
 
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.rx.CompletableEmitter;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -34,11 +35,13 @@ public class ActionRxSubscriber implements Subscriber {
     private Context ctx;
     private Action action;
     private boolean isStreaming;
+    private CompletableEmitter completableEmitter;
 
-    public ActionRxSubscriber(Context ctx, Action action, boolean isStreaming) {
+    public ActionRxSubscriber(Context ctx, Action action, boolean isStreaming, CompletableEmitter completableEmitter) {
         this.ctx = ctx;
         this.action = action;
         this.isStreaming = isStreaming;
+        this.completableEmitter = completableEmitter;
     }
 
     private void request(Subscription subscription) {
@@ -74,20 +77,11 @@ public class ActionRxSubscriber implements Subscriber {
 
     @Override
     public void onError(Throwable e) {
-        try {
-            action.render(e, ctx, false);
-        } catch (Throwable e2) {
-            ctx.status(500);
-            log.warn(e.getMessage(), e);
-        } finally {
-            onComplete();
-        }
+        completableEmitter.onError(e);
     }
 
     @Override
     public void onComplete() {
-        if (ctx.asyncSupported()) {
-            ctx.asyncComplete();
-        }
+        completableEmitter.onComplete();
     }
 }
