@@ -10,9 +10,10 @@ import org.noear.solon.rx.handle.RxFilterChain;
  * @author noear 2025/2/16 created
  */
 @Component
-public class RxFilterImpl implements RxFilter {
+public class RxFilterImpl implements RxFilter<Context> {
+
     @Override
-    public Completable doFilter(Context ctx, RxFilterChain chain) {
+    public Completable doFilter(Context ctx, RxFilterChain<Context> chain) {
         return chain.doFilter(ctx)
                 .doOnComplete(() -> {
                     System.out.println("RxFilterImpl.doFilter called");

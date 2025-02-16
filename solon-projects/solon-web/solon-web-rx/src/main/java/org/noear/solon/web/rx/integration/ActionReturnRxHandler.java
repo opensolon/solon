@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.rx.integration;
 
+import org.noear.solon.Solon;
 import org.noear.solon.rx.handle.RxChainManager;
 import org.noear.solon.rx.handle.RxHandler;
 import org.noear.solon.web.util.MimeType;
@@ -35,11 +36,11 @@ import reactor.core.publisher.Flux;
  */
 public class ActionReturnRxHandler implements ActionReturnHandler {
     private final boolean hasReactor;
-    private RxChainManager chainManager;
+    private RxChainManager<Context> chainManager;
 
     public ActionReturnRxHandler() {
         this.hasReactor = ClassUtil.hasClass(() -> Flux.class);
-        this.chainManager = RxChainManager.getInstance();
+        this.chainManager = Solon.context().getBean("RxChainManager<Context>");
     }
 
     @Override

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.rx.handle;
 
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.rx.Completable;
 
 /**
@@ -24,12 +23,12 @@ import org.noear.solon.rx.Completable;
  * @author noear
  * @since 3.1
  */
-public interface RxFilter {
+public interface RxFilter<CTX> {
     /**
      * 过滤
      *
      * @param ctx   上下文
      * @param chain 响应式过滤器调用链
      */
-    Completable doFilter(Context ctx, RxFilterChain chain);
+    Completable doFilter(CTX ctx, RxFilterChain<CTX> chain);
 }

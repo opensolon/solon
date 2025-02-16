@@ -17,20 +17,31 @@ package org.noear.solon.web.rx.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.rx.handle.RxChainManager;
 import org.noear.solon.rx.handle.RxFilter;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * @author noear
  * @since 2.3
  */
 public class WebRxPlugin implements Plugin {
+
     @Override
     public void start(AppContext context) throws Throwable {
-        RxChainManager chainManager = RxChainManager.getInstance();
+        RxChainManager<Context> chainManager = new RxChainManager<>();
+        ParameterizedType filterType = new ParameterizedTypeImpl(RxFilter.class, new Type[]{Context.class}, null);
+
+        context.wrapAndPut("RxChainManager<Context>", chainManager);
 
         context.subWrapsOfType(RxFilter.class, bw -> {
-            chainManager.addFilter(bw.get(), bw.index());
+            if (bw.isGenericFrom(filterType)) {
+                chainManager.addFilter(bw.get(), bw.index());
+            }
         });
 
         context.app().chainManager().addReturnHandler(new ActionReturnRxHandler());

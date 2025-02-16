@@ -15,11 +15,11 @@
  */
 package org.noear.solon.rx.handle;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.rx.Completable;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,11 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author noear
  * @since 3.1
  */
-public class RxChainManager {
-    public static RxChainManager getInstance() {
-        return Solon.context().wrapAndPut(RxChainManager.class).get();
-    }
-
+public class RxChainManager<CTX> {
     /**
      * 类型集合（用于重复检测）
      */
@@ -42,14 +38,14 @@ public class RxChainManager {
     /**
      * 过滤器 节点
      */
-    private final List<RankEntity<RxFilter>> filterNodes = new ArrayList<>();
+    private final List<RankEntity<RxFilter<CTX>>> filterNodes = new ArrayList<>();
 
     private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
-    public Collection<RxFilter> getFilterNodes() {
-        List<RxFilter> tmp = new ArrayList<>();
+    public Collection<RxFilter<CTX>> getFilterNodes() {
+        List<RxFilter<CTX>> tmp = new ArrayList<>();
 
-        for (RankEntity<RxFilter> entity : filterNodes) {
+        for (RankEntity<RxFilter<CTX>> entity : filterNodes) {
             tmp.add(entity.target);
         }
 
@@ -59,7 +55,7 @@ public class RxChainManager {
     /**
      * 添加过滤器
      */
-    public void addFilter(RxFilter filter, int index) {
+    public void addFilter(RxFilter<CTX> filter, int index) {
         SYNC_LOCK.lock();
 
         try {
@@ -75,7 +71,7 @@ public class RxChainManager {
     /**
      * 添加过滤器，如果有相同类的则不加
      */
-    public void addFilterIfAbsent(RxFilter filter, int index) {
+    public void addFilterIfAbsent(RxFilter<CTX> filter, int index) {
         SYNC_LOCK.lock();
 
         try {
@@ -96,7 +92,7 @@ public class RxChainManager {
     /**
      * 执行过滤
      */
-    public Completable doFilter(Context x, RxHandler lastHandler) throws Throwable {
+    public Completable doFilter(CTX x, RxHandler<CTX> lastHandler) throws Throwable {
         return new RxFilterChainImpl(filterNodes, lastHandler).doFilter(x);
     }
 }

@@ -9,7 +9,7 @@ import org.reactivestreams.Publisher;
 /**
  * @author noear 2025/2/16 created
  */
-public class ActionRxHandler implements RxHandler {
+public class ActionRxHandler implements RxHandler<Context> {
     private Action action;
     private Publisher publisher;
     private boolean isStreaming;
