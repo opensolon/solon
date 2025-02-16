@@ -429,7 +429,7 @@ public abstract class BeanContainer {
 
     /**
      * wrap 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
-     * 
+     *
      * @deprecated 3.0 {@link #beanPublish(BeanWrap)}
      */
     @Deprecated
@@ -575,9 +575,31 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback, int index) {
+        subWrapsOfType(baseType, null, callback, index);
+    }
+
+    /**
+     * 订阅某类型的 bean 包装
+     *
+     * @param baseType 基类
+     */
+    public void subWrapsOfType(Class<?> baseType, ParameterizedType genericType, Consumer<BeanWrap> callback) {
+        subWrapsOfType(baseType, genericType, callback, 0);
+    }
+
+    /**
+     * 订阅某类型的 bean 包装
+     *
+     * @param baseType 基类
+     */
+    public void subWrapsOfType(Class<?> baseType, ParameterizedType genericType, Consumer<BeanWrap> callback, int index) {
         //获取现有的
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
+                if (genericType != null && bw.isGenericFrom(genericType) == false) {
+                    return;
+                }
+
                 callback.accept(bw);
             }
         });
@@ -585,6 +607,10 @@ public abstract class BeanContainer {
         //获取未来的
         beanBaseSubscribe((bw) -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
+                if (genericType != null && bw.isGenericFrom(genericType) == false) {
+                    return;
+                }
+
                 callback.accept(bw);
             }
         }, index);
@@ -624,14 +650,14 @@ public abstract class BeanContainer {
      * 获取某类型的 bean list
      *
      * @param baseType    基类
-     * @param geneticName 泛型名
+     * @param genericType 泛型
      */
-    public <T> List<T> getBeansOfType(Class<T> baseType, String geneticName) {
+    public <T> List<T> getBeansOfType(Class<T> baseType, ParameterizedType genericType) {
         List<BeanWrap> beanWraps = beanFind(bw -> baseType.isAssignableFrom(bw.rawClz()));
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
-            if (geneticName != null && bw.isGenericFrom(geneticName) == false) {
+            if (genericType != null && bw.isGenericFrom(genericType) == false) {
                 continue;
             }
 
@@ -654,14 +680,14 @@ public abstract class BeanContainer {
      * 获取某类型的 bean map
      *
      * @param baseType    基类
-     * @param geneticName 泛型名
+     * @param genericType 泛型
      */
-    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, String geneticName) {
+    public <T> Map<String, T> getBeansMapOfType(Class<T> baseType, ParameterizedType genericType) {
         Map<String, T> beanMap = new HashMap<>();
 
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
-                if (geneticName != null && bw.isGenericFrom(geneticName) == false) {
+                if (genericType != null && bw.isGenericFrom(genericType) == false) {
                     return;
                 }
 
@@ -711,7 +737,16 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public <T> void subBeansOfType(Class<T> baseType, Consumer<T> callback) {
-        subWrapsOfType(baseType, (bw) -> {
+        subBeansOfType(baseType, null, callback);
+    }
+
+    /**
+     * 订阅某类型的 Bean
+     *
+     * @param baseType 基类
+     */
+    public <T> void subBeansOfType(Class<T> baseType, ParameterizedType genericType, Consumer<T> callback) {
+        subWrapsOfType(baseType, genericType, (bw) -> {
             callback.accept(bw.get());
         });
     }

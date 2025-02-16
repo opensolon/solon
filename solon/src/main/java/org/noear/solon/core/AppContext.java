@@ -316,14 +316,14 @@ public class AppContext extends BeanContainer {
                     //支持 List<Bean> 注入 //@since 3.0
                     Type tmp = vh.getGenericType().getActualTypeArguments()[0];
 
-                    final String typeFilter; //过滤泛型
+                    final ParameterizedType genericType; //过滤泛型
                     final Type type;
                     if (tmp instanceof ParameterizedType) {
+                        genericType = ((ParameterizedType) tmp);
                         type = ((ParameterizedType) tmp).getRawType();
-                        typeFilter = tmp.getTypeName();
                     } else {
+                        genericType = null;
                         type = tmp;
-                        typeFilter = null;
                     }
 
                     if (type instanceof Class) {
@@ -332,7 +332,7 @@ public class AppContext extends BeanContainer {
                         }
                         vh.required(required);
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, typeFilter));
+                        vh.setValueDefault(() -> this.getBeansOfType((Class<? extends Object>) type, genericType));
                     }
                 } else if (Map.class == vh.getType()) {
                     //支持 Map<String,Bean> 注入 //@since 3.0
@@ -340,14 +340,14 @@ public class AppContext extends BeanContainer {
 
                     Type keyType = vh.getGenericType().getActualTypeArguments()[0];
                     Type valType;
-                    String valFilter;
+                    ParameterizedType valGenericType;
 
                     if (valTmp instanceof ParameterizedType) {
-                        valType = ((ParameterizedType) valTmp).getRawType();
-                        valFilter = valTmp.getTypeName();
+                        valGenericType = ((ParameterizedType) valTmp);
+                        valType = valGenericType.getRawType();
                     } else {
+                        valGenericType = null;
                         valType = valTmp;
-                        valFilter = null;
                     }
 
 
@@ -357,7 +357,7 @@ public class AppContext extends BeanContainer {
                         }
                         vh.required(required);
                         //设置默认值（放下面）
-                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valFilter));
+                        vh.setValueDefault(() -> this.getBeansMapOfType((Class<?>) valType, valGenericType));
                     }
                 }
             }
