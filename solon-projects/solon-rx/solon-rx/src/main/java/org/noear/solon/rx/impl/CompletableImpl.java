@@ -72,14 +72,31 @@ public class CompletableImpl implements Completable, Subscription {
 
     @Override
     public Completable doOnError(Consumer<Throwable> doOnError) {
-        subscriberBuilder.doOnError(doOnError);
-        return this;
+        return Completable.create(emitter -> {
+            subscriberBuilder.doOnError(doOnError);
+            subscriberBuilder.doOnComplete(() -> {
+                emitter.onComplete();
+            });
+
+            subscribe();
+        });
     }
 
     @Override
     public Completable doOnComplete(Runnable doOnComplete) {
-        subscriberBuilder.doOnComplete(doOnComplete);
-        return this;
+        return Completable.create(emitter -> {
+            subscriberBuilder.doOnError(err -> {
+                emitter.onError(cause);
+            });
+            subscriberBuilder.doOnComplete(() -> {
+                try {
+                    doOnComplete.run();
+                } finally {
+                    emitter.onComplete();
+                }
+            });
+            subscribe();
+        });
     }
 
     @Override
