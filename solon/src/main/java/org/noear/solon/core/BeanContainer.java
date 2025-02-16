@@ -631,7 +631,7 @@ public abstract class BeanContainer {
         List<T> beans = new ArrayList<>();
 
         for (BeanWrap bw : beanWraps) {
-            if (geneticName != null && bw.isGenericOf(geneticName) == false) {
+            if (geneticName != null && bw.isGenericFrom(geneticName) == false) {
                 continue;
             }
 
@@ -661,7 +661,7 @@ public abstract class BeanContainer {
 
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.rawClz())) {
-                if (geneticName != null && bw.isGenericOf(geneticName) == false) {
+                if (geneticName != null && bw.isGenericFrom(geneticName) == false) {
                     return;
                 }
 
