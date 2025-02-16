@@ -16,12 +16,11 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
@@ -74,6 +73,28 @@ public class BeanWrap {
         }
 
         return genericList;
+    }
+
+    /**
+     * 是否为自来泛型
+     */
+    public boolean isGenericFrom(String geneticName) {
+        if (genericList == null || Utils.isEmpty(geneticName)) {
+            return false;
+        }
+
+        return genericList.contains(geneticName);
+    }
+
+    /**
+     * 是否为自来泛型
+     */
+    public boolean isGenericFrom(ParameterizedType type) {
+        if (genericList == null || type == null) {
+            return false;
+        }
+
+        return genericList.contains(type.getTypeName());
     }
 
 
