@@ -95,15 +95,15 @@ public class ChatRequestDefault implements ChatRequest {
             log.trace("ai-response: {}", respJson);
         }
 
-        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseDefault());
+        ChatResponseDefault resp = new ChatResponseDefault();
         config.dialect().parseResponseJson(config, resp, respJson);
 
-        if (resp.getReal().getError() != null) {
-            throw resp.getReal().getError();
+        if (resp.getError() != null) {
+            throw resp.getError();
         }
 
-        if (resp.getReal().hasChoices()) {
-            AssistantMessage choiceMessage = resp.getReal().getMessage();
+        if (resp.hasChoices()) {
+            AssistantMessage choiceMessage = resp.getMessage();
             if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                 messages.add(choiceMessage);
                 buildToolMessage(choiceMessage);
@@ -112,7 +112,7 @@ public class ChatRequestDefault implements ChatRequest {
             }
         }
 
-        return resp.getReal();
+        return resp;
     }
 
     /**
@@ -145,7 +145,7 @@ public class ChatRequestDefault implements ChatRequest {
     }
 
     private void parseResp(HttpResponse httpResp, Subscriber<? super ChatResponse> subscriber) throws IOException {
-        ChatResponseAmend resp = new ChatResponseAmend(new ChatResponseDefault());
+        ChatResponseDefault resp = new ChatResponseDefault();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(httpResp.body()))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
@@ -171,13 +171,13 @@ public class ChatRequestDefault implements ChatRequest {
 
                         resp.reset();
                         if (config.dialect().parseResponseJson(config, resp, respJson)) {
-                            if (resp.getReal().getError() != null) {
-                                subscriber.onError(resp.getReal().getError());
+                            if (resp.getError() != null) {
+                                subscriber.onError(resp.getError());
                                 return;
                             }
 
-                            if (resp.getReal().hasChoices()) {
-                                AssistantMessage choiceMessage = resp.getReal().getMessage();
+                            if (resp.hasChoices()) {
+                                AssistantMessage choiceMessage = resp.getMessage();
                                 if (Utils.isNotEmpty(choiceMessage.getToolCalls())) {
                                     messages.add(choiceMessage);
                                     buildToolMessage(choiceMessage);
@@ -190,7 +190,7 @@ public class ChatRequestDefault implements ChatRequest {
                                 }
 
                                 if (choiceMessage != null) {
-                                    subscriber.onNext(resp.getReal());
+                                    subscriber.onNext(resp);
                                 }
                             }
 

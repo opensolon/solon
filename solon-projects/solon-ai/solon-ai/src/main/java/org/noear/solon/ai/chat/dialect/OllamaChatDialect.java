@@ -43,7 +43,7 @@ public class OllamaChatDialect extends AbstractChatDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseAmend resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         //解析
         ONode oResp = ONode.load(json);
 

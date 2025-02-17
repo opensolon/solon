@@ -95,4 +95,54 @@ public class ChatResponseDefault implements ChatResponse {
     public boolean isFinished() {
         return finished;
     }
+
+    /// //////////////////////////
+
+    /**
+     * 思考中
+     */
+    public boolean reasoning;
+
+    /**
+     * 重置响应数据
+     */
+    public void reset() {
+        this.error = null;
+        this.choices.clear();
+    }
+
+    /**
+     * 添加选择
+     */
+    public void addChoice(ChatChoice choice) {
+        this.choices.add(choice);
+    }
+
+    /**
+     * 设置错误
+     */
+    public void setError(ChatException error) {
+        this.error = error;
+    }
+
+    /**
+     * 设置使用情况
+     */
+    public void setUsage(Usage usage) {
+        this.usage = usage;
+    }
+
+    /**
+     * 设置模型
+     */
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    /**
+     * 设置完成状态
+     */
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 }

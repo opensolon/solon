@@ -216,7 +216,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
         return toolCalls;
     }
 
-    protected AssistantMessage parseAssistantMessage(ChatResponseAmend resp, ONode oMessage) {
+    protected AssistantMessage parseAssistantMessage(ChatResponseDefault resp, ONode oMessage) {
         String content = oMessage.get("content").getString();
         String reasoning_content = oMessage.get("reasoning_content").getString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");

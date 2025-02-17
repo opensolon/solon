@@ -16,7 +16,7 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.solon.ai.chat.ChatConfig;
-import org.noear.solon.ai.chat.ChatResponseAmend;
+import org.noear.solon.ai.chat.ChatResponseDefault;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.chat.ChatOptions;
 
@@ -49,5 +49,5 @@ public interface ChatDialect {
      *
      * @param config 聊天配置
      */
-    boolean parseResponseJson(ChatConfig config, ChatResponseAmend resp, String json);
+    boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json);
 }

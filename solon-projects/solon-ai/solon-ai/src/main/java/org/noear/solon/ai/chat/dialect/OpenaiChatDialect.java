@@ -52,7 +52,7 @@ public class OpenaiChatDialect extends AbstractChatDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseAmend resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
