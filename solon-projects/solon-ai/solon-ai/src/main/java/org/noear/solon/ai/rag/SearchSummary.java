@@ -13,31 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag.repository;
+package org.noear.solon.ai.rag;
 
-import org.noear.solon.ai.embedding.EmbeddingModel;
-import org.noear.solon.ai.rag.State;
-import org.noear.solon.ai.rag.loader.DocumentLoader;
+import lombok.Builder;
+import lombok.Getter;
 import org.noear.solon.lang.Preview;
 
 /**
+ * 文档
+ *
  * @author noear
  * @since 3.1
  */
+@Builder
+@Getter
 @Preview("3.1")
-public class InMemoryRepository implements Repository {
+public class SearchSummary implements Document {
+    /**
+     * id
+     */
+    private String id;
 
-    public InMemoryRepository(EmbeddingModel embeddings) {
+    /**
+     * 标题
+     */
+    private String title;
 
-    }
+    /**
+     * 网址
+     */
+    private String url;
 
-    @Override
-    public void load(DocumentLoader loader) {
+    /**
+     * 片段
+     */
+    private String snippet;
 
-    }
+    /**
+     * 内容
+     */
+    private String content;
 
-    @Override
-    public State retrieve(String question) {
-        return null;
-    }
+    /**
+     * 语言
+     */
+    private String language;
 }

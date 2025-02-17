@@ -15,12 +15,13 @@
  */
 package org.noear.solon.ai.rag.repository;
 
-import org.noear.solon.ai.rag.State;
-import org.noear.solon.ai.rag.loader.DocumentLoader;
+import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
+import java.util.List;
+
 /**
- * 知识库（向量存储与索引）
+ * 文档仓库（向量存储与索引）
  *
  * @author noear
  * @since 3.1
@@ -28,12 +29,17 @@ import org.noear.solon.lang.Preview;
 @Preview("3.1")
 public interface Repository {
     /**
-     * 加载
+     * 推入
      */
-    void load(DocumentLoader loader);
+    void put(List<Document> documents);
 
     /**
-     * 检索
+     * 移除
      */
-    State retrieve(String question);
+    void remove(String id);
+
+    /**
+     * 相似性搜索
+     */
+    List<Document> search(String message);
 }

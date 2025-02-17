@@ -5,7 +5,10 @@ import org.noear.solon.ai.rag.Document;
 import java.util.List;
 
 /**
- * @author noear 2025/2/12 created
+ * 文档加载器
+ *
+ * @author noear
+ * @since 3.1
  */
 public interface DocumentLoader {
     List<Document> load();

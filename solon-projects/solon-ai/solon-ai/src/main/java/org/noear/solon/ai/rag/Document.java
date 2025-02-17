@@ -15,9 +15,10 @@
  */
 package org.noear.solon.ai.rag;
 
-import lombok.Builder;
-import lombok.Getter;
+import org.noear.solon.Utils;
 import org.noear.solon.lang.Preview;
+
+import java.util.List;
 
 /**
  * 文档
@@ -25,37 +26,49 @@ import org.noear.solon.lang.Preview;
  * @author noear
  * @since 3.1
  */
-@Builder
-@Getter
 @Preview("3.1")
 public class Document {
+    private String id;
+    private String content;
+    private List<Float> embedding;
+
+    public static Document of(String content) {
+        Document doc = new Document();
+        doc.content = content;
+        doc.id = Utils.guid();
+        return doc;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setEmbedding(List<Float> embedding) {
+        this.embedding = embedding;
+    }
+
     /**
      * id
      */
-    private String id;
+    public String getId() {
+        return id;
+    }
 
     /**
-     * 标题
+     * 内容
      */
-    private String title;
+    public String getContent() {
+        return content;
+    }
 
     /**
-     * 网址
+     * 嵌入
      */
-    private String url;
-
-    /**
-     * 片段
-     */
-    private String snippet;
-
-    /**
-     * 摘要
-     */
-    private String summary;
-
-    /**
-     * 语言
-     */
-    private String language;
+    public List<Float> getEmbedding() {
+        return embedding;
+    }
 }
