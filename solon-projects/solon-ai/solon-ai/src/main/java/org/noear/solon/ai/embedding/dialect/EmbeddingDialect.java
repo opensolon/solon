@@ -33,5 +33,5 @@ public interface EmbeddingDialect {
      *
      * @param config 聊天配置
      */
-    EmbeddingResponse parseResponseJson(EmbeddingConfig config, String json);
+    EmbeddingResponse parseResponseJson(EmbeddingConfig config, String respJson);
 }

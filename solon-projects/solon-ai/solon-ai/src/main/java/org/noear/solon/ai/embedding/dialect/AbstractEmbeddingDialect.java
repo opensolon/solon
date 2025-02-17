@@ -36,8 +36,8 @@ public abstract class AbstractEmbeddingDialect implements EmbeddingDialect {
     }
 
     @Override
-    public EmbeddingResponse parseResponseJson(EmbeddingConfig config, String json) {
-        ONode oResp = ONode.load(json);
+    public EmbeddingResponse parseResponseJson(EmbeddingConfig config, String respJson) {
+        ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
         List<Embedding> data = new ArrayList<>();

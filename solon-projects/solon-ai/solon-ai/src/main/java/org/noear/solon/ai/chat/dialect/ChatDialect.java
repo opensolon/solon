@@ -49,5 +49,5 @@ public interface ChatDialect {
      *
      * @param config 聊天配置
      */
-    boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json);
+    boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String respJson);
 }
