@@ -29,7 +29,7 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public abstract class AbstractDialect implements ChatDialect {
+public abstract class AbstractChatDialect implements ChatDialect {
 
     protected void buildChatMessageNodeDo(ONode oNode, AssistantMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());

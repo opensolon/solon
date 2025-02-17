@@ -29,10 +29,10 @@ import java.util.Date;
  * @author noear
  * @since 3.1
  */
-public class OpenaiDialect extends AbstractDialect {
-    private static final OpenaiDialect instance = new OpenaiDialect();
+public class OpenaiChatDialect extends AbstractChatDialect {
+    private static final OpenaiChatDialect instance = new OpenaiChatDialect();
 
-    public static OpenaiDialect instance() {
+    public static OpenaiChatDialect instance() {
         return instance;
     }
 

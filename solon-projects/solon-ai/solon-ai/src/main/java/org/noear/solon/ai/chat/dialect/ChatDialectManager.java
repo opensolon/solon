@@ -31,7 +31,7 @@ public class ChatDialectManager {
     private static List<RankEntity<ChatDialect>> dialects = new ArrayList<>();
 
     static {
-        register(OllamaDialect.getInstance());
+        register(OllamaChatDialect.getInstance());
     }
 
     /**
@@ -44,7 +44,7 @@ public class ChatDialectManager {
             }
         }
 
-        return OpenaiDialect.instance();
+        return OpenaiChatDialect.instance();
     }
 
     /**

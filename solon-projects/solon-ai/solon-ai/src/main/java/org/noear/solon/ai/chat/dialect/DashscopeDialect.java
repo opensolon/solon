@@ -9,7 +9,7 @@ import org.noear.solon.ai.chat.ChatResponseAmend;
  * @author noear
  * @since 3.1
  */
-public class DashscopeDialect extends AbstractDialect {
+public class DashscopeDialect extends AbstractChatDialect {
     @Override
     public boolean matched(ChatConfig config) {
         if (config.provider() != null) {
