@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
-import org.noear.solon.ai.Usage;
+import org.noear.solon.ai.common.Usage;
 
 import java.util.List;
 

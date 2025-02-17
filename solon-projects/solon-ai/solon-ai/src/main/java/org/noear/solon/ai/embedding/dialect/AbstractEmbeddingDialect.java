@@ -2,7 +2,7 @@ package org.noear.solon.ai.embedding.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.ai.Usage;
+import org.noear.solon.ai.common.Usage;
 import org.noear.solon.ai.embedding.*;
 
 import java.util.ArrayList;

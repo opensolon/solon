@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.Usage;
+import org.noear.solon.ai.common.Usage;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.lang.Preview;

@@ -16,7 +16,7 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
-import org.noear.solon.ai.Usage;
+import org.noear.solon.ai.common.Usage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;

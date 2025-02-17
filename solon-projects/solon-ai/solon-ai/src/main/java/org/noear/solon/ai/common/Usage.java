@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai;
+package org.noear.solon.ai.common;
 
 import org.noear.solon.lang.Preview;
 
