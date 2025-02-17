@@ -15,26 +15,44 @@
  */
 package org.noear.solon.ai.embedding;
 
-import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
 import org.noear.solon.lang.Preview;
 
-import java.util.List;
-
 /**
+ * 聊天使用情况
+ *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public class EmbeddingModelDefault implements EmbeddingModel {
-    private EmbeddingConfig config;
+public class EmbeddingUsage {
+    private final long promptTokens;
+    private final long completionTokens;
+    private final long totalTokens;
 
-    public EmbeddingModelDefault(EmbeddingConfig config) {
-        config.dialect = EmbeddingDialectManager.select(config);
-        this.config = config;
+    public EmbeddingUsage(long promptTokens, long completionTokens, long totalTokens) {
+        this.promptTokens = promptTokens;
+        this.completionTokens = completionTokens;
+        this.totalTokens = totalTokens;
     }
 
-    @Override
-    public EmbeddingRequest input(List<String> input) {
-        return new EmbeddingRequestDefault(config, input);
+    /**
+     * 获取提示语消耗令牌数
+     */
+    public long promptTokens() {
+        return promptTokens;
+    }
+
+    /**
+     * 获取完成消耗令牌数
+     */
+    public long completionTokens() {
+        return completionTokens;
+    }
+
+    /**
+     * 获取总消耗令牌数
+     */
+    public long totalTokens() {
+        return totalTokens;
     }
 }

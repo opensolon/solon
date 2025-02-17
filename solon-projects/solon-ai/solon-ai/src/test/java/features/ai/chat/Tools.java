@@ -1,9 +1,7 @@
-package demo.ai;
+package features.ai.chat;
 
 import org.noear.solon.ai.annotation.FunctionMapping;
 import org.noear.solon.ai.annotation.FunctionParam;
-import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.Prompts;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.net.http.HttpUtils;
 

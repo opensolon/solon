@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
+import org.noear.solon.ai.embedding.dialect.EmbeddingDialect;
 import org.noear.solon.lang.Preview;
 
 import java.time.Duration;
@@ -35,4 +36,34 @@ public class EmbeddingConfig {
     protected String model;
     protected final Map<String, String> headers = new LinkedHashMap<>();
     protected Duration timeout = Duration.ofSeconds(30);
+
+    protected transient EmbeddingDialect dialect;
+
+    public String apiKey() {
+        return apiKey;
+    }
+
+    public String apiUrl() {
+        return apiUrl;
+    }
+
+    public String provider() {
+        return provider;
+    }
+
+    public String model() {
+        return model;
+    }
+
+    public Map<String, String> headers() {
+        return headers;
+    }
+
+    public Duration timeout() {
+        return timeout;
+    }
+
+    public EmbeddingDialect dialect() {
+        return dialect;
+    }
 }

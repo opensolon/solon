@@ -1,6 +1,5 @@
 package features.ai.chat;
 
-import demo.ai.Tools;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;

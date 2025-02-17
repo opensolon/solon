@@ -17,6 +17,9 @@ package org.noear.solon.ai.embedding;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 嵌入模型（相当于翻译器）
  *
@@ -26,7 +29,18 @@ import org.noear.solon.lang.Preview;
 @Preview("3.1")
 public interface EmbeddingModel {
 
-    static EmbeddingModel of(EmbeddingConfig config) {
-        return new EmbeddingModelDefault(config);
+    default EmbeddingRequest input(String... input){
+        return input(Arrays.asList(input));
+    }
+
+    EmbeddingRequest input(List<String> input);
+
+
+    static EmbeddingModelBuilder of(EmbeddingConfig config) {
+        return new EmbeddingModelBuilder(config);
+    }
+
+    static EmbeddingModelBuilder of(String apiUrl) {
+        return new EmbeddingModelBuilder(apiUrl);
     }
 }
