@@ -196,10 +196,18 @@ public class Chain {
         }
 
         //节点（倒序加载，方便自动构建 link）
-        List<ONode> nodesTmp = oNode.get("nodes").ary();
+        List<ONode> layoutTmp = null;
+        if(oNode.contains("layout")){
+            //新用 layout
+            layoutTmp = oNode.get("layout").ary();;
+        }else{
+            //弃用 3.1
+            layoutTmp = oNode.get("nodes").ary();;
+        }
+
         NodeDecl nodesLat = null;
-        for (int i = nodesTmp.size(); i > 0; i--) {
-            ONode n1 = nodesTmp.get(i - 1);
+        for (int i = layoutTmp.size(); i > 0; i--) {
+            ONode n1 = layoutTmp.get(i - 1);
 
             //自动构建：如果没有时，生成 id
             String n1_id = n1.get("id").getString();
