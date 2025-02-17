@@ -155,7 +155,7 @@ public class Chain {
 
 
     /**
-     * 解析文件
+     * 解析配置文件
      */
     public static Chain parseByUri(String uri) throws IOException {
         URL url = ResourceUtil.findResource(uri, false);
@@ -173,36 +173,49 @@ public class Chain {
     }
 
     /**
-     * 解析属性
+     * 解析配置文本
+     *
+     * @param text 配置文本（支持 yml, properties, json 格式）
+     */
+    public static Chain parseByText(String text) {
+        return parseByProperties(Utils.buildProperties(text));
+    }
+
+    /**
+     * 解析配置属性
+     *
+     * @param properties 配置属性
      */
     public static Chain parseByProperties(Properties properties) {
         return parseByDom(ONode.load(properties));
     }
 
     /**
-     * 解析文档树
+     * 解析配置文档模型
+     *
+     * @param dom 配置文档模型
      */
-    public static Chain parseByDom(ONode oNode) {
-        String id = oNode.get("id").getString();
-        String title = oNode.get("title").getString();
-        String driver = oNode.get("driver").getString();
+    public static Chain parseByDom(ONode dom) {
+        String id = dom.get("id").getString();
+        String title = dom.get("title").getString();
+        String driver = dom.get("driver").getString();
 
         Chain chain = new Chain(id, title, driver);
 
         //元信息
-        Map metaTmp = oNode.get("meta").toObject(Map.class);
+        Map metaTmp = dom.get("meta").toObject(Map.class);
         if (Utils.isNotEmpty(metaTmp)) {
             chain.meta().putAll(metaTmp);
         }
 
         //节点（倒序加载，方便自动构建 link）
         List<ONode> layoutTmp = null;
-        if(oNode.contains("layout")){
+        if (dom.contains("layout")) {
             //新用 layout
-            layoutTmp = oNode.get("layout").ary();;
-        }else{
+            layoutTmp = dom.get("layout").ary();
+        } else {
             //弃用 3.1
-            layoutTmp = oNode.get("nodes").ary();;
+            layoutTmp = dom.get("nodes").ary();
         }
 
         NodeDecl nodesLat = null;
