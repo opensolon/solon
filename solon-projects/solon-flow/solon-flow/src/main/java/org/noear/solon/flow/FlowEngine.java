@@ -60,6 +60,17 @@ public interface FlowEngine {
     /**
      * 加载链
      *
+     * @param chains 链集合
+     */
+    default void load(Iterable<Chain> chains) {
+        for (Chain chain : chains) {
+            load(chain);
+        }
+    }
+
+    /**
+     * 加载链
+     *
      * @param chain 链
      */
     void load(Chain chain);

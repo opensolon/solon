@@ -29,13 +29,21 @@
 * 优化 规范插件命名
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
+* 添加 solon BeanWrap:isNullOrGenericFrom 方法
+* 添加 solon subWrapsOfType, subBeansOfType, getBeansOfType, getBeansMapOfType genericType 过滤参数
+* 添加 solon ParameterizedTypeImpl:toString 缓存支持
+* 添加 solon-flow Chain.parseByExpr(resExpr) 方法
+* 添加 solon-flow FlowEngine:load(Iterable) 方法
+* 添加 solon-flow Chain:parseByText 方法
 * 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口
+* 添加 solon-web-rx 过滤体系
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
 * 修复 solon-data nested 事务策略单独回滚失效的问题
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
+* 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
