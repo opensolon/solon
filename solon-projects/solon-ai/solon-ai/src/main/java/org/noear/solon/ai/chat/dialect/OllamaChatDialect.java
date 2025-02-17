@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
+import org.noear.solon.ai.Usage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
@@ -70,7 +71,7 @@ public class OllamaChatDialect extends AbstractChatDialect {
                 long completionTokens = oResp.get("eval_count").getLong();
                 long totalTokens = promptTokens + completionTokens;
 
-                resp.setUsage(new ChatUsage(promptTokens, completionTokens, totalTokens));
+                resp.setUsage(new Usage(promptTokens, completionTokens, totalTokens));
             }
         }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.embedding;
+package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
@@ -24,12 +24,12 @@ import org.noear.solon.lang.Preview;
  * @since 3.1
  */
 @Preview("3.1")
-public class EmbeddingUsage {
+public class Usage {
     private final long promptTokens;
     private final long completionTokens;
     private final long totalTokens;
 
-    public EmbeddingUsage(long promptTokens, long completionTokens, long totalTokens) {
+    public Usage(long promptTokens, long completionTokens, long totalTokens) {
         this.promptTokens = promptTokens;
         this.completionTokens = completionTokens;
         this.totalTokens = totalTokens;

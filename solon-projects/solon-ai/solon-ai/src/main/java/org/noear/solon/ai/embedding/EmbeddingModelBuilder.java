@@ -18,7 +18,7 @@ package org.noear.solon.ai.embedding;
 import java.time.Duration;
 
 /**
- * 聊天模型构建器实现
+ * 嵌入模型构建器实现
  *
  * @author noear
  * @since 3.1
@@ -64,6 +64,6 @@ public class EmbeddingModelBuilder {
     }
 
     public EmbeddingModel build() {
-        return new EmbeddingModelDefault(config);
+        return new EmbeddingModel(config);
     }
 }

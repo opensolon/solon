@@ -1,4 +1,21 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.ai.embedding;
+
+import org.noear.solon.ai.Usage;
 
 import java.util.List;
 
@@ -10,24 +27,33 @@ import java.util.List;
  */
 public class EmbeddingResponse {
     private final String model;
-    private final List<EmbeddingCheuk> data;
-    private final EmbeddingUsage usage;
+    private final List<Embedding> data;
+    private final Usage usage;
 
-    public EmbeddingResponse(String model, List<EmbeddingCheuk> data, EmbeddingUsage usage) {
+    public EmbeddingResponse(String model, List<Embedding> data, Usage usage) {
         this.model = model;
         this.data = data;
         this.usage = usage;
     }
 
+    /**
+     * 获取模型
+     */
     public String getModel() {
         return model;
     }
 
-    public List<EmbeddingCheuk> getData() {
+    /**
+     * 获取数据
+     */
+    public List<Embedding> getData() {
         return data;
     }
 
-    public EmbeddingUsage getUsage() {
+    /**
+     * 获取使用情况
+     */
+    public Usage getUsage() {
         return usage;
     }
 

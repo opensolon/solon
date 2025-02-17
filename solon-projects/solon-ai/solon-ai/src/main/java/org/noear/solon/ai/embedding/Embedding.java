@@ -15,26 +15,40 @@
  */
 package org.noear.solon.ai.embedding;
 
-import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
-import org.noear.solon.lang.Preview;
-
 import java.util.List;
 
 /**
+ * 嵌入数据
+ *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public class EmbeddingModelDefault implements EmbeddingModel {
-    private EmbeddingConfig config;
+public class Embedding {
+    private int index;
+    private List<Float> embedding;
 
-    public EmbeddingModelDefault(EmbeddingConfig config) {
-        config.dialect = EmbeddingDialectManager.select(config);
-        this.config = config;
+    public Embedding() {
+        //用于反序列化
+    }
+
+    public Embedding(int index, List<Float> embedding) {
+        this.embedding = embedding;
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public List<Float> getEmbedding() {
+        return embedding;
     }
 
     @Override
-    public EmbeddingRequest input(List<String> input) {
-        return new EmbeddingRequestDefault(config, input);
+    public String toString() {
+        return "{" +
+                "index=" + index +
+                ", embedding=" + embedding +
+                '}';
     }
 }

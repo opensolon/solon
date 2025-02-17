@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.Usage;
+
 /**
  * 聊天响应修改器
  *
@@ -65,7 +67,7 @@ public class ChatResponseAmend {
     /**
      * 设置使用情况
      */
-    public void setUsage(ChatUsage usage) {
+    public void setUsage(Usage usage) {
         real.usage = usage;
     }
 

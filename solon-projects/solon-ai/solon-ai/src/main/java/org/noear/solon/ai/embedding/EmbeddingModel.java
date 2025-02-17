@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
+import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
 import org.noear.solon.lang.Preview;
 
 import java.util.Arrays;
@@ -27,20 +28,40 @@ import java.util.List;
  * @since 3.1
  */
 @Preview("3.1")
-public interface EmbeddingModel {
+public class EmbeddingModel {
+    private EmbeddingConfig config;
 
-    default EmbeddingRequest input(String... input){
+    protected EmbeddingModel(EmbeddingConfig config) {
+        config.dialect = EmbeddingDialectManager.select(config);
+        this.config = config;
+    }
+
+    /**
+     * 输入
+     */
+    public EmbeddingRequest input(String... input) {
         return input(Arrays.asList(input));
     }
 
-    EmbeddingRequest input(List<String> input);
+    /**
+     * 输入
+     */
+    public EmbeddingRequest input(List<String> input) {
+        return new EmbeddingRequest(config, input);
+    }
 
 
-    static EmbeddingModelBuilder of(EmbeddingConfig config) {
+    /**
+     * 构建
+     */
+    public static EmbeddingModelBuilder of(EmbeddingConfig config) {
         return new EmbeddingModelBuilder(config);
     }
 
-    static EmbeddingModelBuilder of(String apiUrl) {
+    /**
+     * 构建
+     */
+    public static EmbeddingModelBuilder of(String apiUrl) {
         return new EmbeddingModelBuilder(apiUrl);
     }
 }
