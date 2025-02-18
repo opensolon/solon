@@ -47,6 +47,7 @@
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
+* liquor 升为 1.3.11
 
 ### v3.0.8
 * 添加 solon-web-sse SseRender 渲染器，支持 "text/event-stream" 的任意类型处理
