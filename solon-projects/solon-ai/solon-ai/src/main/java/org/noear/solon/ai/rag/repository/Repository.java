@@ -18,6 +18,7 @@ package org.noear.solon.ai.rag.repository;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public interface Repository {
     /**
      * 推入
      */
-    void put(List<Document> documents);
+    void put(List<Document> documents) throws IOException;
 
     /**
      * 移除
@@ -39,7 +40,14 @@ public interface Repository {
     void remove(String id);
 
     /**
-     * 相似性搜索
+     * 搜索
      */
-    List<Document> search(String message);
+    default List<Document> search(String message) throws IOException{
+        return search(new SearchRequest(message));
+    }
+
+    /**
+     * 搜索
+     */
+    List<Document> search(SearchRequest request) throws IOException;
 }

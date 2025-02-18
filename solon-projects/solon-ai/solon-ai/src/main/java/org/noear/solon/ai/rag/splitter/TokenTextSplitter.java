@@ -24,7 +24,15 @@ public class TokenTextSplitter extends TextSplitter {
     private final boolean keepSeparator;
 
     public TokenTextSplitter() {
-        this(800, 350, 5, 1000, true);
+        this(800);
+    }
+
+    public TokenTextSplitter(int chunkSize) {
+        this(chunkSize, 350);
+    }
+
+    public TokenTextSplitter(int chunkSize, int minChunkSizeChars) {
+        this(chunkSize, minChunkSizeChars, 5, 1000, true);
     }
 
     public TokenTextSplitter(int chunkSize, int minChunkSizeChars, int minChunkLengthToEmbed, int maxChunkCount, boolean keepSeparator) {

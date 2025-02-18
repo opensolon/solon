@@ -18,6 +18,7 @@ package org.noear.solon.ai.embedding;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,13 @@ public class EmbeddingModel {
     protected EmbeddingModel(EmbeddingConfig config) {
         config.dialect = EmbeddingDialectManager.select(config);
         this.config = config;
+    }
+
+    /**
+     * 快捷内嵌
+     */
+    public float[] embed(String text) throws IOException {
+        return input(text).call().getData().get(0).getEmbedding();
     }
 
     /**

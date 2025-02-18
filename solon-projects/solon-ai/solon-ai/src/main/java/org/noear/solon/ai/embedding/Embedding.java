@@ -25,13 +25,13 @@ import java.util.List;
  */
 public class Embedding {
     private int index;
-    private List<Float> embedding;
+    private float[] embedding;
 
     public Embedding() {
         //用于反序列化
     }
 
-    public Embedding(int index, List<Float> embedding) {
+    public Embedding(int index, float[] embedding) {
         this.embedding = embedding;
         this.index = index;
     }
@@ -40,7 +40,7 @@ public class Embedding {
         return index;
     }
 
-    public List<Float> getEmbedding() {
+    public float[] getEmbedding() {
         return embedding;
     }
 

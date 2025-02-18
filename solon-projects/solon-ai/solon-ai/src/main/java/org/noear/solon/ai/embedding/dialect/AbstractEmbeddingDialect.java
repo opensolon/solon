@@ -40,15 +40,8 @@ public abstract class AbstractEmbeddingDialect implements EmbeddingDialect {
         ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
-        List<Embedding> data = new ArrayList<>();
+        List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
         Usage usage = null;
-
-        for (ONode m1 : oResp.get("data").ary()) {
-            //不使用反序列化，可方便别的阅读和修改定制
-            data.add(new Embedding(
-                    m1.get("index").getInt(),
-                    m1.get("embedding").toObjectList(Float.class)));
-        }
 
         if (oResp.contains("usage")) {
             ONode oUsage = oResp.get("usage");

@@ -19,7 +19,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.lang.Preview;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,9 +32,9 @@ public class Document {
     protected final String id;
     protected final String content;
     protected final Map<String, Object> metadata;
-    protected final Double score;
+    protected final double score;
 
-    private List<Float> embedding;
+    private float[] embedding;
 
     public Document() {
         this("");
@@ -50,17 +49,17 @@ public class Document {
     }
 
     public Document(String id, String content, Map<String, Object> metadata) {
-        this(id, content, metadata, null);
+        this(id, content, metadata, 0.0D);
     }
 
-    public Document(String id, String content, Map<String, Object> metadata, Double score) {
+    public Document(String id, String content, Map<String, Object> metadata, double score) {
         this.id = (id == null ? Utils.guid() : id);
         this.content = content;
         this.metadata = (metadata == null ? new HashMap<>() : metadata);
         this.score = score;
     }
 
-    public void setEmbedding(List<Float> embedding) {
+    public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
     }
 
@@ -81,14 +80,14 @@ public class Document {
     /**
      * 嵌入
      */
-    public List<Float> getEmbedding() {
+    public float[] getEmbedding() {
         return embedding;
     }
 
     /**
      * 评分
      */
-    public Double getScore() {
+    public double getScore() {
         return score;
     }
 
