@@ -11,5 +11,8 @@ import java.util.List;
  * @since 3.1
  */
 public interface DocumentLoader {
+    /**
+     * 加载文档
+     */
     List<Document> load();
 }

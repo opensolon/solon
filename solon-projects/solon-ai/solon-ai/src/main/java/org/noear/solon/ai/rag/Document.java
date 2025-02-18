@@ -18,7 +18,9 @@ package org.noear.solon.ai.rag;
 import org.noear.solon.Utils;
 import org.noear.solon.lang.Preview;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文档
@@ -28,23 +30,30 @@ import java.util.List;
  */
 @Preview("3.1")
 public class Document {
-    private String id;
-    private String content;
+    private final String id;
+    private final String content;
+    private final Map<String, Object> metadata;
+    private final Double score;
+
     private List<Float> embedding;
 
-    public static Document of(String content) {
-        Document doc = new Document();
-        doc.content = content;
-        doc.id = Utils.guid();
-        return doc;
+    public Document(String content) {
+        this(content, null);
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Document(String content, Map<String, Object> metadata) {
+        this(null, content, metadata);
     }
 
-    public void setContent(String content) {
+    public Document(String id, String content, Map<String, Object> metadata) {
+        this(id, content, metadata, null);
+    }
+
+    public Document(String id, String content, Map<String, Object> metadata, Double score) {
+        this.id = (id == null ? Utils.guid() : id);
         this.content = content;
+        this.metadata = (metadata == null ? new HashMap<>() : metadata);
+        this.score = score;
     }
 
     public void setEmbedding(List<Float> embedding) {
@@ -70,5 +79,29 @@ public class Document {
      */
     public List<Float> getEmbedding() {
         return embedding;
+    }
+
+    /**
+     * 评分
+     */
+    public Double getScore() {
+        return score;
+    }
+
+    /**
+     * 元数据
+     */
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id='" + id + '\'' +
+                ", content='" + content + '\'' +
+                ", metadata=" + metadata +
+                ", score=" + score +
+                '}';
     }
 }
