@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.rag.loader;
+
+import org.noear.solon.ai.rag.Document;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
- * 重排模型
+ * md 文档加载器
  *
  * @author noear
  * @since 3.1
- */
-public interface RerankingModel {
+ * */
+public class MdLoader implements DocumentLoader {
+    @Override
+    public List<Document> load() {
+        return Collections.emptyList();
+    }
 }

@@ -30,10 +30,6 @@ import java.util.List;
  * @since 3.1
  */
 public final class Prompts {
-    public static ChatMessage augment(State state) {
-        return augment(state.question, state.context);
-    }
-
     /**
      * 增强提示语
      */
@@ -57,7 +53,7 @@ public final class Prompts {
         }
 
 
-        return String.format("question: %s\n\n now:%s \n\n context:%s", question,
+        return String.format("question: %s\n\n now: %s \n\n context: %s", question,
                 LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
     }
 }

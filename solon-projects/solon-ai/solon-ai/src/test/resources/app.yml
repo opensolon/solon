@@ -10,4 +10,4 @@ solon.ai:
   logging:
     logger:
       root:
-        level: TRACE
+        level: DEBUG

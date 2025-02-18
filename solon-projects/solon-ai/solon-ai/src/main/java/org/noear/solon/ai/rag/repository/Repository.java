@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 文档仓库（向量存储与索引）
+ * 知识库（可索引）
  *
  * @author noear
  * @since 3.1
@@ -30,24 +30,18 @@ import java.util.List;
 @Preview("3.1")
 public interface Repository {
     /**
-     * 推入
-     */
-    void put(List<Document> documents) throws IOException;
-
-    /**
-     * 移除
-     */
-    void remove(String id);
-
-    /**
      * 搜索
+     *
+     * @param query 查询字符串
      */
-    default List<Document> search(String message) throws IOException{
-        return search(new SearchRequest(message));
+    default List<Document> search(String query) throws IOException {
+        return search(new SearchCondition(query));
     }
 
     /**
      * 搜索
+     *
+     * @param condition 查询条件
      */
-    List<Document> search(SearchRequest request) throws IOException;
+    List<Document> search(SearchCondition condition) throws IOException;
 }

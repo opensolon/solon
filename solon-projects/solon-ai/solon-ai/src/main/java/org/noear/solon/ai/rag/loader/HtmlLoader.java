@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.rag.loader;
 
+import org.noear.solon.ai.rag.Document;
+
+import java.util.Collections;
 import java.util.List;
 
 /**
- * 搜索状态
+ * Html 文档加载器
  *
  * @author noear
  * @since 3.1
  */
-public class State {
-    /**
-     * 上下文
-     */
-    List<Document> context;
-    /**
-     * 问题
-     */
-    String question;
-    /**
-     * 答案
-     */
-    String answer;
+public class HtmlLoader implements DocumentLoader {
+    @Override
+    public List<Document> load() {
+        return Collections.emptyList();
+    }
 }

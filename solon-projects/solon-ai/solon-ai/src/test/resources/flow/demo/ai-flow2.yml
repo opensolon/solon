@@ -1,5 +1,5 @@
 id: demo1
-nodes:
+layout:
   - title: "开始"
     type: start
   - title: "文件提取"

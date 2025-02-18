@@ -13,37 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.rag.repository;
 
-import org.noear.solon.ai.chat.ChatModel;
-import org.noear.solon.ai.chat.ChatRequest;
-import org.noear.solon.ai.chat.functioncall.ChatFunction;
-import org.noear.solon.ai.rag.loader.DocumentLoader;
-import org.noear.solon.ai.rag.repository.Repository;
-import org.noear.solon.flow.FlowEngine;
+import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
- * 智能体
+ * 可存储的知识库（可存储）
  *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public interface Agent {
-    static Agent of() {
-        return null;
-    }
+public interface RepositoryStorable extends Repository {
+    /**
+     * 推入
+     */
+    void put(List<Document> documents) throws IOException;
 
-    Agent model(ChatModel chatModel);
-    Agent repository(Repository repository);
-    Agent flow(FlowEngine flowEngine);
-    Agent build();
+    /**
+     * 移除
+     */
+    void remove(String id);
 
-
-    ChatRequest prompt(String prompt);
-
-    void load(DocumentLoader loader);
-
-    void load(ChatFunction function);
+    /**
+     * 获取
+     */
+    Document get(String id);
 }

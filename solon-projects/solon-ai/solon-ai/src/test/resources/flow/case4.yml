@@ -1,5 +1,5 @@
 id: "ai-1"
-nodes:
+layout:
   - task: |
       let resp = chatModel.prompt("写个 solon helloworld 项目").call();
       

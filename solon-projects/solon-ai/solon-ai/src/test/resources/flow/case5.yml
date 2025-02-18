@@ -1,5 +1,5 @@
 id: "ai-2"
-nodes:
+layout:
   - title: init
     task: |
       import org.noear.solon.ai.chat.ChatModel;
