@@ -87,6 +87,9 @@ public class EmbeddingRequest {
         return resp;
     }
 
+    /**
+     * 构建 http 请求
+     */
     private HttpUtils buildReqHttp() {
         HttpUtils httpUtils = HttpUtils
                 .http(config.apiUrl())

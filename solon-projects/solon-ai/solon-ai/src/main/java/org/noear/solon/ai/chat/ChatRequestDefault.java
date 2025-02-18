@@ -236,6 +236,9 @@ public class ChatRequestDefault implements ChatRequest {
         }
     }
 
+    /**
+     * 调用函数
+     */
     private String callFunction(ChatFunction func, Map<String, Object> args) throws Throwable {
         Map<String, Object> argsNew = new HashMap<>();
 
@@ -254,6 +257,9 @@ public class ChatRequestDefault implements ChatRequest {
         return func.handle(argsNew);
     }
 
+    /**
+     * 构建 http 请求
+     */
     private HttpUtils buildReqHttp() {
         HttpUtils httpUtils = HttpUtils
                 .http(config.apiUrl())
