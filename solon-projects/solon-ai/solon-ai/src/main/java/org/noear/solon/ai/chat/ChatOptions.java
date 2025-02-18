@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.annotation.FunctionMapping;
+import org.noear.solon.ai.chat.annotation.FunctionMapping;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionDecl;
 import org.noear.solon.ai.chat.functioncall.MethodChatFunction;

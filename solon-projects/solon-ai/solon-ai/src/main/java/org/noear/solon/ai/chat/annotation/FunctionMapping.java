@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.annotation;
+package org.noear.solon.ai.chat.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * 函数参数
+ * 函数映射
  *
  * @author noear
  * @since 3.1
  */
-@Target({ElementType.PARAMETER})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface FunctionParam {
+public @interface FunctionMapping {
     /**
      * 名字
      */
@@ -36,9 +36,4 @@ public @interface FunctionParam {
      * 描述
      */
     String description();
-
-    /**
-     * 是否必须
-     */
-    boolean required() default false;
 }

@@ -17,8 +17,8 @@ package org.noear.solon.ai.chat.functioncall;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.ai.annotation.FunctionMapping;
-import org.noear.solon.ai.annotation.FunctionParam;
+import org.noear.solon.ai.chat.annotation.FunctionMapping;
+import org.noear.solon.ai.chat.annotation.FunctionParam;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

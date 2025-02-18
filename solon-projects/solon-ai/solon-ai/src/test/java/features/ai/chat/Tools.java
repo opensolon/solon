@@ -1,7 +1,7 @@
 package features.ai.chat;
 
-import org.noear.solon.ai.annotation.FunctionMapping;
-import org.noear.solon.ai.annotation.FunctionParam;
+import org.noear.solon.ai.chat.annotation.FunctionMapping;
+import org.noear.solon.ai.chat.annotation.FunctionParam;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.net.http.HttpUtils;
 
