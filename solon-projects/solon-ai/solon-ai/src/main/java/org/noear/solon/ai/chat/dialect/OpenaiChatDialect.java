@@ -16,7 +16,7 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
-import org.noear.solon.ai.common.Usage;
+import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
@@ -95,7 +95,7 @@ public class OpenaiChatDialect extends AbstractChatDialect {
                 long completionTokens = oUsage.get("completion_tokens").getLong();
                 long totalTokens = oUsage.get("total_tokens").getLong();
 
-                resp.setUsage(new Usage(promptTokens, completionTokens, totalTokens));
+                resp.setUsage(new AiUsage(promptTokens, completionTokens, totalTokens));
             }
         }
 

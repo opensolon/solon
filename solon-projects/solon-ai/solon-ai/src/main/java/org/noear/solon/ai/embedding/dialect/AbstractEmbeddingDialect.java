@@ -2,10 +2,9 @@ package org.noear.solon.ai.embedding.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.ai.common.Usage;
+import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.embedding.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +40,11 @@ public abstract class AbstractEmbeddingDialect implements EmbeddingDialect {
 
         String model = oResp.get("model").getString();
         List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
-        Usage usage = null;
+        AiUsage usage = null;
 
         if (oResp.contains("usage")) {
             ONode oUsage = oResp.get("usage");
-            usage = new Usage(
+            usage = new AiUsage(
                     oUsage.get("prompt_tokens").getInt(),
                     0,
                     oUsage.get("total_tokens").getInt()

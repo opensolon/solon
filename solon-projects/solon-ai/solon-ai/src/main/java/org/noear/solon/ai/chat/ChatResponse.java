@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.common.Usage;
+import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.lang.Preview;
@@ -61,7 +61,7 @@ public interface ChatResponse {
      * 获取使用情况（完成时，才会有使用情况）
      */
     @Nullable
-    Usage getUsage();
+    AiUsage getUsage();
 
     /**
      * 是否完成

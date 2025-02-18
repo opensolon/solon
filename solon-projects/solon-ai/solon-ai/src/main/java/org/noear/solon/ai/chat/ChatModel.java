@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.solon.ai.AiModel;
+import org.noear.solon.ai.chat.dialect.ChatDialectManager;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.lang.Preview;
 
@@ -29,23 +31,32 @@ import java.util.List;
  * @since 3.1
  */
 @Preview("3.1")
-public interface ChatModel {
-    /**
-     * 提示语
-     */
-    ChatRequest prompt(List<ChatMessage> messages);
+public class ChatModel implements AiModel {
+    private final ChatConfig config;
+
+    public ChatModel(ChatConfig config) {
+        config.dialect = ChatDialectManager.select(config);
+        this.config = config;
+    }
 
     /**
      * 提示语
      */
-    default ChatRequest prompt(ChatMessage... messages) {
+    public ChatRequest prompt(List<ChatMessage> messages) {
+        return new ChatRequestDefault(config, messages);
+    }
+
+    /**
+     * 提示语
+     */
+    public ChatRequest prompt(ChatMessage... messages) {
         return prompt(new ArrayList<>(Arrays.asList(messages)));
     }
 
     /**
      * 提示语
      */
-    default ChatRequest prompt(String content) {
+    public ChatRequest prompt(String content) {
         return prompt(ChatMessage.ofUser(content));
     }
 
@@ -55,14 +66,14 @@ public interface ChatModel {
     /**
      * 构建
      */
-    static ChatModelBuilder of(ChatConfig config) {
+    public static ChatModelBuilder of(ChatConfig config) {
         return new ChatModelBuilder(config);
     }
 
     /**
      * 开始构建
      */
-    static ChatModelBuilder of(String apiUrl) {
+    public static ChatModelBuilder of(String apiUrl) {
         return new ChatModelBuilder(apiUrl);
     }
 }

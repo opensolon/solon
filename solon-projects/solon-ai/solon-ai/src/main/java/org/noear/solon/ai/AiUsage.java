@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.common;
+package org.noear.solon.ai;
 
 import org.noear.solon.lang.Preview;
 
 /**
- * 聊天使用情况
+ * Ai 使用情况
  *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public class Usage {
+public class AiUsage {
     private final long promptTokens;
     private final long completionTokens;
     private final long totalTokens;
 
-    public Usage(long promptTokens, long completionTokens, long totalTokens) {
+    public AiUsage(long promptTokens, long completionTokens, long totalTokens) {
         this.promptTokens = promptTokens;
         this.completionTokens = completionTokens;
         this.totalTokens = totalTokens;

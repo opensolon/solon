@@ -16,7 +16,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.Utils;
-import org.noear.solon.ai.common.Usage;
+import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.lang.Nullable;
 
@@ -32,7 +32,7 @@ import java.util.List;
 public class ChatResponseDefault implements ChatResponse {
     protected final List<ChatChoice> choices = new ArrayList<>();
     protected ChatException error;
-    protected Usage usage;
+    protected AiUsage usage;
     protected String model;
     protected boolean finished;
 
@@ -84,7 +84,7 @@ public class ChatResponseDefault implements ChatResponse {
      * 获取使用情况（完成时，才会有使用情况）
      */
     @Override
-    public @Nullable Usage getUsage() {
+    public @Nullable AiUsage getUsage() {
         return usage;
     }
 
@@ -128,7 +128,7 @@ public class ChatResponseDefault implements ChatResponse {
     /**
      * 设置使用情况
      */
-    public void setUsage(Usage usage) {
+    public void setUsage(AiUsage usage) {
         this.usage = usage;
     }
 

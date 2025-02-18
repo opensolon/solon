@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
-import org.noear.solon.ai.common.Usage;
+import org.noear.solon.ai.AiUsage;
 
 import java.util.List;
 
@@ -28,9 +28,9 @@ import java.util.List;
 public class EmbeddingResponse {
     private final String model;
     private final List<Embedding> data;
-    private final Usage usage;
+    private final AiUsage usage;
 
-    public EmbeddingResponse(String model, List<Embedding> data, Usage usage) {
+    public EmbeddingResponse(String model, List<Embedding> data, AiUsage usage) {
         this.model = model;
         this.data = data;
         this.usage = usage;
@@ -53,7 +53,7 @@ public class EmbeddingResponse {
     /**
      * 获取使用情况
      */
-    public Usage getUsage() {
+    public AiUsage getUsage() {
         return usage;
     }
 

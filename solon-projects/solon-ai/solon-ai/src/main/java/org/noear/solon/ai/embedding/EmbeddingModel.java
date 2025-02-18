@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
+import org.noear.solon.ai.AiModel;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
 import org.noear.solon.lang.Preview;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * @since 3.1
  */
 @Preview("3.1")
-public class EmbeddingModel {
+public class EmbeddingModel implements AiModel {
     private EmbeddingConfig config;
 
     protected EmbeddingModel(EmbeddingConfig config) {
