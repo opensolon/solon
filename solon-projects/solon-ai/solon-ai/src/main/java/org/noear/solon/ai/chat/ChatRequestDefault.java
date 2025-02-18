@@ -15,9 +15,11 @@
  */
 package org.noear.solon.ai.chat;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
+import org.noear.solon.ai.chat.functioncall.ChatFunctionParam;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.net.http.HttpResponse;
@@ -31,7 +33,9 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -223,13 +227,31 @@ public class ChatRequestDefault implements ChatRequest {
 
             if (func != null) {
                 try {
-                    String content = func.handle(call.arguments());
+                    String content = callFunction(func, call.arguments());
                     messages.add(ChatMessage.ofTool(content, call.name(), call.id()));
                 } catch (Throwable ex) {
                     throw new ChatException("The function call failed!", ex);
                 }
             }
         }
+    }
+
+    private String callFunction(ChatFunction func, Map<String, Object> args) throws Throwable {
+        Map<String, Object> argsNew = new HashMap<>();
+
+        ONode argsNode = ONode.load(args);
+        for (ChatFunctionParam p1 : func.params()) {
+            ONode v1 = argsNode.getOrNull(p1.name());
+            if (v1 == null) {
+                //null
+                argsNew.put(p1.name(), null);
+            } else {
+                //用 ONode 可以自动转换类型
+                argsNew.put(p1.name(), v1.toObject(p1.type()));
+            }
+        }
+
+        return func.handle(argsNew);
     }
 
     private HttpUtils buildReqHttp() {

@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.chat.functioncall;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.annotation.FunctionMapping;
 import org.noear.solon.ai.chat.annotation.FunctionParam;
@@ -74,15 +73,8 @@ public class MethodChatFunction implements ChatFunction {
     public String handle(Map<String, Object> args) throws Throwable {
         Object[] vals = new Object[params.size()];
 
-        //用 ONode 可以自动转换类型
-        ONode argsNode = ONode.load(args);
         for (int i = 0; i < params.size(); ++i) {
-            ONode v1 = argsNode.getOrNull(params.get(i).name());
-            if (v1 == null) {
-                vals[i] = null;
-            } else {
-                vals[i] = v1.toObject(params.get(i).type());
-            }
+            vals[i] = args.get(params.get(i).name());
         }
 
         Object rst = method.invoke(target, vals);

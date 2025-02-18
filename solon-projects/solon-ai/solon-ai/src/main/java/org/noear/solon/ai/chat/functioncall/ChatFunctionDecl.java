@@ -66,21 +66,37 @@ public class ChatFunctionDecl implements ChatFunction {
         return this;
     }
 
+    /// /////////////////////
+
+    /**
+     * 函数名字
+     */
     @Override
     public String name() {
         return name;
     }
 
+
+    /**
+     * 函数描述
+     */
     @Override
     public String description() {
         return description;
     }
 
+
+    /**
+     * 函数参数
+     */
     @Override
     public Iterable<ChatFunctionParam> params() {
         return params;
     }
 
+    /**
+     * 执行处理
+     */
     @Override
     public String handle(Map<String, Object> args) throws Throwable {
         return handler.apply(args);
