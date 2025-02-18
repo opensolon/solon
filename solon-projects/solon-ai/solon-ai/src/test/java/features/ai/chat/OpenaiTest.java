@@ -95,10 +95,13 @@ public class OpenaiTest {
                 .build();
 
         ChatResponse resp = chatModel
-                .prompt(Prompts.augment("solon 框架的作者是谁？", Document.builder()
+                .prompt(Prompts.augment("solon 框架的作者是谁？", new Document()
                         .title("概述")
-                        .url("https://solon.noear.org/article/about").build()))
+                        .url("https://solon.noear.org/article/about")))
                 .call();
+
+        //打印
+        System.out.println(resp.getMessage());
     }
 
     @Test

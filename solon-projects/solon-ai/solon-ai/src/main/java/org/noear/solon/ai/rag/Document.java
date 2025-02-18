@@ -30,12 +30,16 @@ import java.util.Map;
  */
 @Preview("3.1")
 public class Document {
-    private final String id;
-    private final String content;
-    private final Map<String, Object> metadata;
-    private final Double score;
+    protected final String id;
+    protected final String content;
+    protected final Map<String, Object> metadata;
+    protected final Double score;
 
     private List<Float> embedding;
+
+    public Document() {
+        this("");
+    }
 
     public Document(String content) {
         this(content, null);
@@ -103,5 +107,32 @@ public class Document {
                 ", metadata=" + metadata +
                 ", score=" + score +
                 '}';
+    }
+
+    /// /////////////////////////////
+
+    public Document addMetadata(String key, Object value) {
+        this.metadata.put(key, value);
+        return this;
+    }
+
+    public Document title(String title) {
+        return addMetadata("title", title);
+    }
+
+    public Document url(String url) {
+        return addMetadata("url", url);
+    }
+
+    public Document summary(String summary) {
+        return addMetadata("summary", summary);
+    }
+
+    public Document snippet(String snippet) {
+        return addMetadata("snippet", snippet);
+    }
+
+    public Document language(String language) {
+        return addMetadata("language", language);
     }
 }

@@ -3,34 +3,39 @@ package org.noear.solon.ai.rag.splitter;
 import org.noear.solon.ai.rag.Document;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
- * @author noear 2025/2/18 created
+ * 文本分割器
+ *
+ * @author noear
+ * @since 3.1
  */
-public class TestSplitter implements DocumentSplitter {
+public class TextSplitter implements DocumentSplitter {
+
     @Override
     public List<Document> split(List<Document> documents) {
         List<Document> outs = new ArrayList<>();
 
-
         for (Document doc : documents) {
-            splitDo(doc, outs);
+            splitDocument(doc, outs);
         }
 
         return outs;
     }
 
-    private void splitDo(Document in, List<Document> outs) {
+    protected List<Document> splitDocument(Document in, List<Document> outs) {
         for (String chuck : splitText(in.getContent())) {
             if (chuck.length() > 0) {
                 outs.add(new Document(chuck, in.getMetadata()));
             }
         }
+
+        return outs;
     }
 
-    protected String[] splitText(String text) {
-        return text.split("\n");
+    protected List<String> splitText(String text) {
+        return Arrays.asList(text.split("\n"));
     }
 }

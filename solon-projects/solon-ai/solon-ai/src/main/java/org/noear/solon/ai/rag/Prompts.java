@@ -56,31 +56,8 @@ public final class Prompts {
             return null;
         }
 
-        StringBuilder results = new StringBuilder();
-
-        for (Document d1 : context) {
-            results.append("Title: ").append(d1.getTitle()).append("\n");
-
-            if (Utils.isNotEmpty(d1.getUrl())) {
-                results.append("Source: ").append(d1.getUrl()).append("\n");
-            }
-
-            if (Utils.isNotEmpty(d1.getSummary())) {
-                results.append("Content: ").append(d1.getSummary()).append("\n");
-            }
-
-            if (Utils.isNotEmpty(d1.getSnippet())) {
-                results.append("Snippet: ").append(d1.getSnippet()).append("\n");
-            }
-
-            if (Utils.isNotEmpty(d1.getLanguage())) {
-                results.append("Language: ").append(d1.getLanguage()).append("\n");
-            }
-
-            results.append("\n\n");
-        }
 
         return String.format("question: %s\n\n now:%s \n\n context:%s", question,
-                LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), results);
+                LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
     }
 }
