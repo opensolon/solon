@@ -16,6 +16,7 @@
 package org.noear.solon.ai.rag.repository;
 
 import io.milvus.v2.client.MilvusClientV2;
+import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
@@ -31,9 +32,11 @@ import java.util.List;
  * @since 3.1
  */
 public class MilvusRepository implements RepositoryStorable {
+    private final EmbeddingModel embeddingModel;
     private final MilvusClientV2 client;
 
-    public MilvusRepository(MilvusClientV2 client) {
+    public MilvusRepository(EmbeddingModel embeddingModel, MilvusClientV2 client) {
+        this.embeddingModel = embeddingModel;
         //客户端的构建由外部完成
         this.client = client;
     }
@@ -46,11 +49,6 @@ public class MilvusRepository implements RepositoryStorable {
     @Override
     public void remove(String id) {
 
-    }
-
-    @Override
-    public Document get(String id) {
-        return null;
     }
 
     @Override

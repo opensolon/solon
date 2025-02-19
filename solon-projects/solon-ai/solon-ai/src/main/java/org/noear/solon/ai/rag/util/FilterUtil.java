@@ -19,10 +19,10 @@ import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 过滤工具
@@ -31,14 +31,18 @@ import java.util.stream.Collectors;
  * @since 3.1
  */
 public final class FilterUtil {
+
+    public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Stream<Document> docs) throws IOException {
+        float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
+
+        return similarityFilter(condition, embeddingModel, docs, userQueryEmbedding);
+    }
+
     /**
      * 相似度过滤
      */
-    public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Collection<Document> docs) throws IOException {
-        float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
-
-        return docs.stream()
-                .filter(condition.getFilter())
+    public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Stream<Document> docs, float[] userQueryEmbedding) throws IOException {
+        return docs.filter(condition.getFilter())
                 .map(doc -> mapDo(doc, userQueryEmbedding))
                 .filter(doc -> filterDo(doc, condition))
                 .sorted(Comparator.comparing(Document::getScore).reversed())

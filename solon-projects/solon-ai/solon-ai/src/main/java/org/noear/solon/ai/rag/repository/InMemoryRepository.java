@@ -55,12 +55,7 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
-    public Document get(String id) {
-        return store.get(id);
-    }
-
-    @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        return FilterUtil.similarityFilter(condition, embeddingModel, store.values());
+        return FilterUtil.similarityFilter(condition, embeddingModel, store.values().stream());
     }
 }

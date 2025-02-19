@@ -37,9 +37,4 @@ public interface RepositoryStorable extends Repository {
      * 移除
      */
     void remove(String id);
-
-    /**
-     * 获取
-     */
-    Document get(String id);
 }
