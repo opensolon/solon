@@ -17,7 +17,9 @@ package org.noear.solon.ai;
 
 /**
  * Ai 模型
+ *
  * @author noear
+ * @since 3.1
  */
 public interface AiModel {
 }
