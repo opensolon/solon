@@ -105,7 +105,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
     }
 
     protected void buildReqFunctionsNode(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
-        buildReqFunctionsNodeDo(n, config.globalFunctions());
+        buildReqFunctionsNodeDo(n, config.getGlobalFunctions());
         buildReqFunctionsNodeDo(n, options.functions());
     }
 
@@ -172,8 +172,8 @@ public abstract class AbstractChatDialect implements ChatDialect {
         return new ONode().build(n -> {
             n.set("stream", stream);
 
-            if (Utils.isNotEmpty(config.model())) {
-                n.set("model", config.model());
+            if (Utils.isNotEmpty(config.getModel())) {
+                n.set("model", config.getModel());
             }
 
             n.getOrNew("messages").build(n1 -> {

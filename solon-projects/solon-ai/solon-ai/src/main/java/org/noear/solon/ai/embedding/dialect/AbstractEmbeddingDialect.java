@@ -2,7 +2,6 @@ package org.noear.solon.ai.embedding.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.embedding.*;
 
 import java.util.List;
@@ -16,8 +15,8 @@ public abstract class AbstractEmbeddingDialect implements EmbeddingDialect {
     @Override
     public String buildRequestJson(EmbeddingConfig config, EmbeddingOptions options, List<String> input) {
         return new ONode().build(n -> {
-            if (Utils.isNotEmpty(config.model())) {
-                n.set("model", config.model());
+            if (Utils.isNotEmpty(config.getModel())) {
+                n.set("model", config.getModel());
             }
 
             n.getOrNew("input").build(n1 -> {

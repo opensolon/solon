@@ -28,7 +28,7 @@ public class EmbeddingModelBuilder {
 
     public EmbeddingModelBuilder(String apiUrl) {
         this.config = new EmbeddingConfig();
-        this.config.apiUrl = apiUrl;
+        this.config.setApiUrl(apiUrl);
     }
 
     public EmbeddingModelBuilder(EmbeddingConfig config) {
@@ -36,30 +36,27 @@ public class EmbeddingModelBuilder {
     }
 
     public EmbeddingModelBuilder apiKey(String apiKey) {
-        config.apiKey = apiKey;
+        config.setApiKey(apiKey);
         return this;
     }
 
     public EmbeddingModelBuilder provider(String provider) {
-        config.provider = provider;
+        config.setProvider(provider);
         return this;
     }
 
     public EmbeddingModelBuilder model(String model) {
-        config.model = model;
+        config.setModel(model);
         return this;
     }
 
     public EmbeddingModelBuilder headerSet(String key, String value) {
-        config.headers.put(key, value);
+        config.setHeader(key, value);
         return this;
     }
 
     public EmbeddingModelBuilder timeout(Duration timeout) {
-        if (timeout != null) {
-            config.timeout = timeout;
-        }
-
+        config.setTimeout(timeout);
         return this;
     }
 

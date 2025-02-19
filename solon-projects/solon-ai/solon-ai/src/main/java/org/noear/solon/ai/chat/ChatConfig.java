@@ -15,10 +15,9 @@
  */
 package org.noear.solon.ai.chat;
 
-import org.noear.solon.ai.chat.dialect.ChatDialect;
+import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 
-import java.time.Duration;
 import java.util.*;
 
 /**
@@ -27,51 +26,14 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public class ChatConfig {
-    protected String apiUrl;
-    protected String apiKey;
-    protected String provider;
-    protected String model;
-    protected final Map<String, String> headers = new LinkedHashMap<>();
-    protected Duration timeout = Duration.ofSeconds(30);
-
+public class ChatConfig extends AiConfig {
     protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
 
-    protected transient ChatDialect dialect;
-
-    public String apiUrl() {
-        return apiUrl;
-    }
-
-    public String apiKey() {
-        return apiKey;
-    }
-
-    public String provider() {
-        return provider;
-    }
-
-    public ChatDialect dialect() {
-        return dialect;
-    }
-
-    public String model() {
-        return model;
-    }
-
-    public Map<String, String> headers() {
-        return headers;
-    }
-
-    public Duration timeout() {
-        return timeout;
-    }
-
-    public Collection<ChatFunction> globalFunctions() {
+    public Collection<ChatFunction> getGlobalFunctions() {
         return globalFunctions.values();
     }
 
-    public ChatFunction globalFunction(String name) {
+    public ChatFunction getGlobalFunction(String name) {
         return globalFunctions.get(name);
     }
 }

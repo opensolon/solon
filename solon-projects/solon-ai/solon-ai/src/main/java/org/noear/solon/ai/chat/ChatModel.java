@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiModel;
+import org.noear.solon.ai.chat.dialect.ChatDialect;
 import org.noear.solon.ai.chat.dialect.ChatDialectManager;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.lang.Preview;
@@ -33,9 +34,10 @@ import java.util.List;
 @Preview("3.1")
 public class ChatModel implements AiModel {
     private final ChatConfig config;
+    private final ChatDialect dialect;
 
     public ChatModel(ChatConfig config) {
-        config.dialect = ChatDialectManager.select(config);
+        this.dialect = ChatDialectManager.select(config);
         this.config = config;
     }
 
@@ -43,7 +45,7 @@ public class ChatModel implements AiModel {
      * 提示语
      */
     public ChatRequest prompt(List<ChatMessage> messages) {
-        return new ChatRequestDefault(config, messages);
+        return new ChatRequestDefault(config, dialect, messages);
     }
 
     /**

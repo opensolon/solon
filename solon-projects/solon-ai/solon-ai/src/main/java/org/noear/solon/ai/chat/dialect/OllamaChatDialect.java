@@ -39,7 +39,7 @@ public class OllamaChatDialect extends AbstractChatDialect {
 
     @Override
     public boolean matched(ChatConfig config) {
-        return "ollama".equals(config.provider());
+        return "ollama".equals(config.getProvider());
     }
 
     @Override

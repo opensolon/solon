@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.rag.Document;
 
 import java.io.IOException;
@@ -27,7 +28,18 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class WebSearchRepository implements Repository{
+public class WebSearchRepository implements Repository {
+    private final AiConfig config;
+
+    public WebSearchRepository() {
+        this.config = new AiConfig();
+        this.config.setApiUrl("https://api.bochaai.com/v1/web-search");
+    }
+
+    public WebSearchRepository(AiConfig config) {
+        this.config = config;
+    }
+
     @Override
     public List<Document> search(SearchCondition condition) throws IOException {
         return Collections.emptyList();

@@ -22,7 +22,7 @@ public class OllamaEmbeddingDialect extends AbstractEmbeddingDialect {
 
     @Override
     public boolean matched(EmbeddingConfig config) {
-        return "ollama".equals(config.provider());
+        return "ollama".equals(config.getProvider());
     }
 
     @Override

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.embedding;
 
-import org.noear.solon.Utils;
+import org.noear.solon.ai.embedding.dialect.EmbeddingDialect;
 import org.noear.solon.net.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +35,13 @@ public class EmbeddingRequest {
     private static final EmbeddingOptions OPTIONS_DEFAULT = new EmbeddingOptions();
 
     private final EmbeddingConfig config;
+    private final EmbeddingDialect dialect;
+    private final List<String> input;
     private EmbeddingOptions options;
-    private List<String> input;
 
-    protected EmbeddingRequest(EmbeddingConfig config, List<String> input) {
+    protected EmbeddingRequest(EmbeddingConfig config, EmbeddingDialect dialect, List<String> input) {
         this.config = config;
+        this.dialect = dialect;
         this.input = input;
         this.options = OPTIONS_DEFAULT;
     }
@@ -68,9 +70,9 @@ public class EmbeddingRequest {
      * 调用
      */
     public EmbeddingResponse call() throws IOException {
-        HttpUtils httpUtils = buildReqHttp();
+        HttpUtils httpUtils = config.createHttpUtils();
 
-        String reqJson = config.dialect().buildRequestJson(config, options, input);
+        String reqJson = dialect.buildRequestJson(config, options, input);
 
         if (log.isTraceEnabled()) {
             log.trace("ai-request: {}", reqJson);
@@ -82,25 +84,8 @@ public class EmbeddingRequest {
             log.trace("ai-response: {}", respJson);
         }
 
-        EmbeddingResponse resp = config.dialect().parseResponseJson(config, respJson);
+        EmbeddingResponse resp = dialect.parseResponseJson(config, respJson);
 
         return resp;
-    }
-
-    /**
-     * 构建 http 请求
-     */
-    private HttpUtils buildReqHttp() {
-        HttpUtils httpUtils = HttpUtils
-                .http(config.apiUrl())
-                .timeout((int) config.timeout().getSeconds());
-
-        if (Utils.isNotEmpty(config.apiKey())) {
-            httpUtils.header("Authorization", "Bearer " + config.apiKey());
-        }
-
-        httpUtils.headers(config.headers());
-
-        return httpUtils;
     }
 }

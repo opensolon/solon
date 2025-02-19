@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
+import org.noear.solon.ai.chat.dialect.ChatDialect;
 import org.noear.solon.ai.chat.functioncall.ChatFunction;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionCall;
 import org.noear.solon.ai.chat.functioncall.ChatFunctionParam;
@@ -49,11 +50,14 @@ public class ChatRequestDefault implements ChatRequest {
     private static final ChatOptions OPTIONS_DEFAULT = new ChatOptions();
 
     private final ChatConfig config;
+    private final ChatDialect dialect;
     private final List<ChatMessage> messages;
+
     private ChatOptions options;
 
-    public ChatRequestDefault(ChatConfig config, List<ChatMessage> messages) {
+    public ChatRequestDefault(ChatConfig config, ChatDialect dialect, List<ChatMessage> messages) {
         this.config = config;
+        this.dialect = dialect;
         this.messages = messages;
         this.options = OPTIONS_DEFAULT;
     }
@@ -85,9 +89,9 @@ public class ChatRequestDefault implements ChatRequest {
      */
     @Override
     public ChatResponse call() throws IOException {
-        HttpUtils httpUtils = buildReqHttp();
+        HttpUtils httpUtils = config.createHttpUtils();
 
-        String reqJson = config.dialect().buildRequestJson(config, options, messages, false);
+        String reqJson = dialect.buildRequestJson(config, options, messages, false);
 
         if (log.isTraceEnabled()) {
             log.trace("ai-request: {}", reqJson);
@@ -100,7 +104,7 @@ public class ChatRequestDefault implements ChatRequest {
         }
 
         ChatResponseDefault resp = new ChatResponseDefault();
-        config.dialect().parseResponseJson(config, resp, respJson);
+        dialect.parseResponseJson(config, resp, respJson);
 
         if (resp.getError() != null) {
             throw resp.getError();
@@ -124,9 +128,9 @@ public class ChatRequestDefault implements ChatRequest {
      */
     @Override
     public Publisher<ChatResponse> stream() {
-        HttpUtils httpUtils = buildReqHttp();
+        HttpUtils httpUtils = config.createHttpUtils();
 
-        String reqJson = config.dialect().buildRequestJson(config, options, messages, true);
+        String reqJson = dialect.buildRequestJson(config, options, messages, true);
 
         if (log.isTraceEnabled()) {
             log.trace("ai-request: {}", reqJson);
@@ -174,7 +178,7 @@ public class ChatRequestDefault implements ChatRequest {
                         }
 
                         resp.reset();
-                        if (config.dialect().parseResponseJson(config, resp, respJson)) {
+                        if (dialect.parseResponseJson(config, resp, respJson)) {
                             if (resp.getError() != null) {
                                 subscriber.onError(resp.getError());
                                 return;
@@ -219,7 +223,7 @@ public class ChatRequestDefault implements ChatRequest {
         }
 
         for (ChatFunctionCall call : acm.getToolCalls()) {
-            ChatFunction func = config.globalFunction(call.name());
+            ChatFunction func = config.getGlobalFunction(call.name());
 
             if (func == null) {
                 func = options.function(call.name());
@@ -255,22 +259,5 @@ public class ChatRequestDefault implements ChatRequest {
         }
 
         return func.handle(argsNew);
-    }
-
-    /**
-     * 构建 http 请求
-     */
-    private HttpUtils buildReqHttp() {
-        HttpUtils httpUtils = HttpUtils
-                .http(config.apiUrl())
-                .timeout((int) config.timeout().getSeconds());
-
-        if (Utils.isNotEmpty(config.apiKey())) {
-            httpUtils.header("Authorization", "Bearer " + config.apiKey());
-        }
-
-        httpUtils.headers(config.headers());
-
-        return httpUtils;
     }
 }

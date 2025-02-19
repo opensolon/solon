@@ -46,7 +46,7 @@ public class OpenaiChatDialect extends AbstractChatDialect {
     protected void buildReqFunctionsNode(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
         if (lastMessage.getRole() != ChatRole.TOOL) {
             //如果是 tool ，后面不跟 funcs
-            buildReqFunctionsNodeDo(n, config.globalFunctions());
+            buildReqFunctionsNodeDo(n, config.getGlobalFunctions());
             buildReqFunctionsNodeDo(n, options.functions());
         }
     }

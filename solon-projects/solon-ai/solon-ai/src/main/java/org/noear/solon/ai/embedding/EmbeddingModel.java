@@ -16,6 +16,7 @@
 package org.noear.solon.ai.embedding;
 
 import org.noear.solon.ai.AiModel;
+import org.noear.solon.ai.embedding.dialect.EmbeddingDialect;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
 import org.noear.solon.lang.Preview;
 
@@ -31,10 +32,11 @@ import java.util.List;
  */
 @Preview("3.1")
 public class EmbeddingModel implements AiModel {
-    private EmbeddingConfig config;
+    private final EmbeddingConfig config;
+    private final EmbeddingDialect dialect;
 
     protected EmbeddingModel(EmbeddingConfig config) {
-        config.dialect = EmbeddingDialectManager.select(config);
+        this.dialect = EmbeddingDialectManager.select(config);
         this.config = config;
     }
 
@@ -56,7 +58,7 @@ public class EmbeddingModel implements AiModel {
      * 输入
      */
     public EmbeddingRequest input(List<String> input) {
-        return new EmbeddingRequest(config, input);
+        return new EmbeddingRequest(config, dialect, input);
     }
 
 

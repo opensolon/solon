@@ -35,7 +35,7 @@ public class ChatModelBuilder {
 
     public ChatModelBuilder(String apiUrl) {
         this.config = new ChatConfig();
-        this.config.apiUrl = apiUrl;
+        this.config.setApiUrl(apiUrl);
     }
 
     public ChatModelBuilder(ChatConfig config) {
@@ -43,22 +43,22 @@ public class ChatModelBuilder {
     }
 
     public ChatModelBuilder apiKey(String apiKey) {
-        config.apiKey = apiKey;
+        config.setApiKey(apiKey);
         return this;
     }
 
     public ChatModelBuilder provider(String provider) {
-        config.provider = provider;
+        config.setProvider(provider);
         return this;
     }
 
     public ChatModelBuilder model(String model) {
-        config.model = model;
+        config.setModel(model);
         return this;
     }
 
     public ChatModelBuilder headerSet(String key, String value) {
-        config.headers.put(key, value);
+        config.setHeader(key, value);
         return this;
     }
 
@@ -107,9 +107,7 @@ public class ChatModelBuilder {
     }
 
     public ChatModelBuilder timeout(Duration timeout) {
-        if (timeout != null) {
-            config.timeout = timeout;
-        }
+        config.setTimeout(timeout);
 
         return this;
     }
