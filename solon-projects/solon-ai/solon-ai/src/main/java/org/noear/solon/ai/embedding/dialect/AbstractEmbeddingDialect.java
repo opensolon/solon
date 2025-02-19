@@ -33,24 +33,4 @@ public abstract class AbstractEmbeddingDialect implements EmbeddingDialect {
             }
         }).toJson();
     }
-
-    @Override
-    public EmbeddingResponse parseResponseJson(EmbeddingConfig config, String respJson) {
-        ONode oResp = ONode.load(respJson);
-
-        String model = oResp.get("model").getString();
-        List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
-        AiUsage usage = null;
-
-        if (oResp.contains("usage")) {
-            ONode oUsage = oResp.get("usage");
-            usage = new AiUsage(
-                    oUsage.get("prompt_tokens").getInt(),
-                    0,
-                    oUsage.get("total_tokens").getInt()
-            );
-        }
-
-        return new EmbeddingResponse(model, data, usage);
-    }
 }
