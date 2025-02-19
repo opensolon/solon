@@ -17,6 +17,7 @@ package org.noear.solon.ai.rag.splitter;
 
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
+import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
 import com.knuddels.jtokkit.api.IntArrayList;
 
@@ -31,12 +32,25 @@ import java.util.Objects;
  * @since 3.1
  */
 public class TokenTextSplitter extends TextSplitter {
-    private final Encoding encoding;
+    private EncodingRegistry encodingRegistry;
+    private EncodingType encodingType;
     private final int chunkSize;
     private final int minChunkSizeChars;
     private final int minChunkLengthToEmbed;
     private final int maxChunkCount;
     private final boolean keepSeparator;
+
+    public void setEncodingRegistry(EncodingRegistry encodingRegistry) {
+        if (encodingRegistry != null) {
+            this.encodingRegistry = encodingRegistry;
+        }
+    }
+
+    public void setEncodingType(EncodingType encodingType) {
+        if (encodingType != null) {
+            this.encodingType = encodingType;
+        }
+    }
 
     public TokenTextSplitter() {
         this(800);
@@ -51,7 +65,8 @@ public class TokenTextSplitter extends TextSplitter {
     }
 
     public TokenTextSplitter(int chunkSize, int minChunkSizeChars, int minChunkLengthToEmbed, int maxChunkCount, boolean keepSeparator) {
-        this.encoding = Encodings.newLazyEncodingRegistry().getEncoding(EncodingType.CL100K_BASE);
+        this.encodingRegistry = Encodings.newLazyEncodingRegistry();
+        this.encodingType = EncodingType.CL100K_BASE;
 
         this.chunkSize = chunkSize;
         this.minChunkSizeChars = minChunkSizeChars;
@@ -62,20 +77,25 @@ public class TokenTextSplitter extends TextSplitter {
 
     @Override
     protected List<String> splitText(String text) {
+        Encoding encoding = encodingRegistry.getEncoding(encodingType);
         List<String> chunks = new ArrayList();
 
         if (text != null && !text.trim().isEmpty()) {
-            List<Integer> tokens = this.encodeTokens(text);
+            List<Integer> tokens = this.encodeTokens(encoding, text);
             int chunksCount = 0;
 
             while (!tokens.isEmpty() && chunksCount < this.maxChunkCount) {
                 List<Integer> chunk = tokens.subList(0, Math.min(chunkSize, tokens.size()));
-                String chunkText = this.decodeTokens(chunk);
+                String chunkText = this.decodeTokens(encoding, chunk);
                 if (chunkText.trim().isEmpty()) {
                     tokens = tokens.subList(chunk.size(), tokens.size());
                 } else {
-                    int lastPunctuation = Math.max(chunkText.lastIndexOf(46), Math.max(chunkText.lastIndexOf(63), Math.max(chunkText.lastIndexOf(33), chunkText.lastIndexOf(10))));
-                    if (lastPunctuation != -1 && lastPunctuation > this.minChunkSizeChars) {
+                    int lastPunctuation = Math.max(chunkText.lastIndexOf(46),
+                            Math.max(chunkText.lastIndexOf(63),
+                                    Math.max(chunkText.lastIndexOf(33),
+                                            chunkText.lastIndexOf(10))));
+
+                    if (lastPunctuation > 0 && lastPunctuation > this.minChunkSizeChars) {
                         chunkText = chunkText.substring(0, lastPunctuation + 1);
                     }
 
@@ -84,13 +104,13 @@ public class TokenTextSplitter extends TextSplitter {
                         chunks.add(chunkTextToAppend);
                     }
 
-                    tokens = tokens.subList(this.encodeTokens(chunkText).size(), tokens.size());
+                    tokens = tokens.subList(this.encodeTokens(encoding, chunkText).size(), tokens.size());
                     ++chunksCount;
                 }
             }
 
             if (!tokens.isEmpty()) {
-                String remaining_text = this.decodeTokens(tokens).replace(System.lineSeparator(), " ").trim();
+                String remaining_text = this.decodeTokens(encoding, tokens).replace(System.lineSeparator(), " ").trim();
                 if (remaining_text.length() > this.minChunkLengthToEmbed) {
                     chunks.add(remaining_text);
                 }
@@ -103,20 +123,20 @@ public class TokenTextSplitter extends TextSplitter {
     /**
      * 编码符号
      */
-    private List<Integer> encodeTokens(String text) {
+    private List<Integer> encodeTokens(Encoding encoding, String text) {
         Objects.requireNonNull(text, "tokens is null");
 
-        return this.encoding.encode(text).boxed();
+        return encoding.encode(text).boxed();
     }
 
     /**
      * 解码符号
      */
-    private String decodeTokens(List<Integer> tokens) {
+    private String decodeTokens(Encoding encoding, List<Integer> tokens) {
         Objects.requireNonNull(tokens, "tokens is null");
 
         IntArrayList tmp = new IntArrayList(tokens.size());
         tokens.forEach(tmp::add);
-        return this.encoding.decode(tmp);
+        return encoding.decode(tmp);
     }
 }
