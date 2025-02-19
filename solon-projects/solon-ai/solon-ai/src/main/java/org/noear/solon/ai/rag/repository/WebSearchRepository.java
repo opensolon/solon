@@ -17,6 +17,7 @@ package org.noear.solon.ai.rag.repository;
 
 import org.noear.snack.ONode;
 import org.noear.solon.ai.AiConfig;
+import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.net.http.HttpUtils;
 
@@ -31,6 +32,15 @@ import java.util.*;
  */
 public class WebSearchRepository implements Repository {
     private final AiConfig config;
+    private EmbeddingModel embeddingModel;
+
+    /**
+     * 设置嵌入模型
+     * */
+    public void setEmbeddingModel(EmbeddingModel embeddingModel) {
+        //可选
+        this.embeddingModel = embeddingModel;
+    }
 
     public WebSearchRepository(String apiKey) {
         this("https://api.bochaai.com/v1/web-search", apiKey);
@@ -80,6 +90,13 @@ public class WebSearchRepository implements Repository {
                     .url(n1.get("url").getString()));
         }
 
+        if(embeddingModel != null){
+            embeddingModel.embed(docs);
+
+            return SearchUtil.filter(condition, embeddingModel, docs);
+        }
+
         return docs;
     }
+
 }

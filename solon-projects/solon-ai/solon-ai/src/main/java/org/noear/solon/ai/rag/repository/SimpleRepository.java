@@ -15,12 +15,10 @@
  */
 package org.noear.solon.ai.rag.repository;
 
-import org.noear.solon.ai.embedding.Embedding;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -62,27 +60,6 @@ public class SimpleRepository implements RepositoryStorable {
 
     @Override
     public List<Document> search(SearchCondition condition) throws IOException {
-        float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
-
-        return this.store.values().stream()
-                .filter(condition.getFilter())
-                .map(doc -> mapDo(doc, userQueryEmbedding))
-                .filter(doc -> filterDo(doc, condition))
-                .sorted(Comparator.comparing(Document::getScore).reversed())
-                .limit((long) condition.getLimit())
-                .collect(Collectors.toList());
-    }
-
-    private Document mapDo(Document doc, float[] userQueryEmbedding) {
-        //方便调试
-        return new Document(doc.getId(),
-                doc.getContent(),
-                doc.getMetadata(),
-                SearchUtil.cosineSimilarity(userQueryEmbedding, doc.getEmbedding()));
-    }
-
-    private boolean filterDo(Document doc, SearchCondition condition) {
-        //方便调试
-        return doc.getScore() >= condition.getSimilarityThreshold();
+        return SearchUtil.filter(condition, embeddingModel, store.values());
     }
 }

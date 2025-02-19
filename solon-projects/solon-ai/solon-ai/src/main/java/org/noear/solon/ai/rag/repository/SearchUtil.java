@@ -15,53 +15,44 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import org.noear.solon.ai.embedding.EmbeddingModel;
+import org.noear.solon.ai.rag.Document;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
- * 搜索工具（提供相似度算法）
- * */
-public interface SearchUtil {
-    /**
-     * 余弦相似度
-     */
-    static double cosineSimilarity(float[] embedA, float[] embedB) {
-        if (embedA != null && embedB != null) {
-            if (embedA.length != embedB.length) {
-                throw new IllegalArgumentException("Embed length must be equal");
-            } else {
-                float dotProduct = dotProduct(embedA, embedB);
-                float normA = norm(embedA);
-                float normB = norm(embedB);
-                if (normA != 0.0F && normB != 0.0F) {
-                    return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-                } else {
-                    throw new IllegalArgumentException("Embed cannot be zero norm");
-                }
-            }
-        } else {
-            throw new RuntimeException("Embed must not be null");
-        }
+ * 搜索工具
+ *
+ * @author noear
+ * @since 3.1
+ */
+public final class SearchUtil {
+    public static List<Document> filter(SearchCondition condition, EmbeddingModel embeddingModel, Collection<Document> docs) throws IOException {
+        float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
+
+        return docs.stream()
+                .filter(condition.getFilter())
+                .map(doc -> mapDo(doc, userQueryEmbedding))
+                .filter(doc -> filterDo(doc, condition))
+                .sorted(Comparator.comparing(Document::getScore).reversed())
+                .limit((long) condition.getLimit())
+                .collect(Collectors.toList());
     }
 
-    /**
-     * 点积
-     */
-    static float dotProduct(float[] embedA, float[] embedB) {
-        if (embedA.length != embedB.length) {
-            throw new IllegalArgumentException("Embed length must be equal");
-        } else {
-            float tmp = 0.0F;
-
-            for (int i = 0; i < embedA.length; ++i) {
-                tmp += embedA[i] * embedB[i];
-            }
-
-            return tmp;
-        }
+    private static Document mapDo(Document doc, float[] userQueryEmbedding) {
+        //方便调试
+        return new Document(doc.getId(),
+                doc.getContent(),
+                doc.getMetadata(),
+                SimilarityMath.cosineSimilarity(userQueryEmbedding, doc.getEmbedding()));
     }
 
-    /**
-     * 范数
-     */
-    static float norm(float[] vector) {
-        return dotProduct(vector, vector);
+    private static boolean filterDo(Document doc, SearchCondition condition) {
+        //方便调试
+        return doc.getScore() >= condition.getSimilarityThreshold();
     }
 }
