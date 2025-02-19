@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * 网页搜索知识库（基于搜索接口实现）
+ * 联网搜索知识库
  *
  * @author noear
  * @since 3.1

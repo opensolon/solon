@@ -15,52 +15,46 @@
  */
 package org.noear.solon.ai.rag.repository;
 
-import org.noear.solon.ai.embedding.EmbeddingModel;
+import io.milvus.v2.client.MilvusClientV2;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
-import org.noear.solon.ai.rag.util.FilterUtil;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 内存存储知识库
+ * Milvus 矢量存储知识库
  *
  * @author noear
  * @since 3.1
  */
-public class InMemoryRepository implements RepositoryStorable {
-    private final EmbeddingModel embeddingModel;
-    private final Map<String, Document> store = new ConcurrentHashMap<>();
+public class MilvusRepository implements RepositoryStorable {
+    private final MilvusClientV2 client;
 
-    public InMemoryRepository(EmbeddingModel embeddingModel) {
-        this.embeddingModel = embeddingModel;
+    public MilvusRepository(MilvusClientV2 client) {
+        //客户端的构建由外部完成
+        this.client = client;
     }
 
     @Override
     public void put(List<Document> documents) throws IOException {
-        embeddingModel.embed(documents);
 
-        for (Document doc : documents) {
-            store.put(doc.getId(), doc);
-        }
     }
 
     @Override
     public void remove(String id) {
-        store.remove(id);
+
     }
 
     @Override
     public Document get(String id) {
-        return store.get(id);
+        return null;
     }
 
     @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        return FilterUtil.similarityFilter(condition, embeddingModel, store.values());
+        return Collections.emptyList();
     }
 }
