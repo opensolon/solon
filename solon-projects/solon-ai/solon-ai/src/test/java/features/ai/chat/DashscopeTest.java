@@ -1,16 +1,13 @@
 package features.ai.chat;
 
-import ch.qos.logback.classic.LoggerContext;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
-import org.noear.solon.ai.chat.ChatModelBuilder;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ public class DashscopeTest {
     private static final String provider = "dashscope";
     private static final String model = "qwen-turbo-latest";//"llama3.2"; //deepseek-r1:1.5b;
 
-    ChatModelBuilder configChatModelBuilder(){
+    ChatModel.Builder configChatModelBuilder(){
         return ChatModel.of(apiUrl)
                 .provider(provider)
                 .model(model)

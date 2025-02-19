@@ -64,13 +64,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.javpower</groupId>
-            <artifactId>vectorex-client</artifactId>
-            <version>1.5.2</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
