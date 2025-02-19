@@ -33,29 +33,29 @@ import java.util.stream.Stream;
 public final class FilterUtil {
 
     public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Stream<Document> docs) throws IOException {
-        float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
+        float[] queryEmbed = embeddingModel.embed(condition.getQuery());
 
-        return similarityFilter(condition, embeddingModel, docs, userQueryEmbedding);
+        return similarityFilter(condition, docs, queryEmbed);
     }
 
     /**
      * 相似度过滤
      */
-    public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Stream<Document> docs, float[] userQueryEmbedding) throws IOException {
+    public static List<Document> similarityFilter(QueryCondition condition, Stream<Document> docs, float[] queryEmbed) throws IOException {
         return docs.filter(condition.getFilter())
-                .map(doc -> mapDo(doc, userQueryEmbedding))
+                .map(doc -> mapDo(doc, queryEmbed))
                 .filter(doc -> filterDo(doc, condition))
                 .sorted(Comparator.comparing(Document::getScore).reversed())
                 .limit((long) condition.getLimit())
                 .collect(Collectors.toList());
     }
 
-    private static Document mapDo(Document doc, float[] userQueryEmbedding) {
+    private static Document mapDo(Document doc, float[] queryEmbed) {
         //方便调试
         return new Document(doc.getId(),
                 doc.getContent(),
                 doc.getMetadata(),
-                SimilarityMath.cosineSimilarity(userQueryEmbedding, doc.getEmbedding()));
+                SimilarityMath.cosineSimilarity(queryEmbed, doc.getEmbedding()));
     }
 
     private static boolean filterDo(Document doc, QueryCondition condition) {
