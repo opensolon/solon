@@ -26,6 +26,7 @@
         <module>../../solon-projects/solon-rx/solon-rx</module>
         <module>../../solon-projects/solon-flow/solon-flow</module>
         <module>../../solon-projects/solon-ai/solon-ai</module>
+        <module>../../solon-projects/solon-ai/solon-ai-milvus</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
         <module>../../solon-projects/solon-config/solon-config-plus</module>
