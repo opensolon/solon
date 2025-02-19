@@ -17,13 +17,13 @@ package org.noear.solon.ai.rag.repository;
 
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.util.SearchCondition;
+import org.noear.solon.ai.rag.util.SearchUtil;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * 简单知识库（基于本地内存实现）
@@ -31,11 +31,11 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 3.1
  */
-public class SimpleRepository implements RepositoryStorable {
+public class InMemoryRepository implements RepositoryStorable {
     private final EmbeddingModel embeddingModel;
     private final Map<String, Document> store = new ConcurrentHashMap<>();
 
-    public SimpleRepository(EmbeddingModel embeddingModel) {
+    public InMemoryRepository(EmbeddingModel embeddingModel) {
         this.embeddingModel = embeddingModel;
     }
 

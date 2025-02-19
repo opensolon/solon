@@ -19,6 +19,8 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.util.SearchCondition;
+import org.noear.solon.ai.rag.util.SearchUtil;
 import org.noear.solon.net.http.HttpUtils;
 
 import java.io.IOException;

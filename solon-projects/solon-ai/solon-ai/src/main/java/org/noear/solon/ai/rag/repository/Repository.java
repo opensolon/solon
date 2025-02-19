@@ -16,6 +16,7 @@
 package org.noear.solon.ai.rag.repository;
 
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.util.SearchCondition;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
