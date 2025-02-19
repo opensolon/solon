@@ -33,27 +33,27 @@ public final class Prompts {
     /**
      * 增强提示语
      */
-    public static ChatMessage augment(String question, Document... context) {
-        return augment(question, Arrays.asList(context));
+    public static ChatMessage augment(String message, Document... context) {
+        return augment(message, Arrays.asList(context));
     }
 
     /**
      * 增强提示语
      */
-    public static ChatMessage augment(String question, List<Document> context) {
-        return ChatMessage.ofUser(format(question, context));
+    public static ChatMessage augment(String message, List<Document> context) {
+        return ChatMessage.ofUser(format(message, context));
     }
 
     /**
      * 增强提示语
      */
-    private static String format(String question, List<Document> context) {
+    private static String format(String message, List<Document> context) {
         if (Utils.isEmpty(context)) {
             return null;
         }
 
 
-        return String.format("question: %s\n\n now: %s \n\n context: %s", question,
+        return String.format("%s\n\n now: %s \n\n context: %s", message,
                 LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
     }
 }

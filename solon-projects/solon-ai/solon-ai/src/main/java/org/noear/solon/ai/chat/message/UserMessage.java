@@ -40,11 +40,17 @@ public class UserMessage implements ChatMessage {
         this.images = images;
     }
 
+    /**
+     * 角色
+     */
     @Override
     public ChatRole getRole() {
         return role;
     }
 
+    /**
+     * 内容
+     */
     @Override
     public String getContent() {
         return content;

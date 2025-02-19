@@ -4,9 +4,9 @@ import features.ai.chat.OpenaiTest;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
-import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.Prompts;
 import org.noear.solon.ai.rag.repository.Repository;
 import org.noear.solon.ai.rag.repository.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.SimpleRepository;
@@ -49,8 +49,7 @@ public class DocTest {
 
     private void qa(String question, Repository repository, ChatModel chatModel) throws Exception {
         List<Document> context = repository.search(question); //1.搜索知识库（结果，作为问题的上下文）
-        String prompt = String.format("%s\n\n 参考以下内容回答：\n%s", question, context); //2.增强问题提示语
-        ChatResponse resp = chatModel.prompt(ChatMessage.ofUser(prompt)).call(); //3.调用大模型
+        ChatResponse resp = chatModel.prompt(Prompts.augment(question, context)).call(); //3.调用大模型
 
         //打印
         System.out.println(resp.getMessage());
