@@ -19,6 +19,9 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.core.util.ResourceUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +35,16 @@ import java.util.List;
 public class TextLoader implements DocumentLoader {
     private final URL url;
 
-    public TextLoader(String uri) {
-        this.url = ResourceUtil.findResource(uri);
+    public TextLoader(File file) throws IOException {
+        this(file.toURI());
+    }
+
+    public TextLoader(URI uri) throws IOException {
+        this(uri.toURL());
+    }
+
+    public TextLoader(URL url) {
+        this.url = url;
     }
 
     @Override

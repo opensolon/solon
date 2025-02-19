@@ -29,9 +29,9 @@ import java.util.List;
 @Preview("3.1")
 public interface RepositoryStorable extends Repository {
     /**
-     * 推入
+     * 存储
      */
-    void put(List<Document> documents) throws IOException;
+    void store(List<Document> documents) throws IOException;
 
     /**
      * 移除

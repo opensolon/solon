@@ -41,7 +41,7 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
-    public void put(List<Document> documents) throws IOException {
+    public void store(List<Document> documents) throws IOException {
         embeddingModel.embed(documents);
 
         for (Document doc : documents) {
