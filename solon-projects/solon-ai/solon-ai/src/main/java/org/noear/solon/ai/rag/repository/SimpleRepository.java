@@ -43,14 +43,9 @@ public class SimpleRepository implements RepositoryStorable {
 
     @Override
     public void put(List<Document> documents) throws IOException {
-        List<String> texts = new ArrayList<>();
-        documents.forEach(d -> texts.add(d.getContent()));
+        embeddingModel.embed(documents);
 
-        List<Embedding> embeddings = embeddingModel.input(texts).call().getData();
-
-        for (int i = 0; i < embeddings.size(); ++i) {
-            Document doc = documents.get(i);
-            doc.setEmbedding(embeddings.get(i).getEmbedding());
+        for (Document doc : documents) {
             store.put(doc.getId(), doc);
         }
     }
