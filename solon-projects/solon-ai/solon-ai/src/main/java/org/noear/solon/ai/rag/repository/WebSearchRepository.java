@@ -91,6 +91,7 @@ public class WebSearchRepository implements Repository {
         }
 
         if(embeddingModel != null){
+            //如果有嵌入模型设置，则做相互度排序和二次过滤
             embeddingModel.embed(docs);
 
             return SearchUtil.filter(condition, embeddingModel, docs);
