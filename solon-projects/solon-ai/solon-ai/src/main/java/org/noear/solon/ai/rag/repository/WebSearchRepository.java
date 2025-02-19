@@ -97,7 +97,7 @@ public class WebSearchRepository implements Repository {
             //如果有嵌入模型设置，则做相互度排序和二次过滤
             embeddingModel.embed(docs);
 
-            return FilterUtil.similarityFilter(condition, embeddingModel, docs);
+            return FilterUtil.similarityFilter(condition, embeddingModel, docs.stream());
         }
 
         return docs;
