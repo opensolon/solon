@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.net.http.HttpUtils;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * @author noear 2025/2/6 created
@@ -19,6 +20,11 @@ public class Tools {
         }
 
         return "晴，24度";// + weatherService.get(location);
+    }
+
+    @FunctionMapping(description = "获取当前时间")
+    public String get_now_time() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());
     }
 
     @FunctionMapping(description = "用关键词搜索网络")
