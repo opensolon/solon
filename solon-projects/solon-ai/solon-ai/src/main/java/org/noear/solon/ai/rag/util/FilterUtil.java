@@ -25,13 +25,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 搜索工具
+ * 过滤工具
  *
  * @author noear
  * @since 3.1
  */
-public final class SearchUtil {
-    public static List<Document> filter(SearchCondition condition, EmbeddingModel embeddingModel, Collection<Document> docs) throws IOException {
+public final class FilterUtil {
+    /**
+     * 相似度过滤
+     */
+    public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Collection<Document> docs) throws IOException {
         float[] userQueryEmbedding = embeddingModel.embed(condition.getQuery());
 
         return docs.stream()
@@ -51,7 +54,7 @@ public final class SearchUtil {
                 SimilarityMath.cosineSimilarity(userQueryEmbedding, doc.getEmbedding()));
     }
 
-    private static boolean filterDo(Document doc, SearchCondition condition) {
+    private static boolean filterDo(Document doc, QueryCondition condition) {
         //方便调试
         return doc.getScore() >= condition.getSimilarityThreshold();
     }

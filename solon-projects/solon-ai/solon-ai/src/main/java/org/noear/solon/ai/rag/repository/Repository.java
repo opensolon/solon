@@ -16,7 +16,7 @@
 package org.noear.solon.ai.rag.repository;
 
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.util.SearchCondition;
+import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public interface Repository {
      * @param query 查询字符串
      */
     default List<Document> search(String query) throws IOException {
-        return search(new SearchCondition(query));
+        return search(new QueryCondition(query));
     }
 
     /**
@@ -44,5 +44,5 @@ public interface Repository {
      *
      * @param condition 查询条件
      */
-    List<Document> search(SearchCondition condition) throws IOException;
+    List<Document> search(QueryCondition condition) throws IOException;
 }

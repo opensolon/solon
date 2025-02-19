@@ -20,19 +20,19 @@ import org.noear.solon.ai.rag.Document;
 import java.util.function.Predicate;
 
 /**
- * 搜索条件
+ * 查询条件
  *
  * @author noear
  * @since 3.1
  */
-public class SearchCondition {
+public class QueryCondition {
     private final String query;
     private Freshness freshness;
     private int limit = 4;
     private double similarityThreshold = 0.4D;
     private Predicate<Document> filter = (doc) -> true;
 
-    public SearchCondition(String query) {
+    public QueryCondition(String query) {
         this.query = query;
     }
 
@@ -78,7 +78,7 @@ public class SearchCondition {
     /**
      * 热度（时间范围）
      */
-    public SearchCondition freshness(Freshness freshness) {
+    public QueryCondition freshness(Freshness freshness) {
         this.freshness = freshness;
         return this;
     }
@@ -86,7 +86,7 @@ public class SearchCondition {
     /**
      * 配置限制条数
      */
-    public SearchCondition limit(int limit) {
+    public QueryCondition limit(int limit) {
         this.limit = limit;
         return this;
     }
@@ -94,7 +94,7 @@ public class SearchCondition {
     /**
      * 配置过滤器
      */
-    public SearchCondition filter(Predicate<Document> filter) {
+    public QueryCondition filter(Predicate<Document> filter) {
         this.filter = filter;
         return this;
     }
@@ -102,7 +102,7 @@ public class SearchCondition {
     /**
      * 配置相似度阈值
      */
-    public SearchCondition similarityThreshold(double similarityThreshold) {
+    public QueryCondition similarityThreshold(double similarityThreshold) {
         this.similarityThreshold = similarityThreshold;
         return this;
     }

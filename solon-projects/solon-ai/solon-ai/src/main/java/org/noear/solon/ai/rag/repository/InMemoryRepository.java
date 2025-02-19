@@ -17,8 +17,8 @@ package org.noear.solon.ai.rag.repository;
 
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.util.SearchCondition;
-import org.noear.solon.ai.rag.util.SearchUtil;
+import org.noear.solon.ai.rag.util.QueryCondition;
+import org.noear.solon.ai.rag.util.FilterUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,7 +59,7 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
-    public List<Document> search(SearchCondition condition) throws IOException {
-        return SearchUtil.filter(condition, embeddingModel, store.values());
+    public List<Document> search(QueryCondition condition) throws IOException {
+        return FilterUtil.similarityFilter(condition, embeddingModel, store.values());
     }
 }

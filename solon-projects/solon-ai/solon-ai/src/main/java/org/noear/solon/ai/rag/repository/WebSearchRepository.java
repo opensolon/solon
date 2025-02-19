@@ -19,8 +19,8 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.util.SearchCondition;
-import org.noear.solon.ai.rag.util.SearchUtil;
+import org.noear.solon.ai.rag.util.QueryCondition;
+import org.noear.solon.ai.rag.util.FilterUtil;
 import org.noear.solon.net.http.HttpUtils;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class WebSearchRepository implements Repository {
     }
 
     @Override
-    public List<Document> search(SearchCondition condition) throws IOException {
+    public List<Document> search(QueryCondition condition) throws IOException {
         //此示例，可作为对接其它搜索的参考
         HttpUtils httpUtils = config.createHttpUtils();
 
@@ -96,7 +96,7 @@ public class WebSearchRepository implements Repository {
             //如果有嵌入模型设置，则做相互度排序和二次过滤
             embeddingModel.embed(docs);
 
-            return SearchUtil.filter(condition, embeddingModel, docs);
+            return FilterUtil.similarityFilter(condition, embeddingModel, docs);
         }
 
         return docs;
