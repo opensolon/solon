@@ -46,6 +46,6 @@ public class RagRepositoryTest {
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
         List<Document> documents = new TokenTextSplitter(200).split(text); //2.分割文档（确保不超过 max-token-size）
-        repository.put(documents); //（推入文档）
+        repository.store(documents); //（推入文档）
     }
 }
