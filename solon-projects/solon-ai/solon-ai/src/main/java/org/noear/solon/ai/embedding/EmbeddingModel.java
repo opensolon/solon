@@ -22,6 +22,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,14 +83,64 @@ public class EmbeddingModel implements AiModel {
     /**
      * 构建
      */
-    public static EmbeddingModelBuilder of(EmbeddingConfig config) {
-        return new EmbeddingModelBuilder(config);
+    public static Builder of(EmbeddingConfig config) {
+        return new Builder(config);
     }
 
     /**
      * 构建
      */
-    public static EmbeddingModelBuilder of(String apiUrl) {
-        return new EmbeddingModelBuilder(apiUrl);
+    public static Builder of(String apiUrl) {
+        return new Builder(apiUrl);
+    }
+
+    /// /////////////
+
+    /**
+     * 嵌入模型构建器实现
+     *
+     * @author noear
+     * @since 3.1
+     */
+    public static class Builder {
+        private final EmbeddingConfig config;
+
+        protected Builder(String apiUrl) {
+            this.config = new EmbeddingConfig();
+            this.config.setApiUrl(apiUrl);
+        }
+
+        public Builder(EmbeddingConfig config) {
+            this.config = config;
+        }
+
+        public Builder apiKey(String apiKey) {
+            config.setApiKey(apiKey);
+            return this;
+        }
+
+        public Builder provider(String provider) {
+            config.setProvider(provider);
+            return this;
+        }
+
+        public Builder model(String model) {
+            config.setModel(model);
+            return this;
+        }
+
+        public Builder headerSet(String key, String value) {
+            config.setHeader(key, value);
+            return this;
+        }
+
+        public Builder timeout(Duration timeout) {
+            config.setTimeout(timeout);
+            return this;
+        }
+
+        public EmbeddingModel build() {
+            return new EmbeddingModel(config);
+        }
     }
 }
