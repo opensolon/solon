@@ -20,7 +20,7 @@ public class TestUtils {
         String apiUrl = "https://api.bochaai.com/v1/web-search";
         String apiKey = "sk-5d36eae2c4a54e2596c7625d9888a9d8";
 
-        return new WebSearchRepository(apiUrl, apiKey);
+        return WebSearchRepository.of(apiUrl).apiKey(apiKey).build();
     }
 
     public static EmbeddingModel getEmbeddingModelOfGiteeai() {

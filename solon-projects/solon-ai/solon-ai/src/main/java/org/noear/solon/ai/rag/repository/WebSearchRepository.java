@@ -22,6 +22,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.Repository;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.FilterUtil;
+import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.http.HttpUtils;
 
 import java.io.IOException;
@@ -35,27 +36,10 @@ import java.util.*;
  */
 public class WebSearchRepository implements Repository {
     private final AiConfig config;
-    private EmbeddingModel embeddingModel;
+    private final @Nullable EmbeddingModel embeddingModel;
 
-    /**
-     * 设置嵌入模型
-     * */
-    public void setEmbeddingModel(EmbeddingModel embeddingModel) {
-        //可选
+    public WebSearchRepository(EmbeddingModel embeddingModel, AiConfig config) {
         this.embeddingModel = embeddingModel;
-    }
-
-    public WebSearchRepository(String apiKey) {
-        this("https://api.bochaai.com/v1/web-search", apiKey);
-    }
-
-    public WebSearchRepository(String apiUrl, String apiKey) {
-        this.config = new AiConfig();
-        this.config.setApiUrl(apiUrl);
-        this.config.setApiKey(apiKey);
-    }
-
-    public WebSearchRepository(AiConfig config) {
         this.config = config;
     }
 
@@ -93,7 +77,7 @@ public class WebSearchRepository implements Repository {
                     .url(n1.get("url").getString()));
         }
 
-        if(embeddingModel != null){
+        if (embeddingModel != null) {
             //如果有嵌入模型设置，则做相互度排序和二次过滤
             embeddingModel.embed(docs);
 
@@ -103,4 +87,33 @@ public class WebSearchRepository implements Repository {
         return docs;
     }
 
+    public static Builder of(String apiUrl) {
+        return new Builder(apiUrl);
+    }
+
+    /**
+     * 构建器
+     */
+    public static class Builder {
+        private AiConfig config = new AiConfig();
+        private EmbeddingModel embeddingModel;
+
+        public Builder(String apiUrl) {
+            config.setApiUrl(apiUrl);
+        }
+
+        public Builder apiKey(String apiKey) {
+            config.setApiKey(apiKey);
+            return this;
+        }
+
+        public Builder embeddingModel(EmbeddingModel embeddingModel) {
+            this.embeddingModel = embeddingModel;
+            return this;
+        }
+
+        public WebSearchRepository build() {
+            return new WebSearchRepository(embeddingModel, config);
+        }
+    }
 }

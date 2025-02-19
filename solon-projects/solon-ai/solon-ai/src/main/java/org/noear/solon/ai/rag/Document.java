@@ -104,7 +104,6 @@ public class Document {
                 "id='" + id + '\'' +
                 ", content='" + content + '\'' +
                 ", metadata=" + metadata +
-                ", score=" + score +
                 '}';
     }
 
