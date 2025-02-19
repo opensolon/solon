@@ -27,6 +27,7 @@ import java.util.function.Predicate;
  */
 public class SearchCondition {
     private final String query;
+    private Freshness freshness;
     private int limit = 4;
     private double similarityThreshold = 0.4D;
     private Predicate<Document> filter = (doc) -> true;
@@ -42,6 +43,13 @@ public class SearchCondition {
      */
     public String getQuery() {
         return query;
+    }
+
+    /**
+     * 获取热度（时间范围）
+     */
+    public Freshness getFreshness() {
+        return freshness;
     }
 
     /**
@@ -66,6 +74,14 @@ public class SearchCondition {
     }
 
     /// /////////////////
+
+    /**
+     * 热度（时间范围）
+     */
+    public SearchCondition freshness(Freshness freshness) {
+        this.freshness = freshness;
+        return this;
+    }
 
     /**
      * 配置限制条数

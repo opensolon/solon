@@ -15,12 +15,13 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import org.noear.snack.ONode;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.net.http.HttpUtils;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 网页搜索知识库（基于搜索接口实现）
@@ -31,9 +32,14 @@ import java.util.List;
 public class WebSearchRepository implements Repository {
     private final AiConfig config;
 
-    public WebSearchRepository() {
+    public WebSearchRepository(String apiKey) {
+        this("https://api.bochaai.com/v1/web-search", apiKey);
+    }
+
+    public WebSearchRepository(String apiUrl, String apiKey) {
         this.config = new AiConfig();
-        this.config.setApiUrl("https://api.bochaai.com/v1/web-search");
+        this.config.setApiUrl(apiUrl);
+        this.config.setApiKey(apiKey);
     }
 
     public WebSearchRepository(AiConfig config) {
@@ -42,6 +48,38 @@ public class WebSearchRepository implements Repository {
 
     @Override
     public List<Document> search(SearchCondition condition) throws IOException {
-        return Collections.emptyList();
+        //此示例，可作为对接其它搜索的参考
+        HttpUtils httpUtils = config.createHttpUtils();
+
+        ONode reqNode = new ONode();
+
+        reqNode.set("query", condition.getQuery());
+        reqNode.set("count", String.valueOf(condition.getLimit()));
+
+        if (condition.getFreshness() != null) {
+            reqNode.set("freshness", condition.getFreshness().value);
+        }
+
+        String respJson = httpUtils.bodyOfJson(reqNode.toJson())
+                .post();
+
+        ONode respNode = ONode.load(respJson);
+
+        int code = respNode.get("code").getInt();
+        String msg = respNode.get("msg").getString();
+
+        if (code != 200) {
+            throw new IOException(msg);
+        }
+
+        List<Document> docs = new ArrayList<>();
+
+        for (ONode n1 : respNode.get("data").get("webPages").get("value").ary()) {
+            docs.add(new Document(n1.get("snippet").getString())
+                    .title(n1.get("title").getString())
+                    .url(n1.get("url").getString()));
+        }
+
+        return docs;
     }
 }

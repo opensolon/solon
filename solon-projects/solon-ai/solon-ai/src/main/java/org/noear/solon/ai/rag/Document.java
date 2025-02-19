@@ -123,15 +123,7 @@ public class Document {
         return addMetadata("url", url);
     }
 
-    public Document summary(String summary) {
-        return addMetadata("summary", summary);
-    }
-
     public Document snippet(String snippet) {
         return addMetadata("snippet", snippet);
-    }
-
-    public Document language(String language) {
-        return addMetadata("language", language);
     }
 }
