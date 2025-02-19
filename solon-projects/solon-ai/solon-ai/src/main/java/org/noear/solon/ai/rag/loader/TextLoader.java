@@ -16,6 +16,7 @@
 package org.noear.solon.ai.rag.loader;
 
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;

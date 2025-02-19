@@ -17,6 +17,7 @@ package org.noear.solon.ai.rag.repository;
 
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.FilterUtil;
 

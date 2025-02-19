@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.Prompts;
-import org.noear.solon.ai.rag.repository.Repository;
-import org.noear.solon.ai.rag.repository.RepositoryStorable;
+import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;
 import org.noear.solon.ai.rag.splitter.TokenTextSplitter;
 import org.noear.solon.net.http.HttpUtils;
@@ -37,20 +35,17 @@ public class RagRepositoryTest {
         load(repository, "https://h5.noear.org/readme.htm");
 
         //3.应用
-        qa("Solon 是谁开发的？", repository, chatModel); //5.应用
+        ChatResponse resp = chatModel
+                .prompt(repository.searchAsPrompt("Solon 是谁开发的？")) //3.1.搜索知识库（结果，作为提示语）
+                .call(); //3.2.调用大模型
+
+        //打印
+        System.out.println(resp.getMessage());
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
         List<Document> documents = new TokenTextSplitter(200).split(text); //2.分割文档（确保不超过 max-token-size）
         repository.put(documents); //（推入文档）
-    }
-
-    private void qa(String question, Repository repository, ChatModel chatModel) throws Exception {
-        List<Document> context = repository.search(question); //1.搜索知识库（结果，作为问题的上下文）
-        ChatResponse resp = chatModel.prompt(Prompts.augment(question, context)).call(); //3.调用大模型
-
-        //打印
-        System.out.println(resp.getMessage());
     }
 }

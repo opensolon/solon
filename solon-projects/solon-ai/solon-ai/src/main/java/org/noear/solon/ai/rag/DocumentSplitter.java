@@ -13,34 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag.repository;
+package org.noear.solon.ai.rag;
 
-import org.noear.solon.ai.rag.Document;
-import org.noear.solon.lang.Preview;
-
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * 可存储的知识库（可存储）
+ * 文档分割器
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface RepositoryStorable extends Repository {
+public interface DocumentSplitter {
     /**
-     * 推入
+     * 分割
+     *
+     * @param text 文本
      */
-    void put(List<Document> documents) throws IOException;
+    default List<Document> split(String text) {
+        return split(Arrays.asList(new Document(text)));
+    }
 
     /**
-     * 移除
+     * 分割
+     *
+     * @param documents 文档
      */
-    void remove(String id);
-
-    /**
-     * 获取
-     */
-    Document get(String id);
+    List<Document> split(List<Document> documents);
 }

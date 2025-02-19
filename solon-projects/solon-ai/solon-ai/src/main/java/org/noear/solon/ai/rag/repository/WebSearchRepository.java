@@ -19,6 +19,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiConfig;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.Repository;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.FilterUtil;
 import org.noear.solon.net.http.HttpUtils;

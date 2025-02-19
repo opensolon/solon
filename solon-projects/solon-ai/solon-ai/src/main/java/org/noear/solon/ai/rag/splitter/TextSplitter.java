@@ -16,6 +16,7 @@
 package org.noear.solon.ai.rag.splitter;
 
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.DocumentSplitter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

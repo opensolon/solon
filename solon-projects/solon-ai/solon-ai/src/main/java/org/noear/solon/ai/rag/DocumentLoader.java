@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag.loader;
-
-import org.noear.solon.ai.rag.Document;
+package org.noear.solon.ai.rag;
 
 import java.util.List;
 
