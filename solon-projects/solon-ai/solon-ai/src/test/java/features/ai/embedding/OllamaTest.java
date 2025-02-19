@@ -25,9 +25,11 @@ public class OllamaTest {
                 .build();
 
         //一次性返回
-        EmbeddingResponse resp = embeddingModel.input("hello").call();
+        EmbeddingResponse resp = embeddingModel
+                .input("比较原始的风格", "能表达内在的大概过程", "太阳升起来了")
+                .call();
 
         //打印消息
-        log.info("{}", resp.getData());
+        log.warn("{}", resp.getData());
     }
 }
