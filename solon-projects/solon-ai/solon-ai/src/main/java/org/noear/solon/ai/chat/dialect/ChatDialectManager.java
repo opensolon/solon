@@ -32,6 +32,7 @@ public class ChatDialectManager {
 
     static {
         register(OllamaChatDialect.getInstance());
+        register(DashscopeDialect.getInstance());
     }
 
     /**
