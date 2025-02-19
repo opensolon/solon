@@ -18,9 +18,11 @@ package org.noear.solon.ai.embedding;
 import org.noear.solon.ai.AiModel;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialect;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
+import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,10 +43,25 @@ public class EmbeddingModel implements AiModel {
     }
 
     /**
-     * 快捷内嵌
+     * 快捷嵌入
      */
     public float[] embed(String text) throws IOException {
         return input(text).call().getData().get(0).getEmbedding();
+    }
+
+    /**
+     * 快捷嵌入
+     */
+    public void embed(List<Document> documents) throws IOException {
+        List<String> texts = new ArrayList<>();
+        documents.forEach(d -> texts.add(d.getContent()));
+
+        List<Embedding> embeddings = input(texts).call().getData();
+
+        for (int i = 0; i < embeddings.size(); ++i) {
+            Document doc = documents.get(i);
+            doc.setEmbedding(embeddings.get(i).getEmbedding());
+        }
     }
 
     /**
