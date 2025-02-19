@@ -263,6 +263,8 @@ public abstract class AbstractChatDialect implements ChatDialect {
             }
         }
 
-        return new AssistantMessage(content, reasoning_content, toolCallsRaw, toolCalls);
+        //标志为思考，或者思考内容不为空
+        boolean isReasoning = resp.reasoning || Utils.isNotEmpty(reasoning_content);
+        return new AssistantMessage(content, isReasoning, reasoning_content, toolCallsRaw, toolCalls);
     }
 }

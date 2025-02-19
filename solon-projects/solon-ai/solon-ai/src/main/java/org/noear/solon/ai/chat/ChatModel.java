@@ -97,30 +97,48 @@ public class ChatModel implements AiModel {
     public static class Builder {
         private final ChatConfig config;
 
+        /**
+         * @param apiUrl 接口地址
+         */
         public Builder(String apiUrl) {
             this.config = new ChatConfig();
             this.config.setApiUrl(apiUrl);
         }
 
+        /**
+         * @param config 配置
+         */
         public Builder(ChatConfig config) {
             this.config = config;
         }
 
+        /**
+         * 接口密钥
+         */
         public Builder apiKey(String apiKey) {
             config.setApiKey(apiKey);
             return this;
         }
 
+        /**
+         * 服务提供者
+         */
         public Builder provider(String provider) {
             config.setProvider(provider);
             return this;
         }
 
+        /**
+         * 使用模型
+         */
         public Builder model(String model) {
             config.setModel(model);
             return this;
         }
 
+        /**
+         * 头信息添加
+         */
         public Builder headerSet(String key, String value) {
             config.setHeader(key, value);
             return this;
@@ -144,13 +162,13 @@ public class ChatModel implements AiModel {
         public Builder globalFunctionAdd(Class<?> functionClz, Object functionObj) {
             if (functionObj instanceof ChatFunction) {
                 ChatFunction func = (ChatFunction) functionObj;
-                config.globalFunctions.put(func.name(), func);
+                config.addGlobalFunction(func);
             } else {
                 int count = 0;
                 for (Method method : functionClz.getMethods()) {
                     if (method.isAnnotationPresent(FunctionMapping.class)) {
                         MethodChatFunction func = new MethodChatFunction(functionObj, method);
-                        config.globalFunctions.put(func.name(), func);
+                        config.addGlobalFunction(func);
                         count++;
                     }
                 }
@@ -163,6 +181,12 @@ public class ChatModel implements AiModel {
             return this;
         }
 
+        /**
+         * 函数添加
+         *
+         * @param name            函数名
+         * @param functionBuilder 函数构建器
+         */
         public Builder globalFunctionAdd(String name, Consumer<ChatFunctionDecl> functionBuilder) {
             ChatFunctionDecl decl = new ChatFunctionDecl(name);
             functionBuilder.accept(decl);
@@ -170,6 +194,9 @@ public class ChatModel implements AiModel {
             return this;
         }
 
+        /**
+         * 超时
+         */
         public Builder timeout(Duration timeout) {
             config.setTimeout(timeout);
 

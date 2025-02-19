@@ -16,6 +16,8 @@
 package org.noear.solon.ai.chat.functioncall;
 
 /**
+ * 聊天函数的参数申明
+ *
  * @author noear
  * @since 3.1
  */
@@ -36,21 +38,33 @@ public class ChatFunctionParamDecl implements ChatFunctionParam {
         this.description = description;
     }
 
+    /**
+     * 参数名字
+     */
     @Override
     public String name() {
         return name;
     }
 
+    /**
+     * 参数类型
+     */
     @Override
     public Class<?> type() {
         return type;
     }
 
+    /**
+     * 参数描述
+     */
     @Override
     public String description() {
         return description;
     }
 
+    /**
+     * 是否必须
+     */
     @Override
     public boolean required() {
         return required;

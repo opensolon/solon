@@ -27,13 +27,26 @@ import java.util.*;
  * @since 3.1
  */
 public class ChatConfig extends AiConfig {
-    protected final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
+    private final Map<String, ChatFunction> globalFunctions = new LinkedHashMap<>();
 
-    public Collection<ChatFunction> getGlobalFunctions() {
-        return globalFunctions.values();
+    /**
+     * 添加全局函数
+     */
+    public void addGlobalFunction(ChatFunction function) {
+        globalFunctions.put(function.name(), function);
     }
 
+    /**
+     * 获取单个全局函数
+     */
     public ChatFunction getGlobalFunction(String name) {
         return globalFunctions.get(name);
+    }
+
+    /**
+     * 获取所有全局函数
+     */
+    public Collection<ChatFunction> getGlobalFunctions() {
+        return globalFunctions.values();
     }
 }

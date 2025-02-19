@@ -35,6 +35,9 @@ public class SystemMessage implements ChatMessage {
         this.content = content;
     }
 
+    /**
+     * 角色
+     */
     @Override
     public ChatRole getRole() {
         return role;

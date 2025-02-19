@@ -17,6 +17,7 @@ package org.noear.solon.ai.rag;
 
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.lang.Preview;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +30,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public final class Prompts {
     /**
      * 增强提示语

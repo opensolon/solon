@@ -112,7 +112,9 @@ public class ChatResponseDefault implements ChatResponse {
     }
 
     /**
-     * 添加选择
+     * 添加输出选择
+     *
+     * @param choice 选择
      */
     public void addChoice(ChatChoice choice) {
         this.choices.add(choice);
@@ -120,6 +122,8 @@ public class ChatResponseDefault implements ChatResponse {
 
     /**
      * 设置错误
+     *
+     * @param error 错误
      */
     public void setError(ChatException error) {
         this.error = error;
@@ -127,6 +131,8 @@ public class ChatResponseDefault implements ChatResponse {
 
     /**
      * 设置使用情况
+     *
+     * @param usage 使用情况
      */
     public void setUsage(AiUsage usage) {
         this.usage = usage;
@@ -134,6 +140,8 @@ public class ChatResponseDefault implements ChatResponse {
 
     /**
      * 设置模型
+     *
+     * @param model 响应模型
      */
     public void setModel(String model) {
         this.model = model;
@@ -141,6 +149,8 @@ public class ChatResponseDefault implements ChatResponse {
 
     /**
      * 设置完成状态
+     *
+     * @param finished 完成状态
      */
     public void setFinished(boolean finished) {
         this.finished = finished;

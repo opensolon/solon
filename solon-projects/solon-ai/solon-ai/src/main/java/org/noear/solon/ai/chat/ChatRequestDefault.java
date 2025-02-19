@@ -64,6 +64,8 @@ public class ChatRequestDefault implements ChatRequest {
 
     /**
      * 选项设置
+     *
+     * @param options 选项
      */
     @Override
     public ChatRequest options(ChatOptions options) {
@@ -76,6 +78,8 @@ public class ChatRequestDefault implements ChatRequest {
 
     /**
      * 选项配置
+     *
+     * @param optionsBuilder 选项构建器
      */
     @Override
     public ChatRequest options(Consumer<ChatOptions> optionsBuilder) {

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.rag;
 
+import org.noear.solon.lang.Preview;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public interface DocumentSplitter {
     /**
      * 分割

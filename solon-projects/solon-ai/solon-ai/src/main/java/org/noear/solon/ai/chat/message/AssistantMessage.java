@@ -32,20 +32,22 @@ public class AssistantMessage implements ChatMessage {
     private String reasoningContent;
     private List<ChatFunctionCall> toolCalls;
     private List<Map> toolCallsRaw;
+    private boolean isReasoning;
 
     public AssistantMessage() {
         //用于序列化
     }
 
-    public AssistantMessage(String content, String reasoningContent, List<Map> toolCallsRaw, List<ChatFunctionCall> toolCalls) {
+    public AssistantMessage(String content, boolean isReasoning, String reasoningContent, List<Map> toolCallsRaw, List<ChatFunctionCall> toolCalls) {
         this.content = content;
+        this.isReasoning = isReasoning;
         this.reasoningContent = reasoningContent;
         this.toolCallsRaw = toolCallsRaw;
         this.toolCalls = toolCalls;
     }
 
     /**
-     * 获取角色
+     * 角色
      */
     @Override
     public ChatRole getRole() {
@@ -53,7 +55,7 @@ public class AssistantMessage implements ChatMessage {
     }
 
     /**
-     * 获取内容（为空时，表示在思考）
+     * 内容（为空时，表示在思考）
      */
     @Override
     public String getContent() {
@@ -61,21 +63,28 @@ public class AssistantMessage implements ChatMessage {
     }
 
     /**
-     * 获取思考内容
+     * 是否思考中
+     */
+    public boolean isReasoning() {
+        return isReasoning;
+    }
+
+    /**
+     * 思考内容
      */
     public String getReasoningContent() {
         return reasoningContent;
     }
 
     /**
-     * 获取工具调用
+     * 工具调用
      */
     public List<ChatFunctionCall> getToolCalls() {
         return toolCalls;
     }
 
     /**
-     * 获取工具高用原始数据（需要回传）
+     * 工具高用原始数据（需要回传）
      */
     public List<Map> getToolCallsRaw() {
         return toolCallsRaw;

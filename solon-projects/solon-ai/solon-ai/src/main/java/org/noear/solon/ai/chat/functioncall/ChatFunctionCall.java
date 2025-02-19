@@ -35,18 +35,23 @@ public class ChatFunctionCall implements Serializable {
         this.arguments = arguments;
     }
 
+    /**
+     * 调用id（用于回传）
+     */
     public String id() {
         return id;
     }
 
-    public String type() {
-        return "function";
-    }
-
+    /**
+     * 函数名字
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * 调用参数
+     */
     public Map<String, Object> arguments() {
         return arguments;
     }

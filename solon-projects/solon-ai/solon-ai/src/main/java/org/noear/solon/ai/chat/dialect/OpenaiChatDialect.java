@@ -37,6 +37,11 @@ public class OpenaiChatDialect extends AbstractChatDialect {
         return instance;
     }
 
+    /**
+     * 匹配检测
+     *
+     * @param config 聊天配置
+     */
     @Override
     public boolean matched(ChatConfig config) {
         return false;

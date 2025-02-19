@@ -31,11 +31,15 @@ import java.util.function.Consumer;
 public interface ChatRequest {
     /**
      * 选项设置
+     *
+     * @param options 选项
      */
     ChatRequest options(ChatOptions options);
 
     /**
      * 选项配置
+     *
+     * @param optionsBuilder 选项构建器
      */
     ChatRequest options(Consumer<ChatOptions> optionsBuilder);
 
@@ -48,5 +52,4 @@ public interface ChatRequest {
      * 流响应
      */
     Publisher<ChatResponse> stream();
-
 }

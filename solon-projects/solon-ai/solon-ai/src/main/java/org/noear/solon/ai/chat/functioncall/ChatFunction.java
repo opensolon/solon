@@ -25,22 +25,22 @@ import java.util.Map;
  */
 public interface ChatFunction {
     /**
-     * 名字
+     * 函数名字
      */
     String name();
 
     /**
-     * 描述
+     * 函数描述
      */
     String description();
 
     /**
-     * 参数
+     * 函数参数
      */
     Iterable<ChatFunctionParam> params();
 
     /**
-     * 处理
+     * 函数处理
      */
     String handle(Map<String, Object> args) throws Throwable;
 }

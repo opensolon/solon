@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 基于方法构建的聊天函数
+ *
  * @author noear
  * @since 3.1
  */
@@ -54,21 +56,33 @@ public class MethodChatFunction implements ChatFunction {
         }
     }
 
+    /**
+     * 函数名字
+     */
     @Override
     public String name() {
         return name;
     }
 
+    /**
+     * 函数描述
+     */
     @Override
     public String description() {
         return description;
     }
 
+    /**
+     * 函数参数
+     */
     @Override
     public Iterable<ChatFunctionParam> params() {
         return params;
     }
 
+    /**
+     * 执行处理
+     */
     @Override
     public String handle(Map<String, Object> args) throws Throwable {
         Object[] vals = new Object[params.size()];

@@ -23,7 +23,7 @@ import org.noear.solon.ai.chat.ChatOptions;
 import java.util.List;
 
 /**
- * 聊天方言
+ * 聊天方言（模型接口）
  *
  * @author noear
  * @since 3.1

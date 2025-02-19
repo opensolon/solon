@@ -16,22 +16,24 @@
 package org.noear.solon.ai.chat.functioncall;
 
 /**
+ * 聊天函数的参数
+ *
  * @author noear
  * @since 3.1
  */
 public interface ChatFunctionParam {
     /**
-     * 名字
+     * 参数名字
      */
     String name();
 
     /**
-     * 类型
+     * 参数类型
      */
     Class<?> type();
 
     /**
-     * 描述
+     * 参数描述
      */
     String description();
 

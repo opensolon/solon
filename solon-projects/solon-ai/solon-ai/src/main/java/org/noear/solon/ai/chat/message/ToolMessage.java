@@ -39,6 +39,9 @@ public class ToolMessage implements ChatMessage {
         this.toolCallId = toolCallId;
     }
 
+    /**
+     * 角色
+     */
     @Override
     public ChatRole getRole() {
         return role;

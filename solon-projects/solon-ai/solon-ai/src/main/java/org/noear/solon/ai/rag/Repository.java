@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 知识库（可索引）
+ * 知识库（可检索）
  *
  * @author noear
  * @since 3.1

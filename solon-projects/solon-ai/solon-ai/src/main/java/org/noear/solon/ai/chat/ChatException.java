@@ -19,7 +19,7 @@ import org.noear.solon.exception.SolonException;
 import org.noear.solon.lang.Preview;
 
 /**
- * Ai 异常
+ * 聊天异常
  *
  * @author noear
  * @since 3.1

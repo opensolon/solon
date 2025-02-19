@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * 聊天函数申明（相当于构建器）
+ *
  * @author noear
  * @since 3.1
  */
@@ -30,16 +32,31 @@ public class ChatFunctionDecl implements ChatFunction {
     private String description;
     private Function<Map<String, Object>, String> handler;
 
+    /**
+     * @param name 函数名字
+     */
     public ChatFunctionDecl(String name) {
         this.name = name;
         this.params = new ArrayList<>();
     }
 
+    /**
+     * 申明函数描述
+     *
+     * @param description 参数
+     */
     public ChatFunctionDecl description(String description) {
         this.description = description;
         return this;
     }
 
+    /**
+     * 申明函数参数
+     *
+     * @param name        参数名字
+     * @param type        参数类型
+     * @param description 参数描述
+     */
     public ChatFunctionDecl param(String name, Class<?> type, String description) {
         if (type.isPrimitive() == false) {
             throw new IllegalArgumentException("type must be primitive");
@@ -49,18 +66,41 @@ public class ChatFunctionDecl implements ChatFunction {
         return this;
     }
 
+    /**
+     * 申明函数字符串参数
+     *
+     * @param name        参数名字
+     * @param description 参数描述
+     */
     public ChatFunctionDecl stringParam(String name, String description) {
         return param(name, String.class, description);
     }
 
+    /**
+     * 申明函数整型参数
+     *
+     * @param name        参数名字
+     * @param description 参数描述
+     */
     public ChatFunctionDecl intParam(String name, String description) {
         return param(name, int.class, description);
     }
 
+    /**
+     * 申明函数浮点数参数
+     *
+     * @param name        参数名字
+     * @param description 参数描述
+     */
     public ChatFunctionDecl floatParam(String name, String description) {
         return param(name, float.class, description);
     }
 
+    /**
+     * 申明函数处理
+     *
+     * @param handler 处理器
+     */
     public ChatFunctionDecl handle(Function<Map<String, Object>, String> handler) {
         this.handler = handler;
         return this;

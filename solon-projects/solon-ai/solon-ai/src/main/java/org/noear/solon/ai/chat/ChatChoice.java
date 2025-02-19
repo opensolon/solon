@@ -43,18 +43,30 @@ public class ChatChoice implements Serializable {
         this.message = message;
     }
 
+    /**
+     * 顺序位
+     */
     public int index() {
         return index;
     }
 
+    /**
+     * 生成时间
+     */
     public Date getCreated() {
         return created;
     }
 
+    /**
+     * 完成原因
+     */
     public String getFinishReason() {
         return finishReason;
     }
 
+    /**
+     * 消息
+     */
     public AssistantMessage getMessage() {
         return message;
     }

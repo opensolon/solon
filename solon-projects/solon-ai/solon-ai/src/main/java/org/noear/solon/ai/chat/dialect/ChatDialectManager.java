@@ -35,7 +35,9 @@ public class ChatDialectManager {
     }
 
     /**
-     * 选择方言
+     * 选择聊天方言
+     *
+     * @param config 聊天配置
      */
     public static ChatDialect select(ChatConfig config) {
         for (RankEntity<ChatDialect> d : dialects) {
@@ -48,7 +50,9 @@ public class ChatDialectManager {
     }
 
     /**
-     * 注册方言
+     * 注册聊天方言
+     *
+     * @param dialect 聊天方言
      */
     public static void register(ChatDialect dialect) {
         register(dialect, 0);
@@ -56,6 +60,9 @@ public class ChatDialectManager {
 
     /**
      * 注册方言
+     *
+     * @param dialect 聊天方言
+     * @param index   顺序位（匹配执行顺序）
      */
     public static void register(ChatDialect dialect, int index) {
         dialects.add(new RankEntity<>(dialect, index));
@@ -64,6 +71,8 @@ public class ChatDialectManager {
 
     /**
      * 注销方言
+     *
+     * @param dialect 聊天方言
      */
     public static void unregister(ChatDialect dialect) {
         dialects.removeIf(rankEntity -> rankEntity.target == dialect);

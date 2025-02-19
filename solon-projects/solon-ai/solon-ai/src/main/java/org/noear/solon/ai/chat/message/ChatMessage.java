@@ -35,12 +35,12 @@ import java.util.List;
  */
 public interface ChatMessage extends Serializable {
     /**
-     * 获取角色
+     * 角色
      */
     ChatRole getRole();
 
     /**
-     * 获取内容
+     * 内容
      */
     String getContent();
 
@@ -48,7 +48,7 @@ public interface ChatMessage extends Serializable {
     /// //////////////
 
     static AssistantMessage ofAssistant(String content) {
-        return new AssistantMessage(content, null, null, null);
+        return new AssistantMessage(content, false, null, null, null);
     }
 
     /**
