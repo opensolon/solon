@@ -13,46 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat.functioncall;
-
-import java.io.Serializable;
-import java.util.Map;
+package org.noear.solon.ai.chat.function;
 
 /**
- * 聊天函数调用
+ * 聊天函数的参数
  *
  * @author noear
  * @since 3.1
  */
-public class ChatFunctionCall implements Serializable {
-    private String id;
-    private String name;
-    private Map<String, Object> arguments;
-
-    public ChatFunctionCall(String id, String name, Map<String, Object> arguments) {
-        this.id = id;
-        this.name = name;
-        this.arguments = arguments;
-    }
+public interface ChatFunctionParam {
+    /**
+     * 参数名字
+     */
+    String name();
 
     /**
-     * 调用id（用于回传）
+     * 参数类型
      */
-    public String id() {
-        return id;
-    }
+    Class<?> type();
 
     /**
-     * 函数名字
+     * 参数描述
      */
-    public String name() {
-        return name;
-    }
+    String description();
 
     /**
-     * 调用参数
+     * 是否必须
      */
-    public Map<String, Object> arguments() {
-        return arguments;
-    }
+    boolean required();
 }

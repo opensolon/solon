@@ -16,7 +16,7 @@
 package org.noear.solon.ai.chat;
 
 import org.noear.solon.ai.AiConfig;
-import org.noear.solon.ai.chat.functioncall.ChatFunction;
+import org.noear.solon.ai.chat.function.ChatFunction;
 
 import java.util.*;
 

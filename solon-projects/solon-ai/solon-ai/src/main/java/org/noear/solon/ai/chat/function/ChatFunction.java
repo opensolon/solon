@@ -13,32 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.chat.functioncall;
+package org.noear.solon.ai.chat.function;
+
+import java.util.Map;
 
 /**
- * 聊天函数的参数
+ * 聊天函数
  *
  * @author noear
  * @since 3.1
  */
-public interface ChatFunctionParam {
+public interface ChatFunction {
     /**
-     * 参数名字
+     * 函数名字
      */
     String name();
 
     /**
-     * 参数类型
-     */
-    Class<?> type();
-
-    /**
-     * 参数描述
+     * 函数描述
      */
     String description();
 
     /**
-     * 是否必须
+     * 函数参数
      */
-    boolean required();
+    Iterable<ChatFunctionParam> params();
+
+    /**
+     * 函数处理
+     */
+    String handle(Map<String, Object> args) throws Throwable;
 }
