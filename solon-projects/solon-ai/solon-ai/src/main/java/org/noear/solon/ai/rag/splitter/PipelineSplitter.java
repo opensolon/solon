@@ -13,35 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.ai.rag;
+package org.noear.solon.ai.rag.splitter;
 
-import org.noear.solon.ai.rag.splitter.PipelineSplitter;
-import org.noear.solon.lang.Preview;
+import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.DocumentSplitter;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
- * 文档分割器
+ * 管道分割器
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface DocumentSplitter {
+public class PipelineSplitter implements DocumentSplitter {
+    private Deque<DocumentSplitter> pipeline = new LinkedList<>();
+
     /**
-     * 分割
-     *
-     * @param text 文本
+     * 添加到后面
      */
-    default List<Document> split(String text) {
-        return split(Arrays.asList(new Document(text)));
+    public PipelineSplitter next(DocumentSplitter splitter) {
+        pipeline.addLast(splitter);
+        return this;
     }
 
     /**
      * 分割
-     *
-     * @param documents 文档
      */
-    List<Document> split(List<Document> documents);
+    @Override
+    public List<Document> split(List<Document> documents) {
+        for (DocumentSplitter splitter : pipeline) {
+            documents = splitter.split(documents);
+        }
+
+        return documents;
+    }
 }
