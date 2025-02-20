@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Redis 矢量存储知识库
+ * Redis 矢量存储知识库 //基于 redis search 乱配
  *
  * @author noear
  * @since 3.1
