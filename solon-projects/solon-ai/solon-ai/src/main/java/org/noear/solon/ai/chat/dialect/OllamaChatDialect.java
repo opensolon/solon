@@ -16,10 +16,12 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
+import org.noear.solon.ai.chat.message.UserMessage;
 import org.noear.solon.core.util.DateUtil;
 
 import java.util.Date;
@@ -45,6 +47,17 @@ public class OllamaChatDialect extends AbstractChatDialect {
     @Override
     public boolean matched(ChatConfig config) {
         return "ollama".equals(config.getProvider());
+    }
+
+    @Override
+    protected void buildChatMessageNodeDo(ONode oNode, UserMessage msg) {
+        oNode.set("role", msg.getRole().name().toLowerCase());
+        if (Utils.isEmpty(msg.getImages())) {
+            oNode.set("content", msg.getContent());
+        } else {
+            oNode.set("content", msg.getContent());
+            oNode.set("images", msg.getImages());
+        }
     }
 
     @Override
