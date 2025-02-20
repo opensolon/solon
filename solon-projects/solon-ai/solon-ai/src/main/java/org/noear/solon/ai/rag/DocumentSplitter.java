@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.rag;
 
-import org.noear.solon.ai.rag.splitter.PipelineSplitter;
 import org.noear.solon.lang.Preview;
 
 import java.util.Arrays;

@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentSplitter;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;
-import org.noear.solon.ai.rag.splitter.PipelineSplitter;
+import org.noear.solon.ai.rag.splitter.SplitterPipeline;
 import org.noear.solon.ai.rag.splitter.RegexTextSplitter;
 import org.noear.solon.ai.rag.splitter.TokenSizeTextSplitter;
 import org.noear.solon.net.http.HttpUtils;
@@ -49,7 +48,7 @@ public class RagRepositoryTest {
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
 
-        List<Document> documents = new PipelineSplitter() //2.分割文档（确保不超过 max-token-size）
+        List<Document> documents = new SplitterPipeline() //2.分割文档（确保不超过 max-token-size）
                 .next(new RegexTextSplitter())
                 .next(new TokenSizeTextSplitter(500))
                 .split(text);

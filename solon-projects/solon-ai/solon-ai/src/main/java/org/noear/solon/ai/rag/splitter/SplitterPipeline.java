@@ -26,13 +26,13 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public class PipelineSplitter implements DocumentSplitter {
+public class SplitterPipeline implements DocumentSplitter {
     private Deque<DocumentSplitter> pipeline = new LinkedList<>();
 
     /**
      * 添加到后面
      */
-    public PipelineSplitter next(DocumentSplitter splitter) {
+    public SplitterPipeline next(DocumentSplitter splitter) {
         pipeline.addLast(splitter);
         return this;
     }
