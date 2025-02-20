@@ -105,7 +105,7 @@ public class EmbeddingModel implements AiModel {
     public static class Builder {
         private final EmbeddingConfig config;
 
-        protected Builder(String apiUrl) {
+        public Builder(String apiUrl) {
             this.config = new EmbeddingConfig();
             this.config.setApiUrl(apiUrl);
         }
