@@ -427,7 +427,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-milvus</artifactId>
+                <artifactId>solon-ai-repo-milvus</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

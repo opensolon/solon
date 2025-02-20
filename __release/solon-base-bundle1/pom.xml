@@ -26,7 +26,7 @@
         <module>../../solon-projects/solon-rx/solon-rx</module>
         <module>../../solon-projects/solon-flow/solon-flow</module>
         <module>../../solon-projects/solon-ai/solon-ai</module>
-        <module>../../solon-projects/solon-ai/solon-ai-milvus</module>
+        <module>../../solon-projects/solon-ai/solon-ai-repo-milvus</module>
         <module>../../solon-projects/solon-ai/solon-ai-repo-redis</module>
         <module>../../solon-projects/solon-ai/solon-ai-repo-elasticsearch</module>
 

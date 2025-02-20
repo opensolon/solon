@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon-ai-milvus</artifactId>
+    <artifactId>solon-ai-repo-milvus</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
