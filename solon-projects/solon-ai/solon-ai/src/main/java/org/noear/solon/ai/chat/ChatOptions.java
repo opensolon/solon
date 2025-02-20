@@ -40,6 +40,7 @@ public class ChatOptions {
     public static final String TOP_K = "top_k";
     public static final String FREQUENCY_PENALTY = "frequency_penalty";
     public static final String PRESENCE_PENALTY = "presence_penalty";
+    public static final String TOOL_CHOICE = "tool_choice";
 
 
     public static ChatOptions of() {
@@ -141,6 +142,33 @@ public class ChatOptions {
     }
 
     /// ///////////////////////////////////
+
+    /**
+     * 函数选择
+     *
+     * @param choiceOrName 选项或特定函数名
+     */
+    public ChatOptions function_choice(String choiceOrName) {
+        if (choiceOrName == null) {
+            optionAdd(TOOL_CHOICE, "none");
+        } else {
+            if ("none".equals(choiceOrName)) {
+                optionAdd(TOOL_CHOICE, "none");
+            } else if ("auto".equals(choiceOrName)) {
+                optionAdd(TOOL_CHOICE, "auto");
+            } else if ("required".equals(choiceOrName)) {
+                optionAdd(TOOL_CHOICE, "required");
+            } else {
+                Map<String, Object> choiceMap = new HashMap<>();
+                choiceMap.put("type", "function");
+                choiceMap.put("function", Collections.singletonMap("name", choiceOrName));
+
+                optionAdd(TOOL_CHOICE, choiceMap);
+            }
+        }
+
+        return this;
+    }
 
     /**
      * 常用选项：最大提示语令牌数限制
