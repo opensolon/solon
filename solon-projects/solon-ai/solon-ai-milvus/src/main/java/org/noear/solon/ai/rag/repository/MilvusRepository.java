@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
@@ -54,25 +55,26 @@ import java.util.Map;
 /**
  * Milvus 矢量存储知识库
  *
- * @author noear
+ * @author linziguan
  * @since 3.1
  */
 public class MilvusRepository implements RepositoryStorable {
     private final EmbeddingModel embeddingModel;
     private final MilvusClientV2 client;
-    
     private final String collectionName="solonAiRepo";
 
-    public MilvusRepository(EmbeddingModel embeddingModel, MilvusClientV2 client) {
+    public MilvusRepository(EmbeddingModel embeddingModel, ConnectConfig connectConfig) {
         this.embeddingModel = embeddingModel;
         //客户端的构建由外部完成
-        this.client = client;
+        this.client = new MilvusClientV2(connectConfig);
+
         buildCollection();
     }
     
     public void buildCollection() {
     	// 查询是否存在
         ListCollectionsResp listCollectionsResp = client.listCollections();
+
         if(!listCollectionsResp.getCollectionNames().contains(collectionName)) {
         	// 构建一个collection，用于存储document
         	CreateCollectionReq.CollectionSchema schema = client.createSchema();
