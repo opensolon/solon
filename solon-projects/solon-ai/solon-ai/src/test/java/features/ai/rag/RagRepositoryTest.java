@@ -7,7 +7,7 @@ import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;
-import org.noear.solon.ai.rag.splitter.TokenTextSplitter;
+import org.noear.solon.ai.rag.splitter.TokenSizeTextSplitter;
 import org.noear.solon.net.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class RagRepositoryTest {
 
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
-        List<Document> documents = new TokenTextSplitter(200).split(text); //2.分割文档（确保不超过 max-token-size）
+        List<Document> documents = new TokenSizeTextSplitter(200).split(text); //2.分割文档（确保不超过 max-token-size）
         repository.store(documents); //（推入文档）
     }
 }

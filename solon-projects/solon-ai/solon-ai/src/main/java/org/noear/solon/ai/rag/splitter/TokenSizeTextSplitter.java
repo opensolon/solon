@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 符号文本分割器
+ * 词元大小文本分割器
  *
  * @author noear
  * @since 3.1
  */
-public class TokenTextSplitter extends TextSplitter {
+public class TokenSizeTextSplitter extends TextSplitter {
     private EncodingRegistry encodingRegistry;
     private EncodingType encodingType;
     private final int chunkSize;
@@ -40,31 +40,19 @@ public class TokenTextSplitter extends TextSplitter {
     private final int maxChunkCount;
     private final boolean keepSeparator;
 
-    public void setEncodingRegistry(EncodingRegistry encodingRegistry) {
-        if (encodingRegistry != null) {
-            this.encodingRegistry = encodingRegistry;
-        }
+    public TokenSizeTextSplitter() {
+        this(500);
     }
 
-    public void setEncodingType(EncodingType encodingType) {
-        if (encodingType != null) {
-            this.encodingType = encodingType;
-        }
+    public TokenSizeTextSplitter(int chunkSize) {
+        this(chunkSize, 300);
     }
 
-    public TokenTextSplitter() {
-        this(800);
-    }
-
-    public TokenTextSplitter(int chunkSize) {
-        this(chunkSize, 350);
-    }
-
-    public TokenTextSplitter(int chunkSize, int minChunkSizeChars) {
+    public TokenSizeTextSplitter(int chunkSize, int minChunkSizeChars) {
         this(chunkSize, minChunkSizeChars, 5, 1000, true);
     }
 
-    public TokenTextSplitter(int chunkSize, int minChunkSizeChars, int minChunkLengthToEmbed, int maxChunkCount, boolean keepSeparator) {
+    public TokenSizeTextSplitter(int chunkSize, int minChunkSizeChars, int minChunkLengthToEmbed, int maxChunkCount, boolean keepSeparator) {
         this.encodingRegistry = Encodings.newLazyEncodingRegistry();
         this.encodingType = EncodingType.CL100K_BASE;
 
@@ -73,6 +61,24 @@ public class TokenTextSplitter extends TextSplitter {
         this.minChunkLengthToEmbed = minChunkLengthToEmbed;
         this.maxChunkCount = maxChunkCount;
         this.keepSeparator = keepSeparator;
+    }
+
+    /**
+     * 设置编码库
+     */
+    public void setEncodingRegistry(EncodingRegistry encodingRegistry) {
+        if (encodingRegistry != null) {
+            this.encodingRegistry = encodingRegistry;
+        }
+    }
+
+    /**
+     * 设置编码类型
+     */
+    public void setEncodingType(EncodingType encodingType) {
+        if (encodingType != null) {
+            this.encodingType = encodingType;
+        }
     }
 
     @Override
@@ -123,7 +129,7 @@ public class TokenTextSplitter extends TextSplitter {
     /**
      * 编码符号
      */
-    private List<Integer> encodeTokens(Encoding encoding, String text) {
+    protected List<Integer> encodeTokens(Encoding encoding, String text) {
         Objects.requireNonNull(text, "tokens is null");
 
         return encoding.encode(text).boxed();
@@ -132,7 +138,7 @@ public class TokenTextSplitter extends TextSplitter {
     /**
      * 解码符号
      */
-    private String decodeTokens(Encoding encoding, List<Integer> tokens) {
+    protected String decodeTokens(Encoding encoding, List<Integer> tokens) {
         Objects.requireNonNull(tokens, "tokens is null");
 
         IntArrayList tmp = new IntArrayList(tokens.size());

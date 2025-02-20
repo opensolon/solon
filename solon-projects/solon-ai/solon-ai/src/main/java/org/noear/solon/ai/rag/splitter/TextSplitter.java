@@ -19,7 +19,6 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentSplitter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class TextSplitter implements DocumentSplitter {
+public abstract class TextSplitter implements DocumentSplitter {
 
     @Override
     public List<Document> split(List<Document> documents) {
@@ -51,7 +50,5 @@ public class TextSplitter implements DocumentSplitter {
         return outs;
     }
 
-    protected List<String> splitText(String text) {
-        return Arrays.asList(text.split("\n"));
-    }
+    protected abstract List<String> splitText(String text);
 }
