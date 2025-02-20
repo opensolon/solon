@@ -11,7 +11,7 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon-ai-store-redis</artifactId>
+    <artifactId>solon-ai-repo-redis</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

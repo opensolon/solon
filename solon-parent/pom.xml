@@ -432,7 +432,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-store-redis</artifactId>
+                <artifactId>solon-ai-repo-redis</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-elasticsearch</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
