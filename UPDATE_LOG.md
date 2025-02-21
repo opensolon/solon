@@ -45,9 +45,10 @@
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
 * 修复 solon-web-staticfiles 的一个潜在安全问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
+* fastjson2 升为 2.0.55
+* jackson 升为 2.18.2
 * sa-token 升为 1.40.0
 * redisson 升为 3.45.0
-* fastjson2 升为 2.0.55
 * lettuce 升为 6.5.4.RELEASE
 * hutool 升为 5.8.36
 * grpc 升为 1.69.1
