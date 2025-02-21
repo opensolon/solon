@@ -48,6 +48,7 @@
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
 * redisson 升为 3.44.0
+* fastjson2 升为 2.0.55
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
