@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * md 文档加载器
  *
- * @author noear
+ * @author chengchuanyao
  * @since 3.1
  */
 public class MarkdownLoader implements DocumentSplitter {
