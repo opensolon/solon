@@ -405,10 +405,7 @@ public class OpenApi2Builder {
                 continue;
             }
 
-            String paramSchema = null;
-            if (isRequiredBody || paramHolder.isRequiredBody()) {
-                paramSchema = this.getParameterSchema(paramHolder);
-            }
+            String paramSchema = this.getParameterSchema(paramHolder);
             String dataType = paramHolder.dataType();
 
             Parameter parameter;
@@ -989,7 +986,15 @@ public class OpenApi2Builder {
                 return null;
             }
 
+            if (Context.class.isAssignableFrom(dataTypeClass)) {
+                return null;
+            }
+
             if (dataTypeClass.getName().startsWith("java.lang")) {
+                return null;
+            }
+
+            if (dataTypeClass.getName().startsWith("java.util")) {
                 return null;
             }
 
