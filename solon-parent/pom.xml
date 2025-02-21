@@ -49,7 +49,7 @@
         <water.version>2.15.1</water.version>
         <luffy.version>1.9.0</luffy.version>
 
-        <redisson.version>3.44.0</redisson.version>
+        <redisson.version>3.45.0</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
@@ -72,7 +72,7 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.1.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
-        <vertx.version>4.5.11</vertx.version>
+        <vertx.version>4.5.13</vertx.version>
         <rxjava.version>3.1.9</rxjava.version>
         <netty.version>4.1.115.Final</netty.version>
         <reactor-core.version>3.6.9</reactor-core.version>
