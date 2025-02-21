@@ -2,8 +2,11 @@ package org.noear.solon.ai.rag.repository;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.milvus.v2.client.ConnectConfig;
+import io.milvus.v2.client.MilvusClientV2;
+
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.rag.Document;
@@ -15,12 +18,12 @@ import org.slf4j.LoggerFactory;
 
 public class MilvusRepositoryTest {
     private static final Logger log = LoggerFactory.getLogger(MilvusRepositoryTest.class);
-    private static String milvusUri = "";
+    private static String milvusUri = "http://IP:端口";
 
     private ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(milvusUri)
             .build();
-
+    private MilvusClientV2 client = new MilvusClientV2(connectConfig);
     @Test
     public void rag_case1() throws Exception {
         try {
@@ -30,7 +33,7 @@ public class MilvusRepositoryTest {
             //2.构建知识库
             MilvusRepository repository = new MilvusRepository(
                     TestUtils.getEmbeddingModelOfGiteeai(),
-                    connectConfig); //3.初始化知识库
+                    client); //3.初始化知识库
 
             repository.dropCollection();
             repository.buildCollection();
@@ -53,19 +56,19 @@ public class MilvusRepositoryTest {
             //2.构建知识库
             MilvusRepository repository = new MilvusRepository(
                     TestUtils.getEmbeddingModelOfGiteeai(),
-                    connectConfig); //3.初始化知识库
-
+                    client); 
+            //3.初始化知识库
             List<Document> list = repository.search("solon");
             if (list != null) {
                 for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore() + "【" + doc.getContent() + "】");
+                    System.out.println(doc.getId() + ":" + doc.getScore()+":" + doc.getUrl() + "【" + doc.getContent() + "】");
                 }
             }
 
             list = repository.search("spring");
             if (list != null) {
                 for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore() + "【" + doc.getContent() + "】");
+                    System.out.println(doc.getId() + ":" + doc.getScore() +":" + doc.getUrl() + "【" + doc.getContent() + "】");
                 }
             }
         } catch (Exception ex) {
@@ -76,7 +79,10 @@ public class MilvusRepositoryTest {
 
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
-        List<Document> documents = new TokenSizeTextSplitter(200).split(text); //2.分割文档（确保不超过 max-token-size）
+        List<Document> documents = new TokenSizeTextSplitter(200).split(text).stream().map(doc -> {
+        	doc.url(url);
+        	return doc;
+        }).collect(Collectors.toList()); //2.分割文档（确保不超过 max-token-size）
         repository.store(documents); //（推入文档）
     }
 }
