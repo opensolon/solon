@@ -15,8 +15,7 @@
  */
 package org.noear.solon.ai.rag.loader;
 
-import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentSplitter;
+import org.noear.solon.ai.rag.splitter.TextSplitter;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -27,7 +26,7 @@ import java.util.regex.Pattern;
  * @author chengchuanyao
  * @since 3.1
  */
-public class MarkdownSplitter implements DocumentSplitter {
+public class MarkdownSplitter extends TextSplitter {
 
     // Markdown文档清理正则表达式
     private static final String[][] MD_PATTERNS = {
@@ -42,13 +41,10 @@ public class MarkdownSplitter implements DocumentSplitter {
             {"\\*\\*(.+?)\\*\\*|__(.+?)__", "$1$2"},               //加粗
             {"\\*(.+?)\\*|_(.+?)_", "$1$2"},                       //斜体
             {"^>\\s*", ""},                                        //引用
-            {"^-{3,}|={3,}|\\*{3,}$", ""}                          //分隔线
+            {"^-{3,}|={3,}|\\*{3,}$", ""},                          //分隔线
+            {"</?[^>]+>", ""}                          //html
     };
-    // 预定义的正则表达式处理规则
-    private static final String[][] PREDEFINED_PATTERNS = {
-            {"\\s+", " "},                                                                      // 替换连续的空格、换行符和制表符
-            {"(?:https?://|www\\.)[^\\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", ""} // 删除URL和邮箱
-    };
+
     private final String delimiter;           // 分段标识符
     private final int maxSegmentLength;       // 最大分段长度
     private final int segmentOverlapLength;   // 分段重叠长度
@@ -111,6 +107,23 @@ public class MarkdownSplitter implements DocumentSplitter {
         this.extraPatterns = Collections.EMPTY_LIST;
     }
 
+    @Override
+    protected List<String> splitText(String text) {
+        // 1. 标准化换行符
+        String content = text
+                .replaceAll("\\r\\n|\\r", "\n")
+                .replaceAll("\\n{3,}", "\n\n");
+
+        // 2. 清理Markdown语法
+        content = cleanMarkdown(content);
+
+        // 3. 应用额外的正则表达式处理
+        content = applyExtraPatterns(content);
+
+        // 4. 分割文本片段
+        return splitTextSegment(content);
+    }
+
     private String applyExtraPatterns(String content) {
         if (content == null || content.isEmpty()) {
             return "";
@@ -132,34 +145,6 @@ public class MarkdownSplitter implements DocumentSplitter {
         return content;
     }
 
-    @Override
-    public List<Document> split(List<Document> documents) {
-        List<Document> result = new ArrayList<>();
-        for (Document doc : documents) {
-            // 1. 标准化换行符
-            String content = doc.getContent()
-                    .replaceAll("\\r\\n|\\r", "\n")
-                    .replaceAll("\\n{3,}", "\n\n");
-
-            // 2. 清理Markdown语法
-            content = cleanMarkdown(content);
-
-            // 3. 应用额外的正则表达式处理
-            content = applyExtraPatterns(content);
-
-            // 4. 分段处理
-            List<String> segments = segment(content);
-
-            // 5. 转换为Document列表
-            for (String segment : segments) {
-                if (!segment.trim().isEmpty()) {
-                    result.add(new Document(segment));
-                }
-            }
-        }
-        return result;
-    }
-
     private String cleanMarkdown(String content) {
         if (content == null || content.isEmpty()) {
             return "";
@@ -173,7 +158,7 @@ public class MarkdownSplitter implements DocumentSplitter {
         return content.replaceAll("[ \\t]+", " ").trim();
     }
 
-    private List<String> segment(String text) {
+    private List<String> splitTextSegment(String text) {
         List<String> segments = new ArrayList<>();
 
         // 1. 根据分段标识符进行初步分段
