@@ -63,10 +63,10 @@ public class MilvusRepository implements RepositoryStorable {
     private final MilvusClientV2 client;
     private final String collectionName="solonAiRepo";
 
-    public MilvusRepository(EmbeddingModel embeddingModel, ConnectConfig connectConfig) {
+    public MilvusRepository(EmbeddingModel embeddingModel, MilvusClientV2 client) {
         this.embeddingModel = embeddingModel;
         //客户端的构建由外部完成
-        this.client = new MilvusClientV2(connectConfig);
+        this.client = client;
 
         buildCollection();
     }
