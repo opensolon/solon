@@ -29,6 +29,10 @@
         <module>../../solon-projects/solon-ai/solon-ai-repo-milvus</module>
         <module>../../solon-projects/solon-ai/solon-ai-repo-redis</module>
         <module>../../solon-projects/solon-ai/solon-ai-repo-elasticsearch</module>
+        <module>../../solon-projects/solon-ai/solon-ai-load-excel</module>
+        <module>../../solon-projects/solon-ai/solon-ai-load-html</module>
+        <module>../../solon-projects/solon-ai/solon-ai-load-markdown</module>
+        <module>../../solon-projects/solon-ai/solon-ai-load-pdf</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
         <module>../../solon-projects/solon-config/solon-config-plus</module>
