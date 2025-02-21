@@ -46,12 +46,13 @@
 * 修复 solon-web-staticfiles 的一个潜在安全问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
-* grpc 升为 1.69.1
-* vertx 升为 4.5.13
 * redisson 升为 3.45.0
 * fastjson2 升为 2.0.55
 * lettuce 升为 6.5.4.RELEASE
 * hutool 升为 5.8.36
+* grpc 升为 1.69.1
+* vertx 升为 4.5.13
+* netty 升为 4.1.118.Final
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题

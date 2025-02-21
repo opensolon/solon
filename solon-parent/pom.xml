@@ -74,7 +74,7 @@
         <tomcat.version>9.0.64</tomcat.version>
         <vertx.version>4.5.13</vertx.version>
         <rxjava.version>3.1.9</rxjava.version>
-        <netty.version>4.1.115.Final</netty.version>
+        <netty.version>4.1.118.Final</netty.version>
         <reactor-core.version>3.6.9</reactor-core.version>
         <reactor-netty-http.version>1.1.22</reactor-netty-http.version>
         <mutiny.version>1.10.0</mutiny.version>
