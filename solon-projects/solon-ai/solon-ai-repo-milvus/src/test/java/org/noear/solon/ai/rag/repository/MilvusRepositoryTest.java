@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class MilvusRepositoryTest {
     private static final Logger log = LoggerFactory.getLogger(MilvusRepositoryTest.class);
-    private static String milvusUri = "http://183.237.106.204:19530";
+    private static String milvusUri = "http://IP:端口";
 
     private ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(milvusUri)
