@@ -177,7 +177,7 @@
         <forest.version>1.6.3</forest.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <seata.version>2.0.0</seata.version>
-        <wx-java.version>4.6.0</wx-java.version>
+        <wx-java.version>4.7.2.B</wx-java.version>
         <graphql-java.version>18.7</graphql-java.version>
         <graphql-java-tools.version>13.1.1</graphql-java-tools.version>
 
