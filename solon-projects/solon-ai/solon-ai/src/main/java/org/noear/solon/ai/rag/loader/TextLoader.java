@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 纯文本文档加载器
+ * Text 文档加载器
  *
  * @author noear
  * @since 3.1

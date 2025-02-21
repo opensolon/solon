@@ -55,7 +55,7 @@ public class Document {
     public Document(String id, String content, Map<String, Object> metadata, double score) {
 //      this.id = (id == null ? Utils.guid() : id);
 //    	id不在document创建时初始化，而是在store方法调用时，作为判断依据，如果id为空就表示insert，如果id不为空就update
-    	this.id = id;
+        this.id = id;
         this.content = content;
         this.metadata = (metadata == null ? new HashMap<>() : metadata);
         this.score = score;
@@ -71,9 +71,9 @@ public class Document {
     public String getId() {
         return id;
     }
-    
+
     public void setId(String id) {
-    	this.id = id;
+        this.id = id;
     }
 
     /**
