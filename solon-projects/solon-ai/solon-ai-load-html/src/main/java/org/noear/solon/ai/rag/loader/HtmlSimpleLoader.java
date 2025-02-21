@@ -15,10 +15,12 @@
  */
 package org.noear.solon.ai.rag.loader;
 
+import org.jsoup.Jsoup;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,9 +29,29 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class HtmlLoader implements DocumentLoader {
+public class HtmlSimpleLoader implements DocumentLoader {
+    private final String html;
+    private final String baseUri;
+
+    public HtmlSimpleLoader(String html) {
+        this(html, null);
+    }
+
+    public HtmlSimpleLoader(String html, String baseUri) {
+        this.html = html;
+        this.baseUri = baseUri;
+    }
+
     @Override
     public List<Document> load() {
-        return Collections.emptyList();
+        String text;
+
+        if (Utils.isEmpty(baseUri)) {
+            text = Jsoup.parse(html).text();
+        } else {
+            text = Jsoup.parse(html, baseUri).text();
+        }
+
+        return Arrays.asList(new Document(text));
     }
 }
