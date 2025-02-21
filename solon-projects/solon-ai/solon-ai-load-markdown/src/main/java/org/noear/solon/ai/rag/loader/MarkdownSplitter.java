@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * @author chengchuanyao
  * @since 3.1
  */
-public class MarkdownLoader implements DocumentSplitter {
+public class MarkdownSplitter implements DocumentSplitter {
 
     // Markdown文档清理正则表达式
     private static final String[][] MD_PATTERNS = {
@@ -59,36 +59,36 @@ public class MarkdownLoader implements DocumentSplitter {
 
     private static final int SEGMENT_OVERLAP_LENGTH = 50;
 
-    public MarkdownLoader() {
+    public MarkdownSplitter() {
         this("\n\n", MAX_SEGMENT_LENGTH, SEGMENT_OVERLAP_LENGTH);
     }
 
-    public MarkdownLoader(int maxSegmentLength, int segmentOverlapLength) {
+    public MarkdownSplitter(int maxSegmentLength, int segmentOverlapLength) {
         this("\n\n", maxSegmentLength, segmentOverlapLength);
     }
 
-    public MarkdownLoader(String delimiter) {
+    public MarkdownSplitter(String delimiter) {
         this(delimiter, MAX_SEGMENT_LENGTH, SEGMENT_OVERLAP_LENGTH);
     }
 
-    public MarkdownLoader(String delimiter, int maxSegmentLength, int segmentOverlapLength) {
+    public MarkdownSplitter(String delimiter, int maxSegmentLength, int segmentOverlapLength) {
         this(delimiter, maxSegmentLength, segmentOverlapLength, EnumSet.noneOf(PatternType.class), null);
     }
 
-    public MarkdownLoader(String delimiter,Set<PatternType> enabledPatterns) {
+    public MarkdownSplitter(String delimiter, Set<PatternType> enabledPatterns) {
         this(delimiter, MAX_SEGMENT_LENGTH, SEGMENT_OVERLAP_LENGTH, enabledPatterns, null);
     }
 
-    public MarkdownLoader(String delimiter, List<String[]> extraPatterns) {
+    public MarkdownSplitter(String delimiter, List<String[]> extraPatterns) {
         this(delimiter, MAX_SEGMENT_LENGTH, SEGMENT_OVERLAP_LENGTH, EnumSet.noneOf(PatternType.class), extraPatterns);
     }
 
-    public MarkdownLoader(String delimiter,Set<PatternType> enabledPatterns, List<String[]> extraPatterns) {
+    public MarkdownSplitter(String delimiter, Set<PatternType> enabledPatterns, List<String[]> extraPatterns) {
         this(delimiter, MAX_SEGMENT_LENGTH, SEGMENT_OVERLAP_LENGTH, enabledPatterns, extraPatterns);
     }
 
     // 新增构造函数，支持自定义正则表达式
-    public MarkdownLoader(String delimiter, int maxSegmentLength, int segmentOverlapLength, Set<PatternType> enabledPatterns, List<String[]> extraPatterns) {
+    public MarkdownSplitter(String delimiter, int maxSegmentLength, int segmentOverlapLength, Set<PatternType> enabledPatterns, List<String[]> extraPatterns) {
         if (maxSegmentLength <= segmentOverlapLength) {
             throw new IllegalArgumentException("maxSegmentLength must be greater than segmentOverlapLength");
         }
@@ -100,7 +100,7 @@ public class MarkdownLoader implements DocumentSplitter {
     }
 
     // 新增构造函数，支持自定义正则表达式
-    public MarkdownLoader(String delimiter, int maxSegmentLength, int segmentOverlapLength, Set<PatternType> enabledPatterns) {
+    public MarkdownSplitter(String delimiter, int maxSegmentLength, int segmentOverlapLength, Set<PatternType> enabledPatterns) {
         if (maxSegmentLength <= segmentOverlapLength) {
             throw new IllegalArgumentException("maxSegmentLength must be greater than segmentOverlapLength");
         }
@@ -211,18 +211,18 @@ public class MarkdownLoader implements DocumentSplitter {
 
         return segments;
     }
-}
 
-// 预定义的正则表达式类型
-enum PatternType {
-    SPACE("\\s+", " "),                                                                            // 替换连续的空格、换行符和制表符
-    URL_EMAIL("(?:https?://|www\\.)[^\\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", "");  // 删除URL和邮箱
+    // 预定义的正则表达式类型
+    public static enum PatternType {
+        SPACE("\\s+", " "),                                                                            // 替换连续的空格、换行符和制表符
+        URL_EMAIL("(?:https?://|www\\.)[^\\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", "");  // 删除URL和邮箱
 
-    protected final String pattern;
-    protected final String replacement;
+        protected final String pattern;
+        protected final String replacement;
 
-    PatternType(String pattern, String replacement) {
-        this.pattern = pattern;
-        this.replacement = replacement;
+        PatternType(String pattern, String replacement) {
+            this.pattern = pattern;
+            this.replacement = replacement;
+        }
     }
 }
