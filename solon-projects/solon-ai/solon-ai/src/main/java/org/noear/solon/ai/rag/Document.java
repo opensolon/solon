@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.rag;
 
-import org.noear.solon.Utils;
 import org.noear.solon.lang.Preview;
 
 import java.util.HashMap;
@@ -61,6 +60,16 @@ public class Document {
         this.score = score;
     }
 
+    /**
+     * 设置 id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * 设置嵌入矢量
+     */
     public void setEmbedding(float[] embedding) {
         this.embedding = embedding;
     }
@@ -72,9 +81,6 @@ public class Document {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     /**
      * 内容
@@ -120,39 +126,37 @@ public class Document {
         return this;
     }
 
+    public Object getMetadata(String key) {
+        if (this.metadata == null) {
+            return null;
+        } else {
+            return this.metadata.get(key);
+        }
+    }
+
+    /// /////////////////////////////
+
     public Document title(String title) {
         return addMetadata("title", title);
     }
-    
+
     public String getTitle() {
-    	if(this.metadata!=null) {
-    		return (String) this.metadata.get("title");
-    	}else {
-    		return null;
-    	}
+        return (String) getMetadata("title");
     }
 
     public Document url(String url) {
         return addMetadata("url", url);
     }
-    
+
     public String getUrl() {
-    	if(this.metadata!=null) {
-    		return (String) this.metadata.get("url");
-    	}else {
-    		return null;
-    	}
+        return (String) getMetadata("url");
     }
 
     public Document snippet(String snippet) {
         return addMetadata("snippet", snippet);
     }
-    
+
     public String getSnippet() {
-    	if(this.metadata!=null) {
-    		return (String) this.metadata.get("snippet");
-    	}else {
-    		return null;
-    	}
+        return (String) getMetadata("snippet");
     }
 }
