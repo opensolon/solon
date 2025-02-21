@@ -33,8 +33,7 @@
 * 添加 solon BeanWrap:isNullOrGenericFrom 方法
 * 添加 solon subWrapsOfType, subBeansOfType, getBeansOfType, getBeansMapOfType genericType 过滤参数
 * 添加 solon ParameterizedTypeImpl:toString 缓存支持
-* 添加 solon-flow Chain.parseByExpr(resExpr) 方法
-* 添加 solon-flow FlowEngine:load(Iterable) 方法
+* 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
 * 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口
 * 添加 solon-web-rx 过滤体系
