@@ -87,22 +87,6 @@ public class OllamaTest {
     }
 
     @Test
-    public void case3_www() throws IOException {
-        ChatModel chatModel = ChatModel.of(apiUrl)
-                .provider(provider)
-                .model(model)
-                .globalFunctionAdd(new Tools())
-                .build();
-
-        ChatResponse resp = chatModel
-                .prompt("solon 框架的作者是谁？")
-                .call();
-
-        //打印消息
-        log.info("{}", resp.getMessage());
-    }
-
-    @Test
     public void case4() throws Throwable {
         ChatModel chatModel = ChatModel.of(apiUrl)
                 .provider(provider)
