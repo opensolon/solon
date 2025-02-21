@@ -47,6 +47,7 @@
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
+* redisson 升为 3.44.0
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
