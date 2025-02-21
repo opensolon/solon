@@ -30,7 +30,7 @@
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
 * 修复 solon-data nested 事务策略单独回滚失效的问题
-* 修复 solon-web-staticfiles 的一个潜在安全问题 [#issue-332](https://github.com/opensolon/solon/issues/332)
+* 调整 solon-web-staticfiles 自动弃用带 `../` 和 `..\` 符号的路径匹配
 * 调整 solon-flow 用 layout 替代 nodes 配置（旧的仍可用，标为弃用）
 * liquor 升为 1.3.11
 
