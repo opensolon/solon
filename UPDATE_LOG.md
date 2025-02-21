@@ -30,7 +30,8 @@
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
 * 修复 solon-data nested 事务策略单独回滚失效的问题
-* 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
+* 修复 solon-web-staticfiles 的一个潜在安全问题
+* 调整 solon-flow 用 layout 替代 nodes 配置（旧的仍可用，标为弃用）
 
 ### v3.0.8
 * 添加 solon-web-sse SseRender 渲染器，支持 "text/event-stream" 的任意类型处理
