@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Json 文档分割器
+ * Json 文档分割器（将数组数据分割为不同的文档）
  *
  * @author noear
  * @since 3.1
