@@ -47,6 +47,7 @@
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * fastjson2 升为 2.0.55
 * jackson 升为 2.18.2
+* gson 升为 2.12.1
 * sa-token 升为 1.40.0
 * redisson 升为 3.45.0
 * lettuce 升为 6.5.4.RELEASE
