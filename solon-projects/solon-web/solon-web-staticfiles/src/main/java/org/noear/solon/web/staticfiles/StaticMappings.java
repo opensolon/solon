@@ -66,32 +66,33 @@ public class StaticMappings {
      * 查询静态资源
      */
     public static URL find(String path) throws Exception {
+        if (path.contains("../") || path.contains("..\\")) {
+            // '../','..\' 不安全，禁止进入静态资料库
+            return null;
+        }
+
         URL rst = null;
-
-        if (path.contains("/../") == false) {
-            // '/../' 不安全，禁止进入静态资料库
-            for (StaticLocation m : locationMap.values()) {
-                if (path.startsWith(m.pathPrefix)) {
-                    if (m.repositoryIncPrefix) {
-                        //path = /demo/file.htm
-                        //relativePath = demo/file.htm （没有'/'开头）
-                        rst = m.repository.find(path.substring(1));
+        for (StaticLocation m : locationMap.values()) {
+            if (path.startsWith(m.pathPrefix)) {
+                if (m.repositoryIncPrefix) {
+                    //path = /demo/file.htm
+                    //relativePath = demo/file.htm （没有'/'开头）
+                    rst = m.repository.find(path.substring(1));
+                } else {
+                    //path = /demo/file.htm
+                    //relativePath = demo/file.htm （没有'/'开头）
+                    if (m.pathPrefixAsFile) {
+                        //如果是文件
+                        int idx = m.pathPrefix.lastIndexOf("/");
+                        rst = m.repository.find(m.pathPrefix.substring(idx + 1));
                     } else {
-                        //path = /demo/file.htm
-                        //relativePath = demo/file.htm （没有'/'开头）
-                        if (m.pathPrefixAsFile) {
-                            //如果是文件
-                            int idx = m.pathPrefix.lastIndexOf("/");
-                            rst = m.repository.find(m.pathPrefix.substring(idx + 1));
-                        } else {
-                            //如果是路段
-                            rst = m.repository.find(path.substring(m.pathPrefix.length()));
-                        }
+                        //如果是路段
+                        rst = m.repository.find(path.substring(m.pathPrefix.length()));
                     }
+                }
 
-                    if (rst != null) {
-                        return rst;
-                    }
+                if (rst != null) {
+                    return rst;
                 }
             }
         }
