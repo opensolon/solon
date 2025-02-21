@@ -50,7 +50,7 @@
         <luffy.version>1.9.0</luffy.version>
 
         <redisson.version>3.45.0</redisson.version>
-        <lettuce.version>6.2.7.RELEASE</lettuce.version>
+        <lettuce.version>6.5.4.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.55</fastjson2.version>

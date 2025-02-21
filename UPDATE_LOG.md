@@ -50,6 +50,7 @@
 * vertx 升为 4.5.13
 * redisson 升为 3.45.0
 * fastjson2 升为 2.0.55
+* lettuce 升为 6.5.4.RELEASE
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
