@@ -49,6 +49,7 @@
 * jackson 升为 2.18.2
 * gson 升为 2.12.1
 * fury 升为 0.10.0
+* kryo 升为 5.6.2
 * sa-token 升为 1.40.0
 * redisson 升为 3.45.0
 * lettuce 升为 6.5.4.RELEASE
