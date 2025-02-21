@@ -27,7 +27,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  * */
-public class MdLoader implements DocumentLoader {
+public class MarkdownLoader implements DocumentLoader {
     @Override
     public List<Document> load() {
         return Collections.emptyList();
