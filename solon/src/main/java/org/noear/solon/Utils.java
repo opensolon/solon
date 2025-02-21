@@ -174,10 +174,17 @@ public class Utils {
     }
 
     /**
-     * 生成UGID
+     * 生成guid
      */
     public static String guid() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    /**
+     * 生成uuid
+     */
+    public static String uuid() {
+        return UUID.randomUUID().toString();
     }
 
     /**
