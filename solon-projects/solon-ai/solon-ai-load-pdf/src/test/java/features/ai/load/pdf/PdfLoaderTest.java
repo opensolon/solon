@@ -1,4 +1,4 @@
-package features;
+package features.ai.load.pdf;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;

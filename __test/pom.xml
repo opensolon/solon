@@ -500,11 +500,6 @@
             <artifactId>jsp-api</artifactId>
             <version>2.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-ai-load-pdf</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!--        <dependency>-->
         <!--            <groupId>org.activiti</groupId>-->
