@@ -123,12 +123,36 @@ public class Document {
     public Document title(String title) {
         return addMetadata("title", title);
     }
+    
+    public String getTitle() {
+    	if(this.metadata!=null) {
+    		return (String) this.metadata.get("title");
+    	}else {
+    		return null;
+    	}
+    }
 
     public Document url(String url) {
         return addMetadata("url", url);
     }
+    
+    public String getUrl() {
+    	if(this.metadata!=null) {
+    		return (String) this.metadata.get("url");
+    	}else {
+    		return null;
+    	}
+    }
 
     public Document snippet(String snippet) {
         return addMetadata("snippet", snippet);
+    }
+    
+    public String getSnippet() {
+    	if(this.metadata!=null) {
+    		return (String) this.metadata.get("snippet");
+    	}else {
+    		return null;
+    	}
     }
 }
