@@ -53,6 +53,8 @@
 * grpc 升为 1.69.1
 * vertx 升为 4.5.13
 * netty 升为 4.1.118.Final
+* liteflow 2.12.4.5
+* forest 1.6.3
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
