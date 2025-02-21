@@ -40,8 +40,6 @@
 * 添加 solon-web-rx 过滤体系
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
-* 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
-* 修复 solon-data nested 事务策略单独回滚失效的问题
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
@@ -49,6 +47,12 @@
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
+
+### v3.0.9
+* 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
+* 修复 solon-data nested 事务策略单独回滚失效的问题
+* 修复 solon-web-staticfiles 的一个潜在安全问题 [#issue-332](https://github.com/opensolon/solon/issues/332)
+* 调整 solon-flow 用 layout 替代 nodes 配置（旧的仍可用，标为弃用）
 * liquor 升为 1.3.11
 
 ### v3.0.8
