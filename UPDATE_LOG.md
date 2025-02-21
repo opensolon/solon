@@ -45,6 +45,7 @@
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
+* 修复 solon-web-staticfiles 的一个潜在安全问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * sa-token 升为 1.40.0
 * grpc 升为 1.69.1
