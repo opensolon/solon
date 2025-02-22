@@ -169,12 +169,6 @@ public class AppContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
-            //尝试绑定属性 //v3.0
-            BindProps bindProps = clz.getAnnotation(BindProps.class);
-            if (bindProps != null) {
-                cfg().getProp(bindProps.prefix()).bindTo(bw.raw());
-            }
-
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
@@ -189,6 +183,11 @@ public class AppContext extends BeanContainer {
                 }
             }
 
+            //尝试绑定属性 //v3.0
+            BindProps bindProps = clz.getAnnotation(BindProps.class);
+            if (bindProps != null) {
+                cfg().getProp(bindProps.prefix()).bindTo(bw.raw());
+            }
 
             //尝试注入属性 //ps:未来由 BindProps 注解替代
             beanInjectProperties(clz, bw.raw());
