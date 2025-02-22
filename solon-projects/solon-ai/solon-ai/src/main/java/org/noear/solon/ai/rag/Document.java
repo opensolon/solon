@@ -29,7 +29,7 @@ import java.util.Map;
 @Preview("3.1")
 public class Document {
     protected String id;
-    protected final String content;
+    protected String content;
     protected final Map<String, Object> metadata;
     protected final double score;
 
@@ -65,6 +65,13 @@ public class Document {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * 设置内容
+     */
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**
