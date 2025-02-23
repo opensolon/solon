@@ -628,6 +628,16 @@ public abstract class BeanContainer {
         return bw == null ? null : bw.get();
     }
 
+    /**
+     * 获取 Bean 或默认
+     *
+     * @param nameOrType 名字或类型
+     */
+    public <T> T getBeanOrDefault(Object nameOrType, T def) {
+        BeanWrap bw = getWrap(nameOrType);
+        return bw == null ? def : bw.get();
+    }
+
 
     /**
      * 获取某类型的 bean list
