@@ -27,7 +27,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class ExcelLoader implements DocumentLoader {
+public class ExcelLoader extends AbstractDocumentLoader {
     @Override
     public List<Document> load() {
         return Collections.emptyList();

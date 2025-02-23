@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.loader.PdfLoadMode;
 import org.noear.solon.ai.rag.loader.PdfLoader;
 
 /**
@@ -50,8 +49,7 @@ public class PdfLoaderTest {
      */
     @Test
     public void testPageMode() {
-        PdfLoadMode mode = PdfLoadMode.PAGE;
-        PdfLoader loader = new PdfLoader(pdfFile, mode);
+        PdfLoader loader = new PdfLoader(pdfFile);
         List<Document> documents = loader.load();
 
         // 验证基本信息
@@ -83,8 +81,7 @@ public class PdfLoaderTest {
      */
     @Test
     public void testSingleMode() {
-        PdfLoadMode mode = PdfLoadMode.SINGLE;
-        PdfLoader loader = new PdfLoader(pdfFile, mode);
+        PdfLoader loader = new PdfLoader(pdfFile, new PdfLoader.Options().loadMode(PdfLoader.LoadMode.SINGLE));
         List<Document> documents = loader.load();
 
         // 验证基本信息
@@ -119,12 +116,6 @@ public class PdfLoaderTest {
         // 测试null参数
         assertThrows(IllegalArgumentException.class, () -> {
             new PdfLoader(null);
-        });
-
-        // 测试无效的模式
-        assertThrows(IllegalArgumentException.class, () -> {
-            PdfLoadMode mode = null;
-            new PdfLoader(pdfFile, mode);
         });
     }
 }

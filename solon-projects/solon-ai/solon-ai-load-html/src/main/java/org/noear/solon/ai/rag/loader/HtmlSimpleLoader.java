@@ -39,7 +39,7 @@ import org.noear.solon.ai.rag.DocumentLoader;
  * @author 小奶奶花生米
  * @since 3.1
  */
-public class HtmlSimpleLoader implements DocumentLoader {
+public class HtmlSimpleLoader extends AbstractDocumentLoader {
     /** 要加载的网页URL列表 */
     private final List<String> webPaths;
     /** HTTP请求头 */
