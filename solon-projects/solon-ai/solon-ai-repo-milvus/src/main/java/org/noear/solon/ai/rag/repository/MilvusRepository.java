@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.rag.repository;
 
-import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
@@ -61,12 +60,14 @@ import java.util.Map;
 public class MilvusRepository implements RepositoryStorable {
     private final EmbeddingModel embeddingModel;
     private final MilvusClientV2 client;
-    private final String collectionName="solonAiRepo";
+    private final String collectionName;
 
-    public MilvusRepository(EmbeddingModel embeddingModel, MilvusClientV2 client) {
+    public MilvusRepository(EmbeddingModel embeddingModel, MilvusClientV2 client, String collectionName) {
         this.embeddingModel = embeddingModel;
         //客户端的构建由外部完成
         this.client = client;
+        //指定集合
+        this.collectionName = collectionName;
 
         buildCollection();
     }
