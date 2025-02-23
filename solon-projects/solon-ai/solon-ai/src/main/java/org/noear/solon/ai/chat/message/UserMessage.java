@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.lang.Preview;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class UserMessage implements ChatMessage {
     /**
      * 消息增强
@@ -39,9 +41,9 @@ public class UserMessage implements ChatMessage {
     }
 
     /**
-     * 构建模板
+     * 创建消息模板
      */
-    public static UserMessageTemplate ofTmpl(String tmpl) {
+    public static UserMessageTemplate template(String tmpl) {
         return new UserMessageTemplate(tmpl);
     }
 

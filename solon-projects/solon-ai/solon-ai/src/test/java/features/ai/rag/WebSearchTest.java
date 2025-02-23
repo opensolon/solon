@@ -27,4 +27,22 @@ public class WebSearchTest {
         //打印
         System.out.println(resp.getMessage());
     }
+
+    @Test
+    public void case2() throws Exception {
+        WebSearchRepository repository = TestUtils.getWebSearchRepositoryOfBochaai();
+        String query = "solon 是谁开发的？";
+
+        List<Document> context = repository.search(query);
+
+        ChatResponse resp = TestUtils.getChatModelOfGiteeai()
+                .prompt(UserMessage.template("${query} \n\n 请参考以下内容回答：${context}")
+                        .param("query", query)
+                        .param("context", context)
+                        .generate())
+                .call();
+
+        //打印
+        System.out.println(resp.getMessage());
+    }
 }
