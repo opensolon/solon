@@ -23,6 +23,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -70,12 +71,16 @@ public class MarkdownLoader extends AbstractDocumentLoader {
     }
 
     @Override
-    public List<Document> load() {
+    public List<Document> load() throws IOException {
         try (InputStream input = this.source.get()) {
             Node md = this.parser.parseReader(new InputStreamReader(input));
             SplitVisitor splitVisitor = new SplitVisitor(this);
             md.accept(splitVisitor);
             return splitVisitor.extract();
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }

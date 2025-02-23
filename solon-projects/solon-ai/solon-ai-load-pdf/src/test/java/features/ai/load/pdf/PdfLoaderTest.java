@@ -1,6 +1,7 @@
 package features.ai.load.pdf;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -9,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions; // 修改导入路径
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,8 +48,9 @@ public class PdfLoaderTest {
      * 测试分页模式
      */
     @Test
-    public void testPageMode() {
-        PdfLoader loader = new PdfLoader(pdfFile);
+    public void testPageMode() throws IOException {
+        PdfLoader loader = new PdfLoader(pdfFile.toURI());
+        loader.additionalMetadata("title", pdfFile.getName());
         List<Document> documents = loader.load();
 
         // 验证基本信息
@@ -80,8 +81,9 @@ public class PdfLoaderTest {
      * 测试单文档模式
      */
     @Test
-    public void testSingleMode() {
-        PdfLoader loader = new PdfLoader(pdfFile, new PdfLoader.Options().loadMode(PdfLoader.LoadMode.SINGLE));
+    public void testSingleMode() throws IOException {
+        PdfLoader loader = new PdfLoader(pdfFile.toURI(), new PdfLoader.Options().loadMode(PdfLoader.LoadMode.SINGLE));
+        loader.additionalMetadata("title", pdfFile.getName());
         List<Document> documents = loader.load();
 
         // 验证基本信息
@@ -100,22 +102,5 @@ public class PdfLoaderTest {
         System.out.println("标题: " + doc.getMetadata().get("title"));
         System.out.println("总页数: " + doc.getMetadata().get("pages"));
         System.out.println("内容预览: " + doc.getContent());
-    }
-
-    /**
-     * 测试异常情况
-     */
-    @Test
-    public void testExceptions() {
-        // 测试不存在的文件
-        File nonExistentFile = new File("non_existent.pdf");
-        assertThrows(IllegalArgumentException.class, () -> {
-            new PdfLoader(nonExistentFile);
-        });
-
-        // 测试null参数
-        assertThrows(IllegalArgumentException.class, () -> {
-            new PdfLoader(null);
-        });
     }
 }

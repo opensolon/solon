@@ -16,7 +16,9 @@
 package org.noear.solon.ai.rag.loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +46,12 @@ public class PdfLoader extends AbstractDocumentLoader {
      */
     private final Options options;
 
-    public PdfLoader(File source) {
-        this(() -> source.toURI().toURL().openStream(), null);
+    public PdfLoader(URI source) {
+        this(() -> source.toURL().openStream(), null);
+    }
+
+    public PdfLoader(URI source, Options options) {
+        this(() -> source.toURL().openStream(), options);
     }
 
     public PdfLoader(SupplierEx<InputStream> source, Options options) {
@@ -63,7 +69,7 @@ public class PdfLoader extends AbstractDocumentLoader {
     }
 
     @Override
-    public List<Document> load() {
+    public List<Document> load() throws IOException {
 
         try (InputStream stream = source.get(); PDDocument pdf = PDDocument.load(stream)) {
             List<Document> documents = new ArrayList<>();
@@ -103,6 +109,10 @@ public class PdfLoader extends AbstractDocumentLoader {
             }
 
             return documents;
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }

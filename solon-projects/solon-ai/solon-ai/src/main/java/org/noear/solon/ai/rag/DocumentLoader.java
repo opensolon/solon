@@ -17,6 +17,7 @@ package org.noear.solon.ai.rag;
 
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,5 +42,5 @@ public interface DocumentLoader {
     /**
      * 加载文档
      */
-    List<Document> load();
+    List<Document> load() throws IOException;
 }
