@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentLoader;
 
 /**
  * pdf 文档加载器
@@ -33,7 +32,7 @@ import org.noear.solon.ai.rag.DocumentLoader;
  * @author noear
  * @since 3.1
  * */
-public class PdfLoader implements DocumentLoader {
+public class PdfLoader extends AbstractDocumentLoader {
     /**
      * PDF 文件对象
      */
@@ -155,6 +154,7 @@ public class PdfLoader implements DocumentLoader {
 
                 Document doc = new Document(text, metadata)
                         .title(pdfFile.getName())
+                        .addMetadata(this.additionalMetadata)
                         .addMetadata("pages", pdf.getNumberOfPages());
                 documents.add(doc);
 
@@ -172,7 +172,8 @@ public class PdfLoader implements DocumentLoader {
 
                     Document doc = new Document(pageText.trim(), pageMetadata)
                             .title(pdfFile.getName())
-                            .snippet("Page " + pageNum);
+                            .snippet("Page " + pageNum)
+                            .addMetadata(this.additionalMetadata);
                     documents.add(doc);
                 }
             }
