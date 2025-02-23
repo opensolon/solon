@@ -17,11 +17,11 @@ package org.noear.solon.ai.rag.loader;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.node.*;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.core.util.SupplierEx;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -32,38 +32,41 @@ import java.util.*;
  */
 public class MarkdownLoader implements DocumentLoader {
     private final SupplierEx<InputStream> resource;
-    private final Config config;
+    private final Options options;
     private final Parser parser;
 
     public MarkdownLoader(SupplierEx<InputStream> resource) {
-        this(resource, Config.getDefault());
+        this(resource, Options.getDefault());
     }
 
-    public MarkdownLoader(SupplierEx<InputStream> resource, Config config) {
+    public MarkdownLoader(SupplierEx<InputStream> resource, Options options) {
         this.resource = resource;
-        this.config = config;
+        this.options = options;
         this.parser = Parser.builder().build();
     }
 
     @Override
     public List<Document> load() {
         try (InputStream input = this.resource.get()) {
-            Node node = this.parser.parseReader(new InputStreamReader(input));
-            DocumentVisitor documentVisitor = new DocumentVisitor(this.config);
-            node.accept(documentVisitor);
-            return documentVisitor.getDocuments();
+            Node md = this.parser.parseReader(new InputStreamReader(input));
+            SplitVisitor splitVisitor = new SplitVisitor(this.options);
+            md.accept(splitVisitor);
+            return splitVisitor.getDocuments();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    static class DocumentVisitor extends AbstractVisitor {
+    /**
+     * 分割观察器
+     */
+    static class SplitVisitor extends AbstractVisitor {
         private final List<Document> documents = new ArrayList();
         private final List<String> currentParagraphs = new ArrayList();
-        private final Config config;
+        private final Options config;
         private Document currentDocument;
 
-        DocumentVisitor(Config config) {
+        SplitVisitor(Options config) {
             this.config = config;
         }
 
@@ -78,7 +81,7 @@ public class MarkdownLoader implements DocumentLoader {
         }
 
         public void visit(ThematicBreak thematicBreak) {
-            if (this.config.horizontalRuleCreateDocument) {
+            if (this.config.horizontalLineAsNew) {
                 this.buildAndFlush();
             }
 
@@ -101,7 +104,7 @@ public class MarkdownLoader implements DocumentLoader {
         }
 
         public void visit(BlockQuote blockQuote) {
-            if (!this.config.includeBlockquote) {
+            if (!this.config.blockquoteAsNew) {
                 this.buildAndFlush();
             }
 
@@ -117,7 +120,7 @@ public class MarkdownLoader implements DocumentLoader {
         }
 
         public void visit(FencedCodeBlock fencedCodeBlock) {
-            if (!this.config.includeCodeBlock) {
+            if (!this.config.codeBlockAsNew) {
                 this.buildAndFlush();
             }
 
@@ -160,7 +163,7 @@ public class MarkdownLoader implements DocumentLoader {
         }
 
         private void translateLineBreakToSpace() {
-            if (!this.currentParagraphs.isEmpty()) {
+            if (Utils.isNotEmpty(this.currentParagraphs)) {
                 this.currentParagraphs.add(" ");
             }
         }
@@ -170,34 +173,49 @@ public class MarkdownLoader implements DocumentLoader {
     /// /////////////////////
 
 
-    public static class Config {
-        private static Config DEFAULT = new Config();
+    /**
+     * 选项
+     */
+    public static class Options {
+        private static Options DEFAULT = new Options();
 
-        public static Config getDefault() {
+        public static Options getDefault() {
             return DEFAULT;
         }
 
-        public boolean horizontalRuleCreateDocument;
-        public boolean includeCodeBlock;
-        public boolean includeBlockquote;
+        /**
+         * 有水平线新建
+         */
+        public boolean horizontalLineAsNew;
+        /**
+         * 有代码块新建
+         */
+        public boolean codeBlockAsNew;
+        /**
+         * 有块引用新建
+         */
+        public boolean blockquoteAsNew;
+        /**
+         * 增量元数据
+         */
         public Map<String, Object> additionalMetadata = new HashMap<>();
 
-        public Config horizontalRuleCreateDocument(boolean horizontalRuleCreateDocument) {
-            this.horizontalRuleCreateDocument = horizontalRuleCreateDocument;
+        public Options includeHorizontalLine(boolean includeHorizontalLine) {
+            this.horizontalLineAsNew = includeHorizontalLine;
             return this;
         }
 
-        public Config includeCodeBlock(boolean includeCodeBlock) {
-            this.includeCodeBlock = includeCodeBlock;
+        public Options includeCodeBlock(boolean includeCodeBlock) {
+            this.codeBlockAsNew = includeCodeBlock;
             return this;
         }
 
-        public Config includeBlockquote(boolean includeBlockquote) {
-            this.includeBlockquote = includeBlockquote;
+        public Options includeBlockquote(boolean includeBlockquote) {
+            this.blockquoteAsNew = includeBlockquote;
             return this;
         }
 
-        public Config additionalMetadata(String key, Object value) {
+        public Options additionalMetadata(String key, Object value) {
             this.additionalMetadata.put(key, value);
             return this;
         }
