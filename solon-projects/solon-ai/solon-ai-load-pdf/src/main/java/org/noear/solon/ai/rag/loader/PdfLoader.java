@@ -42,14 +42,12 @@ public class PdfLoader implements DocumentLoader {
     /**
      * PDF 加载模式，可以是单文档模式或分页模式
      */
-    private final PdfLoadMode mode;
+    private final LoadMode mode;
 
     /**
      * 页面分隔符，用于在单文档模式下分隔不同页面的文本
      */
     private final String pageDelimiter;
-
-
 
     /**
      * 构造函数，使用默认的分页模式
@@ -58,30 +56,30 @@ public class PdfLoader implements DocumentLoader {
      * @author 小奶奶花生米
      */
     public PdfLoader(File pdfFile) {
-        this(pdfFile, PdfLoadMode.PAGE);
+        this(pdfFile, LoadMode.PAGE);
     }
 
     /**
      * 构造函数，使用指定的加载模式和默认的页面分隔符
      *
      * @param pdfFile PDF文件对象
-     * @param mode 加载模式，SINGLE或PAGE
+     * @param mode    加载模式，SINGLE或PAGE
      * @author 小奶奶花生米
      */
-    public PdfLoader(File pdfFile, PdfLoadMode mode) {
+    public PdfLoader(File pdfFile, LoadMode mode) {
         this(pdfFile, mode, "\n\f");
     }
 
     /**
      * 构造函数，完整参数配置
      *
-     * @param pdfFile PDF文件对象
-     * @param mode 加载模式，SINGLE或PAGE
+     * @param pdfFile       PDF文件对象
+     * @param mode          加载模式，SINGLE或PAGE
      * @param pageDelimiter 页面分隔符，用于在单文档模式下分隔不同页面的文本
      * @throws IllegalArgumentException 如果PDF文件不存在、不可读或不是PDF文件
      * @author 小奶奶花生米
      */
-    public PdfLoader(File pdfFile, PdfLoadMode mode, String pageDelimiter) {
+    public PdfLoader(File pdfFile, LoadMode mode, String pageDelimiter) {
         // 检查文件是否为null
         if (pdfFile == null) {
             throw new IllegalArgumentException("PDF file cannot be null");
@@ -148,7 +146,7 @@ public class PdfLoader implements DocumentLoader {
             metadata.put("source", pdfFile.getName());
             metadata.put("type", "pdf");
 
-            if (mode == PdfLoadMode.SINGLE) {
+            if (mode == LoadMode.SINGLE) {
                 // 整个文档作为一个 Document
                 PDFTextStripper stripper = new PDFTextStripper();
                 // 设置页面分隔符
@@ -184,5 +182,22 @@ public class PdfLoader implements DocumentLoader {
         }
 
         return documents;
+    }
+
+    /**
+     * PDF 加载模式
+     *
+     * @author 小奶奶花生米
+     * @date 2025-02-21
+     */
+    public static enum LoadMode {
+        /**
+         * 整个文档作为一个 Document
+         */
+        SINGLE,
+        /**
+         * 每页作为一个 Document
+         */
+        PAGE
     }
 }
