@@ -70,10 +70,15 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
     }
 
     private Map<String, OkHttpClient> proxyClients = new ConcurrentHashMap<>();
+    private OkHttpClient defaultClient = createHttpClient(null, 0);
 
     protected OkHttpClient getClient(String proxyHost, int proxyPort) {
-        String key = proxyHost + ":" + proxyPort;
-        return proxyClients.computeIfAbsent(key, k -> createHttpClient(proxyHost, proxyPort));
+        if (proxyHost == null) {
+            return defaultClient;
+        } else {
+            String key = proxyHost + ":" + proxyPort;
+            return proxyClients.computeIfAbsent(key, k -> createHttpClient(proxyHost, proxyPort));
+        }
     }
 
     @Override
