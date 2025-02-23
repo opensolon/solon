@@ -46,7 +46,7 @@ import java.util.concurrent.CompletableFuture;
  * @since 3.0
  */
 @SuppressWarnings("unchecked")
-public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
+public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     static final Set<String> METHODS_NOBODY;
 
     static {
@@ -58,7 +58,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         allowMethods("PATCH");
     }
 
-    public JdkHttpUtilsImpl(String url) {
+    public JdkHttpUtils(String url) {
         super(url);
         _timeout = new HttpTimeout(60);
     }
@@ -154,7 +154,7 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            return new JdkHttpResponseImpl(this, _builder);
+            return new JdkHttpResponse(this, _builder);
         } catch (IOException e) {
             _builder.disconnect();
             throw e;

@@ -27,6 +27,6 @@ import org.noear.solon.net.http.HttpUtilsFactory;
 public class OkHttpUtilsFactory implements HttpUtilsFactory {
     @Override
     public HttpUtils http(String url) {
-        return new OkHttpUtilsImpl(url);
+        return new OkHttpUtils(url);
     }
 }

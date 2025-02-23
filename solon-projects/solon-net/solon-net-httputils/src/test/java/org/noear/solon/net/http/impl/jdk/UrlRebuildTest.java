@@ -12,7 +12,7 @@ public class UrlRebuildTest {
     public void case1() throws Exception {
         String url = "http://localhost:8080/demo2/mapping/e/{p_q}/{obj}/{id}?a=中";
 
-        String url2 = new JdkHttpUtilsImpl(url).urlRebuild(null, url, Charset.defaultCharset());
+        String url2 = new JdkHttpUtils(url).urlRebuild(null, url, Charset.defaultCharset());
 
         System.out.println(url2);
 

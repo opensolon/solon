@@ -3,7 +3,7 @@ package features.httputils;
 import features.jdkhttp.App;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
+import org.noear.solon.net.http.impl.okhttp.OkHttpUtils;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -12,7 +12,7 @@ import org.noear.solon.test.SolonTest;
 @SolonTest(App.class)
 public class DataOkTest {
     public static HttpUtils http(String url) {
-        return new OkHttpUtilsImpl(url);
+        return new OkHttpUtils(url);
     }
 
     @Test

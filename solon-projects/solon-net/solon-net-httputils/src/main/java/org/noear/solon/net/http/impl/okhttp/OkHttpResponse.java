@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.http.impl.jdk;
+package org.noear.solon.net.http.impl.okhttp;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.util.IoUtil;
+import okhttp3.MediaType;
+import okhttp3.Response;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
@@ -24,45 +24,24 @@ import org.noear.solon.net.http.HttpResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * Http 响应 JDK HttpURLConnection 实现
+ * Http 响应 OkHttp 实现
  *
  * @author noear
- * @since 3.0
+ * @since 2.8
  */
-public class JdkHttpResponseImpl implements HttpResponse {
-    private final JdkHttpUtilsImpl utils;
-    private final HttpURLConnection http;
-    private final int statusCode;
-    private final MultiMap<String> headers;
+public class OkHttpResponse implements HttpResponse {
+    private final OkHttpUtils utils;
+    private final Response response;
     private MultiMap<String> cookies;
-    private final InputStream body;
 
-    public JdkHttpResponseImpl(JdkHttpUtilsImpl utils, HttpURLConnection http) throws IOException {
+    public OkHttpResponse(OkHttpUtils utils, Response response) {
         this.utils = utils;
-        this.http = http;
-
-        this.statusCode = http.getResponseCode();
-        this.headers = new MultiMap<>();
-
-        for (Map.Entry<String, List<String>> kv : http.getHeaderFields().entrySet()) {
-            if (kv.getKey() != null) {
-                headers.holder(kv.getKey()).setValues(kv.getValue());
-            }
-        }
-
-        InputStream inputStream = statusCode < 400 ? http.getInputStream() : http.getErrorStream();
-        // 获取响应头是否有Content-Encoding=gzip
-        String gzip = http.getHeaderField("Content-Encoding");
-        if (Utils.isNotEmpty(gzip) && gzip.contains("gzip")) {
-            inputStream = new GZIPInputStream(inputStream);
-        }
-        body = new JdkInputStreamWrapper(http, inputStream);
+        this.response = response;
     }
 
     private MultiMap<String> cookiesInit() {
@@ -86,21 +65,17 @@ public class JdkHttpResponseImpl implements HttpResponse {
 
     @Override
     public Collection<String> headerNames() {
-        return headers.keySet();
+        return response.headers().names();
     }
 
     @Override
     public String header(String name) {
-        List<String> values = headers(name);
-        if (values == null || values.isEmpty()) {
-            return null;
-        }
-        return values.get(0);
+        return response.header(name);
     }
 
     @Override
     public List<String> headers(String name) {
-        return headers.getAll(name);
+        return response.headers(name);
     }
 
     @Override
@@ -120,51 +95,52 @@ public class JdkHttpResponseImpl implements HttpResponse {
 
     @Override
     public Long contentLength() {
-        return http.getContentLengthLong();
+        return response.body().contentLength();
     }
 
     @Override
     public String contentType() {
-        return http.getContentType();
+        MediaType tmp = response.body().contentType();
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.type();
+        }
     }
 
     @Override
     public Charset contentEncoding() {
-        String tmp = http.getContentEncoding();
-        return tmp == null ? null : Charset.forName(tmp);
+        MediaType tmp = response.body().contentType();
+        if (tmp == null) {
+            return null;
+        } else {
+            return tmp.charset();
+        }
     }
 
     @Override
     public List<String> cookies() {
-        return headers("Set-Cookie");
+        return response.headers("Set-Cookie");
     }
 
     @Override
     public int code() {
-        return statusCode;
+        return response.code();
     }
 
     @Override
     public InputStream body() {
-        return body;
+        return response.body().byteStream();
     }
 
     @Override
     public byte[] bodyAsBytes() throws IOException {
-        try {
-            return IoUtil.transferToBytes(body());
-        } finally {
-            body().close();
-        }
+        return response.body().bytes();
     }
 
     @Override
     public String bodyAsString() throws IOException {
-        try {
-            return IoUtil.transferToString(body());
-        } finally {
-            body().close();
-        }
+        return response.body().string();
     }
 
     @Override
@@ -180,6 +156,6 @@ public class JdkHttpResponseImpl implements HttpResponse {
 
     @Override
     public void close() throws IOException {
-        body().close();
+        response.close();
     }
 }

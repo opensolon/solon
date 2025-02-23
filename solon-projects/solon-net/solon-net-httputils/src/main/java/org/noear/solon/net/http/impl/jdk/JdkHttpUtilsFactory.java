@@ -27,6 +27,6 @@ import org.noear.solon.net.http.HttpUtilsFactory;
 public class JdkHttpUtilsFactory implements HttpUtilsFactory {
     @Override
     public HttpUtils http(String url) {
-        return new JdkHttpUtilsImpl(url);
+        return new JdkHttpUtils(url);
     }
 }
