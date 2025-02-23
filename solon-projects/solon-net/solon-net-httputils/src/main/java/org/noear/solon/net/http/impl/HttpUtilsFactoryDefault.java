@@ -19,8 +19,8 @@ import okhttp3.OkHttpClient;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.HttpUtilsFactory;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtils;
-import org.noear.solon.net.http.impl.okhttp.OkHttpUtils;
+import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
+import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
 
 /**
  * @author noear
@@ -30,9 +30,9 @@ public class HttpUtilsFactoryDefault implements HttpUtilsFactory {
     @Override
     public HttpUtils http(String url) {
         if (ClassUtil.hasClass(() -> OkHttpClient.class)) {
-            return new OkHttpUtils(url);
+            return OkHttpUtilsFactory.getInstance().http(url);
         } else {
-            return new JdkHttpUtils(url);
+            return JdkHttpUtilsFactory.getInstance().http(url);
         }
     }
 }

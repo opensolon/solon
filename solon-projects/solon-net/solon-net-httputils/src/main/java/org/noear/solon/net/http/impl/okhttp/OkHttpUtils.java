@@ -26,12 +26,8 @@ import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 /**
  * Http 工具 OkHttp 实现
@@ -40,58 +36,10 @@ import java.util.function.Supplier;
  * @since 1.5
  * */
 public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
-    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
-        Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(20000);
-        temp.setMaxRequestsPerHost(10000);
-        return temp;
-    };
-
-    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .dispatcher(httpClientDispatcher.get())
-            .addInterceptor(OkHttpInterceptor.instance)
-            .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
-            .hostnameVerifier(HttpSsl.defaultHostnameVerifier)
-            .build();
-
-    private OkHttpClient _client;
-
-    public OkHttpUtils(String url) {
-        this(url, null);
-    }
-
-    public OkHttpUtils(String url, OkHttpClient client) {
+    private final OkHttpUtilsFactory factory;
+    public OkHttpUtils(OkHttpUtilsFactory factory, String url) {
         super(url);
-
-        if (client == null) {
-            _client = httpClient;
-        } else {
-            _client = client;
-        }
-    }
-
-    @Override
-    public HttpUtils proxy(String host, int port) {
-        super.proxy(host, port);
-
-        if (Utils.isNotEmpty(host)) {
-            Proxy httpProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(_proxyHost, _proxyPort));
-            _client = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .dispatcher(httpClientDispatcher.get())
-                    .addInterceptor(OkHttpInterceptor.instance)
-                    .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
-                    .hostnameVerifier(HttpSsl.defaultHostnameVerifier)
-                    .proxy(httpProxy)
-                    .build();
-        }
-
-        return this;
+        this.factory = factory;
     }
 
     @Override
@@ -190,6 +138,8 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
 
         final OkHttpUtils self = this;
+
+        OkHttpClient _client = factory.getClient(_proxyHost, _proxyPort);
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());
