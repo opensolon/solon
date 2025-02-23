@@ -17,7 +17,6 @@ package org.noear.solon.ai.rag.loader;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.node.*;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
@@ -40,12 +39,12 @@ public class MarkdownLoader extends AbstractDocumentLoader {
     private final Parser parser;
     private final Options options;
 
-    public MarkdownLoader(String text) {
-        this(text, null);
+    public MarkdownLoader(byte[] bytes) {
+        this(bytes, null);
     }
 
-    public MarkdownLoader(String text, Options options) {
-        this(() -> new ByteArrayInputStream(text.getBytes(Solon.encoding())), options);
+    public MarkdownLoader(byte[] bytes, Options options) {
+        this(() -> new ByteArrayInputStream(bytes), options);
     }
 
     public MarkdownLoader(URI uri) {
