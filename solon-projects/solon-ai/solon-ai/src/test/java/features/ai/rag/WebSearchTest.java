@@ -2,8 +2,9 @@ package features.ai.rag;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.chat.message.UserMessage;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.Prompts;
 import org.noear.solon.ai.rag.repository.WebSearchRepository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class WebSearchTest {
         List<Document> context = repository.search(query);
 
         ChatResponse resp = TestUtils.getChatModelOfGiteeai()
-                .prompt(Prompts.augment(query, context))
+                .prompt(UserMessage.augment(query, context))
                 .call();
 
         //打印
