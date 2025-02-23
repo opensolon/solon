@@ -31,9 +31,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -70,7 +68,8 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         final String method = _method.toUpperCase();
         final String newUrl = urlRebuild(method, _url, _charset);
 
-        HttpURLConnection _builder = (HttpURLConnection) new URL(newUrl).openConnection();
+        HttpURLConnection _builder = openConnection(newUrl);
+
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
@@ -114,6 +113,15 @@ public class JdkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
             });
 
             return null;
+        }
+    }
+
+    private HttpURLConnection openConnection(String newUrl) throws MalformedURLException,IOException {
+        if (Utils.isEmpty(_proxyHost)) {
+            return (HttpURLConnection) new URL(newUrl).openConnection();
+        } else {
+            Proxy httpProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(_proxyHost, _proxyPort));
+            return (HttpURLConnection) new URL(newUrl).openConnection(httpProxy);
         }
     }
 

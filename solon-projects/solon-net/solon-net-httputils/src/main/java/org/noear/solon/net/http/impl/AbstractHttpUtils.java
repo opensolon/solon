@@ -43,6 +43,9 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     protected boolean _enablePrintln = false;
 
+    protected String _proxyHost = null;
+    protected int    _proxyPort = 0;
+
     protected final String _url;
     protected Charset _charset = StandardCharsets.UTF_8;
     protected MultiMap<String> _headers;
@@ -108,6 +111,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils enablePrintln(boolean enable) {
         _enablePrintln = enable;
+        return this;
+    }
+
+    @Override
+    public HttpUtils proxy(String host, int port) {
+        _proxyHost = host;
+        _proxyPort = port;
         return this;
     }
 

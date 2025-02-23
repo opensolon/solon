@@ -26,6 +26,8 @@ import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -71,6 +73,26 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
+    @Override
+    public HttpUtils proxy(String host, int port) {
+        super.proxy(host, port);
+
+        if (Utils.isNotEmpty(host)) {
+            Proxy httpProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(_proxyHost, _proxyPort));
+            _client = new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .dispatcher(httpClientDispatcher.get())
+                    .addInterceptor(OkHttpInterceptorImpl.instance)
+                    .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
+                    .hostnameVerifier(HttpSsl.defaultHostnameVerifier)
+                    .proxy(httpProxy)
+                    .build();
+        }
+
+        return this;
+    }
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
