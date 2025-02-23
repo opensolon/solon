@@ -32,7 +32,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class TextLoader implements DocumentLoader {
+public class TextLoader extends AbstractDocumentLoader {
     private final URL url;
 
     public TextLoader(File file) throws IOException {
@@ -51,7 +51,7 @@ public class TextLoader implements DocumentLoader {
     public List<Document> load() {
         try {
             String temp = ResourceUtil.getResourceAsString(url);
-            return Arrays.asList(new Document(temp));
+            return Arrays.asList(new Document(temp).addMetadata(additionalMetadata));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

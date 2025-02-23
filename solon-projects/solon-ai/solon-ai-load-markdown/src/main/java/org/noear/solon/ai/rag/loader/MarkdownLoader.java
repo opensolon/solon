@@ -17,41 +17,61 @@ package org.noear.solon.ai.rag.loader;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.node.*;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.core.util.SupplierEx;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.*;
 
 /**
+ * Markdown 文档加载器
+ *
  * @author noear
  * @since 3.1
  */
-public class MarkdownLoader implements DocumentLoader {
-    private final SupplierEx<InputStream> resource;
-    private final Options options;
+public class MarkdownLoader extends AbstractDocumentLoader {
+    private final SupplierEx<InputStream> source;
     private final Parser parser;
+    private final Options options;
 
-    public MarkdownLoader(SupplierEx<InputStream> resource) {
-        this(resource, Options.getDefault());
+    public MarkdownLoader(String text) {
+        this(text, null);
     }
 
-    public MarkdownLoader(SupplierEx<InputStream> resource, Options options) {
-        this.resource = resource;
-        this.options = options;
+    public MarkdownLoader(String text, Options options) {
+        this(() -> new ByteArrayInputStream(text.getBytes(Solon.encoding())), options);
+    }
+
+    public MarkdownLoader(URI uri) {
+        this(uri, null);
+    }
+
+    public MarkdownLoader(URI uri, Options options) {
+        this(() -> uri.toURL().openStream(), options);
+    }
+
+    public MarkdownLoader(SupplierEx<InputStream> source, Options options) {
+        this.source = source;
         this.parser = Parser.builder().build();
+        if (options == null) {
+            this.options = Options.getDefault();
+        } else {
+            this.options = options;
+        }
     }
 
     @Override
     public List<Document> load() {
-        try (InputStream input = this.resource.get()) {
+        try (InputStream input = this.source.get()) {
             Node md = this.parser.parseReader(new InputStreamReader(input));
-            SplitVisitor splitVisitor = new SplitVisitor(this.options);
+            SplitVisitor splitVisitor = new SplitVisitor(this);
             md.accept(splitVisitor);
-            return splitVisitor.getDocuments();
+            return splitVisitor.extract();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -63,49 +83,56 @@ public class MarkdownLoader implements DocumentLoader {
     static class SplitVisitor extends AbstractVisitor {
         private final List<Document> documents = new ArrayList();
         private final List<String> currentParagraphs = new ArrayList();
-        private final Options config;
+        private final MarkdownLoader loader;
         private Document currentDocument;
 
-        SplitVisitor(Options config) {
-            this.config = config;
+        SplitVisitor(MarkdownLoader loader) {
+            this.loader = loader;
         }
 
+        @Override
         public void visit(org.commonmark.node.Document document) {
             this.currentDocument = new Document();
             super.visit(document);
         }
 
+        @Override
         public void visit(Heading heading) {
-            this.buildAndFlush();
+            this.doneAndNew();
             super.visit(heading);
         }
 
+        @Override
         public void visit(ThematicBreak thematicBreak) {
-            if (this.config.horizontalLineAsNew) {
-                this.buildAndFlush();
+            if (loader.options.horizontalLineAsNew) {
+                this.doneAndNew();
             }
 
             super.visit(thematicBreak);
         }
 
+        @Override
         public void visit(SoftLineBreak softLineBreak) {
             this.translateLineBreakToSpace();
             super.visit(softLineBreak);
         }
 
+        @Override
         public void visit(HardLineBreak hardLineBreak) {
             this.translateLineBreakToSpace();
             super.visit(hardLineBreak);
         }
 
+        @Override
         public void visit(ListItem listItem) {
             this.translateLineBreakToSpace();
             super.visit(listItem);
         }
 
+        @Override
         public void visit(BlockQuote blockQuote) {
-            if (!this.config.blockquoteAsNew) {
-                this.buildAndFlush();
+            if (loader.options.blockquoteAsNew) {
+                this.doneAndNew();
             }
 
             this.translateLineBreakToSpace();
@@ -113,29 +140,32 @@ public class MarkdownLoader implements DocumentLoader {
             super.visit(blockQuote);
         }
 
+        @Override
         public void visit(Code code) {
             this.currentParagraphs.add(code.getLiteral());
             this.currentDocument.addMetadata("category", "code_inline");
             super.visit(code);
         }
 
+        @Override
         public void visit(FencedCodeBlock fencedCodeBlock) {
-            if (!this.config.codeBlockAsNew) {
-                this.buildAndFlush();
+            if (loader.options.codeBlockAsNew) {
+                this.doneAndNew();
             }
 
             this.translateLineBreakToSpace();
             this.currentParagraphs.add(fencedCodeBlock.getLiteral());
             this.currentDocument.addMetadata("category", "code_block");
             this.currentDocument.addMetadata("lang", fencedCodeBlock.getInfo());
-            this.buildAndFlush();
+            this.doneAndNew();
             super.visit(fencedCodeBlock);
         }
 
+        @Override
         public void visit(Text text) {
-            Node var3 = text.getParent();
-            if (var3 instanceof Heading) {
-                Heading heading = (Heading) var3;
+            Node tmp = text.getParent();
+            if (tmp instanceof Heading) {
+                Heading heading = (Heading) tmp;
                 this.currentDocument.addMetadata("category", String.format("header_%d", (heading.getLevel())));
                 this.currentDocument.addMetadata("title", text.getLiteral());
             } else {
@@ -145,16 +175,22 @@ public class MarkdownLoader implements DocumentLoader {
             super.visit(text);
         }
 
-        public List<Document> getDocuments() {
-            this.buildAndFlush();
+        /**
+         * 提取文档
+         */
+        public List<Document> extract() {
+            this.doneAndNew();
             return this.documents;
         }
 
-        private void buildAndFlush() {
+        /**
+         * 结束并重新开始
+         */
+        private void doneAndNew() {
             if (!this.currentParagraphs.isEmpty()) {
                 String content = String.join("", this.currentParagraphs);
                 this.currentDocument.setContent(content);
-                this.config.additionalMetadata.forEach((k, v) -> currentDocument.addMetadata(k, v));
+                this.currentDocument.addMetadata(loader.additionalMetadata);
                 this.documents.add(currentDocument);
                 this.currentParagraphs.clear();
             }
@@ -174,7 +210,7 @@ public class MarkdownLoader implements DocumentLoader {
 
 
     /**
-     * 选项
+     * 加载选项
      */
     public static class Options {
         private static Options DEFAULT = new Options();
@@ -186,37 +222,28 @@ public class MarkdownLoader implements DocumentLoader {
         /**
          * 有水平线新建
          */
-        public boolean horizontalLineAsNew;
+        private boolean horizontalLineAsNew;
         /**
          * 有代码块新建
          */
-        public boolean codeBlockAsNew;
+        private boolean codeBlockAsNew;
         /**
          * 有块引用新建
          */
-        public boolean blockquoteAsNew;
-        /**
-         * 增量元数据
-         */
-        public Map<String, Object> additionalMetadata = new HashMap<>();
+        private boolean blockquoteAsNew;
 
-        public Options includeHorizontalLine(boolean includeHorizontalLine) {
-            this.horizontalLineAsNew = includeHorizontalLine;
+        public Options horizontalLineAsNew(boolean horizontalLineAsNew) {
+            this.horizontalLineAsNew = horizontalLineAsNew;
             return this;
         }
 
-        public Options includeCodeBlock(boolean includeCodeBlock) {
-            this.codeBlockAsNew = includeCodeBlock;
+        public Options codeBlockAsNew(boolean codeBlockAsNew) {
+            this.codeBlockAsNew = codeBlockAsNew;
             return this;
         }
 
-        public Options includeBlockquote(boolean includeBlockquote) {
-            this.blockquoteAsNew = includeBlockquote;
-            return this;
-        }
-
-        public Options additionalMetadata(String key, Object value) {
-            this.additionalMetadata.put(key, value);
+        public Options blockquoteAsNew(boolean blockquoteAsNew) {
+            this.blockquoteAsNew = blockquoteAsNew;
             return this;
         }
     }

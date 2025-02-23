@@ -133,6 +133,11 @@ public class Document {
         return this;
     }
 
+    public Document addMetadata(Map<String, Object> metadata) {
+        this.metadata.putAll(metadata);
+        return this;
+    }
+
     public Object getMetadata(String key) {
         if (this.metadata == null) {
             return null;
