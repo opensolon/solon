@@ -16,7 +16,7 @@
 package org.noear.solon.ai.rag.loader;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
  * pdf 文档加载器
@@ -37,17 +38,21 @@ public class PdfLoader extends AbstractDocumentLoader {
     /**
      * 文件源
      */
-    private final File source;
+    private final SupplierEx<InputStream> source;
     /**
      * 加载选项
      */
     private final Options options;
 
     public PdfLoader(File source) {
-        this(source, null);
+        this(() -> source.toURI().toURL().openStream(), null);
     }
 
-    public PdfLoader(File source, Options options) {
+    public PdfLoader(SupplierEx<InputStream> source, Options options) {
+        if (source == null) {
+            throw new IllegalArgumentException("Source cannot be null");
+        }
+
         this.source = source;
 
         if (options == null) {
@@ -55,61 +60,15 @@ public class PdfLoader extends AbstractDocumentLoader {
         } else {
             this.options = options;
         }
-
-        this.check();
     }
 
-    private void check() {
-        // 检查文件是否为null
-        if (source == null) {
-            throw new IllegalArgumentException("File source cannot be null");
-        }
-
-        // 检查文件是否存在
-        if (!source.exists()) {
-            throw new IllegalArgumentException("File source does not exist: " + source.getPath());
-        }
-
-        // 检查是否是文件而不是目录
-        if (!source.isFile()) {
-            throw new IllegalArgumentException("File source is not a file: " + source.getPath());
-        }
-
-        // 检查文件是否可读
-        if (!source.canRead()) {
-            throw new IllegalArgumentException("File source is not readable: " + source.getPath());
-        }
-
-        // 检查文件扩展名
-        String fileName = source.getName().toLowerCase();
-        if (!fileName.endsWith(".pdf")) {
-            throw new IllegalArgumentException("File source is not a PDF: " + source.getPath());
-        }
-
-        // 检查文件大小不为0
-        if (source.length() == 0) {
-            throw new IllegalArgumentException("File source is empty: " + source.getPath());
-        }
-    }
-
-    /**
-     * 加载PDF文档
-     * <p>
-     * 在SINGLE模式下，将整个PDF文档作为一个Document返回，使用pageDelimiter分隔不同页面
-     * 在PAGE模式下，将每一页作为单独的Document返回
-     * </p>
-     *
-     * @return Document列表，包含提取的文本内容和元数据
-     * @throws RuntimeException 如果PDF文件加载或处理失败
-     * @author 小奶奶花生米
-     */
     @Override
     public List<Document> load() {
-        List<Document> documents = new ArrayList<>();
 
-        try (PDDocument pdf = PDDocument.load(source)) {
+        try (InputStream stream = source.get(); PDDocument pdf = PDDocument.load(stream)) {
+            List<Document> documents = new ArrayList<>();
+
             Map<String, Object> metadata = new HashMap<>();
-            metadata.put("source", source.getName());
             metadata.put("type", "pdf");
 
             if (options.loadMode == LoadMode.SINGLE) {
@@ -120,7 +79,6 @@ public class PdfLoader extends AbstractDocumentLoader {
                 String text = stripper.getText(pdf);
 
                 Document doc = new Document(text, metadata)
-                        .title(source.getName())
                         .addMetadata(this.additionalMetadata)
                         .addMetadata("pages", pdf.getNumberOfPages());
                 documents.add(doc);
@@ -138,18 +96,16 @@ public class PdfLoader extends AbstractDocumentLoader {
                     pageMetadata.put("total_pages", pdf.getNumberOfPages());
 
                     Document doc = new Document(pageText.trim(), pageMetadata)
-                            .title(source.getName())
                             .snippet("Page " + pageNum)
                             .addMetadata(this.additionalMetadata);
                     documents.add(doc);
                 }
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load: " + source.getPath(), e);
+            return documents;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
-
-        return documents;
     }
 
     /**
@@ -171,28 +127,23 @@ public class PdfLoader extends AbstractDocumentLoader {
 
     /**
      * 加载选项
-     *
-     * @author noear
-     * @since 3.1
      */
     public static class Options {
         private static final Options DEFAULT = new Options();
+        private LoadMode loadMode = LoadMode.PAGE;
+        private String pageDelimiter = "\n\f";
 
         /**
          * PDF 加载模式，可以是单文档模式或分页模式
          */
-        private LoadMode loadMode = LoadMode.PAGE;
-
-        /**
-         * 页面分隔符，用于在单文档模式下分隔不同页面的文本
-         */
-        private String pageDelimiter = "\n\f";
-
         public Options loadMode(LoadMode loadMode) {
             this.loadMode = loadMode;
             return this;
         }
 
+        /**
+         * 页面分隔符，用于在单文档模式下分隔不同页面的文本
+         */
         public Options pageDelimiter(String pageDelimiter) {
             if (pageDelimiter != null) {
                 this.pageDelimiter = pageDelimiter;

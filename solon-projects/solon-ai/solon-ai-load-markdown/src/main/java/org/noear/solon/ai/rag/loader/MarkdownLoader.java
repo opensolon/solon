@@ -56,10 +56,14 @@ public class MarkdownLoader extends AbstractDocumentLoader {
     }
 
     public MarkdownLoader(SupplierEx<InputStream> source, Options options) {
+        if (source == null) {
+            throw new IllegalArgumentException("Source cannot be null");
+        }
+
         this.source = source;
         this.parser = Parser.builder().build();
         if (options == null) {
-            this.options = Options.getDefault();
+            this.options = Options.DEFAULT;
         } else {
             this.options = options;
         }
@@ -213,11 +217,7 @@ public class MarkdownLoader extends AbstractDocumentLoader {
      * 加载选项
      */
     public static class Options {
-        private static Options DEFAULT = new Options();
-
-        public static Options getDefault() {
-            return DEFAULT;
-        }
+        private static final Options DEFAULT = new Options();
 
         /**
          * 有水平线新建
