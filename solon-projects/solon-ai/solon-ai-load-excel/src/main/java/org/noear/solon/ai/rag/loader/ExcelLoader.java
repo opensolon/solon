@@ -83,15 +83,19 @@ public class ExcelLoader extends AbstractOptionsDocumentLoader<ExcelLoader.Optio
                     }
 
                     if (readAll.size() > 0) {
-                        int totalSize = readAll.size();
-                        int numBatches = (totalSize + options.documentMaxRows - 1) / options.documentMaxRows; // 计算总批次数
-                        for (int i = 0; i < numBatches; i++) {
-                            int start = i * options.documentMaxRows;
-                            int end = Math.min(start + options.documentMaxRows, totalSize); // 确保最后一组不会越界
+                        if (options.documentMaxRows < 0) {
+                            docs.add(new Document(ONode.stringify(readAll)).metadata(this.additionalMetadata));
+                        } else {
+                            int totalSize = readAll.size();
+                            int numBatches = (totalSize + options.documentMaxRows - 1) / options.documentMaxRows; // 计算总批次数
+                            for (int i = 0; i < numBatches; i++) {
+                                int start = i * options.documentMaxRows;
+                                int end = Math.min(start + options.documentMaxRows, totalSize); // 确保最后一组不会越界
 
-                            List<Map<String, Object>> batch = readAll.subList(start, end);
+                                List<Map<String, Object>> batch = readAll.subList(start, end);
 
-                            docs.add(new Document(ONode.stringify(batch)).metadata(this.additionalMetadata));
+                                docs.add(new Document(ONode.stringify(batch)).metadata(this.additionalMetadata));
+                            }
                         }
                     }
                 }
@@ -163,17 +167,7 @@ public class ExcelLoader extends AbstractOptionsDocumentLoader<ExcelLoader.Optio
      * 选项
      */
     public static class Options {
-        private boolean firstLineIsHeader = true;
         private int documentMaxRows = 200;
-        private boolean dataAsJsonMap = true;
-
-        /**
-         * 第一行是表头
-         */
-        public Options firstLineIsHeader(boolean firstLineIsHeader) {
-            this.firstLineIsHeader = firstLineIsHeader;
-            return this;
-        }
 
         /**
          * 一个文档最多放多少行
