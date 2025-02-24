@@ -44,6 +44,7 @@ public class ChatSessionDefault implements ChatSession {
     /**
      * 获取会话id
      */
+    @Override
     public String getSessionId() {
         return sessionId;
     }
@@ -51,6 +52,7 @@ public class ChatSessionDefault implements ChatSession {
     /**
      * 获取所有消息
      */
+    @Override
     public List<ChatMessage> getMessages() {
         return messages;
     }
@@ -58,6 +60,7 @@ public class ChatSessionDefault implements ChatSession {
     /**
      * 添加消息
      */
+    @Override
     public void addMessage(ChatMessage... messages) {
         if (messages.length == 1) {
             this.messages.add(messages[0]);
@@ -71,6 +74,7 @@ public class ChatSessionDefault implements ChatSession {
     /**
      * 清空消息
      */
+    @Override
     public void clear() {
         this.messages.clear();
     }
