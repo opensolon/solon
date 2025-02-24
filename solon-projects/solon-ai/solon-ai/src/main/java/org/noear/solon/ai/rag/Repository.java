@@ -30,7 +30,7 @@ import java.util.List;
 @Preview("3.1")
 public interface Repository {
     /**
-     * 搜索
+     * 检索
      *
      * @param query 查询字符串
      */
@@ -39,7 +39,7 @@ public interface Repository {
     }
 
     /**
-     * 搜索
+     * 检索
      *
      * @param condition 查询条件
      */
