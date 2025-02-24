@@ -13,10 +13,6 @@
     
     <artifactId>solon-ai-load-excel</artifactId>
     <packaging>jar</packaging>
-    
-    <properties>
-        <poi.version>5.4.0</poi.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -39,7 +35,7 @@
         <dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
-		    <version>${poi.version}</version>
+		    <version>${apache.poi.version}</version>
 		</dependency>
     </dependencies>
 

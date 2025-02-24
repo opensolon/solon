@@ -22,7 +22,7 @@ public class HtmlTest {
     @Test
     public void testSingleUrl() throws Exception {
         // 测试单个URL加载
-        HtmlSimpleLoader loader = new HtmlSimpleLoader(URI.create(TEST_URL));
+        HtmlSimpleLoader loader = new HtmlSimpleLoader(URI.create(TEST_URL).toURL());
         List<Document> docs = loader.load();
 
         Assertions.assertFalse(docs.isEmpty(), "文档列表不应为空");

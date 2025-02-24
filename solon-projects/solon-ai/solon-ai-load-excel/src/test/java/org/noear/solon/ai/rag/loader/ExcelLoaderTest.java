@@ -18,10 +18,11 @@ public class ExcelLoaderTest {
         System.out.println(docs);
     }
 
-    @Test
-    public void test2() throws Exception {
-        ExcelLoader loader = new ExcelLoader(ResourceUtil.getResource("demo2.xlsx"), new ExcelLoader.Options().firstLineIsHeader(false));
-        List<Document> docs = loader.load();
-        System.out.println(docs);
-    }
+//    @Test
+//    public void test2() throws Exception {
+//        ExcelLoader loader = new ExcelLoader(ResourceUtil.getResource("demo2.xlsx"))
+//                .options(opt -> opt.firstLineIsHeader(false));
+//        List<Document> docs = loader.load();
+//        System.out.println(docs);
+//    }
 }

@@ -108,6 +108,11 @@
         <agrona-sbe.version>1.22.0</agrona-sbe.version>
         <chronicle-bytes.version>2.27ea0</chronicle-bytes.version>
 
+        <apache.pdfbox.version>2.0.29</apache.pdfbox.version>
+        <apache.poi.version>5.4.0</apache.poi.version>
+        <commonmark.version>0.20.0</commonmark.version>
+        <jsoup.version>1.18.3</jsoup.version>
+
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.11.4</junit5.version>
         <hamcrest.version>2.2</hamcrest.version>
