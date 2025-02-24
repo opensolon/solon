@@ -41,13 +41,30 @@ public class SimpleSqlExecutor implements SqlExecutor {
     private final DataSource dataSource;
     private final String commandText;
     private SqlCommand command;
-    private Consumer<SqlCommand> onCommandPost;
-    private Consumer<SqlCommand> onCommandAfter;
+    private Consumer<SqlCommand> onExecuteBefore;
+    private Consumer<SqlCommand> onExecuteAfter;
 
     public SimpleSqlExecutor(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
         this.commandText = sql;
     }
+
+    /**
+     * 执行之前
+     */
+    public SimpleSqlExecutor onExecuteBefore(Consumer<SqlCommand> action) {
+        this.onExecuteBefore = action;
+        return this;
+    }
+
+    /**
+     * 执行之后
+     */
+    public SimpleSqlExecutor onExecuteAfter(Consumer<SqlCommand> action) {
+        this.onExecuteAfter = action;
+        return this;
+    }
+
 
     @Override
     public SqlExecutor params(Object... args) {
@@ -70,16 +87,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
     @Override
     public <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier) {
         this.command = new SqlCommand(commandText, argsList, binderSupplier.get());
-        return this;
-    }
-
-    public SimpleSqlExecutor onCommandPost(Consumer<SqlCommand> action) {
-        this.onCommandPost = action;
-        return this;
-    }
-
-    public SimpleSqlExecutor onCommandAfter(Consumer<SqlCommand> action) {
-        this.onCommandAfter = action;
         return this;
     }
 
@@ -206,8 +213,8 @@ public class SimpleSqlExecutor implements SqlExecutor {
      * 完成命令处理
      */
     protected void finishStatement(SqlCommand command) {
-        if (onCommandAfter != null) {
-            onCommandAfter.accept(command);
+        if (onExecuteAfter != null) {
+            onExecuteAfter.accept(command);
         }
     }
 
@@ -216,8 +223,8 @@ public class SimpleSqlExecutor implements SqlExecutor {
      */
     protected StatementHolder beginStatement(SqlCommand command, boolean returnKeys, boolean isStream) throws SQLException {
         //命令确认
-        if (onCommandPost != null) {
-            onCommandPost.accept(command);
+        if (onExecuteBefore != null) {
+            onExecuteBefore.accept(command);
         }
 
         StatementHolder holder = new StatementHolder();
