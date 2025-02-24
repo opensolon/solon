@@ -22,10 +22,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.lang.Preview;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -44,6 +41,9 @@ public class MarkdownLoader extends AbstractOptionsDocumentLoader<MarkdownLoader
         this(() -> new ByteArrayInputStream(source));
     }
 
+    public MarkdownLoader(File file) {
+        this(() -> new FileInputStream(file));
+    }
 
     public MarkdownLoader(URL source) {
         this(() -> source.openStream());
