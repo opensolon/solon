@@ -25,6 +25,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.lang.Preview;
 
 /**
  * 简单html加载器
@@ -32,6 +33,7 @@ import org.noear.solon.core.util.SupplierEx;
  * @author 小奶奶花生米
  * @since 3.1
  */
+@Preview("3.1")
 public class HtmlSimpleLoader extends AbstractOptionsDocumentLoader<HtmlSimpleLoader.Options, HtmlSimpleLoader> {
     private final SupplierEx<InputStream> source;
 

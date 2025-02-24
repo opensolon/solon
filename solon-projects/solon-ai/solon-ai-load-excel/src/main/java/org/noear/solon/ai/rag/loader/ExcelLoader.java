@@ -24,6 +24,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.lang.Preview;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +40,7 @@ import java.util.*;
  * @author linziguan
  * @since 3.1
  */
+@Preview("3.1")
 public class ExcelLoader extends AbstractOptionsDocumentLoader<ExcelLoader.Options, ExcelLoader> {
     private final SupplierEx<InputStream> source;
 

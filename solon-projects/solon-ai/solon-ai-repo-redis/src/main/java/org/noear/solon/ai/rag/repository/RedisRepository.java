@@ -19,6 +19,7 @@ import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
+import org.noear.solon.lang.Preview;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class RedisRepository implements RepositoryStorable {
     private final EmbeddingModel embeddingModel;
     private final JedisPool client;

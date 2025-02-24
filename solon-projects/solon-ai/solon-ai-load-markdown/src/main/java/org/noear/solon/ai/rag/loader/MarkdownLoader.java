@@ -20,6 +20,7 @@ import org.commonmark.node.*;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.lang.Preview;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class MarkdownLoader extends AbstractOptionsDocumentLoader<MarkdownLoader.Options, MarkdownLoader> {
     private final SupplierEx<InputStream> source;
     private final Parser parser;

@@ -42,6 +42,7 @@ import org.noear.solon.ai.rag.util.QueryCondition;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import java.util.Map;
  * @author linziguan
  * @since 3.1
  */
+@Preview("3.1")
 public class MilvusRepository implements RepositoryStorable {
     private final EmbeddingModel embeddingModel;
     private final MilvusClientV2 client;

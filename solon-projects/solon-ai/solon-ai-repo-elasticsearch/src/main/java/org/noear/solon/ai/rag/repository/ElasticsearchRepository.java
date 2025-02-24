@@ -34,6 +34,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.lang.Preview;
 
 /**
  * Elasticsearch 矢量存储知识库
@@ -41,6 +42,7 @@ import org.noear.solon.core.util.IoUtil;
  * @author 小奶奶花生米
  * @since 3.1
  */
+@Preview("3.1")
 public class ElasticsearchRepository implements RepositoryStorable {
     /**
      * 向量模型，用于将文档内容转换为向量表示

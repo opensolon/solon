@@ -29,6 +29,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.lang.Preview;
 
 /**
  * pdf 文档加载器
@@ -37,6 +38,7 @@ import org.noear.solon.core.util.SupplierEx;
  * @author noear
  * @since 3.1
  * */
+@Preview("3.1")
 public class PdfLoader extends AbstractOptionsDocumentLoader<PdfLoader.Options, PdfLoader> {
     /**
      * 文件源
