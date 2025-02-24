@@ -33,8 +33,7 @@
 * 添加 solon BeanWrap:isNullOrGenericFrom 方法
 * 添加 solon subWrapsOfType, subBeansOfType, getBeansOfType, getBeansMapOfType genericType 过滤参数
 * 添加 solon ParameterizedTypeImpl:toString 缓存支持
-* 添加 solon-flow Chain.parseByExpr(resExpr) 方法
-* 添加 solon-flow FlowEngine:load(Iterable) 方法
+* 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
 * 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口
 * 添加 solon-web-rx 过滤体系
@@ -45,13 +44,26 @@
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
 * 修复 solon-web-staticfiles 的一个潜在安全问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
+* fastjson2 升为 2.0.55
+* jackson 升为 2.18.2
+* gson 升为 2.12.1
+* fury 升为 0.10.0
+* kryo 升为 5.6.2
 * sa-token 升为 1.40.0
+* redisson 升为 3.45.0
+* lettuce 升为 6.5.4.RELEASE
+* hutool 升为 5.8.36
 * grpc 升为 1.69.1
+* vertx 升为 4.5.13
+* netty 升为 4.1.118.Final
+* liteflow 2.12.4.5
+* forest 升为 1.6.3
+* wx-java 升为 4.7.2.B
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
 * 修复 solon-data nested 事务策略单独回滚失效的问题
-* 修复 solon-web-staticfiles 的一个潜在安全问题 [#issue-332](https://github.com/opensolon/solon/issues/332)
+* 调整 solon-web-staticfiles 自动弃用带 `../` 和 `..\` 符号的路径匹配
 * 调整 solon-flow 用 layout 替代 nodes 配置（旧的仍可用，标为弃用）
 * liquor 升为 1.3.11
 

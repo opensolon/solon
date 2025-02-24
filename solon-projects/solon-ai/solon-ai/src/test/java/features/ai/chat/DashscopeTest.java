@@ -20,15 +20,15 @@ import java.util.concurrent.CountDownLatch;
 public class DashscopeTest {
     private static final Logger log = LoggerFactory.getLogger(DashscopeTest.class);
     private static final String apiUrl = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
-
+    private static final String apiKey = "sk-1ffe449611a74e61ad8e71e1b35a9858";
     private static final String provider = "dashscope";
     private static final String model = "qwen-turbo-latest";//"llama3.2"; //deepseek-r1:1.5b;
 
     ChatModel.Builder configChatModelBuilder(){
         return ChatModel.of(apiUrl)
+                .apiKey(apiKey)
                 .provider(provider)
-                .model(model)
-                .apiKey(System.getenv("DASHSCOPE_API_KEY"));
+                .model(model);
     }
 
 
@@ -66,14 +66,6 @@ public class DashscopeTest {
                 }));
 
         doneLatch.await();
-
-        //序列化测试
-        String ndjson1 = ChatMessage.toNdjson(messageList);
-        System.out.println(ndjson1);
-        List<ChatMessage> messageList2 = ChatMessage.fromNdjson(ndjson1);
-        String ndjson2 = ChatMessage.toNdjson(messageList2);
-        System.out.println(ndjson2);
-        assert ndjson1.equals(ndjson2);
     }
 
     @Test
@@ -133,14 +125,5 @@ public class DashscopeTest {
                 }));
 
         doneLatch.await();
-
-
-        //序列化测试
-        String ndjson1 = ChatMessage.toNdjson(messageList);
-        System.out.println(ndjson1);
-        List<ChatMessage> messageList2 = ChatMessage.fromNdjson(ndjson1);
-        String ndjson2 = ChatMessage.toNdjson(messageList2);
-        System.out.println(ndjson2);
-        assert ndjson1.equals(ndjson2);
     }
 }

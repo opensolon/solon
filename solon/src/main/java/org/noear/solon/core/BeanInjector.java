@@ -41,6 +41,13 @@ import java.lang.annotation.Annotation;
 public interface BeanInjector<T extends Annotation> {
     /**
      * 注入
-     * */
+     */
     void doInject(VarHolder vh, T anno);
+
+    /**
+     * 填充
+     */
+    default void doFill(Object obj, T anno) {
+
+    }
 }

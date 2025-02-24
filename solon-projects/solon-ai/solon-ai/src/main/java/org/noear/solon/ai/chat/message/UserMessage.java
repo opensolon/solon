@@ -17,7 +17,10 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.lang.Preview;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -26,13 +29,37 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class UserMessage implements ChatMessage {
+    /**
+     * 消息增强
+     */
+    public static ChatMessage augment(String message, Object context) {
+        String newContent = String.format("%s\n\n now: %s \n\n context: %s", message,
+                LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
+        return new UserMessage(newContent);
+    }
+
+    /**
+     * 创建消息模板
+     */
+    public static UserMessageTemplate template(String tmpl) {
+        return new UserMessageTemplate(tmpl);
+    }
+
+
+    /// ////////////////
+
     private final ChatRole role = ChatRole.USER;
     private String content;
     private List<String> images;
 
     public UserMessage() {
         //用于序列化
+    }
+
+    public UserMessage(String content) {
+        this(content, null);
     }
 
     public UserMessage(String content, List<String> images) {

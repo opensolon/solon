@@ -4,6 +4,8 @@ import features.ai.chat.OpenaiTest;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.chat.message.UserMessage;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;
@@ -36,9 +38,11 @@ public class RagRepositoryTest {
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");
 
+        String query = "Solon 是谁开发的？";
+
         //3.应用
         ChatResponse resp = chatModel
-                .prompt(repository.searchAsPrompt("Solon 是谁开发的？")) //3.1.搜索知识库（结果，作为提示语）
+                .prompt(UserMessage.augment(query, repository.search(query))) //3.1.搜索知识库（结果，作为提示语）
                 .call(); //3.2.调用大模型
 
         //打印

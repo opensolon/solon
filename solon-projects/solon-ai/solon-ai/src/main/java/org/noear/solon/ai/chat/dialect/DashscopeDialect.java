@@ -6,19 +6,21 @@ import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
-import org.noear.solon.ai.chat.message.ToolMessage;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DashScope 方言（阿里云产品）
  *
+ * @author shoukaiseki
  * @author noear
  * @since 3.1
  */
 
 public class DashscopeDialect extends AbstractChatDialect {
+    //https://help.aliyun.com/zh/model-studio/developer-reference
 
     private static DashscopeDialect instance = new DashscopeDialect();
 
@@ -26,39 +28,38 @@ public class DashscopeDialect extends AbstractChatDialect {
         return instance;
     }
 
+    /**
+     * 匹配检测
+     *
+     * @param config 聊天配置
+     */
     @Override
     public boolean matched(ChatConfig config) {
         return "dashscope".equals(config.getProvider());
 
     }
 
-
-    //    @Override
     @Override
     public String buildRequestJson(ChatConfig config, ChatOptions options, List<ChatMessage> messages, boolean stream) {
         return new ONode().build(n -> {
             n.set("stream", stream);
 
-            if (options.option("temperature") != null) {
-                n.set("temperature", options.option("temperature"));
-            }
-
             if (Utils.isNotEmpty(config.getModel())) {
                 n.set("model", config.getModel());
             }
 
-            ONode inputNode = new ONode();
-            n.setNode("input", inputNode);
-
-            inputNode.getOrNew("messages").build(n1 -> {
+            n.getOrNew("input").getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
                     n1.add(buildChatMessageNode(m1));
                 }
             });
 
-            ONode p = new ONode();
-            n.setNode("parameters", p);
-            p.set("result_format","message");
+            for (Map.Entry<String, Object> kv : options.options().entrySet()) {
+                n.set(kv.getKey(), kv.getValue());
+            }
+
+            ONode p = n.getOrNew("parameters");
+            p.set("result_format", "message");
             buildReqFunctionsNodeDo(p, config.getGlobalFunctions());
             buildReqFunctionsNodeDo(p, options.functions());
 
@@ -70,6 +71,11 @@ public class DashscopeDialect extends AbstractChatDialect {
     public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
+
+            if ("[DONE]".equals(json)) { //不是数据结构
+                resp.setFinished(true);
+                return true;
+            }
         }
 
         //解析
@@ -79,22 +85,20 @@ public class DashscopeDialect extends AbstractChatDialect {
             return false;
         }
 
-
-        if (oResp.contains("code")&&!Utils.isEmpty(oResp.get("code").getString())) {
-            resp.setError(new ChatException(oResp.get("code").getString()+"\t"+oResp.get("message").getString()));
-//            log.debug("请参考文档：https://help.aliyun.com/zh/model-studio/developer-reference/error-code");
+        if (oResp.contains("code") && !Utils.isEmpty(oResp.get("code").getString())) {
+            resp.setError(new ChatException(oResp.get("code").getString() + ": " + oResp.get("message").getString()));
         } else {
-            ONode output = oResp.get("output");
-            ONode choices = output.get("choices");
-
             resp.setModel(config.getModel());
-            boolean finishReason = false;
-            int i=0;
-            Date created=null;
-            for (ONode oChoice1 : choices.ary()) {
 
-                int index = i++;
-                String finish_reason=choices.get("finish_reason").getString();
+            int index = 0;
+            Date created = null;
+            for (ONode oChoice1 : oResp.get("output").get("choices").ary()) {
+                String finish_reason = oChoice1.get("finish_reason").getString();
+
+                if ("stop".equals(finish_reason)) {
+                    resp.setFinished(true);
+                }
+
                 AssistantMessage message1;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
                     message1 = parseAssistantMessage(resp, oChoice1.get("delta"));
@@ -102,9 +106,8 @@ public class DashscopeDialect extends AbstractChatDialect {
                     message1 = parseAssistantMessage(resp, oChoice1.get("message"));
                 }
                 resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
-
+                index++;
             }
-
 
             ONode oUsage = oResp.getOrNull("usage");
             if (oUsage != null) {

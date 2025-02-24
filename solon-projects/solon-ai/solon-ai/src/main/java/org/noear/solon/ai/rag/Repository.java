@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.rag;
 
-import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.lang.Preview;
 
@@ -30,25 +29,6 @@ import java.util.List;
  */
 @Preview("3.1")
 public interface Repository {
-    /**
-     * 搜索并转为提示语
-     *
-     * @param query 查询字符串
-     */
-    default ChatMessage searchAsPrompt(String query) throws IOException {
-        return searchAsPrompt(new QueryCondition(query));
-    }
-
-    /**
-     * 搜索并转为提示语
-     *
-     * @param condition 查询条件
-     */
-    default ChatMessage searchAsPrompt(QueryCondition condition) throws IOException {
-        List<Document> context = search(condition);
-        return Prompts.augment(condition.getQuery(), context);
-    }
-
     /**
      * 搜索
      *

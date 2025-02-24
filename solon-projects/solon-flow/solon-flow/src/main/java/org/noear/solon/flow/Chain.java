@@ -155,25 +155,6 @@ public class Chain {
 
     /**
      * 解析配置文件
-     *
-     * @param resExpr 资源表达式
-     */
-    public static Iterable<Chain> parseByExpr(String resExpr) throws IOException {
-        List<Chain> chains = new ArrayList<>();
-
-        if (resExpr.contains("*")) {
-            for (String u1 : ResourceUtil.scanResources(resExpr)) {
-                chains.add(Chain.parseByUri(u1));
-            }
-        } else {
-            chains.add(Chain.parseByUri(resExpr));
-        }
-
-        return chains;
-    }
-
-    /**
-     * 解析配置文件
      */
     public static Chain parseByUri(String uri) throws IOException {
         URL url = ResourceUtil.findResource(uri, false);

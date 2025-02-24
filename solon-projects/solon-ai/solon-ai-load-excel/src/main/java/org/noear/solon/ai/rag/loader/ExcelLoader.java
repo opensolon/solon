@@ -33,6 +33,7 @@ import java.util.Map;
  * @since 3.1
  */
 public class ExcelLoader extends AbstractDocumentLoader {
+
 	private InputStream inputStream;
 	
 	public ExcelLoader(InputStream inputStream) {

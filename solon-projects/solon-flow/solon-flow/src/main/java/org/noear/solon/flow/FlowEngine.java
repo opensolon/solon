@@ -15,8 +15,10 @@
  */
 package org.noear.solon.flow;
 
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -57,14 +59,19 @@ public interface FlowEngine {
      */
     void unregister(String name);
 
+
     /**
-     * 加载链
+     * 解析配置文件
      *
-     * @param chains 链集合
+     * @param chainUri 链资源地址
      */
-    default void load(Iterable<Chain> chains) {
-        for (Chain chain : chains) {
-            load(chain);
+    default void load(String chainUri) throws IOException {
+        if (chainUri.contains("*")) {
+            for (String u1 : ResourceUtil.scanResources(chainUri)) {
+                load(Chain.parseByUri(u1));
+            }
+        } else {
+            load(Chain.parseByUri(chainUri));
         }
     }
 

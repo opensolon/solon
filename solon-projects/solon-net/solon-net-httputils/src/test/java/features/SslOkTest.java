@@ -2,15 +2,14 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsImpl;
-import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsImpl;
+import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
 
 /**
  * @author noear 2024/10/4 created
  */
 public class SslOkTest {
     static HttpUtils http(String url) {
-        return new OkHttpUtilsImpl(url);
+        return OkHttpUtilsFactory.getInstance().http(url);
     }
 
 

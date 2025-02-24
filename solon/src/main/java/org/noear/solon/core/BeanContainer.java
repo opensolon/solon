@@ -628,6 +628,16 @@ public abstract class BeanContainer {
         return bw == null ? null : bw.get();
     }
 
+    /**
+     * 获取 Bean 或默认
+     *
+     * @param nameOrType 名字或类型
+     */
+    public <T> T getBeanOrDefault(Object nameOrType, T def) {
+        BeanWrap bw = getWrap(nameOrType);
+        return bw == null ? def : bw.get();
+    }
+
 
     /**
      * 获取某类型的 bean list
@@ -1043,9 +1053,7 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, Object obj) {
-        Inject typeInj = clz.getAnnotation(Inject.class);
-
+    protected void beanFillProperties(Object obj, Inject typeInj) {
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             String name = typeInj.value();
 
@@ -1069,18 +1077,26 @@ public abstract class BeanContainer {
                 //
                 String name2 = findConfigKey(name);
 
-                beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
 
                 //支持自动刷新
                 if (typeInj.autoRefreshed()) {
                     cfg().onChange((key, val) -> {
                         if (key.startsWith(name2)) {
-                            beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                            beanFillPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
                         }
                     });
                 }
             }
         }
+    }
+
+    private void beanFillPropertiesDo(String name, Object obj, Properties val, boolean required) {
+        if (required && val.size() == 0) {
+            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + obj.getClass().getName());
+        }
+
+        Utils.injectProperties(obj, val);
     }
 
     /**
@@ -1101,14 +1117,6 @@ public abstract class BeanContainer {
             }
         }
         return name2;
-    }
-
-    private void beanInjectPropertiesDo(String name, Object obj, Properties val, boolean required) {
-        if (required && val.size() == 0) {
-            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + obj.getClass().getName());
-        }
-
-        Utils.injectProperties(obj, val);
     }
 
 

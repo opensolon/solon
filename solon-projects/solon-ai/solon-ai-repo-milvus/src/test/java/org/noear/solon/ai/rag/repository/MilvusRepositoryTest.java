@@ -24,6 +24,8 @@ public class MilvusRepositoryTest {
             .uri(milvusUri)
             .build();
     private MilvusClientV2 client = new MilvusClientV2(connectConfig);
+    private String collectionName = "solonAiRepo";
+
     @Test
     public void rag_case1() throws Exception {
         try {
@@ -33,7 +35,8 @@ public class MilvusRepositoryTest {
             //2.构建知识库
             MilvusRepository repository = new MilvusRepository(
                     TestUtils.getEmbeddingModelOfGiteeai(),
-                    client); //3.初始化知识库
+                    client,
+                    collectionName); //3.初始化知识库
 
             repository.dropCollection();
             repository.buildCollection();
@@ -56,19 +59,21 @@ public class MilvusRepositoryTest {
             //2.构建知识库
             MilvusRepository repository = new MilvusRepository(
                     TestUtils.getEmbeddingModelOfGiteeai(),
-                    client); 
+                    client,
+                    collectionName);
+
             //3.初始化知识库
             List<Document> list = repository.search("solon");
             if (list != null) {
                 for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore()+":" + doc.getUrl() + "【" + doc.getContent() + "】");
+                    System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
                 }
             }
 
             list = repository.search("spring");
             if (list != null) {
                 for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore() +":" + doc.getUrl() + "【" + doc.getContent() + "】");
+                    System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
                 }
             }
         } catch (Exception ex) {
@@ -80,8 +85,8 @@ public class MilvusRepositoryTest {
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
         List<Document> documents = new TokenSizeTextSplitter(200).split(text).stream().map(doc -> {
-        	doc.url(url);
-        	return doc;
+            doc.url(url);
+            return doc;
         }).collect(Collectors.toList()); //2.分割文档（确保不超过 max-token-size）
         repository.store(documents); //（推入文档）
     }

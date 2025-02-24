@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
  * @author noear
  * @since 2.8
  */
-public class OkHttpInterceptorImpl implements Interceptor {
-    public static final OkHttpInterceptorImpl instance = new OkHttpInterceptorImpl();
+public class OkHttpInterceptor implements Interceptor {
+    public static final OkHttpInterceptor instance = new OkHttpInterceptor();
 
     @Override
     public Response intercept(Chain chain) throws IOException {

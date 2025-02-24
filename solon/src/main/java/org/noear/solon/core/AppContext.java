@@ -169,12 +169,6 @@ public class AppContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
-            //尝试绑定属性 //v3.0
-            BindProps bindProps = clz.getAnnotation(BindProps.class);
-            if (bindProps != null) {
-                cfg().getProp(bindProps.prefix()).bindTo(bw.raw());
-            }
-
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
@@ -189,9 +183,8 @@ public class AppContext extends BeanContainer {
                 }
             }
 
-
-            //尝试注入属性 //ps:未来由 BindProps 注解替代
-            beanInjectProperties(clz, bw.raw());
+            //尝试填充属性 //3.1
+            tryFill(bw.raw(), clz.getAnnotations());
 
             //构建小饼
             for (Method m : ClassUtil.findPublicMethods(bw.clz())) {
@@ -251,9 +244,29 @@ public class AppContext extends BeanContainer {
         });
 
         //注册 @Inject 注入器
-        beanInjectorAdd(Inject.class, ((vh, anno) -> {
-            beanInject(vh, anno.value(), anno.required(), anno.autoRefreshed());
-        }));
+        beanInjectorAdd(Inject.class, new BeanInjector<Inject>() {
+            @Override
+            public void doInject(VarHolder vh, Inject anno) {
+                beanInject(vh, anno.value(), anno.required(), anno.autoRefreshed());
+            }
+
+            @Override
+            public void doFill(Object obj, Inject anno) {
+                beanFillProperties(obj, anno);
+            }
+        });
+
+        beanInjectorAdd(BindProps.class, new BeanInjector<BindProps>() {
+            @Override
+            public void doInject(VarHolder vh, BindProps anno) {
+                //不支持注入
+            }
+
+            @Override
+            public void doFill(Object obj, BindProps anno) {
+                cfg().getProp(anno.prefix()).bindTo(obj);
+            }
+        });
 
         //注册 @To 拦截器
         beanInterceptorAdd(To.class, inv -> {
@@ -732,6 +745,27 @@ public class AppContext extends BeanContainer {
     //
 
     /**
+     * 尝试为bean填充
+     */
+    protected void tryFill(Object obj, Annotation[] annS) {
+        if (obj == null) {
+            return;
+        }
+
+        for (Annotation anno : annS) {
+            TypeMap<BeanInjector<?>> biMap = beanInjectors.get(anno.annotationType());
+            if (biMap != null) {
+                //只允许一个注入器有效 //如果有多个略过
+                BeanInjector injector = biMap.get(obj.getClass());
+                if (injector != null) {
+                    injector.doFill(obj, anno);
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
      * 尝试为bean注入
      */
     protected void tryInject(VarHolder vh, Annotation[] annS) {
@@ -842,11 +876,8 @@ public class AppContext extends BeanContainer {
             Object raw = mWrap.invoke(bw.raw(), args);
 
             if (raw != null) {
-                //尝试绑定属性
-                BindProps bindProps = mWrap.getAnnotation(BindProps.class);
-                if (bindProps != null) {
-                    cfg().getProp(bindProps.prefix()).bindTo(raw);
-                }
+                //尝试填充属性 //v3.1
+                tryFill(raw, mWrap.getAnnotations());
 
                 Class<?> beanClz = mWrap.getReturnType();
                 Type beanGtp = mWrap.getGenericReturnType();

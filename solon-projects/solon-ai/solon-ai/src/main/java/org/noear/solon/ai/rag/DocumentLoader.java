@@ -17,7 +17,9 @@ package org.noear.solon.ai.rag;
 
 import org.noear.solon.lang.Preview;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文档加载器
@@ -28,7 +30,17 @@ import java.util.List;
 @Preview("3.1")
 public interface DocumentLoader {
     /**
+     * 附加元数据
+     */
+    DocumentLoader additionalMetadata(String key, Object value);
+
+    /**
+     * 附加元数据
+     */
+    DocumentLoader additionalMetadata(Map<String, Object> metadata);
+
+    /**
      * 加载文档
      */
-    List<Document> load();
+    List<Document> load() throws IOException;
 }

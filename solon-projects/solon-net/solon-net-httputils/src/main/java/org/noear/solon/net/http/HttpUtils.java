@@ -81,6 +81,11 @@ public interface HttpUtils {
     HttpUtils enablePrintln(boolean enable);
 
     /**
+     * 代理配置
+     */
+    HttpUtils proxy(String host, int port);
+
+    /**
      * 超时配置
      */
     HttpUtils timeout(int timeoutSeconds);
@@ -342,7 +347,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0 {@link #body(String,String)}
+     * @deprecated 3.0 {@link #body(String, String)}
      */
     @Deprecated
     default HttpUtils bodyTxt(String txt, String contentType) {
@@ -376,7 +381,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0 {@link #body(byte[],String)}
+     * @deprecated 3.0 {@link #body(byte[], String)}
      */
     @Deprecated
     default HttpUtils bodyRaw(byte[] bytes, String contentType) {
@@ -409,7 +414,7 @@ public interface HttpUtils {
     /**
      * 主体配置
      *
-     * @deprecated 3.0 {@link #body(byte[],String)}
+     * @deprecated 3.0 {@link #body(byte[], String)}
      */
     @Deprecated
     default HttpUtils bodyRaw(InputStream raw, String contentType) {

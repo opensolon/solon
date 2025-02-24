@@ -3,6 +3,8 @@ package features.ai.chat;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
+import org.noear.solon.ai.chat.ChatSession;
+import org.noear.solon.ai.chat.ChatSessionDefault;
 import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
@@ -41,16 +43,16 @@ public class OllamaTest {
     public void case2() throws Exception {
         ChatModel chatModel = ChatModel.of(apiUrl).provider(provider).model(model).build();
 
-        List<ChatMessage> messageList = new ArrayList<>();
-        messageList.add(ChatMessage.ofUser("hello"));
+        ChatSession chatSession = new ChatSessionDefault();
+        chatSession.addMessage(ChatMessage.ofUser("hello"));
 
         //流返回
-        Publisher<ChatResponse> publisher = chatModel.prompt(messageList).stream();
+        Publisher<ChatResponse> publisher = chatModel.prompt(chatSession).stream();
 
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    messageList.add(resp.getMessage());
+                    chatSession.addMessage(resp.getMessage());
                     log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
@@ -62,10 +64,12 @@ public class OllamaTest {
         doneLatch.await();
 
         //序列化测试
-        String ndjson1 = ChatMessage.toNdjson(messageList);
+        String ndjson1 = chatSession.toNdjson();
         System.out.println(ndjson1);
-        List<ChatMessage> messageList2 = ChatMessage.fromNdjson(ndjson1);
-        String ndjson2 = ChatMessage.toNdjson(messageList2);
+
+        chatSession.clear();
+        chatSession.loadNdjson(ndjson1);
+        String ndjson2 = chatSession.toNdjson();
         System.out.println(ndjson2);
         assert ndjson1.equals(ndjson2);
     }
@@ -87,41 +91,25 @@ public class OllamaTest {
     }
 
     @Test
-    public void case3_www() throws IOException {
-        ChatModel chatModel = ChatModel.of(apiUrl)
-                .provider(provider)
-                .model(model)
-                .globalFunctionAdd(new Tools())
-                .build();
-
-        ChatResponse resp = chatModel
-                .prompt("solon 框架的作者是谁？")
-                .call();
-
-        //打印消息
-        log.info("{}", resp.getMessage());
-    }
-
-    @Test
     public void case4() throws Throwable {
         ChatModel chatModel = ChatModel.of(apiUrl)
                 .provider(provider)
                 .model(model)
                 .build();
 
-        List<ChatMessage> messageList = new ArrayList<>();
-        messageList.add(ChatMessage.ofUser("今天杭州的天气情况？"));
+        ChatSession chatSession = new ChatSessionDefault();
+        chatSession.addMessage(ChatMessage.ofUser("今天杭州的天气情况？"));
 
         //流返回(sse)
         Publisher<ChatResponse> publisher = chatModel
-                .prompt(messageList)
+                .prompt(chatSession)
                 .options(o -> o.functionAdd(new Tools()))
                 .stream();
 
         CountDownLatch doneLatch = new CountDownLatch(1);
         publisher.subscribe(new SimpleSubscriber<ChatResponse>()
                 .doOnNext(resp -> {
-                    messageList.add(resp.getMessage());
+                    chatSession.addMessage(resp.getMessage());
                     log.info("{}", resp.getMessage());
                 }).doOnComplete(() -> {
                     log.debug("::完成!");
@@ -134,10 +122,12 @@ public class OllamaTest {
 
 
         //序列化测试
-        String ndjson1 = ChatMessage.toNdjson(messageList);
+        String ndjson1 = chatSession.toNdjson();
         System.out.println(ndjson1);
-        List<ChatMessage> messageList2 = ChatMessage.fromNdjson(ndjson1);
-        String ndjson2 = ChatMessage.toNdjson(messageList2);
+
+        chatSession.clear();
+        chatSession.loadNdjson(ndjson1);
+        String ndjson2 = chatSession.toNdjson();
         System.out.println(ndjson2);
         assert ndjson1.equals(ndjson2);
     }

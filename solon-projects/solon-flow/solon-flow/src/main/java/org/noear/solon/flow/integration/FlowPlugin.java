@@ -35,7 +35,7 @@ public class FlowPlugin implements Plugin {
 
         List<String> chainList = context.cfg().getList("solon.flow");
         for (String chainUri : chainList) {
-            flowEngine.load(Chain.parseByExpr(chainUri));
+            flowEngine.load(chainUri);
         }
 
         context.wrapAndPut(FlowEngine.class, flowEngine);

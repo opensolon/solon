@@ -25,8 +25,14 @@ import org.noear.solon.net.http.HttpUtilsFactory;
  * @since 3.0
  */
 public class JdkHttpUtilsFactory implements HttpUtilsFactory {
+    private static final JdkHttpUtilsFactory instance = new JdkHttpUtilsFactory();
+
+    public static JdkHttpUtilsFactory getInstance() {
+        return instance;
+    }
+
     @Override
     public HttpUtils http(String url) {
-        return new JdkHttpUtilsImpl(url);
+        return new JdkHttpUtils(url);
     }
 }

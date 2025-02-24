@@ -28,8 +28,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 /**
  * Http 工具 OkHttp 实现
@@ -37,40 +35,12 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.5
  * */
-public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
-    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
-        Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(20000);
-        temp.setMaxRequestsPerHost(10000);
-        return temp;
-    };
-
-    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .dispatcher(httpClientDispatcher.get())
-            .addInterceptor(OkHttpInterceptorImpl.instance)
-            .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
-            .hostnameVerifier(HttpSsl.defaultHostnameVerifier)
-            .build();
-
-    private OkHttpClient _client;
-
-    public OkHttpUtilsImpl(String url) {
-        this(url, null);
-    }
-
-    public OkHttpUtilsImpl(String url, OkHttpClient client) {
+public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
+    private final OkHttpUtilsFactory factory;
+    public OkHttpUtils(OkHttpUtilsFactory factory, String url) {
         super(url);
-
-        if (client == null) {
-            _client = httpClient;
-        } else {
-            _client = client;
-        }
+        this.factory = factory;
     }
-
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
@@ -167,11 +137,13 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
                 throw new IllegalArgumentException("This method is not supported");
         }
 
-        final OkHttpUtilsImpl self = this;
+        final OkHttpUtils self = this;
+
+        OkHttpClient _client = factory.getClient(_proxyHost, _proxyPort);
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());
-            return new OkHttpResponseImpl(this, call.execute());
+            return new OkHttpResponse(this, call.execute());
         } else {
             _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
@@ -182,7 +154,7 @@ public class OkHttpUtilsImpl extends AbstractHttpUtils implements HttpUtils {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    future.complete(new OkHttpResponseImpl(self, response));
+                    future.complete(new OkHttpResponse(self, response));
                     //call.cancel();
                 }
             });

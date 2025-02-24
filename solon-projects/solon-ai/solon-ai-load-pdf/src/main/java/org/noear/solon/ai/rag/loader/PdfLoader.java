@@ -15,21 +15,150 @@
  */
 package org.noear.solon.ai.rag.loader;
 
-import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentLoader;
-
-import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.noear.solon.ai.rag.Document;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
  * pdf 文档加载器
  *
+ * @author 小奶奶花生米
  * @author noear
  * @since 3.1
  * */
-public class PdfLoader implements DocumentLoader {
+public class PdfLoader extends AbstractDocumentLoader {
+    /**
+     * 文件源
+     */
+    private final SupplierEx<InputStream> source;
+    /**
+     * 加载选项
+     */
+    private final Options options;
+
+    public PdfLoader(URI source) {
+        this(() -> source.toURL().openStream(), null);
+    }
+
+    public PdfLoader(URI source, Options options) {
+        this(() -> source.toURL().openStream(), options);
+    }
+
+    public PdfLoader(SupplierEx<InputStream> source, Options options) {
+        if (source == null) {
+            throw new IllegalArgumentException("Source cannot be null");
+        }
+
+        this.source = source;
+
+        if (options == null) {
+            this.options = Options.DEFAULT;
+        } else {
+            this.options = options;
+        }
+    }
+
     @Override
-    public List<Document> load() {
-        return Collections.emptyList();
+    public List<Document> load() throws IOException {
+
+        try (InputStream stream = source.get(); PDDocument pdf = PDDocument.load(stream)) {
+            List<Document> documents = new ArrayList<>();
+
+            Map<String, Object> metadata = new HashMap<>();
+            metadata.put("type", "pdf");
+
+            if (options.loadMode == LoadMode.SINGLE) {
+                // 整个文档作为一个 Document
+                PDFTextStripper stripper = new PDFTextStripper();
+                // 设置页面分隔符
+                stripper.setPageEnd(options.pageDelimiter);
+                String text = stripper.getText(pdf);
+
+                Document doc = new Document(text, metadata)
+                        .addMetadata(this.additionalMetadata)
+                        .addMetadata("pages", pdf.getNumberOfPages());
+                documents.add(doc);
+
+            } else {
+                // 每页作为一个 Document
+                PDFTextStripper stripper = new PDFTextStripper();
+                for (int pageNum = 1; pageNum <= pdf.getNumberOfPages(); pageNum++) {
+                    stripper.setStartPage(pageNum);
+                    stripper.setEndPage(pageNum);
+                    String pageText = stripper.getText(pdf);
+
+                    Map<String, Object> pageMetadata = new HashMap<>(metadata);
+                    pageMetadata.put("page", pageNum);
+                    pageMetadata.put("total_pages", pdf.getNumberOfPages());
+
+                    Document doc = new Document(pageText.trim(), pageMetadata)
+                            .snippet("Page " + pageNum)
+                            .addMetadata(this.additionalMetadata);
+                    documents.add(doc);
+                }
+            }
+
+            return documents;
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 分割模式
+     *
+     * @author 小奶奶花生米
+     * @since 3.1
+     */
+    public static enum LoadMode {
+        /**
+         * 整个文档作为一个 Document
+         */
+        SINGLE,
+        /**
+         * 每页作为一个 Document
+         */
+        PAGE
+    }
+
+    /**
+     * 加载选项
+     */
+    public static class Options {
+        private static final Options DEFAULT = new Options();
+        private LoadMode loadMode = LoadMode.PAGE;
+        private String pageDelimiter = "\n\f";
+
+        /**
+         * PDF 加载模式，可以是单文档模式或分页模式
+         */
+        public Options loadMode(LoadMode loadMode) {
+            this.loadMode = loadMode;
+            return this;
+        }
+
+        /**
+         * 页面分隔符，用于在单文档模式下分隔不同页面的文本
+         */
+        public Options pageDelimiter(String pageDelimiter) {
+            if (pageDelimiter != null) {
+                this.pageDelimiter = pageDelimiter;
+            }
+            return this;
+        }
     }
 }

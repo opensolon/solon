@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
@@ -45,6 +46,10 @@ public class InMemoryRepository implements RepositoryStorable {
         embeddingModel.embed(documents);
 
         for (Document doc : documents) {
+            if (Utils.isEmpty(doc.getId())) {
+                doc.setId(Utils.uuid());
+            }
+
             store.put(doc.getId(), doc);
         }
     }

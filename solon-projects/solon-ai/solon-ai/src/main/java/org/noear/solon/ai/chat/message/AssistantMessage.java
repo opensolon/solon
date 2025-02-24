@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.ai.chat.function.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.lang.Preview;
 
 import java.util.*;
 
@@ -26,6 +27,7 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class AssistantMessage implements ChatMessage {
     private final ChatRole role = ChatRole.ASSISTANT;
     private String content;

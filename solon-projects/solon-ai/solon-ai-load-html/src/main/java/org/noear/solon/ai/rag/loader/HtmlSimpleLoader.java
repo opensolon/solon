@@ -15,43 +15,109 @@
  */
 package org.noear.solon.ai.rag.loader;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.*;
 import org.jsoup.Jsoup;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentLoader;
-
-import java.util.Arrays;
-import java.util.List;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
- * Html 文档加载器
+ * 简单html加载器
  *
- * @author noear
+ * @author 小奶奶花生米
  * @since 3.1
  */
-public class HtmlSimpleLoader implements DocumentLoader {
-    private final String html;
-    private final String baseUri;
+public class HtmlSimpleLoader extends AbstractDocumentLoader {
+    private final SupplierEx<InputStream> source;
+    private final Options options;
 
-    public HtmlSimpleLoader(String html) {
-        this(html, null);
+    public HtmlSimpleLoader(byte[] source) {
+        this(source, null);
     }
 
-    public HtmlSimpleLoader(String html, String baseUri) {
-        this.html = html;
-        this.baseUri = baseUri;
+    public HtmlSimpleLoader(byte[] source, Options options) {
+        this(() -> new ByteArrayInputStream(source), options);
+    }
+
+    public HtmlSimpleLoader(URI source) {
+        this(source, null);
+    }
+
+    public HtmlSimpleLoader(URI source, Options options) {
+        this(() -> source.toURL().openStream(), options);
+    }
+
+    public HtmlSimpleLoader(SupplierEx<InputStream> source, Options options) {
+        this.source = source;
+        if (options == null) {
+            this.options = Options.DEFAULT;
+        } else {
+            this.options = options;
+        }
     }
 
     @Override
-    public List<Document> load() {
-        String text;
+    public List<Document> load() throws IOException {
+        try (InputStream stream = source.get()) {
+            org.jsoup.nodes.Document soup = Jsoup.parse(stream, options.charset, options.baseUri);
+            String text = soup.body().text();
+            Map<String, Object> metadata = buildMetadata(soup);
+            return Arrays.asList(new Document(text, metadata).addMetadata(this.additionalMetadata));
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-        if (Utils.isEmpty(baseUri)) {
-            text = Jsoup.parse(html).text();
-        } else {
-            text = Jsoup.parse(html, baseUri).text();
+
+    /**
+     * 从HTML文档中提取元数据
+     */
+    private Map<String, Object> buildMetadata(org.jsoup.nodes.Document soup) {
+        Map<String, Object> metadata = new HashMap<>();
+
+        String title = soup.title();
+        if (!Utils.isEmpty(title)) {
+            metadata.put("title", title);
         }
 
-        return Arrays.asList(new Document(text));
+        String description = soup.select("meta[name=description]").attr("content");
+        if (!Utils.isEmpty(description)) {
+            metadata.put("description", description);
+        }
+
+        String language = soup.select("html").attr("lang");
+        if (!Utils.isEmpty(language)) {
+            metadata.put("language", language);
+        }
+
+        return metadata;
+    }
+
+    public static class Options {
+        private static final Options DEFAULT = new Options();
+
+        private String charset = Solon.encoding();
+        private String baseUri ="";
+
+        public Options charset(String charset) {
+            this.charset = charset;
+            return this;
+        }
+
+        public Options baseUri(String baseUri) {
+            if(baseUri !=null) {
+                this.baseUri = baseUri;
+            }
+            return this;
+        }
     }
 }

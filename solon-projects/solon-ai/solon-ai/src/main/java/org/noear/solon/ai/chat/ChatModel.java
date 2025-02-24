@@ -51,6 +51,13 @@ public class ChatModel implements AiModel {
     /**
      * 提示语
      */
+    public ChatRequest prompt(ChatSession session) {
+        return prompt(session.getMessages());
+    }
+
+    /**
+     * 提示语
+     */
     public ChatRequest prompt(List<ChatMessage> messages) {
         return new ChatRequestDefault(config, dialect, messages);
     }

@@ -16,6 +16,7 @@
 package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.lang.Preview;
 
 /**
  * 聊天系统消息
@@ -23,6 +24,7 @@ import org.noear.solon.ai.chat.ChatRole;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class SystemMessage implements ChatMessage {
     private final ChatRole role = ChatRole.SYSTEM;
     private String content;

@@ -67,6 +67,18 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
         }
     }
 
+    @Override
+    public void doFill(Object obj, CloudConfig anno) {
+        //支持${xxx}配置
+        String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
+        //支持${xxx}配置
+        String group = Solon.cfg().getByTmpl(anno.group());
+
+        Config cfg = CloudClient.config().pull(group, name);
+
+        Utils.injectProperties(obj, cfg.toProps());
+    }
+
     public Object build(Class<?> type, String group, String name) {
         Config cfg = CloudClient.config().pull(group, name);
 
