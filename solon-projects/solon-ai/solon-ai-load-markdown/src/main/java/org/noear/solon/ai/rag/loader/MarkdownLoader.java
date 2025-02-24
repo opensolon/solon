@@ -34,39 +34,27 @@ import java.util.*;
  * @author noear
  * @since 3.1
  */
-public class MarkdownLoader extends AbstractDocumentLoader {
+public class MarkdownLoader extends AbstractOptionsDocumentLoader<MarkdownLoader.Options, MarkdownLoader> {
     private final SupplierEx<InputStream> source;
     private final Parser parser;
-    private final Options options;
 
     public MarkdownLoader(byte[] source) {
-        this(source, null);
+        this(() -> new ByteArrayInputStream(source));
     }
 
-    public MarkdownLoader(byte[] source, Options options) {
-        this(() -> new ByteArrayInputStream(source), options);
-    }
 
     public MarkdownLoader(URL source) {
-        this(source, null);
+        this(() -> source.openStream());
     }
 
-    public MarkdownLoader(URL source, Options options) {
-        this(() -> source.openStream(), options);
-    }
-
-    public MarkdownLoader(SupplierEx<InputStream> source, Options options) {
+    public MarkdownLoader(SupplierEx<InputStream> source) {
         if (source == null) {
             throw new IllegalArgumentException("Source cannot be null");
         }
 
         this.source = source;
         this.parser = Parser.builder().build();
-        if (options == null) {
-            this.options = Options.DEFAULT;
-        } else {
-            this.options = options;
-        }
+        this.options = new Options();
     }
 
     @Override
@@ -221,8 +209,6 @@ public class MarkdownLoader extends AbstractDocumentLoader {
      * 加载选项
      */
     public static class Options {
-        private static final Options DEFAULT = new Options();
-
         /**
          * 有水平线新建
          */

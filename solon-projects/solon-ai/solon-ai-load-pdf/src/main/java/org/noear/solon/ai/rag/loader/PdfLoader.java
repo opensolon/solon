@@ -37,44 +37,29 @@ import org.noear.solon.core.util.SupplierEx;
  * @author noear
  * @since 3.1
  * */
-public class PdfLoader extends AbstractDocumentLoader {
+public class PdfLoader extends AbstractOptionsDocumentLoader<PdfLoader.Options, PdfLoader> {
     /**
      * 文件源
      */
     private final SupplierEx<InputStream> source;
-    /**
-     * 加载选项
-     */
-    private final Options options;
+
 
     public PdfLoader(File file) {
-        this(file, null);
+        this(() -> new FileInputStream(file));
     }
 
-    public PdfLoader(File file, Options options) {
-        this(() -> new FileInputStream(file), options);
-    }
 
     public PdfLoader(URL url) {
-        this(url, null);
+        this(() -> url.openStream());
     }
 
-    public PdfLoader(URL url, Options options) {
-        this(() -> url.openStream(), options);
-    }
-
-    public PdfLoader(SupplierEx<InputStream> source, Options options) {
+    public PdfLoader(SupplierEx<InputStream> source) {
         if (source == null) {
             throw new IllegalArgumentException("Source cannot be null");
         }
 
         this.source = source;
-
-        if (options == null) {
-            this.options = Options.DEFAULT;
-        } else {
-            this.options = options;
-        }
+        this.options = new Options();
     }
 
     @Override
@@ -148,7 +133,6 @@ public class PdfLoader extends AbstractDocumentLoader {
      * 加载选项
      */
     public static class Options {
-        private static final Options DEFAULT = new Options();
         private LoadMode loadMode = LoadMode.PAGE;
         private String pageDelimiter = "\n\f";
 

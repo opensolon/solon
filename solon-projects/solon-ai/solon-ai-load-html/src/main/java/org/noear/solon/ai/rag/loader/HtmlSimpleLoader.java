@@ -32,33 +32,20 @@ import org.noear.solon.core.util.SupplierEx;
  * @author 小奶奶花生米
  * @since 3.1
  */
-public class HtmlSimpleLoader extends AbstractDocumentLoader {
+public class HtmlSimpleLoader extends AbstractOptionsDocumentLoader<HtmlSimpleLoader.Options, HtmlSimpleLoader> {
     private final SupplierEx<InputStream> source;
-    private final Options options;
 
     public HtmlSimpleLoader(byte[] source) {
-        this(source, null);
-    }
-
-    public HtmlSimpleLoader(byte[] source, Options options) {
-        this(() -> new ByteArrayInputStream(source), options);
+        this(() -> new ByteArrayInputStream(source));
     }
 
     public HtmlSimpleLoader(URL source) {
-        this(source, null);
+        this(() -> source.openStream());
     }
 
-    public HtmlSimpleLoader(URL source, Options options) {
-        this(() -> source.openStream(), options);
-    }
-
-    public HtmlSimpleLoader(SupplierEx<InputStream> source, Options options) {
+    public HtmlSimpleLoader(SupplierEx<InputStream> source) {
         this.source = source;
-        if (options == null) {
-            this.options = Options.DEFAULT;
-        } else {
-            this.options = options;
-        }
+        this.options = new Options();
     }
 
     @Override
@@ -103,10 +90,8 @@ public class HtmlSimpleLoader extends AbstractDocumentLoader {
     }
 
     public static class Options {
-        private static final Options DEFAULT = new Options();
-
         private String charset = Solon.encoding();
-        private String baseUri ="";
+        private String baseUri = "";
 
         public Options charset(String charset) {
             this.charset = charset;
@@ -114,7 +99,7 @@ public class HtmlSimpleLoader extends AbstractDocumentLoader {
         }
 
         public Options baseUri(String baseUri) {
-            if(baseUri !=null) {
+            if (baseUri != null) {
                 this.baseUri = baseUri;
             }
             return this;

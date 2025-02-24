@@ -39,34 +39,20 @@ import java.util.*;
  * @author linziguan
  * @since 3.1
  */
-public class ExcelLoader extends AbstractDocumentLoader {
+public class ExcelLoader extends AbstractOptionsDocumentLoader<ExcelLoader.Options, ExcelLoader> {
     private final SupplierEx<InputStream> source;
-    private final Options options;
 
     public ExcelLoader(File file) {
-        this(file, null);
-    }
-
-    public ExcelLoader(File file, Options options) {
-        this(() -> new FileInputStream(file), options);
+        this(() -> new FileInputStream(file));
     }
 
     public ExcelLoader(URL url) {
-        this(url, null);
+        this(() -> url.openStream());
     }
 
-    public ExcelLoader(URL url, Options options) {
-        this(() -> url.openStream(), options);
-    }
-
-    public ExcelLoader(SupplierEx<InputStream> source, Options options) {
+    public ExcelLoader(SupplierEx<InputStream> source) {
         this.source = source;
-
-        if (options == null) {
-            this.options = Options.DEFAULT;
-        } else {
-            this.options = options;
-        }
+        this.options = new Options();
     }
 
     @Override
@@ -85,7 +71,7 @@ public class ExcelLoader extends AbstractDocumentLoader {
                     for (Row row : sheet) {
                         List<Object> values = readRow(row);
 
-                        if(Utils.isEmpty(values)){
+                        if (Utils.isEmpty(values)) {
                             break;
                         }
 
@@ -177,8 +163,6 @@ public class ExcelLoader extends AbstractDocumentLoader {
      * 选项
      */
     public static class Options {
-        private static final Options DEFAULT = new Options();
-
         private boolean firstLineIsHeader = true;
         private int documentMaxRows = 200;
         private boolean dataAsJsonMap = true;
