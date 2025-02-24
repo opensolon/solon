@@ -53,6 +53,10 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
         if (result != null) {
             if (ctx.asyncSupported() == false) {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
+            } else {
+                if (ctx.asyncStarted() == false) {
+                    ctx.asyncStart();
+                }
             }
 
             //预处理
@@ -61,6 +65,7 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
 
             //处理
             RxHandler handler = new ActionRxHandler(action, publisher, isStreaming);
+
             chainManager.doFilter(ctx, handler)
                     .doOnError(err -> {
                         try {
