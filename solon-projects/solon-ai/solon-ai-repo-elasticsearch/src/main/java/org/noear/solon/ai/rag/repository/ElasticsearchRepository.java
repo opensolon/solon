@@ -15,14 +15,24 @@
  */
 package org.noear.solon.ai.rag.repository;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.xcontent.XContentBuilder;
+import org.elasticsearch.xcontent.XContentFactory;
+import org.noear.snack.ONode;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Elasticsearch 矢量存储知识库
@@ -31,25 +41,284 @@ import java.util.List;
  * @since 3.1
  */
 public class ElasticsearchRepository implements RepositoryStorable {
+    /**
+     * 向量模型，用于将文档内容转换为向量表示
+     */
     private final EmbeddingModel embeddingModel;
-    private Object client;
-    public ElasticsearchRepository(EmbeddingModel embeddingModel, Object client) {
+
+    /**
+     * Elasticsearch 客户端，用于与 ES 服务器交互
+     */
+    private final RestHighLevelClient client;
+
+    /**
+     * ES 索引名称，用于存储文档
+     */
+    private final String indexName;
+
+    /**
+     * 查询转换器，用于将查询条件转换为 ES 查询语句
+     */
+    private final ElasticsearchQueryTranslator queryTranslator;
+
+    /**
+     * 构造函数
+     *
+     * @param embeddingModel 向量模型，用于生成文档的向量表示
+     * @param client ES客户端
+     * @param indexName 索引名称
+     * @author 小奶奶花生米
+     */
+    public ElasticsearchRepository(EmbeddingModel embeddingModel, RestHighLevelClient client, String indexName) {
         this.embeddingModel = embeddingModel;
         this.client = client;
+        this.indexName = indexName;
+        this.queryTranslator = new ElasticsearchQueryTranslator();
+        initializeIndex();
     }
 
-    @Override
-    public void store(List<Document> documents) throws IOException {
-
+    /**
+     * 初始化 Elasticsearch 索引
+     * 如果索引不存在则创建新索引
+     */
+    private void initializeIndex() {
+        try {
+            if (!indexExists()) {
+                createIndex();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize Elasticsearch index", e);
+        }
     }
 
-    @Override
-    public void remove(String id) {
-
+    /**
+     * 检查索引是否存在
+     *
+     * @return 如果索引存在返回true，否则返回false
+     * @throws IOException 如果检查过程发生IO错误
+     */
+    private boolean indexExists() throws IOException {
+        GetIndexRequest request = new GetIndexRequest(indexName);
+        return client.indices().exists(request, RequestOptions.DEFAULT);
     }
 
+    /**
+     * 创建新的索引
+     *
+     * @throws IOException 如果创建过程发生IO错误
+     */
+    private void createIndex() throws IOException {
+        CreateIndexRequest request = new CreateIndexRequest(indexName);
+        request.source(buildIndexMapping());
+        client.indices().create(request, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * 构建索引的映射配置
+     * 定义文档字段的类型和属性
+     *
+     * @return 索引映射的XContent构建器
+     * @throws IOException 如果构建过程发生IO错误
+     */
+    private XContentBuilder buildIndexMapping() throws IOException {
+        return XContentFactory.jsonBuilder()
+                .startObject()
+                    .startObject("mappings")
+                        .startObject("properties")
+                            .startObject("content")
+                                .field("type", "text")
+                            .endObject()
+                            .startObject("metadata")
+                                .field("type", "object")
+                            .endObject()
+                            .startObject("embedding")
+                                .field("type", "dense_vector")
+                                .field("dims", 3)
+                            .endObject()
+                            .startObject("url")
+                                .field("type", "keyword")
+                            .endObject()
+                        .endObject()
+                    .endObject()
+                .endObject();
+    }
+
+    /**
+     * 将文档添加到批量索引操作中
+     *
+     * @param bulk 批量操作的StringBuilder
+     * @param doc 要添加的文档
+     * @throws IOException 如果添加过程发生IO错误
+     */
+    private void appendBulkIndexOperation(StringBuilder bulk, Document doc) throws IOException {
+        String id = java.util.UUID.randomUUID().toString();
+        doc.setId(id);
+        
+        bulk.append("{\"index\":{\"_index\":\"").append(indexName)
+            .append("\",\"_id\":\"").append(id).append("\"}}\n");
+        
+        Map<String, Object> source = new HashMap<>();
+        source.put("content", doc.getContent());
+        source.put("metadata", doc.getMetadata());
+        source.put("embedding", embeddingModel.embed(doc.getContent()));
+        source.put("url", doc.getUrl());
+        
+        bulk.append(ONode.stringify(source)).append("\n");
+    }
+
+    /**
+     * 删除所有文档
+     *
+     * @throws IOException 如果删除过程发生IO错误
+     */
+    private void deleteAllDocuments() throws IOException {
+        Request request = new Request("POST", "/" + indexName + "/_delete_by_query");
+        request.setJsonEntity("{\"query\":{\"match_all\":{}}}");
+        client.getLowLevelClient().performRequest(request);
+    }
+
+    /**
+     * 删除指定ID的文档
+     *
+     * @param id 要删除的文档ID
+     * @throws IOException 如果删除过程发生IO错误
+     */
+    private void deleteDocument(String id) throws IOException {
+        Request request = new Request("DELETE", "/" + indexName + "/_doc/" + id);
+        client.getLowLevelClient().performRequest(request);
+    }
+
+    /**
+     * 搜索文档
+     * 支持文本搜索、向量相似度搜索和元数据过滤
+     *
+     * @param condition 查询条件，包含查询文本、过滤器等
+     * @return 匹配的文档列表
+     * @throws IOException 如果搜索过程中发生IO错误
+     * @author 小奶奶花生米
+     */
     @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        return Collections.emptyList();
+        String responseBody = executeSearch(condition);
+        return parseSearchResponse(responseBody);
+    }
+
+    /**
+     * 执行搜索请求
+     *
+     * @param condition 搜索条件
+     * @return 搜索响应的JSON字符串
+     * @throws IOException 如果搜索过程发生IO错误
+     */
+    private String executeSearch(QueryCondition condition) throws IOException {
+        Request request = new Request("POST", "/" + indexName + "/_search");
+        
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("query", queryTranslator.translate(condition));
+        requestBody.put("size", condition.getLimit() > 0 ? condition.getLimit() : 10);
+        
+        request.setJsonEntity(ONode.stringify(requestBody));
+        
+        org.elasticsearch.client.Response response = client.getLowLevelClient().performRequest(request);
+        return new String(response.getEntity().getContent().readAllBytes(), "UTF-8");
+    }
+
+    /**
+     * 解析搜索响应
+     *
+     * @param responseBody 响应JSON字符串
+     * @return 文档列表
+     */
+    private List<Document> parseSearchResponse(String responseBody) {
+        Map<String, Object> responseMap = ONode.loadStr(responseBody).toObject(Map.class);
+        List<Document> results = new ArrayList<>();
+        
+        Map<String, Object> hits = (Map<String, Object>) responseMap.get("hits");
+        List<Map<String, Object>> hitsList = (List<Map<String, Object>>) hits.get("hits");
+        
+        for (Map<String, Object> hit : hitsList) {
+            results.add(createDocumentFromHit(hit));
+        }
+        
+        return results;
+    }
+
+    /**
+     * 从搜索结果创建文档对象
+     *
+     * @param hit 搜索结果项
+     * @return 文档对象
+     */
+    private Document createDocumentFromHit(Map<String, Object> hit) {
+        Map<String, Object> source = (Map<String, Object>) hit.get("_source");
+        Document doc = new Document(
+                (String) source.get("content"),
+                (Map<String, Object>) source.get("metadata"));
+        doc.setId((String) hit.get("_id"));
+        doc.url((String) source.get("url"));
+        return doc;
+    }
+
+    /**
+     * 执行批量请求
+     *
+     * @param bulkBody 批量操作的JSON字符串
+     * @throws IOException 如果执行过程发生IO错误
+     */
+    private void executeBulkRequest(String bulkBody) throws IOException {
+        Request request = new Request("POST", "/_bulk");
+        request.setJsonEntity(bulkBody);
+        client.getLowLevelClient().performRequest(request);
+    }
+
+    /**
+     * 刷新索引
+     * 确保最近的更改对搜索可见
+     *
+     * @throws IOException 如果刷新过程发生IO错误
+     */
+    private void refreshIndex() throws IOException {
+        Request request = new Request("POST", "/" + indexName + "/_refresh");
+        client.getLowLevelClient().performRequest(request);
+    }
+
+    /**
+     * 批量存储文档
+     * 将文档内容转换为向量并存储到ES中
+     *
+     * @param documents 要存储的文档列表
+     * @throws IOException 如果存储过程中发生IO错误
+     * @author 小奶奶花生米
+     */
+    @Override
+    public void store(List<Document> documents) throws IOException {
+        if (documents == null || documents.isEmpty()) {
+            return;
+        }
+
+        StringBuilder bulk = new StringBuilder();
+        for (Document doc : documents) {
+            appendBulkIndexOperation(bulk, doc);
+        }
+
+        executeBulkRequest(bulk.toString());
+        refreshIndex();
+    }
+
+    /**
+     * 删除指定ID的文档
+     */
+    @Override
+    public void remove(String id) {
+        try {
+            if ("*".equals(id)) {
+                deleteAllDocuments();
+            } else {
+                deleteDocument(id);
+            }
+            refreshIndex();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete document: " + id, e);
+        }
     }
 }

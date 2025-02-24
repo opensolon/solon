@@ -10,7 +10,7 @@
         <version>3.1.0-M1</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
-    
+
     <artifactId>solon-ai-repo-elasticsearch</artifactId>
     <packaging>jar</packaging>
 
@@ -21,9 +21,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-logging-simple</artifactId>
-            <scope>test</scope>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.17.9</version>
         </dependency>
 
         <dependency>
@@ -31,7 +31,12 @@
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-logging-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>
