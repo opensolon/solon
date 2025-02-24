@@ -49,7 +49,7 @@ public class PdfLoaderTest {
      */
     @Test
     public void testPageMode() throws IOException {
-        PdfLoader loader = new PdfLoader(pdfFile.toURI());
+        PdfLoader loader = new PdfLoader(pdfFile);
         loader.additionalMetadata("title", pdfFile.getName());
         List<Document> documents = loader.load();
 
@@ -82,7 +82,8 @@ public class PdfLoaderTest {
      */
     @Test
     public void testSingleMode() throws IOException {
-        PdfLoader loader = new PdfLoader(pdfFile.toURI(), new PdfLoader.Options().loadMode(PdfLoader.LoadMode.SINGLE));
+        PdfLoader loader = new PdfLoader(pdfFile)
+                .options(o -> o.loadMode(PdfLoader.LoadMode.SINGLE));
         loader.additionalMetadata("title", pdfFile.getName());
         List<Document> documents = loader.load();
 
