@@ -15,9 +15,11 @@
  */
 package org.noear.solon.ai.rag.loader;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +47,20 @@ public class PdfLoader extends AbstractDocumentLoader {
      */
     private final Options options;
 
-    public PdfLoader(URI source) {
-        this(() -> source.toURL().openStream(), null);
+    public PdfLoader(File file) {
+        this(file, null);
     }
 
-    public PdfLoader(URI source, Options options) {
-        this(() -> source.toURL().openStream(), options);
+    public PdfLoader(File file, Options options) {
+        this(() -> new FileInputStream(file), options);
+    }
+
+    public PdfLoader(URL url) {
+        this(url, null);
+    }
+
+    public PdfLoader(URL url, Options options) {
+        this(() -> url.openStream(), options);
     }
 
     public PdfLoader(SupplierEx<InputStream> source, Options options) {

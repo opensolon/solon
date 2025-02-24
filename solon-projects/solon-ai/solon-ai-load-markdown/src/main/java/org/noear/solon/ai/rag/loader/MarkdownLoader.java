@@ -25,7 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -39,20 +39,20 @@ public class MarkdownLoader extends AbstractDocumentLoader {
     private final Parser parser;
     private final Options options;
 
-    public MarkdownLoader(byte[] bytes) {
-        this(bytes, null);
+    public MarkdownLoader(byte[] source) {
+        this(source, null);
     }
 
-    public MarkdownLoader(byte[] bytes, Options options) {
-        this(() -> new ByteArrayInputStream(bytes), options);
+    public MarkdownLoader(byte[] source, Options options) {
+        this(() -> new ByteArrayInputStream(source), options);
     }
 
-    public MarkdownLoader(URI uri) {
-        this(uri, null);
+    public MarkdownLoader(URL source) {
+        this(source, null);
     }
 
-    public MarkdownLoader(URI uri, Options options) {
-        this(() -> uri.toURL().openStream(), options);
+    public MarkdownLoader(URL source, Options options) {
+        this(() -> source.openStream(), options);
     }
 
     public MarkdownLoader(SupplierEx<InputStream> source, Options options) {

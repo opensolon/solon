@@ -23,9 +23,10 @@ import cn.hutool.poi.excel.ExcelUtil;
 import org.noear.solon.core.util.SupplierEx;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,19 +43,19 @@ public class ExcelLoader extends AbstractDocumentLoader {
     private final Options options;
 
     public ExcelLoader(File file) {
-        this(file.toURI(), null);
+        this(file, null);
     }
 
     public ExcelLoader(File file, Options options) {
-        this(file.toURI(), options);
+        this(() -> new FileInputStream(file), options);
     }
 
-    public ExcelLoader(URI uri) {
-        this(uri, null);
+    public ExcelLoader(URL url) {
+        this(url, null);
     }
 
-    public ExcelLoader(URI uri, Options options) {
-        this(() -> uri.toURL().openStream(), options);
+    public ExcelLoader(URL url, Options options) {
+        this(() -> url.openStream(), options);
     }
 
     public ExcelLoader(SupplierEx<InputStream> source, Options options) {
@@ -78,7 +79,7 @@ public class ExcelLoader extends AbstractDocumentLoader {
                     List<Map<String, Object>> readAll = reader.setSheet(num).readAll();
                     if (readAll.size() > 0) {
                         String title = null;
-                        if (options.firstLineAsTitle) {
+                        if (options.firstLineIsHeader) {
                             // 第一行标题
                             Map<String, Object> titleRow = readAll.get(0);
                             readAll.remove(0);
@@ -114,14 +115,14 @@ public class ExcelLoader extends AbstractDocumentLoader {
     public static class Options {
         private static final Options DEFAULT = new Options();
 
-        private boolean firstLineAsTitle = false;
+        private boolean firstLineIsHeader = true;
         private int documentMaxRows = 200;
 
         /**
-         * 第一行，作为标题
+         * 第一行是表头
          */
-        public Options firstLineAsTitle(boolean firstLineAsTitle) {
-            this.firstLineAsTitle = firstLineAsTitle;
+        public Options firstLineIsHeader(boolean firstLineIsHeader) {
+            this.firstLineIsHeader = firstLineIsHeader;
             return this;
         }
 

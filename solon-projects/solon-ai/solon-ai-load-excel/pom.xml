@@ -15,9 +15,7 @@
     <packaging>jar</packaging>
     
     <properties>
-        <poi.version>5.1.0</poi.version>
-        <xerces.version>2.12.0</xerces.version>
-        <hutool.version>5.8.16</hutool.version>
+        <poi.version>5.4.0</poi.version>
     </properties>
 
     <dependencies>
@@ -43,23 +41,12 @@
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>${poi.version}</version>
 		</dependency>
-		<dependency>
-		    <groupId>xerces</groupId>
-		    <artifactId>xercesImpl</artifactId>
-		    <version>${xerces.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>cn.hutool</groupId>
-		    <artifactId>hutool-poi</artifactId>
-		    <version>${hutool.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>cn.hutool</groupId>
-		    <artifactId>hutool-json</artifactId>
-		    <version>${hutool.version}</version>
-		</dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-poi</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
     </dependencies>
 
 

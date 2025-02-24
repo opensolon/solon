@@ -18,7 +18,7 @@ package org.noear.solon.ai.rag.loader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import java.util.*;
 import org.jsoup.Jsoup;
 import org.noear.solon.Solon;
@@ -44,12 +44,12 @@ public class HtmlSimpleLoader extends AbstractDocumentLoader {
         this(() -> new ByteArrayInputStream(source), options);
     }
 
-    public HtmlSimpleLoader(URI source) {
+    public HtmlSimpleLoader(URL source) {
         this(source, null);
     }
 
-    public HtmlSimpleLoader(URI source, Options options) {
-        this(() -> source.toURL().openStream(), options);
+    public HtmlSimpleLoader(URL source, Options options) {
+        this(() -> source.openStream(), options);
     }
 
     public HtmlSimpleLoader(SupplierEx<InputStream> source, Options options) {
