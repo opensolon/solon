@@ -38,6 +38,10 @@ public class WebSearchRepository implements Repository {
     private final AiConfig config;
     private final @Nullable EmbeddingModel embeddingModel;
 
+    public WebSearchRepository(AiConfig config) {
+        this(null, config);
+    }
+
     public WebSearchRepository(EmbeddingModel embeddingModel, AiConfig config) {
         this.embeddingModel = embeddingModel;
         this.config = config;
