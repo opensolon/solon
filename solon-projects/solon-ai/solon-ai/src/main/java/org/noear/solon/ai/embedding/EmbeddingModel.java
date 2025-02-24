@@ -61,7 +61,7 @@ public class EmbeddingModel implements AiModel {
 
         for (int i = 0; i < embeddings.size(); ++i) {
             Document doc = documents.get(i);
-            doc.setEmbedding(embeddings.get(i).getEmbedding());
+            doc.embedding(embeddings.get(i).getEmbedding());
         }
     }
 

@@ -47,7 +47,7 @@ public class InMemoryRepository implements RepositoryStorable {
 
         for (Document doc : documents) {
             if (Utils.isEmpty(doc.getId())) {
-                doc.setId(Utils.uuid());
+                doc.id(Utils.uuid());
             }
 
             store.put(doc.getId(), doc);

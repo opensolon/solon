@@ -63,59 +63,62 @@ public class Document {
     /**
      * 设置 id
      */
-    public void setId(String id) {
+    public Document id(String id) {
         this.id = id;
+        return this;
     }
 
     /**
-     * 设置内容
-     */
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    /**
-     * 设置嵌入矢量
-     */
-    public void setEmbedding(float[] embedding) {
-        this.embedding = embedding;
-    }
-
-    /**
-     * id
+     * 获取 id
      */
     public String getId() {
         return id;
     }
 
+    /**
+     * 设置内容
+     */
+    public Document content(String content) {
+        this.content = content;
+        return this;
+    }
 
     /**
-     * 内容
+     * 获取内容
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * 嵌入
+     * 设置嵌入矢量
+     */
+    public Document embedding(float[] embedding) {
+        this.embedding = embedding;
+        return this;
+    }
+
+    /**
+     * 设置嵌入矢量
      */
     public float[] getEmbedding() {
         return embedding;
     }
 
     /**
-     * 评分
+     * 获取评分
      */
     public double getScore() {
         return score;
     }
 
     /**
-     * 元数据
+     * 获取元数据
      */
     public Map<String, Object> getMetadata() {
         return metadata;
     }
+
 
     @Override
     public String toString() {
@@ -128,16 +131,27 @@ public class Document {
 
     /// /////////////////////////////
 
-    public Document addMetadata(String key, Object value) {
-        this.metadata.put(key, value);
+    /**
+     * 添加元数据
+     */
+    public Document metadata(String key, Object value) {
+        if (value != null) {
+            this.metadata.put(key, value);
+        }
         return this;
     }
 
-    public Document addMetadata(Map<String, Object> metadata) {
+    /**
+     * 添加元数据
+     */
+    public Document metadata(Map<String, Object> metadata) {
         this.metadata.putAll(metadata);
         return this;
     }
 
+    /**
+     * 获取元数据
+     */
     public Object getMetadata(String key) {
         if (this.metadata == null) {
             return null;
@@ -147,28 +161,45 @@ public class Document {
     }
 
     /// /////////////////////////////
-
+    /**
+     * 标题（可选）
+     */
     public Document title(String title) {
-        return addMetadata("title", title);
+        return metadata("title", title);
     }
 
+    /**
+     * 获取标题
+     */
     public String getTitle() {
         return (String) getMetadata("title");
     }
 
+    /**
+     * 资源地址（可选）
+     */
     public Document url(String url) {
-        return addMetadata("url", url);
+        return metadata("url", url);
     }
 
+    /**
+     * 获取资源地址
+     */
     public String getUrl() {
         return (String) getMetadata("url");
     }
 
-    public Document snippet(String snippet) {
-        return addMetadata("snippet", snippet);
+    /**
+     * 摘要（可选）
+     */
+    public Document summary(String summary) {
+        return metadata("summary", summary);
     }
 
-    public String getSnippet() {
-        return (String) getMetadata("snippet");
+    /**
+     * 获取摘要
+     */
+    public String getSummary() {
+        return (String) getMetadata("summary");
     }
 }

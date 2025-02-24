@@ -67,7 +67,7 @@ public class HtmlSimpleLoader extends AbstractDocumentLoader {
             org.jsoup.nodes.Document soup = Jsoup.parse(stream, options.charset, options.baseUri);
             String text = soup.body().text();
             Map<String, Object> metadata = buildMetadata(soup);
-            return Arrays.asList(new Document(text, metadata).addMetadata(this.additionalMetadata));
+            return Arrays.asList(new Document(text, metadata).metadata(this.additionalMetadata));
         } catch (IOException e) {
             throw e;
         } catch (RuntimeException e) {

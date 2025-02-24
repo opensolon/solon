@@ -16,7 +16,6 @@
 package org.noear.solon.ai.rag.loader;
 
 import org.noear.solon.ai.rag.Document;
-import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -51,7 +50,7 @@ public class TextLoader extends AbstractDocumentLoader {
     public List<Document> load() {
         try {
             String temp = ResourceUtil.getResourceAsString(url);
-            return Arrays.asList(new Document(temp).addMetadata(additionalMetadata));
+            return Arrays.asList(new Document(temp).metadata(additionalMetadata));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

@@ -14,7 +14,7 @@ public class ExcelLoaderTest {
 	
 	@Test
     public void test1() throws Exception {
-		ExcelLoader loader = new ExcelLoader(new FileInputStream(new File("一个excel文档地址")));
+		ExcelLoader loader = new ExcelLoader(new File("一个excel文档地址"));
 		List<Document> docs = loader.load();
 		System.out.println(docs);
 	}

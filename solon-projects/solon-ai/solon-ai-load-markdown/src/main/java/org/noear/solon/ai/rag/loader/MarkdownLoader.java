@@ -144,14 +144,14 @@ public class MarkdownLoader extends AbstractDocumentLoader {
             }
 
             this.translateLineBreakToSpace();
-            this.currentDocument.addMetadata("category", "blockquote");
+            this.currentDocument.metadata("category", "blockquote");
             super.visit(blockQuote);
         }
 
         @Override
         public void visit(Code code) {
             this.currentParagraphs.add(code.getLiteral());
-            this.currentDocument.addMetadata("category", "code_inline");
+            this.currentDocument.metadata("category", "code_inline");
             super.visit(code);
         }
 
@@ -163,8 +163,8 @@ public class MarkdownLoader extends AbstractDocumentLoader {
 
             this.translateLineBreakToSpace();
             this.currentParagraphs.add(fencedCodeBlock.getLiteral());
-            this.currentDocument.addMetadata("category", "code_block");
-            this.currentDocument.addMetadata("lang", fencedCodeBlock.getInfo());
+            this.currentDocument.metadata("category", "code_block");
+            this.currentDocument.metadata("lang", fencedCodeBlock.getInfo());
             this.doneAndNew();
             super.visit(fencedCodeBlock);
         }
@@ -174,8 +174,8 @@ public class MarkdownLoader extends AbstractDocumentLoader {
             Node tmp = text.getParent();
             if (tmp instanceof Heading) {
                 Heading heading = (Heading) tmp;
-                this.currentDocument.addMetadata("category", String.format("header_%d", (heading.getLevel())));
-                this.currentDocument.addMetadata("title", text.getLiteral());
+                this.currentDocument.metadata("category", String.format("header_%d", (heading.getLevel())));
+                this.currentDocument.metadata("title", text.getLiteral());
             } else {
                 this.currentParagraphs.add(text.getLiteral());
             }
@@ -197,8 +197,8 @@ public class MarkdownLoader extends AbstractDocumentLoader {
         private void doneAndNew() {
             if (!this.currentParagraphs.isEmpty()) {
                 String content = String.join("", this.currentParagraphs);
-                this.currentDocument.setContent(content);
-                this.currentDocument.addMetadata(loader.additionalMetadata);
+                this.currentDocument.content(content);
+                this.currentDocument.metadata(loader.additionalMetadata);
                 this.documents.add(currentDocument);
                 this.currentParagraphs.clear();
             }

@@ -179,8 +179,9 @@ public class MilvusRepository implements RepositoryStorable {
     		if(doc.getEmbedding()==null) {
     			continue;
     		}
+
     		if(doc.getId()==null) {
-    			doc.setId(Utils.guid());
+    			doc.id(Utils.guid());
     			JsonObject jsonObj = gson.fromJson(gson.toJson(doc),JsonObject.class);
     			jsonObj.remove("score");
     			insertObjs.add(jsonObj);
@@ -283,7 +284,7 @@ public class MilvusRepository implements RepositoryStorable {
     	    	float[] embedding = (float[]) entity.get("embedding");
     	    	
     	    	doc = new Document((String)result.getId(),content,metadata,result.getScore());
-    	    	doc.setEmbedding(embedding);
+    	    	doc.embedding(embedding);
     	    	if(condition.getFilter().test(doc)) {
     	    		list.add(doc);
     	    	}

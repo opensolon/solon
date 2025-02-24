@@ -15,7 +15,6 @@
  */
 package org.noear.solon.ai.rag.loader;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -85,8 +84,8 @@ public class PdfLoader extends AbstractDocumentLoader {
                 String text = stripper.getText(pdf);
 
                 Document doc = new Document(text, metadata)
-                        .addMetadata(this.additionalMetadata)
-                        .addMetadata("pages", pdf.getNumberOfPages());
+                        .metadata(this.additionalMetadata)
+                        .metadata("pages", pdf.getNumberOfPages());
                 documents.add(doc);
 
             } else {
@@ -102,8 +101,8 @@ public class PdfLoader extends AbstractDocumentLoader {
                     pageMetadata.put("total_pages", pdf.getNumberOfPages());
 
                     Document doc = new Document(pageText.trim(), pageMetadata)
-                            .snippet("Page " + pageNum)
-                            .addMetadata(this.additionalMetadata);
+                            .summary("Page " + pageNum)
+                            .metadata(this.additionalMetadata);
                     documents.add(doc);
                 }
             }
