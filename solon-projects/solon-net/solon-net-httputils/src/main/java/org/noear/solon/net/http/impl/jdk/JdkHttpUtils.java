@@ -116,12 +116,11 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    private HttpURLConnection openConnection(String newUrl) throws MalformedURLException,IOException {
-        if (Utils.isEmpty(_proxyHost)) {
+    private HttpURLConnection openConnection(String newUrl) throws IOException {
+        if (_proxy == null) {
             return (HttpURLConnection) new URL(newUrl).openConnection();
         } else {
-            Proxy httpProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(_proxyHost, _proxyPort));
-            return (HttpURLConnection) new URL(newUrl).openConnection(httpProxy);
+            return (HttpURLConnection) new URL(newUrl).openConnection(_proxy);
         }
     }
 

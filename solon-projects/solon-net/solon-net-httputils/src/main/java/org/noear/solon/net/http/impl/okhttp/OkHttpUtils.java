@@ -139,7 +139,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         final OkHttpUtils self = this;
 
-        OkHttpClient _client = factory.getClient(_proxyHost, _proxyPort);
+        OkHttpClient _client = factory.getClient(_proxy);
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());

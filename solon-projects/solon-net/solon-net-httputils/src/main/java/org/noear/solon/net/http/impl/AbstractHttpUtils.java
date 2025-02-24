@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -43,8 +44,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     protected boolean _enablePrintln = false;
 
-    protected String _proxyHost = null;
-    protected int    _proxyPort = 0;
+    protected Proxy _proxy = null;
 
     protected final String _url;
     protected Charset _charset = StandardCharsets.UTF_8;
@@ -115,9 +115,8 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public HttpUtils proxy(String host, int port) {
-        _proxyHost = host;
-        _proxyPort = port;
+    public HttpUtils proxy(Proxy proxy) {
+        _proxy = proxy;
         return this;
     }
 

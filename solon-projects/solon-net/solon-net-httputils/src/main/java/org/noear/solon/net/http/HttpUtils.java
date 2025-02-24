@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -83,7 +85,14 @@ public interface HttpUtils {
     /**
      * 代理配置
      */
-    HttpUtils proxy(String host, int port);
+    HttpUtils proxy(Proxy proxy);
+
+    /**
+     * 代理配置
+     */
+    default HttpUtils proxy(String host, int port){
+        return proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
+    }
 
     /**
      * 超时配置

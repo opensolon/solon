@@ -35,7 +35,8 @@
 * 添加 solon ParameterizedTypeImpl:toString 缓存支持
 * 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
-* 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口
+* 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口，支持批处理后返回主键
+* 添加 solon-net-httputils HttpUtils:proxy 接口，支持 http 代理
 * 添加 solon-web-rx 过滤体系
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
