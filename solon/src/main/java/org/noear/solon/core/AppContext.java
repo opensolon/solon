@@ -1125,7 +1125,7 @@ public class AppContext extends BeanContainer {
             //开始之后
             postStartBeanLifecycle();
         } catch (Throwable e) {
-            throw new IllegalStateException("AppContext start failed", e);
+            throw new RuntimeException(e);
         }
     }
 
