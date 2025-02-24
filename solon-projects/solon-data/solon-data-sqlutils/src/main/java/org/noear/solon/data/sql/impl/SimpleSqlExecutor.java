@@ -42,6 +42,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
     private final String commandText;
     private SqlCommand command;
     private Consumer<SqlCommand> onCommandPost;
+    private Consumer<SqlCommand> onCommandAfter;
 
     public SimpleSqlExecutor(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
@@ -72,8 +73,13 @@ public class SimpleSqlExecutor implements SqlExecutor {
         return this;
     }
 
-    public SqlExecutor onCommandPost(Consumer<SqlCommand> action) {
+    public SimpleSqlExecutor onCommandPost(Consumer<SqlCommand> action) {
         this.onCommandPost = action;
+        return this;
+    }
+
+    public SimpleSqlExecutor onCommandAfter(Consumer<SqlCommand> action) {
+        this.onCommandAfter = action;
         return this;
     }
 
@@ -94,11 +100,13 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
+        try (StatementHolder holder = beginStatement(command, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
-                return converter.convert(holder.rsts);
+                T rst = converter.convert(holder.rsts);
+                finishStatement(command);
+                return rst;
             } else {
                 return null;
             }
@@ -112,7 +120,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
+        try (StatementHolder holder = beginStatement(command, false, false)) {
 
             holder.rsts = holder.stmt.executeQuery();
 
@@ -122,6 +130,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
                 list.add(converter.convert(holder.rsts));
             }
 
+            finishStatement(command);
             return list.size() > 0 ? list : null;
         }
     }
@@ -133,28 +142,33 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        StatementHolder holder = buildStatement(command, false, true);
+        StatementHolder holder = beginStatement(command, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
+        finishStatement(command);
         return new SimpleRowIterator(holder, converter);
     }
 
     @Override
     public int update() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
-            return holder.stmt.executeUpdate();
+        try (StatementHolder holder = beginStatement(command, false, false)) {
+            int rst = holder.stmt.executeUpdate();
+            finishStatement(command);
+            return rst;
         }
     }
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, true, false)) {
+        try (StatementHolder holder = beginStatement(command, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
             if (holder.rsts.next()) {
-                return (T) holder.rsts.getObject(1);
+                T rst = (T) holder.rsts.getObject(1);
+                finishStatement(command);
+                return rst;
             } else {
                 return null;
             }
@@ -163,14 +177,16 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int[] updateBatch() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, false, false)) {
-            return holder.stmt.executeBatch();
+        try (StatementHolder holder = beginStatement(command, false, false)) {
+            int[] rst = holder.stmt.executeBatch();
+            finishStatement(command);
+            return rst;
         }
     }
 
     @Override
     public <T> List<T> updateBatchReturnKeys() throws SQLException {
-        try (StatementHolder holder = buildStatement(command, true, false)) {
+        try (StatementHolder holder = beginStatement(command, true, false)) {
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -179,6 +195,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
                 keyList.add((T) holder.rsts.getObject(1));
             }
 
+            finishStatement(command);
             return keyList;
         }
     }
@@ -186,9 +203,18 @@ public class SimpleSqlExecutor implements SqlExecutor {
     /////////////////////
 
     /**
-     * 构建预处理
+     * 完成命令处理
      */
-    protected StatementHolder buildStatement(SqlCommand command, boolean returnKeys, boolean isStream) throws SQLException {
+    protected void finishStatement(SqlCommand command) {
+        if (onCommandAfter != null) {
+            onCommandAfter.accept(command);
+        }
+    }
+
+    /**
+     * 开始命令处理
+     */
+    protected StatementHolder beginStatement(SqlCommand command, boolean returnKeys, boolean isStream) throws SQLException {
         //命令确认
         if (onCommandPost != null) {
             onCommandPost.accept(command);

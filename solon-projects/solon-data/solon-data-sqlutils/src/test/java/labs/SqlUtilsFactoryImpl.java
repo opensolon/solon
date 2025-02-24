@@ -7,9 +7,6 @@ import org.noear.solon.data.sql.impl.SimpleSqlExecutor;
 
 import javax.sql.DataSource;
 
-/**
- * @author noear 2024/12/19 created
- */
 @Component
 public class SqlUtilsFactoryImpl implements SqlUtilsFactory {
     @Override
@@ -17,6 +14,8 @@ public class SqlUtilsFactoryImpl implements SqlUtilsFactory {
         //打印 sql
         return new SimpleSqlExecutor(ds, sql).onCommandPost(cmd -> {
             System.out.println(cmd);
+        }).onCommandAfter(cmd -> {
+            System.out.println(System.currentTimeMillis() - cmd.getStartTime());
         });
     }
 }
