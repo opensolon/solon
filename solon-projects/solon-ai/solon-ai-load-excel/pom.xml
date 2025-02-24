@@ -41,12 +41,6 @@
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>${poi.version}</version>
 		</dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-poi</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
     </dependencies>
 
 

@@ -15,11 +15,14 @@
  */
 package org.noear.solon.ai.rag.loader;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.rag.Document;
 
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
 import org.noear.solon.core.util.SupplierEx;
 
 import java.io.File;
@@ -27,9 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Excel 文档加载器
@@ -73,18 +74,29 @@ public class ExcelLoader extends AbstractDocumentLoader {
         List<Document> docs = new ArrayList<>();
 
         try (InputStream stream = source.get()) {
-            try (ExcelReader reader = ExcelUtil.getReader(stream)) {
-                int numberOfSheets = reader.getWorkbook().getNumberOfSheets();
+            try (XSSFWorkbook reader = new XSSFWorkbook(stream)) {
+                int numberOfSheets = reader.getNumberOfSheets();
                 for (int num = 0; num < numberOfSheets; num++) {
-                    List<Map<String, Object>> readAll = reader.setSheet(num).readAll();
-                    if (readAll.size() > 0) {
-                        String title = null;
-                        if (options.firstLineIsHeader) {
-                            // 第一行标题
-                            Map<String, Object> titleRow = readAll.get(0);
-                            readAll.remove(0);
+                    XSSFSheet sheet = reader.getSheetAt(num);
+
+                    List<Map<String, Object>> readAll = new ArrayList<>();
+                    List<Object> titles = null;
+
+                    for (Row row : sheet) {
+                        List<Object> values = readRow(row);
+
+                        if(Utils.isEmpty(values)){
+                            break;
                         }
 
+                        if (titles == null) {
+                            titles = values;
+                        } else {
+                            readAll.add(rowToMap(titles, values));
+                        }
+                    }
+
+                    if (readAll.size() > 0) {
                         int totalSize = readAll.size();
                         int numBatches = (totalSize + options.documentMaxRows - 1) / options.documentMaxRows; // 计算总批次数
                         for (int i = 0; i < numBatches; i++) {
@@ -93,7 +105,7 @@ public class ExcelLoader extends AbstractDocumentLoader {
 
                             List<Map<String, Object>> batch = readAll.subList(start, end);
 
-                            docs.add(new Document(ONode.stringify(batch)).title(title).metadata(this.additionalMetadata));
+                            docs.add(new Document(ONode.stringify(batch)).metadata(this.additionalMetadata));
                         }
                     }
                 }
@@ -109,6 +121,58 @@ public class ExcelLoader extends AbstractDocumentLoader {
         return docs;
     }
 
+    private Map<String, Object> rowToMap(List<Object> titles, List<Object> values) {
+        Map<String, Object> rowMap = new LinkedHashMap<>();
+        for (int i = 0; i < titles.size(); i++) {
+            Object val = null;
+            if (values.size() > i) {
+                val = values.get(i);
+            }
+
+            rowMap.put(String.valueOf(titles.get(i)), String.valueOf(val));
+        }
+
+        return rowMap;
+    }
+
+    private List<Object> readRow(Row row) {
+        int noneCount = 0;
+        List<Object> values = new ArrayList<>();
+        for (Cell cell : row) {
+            switch (cell.getCellType()) {
+                case _NONE:
+                    values.add(null);
+                    noneCount++;
+                    break;
+                case BLANK:
+                    values.add("");
+                    noneCount++;
+                    break;
+                case STRING:
+                    values.add(cell.getStringCellValue());
+                    break;
+                case NUMERIC:
+                    values.add(cell.getNumericCellValue());
+                    break;
+                case BOOLEAN:
+                    values.add(cell.getBooleanCellValue());
+                    break;
+                case FORMULA:
+                    values.add(cell.getCellFormula());
+                    break;
+                case ERROR:
+                    values.add(cell.getErrorCellValue());
+                    break;
+            }
+        }
+
+        if (values.size() == noneCount) {
+            return null;
+        } else {
+            return values;
+        }
+    }
+
     /**
      * 选项
      */
@@ -117,6 +181,7 @@ public class ExcelLoader extends AbstractDocumentLoader {
 
         private boolean firstLineIsHeader = true;
         private int documentMaxRows = 200;
+        private boolean dataAsJsonMap = true;
 
         /**
          * 第一行是表头
