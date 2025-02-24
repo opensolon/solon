@@ -16,12 +16,17 @@
 package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.rx.SimpleSubscription;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.*;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +76,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils serializer(Serializer serializer) {
         if (serializer != null) {
-            if(serializer.mimeType() == null){
+            if (serializer.mimeType() == null) {
                 throw new IllegalArgumentException("Invalid Serializer mimeType: " + serializer.getClass().getName());
             }
 
@@ -463,6 +468,48 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         }
     }
 
+    @Override
+    public Publisher<String> execAsTextStream(String method) throws IOException {
+        return subscriber -> execAsync(method)
+                .whenComplete((resp, err) -> {
+                    if (err == null) {
+                        try {
+                            parseRespAsTextStream(resp, subscriber);
+                        } catch (IOException e) {
+                            subscriber.onError(e);
+                        }
+                    } else {
+                        subscriber.onError(err);
+                    }
+                });
+    }
+
+    private void parseRespAsTextStream(HttpResponse resp, Subscriber<? super String> subscriber) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()))) {
+            subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
+                try {
+                    while (l > 0) {
+                        if (subscription.isCancelled()) {
+                            break;
+                        } else {
+                            l--;
+                        }
+
+                        String textLine = reader.readLine();
+
+                        if (textLine == null) {
+                            subscriber.onComplete();
+                        } else {
+                            subscriber.onNext(textLine);
+                        }
+                    }
+                } catch (Throwable err) {
+                    subscriber.onError(err);
+                }
+            }));
+        }
+    }
+
     /**
      * 执行请求，返回响应对象（需要自己做关闭处理）
      */
@@ -486,12 +533,12 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    /////////////////////
+    /// //////////////////
 
     protected abstract HttpResponse execDo(String method, CompletableFuture<HttpResponse> future) throws IOException;
 
 
-    /////////////////////
+    /// //////////////////
 
     protected String getRequestCookieString(MultiMap<String> cookies) {
         StringBuilder sb = new StringBuilder();

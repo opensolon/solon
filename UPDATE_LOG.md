@@ -31,12 +31,14 @@
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
 * 添加 solon BeanWrap:isNullOrGenericFrom 方法
+* 添加 solon AppContext:: getBeanOrDefault 方法
 * 添加 solon subWrapsOfType, subBeansOfType, getBeansOfType, getBeansMapOfType genericType 过滤参数
 * 添加 solon ParameterizedTypeImpl:toString 缓存支持
 * 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
 * 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口，支持批处理后返回主键
 * 添加 solon-net-httputils HttpUtils:proxy 接口，支持 http 代理
+* 添加 solon-net-httputils HttpUtils:execAsTextStream 文本流读取接口（可用于 dnjson 和 sse-stream）
 * 添加 solon-web-rx 过滤体系
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
