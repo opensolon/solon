@@ -24,10 +24,13 @@
 ### v3.1.0
 
 * 新增 solon-ai 插件
-* 新增 solon-ai-milvus 插件
-* 定义 响应式过滤和拦截体系
-* 优化 拦截体系与 rx 的兼容？
-* 优化 规范插件命名
+* 新增 solon-ai-repo-milvus 插件
+* 新增 solon-ai-load-markdown 插件
+* 新增 solon-ai-load-pdf 插件
+* 新增 solon-ai-load-html 插件
+* 定义 响应式过滤和拦截体系？？？
+* 优化 拦截体系与 rx 的兼容？？？
+* 优化 规范插件命名？？？
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
 * 添加 solon BeanWrap:isNullOrGenericFrom 方法
@@ -45,8 +48,8 @@
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
-* 修复 solon-web-staticfiles 的一个潜在安全问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
+* socket.d 升为 2.5.15
 * fastjson2 升为 2.0.55
 * jackson 升为 2.18.2
 * gson 升为 2.12.1
