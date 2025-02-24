@@ -33,11 +33,12 @@ import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.QueryCondition;
+import org.noear.solon.core.util.IoUtil;
 
 /**
  * Elasticsearch 矢量存储知识库
  *
- * @author noear
+ * @author 小奶奶花生米
  * @since 3.1
  */
 public class ElasticsearchRepository implements RepositoryStorable {
@@ -59,21 +60,21 @@ public class ElasticsearchRepository implements RepositoryStorable {
     /**
      * 查询转换器，用于将查询条件转换为 ES 查询语句
      */
-    private final ElasticsearchQueryTranslator queryTranslator;
+    private final QueryConditionTranslator queryTranslator;
 
     /**
      * 构造函数
      *
      * @param embeddingModel 向量模型，用于生成文档的向量表示
-     * @param client ES客户端
-     * @param indexName 索引名称
+     * @param client         ES客户端
+     * @param indexName      索引名称
      * @author 小奶奶花生米
      */
     public ElasticsearchRepository(EmbeddingModel embeddingModel, RestHighLevelClient client, String indexName) {
         this.embeddingModel = embeddingModel;
         this.client = client;
         this.indexName = indexName;
-        this.queryTranslator = new ElasticsearchQueryTranslator();
+        this.queryTranslator = new QueryConditionTranslator();
         initializeIndex();
     }
 
@@ -123,23 +124,23 @@ public class ElasticsearchRepository implements RepositoryStorable {
     private XContentBuilder buildIndexMapping() throws IOException {
         return XContentFactory.jsonBuilder()
                 .startObject()
-                    .startObject("mappings")
-                        .startObject("properties")
-                            .startObject("content")
-                                .field("type", "text")
-                            .endObject()
-                            .startObject("metadata")
-                                .field("type", "object")
-                            .endObject()
-                            .startObject("embedding")
-                                .field("type", "dense_vector")
-                                .field("dims", 3)
-                            .endObject()
-                            .startObject("url")
-                                .field("type", "keyword")
-                            .endObject()
-                        .endObject()
-                    .endObject()
+                .startObject("mappings")
+                .startObject("properties")
+                .startObject("content")
+                .field("type", "text")
+                .endObject()
+                .startObject("metadata")
+                .field("type", "object")
+                .endObject()
+                .startObject("embedding")
+                .field("type", "dense_vector")
+                .field("dims", 3)
+                .endObject()
+                .startObject("url")
+                .field("type", "keyword")
+                .endObject()
+                .endObject()
+                .endObject()
                 .endObject();
     }
 
@@ -147,22 +148,22 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * 将文档添加到批量索引操作中
      *
      * @param bulk 批量操作的StringBuilder
-     * @param doc 要添加的文档
+     * @param doc  要添加的文档
      * @throws IOException 如果添加过程发生IO错误
      */
     private void appendBulkIndexOperation(StringBuilder bulk, Document doc) throws IOException {
         String id = java.util.UUID.randomUUID().toString();
-        doc.setId(id);
-        
+        doc.id(id);
+
         bulk.append("{\"index\":{\"_index\":\"").append(indexName)
-            .append("\",\"_id\":\"").append(id).append("\"}}\n");
-        
+                .append("\",\"_id\":\"").append(id).append("\"}}\n");
+
         Map<String, Object> source = new HashMap<>();
         source.put("content", doc.getContent());
         source.put("metadata", doc.getMetadata());
         source.put("embedding", embeddingModel.embed(doc.getContent()));
         source.put("url", doc.getUrl());
-        
+
         bulk.append(ONode.stringify(source)).append("\n");
     }
 
@@ -212,15 +213,16 @@ public class ElasticsearchRepository implements RepositoryStorable {
      */
     private String executeSearch(QueryCondition condition) throws IOException {
         Request request = new Request("POST", "/" + indexName + "/_search");
-        
+
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("query", queryTranslator.translate(condition));
         requestBody.put("size", condition.getLimit() > 0 ? condition.getLimit() : 10);
-        
+
         request.setJsonEntity(ONode.stringify(requestBody));
-        
+
         org.elasticsearch.client.Response response = client.getLowLevelClient().performRequest(request);
-        return new String(response.getEntity().getContent().readAllBytes(), "UTF-8");
+
+        return IoUtil.transferToString(response.getEntity().getContent(), "UTF-8");
     }
 
     /**
@@ -232,14 +234,14 @@ public class ElasticsearchRepository implements RepositoryStorable {
     private List<Document> parseSearchResponse(String responseBody) {
         Map<String, Object> responseMap = ONode.loadStr(responseBody).toObject(Map.class);
         List<Document> results = new ArrayList<>();
-        
+
         Map<String, Object> hits = (Map<String, Object>) responseMap.get("hits");
         List<Map<String, Object>> hitsList = (List<Map<String, Object>>) hits.get("hits");
-        
+
         for (Map<String, Object> hit : hitsList) {
             results.add(createDocumentFromHit(hit));
         }
-        
+
         return results;
     }
 
@@ -254,7 +256,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
         Document doc = new Document(
                 (String) source.get("content"),
                 (Map<String, Object>) source.get("metadata"));
-        doc.setId((String) hit.get("_id"));
+        doc.id((String) hit.get("_id"));
         doc.url((String) source.get("url"));
         return doc;
     }
@@ -319,6 +321,50 @@ public class ElasticsearchRepository implements RepositoryStorable {
             refreshIndex();
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete document: " + id, e);
+        }
+    }
+
+
+    /**
+     * 查询条件转换器（转为 Elasticsearch 条件）
+     *
+     * @author 小奶奶花生米
+     * @since 3.1
+     */
+    public class QueryConditionTranslator {
+        /**
+         * 转换查询条件为 ES 查询语句
+         */
+        public Map<String, Object> translate(QueryCondition condition) {
+            Map<String, Object> query = new HashMap<>();
+            Map<String, Object> bool = new HashMap<>();
+            List<Map<String, Object>> must = new ArrayList<>();
+
+            // 构建文本查询
+            if (condition.getQuery() != null && !condition.getQuery().isEmpty()) {
+                Map<String, Object> match = new HashMap<>();
+                Map<String, Object> matchQuery = new HashMap<>();
+                matchQuery.put("content", condition.getQuery());
+                match.put("match", matchQuery);
+                must.add(match);
+            } else {
+                // 空查询时返回所有文档
+                Map<String, Object> matchAll = new HashMap<>();
+                matchAll.put("match_all", new HashMap<>());
+                must.add(matchAll);
+            }
+
+            // 构建过滤条件
+            if (condition.getFilter() != null) {
+                Map<String, Object> filter = new HashMap<>();
+                filter.put("match_all", new HashMap<>());
+                must.add(filter);
+            }
+
+            bool.put("must", must);
+            query.put("bool", bool);
+
+            return query;
         }
     }
 }
