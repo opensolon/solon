@@ -13,6 +13,12 @@
     
     <artifactId>solon-ai-load-excel</artifactId>
     <packaging>jar</packaging>
+    
+    <properties>
+        <poi.version>5.1.0</poi.version>
+        <xerces.version>2.12.0</xerces.version>
+        <hutool.version>5.8.16</hutool.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -31,6 +37,29 @@
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>${poi.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>xerces</groupId>
+		    <artifactId>xercesImpl</artifactId>
+		    <version>${xerces.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>cn.hutool</groupId>
+		    <artifactId>hutool-poi</artifactId>
+		    <version>${hutool.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>cn.hutool</groupId>
+		    <artifactId>hutool-json</artifactId>
+		    <version>${hutool.version}</version>
+		</dependency>
     </dependencies>
 
 
