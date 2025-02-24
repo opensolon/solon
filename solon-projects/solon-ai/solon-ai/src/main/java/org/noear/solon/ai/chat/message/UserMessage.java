@@ -35,7 +35,7 @@ public class UserMessage implements ChatMessage {
      * 消息增强
      */
     public static ChatMessage augment(String message, Object context) {
-        String newContent = String.format("%s\n\n now: %s \n\n context: %s", message,
+        String newContent = String.format("%s\n\n Now: %s\n\n References: %s", message,
                 LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
         return new UserMessage(newContent);
     }
