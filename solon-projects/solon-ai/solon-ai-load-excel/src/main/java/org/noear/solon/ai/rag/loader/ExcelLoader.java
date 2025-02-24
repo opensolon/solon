@@ -18,8 +18,13 @@ package org.noear.solon.ai.rag.loader;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
 
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Excel 文档加载器
@@ -27,9 +32,18 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class ExcelLoader implements DocumentLoader {
+public class ExcelLoader extends AbstractDocumentLoader {
+	private InputStream inputStream;
+	
+	public ExcelLoader(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+	
     @Override
     public List<Document> load() {
+    	ExcelReader reader = ExcelUtil.getReader(this.inputStream);
+    	List<Map<String, Object>> readAll = reader.readAll();
+    	
         return Collections.emptyList();
     }
 }
