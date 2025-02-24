@@ -36,7 +36,7 @@ public class ElasticsearchRepositoryTest {
     private static final String TEST_INDEX = "test_docs";
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, InterruptedException {
         // 创建ES客户端
         client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost("127.0.0.1", 9200, "http")));
@@ -57,6 +57,7 @@ public class ElasticsearchRepositoryTest {
         load(repository, "https://solon.noear.org/article/about?format=md");
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");
+        Thread.sleep(1000);
     }
 
     @Test
@@ -94,16 +95,18 @@ public class ElasticsearchRepositoryTest {
 
         try {
             repository.store(documents);
-
+            Thread.sleep(1000);
             // 删除文档
             repository.remove(doc.getId());
 
+            Thread.sleep(1000);
             // 验证文档已被删除
             QueryCondition condition = new QueryCondition("removed");
             List<Document> results = repository.search(condition);
             assertTrue(results.isEmpty(), "文档应该已被删除");
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             fail("测试过程中发生异常: " + e.getMessage());
         }
     }
