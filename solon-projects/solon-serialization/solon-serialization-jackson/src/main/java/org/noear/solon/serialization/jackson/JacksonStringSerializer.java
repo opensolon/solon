@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
@@ -132,7 +133,7 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
         if (mime == null) {
             return false;
         } else {
-            return mime.contains(label);
+            return mime.contains(label) || mime.startsWith(MimeType.APPLICATION_X_NDJSON_VALUE);
         }
     }
 

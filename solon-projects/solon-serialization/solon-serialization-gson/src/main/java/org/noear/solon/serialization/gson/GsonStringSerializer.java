@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.serialization.ContextSerializer;
 
@@ -101,7 +102,7 @@ public class GsonStringSerializer implements ContextSerializer<String> {
         if (mime == null) {
             return false;
         } else {
-            return mime.contains(label);
+            return mime.contains(label) || mime.startsWith(MimeType.APPLICATION_X_NDJSON_VALUE);
         }
     }
 
