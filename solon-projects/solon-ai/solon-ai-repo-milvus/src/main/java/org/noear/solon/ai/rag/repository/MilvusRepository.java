@@ -234,7 +234,7 @@ public class MilvusRepository implements RepositoryStorable {
 
     @Override
     public void remove(String id) {
-    	DeleteResp deleteResp = client.delete(DeleteReq.builder()
+    	client.delete(DeleteReq.builder()
     	        .collectionName(collectionName)
     	        .ids(Arrays.asList(id))
     	        .build());
