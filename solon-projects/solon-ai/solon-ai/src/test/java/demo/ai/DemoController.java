@@ -9,7 +9,7 @@ import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.web.sse.SseEvent;
-import org.noear.solon.web.util.MimeType;
+import org.noear.solon.core.util.MimeType;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
