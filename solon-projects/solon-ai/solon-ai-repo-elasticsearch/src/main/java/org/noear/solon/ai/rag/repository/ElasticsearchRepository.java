@@ -59,10 +59,6 @@ public class ElasticsearchRepository implements RepositoryStorable {
      */
     private final String indexName;
 
-    /**
-     * 查询转换器，用于将查询条件转换为 ES 查询语句
-     */
-    private final QueryConditionTranslator queryTranslator;
 
     /**
      * 构造函数
@@ -76,7 +72,6 @@ public class ElasticsearchRepository implements RepositoryStorable {
         this.embeddingModel = embeddingModel;
         this.client = client;
         this.indexName = indexName;
-        this.queryTranslator = new QueryConditionTranslator();
         initializeIndex();
     }
 
@@ -208,22 +203,15 @@ public class ElasticsearchRepository implements RepositoryStorable {
 
     /**
      * 执行搜索请求
-     *
-     * @param condition 搜索条件
-     * @return 搜索响应的JSON字符串
-     * @throws IOException 如果搜索过程发生IO错误
      */
     private String executeSearch(QueryCondition condition) throws IOException {
         Request request = new Request("POST", "/" + indexName + "/_search");
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("query", queryTranslator.translate(condition));
+        requestBody.put("query", translate(condition));
         requestBody.put("size", condition.getLimit() > 0 ? condition.getLimit() : 10);
-
         request.setJsonEntity(ONode.stringify(requestBody));
-
         org.elasticsearch.client.Response response = client.getLowLevelClient().performRequest(request);
-
         return IoUtil.transferToString(response.getEntity().getContent(), "UTF-8");
     }
 
@@ -328,45 +316,37 @@ public class ElasticsearchRepository implements RepositoryStorable {
 
 
     /**
-     * 查询条件转换器（转为 Elasticsearch 条件）
-     *
-     * @author 小奶奶花生米
-     * @since 3.1
+     * 转换查询条件为 ES 查询语句
      */
-    public class QueryConditionTranslator {
-        /**
-         * 转换查询条件为 ES 查询语句
-         */
-        public Map<String, Object> translate(QueryCondition condition) {
-            Map<String, Object> query = new HashMap<>();
-            Map<String, Object> bool = new HashMap<>();
-            List<Map<String, Object>> must = new ArrayList<>();
+    private Map<String, Object> translate(QueryCondition condition) {
+        Map<String, Object> query = new HashMap<>();
+        Map<String, Object> bool = new HashMap<>();
+        List<Map<String, Object>> must = new ArrayList<>();
 
-            // 构建文本查询
-            if (condition.getQuery() != null && !condition.getQuery().isEmpty()) {
-                Map<String, Object> match = new HashMap<>();
-                Map<String, Object> matchQuery = new HashMap<>();
-                matchQuery.put("content", condition.getQuery());
-                match.put("match", matchQuery);
-                must.add(match);
-            } else {
-                // 空查询时返回所有文档
-                Map<String, Object> matchAll = new HashMap<>();
-                matchAll.put("match_all", new HashMap<>());
-                must.add(matchAll);
-            }
-
-            // 构建过滤条件
-            if (condition.getFilter() != null) {
-                Map<String, Object> filter = new HashMap<>();
-                filter.put("match_all", new HashMap<>());
-                must.add(filter);
-            }
-
-            bool.put("must", must);
-            query.put("bool", bool);
-
-            return query;
+        // 构建文本查询
+        if (condition.getQuery() != null && !condition.getQuery().isEmpty()) {
+            Map<String, Object> match = new HashMap<>();
+            Map<String, Object> matchQuery = new HashMap<>();
+            matchQuery.put("content", condition.getQuery());
+            match.put("match", matchQuery);
+            must.add(match);
+        } else {
+            // 空查询时返回所有文档
+            Map<String, Object> matchAll = new HashMap<>();
+            matchAll.put("match_all", new HashMap<>());
+            must.add(matchAll);
         }
+
+        // 构建过滤条件
+        if (condition.getFilter() != null) {
+            Map<String, Object> filter = new HashMap<>();
+            filter.put("match_all", new HashMap<>());
+            must.add(filter);
+        }
+
+        bool.put("must", must);
+        query.put("bool", bool);
+
+        return query;
     }
 }
