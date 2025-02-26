@@ -84,8 +84,10 @@ public class ResourceScanner {
         } else if ("jar".equals(url.getProtocol())) {
             //3.2.找到jar包
             //
-            JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
-            doScanByJar(jar, path, filter, urls);
+            JarURLConnection jarCon = (JarURLConnection) url.openConnection();
+            try (JarFile jar = jarCon.getJarFile()) {
+                doScanByJar(jar, path, filter, urls);jarCon.connect();;
+            }
         }
     }
 
