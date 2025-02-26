@@ -21,6 +21,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 泛型处理工具
@@ -157,7 +158,7 @@ public class GenericUtil {
 
     ///////////////////////////
 
-    private static final Map<Type, Map<String, Type>> genericInfoCached = new HashMap<>();
+    private static final Map<Type, Map<String, Type>> genericInfoCached = new ConcurrentHashMap<>();
 
     /**
      * 获取泛型变量和泛型实际类型的对应关系Map
@@ -166,23 +167,7 @@ public class GenericUtil {
      * @return 泛型对应关系Map
      */
     public static Map<String, Type> getGenericInfo(Type type) {
-        Map<String, Type> tmp = genericInfoCached.get(type);
-        if (tmp == null) {
-            Utils.locker().lock();
-
-            try {
-                tmp = genericInfoCached.get(type);
-
-                if (tmp == null) {
-                    tmp = createTypeGenericMap(type);
-                    genericInfoCached.put(type, tmp);
-                }
-            } finally {
-                Utils.locker().unlock();
-            }
-        }
-
-        return tmp;
+        return genericInfoCached.computeIfAbsent(type, k -> createTypeGenericMap(k));
     }
 
 
