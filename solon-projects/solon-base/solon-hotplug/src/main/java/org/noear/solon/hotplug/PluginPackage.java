@@ -173,7 +173,7 @@ public class PluginPackage {
      * 加载 jar 插件包
      *
      * @param file 文件
-     * */
+     */
     public static PluginPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
@@ -195,11 +195,13 @@ public class PluginPackage {
      * 卸载 Jar 插件包
      *
      * @param pluginPackage 插件包
-     * */
+     */
     public static void unloadJar(PluginPackage pluginPackage) {
         try {
-            pluginPackage.prestop();
-            pluginPackage.stop();
+            if (pluginPackage.getStarted()) {
+                pluginPackage.prestop();
+                pluginPackage.stop();
+            }
 
             PluginClassLoader classLoader = pluginPackage.getClassLoader();
 
