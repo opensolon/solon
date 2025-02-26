@@ -6,7 +6,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.ai.embedding.EmbeddingConfig;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.loader.HtmlSimpleLoader;
 import org.noear.solon.ai.rag.loader.MarkdownLoader;
 import org.noear.solon.ai.rag.repository.RedisRepository;
 import org.noear.solon.ai.rag.splitter.RegexTextSplitter;
@@ -16,14 +18,15 @@ import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.test.SolonTest;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
  * @author noear 2025/2/26 created
  */
-//@SolonTest
+@SolonTest
 public class RedisRepositoryTest {
-    //@Test
+    @Test
     public void case1() throws Exception {
 
         EmbeddingConfig config = Solon.cfg().toBean("solon.ai.embed.bgem3", EmbeddingConfig.class);
@@ -45,8 +48,15 @@ public class RedisRepositoryTest {
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {
+        String text = HttpUtils.http(url).get();
+
         //1.加载文档（测试用）
-        MarkdownLoader loader = new MarkdownLoader(() -> HttpUtils.http(url).exec("POST").body());
+        DocumentLoader loader = null;
+        if (text.contains("</html>")) {
+            loader = new HtmlSimpleLoader(text.getBytes(StandardCharsets.UTF_8));
+        } else {
+            loader = new MarkdownLoader(text.getBytes(StandardCharsets.UTF_8));
+        }
 
         List<Document> documents = new SplitterPipeline() //2.分割文档（确保不超过 max-token-size）
                 .next(new RegexTextSplitter())
