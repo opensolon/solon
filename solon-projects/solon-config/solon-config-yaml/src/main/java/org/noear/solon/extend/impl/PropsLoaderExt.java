@@ -24,7 +24,9 @@ import org.noear.solon.config.yaml.PropertiesYaml;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Properties;
 
 /**
@@ -58,9 +60,16 @@ public class PropsLoaderExt extends PropsLoader {
             }
 
             Properties tmp = new Properties();
-            try (InputStreamReader reader = new InputStreamReader(url.openStream(), Solon.encoding())) {
+
+            URLConnection urlConn = url.openConnection();
+            try (InputStreamReader reader = new InputStreamReader(urlConn.getInputStream(), Solon.encoding())) {
                 tmp.load(reader);
             }
+
+            if (urlConn instanceof JarURLConnection) {
+                ((JarURLConnection) urlConn).getJarFile().close();
+            }
+
             return tmp;
         }
 
@@ -70,9 +79,16 @@ public class PropsLoaderExt extends PropsLoader {
             }
 
             PropertiesYaml tmp = new PropertiesYaml();
-            try (InputStreamReader reader = new InputStreamReader(url.openStream(), Solon.encoding())) {
+
+            URLConnection urlConn = url.openConnection();
+            try (InputStreamReader reader = new InputStreamReader(urlConn.getInputStream(), Solon.encoding())) {
                 tmp.loadYml(reader);
             }
+
+            if (urlConn instanceof JarURLConnection) {
+                ((JarURLConnection) urlConn).getJarFile().close();
+            }
+
             return tmp;
         }
 
