@@ -1,0 +1,17 @@
+
+solon.logging.logger:
+  root:
+    level: INFO
+
+solon.ai.repo:
+  redis:
+    server: localhost:6379
+    db: 1
+    password: 123456
+
+
+solon.ai.embed:
+  bgem3:
+    apiUrl: "http://127.0.0.1:11434/api/embed" # 使用完整地址（而不是 api_base）
+    provider: "ollama" # 使用 ollama 服务时，需要配置 provider
+    model: "bge-m3:latest"
