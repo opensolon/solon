@@ -36,13 +36,13 @@ public class ImageRequest {
 
     private final ImageConfig config;
     private final ImageDialect dialect;
-    private final List<String> input;
+    private final String prompt;
     private ImageOptions options;
 
-    protected ImageRequest(ImageConfig config, ImageDialect dialect, List<String> input) {
+    protected ImageRequest(ImageConfig config, ImageDialect dialect, String prompt) {
         this.config = config;
         this.dialect = dialect;
-        this.input = input;
+        this.prompt = prompt;
         this.options = OPTIONS_DEFAULT;
     }
 
@@ -69,10 +69,10 @@ public class ImageRequest {
     /**
      * 调用
      */
-    public ImageResponse call() throws IOException {
+    protected ImageResponse call() throws IOException {
         HttpUtils httpUtils = config.createHttpUtils();
 
-        String reqJson = dialect.buildRequestJson(config, options, input);
+        String reqJson = dialect.buildRequestJson(config, options, prompt);
 
         if (log.isTraceEnabled()) {
             log.trace("ai-request: {}", reqJson);
@@ -87,5 +87,38 @@ public class ImageRequest {
         ImageResponse resp = dialect.parseResponseJson(config, respJson);
 
         return resp;
+    }
+
+    /**
+     * 生成
+     */
+    public ImageResponse generate() throws IOException {
+        return call();
+    }
+
+    /**
+     * 编辑
+     */
+    public ImageResponse edit(Image image, Image mask) throws IOException {
+        if (image != null) {
+            options.optionAdd("image", image.getUrl());
+        }
+
+        if (mask != null) {
+            options.optionAdd("mask", mask.getUrl());
+        }
+
+        return call();
+    }
+
+    /**
+     * 变动
+     */
+    public ImageResponse variation(Image image) throws IOException {
+        if (image != null) {
+            options.optionAdd("image", image.getUrl());
+        }
+
+        return call();
     }
 }

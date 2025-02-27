@@ -42,7 +42,7 @@ public interface ImageDialect extends AiModelDialect {
      * @param config  聊天配置
      * @param options 聊天选项
      */
-    String buildRequestJson(ImageConfig config, ImageOptions options, List<String> input);
+    String buildRequestJson(ImageConfig config, ImageOptions options, String prompt);
 
     /**
      * 分析响应数据

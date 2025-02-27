@@ -17,7 +17,7 @@ package org.noear.solon.ai.image.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.ai.AiUsage;
-import org.noear.solon.ai.image.Embedding;
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageResponse;
 
@@ -44,7 +44,7 @@ public class OpenaiImageDialect extends AbstractImageDialect {
         ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
-        List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
+        List<Image> data = oResp.get("data").toObjectList(Image.class);
         AiUsage usage = null;
 
         if (oResp.contains("usage")) {

@@ -54,12 +54,25 @@ public class ImageOptions {
         return this;
     }
 
-    public ImageOptions dimensions(int dimensions) {
-        return optionAdd("dimensions", dimensions);
+    /**
+     * 模型
+     */
+    public ImageOptions model(String model) {
+        return optionAdd("model", model);
     }
 
 
-    public ImageOptions user(String user) {
-        return optionAdd("user", user);
+    /**
+     * 尺寸
+     */
+    public ImageOptions size(String size) {
+        return optionAdd("size", size);
+    }
+
+    /**
+     * 质量
+     */
+    public ImageOptions quality(String quality) {
+        return optionAdd("quality", quality);
     }
 }

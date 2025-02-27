@@ -17,11 +17,10 @@ package org.noear.solon.ai.image.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.ai.AiUsage;
-import org.noear.solon.ai.image.Embedding;
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,12 +45,7 @@ public class OllamaImageDialect extends AbstractImageDialect {
 
         String model = oResp.get("model").getString();
 
-        List<Embedding> data = new ArrayList<>();
-        int dataIndex = 0;
-        for (float[] embed : oResp.get("embeddings").toObjectList(float[].class)) {
-            data.add(new Embedding(dataIndex, embed));
-            dataIndex++;
-        }
+        List<Image> data = oResp.get("data").toObjectList(Image.class);
 
         AiUsage usage = null;
 

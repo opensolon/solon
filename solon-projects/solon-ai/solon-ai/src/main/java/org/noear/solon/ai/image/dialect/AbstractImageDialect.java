@@ -31,19 +31,15 @@ import java.util.Map;
  */
 public abstract class AbstractImageDialect implements ImageDialect {
     @Override
-    public String buildRequestJson(ImageConfig config, ImageOptions options, List<String> input) {
+    public String buildRequestJson(ImageConfig config, ImageOptions options, String prompt) {
         return new ONode().build(n -> {
             if (Utils.isNotEmpty(config.getModel())) {
                 n.set("model", config.getModel());
             }
 
-            n.getOrNew("input").build(n1 -> {
-                for (String m1 : input) {
-                    n1.add(m1);
-                }
-            });
-
-            n.set("encoding_format", "float");
+            if (Utils.isNotEmpty(prompt)) {
+                n.set("prompt", prompt);
+            }
 
             for (Map.Entry<String, Object> kv : options.options().entrySet()) {
                 n.set(kv.getKey(), kv.getValue());

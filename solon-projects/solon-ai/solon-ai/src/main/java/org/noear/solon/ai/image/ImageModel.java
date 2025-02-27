@@ -18,12 +18,9 @@ package org.noear.solon.ai.image;
 import org.noear.solon.ai.AiModel;
 import org.noear.solon.ai.image.dialect.ImageDialect;
 import org.noear.solon.ai.image.dialect.ImageDialectManager;
-import org.noear.solon.ai.rag.Document;
 import org.noear.solon.lang.Preview;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,40 +40,12 @@ public class ImageModel implements AiModel {
         this.config = config;
     }
 
-    /**
-     * 快捷嵌入
-     */
-    public float[] embed(String text) throws IOException {
-        return input(text).call().getData().get(0).getEmbedding();
-    }
-
-    /**
-     * 快捷嵌入
-     */
-    public void embed(List<Document> documents) throws IOException {
-        List<String> texts = new ArrayList<>();
-        documents.forEach(d -> texts.add(d.getContent()));
-
-        List<Embedding> embeddings = input(texts).call().getData();
-
-        for (int i = 0; i < embeddings.size(); ++i) {
-            Document doc = documents.get(i);
-            doc.embedding(embeddings.get(i).getEmbedding());
-        }
-    }
 
     /**
      * 输入
      */
-    public ImageRequest input(String... input) {
-        return input(Arrays.asList(input));
-    }
-
-    /**
-     * 输入
-     */
-    public ImageRequest input(List<String> input) {
-        return new ImageRequest(config, dialect, input);
+    public ImageRequest prompt(String prompt) {
+        return new ImageRequest(config, dialect, prompt);
     }
 
 

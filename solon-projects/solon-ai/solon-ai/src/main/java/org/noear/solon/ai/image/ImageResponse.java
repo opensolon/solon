@@ -27,10 +27,10 @@ import java.util.List;
  */
 public class ImageResponse {
     private final String model;
-    private final List<Embedding> data;
+    private final List<Image> data;
     private final AiUsage usage;
 
-    public ImageResponse(String model, List<Embedding> data, AiUsage usage) {
+    public ImageResponse(String model, List<Image> data, AiUsage usage) {
         this.model = model;
         this.data = data;
         this.usage = usage;
@@ -46,7 +46,7 @@ public class ImageResponse {
     /**
      * 获取数据
      */
-    public List<Embedding> getData() {
+    public List<Image> getData() {
         return data;
     }
 
