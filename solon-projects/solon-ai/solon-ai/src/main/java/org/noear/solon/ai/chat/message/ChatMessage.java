@@ -109,7 +109,7 @@ public interface ChatMessage extends Serializable {
      * 序列化为 json
      */
     static String toJson(ChatMessage message) {
-        return ONode.stringify(message, Feature.EnumUsingName);
+        return ONode.load(message, Feature.EnumUsingName).toJson();
     }
 
     /**
