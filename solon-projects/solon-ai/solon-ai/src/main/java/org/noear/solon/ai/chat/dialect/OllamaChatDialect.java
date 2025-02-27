@@ -60,7 +60,7 @@ public class OllamaChatDialect extends AbstractChatDialect {
             oNode.set("content", msg.getContent());
         } else {
             oNode.set("content", msg.getContent());
-            oNode.set("images", msg.getImages().stream().map(i->i.toString()).collect(Collectors.toList()));
+            oNode.set("images", msg.getImages().stream().map(i->i.toDataString(false)).collect(Collectors.toList()));
         }
     }
 

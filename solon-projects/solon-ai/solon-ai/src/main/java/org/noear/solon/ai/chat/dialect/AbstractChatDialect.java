@@ -72,7 +72,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
                 n1.addNew().set("type", "text").set("text", msg.getContent());
 
                 for (Image img : msg.getImages()) {
-                    n1.addNew().set("type", "image_url").getOrNew("image_url").set("url", img.toMediaString());
+                    n1.addNew().set("type", "image_url").getOrNew("image_url").set("url", img.toDataString(true));
                 }
             });
         }

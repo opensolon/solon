@@ -21,8 +21,6 @@ import org.noear.solon.ai.image.Image;
 import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageResponse;
 
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 /**

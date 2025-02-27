@@ -77,20 +77,23 @@ public class Image {
     /**
      * 转为带媒体信息的字符串
      */
-    public String toMediaString() {
+    public String toDataString(boolean useMime) {
         if (Utils.isEmpty(b64_json)) {
             return url;
         } else {
-            return "data:image/jpeg;base64," + b64_json;
+            if (useMime) {
+                return "data:image/jpeg;base64," + b64_json;
+            } else {
+                return b64_json;
+            }
         }
     }
 
     @Override
     public String toString() {
-        if (Utils.isEmpty(b64_json)) {
-            return url;
-        } else {
-            return b64_json;
-        }
+        return "Image{" +
+                "b64_json='" + b64_json + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
