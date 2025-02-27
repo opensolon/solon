@@ -31,25 +31,6 @@ import java.util.List;
  */
 @Preview("3.1")
 public class UserMessage implements ChatMessage {
-    /**
-     * 消息增强
-     */
-    public static ChatMessage augment(String message, Object context) {
-        String newContent = String.format("%s\n\n Now: %s\n\n References: %s", message,
-                LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
-        return new UserMessage(newContent);
-    }
-
-    /**
-     * 创建消息模板
-     */
-    public static UserMessageTemplate template(String tmpl) {
-        return new UserMessageTemplate(tmpl);
-    }
-
-
-    /// ////////////////
-
     private final ChatRole role = ChatRole.USER;
     private String content;
     private List<String> images;

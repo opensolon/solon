@@ -20,6 +20,8 @@ import org.noear.snack.core.Feature;
 import org.noear.solon.ai.chat.ChatRole;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -72,6 +74,24 @@ public interface ChatMessage extends Serializable {
      */
     static ChatMessage ofTool(String content, String name, String toolCallId) {
         return new ToolMessage(content, name, toolCallId);
+    }
+
+    /// //////////////////
+
+    /**
+     * 消息增强
+     */
+    default ChatMessage augment(String message, Object context) {
+        String newContent = String.format("%s\n\n Now: %s\n\n References: %s", message,
+                LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME), context);
+        return new UserMessage(newContent);
+    }
+
+    /**
+     * 创建消息模板
+     */
+    default UserMessageTemplate template(String tmpl) {
+        return new UserMessageTemplate(tmpl);
     }
 
     /// //////////////////
