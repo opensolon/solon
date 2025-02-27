@@ -286,7 +286,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
      */
     @Override
     public void store(List<Document> documents) throws IOException {
-        if(Utils.isEmpty(documents)) {
+        if (Utils.isEmpty(documents)) {
             return;
         }
 
@@ -308,16 +308,18 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * 删除指定ID的文档
      */
     @Override
-    public void remove(String id) {
-        try {
-            if ("*".equals(id)) {
-                deleteAllDocuments();
-            } else {
-                deleteDocument(id);
+    public void remove(String... ids) {
+        for (String id : ids) {
+            try {
+                if ("*".equals(id)) {
+                    deleteAllDocuments();
+                } else {
+                    deleteDocument(id);
+                }
+                refreshIndex();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to delete document: " + id, e);
             }
-            refreshIndex();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete document: " + id, e);
         }
     }
 

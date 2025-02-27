@@ -44,7 +44,7 @@ public class InMemoryRepository implements RepositoryStorable {
 
     @Override
     public void store(List<Document> documents) throws IOException {
-        if(Utils.isEmpty(documents)) {
+        if (Utils.isEmpty(documents)) {
             return;
         }
 
@@ -63,8 +63,10 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
-    public void remove(String id) {
-        store.remove(id);
+    public void remove(String... ids) {
+        for (String id : ids) {
+            store.remove(id);
+        }
     }
 
     @Override

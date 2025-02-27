@@ -163,7 +163,7 @@ public class RedisRepository implements RepositoryStorable {
      */
     @Override
     public void store(List<Document> documents) throws IOException {
-        if(Utils.isEmpty(documents)) {
+        if (Utils.isEmpty(documents)) {
             return;
         }
 
@@ -177,7 +177,7 @@ public class RedisRepository implements RepositoryStorable {
             pipeline = client.pipelined();
             for (Document doc : documents) {
                 if (doc.getId() == null) {
-                    doc.id(generateId());
+                    doc.id(Utils.uuid());
                 }
 
                 String key = keyPrefix + doc.getId();
@@ -210,11 +210,22 @@ public class RedisRepository implements RepositoryStorable {
     /**
      * 删除指定 ID 的文档
      *
-     * @param id 文档 ID
+     * @param ids 文档 ID
      */
     @Override
-    public void remove(String id) {
-        client.del(keyPrefix + id);
+    public void remove(String... ids) {
+        PipelineBase pipeline = null;
+        try {
+            pipeline = client.pipelined();
+            for (String id : ids) {
+                pipeline.del(keyPrefix + id);
+            }
+            pipeline.sync();
+        } finally {
+            if (pipeline != null) {
+                pipeline.close();
+            }
+        }
     }
 
     /**
@@ -240,14 +251,5 @@ public class RedisRepository implements RepositoryStorable {
             documents.add(new Document(id, content, new HashMap<>(16), 1.0f));
         }
         return documents;
-    }
-
-    /**
-     * 生成唯一文档 ID
-     *
-     * @return UUID 字符串
-     */
-    private String generateId() {
-        return UUID.randomUUID().toString();
     }
 }
