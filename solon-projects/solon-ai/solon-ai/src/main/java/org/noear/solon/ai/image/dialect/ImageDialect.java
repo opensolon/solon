@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.image.dialect;
 
+import org.noear.solon.ai.AiModelDialect;
 import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageOptions;
 import org.noear.solon.ai.image.ImageResponse;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public interface ImageDialect {
+public interface ImageDialect extends AiModelDialect {
     /**
      * 匹配检测
      *

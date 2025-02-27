@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat.dialect;
 
+import org.noear.solon.ai.AiModelDialect;
 import org.noear.solon.ai.chat.ChatConfig;
 import org.noear.solon.ai.chat.ChatResponseDefault;
 import org.noear.solon.ai.chat.message.ChatMessage;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public interface ChatDialect {
+public interface ChatDialect extends AiModelDialect {
     /**
      * 匹配检测
      *
