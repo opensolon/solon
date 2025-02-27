@@ -36,5 +36,5 @@ public interface RepositoryStorable extends Repository {
     /**
      * 移除
      */
-    void remove(String id);
+    void remove(String... ids);
 }
