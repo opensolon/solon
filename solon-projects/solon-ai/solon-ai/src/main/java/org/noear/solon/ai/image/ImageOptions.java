@@ -53,4 +53,13 @@ public class ImageOptions {
         options.put(key, val);
         return this;
     }
+
+    public ImageOptions dimensions(int dimensions) {
+        return optionAdd("dimensions", dimensions);
+    }
+
+
+    public ImageOptions user(String user) {
+        return optionAdd("user", user);
+    }
 }

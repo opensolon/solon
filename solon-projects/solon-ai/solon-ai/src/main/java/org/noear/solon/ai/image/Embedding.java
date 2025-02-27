@@ -15,54 +15,38 @@
  */
 package org.noear.solon.ai.image;
 
-import org.noear.solon.ai.AiUsage;
-
-import java.util.List;
-
 /**
- * 图像响应
+ * 嵌入数据
  *
  * @author noear
  * @since 3.1
  */
-public class ImageResponse {
-    private final String model;
-    private final List<Embedding> data;
-    private final AiUsage usage;
+public class Embedding {
+    private int index;
+    private float[] embedding;
 
-    public ImageResponse(String model, List<Embedding> data, AiUsage usage) {
-        this.model = model;
-        this.data = data;
-        this.usage = usage;
+    public Embedding() {
+        //用于反序列化
     }
 
-    /**
-     * 获取模型
-     */
-    public String getModel() {
-        return model;
+    public Embedding(int index, float[] embedding) {
+        this.embedding = embedding;
+        this.index = index;
     }
 
-    /**
-     * 获取数据
-     */
-    public List<Embedding> getData() {
-        return data;
+    public int getIndex() {
+        return index;
     }
 
-    /**
-     * 获取使用情况
-     */
-    public AiUsage getUsage() {
-        return usage;
+    public float[] getEmbedding() {
+        return embedding;
     }
 
     @Override
     public String toString() {
         return "{" +
-                "model='" + model + '\'' +
-                ", data=" + data +
-                ", usage=" + usage +
+                "index=" + index +
+                ", embedding=" + embedding +
                 '}';
     }
 }

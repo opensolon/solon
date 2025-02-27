@@ -15,6 +15,15 @@
  */
 package org.noear.solon.ai.image;
 
+import org.noear.solon.ai.image.dialect.ImageDialect;
+import org.noear.solon.net.http.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * 图像请求
  *
@@ -22,4 +31,61 @@ package org.noear.solon.ai.image;
  * @since 3.1
  */
 public class ImageRequest {
+    private static final Logger log = LoggerFactory.getLogger(ImageRequest.class);
+    private static final ImageOptions OPTIONS_DEFAULT = new ImageOptions();
+
+    private final ImageConfig config;
+    private final ImageDialect dialect;
+    private final List<String> input;
+    private ImageOptions options;
+
+    protected ImageRequest(ImageConfig config, ImageDialect dialect, List<String> input) {
+        this.config = config;
+        this.dialect = dialect;
+        this.input = input;
+        this.options = OPTIONS_DEFAULT;
+    }
+
+    /**
+     * 选项
+     */
+    public ImageRequest options(ImageOptions options) {
+        if (options != null) {
+            this.options = options;
+        }
+
+        return this;
+    }
+
+    /**
+     * 选项
+     */
+    public ImageRequest options(Consumer<ImageOptions> optionsBuilder) {
+        this.options = ImageOptions.of();
+        optionsBuilder.accept(options);
+        return this;
+    }
+
+    /**
+     * 调用
+     */
+    public ImageResponse call() throws IOException {
+        HttpUtils httpUtils = config.createHttpUtils();
+
+        String reqJson = dialect.buildRequestJson(config, options, input);
+
+        if (log.isTraceEnabled()) {
+            log.trace("ai-request: {}", reqJson);
+        }
+
+        String respJson = httpUtils.bodyOfJson(reqJson).post();
+
+        if (log.isTraceEnabled()) {
+            log.trace("ai-response: {}", respJson);
+        }
+
+        ImageResponse resp = dialect.parseResponseJson(config, respJson);
+
+        return resp;
+    }
 }

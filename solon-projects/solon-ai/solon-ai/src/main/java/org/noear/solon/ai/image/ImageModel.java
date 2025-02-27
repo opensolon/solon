@@ -15,11 +15,132 @@
  */
 package org.noear.solon.ai.image;
 
+import org.noear.solon.ai.AiModel;
+import org.noear.solon.ai.image.dialect.ImageDialect;
+import org.noear.solon.ai.image.dialect.ImageDialectManager;
+import org.noear.solon.ai.rag.Document;
+import org.noear.solon.lang.Preview;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 图像模型
  *
  * @author noear
  * @since 3.1
  */
-public class ImageModel {
+@Preview("3.1")
+public class ImageModel implements AiModel {
+    private final ImageConfig config;
+    private final ImageDialect dialect;
+
+    protected ImageModel(ImageConfig config) {
+        this.dialect = ImageDialectManager.select(config);
+        this.config = config;
+    }
+
+    /**
+     * 快捷嵌入
+     */
+    public float[] embed(String text) throws IOException {
+        return input(text).call().getData().get(0).getEmbedding();
+    }
+
+    /**
+     * 快捷嵌入
+     */
+    public void embed(List<Document> documents) throws IOException {
+        List<String> texts = new ArrayList<>();
+        documents.forEach(d -> texts.add(d.getContent()));
+
+        List<Embedding> embeddings = input(texts).call().getData();
+
+        for (int i = 0; i < embeddings.size(); ++i) {
+            Document doc = documents.get(i);
+            doc.embedding(embeddings.get(i).getEmbedding());
+        }
+    }
+
+    /**
+     * 输入
+     */
+    public ImageRequest input(String... input) {
+        return input(Arrays.asList(input));
+    }
+
+    /**
+     * 输入
+     */
+    public ImageRequest input(List<String> input) {
+        return new ImageRequest(config, dialect, input);
+    }
+
+
+    /**
+     * 构建
+     */
+    public static Builder of(ImageConfig config) {
+        return new Builder(config);
+    }
+
+    /**
+     * 构建
+     */
+    public static Builder of(String apiUrl) {
+        return new Builder(apiUrl);
+    }
+
+    /// /////////////
+
+    /**
+     * 嵌入模型构建器实现
+     *
+     * @author noear
+     * @since 3.1
+     */
+    public static class Builder {
+        private final ImageConfig config;
+
+        public Builder(String apiUrl) {
+            this.config = new ImageConfig();
+            this.config.setApiUrl(apiUrl);
+        }
+
+        public Builder(ImageConfig config) {
+            this.config = config;
+        }
+
+        public Builder apiKey(String apiKey) {
+            config.setApiKey(apiKey);
+            return this;
+        }
+
+        public Builder provider(String provider) {
+            config.setProvider(provider);
+            return this;
+        }
+
+        public Builder model(String model) {
+            config.setModel(model);
+            return this;
+        }
+
+        public Builder headerSet(String key, String value) {
+            config.setHeader(key, value);
+            return this;
+        }
+
+        public Builder timeout(Duration timeout) {
+            config.setTimeout(timeout);
+            return this;
+        }
+
+        public ImageModel build() {
+            return new ImageModel(config);
+        }
+    }
 }
