@@ -32,7 +32,7 @@ public class RagRepositoryTest {
         ChatModel chatModel = TestUtils.getChatModelOfGiteeai();
 
         //2.构建知识库
-        InMemoryRepository repository = new InMemoryRepository(TestUtils.getEmbeddingModelOfGiteeai()); //3.初始化知识库
+        InMemoryRepository repository = new InMemoryRepository(TestUtils.getEmbeddingModelOfOllama()); //3.初始化知识库
         load(repository, "https://solon.noear.org/article/about?format=md");
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");

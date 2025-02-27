@@ -10,8 +10,8 @@ import org.noear.solon.ai.rag.repository.WebSearchRepository;
 public class TestUtils {
     public static ChatModel getChatModelOfGiteeai() {
         final String apiUrl = "https://ai.gitee.com/v1/chat/completions";
-        final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
-        final String model = "InternVL2-8B";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
+        final String apkKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
+        final String model = "Qwen2.5-72B-Instruct";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
 
         return ChatModel.of(apiUrl).apiKey(apkKey).model(model).build(); //4.初始化语言模型
     }
@@ -23,12 +23,11 @@ public class TestUtils {
         return WebSearchRepository.of(apiUrl).apiKey(apiKey).build();
     }
 
-    public static EmbeddingModel getEmbeddingModelOfGiteeai() {
-        final String apiUrl = "https://ai.gitee.com/v1/embeddings";
-        final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
-        final String provider = "giteeai";
+    public static EmbeddingModel getEmbeddingModelOfOllama() {
+        final String apiUrl = "http://127.0.0.1:11434/api/embed";
+        final String provider = "ollama";
         final String model = "bge-m3";//
 
-        return EmbeddingModel.of(apiUrl).apiKey(apkKey).provider(provider).model(model).build();
+        return EmbeddingModel.of(apiUrl).provider(provider).model(model).build();
     }
 }
