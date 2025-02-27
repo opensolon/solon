@@ -6,6 +6,7 @@ import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.chat.ChatSession;
 import org.noear.solon.ai.chat.ChatSessionDefault;
 import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
@@ -35,12 +36,11 @@ public class OllamaVisionTest {
                 .timeout(Duration.ofSeconds(300))
                 .build();
 
-       byte[] bytes =  HttpUtils.http("https://solon.noear.org/img/solon/favicon256.png").exec("GET").bodyAsBytes();
+        byte[] bytes = HttpUtils.http("https://solon.noear.org/img/solon/favicon256.png").exec("GET").bodyAsBytes();
 
         //一次性返回
-        ChatResponse resp = chatModel.prompt(
-                ChatMessage.ofUser("图里有人像吗？",
-                        Arrays.asList(Base64.getEncoder().encodeToString(bytes)))).call();
+        ChatResponse resp = chatModel.prompt(ChatMessage.ofUser("图里有人像吗？", Image.ofBase64(bytes)))
+                .call();
 
         //打印消息
         log.info("{}", resp.getMessage());

@@ -17,10 +17,9 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.lang.Preview;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ import java.util.List;
 public class UserMessage implements ChatMessage {
     private final ChatRole role = ChatRole.USER;
     private String content;
-    private List<String> images;
+    private List<Image> images;
 
     public UserMessage() {
         //用于序列化
@@ -43,7 +42,7 @@ public class UserMessage implements ChatMessage {
         this(content, null);
     }
 
-    public UserMessage(String content, List<String> images) {
+    public UserMessage(String content, List<Image> images) {
         this.content = content;
         this.images = images;
     }
@@ -67,7 +66,7 @@ public class UserMessage implements ChatMessage {
     /**
      * 图片集合
      */
-    public List<String> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
@@ -82,7 +81,7 @@ public class UserMessage implements ChatMessage {
             return "{" +
                     "role='" + getRole() + '\'' +
                     ", content='" + content + '\'' +
-                    ", image_urls='" + images + '\'' +
+                    ", images='" + images + '\'' +
                     '}';
         }
     }

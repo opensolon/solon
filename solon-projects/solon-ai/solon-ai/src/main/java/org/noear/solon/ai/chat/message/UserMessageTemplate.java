@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.lang.Preview;
 
@@ -30,7 +31,7 @@ import java.util.*;
 public class UserMessageTemplate {
     private final String tmpl;
     private final Map<String, Object> params = new HashMap<>();
-    private List<String> images;
+    private List<Image> images;
 
 
     /**
@@ -51,7 +52,7 @@ public class UserMessageTemplate {
     /**
      * 配置图片
      */
-    public UserMessageTemplate image(String image) {
+    public UserMessageTemplate image(Image image) {
         if (images == null) {
             images = new ArrayList<>();
         }

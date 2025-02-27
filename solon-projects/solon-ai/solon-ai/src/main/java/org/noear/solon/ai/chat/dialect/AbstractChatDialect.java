@@ -22,6 +22,7 @@ import org.noear.solon.ai.chat.function.ChatFunction;
 import org.noear.solon.ai.chat.function.ChatFunctionCall;
 import org.noear.solon.ai.chat.function.ChatFunctionParam;
 import org.noear.solon.ai.chat.message.*;
+import org.noear.solon.ai.image.Image;
 
 import java.util.*;
 
@@ -68,24 +69,24 @@ public abstract class AbstractChatDialect implements ChatDialect {
             oNode.set("content", msg.getContent());
         } else {
             oNode.getOrNew("content").build(n1 -> {
-                for (String imgUrl : msg.getImages()) {
-                    ONode n2 = n1.addNew();
-                    n2.set("type", "image_url");
-
-                    if (imgUrl.contains("://")) {
-                        //url
-                        n2.getOrNew("image_url").set("url", imgUrl);
-                    } else if (imgUrl.contains(",")) {
-                        //image base64
-                        n2.getOrNew("image_url").set("url", imgUrl);
-                    } else {
-                        //base64
-                        n2.getOrNew("image_url").set("url", "data:image/jpeg;base64," + imgUrl);
-                    }
+                for (Image image : msg.getImages()) {
+                    buildChatMessageImageNodeDo(n1.addNew(), image);
                 }
 
                 n1.addNew().set("type", "text").set("text", msg.getContent());
             });
+        }
+    }
+
+    protected void buildChatMessageImageNodeDo(ONode oNode, Image img) {
+        oNode.set("type", "image_url");
+
+        if (Utils.isNotEmpty(img.getUrl())) {
+            //url
+            oNode.getOrNew("image_url").set("url", img.getUrl());
+        } else {
+            //base64
+            oNode.getOrNew("image_url").set("url", "data:image/jpeg;base64," + img.getB64Json());
         }
     }
 

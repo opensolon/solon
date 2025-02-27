@@ -22,9 +22,12 @@ import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.UserMessage;
+import org.noear.solon.ai.image.Image;
 import org.noear.solon.core.util.DateUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Ollama 聊天模型方言
@@ -55,8 +58,29 @@ public class OllamaChatDialect extends AbstractChatDialect {
         if (Utils.isEmpty(msg.getImages())) {
             oNode.set("content", msg.getContent());
         } else {
+            List<String> imageUrls = new ArrayList<>();
+            for (Image img : msg.getImages()) {
+                if (Utils.isEmpty(img.getB64Json())) {
+                    imageUrls.add(img.getUrl());
+                } else {
+                    imageUrls.add(img.getB64Json());
+                }
+            }
+
             oNode.set("content", msg.getContent());
-            oNode.set("images", msg.getImages());
+            oNode.set("images", imageUrls);
+        }
+    }
+
+    protected void buildChatMessageImageNodeDo(ONode oNode, Image img) {
+        oNode.set("type", "image_url");
+
+        if (Utils.isNotEmpty(img.getUrl())) {
+            //url
+            oNode.getOrNew("image_url").set("url", img.getUrl());
+        } else {
+            //base64
+            oNode.getOrNew("image_url").set("url", img.getB64Json());
         }
     }
 

@@ -24,23 +24,29 @@ import java.util.Base64;
  * @since 3.1
  */
 public class Image {
-    private String b64_json;
+    private String b64_json; //就是 base64-str
     private String url;
 
     public Image() {
         //...用于反序列化
     }
 
-    public Image(String data) {
-        if (data.contains("://")) {
-            this.url = data;
-        } else {
-            this.b64_json = data;
-        }
+    public static Image ofUrl(String url) {
+        Image img = new Image();
+        img.url = url;
+        return img;
     }
 
-    public Image(byte[] data) {
-        this.b64_json = Base64.getEncoder().encodeToString(data);
+    public static Image ofBase64(String base64) {
+        Image img = new Image();
+        img.b64_json = base64;
+        return img;
+    }
+
+    public static Image ofBase64(byte[] base64) {
+        Image img = new Image();
+        img.b64_json = Base64.getEncoder().encodeToString(base64);
+        return img;
     }
 
     public String getB64Json() {

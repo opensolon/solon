@@ -18,10 +18,12 @@ package org.noear.solon.ai.chat.message;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.solon.ai.chat.ChatRole;
+import org.noear.solon.ai.image.Image;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,8 +67,15 @@ public interface ChatMessage extends Serializable {
     /**
      * 构建用户消息
      */
-    static ChatMessage ofUser(String content, List<String> images) {
+    static ChatMessage ofUser(String content, List<Image> images) {
         return new UserMessage(content, images);
+    }
+
+    /**
+     * 构建用户消息
+     */
+    static ChatMessage ofUser(String content, Image... images) {
+        return new UserMessage(content, Arrays.asList(images));
     }
 
     /**

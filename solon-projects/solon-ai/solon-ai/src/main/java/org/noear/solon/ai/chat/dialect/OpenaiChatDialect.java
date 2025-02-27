@@ -16,11 +16,13 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
+import org.noear.solon.ai.image.Image;
 
 import java.util.Date;
 
@@ -45,6 +47,18 @@ public class OpenaiChatDialect extends AbstractChatDialect {
     @Override
     public boolean matched(ChatConfig config) {
         return false;
+    }
+
+    protected void buildChatMessageImageNodeDo(ONode oNode, Image img) {
+        oNode.set("type", "image_url");
+
+        if (Utils.isNotEmpty(img.getUrl())) {
+            //url
+            oNode.getOrNew("image_url").set("url", img.getUrl());
+        } else {
+            //base64
+            oNode.getOrNew("image_url").set("url", "data:image/jpeg;base64," + img.getB64Json());
+        }
     }
 
     @Override
