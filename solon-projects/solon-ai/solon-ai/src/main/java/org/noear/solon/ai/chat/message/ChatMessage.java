@@ -79,7 +79,7 @@ public interface ChatMessage extends Serializable {
     /// //////////////////
 
     /**
-     * 消息增强
+     * 用户消息增强
      */
     default ChatMessage augment(String message, Object context) {
         String newContent = String.format("%s\n\n Now: %s\n\n References: %s", message,
@@ -88,7 +88,7 @@ public interface ChatMessage extends Serializable {
     }
 
     /**
-     * 创建消息模板
+     * 创建用户消息模板
      */
     default UserMessageTemplate template(String tmpl) {
         return new UserMessageTemplate(tmpl);
