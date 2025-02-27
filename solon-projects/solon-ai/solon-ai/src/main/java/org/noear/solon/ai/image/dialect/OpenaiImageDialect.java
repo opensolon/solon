@@ -21,6 +21,8 @@ import org.noear.solon.ai.image.Image;
 import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageResponse;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -45,8 +47,8 @@ public class OpenaiImageDialect extends AbstractImageDialect {
 
         String model = oResp.get("model").getString();
         List<Image> data = oResp.get("data").toObjectList(Image.class);
-        AiUsage usage = null;
 
+        AiUsage usage = null;
         if (oResp.contains("usage")) {
             ONode oUsage = oResp.get("usage");
             usage = new AiUsage(

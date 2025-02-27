@@ -31,6 +31,7 @@
 * 定义 响应式过滤和拦截体系？？？
 * 优化 拦截体系与 rx 的兼容？？？
 * 优化 规范插件命名？？？
+* 优化 solon 小写且带点环境变量的一个边界问题
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
 * 添加 solon BeanWrap:isNullOrGenericFrom 方法

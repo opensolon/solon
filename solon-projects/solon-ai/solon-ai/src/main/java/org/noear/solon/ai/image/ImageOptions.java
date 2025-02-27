@@ -75,4 +75,11 @@ public class ImageOptions {
     public ImageOptions quality(String quality) {
         return optionAdd("quality", quality);
     }
+
+    /**
+     * 响应格式
+     */
+    public ImageOptions response_format(String response_format) {
+        return optionAdd("response_format", response_format);
+    }
 }

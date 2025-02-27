@@ -44,11 +44,9 @@ public class OllamaImageDialect extends AbstractImageDialect {
         ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
-
         List<Image> data = oResp.get("data").toObjectList(Image.class);
 
         AiUsage usage = null;
-
         if (oResp.contains("prompt_eval_count")) {
             int prompt_eval_count = oResp.get("prompt_eval_count").getInt();
             usage = new AiUsage(

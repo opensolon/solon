@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -93,32 +92,6 @@ public class ImageRequest {
      * 生成
      */
     public ImageResponse generate() throws IOException {
-        return call();
-    }
-
-    /**
-     * 编辑
-     */
-    public ImageResponse edit(Image image, Image mask) throws IOException {
-        if (image != null) {
-            options.optionAdd("image", image.getUrl());
-        }
-
-        if (mask != null) {
-            options.optionAdd("mask", mask.getUrl());
-        }
-
-        return call();
-    }
-
-    /**
-     * 变动
-     */
-    public ImageResponse variation(Image image) throws IOException {
-        if (image != null) {
-            options.optionAdd("image", image.getUrl());
-        }
-
         return call();
     }
 }

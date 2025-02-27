@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.image;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.AiUsage;
 
 import java.util.List;
@@ -43,11 +44,23 @@ public class ImageResponse {
         return model;
     }
 
+
+    public boolean hasData() {
+        return Utils.isNotEmpty(data);
+    }
+
     /**
      * 获取数据
      */
     public List<Image> getData() {
         return data;
+    }
+
+    /**
+     * 获取图片
+     */
+    public Image getImage() {
+        return data.get(0);
     }
 
     /**
