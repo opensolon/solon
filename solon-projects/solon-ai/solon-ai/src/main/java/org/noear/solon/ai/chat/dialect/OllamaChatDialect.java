@@ -28,6 +28,7 @@ import org.noear.solon.core.util.DateUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Ollama 聊天模型方言
@@ -59,7 +60,7 @@ public class OllamaChatDialect extends AbstractChatDialect {
             oNode.set("content", msg.getContent());
         } else {
             oNode.set("content", msg.getContent());
-            oNode.set("images", msg.getImages());
+            oNode.set("images", msg.getImages().stream().map(i->i.toString()).collect(Collectors.toList()));
         }
     }
 
