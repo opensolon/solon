@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DashScope 方言（阿里云产品）
+ * DashScope 聊天模型方言（阿里云产品）
  *
  * @author shoukaiseki
  * @author noear

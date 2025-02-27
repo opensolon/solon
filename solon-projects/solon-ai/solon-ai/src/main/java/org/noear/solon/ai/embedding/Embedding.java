@@ -15,8 +15,6 @@
  */
 package org.noear.solon.ai.embedding;
 
-import java.util.List;
-
 /**
  * 嵌入数据
  *

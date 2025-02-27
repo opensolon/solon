@@ -25,7 +25,7 @@ import org.noear.solon.ai.chat.message.ChatMessage;
 import java.util.Date;
 
 /**
- * Openai 方言
+ * Openai 聊天模型方言
  *
  * @author noear
  * @since 3.1

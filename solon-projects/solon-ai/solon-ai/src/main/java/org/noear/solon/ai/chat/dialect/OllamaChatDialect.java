@@ -27,7 +27,7 @@ import org.noear.solon.core.util.DateUtil;
 import java.util.Date;
 
 /**
- * Ollama 方言
+ * Ollama 聊天模型方言
  *
  * @author noear
  * @since 3.1

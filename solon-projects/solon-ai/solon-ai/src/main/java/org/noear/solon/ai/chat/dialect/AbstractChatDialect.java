@@ -26,6 +26,8 @@ import org.noear.solon.ai.chat.message.*;
 import java.util.*;
 
 /**
+ * 聊天模型方言虚拟类
+ *
  * @author noear
  * @since 3.1
  */
