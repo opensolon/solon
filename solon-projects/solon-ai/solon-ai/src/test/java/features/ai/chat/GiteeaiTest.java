@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 public class GiteeaiTest {
     private static final Logger log = LoggerFactory.getLogger(GiteeaiTest.class);
     private static final String apiUrl = "https://ai.gitee.com/v1/chat/completions";
-    private static final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
+    private static final String apkKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
     private static final String model = "Qwen2.5-72B-Instruct";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
 
     @Test

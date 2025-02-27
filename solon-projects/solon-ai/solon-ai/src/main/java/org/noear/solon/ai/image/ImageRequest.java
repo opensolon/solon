@@ -68,7 +68,7 @@ public class ImageRequest {
     /**
      * 调用
      */
-    protected ImageResponse call() throws IOException {
+    public ImageResponse call() throws IOException {
         HttpUtils httpUtils = config.createHttpUtils();
 
         String reqJson = dialect.buildRequestJson(config, options, prompt);
@@ -86,12 +86,5 @@ public class ImageRequest {
         ImageResponse resp = dialect.parseResponseJson(config, respJson);
 
         return resp;
-    }
-
-    /**
-     * 生成
-     */
-    public ImageResponse generate() throws IOException {
-        return call();
     }
 }

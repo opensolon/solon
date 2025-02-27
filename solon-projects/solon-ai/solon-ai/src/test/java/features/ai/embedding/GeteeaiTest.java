@@ -14,7 +14,7 @@ import java.io.IOException;
 public class GeteeaiTest {
     private static final Logger log = LoggerFactory.getLogger(GeteeaiTest.class);
     private static final String apiUrl = "https://ai.gitee.com/v1/embeddings";
-    private static final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
+    private static final String apkKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
     private static final String provider = "giteeai";
     private static final String model = "bge-m3";//
 

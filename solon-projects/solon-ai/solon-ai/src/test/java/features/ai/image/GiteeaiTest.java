@@ -19,7 +19,7 @@ import java.util.Base64;
 public class GiteeaiTest {
     private static final Logger log = LoggerFactory.getLogger(GiteeaiTest.class);
     private static final String apiUrl = "https://ai.gitee.com/v1/images/generations";
-    private static final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
+    private static final String apkKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
     private static final String model = "stable-diffusion-3.5-large-turbo";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
 
     @Test
@@ -29,7 +29,7 @@ public class GiteeaiTest {
         //一次性返回
         ImageResponse resp = chatModel.prompt("a white siamese cat")
                 .options(o -> o.size("1024x1024"))
-                .generate();
+                .call();
 
         byte[] bytes = Base64.getDecoder().decode(resp.getImage().getB64Json());
         File file = new File("/Users/noear/Downloads/ai-tmp1.jpg");
