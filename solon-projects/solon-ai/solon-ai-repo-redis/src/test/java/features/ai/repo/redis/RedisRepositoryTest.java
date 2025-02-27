@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Solon;
-import org.noear.solon.ai.embedding.EmbeddingConfig;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
@@ -43,7 +41,7 @@ public class RedisRepositoryTest {
     @BeforeEach
     public void setup() throws IOException {
         // 创建测试用的 MockEmbeddingModel
-        EmbeddingModel embeddingModel = new MockEmbeddingModel();
+        EmbeddingModel embeddingModel = TestUtils.getEmbeddingModel();
 
         // 创建 Redis 客户端
         RedisClient redisClient = Solon.cfg().getBean("solon.ai.repo.redis", RedisClient.class);
@@ -61,27 +59,20 @@ public class RedisRepositoryTest {
 
     @AfterEach
     public void cleanup() {
-        // 清理测试数据
-        try {
-            client.ftDropIndex("test_idx");
-        } catch (Exception ignored) {
-        }
-        client.close();
+        repository.dropIndex();
     }
 
     @Test
-    public void testStore() throws IOException {
-        // 准备测试文档，显式指定 ID
-        Document doc = new Document("Test content");
-        repository.store(Collections.singletonList(doc));
+    public void case1_search() throws Exception {
+        List<Document> list = repository.search("solon");
+        assert list.size() == 4;
 
-        // 验证存储
-        String key = "test_doc:" + doc.getId();
-        assertTrue(client.exists(key), "Document should exist in Redis");
+        list = repository.search("spring");
+        assert list.size() == 0;
     }
 
     @Test
-    public void testRemove() throws IOException {
+    public void case2_remove() throws IOException {
         // 准备并存储文档，显式指定 ID
         Document doc = new Document("Test content");
         repository.store(Collections.singletonList(doc));
@@ -98,10 +89,10 @@ public class RedisRepositoryTest {
     }
 
     @Test
-    public void testSearch() throws IOException {
+    public void case3_search2() throws IOException {
         // 准备测试数据
         Document doc1 = new Document("Solon is a lightweight Java web framework");
-        Document doc2 = new Document("Spring is a popular Java framework");
+        Document doc2 = new Document("vert.x is a popular Java framework");
 
         repository.store(Arrays.asList(doc1, doc2));
 
@@ -124,7 +115,6 @@ public class RedisRepositoryTest {
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get();
 
-        //1.加载文档（测试用）
         DocumentLoader loader = null;
         if (text.contains("</html>")) {
             loader = new HtmlSimpleLoader(text.getBytes(StandardCharsets.UTF_8));
@@ -138,24 +128,5 @@ public class RedisRepositoryTest {
                 .split(loader.load());
 
         repository.store(documents); //（推入文档）
-    }
-
-    // 测试专用的 MockEmbeddingModel
-    private static class MockEmbeddingModel extends EmbeddingModel {
-        public MockEmbeddingModel() {
-            super(new EmbeddingConfig());
-        }
-
-        @Override
-        public float[] embed(String content) {
-            return new float[]{0.1f, 0.2f, 0.3f};
-        }
-
-        @Override
-        public void embed(List<Document> documents) {
-            for (Document doc : documents) {
-                doc.embedding(new float[]{0.1f, 0.2f, 0.3f});
-            }
-        }
     }
 }

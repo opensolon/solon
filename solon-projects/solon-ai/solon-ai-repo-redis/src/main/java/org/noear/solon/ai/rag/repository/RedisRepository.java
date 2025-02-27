@@ -19,18 +19,18 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
+import org.noear.solon.ai.rag.util.SimilarityUtil;
 import org.noear.solon.lang.Preview;
 
 import redis.clients.jedis.PipelineBase;
@@ -60,10 +60,6 @@ public class RedisRepository implements RepositoryStorable {
      * 向量距离度量方式
      */
     private static final String DISTANCE_METRIC = "COSINE";
-    /**
-     * 向量维度
-     */
-    private static final int VECTOR_DIM = 3;
     /**
      * 初始容量
      */
@@ -118,41 +114,52 @@ public class RedisRepository implements RepositoryStorable {
         this.indexName = indexName;
         this.keyPrefix = keyPrefix;
 
-        // 检查并初始化索引
-        try {
-            client.ftInfo(indexName);
-        } catch (Exception e) {
-            // 索引不存在时才创建
-            initializeIndex();
-        }
+        buildIndex();
     }
 
     /**
      * 初始化向量索引
      */
-    private void initializeIndex() {
-        // 配置向量索引参数
-        Map<String, Object> vectorArgs = new HashMap<>();
-        vectorArgs.put("TYPE", VECTOR_TYPE);
-        vectorArgs.put("DIM", String.valueOf(VECTOR_DIM));
-        vectorArgs.put("DISTANCE_METRIC", DISTANCE_METRIC);
-        vectorArgs.put("INITIAL_CAP", String.valueOf(INITIAL_CAP));
-        vectorArgs.put("M", String.valueOf(M));
-        vectorArgs.put("EF_CONSTRUCTION", String.valueOf(EF_CONSTRUCTION));
+    public void buildIndex() {
+        try {
+            // 检查并初始化索引
+            client.ftInfo(indexName);
+        } catch (Exception e) {
+            // 索引不存在时才创建
 
-        // 定义索引字段
-        SchemaField[] fields = new SchemaField[]{
-                new TextField("content"),  // 文本内容字段
-                new VectorField("embedding", VectorField.VectorAlgorithm.HNSW, vectorArgs),  // 向量字段
-                new TagField("metadata")  // 元数据字段
-        };
+            try {
+                int dim = embeddingModel.embed("test").length;
 
-        // 创建索引
-        client.ftCreate(indexName,
-                FTCreateParams.createParams()
-                        .on(IndexDataType.HASH)
-                        .prefix(keyPrefix),
-                fields);
+                // 配置向量索引参数
+                Map<String, Object> vectorArgs = new HashMap<>();
+                vectorArgs.put("TYPE", VECTOR_TYPE);
+                vectorArgs.put("DIM", String.valueOf(dim));
+                vectorArgs.put("DISTANCE_METRIC", DISTANCE_METRIC);
+                vectorArgs.put("INITIAL_CAP", String.valueOf(INITIAL_CAP));
+                vectorArgs.put("M", String.valueOf(M));
+                vectorArgs.put("EF_CONSTRUCTION", String.valueOf(EF_CONSTRUCTION));
+
+                // 定义索引字段
+                SchemaField[] fields = new SchemaField[]{
+                        new TextField("content"),  // 文本内容字段
+                        new VectorField("embedding", VectorField.VectorAlgorithm.HNSW, vectorArgs),  // 向量字段
+                        new TagField("metadata")  // 元数据字段
+                };
+
+                // 创建索引
+                client.ftCreate(indexName,
+                        FTCreateParams.createParams()
+                                .on(IndexDataType.HASH)
+                                .prefix(keyPrefix),
+                        fields);
+            } catch (Exception err) {
+                throw new RuntimeException(err);
+            }
+        }
+    }
+
+    public void dropIndex() {
+        client.ftDropIndex(indexName);
     }
 
     /**
@@ -170,39 +177,41 @@ public class RedisRepository implements RepositoryStorable {
         // 批量embedding
         for (List<Document> sub : ListUtil.partition(documents, 20)) {
             embeddingModel.embed(sub);
-        }
 
-        PipelineBase pipeline = null;
-        try {
-            pipeline = client.pipelined();
-            for (Document doc : documents) {
-                if (doc.getId() == null) {
-                    doc.id(Utils.uuid());
+            PipelineBase pipeline = null;
+            try {
+                pipeline = client.pipelined();
+                for (Document doc : sub) {
+                    if (doc.getId() == null) {
+                        doc.id(Utils.uuid());
+                    }
+
+                    String key = keyPrefix + doc.getId();
+                    float[] embedding = doc.getEmbedding();
+
+                    // 将向量转换为字节数组
+                    byte[] bytes = new byte[embedding.length * 4];
+                    ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                    buffer.order(ByteOrder.LITTLE_ENDIAN);
+                    for (float f : embedding) {
+                        buffer.putFloat(f);
+                    }
+
+                    String metadataJson = ONode.stringify(doc.getMetadata());
+
+                    // 存储文档字段
+                    Map<byte[], byte[]> fields = new HashMap<>(16);
+                    fields.put("content".getBytes(StandardCharsets.UTF_8), doc.getContent().getBytes(StandardCharsets.UTF_8));
+                    fields.put("embedding".getBytes(StandardCharsets.UTF_8), bytes);
+                    fields.put("metadata".getBytes(StandardCharsets.UTF_8), metadataJson.getBytes(StandardCharsets.UTF_8));
+
+                    pipeline.hmset(key.getBytes(StandardCharsets.UTF_8), fields);
                 }
-
-                String key = keyPrefix + doc.getId();
-                float[] embedding = doc.getEmbedding();
-
-                // 将向量转换为字节数组
-                byte[] bytes = new byte[VECTOR_DIM * 4];
-                ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                buffer.order(ByteOrder.LITTLE_ENDIAN);
-                for (float f : embedding) {
-                    buffer.putFloat(f);
+                pipeline.sync();
+            } finally {
+                if (pipeline != null) {
+                    pipeline.close();
                 }
-
-                // 存储文档字段
-                Map<byte[], byte[]> fields = new HashMap<>(16);
-                fields.put("content".getBytes(StandardCharsets.UTF_8), doc.getContent().getBytes(StandardCharsets.UTF_8));
-                fields.put("embedding".getBytes(StandardCharsets.UTF_8), bytes);
-                fields.put("metadata".getBytes(StandardCharsets.UTF_8), "{}".getBytes(StandardCharsets.UTF_8));
-
-                pipeline.hmset(key.getBytes(StandardCharsets.UTF_8), fields);
-            }
-            pipeline.sync();
-        } finally {
-            if (pipeline != null) {
-                pipeline.close();
             }
         }
     }
@@ -244,12 +253,17 @@ public class RedisRepository implements RepositoryStorable {
 
         SearchResult result = client.ftSearch(indexName, query);
 
-        List<Document> documents = new ArrayList<>();
-        for (redis.clients.jedis.search.Document doc : result.getDocuments()) {
-            String id = doc.getId().substring(keyPrefix.length());
-            String content = doc.getString("content");
-            documents.add(new Document(id, content, new HashMap<>(16), 1.0f));
-        }
-        return documents;
+        //再次过滤下
+        return SimilarityUtil.filter(condition, result.getDocuments()
+                .stream()
+                .map(this::toDocument));
+    }
+
+    private Document toDocument(redis.clients.jedis.search.Document jDoc) {
+        String id = jDoc.getId().substring(keyPrefix.length());
+        String content = jDoc.getString("content");
+        Map<String, Object> metadata = ONode.deserialize(jDoc.getString("metadata"), Map.class);
+
+        return new Document(id, content, metadata, jDoc.getScore());
     }
 }
