@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.image;
 
+import org.noear.solon.Utils;
+
 import java.util.Base64;
 
 /**
@@ -31,37 +33,64 @@ public class Image {
         //...用于反序列化
     }
 
+    /**
+     * 由 url 构建
+     */
     public static Image ofUrl(String url) {
         Image img = new Image();
         img.url = url;
         return img;
     }
 
-    public static Image ofBase64(String base64) {
+    /**
+     * 由 base64String 构建
+     */
+    public static Image ofBase64(String base64String) {
         Image img = new Image();
-        img.b64_json = base64;
+        img.b64_json = base64String;
         return img;
     }
 
+    /**
+     * 由 base64 构建
+     */
     public static Image ofBase64(byte[] base64) {
         Image img = new Image();
         img.b64_json = Base64.getEncoder().encodeToString(base64);
         return img;
     }
 
+    /**
+     * 获取 base64
+     */
     public String getB64Json() {
         return b64_json;
     }
 
+    /**
+     * 获取 url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * 转为带媒体信息的字符串
+     */
+    public String toMediaString() {
+        if (Utils.isEmpty(b64_json)) {
+            return url;
+        } else {
+            return "data:image/jpeg;base64," + b64_json;
+        }
+    }
+
     @Override
     public String toString() {
-        return "Image{" +
-                "b64_json='" + b64_json + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        if (Utils.isEmpty(b64_json)) {
+            return url;
+        } else {
+            return b64_json;
+        }
     }
 }

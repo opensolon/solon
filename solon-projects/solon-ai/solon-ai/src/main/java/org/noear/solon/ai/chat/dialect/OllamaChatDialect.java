@@ -58,17 +58,8 @@ public class OllamaChatDialect extends AbstractChatDialect {
         if (Utils.isEmpty(msg.getImages())) {
             oNode.set("content", msg.getContent());
         } else {
-            List<String> imageUrls = new ArrayList<>();
-            for (Image img : msg.getImages()) {
-                if (Utils.isEmpty(img.getB64Json())) {
-                    imageUrls.add(img.getUrl());
-                } else {
-                    imageUrls.add(img.getB64Json());
-                }
-            }
-
             oNode.set("content", msg.getContent());
-            oNode.set("images", imageUrls);
+            oNode.set("images", msg.getImages());
         }
     }
 

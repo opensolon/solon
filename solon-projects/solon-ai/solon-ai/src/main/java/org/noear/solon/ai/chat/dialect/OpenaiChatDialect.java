@@ -49,18 +49,6 @@ public class OpenaiChatDialect extends AbstractChatDialect {
         return false;
     }
 
-    protected void buildChatMessageImageNodeDo(ONode oNode, Image img) {
-        oNode.set("type", "image_url");
-
-        if (Utils.isNotEmpty(img.getUrl())) {
-            //url
-            oNode.getOrNew("image_url").set("url", img.getUrl());
-        } else {
-            //base64
-            oNode.getOrNew("image_url").set("url", "data:image/jpeg;base64," + img.getB64Json());
-        }
-    }
-
     @Override
     protected void buildReqFunctionsNode(ONode n, ChatConfig config, ChatOptions options, ChatMessage lastMessage) {
         if (lastMessage.getRole() != ChatRole.TOOL) {
