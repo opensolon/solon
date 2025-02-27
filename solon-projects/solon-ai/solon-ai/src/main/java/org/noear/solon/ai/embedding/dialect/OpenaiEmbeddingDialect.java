@@ -19,6 +19,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.embedding.Embedding;
 import org.noear.solon.ai.embedding.EmbeddingConfig;
+import org.noear.solon.ai.embedding.EmbeddingException;
 import org.noear.solon.ai.embedding.EmbeddingResponse;
 
 import java.util.List;
@@ -46,18 +47,23 @@ public class OpenaiEmbeddingDialect extends AbstractEmbeddingDialect {
         ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
-        List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
-        AiUsage usage = null;
 
-        if (oResp.contains("usage")) {
-            ONode oUsage = oResp.get("usage");
-            usage = new AiUsage(
-                    oUsage.get("prompt_tokens").getInt(),
-                    0,
-                    oUsage.get("total_tokens").getInt()
-            );
+        if (oResp.contains("error")) {
+            return new EmbeddingResponse(model, new EmbeddingException(oResp.get("error").getString()), null, null);
+        } else {
+            List<Embedding> data = oResp.get("data").toObjectList(Embedding.class);
+            AiUsage usage = null;
+
+            if (oResp.contains("usage")) {
+                ONode oUsage = oResp.get("usage");
+                usage = new AiUsage(
+                        oUsage.get("prompt_tokens").getInt(),
+                        0,
+                        oUsage.get("total_tokens").getInt()
+                );
+            }
+
+            return new EmbeddingResponse(model, null, data, usage);
         }
-
-        return new EmbeddingResponse(model, data, usage);
     }
 }

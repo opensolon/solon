@@ -16,6 +16,8 @@
 package org.noear.solon.ai.embedding;
 
 import org.noear.solon.ai.AiUsage;
+import org.noear.solon.ai.chat.ChatException;
+import org.noear.solon.lang.Nullable;
 
 import java.util.List;
 
@@ -27,11 +29,13 @@ import java.util.List;
  */
 public class EmbeddingResponse {
     private final String model;
+    private final EmbeddingException error;
     private final List<Embedding> data;
     private final AiUsage usage;
 
-    public EmbeddingResponse(String model, List<Embedding> data, AiUsage usage) {
+    public EmbeddingResponse(String model, EmbeddingException error, List<Embedding> data, AiUsage usage) {
         this.model = model;
+        this.error = error;
         this.data = data;
         this.usage = usage;
     }
@@ -41,6 +45,14 @@ public class EmbeddingResponse {
      */
     public String getModel() {
         return model;
+    }
+
+    /**
+     * 获取错误
+     */
+    @Nullable
+    public EmbeddingException getError() {
+        return error;
     }
 
     /**

@@ -28,11 +28,13 @@ import java.util.List;
  */
 public class ImageResponse {
     private final String model;
+    private final ImageException error;
     private final List<Image> data;
     private final AiUsage usage;
 
-    public ImageResponse(String model, List<Image> data, AiUsage usage) {
+    public ImageResponse(String model, ImageException error, List<Image> data, AiUsage usage) {
         this.model = model;
+        this.error = error;
         this.data = data;
         this.usage = usage;
     }
@@ -44,6 +46,12 @@ public class ImageResponse {
         return model;
     }
 
+    /**
+     * 获取异常
+     */
+    public ImageException getError() {
+        return error;
+    }
 
     public boolean hasData() {
         return Utils.isNotEmpty(data);

@@ -77,7 +77,7 @@ public class OpenaiChatDialect extends AbstractChatDialect {
         }
 
         if (oResp.contains("error")) {
-            resp.setError(new ChatException(oResp.get("error").get("message").getString()));
+            resp.setError(new ChatException(oResp.get("error").getString()));
         } else {
             resp.setModel(oResp.get("model").getString());
 

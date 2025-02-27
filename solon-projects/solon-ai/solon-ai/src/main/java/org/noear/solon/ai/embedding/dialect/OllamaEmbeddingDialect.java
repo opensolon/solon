@@ -19,6 +19,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.embedding.Embedding;
 import org.noear.solon.ai.embedding.EmbeddingConfig;
+import org.noear.solon.ai.embedding.EmbeddingException;
 import org.noear.solon.ai.embedding.EmbeddingResponse;
 
 import java.util.ArrayList;
@@ -48,24 +49,28 @@ public class OllamaEmbeddingDialect extends AbstractEmbeddingDialect {
 
         String model = oResp.get("model").getString();
 
-        List<Embedding> data = new ArrayList<>();
-        int dataIndex = 0;
-        for (float[] embed : oResp.get("embeddings").toObjectList(float[].class)) {
-            data.add(new Embedding(dataIndex, embed));
-            dataIndex++;
+        if (oResp.contains("error")) {
+            return new EmbeddingResponse(model, new EmbeddingException(oResp.get("error").getString()), null, null);
+        } else {
+            List<Embedding> data = new ArrayList<>();
+            int dataIndex = 0;
+            for (float[] embed : oResp.get("embeddings").toObjectList(float[].class)) {
+                data.add(new Embedding(dataIndex, embed));
+                dataIndex++;
+            }
+
+            AiUsage usage = null;
+
+            if (oResp.contains("prompt_eval_count")) {
+                int prompt_eval_count = oResp.get("prompt_eval_count").getInt();
+                usage = new AiUsage(
+                        prompt_eval_count,
+                        0,
+                        prompt_eval_count
+                );
+            }
+
+            return new EmbeddingResponse(model, null, data, usage);
         }
-
-        AiUsage usage = null;
-
-        if (oResp.contains("prompt_eval_count")) {
-            int prompt_eval_count = oResp.get("prompt_eval_count").getInt();
-            usage = new AiUsage(
-                    prompt_eval_count,
-                    0,
-                    prompt_eval_count
-            );
-        }
-
-        return new EmbeddingResponse(model, data, usage);
     }
 }

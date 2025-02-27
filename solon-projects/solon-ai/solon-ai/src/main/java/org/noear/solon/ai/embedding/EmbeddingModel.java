@@ -47,7 +47,12 @@ public class EmbeddingModel implements AiModel {
      * 快捷嵌入
      */
     public float[] embed(String text) throws IOException {
-        return input(text).call().getData().get(0).getEmbedding();
+        EmbeddingResponse resp = input(text).call();
+        if(resp.getError() != null) {
+            throw resp.getError();
+        }
+
+        return resp.getData().get(0).getEmbedding();
     }
 
     /**
@@ -57,7 +62,12 @@ public class EmbeddingModel implements AiModel {
         List<String> texts = new ArrayList<>();
         documents.forEach(d -> texts.add(d.getContent()));
 
-        List<Embedding> embeddings = input(texts).call().getData();
+        EmbeddingResponse resp = input(texts).call();
+        if(resp.getError() != null) {
+            throw resp.getError();
+        }
+
+        List<Embedding> embeddings = resp.getData();
 
         for (int i = 0; i < embeddings.size(); ++i) {
             Document doc = documents.get(i);

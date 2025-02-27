@@ -11,7 +11,7 @@ public class TestUtils {
     public static ChatModel getChatModelOfGiteeai() {
         final String apiUrl = "https://ai.gitee.com/v1/chat/completions";
         final String apkKey = "JQC6M0GTNPGSCEXZOBUGUX0HVHCOLDIMN6XOSSSA";
-        final String model = "Qwen2.5-72B-Instruct";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
+        final String model = "InternVL2-8B";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
 
         return ChatModel.of(apiUrl).apiKey(apkKey).model(model).build(); //4.初始化语言模型
     }

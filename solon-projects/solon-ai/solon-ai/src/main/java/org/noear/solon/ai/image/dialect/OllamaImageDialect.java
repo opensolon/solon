@@ -19,6 +19,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.image.Image;
 import org.noear.solon.ai.image.ImageConfig;
+import org.noear.solon.ai.image.ImageException;
 import org.noear.solon.ai.image.ImageResponse;
 
 import java.util.List;
@@ -44,18 +45,23 @@ public class OllamaImageDialect extends AbstractImageDialect {
         ONode oResp = ONode.load(respJson);
 
         String model = oResp.get("model").getString();
-        List<Image> data = oResp.get("data").toObjectList(Image.class);
 
-        AiUsage usage = null;
-        if (oResp.contains("prompt_eval_count")) {
-            int prompt_eval_count = oResp.get("prompt_eval_count").getInt();
-            usage = new AiUsage(
-                    prompt_eval_count,
-                    0,
-                    prompt_eval_count
-            );
+        if (oResp.contains("error")) {
+            return new ImageResponse(model, new ImageException(oResp.get("error").getString()), null, null);
+        } else {
+            List<Image> data = oResp.get("data").toObjectList(Image.class);
+
+            AiUsage usage = null;
+            if (oResp.contains("prompt_eval_count")) {
+                int prompt_eval_count = oResp.get("prompt_eval_count").getInt();
+                usage = new AiUsage(
+                        prompt_eval_count,
+                        0,
+                        prompt_eval_count
+                );
+            }
+
+            return new ImageResponse(model, null, data, usage);
         }
-
-        return new ImageResponse(model, data, usage);
     }
 }
