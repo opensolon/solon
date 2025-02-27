@@ -80,58 +80,64 @@ public class MilvusRepository implements RepositoryStorable {
 
         if (exists == false) {
             // 构建一个collection，用于存储document
-            CreateCollectionReq.CollectionSchema schema = client.createSchema();
-            schema.addField(AddFieldReq.builder()
-                    .fieldName("id")
-                    .dataType(DataType.VarChar)
-                    .maxLength(64)
-                    .isPrimaryKey(true)
-                    .autoID(false)
-                    .build());
-            schema.addField(AddFieldReq.builder()
-                    .fieldName("embedding")
-                    .dataType(DataType.FloatVector)
-                    .dimension(1024)
-                    .build());
-            schema.addField(AddFieldReq.builder()
-                    .fieldName("content")
-                    .dataType(DataType.VarChar)
-                    .maxLength(65535)
-                    .build());
-            schema.addField(AddFieldReq.builder()
-                    .fieldName("metadata")
-                    .dataType(DataType.JSON)
-                    .build());
+            try {
+                CreateCollectionReq.CollectionSchema schema = client.createSchema();
+                schema.addField(AddFieldReq.builder()
+                        .fieldName("id")
+                        .dataType(DataType.VarChar)
+                        .maxLength(64)
+                        .isPrimaryKey(true)
+                        .autoID(false)
+                        .build());
 
-            IndexParam indexParamForIdField = IndexParam.builder()
-                    .fieldName("id")
-                    .build();
+                int dim = embeddingModel.embed("test").length;
+                schema.addField(AddFieldReq.builder()
+                        .fieldName("embedding")
+                        .dataType(DataType.FloatVector)
+                        .dimension(dim)
+                        .build());
+                schema.addField(AddFieldReq.builder()
+                        .fieldName("content")
+                        .dataType(DataType.VarChar)
+                        .maxLength(65535)
+                        .build());
+                schema.addField(AddFieldReq.builder()
+                        .fieldName("metadata")
+                        .dataType(DataType.JSON)
+                        .build());
 
-            IndexParam indexParamForVectorField = IndexParam.builder()
-                    .fieldName("embedding")
-                    .indexName("embedding_index")
-                    .indexType(IndexParam.IndexType.IVF_FLAT)
-                    .metricType(IndexParam.MetricType.COSINE)
-                    .extraParams(Collections.singletonMap("nlist", 128))
-                    .build();
+                IndexParam indexParamForIdField = IndexParam.builder()
+                        .fieldName("id")
+                        .build();
 
-            List<IndexParam> indexParams = new ArrayList<>();
-            indexParams.add(indexParamForIdField);
-            indexParams.add(indexParamForVectorField);
+                IndexParam indexParamForVectorField = IndexParam.builder()
+                        .fieldName("embedding")
+                        .indexName("embedding_index")
+                        .indexType(IndexParam.IndexType.IVF_FLAT)
+                        .metricType(IndexParam.MetricType.COSINE)
+                        .extraParams(Collections.singletonMap("nlist", 128))
+                        .build();
 
-            CreateCollectionReq customizedSetupReq1 = CreateCollectionReq.builder()
-                    .collectionName(collectionName)
-                    .collectionSchema(schema)
-                    .indexParams(indexParams)
-                    .build();
+                List<IndexParam> indexParams = new ArrayList<>();
+                indexParams.add(indexParamForIdField);
+                indexParams.add(indexParamForVectorField);
 
-            client.createCollection(customizedSetupReq1);
+                CreateCollectionReq customizedSetupReq1 = CreateCollectionReq.builder()
+                        .collectionName(collectionName)
+                        .collectionSchema(schema)
+                        .indexParams(indexParams)
+                        .build();
 
-            GetLoadStateReq customSetupLoadStateReq1 = GetLoadStateReq.builder()
-                    .collectionName(collectionName)
-                    .build();
+                client.createCollection(customizedSetupReq1);
 
-            client.getLoadState(customSetupLoadStateReq1);
+                GetLoadStateReq customSetupLoadStateReq1 = GetLoadStateReq.builder()
+                        .collectionName(collectionName)
+                        .build();
+
+                client.getLoadState(customSetupLoadStateReq1);
+            } catch (Exception err) {
+                throw new RuntimeException(err);
+            }
         }
     }
 

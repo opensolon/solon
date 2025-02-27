@@ -3,13 +3,13 @@ package org.noear.solon.ai.rag.repository;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.ai.rag.RepositoryStorable;
@@ -31,15 +31,15 @@ public class MilvusRepositoryTest {
             .build();
     private MilvusClientV2 client = new MilvusClientV2(connectConfig);
     private String collectionName = "solonAiRepo";
+    private MilvusRepository repository;
 
-    @Test
-    public void case1_init() throws Exception {
-        MilvusRepository repository = new MilvusRepository(
+    @BeforeEach
+    public void setup() throws Exception {
+        repository = new MilvusRepository(
                 TestUtils.getEmbeddingModel(),
                 client,
                 collectionName); //3.初始化知识库
 
-        repository.dropCollection();
         repository.buildCollection();
 
         load(repository, "https://solon.noear.org/article/about?format=md");
@@ -47,34 +47,22 @@ public class MilvusRepositoryTest {
         load(repository, "https://h5.noear.org/readme.htm");
     }
 
+    @AfterEach
+    public void cleanup() {
+        repository.dropCollection();
+    }
+
     @Test
-    public void case2_search() throws Exception {
-        MilvusRepository repository = new MilvusRepository(
-                TestUtils.getEmbeddingModel(),
-                client,
-                collectionName);
-
+    public void case1_search() throws Exception {
         List<Document> list = repository.search("solon");
-        if (list != null) {
-            for (Document doc : list) {
-                System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
-            }
-        }
-
         assert list.size() == 4;
 
         list = repository.search("spring");
-        if (list != null) {
-            for (Document doc : list) {
-                System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
-            }
-        }
-
         assert list.size() == 0;
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {
-        String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
+        String text = HttpUtils.http(url).get();
 
         DocumentLoader loader = null;
         if (text.contains("</html>")) {
