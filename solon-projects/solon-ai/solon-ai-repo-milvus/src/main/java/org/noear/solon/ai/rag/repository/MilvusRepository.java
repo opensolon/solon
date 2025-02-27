@@ -223,10 +223,7 @@ public class MilvusRepository implements RepositoryStorable {
             doc.id(Utils.uuid());
         }
 
-        JsonObject jsonObj = gson.fromJson(gson.toJson(doc), JsonObject.class);
-        jsonObj.remove("score");
-
-        return jsonObj;
+        return gson.toJsonTree(doc).getAsJsonObject();
     }
 
     /**
