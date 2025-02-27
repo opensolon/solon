@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.FilterUtil;
 
@@ -43,14 +44,17 @@ public class InMemoryRepository implements RepositoryStorable {
 
     @Override
     public void store(List<Document> documents) throws IOException {
-        embeddingModel.embed(documents);
+        //做分块处理，避免太大
+        for (List<Document> subList : ListUtil.partition(documents, 20)) {
+            embeddingModel.embed(subList);
 
-        for (Document doc : documents) {
-            if (Utils.isEmpty(doc.getId())) {
-                doc.id(Utils.uuid());
+            for (Document doc : subList) {
+                if (Utils.isEmpty(doc.getId())) {
+                    doc.id(Utils.uuid());
+                }
+
+                store.put(doc.getId(), doc);
             }
-
-            store.put(doc.getId(), doc);
         }
     }
 
