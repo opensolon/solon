@@ -1,13 +1,13 @@
-
 solon.logging.logger:
   root:
     level: INFO
 
 solon.ai.repo:
   redis:
-    server: localhost:6379
-    db: 1
-    password: 123456
+    server: "127.0.0.1:6379"  # 改为你的 Redis Stack 地址
+    db: 0
+    maxTotal: 200
+#    password: 123456
 
 
 solon.ai.embed:
