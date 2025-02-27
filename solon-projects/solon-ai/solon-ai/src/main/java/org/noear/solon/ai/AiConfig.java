@@ -34,7 +34,7 @@ public class AiConfig {
     protected String provider;
     protected String model;
     protected final Map<String, String> headers = new LinkedHashMap<>();
-    protected Duration timeout = Duration.ofSeconds(30);
+    protected Duration timeout = Duration.ofSeconds(60);
 
     /// ///////////////////
 
