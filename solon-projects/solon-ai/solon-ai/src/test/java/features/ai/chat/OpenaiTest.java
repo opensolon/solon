@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.chat.message.ChatMessage;
-import org.noear.solon.ai.chat.message.UserMessage;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
@@ -96,7 +95,7 @@ public class OpenaiTest {
                 .build();
 
         ChatResponse resp = chatModel
-                .prompt(UserMessage.augment("solon 框架的作者是谁？", new Document()
+                .prompt(ChatMessage.augment("solon 框架的作者是谁？", new Document()
                         .title("概述")
                         .url("https://solon.noear.org/article/about")))
                 .call();

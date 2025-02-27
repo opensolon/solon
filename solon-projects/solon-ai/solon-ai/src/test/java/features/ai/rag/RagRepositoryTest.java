@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
 import org.noear.solon.ai.chat.message.ChatMessage;
-import org.noear.solon.ai.chat.message.UserMessage;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.repository.InMemoryRepository;
@@ -42,7 +41,7 @@ public class RagRepositoryTest {
 
         //3.应用
         ChatResponse resp = chatModel
-                .prompt(UserMessage.augment(query, repository.search(query))) //3.1.搜索知识库（结果，作为提示语）
+                .prompt(ChatMessage.augment(query, repository.search(query))) //3.1.搜索知识库（结果，作为提示语）
                 .call(); //3.2.调用大模型
 
         //打印

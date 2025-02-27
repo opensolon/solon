@@ -2,7 +2,7 @@ package features.ai.rag;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatResponse;
-import org.noear.solon.ai.chat.message.UserMessage;
+import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.repository.WebSearchRepository;
 
@@ -20,7 +20,7 @@ public class WebSearchTest {
         List<Document> context = repository.search(query);
 
         ChatResponse resp = TestUtils.getChatModelOfGiteeai()
-                .prompt(UserMessage.augment(query, context))
+                .prompt(ChatMessage.augment(query, context))
                 .call();
 
         //打印
@@ -35,7 +35,7 @@ public class WebSearchTest {
         List<Document> context = repository.search(query);
 
         ChatResponse resp = TestUtils.getChatModelOfGiteeai()
-                .prompt(UserMessage.template("${query} \n\n 请参考以下内容回答：${context}")
+                .prompt(ChatMessage.template("${query} \n\n 请参考以下内容回答：${context}")
                         .param("query", query)
                         .param("context", context)
                         .generate())

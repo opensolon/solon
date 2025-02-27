@@ -3,7 +3,7 @@ package features.ai.chat;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.chat.ChatResponse;
-import org.noear.solon.ai.chat.message.UserMessage;
+import org.noear.solon.ai.chat.message.ChatMessage;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.rx.SimpleSubscriber;
 import org.reactivestreams.Publisher;
@@ -95,7 +95,7 @@ public class GiteeaiTest {
                 .build();
 
         ChatResponse resp = chatModel
-                .prompt(UserMessage.augment("solon 框架的作者是谁？", new Document()
+                .prompt(ChatMessage.augment("solon 框架的作者是谁？", new Document()
                         .title("概述")
                         .summary("Solon 框架由杭州无耳科技有限公司（下属 Noear 团队）开发并开源。是新一代，Java 企业级应用开发框架。从零开始构建，有自主的标准规范与开放生态。近16万行代码。")
                         .url("https://solon.noear.org/article/about")))
