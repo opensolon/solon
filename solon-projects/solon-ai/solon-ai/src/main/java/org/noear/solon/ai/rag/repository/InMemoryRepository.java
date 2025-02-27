@@ -21,7 +21,7 @@ import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
 import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
-import org.noear.solon.ai.rag.util.FilterUtil;
+import org.noear.solon.ai.rag.util.SimilarityUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,6 +71,8 @@ public class InMemoryRepository implements RepositoryStorable {
 
     @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        return FilterUtil.similarityFilter(condition, embeddingModel, store.values().stream());
+        float[] queryEmbed = embeddingModel.embed(condition.getQuery());
+
+        return SimilarityUtil.scoreAndfilter(condition, store.values().stream(), queryEmbed);
     }
 }

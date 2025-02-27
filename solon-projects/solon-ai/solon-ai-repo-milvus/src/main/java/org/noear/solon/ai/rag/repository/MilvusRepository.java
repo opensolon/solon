@@ -29,7 +29,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
-import org.noear.solon.ai.rag.util.FilterUtil;
+import org.noear.solon.ai.rag.util.SimilarityUtil;
 import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 
@@ -44,6 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Milvus 矢量存储知识库
@@ -205,16 +206,12 @@ public class MilvusRepository implements RepositoryStorable {
 
         SearchResp searchResp = client.search(searchReq);
 
-
-        List<Document> list = new ArrayList<>();
-
-        List<List<SearchResp.SearchResult>> searchResults = searchResp.getSearchResults();
-        for (List<SearchResp.SearchResult> results : searchResults) {
-            results.stream().map(this::toDocument).forEach(list::add);
-        }
+        Stream<Document> docs = searchResp.getSearchResults().stream()
+                .flatMap(r -> r.stream())
+                .map(this::toDocument);
 
         //再次过滤下
-        return FilterUtil.filter(condition, list.stream());
+        return SimilarityUtil.filter(condition, docs);
     }
 
     //文档转为 JsonObject

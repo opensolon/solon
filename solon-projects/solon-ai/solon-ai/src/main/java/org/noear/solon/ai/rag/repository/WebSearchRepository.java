@@ -21,7 +21,7 @@ import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.Repository;
 import org.noear.solon.ai.rag.util.QueryCondition;
-import org.noear.solon.ai.rag.util.FilterUtil;
+import org.noear.solon.ai.rag.util.SimilarityUtil;
 import org.noear.solon.lang.Nullable;
 import org.noear.solon.net.http.HttpUtils;
 
@@ -85,10 +85,11 @@ public class WebSearchRepository implements Repository {
             //如果有嵌入模型设置，则做相互度排序和二次过滤
             embeddingModel.embed(docs);
 
-            return FilterUtil.similarityFilter(condition, embeddingModel, docs.stream());
+            float[] queryEmbed = embeddingModel.embed(condition.getQuery());
+            return SimilarityUtil.scoreAndfilter(condition, docs.stream(), queryEmbed);
+        } else {
+            return docs;
         }
-
-        return docs;
     }
 
     public static Builder of(String apiUrl) {
