@@ -29,10 +29,10 @@ public class RagRepositoryTest {
     @Test
     public void rag_case1() throws Exception {
         //1.构建模型
-        ChatModel chatModel = TestUtils.getChatModelOfGiteeai();
+        ChatModel chatModel = TestUtils.getChatModel();
 
         //2.构建知识库
-        InMemoryRepository repository = new InMemoryRepository(TestUtils.getEmbeddingModelOfOllama()); //3.初始化知识库
+        InMemoryRepository repository = new InMemoryRepository(TestUtils.getEmbeddingModel()); //3.初始化知识库
         load(repository, "https://solon.noear.org/article/about?format=md");
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");

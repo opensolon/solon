@@ -72,7 +72,7 @@ public class RedisRepositoryTest {
     @Test
     public void testStore() throws IOException {
         // 准备测试文档，显式指定 ID
-        Document doc = new Document("test1", "Test content", new HashMap<>());
+        Document doc = new Document("Test content");
         repository.store(Collections.singletonList(doc));
 
         // 验证存储
@@ -83,7 +83,7 @@ public class RedisRepositoryTest {
     @Test
     public void testRemove() throws IOException {
         // 准备并存储文档，显式指定 ID
-        Document doc = new Document("test2", "Test content", new HashMap<>());
+        Document doc = new Document("Test content");
         repository.store(Collections.singletonList(doc));
         String key = "test_doc:" + doc.getId();
 
@@ -100,8 +100,8 @@ public class RedisRepositoryTest {
     @Test
     public void testSearch() throws IOException {
         // 准备测试数据
-        Document doc1 = new Document("doc1", "Solon is a lightweight Java web framework", new HashMap<>());
-        Document doc2 = new Document("doc2", "Spring is a popular Java framework", new HashMap<>());
+        Document doc1 = new Document("Solon is a lightweight Java web framework");
+        Document doc2 = new Document("Spring is a popular Java framework");
 
         repository.store(Arrays.asList(doc1, doc2));
 

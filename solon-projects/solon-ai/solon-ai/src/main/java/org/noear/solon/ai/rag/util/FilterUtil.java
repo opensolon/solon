@@ -32,6 +32,14 @@ import java.util.stream.Stream;
  */
 public final class FilterUtil {
 
+    public static List<Document> filter(QueryCondition condition, Stream<Document> docs) throws IOException {
+        return docs.filter(condition.getFilter())
+                .filter(doc -> filterDo(doc, condition))
+                .sorted(Comparator.comparing(Document::getScore).reversed())
+                .limit(condition.getLimit())
+                .collect(Collectors.toList());
+    }
+
     public static List<Document> similarityFilter(QueryCondition condition, EmbeddingModel embeddingModel, Stream<Document> docs) throws IOException {
         float[] queryEmbed = embeddingModel.embed(condition.getQuery());
 
@@ -46,7 +54,7 @@ public final class FilterUtil {
                 .map(doc -> mapDo(doc, queryEmbed))
                 .filter(doc -> filterDo(doc, condition))
                 .sorted(Comparator.comparing(Document::getScore).reversed())
-                .limit((long) condition.getLimit())
+                .limit(condition.getLimit())
                 .collect(Collectors.toList());
     }
 

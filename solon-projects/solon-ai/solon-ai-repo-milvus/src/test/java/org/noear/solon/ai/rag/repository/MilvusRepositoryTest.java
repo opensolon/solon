@@ -1,6 +1,7 @@
 package org.noear.solon.ai.rag.repository;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,12 @@ import io.milvus.v2.client.MilvusClientV2;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.ai.chat.ChatModel;
 import org.noear.solon.ai.rag.Document;
+import org.noear.solon.ai.rag.DocumentLoader;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.loader.HtmlSimpleLoader;
+import org.noear.solon.ai.rag.loader.MarkdownLoader;
+import org.noear.solon.ai.rag.splitter.RegexTextSplitter;
+import org.noear.solon.ai.rag.splitter.SplitterPipeline;
 import org.noear.solon.ai.rag.splitter.TokenSizeTextSplitter;
 import org.noear.solon.net.http.HttpUtils;
 import org.slf4j.Logger;
@@ -18,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class MilvusRepositoryTest {
     private static final Logger log = LoggerFactory.getLogger(MilvusRepositoryTest.class);
-    private static String milvusUri = "http://IP:端口";
+    private static String milvusUri = "http://localhost:19530";
 
     private ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(milvusUri)
@@ -27,67 +33,61 @@ public class MilvusRepositoryTest {
     private String collectionName = "solonAiRepo";
 
     @Test
-    public void rag_case1() throws Exception {
-        try {
-            //1.构建模型
-            ChatModel chatModel = TestUtils.getChatModelOfGiteeai();
+    public void case1_init() throws Exception {
+        MilvusRepository repository = new MilvusRepository(
+                TestUtils.getEmbeddingModel(),
+                client,
+                collectionName); //3.初始化知识库
 
-            //2.构建知识库
-            MilvusRepository repository = new MilvusRepository(
-                    TestUtils.getEmbeddingModelOfGiteeai(),
-                    client,
-                    collectionName); //3.初始化知识库
+        repository.dropCollection();
+        repository.buildCollection();
 
-            repository.dropCollection();
-            repository.buildCollection();
-
-            load(repository, "https://solon.noear.org/article/about?format=md");
-            load(repository, "https://h5.noear.org/more.htm");
-            load(repository, "https://h5.noear.org/readme.htm");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        load(repository, "https://solon.noear.org/article/about?format=md");
+        load(repository, "https://h5.noear.org/more.htm");
+        load(repository, "https://h5.noear.org/readme.htm");
     }
 
     @Test
-    public void searchTest() throws Exception {
-        try {
-            //1.构建模型
-            ChatModel chatModel = TestUtils.getChatModelOfGiteeai();
+    public void case2_search() throws Exception {
+        MilvusRepository repository = new MilvusRepository(
+                TestUtils.getEmbeddingModel(),
+                client,
+                collectionName);
 
-            //2.构建知识库
-            MilvusRepository repository = new MilvusRepository(
-                    TestUtils.getEmbeddingModelOfGiteeai(),
-                    client,
-                    collectionName);
-
-            //3.初始化知识库
-            List<Document> list = repository.search("solon");
-            if (list != null) {
-                for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
-                }
+        List<Document> list = repository.search("solon");
+        if (list != null) {
+            for (Document doc : list) {
+                System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
             }
-
-            list = repository.search("spring");
-            if (list != null) {
-                for (Document doc : list) {
-                    System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
         }
+
+        assert list.size() == 4;
+
+        list = repository.search("spring");
+        if (list != null) {
+            for (Document doc : list) {
+                System.out.println(doc.getId() + ":" + doc.getScore() + ":" + doc.getUrl() + "【" + doc.getContent() + "】");
+            }
+        }
+
+        assert list.size() == 0;
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {
         String text = HttpUtils.http(url).get(); //1.加载文档（测试用）
-        List<Document> documents = new TokenSizeTextSplitter(200).split(text).stream().map(doc -> {
-            doc.url(url);
-            return doc;
-        }).collect(Collectors.toList()); //2.分割文档（确保不超过 max-token-size）
+
+        DocumentLoader loader = null;
+        if (text.contains("</html>")) {
+            loader = new HtmlSimpleLoader(text.getBytes(StandardCharsets.UTF_8));
+        } else {
+            loader = new MarkdownLoader(text.getBytes(StandardCharsets.UTF_8));
+        }
+
+        List<Document> documents = new SplitterPipeline() //2.分割文档（确保不超过 max-token-size）
+                .next(new RegexTextSplitter())
+                .next(new TokenSizeTextSplitter(500))
+                .split(loader.load());
+
         repository.store(documents); //（推入文档）
     }
 }

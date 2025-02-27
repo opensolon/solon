@@ -31,7 +31,7 @@ public class Document {
     protected String id;
     protected String content;
     protected final Map<String, Object> metadata;
-    protected final double score;
+    protected final transient double score; //不进行序列化（搜索时动态产生）
 
     private float[] embedding;
 
@@ -44,16 +44,10 @@ public class Document {
     }
 
     public Document(String content, Map<String, Object> metadata) {
-        this(null, content, metadata);
-    }
-
-    public Document(String id, String content, Map<String, Object> metadata) {
-        this(id, content, metadata, 0.0D);
+        this(null, content, metadata, 0.0D);
     }
 
     public Document(String id, String content, Map<String, Object> metadata, double score) {
-//      this.id = (id == null ? Utils.guid() : id);
-//    	id不在document创建时初始化，而是在store方法调用时，作为判断依据，如果id为空就表示insert，如果id不为空就update
         this.id = id;
         this.content = content;
         this.metadata = (metadata == null ? new HashMap<>() : metadata);

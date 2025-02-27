@@ -53,6 +53,18 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon-ai-load-markdown</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-ai-load-html</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
