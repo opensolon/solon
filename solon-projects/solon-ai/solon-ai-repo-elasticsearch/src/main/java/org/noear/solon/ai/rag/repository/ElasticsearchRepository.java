@@ -29,9 +29,11 @@ import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.xcontent.XContentBuilder;
 import org.elasticsearch.xcontent.XContentFactory;
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.lang.Preview;
@@ -158,7 +160,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
         Map<String, Object> source = new HashMap<>();
         source.put("content", doc.getContent());
         source.put("metadata", doc.getMetadata());
-        source.put("embedding", embeddingModel.embed(doc.getContent()));
+        source.put("embedding", doc.getEmbedding());
         source.put("url", doc.getUrl());
 
         bulk.append(ONode.stringify(source)).append("\n");
@@ -284,8 +286,13 @@ public class ElasticsearchRepository implements RepositoryStorable {
      */
     @Override
     public void store(List<Document> documents) throws IOException {
-        if (documents == null || documents.isEmpty()) {
+        if(Utils.isEmpty(documents)) {
             return;
+        }
+
+        // 批量embedding
+        for (List<Document> sub : ListUtil.partition(documents, 20)) {
+            embeddingModel.embed(sub);
         }
 
         StringBuilder bulk = new StringBuilder();

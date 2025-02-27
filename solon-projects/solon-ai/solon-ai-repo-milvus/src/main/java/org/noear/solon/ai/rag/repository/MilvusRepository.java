@@ -38,6 +38,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 
 import com.google.gson.Gson;
@@ -156,22 +157,14 @@ public class MilvusRepository implements RepositoryStorable {
 
     @Override
     public void store(List<Document> documents) throws IOException {
-    	// 批量embedding
-    	if(documents.size()>0) {
-    		int batchSize = 25;
-    		int totalSize = documents.size();
-            int numBatches = (totalSize + batchSize - 1) / batchSize; // 计算总批次数
-            for (int i = 0; i < numBatches; i++) {
-            	int start = i * batchSize;
-                int end = Math.min(start + batchSize, totalSize); // 确保最后一组不会越界
+        if(Utils.isEmpty(documents)) {
+            return;
+        }
 
-                List<Document> batch = documents.subList(start, end);
-                
-                embeddingModel.embed(batch);
-            }
-    	}else {
-    		return;
-    	}
+    	// 批量embedding
+        for (List<Document> sub : ListUtil.partition(documents, 20)) {
+            embeddingModel.embed(sub);
+        }
     	
     	// 转换成json存储
     	Gson gson = new Gson();

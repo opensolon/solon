@@ -25,9 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.lang.Preview;
 
@@ -50,33 +52,53 @@ import redis.clients.jedis.search.schemafields.VectorField;
  */
 @Preview("3.1")
 public class RedisRepository implements RepositoryStorable {
-    /** 向量数据类型 */
+    /**
+     * 向量数据类型
+     */
     private static final String VECTOR_TYPE = "FLOAT32";
-    /** 向量距离度量方式 */
+    /**
+     * 向量距离度量方式
+     */
     private static final String DISTANCE_METRIC = "COSINE";
-    /** 向量维度 */
+    /**
+     * 向量维度
+     */
     private static final int VECTOR_DIM = 3;
-    /** 初始容量 */
+    /**
+     * 初始容量
+     */
     private static final int INITIAL_CAP = 100;
-    /** HNSW 图的每层最大节点数 */
+    /**
+     * HNSW 图的每层最大节点数
+     */
     private static final int M = 16;
-    /** HNSW 构建时的候选集大小 */
+    /**
+     * HNSW 构建时的候选集大小
+     */
     private static final int EF_CONSTRUCTION = 200;
 
-    /** 嵌入模型，用于生成文档的向量表示 */
+    /**
+     * 嵌入模型，用于生成文档的向量表示
+     */
     private final EmbeddingModel embeddingModel;
-    /** Redis 客户端 */
+    /**
+     * Redis 客户端
+     */
     private final UnifiedJedis client;
-    /** 索引名称 */
+    /**
+     * 索引名称
+     */
     private final String indexName;
-    /** 键前缀 */
+    /**
+     * 键前缀
+     */
     private final String keyPrefix;
 
     /**
      * 创建 Redis 知识库
      *
      * @param embeddingModel 嵌入模型
-     * @param client Redis 客户端
+     * @param client         Redis 客户端
      */
     public RedisRepository(EmbeddingModel embeddingModel, UnifiedJedis client) {
         this(embeddingModel, client, "idx:solon-ai", "doc:");
@@ -86,9 +108,9 @@ public class RedisRepository implements RepositoryStorable {
      * 创建 Redis 知识库
      *
      * @param embeddingModel 嵌入模型
-     * @param client Redis 客户端
-     * @param indexName 索引名称
-     * @param keyPrefix 键前缀
+     * @param client         Redis 客户端
+     * @param indexName      索引名称
+     * @param keyPrefix      键前缀
      */
     public RedisRepository(EmbeddingModel embeddingModel, UnifiedJedis client, String indexName, String keyPrefix) {
         this.embeddingModel = embeddingModel;
@@ -141,7 +163,14 @@ public class RedisRepository implements RepositoryStorable {
      */
     @Override
     public void store(List<Document> documents) throws IOException {
-        embeddingModel.embed(documents);
+        if(Utils.isEmpty(documents)) {
+            return;
+        }
+
+        // 批量embedding
+        for (List<Document> sub : ListUtil.partition(documents, 20)) {
+            embeddingModel.embed(sub);
+        }
 
         PipelineBase pipeline = null;
         try {
@@ -149,11 +178,6 @@ public class RedisRepository implements RepositoryStorable {
             for (Document doc : documents) {
                 if (doc.getId() == null) {
                     doc.id(generateId());
-                }
-
-                // 确保文档有向量
-                if (doc.getEmbedding() == null) {
-                    doc.embedding(embeddingModel.embed(doc.getContent()));
                 }
 
                 String key = keyPrefix + doc.getId();

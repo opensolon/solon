@@ -44,17 +44,21 @@ public class InMemoryRepository implements RepositoryStorable {
 
     @Override
     public void store(List<Document> documents) throws IOException {
-        //做分块处理，避免太大
-        for (List<Document> subList : ListUtil.partition(documents, 20)) {
-            embeddingModel.embed(subList);
+        if(Utils.isEmpty(documents)) {
+            return;
+        }
 
-            for (Document doc : subList) {
-                if (Utils.isEmpty(doc.getId())) {
-                    doc.id(Utils.uuid());
-                }
+        // 批量embedding
+        for (List<Document> sub : ListUtil.partition(documents, 20)) {
+            embeddingModel.embed(sub);
+        }
 
-                store.put(doc.getId(), doc);
+        for (Document doc : documents) {
+            if (Utils.isEmpty(doc.getId())) {
+                doc.id(Utils.uuid());
             }
+
+            store.put(doc.getId(), doc);
         }
     }
 
