@@ -54,11 +54,19 @@ public class EmbeddingOptions {
         return this;
     }
 
+    /**
+     * 维度
+     *
+     * @param dimensions [1024、768、512]
+     */
     public EmbeddingOptions dimensions(int dimensions) {
         return optionAdd("dimensions", dimensions);
     }
 
 
+    /**
+     * 用户
+     */
     public EmbeddingOptions user(String user) {
         return optionAdd("user", user);
     }

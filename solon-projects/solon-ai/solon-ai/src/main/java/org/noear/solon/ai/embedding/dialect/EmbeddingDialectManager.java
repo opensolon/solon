@@ -32,6 +32,7 @@ public class EmbeddingDialectManager {
 
     static {
         register(OllamaEmbeddingDialect.getInstance());
+        register(DashscopeEmbeddingDialect.getInstance());
     }
 
     /**
