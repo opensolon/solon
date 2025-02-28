@@ -19,6 +19,8 @@ import org.noear.solon.ai.chat.dialect.ChatDialect;
 import org.noear.solon.ai.chat.dialect.ChatDialectManager;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialect;
 import org.noear.solon.ai.embedding.dialect.EmbeddingDialectManager;
+import org.noear.solon.ai.image.dialect.ImageDialect;
+import org.noear.solon.ai.image.dialect.ImageDialectManager;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -35,6 +37,10 @@ public class AiPlugin implements Plugin {
 
         context.subBeansOfType(EmbeddingDialect.class, bean -> {
             EmbeddingDialectManager.register(bean);
+        });
+
+        context.subBeansOfType(ImageDialect.class, bean -> {
+            ImageDialectManager.register(bean);
         });
     }
 }
