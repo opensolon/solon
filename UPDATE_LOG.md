@@ -54,6 +54,7 @@
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
 * 修复 solon-web-rx ActionReturnRxHandler 在接收异步发布器时，会结束输出的问题 
 * 修复 solon-hotplug 在 win 下无法删除 jar 文件的问题
+* 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.127
 * socket.d 升为 2.5.15

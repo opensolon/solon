@@ -24,6 +24,10 @@ package org.noear.solon.core;
 public interface Constants {
     String PARM_UNDEFINED_VALUE = "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 
+    /**
+     * @deprecated 3.1 {@link org.noear.solon.core.util.MimeType}
+     * */
+    @Deprecated
     String HEADER_CONTENT_TYPE_DEF = "text/plain;charset=UTF-8";
 
     //@since: 2.5
