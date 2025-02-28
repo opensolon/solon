@@ -29,7 +29,7 @@ public final class ListUtil {
     /**
      * 分列
      */
-    public static <T> Iterable<List<T>> partition(List<T> list, int pageSize) {
+    public static <T> List<List<T>> partition(List<T> list, int pageSize) {
         if (list.size() <= pageSize) {
             return Arrays.asList(list);
         } else {
@@ -43,7 +43,7 @@ public final class ListUtil {
             for (int i = 0; i < pageCount; i++) {
                 int start = i * pageSize;
 
-                if (i == pageLastSize - 1) {
+                if (i == pageCount - 1) {
                     if (pageLastSize > 0) {
                         List<T> subList = list.subList(start, start + pageLastSize);
                         result.add(subList);
