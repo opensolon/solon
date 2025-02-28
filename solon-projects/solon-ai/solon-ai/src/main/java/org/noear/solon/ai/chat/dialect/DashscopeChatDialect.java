@@ -54,15 +54,15 @@ public class DashscopeChatDialect extends AbstractChatDialect {
                 }
             });
 
-            for (Map.Entry<String, Object> kv : options.options().entrySet()) {
-                n.set(kv.getKey(), kv.getValue());
-            }
+            n.getOrNew("parameters").build(n1 -> {
+                for (Map.Entry<String, Object> kv : options.options().entrySet()) {
+                    n1.set(kv.getKey(), kv.getValue());
+                }
 
-            ONode p = n.getOrNew("parameters");
-            p.set("result_format", "message");
-            buildReqFunctionsNodeDo(p, config.getGlobalFunctions());
-            buildReqFunctionsNodeDo(p, options.functions());
-
+                n1.set("result_format", "message");
+                buildReqFunctionsNodeDo(n1, config.getGlobalFunctions());
+                buildReqFunctionsNodeDo(n1, options.functions());
+            });
         }).toJson();
     }
 
