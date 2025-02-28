@@ -28,7 +28,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
-import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.SimilarityUtil;
 import org.noear.solon.lang.Preview;
@@ -174,14 +173,18 @@ public class RedisRepository implements RepositoryStorable {
             return;
         }
 
-        // 批量embedding
-        for (List<Document> sub : ListUtil.partition(documents, 20)) {
-            embeddingModel.embed(sub);
+        // 批量处理，每批20个
+        int batchSize = 20;
+        for (int i = 0; i < documents.size(); i += batchSize) {
+            int end = Math.min(i + batchSize, documents.size());
+            List<Document> batch = documents.subList(i, end);
+
+            embeddingModel.embed(batch);
 
             PipelineBase pipeline = null;
             try {
                 pipeline = client.pipelined();
-                for (Document doc : sub) {
+                for (Document doc : batch) {
                     if (doc.getId() == null) {
                         doc.id(Utils.uuid());
                     }
@@ -246,14 +249,38 @@ public class RedisRepository implements RepositoryStorable {
      */
     @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        Query query = new Query(String.format("@content:%s", condition.getQuery()))
-                .returnFields("content", "metadata")
+        // 生成查询向量
+        float[] queryEmbedding = embeddingModel.embed(condition.getQuery());
+
+        // 将向量转换为字节数组
+        byte[] bytes = new byte[queryEmbedding.length * 4];
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        for (float f : queryEmbedding) {
+            buffer.putFloat(f);
+        }
+
+        // 构建混合查询（文本 + 向量）
+        StringBuilder queryBuilder = new StringBuilder();
+        
+        // 添加文本过滤
+        if (!Utils.isEmpty(condition.getQuery())) {
+            queryBuilder.append("(@content:\"").append(condition.getQuery()).append("\") => ");
+        }
+        
+        // 添加向量搜索
+        queryBuilder.append("[KNN ").append(condition.getLimit())
+                   .append(" @embedding $BLOB AS vector_score]");
+
+        Query query = new Query(queryBuilder.toString())
+                .addParam("BLOB", bytes)
+                .returnFields("content", "metadata", "vector_score")
+                .setSortBy("vector_score", false)
                 .limit(0, condition.getLimit())
                 .dialect(2);
 
         SearchResult result = client.ftSearch(indexName, query);
 
-        //再次过滤下
         return SimilarityUtil.filter(condition, result.getDocuments()
                 .stream()
                 .map(this::toDocument));
