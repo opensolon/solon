@@ -50,6 +50,7 @@ public final class MimeType {
     public static final String TEXT_JSON_VALUE = "text/json";
     public static final String TEXT_MARKDOWN_VALUE = "text/markdown";
     public static final String TEXT_PLAIN_VALUE = "text/plain";
+    public static final String TEXT_PLAIN_UTF8_VALUE = "text/plain;charset=UTF-8";
     public static final String TEXT_XML_VALUE = "text/xml";
 
     /**
