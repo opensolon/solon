@@ -58,15 +58,13 @@ public class DashscopeEmbeddingDialect extends AbstractEmbeddingDialect {
                 n.set("model", config.getModel());
             }
 
-            n.getOrNew("input").build(n1 -> {
+            n.getOrNew("input").getOrNew("texts").build(n1 -> {
                 for (String m1 : input) {
                     n1.add(m1);
                 }
             });
 
             n.getOrNew("parameters").build(n1 -> {
-                n1.set("encoding_format", "float");
-
                 for (Map.Entry<String, Object> kv : options.options().entrySet()) {
                     n1.set(kv.getKey(), kv.getValue());
                 }
