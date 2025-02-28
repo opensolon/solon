@@ -19,12 +19,12 @@ import java.util.Map;
  * @since 3.1
  */
 
-public class DashscopeDialect extends AbstractChatDialect {
+public class DashscopeChatDialect extends AbstractChatDialect {
     //https://help.aliyun.com/zh/model-studio/developer-reference
 
-    private static DashscopeDialect instance = new DashscopeDialect();
+    private static DashscopeChatDialect instance = new DashscopeChatDialect();
 
-    public static DashscopeDialect getInstance() {
+    public static DashscopeChatDialect getInstance() {
         return instance;
     }
 
