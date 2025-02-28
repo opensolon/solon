@@ -89,6 +89,13 @@ public final class SolonProps extends Props {
 
         //3.获取原始系统属性原始副本
         Properties sysPropOrg = new Properties();
+        //3.1.把带'.'的环境变量同步到系统属性（支持弹性容器设置的环境变量）
+        System.getenv().forEach((k, v) -> {
+            if(k.indexOf('.') > 0){
+                System.setProperty(k,v);
+            }
+        });
+        //3.2.为系统属性建立一个原始副本
         System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
 
         //4.加载文件配置
@@ -98,7 +105,7 @@ public final class SolonProps extends Props {
             loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
-            loadEnv(k -> k.indexOf('.') > 0);
+            //loadEnv(k -> k.indexOf('.') > 0);
 
             //4.2.加载环境配置(例：env=pro 或 env=debug)
             env = getArg("env");
@@ -111,7 +118,7 @@ public final class SolonProps extends Props {
             loadInit(ResourceUtil.getResource(config), sysPropOrg);
 
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
-            loadEnv(k -> k.indexOf('.') > 0);
+            //loadEnv(k -> k.indexOf('.') > 0);
         }
 
 
