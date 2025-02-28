@@ -67,7 +67,7 @@ public class MilvusRepositoryTest {
 
         // 准备并存储文档，显式指定 ID
         Document doc = new Document("Test content");
-        repository.store(Collections.singletonList(doc));
+        repository.insert(Collections.singletonList(doc));
         String key = doc.getId();
 
         // 验证存储成功
@@ -95,6 +95,6 @@ public class MilvusRepositoryTest {
                 .next(new TokenSizeTextSplitter(500))
                 .split(loader.load());
 
-        repository.store(documents); //（推入文档）
+        repository.insert(documents); //（推入文档）
     }
 }

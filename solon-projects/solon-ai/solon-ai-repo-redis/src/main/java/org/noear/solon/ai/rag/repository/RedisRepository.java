@@ -148,7 +148,7 @@ public class RedisRepository implements RepositoryStorable {
      * @throws IOException 如果存储过程中发生 IO 错误
      */
     @Override
-    public void store(List<Document> documents) throws IOException {
+    public void insert(List<Document> documents) throws IOException {
         if (Utils.isEmpty(documents)) {
             return;
         }

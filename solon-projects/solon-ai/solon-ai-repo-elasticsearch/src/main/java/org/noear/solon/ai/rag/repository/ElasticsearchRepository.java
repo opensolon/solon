@@ -275,7 +275,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * @author 小奶奶花生米
      */
     @Override
-    public void store(List<Document> documents) throws IOException {
+    public void insert(List<Document> documents) throws IOException {
         if (Utils.isEmpty(documents)) {
             return;
         }

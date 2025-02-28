@@ -94,7 +94,7 @@ public class ElasticsearchRepositoryTest {
         documents.add(doc);
 
         try {
-            repository.store(documents);
+            repository.insert(documents);
             Thread.sleep(1000);
             // 删除文档
             repository.remove(doc.getId());
@@ -198,6 +198,6 @@ public class ElasticsearchRepositoryTest {
                 .collect(Collectors.toList());
 
         // 存储文档
-        repository.store(documents);
+        repository.insert(documents);
     }
 }
