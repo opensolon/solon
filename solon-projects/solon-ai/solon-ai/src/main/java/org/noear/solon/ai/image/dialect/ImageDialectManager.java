@@ -32,6 +32,7 @@ public class ImageDialectManager {
 
     static {
         register(OllamaImageDialect.getInstance());
+        register(DashscopeImageDialect.getInstance());
     }
 
     /**

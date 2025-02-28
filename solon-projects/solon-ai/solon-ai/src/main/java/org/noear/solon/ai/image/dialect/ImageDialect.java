@@ -20,8 +20,6 @@ import org.noear.solon.ai.image.ImageConfig;
 import org.noear.solon.ai.image.ImageOptions;
 import org.noear.solon.ai.image.ImageResponse;
 
-import java.util.List;
-
 /**
  * 图像模型方言
  *
