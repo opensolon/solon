@@ -20,7 +20,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
-import org.noear.solon.web.util.MimeType;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.web.sse.SseEmitter;
 import org.noear.solon.web.sse.SseEvent;
 import reactor.core.publisher.Flux;

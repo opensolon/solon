@@ -15,7 +15,7 @@
  */
 package org.noear.solon.web.rx.integration;
 
-import org.noear.solon.web.util.MimeType;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;

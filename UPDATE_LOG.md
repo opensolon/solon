@@ -27,6 +27,11 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### v3.0.10
+
+* 添加 org.noear.solon.core.util.MimeType 类
+* 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
+
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
 * 修复 solon-data nested 事务策略单独回滚失效的问题

@@ -22,7 +22,7 @@ import org.noear.solon.Utils;
  *
  * @author noear
  * @since 1.10
- * @deprecated 3.1 {@link MimeType}
+ * @deprecated 3.1 {@link org.noear.solon.core.util.MimeType}
  */
 @Deprecated
 public final class MimeType {
