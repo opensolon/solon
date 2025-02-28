@@ -38,17 +38,20 @@ public final class ListUtil {
             if (pageLastSize > 0) {
                 pageCount++;
             }
+
             List<List<T>> result = new ArrayList<>();
             for (int i = 0; i < pageCount; i++) {
+                int start = i * pageSize;
+
                 if (i == pageLastSize - 1) {
                     if (pageLastSize > 0) {
-                        List<T> subList = list.subList(i * pageSize, pageLastSize);
+                        List<T> subList = list.subList(start, start + pageLastSize);
                         result.add(subList);
                         break;
                     }
                 }
 
-                List<T> subList = list.subList(i * pageSize, list.size());
+                List<T> subList = list.subList(start, start + pageSize);
                 result.add(subList);
             }
 

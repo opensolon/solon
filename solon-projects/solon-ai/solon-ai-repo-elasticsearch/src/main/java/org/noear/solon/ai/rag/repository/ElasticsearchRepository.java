@@ -237,15 +237,15 @@ public class ElasticsearchRepository implements RepositoryStorable {
         // 批量embedding
         for (List<Document> sub : ListUtil.partition(documents, 20)) {
             embeddingModel.embed(sub);
-        }
 
-        StringBuilder buf = new StringBuilder();
-        for (Document doc : documents) {
-            insertBuild(buf, doc);
-        }
+            StringBuilder buf = new StringBuilder();
+            for (Document doc : sub) {
+                insertBuild(buf, doc);
+            }
 
-        executeBulkRequest(buf.toString());
-        refreshIndex();
+            executeBulkRequest(buf.toString());
+            refreshIndex();
+        }
     }
 
 

@@ -59,7 +59,7 @@ public class MilvusRepositoryTest {
         List<Document> list = repository.search("solon");
         assert list.size() == 4;
 
-        list = repository.search("spring");
+        list = repository.search("vert.x");
         assert list.size() == 0;
 
 

@@ -28,6 +28,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.ai.embedding.EmbeddingModel;
 import org.noear.solon.ai.rag.Document;
 import org.noear.solon.ai.rag.RepositoryStorable;
+import org.noear.solon.ai.rag.util.ListUtil;
 import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.ai.rag.util.SimilarityUtil;
 import org.noear.solon.lang.Preview;
@@ -153,12 +154,7 @@ public class RedisRepository implements RepositoryStorable {
             return;
         }
 
-        // 批量处理，每批20个
-        int batchSize = 20;
-        for (int i = 0; i < documents.size(); i += batchSize) {
-            int end = Math.min(i + batchSize, documents.size());
-            List<Document> batch = documents.subList(i, end);
-
+        for (List<Document> batch : ListUtil.partition(documents, 20)) {
             embeddingModel.embed(batch);
 
             PipelineBase pipeline = null;
