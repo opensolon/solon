@@ -92,13 +92,13 @@ public class RedisRepository implements RepositoryStorable {
         this.indexName = indexName;
         this.keyPrefix = keyPrefix;
 
-        buildIndex();
+        initRepository();
     }
 
     /**
-     * 初始化向量索引
+     * 初始化仓库
      */
-    public void buildIndex() {
+    public void initRepository() {
         try {
             // 检查并初始化索引
             client.ftInfo(indexName);
@@ -133,7 +133,10 @@ public class RedisRepository implements RepositoryStorable {
         }
     }
 
-    public void dropIndex() {
+    /**
+     * 注销仓库
+     */
+    public void dropRepository() {
         client.ftDropIndex(indexName);
         client.flushDB();
     }
@@ -201,7 +204,7 @@ public class RedisRepository implements RepositoryStorable {
      * @param ids 文档 ID
      */
     @Override
-    public void remove(String... ids) {
+    public void remove(String... ids) throws IOException {
         PipelineBase pipeline = null;
         try {
             pipeline = client.pipelined();
@@ -214,6 +217,11 @@ public class RedisRepository implements RepositoryStorable {
                 pipeline.close();
             }
         }
+    }
+
+    @Override
+    public boolean exists(String id) throws IOException {
+        return client.exists(keyPrefix + id);
     }
 
     /**

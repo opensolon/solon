@@ -20,6 +20,7 @@ import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
 import io.milvus.v2.service.collection.request.*;
 import io.milvus.v2.service.vector.request.DeleteReq;
+import io.milvus.v2.service.vector.request.GetReq;
 import io.milvus.v2.service.vector.request.InsertReq;
 import io.milvus.v2.service.vector.request.SearchReq;
 import io.milvus.v2.service.vector.request.data.FloatVec;
@@ -66,13 +67,13 @@ public class MilvusRepository implements RepositoryStorable {
         //指定集合
         this.collectionName = collectionName;
 
-        buildCollection();
+        initRepository();
     }
 
     /**
-     * 构建集合
+     * 初始化仓库
      */
-    public void buildCollection() {
+    public void initRepository() {
         // 查询是否存在
         boolean exists = client.hasCollection(HasCollectionReq.builder()
                 .collectionName(collectionName)
@@ -142,9 +143,9 @@ public class MilvusRepository implements RepositoryStorable {
     }
 
     /**
-     * 注销集合
+     * 注销仓库
      */
-    public void dropCollection() {
+    public void dropRepository() {
         client.dropCollection(DropCollectionReq.builder()
                 .collectionName(collectionName)
                 .build());
@@ -176,7 +177,7 @@ public class MilvusRepository implements RepositoryStorable {
     }
 
     @Override
-    public void remove(String... ids) {
+    public void remove(String... ids) throws IOException {
         client.delete(DeleteReq.builder()
                 .collectionName(collectionName)
                 .ids(Arrays.asList(ids))
@@ -184,24 +185,16 @@ public class MilvusRepository implements RepositoryStorable {
     }
 
     @Override
+    public boolean exists(String id) throws IOException {
+        return client.get(GetReq.builder()
+                .collectionName(collectionName)
+                .ids(Arrays.asList(id))
+                .build()).getGetResults().size() > 0;
+
+    }
+
+    @Override
     public List<Document> search(QueryCondition condition) throws IOException {
-        // Load the collection
-        LoadCollectionReq loadCollectionReq = LoadCollectionReq.builder()
-                .collectionName(collectionName)
-                .build();
-
-        client.loadCollection(loadCollectionReq);
-
-        // Get load state of the collection
-        GetLoadStateReq loadStateReq = GetLoadStateReq.builder()
-                .collectionName(collectionName)
-                .build();
-
-        Boolean res = client.getLoadState(loadStateReq);
-        if (!res) {
-            return null;
-        }
-
         FloatVec queryVector = new FloatVec(embeddingModel.embed(condition.getQuery()));
         SearchReq searchReq = SearchReq.builder()
                 .collectionName(collectionName)

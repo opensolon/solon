@@ -36,5 +36,10 @@ public interface RepositoryStorable extends Repository {
     /**
      * 移除
      */
-    void remove(String... ids);
+    void remove(String... ids) throws IOException;
+
+    /**
+     * 是否存在
+     */
+    boolean exists(String id) throws IOException;
 }

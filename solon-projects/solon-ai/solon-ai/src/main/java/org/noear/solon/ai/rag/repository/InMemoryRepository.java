@@ -70,6 +70,11 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
+    public boolean exists(String id) {
+        return store.containsKey(id);
+    }
+
+    @Override
     public List<Document> search(QueryCondition condition) throws IOException {
         float[] queryEmbed = embeddingModel.embed(condition.getQuery());
 

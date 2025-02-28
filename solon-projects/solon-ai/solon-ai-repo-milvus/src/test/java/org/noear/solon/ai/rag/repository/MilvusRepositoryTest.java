@@ -2,6 +2,7 @@ package org.noear.solon.ai.rag.repository;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 import io.milvus.v2.client.ConnectConfig;
@@ -22,6 +23,9 @@ import org.noear.solon.net.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class MilvusRepositoryTest {
     private static final Logger log = LoggerFactory.getLogger(MilvusRepositoryTest.class);
     private static String milvusUri = "http://localhost:19530";
@@ -40,8 +44,6 @@ public class MilvusRepositoryTest {
                 client,
                 collectionName); //3.初始化知识库
 
-        repository.buildCollection();
-
         load(repository, "https://solon.noear.org/article/about?format=md");
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");
@@ -49,7 +51,7 @@ public class MilvusRepositoryTest {
 
     @AfterEach
     public void cleanup() {
-        repository.dropCollection();
+        repository.dropRepository();
     }
 
     @Test
@@ -59,6 +61,23 @@ public class MilvusRepositoryTest {
 
         list = repository.search("spring");
         assert list.size() == 0;
+
+
+        /// /////////////////////////////
+
+        // 准备并存储文档，显式指定 ID
+        Document doc = new Document("Test content");
+        repository.store(Collections.singletonList(doc));
+        String key = doc.getId();
+
+        // 验证存储成功
+        assertTrue(repository.exists(key), "Document should exist after storing");
+
+        // 删除文档
+        repository.remove(doc.getId());
+
+        // 验证删除成功
+        assertFalse(repository.exists(key), "Document should not exist after removal");
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {

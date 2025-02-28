@@ -177,16 +177,6 @@ public class ElasticsearchRepository implements RepositoryStorable {
         client.getLowLevelClient().performRequest(request);
     }
 
-    /**
-     * 删除指定ID的文档
-     *
-     * @param id 要删除的文档ID
-     * @throws IOException 如果删除过程发生IO错误
-     */
-    private void deleteDocument(String id) throws IOException {
-        Request request = new Request("DELETE", "/" + indexName + "/_doc/" + id);
-        client.getLowLevelClient().performRequest(request);
-    }
 
     /**
      * 搜索文档
@@ -308,21 +298,19 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * 删除指定ID的文档
      */
     @Override
-    public void remove(String... ids) {
+    public void remove(String... ids) throws IOException {
         for (String id : ids) {
-            try {
-                if ("*".equals(id)) {
-                    deleteAllDocuments();
-                } else {
-                    deleteDocument(id);
-                }
-                refreshIndex();
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to delete document: " + id, e);
-            }
+            //不支持星号删除
+            Request request = new Request("DELETE", "/" + indexName + "/_doc/" + id);
+            client.getLowLevelClient().performRequest(request);
+            refreshIndex();
         }
     }
 
+    @Override
+    public boolean exists(String id) {
+        return false;
+    }
 
     /**
      * 转换查询条件为 ES 查询语句

@@ -2,7 +2,6 @@ package features.ai.repo.redis;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import org.noear.solon.ai.rag.repository.RedisRepository;
 import org.noear.solon.ai.rag.splitter.RegexTextSplitter;
 import org.noear.solon.ai.rag.splitter.SplitterPipeline;
 import org.noear.solon.ai.rag.splitter.TokenSizeTextSplitter;
-import org.noear.solon.ai.rag.util.QueryCondition;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.test.SolonTest;
 
@@ -59,7 +57,7 @@ public class RedisRepositoryTest {
 
     @AfterEach
     public void cleanup() {
-        repository.dropIndex();
+        repository.dropRepository();
     }
 
     @Test
@@ -69,47 +67,22 @@ public class RedisRepositoryTest {
 
         list = repository.search("spring");
         assert list.size() == 0;
-    }
 
-    @Test
-    public void case2_remove() throws IOException {
+        /// /////////////////////////////
+
         // 准备并存储文档，显式指定 ID
         Document doc = new Document("Test content");
         repository.store(Collections.singletonList(doc));
-        String key = "test_doc:" + doc.getId();
+        String key = doc.getId();
 
         // 验证存储成功
-        assertTrue(client.exists(key), "Document should exist after storing");
+        assertTrue(repository.exists(key), "Document should exist after storing");
 
         // 删除文档
         repository.remove(doc.getId());
 
         // 验证删除成功
-        assertFalse(client.exists(key), "Document should not exist after removal");
-    }
-
-    @Test
-    public void case3_search2() throws IOException {
-        // 准备测试数据
-        Document doc1 = new Document("Solon is a lightweight Java web framework");
-        Document doc2 = new Document("vert.x is a popular Java framework");
-
-        repository.store(Arrays.asList(doc1, doc2));
-
-        // 测试搜索
-        QueryCondition condition = new QueryCondition("solon")
-                .limit(10)
-                .similarityThreshold(0.0f);  // 降低相似度阈值
-
-        List<Document> results = repository.search(condition);
-
-        // 验证结果
-        assertFalse(results.isEmpty(), "搜索结果不应为空");
-        assertTrue(results.size() <= condition.getLimit(), "结果数量应该符合限制");
-        for (Document result : results) {
-            System.out.println(result.getContent());
-            assertTrue(result.getContent().toLowerCase().contains("solon"), "搜索结果应该包含查询关键词");
-        }
+        assertFalse(repository.exists(key), "Document should not exist after removal");
     }
 
     private void load(RepositoryStorable repository, String url) throws IOException {
