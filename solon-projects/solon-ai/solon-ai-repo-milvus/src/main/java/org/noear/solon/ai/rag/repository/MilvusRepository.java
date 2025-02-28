@@ -90,7 +90,7 @@ public class MilvusRepository implements RepositoryStorable {
                         .autoID(false)
                         .build());
 
-                int dim = embeddingModel.embed("test").length;
+                int dim = embeddingModel.dimensions();
                 schema.addField(AddFieldReq.builder()
                         .fieldName("embedding")
                         .dataType(DataType.FloatVector)

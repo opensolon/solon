@@ -48,11 +48,18 @@ public class EmbeddingModel implements AiModel {
      */
     public float[] embed(String text) throws IOException {
         EmbeddingResponse resp = input(text).call();
-        if(resp.getError() != null) {
+        if (resp.getError() != null) {
             throw resp.getError();
         }
 
         return resp.getData().get(0).getEmbedding();
+    }
+
+    /**
+     * 维度
+     */
+    public int dimensions() throws IOException {
+        return embed("test").length;
     }
 
     /**
@@ -63,7 +70,7 @@ public class EmbeddingModel implements AiModel {
         documents.forEach(d -> texts.add(d.getContent()));
 
         EmbeddingResponse resp = input(texts).call();
-        if(resp.getError() != null) {
+        if (resp.getError() != null) {
             throw resp.getError();
         }
 
