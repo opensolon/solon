@@ -23,7 +23,7 @@ public class AppRouterInterceptor implements RouterInterceptor {
     public Object postResult(Context ctx, Object result) throws Throwable {
         //根据返回类型，构建 contentType
         if (result instanceof Multi) {
-            if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
+            if (MimeType.isStreaming(ctx.acceptNew()) == false) {
                 return ((Multi) result).collect().asList().toMulti();
             }
         } else if (result instanceof Uni) {

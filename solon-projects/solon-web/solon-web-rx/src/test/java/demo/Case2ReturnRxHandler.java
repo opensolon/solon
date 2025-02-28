@@ -23,7 +23,7 @@ public class Case2ReturnRxHandler extends ActionReturnRxHandler {
     @Override
     protected Publisher postPublisher(Context ctx, Action action, Object result, boolean isStreaming) throws Throwable {
         if (result instanceof Multi) {
-            if (ctx.acceptNew().startsWith(MimeType.APPLICATION_X_NDJSON_VALUE) == false) {
+            if (isStreaming == false) {
                 return ((Multi) result).collect().asList().toMulti();
             }
         } else if (result instanceof Uni) {
