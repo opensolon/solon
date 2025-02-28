@@ -71,8 +71,10 @@ public final class SmHttpPlugin implements Plugin {
     private static final String SMARTHTTP_LOG_LEVEL = "smarthttp.log.level";
 
     private void start0(AppContext context) throws Throwable {
-        if(Utils.isEmpty(System.getProperty(SMARTHTTP_LOG_LEVEL))) {
-            System.setProperty(SMARTHTTP_LOG_LEVEL, "WARNING");
+        if (Solon.cfg().isDebugMode() == false) {
+            if (Utils.isEmpty(System.getProperty(SMARTHTTP_LOG_LEVEL))) {
+                System.setProperty(SMARTHTTP_LOG_LEVEL, "WARNING");
+            }
         }
 
         //初始化属性
@@ -124,7 +126,7 @@ public final class SmHttpPlugin implements Plugin {
         }
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
-        LogUtil.global().info(connectorInfo + "}{"+ httpServerUrl +"}");
+        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: smarthttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
