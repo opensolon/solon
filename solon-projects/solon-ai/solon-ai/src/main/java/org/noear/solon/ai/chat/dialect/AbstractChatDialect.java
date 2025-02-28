@@ -231,11 +231,11 @@ public abstract class AbstractChatDialect implements ChatDialect {
                     if (thinkEnd > 0) {
                         //单次返回
                         resp.reasoning = false;
-                        reasoning_content = content.substring(7, thinkEnd);
+                        reasoning_content = content.substring(0, thinkEnd) + "</think>";
                         content = content.substring(thinkEnd + 8);
                     } else {
-                        //流式返回
-                        reasoning_content = "";
+                        //流式返回（开始）
+                        reasoning_content = "<think>";
                         content = "";
                     }
                 } else {
@@ -244,7 +244,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
                         int thinkEnd = content.indexOf("</think>");
                         if (thinkEnd >= 0) { //可能是个开始符
                             resp.reasoning = false;
-                            reasoning_content = "";
+                            reasoning_content = "</think>";
                             content = "";
                         } else {
                             reasoning_content = content;
