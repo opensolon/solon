@@ -68,15 +68,7 @@ public final class SmHttpPlugin implements Plugin {
         });
     }
 
-    private static final String SMARTHTTP_LOG_LEVEL = "smarthttp.log.level";
-
     private void start0(AppContext context) throws Throwable {
-        if (Solon.cfg().isDebugMode() == false) {
-            if (Utils.isEmpty(System.getProperty(SMARTHTTP_LOG_LEVEL))) {
-                System.setProperty(SMARTHTTP_LOG_LEVEL, "WARNING");
-            }
-        }
-
         //初始化属性
         ServerProps.init();
         MultipartUtil.init();
