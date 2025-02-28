@@ -65,6 +65,18 @@ public class AssistantMessage implements ChatMessage {
     }
 
     /**
+     * 显示内容
+     */
+    @Override
+    public String getDisplayContent() {
+        if (isReasoning()) {
+            return getReasoningContent();
+        } else {
+            return getContent();
+        }
+    }
+
+    /**
      * 是否思考中
      */
     public boolean isReasoning() {

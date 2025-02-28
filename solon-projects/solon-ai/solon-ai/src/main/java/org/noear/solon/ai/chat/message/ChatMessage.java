@@ -43,6 +43,13 @@ public interface ChatMessage extends Serializable {
      */
     String getContent();
 
+    /**
+     * 显示内容
+     */
+    default String getDisplayContent() {
+        return getContent();
+    }
+
 
     /// //////////////
 
