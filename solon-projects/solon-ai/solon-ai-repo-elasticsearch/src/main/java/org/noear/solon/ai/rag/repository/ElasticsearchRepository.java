@@ -74,43 +74,23 @@ public class ElasticsearchRepository implements RepositoryStorable {
         this.embeddingModel = embeddingModel;
         this.client = client;
         this.indexName = indexName;
-        initializeIndex();
+        initRepository();
     }
 
     /**
-     * 初始化 Elasticsearch 索引
-     * 如果索引不存在则创建新索引
+     * 初始化仓库
      */
-    private void initializeIndex() {
+    public void initRepository() {
         try {
-            if (!indexExists()) {
-                createIndex();
+            GetIndexRequest getIndexRequest = new GetIndexRequest(indexName);
+            if (client.indices().exists(getIndexRequest, RequestOptions.DEFAULT) == false) {
+                CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
+                createIndexRequest.source(buildIndexMapping());
+                client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize Elasticsearch index", e);
         }
-    }
-
-    /**
-     * 检查索引是否存在
-     *
-     * @return 如果索引存在返回true，否则返回false
-     * @throws IOException 如果检查过程发生IO错误
-     */
-    private boolean indexExists() throws IOException {
-        GetIndexRequest request = new GetIndexRequest(indexName);
-        return client.indices().exists(request, RequestOptions.DEFAULT);
-    }
-
-    /**
-     * 创建新的索引
-     *
-     * @throws IOException 如果创建过程发生IO错误
-     */
-    private void createIndex() throws IOException {
-        CreateIndexRequest request = new CreateIndexRequest(indexName);
-        request.source(buildIndexMapping());
-        client.indices().create(request, RequestOptions.DEFAULT);
     }
 
     /**
@@ -121,6 +101,8 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * @throws IOException 如果构建过程发生IO错误
      */
     private XContentBuilder buildIndexMapping() throws IOException {
+        int dims = embeddingModel.dimensions();
+
         return XContentFactory.jsonBuilder()
                 .startObject()
                 .startObject("mappings")
@@ -133,10 +115,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
                 .endObject()
                 .startObject("embedding")
                 .field("type", "dense_vector")
-                .field("dims", 3)
-                .endObject()
-                .startObject("url")
-                .field("type", "keyword")
+                .field("dims", dims)
                 .endObject()
                 .endObject()
                 .endObject()
@@ -144,34 +123,9 @@ public class ElasticsearchRepository implements RepositoryStorable {
     }
 
     /**
-     * 将文档添加到批量索引操作中
-     *
-     * @param bulk 批量操作的StringBuilder
-     * @param doc  要添加的文档
-     * @throws IOException 如果添加过程发生IO错误
+     * 注销仓库
      */
-    private void appendBulkIndexOperation(StringBuilder bulk, Document doc) throws IOException {
-        String id = java.util.UUID.randomUUID().toString();
-        doc.id(id);
-
-        bulk.append("{\"index\":{\"_index\":\"").append(indexName)
-                .append("\",\"_id\":\"").append(id).append("\"}}\n");
-
-        Map<String, Object> source = new HashMap<>();
-        source.put("content", doc.getContent());
-        source.put("metadata", doc.getMetadata());
-        source.put("embedding", doc.getEmbedding());
-        source.put("url", doc.getUrl());
-
-        bulk.append(ONode.stringify(source)).append("\n");
-    }
-
-    /**
-     * 删除所有文档
-     *
-     * @throws IOException 如果删除过程发生IO错误
-     */
-    private void deleteAllDocuments() throws IOException {
+    public void dropRepository() throws IOException {
         Request request = new Request("POST", "/" + indexName + "/_delete_by_query");
         request.setJsonEntity("{\"query\":{\"match_all\":{}}}");
         client.getLowLevelClient().performRequest(request);
@@ -285,13 +239,33 @@ public class ElasticsearchRepository implements RepositoryStorable {
             embeddingModel.embed(sub);
         }
 
-        StringBuilder bulk = new StringBuilder();
+        StringBuilder buf = new StringBuilder();
         for (Document doc : documents) {
-            appendBulkIndexOperation(bulk, doc);
+            insertBuild(buf, doc);
         }
 
-        executeBulkRequest(bulk.toString());
+        executeBulkRequest(buf.toString());
         refreshIndex();
+    }
+
+
+    /**
+     * 将文档添加到批量索引操作中
+     */
+    private void insertBuild(StringBuilder buf, Document doc) {
+        if (doc.getId() == null) {
+            doc.id(Utils.uuid());
+        }
+
+        buf.append("{\"index\":{\"_index\":\"").append(indexName)
+                .append("\",\"_id\":\"").append(doc.getId()).append("\"}}\n");
+
+        Map<String, Object> source = new HashMap<>();
+        source.put("content", doc.getContent());
+        source.put("metadata", doc.getMetadata());
+        source.put("embedding", doc.getEmbedding());
+
+        buf.append(ONode.stringify(source)).append("\n");
     }
 
     /**
