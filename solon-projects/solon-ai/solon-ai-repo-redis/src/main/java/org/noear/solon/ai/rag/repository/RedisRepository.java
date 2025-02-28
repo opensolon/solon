@@ -52,27 +52,6 @@ import redis.clients.jedis.search.schemafields.VectorField;
 @Preview("3.1")
 public class RedisRepository implements RepositoryStorable {
     /**
-     * 向量数据类型
-     */
-    private static final String VECTOR_TYPE = "FLOAT32";
-    /**
-     * 向量距离度量方式
-     */
-    private static final String DISTANCE_METRIC = "COSINE";
-    /**
-     * 初始容量
-     */
-    private static final int INITIAL_CAP = 100;
-    /**
-     * HNSW 图的每层最大节点数
-     */
-    private static final int M = 16;
-    /**
-     * HNSW 构建时的候选集大小
-     */
-    private static final int EF_CONSTRUCTION = 200;
-
-    /**
      * 嵌入模型，用于生成文档的向量表示
      */
     private final EmbeddingModel embeddingModel;
@@ -127,16 +106,13 @@ public class RedisRepository implements RepositoryStorable {
             // 索引不存在时才创建
 
             try {
-                int dim = embeddingModel.embed("test").length;
+                int dim = embeddingModel.dimensions();
 
                 // 配置向量索引参数
                 Map<String, Object> vectorArgs = new HashMap<>();
-                vectorArgs.put("TYPE", VECTOR_TYPE);
+                vectorArgs.put("DISTANCE_METRIC", "COSINE");
+                vectorArgs.put("TYPE", "FLOAT32");
                 vectorArgs.put("DIM", String.valueOf(dim));
-                vectorArgs.put("DISTANCE_METRIC", DISTANCE_METRIC);
-                vectorArgs.put("INITIAL_CAP", String.valueOf(INITIAL_CAP));
-                vectorArgs.put("M", String.valueOf(M));
-                vectorArgs.put("EF_CONSTRUCTION", String.valueOf(EF_CONSTRUCTION));
 
                 // 定义索引字段
                 SchemaField[] fields = new SchemaField[]{
@@ -195,8 +171,7 @@ public class RedisRepository implements RepositoryStorable {
 
                     // 将向量转换为字节数组
                     byte[] bytes = new byte[embedding.length * 4];
-                    ByteBuffer buffer = ByteBuffer.wrap(bytes);
-                    buffer.order(ByteOrder.LITTLE_ENDIAN);
+                    ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
                     for (float f : embedding) {
                         buffer.putFloat(f);
                     }
@@ -264,7 +239,7 @@ public class RedisRepository implements RepositoryStorable {
         Query query = new Query("*=>[KNN " + condition.getLimit() + " @embedding $BLOB AS score]")
                 .addParam("BLOB", vectorBytes)
                 .returnFields("content", "metadata", "score")
-                .setSortBy("score", false)
+                .setSortBy("score", true)
                 .limit(0, condition.getLimit())
                 .dialect(2);
 
@@ -284,7 +259,7 @@ public class RedisRepository implements RepositoryStorable {
         return new Document(id, content, metadata, similarityScore(jDoc));
     }
 
-    private float similarityScore(redis.clients.jedis.search.Document doc) {
-        return (2 - Float.parseFloat(doc.getString("score"))) / 2;
+    private double similarityScore(redis.clients.jedis.search.Document jDoc) {
+        return 1.0D - Double.parseDouble(jDoc.getString("score"));
     }
 }
