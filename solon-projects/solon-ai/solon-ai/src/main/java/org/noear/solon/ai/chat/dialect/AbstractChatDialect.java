@@ -170,7 +170,9 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
             n.getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    n1.add(buildChatMessageNode(m1));
+                    if(m1.isThinking() == false) {
+                        n1.add(buildChatMessageNode(m1));
+                    }
                 }
             });
 
@@ -221,7 +223,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
         }
 
         if (Utils.isEmpty(reasoning_content)) {
-            //将 think 转到 reasoning_content
+            //将 think 状态判断
             if (Utils.isNotEmpty(content)) {
                 if (content.startsWith("<think>")) {
                     resp.reasoning = true;
@@ -231,12 +233,6 @@ public abstract class AbstractChatDialect implements ChatDialect {
                     if (thinkEnd > 0) {
                         //单次返回
                         resp.reasoning = false;
-                        reasoning_content = content.substring(0, thinkEnd) + "</think>";
-                        content = content.substring(thinkEnd + 8);
-                    } else {
-                        //流式返回（开始）
-                        reasoning_content = "<think>";
-                        content = "";
                     }
                 } else {
                     if (resp.reasoning) {
@@ -244,19 +240,16 @@ public abstract class AbstractChatDialect implements ChatDialect {
                         int thinkEnd = content.indexOf("</think>");
                         if (thinkEnd >= 0) { //可能是个开始符
                             resp.reasoning = false;
-                            reasoning_content = "</think>";
-                            content = "";
-                        } else {
-                            reasoning_content = content;
-                            content = "";
                         }
                     }
                 }
             }
+        } else{
+            content = reasoning_content;
         }
 
         //标志为思考，或者思考内容不为空
         boolean isReasoning = resp.reasoning || Utils.isNotEmpty(reasoning_content);
-        return new AssistantMessage(content, isReasoning, reasoning_content, toolCallsRaw, toolCalls);
+        return new AssistantMessage(content, isReasoning, toolCallsRaw, toolCalls);
     }
 }

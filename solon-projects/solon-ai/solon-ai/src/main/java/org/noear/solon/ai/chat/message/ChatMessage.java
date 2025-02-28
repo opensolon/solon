@@ -44,17 +44,16 @@ public interface ChatMessage extends Serializable {
     String getContent();
 
     /**
-     * 显示内容
+     * 是否思考中
      */
-    default String getDisplayContent() {
-        return getContent();
+    default boolean isThinking() {
+        return false;
     }
-
 
     /// //////////////
 
     static AssistantMessage ofAssistant(String content) {
-        return new AssistantMessage(content, false, null, null, null);
+        return new AssistantMessage(content, false, null, null);
     }
 
     /**

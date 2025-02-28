@@ -50,7 +50,9 @@ public class DashscopeChatDialect extends AbstractChatDialect {
 
             n.getOrNew("input").getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    n1.add(buildChatMessageNode(m1));
+                    if(m1.isThinking() == false) {
+                        n1.add(buildChatMessageNode(m1));
+                    }
                 }
             });
 
