@@ -814,8 +814,11 @@ public abstract class Context {
         contentTypeDoSet(contentType);
 
         //只记录非默认值
-        if (Constants.HEADER_CONTENT_TYPE_DEF.equals(contentType) == false) {
-            contentTypeNew = contentType;
+        if (contentType != null) {
+            if (contentType.startsWith(MimeType.TEXT_PLAIN_VALUE) == false
+                    && contentType.startsWith(MimeType.ALL_VALUE) == false) {
+                contentTypeNew = contentType;
+            }
         }
     }
 
