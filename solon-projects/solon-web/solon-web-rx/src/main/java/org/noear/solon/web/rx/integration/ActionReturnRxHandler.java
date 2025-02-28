@@ -55,7 +55,7 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
                 throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             } else {
                 if (ctx.asyncStarted() == false) {
-                    ctx.asyncStart();
+                    ctx.asyncStart(-1L, null);
                 }
             }
 

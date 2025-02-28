@@ -52,6 +52,7 @@
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
+* 调整 solon-web-rx ActionReturnRxHandler 改为不限时长，支持流式不断输出
 * 修复 solon-web-rx ActionReturnRxHandler 在接收异步发布器时，会结束输出的问题 
 * 修复 solon-hotplug 在 win 下无法删除 jar 文件的问题
 * 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
