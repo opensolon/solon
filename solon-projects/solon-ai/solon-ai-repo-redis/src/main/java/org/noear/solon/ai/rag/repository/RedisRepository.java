@@ -159,6 +159,7 @@ public class RedisRepository implements RepositoryStorable {
 
     public void dropIndex() {
         client.ftDropIndex(indexName);
+        client.flushDB();
     }
 
     /**
@@ -253,29 +254,17 @@ public class RedisRepository implements RepositoryStorable {
         float[] queryEmbedding = embeddingModel.embed(condition.getQuery());
 
         // 将向量转换为字节数组
-        byte[] bytes = new byte[queryEmbedding.length * 4];
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        byte[] vectorBytes = new byte[queryEmbedding.length * 4];
+        ByteBuffer buffer = ByteBuffer.wrap(vectorBytes).order(ByteOrder.LITTLE_ENDIAN);
         for (float f : queryEmbedding) {
             buffer.putFloat(f);
         }
 
-        // 构建混合查询（文本 + 向量）
-        StringBuilder queryBuilder = new StringBuilder();
-        
-        // 添加文本过滤
-        if (!Utils.isEmpty(condition.getQuery())) {
-            queryBuilder.append("(@content:\"").append(condition.getQuery()).append("\") => ");
-        }
-        
-        // 添加向量搜索
-        queryBuilder.append("[KNN ").append(condition.getLimit())
-                   .append(" @embedding $BLOB AS vector_score]");
 
-        Query query = new Query(queryBuilder.toString())
-                .addParam("BLOB", bytes)
-                .returnFields("content", "metadata", "vector_score")
-                .setSortBy("vector_score", false)
+        Query query = new Query("*=>[KNN " + condition.getLimit() + " @embedding $BLOB AS score]")
+                .addParam("BLOB", vectorBytes)
+                .returnFields("content", "metadata", "score")
+                .setSortBy("score", false)
                 .limit(0, condition.getLimit())
                 .dialect(2);
 
@@ -291,6 +280,11 @@ public class RedisRepository implements RepositoryStorable {
         String content = jDoc.getString("content");
         Map<String, Object> metadata = ONode.deserialize(jDoc.getString("metadata"), Map.class);
 
-        return new Document(id, content, metadata, jDoc.getScore());
+
+        return new Document(id, content, metadata, similarityScore(jDoc));
+    }
+
+    private float similarityScore(redis.clients.jedis.search.Document doc) {
+        return (2 - Float.parseFloat(doc.getString("score"))) / 2;
     }
 }
