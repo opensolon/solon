@@ -38,6 +38,7 @@ public class CloudBreakerInterceptor implements Interceptor {
 
         CloudBreaker anno = inv.getMethodAnnotation(CloudBreaker.class);
 
+        //@since 3.1
         if (anno == null) {
             anno = inv.getTargetAnnotation(CloudBreaker.class);
         }
