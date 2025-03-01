@@ -16,6 +16,7 @@
 package org.noear.solon.ai.image;
 
 import org.noear.solon.Utils;
+import org.noear.solon.ai.AiMedia;
 
 import java.util.Base64;
 
@@ -25,7 +26,7 @@ import java.util.Base64;
  * @author noear
  * @since 3.1
  */
-public class Image {
+public class Image implements AiMedia {
     private String b64_json; //就是 base64-str
     private String url;
 
@@ -37,27 +38,27 @@ public class Image {
      * 由 url 构建
      */
     public static Image ofUrl(String url) {
-        Image img = new Image();
-        img.url = url;
-        return img;
+        Image tmp = new Image();
+        tmp.url = url;
+        return tmp;
     }
 
     /**
      * 由 base64String 构建
      */
     public static Image ofBase64(String base64String) {
-        Image img = new Image();
-        img.b64_json = base64String;
-        return img;
+        Image tmp = new Image();
+        tmp.b64_json = base64String;
+        return tmp;
     }
 
     /**
      * 由 base64 构建
      */
     public static Image ofBase64(byte[] base64) {
-        Image img = new Image();
-        img.b64_json = Base64.getEncoder().encodeToString(base64);
-        return img;
+        Image tmp = new Image();
+        tmp.b64_json = Base64.getEncoder().encodeToString(base64);
+        return tmp;
     }
 
     /**
@@ -77,6 +78,7 @@ public class Image {
     /**
      * 转为带媒体信息的字符串
      */
+    @Override
     public String toDataString(boolean useMime) {
         if (Utils.isEmpty(b64_json)) {
             return url;
