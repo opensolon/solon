@@ -19,12 +19,12 @@ import java.util.Base64;
 public class GiteeaiTest {
     private static final Logger log = LoggerFactory.getLogger(GiteeaiTest.class);
     private static final String apiUrl = "https://ai.gitee.com/v1/images/generations";
-    private static final String apkKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
+    private static final String apiKey = "PE6JVMP7UQI81GY6AZ0J8WEWWLFHWHROG15XUP18";
     private static final String model = "stable-diffusion-3.5-large-turbo";//"DeepSeek-V3"; //deepseek-reasoner//deepseek-chat
 
     @Test
     public void case1() throws IOException {
-        ImageModel chatModel = ImageModel.of(apiUrl).apiKey(apkKey).model(model).build();
+        ImageModel chatModel = ImageModel.of(apiUrl).apiKey(apiKey).model(model).build();
 
         //一次性返回
         ImageResponse resp = chatModel.prompt("a white siamese cat")
