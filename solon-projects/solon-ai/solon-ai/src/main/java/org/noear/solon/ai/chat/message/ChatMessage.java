@@ -54,7 +54,7 @@ public interface ChatMessage extends Serializable {
     /// //////////////
 
     static AssistantMessage ofAssistant(String content) {
-        return new AssistantMessage(content, null, false, null, null);
+        return new AssistantMessage(content, false, null, null);
     }
 
     /**

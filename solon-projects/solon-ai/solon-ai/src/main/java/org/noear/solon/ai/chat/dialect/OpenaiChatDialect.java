@@ -23,6 +23,7 @@ import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Openai 聊天模型方言
@@ -85,13 +86,16 @@ public class OpenaiChatDialect extends AbstractChatDialect {
             for (ONode oChoice1 : oResp.get("choices").ary()) {
                 int index = oChoice1.get("index").getInt();
 
-                AssistantMessage message1;
+                List<AssistantMessage> messageList;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
-                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
+                    messageList = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
                 } else { //object=chat.completion
-                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
+                    messageList = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
                 }
-                resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
+
+                for (AssistantMessage msg1 : messageList) {
+                    resp.addChoice(new ChatChoice(index, created, finish_reason, msg1));
+                }
             }
 
             ONode oUsage = oResp.getOrNull("usage");

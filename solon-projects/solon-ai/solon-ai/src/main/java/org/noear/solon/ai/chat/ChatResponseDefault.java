@@ -74,7 +74,8 @@ public class ChatResponseDefault implements ChatResponse {
     @Override
     public AssistantMessage getMessage() {
         if (hasChoices()) {
-            return choices.get(0).getMessage();
+            //取最后条消息
+            return choices.get(choices.size() - 1).getMessage();
         } else {
             return null;
         }

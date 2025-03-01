@@ -29,6 +29,7 @@ import org.noear.solon.ai.video.Video;
 import org.noear.solon.core.util.DateUtil;
 
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -94,8 +95,10 @@ public class OllamaChatDialect extends AbstractChatDialect {
                 createdStr = createdStr.substring(0, createdStr.indexOf(".") + 4);
             }
             Date created = DateUtil.parseTry(createdStr);
-            AssistantMessage message1 = parseAssistantMessage(isStream, resp, oResp.get("message"));
-            resp.addChoice(new ChatChoice(0, created, done_reason, message1));
+            List<AssistantMessage> messageList = parseAssistantMessage(isStream, resp, oResp.get("message"));
+            for (AssistantMessage msg1 : messageList) {
+                resp.addChoice(new ChatChoice(0, created, done_reason, msg1));
+            }
 
             if (resp.isFinished()) {
                 long promptTokens = oResp.get("prompt_eval_count").getLong();

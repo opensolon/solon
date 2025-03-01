@@ -39,7 +39,13 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
     protected void buildChatMessageNodeDo(ONode oNode, AssistantMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
-        oNode.set("content", msg.getOriginalContent());
+
+        int tinkIndex = msg.getContent().indexOf("</tink>");
+        if (tinkIndex > 0) {
+            oNode.set("content", msg.getContent().substring(tinkIndex));
+        } else {
+            oNode.set("content", msg.getContent());
+        }
 
         //reasoning_content 不回传
 
@@ -219,9 +225,10 @@ public abstract class AbstractChatDialect implements ChatDialect {
         return toolCalls;
     }
 
-    protected AssistantMessage parseAssistantMessage(boolean isStream, ChatResponseDefault resp, ONode oMessage) {
+    protected List<AssistantMessage> parseAssistantMessage(boolean isStream, ChatResponseDefault resp, ONode oMessage) {
+        List<AssistantMessage> messageList = new ArrayList<>();
+
         String content = oMessage.get("content").getRawString();
-        String reasoning_content = null;
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
 
         List<Map> toolCallsRaw = null;
@@ -233,20 +240,26 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
         if (oMessage.contains("reasoning_content")) {
             //有思考专属内容的协议
-            reasoning_content = oMessage.get("reasoning_content").getRawString();
+            String reasoning_content = oMessage.get("reasoning_content").getRawString();
 
             if (isStream) {
-                //如果是流返回
+                //如果是流返回（可能要拆成多条流消息）
                 if (content == null) {
                     if (resp.reasoning == false) {
                         //说明是第一次
-                        reasoning_content = "<think>" + reasoning_content;
+                        messageList.add(new AssistantMessage("<think>", true, null, null));
+                        messageList.add(new AssistantMessage("\n\n", true, null, null));
+                        content = reasoning_content;
+                    } else {
+                        content = reasoning_content;
                     }
+
                     resp.reasoning = true;
                 } else {
                     if (resp.reasoning) {
                         //说明是最后一次
-                        reasoning_content = "</think>";
+                        messageList.add(new AssistantMessage("</think>", true, null, null));
+                        messageList.add(new AssistantMessage("\n\n", false, null, null));
                     }
 
                     resp.reasoning = false;
@@ -254,7 +267,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
             } else {
                 //如查是单次返回
                 if (reasoning_content != null) {
-                    reasoning_content = "<think>" + reasoning_content + "</think>";
+                    content = "<think>\n\n" + reasoning_content + "</think>\n\n" + content;
                 }
             }
         } else {
@@ -263,30 +276,20 @@ public abstract class AbstractChatDialect implements ChatDialect {
                 //如果是流返回
                 if (content.startsWith("<think>")) {
                     resp.reasoning = true;
-                    reasoning_content = content;
-                    content = null;
                 } else {
                     if (resp.reasoning) {
                         int thinkEnd = content.indexOf("</think>");
                         if (thinkEnd >= 0) { //可能是个开始符
                             resp.reasoning = false;
+                            messageList.add(new AssistantMessage(content, true, null, null));
+                            return messageList;
                         }
-
-                        reasoning_content = content;
-                        content = null;
                     }
-                }
-            } else {
-                //如查是单次返回
-                if (content.startsWith("<think>")) {
-                    //有思考
-                    int thinkEnd = content.indexOf("</think>");
-                    reasoning_content = content.substring(0, thinkEnd + 8);
-                    content = content.substring(thinkEnd + 8);
                 }
             }
         }
 
-        return new AssistantMessage(content, reasoning_content, resp.reasoning, toolCallsRaw, toolCalls);
+        messageList.add(new AssistantMessage(content, resp.reasoning, toolCallsRaw, toolCalls));
+        return messageList;
     }
 }

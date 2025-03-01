@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,7 +203,17 @@ public class ChatRequestDefault implements ChatRequest {
                                 }
 
                                 if (choiceMessage != null) {
-                                    subscriber.onNext(resp);
+                                    if (resp.getChoices().size() > 1) {
+                                        //有多个选择时，拆成多个。
+                                        List<ChatChoice> choices = new ArrayList<>(resp.getChoices());
+                                        for (ChatChoice choice : choices) {
+                                            resp.reset();
+                                            resp.addChoice(choice);
+                                            subscriber.onNext(resp);
+                                        }
+                                    } else {
+                                        subscriber.onNext(resp);
+                                    }
                                 }
                             }
 

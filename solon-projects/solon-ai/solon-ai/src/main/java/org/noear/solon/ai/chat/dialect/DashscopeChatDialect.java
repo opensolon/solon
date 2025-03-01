@@ -7,6 +7,7 @@ import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -101,13 +102,17 @@ public class DashscopeChatDialect extends AbstractChatDialect {
                     resp.setFinished(true);
                 }
 
-                AssistantMessage message1;
+                List<AssistantMessage> messageList;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
-                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
+                    messageList = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
                 } else { //object=chat.completion
-                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
+                    messageList = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
                 }
-                resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
+
+                for (AssistantMessage msg1 : messageList) {
+                    resp.addChoice(new ChatChoice(index, created, finish_reason, msg1));
+                }
+
                 index++;
             }
 
