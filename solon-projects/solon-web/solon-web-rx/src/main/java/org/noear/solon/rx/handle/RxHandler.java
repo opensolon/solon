@@ -15,7 +15,6 @@
  */
 package org.noear.solon.rx.handle;
 
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.rx.Completable;
 
 /**
