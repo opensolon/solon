@@ -34,6 +34,7 @@ public class AssistantMessage implements ChatMessage {
     private List<ChatFunctionCall> toolCalls;
     private List<Map> toolCallsRaw;
 
+    //纯思考；纯内容；混合内容
     private boolean isThinking;
 
     public AssistantMessage() {
