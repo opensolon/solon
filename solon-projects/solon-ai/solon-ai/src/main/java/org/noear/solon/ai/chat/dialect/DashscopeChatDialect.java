@@ -50,7 +50,7 @@ public class DashscopeChatDialect extends AbstractChatDialect {
 
             n.getOrNew("input").getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    if(m1.isThinking() == false) {
+                    if (m1.isThinking() == false) {
                         n1.add(buildChatMessageNode(m1));
                     }
                 }
@@ -70,7 +70,7 @@ public class DashscopeChatDialect extends AbstractChatDialect {
 
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, boolean isStream, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
@@ -103,9 +103,9 @@ public class DashscopeChatDialect extends AbstractChatDialect {
 
                 AssistantMessage message1;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
-                    message1 = parseAssistantMessage(resp, oChoice1.get("delta"));
+                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
                 } else { //object=chat.completion
-                    message1 = parseAssistantMessage(resp, oChoice1.get("message"));
+                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
                 }
                 resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
                 index++;

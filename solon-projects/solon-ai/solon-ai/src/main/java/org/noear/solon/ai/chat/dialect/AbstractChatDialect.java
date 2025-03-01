@@ -179,7 +179,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
             n.getOrNew("messages").build(n1 -> {
                 for (ChatMessage m1 : messages) {
-                    if(m1.isThinking() == false) {
+                    if (m1.isThinking() == false) {
                         n1.add(buildChatMessageNode(m1));
                     }
                 }
@@ -219,9 +219,8 @@ public abstract class AbstractChatDialect implements ChatDialect {
         return toolCalls;
     }
 
-    protected AssistantMessage parseAssistantMessage(ChatResponseDefault resp, ONode oMessage) {
-        String content = oMessage.get("content").getString();
-        String reasoning_content = oMessage.get("reasoning_content").getString();
+    protected AssistantMessage parseAssistantMessage(boolean isStream, ChatResponseDefault resp, ONode oMessage) {
+        String content = oMessage.get("content").getRawString();
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
 
         List<Map> toolCallsRaw = null;
@@ -231,8 +230,27 @@ public abstract class AbstractChatDialect implements ChatDialect {
             toolCallsRaw = toolCallsNode.toObject(List.class);
         }
 
-        if (Utils.isEmpty(reasoning_content)) {
-            //将 think 状态判断
+        if (oMessage.contains("reasoning_content")) {
+            //有思考专属内容的协议
+            if (content == null) {
+                if (resp.reasoning == false) {
+                    //说明是第一次
+                    content = "<think>" + oMessage.get("reasoning_content").getRawString();
+                } else {
+                    content = oMessage.get("reasoning_content").getRawString();
+                }
+
+                resp.reasoning = true;
+            } else {
+                if (resp.reasoning) {
+                    //说明是最后一次
+                    content = "</think>" + content;
+                }
+
+                resp.reasoning = false;
+            }
+        } else {
+            //分析 think 状态
             if (Utils.isNotEmpty(content)) {
                 if (content.startsWith("<think>")) {
                     resp.reasoning = true;
@@ -253,12 +271,12 @@ public abstract class AbstractChatDialect implements ChatDialect {
                     }
                 }
             }
-        } else{
-            content = reasoning_content;
         }
 
-        //标志为思考，或者思考内容不为空
-        boolean isReasoning = resp.reasoning || Utils.isNotEmpty(reasoning_content);
-        return new AssistantMessage(content, isReasoning, toolCallsRaw, toolCalls);
+        if (content == null) {
+            content = "";
+        }
+
+        return new AssistantMessage(content, resp.reasoning, toolCallsRaw, toolCalls);
     }
 }

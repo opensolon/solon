@@ -50,5 +50,5 @@ public interface ChatDialect extends AiModelDialect {
      *
      * @param config 聊天配置
      */
-    boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String respJson);
+    boolean parseResponseJson(ChatConfig config, boolean isStream, ChatResponseDefault resp, String respJson);
 }

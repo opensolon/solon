@@ -16,13 +16,11 @@
 package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
-import org.noear.solon.Utils;
 import org.noear.solon.ai.AiUsage;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.ChatMessage;
-import org.noear.solon.ai.image.Image;
 
 import java.util.Date;
 
@@ -59,7 +57,7 @@ public class OpenaiChatDialect extends AbstractChatDialect {
     }
 
     @Override
-    public boolean parseResponseJson(ChatConfig config, ChatResponseDefault resp, String json) {
+    public boolean parseResponseJson(ChatConfig config, boolean isStream, ChatResponseDefault resp, String json) {
         if (json.startsWith("data:")) {
             json = json.substring(6);
 
@@ -89,9 +87,9 @@ public class OpenaiChatDialect extends AbstractChatDialect {
 
                 AssistantMessage message1;
                 if (oChoice1.contains("delta")) {  //object=chat.completion.chunk
-                    message1 = parseAssistantMessage(resp, oChoice1.get("delta"));
+                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("delta"));
                 } else { //object=chat.completion
-                    message1 = parseAssistantMessage(resp, oChoice1.get("message"));
+                    message1 = parseAssistantMessage(isStream, resp, oChoice1.get("message"));
                 }
                 resp.addChoice(new ChatChoice(index, created, finish_reason, message1));
             }

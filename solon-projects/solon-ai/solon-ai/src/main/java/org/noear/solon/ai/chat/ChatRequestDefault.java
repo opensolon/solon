@@ -108,7 +108,7 @@ public class ChatRequestDefault implements ChatRequest {
         }
 
         ChatResponseDefault resp = new ChatResponseDefault();
-        dialect.parseResponseJson(config, resp, respJson);
+        dialect.parseResponseJson(config, false, resp, respJson);
 
         if (resp.getError() != null) {
             throw resp.getError();
@@ -182,7 +182,7 @@ public class ChatRequestDefault implements ChatRequest {
                         }
 
                         resp.reset();
-                        if (dialect.parseResponseJson(config, resp, respJson)) {
+                        if (dialect.parseResponseJson(config, true, resp, respJson)) {
                             if (resp.getError() != null) {
                                 subscriber.onError(resp.getError());
                                 return;
@@ -240,9 +240,9 @@ public class ChatRequestDefault implements ChatRequest {
                 } catch (Throwable ex) {
                     throw new ChatException("The function call failed!", ex);
                 }
-            }else{
+            } else {
                 //会存在调用的call实际上不存在的情况
-                log.warn("tool call 名称 {} 不存在",call.name());
+                log.warn("tool call 名称 {} 不存在", call.name());
             }
         }
     }
