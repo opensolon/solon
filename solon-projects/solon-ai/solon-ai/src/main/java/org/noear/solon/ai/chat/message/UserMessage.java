@@ -16,8 +16,8 @@
 package org.noear.solon.ai.chat.message;
 
 import org.noear.solon.Utils;
+import org.noear.solon.ai.AiMedia;
 import org.noear.solon.ai.chat.ChatRole;
-import org.noear.solon.ai.image.Image;
 import org.noear.solon.lang.Preview;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
 public class UserMessage implements ChatMessage {
     private final ChatRole role = ChatRole.USER;
     private String content;
-    private List<Image> images;
+    private List<AiMedia> medias;
 
     public UserMessage() {
         //用于序列化
@@ -42,9 +42,9 @@ public class UserMessage implements ChatMessage {
         this(content, null);
     }
 
-    public UserMessage(String content, List<Image> images) {
+    public UserMessage(String content, List<AiMedia> medias) {
         this.content = content;
-        this.images = images;
+        this.medias = medias;
     }
 
     /**
@@ -66,13 +66,13 @@ public class UserMessage implements ChatMessage {
     /**
      * 图片集合
      */
-    public List<Image> getImages() {
-        return images;
+    public List<AiMedia> getMedias() {
+        return medias;
     }
 
     @Override
     public String toString() {
-        if (Utils.isEmpty(images)) {
+        if (Utils.isEmpty(medias)) {
             return "{" +
                     "role='" + getRole() + '\'' +
                     ", content='" + content + '\'' +
@@ -81,7 +81,7 @@ public class UserMessage implements ChatMessage {
             return "{" +
                     "role='" + getRole() + '\'' +
                     ", content='" + content + '\'' +
-                    ", images='" + images + '\'' +
+                    ", medias='" + medias + '\'' +
                     '}';
         }
     }

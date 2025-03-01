@@ -17,12 +17,15 @@ package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
+import org.noear.solon.ai.AiMedia;
+import org.noear.solon.ai.audio.Audio;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.function.ChatFunction;
 import org.noear.solon.ai.chat.function.ChatFunctionCall;
 import org.noear.solon.ai.chat.function.ChatFunctionParam;
 import org.noear.solon.ai.chat.message.*;
 import org.noear.solon.ai.image.Image;
+import org.noear.solon.ai.video.Video;
 
 import java.util.*;
 
@@ -65,14 +68,20 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
     protected void buildChatMessageNodeDo(ONode oNode, UserMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
-        if (Utils.isEmpty(msg.getImages())) {
+        if (Utils.isEmpty(msg.getMedias())) {
             oNode.set("content", msg.getContent());
         } else {
             oNode.getOrNew("content").build(n1 -> {
                 n1.addNew().set("type", "text").set("text", msg.getContent());
 
-                for (Image img : msg.getImages()) {
-                    n1.addNew().set("type", "image_url").getOrNew("image_url").set("url", img.toDataString(true));
+                for (AiMedia media : msg.getMedias()) {
+                    if (media instanceof Image) {
+                        n1.addNew().set("type", "image_url").getOrNew("image_url").set("url", media.toDataString(true));
+                    } else if (media instanceof Audio) {
+                        n1.addNew().set("type", "audio_url").getOrNew("audio_url").set("url", media.getUrl());
+                    } else if (media instanceof Video) {
+                        n1.addNew().set("type", "video_url").getOrNew("video_url").set("url", media.getUrl());
+                    }
                 }
             });
         }

@@ -41,4 +41,11 @@ public class Video implements AiMedia {
     public String getUrl() {
         return url;
     }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }

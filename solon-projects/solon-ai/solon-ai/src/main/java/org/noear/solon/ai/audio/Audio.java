@@ -42,4 +42,11 @@ public class Audio implements AiMedia {
     public String getUrl() {
         return url;
     }
+
+    @Override
+    public String toString() {
+        return "Audio{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }

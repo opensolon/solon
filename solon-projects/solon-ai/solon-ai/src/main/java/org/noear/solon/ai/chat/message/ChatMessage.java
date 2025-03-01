@@ -17,6 +17,7 @@ package org.noear.solon.ai.chat.message;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
+import org.noear.solon.ai.AiMedia;
 import org.noear.solon.ai.chat.ChatRole;
 import org.noear.solon.ai.image.Image;
 
@@ -73,8 +74,15 @@ public interface ChatMessage extends Serializable {
     /**
      * 构建用户消息
      */
-    static ChatMessage ofUser(String content, List<Image> images) {
-        return new UserMessage(content, images);
+    static ChatMessage ofUser(String content, List<AiMedia> medias) {
+        return new UserMessage(content, medias);
+    }
+
+    /**
+     * 构建用户消息
+     */
+    static ChatMessage ofUser(String content, AiMedia... medias) {
+        return new UserMessage(content, Arrays.asList(medias));
     }
 
     /**

@@ -15,7 +15,7 @@
  */
 package org.noear.solon.ai.chat.message;
 
-import org.noear.solon.ai.image.Image;
+import org.noear.solon.ai.AiMedia;
 import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.lang.Preview;
 
@@ -31,7 +31,7 @@ import java.util.*;
 public class UserMessageTemplate {
     private final String tmpl;
     private final Map<String, Object> params = new HashMap<>();
-    private List<Image> images;
+    private List<AiMedia> medias;
 
 
     /**
@@ -50,13 +50,13 @@ public class UserMessageTemplate {
     }
 
     /**
-     * 配置图片
+     * 配置感知媒体
      */
-    public UserMessageTemplate image(Image image) {
-        if (images == null) {
-            images = new ArrayList<>();
+    public UserMessageTemplate media(AiMedia media) {
+        if (medias == null) {
+            medias = new ArrayList<>();
         }
-        images.add(image);
+        medias.add(media);
         return this;
     }
 
@@ -65,6 +65,6 @@ public class UserMessageTemplate {
      */
     public UserMessage generate() {
         String content = TmplUtil.parse(tmpl, params);
-        return new UserMessage(content, images);
+        return new UserMessage(content, medias);
     }
 }

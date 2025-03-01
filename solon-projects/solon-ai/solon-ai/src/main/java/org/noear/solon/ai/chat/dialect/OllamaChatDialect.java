@@ -17,11 +17,15 @@ package org.noear.solon.ai.chat.dialect;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
+import org.noear.solon.ai.AiMedia;
 import org.noear.solon.ai.AiUsage;
+import org.noear.solon.ai.audio.Audio;
 import org.noear.solon.ai.chat.ChatException;
 import org.noear.solon.ai.chat.*;
 import org.noear.solon.ai.chat.message.AssistantMessage;
 import org.noear.solon.ai.chat.message.UserMessage;
+import org.noear.solon.ai.image.Image;
+import org.noear.solon.ai.video.Video;
 import org.noear.solon.core.util.DateUtil;
 
 import java.util.Date;
@@ -53,11 +57,19 @@ public class OllamaChatDialect extends AbstractChatDialect {
     @Override
     protected void buildChatMessageNodeDo(ONode oNode, UserMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
-        if (Utils.isEmpty(msg.getImages())) {
+        if (Utils.isEmpty(msg.getMedias())) {
             oNode.set("content", msg.getContent());
         } else {
             oNode.set("content", msg.getContent());
-            oNode.set("images", msg.getImages().stream().map(i->i.toDataString(false)).collect(Collectors.toList()));
+
+            AiMedia demo = msg.getMedias().get(0);
+            if (demo instanceof Image) {
+                oNode.set("images", msg.getMedias().stream().map(i -> i.toDataString(false)).collect(Collectors.toList()));
+            } else if (demo instanceof Audio) {
+                oNode.set("audios", msg.getMedias().stream().map(i -> i.toDataString(false)).collect(Collectors.toList()));
+            } else if (demo instanceof Video) {
+                oNode.set("videos", msg.getMedias().stream().map(i -> i.toDataString(false)).collect(Collectors.toList()));
+            }
         }
     }
 
