@@ -47,6 +47,7 @@
 * 添加 solon-net-httputils HttpUtils:execAsTextStream 文本流读取接口（可用于 dnjson 和 sse-stream）
 * 添加 solon-web-rx 过滤体系
 * 添加 solon-serialization-json* 插件对 ndjson 格式的匹配支持
+* 添加 solon-cloud CloudBreaker 注解对类的支持
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?

@@ -38,6 +38,10 @@ public class CloudBreakerInterceptor implements Interceptor {
 
         CloudBreaker anno = inv.getMethodAnnotation(CloudBreaker.class);
 
+        if (anno == null) {
+            anno = inv.getTargetAnnotation(CloudBreaker.class);
+        }
+
         if (anno != null) {
             //支持${xxx}配置
             String name = Solon.cfg().getByTmpl(Utils.annoAlias(anno.value(), anno.name()));
