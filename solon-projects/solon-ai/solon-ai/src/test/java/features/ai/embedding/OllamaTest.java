@@ -15,7 +15,7 @@ public class OllamaTest {
     private static final Logger log = LoggerFactory.getLogger(OllamaTest.class);
     private static final String apiUrl = "http://127.0.0.1:11434/api/embed";
     private static final String provider = "ollama";
-    private static final String model = "nomic-embed-text:latest";//
+    private static final String model = "bge-m3";//
 
     @Test
     public void case1() throws IOException {

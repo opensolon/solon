@@ -15,6 +15,8 @@
  */
 package org.noear.solon.ai.embedding;
 
+import java.util.Arrays;
+
 /**
  * 嵌入数据
  *
@@ -46,7 +48,7 @@ public class Embedding {
     public String toString() {
         return "{" +
                 "index=" + index +
-                ", embedding=" + embedding +
+                ", embedding=" + Arrays.toString(embedding) +
                 '}';
     }
 }
