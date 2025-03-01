@@ -85,7 +85,14 @@ public class DashscopeEmbeddingDialect extends AbstractEmbeddingDialect {
         } else {
             List<Embedding> data = new ArrayList<>();
             for (ONode n1 : oResp.get("output").get("embeddings").ary()) {
-                data.add(new Embedding(n1.get("text_index").getInt(), n1.get("embedding").toObject(float[].class)));
+                int index = 0;
+                if (n1.contains("text_index")) {
+                    index = n1.get("text_index").getInt();
+                } else {
+                    index = n1.get("index").getInt();
+                }
+
+                data.add(new Embedding(index, n1.get("embedding").toObject(float[].class)));
             }
 
 
