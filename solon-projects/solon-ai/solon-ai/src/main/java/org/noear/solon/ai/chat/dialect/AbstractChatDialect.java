@@ -249,13 +249,9 @@ public abstract class AbstractChatDialect implements ChatDialect {
                         //说明是第一次
                         messageList.add(new AssistantMessage("<think>", true, null, null));
                         messageList.add(new AssistantMessage("\n\n", true, null, null));
-
-                        if(Utils.isEmpty(reasoning_content)) {
-                            //如果不空，不用再继续了
-                            return messageList;
+                        if (Utils.isNotEmpty(reasoning_content)) {
+                            content = reasoning_content;
                         }
-
-                        content = reasoning_content;
                     } else {
                         content = reasoning_content;
                     }
@@ -272,13 +268,8 @@ public abstract class AbstractChatDialect implements ChatDialect {
                 }
             } else {
                 //如查是单次返回
-                if (reasoning_content != null) {
+                if (Utils.isNotEmpty(reasoning_content)) {
                     content = "<think>\n\n" + reasoning_content + "</think>\n\n" + content;
-                } else if (content.indexOf("</think>") > 0) {
-                    //gitee 的结构不完整
-                    if (content.startsWith("<think>") == false) {
-                        content = "<think>\n\n" + content;
-                    }
                 }
             }
         } else {
@@ -300,7 +291,10 @@ public abstract class AbstractChatDialect implements ChatDialect {
             }
         }
 
-        messageList.add(new AssistantMessage(content, resp.reasoning, toolCallsRaw, toolCalls));
+        if (content != null) {
+            messageList.add(new AssistantMessage(content, resp.reasoning, toolCallsRaw, toolCalls));
+        }
+
         return messageList;
     }
 }
