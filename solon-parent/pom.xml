@@ -989,6 +989,13 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- tool:: begin -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-configuration-processor</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <!-- tool:: end -->
 
             <!-- solon-integration:: begin -->
 
