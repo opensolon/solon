@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.1.0-M2
+Solon v3.1.0-M3
 </h1>
 <p align="center">
 	<strong>Структура разработки приложений на бизнес-уровне, ориентированная на полную сцену: сдержанность, эффективность, открытость, экология</strong>

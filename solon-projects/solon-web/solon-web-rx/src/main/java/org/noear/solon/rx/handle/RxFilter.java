@@ -15,6 +15,7 @@
  */
 package org.noear.solon.rx.handle;
 
+import org.noear.solon.lang.Preview;
 import org.noear.solon.rx.Completable;
 
 /**
@@ -23,6 +24,7 @@ import org.noear.solon.rx.Completable;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public interface RxFilter<CTX> {
     /**
      * 过滤
