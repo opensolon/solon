@@ -39,7 +39,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
     protected void buildChatMessageNodeDo(ONode oNode, AssistantMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
-        oNode.set("content", msg.getContent());
+        oNode.set("content", msg.getOriginalContent());
 
         //reasoning_content 不回传
 
@@ -221,6 +221,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
     protected AssistantMessage parseAssistantMessage(boolean isStream, ChatResponseDefault resp, ONode oMessage) {
         String content = oMessage.get("content").getRawString();
+        String reasoning_content = null;
         ONode toolCallsNode = oMessage.getOrNull("tool_calls");
 
         List<Map> toolCallsRaw = null;
@@ -232,51 +233,60 @@ public abstract class AbstractChatDialect implements ChatDialect {
 
         if (oMessage.contains("reasoning_content")) {
             //有思考专属内容的协议
-            if (content == null) {
-                if (resp.reasoning == false) {
-                    //说明是第一次
-                    content = "<think>" + oMessage.get("reasoning_content").getRawString();
+            reasoning_content = oMessage.get("reasoning_content").getRawString();
+
+            if (isStream) {
+                //如果是流返回
+                if (content == null) {
+                    if (resp.reasoning == false) {
+                        //说明是第一次
+                        reasoning_content = "<think>" + reasoning_content;
+                    }
+                    resp.reasoning = true;
                 } else {
-                    content = oMessage.get("reasoning_content").getRawString();
-                }
+                    if (resp.reasoning) {
+                        //说明是最后一次
+                        reasoning_content = "</think>";
+                    }
 
-                resp.reasoning = true;
+                    resp.reasoning = false;
+                }
             } else {
-                if (resp.reasoning) {
-                    //说明是最后一次
-                    content = "</think>" + content;
+                //如查是单次返回
+                if (reasoning_content != null) {
+                    reasoning_content = "<think>" + reasoning_content + "</think>";
                 }
-
-                resp.reasoning = false;
             }
         } else {
             //分析 think 状态
-            if (Utils.isNotEmpty(content)) {
+            if (isStream) {
+                //如果是流返回
                 if (content.startsWith("<think>")) {
                     resp.reasoning = true;
-
-                    //可能马上结束的
-                    int thinkEnd = content.indexOf("</think>");
-                    if (thinkEnd > 0) {
-                        //单次返回
-                        resp.reasoning = false;
-                    }
+                    reasoning_content = content;
+                    content = null;
                 } else {
                     if (resp.reasoning) {
-                        //流式返回
                         int thinkEnd = content.indexOf("</think>");
                         if (thinkEnd >= 0) { //可能是个开始符
                             resp.reasoning = false;
                         }
+
+                        reasoning_content = content;
+                        content = null;
                     }
+                }
+            } else {
+                //如查是单次返回
+                if (content.startsWith("<think>")) {
+                    //有思考
+                    int thinkEnd = content.indexOf("</think>");
+                    reasoning_content = content.substring(0, thinkEnd + 8);
+                    content = content.substring(thinkEnd + 8);
                 }
             }
         }
 
-        if (content == null) {
-            content = "";
-        }
-
-        return new AssistantMessage(content, resp.reasoning, toolCallsRaw, toolCalls);
+        return new AssistantMessage(content, reasoning_content, resp.reasoning, toolCallsRaw, toolCalls);
     }
 }

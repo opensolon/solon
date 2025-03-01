@@ -31,16 +31,19 @@ import java.util.*;
 public class AssistantMessage implements ChatMessage {
     private final ChatRole role = ChatRole.ASSISTANT;
     private String content;
+    private String reasoning_content;
     private List<ChatFunctionCall> toolCalls;
     private List<Map> toolCallsRaw;
-    private boolean isThinking;
+
+    private transient boolean isThinking;
 
     public AssistantMessage() {
         //用于序列化
     }
 
-    public AssistantMessage(String content, boolean isThinking, List<Map> toolCallsRaw, List<ChatFunctionCall> toolCalls) {
+    public AssistantMessage(String content, String reasoning_content, boolean isThinking, List<Map> toolCallsRaw, List<ChatFunctionCall> toolCalls) {
         this.content = content;
+        this.reasoning_content = reasoning_content;
         this.isThinking = isThinking;
         this.toolCallsRaw = toolCallsRaw;
         this.toolCalls = toolCalls;
@@ -55,11 +58,34 @@ public class AssistantMessage implements ChatMessage {
     }
 
     /**
-     * 内容（为空时，表示在思考）
+     * 内容
      */
     @Override
     public String getContent() {
+        if (reasoning_content == null) {
+            return content;
+        } else {
+            if (content == null) {
+                return reasoning_content;
+            } else {
+                return reasoning_content + content;
+            }
+        }
+    }
+
+
+    /**
+     * 获取原始内容
+     */
+    public String getOriginalContent() {
         return content;
+    }
+
+    /**
+     * 获取推理内容
+     */
+    public String getReasoningContent() {
+        return reasoning_content;
     }
 
     /**
@@ -98,8 +124,8 @@ public class AssistantMessage implements ChatMessage {
             buf.append(", content='").append(content).append('\'');
         }
 
-        if (isThinking) {
-            buf.append(", isReasoning=true");
+        if (reasoning_content != null) {
+            buf.append(", reasoning_content='").append(reasoning_content).append('\'');
         }
 
         if (toolCallsRaw != null) {
