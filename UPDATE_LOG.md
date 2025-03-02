@@ -28,9 +28,11 @@
 * 新增 solon-ai-load-markdown 插件
 * 新增 solon-ai-load-pdf 插件
 * 新增 solon-ai-load-html 插件
+* 新增 solon-configuration-processor 插件
 * 定义 响应式过滤和拦截体系？？？
+* 测试 虚拟线程、异步、响应式并优化性能？？？
 * 优化 拦截体系与 rx 的兼容？？？
-* 优化 规范插件命名？？？
+* 优化 solon 仓库的规范插件命名
 * 优化 solon 小写且带点环境变量的一个边界问题
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
 * 优化 solon-security-validation BeanValidator 的设定方式
@@ -57,7 +59,6 @@
 * 修复 solon-web-rx ActionReturnRxHandler 在接收异步发布器时，会结束输出的问题 
 * 修复 solon-hotplug 在 win 下无法删除 jar 文件的问题
 * 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
-* 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.127
 * socket.d 升为 2.5.16
 * fastjson2 升为 2.0.55
