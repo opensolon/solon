@@ -59,7 +59,7 @@
 * 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * snack3 升为 3.2.127
-* socket.d 升为 2.5.15
+* socket.d 升为 2.5.16
 * fastjson2 升为 2.0.55
 * jackson 升为 2.18.2
 * gson 升为 2.12.1
