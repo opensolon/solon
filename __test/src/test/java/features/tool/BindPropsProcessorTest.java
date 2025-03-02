@@ -44,24 +44,24 @@ public class BindPropsProcessorTest {
         assertThat(ctx.read("$.properties.length()"), greaterThanOrEqualTo(18));
         assertThat(ctx.read("$.hints.length()"), greaterThanOrEqualTo(0));
 
-        checkProperty(ctx, "demo.boolean-value", Boolean.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.byte-value", Byte.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.char-value", Character.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.default-ddemo-enum", DemoEnum.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("a")));
-        checkProperty(ctx, "demo.boolean-value", Boolean.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.default-demo-enum-with-value", DemoEnumWithValue.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("b")));
-        checkProperty(ctx, "demo.default-string-array-value", "java.lang.String[]", canonicalName, (v) -> assertThat(v.toString(), equalTo("[\"a\",\"b\"]")));
-        checkProperty(ctx, "demo.default-value", Boolean.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("true")));
-        checkProperty(ctx, "demo.demo-enum", DemoEnum.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.demo-enum-with-value", DemoEnumWithValue.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.double-value", Double.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.float-value", Float.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.int-value", Integer.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.long-value", Long.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.short-value", Short.class.getCanonicalName(), canonicalName);
-        checkProperty(ctx, "demo.string-array-value", "java.lang.String[]", canonicalName);
-        checkProperty(ctx, "demo.string-list-value", "java.util.List<java.lang.String>", canonicalName);
-        checkProperty(ctx, "demo.string-value", String.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.booleanValue", Boolean.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.byteValue", Byte.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.charValue", Character.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.defaultDemoEnum", DemoEnum.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("a")));
+        checkProperty(ctx, "demo.booleanValue", Boolean.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.defaultDemoEnumWithValue", DemoEnumWithValue.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("b")));
+        checkProperty(ctx, "demo.defaultStringArrayValue", "java.lang.String[]", canonicalName, (v) -> assertThat(v.toString(), equalTo("[\"a\",\"b\"]")));
+        checkProperty(ctx, "demo.defaultValue", Boolean.class.getCanonicalName(), canonicalName, (v) -> assertThat(v.toString(), equalTo("true")));
+        checkProperty(ctx, "demo.demoEnum", DemoEnum.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.demoEnumWithValue", DemoEnumWithValue.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.doubleValue", Double.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.floatValue", Float.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.intValue", Integer.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.longValue", Long.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.shortValue", Short.class.getCanonicalName(), canonicalName);
+        checkProperty(ctx, "demo.stringArrayValue", "java.lang.String[]", canonicalName);
+        checkProperty(ctx, "demo.stringListValue", "java.util.List<java.lang.String>", canonicalName);
+        checkProperty(ctx, "demo.stringValue", String.class.getCanonicalName(), canonicalName);
 
     }
 
