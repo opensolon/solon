@@ -25,6 +25,30 @@ import org.noear.solon.core.handle.Context;
  */
 public interface RxContext {
     /**
+     * 属性获取
+     */
+    <T> T attr(String key);
+
+    /**
+     * 属性设置
+     */
+    void attrSet(String key, Object value);
+
+    ////////////////////////////////////////////////////
+
+    /**
+     * 客户端真实IP
+     */
+    String realIp();
+
+    /**
+     * 是否安全
+     */
+    boolean isSecure();
+
+    ////////////////////////////////////////////////////
+
+    /**
      * 转为经典上下文接口
      */
     Context toContext();

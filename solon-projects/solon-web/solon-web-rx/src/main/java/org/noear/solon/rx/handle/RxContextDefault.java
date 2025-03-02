@@ -24,7 +24,7 @@ import org.noear.solon.core.handle.Context;
  * @since 3.1
  */
 public class RxContextDefault implements RxContext {
-    private final Context context;
+    private final Context real;
 
     public RxContextDefault(Context ctx) {
         if (ctx.asyncSupported() == false) {
@@ -35,7 +35,27 @@ public class RxContextDefault implements RxContext {
             }
         }
 
-        this.context = ctx;
+        this.real = ctx;
+    }
+
+    @Override
+    public <T> T attr(String key) {
+        return real.attr(key);
+    }
+
+    @Override
+    public void attrSet(String key, Object value) {
+        real.attrSet(key, value);
+    }
+
+    @Override
+    public String realIp() {
+        return real.realIp();
+    }
+
+    @Override
+    public boolean isSecure() {
+        return real.isSecure();
     }
 
     /**
@@ -43,6 +63,6 @@ public class RxContextDefault implements RxContext {
      */
     @Override
     public Context toContext() {
-        return context;
+        return real;
     }
 }
