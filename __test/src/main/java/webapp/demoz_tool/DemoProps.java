@@ -45,7 +45,7 @@ public class DemoProps {
         add("b");
     }};
 
-    private DemoEnum defaultDdemoEnum = DemoEnum.A;
+    private DemoEnum defaultDemoEnum = DemoEnum.A;
 
     private DemoEnumWithValue defaultDemoEnumWithValue = DemoEnumWithValue.B;
 }

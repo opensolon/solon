@@ -20,7 +20,6 @@ package org.noear.solon.configurationprocessor.fieldvalues.javac;
 
 import org.noear.solon.configurationprocessor.fieldvalues.FieldValuesParser;
 import org.noear.solon.configurationprocessor.fieldvalues.javac.ExpressionTree.Member;
-import org.noear.solon.configurationprocessor.support.ConventionUtils;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
@@ -36,210 +35,202 @@ import java.util.*;
  */
 public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 
-	private final Trees trees;
+    private final Trees trees;
 
-	public JavaCompilerFieldValuesParser(ProcessingEnvironment env) throws Exception {
-		this.trees = Trees.instance(env);
-	}
+    public JavaCompilerFieldValuesParser(ProcessingEnvironment env) throws Exception {
+        this.trees = Trees.instance(env);
+    }
 
-	@Override
-	public Map<String, Object> getFieldValues(TypeElement element) throws Exception {
-		Tree tree = this.trees.getTree(element);
-		if (tree != null) {
-			FieldCollector fieldCollector = new FieldCollector();
-			tree.accept(fieldCollector);
-			return fieldCollector.getFieldValues();
-		}
-		return Collections.emptyMap();
-	}
+    @Override
+    public Map<String, Object> getFieldValues(TypeElement element) throws Exception {
+        Tree tree = this.trees.getTree(element);
+        if (tree != null) {
+            FieldCollector fieldCollector = new FieldCollector();
+            tree.accept(fieldCollector);
+            return fieldCollector.getFieldValues();
+        }
+        return Collections.emptyMap();
+    }
 
-	/**
-	 * {@link TreeVisitor} to collect fields.
-	 */
-	private static final class FieldCollector implements TreeVisitor {
+    /**
+     * {@link TreeVisitor} to collect fields.
+     */
+    private static final class FieldCollector implements TreeVisitor {
 
-		private static final Map<String, Class<?>> WRAPPER_TYPES;
+        private static final Map<String, Class<?>> WRAPPER_TYPES;
+        private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
+        private static final Map<String, Object> WELL_KNOWN_STATIC_FINALS;
+        private static final String DURATION_OF = "Duration.of";
+        private static final Map<String, String> DURATION_SUFFIX;
+        private static final String PERIOD_OF = "Period.of";
+        private static final Map<String, String> PERIOD_SUFFIX;
+        private static final String DATA_SIZE_OF = "DataSize.of";
+        private static final Map<String, String> DATA_SIZE_SUFFIX;
 
-		static {
-			Map<String, Class<?>> types = new HashMap<>();
-			types.put("boolean", Boolean.class);
-			types.put(Boolean.class.getName(), Boolean.class);
-			types.put("byte", Byte.class);
-			types.put(Byte.class.getName(), Byte.class);
-			types.put("short", Short.class);
-			types.put(Short.class.getName(), Short.class);
-			types.put("int", Integer.class);
-			types.put(Integer.class.getName(), Integer.class);
-			types.put("long", Long.class);
-			types.put(Long.class.getName(), Long.class);
-			WRAPPER_TYPES = Collections.unmodifiableMap(types);
-		}
+        static {
+            Map<String, Class<?>> types = new HashMap<>();
+            types.put("boolean", Boolean.class);
+            types.put(Boolean.class.getName(), Boolean.class);
+            types.put("byte", Byte.class);
+            types.put(Byte.class.getName(), Byte.class);
+            types.put("short", Short.class);
+            types.put(Short.class.getName(), Short.class);
+            types.put("int", Integer.class);
+            types.put(Integer.class.getName(), Integer.class);
+            types.put("long", Long.class);
+            types.put(Long.class.getName(), Long.class);
+            WRAPPER_TYPES = Collections.unmodifiableMap(types);
+        }
 
-		private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
+        static {
+            Map<Class<?>, Object> values = new HashMap<>();
+            values.put(Boolean.class, false);
+            values.put(Byte.class, (byte) 0);
+            values.put(Short.class, (short) 0);
+            values.put(Integer.class, 0);
+            values.put(Long.class, (long) 0);
+            DEFAULT_TYPE_VALUES = Collections.unmodifiableMap(values);
+        }
 
-		static {
-			Map<Class<?>, Object> values = new HashMap<>();
-			values.put(Boolean.class, false);
-			values.put(Byte.class, (byte) 0);
-			values.put(Short.class, (short) 0);
-			values.put(Integer.class, 0);
-			values.put(Long.class, (long) 0);
-			DEFAULT_TYPE_VALUES = Collections.unmodifiableMap(values);
-		}
+        static {
+            Map<String, Object> values = new HashMap<>();
+            values.put("Boolean.TRUE", true);
+            values.put("Boolean.FALSE", false);
+            values.put("StandardCharsets.ISO_8859_1", "ISO-8859-1");
+            values.put("StandardCharsets.UTF_8", "UTF-8");
+            values.put("StandardCharsets.UTF_16", "UTF-16");
+            values.put("StandardCharsets.US_ASCII", "US-ASCII");
+            values.put("Duration.ZERO", 0);
+            values.put("Period.ZERO", 0);
+            WELL_KNOWN_STATIC_FINALS = Collections.unmodifiableMap(values);
+        }
 
-		private static final Map<String, Object> WELL_KNOWN_STATIC_FINALS;
+        static {
+            Map<String, String> values = new HashMap<>();
+            values.put("Nanos", "ns");
+            values.put("Millis", "ms");
+            values.put("Seconds", "s");
+            values.put("Minutes", "m");
+            values.put("Hours", "h");
+            values.put("Days", "d");
+            DURATION_SUFFIX = Collections.unmodifiableMap(values);
+        }
 
-		static {
-			Map<String, Object> values = new HashMap<>();
-			values.put("Boolean.TRUE", true);
-			values.put("Boolean.FALSE", false);
-			values.put("StandardCharsets.ISO_8859_1", "ISO-8859-1");
-			values.put("StandardCharsets.UTF_8", "UTF-8");
-			values.put("StandardCharsets.UTF_16", "UTF-16");
-			values.put("StandardCharsets.US_ASCII", "US-ASCII");
-			values.put("Duration.ZERO", 0);
-			values.put("Period.ZERO", 0);
-			WELL_KNOWN_STATIC_FINALS = Collections.unmodifiableMap(values);
-		}
+        static {
+            Map<String, String> values = new HashMap<>();
+            values.put("Days", "d");
+            values.put("Weeks", "w");
+            values.put("Months", "m");
+            values.put("Years", "y");
+            PERIOD_SUFFIX = Collections.unmodifiableMap(values);
+        }
 
-		private static final String DURATION_OF = "Duration.of";
+        static {
+            Map<String, String> values = new HashMap<>();
+            values.put("Bytes", "B");
+            values.put("Kilobytes", "KB");
+            values.put("Megabytes", "MB");
+            values.put("Gigabytes", "GB");
+            values.put("Terabytes", "TB");
+            DATA_SIZE_SUFFIX = Collections.unmodifiableMap(values);
+        }
 
-		private static final Map<String, String> DURATION_SUFFIX;
+        private final Map<String, Object> fieldValues = new HashMap<>();
 
-		static {
-			Map<String, String> values = new HashMap<>();
-			values.put("Nanos", "ns");
-			values.put("Millis", "ms");
-			values.put("Seconds", "s");
-			values.put("Minutes", "m");
-			values.put("Hours", "h");
-			values.put("Days", "d");
-			DURATION_SUFFIX = Collections.unmodifiableMap(values);
-		}
+        private final Map<String, Object> staticFinals = new HashMap<>();
 
-		private static final String PERIOD_OF = "Period.of";
+        @Override
+        public void visitVariable(VariableTree variable) throws Exception {
+            Set<Modifier> flags = variable.getModifierFlags();
+            if (flags.contains(Modifier.STATIC) && flags.contains(Modifier.FINAL)) {
+                this.staticFinals.put(variable.getName(), getValue(variable));
+            }
+            if (!flags.contains(Modifier.FINAL)) {
+                this.fieldValues.put(variable.getName(), getValue(variable));
+            }
+        }
 
-		private static final Map<String, String> PERIOD_SUFFIX;
+        private Object getValue(VariableTree variable) throws Exception {
+            ExpressionTree initializer = variable.getInitializer();
+            Class<?> wrapperType = WRAPPER_TYPES.get(variable.getType());
+            Object defaultValue = DEFAULT_TYPE_VALUES.get(wrapperType);
+            if (initializer != null) {
+                return getValue(variable.getType(), initializer, defaultValue);
+            }
+            return defaultValue;
+        }
 
-		static {
-			Map<String, String> values = new HashMap<>();
-			values.put("Days", "d");
-			values.put("Weeks", "w");
-			values.put("Months", "m");
-			values.put("Years", "y");
-			PERIOD_SUFFIX = Collections.unmodifiableMap(values);
-		}
+        private Object getValue(String variableType, ExpressionTree expression, Object defaultValue) throws Exception {
+            Object literalValue = expression.getLiteralValue();
+            if (literalValue != null) {
+                return literalValue;
+            }
+            Object factoryValue = expression.getFactoryValue();
+            if (factoryValue != null) {
+                return getFactoryValue(expression, factoryValue);
+            }
+            List<? extends ExpressionTree> arrayValues = expression.getArrayExpression();
+            if (arrayValues != null) {
+                Object[] result = new Object[arrayValues.size()];
+                for (int i = 0; i < arrayValues.size(); i++) {
+                    Object value = getValue(variableType, arrayValues.get(i), null);
+                    if (value == null) { // One of the elements could not be resolved
+                        return defaultValue;
+                    }
+                    result[i] = value;
+                }
+                return result;
+            }
+            if (expression.getKind().equals("IDENTIFIER")) {
+                return this.staticFinals.get(expression.toString());
+            }
+            if (expression.getKind().equals("MEMBER_SELECT")) {
+                Object value = WELL_KNOWN_STATIC_FINALS.get(expression.toString());
+                if (value != null) {
+                    return value;
+                }
+                Member selectedMember = expression.getSelectedMember();
+                // Type matching the expression, assuming an enum
+                if (selectedMember != null && selectedMember.expression().equals(variableType)) {
+                    return selectedMember.identifier().toLowerCase(Locale.ENGLISH);
+                }
+                return null;
+            }
+            return defaultValue;
+        }
 
-		private static final String DATA_SIZE_OF = "DataSize.of";
+        private Object getFactoryValue(ExpressionTree expression, Object factoryValue) {
+            Object durationValue = getFactoryValue(expression, factoryValue, DURATION_OF, DURATION_SUFFIX);
+            if (durationValue != null) {
+                return durationValue;
+            }
+            Object dataSizeValue = getFactoryValue(expression, factoryValue, DATA_SIZE_OF, DATA_SIZE_SUFFIX);
+            if (dataSizeValue != null) {
+                return dataSizeValue;
+            }
+            Object periodValue = getFactoryValue(expression, factoryValue, PERIOD_OF, PERIOD_SUFFIX);
+            if (periodValue != null) {
+                return periodValue;
+            }
+            return factoryValue;
+        }
 
-		private static final Map<String, String> DATA_SIZE_SUFFIX;
+        private Object getFactoryValue(ExpressionTree expression, Object factoryValue, String prefix,
+                                       Map<String, String> suffixMapping) {
+            Object instance = expression.getInstance();
+            if (instance != null && instance.toString().startsWith(prefix)) {
+                String type = instance.toString();
+                type = type.substring(prefix.length(), type.indexOf('('));
+                String suffix = suffixMapping.get(type);
+                return (suffix != null) ? factoryValue + suffix : null;
+            }
+            return null;
+        }
 
-		static {
-			Map<String, String> values = new HashMap<>();
-			values.put("Bytes", "B");
-			values.put("Kilobytes", "KB");
-			values.put("Megabytes", "MB");
-			values.put("Gigabytes", "GB");
-			values.put("Terabytes", "TB");
-			DATA_SIZE_SUFFIX = Collections.unmodifiableMap(values);
-		}
+        Map<String, Object> getFieldValues() {
+            return this.fieldValues;
+        }
 
-		private final Map<String, Object> fieldValues = new HashMap<>();
-
-		private final Map<String, Object> staticFinals = new HashMap<>();
-
-		@Override
-		public void visitVariable(VariableTree variable) throws Exception {
-			Set<Modifier> flags = variable.getModifierFlags();
-			if (flags.contains(Modifier.STATIC) && flags.contains(Modifier.FINAL)) {
-				this.staticFinals.put(variable.getName(), getValue(variable));
-			}
-			if (!flags.contains(Modifier.FINAL)) {
-				this.fieldValues.put(variable.getName(), getValue(variable));
-			}
-		}
-
-		private Object getValue(VariableTree variable) throws Exception {
-			ExpressionTree initializer = variable.getInitializer();
-			Class<?> wrapperType = WRAPPER_TYPES.get(variable.getType());
-			Object defaultValue = DEFAULT_TYPE_VALUES.get(wrapperType);
-			if (initializer != null) {
-				return getValue(variable.getType(), initializer, defaultValue);
-			}
-			return defaultValue;
-		}
-
-		private Object getValue(String variableType, ExpressionTree expression, Object defaultValue) throws Exception {
-			Object literalValue = expression.getLiteralValue();
-			if (literalValue != null) {
-				return literalValue;
-			}
-			Object factoryValue = expression.getFactoryValue();
-			if (factoryValue != null) {
-				return getFactoryValue(expression, factoryValue);
-			}
-			List<? extends ExpressionTree> arrayValues = expression.getArrayExpression();
-			if (arrayValues != null) {
-				Object[] result = new Object[arrayValues.size()];
-				for (int i = 0; i < arrayValues.size(); i++) {
-					Object value = getValue(variableType, arrayValues.get(i), null);
-					if (value == null) { // One of the elements could not be resolved
-						return defaultValue;
-					}
-					result[i] = value;
-				}
-				return result;
-			}
-			if (expression.getKind().equals("IDENTIFIER")) {
-				return this.staticFinals.get(expression.toString());
-			}
-			if (expression.getKind().equals("MEMBER_SELECT")) {
-				Object value = WELL_KNOWN_STATIC_FINALS.get(expression.toString());
-				if (value != null) {
-					return value;
-				}
-				Member selectedMember = expression.getSelectedMember();
-				// Type matching the expression, assuming an enum
-				if (selectedMember != null && selectedMember.expression().equals(variableType)) {
-					return ConventionUtils.toDashedCase(selectedMember.identifier().toLowerCase(Locale.ENGLISH));
-				}
-				return null;
-			}
-			return defaultValue;
-		}
-
-		private Object getFactoryValue(ExpressionTree expression, Object factoryValue) {
-			Object durationValue = getFactoryValue(expression, factoryValue, DURATION_OF, DURATION_SUFFIX);
-			if (durationValue != null) {
-				return durationValue;
-			}
-			Object dataSizeValue = getFactoryValue(expression, factoryValue, DATA_SIZE_OF, DATA_SIZE_SUFFIX);
-			if (dataSizeValue != null) {
-				return dataSizeValue;
-			}
-			Object periodValue = getFactoryValue(expression, factoryValue, PERIOD_OF, PERIOD_SUFFIX);
-			if (periodValue != null) {
-				return periodValue;
-			}
-			return factoryValue;
-		}
-
-		private Object getFactoryValue(ExpressionTree expression, Object factoryValue, String prefix,
-				Map<String, String> suffixMapping) {
-			Object instance = expression.getInstance();
-			if (instance != null && instance.toString().startsWith(prefix)) {
-				String type = instance.toString();
-				type = type.substring(prefix.length(), type.indexOf('('));
-				String suffix = suffixMapping.get(type);
-				return (suffix != null) ? factoryValue + suffix : null;
-			}
-			return null;
-		}
-
-		Map<String, Object> getFieldValues() {
-			return this.fieldValues;
-		}
-
-	}
+    }
 
 }
