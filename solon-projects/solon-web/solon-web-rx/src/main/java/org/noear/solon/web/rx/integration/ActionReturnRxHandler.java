@@ -15,8 +15,9 @@
  */
 package org.noear.solon.web.rx.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.rx.handle.RxChainManager;
+import org.noear.solon.rx.handle.RxContext;
+import org.noear.solon.rx.handle.RxContextDefault;
 import org.noear.solon.rx.handle.RxHandler;
 import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.handle.Action;
@@ -36,11 +37,11 @@ import reactor.core.publisher.Flux;
  */
 public class ActionReturnRxHandler implements ActionReturnHandler {
     private final boolean hasReactor;
-    private RxChainManager<Context> chainManager;
+    private RxChainManager chainManager;
 
     public ActionReturnRxHandler() {
         this.hasReactor = ClassUtil.hasClass(() -> Flux.class);
-        this.chainManager = Solon.context().getBean("RxChainManager<Context>");
+        this.chainManager = RxChainManager.getInstance();
     }
 
     @Override
@@ -51,13 +52,8 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
     @Override
     public void returnHandle(Context ctx, Action action, Object result) throws Throwable {
         if (result != null) {
-            if (ctx.asyncSupported() == false) {
-                throw new IllegalStateException("This boot plugin does not support asynchronous mode");
-            } else {
-                if (ctx.asyncStarted() == false) {
-                    ctx.asyncStart(-1L, null);
-                }
-            }
+            //转为响应式上下文
+            RxContext rxCtx = new RxContextDefault(ctx);
 
             //预处理
             boolean isStreaming = isStreaming(ctx);
@@ -66,7 +62,8 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
             //处理
             RxHandler handler = new ActionRxHandler(action, publisher, isStreaming);
 
-            chainManager.doFilter(ctx, handler)
+
+            chainManager.doFilter(rxCtx, handler)
                     .doOnError(err -> {
                         try {
                             ctx.status(500);

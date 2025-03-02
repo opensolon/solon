@@ -26,16 +26,16 @@ import java.util.List;
  * @author noear
  * @since 3.1
  */
-public class RxFilterChainImpl<CTX> implements RxFilterChain<CTX> {
-    private final List<RankEntity<RxFilter<CTX>>> filterList;
+public class RxFilterChainImpl implements RxFilterChain {
+    private final List<RankEntity<RxFilter>> filterList;
     private final RxHandler lastHandler;
     private int index;
 
-    public RxFilterChainImpl(List<RankEntity<RxFilter<CTX>>> filterList) {
+    public RxFilterChainImpl(List<RankEntity<RxFilter>> filterList) {
         this(filterList, null);
     }
 
-    public RxFilterChainImpl(List<RankEntity<RxFilter<CTX>>> filterList, RxHandler<CTX> lastHandler) {
+    public RxFilterChainImpl(List<RankEntity<RxFilter>> filterList, RxHandler lastHandler) {
         this.filterList = filterList;
         this.index = 0;
         this.lastHandler = lastHandler;
@@ -47,7 +47,7 @@ public class RxFilterChainImpl<CTX> implements RxFilterChain<CTX> {
      * @param ctx 上下文
      */
     @Override
-    public Completable doFilter(CTX ctx) {
+    public Completable doFilter(RxContext ctx) {
         if (lastHandler == null) {
             return filterList.get(index++).target.doFilter(ctx, this);
         } else {

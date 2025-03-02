@@ -15,21 +15,17 @@
  */
 package org.noear.solon.rx.handle;
 
-import org.noear.solon.lang.Preview;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.core.handle.Context;
 
 /**
- * 响应式过滤器链
+ * 响应式上下文
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface RxFilterChain {
+public interface RxContext {
     /**
-     * 过滤
-     *
-     * @param ctx 上下文
+     * 转为经典上下文接口
      */
-    Completable doFilter(RxContext ctx);
+    Context toContext();
 }

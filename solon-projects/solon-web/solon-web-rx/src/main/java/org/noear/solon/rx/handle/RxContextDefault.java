@@ -15,21 +15,34 @@
  */
 package org.noear.solon.rx.handle;
 
-import org.noear.solon.lang.Preview;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.core.handle.Context;
 
 /**
- * 响应式过滤器链
+ * 响应式上下文默认实现
  *
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
-public interface RxFilterChain {
+public class RxContextDefault implements RxContext {
+    private final Context context;
+
+    public RxContextDefault(Context ctx) {
+        if (ctx.asyncSupported() == false) {
+            throw new IllegalStateException("This ctx does not support asynchronous mode");
+        } else {
+            if (ctx.asyncStarted() == false) {
+                ctx.asyncStart(-1L, null);
+            }
+        }
+
+        this.context = ctx;
+    }
+
     /**
-     * 过滤
-     *
-     * @param ctx 上下文
+     * 转为经典上下文接口
      */
-    Completable doFilter(RxContext ctx);
+    @Override
+    public Context toContext() {
+        return context;
+    }
 }

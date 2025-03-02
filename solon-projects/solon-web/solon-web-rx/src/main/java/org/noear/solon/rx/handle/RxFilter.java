@@ -25,12 +25,12 @@ import org.noear.solon.rx.Completable;
  * @since 3.1
  */
 @Preview("3.1")
-public interface RxFilter<CTX> {
+public interface RxFilter {
     /**
      * 过滤
      *
      * @param ctx   上下文
      * @param chain 响应式过滤器调用链
      */
-    Completable doFilter(CTX ctx, RxFilterChain<CTX> chain);
+    Completable doFilter(RxContext ctx, RxFilterChain chain);
 }

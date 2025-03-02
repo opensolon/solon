@@ -25,11 +25,11 @@ import org.noear.solon.rx.Completable;
  * @since 3.1
  */
 @Preview("3.1")
-public interface RxHandler<CTX> {
+public interface RxHandler {
     /**
      * 处理
      *
      * @param ctx 上下文
      */
-    Completable handle(CTX ctx);
+    Completable handle(RxContext ctx);
 }

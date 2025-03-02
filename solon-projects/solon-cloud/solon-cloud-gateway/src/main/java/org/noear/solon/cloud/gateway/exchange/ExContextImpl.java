@@ -276,12 +276,19 @@ public class ExContextImpl implements ExContext {
         return rawRequest.body();
     }
 
+
+    private VxWebContext context;
+
     /**
-     * 转为经典接口（不带 req-body）
+     * 转为经典上下文接口（不带 req-body）
      */
     @Override
     public Context toContext() {
-        return new VxWebContext(rawRequest, null);
+        if (context == null) {
+            context = new VxWebContext(rawRequest, null);
+        }
+
+        return context;
     }
 
     ////////////////////////////////////////////////////
