@@ -40,14 +40,7 @@ public abstract class AbstractChatDialect implements ChatDialect {
     protected void buildChatMessageNodeDo(ONode oNode, AssistantMessage msg) {
         oNode.set("role", msg.getRole().name().toLowerCase());
 
-        int tinkIndex = msg.getContent().indexOf("</tink>");
-        if (tinkIndex > 0) {
-            oNode.set("content", msg.getContent().substring(tinkIndex));
-        } else {
-            oNode.set("content", msg.getContent());
-        }
-
-        //reasoning_content 不回传
+        oNode.set("content", msg.getResultContent());
 
         if (Utils.isNotEmpty(msg.getToolCallsRaw())) {
             oNode.set("tool_calls", ONode.load(msg.getToolCallsRaw()));
