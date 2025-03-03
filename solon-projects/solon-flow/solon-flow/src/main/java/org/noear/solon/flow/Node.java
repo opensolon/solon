@@ -17,10 +17,7 @@ package org.noear.solon.flow;
 
 import org.noear.solon.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 节点
@@ -84,6 +81,13 @@ public class Node {
      */
     public Map<String, Object> meta() {
         return Collections.unmodifiableMap(decl.meta);
+    }
+
+    /**
+     * 获取元信息
+     */
+    public <T> T metaAs(String key) {
+        return (T) decl.meta.get(key);
     }
 
     /**
