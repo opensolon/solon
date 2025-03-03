@@ -63,7 +63,7 @@ public class InMemoryRepository implements RepositoryStorable {
     }
 
     @Override
-    public void remove(String... ids) {
+    public void delete(String... ids) {
         for (String id : ids) {
             store.remove(id);
         }

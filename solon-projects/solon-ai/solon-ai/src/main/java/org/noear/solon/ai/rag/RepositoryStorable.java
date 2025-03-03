@@ -34,9 +34,9 @@ public interface RepositoryStorable extends Repository {
     void insert(List<Document> documents) throws IOException;
 
     /**
-     * 移除
+     * 删除
      */
-    void remove(String... ids) throws IOException;
+    void delete(String... ids) throws IOException;
 
     /**
      * 是否存在

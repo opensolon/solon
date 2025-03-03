@@ -200,7 +200,7 @@ public class RedisRepository implements RepositoryStorable {
      * @param ids 文档 ID
      */
     @Override
-    public void remove(String... ids) throws IOException {
+    public void delete(String... ids) throws IOException {
         PipelineBase pipeline = null;
         try {
             pipeline = client.pipelined();

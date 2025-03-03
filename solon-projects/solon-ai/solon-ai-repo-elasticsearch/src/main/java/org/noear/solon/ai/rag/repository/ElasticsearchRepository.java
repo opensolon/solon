@@ -272,7 +272,7 @@ public class ElasticsearchRepository implements RepositoryStorable {
      * 删除指定ID的文档
      */
     @Override
-    public void remove(String... ids) throws IOException {
+    public void delete(String... ids) throws IOException {
         for (String id : ids) {
             //不支持星号删除
             Request request = new Request("DELETE", "/" + indexName + "/_doc/" + id);

@@ -177,7 +177,7 @@ public class MilvusRepository implements RepositoryStorable {
     }
 
     @Override
-    public void remove(String... ids) throws IOException {
+    public void delete(String... ids) throws IOException {
         client.delete(DeleteReq.builder()
                 .collectionName(collectionName)
                 .ids(Arrays.asList(ids))

@@ -53,7 +53,7 @@ public class ElasticsearchRepositoryTest {
         repository = new ElasticsearchRepository(embeddingModel, client, TEST_INDEX);
 
         // 初始化测试数据
-        repository.remove("*");  // 清空所有文档
+        repository.delete("*");  // 清空所有文档
         load(repository, "https://solon.noear.org/article/about?format=md");
         load(repository, "https://h5.noear.org/more.htm");
         load(repository, "https://h5.noear.org/readme.htm");
@@ -97,7 +97,7 @@ public class ElasticsearchRepositoryTest {
             repository.insert(documents);
             Thread.sleep(1000);
             // 删除文档
-            repository.remove(doc.getId());
+            repository.delete(doc.getId());
 
             Thread.sleep(1000);
             // 验证文档已被删除

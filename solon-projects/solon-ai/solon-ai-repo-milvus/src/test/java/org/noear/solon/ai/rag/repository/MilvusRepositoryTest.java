@@ -74,7 +74,7 @@ public class MilvusRepositoryTest {
         assertTrue(repository.exists(key), "Document should exist after storing");
 
         // 删除文档
-        repository.remove(doc.getId());
+        repository.delete(doc.getId());
 
         // 验证删除成功
         assertFalse(repository.exists(key), "Document should not exist after removal");
