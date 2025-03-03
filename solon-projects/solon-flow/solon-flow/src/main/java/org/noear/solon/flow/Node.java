@@ -86,8 +86,15 @@ public class Node {
     /**
      * 获取元信息
      */
-    public <T> T metaAs(String key) {
+    public <T> T meta(String key) {
         return (T) decl.meta.get(key);
+    }
+
+    /**
+     * 获取元信息或默认
+     */
+    public <T> T metaOrDefault(String key, T def) {
+        return (T) decl.meta.getOrDefault(key, def);
     }
 
     /**
