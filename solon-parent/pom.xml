@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.1.0-M3</version>
+    <version>3.1.0-RC</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -30,10 +30,10 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.1.0-M3</solon.version>
-        <solon-cloud.version>3.1.0-M1</solon-cloud.version>
-        <solon-admin.version>3.1.0-M1</solon-admin.version>
-        <solon-integration.version>3.1.0-M1</solon-integration.version>
+        <solon.version>3.1.0-RC</solon.version>
+        <solon-cloud.version>3.1.0-RC</solon-cloud.version>
+        <solon-admin.version>3.1.0-RC</solon-admin.version>
+        <solon-integration.version>3.1.0-RC</solon-integration.version>
         <solon-jakarta.version>3.0.9</solon-jakarta.version>
 
         <solonx.version>1.1.3</solonx.version>
