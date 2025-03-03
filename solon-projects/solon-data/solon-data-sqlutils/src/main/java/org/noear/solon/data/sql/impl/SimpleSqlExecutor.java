@@ -21,12 +21,12 @@ import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowIterator;
 import org.noear.solon.data.sql.bound.StatementBinder;
 import org.noear.solon.data.sql.*;
+import org.noear.solon.data.sql.intercept.SqlInterceptor;
 import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -41,8 +41,7 @@ public class SimpleSqlExecutor implements SqlExecutor {
     private final DataSource dataSource;
     private final String commandText;
     private SqlCommand command;
-    private Consumer<SqlCommand> onExecuteBefore;
-    private Consumer<SqlCommand> onExecuteAfter;
+    private SqlInterceptor interceptor;
 
     public SimpleSqlExecutor(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
@@ -50,18 +49,10 @@ public class SimpleSqlExecutor implements SqlExecutor {
     }
 
     /**
-     * 执行之前
+     * 拦截
      */
-    public SimpleSqlExecutor onExecuteBefore(Consumer<SqlCommand> action) {
-        this.onExecuteBefore = action;
-        return this;
-    }
-
-    /**
-     * 执行之后
-     */
-    public SimpleSqlExecutor onExecuteAfter(Consumer<SqlCommand> action) {
-        this.onExecuteAfter = action;
+    public SimpleSqlExecutor intercept(SqlInterceptor interceptor) {
+        this.interceptor = interceptor;
         return this;
     }
 
@@ -107,13 +98,21 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = beginStatement(command, false, false)) {
+        if (interceptor == null) {
+            return (T) queryRowDo(command, converter);
+        } else {
+            return (T) interceptor.doIntercept(command, (cmd) -> {
+                return queryRowDo(cmd, converter);
+            });
+        }
+    }
+
+    protected <T> Object queryRowDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
-                T rst = converter.convert(holder.rsts);
-                finishStatement(command);
-                return rst;
+                return converter.convert(holder.rsts);
             } else {
                 return null;
             }
@@ -127,7 +126,17 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = beginStatement(command, false, false)) {
+        if (interceptor == null) {
+            return queryRowListDo(command, converter);
+        } else {
+            return (List<T>) interceptor.doIntercept(command, (cmd) -> {
+                return queryRowListDo(cmd, converter);
+            });
+        }
+    }
+
+    protected <T> List<T> queryRowListDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, false, false)) {
 
             holder.rsts = holder.stmt.executeQuery();
 
@@ -137,7 +146,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
                 list.add(converter.convert(holder.rsts));
             }
 
-            finishStatement(command);
             return list.size() > 0 ? list : null;
         }
     }
@@ -149,33 +157,58 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        StatementHolder holder = beginStatement(command, false, true);
+        if (interceptor == null) {
+            return queryRowIteratorDo(command, fetchSize, converter);
+        } else {
+            return (RowIterator<T>) interceptor.doIntercept(command, (cmd) -> {
+                return queryRowIteratorDo(cmd, fetchSize, converter);
+            });
+        }
+    }
+
+    protected <T> RowIterator<T> queryRowIteratorDo(SqlCommand cmd, int fetchSize, RowConverter<T> converter) throws SQLException {
+        StatementHolder holder = beginStatement(cmd, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
-        finishStatement(command);
         return new SimpleRowIterator(holder, converter);
     }
 
     @Override
     public int update() throws SQLException {
-        try (StatementHolder holder = beginStatement(command, false, false)) {
-            int rst = holder.stmt.executeUpdate();
-            finishStatement(command);
-            return rst;
+        if (interceptor == null) {
+            return updateDo(command);
+        } else {
+            return (int) interceptor.doIntercept(command, (cmd) -> {
+                return updateDo(cmd);
+            });
+        }
+    }
+
+    protected int updateDo(SqlCommand cmd) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+            return holder.stmt.executeUpdate();
         }
     }
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
-        try (StatementHolder holder = beginStatement(command, true, false)) {
+        if (interceptor == null) {
+            return (T) updateReturnKeyDo(command);
+        } else {
+            return (T) interceptor.doIntercept(command, (cmd) -> {
+                return updateReturnKeyDo(cmd);
+            });
+        }
+    }
+
+    protected Object updateReturnKeyDo(SqlCommand cmd) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
             if (holder.rsts.next()) {
-                T rst = (T) holder.rsts.getObject(1);
-                finishStatement(command);
-                return rst;
+                return holder.rsts.getObject(1);
             } else {
                 return null;
             }
@@ -184,16 +217,34 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int[] updateBatch() throws SQLException {
-        try (StatementHolder holder = beginStatement(command, false, false)) {
-            int[] rst = holder.stmt.executeBatch();
-            finishStatement(command);
-            return rst;
+        if (interceptor == null) {
+            return updateBatchDo(command);
+        } else {
+            return (int[]) interceptor.doIntercept(command, (cmd) -> {
+                return updateBatchDo(cmd);
+            });
+        }
+    }
+
+    protected int[] updateBatchDo(SqlCommand cmd) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+            return holder.stmt.executeBatch();
         }
     }
 
     @Override
     public <T> List<T> updateBatchReturnKeys() throws SQLException {
-        try (StatementHolder holder = beginStatement(command, true, false)) {
+        if (interceptor == null) {
+            return updateBatchReturnKeysDo(command);
+        } else {
+            return (List<T>) interceptor.doIntercept(command, (cmd) -> {
+                return updateBatchReturnKeysDo(cmd);
+            });
+        }
+    }
+
+    protected <T> List<T> updateBatchReturnKeysDo(SqlCommand cmd) throws SQLException {
+        try (StatementHolder holder = beginStatement(cmd, true, false)) {
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -202,7 +253,6 @@ public class SimpleSqlExecutor implements SqlExecutor {
                 keyList.add((T) holder.rsts.getObject(1));
             }
 
-            finishStatement(command);
             return keyList;
         }
     }
@@ -210,49 +260,35 @@ public class SimpleSqlExecutor implements SqlExecutor {
     /////////////////////
 
     /**
-     * 完成命令处理
-     */
-    protected void finishStatement(SqlCommand command) {
-        if (onExecuteAfter != null) {
-            onExecuteAfter.accept(command);
-        }
-    }
-
-    /**
      * 开始命令处理
      */
-    protected StatementHolder beginStatement(SqlCommand command, boolean returnKeys, boolean isStream) throws SQLException {
-        //命令确认
-        if (onExecuteBefore != null) {
-            onExecuteBefore.accept(command);
-        }
-
+    protected StatementHolder beginStatement(SqlCommand cmd, boolean returnKeys, boolean isStream) throws SQLException {
         StatementHolder holder = new StatementHolder();
         holder.conn = getConnection();
 
         if (isStream) {
             //流
-            if (command.getSql().startsWith("{call")) {
-                holder.stmt = holder.conn.prepareCall(command.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            if (cmd.getSql().startsWith("{call")) {
+                holder.stmt = holder.conn.prepareCall(cmd.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             } else {
-                holder.stmt = holder.conn.prepareStatement(command.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                holder.stmt = holder.conn.prepareStatement(cmd.getSql(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             }
         } else {
             if (returnKeys) {
                 //插入
-                holder.stmt = holder.conn.prepareStatement(command.getSql(), Statement.RETURN_GENERATED_KEYS);
+                holder.stmt = holder.conn.prepareStatement(cmd.getSql(), Statement.RETURN_GENERATED_KEYS);
             } else {
                 //其它
-                if (command.getSql().startsWith("{call")) {
-                    holder.stmt = holder.conn.prepareCall(command.getSql());
+                if (cmd.getSql().startsWith("{call")) {
+                    holder.stmt = holder.conn.prepareCall(cmd.getSql());
                 } else {
-                    holder.stmt = holder.conn.prepareStatement(command.getSql());
+                    holder.stmt = holder.conn.prepareStatement(cmd.getSql());
                 }
             }
         }
 
         //绑定参数
-        command.fill(holder.stmt);
+        cmd.fill(holder.stmt);
 
         return holder;
     }

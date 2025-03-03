@@ -32,15 +32,12 @@ public class SqlCommand<T> {
     private String sql;
     private T args;
     private Collection<T> argsColl;
-    //开始时间
-    private long startTime;
 
     public SqlCommand(String sql, T args, StatementBinder<T> binder) {
         this.sql = sql;
         this.args = args;
         this.argsColl = null;
         this.binder = binder;
-        this.startTime = System.currentTimeMillis();
     }
 
     public SqlCommand(String sql, Collection<T> argsColl, StatementBinder<T> binder) {
@@ -48,7 +45,6 @@ public class SqlCommand<T> {
         this.args = null;
         this.argsColl = argsColl;
         this.binder = binder;
-        this.startTime = System.currentTimeMillis();
     }
 
     /**
@@ -100,13 +96,6 @@ public class SqlCommand<T> {
      */
     public Collection<T> getArgsColl() {
         return argsColl;
-    }
-
-    /**
-     * 获取开始时间
-     */
-    public long getStartTime() {
-        return startTime;
     }
 
     /**

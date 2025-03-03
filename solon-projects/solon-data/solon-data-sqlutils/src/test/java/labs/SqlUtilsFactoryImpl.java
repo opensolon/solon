@@ -12,10 +12,15 @@ public class SqlUtilsFactoryImpl implements SqlUtilsFactory {
     @Override
     public SqlExecutor create(DataSource ds, String sql) {
         //打印 sql
-        return new SimpleSqlExecutor(ds, sql).onExecuteBefore(cmd -> {
+        return new SimpleSqlExecutor(ds, sql).intercept((cmd, inv) -> {
             System.out.println(cmd);
-        }).onExecuteAfter(cmd -> {
-            System.out.println(System.currentTimeMillis() - cmd.getStartTime());
+            long start = System.currentTimeMillis();
+
+            try {
+                return inv.invoke(cmd);
+            } finally {
+                System.out.println(System.currentTimeMillis() - start);
+            }
         });
     }
 }
