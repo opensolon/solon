@@ -68,17 +68,22 @@ public class AssistantMessage extends ChatMessageBase<AssistantMessage> {
     /**
      * 结果内容（没有推理标签的内容）
      */
+    private transient String resultContent;
     public String getResultContent() {
-        if (content == null) {
-            return null;
-        } else {
-            int tinkIndex = content.indexOf("</tink>");
-            if (tinkIndex > 0) {
-                return content.substring(tinkIndex).trim();
+        if (resultContent == null) {
+            if (content == null) {
+                resultContent = "";
             } else {
-                return content;
+                int tinkIndex = content.indexOf("</tink>");
+                if (tinkIndex > 0) {
+                    resultContent = content.substring(tinkIndex).trim();
+                } else {
+                    resultContent = content;
+                }
             }
         }
+
+        return resultContent;
     }
 
     /**
