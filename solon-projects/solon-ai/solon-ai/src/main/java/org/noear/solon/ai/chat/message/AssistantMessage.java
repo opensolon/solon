@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.function.ChatFunctionCall;
 import org.noear.solon.ai.chat.ChatRole;
 import org.noear.solon.lang.Preview;
@@ -31,6 +32,7 @@ import java.util.*;
 public class AssistantMessage implements ChatMessage {
     private final ChatRole role = ChatRole.ASSISTANT;
     private String content;
+    private Map<String, Object> metadata;
     private List<ChatFunctionCall> toolCalls;
     private List<Map> toolCallsRaw;
 
@@ -64,6 +66,38 @@ public class AssistantMessage implements ChatMessage {
         return content;
     }
 
+    /**
+     * 获取元数据
+     */
+    public Map<String, Object> getMetadata() {
+        if (metadata == null) {
+            metadata = new LinkedHashMap<>();
+        }
+
+        return metadata;
+    }
+
+    /**
+     * 添加元数据
+     */
+    public AssistantMessage addMetadata(Map<String, Object> map) {
+        if (Utils.isNotEmpty(map)) {
+            getMetadata().putAll(map);
+        }
+
+        return this;
+    }
+
+    /**
+     * 添加元数据
+     */
+    public AssistantMessage addMetadata(String key, Object value) {
+        if (Utils.isNotEmpty(key)) {
+            getMetadata().put(key, value);
+        }
+
+        return this;
+    }
 
     /**
      * 是否思考中
@@ -100,6 +134,11 @@ public class AssistantMessage implements ChatMessage {
         if (content != null) {
             buf.append(", content='").append(content).append('\'');
         }
+
+        if (metadata != null) {
+            buf.append(", metadata=").append(metadata);
+        }
+
         if (toolCallsRaw != null) {
             buf.append(", tool_calls=").append(toolCallsRaw);
         }
