@@ -24,6 +24,7 @@ import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.sql.SqlUtilsFactory;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
+import org.noear.solon.data.sql.intercept.SqlInterceptor;
 
 /**
  * @author noear
@@ -40,6 +41,10 @@ public class SqlUtilsPlugin implements Plugin {
 
         context.getBeanAsync(RowConverterFactory.class, bean -> {
             SqlConfiguration.setConverter(bean);
+        });
+
+        context.getBeanAsync(SqlInterceptor.class, bean -> {
+            SqlConfiguration.setInterceptor(bean);
         });
     }
 

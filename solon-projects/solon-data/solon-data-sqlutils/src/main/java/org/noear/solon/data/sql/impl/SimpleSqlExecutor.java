@@ -21,7 +21,6 @@ import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowIterator;
 import org.noear.solon.data.sql.bound.StatementBinder;
 import org.noear.solon.data.sql.*;
-import org.noear.solon.data.sql.intercept.SqlInterceptor;
 import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
@@ -41,43 +40,34 @@ public class SimpleSqlExecutor implements SqlExecutor {
     private final DataSource dataSource;
     private final String commandText;
     private SqlCommand command;
-    private SqlInterceptor interceptor;
 
     public SimpleSqlExecutor(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
         this.commandText = sql;
     }
 
-    /**
-     * 拦截
-     */
-    public SimpleSqlExecutor intercept(SqlInterceptor interceptor) {
-        this.interceptor = interceptor;
-        return this;
-    }
-
 
     @Override
     public SqlExecutor params(Object... args) {
-        this.command = new SqlCommand(commandText, args, DEFAULT_BINDER);
+        this.command = new SqlCommand(dataSource, commandText, args, DEFAULT_BINDER);
         return this;
     }
 
     @Override
     public <S> SqlExecutor params(S args, StatementBinder<S> binder) {
-        this.command = new SqlCommand(commandText, args, binder);
+        this.command = new SqlCommand(dataSource, commandText, args, binder);
         return this;
     }
 
     @Override
     public SqlExecutor params(Collection<Object[]> argsList) {
-        this.command = new SqlCommand(commandText, argsList, DEFAULT_BINDER);
+        this.command = new SqlCommand(dataSource, commandText, argsList, DEFAULT_BINDER);
         return this;
     }
 
     @Override
     public <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier) {
-        this.command = new SqlCommand(commandText, argsList, binderSupplier.get());
+        this.command = new SqlCommand(dataSource, commandText, argsList, binderSupplier.get());
         return this;
     }
 
@@ -98,13 +88,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        if (interceptor == null) {
-            return (T) queryRowDo(command, converter);
-        } else {
-            return (T) interceptor.doIntercept(command, (cmd) -> {
-                return queryRowDo(cmd, converter);
-            });
-        }
+        return (T) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return queryRowDo(cmd, converter);
+        });
     }
 
     protected <T> Object queryRowDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
@@ -126,13 +112,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        if (interceptor == null) {
-            return queryRowListDo(command, converter);
-        } else {
-            return (List<T>) interceptor.doIntercept(command, (cmd) -> {
-                return queryRowListDo(cmd, converter);
-            });
-        }
+        return (List<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return queryRowListDo(cmd, converter);
+        });
     }
 
     protected <T> List<T> queryRowListDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
@@ -157,13 +139,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        if (interceptor == null) {
-            return queryRowIteratorDo(command, fetchSize, converter);
-        } else {
-            return (RowIterator<T>) interceptor.doIntercept(command, (cmd) -> {
-                return queryRowIteratorDo(cmd, fetchSize, converter);
-            });
-        }
+        return (RowIterator<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return queryRowIteratorDo(cmd, fetchSize, converter);
+        });
     }
 
     protected <T> RowIterator<T> queryRowIteratorDo(SqlCommand cmd, int fetchSize, RowConverter<T> converter) throws SQLException {
@@ -176,13 +154,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int update() throws SQLException {
-        if (interceptor == null) {
-            return updateDo(command);
-        } else {
-            return (int) interceptor.doIntercept(command, (cmd) -> {
-                return updateDo(cmd);
-            });
-        }
+        return (int) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return updateDo(cmd);
+        });
     }
 
     protected int updateDo(SqlCommand cmd) throws SQLException {
@@ -193,13 +167,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
-        if (interceptor == null) {
-            return (T) updateReturnKeyDo(command);
-        } else {
-            return (T) interceptor.doIntercept(command, (cmd) -> {
-                return updateReturnKeyDo(cmd);
-            });
-        }
+        return (T) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return updateReturnKeyDo(cmd);
+        });
     }
 
     protected Object updateReturnKeyDo(SqlCommand cmd) throws SQLException {
@@ -217,13 +187,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public int[] updateBatch() throws SQLException {
-        if (interceptor == null) {
-            return updateBatchDo(command);
-        } else {
-            return (int[]) interceptor.doIntercept(command, (cmd) -> {
-                return updateBatchDo(cmd);
-            });
-        }
+        return (int[]) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return updateBatchDo(cmd);
+        });
     }
 
     protected int[] updateBatchDo(SqlCommand cmd) throws SQLException {
@@ -234,13 +200,9 @@ public class SimpleSqlExecutor implements SqlExecutor {
 
     @Override
     public <T> List<T> updateBatchReturnKeys() throws SQLException {
-        if (interceptor == null) {
-            return updateBatchReturnKeysDo(command);
-        } else {
-            return (List<T>) interceptor.doIntercept(command, (cmd) -> {
-                return updateBatchReturnKeysDo(cmd);
-            });
-        }
+        return (List<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
+            return updateBatchReturnKeysDo(cmd);
+        });
     }
 
     protected <T> List<T> updateBatchReturnKeysDo(SqlCommand cmd) throws SQLException {

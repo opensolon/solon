@@ -17,6 +17,7 @@ package org.noear.solon.data.sql;
 
 import org.noear.solon.data.sql.bound.StatementBinder;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -28,19 +29,22 @@ import java.util.Collection;
  * @since 3.1
  */
 public class SqlCommand<T> {
+    private final DataSource ds;
     private StatementBinder<T> binder;
     private String sql;
     private T args;
     private Collection<T> argsColl;
 
-    public SqlCommand(String sql, T args, StatementBinder<T> binder) {
+    public SqlCommand(DataSource ds, String sql, T args, StatementBinder<T> binder) {
+        this.ds = ds;
         this.sql = sql;
         this.args = args;
         this.argsColl = null;
         this.binder = binder;
     }
 
-    public SqlCommand(String sql, Collection<T> argsColl, StatementBinder<T> binder) {
+    public SqlCommand(DataSource ds, String sql, Collection<T> argsColl, StatementBinder<T> binder) {
+        this.ds = ds;
         this.sql = sql;
         this.args = null;
         this.argsColl = argsColl;
@@ -52,6 +56,13 @@ public class SqlCommand<T> {
      */
     public boolean isBatch() {
         return argsColl != null;
+    }
+
+    /**
+     * 获取数据源
+     */
+    public DataSource getDs() {
+        return ds;
     }
 
     /**

@@ -14,5 +14,5 @@ public interface SqlInterceptor {
     /**
      * 拦截
      */
-    Object doIntercept(SqlCommand cmd, SqlInvocation invocation) throws SQLException;
+    Object doIntercept(SqlCommand cmd, SqlInvocation inv) throws SQLException;
 }

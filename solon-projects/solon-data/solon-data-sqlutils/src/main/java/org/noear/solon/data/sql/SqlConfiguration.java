@@ -18,6 +18,10 @@ package org.noear.solon.data.sql;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 import org.noear.solon.data.sql.impl.DefaultConverter;
 import org.noear.solon.data.sql.impl.SimpleSqlUtilsFactory;
+import org.noear.solon.data.sql.intercept.SqlInterceptor;
+import org.noear.solon.data.sql.intercept.SqlInvocation;
+
+import java.sql.SQLException;
 
 /**
  * Sql 配置类
@@ -26,6 +30,35 @@ import org.noear.solon.data.sql.impl.SimpleSqlUtilsFactory;
  * @since 3.0
  */
 public class SqlConfiguration {
+    private static SqlInterceptor interceptor;
+
+    /**
+     * 设置拦截器
+     */
+    public static void setInterceptor(SqlInterceptor interceptor) {
+        SqlConfiguration.interceptor = interceptor;
+    }
+
+    /**
+     * 获取拦截
+     */
+    public static SqlInterceptor getInterceptor() {
+        return interceptor;
+    }
+
+    /**
+     * 拦截
+     */
+    public static Object doIntercept(SqlCommand cmd, SqlInvocation invocation) throws SQLException {
+        if (interceptor == null) {
+            return invocation.invoke(cmd);
+        } else {
+            return interceptor.doIntercept(cmd, invocation);
+        }
+    }
+
+    /// //////////////////////
+
     private static SqlUtilsFactory factory = new SimpleSqlUtilsFactory();
 
     /**
@@ -43,6 +76,9 @@ public class SqlConfiguration {
             SqlConfiguration.factory = factory;
         }
     }
+
+
+    /// //////////////////////
 
     private static RowConverterFactory converter = new DefaultConverter();
 
