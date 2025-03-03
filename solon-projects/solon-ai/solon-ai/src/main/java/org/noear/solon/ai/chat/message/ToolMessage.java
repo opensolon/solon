@@ -15,8 +15,11 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
 import org.noear.solon.lang.Preview;
+
+import java.util.Map;
 
 /**
  * 聊天工具消息
@@ -25,7 +28,7 @@ import org.noear.solon.lang.Preview;
  * @since 3.1
  */
 @Preview("3.1")
-public class ToolMessage implements ChatMessage {
+public class ToolMessage extends ChatMessageBase<ToolMessage> {
     private final ChatRole role = ChatRole.TOOL;
     private String content;
     private String name;
@@ -78,6 +81,10 @@ public class ToolMessage implements ChatMessage {
 
         if (content != null) {
             buf.append(", content='").append(content).append('\'');
+        }
+
+        if (Utils.isNotEmpty(metadata)) {
+            buf.append(", metadata=").append(metadata);
         }
 
         if (name != null) {

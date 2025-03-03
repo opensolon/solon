@@ -29,7 +29,7 @@ import java.util.List;
  * @since 3.1
  */
 @Preview("3.1")
-public class UserMessage implements ChatMessage {
+public class UserMessage extends ChatMessageBase<UserMessage> {
     private final ChatRole role = ChatRole.USER;
     private String content;
     private List<AiMedia> medias;
@@ -72,17 +72,25 @@ public class UserMessage implements ChatMessage {
 
     @Override
     public String toString() {
-        if (Utils.isEmpty(medias)) {
-            return "{" +
-                    "role='" + getRole() + '\'' +
-                    ", content='" + content + '\'' +
-                    '}';
-        } else {
-            return "{" +
-                    "role='" + getRole() + '\'' +
-                    ", content='" + content + '\'' +
-                    ", medias='" + medias + '\'' +
-                    '}';
+        StringBuilder buf = new StringBuilder();
+        buf.append("{");
+
+        buf.append("role=").append(getRole().name().toLowerCase());
+
+        if (content != null) {
+            buf.append(", content='").append(content).append('\'');
         }
+
+        if (Utils.isNotEmpty(metadata)) {
+            buf.append(", metadata=").append(metadata);
+        }
+
+        if (Utils.isNotEmpty(medias)) {
+            buf.append(", medias=").append(medias);
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }

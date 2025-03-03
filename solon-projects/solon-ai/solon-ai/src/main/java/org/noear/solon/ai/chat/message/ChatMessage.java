@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 聊天消息
@@ -43,6 +44,21 @@ public interface ChatMessage extends Serializable {
      * 内容
      */
     String getContent();
+
+    /**
+     * 获取元数据
+     */
+    Map<String, Object> getMetadata();
+
+    /**
+     * 添加元数据
+     */
+    ChatMessage addMetadata(Map<String, Object> map);
+
+    /**
+     * 添加元数据
+     */
+    ChatMessage addMetadata(String key, Object value);
 
     /**
      * 是否思考中

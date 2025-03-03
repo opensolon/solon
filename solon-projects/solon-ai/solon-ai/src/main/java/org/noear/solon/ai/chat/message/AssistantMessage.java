@@ -29,10 +29,9 @@ import java.util.*;
  * @since 3.1
  */
 @Preview("3.1")
-public class AssistantMessage implements ChatMessage {
+public class AssistantMessage extends ChatMessageBase<AssistantMessage> {
     private final ChatRole role = ChatRole.ASSISTANT;
     private String content;
-    private Map<String, Object> metadata;
     private List<ChatFunctionCall> toolCalls;
     private List<Map> toolCallsRaw;
 
@@ -64,39 +63,6 @@ public class AssistantMessage implements ChatMessage {
     @Override
     public String getContent() {
         return content;
-    }
-
-    /**
-     * 获取元数据
-     */
-    public Map<String, Object> getMetadata() {
-        if (metadata == null) {
-            metadata = new LinkedHashMap<>();
-        }
-
-        return metadata;
-    }
-
-    /**
-     * 添加元数据
-     */
-    public AssistantMessage addMetadata(Map<String, Object> map) {
-        if (Utils.isNotEmpty(map)) {
-            getMetadata().putAll(map);
-        }
-
-        return this;
-    }
-
-    /**
-     * 添加元数据
-     */
-    public AssistantMessage addMetadata(String key, Object value) {
-        if (Utils.isNotEmpty(key)) {
-            getMetadata().put(key, value);
-        }
-
-        return this;
     }
 
     /**
@@ -135,7 +101,7 @@ public class AssistantMessage implements ChatMessage {
             buf.append(", content='").append(content).append('\'');
         }
 
-        if (metadata != null) {
+        if (Utils.isNotEmpty(metadata)) {
             buf.append(", metadata=").append(metadata);
         }
 

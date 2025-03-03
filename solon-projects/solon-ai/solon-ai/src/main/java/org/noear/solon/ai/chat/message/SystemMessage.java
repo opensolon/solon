@@ -15,6 +15,7 @@
  */
 package org.noear.solon.ai.chat.message;
 
+import org.noear.solon.Utils;
 import org.noear.solon.ai.chat.ChatRole;
 import org.noear.solon.lang.Preview;
 
@@ -25,7 +26,7 @@ import org.noear.solon.lang.Preview;
  * @since 3.1
  */
 @Preview("3.1")
-public class SystemMessage implements ChatMessage {
+public class SystemMessage extends ChatMessageBase<SystemMessage> {
     private final ChatRole role = ChatRole.SYSTEM;
     private String content;
 
@@ -52,9 +53,21 @@ public class SystemMessage implements ChatMessage {
 
     @Override
     public String toString() {
-        return "{" +
-                "role='" + getRole() + '\'' +
-                ",content='" + content + '\'' +
-                '}';
+        StringBuilder buf = new StringBuilder();
+        buf.append("{");
+
+        buf.append("role=").append(getRole().name().toLowerCase());
+
+        if (content != null) {
+            buf.append(", content='").append(content).append('\'');
+        }
+
+        if (Utils.isNotEmpty(metadata)) {
+            buf.append(", metadata=").append(metadata);
+        }
+
+        buf.append("}");
+
+        return buf.toString();
     }
 }
