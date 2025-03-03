@@ -73,7 +73,7 @@
 * grpc 升为 1.69.1
 * vertx 升为 4.5.13
 * netty 升为 4.1.118.Final
-* liteflow 2.12.4.5
+* liteflow 升为 2.13.0
 * forest 升为 1.6.3
 * wx-java 升为 4.7.2.B
 * smart-http 升为 2.5.4（日志改为 slf4j，方便级别控制和记录）

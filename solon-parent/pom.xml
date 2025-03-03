@@ -178,7 +178,7 @@
         <bean-searcher.version>4.3.2</bean-searcher.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
 
-        <liteflow.version>2.12.4.5</liteflow.version>
+        <liteflow.version>2.13.0</liteflow.version>
         <forest.version>1.6.3</forest.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <seata.version>2.0.0</seata.version>
