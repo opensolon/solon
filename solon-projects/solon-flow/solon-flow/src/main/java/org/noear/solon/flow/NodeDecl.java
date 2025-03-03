@@ -15,10 +15,7 @@
  */
 package org.noear.solon.flow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +28,7 @@ public class NodeDecl {
     protected final String id;
     protected String title;
     protected NodeType type;      //元素类型
-    protected Map<String, Object> meta; //元信息
+    protected final Map<String, Object> meta = new LinkedHashMap<>(); //元信息
     protected List<LinkDecl> links = new ArrayList<>();
     protected String when;
     protected String task;
@@ -60,7 +57,7 @@ public class NodeDecl {
      * 配置元信息
      */
     public NodeDecl meta(Map<String, Object> meta) {
-        this.meta = meta;
+        this.meta.putAll(meta);
         return this;
     }
 
@@ -68,11 +65,7 @@ public class NodeDecl {
      * 配置元信息
      */
     public NodeDecl metaPut(String key, Object value) {
-        if (meta == null) {
-            meta = new HashMap<>();
-        }
-
-        meta.put(key, value);
+        this.meta.put(key, value);
         return this;
     }
 
