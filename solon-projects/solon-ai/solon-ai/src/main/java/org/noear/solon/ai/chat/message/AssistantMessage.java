@@ -74,9 +74,9 @@ public class AssistantMessage extends ChatMessageBase<AssistantMessage> {
             if (content == null) {
                 resultContent = "";
             } else {
-                int tinkIndex = content.indexOf("</tink>");
+                int tinkIndex = content.indexOf("</think>");
                 if (tinkIndex > 0) {
-                    resultContent = content.substring(tinkIndex).trim();
+                    resultContent = content.substring(tinkIndex + 8).trim();
                 } else {
                     resultContent = content;
                 }
