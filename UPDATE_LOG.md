@@ -76,7 +76,7 @@
 * liteflow 2.12.4.5
 * forest 升为 1.6.3
 * wx-java 升为 4.7.2.B
-* smart-http 升为 2.5.3（日志改为 slf4j，方便级别控制和记录）
+* smart-http 升为 2.5.4（日志改为 slf4j，方便级别控制和记录）
 
 
 ### v3.0.10
