@@ -15,6 +15,8 @@
  */
 package org.noear.solon.flow;
 
+import org.noear.solon.Utils;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -56,8 +58,11 @@ public class NodeDecl {
     /**
      * 配置元信息
      */
-    public NodeDecl meta(Map<String, Object> meta) {
-        this.meta.putAll(meta);
+    public NodeDecl meta(Map<String, Object> map) {
+        if (Utils.isNotEmpty(map)) {
+            this.meta.putAll(map);
+        }
+
         return this;
     }
 
@@ -65,7 +70,10 @@ public class NodeDecl {
      * 配置元信息
      */
     public NodeDecl metaPut(String key, Object value) {
-        this.meta.put(key, value);
+        if (Utils.isNotEmpty(key)) {
+            this.meta.put(key, value);
+        }
+
         return this;
     }
 
