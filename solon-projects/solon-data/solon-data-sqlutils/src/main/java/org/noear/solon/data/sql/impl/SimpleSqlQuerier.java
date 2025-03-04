@@ -88,13 +88,13 @@ public class SimpleSqlQuerier implements SqlQuerier {
 
     @Override
     public <T> T queryRow(RowConverter<T> converter) throws SQLException {
-        return (T) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return queryRowDo(cmd, converter);
+        return (T) SqlConfiguration.doIntercept(command, () -> {
+            return queryRowDo(converter);
         });
     }
 
-    protected <T> Object queryRowDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, false, false)) {
+    protected <T> Object queryRowDo(RowConverter<T> converter) throws SQLException {
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
@@ -112,13 +112,13 @@ public class SimpleSqlQuerier implements SqlQuerier {
 
     @Override
     public <T> List<T> queryRowList(RowConverter<T> converter) throws SQLException {
-        return (List<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return queryRowListDo(cmd, converter);
+        return (List<T>) SqlConfiguration.doIntercept(command, () -> {
+            return queryRowListDo(converter);
         });
     }
 
-    protected <T> List<T> queryRowListDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, false, false)) {
+    protected <T> List<T> queryRowListDo(RowConverter<T> converter) throws SQLException {
+        try (StatementHolder holder = buildStatement(command, false, false)) {
 
             holder.rsts = holder.stmt.executeQuery();
 
@@ -139,13 +139,13 @@ public class SimpleSqlQuerier implements SqlQuerier {
 
     @Override
     public <T> RowIterator<T> queryRowIterator(int fetchSize, RowConverter<T> converter) throws SQLException {
-        return (RowIterator<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return queryRowIteratorDo(cmd, fetchSize, converter);
+        return (RowIterator<T>) SqlConfiguration.doIntercept(command, () -> {
+            return queryRowIteratorDo(fetchSize, converter);
         });
     }
 
-    protected <T> RowIterator<T> queryRowIteratorDo(SqlCommand cmd, int fetchSize, RowConverter<T> converter) throws SQLException {
-        StatementHolder holder = buildStatement(cmd, false, true);
+    protected <T> RowIterator<T> queryRowIteratorDo(int fetchSize, RowConverter<T> converter) throws SQLException {
+        StatementHolder holder = buildStatement(command, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
@@ -157,8 +157,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
         return (int) SqlConfiguration.doIntercept(command, this::updateDo);
     }
 
-    protected int updateDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, false, false)) {
+    protected int updateDo() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             return holder.stmt.executeUpdate();
         }
     }
@@ -168,8 +168,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
         return (T) SqlConfiguration.doIntercept(command, this::updateReturnKeyDo);
     }
 
-    protected Object updateReturnKeyDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, true, false)) {
+    protected Object updateReturnKeyDo() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -186,8 +186,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
         return (int[]) SqlConfiguration.doIntercept(command, this::updateBatchDo);
     }
 
-    protected int[] updateBatchDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, false, false)) {
+    protected int[] updateBatchDo() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, false, false)) {
             return holder.stmt.executeBatch();
         }
     }
@@ -197,8 +197,8 @@ public class SimpleSqlQuerier implements SqlQuerier {
         return (List<T>) SqlConfiguration.doIntercept(command, this::updateBatchReturnKeysDo);
     }
 
-    protected <T> List<T> updateBatchReturnKeysDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = buildStatement(cmd, true, false)) {
+    protected <T> List<T> updateBatchReturnKeysDo() throws SQLException {
+        try (StatementHolder holder = buildStatement(command, true, false)) {
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 

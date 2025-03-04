@@ -23,7 +23,7 @@ import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.sql.SqlConfiguration;
 import org.noear.solon.data.sql.SqlUtils;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
-import org.noear.solon.data.sql.intercept.SqlExecuteInterceptor;
+import org.noear.solon.data.sql.intercept.SqlCommandInterceptor;
 
 /**
  * @author noear
@@ -38,7 +38,7 @@ public class SqlUtilsPlugin implements Plugin {
             SqlConfiguration.setConverter(bean);
         });
 
-        context.getWrapAsync(SqlExecuteInterceptor.class, bw -> {
+        context.getWrapAsync(SqlCommandInterceptor.class, bw -> {
             SqlConfiguration.addInterceptor(bw.raw(), bw.index());
         });
     }

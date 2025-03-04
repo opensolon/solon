@@ -18,9 +18,9 @@ package org.noear.solon.data.sql;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 import org.noear.solon.data.sql.impl.DefaultConverter;
-import org.noear.solon.data.sql.intercept.SqlExecuteInterceptor;
-import org.noear.solon.data.sql.intercept.SqlExecutor;
-import org.noear.solon.data.sql.intercept.SqlExecutorWrapper;
+import org.noear.solon.data.sql.intercept.SqlCommandInterceptor;
+import org.noear.solon.data.sql.intercept.SqlCallable;
+import org.noear.solon.data.sql.intercept.SqlCommandInvocation;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,12 +34,12 @@ import java.util.List;
  * @since 3.0
  */
 public class SqlConfiguration {
-    private static List<RankEntity<SqlExecuteInterceptor>> interceptorList = new ArrayList<>();
+    private static List<RankEntity<SqlCommandInterceptor>> interceptorList = new ArrayList<>();
 
     /**
-     * 设置执行拦截器
+     * 设置拦截器
      */
-    public static void addInterceptor(SqlExecuteInterceptor interceptor, int index) {
+    public static void addInterceptor(SqlCommandInterceptor interceptor, int index) {
         interceptorList.add(new RankEntity<>(interceptor, index));
         Collections.sort(interceptorList);
     }
@@ -47,11 +47,10 @@ public class SqlConfiguration {
     /**
      * 执行拦截
      *
-     * @param cmd     命令
      * @param excutor 执行器
      */
-    public static Object doIntercept(SqlCommand cmd, SqlExecutor excutor) throws SQLException {
-        return new SqlExecutorWrapper(interceptorList, excutor).execute(cmd);
+    public static Object doIntercept(SqlCommand command, SqlCallable excutor) throws SQLException {
+        return new SqlCommandInvocation(command, interceptorList, excutor).invoke();
     }
 
 

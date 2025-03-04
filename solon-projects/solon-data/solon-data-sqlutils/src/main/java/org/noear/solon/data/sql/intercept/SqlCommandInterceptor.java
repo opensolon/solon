@@ -1,6 +1,5 @@
 package org.noear.solon.data.sql.intercept;
 
-import org.noear.solon.data.sql.SqlCommand;
 import org.noear.solon.lang.Preview;
 
 import java.sql.SQLException;
@@ -12,12 +11,11 @@ import java.sql.SQLException;
  * @since 3.1
  */
 @Preview("3.1")
-public interface SqlExecuteInterceptor {
+public interface SqlCommandInterceptor {
     /**
      * 拦截
      *
-     * @param cmd      命令
-     * @param executor 执行器
+     * @param inv 调用者
      */
-    Object doIntercept(SqlCommand cmd, SqlExecutor executor) throws SQLException;
+    Object doIntercept(SqlCommandInvocation inv) throws SQLException;
 }
