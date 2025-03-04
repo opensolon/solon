@@ -112,7 +112,15 @@ class FlowEngineImpl implements FlowEngine {
             throw new IllegalArgumentException("No driver found for: '" + chain.driver() + "'");
         }
 
-        node_run(driver, context, start, depth);
+        try {
+            driver.onChainStart(context, chain);
+            node_run(driver, context, start, depth);
+        } catch (Throwable err) {
+            context.error = err;
+            throw err;
+        } finally {
+            driver.onChainEnd(context, chain);
+        }
     }
 
     /**
@@ -167,34 +175,40 @@ class FlowEngineImpl implements FlowEngine {
 
         boolean node_end = true;
 
-        switch (node.type()) {
-            case start:
-                //转到下个节点
-                node_run(driver, context, node.nextNode(), depth);
-                break;
-            case end:
-                break;
-            case execute:
-                //尝试执行任务（可能为空）
-                task_exec(driver, context, node);
-                //转到下个节点
-                node_run(driver, context, node.nextNode(), depth);
-                break;
-            case inclusive: //包容网关（多选）
-                node_end = inclusive_run(driver, context, node, depth);
-                break;
-            case exclusive: //排他网关（单选）
-                node_end = exclusive_run(driver, context, node, depth);
-                break;
-            case parallel: //并行网关（全选）
-                node_end = parallel_run(driver, context, node, depth);
-                break;
+        try {
+            switch (node.type()) {
+                case start:
+                    //转到下个节点
+                    node_run(driver, context, node.nextNode(), depth);
+                    break;
+                case end:
+                    break;
+                case execute:
+                    //尝试执行任务（可能为空）
+                    task_exec(driver, context, node);
+                    //转到下个节点
+                    node_run(driver, context, node.nextNode(), depth);
+                    break;
+                case inclusive: //包容网关（多选）
+                    node_end = inclusive_run(driver, context, node, depth);
+                    break;
+                case exclusive: //排他网关（单选）
+                    node_end = exclusive_run(driver, context, node, depth);
+                    break;
+                case parallel: //并行网关（全选）
+                    node_end = parallel_run(driver, context, node, depth);
+                    break;
+            }
+        } catch (Throwable err) {
+            context.error = err;
+            throw err;
+        } finally {
+            //节点运行之后事件
+            if (node_end) {
+                driver.onNodeEnd(context, node);
+            }
         }
 
-        //节点运行之后事件
-        if (node_end) {
-            driver.onNodeEnd(context, node);
-        }
         return node_end;
     }
 

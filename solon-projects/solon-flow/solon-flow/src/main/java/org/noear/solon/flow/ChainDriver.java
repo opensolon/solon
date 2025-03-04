@@ -26,6 +26,16 @@ import org.noear.solon.lang.Preview;
 @Preview("3.0")
 public interface ChainDriver {
     /**
+     * 链运行开始时
+     */
+    void onChainStart(ChainContext context, Chain chain);
+
+    /**
+     * 链运行结束时
+     */
+    void onChainEnd(ChainContext context, Chain chain);
+
+    /**
      * 节点运行开始时
      */
     void onNodeStart(ChainContext context, Node node);

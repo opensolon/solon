@@ -34,6 +34,8 @@ public class ChainContext {
     private transient final Map<String, Object> model = new LinkedHashMap<>();
     //存放执行结果（可选）
     public transient Object result;
+    //存放执行错误（可选）
+    public transient Throwable error;
 
     //控制过程计数
     private transient final Counter counter = new Counter();
