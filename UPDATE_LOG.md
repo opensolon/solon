@@ -25,6 +25,7 @@
 
 * 新增 solon-ai 插件
 * 新增 solon-ai-repo-milvus 插件
+* 新增 solon-ai-repo-redis 插件
 * 新增 solon-ai-load-markdown 插件
 * 新增 solon-ai-load-pdf 插件
 * 新增 solon-ai-load-html 插件
@@ -43,6 +44,7 @@
 * 添加 solon MimeType 类，替代 solon-boot 的 MimeType（后者标为弃用）
 * 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
+* 添加 solon-flow 拦截体系
 * 添加 solon-data-sqlutils SqlQuerier:updateBatchReturnKeys 接口，支持批处理后返回主键
 * 添加 solon-net-httputils HttpUtils:proxy 接口，支持 http 代理
 * 添加 solon-net-httputils HttpUtils:execAsTextStream 文本流读取接口（可用于 dnjson 和 sse-stream）
@@ -77,11 +79,11 @@
 * wx-java 升为 4.7.2.B
 * smart-http 升为 2.5.4（日志改为 slf4j，方便级别控制和记录）
 
-
 ### v3.0.10
 * 优化 solon 小写开头且带点环境变量的一个边界问题
 * 添加 org.noear.solon.core.util.MimeType 类
 * 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
+* smart-http 升为 2.5.4（日志改为 slf4j，方便级别控制和记录）
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
