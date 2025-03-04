@@ -5,7 +5,7 @@ import org.noear.solon.lang.Preview;
 import java.sql.SQLException;
 
 /**
- * Sql 执行器
+ * Sql 可调用的
  *
  * @author noear
  * @since 3.1
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 @Preview("3.1")
 public interface SqlCallable {
     /**
-     * 执行
+     * 调用
      */
     Object call() throws SQLException;
 }

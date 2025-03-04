@@ -5,7 +5,7 @@ import org.noear.solon.lang.Preview;
 import java.sql.SQLException;
 
 /**
- * Sql 执行拦截器
+ * Sql 命令拦截器
  *
  * @author noear
  * @since 3.1

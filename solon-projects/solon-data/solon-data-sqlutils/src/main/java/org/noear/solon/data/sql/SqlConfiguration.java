@@ -47,10 +47,11 @@ public class SqlConfiguration {
     /**
      * 执行拦截
      *
-     * @param excutor 执行器
+     * @param command  命令
+     * @param callable 可调用的
      */
-    public static Object doIntercept(SqlCommand command, SqlCallable excutor) throws SQLException {
-        return new SqlCommandInvocation(command, interceptorList, excutor).invoke();
+    public static Object doIntercept(SqlCommand command, SqlCallable callable) throws SQLException {
+        return new SqlCommandInvocation(command, interceptorList, callable).invoke();
     }
 
 

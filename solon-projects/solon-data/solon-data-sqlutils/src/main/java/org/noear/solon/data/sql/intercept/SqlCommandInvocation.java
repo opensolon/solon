@@ -7,21 +7,21 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Sql 执行包装器
+ * Sql 命令调用者
  *
  * @author noear
  * @since 3.1
  */
 public class SqlCommandInvocation {
     private final List<RankEntity<SqlCommandInterceptor>> executeInterceptors;
-    private final SqlCallable executor;
+    private final SqlCallable callable;
     private final SqlCommand command;
 
     private int index;
 
-    public SqlCommandInvocation(SqlCommand command, List<RankEntity<SqlCommandInterceptor>> executeInterceptors, SqlCallable executor) {
+    public SqlCommandInvocation(SqlCommand command, List<RankEntity<SqlCommandInterceptor>> executeInterceptors, SqlCallable callable) {
         this.executeInterceptors = executeInterceptors;
-        this.executor = executor;
+        this.callable = callable;
         this.command = command;
         this.index = 0;
     }
@@ -37,14 +37,10 @@ public class SqlCommandInvocation {
      * 调用
      */
     public Object invoke() throws SQLException {
-        if (executor == null) {
+        if (index < executeInterceptors.size()) {
             return executeInterceptors.get(index++).target.doIntercept(this);
         } else {
-            if (index < executeInterceptors.size()) {
-                return executeInterceptors.get(index++).target.doIntercept(this);
-            } else {
-                return executor.call();
-            }
+            return callable.call();
         }
     }
 }
