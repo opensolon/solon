@@ -27,32 +27,32 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Sql 执行器
+ * Sql 查询器
  *
  * @author noear
  * @since 3.0
  */
 @Preview("3.0")
-public interface SqlExecutor {
+public interface SqlQuerier {
     /**
      * 绑定参数
      */
-    SqlExecutor params(Object... args);
+    SqlQuerier params(Object... args);
 
     /**
      * 绑定参数
      */
-    <S> SqlExecutor params(S args, StatementBinder<S> binder);
+    <S> SqlQuerier params(S args, StatementBinder<S> binder);
 
     /**
      * 绑定参数（用于批处理）
      */
-    SqlExecutor params(Collection<Object[]> argsList);
+    SqlQuerier params(Collection<Object[]> argsList);
 
     /**
      * 绑定参数（用于批处理）
      */
-    <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier);
+    <S> SqlQuerier params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier);
 
 
     /// //////////////////////

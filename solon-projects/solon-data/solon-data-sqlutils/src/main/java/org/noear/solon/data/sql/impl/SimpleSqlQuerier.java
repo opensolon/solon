@@ -29,44 +29,44 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Sql 执行器简单实现
+ * Sql 查询器简单实现
  *
  * @author noear
  * @since 3.0
  */
-public class SimpleSqlExecutor implements SqlExecutor {
+public class SimpleSqlQuerier implements SqlQuerier {
     private final static DefaultBinder DEFAULT_BINDER = new DefaultBinder();
 
     private final DataSource dataSource;
     private final String commandText;
     private SqlCommand command;
 
-    public SimpleSqlExecutor(DataSource dataSource, String sql) {
+    public SimpleSqlQuerier(DataSource dataSource, String sql) {
         this.dataSource = dataSource;
         this.commandText = sql;
     }
 
 
     @Override
-    public SqlExecutor params(Object... args) {
+    public SqlQuerier params(Object... args) {
         this.command = new SqlCommand(dataSource, commandText, args, DEFAULT_BINDER);
         return this;
     }
 
     @Override
-    public <S> SqlExecutor params(S args, StatementBinder<S> binder) {
+    public <S> SqlQuerier params(S args, StatementBinder<S> binder) {
         this.command = new SqlCommand(dataSource, commandText, args, binder);
         return this;
     }
 
     @Override
-    public SqlExecutor params(Collection<Object[]> argsList) {
+    public SqlQuerier params(Collection<Object[]> argsList) {
         this.command = new SqlCommand(dataSource, commandText, argsList, DEFAULT_BINDER);
         return this;
     }
 
     @Override
-    public <S> SqlExecutor params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier) {
+    public <S> SqlQuerier params(Collection<S> argsList, Supplier<StatementBinder<S>> binderSupplier) {
         this.command = new SqlCommand(dataSource, commandText, argsList, binderSupplier.get());
         return this;
     }

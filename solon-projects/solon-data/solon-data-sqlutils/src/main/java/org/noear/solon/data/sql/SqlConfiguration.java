@@ -15,13 +15,16 @@
  */
 package org.noear.solon.data.sql;
 
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 import org.noear.solon.data.sql.impl.DefaultConverter;
-import org.noear.solon.data.sql.impl.SimpleSqlUtilsFactory;
-import org.noear.solon.data.sql.intercept.SqlInterceptor;
-import org.noear.solon.data.sql.intercept.SqlInvocation;
+import org.noear.solon.data.sql.intercept.SqlExecuteInterceptor;
+import org.noear.solon.data.sql.intercept.SqlExecutor;
+import org.noear.solon.data.sql.intercept.SqlExecutorWrapper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sql 配置类
@@ -30,51 +33,23 @@ import java.sql.SQLException;
  * @since 3.0
  */
 public class SqlConfiguration {
-    private static SqlInterceptor interceptor;
+    private static List<RankEntity<SqlExecuteInterceptor>> interceptorList = new ArrayList<>();
 
     /**
-     * 设置拦截器
+     * 设置执行拦截器
      */
-    public static void setInterceptor(SqlInterceptor interceptor) {
-        SqlConfiguration.interceptor = interceptor;
+    public static void addInterceptor(SqlExecuteInterceptor interceptor, int index) {
+        SqlConfiguration.interceptorList.add(new RankEntity<>(interceptor, index));
     }
 
     /**
-     * 获取拦截
+     * 执行拦截
+     *
+     * @param cmd     命令
+     * @param excutor 执行器
      */
-    public static SqlInterceptor getInterceptor() {
-        return interceptor;
-    }
-
-    /**
-     * 拦截
-     */
-    public static Object doIntercept(SqlCommand cmd, SqlInvocation invocation) throws SQLException {
-        if (interceptor == null) {
-            return invocation.invoke(cmd);
-        } else {
-            return interceptor.doIntercept(cmd, invocation);
-        }
-    }
-
-    /// //////////////////////
-
-    private static SqlUtilsFactory factory = new SimpleSqlUtilsFactory();
-
-    /**
-     * 获取工厂
-     */
-    public static SqlUtilsFactory getFactory() {
-        return factory;
-    }
-
-    /**
-     * 设置工厂
-     */
-    public static void setFactory(SqlUtilsFactory factory) {
-        if (factory != null) {
-            SqlConfiguration.factory = factory;
-        }
+    public static Object doIntercept(SqlCommand cmd, SqlExecutor excutor) throws SQLException {
+        return new SqlExecutorWrapper(interceptorList, excutor).execute(cmd);
     }
 
 

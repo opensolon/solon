@@ -59,14 +59,14 @@ public interface SqlUtils {
      *
      * @param sql 代码
      */
-    SqlExecutor sql(String sql, Object... args);
+    SqlQuerier sql(String sql, Object... args);
 
     /**
      * 执行代码
      *
      * @param sqlSpec 代码申明
      */
-    default SqlExecutor sql(SqlSpec sqlSpec) {
+    default SqlQuerier sql(SqlSpec sqlSpec) {
         return sql(sqlSpec.getSql(), sqlSpec.getArgs());
     }
 }
