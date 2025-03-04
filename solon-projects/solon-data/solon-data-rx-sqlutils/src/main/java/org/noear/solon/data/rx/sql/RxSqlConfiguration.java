@@ -17,9 +17,9 @@ package org.noear.solon.data.rx.sql;
 
 
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.data.rx.sql.intercept.RxSqlExecuteInterceptor;
-import org.noear.solon.data.rx.sql.intercept.RxSqlExecutor;
-import org.noear.solon.data.rx.sql.intercept.RxSqlExecutorWrapper;
+import org.noear.solon.data.rx.sql.intercept.RxSqlCommandInterceptor;
+import org.noear.solon.data.rx.sql.intercept.RxSqlCallable;
+import org.noear.solon.data.rx.sql.intercept.RxSqlCommandInvocation;
 import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
@@ -33,12 +33,12 @@ import java.util.List;
  * @since 3.0
  */
 public class RxSqlConfiguration {
-    private static List<RankEntity<RxSqlExecuteInterceptor>> interceptorList = new ArrayList<>();
+    private static List<RankEntity<RxSqlCommandInterceptor>> interceptorList = new ArrayList<>();
 
     /**
-     * 设置执行拦截器
+     * 添加拦截器
      */
-    public static void addInterceptor(RxSqlExecuteInterceptor interceptor, int index) {
+    public static void addInterceptor(RxSqlCommandInterceptor interceptor, int index) {
         interceptorList.add(new RankEntity<>(interceptor, index));
         Collections.sort(interceptorList);
     }
@@ -46,10 +46,10 @@ public class RxSqlConfiguration {
     /**
      * 执行拦截
      *
-     * @param cmd     命令
-     * @param excutor 执行器
+     * @param command  命令
+     * @param callable 可调用的
      */
-    public static Publisher doIntercept(RxSqlCommand cmd, RxSqlExecutor excutor) {
-        return new RxSqlExecutorWrapper(interceptorList, excutor).execute(cmd);
+    public static Publisher doIntercept(RxSqlCommand command, RxSqlCallable callable) {
+        return new RxSqlCommandInvocation(command, interceptorList, callable).invoke();
     }
 }

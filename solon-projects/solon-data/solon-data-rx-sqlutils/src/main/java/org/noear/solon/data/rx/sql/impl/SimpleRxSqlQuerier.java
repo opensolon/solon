@@ -90,14 +90,14 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Mono<T> queryRow(RxRowConverter<T> converter) {
         //用 Mono.from 再转一下，避免拦截时转掉了
-        return Mono.from(RxSqlConfiguration.doIntercept(command, (cmd) -> {
-            return queryRowDo(cmd, converter);
+        return Mono.from(RxSqlConfiguration.doIntercept(command, () -> {
+            return queryRowDo(converter);
         }));
     }
 
-    protected <T> Mono<T> queryRowDo(RxSqlCommand cmd, RxRowConverter<T> converter) {
+    protected <T> Mono<T> queryRowDo(RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, cmd, false))
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.map(converter::convert))
                 .take(1)
                 .singleOrEmpty();
@@ -111,14 +111,14 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Flux<T> queryRowList(RxRowConverter<T> converter) {
         //用 Flux.from 再转一下，避免拦截时转掉了
-        return Flux.from(RxSqlConfiguration.doIntercept(command, (cmd) -> {
-            return queryRowListDo(cmd, converter);
+        return Flux.from(RxSqlConfiguration.doIntercept(command, () -> {
+            return queryRowListDo(converter);
         }));
     }
 
-    protected <T> Flux<T> queryRowListDo(RxSqlCommand cmd, RxRowConverter<T> converter) {
+    protected <T> Flux<T> queryRowListDo(RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, cmd, false))
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.map(converter::convert));
     }
 
@@ -128,9 +128,9 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
         return Mono.from(RxSqlConfiguration.doIntercept(command, this::updateDo));
     }
 
-    protected Mono<Long> updateDo(RxSqlCommand cmd) {
+    protected Mono<Long> updateDo() {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, cmd, false))
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.getRowsUpdated())
                 .take(1)
                 .singleOrEmpty();
@@ -139,12 +139,12 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Mono<T> updateReturnKey(Class<T> tClass) {
         //用 Mono.from 再转一下，避免拦截时转掉了
-        return Mono.from(RxSqlConfiguration.doIntercept(command,this::updateReturnKeyDo));
+        return Mono.from(RxSqlConfiguration.doIntercept(command, this::updateReturnKeyDo));
     }
 
-    protected Mono updateReturnKeyDo(RxSqlCommand cmd) {
+    protected Mono updateReturnKeyDo() {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, cmd, true))
+                .flatMapMany(conn -> buildStatement(conn, command, true))
                 .flatMap(result -> result.map(r -> r.get(0)))
                 .take(1)
                 .singleOrEmpty();
@@ -156,9 +156,9 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
         return Flux.from(RxSqlConfiguration.doIntercept(command, this::updateBatchDo));
     }
 
-    protected Flux<Long> updateBatchDo(RxSqlCommand cmd) {
+    protected Flux<Long> updateBatchDo() {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, cmd, false))
+                .flatMapMany(conn -> buildStatement(conn, command, false))
                 .flatMap(result -> result.getRowsUpdated());
     }
 

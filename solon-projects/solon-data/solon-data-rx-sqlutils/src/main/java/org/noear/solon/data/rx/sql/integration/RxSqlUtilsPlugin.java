@@ -24,7 +24,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.data.rx.sql.RxSqlConfiguration;
 import org.noear.solon.data.rx.sql.RxSqlUtils;
-import org.noear.solon.data.rx.sql.intercept.RxSqlExecuteInterceptor;
+import org.noear.solon.data.rx.sql.intercept.RxSqlCommandInterceptor;
 
 import java.util.function.Consumer;
 
@@ -37,7 +37,7 @@ public class RxSqlUtilsPlugin implements Plugin {
     public void start(AppContext context) throws Throwable {
         context.beanInjectorAdd(Inject.class, RxSqlUtils.class, this::doInject);
 
-        context.getWrapAsync(RxSqlExecuteInterceptor.class, bw -> {
+        context.getWrapAsync(RxSqlCommandInterceptor.class, bw -> {
             RxSqlConfiguration.addInterceptor(bw.raw(), bw.index());
         });
     }
