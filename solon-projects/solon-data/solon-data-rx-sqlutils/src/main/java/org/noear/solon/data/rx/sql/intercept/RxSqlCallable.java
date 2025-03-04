@@ -1,21 +1,18 @@
 package org.noear.solon.data.rx.sql.intercept;
 
-import org.noear.solon.data.rx.sql.RxSqlCommand;
 import org.noear.solon.lang.Preview;
 import org.reactivestreams.Publisher;
 
 /**
- * Sql 执行器
+ * Sql 可调用的
  *
  * @author noear
  * @since 3.1
  */
 @Preview("3.1")
-public interface RxSqlExecutor {
+public interface RxSqlCallable {
     /**
-     * 执行
-     *
-     * @param cmd 命令
+     * 调用
      */
-    Publisher execute(RxSqlCommand cmd);
+    Publisher call();
 }
