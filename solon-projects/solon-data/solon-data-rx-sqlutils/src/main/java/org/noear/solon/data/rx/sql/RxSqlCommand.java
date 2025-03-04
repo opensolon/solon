@@ -15,8 +15,11 @@
  */
 package org.noear.solon.data.rx.sql;
 
+import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.Statement;
 import org.noear.solon.data.rx.sql.bound.RxStatementBinder;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -27,19 +30,22 @@ import java.util.Collection;
  * @since 3.1
  */
 public class RxSqlCommand<T> {
+    private final ConnectionFactory ds;
     private RxStatementBinder<T> binder;
     private String sql;
     private T args;
     private Collection<T> argsColl;
 
-    public RxSqlCommand(String sql, T args, RxStatementBinder<T> binder) {
+    public RxSqlCommand(ConnectionFactory ds, String sql, T args, RxStatementBinder<T> binder) {
+        this.ds = ds;
         this.sql = sql;
         this.args = args;
         this.argsColl = null;
         this.binder = binder;
     }
 
-    public RxSqlCommand(String sql, Collection<T> argsColl, RxStatementBinder<T> binder) {
+    public RxSqlCommand(ConnectionFactory ds, String sql, Collection<T> argsColl, RxStatementBinder<T> binder) {
+        this.ds = ds;
         this.sql = sql;
         this.args = null;
         this.argsColl = argsColl;
@@ -51,6 +57,13 @@ public class RxSqlCommand<T> {
      */
     public boolean isBatch() {
         return argsColl != null;
+    }
+
+    /**
+     * 获取数据源
+     */
+    public ConnectionFactory getDs() {
+        return ds;
     }
 
     /**

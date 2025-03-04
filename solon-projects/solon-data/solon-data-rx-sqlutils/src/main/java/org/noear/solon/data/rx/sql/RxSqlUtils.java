@@ -60,14 +60,14 @@ public interface RxSqlUtils {
      * @param sql  代码
      * @param args 参数
      */
-    RxSqlExecutor sql(String sql, Object... args);
+    RxSqlQuerier sql(String sql, Object... args);
 
     /**
      * 执行代码
      *
      * @param sqlSpec 代码申明
      */
-    default RxSqlExecutor sql(SqlSpec sqlSpec) {
+    default RxSqlQuerier sql(SqlSpec sqlSpec) {
         return sql(sqlSpec.getSql(), sqlSpec.getArgs());
     }
 }

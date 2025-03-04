@@ -26,32 +26,32 @@ import java.util.Collection;
 import java.util.function.Supplier;
 
 /**
- * Sql 执行器
+ * Sql 查询器
  *
  * @author noear
  * @since 3.0
  */
 @Preview("3.0")
-public interface RxSqlExecutor {
+public interface RxSqlQuerier {
     /**
      * 绑定参数
      */
-    RxSqlExecutor params(Object... args);
+    RxSqlQuerier params(Object... args);
 
     /**
      * 绑定参数
      */
-    <S> RxSqlExecutor params(S args, RxStatementBinder<S> binder);
+    <S> RxSqlQuerier params(S args, RxStatementBinder<S> binder);
 
     /**
      * 绑定参数（用于批处理）
      */
-    RxSqlExecutor params(Collection<Object[]> argsList);
+    RxSqlQuerier params(Collection<Object[]> argsList);
 
     /**
      * 绑定参数（用于批处理）
      */
-    <S> RxSqlExecutor params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier);
+    <S> RxSqlQuerier params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier);
 
     /// /////////////////////////////
 

@@ -30,6 +30,7 @@
 * 新增 solon-ai-load-html 插件
 * 新增 solon-configuration-processor 插件
 * 插件 solon-data-sqlutils 二次预览（优化概念结构，增加执行拦截器）
+* 插件 solon-data-rx-sqlutils 二次预览（优化概念结构，增加执行拦截器）
 * 测试 虚拟线程、异步、响应式并优化性能？？？
 * 优化 solon 仓库的规范插件命名
 * 优化 solon 小写且带点环境变量的一个边界问题

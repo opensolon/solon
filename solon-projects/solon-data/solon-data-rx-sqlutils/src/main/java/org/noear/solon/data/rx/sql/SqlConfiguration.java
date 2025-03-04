@@ -15,7 +15,17 @@
  */
 package org.noear.solon.data.rx.sql;
 
-import org.noear.solon.data.rx.sql.impl.SimpleRxSqlUtilsFactory;
+
+import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.data.rx.sql.intercept.RxSqlExecuteInterceptor;
+import org.noear.solon.data.rx.sql.intercept.RxSqlExecutor;
+import org.noear.solon.data.rx.sql.intercept.RxSqlExecutorWrapper;
+import org.reactivestreams.Publisher;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Sql 配置类
@@ -24,21 +34,23 @@ import org.noear.solon.data.rx.sql.impl.SimpleRxSqlUtilsFactory;
  * @since 3.0
  */
 public class SqlConfiguration {
-    private static RxSqlUtilsFactory factory = new SimpleRxSqlUtilsFactory();
+    private static List<RankEntity<RxSqlExecuteInterceptor>> interceptorList = new ArrayList<>();
 
     /**
-     * 获取工厂
+     * 设置执行拦截器
      */
-    public static RxSqlUtilsFactory getFactory() {
-        return factory;
+    public static void addInterceptor(RxSqlExecuteInterceptor interceptor, int index) {
+        interceptorList.add(new RankEntity<>(interceptor, index));
+        Collections.sort(interceptorList);
     }
 
     /**
-     * 设置工厂
+     * 执行拦截
+     *
+     * @param cmd     命令
+     * @param excutor 执行器
      */
-    public static void setFactory(RxSqlUtilsFactory factory) {
-        if (factory != null) {
-            SqlConfiguration.factory = factory;
-        }
+    public static Publisher doIntercept(RxSqlCommand cmd, RxSqlExecutor excutor) {
+        return new RxSqlExecutorWrapper(interceptorList, excutor).execute(cmd);
     }
 }

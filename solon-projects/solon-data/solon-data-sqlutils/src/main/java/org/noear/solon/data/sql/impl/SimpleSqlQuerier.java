@@ -94,7 +94,7 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> Object queryRowDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+        try (StatementHolder holder = buildStatement(cmd, false, false)) {
             holder.rsts = holder.stmt.executeQuery();
 
             if (holder.rsts.next()) {
@@ -118,7 +118,7 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> List<T> queryRowListDo(SqlCommand cmd, RowConverter<T> converter) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+        try (StatementHolder holder = buildStatement(cmd, false, false)) {
 
             holder.rsts = holder.stmt.executeQuery();
 
@@ -145,7 +145,7 @@ public class SimpleSqlQuerier implements SqlQuerier {
     }
 
     protected <T> RowIterator<T> queryRowIteratorDo(SqlCommand cmd, int fetchSize, RowConverter<T> converter) throws SQLException {
-        StatementHolder holder = beginStatement(cmd, false, true);
+        StatementHolder holder = buildStatement(cmd, false, true);
         holder.stmt.setFetchSize(fetchSize);
         holder.rsts = holder.stmt.executeQuery();
 
@@ -154,26 +154,22 @@ public class SimpleSqlQuerier implements SqlQuerier {
 
     @Override
     public int update() throws SQLException {
-        return (int) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return updateDo(cmd);
-        });
+        return (int) SqlConfiguration.doIntercept(command, this::updateDo);
     }
 
     protected int updateDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+        try (StatementHolder holder = buildStatement(cmd, false, false)) {
             return holder.stmt.executeUpdate();
         }
     }
 
     @Override
     public <T> T updateReturnKey() throws SQLException {
-        return (T) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return updateReturnKeyDo(cmd);
-        });
+        return (T) SqlConfiguration.doIntercept(command, this::updateReturnKeyDo);
     }
 
     protected Object updateReturnKeyDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, true, false)) {
+        try (StatementHolder holder = buildStatement(cmd, true, false)) {
             holder.stmt.executeUpdate();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -187,26 +183,22 @@ public class SimpleSqlQuerier implements SqlQuerier {
 
     @Override
     public int[] updateBatch() throws SQLException {
-        return (int[]) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return updateBatchDo(cmd);
-        });
+        return (int[]) SqlConfiguration.doIntercept(command, this::updateBatchDo);
     }
 
     protected int[] updateBatchDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, false, false)) {
+        try (StatementHolder holder = buildStatement(cmd, false, false)) {
             return holder.stmt.executeBatch();
         }
     }
 
     @Override
     public <T> List<T> updateBatchReturnKeys() throws SQLException {
-        return (List<T>) SqlConfiguration.doIntercept(command, (cmd) -> {
-            return updateBatchReturnKeysDo(cmd);
-        });
+        return (List<T>) SqlConfiguration.doIntercept(command, this::updateBatchReturnKeysDo);
     }
 
     protected <T> List<T> updateBatchReturnKeysDo(SqlCommand cmd) throws SQLException {
-        try (StatementHolder holder = beginStatement(cmd, true, false)) {
+        try (StatementHolder holder = buildStatement(cmd, true, false)) {
             holder.stmt.executeBatch();
             holder.rsts = holder.stmt.getGeneratedKeys();
 
@@ -224,7 +216,7 @@ public class SimpleSqlQuerier implements SqlQuerier {
     /**
      * 开始命令处理
      */
-    protected StatementHolder beginStatement(SqlCommand cmd, boolean returnKeys, boolean isStream) throws SQLException {
+    protected StatementHolder buildStatement(SqlCommand cmd, boolean returnKeys, boolean isStream) throws SQLException {
         StatementHolder holder = new StatementHolder();
         holder.conn = getConnection();
 

@@ -16,7 +16,7 @@
 package org.noear.solon.data.rx.sql.impl;
 
 import io.r2dbc.spi.ConnectionFactory;
-import org.noear.solon.data.rx.sql.RxSqlExecutor;
+import org.noear.solon.data.rx.sql.RxSqlQuerier;
 import org.noear.solon.data.rx.sql.RxSqlUtils;
 import org.noear.solon.data.rx.sql.SqlConfiguration;
 
@@ -34,7 +34,7 @@ public class DefaultRxSqlUtils implements RxSqlUtils {
     }
 
     @Override
-    public RxSqlExecutor sql(String sql, Object... args) {
-        return SqlConfiguration.getFactory().create(ds, sql).params(args);
+    public RxSqlQuerier sql(String sql, Object... args) {
+        return new SimpleRxSqlQuerier(ds, sql).params(args);
     }
 }

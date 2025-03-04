@@ -20,7 +20,8 @@ import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.Result;
 import io.r2dbc.spi.Statement;
 import org.noear.solon.data.rx.sql.RxSqlCommand;
-import org.noear.solon.data.rx.sql.RxSqlExecutor;
+import org.noear.solon.data.rx.sql.RxSqlQuerier;
+import org.noear.solon.data.rx.sql.SqlConfiguration;
 import org.noear.solon.data.rx.sql.bound.RxRowConverter;
 import org.noear.solon.data.rx.sql.bound.RxStatementBinder;
 import org.reactivestreams.Publisher;
@@ -28,53 +29,46 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Sql 执行器简单实现
+ * Sql 查询器简单实现
  *
  * @author noear
  * @since 3.0
  */
-public class SimpleRxSqlExecutor implements RxSqlExecutor {
+public class SimpleRxSqlQuerier implements RxSqlQuerier {
     private final static DefaultRxBinder DEFAULT_BINDER = new DefaultRxBinder();
     private final ConnectionFactory dataSource;
     private final String commandText;
     private RxSqlCommand command;
-    private Consumer<RxSqlCommand> onCommandPost;
 
-    public SimpleRxSqlExecutor(ConnectionFactory dataSource, String sql) {
+    public SimpleRxSqlQuerier(ConnectionFactory dataSource, String sql) {
         this.dataSource = dataSource;
         this.commandText = sql;
     }
 
     @Override
-    public RxSqlExecutor params(Object... args) {
-        this.command = new RxSqlCommand(commandText, args, DEFAULT_BINDER);
+    public RxSqlQuerier params(Object... args) {
+        this.command = new RxSqlCommand(dataSource, commandText, args, DEFAULT_BINDER);
         return this;
     }
 
     @Override
-    public <S> RxSqlExecutor params(S args, RxStatementBinder<S> binder) {
-        this.command = new RxSqlCommand(commandText, args, binder);
+    public <S> RxSqlQuerier params(S args, RxStatementBinder<S> binder) {
+        this.command = new RxSqlCommand(dataSource, commandText, args, binder);
         return this;
     }
 
     @Override
-    public RxSqlExecutor params(Collection<Object[]> argsList) {
-        this.command = new RxSqlCommand(commandText, argsList, DEFAULT_BINDER);
+    public RxSqlQuerier params(Collection<Object[]> argsList) {
+        this.command = new RxSqlCommand(dataSource, commandText, argsList, DEFAULT_BINDER);
         return this;
     }
 
     @Override
-    public <S> RxSqlExecutor params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier) {
-        this.command = new RxSqlCommand(commandText, argsList, binderSupplier.get());
-        return this;
-    }
-
-    public RxSqlExecutor onCommandPost(Consumer<RxSqlCommand> action) {
-        this.onCommandPost = action;
+    public <S> RxSqlQuerier params(Collection<S> argsList, Supplier<RxStatementBinder<S>> binderSupplier) {
+        this.command = new RxSqlCommand(dataSource, commandText, argsList, binderSupplier.get());
         return this;
     }
 
@@ -95,8 +89,15 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public <T> Mono<T> queryRow(RxRowConverter<T> converter) {
+        //用 Mono.from 再转一下，避免拦截时转掉了
+        return Mono.from(SqlConfiguration.doIntercept(command, (cmd) -> {
+            return queryRowDo(cmd, converter);
+        }));
+    }
+
+    protected <T> Mono<T> queryRowDo(RxSqlCommand cmd, RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
+                .flatMapMany(conn -> buildStatement(conn, cmd, false))
                 .flatMap(result -> result.map(converter::convert))
                 .take(1)
                 .singleOrEmpty();
@@ -109,15 +110,27 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public <T> Flux<T> queryRowList(RxRowConverter<T> converter) {
+        //用 Flux.from 再转一下，避免拦截时转掉了
+        return Flux.from(SqlConfiguration.doIntercept(command, (cmd) -> {
+            return queryRowListDo(cmd, converter);
+        }));
+    }
+
+    protected <T> Flux<T> queryRowListDo(RxSqlCommand cmd, RxRowConverter<T> converter) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
+                .flatMapMany(conn -> buildStatement(conn, cmd, false))
                 .flatMap(result -> result.map(converter::convert));
     }
 
     @Override
     public Mono<Long> update() {
+        //用 Mono.from 再转一下，避免拦截时转掉了
+        return Mono.from(SqlConfiguration.doIntercept(command, this::updateDo));
+    }
+
+    protected Mono<Long> updateDo(RxSqlCommand cmd) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
+                .flatMapMany(conn -> buildStatement(conn, cmd, false))
                 .flatMap(result -> result.getRowsUpdated())
                 .take(1)
                 .singleOrEmpty();
@@ -125,8 +138,13 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public <T> Mono<T> updateReturnKey(Class<T> tClass) {
-        return (Mono<T>) Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, true))
+        //用 Mono.from 再转一下，避免拦截时转掉了
+        return Mono.from(SqlConfiguration.doIntercept(command,this::updateReturnKeyDo));
+    }
+
+    protected Mono updateReturnKeyDo(RxSqlCommand cmd) {
+        return Mono.from(getConnection())
+                .flatMapMany(conn -> buildStatement(conn, cmd, true))
                 .flatMap(result -> result.map(r -> r.get(0)))
                 .take(1)
                 .singleOrEmpty();
@@ -134,8 +152,13 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
 
     @Override
     public Flux<Long> updateBatch() {
+        //用 Flux.from 再转一下，避免拦截时转掉了
+        return Flux.from(SqlConfiguration.doIntercept(command, this::updateBatchDo));
+    }
+
+    protected Flux<Long> updateBatchDo(RxSqlCommand cmd) {
         return Mono.from(getConnection())
-                .flatMapMany(conn -> buildStatement(conn, command, false))
+                .flatMapMany(conn -> buildStatement(conn, cmd, false))
                 .flatMap(result -> result.getRowsUpdated());
     }
 
@@ -143,10 +166,6 @@ public class SimpleRxSqlExecutor implements RxSqlExecutor {
     /// //////////////////
 
     protected Publisher<? extends Result> buildStatement(Connection conn, RxSqlCommand command, boolean returnKeys) {
-        if (onCommandPost != null) {
-            onCommandPost.accept(command);
-        }
-
         Statement stmt = conn.createStatement(command.getSql());
 
         if (returnKeys) {

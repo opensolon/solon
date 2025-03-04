@@ -24,6 +24,7 @@ import org.noear.solon.data.sql.intercept.SqlExecutorWrapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,7 +40,8 @@ public class SqlConfiguration {
      * 设置执行拦截器
      */
     public static void addInterceptor(SqlExecuteInterceptor interceptor, int index) {
-        SqlConfiguration.interceptorList.add(new RankEntity<>(interceptor, index));
+        interceptorList.add(new RankEntity<>(interceptor, index));
+        Collections.sort(interceptorList);
     }
 
     /**
