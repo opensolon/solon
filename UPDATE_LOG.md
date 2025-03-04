@@ -29,9 +29,8 @@
 * 新增 solon-ai-load-pdf 插件
 * 新增 solon-ai-load-html 插件
 * 新增 solon-configuration-processor 插件
-* 定义 响应式过滤和拦截体系？？？
+* 插件 solon-data-sqlutils 二次预览（优化概念结构，增加执行拦截器）
 * 测试 虚拟线程、异步、响应式并优化性能？？？
-* 优化 拦截体系与 rx 的兼容？？？
 * 优化 solon 仓库的规范插件命名
 * 优化 solon 小写且带点环境变量的一个边界问题
 * 优化 solon-auth，AuthRuleHandler 的 Filter 实现转到 AuthAdapter 身上，方便用户控制 index
@@ -43,8 +42,7 @@
 * 添加 solon MimeType 类，替代 solon-boot 的 MimeType（后者标为弃用）
 * 添加 solon-flow FlowEngine:load(uri) 方法
 * 添加 solon-flow Chain:parseByText 方法
-* 添加 solon-data-sqlutils SqlExecutor:updateBatchReturnKeys 接口，支持批处理后返回主键
-* 添加 solon-data-sqlutils SimpleSqlExecutor:onCommandPost、onCommandAfter 事件支持
+* 添加 solon-data-sqlutils SqlQuerier:updateBatchReturnKeys 接口，支持批处理后返回主键
 * 添加 solon-net-httputils HttpUtils:proxy 接口，支持 http 代理
 * 添加 solon-net-httputils HttpUtils:execAsTextStream 文本流读取接口（可用于 dnjson 和 sse-stream）
 * 添加 solon-web-rx 过滤体系
