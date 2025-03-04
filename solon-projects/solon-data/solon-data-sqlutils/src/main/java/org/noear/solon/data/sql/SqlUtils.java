@@ -17,7 +17,7 @@ package org.noear.solon.data.sql;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.data.sql.impl.DefaultSqlUtils;
+import org.noear.solon.data.sql.impl.SimpleSqlUtils;
 import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
@@ -34,7 +34,7 @@ import java.sql.SQLException;
 public interface SqlUtils {
     static SqlUtils of(DataSource ds) {
         assert ds != null;
-        return new DefaultSqlUtils(ds);
+        return new SimpleSqlUtils(ds);
     }
 
     static SqlUtils ofName(String dsName) {

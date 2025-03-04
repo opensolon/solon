@@ -19,7 +19,7 @@ import io.r2dbc.spi.ConnectionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.lang.Preview;
-import org.noear.solon.data.rx.sql.impl.DefaultRxSqlUtils;
+import org.noear.solon.data.rx.sql.impl.SimpleRxSqlUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ import java.sql.SQLException;
 public interface RxSqlUtils {
     static RxSqlUtils of(ConnectionFactory ds) {
         assert ds != null;
-        return new DefaultRxSqlUtils(ds);
+        return new SimpleRxSqlUtils(ds);
     }
 
     static RxSqlUtils ofName(String dsName) {

@@ -18,7 +18,6 @@ package org.noear.solon.data.rx.sql.impl;
 import io.r2dbc.spi.ConnectionFactory;
 import org.noear.solon.data.rx.sql.RxSqlQuerier;
 import org.noear.solon.data.rx.sql.RxSqlUtils;
-import org.noear.solon.data.rx.sql.SqlConfiguration;
 
 /**
  * Sql 工具类简单实现
@@ -26,10 +25,10 @@ import org.noear.solon.data.rx.sql.SqlConfiguration;
  * @author noear
  * @since 3.0
  */
-public class DefaultRxSqlUtils implements RxSqlUtils {
+public class SimpleRxSqlUtils implements RxSqlUtils {
     private final ConnectionFactory ds;
 
-    public DefaultRxSqlUtils(ConnectionFactory ds) {
+    public SimpleRxSqlUtils(ConnectionFactory ds) {
         this.ds = ds;
     }
 

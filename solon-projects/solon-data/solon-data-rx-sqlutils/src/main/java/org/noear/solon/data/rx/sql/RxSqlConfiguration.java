@@ -22,7 +22,6 @@ import org.noear.solon.data.rx.sql.intercept.RxSqlExecutor;
 import org.noear.solon.data.rx.sql.intercept.RxSqlExecutorWrapper;
 import org.reactivestreams.Publisher;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +32,7 @@ import java.util.List;
  * @author noear
  * @since 3.0
  */
-public class SqlConfiguration {
+public class RxSqlConfiguration {
     private static List<RankEntity<RxSqlExecuteInterceptor>> interceptorList = new ArrayList<>();
 
     /**

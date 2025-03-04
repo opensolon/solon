@@ -21,7 +21,7 @@ import io.r2dbc.spi.Result;
 import io.r2dbc.spi.Statement;
 import org.noear.solon.data.rx.sql.RxSqlCommand;
 import org.noear.solon.data.rx.sql.RxSqlQuerier;
-import org.noear.solon.data.rx.sql.SqlConfiguration;
+import org.noear.solon.data.rx.sql.RxSqlConfiguration;
 import org.noear.solon.data.rx.sql.bound.RxRowConverter;
 import org.noear.solon.data.rx.sql.bound.RxStatementBinder;
 import org.reactivestreams.Publisher;
@@ -90,7 +90,7 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Mono<T> queryRow(RxRowConverter<T> converter) {
         //用 Mono.from 再转一下，避免拦截时转掉了
-        return Mono.from(SqlConfiguration.doIntercept(command, (cmd) -> {
+        return Mono.from(RxSqlConfiguration.doIntercept(command, (cmd) -> {
             return queryRowDo(cmd, converter);
         }));
     }
@@ -111,7 +111,7 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Flux<T> queryRowList(RxRowConverter<T> converter) {
         //用 Flux.from 再转一下，避免拦截时转掉了
-        return Flux.from(SqlConfiguration.doIntercept(command, (cmd) -> {
+        return Flux.from(RxSqlConfiguration.doIntercept(command, (cmd) -> {
             return queryRowListDo(cmd, converter);
         }));
     }
@@ -125,7 +125,7 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public Mono<Long> update() {
         //用 Mono.from 再转一下，避免拦截时转掉了
-        return Mono.from(SqlConfiguration.doIntercept(command, this::updateDo));
+        return Mono.from(RxSqlConfiguration.doIntercept(command, this::updateDo));
     }
 
     protected Mono<Long> updateDo(RxSqlCommand cmd) {
@@ -139,7 +139,7 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public <T> Mono<T> updateReturnKey(Class<T> tClass) {
         //用 Mono.from 再转一下，避免拦截时转掉了
-        return Mono.from(SqlConfiguration.doIntercept(command,this::updateReturnKeyDo));
+        return Mono.from(RxSqlConfiguration.doIntercept(command,this::updateReturnKeyDo));
     }
 
     protected Mono updateReturnKeyDo(RxSqlCommand cmd) {
@@ -153,7 +153,7 @@ public class SimpleRxSqlQuerier implements RxSqlQuerier {
     @Override
     public Flux<Long> updateBatch() {
         //用 Flux.from 再转一下，避免拦截时转掉了
-        return Flux.from(SqlConfiguration.doIntercept(command, this::updateBatchDo));
+        return Flux.from(RxSqlConfiguration.doIntercept(command, this::updateBatchDo));
     }
 
     protected Flux<Long> updateBatchDo(RxSqlCommand cmd) {
