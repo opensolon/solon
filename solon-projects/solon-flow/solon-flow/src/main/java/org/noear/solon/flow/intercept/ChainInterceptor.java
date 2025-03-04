@@ -13,35 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.flow;
+package org.noear.solon.flow.intercept;
 
 import org.noear.solon.lang.Preview;
 
 /**
- * 链驱动器
+ * 链拦截器
  *
  * @author noear
- * @since 3.0
- * */
-@Preview("3.0")
-public interface ChainDriver {
+ * @since 3.1
+ */
+@Preview("3.1")
+public interface ChainInterceptor {
     /**
-     * 节点运行开始时
+     * 拦截
+     *
+     * @param invocation 调用者
      */
-    void onNodeStart(ChainContext context, Node node);
-
-    /**
-     * 节点运行结束时
-     */
-    void onNodeEnd(ChainContext context, Node node);
-
-    /**
-     * 处理条件检测
-     */
-    boolean handleTest(ChainContext context, Condition condition) throws Throwable;
-
-    /**
-     * 处理执行任务
-     */
-    void handleTask(ChainContext context, Task task) throws Throwable;
+    void doIntercept(ChainInvocation invocation) throws Throwable;
 }

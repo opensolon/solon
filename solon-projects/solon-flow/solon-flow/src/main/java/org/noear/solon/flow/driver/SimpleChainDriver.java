@@ -53,17 +53,6 @@ public class SimpleChainDriver implements ChainDriver {
 
     /// //////////////
 
-
-    @Override
-    public void onChainStart(ChainContext context, Chain chain) {
-        log.debug("on-chain-start: chain={}", chain.id());
-    }
-
-    @Override
-    public void onChainEnd(ChainContext context, Chain chain) {
-        log.debug("on-chain-end: chain={}", chain.id());
-    }
-
     @Override
     public void onNodeStart(ChainContext context, Node node) {
         log.debug("on-node-start: chain={}, node={}", node.chain().id(), node);

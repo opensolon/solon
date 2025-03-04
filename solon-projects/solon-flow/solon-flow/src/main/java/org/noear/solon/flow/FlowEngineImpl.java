@@ -16,7 +16,10 @@
 package org.noear.solon.flow;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.flow.driver.SimpleChainDriver;
+import org.noear.solon.flow.intercept.ChainInterceptor;
+import org.noear.solon.flow.intercept.ChainInvocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,10 +33,17 @@ import java.util.concurrent.ConcurrentHashMap;
 class FlowEngineImpl implements FlowEngine {
     protected final Map<String, Chain> chainMap = new ConcurrentHashMap<>();
     protected final Map<String, ChainDriver> driverMap = new ConcurrentHashMap<>();
+    protected final List<RankEntity<ChainInterceptor>> interceptorList = new ArrayList<>();
 
     public FlowEngineImpl() {
         //默认驱动器
         driverMap.put("", SimpleChainDriver.getInstance());
+    }
+
+    @Override
+    public void addInterceptor(ChainInterceptor interceptor, int index) {
+        interceptorList.add(new RankEntity<>(interceptor, index));
+        Collections.sort(interceptorList);
     }
 
     @Override
@@ -112,15 +122,15 @@ class FlowEngineImpl implements FlowEngine {
             throw new IllegalArgumentException("No driver found for: '" + chain.driver() + "'");
         }
 
-        try {
-            driver.onChainStart(context, chain);
-            node_run(driver, context, start, depth);
-        } catch (Throwable err) {
-            context.error = err;
-            throw err;
-        } finally {
-            driver.onChainEnd(context, chain);
-        }
+        //开始执行
+        new ChainInvocation(driver, context, start, depth, this.interceptorList, this::evalDo).invoke();
+    }
+
+    /**
+     * 执行评估
+     */
+    protected void evalDo(ChainInvocation inv) throws Throwable {
+        node_run(inv.getDriver(), inv.getContext(), inv.getStartNode(), inv.getEvalDepth());
     }
 
     /**
@@ -175,39 +185,35 @@ class FlowEngineImpl implements FlowEngine {
 
         boolean node_end = true;
 
-        try {
-            switch (node.type()) {
-                case start:
-                    //转到下个节点
-                    node_run(driver, context, node.nextNode(), depth);
-                    break;
-                case end:
-                    break;
-                case execute:
-                    //尝试执行任务（可能为空）
-                    task_exec(driver, context, node);
-                    //转到下个节点
-                    node_run(driver, context, node.nextNode(), depth);
-                    break;
-                case inclusive: //包容网关（多选）
-                    node_end = inclusive_run(driver, context, node, depth);
-                    break;
-                case exclusive: //排他网关（单选）
-                    node_end = exclusive_run(driver, context, node, depth);
-                    break;
-                case parallel: //并行网关（全选）
-                    node_end = parallel_run(driver, context, node, depth);
-                    break;
-            }
-        } catch (Throwable err) {
-            context.error = err;
-            throw err;
-        } finally {
-            //节点运行之后事件
-            if (node_end) {
-                driver.onNodeEnd(context, node);
-            }
+        switch (node.type()) {
+            case start:
+                //转到下个节点
+                node_run(driver, context, node.nextNode(), depth);
+                break;
+            case end:
+                break;
+            case execute:
+                //尝试执行任务（可能为空）
+                task_exec(driver, context, node);
+                //转到下个节点
+                node_run(driver, context, node.nextNode(), depth);
+                break;
+            case inclusive: //包容网关（多选）
+                node_end = inclusive_run(driver, context, node, depth);
+                break;
+            case exclusive: //排他网关（单选）
+                node_end = exclusive_run(driver, context, node, depth);
+                break;
+            case parallel: //并行网关（全选）
+                node_end = parallel_run(driver, context, node, depth);
+                break;
         }
+
+        //节点运行之后事件
+        if (node_end) {
+            driver.onNodeEnd(context, node);
+        }
+
 
         return node_end;
     }

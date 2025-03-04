@@ -16,6 +16,7 @@
 package org.noear.solon.flow;
 
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.flow.intercept.ChainInterceptor;
 import org.noear.solon.lang.Preview;
 
 import java.io.IOException;
@@ -35,6 +36,14 @@ public interface FlowEngine {
     static FlowEngine newInstance() {
         return new FlowEngineImpl();
     }
+
+    /**
+     * 添加拦截器
+     *
+     * @param index       顺序位
+     * @param interceptor 拦截器
+     */
+    void addInterceptor(ChainInterceptor interceptor, int index);
 
 
     /**
