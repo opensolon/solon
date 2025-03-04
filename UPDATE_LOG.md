@@ -32,6 +32,7 @@
 * 优化 solon 小写开头且带点环境变量的一个边界问题
 * 添加 org.noear.solon.core.util.MimeType 类
 * 修复 solon-web 当前端传入 `accept=*/*` 时，后端 contextType 也会输出 `*/*` 的问题
+* smarthttp 升为 2.5.4
 
 ### v3.0.9
 * 修复 solon-docs-openapi2 @Body 注解识别失灵的问题
