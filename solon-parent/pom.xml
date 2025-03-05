@@ -31,6 +31,7 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.1.0</solon.version>
+        <solon-ai.version>3.1.0</solon-ai.version>
         <solon-cloud.version>3.1.0</solon-cloud.version>
         <solon-admin.version>3.1.0</solon-admin.version>
         <solon-integration.version>3.1.0</solon-integration.version>
@@ -428,42 +429,42 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-milvus</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-redis</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-elasticsearch</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-load-excel</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-load-html</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-load-markdown</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-load-pdf</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
