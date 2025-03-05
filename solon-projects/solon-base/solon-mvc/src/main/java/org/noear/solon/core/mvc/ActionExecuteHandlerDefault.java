@@ -114,7 +114,11 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 //
                 args.add(ctx.fileValues(p.spec().getName()));
             } else {
-                Object tv = ctx.pull(pt);
+                Object tv = null;
+
+                if (Object.class != pt) { //object 是所在基类，不能用它拉取
+                    tv = ctx.pull(pt);
+                }
 
                 if (tv == null) {
                     if (p.spec().isRequiredBody()) {
