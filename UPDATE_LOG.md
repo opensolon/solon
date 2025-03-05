@@ -26,6 +26,7 @@
 * 优化 solon-web 对 `accept=...` 头处理（不能直接作为 context-type 输出）???
 * 添加 solon-ai 对 doc 文档的解析
 * 调整 solon-configuration-processor 依赖包
+* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * java-cron 升为 1.0.1
 
 ### v3.1.0
@@ -59,7 +60,6 @@
 * 添加 solon-cloud CloudBreaker 注解对类的支持
 * 移除 solon-data-sqlutils Row,RowList 弃用接口
 * 移除 solon-auth AuthAdapterSupplier 弃用接口
-* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 调整 solon-flow 用 layout 替代 nodes 配置（标为弃用）
 * 调整 solon-rx Completable:doOnXxx 构建策略（可重复添加）
 * 调整 solon-web-rx ActionReturnRxHandler 改为不限时长，支持流式不断输出
