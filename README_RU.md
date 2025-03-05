@@ -77,6 +77,7 @@ Solon v3.1.0
 | https://gitee.com/opensolon/solon                | Solon ,Главный код пакгауза                         | 
 | https://gitee.com/opensolon/solon-examples       | Solon ,Стандартный набор кодов на официальном сайте |
 |                                                  |                                                     |
+| https://gitee.com/opensolon/solon-ai            | Solon Ai ,Кодовый склад                   | 
 | https://gitee.com/opensolon/solon-cloud          | Solon Cloud ,Кодовый склад                          | 
 | https://gitee.com/opensolon/solon-admin          | Solon Admin ,Кодовый склад                          | 
 | https://gitee.com/opensolon/solon-jakarta        | Solon Jakarta ,Кодовый склад（base java21）           | 

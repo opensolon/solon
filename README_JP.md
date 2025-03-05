@@ -75,6 +75,7 @@ Solon v3.1.0
 | https://gitee.com/opensolon/solon               | Solon ,メインコードのリポジトリです                  | 
 | https://gitee.com/opensolon/solon-examples      | Solon ,公式サイトの例コードリポジトリです               |
 |                                                 |                                        |
+| https://gitee.com/opensolon/solon-ai            | Solon Ai ,コードリポジトリです                   | 
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,コードリポジトリです                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,コードリポジトリです                | 
 | https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java21） | 
