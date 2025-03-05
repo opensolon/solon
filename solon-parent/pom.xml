@@ -342,12 +342,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-jlhttp</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-boot-smarthttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -1755,11 +1749,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jlhttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>
