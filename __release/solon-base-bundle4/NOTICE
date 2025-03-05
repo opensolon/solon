@@ -16,9 +16,9 @@ This project includes:
   aio-core under The Apache License, Version 2.0
   aio-pro under The Apache License, Version 2.0
   ANTLR 4 Runtime under The BSD License
-  Apache Commons Lang under Apache License, Version 2.0
+  Apache Commons Lang under Apache-2.0
   Apache FreeMarker under Apache License, Version 2.0
-  Apache Velocity - Engine under Apache License, Version 2.0
+  Apache Velocity - Engine under Apache-2.0
   asm under BSD-3-Clause
   attoparser under The Apache Software License, Version 2.0
   beetl under BSD License
@@ -29,7 +29,6 @@ This project includes:
   Byte Buddy agent under Apache License, Version 2.0
   c3p0 under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
   enjoy under The Apache Software License, Version 2.0
-  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
   Jakarta Server Pages API under Eclipse Public License v. 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
   Jakarta Servlet under EPL 2.0 or GPL2 w/ CPE
   Java Servlet API under CDDL + GPLv2 with classpath exception
@@ -43,10 +42,6 @@ This project includes:
   JUnit Jupiter Params under Eclipse Public License v2.0
   JUnit Platform Commons under Eclipse Public License v2.0
   JUnit Platform Engine API under Eclipse Public License v2.0
-  Kotlin Stdlib under The Apache License, Version 2.0
-  Kotlin Stdlib Common under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   luffy.base under The Apache Software License, Version 2.0
   luffy.executor.s.javascript under The Apache Software License, Version 2.0
   mchange-commons-java under GNU Lesser General Public License, Version 2.1 or Eclipse Public License, Version 1.0
@@ -54,14 +49,13 @@ This project includes:
   mockito-junit-jupiter under The MIT License
   Objenesis under Apache License, Version 2.0
   OGNL - Object Graph Navigation Library under The Apache Software License, Version 2.0
-  okhttp under The Apache Software License, Version 2.0
-  okio under The Apache Software License, Version 2.0
   okldap under The Apache Software License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
   Project Lombok under The MIT License
   qps-helper under The Apache License, Version 2.0
   quartz under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
   SLF4J API Module under MIT License
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
@@ -81,9 +75,11 @@ This project includes:
   solon-lib under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
   solon-logging-simple under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
   solon-scheduling under The Apache Software License, Version 2.0
   solon-scheduling-quartz under The Apache Software License, Version 2.0
   solon-scheduling-simple under The Apache Software License, Version 2.0

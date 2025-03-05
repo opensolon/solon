@@ -19,6 +19,7 @@ This project includes:
   protostuff :: runtime under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-protostuff under The Apache Software License, Version 2.0
   solon.serialization.protostuff under The Apache Software License, Version 2.0

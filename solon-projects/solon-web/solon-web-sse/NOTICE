@@ -13,7 +13,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
+  aio-core under The Apache License, Version 2.0
+  aio-pro under The Apache License, Version 2.0
+  asm under BSD-3-Clause
+  Non-Blocking Reactive Foundation for the JVM under Apache License, Version 2.0
+  reactive-streams under MIT-0
   SLF4J API Module under MIT License
+  smart-http-common under The Apache License, Version 2.0
+  smart-http-server under The Apache License, Version 2.0
+  snack3 under The Apache Software License, Version 2.0
+  SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-lib under The Apache Software License, Version 2.0
+  solon-logging under The Apache Software License, Version 2.0
+  solon-logging-simple under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-security-validation under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-sessionstate-local under The Apache Software License, Version 2.0
+  solon-web under The Apache Software License, Version 2.0
+  solon-web-cors under The Apache Software License, Version 2.0
+  solon-web-rx under The Apache Software License, Version 2.0
   solon-web-sse under The Apache Software License, Version 2.0
+  solon-web-staticfiles under The Apache Software License, Version 2.0
 

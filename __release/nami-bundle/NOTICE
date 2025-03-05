@@ -25,7 +25,7 @@ This project includes:
   Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
   Guava ListenableFuture only under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under Apache License, Version 2.0
-  Hessian Lite(Dubbo embed version) under Apache License, Version 2.0
+  Hessian Lite (Dubbo embed version) under Apache License, Version 2.0
   hutool-core under Mulan Permissive Software License，Version 2
   hutool-http under Mulan Permissive Software License，Version 2
   IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
@@ -45,18 +45,23 @@ This project includes:
   Kotlin Stdlib Common under The Apache License, Version 2.0
   Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
   Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
+  Kryo under 3-Clause BSD License
+  MinLog under 3-Clause BSD License
   mockito-core under The MIT License
   mockito-junit-jupiter under The MIT License
   nami under The Apache Software License, Version 2.0
   nami-bundle under The Apache Software License, Version 2.0
+  nami-channel-http under The Apache Software License, Version 2.0
   nami-channel-http-hutool under The Apache Software License, Version 2.0
   nami-channel-http-okhttp under The Apache Software License, Version 2.0
   nami-channel-socketd under The Apache Software License, Version 2.0
+  nami-coder-abc under The Apache Software License, Version 2.0
   nami-coder-fastjson under The Apache Software License, Version 2.0
   nami-coder-fastjson2 under The Apache Software License, Version 2.0
   nami-coder-fury under The Apache Software License, Version 2.0
   nami-coder-hessian under The Apache Software License, Version 2.0
   nami-coder-jackson under The Apache Software License, Version 2.0
+  nami-coder-kryo under The Apache Software License, Version 2.0
   nami-coder-protostuff under The Apache Software License, Version 2.0
   nami-coder-snack3 under The Apache Software License, Version 2.0
   nami.channel.http.hutool under The Apache Software License, Version 2.0
@@ -78,18 +83,26 @@ This project includes:
   protostuff :: collectionschema under The Apache Software License, Version 2.0
   protostuff :: core under The Apache Software License, Version 2.0
   protostuff :: runtime under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
+  ReflectASM under 3-Clause BSD License
   SLF4J API Module under MIT License
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   socketd under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-aot under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
   solon-config-plus under The Apache Software License, Version 2.0
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-abc under The Apache Software License, Version 2.0
+  solon-serialization-protostuff under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
 

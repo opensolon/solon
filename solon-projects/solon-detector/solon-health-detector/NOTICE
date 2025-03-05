@@ -23,21 +23,23 @@ This project includes:
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon-api under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-smarthttp under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-health under The Apache Software License, Version 2.0
+  solon-health-detector under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.boot.smarthttp under The Apache Software License, Version 2.0
-  solon.config.yaml under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.health under The Apache Software License, Version 2.0
-  solon.health.detector under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.net under The Apache Software License, Version 2.0
-  solon.proxy under The Apache Software License, Version 2.0
-  solon.security.validation under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
-  solon.serialization under The Apache Software License, Version 2.0
-  solon.serialization.snack3 under The Apache Software License, Version 2.0
-  solon.web.cors under The Apache Software License, Version 2.0
-  solon.web.staticfiles under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-security-validation under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-sessionstate-local under The Apache Software License, Version 2.0
+  solon-web under The Apache Software License, Version 2.0
+  solon-web-cors under The Apache Software License, Version 2.0
+  solon-web-staticfiles under The Apache Software License, Version 2.0
 

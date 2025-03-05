@@ -19,9 +19,15 @@ This project includes:
   Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
   Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   nami under The Apache Software License, Version 2.0
-  nami.channel.http.okhttp under The Apache Software License, Version 2.0
+  nami-channel-http under The Apache Software License, Version 2.0
+  nami-channel-http-okhttp under The Apache Software License, Version 2.0
   okhttp under The Apache Software License, Version 2.0
   okio under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
 

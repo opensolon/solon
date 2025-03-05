@@ -15,8 +15,12 @@ limitations under the License.
 This project includes:
   Java-WebSocket under MIT License
   SLF4J API Module under MIT License
+  snack3 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
   solon-boot under The Apache Software License, Version 2.0
   solon-boot-websocket under The Apache Software License, Version 2.0
+  solon-logging under The Apache Software License, Version 2.0
+  solon-logging-simple under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
 

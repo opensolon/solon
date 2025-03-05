@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  Hessian Lite(Dubbo embed version) under Apache License, Version 2.0
+  Hessian Lite (Dubbo embed version) under Apache License, Version 2.0
   nami under The Apache Software License, Version 2.0
-  nami.coder.hessian under The Apache Software License, Version 2.0
+  nami-coder-hessian under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
 

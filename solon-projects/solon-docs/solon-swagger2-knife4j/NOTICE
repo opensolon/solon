@@ -13,20 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  Byte Buddy (without dependencies) under Apache License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   knife4j-openapi2-ui under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-docs under The Apache Software License, Version 2.0
+  solon-docs-openapi2 under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-openapi2-knife4j under The Apache Software License, Version 2.0
   solon-swagger2-knife4j under The Apache Software License, Version 2.0
-  solon.boot under The Apache Software License, Version 2.0
-  solon.docs under The Apache Software License, Version 2.0
-  solon.docs.openapi2 under The Apache Software License, Version 2.0
-  solon.mvc under The Apache Software License, Version 2.0
-  solon.web.staticfiles under The Apache Software License, Version 2.0
+  solon-web-staticfiles under The Apache Software License, Version 2.0
   swagger-annotations under Apache License 2.0
   swagger-models under Apache License 2.0
 

@@ -15,12 +15,10 @@ limitations under the License.
 This project includes:
   Apache Log4j API under Apache-2.0
   Apache Log4j Core under Apache-2.0
-  Apache Log4j SLF4J 2.0 Binding under Apache-2.0
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
-  jansi under The Apache Software License, Version 2.0
+  Jansi under Apache License, Version 2.0
   JavaPoet under Apache 2.0
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0
@@ -28,18 +26,14 @@ This project includes:
   JUnit Jupiter Params under Eclipse Public License v2.0
   JUnit Platform Commons under Eclipse Public License v2.0
   JUnit Platform Engine API under Eclipse Public License v2.0
-  Kotlin Stdlib under The Apache License, Version 2.0
-  Kotlin Stdlib Common under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   mockito-core under The MIT License
   mockito-junit-jupiter under The MIT License
   Objenesis under Apache License, Version 2.0
-  okhttp under The Apache Software License, Version 2.0
-  okio under The Apache Software License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
   Project Lombok under The MIT License
+  reactive-streams under MIT-0
+  SLF4J 2 Provider for Log4j API under Apache-2.0
   SLF4J API Module under MIT License
   snack3 under The Apache Software License, Version 2.0
   SnakeYAML under Apache License, Version 2.0
@@ -50,8 +44,11 @@ This project includes:
   solon-data under The Apache Software License, Version 2.0
   solon-logging under The Apache Software License, Version 2.0
   solon-logging-log4j2 under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
   solon-test under The Apache Software License, Version 2.0
 

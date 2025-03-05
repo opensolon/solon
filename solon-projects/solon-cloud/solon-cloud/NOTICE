@@ -13,22 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
-  Kotlin Stdlib under The Apache License, Version 2.0
-  Kotlin Stdlib Common under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   nami under The Apache Software License, Version 2.0
-  okhttp under The Apache Software License, Version 2.0
-  okio under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
   SLF4J API Module under MIT License
   snack3 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
-  solon.cloud under The Apache Software License, Version 2.0
-  solon.data under The Apache Software License, Version 2.0
-  solon.health under The Apache Software License, Version 2.0
-  solon.i18n under The Apache Software License, Version 2.0
-  solon.logging under The Apache Software License, Version 2.0
-  solon.net.httputils under The Apache Software License, Version 2.0
-  solon.security.vault under The Apache Software License, Version 2.0
+  solon-cloud under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-health under The Apache Software License, Version 2.0
+  solon-i18n under The Apache Software License, Version 2.0
+  solon-logging under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
 

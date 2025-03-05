@@ -30,6 +30,9 @@ This project includes:
   solon under The Apache Software License, Version 2.0
   solon-boot under The Apache Software License, Version 2.0
   solon-boot-vertx under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-web-vertx under The Apache Software License, Version 2.0
   solon.boot.vertx under The Apache Software License, Version 2.0
   Vert.x Core under The Apache Software License, Version 2.0 or Eclipse Public License - v 2.0
 

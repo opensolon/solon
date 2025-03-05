@@ -16,6 +16,7 @@ This project includes:
   SLF4J API Module under MIT License
   snack3 under The Apache Software License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-properties under The Apache Software License, Version 2.0
   solon.serialization.properties under The Apache Software License, Version 2.0

@@ -32,7 +32,6 @@ This project includes:
   Apache HttpComponents Core HTTP/2 under Apache License, Version 2.0
   Apache Log4j API under Apache-2.0
   Apache Log4j Core under Apache-2.0
-  Apache Log4j SLF4J 2.0 Binding under Apache-2.0
   Apache Yetus - Audience Annotations under Apache License, Version 2.0
   Apache ZooKeeper - Jute under Apache License, Version 2.0
   Apache ZooKeeper - Server under Apache License, Version 2.0
@@ -79,13 +78,12 @@ This project includes:
   H2 Database Engine under MPL 2.0 or EPL 1.0
   HikariCP under The Apache Software License, Version 2.0
   hutool-core under Mulan Permissive Software License，Version 2
-  IntelliJ IDEA Annotations under The Apache Software License, Version 2.0
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   Jackson-dataformat-YAML under The Apache Software License, Version 2.0
   janino under BSD-3-Clause
-  jansi under The Apache Software License, Version 2.0
+  Jansi under Apache License, Version 2.0
   JavaPoet under Apache 2.0
   JCL 1.2 implemented over SLF4J under Apache License, Version 2.0
   Jedis under MIT
@@ -103,10 +101,6 @@ This project includes:
   JUnit Platform Commons under Eclipse Public License v2.0
   JUnit Platform Engine API under Eclipse Public License v2.0
   knife4j-openapi2-ui under The Apache Software License, Version 2.0
-  Kotlin Stdlib under The Apache License, Version 2.0
-  Kotlin Stdlib Common under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk7 under The Apache License, Version 2.0
-  Kotlin Stdlib Jdk8 under The Apache License, Version 2.0
   Kryo under 3-Clause BSD License
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
@@ -126,8 +120,6 @@ This project includes:
   Netty/Transport/Native/Unix/Common under Apache License, Version 2.0
   Non-Blocking Reactive Foundation for the JVM under Apache License, Version 2.0
   Objenesis under Apache License, Version 2.0
-  okhttp under The Apache Software License, Version 2.0
-  okio under The Apache Software License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.locationtech.jts.io:jts-io-common under Eclipse Public License, Version 2.0 or Eclipse Distribution License - v 1.0
   org.locationtech.jts:jts-core under Eclipse Public License, Version 2.0 or Eclipse Distribution License - v 1.0
@@ -137,7 +129,10 @@ This project includes:
   Project Lombok under The MIT License
   Protocol Buffers [Core] under 3-Clause BSD License
   quartz under The Apache Software License, Version 2.0
-  reactive-streams under MIT-0
+  Reactive Relational Database Connectivity - Connection Pooling under Apache License 2.0
+  Reactive Relational Database Connectivity - SPI under Apache License 2.0
+  reactive-streams under CC0
+  Reactor Pool under The Apache Software License, Version 2.0
   Redisson under Apache v2
   redisx under The Apache Software License, Version 2.0
   ReflectASM under 3-Clause BSD License
@@ -219,6 +214,7 @@ This project includes:
   shardingsphere-traffic-core under Apache License 2.0
   shardingsphere-transaction-api under Apache License 2.0
   shardingsphere-transaction-core under Apache License 2.0
+  SLF4J 2 Provider for Log4j API under Apache-2.0
   SLF4J API Module under MIT License
   smart-http-common under The Apache License, Version 2.0
   smart-http-server under The Apache License, Version 2.0
@@ -238,7 +234,9 @@ This project includes:
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
   solon-data-dynamicds under The Apache Software License, Version 2.0
+  solon-data-rx-sqlutils under The Apache Software License, Version 2.0
   solon-data-shardingds under The Apache Software License, Version 2.0
+  solon-data-sqlutils under The Apache Software License, Version 2.0
   solon-docs under The Apache Software License, Version 2.0
   solon-docs-openapi2 under The Apache Software License, Version 2.0
   solon-docs-openapi2-javadoc under The Apache Software License, Version 2.0
@@ -248,10 +246,12 @@ This project includes:
   solon-logging-log4j2 under The Apache Software License, Version 2.0
   solon-logging-logback under The Apache Software License, Version 2.0
   solon-logging-simple under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-net under The Apache Software License, Version 2.0
   solon-net-httputils under The Apache Software License, Version 2.0
   solon-openapi2-knife4j under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
   solon-security-validation under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
@@ -271,10 +271,6 @@ This project includes:
   solon.data.shardingds under The Apache Software License, Version 2.0
   solon.docs under The Apache Software License, Version 2.0
   solon.docs.openapi2 under The Apache Software License, Version 2.0
-  solon.logging under The Apache Software License, Version 2.0
-  solon.logging.log4j2 under The Apache Software License, Version 2.0
-  solon.logging.logback under The Apache Software License, Version 2.0
-  solon.logging.simple under The Apache Software License, Version 2.0
   Spymemcached under The Apache Software License, Version 2.0
   swagger-annotations under Apache License 2.0
   swagger-models under Apache License 2.0

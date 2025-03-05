@@ -14,9 +14,18 @@ limitations under the License.
 
 This project includes:
   Apache FreeMarker under Apache License, Version 2.0
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
   solon-boot under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-security-auth under The Apache Software License, Version 2.0
   solon-view under The Apache Software License, Version 2.0
   solon-view-freemarker under The Apache Software License, Version 2.0

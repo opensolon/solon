@@ -13,12 +13,41 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
+  asm under BSD-3-Clause
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Byte Buddy agent under Apache License, Version 2.0
+  JavaPoet under Apache 2.0
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  mockito-core under The MIT License
+  mockito-junit-jupiter under The MIT License
+  Objenesis under Apache License, Version 2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
+  Project Lombok under The MIT License
   protostuff :: api under The Apache Software License, Version 2.0
   protostuff :: collectionschema under The Apache Software License, Version 2.0
   protostuff :: core under The Apache Software License, Version 2.0
   protostuff :: runtime under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
   SLF4J API Module under MIT License
+  snack3 under The Apache Software License, Version 2.0
+  SnakeYAML under Apache License, Version 2.0
   solon under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
   solon-serialization under The Apache Software License, Version 2.0
   solon-serialization-protostuff under The Apache Software License, Version 2.0
+  solon-test under The Apache Software License, Version 2.0
 

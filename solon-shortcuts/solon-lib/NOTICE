@@ -22,6 +22,7 @@ This project includes:
   solon-config-yaml under The Apache Software License, Version 2.0
   solon-data under The Apache Software License, Version 2.0
   solon-lib under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
   solon-proxy under The Apache Software License, Version 2.0
   solon-security-vault under The Apache Software License, Version 2.0
 

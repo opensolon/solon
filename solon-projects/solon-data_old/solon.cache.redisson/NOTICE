@@ -1,0 +1,46 @@
+Copyright 2017-2025 noear.org and authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes:
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Jackson-annotations under The Apache Software License, Version 2.0
+  Jackson-core under The Apache Software License, Version 2.0
+  jackson-databind under The Apache Software License, Version 2.0
+  Jackson-dataformat-YAML under The Apache Software License, Version 2.0
+  Jodd Util under BSD-2-Clause
+  JSR107 API and SPI under Apache License, Version 2.0
+  Kryo under 3-Clause BSD License
+  MinLog under 3-Clause BSD License
+  Netty/Buffer under Apache License, Version 2.0
+  Netty/Codec under Apache License, Version 2.0
+  Netty/Codec/DNS under Apache License, Version 2.0
+  Netty/Common under Apache License, Version 2.0
+  Netty/Handler under Apache License, Version 2.0
+  Netty/Resolver under Apache License, Version 2.0
+  Netty/Resolver/DNS under Apache License, Version 2.0
+  Netty/Transport under Apache License, Version 2.0
+  Netty/Transport/Native/Unix/Common under Apache License, Version 2.0
+  Non-Blocking Reactive Foundation for the JVM under Apache License, Version 2.0
+  Objenesis under Apache License, Version 2.0
+  reactive-streams under MIT-0
+  Redisson under Apache v2
+  ReflectASM under 3-Clause BSD License
+  RxJava under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT License
+  solon under The Apache Software License, Version 2.0
+  solon-cache-redisson under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon.cache.redisson under The Apache Software License, Version 2.0
+

@@ -15,7 +15,7 @@ limitations under the License.
 This project includes:
   fastjson2 under Apache 2
   nami under The Apache Software License, Version 2.0
-  nami.coder.fastjson2 under The Apache Software License, Version 2.0
+  nami-coder-fastjson2 under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   solon under The Apache Software License, Version 2.0
 

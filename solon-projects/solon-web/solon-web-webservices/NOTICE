@@ -1,0 +1,55 @@
+Copyright 2017-2025 noear.org and authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes:
+  Apache CXF Core under Apache-2.0
+  Apache CXF Runtime Core for WSDL under Apache-2.0
+  Apache CXF Runtime HTTP Transport under Apache-2.0
+  Apache CXF Runtime JAX-WS Frontend under Apache-2.0
+  Apache CXF Runtime JAXB DataBinding under Apache-2.0
+  Apache CXF Runtime Simple Frontend under Apache-2.0
+  Apache CXF Runtime SOAP Binding under Apache-2.0
+  Apache CXF Runtime WS Addressing under Apache-2.0
+  Apache CXF Runtime WS Policy under Apache-2.0
+  Apache CXF Runtime XML Binding under Apache-2.0
+  Apache Neethi under Apache License, Version 2.0
+  asm under BSD-3-Clause
+  istack common utility code runtime under Eclipse Distribution License - v 1.0
+  Jakarta Activation under EDL 1.0
+  Jakarta Activation API jar under EDL 1.0
+  Jakarta XML Binding API under Eclipse Distribution License - v 1.0
+  Java Servlet API under CDDL + GPLv2 with classpath exception
+  JAXB Runtime under Eclipse Distribution License - v 1.0
+  Jetty :: Http Utility under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: IO Utility under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Security under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Server Core under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Servlet Handling under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Utilities under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  Jetty :: Utilities :: Ajax(JSON) under Apache Software License - Version 2.0 or Eclipse Public License - Version 1.0
+  SLF4J API Module under MIT License
+  solon under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-boot-jetty under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-web-servlet under The Apache Software License, Version 2.0
+  solon-web-webservices under The Apache Software License, Version 2.0
+  Stax2 API under The BSD License
+  TXW2 Runtime under Eclipse Distribution License - v 1.0
+  Woodstox under The Apache License, Version 2.0
+  WSDL4J under CPL
+  XML Commons Resolver Component under The Apache Software License, Version 2.0
+  XmlSchema Core under Apache License, Version 2.0
+
