@@ -32,7 +32,7 @@ This project includes:
   Jakarta Server Pages API under Eclipse Public License v. 2.0 or GNU General Public License, version 2 with the GNU Classpath Exception
   Jakarta Servlet under EPL 2.0 or GPL2 w/ CPE
   Java Servlet API under CDDL + GPLv2 with classpath exception
-  java-cron under GNU General Public License v2.0
+  java-cron under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
   JavaServer Pages(TM) API under CDDL + GPLv2 with classpath exception
   Javassist under MPL 1.1 or LGPL 2.1 or Apache License 2.0

@@ -16,7 +16,7 @@ This project includes:
   asm under BSD-3-Clause
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  java-cron under GNU General Public License v2.0
+  java-cron under The Apache Software License, Version 2.0
   JavaPoet under Apache 2.0
   JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
   JUnit Jupiter API under Eclipse Public License v2.0

@@ -22,6 +22,7 @@
 
 ### v3.1.1
 * 移除 solon-boot-jlhttp 插件
+* 优化 开源合规性
 * 优化 solon-web 对 `accept=...` 头处理（不能直接作为 context-type 输出）???
 * 添加 solon-ai 对 doc 文档的解析
 * java-cron 升为 1.0.1
