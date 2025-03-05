@@ -17,12 +17,14 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 
-* 新增 seata-solon-plugin 插件？
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### v3.1.0
+### v3.1.1
+* 优化 solon-web 对 `accept=...` 头处理（不能直接作为 context-type 输出）???
+* 添加 solon-ai 对 doc 文档的解析
 
+### v3.1.0
 * 新增 solon-ai 插件
 * 新增 solon-ai-repo-milvus 插件
 * 新增 solon-ai-repo-redis 插件
