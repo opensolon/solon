@@ -43,6 +43,8 @@ public interface SqlUtils {
 
     /**
      * 初始化数据库
+     *
+     * @param scriptUri 示例：`classpath:demo.sql` 或 `file:demo.sql`
      */
     default void initDatabase(String scriptUri) throws IOException, SQLException {
         String sql = ResourceUtil.findResourceAsString(scriptUri);
