@@ -45,7 +45,6 @@ import java.util.concurrent.CompletableFuture;
  * @author noear
  * @since 3.0
  */
-@SuppressWarnings("unchecked")
 public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     static final Set<String> METHODS_NOBODY;
 
@@ -54,8 +53,6 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("HEAD");
         METHODS_NOBODY.add("TRACE");
         METHODS_NOBODY.add("OPTIONS");
-
-        allowMethods("PATCH");
     }
 
     public JdkHttpUtils(String url) {
@@ -314,9 +311,17 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     }
 
     /**
+     * 允许 PATCH 方法
+     */
+    public static void allowPatch() {
+        allowMethods("PATCH");
+    }
+
+    /**
      * 补丁，增加新方法支持
      */
-    private static void allowMethods(String... methods) {
+    @SuppressWarnings("all")
+    public static void allowMethods(String... methods) {
         try {
             Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
 
