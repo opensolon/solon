@@ -35,7 +35,6 @@
 
         <module>../../solon-projects/solon-boot_old/solon.boot</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.jdkhttp</module>
-        <module>../../solon-projects/solon-boot_old/solon.boot.jlhttp</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.smarthttp</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.jetty</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.undertow</module>

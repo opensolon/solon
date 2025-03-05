@@ -21,8 +21,10 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.1.1
+* 移除 solon-boot-jlhttp 插件
 * 优化 solon-web 对 `accept=...` 头处理（不能直接作为 context-type 输出）???
 * 添加 solon-ai 对 doc 文档的解析
+* java-cron 升为 1.0.1
 
 ### v3.1.0
 * 新增 solon-ai 插件
