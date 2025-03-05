@@ -28,6 +28,7 @@
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * java-cron 升为 1.0.1
+* redisx 升为 1.6.10
 
 ### v3.1.0
 * 新增 solon-ai 插件
