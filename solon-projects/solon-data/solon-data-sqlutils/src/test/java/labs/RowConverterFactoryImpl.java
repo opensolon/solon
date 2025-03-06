@@ -37,7 +37,7 @@ public class RowConverterFactoryImpl implements RowConverterFactory<Object> {
 
             Map<String, Object> map = new LinkedHashMap<>();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                String name = metaData.getColumnName(i);
+                String name = metaData.getColumnLabel(i);
                 Object value = rs.getObject(i);
                 map.put(name, value);
             }
