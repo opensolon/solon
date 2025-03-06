@@ -26,6 +26,7 @@ import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
@@ -237,7 +238,7 @@ public class EnjoyRender implements Render {
 
     public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
-            ctx.contentType("text/html;charset=utf-8");
+            ctx.contentType(MimeType.TEXT_HTML_UTF8_VALUE);
         }
 
         if (ViewConfig.isOutputMeta()) {

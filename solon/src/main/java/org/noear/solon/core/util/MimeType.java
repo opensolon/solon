@@ -47,6 +47,7 @@ public final class MimeType {
     public static final String TEXT_EVENT_STREAM_VALUE = "text/event-stream";
     public static final String TEXT_EVENT_STREAM_UTF8_VALUE = "text/event-stream;charset=UTF-8";
     public static final String TEXT_HTML_VALUE = "text/html";
+    public static final String TEXT_HTML_UTF8_VALUE = "text/html;charset=UTF-8";
     public static final String TEXT_JSON_VALUE = "text/json";
     public static final String TEXT_MARKDOWN_VALUE = "text/markdown";
     public static final String TEXT_PLAIN_VALUE = "text/plain";

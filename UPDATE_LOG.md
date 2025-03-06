@@ -25,7 +25,7 @@
 * 优化 开源合规性
 * 添加 solon-ai 对 doc 文档的解析
 * 优化 solon-mvc 取消请求 `accept=...` 直接作为响应 `context-type` 的初始值处理（没必要关联）
-* 优化 solon-serialization 所有序列化插件增加 contentTypeNew 默认过滤
+* 优化 solon-serialization 所有序列化插件增加 contentTypeNew 默认过滤（保持与 solon-view 相同处理）
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * java-cron 升为 1.0.1
