@@ -133,10 +133,11 @@ public class StringSerializerRender implements Render {
         if (data instanceof String && isTyped() == false) {
             ctx.output(text);
         } else {
+            //如果没有设置过，用默认的 //如 ndjson,sse 或故意改变 mime（可由外部控制）
             if (ctx.contentTypeNew() == null) {
-                //如果没有设置过，用默认的 //如 ndjson 是在外面设定的
                 ctx.contentType(serializer.mimeType());
             }
+
             ctx.output(text);
         }
     }

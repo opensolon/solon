@@ -192,7 +192,10 @@ public class JacksonStringSerializer implements ContextSerializer<String> {
     public void serializeToBody(Context ctx, Object data) throws IOException {
         init();
 
-        ctx.contentType(this.mimeType());
+        //如果没有设置过，用默认的 //如 ndjson,sse 或故意改变 mime（可由外部控制）
+        if (ctx.contentTypeNew() == null) {
+            ctx.contentType(this.mimeType());
+        }
 
         if (data instanceof ModelAndView) {
             ctx.output(serialize(((ModelAndView) data).model()));

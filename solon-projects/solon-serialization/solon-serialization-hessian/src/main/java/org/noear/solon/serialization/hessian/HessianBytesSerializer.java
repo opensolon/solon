@@ -109,7 +109,10 @@ public class HessianBytesSerializer implements ContextSerializer<byte[]> {
      */
     @Override
     public void serializeToBody(Context ctx, Object data) throws IOException {
-        ctx.contentType(this.mimeType());
+        //如果没有设置过，用默认的 //如 ndjson,sse 或故意改变 mime（可由外部控制）
+        if (ctx.contentTypeNew() == null) {
+            ctx.contentType(this.mimeType());
+        }
 
         Hessian2Output ho = new Hessian2Output(ctx.outputStream());
         if (data instanceof ModelAndView) {
