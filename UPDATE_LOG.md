@@ -31,7 +31,6 @@
 * 修复 solon-data-sqlutils `as` 查讲没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
 * java-cron 升为 1.0.1
-* redisx 升为 1.6.10
 
 ### v3.1.0
 * 新增 solon-ai 插件
