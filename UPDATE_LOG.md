@@ -29,6 +29,7 @@
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * 修复 solon-data-sqlutils `as` 查讲没有生效的问题
+* 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
 * java-cron 升为 1.0.1
 * redisx 升为 1.6.10
 

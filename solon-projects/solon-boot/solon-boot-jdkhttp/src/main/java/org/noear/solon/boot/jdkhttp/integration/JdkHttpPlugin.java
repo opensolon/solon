@@ -44,18 +44,23 @@ public final class JdkHttpPlugin implements Plugin {
             return;
         }
 
-        //如果有jetty插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
+        //如果有 jetty 插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.boot.jetty.integration.JettyPlugin") != null) {
             return;
         }
 
         //如果有undrtow插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
+        if (ClassUtil.loadClass("org.noear.solon.boot.undertow.integration.UndertowPlugin") != null) {
+            return;
+        }
+
+        //如果有 vertx 插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.boot.vertx.integration.VxHttpPlugin") != null) {
             return;
         }
 
         //如果有smarthttp插件，就不启动了
-        if (ClassUtil.loadClass("org.noear.solon.boot.smarthttp.XPluginImp") != null) {
+        if (ClassUtil.loadClass("org.noear.solon.boot.smarthttp.integration.SmHttpPlugin") != null) {
             return;
         }
 
