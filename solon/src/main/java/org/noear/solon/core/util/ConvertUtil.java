@@ -42,12 +42,12 @@ public class ConvertUtil {
     /**
      * 转换 context 的值
      *
-     * @param descriptor 目标申明
+     * @param spec 目标申明
      * @param val        值
      * @param ctx        通用上下文
      */
-    public static Object to(VarSpec descriptor, String val, Context ctx) throws ClassCastException {
-        if (String.class == descriptor.getType()) {
+    public static Object to(VarSpec spec, String val, Context ctx) throws ClassCastException {
+        if (String.class == spec.getType() || Object.class == spec.getType()) {
             //如果是 string 返回原始值
             return val;
         }
@@ -60,35 +60,35 @@ public class ConvertUtil {
         Object rst = null;
 
         //转数组
-        if (rst == null && descriptor.getType().isArray()) {
+        if (rst == null && spec.getType().isArray()) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = descriptor.getValues(ctx);
+                ary = spec.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            rst = tryToArray(ary, descriptor.getType());
+            rst = tryToArray(ary, spec.getType());
         }
 
         //转集合
-        if (rst == null && Collection.class.isAssignableFrom(descriptor.getType())) {
+        if (rst == null && Collection.class.isAssignableFrom(spec.getType())) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = descriptor.getValues(ctx);
+                ary = spec.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            Type gType = descriptor.getGenericType();
+            Type gType = spec.getGenericType();
 
             if (gType instanceof ParameterizedType) {
                 Type gTypeA = ((ParameterizedType) gType).getActualTypeArguments()[0];
@@ -97,22 +97,22 @@ public class ConvertUtil {
                     for (int i = 0; i < ary.length; i++) {
                         ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
                     }
-                    rst = tryToColl(descriptor.getType(), ary2);
+                    rst = tryToColl(spec.getType(), ary2);
                 } else {
-                    rst = tryToColl(descriptor.getType(), Arrays.asList(ary));
+                    rst = tryToColl(spec.getType(), Arrays.asList(ary));
                 }
             } else {
-                rst = tryToColl(descriptor.getType(), Arrays.asList(ary));
+                rst = tryToColl(spec.getType(), Arrays.asList(ary));
             }
         }
 
         //转其它（不是数组，也不是集合）
         if (rst == null) {
-            rst = tryTo(descriptor.getType(), val);
+            rst = tryTo(spec.getType(), val);
         }
 
         if (rst == null) {
-            throw new ClassCastException("Unsupported type:" + descriptor.getName());
+            throw new ClassCastException("Unsupported type:" + spec.getName());
         } else {
             return rst;
         }
@@ -135,7 +135,7 @@ public class ConvertUtil {
      * @param val  属性值
      */
     public static Object to(Class<?> type, Type genericType, String val) throws ClassCastException {
-        if (String.class == (type)) {
+        if (String.class == type || Object.class == type) {
             return val;
         }
 
@@ -363,7 +363,7 @@ public class ConvertUtil {
             return Duration.parse(tmp);
         }
 
-        if (String.class == type) {
+        if (String.class == type || Object.class == type) {
             return val;
         }
 
