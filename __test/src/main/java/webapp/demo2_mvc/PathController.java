@@ -51,4 +51,9 @@ public class PathController {
     public String test3_b(String name) {
         return name;
     }
+
+    @Mapping("/test4/{id}")
+    public Object test4(Object id) {
+        return id;
+    }
 }
