@@ -23,8 +23,8 @@
 ### v3.1.1
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
-* 优化 solon-web 对 `accept=...` 头处理（不能直接作为 context-type 输出）???
 * 添加 solon-ai 对 doc 文档的解析
+* 调整 solon-mvc 取消请求 `accept=...` 直接作为响应 `context-type` 的初始值处理（没必要关联）
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc?
 * java-cron 升为 1.0.1

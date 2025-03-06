@@ -327,17 +327,17 @@ public class ActionDefault extends HandlerAide implements Action {
                 c.result = executeDo(c, obj);
 
                 //设定输出产品（放在这个位置正好）
-                if (Utils.isEmpty(mProduces)) {
-                    String tmp = c.accept();
-                    if (c.contentTypeNew() == null && tmp != null && tmp.indexOf(',') < 0) {
-                        //如果未设过；且是单个内容类型
-                        c.contentType(tmp);
-                    }
-                } else {
+                if (Utils.isNotEmpty(mProduces)) {
                     c.accept(mProduces);
                     c.contentType(mProduces);
                 }
-
+//                else { //v3.1.1
+//                    String tmp = c.accept();
+//                    if (c.contentTypeNew() == null && tmp != null && tmp.indexOf(',') < 0) {
+//                        //如果未设过；且是单个内容类型
+//                        c.contentType(tmp);
+//                    }
+//                }
 
                 //结果处理
                 ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
