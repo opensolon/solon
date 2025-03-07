@@ -15,7 +15,6 @@
  */
 package org.noear.solon.boot.smarthttp;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
@@ -27,12 +26,10 @@ import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImpl;
 import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.util.ThreadsUtil;
 import org.noear.solon.lang.Nullable;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
 import org.smartboot.http.server.impl.Request;
-import org.smartboot.socket.enhance.EnhanceAsynchronousChannelProvider;
 import org.smartboot.socket.extension.plugins.SslPlugin;
 
 import javax.net.ssl.SSLContext;
@@ -127,13 +124,8 @@ public class SmHttpServer implements ServerLifecycle {
 
         SmHttpContextHandler handlerTmp = new SmHttpContextHandler(handler);
 
-        if (Solon.cfg().isEnabledVirtualThreads()) {
-            _config.group(new EnhanceAsynchronousChannelProvider(false)
-                    .openAsynchronousChannelGroup(ThreadsUtil.newVirtualThreadPerTaskExecutor(), coreThreads));
-        } else{
-            //非虚拟时，添加二级线程池
-            handlerTmp.setExecutor(workExecutor);
-        }
+        //非虚拟时，添加二级线程池（不能在 core 里添加虚拟线程）
+        handlerTmp.setExecutor(workExecutor);
 
         //HttpServerConfiguration
         EventBus.publish(_config);
