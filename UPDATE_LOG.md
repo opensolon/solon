@@ -30,7 +30,7 @@
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
-* 修复 solon-data-sqlutils `as` 查讲没有生效的问题
+* 修复 solon-data-sqlutils `as` 查询没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
 * 优化 solon GenericUtil.reviewType 检查到 TypeVariable 后不再深入（避免死循环）
 * java-cron 升为 1.0.1
