@@ -246,7 +246,8 @@ public class GenericUtil {
             if(typeTmp == null){
                 return type;
             }else{
-                return reviewType(typeTmp, genericInfo);
+                return typeTmp;
+                //return reviewType(typeTmp, genericInfo); //存在死循环的可能
             }
         } else if (type instanceof ParameterizedType) {
             ParameterizedType typeTmp = (ParameterizedType) type;
