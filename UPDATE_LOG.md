@@ -35,6 +35,7 @@
 * 优化 solon GenericUtil.reviewType 检查到 TypeVariable 后不再深入（避免死循环）
 * java-cron 升为 1.0.1
 * redisx 升为 1.6.11
+* snack3 升为 3.2.128
 
 ### v3.1.0
 * 新增 solon-ai 插件
