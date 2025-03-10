@@ -314,21 +314,21 @@ public class Props extends Properties {
     public Collection<Props> getListedProp(String keyStarts) {
         Props rootProps = getProp(keyStarts);
 
-        Set<String> groups = new HashSet<>();
+        Set<String> groups = new TreeSet<>();
         for (Object key : rootProps.keySet()) {
             if (key instanceof String) {
                 groups.add(((String) key).split("\\.")[0]);
             }
         }
 
-        Map<String, Props> groupProps = new LinkedHashMap<>();
+        List<Props> groupProps = new ArrayList<>();
 
         for (String group : groups) {
             Props tmp = rootProps.getProp(group);
-            groupProps.put(group, tmp);
+            groupProps.add(tmp);
         }
 
-        return groupProps.values();
+        return groupProps;
     }
 
     /**

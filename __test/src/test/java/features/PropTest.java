@@ -18,12 +18,14 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.Props;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo8_config.DsModel;
 import webapp.demo8_config.DsModel2;
 import webapp.models.CfgItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -116,18 +118,28 @@ public class PropTest {
     }
 
     @Test
-    public void test_bind_clz(){
-        assert dsModel.getUrl() !=null;
+    public void test_bind_clz() {
+        assert dsModel.getUrl() != null;
         assert dsModel.getUrl().contains("jdbc");
     }
 
     @Test
-    public void test_bind_mth(){
-        assert dsModel2.getUrl() !=null;
+    public void test_bind_mth() {
+        assert dsModel2.getUrl() != null;
         assert dsModel2.getUrl().contains("jdbc");
     }
 
-    public void configLoad(){
+    @Test
+    public void test_listed() {
+        List<Props> groups = new ArrayList<>(Solon.cfg().getListedProp("demo10"));
+
+        assert groups.size() == 3;
+        assert groups.get(0).get("a").equals("1");
+        assert groups.get(1).get("a").equals("3");
+        assert groups.get(2).get("a").equals("2");
+    }
+
+    public void configLoad() {
         assert "jdbc".equals(jdbcName);
     }
 

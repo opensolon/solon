@@ -25,6 +25,7 @@
 * 优化 开源合规性
 * 添加 solon-ai 对 doc 文档的解析
 * 优化 solon GenericUtil.reviewType 泛型深度兼容能力
+* 优化 solon Props:getListedProp 按配置顺序输出
 * 优化 solon-mvc 取消请求 `accept=...` 直接作为响应 `context-type` 的初始值处理（没必要关联）
 * 优化 solon-serialization 所有序列化插件增加 contentTypeNew 默认过滤（保持与 solon-view 相同处理）
 * 优化 solon-boot-smarthttp 取消在 core 里使用虚拟线程（影响性能）
