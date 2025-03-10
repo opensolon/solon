@@ -205,15 +205,8 @@ public class GenericUtil {
                 value = typeArguments[i];
                 // 跳过泛型变量对应泛型变量的情况
                 if (false == value instanceof TypeVariable) {
-                    String typeVariableName = typeParameters[i].getTypeName();
-
-                    if (typeMap.containsKey(typeVariableName)) {
-                        //如果有了，就不继续了
-                        break;
-                    } else {
-                        if (checkNoTypeVariable(value)) {
-                            typeMap.put(typeVariableName, value);
-                        }
+                    if (checkNoTypeVariable(value)) {
+                        typeMap.put(typeParameters[i].getTypeName(), value);
                     }
                 }
             }
