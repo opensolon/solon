@@ -24,6 +24,7 @@
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
 * 添加 solon-ai 对 doc 文档的解析
+* 优化 solon GenericUtil.reviewType 泛型深度兼容能力
 * 优化 solon-mvc 取消请求 `accept=...` 直接作为响应 `context-type` 的初始值处理（没必要关联）
 * 优化 solon-serialization 所有序列化插件增加 contentTypeNew 默认过滤（保持与 solon-view 相同处理）
 * 优化 solon-boot-smarthttp 取消在 core 里使用虚拟线程（影响性能）
@@ -32,10 +33,9 @@
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-data-sqlutils `as` 查询没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
-* 优化 solon GenericUtil.reviewType 泛型深度兼容能力
 * java-cron 升为 1.0.1
 * redisx 升为 1.6.11
-* snack3 升为 3.2.128
+* snack3 升为 3.2.129
 
 ### v3.1.0
 * 新增 solon-ai 插件
