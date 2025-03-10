@@ -115,6 +115,10 @@ public class GenericUtil {
      * @since 3.0
      * */
     public static ParameterizedType toParameterizedType(Type type, Map<String, Type> genericInfo) {
+        if(type == null){
+            return null;
+        }
+
         ParameterizedType result = null;
         if (type instanceof ParameterizedType) {
             result = (ParameterizedType) type;
@@ -200,8 +204,17 @@ public class GenericUtil {
             for (int i = 0; i < typeParameters.length; i++) {
                 value = typeArguments[i];
                 // 跳过泛型变量对应泛型变量的情况
-                if(false == value instanceof TypeVariable){
-                    typeMap.put(typeParameters[i].getTypeName(), value);
+                if (false == value instanceof TypeVariable) {
+                    String typeVariableName = typeParameters[i].getTypeName();
+
+                    if (typeMap.containsKey(typeVariableName)) {
+                        //如果有了，就不继续了
+                        break;
+                    } else {
+                        if (checkNoTypeVariable(value)) {
+                            typeMap.put(typeVariableName, value);
+                        }
+                    }
                 }
             }
 
@@ -209,6 +222,20 @@ public class GenericUtil {
         }
 
         return typeMap;
+    }
+
+    private static boolean checkNoTypeVariable(Type type) {
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            for (Type rawType : parameterizedType.getActualTypeArguments()) {
+                if (rawType instanceof TypeVariable) {
+                    //说明没有真实的泛型传入
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 
@@ -235,7 +262,7 @@ public class GenericUtil {
      * @since 3.0
      * */
     public static Type reviewType(Type type, Map<String, Type> genericInfo) {
-        if (genericInfo == null) {
+        if(genericInfo == null || genericInfo.isEmpty()) {
             return type;
         }
 
@@ -246,8 +273,7 @@ public class GenericUtil {
             if(typeTmp == null){
                 return type;
             }else{
-                return typeTmp;
-                //return reviewType(typeTmp, genericInfo); //存在死循环的可能
+                return reviewType(typeTmp, genericInfo);
             }
         } else if (type instanceof ParameterizedType) {
             ParameterizedType typeTmp = (ParameterizedType) type;
