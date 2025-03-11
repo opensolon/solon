@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * @since 1.11
  */
 public class RedissonClientSupplier implements Supplier<RedissonClient> {
-    RedissonClient real;
+    private final RedissonClient real;
 
     public RedissonClientSupplier(Properties props) {
         real = RedissonBuilder.build(props);
@@ -35,6 +35,6 @@ public class RedissonClientSupplier implements Supplier<RedissonClient> {
 
     @Override
     public RedissonClient get() {
-        return null;
+        return real;
     }
 }

@@ -34,6 +34,7 @@
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-data-sqlutils `as` 查询没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
+* 修复 solon-cache-redisson RedissonClientSupplier:get 为 null 的问题
 * java-cron 升为 1.0.1
 * redisx 升为 1.6.11
 * snack3 升为 3.2.129
