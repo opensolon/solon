@@ -90,7 +90,8 @@ public class CpuDetector extends AbstractDetector {
     }
 
     private void readCpuRatioForWindows(Map<String,Object> detectorInfo) throws Exception {
-        String[] cmd = { "wmic", "process", "get", "Caption,KernelModeTime,UserModeTime" };
+        //巨硬在Windows 11 24H2 开始移除了WMIC,建议换用powershell,只要系统内置的powershell版本大于3.0,也就是Windows 8+ 应该都可以用
+        String[] cmd = { "powershell", "$totalMem=(Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory;Get-Process|ForEach-Object{$totalMemoryPercentage+=(($_.WorkingSet64 / $totalMem) * 100)};$totalMemoryPercentage" };
 
         long[] c0 = readCpuTime(CmdUtil.execute(cmd));
         Thread.sleep(30L);
