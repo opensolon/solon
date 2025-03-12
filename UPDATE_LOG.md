@@ -21,9 +21,11 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.1.1
+* 新增 solon-expression 插件
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
-* 添加 solon-ai 对 doc 文档的解析
+* 添加 solon-ai 对 docx 文档的解析
+* 添加 solon-data Transaction 事务注解（替代 Tran，后者标为弃用）
 * 优化 solon GenericUtil.reviewType 泛型深度兼容能力
 * 优化 solon Props:getListedProp 按配置顺序输出
 * 优化 solon-mvc 取消请求 `accept=...` 直接作为响应 `context-type` 的初始值处理（没必要关联）
