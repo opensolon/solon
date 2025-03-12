@@ -16,7 +16,7 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.core.FactoryManager;
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.impl.*;
 import org.noear.solon.core.util.RunnableEx;
 
@@ -100,7 +100,7 @@ public class TranExecutorDefault implements TranExecutor {
      * @param runnable 真实执行器
      * */
     @Override
-    public void execute(Tran meta, RunnableEx runnable) throws Throwable {
+    public void execute(Transaction meta, RunnableEx runnable) throws Throwable {
         if (meta == null) {
             //
             //如果没有注解或工厂，直接运行
@@ -145,7 +145,7 @@ public class TranExecutorDefault implements TranExecutor {
      * @param meta 事务注解
      * @param runnable 真实执行器
      */
-    protected void forRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
+    protected void forRoot(Stack<TranEntity> stack, Transaction meta, RunnableEx runnable) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
         TranNode tran = create(meta);
@@ -166,7 +166,7 @@ public class TranExecutorDefault implements TranExecutor {
      * @param meta 事务注解
      * @param runnable 真实执行器
      */
-    protected void forNotRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
+    protected void forNotRoot(Stack<TranEntity> stack, Transaction meta, RunnableEx runnable) throws Throwable {
         switch (meta.policy()) {
             case required: {
                 //::支持当前事务
@@ -205,7 +205,7 @@ public class TranExecutorDefault implements TranExecutor {
      * @param meta 事务注解
      * @param runnable 真实执行器
      * */
-    protected void applyDo(Stack<TranEntity> stack, TranNode tran, Tran meta, RunnableEx runnable) throws Throwable {
+    protected void applyDo(Stack<TranEntity> stack, TranNode tran, Transaction meta, RunnableEx runnable) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //required || requires_new || nested ，需要入栈
             //
@@ -229,7 +229,7 @@ public class TranExecutorDefault implements TranExecutor {
      *
      * @param meta 事务注解
      */
-    protected TranNode create(Tran meta) {
+    protected TranNode create(Transaction meta) {
         if (meta.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;

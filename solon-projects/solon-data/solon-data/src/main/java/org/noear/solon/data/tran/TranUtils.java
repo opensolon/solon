@@ -18,6 +18,8 @@ package org.noear.solon.data.tran;
 import org.noear.solon.Solon;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.annotation.Transaction;
+import org.noear.solon.data.annotation.TransactionAnno;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -39,8 +41,18 @@ public final class TranUtils {
 
     /**
      * 执行事务
+     *
+     * @deprecated 3.1 {@link #execute(Transaction, RunnableEx)}
      */
+    @Deprecated
     public static void execute(Tran tran, RunnableEx runnable) throws Throwable {
+        executor.execute(TransactionAnno.ofTran(tran), runnable);
+    }
+
+    /**
+     * 执行事务
+     */
+    public static void execute(Transaction tran, RunnableEx runnable) throws Throwable {
         executor.execute(tran, runnable);
     }
 

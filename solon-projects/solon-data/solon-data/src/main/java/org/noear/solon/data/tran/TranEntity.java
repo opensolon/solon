@@ -15,7 +15,7 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.annotation.Transaction;
 
 /**
  * 事物实体。用于存放事务节点与注解信息
@@ -25,9 +25,9 @@ import org.noear.solon.data.annotation.Tran;
  * */
 class TranEntity {
     protected TranNode tran;
-    protected Tran meta;
+    protected Transaction meta;
 
-    public TranEntity(TranNode tran, Tran meta){
+    public TranEntity(TranNode tran, Transaction meta){
         this.tran = tran;
         this.meta = meta;
     }

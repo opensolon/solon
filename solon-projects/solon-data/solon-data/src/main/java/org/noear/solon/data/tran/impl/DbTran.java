@@ -16,8 +16,8 @@
 package org.noear.solon.data.tran.impl;
 
 import org.noear.solon.Utils;
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.datasource.RoutingDataSourceMapping;
 import org.noear.solon.data.tran.*;
 
@@ -34,7 +34,7 @@ import java.util.Map;
  * @since 1.0
  * */
 public abstract class DbTran extends DbTranNode implements TranNode {
-    private final Tran meta;
+    private final Transaction meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
     private final TranListenerSet listenerSet = new TranListenerSet();
 
@@ -51,7 +51,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 //        listener.beforeCommit(tran.getMeta().readOnly());
     }
 
-    public Tran getMeta() {
+    public Transaction getMeta() {
         return meta;
     }
 
@@ -79,7 +79,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
         }
     }
 
-    public DbTran(Tran meta) {
+    public DbTran(Transaction meta) {
         this.meta = meta;
     }
 

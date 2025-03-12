@@ -15,10 +15,9 @@
  */
 package demo;
 
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranListener;
-import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.TranUtils;
 
 /**
@@ -34,7 +33,7 @@ public class DemoTest {
         });
     }
 
-    @Tran(readOnly = true)
+    @Transaction(readOnly = true)
     public void test2(){
         //..
         TranUtils.listen(new TranListener() {

@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.tran;
 
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.annotation.Transaction;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -61,8 +61,9 @@ public interface TranExecutor {
      * 执行
      *
      * @since 1.9
+     * @since 3.1
      */
-    default void execute(Tran meta, RunnableEx runnable) throws Throwable {
+    default void execute(Transaction meta, RunnableEx runnable) throws Throwable {
 
     }
 }

@@ -18,8 +18,7 @@ package demo;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.EventTran;
-import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.data.tran.TranUtils;
+import org.noear.solon.data.annotation.Transaction;
 
 /**
  * @author noear 2024/5/14 created
@@ -39,7 +38,7 @@ public class EventDemo {
         }
     }
 
-    @Tran
+    @Transaction
     public void event_and_jdbc() {
         EventTran eventTran = CloudClient.event().newTranAndJoin(); //加入 @Tran 管理
 

@@ -25,10 +25,19 @@ import java.lang.annotation.Annotation;
  *
  * @author noear
  * @since 1.9
- * @deprecated 3.1 {@link TransactionAnno}
  */
-@Deprecated
-public class TranAnno implements Tran {
+public class TransactionAnno implements Transaction {
+
+    public static TransactionAnno ofTran(Tran anno) {
+        TransactionAnno anno2 = new TransactionAnno();
+        anno2.policy(anno.policy());
+        anno2.isolation(anno.isolation());
+        anno2.readOnly(anno.readOnly());
+        anno2.message(anno.message());
+        return anno2;
+    }
+
+
     /**
      * 事务传导策略
      */
@@ -51,7 +60,7 @@ public class TranAnno implements Tran {
         return _policy;
     }
 
-    public TranAnno policy(TranPolicy policy){
+    public TransactionAnno policy(TranPolicy policy){
         _policy = policy;
         return this;
     }
@@ -60,7 +69,7 @@ public class TranAnno implements Tran {
     public TranIsolation isolation() {
         return _isolation;
     }
-    public TranAnno isolation(TranIsolation isolation){
+    public TransactionAnno isolation(TranIsolation isolation){
         _isolation = isolation;
         return this;
     }
@@ -75,12 +84,12 @@ public class TranAnno implements Tran {
         return _message;
     }
 
-    public TranAnno message(String message){
+    public TransactionAnno message(String message){
         _message = message;
         return this;
     }
 
-    public TranAnno readOnly(boolean readOnly){
+    public TransactionAnno readOnly(boolean readOnly){
         _readOnly = readOnly;
         return this;
     }

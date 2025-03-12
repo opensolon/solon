@@ -15,8 +15,8 @@
  */
 package org.noear.solon.data.tran.impl;
 
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.TranNode;
 import org.noear.solon.data.tran.TranManager;
 
@@ -28,7 +28,7 @@ import org.noear.solon.data.tran.TranManager;
  * */
 public class TranDbNewImpl extends DbTran implements TranNode {
 
-    public TranDbNewImpl(Tran meta) {
+    public TranDbNewImpl(Transaction meta) {
         super(meta);
     }
 

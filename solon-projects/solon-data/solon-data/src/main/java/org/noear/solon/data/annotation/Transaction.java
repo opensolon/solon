@@ -24,23 +24,21 @@ import java.lang.annotation.*;
  * 事务注解
  *
  * @author noear
- * @since 1.0
- * @deprecated 3.1 {@link Transaction}
+ * @since 3.1
  * */
-@Deprecated
 @Inherited
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Tran {
+public @interface Transaction {
     /**
      * 事务传导策略
      * */
     TranPolicy policy() default TranPolicy.required;
 
     /*
-    * 事务隔离等级
-    * */
+     * 事务隔离等级
+     * */
     TranIsolation isolation() default TranIsolation.unspecified;
 
     /**

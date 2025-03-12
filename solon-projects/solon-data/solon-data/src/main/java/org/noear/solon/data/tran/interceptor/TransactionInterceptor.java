@@ -16,9 +16,9 @@
 package org.noear.solon.data.tran.interceptor;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.tran.TranUtils;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,26 +28,24 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author noear
  * @since 1.0
- * @deprecated 3.1 {@link TransactionInterceptor}
  * */
-@Deprecated
-public class TranInterceptor implements Interceptor {
-    public static final TranInterceptor instance = new TranInterceptor();
+public class TransactionInterceptor implements Interceptor {
+    public static final TransactionInterceptor instance = new TransactionInterceptor();
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         //支持动态开关事务
         if (Solon.app().enableTransaction()) {
-            Tran anno = inv.getMethodAnnotation(Tran.class);
+            Transaction anno = inv.getMethodAnnotation(Transaction.class);
             if (anno == null) {
-                anno = inv.getTargetAnnotation(Tran.class);
+                anno = inv.getTargetAnnotation(Transaction.class);
             }
 
             if (anno == null) {
                 return inv.invoke();
             } else {
                 AtomicReference val0 = new AtomicReference();
-                Tran anno0 = anno;
+                Transaction anno0 = anno;
 
                 TranUtils.execute(anno0, () -> {
                     val0.set(inv.invoke());

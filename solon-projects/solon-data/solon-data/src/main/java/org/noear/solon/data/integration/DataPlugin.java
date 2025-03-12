@@ -25,6 +25,7 @@ import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
 import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
+import org.noear.solon.data.tran.interceptor.TransactionInterceptor;
 
 public class DataPlugin implements Plugin {
     @Override
@@ -39,6 +40,7 @@ public class DataPlugin implements Plugin {
 
             //添加注解支持
             context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
+            context.beanInterceptorAdd(Transaction.class, TransactionInterceptor.instance, 120);
         }
 
         //添加缓存控制支持
