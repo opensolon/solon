@@ -380,7 +380,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         }
 
         public boolean isIdentifier() {
-            return Character.isLetterOrDigit(getCurrentChar()) || getCurrentChar() == '_';
+            return Character.isLetterOrDigit(getCurrentChar()) || getCurrentChar() == '_' || getCurrentChar() == '.';
         }
     }
 }

@@ -165,4 +165,13 @@ public class Query3Test {
         String result3 = (String) evaluator.eval("'hello ' + 'world!'");
         assert "hello world!".equals(result3);
     }
+
+    @Test
+    public void case9() {
+        Map<String, Object> context = new HashMap();
+        context.put("user.name", "world");
+
+        Object result = evaluator.eval("user.name", context);
+        assert "world".equals(result);
+    }
 }
