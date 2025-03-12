@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.ExpressionContext;
 import org.noear.solon.expression.ExpressionEvaluator;
 
 /**
@@ -49,7 +50,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     private Map<String, Expression> exprCached = new ConcurrentHashMap<>();
 
     @Override
-    public Object eval(String expr, Map context, boolean cached) {
+    public Object eval(String expr, ExpressionContext context, boolean cached) {
         if(cached) {
             Expression expression = exprCached.computeIfAbsent(expr, k -> compile(expr));
             return expression.evaluate(context);

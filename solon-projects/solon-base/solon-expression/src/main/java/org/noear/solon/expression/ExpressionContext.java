@@ -13,33 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.expression.snel;
-
-import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
+package org.noear.solon.expression;
 
 /**
- * 变量表达式节点（表示查询中的变量或字段）
+ * 表达式上下文
  *
  * @author noear
  * @since 3.1
  */
-public class VariableNode implements Expression {
-    private String name;
-
-    public VariableNode(String name) {
-        this.name = name;
-    }
-
+public interface ExpressionContext {
     /**
-     * 获取字段名
+     * 获取值
      */
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Object evaluate(ExpressionContext context) {
-        return context.get(name);
-    }
+    Object get(String key);
 }

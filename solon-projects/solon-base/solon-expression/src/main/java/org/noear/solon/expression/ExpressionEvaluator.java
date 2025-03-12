@@ -17,6 +17,7 @@ package org.noear.solon.expression;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -45,7 +46,29 @@ public interface ExpressionEvaluator {
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    Object eval(String expr, Map context, boolean cached);
+    Object eval(String expr, ExpressionContext context, boolean cached);
+
+    /**
+     * 评估
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     * @param cached  是否带编译缓存
+     */
+    default Object eval(String expr, Map context, boolean cached) {
+        return eval(expr, context::get, cached);
+    }
+
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     */
+    default Object eval(String expr, ExpressionContext context) {
+        return eval(expr, context, true);
+    }
 
     /**
      * 评估（带编译缓存）
@@ -63,6 +86,6 @@ public interface ExpressionEvaluator {
      * @param expr 表达式
      */
     default Object eval(String expr) {
-        return eval(expr, null, true);
+        return eval(expr, Collections.EMPTY_MAP::get, true);
     }
 }

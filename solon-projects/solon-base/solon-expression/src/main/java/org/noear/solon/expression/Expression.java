@@ -27,14 +27,21 @@ import java.util.Map;
  */
 public interface Expression<T> {
     /**
-     * 评估（即执行）
+     * 评估
      */
-    T evaluate(Map context);
+    T evaluate(ExpressionContext context);
 
     /**
-     * 评估（即执行）
+     * 评估
+     */
+    default T evaluate(Map context) {
+        return evaluate(context::get);
+    }
+
+    /**
+     * 评估
      */
     default T evaluate() {
-        return evaluate(Collections.emptyMap());
+        return evaluate(Collections.EMPTY_MAP);
     }
 }

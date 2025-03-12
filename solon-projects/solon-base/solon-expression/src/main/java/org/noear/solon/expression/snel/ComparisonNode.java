@@ -16,9 +16,9 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.ExpressionContext;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * 比较表达式节点（如 >, <, ==）
@@ -59,7 +59,7 @@ public class ComparisonNode implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Map context) {
+    public Boolean evaluate(ExpressionContext context) {
         Object leftValue = left.evaluate(context);
         Object rightValue = right.evaluate(context);
 
