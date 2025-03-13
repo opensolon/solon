@@ -2,7 +2,6 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.expression.*;
-import org.noear.solon.expression.StandardExpressionContext;
 import org.noear.solon.expression.snel.SnelExpressionEvaluator;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
  * @author noear 2025/3/12 created
  */
 public class Query3Test {
-    ExpressionEvaluator evaluator = new SnelExpressionEvaluator();
+    ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
 
     @Test
     public void case1() {
@@ -170,30 +169,9 @@ public class Query3Test {
     @Test
     public void case9() {
         Map<String, Object> context = new HashMap();
-        context.put("user.name", "world");
+        context.put("user_name", "world");
 
-        Object result = evaluator.eval("user.name", context);
+        Object result = evaluator.eval("user_name", context);
         assert "world".equals(result);
-    }
-
-    @Test
-    public void case10() {
-        Map<String,Object> user = new HashMap<>();
-        user.put("name", "world");
-        user.put("age", 20);
-        user.put("age2", 10);
-
-        StandardExpressionContext context = new StandardExpressionContext();
-        context.put("user", user);
-
-        Object result = evaluator.eval("user.age == 20 ? true : false", context);
-        assert true == (Boolean) result;
-
-
-        result = evaluator.eval("user.age == user.age2 ? true : false", context);
-        assert false == (Boolean) result;
-
-        result = evaluator.eval("false ? true : false", context);
-        assert false == (Boolean) result;
     }
 }

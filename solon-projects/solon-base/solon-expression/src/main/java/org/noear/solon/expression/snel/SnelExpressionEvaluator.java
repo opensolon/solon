@@ -49,14 +49,14 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
 
     /// /////////////
 
-    private Map<String, Expression> exprCached = new ConcurrentHashMap<>();
+    private final Map<String, Expression> exprCached = new ConcurrentHashMap<>();
 
     @Override
     public Object eval(String expr, ExpressionContext context, boolean cached) {
-        if(cached) {
-            Expression expression = exprCached.computeIfAbsent(expr, k -> compile(expr));
+        if (cached) {
+            Expression expression = exprCached.computeIfAbsent(expr, k -> compile(k));
             return expression.evaluate(context);
-        }else{
+        } else {
             return compile(expr).evaluate(context);
         }
     }
@@ -184,7 +184,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     private Expression parsePrimaryExpression(ParserState state) {
         state.skipWhitespace();
         if (eat(state, '(')) {
-            Expression result = parseLogicalOrExpression(state); // 递归解析括号内的表达式
+            Expression result = parseLogicalOrExpression(state);
             eat(state, ')');
             return result;
         } else if (Character.isDigit(state.getCurrentChar())) {
@@ -192,16 +192,34 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         } else if (state.isString()) {
             return new ConstantNode(parseString(state));
         } else {
-            String identifier = parseIdentifier(state);
-            state.skipWhitespace();
+            return parseVariableOrProperty(state); // 调用新方法解析变量或属性
+        }
+    }
 
-            if ("true".equals(identifier) || "false".equals(identifier)) {
-                // 普通常量
-                return new ConstantNode(Boolean.parseBoolean(identifier));
-            } else {
-                // 普通变量
-                return new VariableNode(identifier);
+    // 解析变量或属性访问（如 user.name 或 user['address']）
+    private Expression parseVariableOrProperty(ParserState state) {
+        String identifier = parseIdentifier(state);
+
+        if ("true".equals(identifier) || "false".equals(identifier)) {
+            return new ConstantNode(Boolean.parseBoolean(parseString(state)));
+        } else {
+            Expression currentExpr = new VariableNode(identifier);
+
+            // 循环处理后续的属性访问（.xxx 或 [xxx]）
+            while (true) {
+                state.skipWhitespace();
+                if (eat(state, '.')) {
+                    String property = parseIdentifier(state);
+                    currentExpr = new PropertyNode(currentExpr, property);
+                } else if (eat(state, '[')) {
+                    Expression propertyExpr = parseLogicalOrExpression(state);
+                    eat(state, ']');
+                    currentExpr = new PropertyNode(currentExpr, propertyExpr);
+                } else {
+                    break;
+                }
             }
+            return currentExpr;
         }
     }
 
@@ -381,7 +399,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         }
 
         public boolean isIdentifier() {
-            return Character.isLetterOrDigit(getCurrentChar()) || getCurrentChar() == '_' || getCurrentChar() == '.';
+            return Character.isLetterOrDigit(getCurrentChar()) || getCurrentChar() == '_';
         }
     }
 }

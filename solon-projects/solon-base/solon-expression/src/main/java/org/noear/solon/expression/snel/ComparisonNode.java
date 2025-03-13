@@ -19,6 +19,7 @@ import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.ExpressionContext;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 比较表达式节点（如 >, <, ==）
@@ -73,9 +74,9 @@ public class ComparisonNode implements Expression<Boolean> {
             case lte:
                 return ((Comparable) leftValue).compareTo(rightValue) <= 0;
             case eq:
-                return leftValue.equals(rightValue);
+                return Objects.equals(leftValue, rightValue);
             case neq:
-                return !leftValue.equals(rightValue);
+                return !Objects.equals(leftValue, rightValue);
             case lk:
                 return (leftValue.toString()).contains(rightValue.toString());
             case nlk:
