@@ -16,6 +16,8 @@
 package org.noear.solon.expression;
 
 
+import org.noear.solon.lang.Preview;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ import java.util.Map;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public interface Expression<T> {
     /**
      * 评估

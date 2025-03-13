@@ -18,6 +18,7 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.ExpressionContext;
 import org.noear.solon.expression.ExpressionEvaluator;
+import org.noear.solon.lang.Preview;
 
 /**
  * 简单表达式评估器
@@ -38,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 3.1
  * */
+@Preview("3.1")
 public class SnelExpressionEvaluator implements ExpressionEvaluator {
     private static final SnelExpressionEvaluator instance = new SnelExpressionEvaluator();
 

@@ -15,12 +15,15 @@
  */
 package org.noear.solon.expression;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * 表达式上下文
  *
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public interface ExpressionContext {
     /**
      * 获取值

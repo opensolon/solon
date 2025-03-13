@@ -1,6 +1,7 @@
 package org.noear.solon.expression;
 
 import org.noear.solon.core.util.NameUtil;
+import org.noear.solon.lang.Preview;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
+@Preview("3.1")
 public class StandardExpressionContext implements ExpressionContext {
     private static final Logger log = LoggerFactory.getLogger(StandardExpressionContext.class);
     private Map<String, Object> map = new HashMap<>();
