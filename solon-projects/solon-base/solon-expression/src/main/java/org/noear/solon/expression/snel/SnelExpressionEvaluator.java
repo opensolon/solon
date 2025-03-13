@@ -81,10 +81,10 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     private Expression parseTernaryExpression(ParserState state) {
         Expression condition = parseLogicalOrExpression(state);
         if (eat(state, '?')) {
-            Expression trueExpr = parseLogicalOrExpression(state);
+            Expression<Object> trueExpr = parseTernaryExpression(state);
             require(state, ':', "Expected ':' in ternary expression");
-            Expression falseExpr = parseLogicalOrExpression(state);
-            return new TernaryNode(condition, trueExpr, falseExpr);
+            Expression<Object> falseExpr = parseTernaryExpression(state);
+            return new TernaryNode((Expression<Boolean>) condition, trueExpr, falseExpr);
         }
         return condition;
     }
@@ -194,7 +194,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     private Expression parsePrimaryExpression(ParserState state) {
         state.skipWhitespace();
         if (eat(state, '(')) {
-            Expression expr = parseLogicalOrExpression(state);
+            Expression expr = parseTernaryExpression(state);
             eat(state, ')');
             return expr;
         } else if (Character.isDigit(state.getCurrentChar())) {
