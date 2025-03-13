@@ -36,7 +36,7 @@ public class Query1Test {
         LogicalNode orNode = new LogicalNode(LogicalOp.or, andNode, notMarriedComparison);
 
         // 计算条件查询表达式的值
-        boolean result = orNode.eval(context);
+        boolean result = orNode.eval(context::get);
         System.out.println("Result: " + result);  // 输出: Result: true
         assert result;
 

@@ -28,7 +28,7 @@ public class Query2Test {
         );
 
         // 计算条件查询表达式的值
-        boolean result = conditionNode.eval(context);
+        boolean result = conditionNode.eval(context::get);
         System.out.println("Result: " + result);  // 输出: Result: true
         assert result;
 

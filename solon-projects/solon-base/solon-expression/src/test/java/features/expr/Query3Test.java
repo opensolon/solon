@@ -30,7 +30,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.eval(context);
+        Object result = root.eval(context::get);
         System.out.println("Result: " + result); // Output: Result: true
         assert result instanceof Boolean;
 
@@ -55,7 +55,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.eval(context);
+        Object result = root.eval(context::get);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 
@@ -79,7 +79,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.eval(context);
+        Object result = root.eval(context::get);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 
@@ -104,7 +104,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.eval(context);
+        Object result = root.eval(context::get);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 
