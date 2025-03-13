@@ -26,9 +26,9 @@ import org.noear.solon.expression.ExpressionContext;
  * @since 3.1
  */
 public class ArithmeticNode implements Expression {
-    private ArithmeticOp operator; // 算数运算符，如 "+", "-", "*", "/"
-    private Expression left;
-    private Expression right;
+    private final ArithmeticOp operator;
+    private final Expression left;
+    private final Expression right;
 
     public ArithmeticNode(ArithmeticOp operator, Expression left, Expression right) {
         this.operator = operator;
@@ -36,121 +36,102 @@ public class ArithmeticNode implements Expression {
         this.right = right;
     }
 
-    public ArithmeticOp getOperator() {
-        return operator;
-    }
-
-    public Expression getLeft() {
-        return left;
-    }
-
-    public Expression getRight() {
-        return right;
-    }
-
     @Override
     public Object evaluate(ExpressionContext context) {
         Object leftValue = left.evaluate(context);
         Object rightValue = right.evaluate(context);
 
+        // 处理加法中的非数值类型拼接
+        if (operator == ArithmeticOp.add) {
+            if (!(leftValue instanceof Number)) {
+                return leftValue.toString() + rightValue.toString();
+            } else if (!(rightValue instanceof Number)) {
+                return leftValue.toString() + rightValue.toString();
+            }
+        }
+
+        // 动态分派数值计算逻辑
+        return calculateNumbers((Number) leftValue, (Number) rightValue);
+    }
+
+    private Number calculateNumbers(Number a, Number b) {
+        // 优先级: double > float > long > int
+        if (isDouble(a) || isDouble(b)) {
+            return calculateAsDouble(a, b);
+        } else if (isFloat(a) || isFloat(b)) {
+            return calculateAsFloat(a, b);
+        } else if (isLong(a) || isLong(b)) {
+            return calculateAsLong(a, b);
+        } else {
+            return calculateAsInt(a, b);
+        }
+    }
+
+    // 判断是否为 double
+    private boolean isDouble(Number n) {
+        return n instanceof Double || n.getClass() == Double.TYPE;
+    }
+
+    // 判断是否为 float
+    private boolean isFloat(Number n) {
+        return n instanceof Float || n.getClass() == Float.TYPE;
+    }
+
+    // 判断是否为 long
+    private boolean isLong(Number n) {
+        return n instanceof Long || n.getClass() == Long.TYPE;
+    }
+
+    // 计算逻辑（按类型分派）
+    private double calculateAsDouble(Number a, Number b) {
+        double aVal = a.doubleValue();
+        double bVal = b.doubleValue();
         switch (operator) {
-            case add: {
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    if (leftValue instanceof Double || rightValue instanceof Double) {
-                        return ((Number) leftValue).doubleValue() + ((Number) rightValue).doubleValue();
-                    } else if (leftValue instanceof Float || rightValue instanceof Float) {
-                        return ((Number) leftValue).floatValue() + ((Number) rightValue).floatValue();
-                    } else if (leftValue instanceof Long || rightValue instanceof Long) {
-                        return ((Number) leftValue).longValue() + ((Number) rightValue).longValue();
-                    } else if (leftValue instanceof Integer || rightValue instanceof Integer) {
-                        return ((Number) leftValue).intValue() + ((Number) rightValue).intValue();
-                    } else if (leftValue instanceof Short || rightValue instanceof Short) {
-                        return ((Number) leftValue).shortValue() + ((Number) rightValue).shortValue();
-                    } else {
-                        throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                    }
-                } else {
-                    return String.valueOf(leftValue) + rightValue;
-                }
-            }
-            case sub: {
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    if (leftValue instanceof Double || rightValue instanceof Double) {
-                        return ((Number) leftValue).doubleValue() - ((Number) rightValue).doubleValue();
-                    } else if (leftValue instanceof Float || rightValue instanceof Float) {
-                        return ((Number) leftValue).floatValue() - ((Number) rightValue).floatValue();
-                    } else if (leftValue instanceof Long || rightValue instanceof Long) {
-                        return ((Number) leftValue).longValue() - ((Number) rightValue).longValue();
-                    } else if (leftValue instanceof Integer || rightValue instanceof Integer) {
-                        return ((Number) leftValue).intValue() - ((Number) rightValue).intValue();
-                    } else if (leftValue instanceof Short || rightValue instanceof Short) {
-                        return ((Number) leftValue).shortValue() - ((Number) rightValue).shortValue();
-                    } else {
-                        throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                    }
-                } else {
-                    throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                }
-            }
-            case mul: {
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    if (leftValue instanceof Double || rightValue instanceof Double) {
-                        return ((Number) leftValue).doubleValue() * ((Number) rightValue).doubleValue();
-                    } else if (leftValue instanceof Float || rightValue instanceof Float) {
-                        return ((Number) leftValue).floatValue() * ((Number) rightValue).floatValue();
-                    } else if (leftValue instanceof Long || rightValue instanceof Long) {
-                        return ((Number) leftValue).longValue() * ((Number) rightValue).longValue();
-                    } else if (leftValue instanceof Integer || rightValue instanceof Integer) {
-                        return ((Number) leftValue).intValue() * ((Number) rightValue).intValue();
-                    } else if (leftValue instanceof Short || rightValue instanceof Short) {
-                        return ((Number) leftValue).shortValue() * ((Number) rightValue).shortValue();
-                    } else {
-                        throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                    }
-                } else {
-                    throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                }
-            }
-            case div: {
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    if (leftValue instanceof Double || rightValue instanceof Double) {
-                        return ((Number) leftValue).doubleValue() / ((Number) rightValue).doubleValue();
-                    } else if (leftValue instanceof Float || rightValue instanceof Float) {
-                        return ((Number) leftValue).floatValue() / ((Number) rightValue).floatValue();
-                    } else if (leftValue instanceof Long || rightValue instanceof Long) {
-                        return ((Number) leftValue).longValue() / ((Number) rightValue).longValue();
-                    } else if (leftValue instanceof Integer || rightValue instanceof Integer) {
-                        return ((Number) leftValue).intValue() / ((Number) rightValue).intValue();
-                    } else if (leftValue instanceof Short || rightValue instanceof Short) {
-                        return ((Number) leftValue).shortValue() / ((Number) rightValue).shortValue();
-                    } else {
-                        throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                    }
-                } else {
-                    throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                }
-            }
-            case mod: {
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    if (leftValue instanceof Double || rightValue instanceof Double) {
-                        return ((Number) leftValue).doubleValue() % ((Number) rightValue).doubleValue();
-                    } else if (leftValue instanceof Float || rightValue instanceof Float) {
-                        return ((Number) leftValue).floatValue() % ((Number) rightValue).floatValue();
-                    } else if (leftValue instanceof Long || rightValue instanceof Long) {
-                        return ((Number) leftValue).longValue() % ((Number) rightValue).longValue();
-                    } else if (leftValue instanceof Integer || rightValue instanceof Integer) {
-                        return ((Number) leftValue).intValue() % ((Number) rightValue).intValue();
-                    } else if (leftValue instanceof Short || rightValue instanceof Short) {
-                        return ((Number) leftValue).shortValue() % ((Number) rightValue).shortValue();
-                    } else {
-                        throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                    }
-                } else {
-                    throw new RuntimeException("Invalid number: " + leftValue + ", " + rightValue);
-                }
-            }
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+            case add: return aVal + bVal;
+            case sub: return aVal - bVal;
+            case mul: return aVal * bVal;
+            case div: return aVal / bVal;
+            case mod: return aVal % bVal;
+            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private float calculateAsFloat(Number a, Number b) {
+        float aVal = a.floatValue();
+        float bVal = b.floatValue();
+        switch (operator) {
+            case add: return aVal + bVal;
+            case sub: return aVal - bVal;
+            case mul: return aVal * bVal;
+            case div: return aVal / bVal;
+            case mod: return aVal % bVal;
+            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private long calculateAsLong(Number a, Number b) {
+        long aVal = a.longValue();
+        long bVal = b.longValue();
+        switch (operator) {
+            case add: return aVal + bVal;
+            case sub: return aVal - bVal;
+            case mul: return aVal * bVal;
+            case div: return aVal / bVal;
+            case mod: return aVal % bVal;
+            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private int calculateAsInt(Number a, Number b) {
+        int aVal = a.intValue();
+        int bVal = b.intValue();
+        switch (operator) {
+            case add: return aVal + bVal;
+            case sub: return aVal - bVal;
+            case mul: return aVal * bVal;
+            case div: return aVal / bVal;
+            case mod: return aVal % bVal;
+            default: throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
 }

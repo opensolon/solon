@@ -193,20 +193,12 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             String identifier = parseIdentifier(state);
             state.skipWhitespace();
 
-            // 检查是否是三元表达式
-            if (eat(state, '?')) {
-                Expression trueExpression = parseLogicalOrExpression(state); // 解析 true 分支
-                eat(state, ':'); // 跳过 :
-                Expression falseExpression = parseLogicalOrExpression(state); // 解析 false 分支
-                return new TernaryNode(new VariableNode(identifier), trueExpression, falseExpression);
+            if ("true".equals(identifier) || "false".equals(identifier)) {
+                // 普通常量
+                return new ConstantNode(Boolean.parseBoolean(identifier));
             } else {
-                if ("true".equals(identifier) || "false".equals(identifier)) {
-                    // 普通常量
-                    return new ConstantNode(Boolean.parseBoolean(identifier));
-                } else {
-                    // 普通变量
-                    return new VariableNode(identifier);
-                }
+                // 普通变量
+                return new VariableNode(identifier);
             }
         }
     }

@@ -181,11 +181,19 @@ public class Query3Test {
         Map<String,Object> user = new HashMap<>();
         user.put("name", "world");
         user.put("age", 20);
+        user.put("age2", 10);
 
         StandardExpressionContext context = new StandardExpressionContext();
         context.put("user", user);
 
-        Object result = evaluator.eval("user.age == 10 ? true : false", context);
+        Object result = evaluator.eval("user.age == 20 ? true : false", context);
+        assert true == (Boolean) result;
+
+
+        result = evaluator.eval("user.age == user.age2 ? true : false", context);
+        assert false == (Boolean) result;
+
+        result = evaluator.eval("false ? true : false", context);
         assert false == (Boolean) result;
     }
 }
