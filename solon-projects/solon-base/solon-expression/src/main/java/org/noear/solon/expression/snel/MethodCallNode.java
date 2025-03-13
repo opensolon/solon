@@ -99,7 +99,7 @@ public class MethodCallNode implements Expression {
 
     private Class<?> getEffectiveClass(Object obj) {
         if (obj == null) {
-            return Object.class;
+            return Void.class;
         }
         Class<?> clazz = obj.getClass();
         if (clazz.isPrimitive()) {

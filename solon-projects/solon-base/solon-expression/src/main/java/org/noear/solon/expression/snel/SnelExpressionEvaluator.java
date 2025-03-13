@@ -15,6 +15,7 @@
  */
 package org.noear.solon.expression.snel;
 
+import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -438,16 +439,16 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
      * 检查当前是否是关键字（如 true/false）
      */
     private boolean checkKeyword(ParserState state, String keyword) {
-        int savedPos = state.getPosition();
+        state.mark();
         for (int i = 0; i < keyword.length(); i++) {
             if (state.getCurrentChar() != keyword.charAt(i)) {
-                state.setPosition(savedPos);
+                state.reset();
                 return false;
             }
             state.nextChar();
         }
         if (state.isIdentifier()) {
-            state.setPosition(savedPos);
+            state.reset();
             return false;
         }
         return true;
@@ -459,12 +460,18 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
      * 解析器状态跟踪器
      */
     private static class ParserState {
-        private final Reader reader;
+        private final BufferedReader reader;
         private int ch;      // 当前字符
         private int position = 0;
+        private int markedCh = 0;
+        private int markedPosition = 0;
 
         public ParserState(Reader reader) {
-            this.reader = reader;
+            if (reader instanceof BufferedReader) {
+                this.reader = (BufferedReader) reader;
+            } else {
+                this.reader = new BufferedReader(reader);
+            }
             nextChar(); // 初始化读取第一个字符
         }
 
@@ -511,15 +518,27 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         /**
          * 获取当前读取位置
          */
-        public int getPosition() {
-            return position;
+        public void mark() {
+            try {
+                reader.mark(position);
+                markedCh = ch;
+                markedPosition = position;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         /**
          * 设置读取位置（用于回滚）
          */
-        public void setPosition(int pos) {
-            this.position = pos;
+        public void reset() {
+            try {
+                reader.reset();
+                ch = markedCh;
+                position = markedPosition;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override

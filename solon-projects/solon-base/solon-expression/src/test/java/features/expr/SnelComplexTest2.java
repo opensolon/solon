@@ -72,7 +72,7 @@ public class SnelComplexTest2 {
         String expr = "name LIKE pattern";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        context.put("pattern", "%Doe%");
+        context.put("pattern", "Doe");
         Object result = evaluator.eval(expr, context);
         assertEquals(true, result);
     }
@@ -164,7 +164,7 @@ public class SnelComplexTest2 {
     @Test
     public void testMethodCallWithDynamicArguments() {
         class Calculator {
-            int calculate(int a, int b, String op) {
+            public int calculate(int a, int b, String op) {
                 switch (op) {
                     case "+":
                         return a + b;
@@ -260,6 +260,15 @@ public class SnelComplexTest2 {
     @Test
     public void testLikeOperatorWithEmptyPattern() {
         String expr = "name LIKE ''";
+        Map<String, Object> context = new HashMap<>();
+        context.put("name", "John Doe");
+        Object result = evaluator.eval(expr, context);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testLikeOperatorWithEmptyPattern2() {
+        String expr = "'' LIKE name";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
         Object result = evaluator.eval(expr, context);

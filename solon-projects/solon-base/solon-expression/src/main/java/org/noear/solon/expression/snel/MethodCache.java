@@ -68,13 +68,19 @@ public class MethodCache {
     }
 
     private boolean isAssignable(Class<?> targetType, Class<?> sourceType) {
-        if (targetType.isAssignableFrom(sourceType)) {
-            return true;
-        }
         if (targetType.isPrimitive()) {
             Class<?> wrapperType = PRIMITIVE_WRAPPER_MAP.get(targetType);
             return wrapperType != null && wrapperType.isAssignableFrom(sourceType);
         }
+
+        if (targetType.isAssignableFrom(sourceType)) {
+            return true;
+        }
+
+        if (sourceType == Void.class) {//表示 source-val 为 null
+            return true;
+        }
+
         return false;
     }
 
