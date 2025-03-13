@@ -29,7 +29,8 @@ import org.noear.solon.lang.Preview;
 
 
 /**
- * Snel 表达式求值引擎核心类。
+ * Snel 表达式求值引擎。
+ *
  * 支持以下特性：
  * 1. 变量访问：`user.name`、`order['created']['name']` 等嵌套属性
  * 2. 方法调用：`Math.add(1, 2)`、`user.getName()` 等
@@ -251,20 +252,6 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * 获取方法名
-     */
-    private String getMethodName(Expression expr) {
-        if (expr instanceof PropertyNode) {
-            // 如果是属性访问节点，获取属性名作为方法名
-            return ((PropertyNode) expr).getPropertyName();
-        } else if (expr instanceof VariableNode) {
-            // 如果是变量节点，获取变量名作为方法名
-            return ((VariableNode) expr).getName();
-        }
-        throw new RuntimeException("Invalid method call target: " + expr);
-    }
-
-    /**
      * 解析方法参数列表
      */
     private List<Expression> parseMethodArguments(ParserState state) {
@@ -356,6 +343,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             state.nextChar();
         } else if (Character.toUpperCase(state.getCurrentChar()) == 'F') {
             isFloat = true;
+            isDouble = false;
             state.nextChar();
         } else if (Character.toUpperCase(state.getCurrentChar()) == 'D') {
             isDouble = true;

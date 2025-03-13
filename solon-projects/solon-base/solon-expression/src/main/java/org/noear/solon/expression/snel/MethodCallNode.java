@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2025 noear.org and authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
@@ -10,9 +25,13 @@ import java.util.Map;
 
 /**
  * 方法调用节点，用于表示方法调用（如 Math.add(1, 2) 或 user.getName()）
+ *
+ * @author noear
+ * @since 3.1
  */
 public class MethodCallNode implements Expression {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
+
     static {
         PRIMITIVE_WRAPPER_MAP.put(byte.class, Byte.class);
         PRIMITIVE_WRAPPER_MAP.put(short.class, Short.class);
@@ -51,14 +70,26 @@ public class MethodCallNode implements Expression {
         }
 
         try {
+            Class<?> targetClass;
+            if (targetValue instanceof Class<?>) {
+                targetClass = (Class<?>) targetValue;
+            } else {
+                targetClass = targetValue.getClass();
+            }
+
             // 查找方法
-            Method method = findMethod(targetValue.getClass(), methodName, argTypes);
+            Method method = findMethod(targetClass, methodName, argTypes);
             if (method == null) {
                 throw new RuntimeException("Method not found: " + methodName);
             }
 
             // 调用方法
-            return method.invoke(targetValue, argValues);
+            if (targetValue instanceof Class<?>) {
+                //静态方法
+                return method.invoke(null, argValues);
+            } else {
+                return method.invoke(targetValue, argValues);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Failed to invoke method: " + methodName, e);
         }
@@ -75,39 +106,9 @@ public class MethodCallNode implements Expression {
         return clazz;
     }
 
-    /**
-     * 查找匹配的方法
-     */
-    private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
-        Method[] methods = clazz.getMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                Class<?>[] paramTypes = method.getParameterTypes();
-                if (paramTypes.length == argTypes.length) {
-                    boolean match = true;
-                    for (int i = 0; i < paramTypes.length; i++) {
-                        if (!isAssignable(paramTypes[i], argTypes[i])) {
-                            match = false;
-                            break;
-                        }
-                    }
-                    if (match) {
-                        return method;
-                    }
-                }
-            }
-        }
-        return null;
-    }
+    private static final MethodCache methodCache = new MethodCache();
 
-    private boolean isAssignable(Class<?> targetType, Class<?> sourceType) {
-        if (targetType.isAssignableFrom(sourceType)) {
-            return true;
-        }
-        if (targetType.isPrimitive()) {
-            Class<?> wrapperType = PRIMITIVE_WRAPPER_MAP.get(targetType);
-            return wrapperType != null && wrapperType.isAssignableFrom(sourceType);
-        }
-        return false;
+    private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
+        return methodCache.getMethod(clazz, methodName, argTypes);
     }
 }
