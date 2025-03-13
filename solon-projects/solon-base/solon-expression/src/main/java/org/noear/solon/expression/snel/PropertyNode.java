@@ -6,6 +6,7 @@ import org.noear.solon.expression.ExpressionContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,28 +41,38 @@ public class PropertyNode implements Expression {
             return null; // 属性名为 null 时返回 null
         }
 
-        String propName = propertyValue.toString();
-
-        // 从 Map 或 Java Bean 中获取属性值
-        if (targetValue instanceof Map) {
-            return ((Map<?, ?>) targetValue).get(propName);
+        if (targetValue instanceof List) {
+            if (propertyValue instanceof Number) {
+                int propIndex = ((Number) propertyValue).intValue();
+                return ((List) targetValue).get(propIndex);
+            } else {
+                throw new RuntimeException("Invalid collection index type");
+            }
         } else {
-            try {
-                String getName = NameUtil.getPropGetterName(propName);
-                Method method = targetValue.getClass().getMethod(getName);
-                return method.invoke(targetValue);
-            } catch (NoSuchMethodException e) {
-                // 尝试访问公共字段
+
+            String propName = propertyValue.toString();
+
+            // 从 Map 或 Java Bean 中获取属性值
+            if (targetValue instanceof Map) {
+                return ((Map<?, ?>) targetValue).get(propName);
+            } else {
                 try {
-                    Field field = targetValue.getClass().getField(propName);
-                    return field.get(targetValue);
-                } catch (NoSuchFieldException ex) {
-                    return null; // 字段不存在返回 null
-                } catch (Exception ex) {
-                    throw new RuntimeException("Failed to access field: " + propName, ex);
+                    String getName = NameUtil.getPropGetterName(propName);
+                    Method method = targetValue.getClass().getMethod(getName);
+                    return method.invoke(targetValue);
+                } catch (NoSuchMethodException e) {
+                    // 尝试访问公共字段
+                    try {
+                        Field field = targetValue.getClass().getField(propName);
+                        return field.get(targetValue);
+                    } catch (NoSuchFieldException ex) {
+                        return null; // 字段不存在返回 null
+                    } catch (Exception ex) {
+                        throw new RuntimeException("Failed to access field: " + propName, ex);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to access property: " + propName, e);
                 }
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to access property: " + propName, e);
             }
         }
     }
