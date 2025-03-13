@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-public interface Snel {
+public interface SnEL {
     /**
      * 编译（即解析）
      */

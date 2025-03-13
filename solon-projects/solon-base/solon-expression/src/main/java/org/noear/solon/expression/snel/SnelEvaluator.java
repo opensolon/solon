@@ -26,7 +26,6 @@ import java.util.function.Function;
 
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.Evaluator;
-import org.noear.solon.lang.Preview;
 
 
 /**
@@ -45,7 +44,6 @@ import org.noear.solon.lang.Preview;
  * @author noear
  * @since 3.1
  * */
-@Preview("3.1")
 public class SnelEvaluator implements Evaluator {
     private static final SnelEvaluator instance = new SnelEvaluator();
     private final Map<String, Expression> exprCached = new ConcurrentHashMap<>();

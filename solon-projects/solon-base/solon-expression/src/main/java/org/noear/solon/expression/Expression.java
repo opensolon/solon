@@ -15,8 +15,6 @@
  */
 package org.noear.solon.expression;
 
-import org.noear.solon.lang.Preview;
-
 import java.util.Map;
 import java.util.function.Function;
 
@@ -26,7 +24,6 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
 public interface Expression<T> {
     /**
      * 评估

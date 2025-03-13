@@ -15,8 +15,6 @@
  */
 package org.noear.solon.expression;
 
-import org.noear.solon.lang.Preview;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
@@ -29,7 +27,6 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-@Preview("3.1")
 public interface Evaluator {
     /**
      * 编译（即解析）
