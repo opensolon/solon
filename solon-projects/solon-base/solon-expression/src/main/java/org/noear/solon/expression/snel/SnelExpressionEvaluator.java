@@ -200,7 +200,13 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
                 Expression falseExpression = parseLogicalOrExpression(state); // 解析 false 分支
                 return new TernaryNode(new VariableNode(identifier), trueExpression, falseExpression);
             } else {
-                return new VariableNode(identifier); // 普通变量
+                if ("true".equals(identifier) || "false".equals(identifier)) {
+                    // 普通常量
+                    return new ConstantNode(Boolean.parseBoolean(identifier));
+                } else {
+                    // 普通变量
+                    return new VariableNode(identifier);
+                }
             }
         }
     }
@@ -241,14 +247,14 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         } else if (Character.isDigit(state.getCurrentChar())) {
             return parseNumber(state);
         } else {
-            String tmp = parseIdentifier(state);
-            if ("true".equals(tmp) || "false".equals(tmp)) {
-                return Boolean.parseBoolean(tmp);
+            String identifier = parseIdentifier(state);
+            if ("true".equals(identifier) || "false".equals(identifier)) {
+                return Boolean.parseBoolean(identifier);
             } else {
                 if (allowVariable) {
-                    return new VariableNode(tmp);
+                    return new VariableNode(identifier);
                 } else {
-                    throw new RuntimeException("Unexpected value: " + tmp);
+                    throw new RuntimeException("Unexpected value: " + identifier);
                 }
             }
         }
