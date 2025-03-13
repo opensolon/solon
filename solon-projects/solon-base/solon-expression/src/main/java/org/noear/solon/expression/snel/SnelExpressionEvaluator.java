@@ -207,6 +207,8 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             return new ConstantNode(true);
         } else if (checkKeyword(state, "false")) {
             return new ConstantNode(false);
+        } else if (checkKeyword(state, "null")) {
+            return new ConstantNode(null);
         } else {
             return parseVariableOrMethodCall(state);
         }
@@ -292,7 +294,6 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
      * 解析列表（用于 IN 操作符）
      */
     private Expression parseList(ParserState state) {
-
         if (eat(state, '[')) {
             List<Object> list = new ArrayList<>();
             while (state.getCurrentChar() != ']') {
@@ -319,6 +320,8 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             return true;
         } else if (checkKeyword(state, "false")) {
             return false;
+        } else if (checkKeyword(state, "null")) {
+            return null;
         } else {
             return parseVariableOrMethodCall(state); // 简化处理
         }

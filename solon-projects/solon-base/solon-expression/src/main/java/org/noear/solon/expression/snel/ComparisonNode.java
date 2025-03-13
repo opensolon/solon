@@ -76,7 +76,7 @@ public class ComparisonNode implements Expression<Boolean> {
             case eq:
                 return Objects.equals(leftValue, rightValue);
             case neq:
-                return !Objects.equals(leftValue, rightValue);
+                return Objects.equals(leftValue, rightValue) == false;
             case lk:
                 return (leftValue.toString()).contains(rightValue.toString());
             case nlk:

@@ -54,6 +54,10 @@ public class ConstantNode implements Expression {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        if (value instanceof String) {
+            return "'" + value + "'";
+        } else {
+            return String.valueOf(value);
+        }
     }
 }

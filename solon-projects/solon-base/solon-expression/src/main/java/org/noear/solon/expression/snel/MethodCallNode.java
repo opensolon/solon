@@ -83,6 +83,8 @@ public class MethodCallNode implements Expression {
                 throw new RuntimeException("Method not found: " + methodName);
             }
 
+            method.setAccessible(true);
+
             // 调用方法
             if (targetValue instanceof Class<?>) {
                 //静态方法

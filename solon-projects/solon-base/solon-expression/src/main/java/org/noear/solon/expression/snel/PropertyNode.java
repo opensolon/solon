@@ -131,6 +131,6 @@ public class PropertyNode implements Expression {
 
     @Override
     public String toString() {
-        return target + "." + property;
+        return target + "[" + property + "]";
     }
 }
