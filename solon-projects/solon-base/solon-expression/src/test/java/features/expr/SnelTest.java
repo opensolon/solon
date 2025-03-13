@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelTest {
 
-    private final SnelEvaluator evaluator = new SnelEvaluator();
+    private final SnelEvaluator evaluator = SnelEvaluator.getInstance();
 
     // 算术运算测试用例
     @Test
