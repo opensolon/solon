@@ -133,12 +133,12 @@ public class SnelEvaluator implements Evaluator {
             String op = parseComparisonOperator(state);
             return new ComparisonNode(ComparisonOp.parse(op), left, parseAdditiveExpression(state));
         } else if (eat(state, "IN")) {
-            return new ComparisonNode(ComparisonOp.in, left, parseList(state));
+            return new ComparisonNode(ComparisonOp.in, left, parseListExpression(state));
         } else if (eat(state, "LIKE")) {
             return new ComparisonNode(ComparisonOp.lk, left, parseAdditiveExpression(state));
         } else if (eat(state, "NOT")) {
             if (eat(state, "IN")) {
-                return new ComparisonNode(ComparisonOp.nin, left, parseList(state));
+                return new ComparisonNode(ComparisonOp.nin, left, parseListExpression(state));
             } else if (eat(state, "LIKE")) {
                 return new ComparisonNode(ComparisonOp.nlk, left, parseAdditiveExpression(state));
             }
@@ -202,6 +202,8 @@ public class SnelEvaluator implements Evaluator {
             return new ConstantNode(parseNumber(state));
         } else if (state.isString()) {
             return new ConstantNode(parseString(state));
+        } else if (state.isArray()) {
+            return parseListExpression(state);
         } else if (checkKeyword(state, "true")) {
             return new ConstantNode(true);
         } else if (checkKeyword(state, "false")) {
@@ -292,7 +294,7 @@ public class SnelEvaluator implements Evaluator {
     /**
      * 解析列表（用于 IN 操作符）
      */
-    private Expression parseList(ParserState state) {
+    private Expression parseListExpression(ParserState state) {
         if (eat(state, '[')) {
             List<Object> list = new ArrayList<>();
             while (state.getCurrentChar() != ']') {
@@ -504,6 +506,13 @@ public class SnelEvaluator implements Evaluator {
          */
         public boolean isString() {
             return ch == '\'' || ch == '"';
+        }
+
+        /**
+         * 检查当前是否是数组起始字符（[）
+         */
+        public boolean isArray() {
+            return ch == '[';
         }
 
         /**
