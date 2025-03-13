@@ -69,4 +69,9 @@ public class LogicalNode implements Expression<Boolean> {
                 throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
+
+    @Override
+    public String toString() {
+        return "(" + left + " " + operator.getCode() + " " + right + ")";
+    }
 }

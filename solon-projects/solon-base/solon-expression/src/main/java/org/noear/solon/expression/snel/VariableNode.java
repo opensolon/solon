@@ -42,4 +42,9 @@ public class VariableNode implements Expression {
     public Object evaluate(ExpressionContext context) {
         return context.get(name);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -42,4 +42,9 @@ public class TernaryNode implements Expression {
         // 根据条件结果返回对应的表达式值
         return conditionResult ? trueExpression.evaluate(context) : falseExpression.evaluate(context);
     }
+
+    @Override
+    public String toString() {
+        return "(" + condition + " ? " + trueExpression + " : " + falseExpression + ")";
+    }
 }

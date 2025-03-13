@@ -128,4 +128,9 @@ public class PropertyNode implements Expression {
     private String capitalize(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
+
+    @Override
+    public String toString() {
+        return target + "." + property;
+    }
 }

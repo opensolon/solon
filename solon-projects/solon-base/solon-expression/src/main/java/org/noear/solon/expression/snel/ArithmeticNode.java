@@ -87,12 +87,18 @@ public class ArithmeticNode implements Expression {
         double aVal = a.doubleValue();
         double bVal = b.doubleValue();
         switch (operator) {
-            case add: return aVal + bVal;
-            case sub: return aVal - bVal;
-            case mul: return aVal * bVal;
-            case div: return aVal / bVal;
-            case mod: return aVal % bVal;
-            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
 
@@ -100,12 +106,18 @@ public class ArithmeticNode implements Expression {
         float aVal = a.floatValue();
         float bVal = b.floatValue();
         switch (operator) {
-            case add: return aVal + bVal;
-            case sub: return aVal - bVal;
-            case mul: return aVal * bVal;
-            case div: return aVal / bVal;
-            case mod: return aVal % bVal;
-            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
 
@@ -113,12 +125,18 @@ public class ArithmeticNode implements Expression {
         long aVal = a.longValue();
         long bVal = b.longValue();
         switch (operator) {
-            case add: return aVal + bVal;
-            case sub: return aVal - bVal;
-            case mul: return aVal * bVal;
-            case div: return aVal / bVal;
-            case mod: return aVal % bVal;
-            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
 
@@ -126,12 +144,23 @@ public class ArithmeticNode implements Expression {
         int aVal = a.intValue();
         int bVal = b.intValue();
         switch (operator) {
-            case add: return aVal + bVal;
-            case sub: return aVal - bVal;
-            case mul: return aVal * bVal;
-            case div: return aVal / bVal;
-            case mod: return aVal % bVal;
-            default: throw new IllegalArgumentException("Unknown operator: " + operator);
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(" + left + " " + operator.getCode() + " " + right + ")";
     }
 }

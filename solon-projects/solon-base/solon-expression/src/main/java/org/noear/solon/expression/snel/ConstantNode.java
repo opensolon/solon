@@ -51,4 +51,9 @@ public class ConstantNode implements Expression {
     public Object evaluate(ExpressionContext context) {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

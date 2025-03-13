@@ -111,4 +111,24 @@ public class MethodCallNode implements Expression {
     private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
         return methodCache.getMethod(clazz, methodName, argTypes);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(target);
+        buf.append(".");
+        buf.append(methodName);
+        buf.append("(");
+
+        for (Expression arg1 : args) {
+            buf.append(arg1).append(",");
+        }
+
+        if (args.size() > 0) {
+            buf.setLength(buf.length() - 1);
+        }
+        buf.append(")");
+
+        return buf.toString();
+    }
 }
