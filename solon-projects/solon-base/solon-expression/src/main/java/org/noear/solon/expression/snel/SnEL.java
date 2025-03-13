@@ -31,14 +31,14 @@ import java.util.function.Function;
  */
 public interface SnEL {
     /**
-     * 编译（即解析）
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
      */
     static Expression compile(Reader reader) {
         return SnelEvaluator.getInstance().compile(reader);
     }
 
     /**
-     * 编译（即解析）
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
      */
     static Expression compile(String expr) {
         return compile(new StringReader(expr));
