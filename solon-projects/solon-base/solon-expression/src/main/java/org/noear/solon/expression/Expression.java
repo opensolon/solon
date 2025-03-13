@@ -17,6 +17,7 @@ package org.noear.solon.expression;
 
 import org.noear.solon.lang.Preview;
 
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -31,4 +32,11 @@ public interface Expression<T> {
      * 评估
      */
     T eval(Function context);
+
+    /**
+     * 评估
+     */
+    default T eval(Map context) {
+        return eval(context::get);
+    }
 }
