@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 方法调用节点，用于表示方法调用（如 Math.add(1, 2) 或 user.getName()）
+ * 方法表达式节点，用于表示方法调用（如 Math.add(1, 2) 或 user.getName()）
  *
  * @author noear
  * @since 3.1
  */
-public class MethodCallNode implements Expression {
+public class MethodNode implements Expression {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
 
     static {
@@ -47,7 +47,7 @@ public class MethodCallNode implements Expression {
     private final String methodName;    // 方法名（如 add 或 getName）
     private final List<Expression> args; // 方法参数列表
 
-    public MethodCallNode(Expression target, String methodName, List<Expression> args) {
+    public MethodNode(Expression target, String methodName, List<Expression> args) {
         this.target = target;
         this.methodName = methodName;
         this.args = args;

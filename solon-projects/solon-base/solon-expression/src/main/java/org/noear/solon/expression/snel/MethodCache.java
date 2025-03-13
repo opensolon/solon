@@ -18,6 +18,7 @@ package org.noear.solon.expression.snel;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 方法缓存
@@ -38,7 +39,7 @@ public class MethodCache {
         // 可以添加更多的基本类型和包装类型映射
     }
 
-    private final Map<MethodKey, Method> cache = new HashMap<>();
+    private final Map<MethodKey, Method> cache = new ConcurrentHashMap<>();
 
     public Method getMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
         MethodKey key = new MethodKey(clazz, methodName, argTypes);

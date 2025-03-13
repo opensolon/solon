@@ -242,10 +242,10 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
                 // 确保 target 是属性访问节点，而不是方法名
                 if (expr instanceof PropertyNode) {
                     PropertyNode propertyNode = (PropertyNode) expr;
-                    expr = new MethodCallNode(propertyNode.getTarget(), propertyNode.getPropertyName(), args);
+                    expr = new MethodNode(propertyNode.getTarget(), propertyNode.getPropertyName(), args);
                 } else if (expr instanceof VariableNode) {
                     // 如果 expr 是变量节点，直接使用方法名
-                    expr = new MethodCallNode(expr, identifier, args);
+                    expr = new MethodNode(expr, identifier, args);
                 } else {
                     throw new RuntimeException("Invalid method call target: " + expr);
                 }

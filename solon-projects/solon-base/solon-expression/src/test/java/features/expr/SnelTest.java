@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelTest {
 
-    private final SnelExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    private final SnelExpressionEvaluator evaluator = new SnelExpressionEvaluator();
 
     // 算术运算测试用例
     @Test
