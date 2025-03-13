@@ -218,9 +218,11 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         while (true) {
             state.skipWhitespace();
             if (eat(state, '.')) {
+                // 解析点号属性访问：obj.property
                 String prop = parseIdentifier(state);
                 expr = new PropertyNode(expr, prop);
             } else if (eat(state, '[')) {
+                // 解析方括号属性访问：obj['property'] 或 obj[0]
                 Expression propExpr = parseLogicalOrExpression(state);
                 eat(state, ']');
                 expr = new PropertyNode(expr, propExpr);
@@ -233,16 +235,12 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
 
     // 以下为工具方法 --------------------------------
 
-    /**
-     * 检查字符是否是比较操作符的起始字符（>、<、=、!）
-     */
+    /** 检查字符是否是比较操作符的起始字符（>、<、=、!） */
     private boolean isComparisonOperatorStart(int c) {
         return c == '>' || c == '<' || c == '=' || c == '!';
     }
 
-    /**
-     * 解析比较操作符（支持 ==、!=、>=、<=）
-     */
+    /** 解析比较操作符（支持 ==、!=、>=、<=） */
     private String parseComparisonOperator(ParserState state) {
         StringBuilder sb = new StringBuilder();
         sb.append((char) state.getCurrentChar());
@@ -254,9 +252,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return sb.toString();
     }
 
-    /**
-     * 解析列表（用于 IN 操作符）
-     */
+    /** 解析列表（用于 IN 操作符） */
     private List<Object> parseList(ParserState state) {
         List<Object> list = new ArrayList<>();
         eat(state, '[');
@@ -268,9 +264,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return list;
     }
 
-    /**
-     * 解析值（数字、字符串、变量）
-     */
+    /** 解析值（数字、字符串、变量） */
     private Object parseValue(ParserState state) {
         state.skipWhitespace();
         if (state.isString()) {
@@ -286,9 +280,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         }
     }
 
-    /**
-     * 解析字符串
-     */
+    /** 解析字符串 */
     private String parseString(ParserState state) {
         char quote = (char) state.getCurrentChar();
         state.nextChar();
@@ -301,9 +293,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return sb.toString();
     }
 
-    /**
-     * 解析数字
-     */
+    /** 解析数字 */
     private Number parseNumber(ParserState state) {
         StringBuilder sb = new StringBuilder();
         boolean isFloat = false;
@@ -345,9 +335,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         }
     }
 
-    /**
-     * 解析标识符
-     */
+    /** 解析标识符 */
     private String parseIdentifier(ParserState state) {
         StringBuilder sb = new StringBuilder();
         while (state.isIdentifier()) {
@@ -357,9 +345,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return sb.toString();
     }
 
-    /**
-     * 检查并跳过指定字符串
-     */
+    /** 检查并跳过指定字符串 */
     private boolean eat(ParserState state, String expected) {
         state.skipWhitespace();
         for (int i = 0; i < expected.length(); i++) {
@@ -371,9 +357,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return true;
     }
 
-    /**
-     * 检查并跳过指定字符
-     */
+    /** 检查并跳过指定字符 */
     private boolean eat(ParserState state, char expected) {
         state.skipWhitespace();
         if (state.getCurrentChar() == expected) {
@@ -383,18 +367,14 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         return false;
     }
 
-    /**
-     * 检查并跳过指定字符，否则抛出异常
-     */
+    /** 检查并跳过指定字符，否则抛出异常 */
     private void require(ParserState state, char expected, String errorMessage) {
         if (!eat(state, expected)) {
             throw new RuntimeException(errorMessage);
         }
     }
 
-    /**
-     * 检查当前是否是关键字（如 true/false）
-     */
+    /** 检查当前是否是关键字（如 true/false） */
     private boolean checkKeyword(ParserState state, String keyword) {
         int savedPos = state.getPosition();
         for (int i = 0; i < keyword.length(); i++) {
@@ -426,16 +406,12 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             nextChar(); // 初始化读取第一个字符
         }
 
-        /**
-         * 获取当前字符
-         */
+        /** 获取当前字符 */
         public int getCurrentChar() {
             return ch;
         }
 
-        /**
-         * 前进到下一个字符
-         */
+        /** 前进到下一个字符 */
         public void nextChar() {
             try {
                 ch = reader.read();
@@ -445,37 +421,27 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
             }
         }
 
-        /**
-         * 跳过空白字符
-         */
+        /** 跳过空白字符 */
         public void skipWhitespace() {
             while (Character.isWhitespace(ch)) nextChar();
         }
 
-        /**
-         * 检查当前是否是字符串起始字符（' 或 "）
-         */
+        /** 检查当前是否是字符串起始字符（' 或 "） */
         public boolean isString() {
             return ch == '\'' || ch == '"';
         }
 
-        /**
-         * 检查当前是否是标识符字符（字母/数字/下划线）
-         */
+        /** 检查当前是否是标识符字符（字母/数字/下划线） */
         public boolean isIdentifier() {
             return Character.isLetterOrDigit(ch) || ch == '_';
         }
 
-        /**
-         * 获取当前读取位置
-         */
+        /** 获取当前读取位置 */
         public int getPosition() {
             return position;
         }
 
-        /**
-         * 设置读取位置（用于回滚）
-         */
+        /** 设置读取位置（用于回滚） */
         public void setPosition(int pos) {
             this.position = pos;
         }

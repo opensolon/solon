@@ -14,7 +14,7 @@ public class PropTest {
     ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
 
     @Test
-    public void case10() {
+    public void case1() {
         Map<String,Object> user = new HashMap<>();
         user.put("name", "world");
         user.put("age", 20);
@@ -35,7 +35,7 @@ public class PropTest {
     }
 
     @Test
-    public void case11() {
+    public void case2() {
         Map<String,Object> user = new HashMap<>();
         user.put("name", "world");
         user.put("age", 20);
@@ -53,6 +53,27 @@ public class PropTest {
 
 
         result = evaluator.eval("order.user.age == order.user.age2 ? true : false", context);
+        assert false == (Boolean) result;
+    }
+
+    @Test
+    public void case3() {
+        Map<String,Object> user = new HashMap<>();
+        user.put("name", "world");
+        user.put("age", 20);
+        user.put("age2", 10);
+
+        Map<String,Object> order = new HashMap<>();
+        order.put("id",1);
+        order.put("user", user);
+
+        Map<String,Object> context = new HashMap();
+        context.put("order", order);
+
+        Object result = evaluator.eval("order['user']['age'] == 20 ? true : false", context);
+        assert true == (Boolean) result;
+
+        result = evaluator.eval("order['user']['age'] == order.user['age2'] ? true : false", context);
         assert false == (Boolean) result;
     }
 }
