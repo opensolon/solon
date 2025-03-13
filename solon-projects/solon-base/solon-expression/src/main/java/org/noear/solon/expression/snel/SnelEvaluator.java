@@ -198,7 +198,7 @@ public class SnelEvaluator implements Evaluator {
             Expression expr = parseTernaryExpression(state);
             eat(state, ')');
             return expr;
-        } else if (Character.isDigit(state.getCurrentChar())) {
+        } else if (state.isNumber()) {
             return new ConstantNode(parseNumber(state));
         } else if (state.isString()) {
             return new ConstantNode(parseString(state));
@@ -315,7 +315,7 @@ public class SnelEvaluator implements Evaluator {
         state.skipWhitespace();
         if (state.isString()) {
             return parseString(state);
-        } else if (Character.isDigit(state.getCurrentChar())) {
+        } else if (state.isNumber()) {
             return parseNumber(state);
         } else if (checkKeyword(state, "true")) {
             return true;
@@ -352,7 +352,7 @@ public class SnelEvaluator implements Evaluator {
         boolean isDouble = false;
         boolean isLong = false;
 
-        while (Character.isDigit(state.getCurrentChar()) || state.getCurrentChar() == '.') {
+        while (state.isNumber() || state.getCurrentChar() == '.') {
             if (state.getCurrentChar() == '.') {
                 isDouble = true;
             }
@@ -506,6 +506,13 @@ public class SnelEvaluator implements Evaluator {
          */
         public boolean isString() {
             return ch == '\'' || ch == '"';
+        }
+
+        /**
+         * 检查当前是否是数字起始字符
+         */
+        public boolean isNumber() {
+            return Character.isDigit(ch) || ch == '-';
         }
 
         /**
