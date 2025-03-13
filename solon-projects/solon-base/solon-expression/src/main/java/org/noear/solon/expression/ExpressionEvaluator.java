@@ -21,6 +21,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 表达式评估器
@@ -49,7 +50,7 @@ public interface ExpressionEvaluator {
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    Object eval(String expr, ExpressionContext context, boolean cached);
+    Object eval(String expr, Function context, boolean cached);
 
     /**
      * 评估
@@ -69,7 +70,7 @@ public interface ExpressionEvaluator {
      * @param expr    表达式
      * @param context 上下文
      */
-    default Object eval(String expr, ExpressionContext context) {
+    default Object eval(String expr, Function context) {
         return eval(expr, context, true);
     }
 

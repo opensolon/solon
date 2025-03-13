@@ -16,7 +16,8 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
+
+import java.util.function.Function;
 
 /**
  * 变量表达式节点（表示查询中的变量或字段）
@@ -39,8 +40,8 @@ public class VariableNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
-        return context.get(name);
+    public Object evaluate(Function context) {
+        return context.apply(name);
     }
 
     @Override

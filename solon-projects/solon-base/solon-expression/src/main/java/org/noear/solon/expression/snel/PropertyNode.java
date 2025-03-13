@@ -16,12 +16,12 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 属性表达式节点，用于表示属性访问（如 user.name 或 order['items'][0]）
@@ -43,7 +43,7 @@ public class PropertyNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
+    public Object evaluate(Function context) {
         Object targetValue = target.evaluate(context);
         if (targetValue == null) {
             return null; // 目标为 null 时返回 null

@@ -16,7 +16,8 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
+
+import java.util.function.Function;
 
 /**
  * 三元表达式节点
@@ -36,7 +37,7 @@ public class TernaryNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
+    public Object evaluate(Function context) {
         // 计算条件表达式
         Boolean conditionResult = condition.evaluate(context);
         // 根据条件结果返回对应的表达式值

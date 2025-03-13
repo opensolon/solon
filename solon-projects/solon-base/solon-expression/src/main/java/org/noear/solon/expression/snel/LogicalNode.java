@@ -16,7 +16,8 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
+
+import java.util.function.Function;
 
 /**
  * 逻辑表达式节点（如 AND, OR, NOT）
@@ -57,7 +58,7 @@ public class LogicalNode implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(ExpressionContext context) {
+    public Boolean evaluate(Function context) {
         Object leftValue = left.evaluate(context);
         Object rightValue = null;
         if (right != null) {

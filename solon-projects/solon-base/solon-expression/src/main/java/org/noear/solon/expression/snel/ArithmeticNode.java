@@ -16,7 +16,8 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
+
+import java.util.function.Function;
 
 
 /**
@@ -37,7 +38,7 @@ public class ArithmeticNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
+    public Object evaluate(Function context) {
         Object leftValue = left.evaluate(context);
         Object rightValue = right.evaluate(context);
 

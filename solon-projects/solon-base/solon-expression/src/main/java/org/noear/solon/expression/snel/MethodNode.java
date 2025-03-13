@@ -16,12 +16,12 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 方法表达式节点，用于表示方法调用（如 Math.add(1, 2) 或 user.getName()）
@@ -54,7 +54,7 @@ public class MethodNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
+    public Object evaluate(Function context) {
         // 先求值 target
         Object targetValue = target.evaluate(context);
         if (targetValue == null) {

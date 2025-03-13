@@ -1,7 +1,6 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.ExpressionContext;
 import org.noear.solon.expression.snel.SnelExpressionEvaluator;
 
 import java.util.*;
@@ -47,8 +46,7 @@ public class SnelComplexTest {
         context.put("user", user);
         context.put("service", service);
         String expr = "service.getUserName(user)";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+        Object result = evaluator.eval(expr, context, false);
         assertEquals("John", result);
     }
 
@@ -108,8 +106,8 @@ public class SnelComplexTest {
         NestedUser nestedUser = new NestedUser(address);
         context.put("nestedUser", nestedUser);
         String expr = "nestedUser.address.city";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals("New York", result);
     }
 
@@ -138,8 +136,8 @@ public class SnelComplexTest {
         List<Integer> list = Arrays.asList(1, 2, 3);
         context.put("list", list);
         String expr = "list[1] + 2";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals(4, result);
     }
 
@@ -160,8 +158,8 @@ public class SnelComplexTest {
         Calculator calculator = new Calculator();
         context.put("calculator", calculator);
         String expr = "calculator.isEven(calculator.add(2, 3)) ? 'even' : 'odd'";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals("odd", result);
     }
 }

@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
 import org.noear.solon.expression.ExpressionEvaluator;
 import org.noear.solon.lang.Preview;
 
@@ -55,7 +55,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     }
 
     @Override
-    public Object eval(String expr, ExpressionContext context, boolean cached) {
+    public Object eval(String expr, Function context, boolean cached) {
         // 使用缓存加速重复表达式求值
         if (cached) {
             return exprCached.computeIfAbsent(expr, k -> compile(k)).evaluate(context);

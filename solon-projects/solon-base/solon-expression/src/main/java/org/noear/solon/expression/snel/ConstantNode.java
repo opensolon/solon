@@ -16,9 +16,9 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionContext;
 
 import java.util.Collection;
+import java.util.function.Function;
 
 /**
  * 常量表达式节点（表示查询中的常量）
@@ -48,7 +48,7 @@ public class ConstantNode implements Expression {
     }
 
     @Override
-    public Object evaluate(ExpressionContext context) {
+    public Object evaluate(Function context) {
         return value;
     }
 

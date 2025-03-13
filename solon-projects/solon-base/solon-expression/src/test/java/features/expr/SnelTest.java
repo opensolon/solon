@@ -1,7 +1,6 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.ExpressionContext;
 import org.noear.solon.expression.snel.SnelExpressionEvaluator;
 
 import java.util.HashMap;
@@ -106,8 +105,8 @@ public class SnelTest {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 5);
         String expr = "x";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals(5, result);
     }
 
@@ -118,8 +117,8 @@ public class SnelTest {
         Map<String, Object> context = new HashMap<>();
         context.put("nested", nested);
         String expr = "nested.y";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals(10, result);
     }
 
@@ -135,8 +134,8 @@ public class SnelTest {
         Map<String, Object> context = new HashMap<>();
         context.put("MathUtils", MathUtils.class);
         String expr = "MathUtils.add(2, 3)";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals(5, result);
     }
 
@@ -217,8 +216,8 @@ public class SnelTest {
         Map<String, Object> context = new HashMap<>();
         context.put("obj", null);
         String expr = "obj.property";
-        ExpressionContext ctx = context::get;
-        Object result = evaluator.eval(expr, ctx, false);
+
+        Object result = evaluator.eval(expr, context, false);
         assertEquals(null, result);
     }
 

@@ -20,6 +20,7 @@ import org.noear.solon.lang.Preview;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 表达式
@@ -32,7 +33,7 @@ public interface Expression<T> {
     /**
      * 评估
      */
-    T evaluate(ExpressionContext context);
+    T evaluate(Function context);
 
     /**
      * 评估
