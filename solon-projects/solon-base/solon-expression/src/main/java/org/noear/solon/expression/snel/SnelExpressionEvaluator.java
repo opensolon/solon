@@ -224,7 +224,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
                 String prop = parseIdentifier(state);
                 expr = new PropertyNode(expr, prop);
             } else if (eat(state, '[')) {
-                // 解析方括号属性访问：obj['property']
+                // 解析方括号属性访问：obj['property'] 或 obj[0]
                 Expression propExpr = parseLogicalOrExpression(state);
                 eat(state, ']');
                 expr = new PropertyNode(expr, propExpr);
@@ -232,7 +232,17 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
                 // 解析方法调用：obj.method()
                 List<Expression> args = parseMethodArguments(state);
                 eat(state, ')');
-                expr = new MethodCallNode(expr, getMethodName(expr), args);
+
+                // 确保 target 是属性访问节点，而不是方法名
+                if (expr instanceof PropertyNode) {
+                    PropertyNode propertyNode = (PropertyNode) expr;
+                    expr = new MethodCallNode(propertyNode.getTarget(), propertyNode.getPropertyName(), args);
+                } else if (expr instanceof VariableNode) {
+                    // 如果 expr 是变量节点，直接使用方法名
+                    expr = new MethodCallNode(expr, identifier, args);
+                } else {
+                    throw new RuntimeException("Invalid method call target: " + expr);
+                }
             } else {
                 break;
             }

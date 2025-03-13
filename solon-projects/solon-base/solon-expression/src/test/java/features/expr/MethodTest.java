@@ -28,6 +28,8 @@ public class MethodTest {
         context.put("order", order);
 
         assert 10 == (Integer) evaluator.eval("order.user.getAge2()", context);
+
+        assert 3 == (Integer) evaluator.eval("order.add(1,2)", context);
     }
 
     @Test

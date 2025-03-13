@@ -30,22 +30,33 @@ public class PropertyNode implements Expression {
     @Override
     public Object evaluate(ExpressionContext context) {
         Object targetValue = target.evaluate(context);
-        Object propertyValue = property.evaluate(context);
+        if (targetValue == null) {
+            return null; // 目标为 null 时返回 null
+        }
 
-        if (targetValue == null || propertyValue == null) {
-            return null; // 目标或属性为 null 时返回 null
+        Object propertyValue = property.evaluate(context);
+        if (propertyValue == null) {
+            return null; // 属性为 null 时返回 null
         }
 
         // 处理集合类型的整数索引访问
         if (targetValue instanceof List && propertyValue instanceof Number) {
             int index = ((Number) propertyValue).intValue();
-            return ((List<?>) targetValue).get(index);
+            try {
+                return ((List<?>) targetValue).get(index);
+            } catch (IndexOutOfBoundsException e) {
+                return null; // 索引越界时返回 null
+            }
         }
 
         // 处理数组类型的整数索引访问
         if (targetValue.getClass().isArray() && propertyValue instanceof Number) {
             int index = ((Number) propertyValue).intValue();
-            return java.lang.reflect.Array.get(targetValue, index);
+            try {
+                return java.lang.reflect.Array.get(targetValue, index);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return null; // 索引越界时返回 null
+            }
         }
 
         // 处理 Map 或 Java Bean 属性访问
@@ -55,6 +66,13 @@ public class PropertyNode implements Expression {
         } else {
             return getPropertyValue(targetValue, propName);
         }
+    }
+
+    /**
+     * 获取目标对象
+     */
+    public Expression getTarget() {
+        return target;
     }
 
     /**
