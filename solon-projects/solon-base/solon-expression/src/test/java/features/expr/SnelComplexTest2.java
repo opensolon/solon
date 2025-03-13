@@ -1,8 +1,8 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.ExpressionEvaluator;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelComplexTest2 {
 
-    private final ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    private final Evaluator evaluator = SnelEvaluator.getInstance();
 
     @Test
     public void testNestedTernaryExpression() {

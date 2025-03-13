@@ -48,7 +48,7 @@ public class ConstantNode implements Expression {
     }
 
     @Override
-    public Object evaluate(Function context) {
+    public Object eval(Function context) {
         return value;
     }
 

@@ -1,7 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelTest {
 
-    private final SnelExpressionEvaluator evaluator = new SnelExpressionEvaluator();
+    private final SnelEvaluator evaluator = new SnelEvaluator();
 
     // 算术运算测试用例
     @Test

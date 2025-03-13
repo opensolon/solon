@@ -43,13 +43,13 @@ public class PropertyNode implements Expression {
     }
 
     @Override
-    public Object evaluate(Function context) {
-        Object targetValue = target.evaluate(context);
+    public Object eval(Function context) {
+        Object targetValue = target.eval(context);
         if (targetValue == null) {
             return null; // 目标为 null 时返回 null
         }
 
-        Object propertyValue = property.evaluate(context);
+        Object propertyValue = property.eval(context);
         if (propertyValue == null) {
             return null; // 属性为 null 时返回 null
         }

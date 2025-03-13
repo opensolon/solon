@@ -58,11 +58,11 @@ public class LogicalNode implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean evaluate(Function context) {
-        Object leftValue = left.evaluate(context);
+    public Boolean eval(Function context) {
+        Object leftValue = left.eval(context);
         Object rightValue = null;
         if (right != null) {
-            rightValue = right.evaluate(context);
+            rightValue = right.eval(context);
         }
 
         switch (operator) {

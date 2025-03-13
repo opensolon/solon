@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionEvaluator;
+import org.noear.solon.expression.Evaluator;
 import org.noear.solon.lang.Preview;
 
 
@@ -46,11 +46,11 @@ import org.noear.solon.lang.Preview;
  * @since 3.1
  * */
 @Preview("3.1")
-public class SnelExpressionEvaluator implements ExpressionEvaluator {
-    private static final SnelExpressionEvaluator instance = new SnelExpressionEvaluator();
+public class SnelEvaluator implements Evaluator {
+    private static final SnelEvaluator instance = new SnelEvaluator();
     private final Map<String, Expression> exprCached = new ConcurrentHashMap<>();
 
-    public static SnelExpressionEvaluator getInstance() {
+    public static SnelEvaluator getInstance() {
         return instance;
     }
 
@@ -58,9 +58,9 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
     public Object eval(String expr, Function context, boolean cached) {
         // 使用缓存加速重复表达式求值
         if (cached) {
-            return exprCached.computeIfAbsent(expr, k -> compile(k)).evaluate(context);
+            return exprCached.computeIfAbsent(expr, k -> compile(k)).eval(context);
         } else {
-            return compile(expr).evaluate(context);
+            return compile(expr).eval(context);
         }
     }
 

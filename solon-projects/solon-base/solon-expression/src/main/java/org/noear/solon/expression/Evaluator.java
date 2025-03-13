@@ -30,7 +30,7 @@ import java.util.function.Function;
  * @since 3.1
  */
 @Preview("3.1")
-public interface ExpressionEvaluator {
+public interface Evaluator {
     /**
      * 编译（即解析）
      */

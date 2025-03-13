@@ -38,9 +38,9 @@ public class ArithmeticNode implements Expression {
     }
 
     @Override
-    public Object evaluate(Function context) {
-        Object leftValue = left.evaluate(context);
-        Object rightValue = right.evaluate(context);
+    public Object eval(Function context) {
+        Object leftValue = left.eval(context);
+        Object rightValue = right.eval(context);
 
         // 处理加法中的非数值类型拼接
         if (operator == ArithmeticOp.add) {

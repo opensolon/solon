@@ -2,7 +2,7 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.expression.*;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
  * @author noear 2025/3/12 created
  */
 public class Query3Test {
-    ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    Evaluator evaluator = SnelEvaluator.getInstance();
 
     @Test
     public void case1() {
@@ -30,7 +30,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.evaluate(context);
+        Object result = root.eval(context);
         System.out.println("Result: " + result); // Output: Result: true
         assert result instanceof Boolean;
 
@@ -55,7 +55,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.evaluate(context);
+        Object result = root.eval(context);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 
@@ -79,7 +79,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.evaluate(context);
+        Object result = root.eval(context);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 
@@ -104,7 +104,7 @@ public class Query3Test {
         System.out.println("Expression Tree: " + root);
 
         // 计算表达式结果
-        Object result = root.evaluate(context);
+        Object result = root.eval(context);
         System.out.println("Result: " + result); // Output: Result: true
         assert ((Boolean) result) == true;
 

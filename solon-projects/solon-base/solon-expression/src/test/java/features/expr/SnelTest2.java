@@ -1,8 +1,8 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.ExpressionEvaluator;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SnelTest2 {
 
-    private final ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    private final Evaluator evaluator = SnelEvaluator.getInstance();
 
     // 测试包含多个算术运算符的复杂表达式
     @Test

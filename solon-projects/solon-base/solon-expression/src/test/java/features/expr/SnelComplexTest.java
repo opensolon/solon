@@ -1,7 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelComplexTest {
 
-    private final SnelExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    private final SnelEvaluator evaluator = SnelEvaluator.getInstance();
 
     // 复杂嵌套逻辑表达式
     @Test

@@ -37,11 +37,11 @@ public class TernaryNode implements Expression {
     }
 
     @Override
-    public Object evaluate(Function context) {
+    public Object eval(Function context) {
         // 计算条件表达式
-        Boolean conditionResult = condition.evaluate(context);
+        Boolean conditionResult = condition.eval(context);
         // 根据条件结果返回对应的表达式值
-        return conditionResult ? trueExpression.evaluate(context) : falseExpression.evaluate(context);
+        return conditionResult ? trueExpression.eval(context) : falseExpression.eval(context);
     }
 
     @Override

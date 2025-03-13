@@ -2,8 +2,8 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.ExpressionEvaluator;
-import org.noear.solon.expression.snel.SnelExpressionEvaluator;
+import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author noear 2025/3/13 created
  */
 public class PropTest {
-    ExpressionEvaluator evaluator = SnelExpressionEvaluator.getInstance();
+    Evaluator evaluator = SnelEvaluator.getInstance();
 
     @Test
     public void case1() {
@@ -91,11 +91,11 @@ public class PropTest {
 
         // 测试 order.items[0]
         Expression expr1 = evaluator.compile("order.items[0]");
-        System.out.println(expr1.evaluate(context)); // 输出: item1
+        System.out.println(expr1.eval(context)); // 输出: item1
 
         // 测试 order.items[1]
         Expression expr2 = evaluator.compile("order.items[1]");
-        System.out.println(expr2.evaluate(context)); // 输出: item2
+        System.out.println(expr2.eval(context)); // 输出: item2
 
         // 测试数组的整数索引访问
         int[] numbers = {10, 20, 30};
@@ -103,10 +103,10 @@ public class PropTest {
 
         // 测试 numbers[0]
         Expression expr3 = evaluator.compile("numbers[0]");
-        assert 10 == (int) (expr3.evaluate(context)); // 输出: 10
+        assert 10 == (int) (expr3.eval(context)); // 输出: 10
 
         // 测试 numbers[2]
         Expression expr4 = evaluator.compile("numbers[2]");
-        assert 30 == (int) (expr4.evaluate(context)); // 输出: 30
+        assert 30 == (int) (expr4.eval(context)); // 输出: 30
     }
 }

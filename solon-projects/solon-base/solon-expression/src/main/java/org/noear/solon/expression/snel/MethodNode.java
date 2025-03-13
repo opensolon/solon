@@ -54,9 +54,9 @@ public class MethodNode implements Expression {
     }
 
     @Override
-    public Object evaluate(Function context) {
+    public Object eval(Function context) {
         // 先求值 target
-        Object targetValue = target.evaluate(context);
+        Object targetValue = target.eval(context);
         if (targetValue == null) {
             return null; // 目标为 null 时返回 null
         }
@@ -65,7 +65,7 @@ public class MethodNode implements Expression {
         Object[] argValues = new Object[args.size()];
         Class<?>[] argTypes = new Class<?>[args.size()];
         for (int i = 0; i < args.size(); i++) {
-            argValues[i] = args.get(i).evaluate(context);
+            argValues[i] = args.get(i).eval(context);
             argTypes[i] = getEffectiveClass(argValues[i]);
         }
 
