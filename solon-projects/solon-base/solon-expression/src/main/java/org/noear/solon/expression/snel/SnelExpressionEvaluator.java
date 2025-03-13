@@ -32,12 +32,13 @@ import org.noear.solon.lang.Preview;
  * Snel 表达式求值引擎核心类。
  * 支持以下特性：
  * 1. 变量访问：`user.name`、`order['created']['name']` 等嵌套属性
- * 2. 逻辑运算：AND/OR/NOT，支持短路逻辑
- * 3. 比较运算：>、<、==、!=、IN、LIKE 等
- * 4. 算术运算：+、-、*、/、%
- * 5. 三元表达式：condition ? trueExpr : falseExpr
- * 6. 布尔常量：直接解析 true/false
- * 7. 空值安全：属性不存在时返回 null，避免 NPE
+ * 2. 方法调用：`Math.add(1, 2)`、`user.getName()` 等
+ * 3. 逻辑运算：AND/OR/NOT，支持短路逻辑
+ * 4. 比较运算：>、<、==、!=、IN、LIKE 等
+ * 5. 算术运算：+、-、*、/、%
+ * 6. 三元表达式：condition ? trueExpr : falseExpr
+ * 7. 布尔常量：直接解析 true/false
+ * 8. 空值安全：属性或方法不存在时返回 null，避免 NPE
  *
  * @author noear
  * @since 3.1
@@ -187,6 +188,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
      * 3. 字符串字面量（如 'hello'）
      * 4. 布尔常量（true/false）
      * 5. 变量或属性访问（如 user.name）
+     * 6. 方法调用（如 Math.add(1, 2)）
      */
     private Expression parsePrimaryExpression(ParserState state) {
         state.skipWhitespace();
@@ -203,18 +205,18 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         } else if (checkKeyword(state, "false")) {
             return new ConstantNode(false);
         } else {
-            return parseVariableOrProperty(state);
+            return parseVariableOrMethodCall(state);
         }
     }
 
     /**
-     * 解析变量或属性访问（如 user.address.city 或 order['items'][0]）
+     * 解析变量、属性访问或方法调用
      */
-    private Expression parseVariableOrProperty(ParserState state) {
+    private Expression parseVariableOrMethodCall(ParserState state) {
         String identifier = parseIdentifier(state);
         Expression expr = new VariableNode(identifier);
 
-        // 循环处理后续的属性访问操作（. 或 []）
+        // 循环处理后续的属性访问操作（. 或 [] 或 ()）
         while (true) {
             state.skipWhitespace();
             if (eat(state, '.')) {
@@ -222,15 +224,46 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
                 String prop = parseIdentifier(state);
                 expr = new PropertyNode(expr, prop);
             } else if (eat(state, '[')) {
-                // 解析方括号属性访问：obj['property'] 或 obj[0]
+                // 解析方括号属性访问：obj['property']
                 Expression propExpr = parseLogicalOrExpression(state);
                 eat(state, ']');
                 expr = new PropertyNode(expr, propExpr);
+            } else if (eat(state, '(')) {
+                // 解析方法调用：obj.method()
+                List<Expression> args = parseMethodArguments(state);
+                eat(state, ')');
+                expr = new MethodCallNode(expr, getMethodName(expr), args);
             } else {
                 break;
             }
         }
         return expr;
+    }
+
+    /**
+     * 获取方法名
+     */
+    private String getMethodName(Expression expr) {
+        if (expr instanceof PropertyNode) {
+            // 如果是属性访问节点，获取属性名作为方法名
+            return ((PropertyNode) expr).getPropertyName();
+        } else if (expr instanceof VariableNode) {
+            // 如果是变量节点，获取变量名作为方法名
+            return ((VariableNode) expr).getName();
+        }
+        throw new RuntimeException("Invalid method call target: " + expr);
+    }
+
+    /**
+     * 解析方法参数列表
+     */
+    private List<Expression> parseMethodArguments(ParserState state) {
+        List<Expression> args = new ArrayList<>();
+        while (state.getCurrentChar() != ')') {
+            args.add(parseLogicalOrExpression(state));
+            if (eat(state, ',')) continue;
+        }
+        return args;
     }
 
     // 以下为工具方法 --------------------------------
@@ -276,7 +309,7 @@ public class SnelExpressionEvaluator implements ExpressionEvaluator {
         } else if (checkKeyword(state, "false")) {
             return false;
         } else {
-            return parseVariableOrProperty(state); // 简化处理
+            return parseVariableOrMethodCall(state); // 简化处理
         }
     }
 
