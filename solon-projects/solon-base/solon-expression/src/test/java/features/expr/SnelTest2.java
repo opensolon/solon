@@ -1,9 +1,8 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.Evaluator;
 import org.noear.solon.expression.exception.EvaluationException;
-import org.noear.solon.expression.snel.SnelEvaluator;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.*;
 
@@ -12,13 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SnelTest2 {
 
-    private final Evaluator evaluator = SnelEvaluator.getInstance();
-
     // 测试包含多个算术运算符的复杂表达式
     @Test
     public void testComplexArithmeticExpression() {
         String expr = "2 + 3 * 4 - 5 / 2";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(12, result);
     }
 
@@ -26,7 +23,7 @@ public class SnelTest2 {
     @Test
     public void testComplexLogicalExpression() {
         String expr = "(true AND false) OR (true AND true)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -34,7 +31,7 @@ public class SnelTest2 {
     @Test
     public void testBracketedArithmeticExpression() {
         String expr = "(2 + 3) * (4 - 1)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(15, result);
     }
 
@@ -42,7 +39,7 @@ public class SnelTest2 {
     @Test
     public void testComplexComparisonExpression() {
         String expr = "(2 < 3) AND (4 > 3) AND (5 == 5)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -55,7 +52,7 @@ public class SnelTest2 {
         context.put("y", 3);
         context.put("z", 4);
         context.put("w", 5);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(12, result);
     }
 
@@ -65,7 +62,7 @@ public class SnelTest2 {
         String expr = "x IN [1, 2, 3]";
         Map<String, Object> context = new HashMap<>();
         context.put("x", 2);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -75,7 +72,7 @@ public class SnelTest2 {
         String expr = "x NOT IN [1, 2, 3]";
         Map<String, Object> context = new HashMap<>();
         context.put("x", 4);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -85,7 +82,7 @@ public class SnelTest2 {
         String expr = "name LIKE 'John'";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -95,7 +92,7 @@ public class SnelTest2 {
         String expr = "name NOT LIKE '%Jane%'";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -106,7 +103,7 @@ public class SnelTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 15);
         context.put("y", 25);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("Both true", result);
     }
 
@@ -116,7 +113,7 @@ public class SnelTest2 {
         String expr = "x IN []";
         Map<String, Object> context = new HashMap<>();
         context.put("x", 1);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(false, result);
     }
 
@@ -126,28 +123,28 @@ public class SnelTest2 {
         String expr = "x + 5";
         Map<String, Object> context = new HashMap<>();
         context.put("x", null);
-        assertThrows(EvaluationException.class, () -> evaluator.eval(expr, context));
+        assertThrows(EvaluationException.class, () -> SnEL.eval(expr, context));
     }
 
     // 测试包含非法操作符的表达式
     @Test
     public void testExpressionWithInvalidOperator() {
         String expr = "2 & 3";
-        assertThrows(RuntimeException.class, () -> evaluator.eval(expr));
+        assertThrows(RuntimeException.class, () -> SnEL.eval(expr));
     }
 
     // 测试包含非法变量名的表达式
     @Test
     public void testExpressionWithInvalidVariableName() {
         String expr = "2 + @invalid";
-        assertThrows(RuntimeException.class, () -> evaluator.eval(expr));
+        assertThrows(RuntimeException.class, () -> SnEL.eval(expr));
     }
 
     // 测试包含未定义变量的表达式
     @Test
     public void testExpressionWithUndefinedVariable() {
         String expr = "x + 5";
-        assertThrows(EvaluationException.class, () -> evaluator.eval(expr));
+        assertThrows(EvaluationException.class, () -> SnEL.eval(expr));
     }
 
     // 测试包含多个 IN 操作符的表达式
@@ -157,7 +154,7 @@ public class SnelTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 2);
         context.put("y", 5);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -168,7 +165,7 @@ public class SnelTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("name1", "John Doe");
         context.put("name2", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -180,7 +177,7 @@ public class SnelTest2 {
         context.put("x", 15);
         context.put("y", 18);
         context.put("z", 30);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -193,7 +190,7 @@ public class SnelTest2 {
         context.put("y", 8);
         context.put("z", 12);
         context.put("w", 5);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 }

@@ -1,7 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.snel.SnelEvaluator;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.*;
 
@@ -9,13 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelComplexTest {
 
-    private final SnelEvaluator evaluator = SnelEvaluator.getInstance();
-
     // 复杂嵌套逻辑表达式
     @Test
     public void testComplexNestedLogicalExpression() {
         String expr = "(true AND (false OR true)) OR (false AND true)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -46,7 +44,7 @@ public class SnelComplexTest {
         context.put("user", user);
         context.put("service", service);
         String expr = "service.getUserName(user)";
-        Object result = evaluator.eval(expr, context, false);
+        Object result = SnEL.eval(expr, context, false);
         assertEquals("John", result);
     }
 
@@ -54,7 +52,7 @@ public class SnelComplexTest {
     @Test
     public void testComplexArithmeticAndComparisonExpression() {
         String expr = "((2 + 3) * 4) > (5 + 10) AND (15 % 2) == 1";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -62,7 +60,7 @@ public class SnelComplexTest {
     @Test
     public void testNestedTernaryExpression() {
         String expr = "true ? (false ? 1 : 2) : (true ? 3 : 4)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(2, result);
     }
 
@@ -70,7 +68,7 @@ public class SnelComplexTest {
     @Test
     public void testComplexInAndNotInExpression() {
         String expr = "2 IN [1, 2, 3] AND 4 NOT IN [1, 2, 3]";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -107,7 +105,7 @@ public class SnelComplexTest {
         context.put("nestedUser", nestedUser);
         String expr = "nestedUser.address.city";
 
-        Object result = evaluator.eval(expr, context, false);
+        Object result = SnEL.eval(expr, context, false);
         assertEquals("New York", result);
     }
 
@@ -115,7 +113,7 @@ public class SnelComplexTest {
     @Test
     public void testComplexLikeAndNotLikeExpression() {
         String expr = "'hello' LIKE 'h' AND 'world' NOT LIKE 'x%'";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         // 这里需要根据实际 LIKE 操作符的实现来判断结果
         // 目前假设 LIKE 操作符按预期工作
         assertEquals(true, result);
@@ -125,7 +123,7 @@ public class SnelComplexTest {
     @Test
     public void testCombinedLogicalArithmeticAndComparisonExpression() {
         String expr = "(2 + 3 > 4) AND (true OR false) AND (6 % 3 == 0)";
-        Object result = evaluator.eval(expr);
+        Object result = SnEL.eval(expr);
         assertEquals(true, result);
     }
 
@@ -137,7 +135,7 @@ public class SnelComplexTest {
         context.put("list", list);
         String expr = "list[1] + 2";
 
-        Object result = evaluator.eval(expr, context, false);
+        Object result = SnEL.eval(expr, context, false);
         assertEquals(4, result);
     }
 
@@ -159,7 +157,7 @@ public class SnelComplexTest {
         context.put("calculator", calculator);
         String expr = "calculator.isEven(calculator.add(2, 3)) ? 'even' : 'odd'";
 
-        Object result = evaluator.eval(expr, context, false);
+        Object result = SnEL.eval(expr, context, false);
         assertEquals("odd", result);
     }
 }

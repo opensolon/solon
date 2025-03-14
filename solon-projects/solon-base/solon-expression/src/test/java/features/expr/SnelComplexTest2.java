@@ -1,8 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.Evaluator;
-import org.noear.solon.expression.snel.SnelEvaluator;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,15 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SnelComplexTest2 {
 
-    private final Evaluator evaluator = SnelEvaluator.getInstance();
-
     @Test
     public void testNestedTernaryExpression() {
         String expr = "x > 10 ? (y > 20 ? 'x>10 and y>20' : 'x>10 but y<=20') : (y > 20 ? 'x<=10 but y>20' : 'x<=10 and y<=20')";
         Map<String, Object> context = new HashMap<>();
         context.put("x", 15);
         context.put("y", 25);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("x>10 and y>20", result);
     }
 
@@ -31,7 +28,7 @@ public class SnelComplexTest2 {
         context.put("x", 20);
         context.put("y", 15);
         context.put("z", 20);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -53,7 +50,7 @@ public class SnelComplexTest2 {
         String expr = "user.address.getCity()";
         Map<String, Object> context = new HashMap<>();
         context.put("user", new User());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("New York", result);
     }
 
@@ -63,7 +60,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 2);
         context.put("list", Arrays.asList(1, 2, 3));
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -73,7 +70,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
         context.put("pattern", "Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -83,7 +80,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 4);
         context.put("nestedList", Arrays.asList(Arrays.asList(1, 2, 3), Arrays.asList(5, 6, 7)));
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -104,7 +101,7 @@ public class SnelComplexTest2 {
         String expr = "order.product.getName().length() > 5";
         Map<String, Object> context = new HashMap<>();
         context.put("order", new Order());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -113,7 +110,7 @@ public class SnelComplexTest2 {
         String expr = "order.product.getName().length()";
         Map<String, Object> context = new HashMap<>();
         context.put("order", new Order());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(6, result);
     }
 
@@ -131,7 +128,7 @@ public class SnelComplexTest2 {
         context.put("x", 15);
         context.put("y", 5);
         context.put("MathUtils", MathUtils.class);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(20, result);
     }
 
@@ -143,7 +140,7 @@ public class SnelComplexTest2 {
         context.put("y", 18);
         context.put("z", 30);
         context.put("w", 45);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -157,7 +154,7 @@ public class SnelComplexTest2 {
         context.put("w", 3);
         context.put("a", 2);
         context.put("b", 3);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(51, result);
     }
 
@@ -185,7 +182,7 @@ public class SnelComplexTest2 {
         context.put("y", 5);
         context.put("op", "+");
         context.put("calculator", new Calculator());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(15, result);
     }
 
@@ -195,7 +192,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", "apple");
         context.put("list", Arrays.asList(1, "apple", true));
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -204,7 +201,7 @@ public class SnelComplexTest2 {
         String expr = "name LIKE 'Doe'";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -214,7 +211,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 15);
         context.put("y", 18);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("Condition met", result);
     }
 
@@ -226,7 +223,7 @@ public class SnelComplexTest2 {
         context.put("y", 10);
         context.put("z", 20);
         context.put("w", 10);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(false, result);
     }
 
@@ -243,7 +240,7 @@ public class SnelComplexTest2 {
         context.put("x", null);
         context.put("y", "world");
         context.put("stringUtils", new StringUtils());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("world", result);
     }
 
@@ -253,7 +250,7 @@ public class SnelComplexTest2 {
         Map<String, Object> context = new HashMap<>();
         context.put("x", 1);
         context.put("list", Arrays.asList());
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(false, result);
     }
 
@@ -262,7 +259,7 @@ public class SnelComplexTest2 {
         String expr = "name LIKE ''";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(true, result);
     }
 
@@ -271,7 +268,7 @@ public class SnelComplexTest2 {
         String expr = "'' LIKE name";
         Map<String, Object> context = new HashMap<>();
         context.put("name", "John Doe");
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals(false, result);
     }
 
@@ -280,7 +277,7 @@ public class SnelComplexTest2 {
         String expr = "x == null ? 'True' : 'False'";
         Map<String, Object> context = new HashMap<>();
         context.put("x", null);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("True", result);
     }
 
@@ -289,7 +286,7 @@ public class SnelComplexTest2 {
         String expr = "x != null ? 'True' : 'False'";
         Map<String, Object> context = new HashMap<>();
         context.put("x", null);
-        Object result = evaluator.eval(expr, context);
+        Object result = SnEL.eval(expr, context);
         assertEquals("False", result);
     }
 }

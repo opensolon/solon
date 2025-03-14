@@ -1,8 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.Evaluator;
-import org.noear.solon.expression.snel.SnelEvaluator;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Map;
  * @author noear 2025/3/13 created
  */
 public class MethodTest {
-    Evaluator evaluator = SnelEvaluator.getInstance();
     Order order = new Order(1, new User("world", 20));
 
     @Test
@@ -19,7 +17,7 @@ public class MethodTest {
         Map<String, Object> context = new HashMap();
         context.put("order", order);
 
-        assert 20 == (Integer) evaluator.eval("order.user.age", context);
+        assert 20 == (Integer) SnEL.eval("order.user.age", context);
     }
 
     @Test
@@ -27,9 +25,9 @@ public class MethodTest {
         Map<String, Object> context = new HashMap();
         context.put("order", order);
 
-        assert 10 == (Integer) evaluator.eval("order.user.getAge2()", context);
+        assert 10 == (Integer) SnEL.eval("order.user.getAge2()", context);
 
-        assert 3 == (Integer) evaluator.eval("order.add(1,2)", context);
+        assert 3 == (Integer) SnEL.eval("order.add(1,2)", context);
     }
 
     @Test
@@ -37,10 +35,10 @@ public class MethodTest {
         Map<String, Object> context = new HashMap();
         context.put("order", order);
 
-        Object result = evaluator.eval("order['user']['age'] == 20 ? true : false", context);
+        Object result = SnEL.eval("order['user']['age'] == 20 ? true : false", context);
         assert true == (Boolean) result;
 
-        result = evaluator.eval("order['user']['age'] == order.user.getAge2() ? true : false", context);
+        result = SnEL.eval("order['user']['age'] == order.user.getAge2() ? true : false", context);
         assert false == (Boolean) result;
     }
 

@@ -17,8 +17,6 @@ package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,16 +31,14 @@ public interface SnEL {
     /**
      * 解析（将文本解析为一个可评估的表达式结构树，可反向转换）
      */
-    static Expression parse(Reader reader) {
-        return SnelEvaluator.getInstance().parse(reader);
+    static Expression parse(String expr, boolean cached) {
+        return SnelEvaluateParser.getInstance().parse(expr, cached);
     }
 
-    /**
-     * 解析（将文本解析为一个可评估的表达式结构树，可反向转换）
-     */
     static Expression parse(String expr) {
-        return parse(new StringReader(expr));
+        return parse(expr, true);
     }
+
 
     /// /////////////////
 
@@ -55,7 +51,7 @@ public interface SnEL {
      * @param cached  是否带编译缓存
      */
     static Object eval(String expr, Function context, boolean cached) {
-        return SnelEvaluator.getInstance().eval(expr, context, cached);
+        return parse(expr, cached).eval(context);
     }
 
     /**
@@ -106,18 +102,16 @@ public interface SnEL {
      */
     static final String CONTEXT_PROPS_KEY = "$PROPS";
 
-    /**
-     * 解析模板
-     */
-    static Expression<String> parseTmpl(Reader reader) {
-        return TemplateEvaluator.getInstance().parse(reader);
-    }
 
     /**
      * 解析模板
      */
+    static Expression<String> parseTmpl(String expr, boolean cached) {
+        return SnelTemplateParser.getInstance().parse(expr, cached);
+    }
+
     static Expression<String> parseTmpl(String expr) {
-        return parseTmpl(new StringReader(expr));
+        return parseTmpl(expr, true);
     }
 
     /// /////////////////
@@ -131,7 +125,7 @@ public interface SnEL {
      * @param cached  是否带编译缓存
      */
     static String evalTmpl(String expr, Function context, boolean cached) {
-        return TemplateEvaluator.getInstance().eval(expr, context, cached);
+        return parseTmpl(expr, cached).eval(context);
     }
 
     /**

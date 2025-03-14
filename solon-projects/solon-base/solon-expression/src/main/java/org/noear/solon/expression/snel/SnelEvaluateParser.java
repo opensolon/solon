@@ -18,21 +18,21 @@ package org.noear.solon.expression.snel;
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.Parser;
 import org.noear.solon.expression.exception.CompilationException;
-import org.noear.solon.expression.exception.EvaluationException;
 
 
 /**
- * Solon 表达式语言求值引擎（简称，SnEL）
+ * Solon 表达式语言求值解析器
  *
+ * <p>
  * 支持以下特性：
  * 1. 变量访问：`user.name`、`order['created']['name']` 等嵌套属性
  * 2. 方法调用：`Math.add(1, 2)`、`user.getName()` 等
@@ -42,32 +42,33 @@ import org.noear.solon.expression.exception.EvaluationException;
  * 6. 三元表达式：condition ? trueExpr : falseExpr
  * 7. 布尔常量：直接解析 true/false
  * 8. 空值安全：属性或方法不存在时返回 null，避免 NPE
+ * </p>
  *
  * @author noear
  * @since 3.1
  * */
-public class SnelEvaluator implements Evaluator {
-    private static final SnelEvaluator instance = new SnelEvaluator();
+public class SnelEvaluateParser implements Parser {
+    private static final SnelEvaluateParser INSTANCE = new SnelEvaluateParser();
     private final Map<String, Expression> exprCached = new ConcurrentHashMap<>();
 
-    public static SnelEvaluator getInstance() {
-        return instance;
+    public static SnelEvaluateParser getInstance() {
+        return INSTANCE;
     }
 
     @Override
-    public Object eval(String expr, Function context, boolean cached) {
-        // 使用缓存加速重复表达式求值
-        try {
-            return (cached ? exprCached.computeIfAbsent(expr, this::parse) : parse(expr)).eval(context);
-        } catch (EvaluationException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new EvaluationException("Evaluation failed for: " + expr, e);
+    public Expression parse(String expr, boolean cached) {
+        if (cached) {
+            return exprCached.computeIfAbsent(expr, this::parseDo);
+        } else {
+            return parseDo(expr);
         }
     }
 
-    @Override
-    public Expression parse(Reader reader) {
+    protected Expression parseDo(String expr) {
+        return parseDo(new StringReader(expr));
+    }
+
+    protected Expression parseDo(Reader reader) {
         ParserState state = new ParserState(reader);
         Expression result = parseTernaryExpression(state);
         if (state.getCurrentChar() != -1) {

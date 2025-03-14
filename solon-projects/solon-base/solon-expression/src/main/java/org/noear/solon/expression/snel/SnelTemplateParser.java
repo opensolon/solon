@@ -15,29 +15,32 @@
  */
 package org.noear.solon.expression.snel;
 
+import org.noear.solon.expression.Parser;
 import org.noear.solon.expression.exception.CompilationException;
-import org.noear.solon.expression.exception.EvaluationException;
-import org.noear.solon.expression.Evaluator;
 import org.noear.solon.expression.Expression;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
- * Solon 表达式语言模板引擎（简称，SnTmpl）
+ * Solon 表达式语言模板解析器
  *
+ * <p>
+ * 支持以下示例：
+ * 1."name is #{user.name}, and key is ${key}"
+ * </p>
  * @author noear
  * @since 3.1
  */
-public class TemplateEvaluator implements Evaluator<String> {
-    private static final TemplateEvaluator INSTANCE = new TemplateEvaluator();
-    private final Map<String, Expression<String>> exprCache = new ConcurrentHashMap<>();
+public class SnelTemplateParser implements Parser<String> {
+    private static final SnelTemplateParser INSTANCE = new SnelTemplateParser();
+    private final Map<String, Expression<String>> exprCached = new ConcurrentHashMap<>();
 
     // 配置常量
     private static final int BUFFER_SIZE = 1024; // 增大缓冲区
@@ -46,24 +49,24 @@ public class TemplateEvaluator implements Evaluator<String> {
     private static final char MARK_BRACE_OPEN = '{';
     private static final char MARK_BRACE_CLOSE = '}';
 
-    public static TemplateEvaluator getInstance() {
+    public static SnelTemplateParser getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public String eval(String expr, Function context, boolean cached) {
-        try {
-            return (String) (cached ? exprCache.computeIfAbsent(expr, this::parse) : parse(expr))
-                    .eval(context);
-        } catch (EvaluationException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EvaluationException("Evaluation failed", e); // 简化错误信息
+    public Expression<String> parse(String expr, boolean cached) {
+        if (cached) {
+            return exprCached.computeIfAbsent(expr, this::parseDo);
+        } else {
+            return parseDo(expr);
         }
     }
 
-    @Override
-    public Expression<String> parse(Reader reader) {
+    protected Expression<String> parseDo(String expr) {
+        return parseDo(new StringReader(expr));
+    }
+
+    protected Expression<String> parseDo(Reader reader) {
         try (BufferedReader br = wrapReader(reader)) {
             ParserState state = new ParserState(br);
             List<TemplateFragment> fragments = new ArrayList<>(64); // 预设初始容量
