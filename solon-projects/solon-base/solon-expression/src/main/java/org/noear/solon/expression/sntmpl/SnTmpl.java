@@ -15,8 +15,87 @@
  */
 package org.noear.solon.expression.sntmpl;
 
+import org.noear.solon.expression.Expression;
+
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+
 /**
- * @author noear 2025/3/14 created
+ * Solon 表达式语言模板引擎快捷方式（简称，SnTmpl）
+ *
+ * @author noear
+ * @since 3.1
  */
 public interface SnTmpl {
+    /**
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     */
+    static Expression<String> compile(Reader reader) {
+        return SntmplEvaluator.getInstance().compile(reader);
+    }
+
+    /**
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     */
+    static Expression<String> compile(String expr) {
+        return compile(new StringReader(expr));
+    }
+
+    /// /////////////////
+
+
+    /**
+     * 评估
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     * @param cached  是否带编译缓存
+     */
+    static String eval(String expr, Function context, boolean cached) {
+        return SntmplEvaluator.getInstance().eval(expr, context, cached);
+    }
+
+    /**
+     * 评估
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     * @param cached  是否带编译缓存
+     */
+    static String eval(String expr, Map context, boolean cached) {
+        return eval(expr, context::get, cached);
+    }
+
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     */
+    static String eval(String expr, Function context) {
+        return eval(expr, context, true);
+    }
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     */
+    static String eval(String expr, Map context) {
+        return eval(expr, context, true);
+    }
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr 表达式
+     */
+    static String eval(String expr) {
+        return eval(expr, Collections.EMPTY_MAP, true);
+    }
 }
