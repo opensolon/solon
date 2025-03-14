@@ -58,14 +58,6 @@ public class MethodCache {
                 .orElse(null);
     }
 
-    // 在 MethodCache 中添加基本类型处理
-    private static Class<?> getBoxedType(Class<?> type) {
-        if (type.isPrimitive()) {
-            return PRIMITIVE_WRAPPER_MAP.getOrDefault(type, type);
-        }
-        return type;
-    }
-
     private boolean isMethodMatch(Method method, Class<?>[] argTypes) {
         Class<?>[] paramTypes = method.getParameterTypes();
         if (paramTypes.length != argTypes.length) return false;

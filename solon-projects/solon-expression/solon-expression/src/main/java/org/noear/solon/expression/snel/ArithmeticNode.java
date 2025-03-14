@@ -31,35 +31,51 @@ public class ArithmeticNode implements Expression {
     private final ArithmeticOp operator;
     private final Expression left;
     private final Expression right;
+    private Object inferResult;
 
     public ArithmeticNode(ArithmeticOp operator, Expression left, Expression right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
+
+        if (left instanceof ConstantNode && right instanceof ConstantNode) {
+            Object leftVal = ((ConstantNode) left).getValue();
+            Object rightVal = ((ConstantNode) right).getValue();
+
+            if (leftVal instanceof Number && rightVal instanceof Number) {
+                inferResult = calculateNumbers((Number) leftVal, (Number) rightVal);
+            } else {
+                inferResult = String.valueOf(leftVal) + leftVal;
+            }
+        }
     }
 
     @Override
     public Object eval(Function context) {
-        Object leftValue = left.eval(context);
-        Object rightValue = right.eval(context);
+        if (inferResult != null) {
+            return inferResult;
+        }
+
+        Object leftVal = left.eval(context);
+        Object rightVal = right.eval(context);
 
         // 处理加法中的非数值类型拼接
         if (operator == ArithmeticOp.add) {
-            if (leftValue instanceof String || rightValue instanceof String) {
-                return String.valueOf(leftValue) + rightValue;
+            if (leftVal instanceof String || rightVal instanceof String) {
+                return String.valueOf(leftVal) + rightVal;
             }
         }
 
-        if(leftValue == null){
+        if (leftVal == null) {
             throw new EvaluationException("Arithmetic left value is null");
         }
 
-        if(rightValue == null){
+        if (rightVal == null) {
             throw new EvaluationException("Arithmetic right value is null");
         }
 
         // 动态分派数值计算逻辑
-        return calculateNumbers((Number) leftValue, (Number) rightValue);
+        return calculateNumbers((Number) leftVal, (Number) rightVal);
     }
 
     private Number calculateNumbers(Number a, Number b) {
