@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -97,7 +98,8 @@ public class PropertyNode implements Expression {
         if (property instanceof ConstantNode) {
             return ((ConstantNode) property).getValue().toString();
         }
-        throw new RuntimeException("Invalid property name: " + property);
+
+        throw new EvaluationException("Invalid property name: " + property);
     }
 
     /**
@@ -114,11 +116,13 @@ public class PropertyNode implements Expression {
             try {
                 Field field = target.getClass().getField(propName);
                 return field.get(target);
-            } catch (Exception ex) {
+            } catch (NoSuchFieldException ex) {
                 return null; // 属性不存在返回 null
+            } catch (Exception ex) {
+                throw new EvaluationException("Failed to access property: " + propName, ex);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to access property: " + propName, e);
+            throw new EvaluationException("Failed to access property: " + propName, e);
         }
     }
 

@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class MethodNode implements Expression {
             // 查找方法
             Method method = findMethod(targetClass, methodName, argTypes);
             if (method == null) {
-                throw new RuntimeException("Method not found: " + methodName);
+                throw new EvaluationException("Method not found: " + methodName);
             }
 
             method.setAccessible(true);
@@ -93,7 +94,7 @@ public class MethodNode implements Expression {
                 return method.invoke(targetValue, argValues);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to invoke method: " + methodName, e);
+            throw new EvaluationException("Failed to invoke method: " + methodName, e);
         }
     }
 
