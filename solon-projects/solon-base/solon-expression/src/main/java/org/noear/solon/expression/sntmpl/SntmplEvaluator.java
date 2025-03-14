@@ -15,6 +15,8 @@
  */
 package org.noear.solon.expression.sntmpl;
 
+import org.noear.solon.expression.exception.CompilationException;
+import org.noear.solon.expression.exception.EvaluationException;
 import org.noear.solon.expression.Evaluator;
 import org.noear.solon.expression.Expression;
 
@@ -28,141 +30,133 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
+ * Solon 表达式语言模板引擎（简称，SnTmpl）
+ *
  * @author noear
  * @since 3.1
  */
 public class SntmplEvaluator implements Evaluator<String> {
-    private static final SntmplEvaluator instance = new SntmplEvaluator();
-    private final Map<String, Expression<String>> exprCached = new ConcurrentHashMap<>();
+    private static final SntmplEvaluator INSTANCE = new SntmplEvaluator();
+    private final Map<String, Expression<String>> exprCache = new ConcurrentHashMap<>();
+
+    // 配置常量
+    private static final int BUFFER_SIZE = 1024; // 增大缓冲区
+    private static final char MARK_START = '#';
+    private static final char MARK_BRACE_OPEN = '{';
+    private static final char MARK_BRACE_CLOSE = '}';
 
     public static SntmplEvaluator getInstance() {
-        return instance;
+        return INSTANCE;
     }
-
-    private static final int MARK_START1 = '#';
-    private static final String MARK_START2 = "#{";
-    private static final int MARK_START3 = '{';
-    private static final int MARK_END = '}';
 
     @Override
     public String eval(String expr, Function context, boolean cached) {
         try {
-            if (cached) {
-                Expression<String> expression = exprCached.computeIfAbsent(expr, k -> compile(k));
-                return expression.eval(context);
-            } else {
-                return (String) compile(expr).eval(context);
-            }
+            return (String) (cached ? exprCache.computeIfAbsent(expr, this::compile) : compile(expr))
+                    .eval(context);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to evaluate expression: " + expr, e);
+            throw new EvaluationException("Evaluation failed", e); // 简化错误信息
         }
     }
 
     @Override
     public Expression<String> compile(Reader reader) {
-        try {
-            List<TemplateFragment> fragments = new ArrayList<>();
-            ParserState state = new ParserState(reader);
+        try (BufferedReader br = wrapReader(reader)) {
+            ParserState state = new ParserState(br);
+            List<TemplateFragment> fragments = new ArrayList<>(64); // 预设初始容量
 
-            int currentChar;
-            while ((currentChar = state.reader.read()) != -1) {
-                char ch = (char) currentChar;
-                handleChar(state, ch, fragments, reader);
+            char[] buffer = new char[BUFFER_SIZE];
+            int readCount;
+            while ((readCount = br.read(buffer)) != -1) {
+                parseBuffer(buffer, readCount, state, fragments);
             }
 
-            // 处理解析结束后的剩余内容
-            finalizeParsing(state, fragments);
+            completeParsing(state, fragments);
             return new TemplateNode(fragments);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to compile template from Reader", e);
+            throw new CompilationException("Compilation failed", e);
         }
     }
 
-
-    /**
-     * 处理当前字符
-     */
-    public void handleChar(ParserState state, char ch, List<TemplateFragment> fragments, Reader reader) throws IOException {
-        if (state.isEvaluable) {
-            handleEvaluableState(state, ch, fragments);
-        } else {
-            handleTextState(state, ch, fragments, reader);
-        }
-    }
-
-    /**
-     * 处理文本状态
-     */
-    private void handleTextState(ParserState state, char ch, List<TemplateFragment> fragments, Reader reader) throws IOException {
-        if (ch == MARK_START1) {
-            reader.mark(1);
-            int nextChar = reader.read();
-            if (nextChar == MARK_START3) {
-                addTextFragment(state, fragments);
-                state.isEvaluable = true;
+    private void parseBuffer(char[] buffer, int length,
+                             ParserState state, List<TemplateFragment> fragments) {
+        for (int i = 0; i < length; ) {
+            if (state.inExpression) {
+                i = processExpression(buffer, i, length, state, fragments);
             } else {
-                reader.reset();
-                state.currentText.append(ch);
+                i = processText(buffer, i, length, state, fragments);
             }
-        } else {
-            state.currentText.append(ch);
         }
     }
 
-    /**
-     * 处理可评估状态
-     */
-    private void handleEvaluableState(ParserState state, char ch, List<TemplateFragment> fragments) {
-        if (ch == MARK_END) {
-            addVariableFragment(state, fragments);
-            state.isEvaluable = false;
-        } else {
-            state.variableName.append(ch);
+    private int processText(char[] buffer, int index, int length,
+                            ParserState state, List<TemplateFragment> fragments) {
+        int start = index;
+        while (index < length) {
+            char ch = buffer[index];
+            if (ch == MARK_START && index + 1 < length) {
+                if (buffer[index + 1] == MARK_BRACE_OPEN) {
+                    flushText(state, fragments, buffer, start, index);
+                    state.inExpression = true;
+                    return index + 2; // 跳过两个字符
+                } else {
+                    index++; // 跳过当前字符，继续处理
+                }
+            }
+            index++;
+        }
+        state.textBuffer.append(buffer, start, index - start);
+        return index;
+    }
+
+    private int processExpression(char[] buffer, int index, int length,
+                                  ParserState state, List<TemplateFragment> fragments) {
+        int start = index;
+        while (index < length) {
+            if (buffer[index] == MARK_BRACE_CLOSE) {
+                state.exprBuffer.append(buffer, start, index - start);
+                fragments.add(new TemplateFragment(true, state.exprBuffer.toString()));
+                state.exprBuffer.setLength(0);
+                state.inExpression = false;
+                return index + 1;
+            }
+            index++;
+        }
+        state.exprBuffer.append(buffer, start, index - start);
+        return index;
+    }
+
+    private void flushText(ParserState state, List<TemplateFragment> fragments,
+                           char[] buffer, int start, int end) {
+        if (start < end) {
+            state.textBuffer.append(buffer, start, end - start);
+        }
+        if (state.textBuffer.length() > 0) {
+            fragments.add(new TemplateFragment(false, state.textBuffer.toString()));
+            state.textBuffer.setLength(0);
         }
     }
 
-    /**
-     * 添加文本片段
-     */
-    private void addTextFragment(ParserState state, List<TemplateFragment> fragments) {
-        if (state.currentText.length() > 0) {
-            fragments.add(new TemplateFragment(false, state.currentText.toString()));
-            state.currentText.setLength(0);
+    private void completeParsing(ParserState state, List<TemplateFragment> fragments) {
+        if (state.inExpression) {
+            fragments.add(new TemplateFragment(false, "#{" + state.exprBuffer));
         }
+        flushText(state, fragments, new char[0], 0, 0); // 强制刷新剩余文本
     }
 
-    /**
-     * 添加变量片段
-     */
-    private void addVariableFragment(ParserState state, List<TemplateFragment> fragments) {
-        fragments.add(new TemplateFragment(true, state.variableName.toString()));
-        state.variableName.setLength(0);
-    }
-
-    /**
-     * 完成解析，处理剩余内容
-     */
-    public void finalizeParsing(ParserState state, List<TemplateFragment> fragments) {
-        if (state.isEvaluable) {
-            state.currentText.append(MARK_START2).append(state.variableName);
-        }
-        if (state.currentText.length() > 0) {
-            fragments.add(new TemplateFragment(false, state.currentText.toString()));
-        }
+    private static BufferedReader wrapReader(Reader reader) {
+        return reader instanceof BufferedReader ?
+                (BufferedReader) reader : new BufferedReader(reader);
     }
 
     private static class ParserState {
-        private final StringBuilder currentText = new StringBuilder();
-        private final StringBuilder variableName = new StringBuilder();
-        private boolean isEvaluable = false;
-        private final BufferedReader reader;
+        final StringBuilder textBuffer = new StringBuilder(256);
+        final StringBuilder exprBuffer = new StringBuilder(64);
+        boolean inExpression;
+        final BufferedReader reader;
 
-        public ParserState(Reader reader) {
-            if (reader instanceof BufferedReader) {
-                this.reader = (BufferedReader) reader;
-            } else {
-                this.reader = new BufferedReader(reader);
-            }
+        ParserState(BufferedReader reader) {
+            this.reader = reader;
         }
     }
 }

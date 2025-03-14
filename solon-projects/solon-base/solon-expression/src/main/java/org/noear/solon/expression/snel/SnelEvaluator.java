@@ -26,10 +26,12 @@ import java.util.function.Function;
 
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.exception.CompilationException;
+import org.noear.solon.expression.exception.EvaluationException;
 
 
 /**
- * Snel 表达式求值引擎。
+ * Solon 表达式语言求值引擎（简称，SnEL）
  *
  * 支持以下特性：
  * 1. 变量访问：`user.name`、`order['created']['name']` 等嵌套属性
@@ -55,10 +57,14 @@ public class SnelEvaluator implements Evaluator {
     @Override
     public Object eval(String expr, Function context, boolean cached) {
         // 使用缓存加速重复表达式求值
-        if (cached) {
-            return exprCached.computeIfAbsent(expr, k -> compile(k)).eval(context);
-        } else {
-            return compile(expr).eval(context);
+        try {
+            if (cached) {
+                return exprCached.computeIfAbsent(expr, k -> compile(k)).eval(context);
+            } else {
+                return compile(expr).eval(context);
+            }
+        } catch (Throwable e) {
+            throw new EvaluationException("Evaluation failed for: " + expr, e);
         }
     }
 
@@ -67,7 +73,7 @@ public class SnelEvaluator implements Evaluator {
         ParserState state = new ParserState(reader);
         Expression result = parseTernaryExpression(state);
         if (state.getCurrentChar() != -1) {
-            throw new RuntimeException("Unexpected trailing character: " + (char) state.getCurrentChar());
+            throw new CompilationException("Unexpected trailing character: " + (char) state.getCurrentChar());
         }
         return result;
     }
@@ -142,7 +148,7 @@ public class SnelEvaluator implements Evaluator {
             } else if (eat(state, "LIKE")) {
                 return new ComparisonNode(ComparisonOp.nlk, left, parseAdditiveExpression(state));
             }
-            throw new RuntimeException("Invalid NOT expression");
+            throw new CompilationException("Invalid NOT expression");
         }
         return left;
     }
@@ -247,7 +253,7 @@ public class SnelEvaluator implements Evaluator {
                     // 如果 expr 是变量节点，直接使用方法名
                     expr = new MethodNode(expr, identifier, args);
                 } else {
-                    throw new RuntimeException("Invalid method call target: " + expr);
+                    throw new CompilationException("Invalid method call target: " + expr);
                 }
             } else {
                 break;
@@ -384,7 +390,7 @@ public class SnelEvaluator implements Evaluator {
                 return Integer.parseInt(numberStr);
             }
         } catch (NumberFormatException e) {
-            throw new RuntimeException("Invalid number format: " + numberStr, e);
+            throw new CompilationException("Invalid number format: " + numberStr, e);
         }
     }
 
@@ -431,7 +437,7 @@ public class SnelEvaluator implements Evaluator {
      */
     private void require(ParserState state, char expected, String errorMessage) {
         if (!eat(state, expected)) {
-            throw new RuntimeException(errorMessage);
+            throw new CompilationException(errorMessage);
         }
     }
 
@@ -490,7 +496,7 @@ public class SnelEvaluator implements Evaluator {
                 ch = reader.read();
                 position++;
             } catch (IOException e) {
-                throw new RuntimeException("Read error at position " + position, e);
+                throw new CompilationException("Read error at position " + position, e);
             }
         }
 
@@ -538,7 +544,7 @@ public class SnelEvaluator implements Evaluator {
                 markedCh = ch;
                 markedPosition = position;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new CompilationException(e);
             }
         }
 
@@ -551,7 +557,7 @@ public class SnelEvaluator implements Evaluator {
                 ch = markedCh;
                 position = markedPosition;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new CompilationException(e);
             }
         }
 
