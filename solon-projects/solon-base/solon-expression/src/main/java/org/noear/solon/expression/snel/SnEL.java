@@ -31,17 +31,17 @@ import java.util.function.Function;
  */
 public interface SnEL {
     /**
-     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     * 解析（将文本解析为一个可评估的表达式结构树，可反向转换）
      */
-    static Expression compile(Reader reader) {
-        return SnelEvaluator.getInstance().compile(reader);
+    static Expression parse(Reader reader) {
+        return SnelEvaluator.getInstance().parse(reader);
     }
 
     /**
-     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     * 解析（将文本解析为一个可评估的表达式结构树，可反向转换）
      */
-    static Expression compile(String expr) {
-        return compile(new StringReader(expr));
+    static Expression parse(String expr) {
+        return parse(new StringReader(expr));
     }
 
     /// /////////////////
@@ -107,71 +107,71 @@ public interface SnEL {
     static final String CONTEXT_PROPS_KEY = "$PROPS";
 
     /**
-     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     * 解析模板
      */
-    static Expression<String> compileTemplate(Reader reader) {
-        return TemplateEvaluator.getInstance().compile(reader);
+    static Expression<String> parseTmpl(Reader reader) {
+        return TemplateEvaluator.getInstance().parse(reader);
     }
 
     /**
-     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     * 解析模板
      */
-    static Expression<String> compileTemplate(String expr) {
-        return compileTemplate(new StringReader(expr));
+    static Expression<String> parseTmpl(String expr) {
+        return parseTmpl(new StringReader(expr));
     }
 
     /// /////////////////
 
 
     /**
-     * 评估
+     * 评估模板
      *
      * @param expr    表达式
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    static String evalTemplate(String expr, Function context, boolean cached) {
+    static String evalTmpl(String expr, Function context, boolean cached) {
         return TemplateEvaluator.getInstance().eval(expr, context, cached);
     }
 
     /**
-     * 评估
+     * 评估模板
      *
      * @param expr    表达式
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    static String evalTemplate(String expr, Map context, boolean cached) {
-        return evalTemplate(expr, context::get, cached);
+    static String evalTmpl(String expr, Map context, boolean cached) {
+        return evalTmpl(expr, context::get, cached);
     }
 
 
     /**
-     * 评估（带编译缓存）
+     * 评估模板（带编译缓存）
      *
      * @param expr    表达式
      * @param context 上下文
      */
-    static String evalTemplate(String expr, Function context) {
-        return evalTemplate(expr, context, true);
+    static String evalTmpl(String expr, Function context) {
+        return evalTmpl(expr, context, true);
     }
 
     /**
-     * 评估（带编译缓存）
+     * 评估模板（带编译缓存）
      *
      * @param expr    表达式
      * @param context 上下文
      */
-    static String evalTemplate(String expr, Map context) {
-        return evalTemplate(expr, context, true);
+    static String evalTmpl(String expr, Map context) {
+        return evalTmpl(expr, context, true);
     }
 
     /**
-     * 评估（带编译缓存）
+     * 评估模板（带编译缓存）
      *
      * @param expr 表达式
      */
-    static String evalTemplate(String expr) {
-        return evalTemplate(expr, Collections.EMPTY_MAP, true);
+    static String evalTmpl(String expr) {
+        return evalTmpl(expr, Collections.EMPTY_MAP, true);
     }
 }

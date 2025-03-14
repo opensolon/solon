@@ -24,7 +24,7 @@ public class Query3Test {
         context.put("vip", "l3");
 
         String expression = "(((age > 18 AND salary < 5000) OR (NOT isMarried)) AND label IN ['aa','bb'] AND title NOT IN ['cc','dd']) OR vip=='l3'";
-        Expression root = evaluator.compile(expression);
+        Expression root = evaluator.parse(expression);
 
         // 打印表达式树
         System.out.println("Expression Tree: " + root);
@@ -49,7 +49,7 @@ public class Query3Test {
 
         String expression = "((age > 18 OR salary < 5000) AND (NOT isMarried) AND label IN ['aa','bb'] AND title NOT IN ['cc','dd']) OR vip=='l3'";
 
-        Expression root = evaluator.compile(expression);
+        Expression root = evaluator.parse(expression);
 
         // 打印表达式树
         System.out.println("Expression Tree: " + root);
@@ -73,7 +73,7 @@ public class Query3Test {
         context.put("vip", "l3");
 
         String expression = "((age > 18 OR salary < 5000) AND (isMarried == false) AND label IN ['aa','bb'] AND title NOT IN ['cc','dd']) OR vip=='l3'";
-        Expression root = evaluator.compile(expression);
+        Expression root = evaluator.parse(expression);
 
         // 打印表达式树
         System.out.println("Expression Tree: " + root);
@@ -98,7 +98,7 @@ public class Query3Test {
         context.put("vip", "l3");
 
         String expression = "((age > 18 OR salary < salaryV) AND (isMarried == false) AND label IN ['aa','bb'] AND title NOT IN ['cc','dd']) OR vip=='l3'";
-        Expression root = evaluator.compile(expression);
+        Expression root = evaluator.parse(expression);
 
         // 打印表达式树
         System.out.println("Expression Tree: " + root);

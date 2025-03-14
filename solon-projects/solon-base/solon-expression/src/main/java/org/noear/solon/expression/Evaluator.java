@@ -29,15 +29,15 @@ import java.util.function.Function;
  */
 public interface Evaluator<T> {
     /**
-     * 编译（即解析）
+     * 解析
      */
-    Expression compile(Reader reader);
+    Expression parse(Reader reader);
 
     /**
-     * 编译（即解析）
+     * 解析
      */
-    default Expression compile(String expr) {
-        return compile(new StringReader(expr));
+    default Expression parse(String expr) {
+        return parse(new StringReader(expr));
     }
 
     /**

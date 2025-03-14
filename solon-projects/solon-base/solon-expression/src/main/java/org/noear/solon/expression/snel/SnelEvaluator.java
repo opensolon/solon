@@ -58,7 +58,7 @@ public class SnelEvaluator implements Evaluator {
     public Object eval(String expr, Function context, boolean cached) {
         // 使用缓存加速重复表达式求值
         try {
-            return (cached ? exprCached.computeIfAbsent(expr, this::compile) : compile(expr)).eval(context);
+            return (cached ? exprCached.computeIfAbsent(expr, this::parse) : parse(expr)).eval(context);
         } catch (EvaluationException e) {
             throw e;
         } catch (Throwable e) {
@@ -67,7 +67,7 @@ public class SnelEvaluator implements Evaluator {
     }
 
     @Override
-    public Expression compile(Reader reader) {
+    public Expression parse(Reader reader) {
         ParserState state = new ParserState(reader);
         Expression result = parseTernaryExpression(state);
         if (state.getCurrentChar() != -1) {

@@ -53,7 +53,7 @@ public class TemplateEvaluator implements Evaluator<String> {
     @Override
     public String eval(String expr, Function context, boolean cached) {
         try {
-            return (String) (cached ? exprCache.computeIfAbsent(expr, this::compile) : compile(expr))
+            return (String) (cached ? exprCache.computeIfAbsent(expr, this::parse) : parse(expr))
                     .eval(context);
         } catch (EvaluationException e) {
             throw e;
@@ -63,7 +63,7 @@ public class TemplateEvaluator implements Evaluator<String> {
     }
 
     @Override
-    public Expression<String> compile(Reader reader) {
+    public Expression<String> parse(Reader reader) {
         try (BufferedReader br = wrapReader(reader)) {
             ParserState state = new ParserState(br);
             List<TemplateFragment> fragments = new ArrayList<>(64); // 预设初始容量
