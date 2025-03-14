@@ -31,57 +31,139 @@ public class ArithmeticNode implements Expression {
     private final ArithmeticOp operator;
     private final Expression left;
     private final Expression right;
-    private final Class<?> inferType;
 
     public ArithmeticNode(ArithmeticOp operator, Expression left, Expression right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
-        this.inferType = getInferType(left, right);
-    }
-
-    private Class<?> getInferType(Expression left, Expression right) {
-        if (left instanceof ConstantNode && right instanceof ConstantNode) {
-            Object lv = ((ConstantNode) left).getValue();
-            Object rv = ((ConstantNode) right).getValue();
-            if (lv instanceof Number && rv instanceof Number) {
-                ArithmeticOp.getPriorityType((Number) lv, (Number) rv);
-            }
-        }
-
-        return null;
     }
 
     @Override
     public Object eval(Function context) {
-        Object leftVal = left.eval(context);
-        Object rightVal = right.eval(context);
+        Object leftValue = left.eval(context);
+        Object rightValue = right.eval(context);
 
-        // 特殊处理加法中的字符串拼接
+        // 处理加法中的非数值类型拼接
         if (operator == ArithmeticOp.add) {
-            if (leftVal instanceof String || rightVal instanceof String) {
-                return String.valueOf(leftVal) + String.valueOf(rightVal);
+            if (leftValue instanceof String || rightValue instanceof String) {
+                return String.valueOf(leftValue) + rightValue;
             }
         }
 
-        if (leftVal == null) {
+        if(leftValue == null){
             throw new EvaluationException("Arithmetic left value is null");
         }
 
-        if (rightVal == null) {
+        if(rightValue == null){
             throw new EvaluationException("Arithmetic right value is null");
         }
 
-        // 确保操作数类型正确
-        if (inferType == null && !(leftVal instanceof Number && rightVal instanceof Number)) {
-            throw new EvaluationException("Non-numeric operands for arithmetic operation: "
-                    + leftVal.getClass() + " and " + rightVal.getClass());
-        }
+        // 动态分派数值计算逻辑
+        return calculateNumbers((Number) leftValue, (Number) rightValue);
+    }
 
-        try {
-            return operator.calculate(inferType, (Number) leftVal, (Number) rightVal);
-        } catch (ArithmeticException e) {
-            throw new EvaluationException("Arithmetic error: " + e.getMessage(), e);
+    private Number calculateNumbers(Number a, Number b) {
+        // 优先级: double > float > long > int
+        if (isDouble(a) || isDouble(b)) {
+            return calculateAsDouble(a, b);
+        } else if (isFloat(a) || isFloat(b)) {
+            return calculateAsFloat(a, b);
+        } else if (isLong(a) || isLong(b)) {
+            return calculateAsLong(a, b);
+        } else {
+            return calculateAsInt(a, b);
+        }
+    }
+
+    // 判断是否为 double
+    private boolean isDouble(Number n) {
+        return n instanceof Double;
+    }
+
+    // 判断是否为 float
+    private boolean isFloat(Number n) {
+        return n instanceof Float;
+    }
+
+    // 判断是否为 long
+    private boolean isLong(Number n) {
+        return n instanceof Long;
+    }
+
+    // 计算逻辑（按类型分派）
+    private double calculateAsDouble(Number a, Number b) {
+        double aVal = a.doubleValue();
+        double bVal = b.doubleValue();
+        switch (operator) {
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private float calculateAsFloat(Number a, Number b) {
+        float aVal = a.floatValue();
+        float bVal = b.floatValue();
+        switch (operator) {
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private long calculateAsLong(Number a, Number b) {
+        long aVal = a.longValue();
+        long bVal = b.longValue();
+        switch (operator) {
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+    }
+
+    private int calculateAsInt(Number a, Number b) {
+        int aVal = a.intValue();
+        int bVal = b.intValue();
+        switch (operator) {
+            case add:
+                return aVal + bVal;
+            case sub:
+                return aVal - bVal;
+            case mul:
+                return aVal * bVal;
+            case div:
+                return aVal / bVal;
+            case mod:
+                return aVal % bVal;
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
         }
     }
 
