@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Solon 表达式语言求值引擎快捷方式（简称，SnEL）
+ * Solon 表达式语言引擎快捷方式（简称，SnEL）
  *
  * @author noear
  * @since 3.1
