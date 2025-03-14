@@ -150,7 +150,8 @@ public class Query3Test {
         context.put("age", 20);
         context.put("salary", 4000);
 
-        Object result = evaluator.eval("(age > 18 AND salary < 5000) ? 'Eligible' : 'Not Eligible'", context);
+        Object result = evaluator.eval("(age > 18 AND salary < 5000) ? \n" +
+                "'Eligible' : 'Not Eligible'", context);
         assert "Eligible".equals(result);
     }
 

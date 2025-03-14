@@ -27,7 +27,7 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-public interface Evaluator {
+public interface Evaluator<T> {
     /**
      * 编译（即解析）
      */
@@ -47,7 +47,7 @@ public interface Evaluator {
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    Object eval(String expr, Function context, boolean cached);
+    T eval(String expr, Function context, boolean cached);
 
     /**
      * 评估
@@ -56,7 +56,7 @@ public interface Evaluator {
      * @param context 上下文
      * @param cached  是否带编译缓存
      */
-    default Object eval(String expr, Map context, boolean cached) {
+    default T eval(String expr, Map context, boolean cached) {
         return eval(expr, context::get, cached);
     }
 
@@ -67,7 +67,7 @@ public interface Evaluator {
      * @param expr    表达式
      * @param context 上下文
      */
-    default Object eval(String expr, Function context) {
+    default T eval(String expr, Function context) {
         return eval(expr, context, true);
     }
 
@@ -77,7 +77,7 @@ public interface Evaluator {
      * @param expr    表达式
      * @param context 上下文
      */
-    default Object eval(String expr, Map context) {
+    default T eval(String expr, Map context) {
         return eval(expr, context, true);
     }
 
@@ -86,7 +86,7 @@ public interface Evaluator {
      *
      * @param expr 表达式
      */
-    default Object eval(String expr) {
+    default T eval(String expr) {
         return eval(expr, Collections.EMPTY_MAP::get, true);
     }
 }
