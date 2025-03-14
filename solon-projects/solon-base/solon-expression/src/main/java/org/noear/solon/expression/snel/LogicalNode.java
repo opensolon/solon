@@ -59,21 +59,18 @@ public class LogicalNode implements Expression<Boolean> {
 
     @Override
     public Boolean eval(Function context) {
-        Object leftValue = left.eval(context);
-        Object rightValue = null;
+        Boolean leftValue = (Boolean) left.eval(context);
+        Boolean rightValue = null;
         if (right != null) {
-            rightValue = right.eval(context);
+            rightValue = (Boolean) right.eval(context);
         }
 
-        switch (operator) {
-            case and:
-                return ((Boolean) leftValue) && ((Boolean) rightValue);
-            case or:
-                return ((Boolean) leftValue) || ((Boolean) rightValue);
-            case not:
-                return ((Boolean) leftValue) == false;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+        if (operator == LogicalOp.and) {
+            return leftValue && rightValue;
+        } else if (operator == LogicalOp.or) {
+            return leftValue || rightValue;
+        } else {
+            return leftValue == false;
         }
     }
 

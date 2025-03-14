@@ -55,6 +55,8 @@ public class SntmplEvaluator implements Evaluator<String> {
         try {
             return (String) (cached ? exprCache.computeIfAbsent(expr, this::compile) : compile(expr))
                     .eval(context);
+        } catch (EvaluationException e) {
+            throw e;
         } catch (Exception e) {
             throw new EvaluationException("Evaluation failed", e); // 简化错误信息
         }

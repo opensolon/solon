@@ -2,6 +2,7 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.expression.Evaluator;
+import org.noear.solon.expression.exception.EvaluationException;
 import org.noear.solon.expression.snel.SnelEvaluator;
 
 import java.util.*;
@@ -125,7 +126,7 @@ public class SnelTest2 {
         String expr = "x + 5";
         Map<String, Object> context = new HashMap<>();
         context.put("x", null);
-        assertThrows(RuntimeException.class, () -> evaluator.eval(expr, context));
+        assertThrows(EvaluationException.class, () -> evaluator.eval(expr, context));
     }
 
     // 测试包含非法操作符的表达式
@@ -146,7 +147,7 @@ public class SnelTest2 {
     @Test
     public void testExpressionWithUndefinedVariable() {
         String expr = "x + 5";
-        assertThrows(RuntimeException.class, () -> evaluator.eval(expr));
+        assertThrows(EvaluationException.class, () -> evaluator.eval(expr));
     }
 
     // 测试包含多个 IN 操作符的表达式

@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.util.function.Function;
 
@@ -39,124 +40,34 @@ public class ArithmeticNode implements Expression {
 
     @Override
     public Object eval(Function context) {
-        Object leftValue = left.eval(context);
-        Object rightValue = right.eval(context);
+        Object leftVal = left.eval(context);
+        Object rightVal = right.eval(context);
 
-        // 处理加法中的非数值类型拼接
+        // 特殊处理加法中的字符串拼接
         if (operator == ArithmeticOp.add) {
-            if (!(leftValue instanceof Number)) {
-                return leftValue.toString() + rightValue.toString();
-            } else if (!(rightValue instanceof Number)) {
-                return leftValue.toString() + rightValue.toString();
+            if (leftVal instanceof String || rightVal instanceof String) {
+                return String.valueOf(leftVal) + String.valueOf(rightVal);
             }
         }
 
-        // 动态分派数值计算逻辑
-        return calculateNumbers((Number) leftValue, (Number) rightValue);
-    }
-
-    private Number calculateNumbers(Number a, Number b) {
-        // 优先级: double > float > long > int
-        if (isDouble(a) || isDouble(b)) {
-            return calculateAsDouble(a, b);
-        } else if (isFloat(a) || isFloat(b)) {
-            return calculateAsFloat(a, b);
-        } else if (isLong(a) || isLong(b)) {
-            return calculateAsLong(a, b);
-        } else {
-            return calculateAsInt(a, b);
+        if (leftVal == null) {
+            throw new EvaluationException("Arithmetic left value is null");
         }
-    }
 
-    // 判断是否为 double
-    private boolean isDouble(Number n) {
-        return n instanceof Double || n.getClass() == Double.TYPE;
-    }
-
-    // 判断是否为 float
-    private boolean isFloat(Number n) {
-        return n instanceof Float || n.getClass() == Float.TYPE;
-    }
-
-    // 判断是否为 long
-    private boolean isLong(Number n) {
-        return n instanceof Long || n.getClass() == Long.TYPE;
-    }
-
-    // 计算逻辑（按类型分派）
-    private double calculateAsDouble(Number a, Number b) {
-        double aVal = a.doubleValue();
-        double bVal = b.doubleValue();
-        switch (operator) {
-            case add:
-                return aVal + bVal;
-            case sub:
-                return aVal - bVal;
-            case mul:
-                return aVal * bVal;
-            case div:
-                return aVal / bVal;
-            case mod:
-                return aVal % bVal;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+        if (rightVal == null) {
+            throw new EvaluationException("Arithmetic right value is null");
         }
-    }
 
-    private float calculateAsFloat(Number a, Number b) {
-        float aVal = a.floatValue();
-        float bVal = b.floatValue();
-        switch (operator) {
-            case add:
-                return aVal + bVal;
-            case sub:
-                return aVal - bVal;
-            case mul:
-                return aVal * bVal;
-            case div:
-                return aVal / bVal;
-            case mod:
-                return aVal % bVal;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+        // 确保操作数类型正确
+        if (!(leftVal instanceof Number && rightVal instanceof Number)) {
+            throw new EvaluationException("Non-numeric operands for arithmetic operation: "
+                    + leftVal.getClass() + " and " + rightVal.getClass());
         }
-    }
 
-    private long calculateAsLong(Number a, Number b) {
-        long aVal = a.longValue();
-        long bVal = b.longValue();
-        switch (operator) {
-            case add:
-                return aVal + bVal;
-            case sub:
-                return aVal - bVal;
-            case mul:
-                return aVal * bVal;
-            case div:
-                return aVal / bVal;
-            case mod:
-                return aVal % bVal;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
-        }
-    }
-
-    private int calculateAsInt(Number a, Number b) {
-        int aVal = a.intValue();
-        int bVal = b.intValue();
-        switch (operator) {
-            case add:
-                return aVal + bVal;
-            case sub:
-                return aVal - bVal;
-            case mul:
-                return aVal * bVal;
-            case div:
-                return aVal / bVal;
-            case mod:
-                return aVal % bVal;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+        try {
+            return operator.calculate((Number) leftVal, (Number) rightVal);
+        } catch (ArithmeticException e) {
+            throw new EvaluationException("Arithmetic error: " + e.getMessage(), e);
         }
     }
 

@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * */
 public class MethodCache {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
+
     static {
         PRIMITIVE_WRAPPER_MAP.put(byte.class, Byte.class);
         PRIMITIVE_WRAPPER_MAP.put(short.class, Short.class);
@@ -46,26 +48,34 @@ public class MethodCache {
         return cache.computeIfAbsent(key, k -> findMethod(clazz, methodName, argTypes));
     }
 
+    // 优化参数类型匹配逻辑
     private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
-        Method[] methods = clazz.getMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                Class<?>[] paramTypes = method.getParameterTypes();
-                if (paramTypes.length == argTypes.length) {
-                    boolean match = true;
-                    for (int i = 0; i < paramTypes.length; i++) {
-                        if (!isAssignable(paramTypes[i], argTypes[i])) {
-                            match = false;
-                            break;
-                        }
-                    }
-                    if (match) {
-                        return method;
-                    }
-                }
+        // 使用流处理并并行查找（如果线程安全）
+        return Arrays.stream(clazz.getMethods())
+                .filter(m -> m.getName().equals(methodName))
+                .filter(m -> isMethodMatch(m, argTypes))
+                .findFirst()
+                .orElse(null);
+    }
+
+    // 在 MethodCache 中添加基本类型处理
+    private static Class<?> getBoxedType(Class<?> type) {
+        if (type.isPrimitive()) {
+            return PRIMITIVE_WRAPPER_MAP.getOrDefault(type, type);
+        }
+        return type;
+    }
+
+    private boolean isMethodMatch(Method method, Class<?>[] argTypes) {
+        Class<?>[] paramTypes = method.getParameterTypes();
+        if (paramTypes.length != argTypes.length) return false;
+
+        for (int i = 0; i < paramTypes.length; i++) {
+            if (!isAssignable(paramTypes[i], argTypes[i])) {
+                return false;
             }
         }
-        return null;
+        return true;
     }
 
     private boolean isAssignable(Class<?> targetType, Class<?> sourceType) {

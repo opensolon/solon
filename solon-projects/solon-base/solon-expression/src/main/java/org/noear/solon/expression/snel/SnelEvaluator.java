@@ -58,11 +58,9 @@ public class SnelEvaluator implements Evaluator {
     public Object eval(String expr, Function context, boolean cached) {
         // 使用缓存加速重复表达式求值
         try {
-            if (cached) {
-                return exprCached.computeIfAbsent(expr, k -> compile(k)).eval(context);
-            } else {
-                return compile(expr).eval(context);
-            }
+            return (cached ? exprCached.computeIfAbsent(expr, this::compile) : compile(expr)).eval(context);
+        } catch (EvaluationException e) {
+            throw e;
         } catch (Throwable e) {
             throw new EvaluationException("Evaluation failed for: " + expr, e);
         }
