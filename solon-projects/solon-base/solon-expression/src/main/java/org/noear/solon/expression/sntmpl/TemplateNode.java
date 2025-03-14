@@ -15,10 +15,13 @@
  */
 package org.noear.solon.expression.sntmpl;
 
+import org.noear.solon.Solon;
+import org.noear.solon.core.Props;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.snel.SnEL;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.function.Function;
 
 /**
@@ -38,7 +41,13 @@ public class TemplateNode implements Expression<String> {
         for (TemplateFragment fragment : fragments) {
             if (fragment.isEvaluable()) {
                 // 如果是变量片段，从上下文中获取值
-                Object value = SnEL.eval(fragment.getContent(), context);
+                Object value;
+                if (fragment.getMarker() == '$') {
+                    value = getProps(context).apply(fragment.getContent());
+                } else {
+                    value = SnEL.eval(fragment.getContent(), context);
+                }
+
                 result.append(value);
             } else {
                 // 如果是文本片段，直接追加
@@ -46,5 +55,22 @@ public class TemplateNode implements Expression<String> {
             }
         }
         return result.toString();
+    }
+
+    private Function<String, String> getProps(Function context) {
+        //属性，可以传入或者
+        Object props = context.apply(SnTmpl.CONTEXT_PROPS_KEY);
+
+        if (props == null) {
+            return Solon.cfg()::getByExpr;
+        } else if (props instanceof Props) {
+            return ((Props) props)::getByExpr;
+        } else if (props instanceof Properties) {
+            return ((Properties) props)::getProperty;
+        } else if (props instanceof Function) {
+            return (Function) props;
+        } else {
+            throw new IllegalArgumentException("Unsupported props type: " + props.getClass());
+        }
     }
 }

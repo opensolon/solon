@@ -23,6 +23,7 @@ package org.noear.solon.expression.sntmpl;
  */
 public class TemplateFragment {
     private boolean evaluable;
+    private int marker;
     private String content;
 
     /**
@@ -33,14 +34,22 @@ public class TemplateFragment {
     }
 
     /**
+     * 标记
+     */
+    public int getMarker() {
+        return marker;
+    }
+
+    /**
      * 片段内容
      */
     public String getContent() {
         return content;
     }
 
-    public TemplateFragment(boolean evaluable, String content) {
+    public TemplateFragment(boolean evaluable, int marker, String content) {
         this.evaluable = evaluable;
+        this.marker = marker;
         this.content = content;
     }
 }

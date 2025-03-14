@@ -31,6 +31,11 @@ import java.util.function.Function;
  */
 public interface SnTmpl {
     /**
+     * 上下文中的属性键（用于支持属性表达式）
+     */
+    static final String CONTEXT_PROPS_KEY = "$PROPS";
+
+    /**
      * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
      */
     static Expression<String> compile(Reader reader) {

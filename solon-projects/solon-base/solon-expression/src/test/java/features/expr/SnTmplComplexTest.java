@@ -1,6 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.core.Props;
 import org.noear.solon.expression.sntmpl.SnTmpl;
 
 import java.util.HashMap;
@@ -132,5 +133,22 @@ public class SnTmplComplexTest {
 
         String result = SnTmpl.eval(template, context);
         assertEquals("Info: New York", result);
+    }
+
+    @Test
+    public void case1() {
+        Props props = new Props();
+        props.put("v", "1");
+
+        Map<String, Object> context = new HashMap<>();
+        context.put(SnTmpl.CONTEXT_PROPS_KEY, props);
+
+        String template = "Info: ${v}#{1}";
+        String result = SnTmpl.eval(template, context);
+        assertEquals("Info: 11", result);
+
+        template = "Info: ${v2:2}#{1}";
+        result = SnTmpl.eval(template, context);
+        assertEquals("Info: 21", result);
     }
 }

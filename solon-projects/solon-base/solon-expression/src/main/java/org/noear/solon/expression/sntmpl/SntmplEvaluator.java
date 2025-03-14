@@ -41,7 +41,8 @@ public class SntmplEvaluator implements Evaluator<String> {
 
     // 配置常量
     private static final int BUFFER_SIZE = 1024; // 增大缓冲区
-    private static final char MARK_START = '#';
+    private static final char MARK_START1 = '#';
+    private static final char MARK_START2 = '$';
     private static final char MARK_BRACE_OPEN = '{';
     private static final char MARK_BRACE_CLOSE = '}';
 
@@ -94,7 +95,8 @@ public class SntmplEvaluator implements Evaluator<String> {
         int start = index;
         while (index < length) {
             char ch = buffer[index];
-            if (ch == MARK_START && index + 1 < length) {
+            if ((ch == MARK_START1 || ch == MARK_START2) && index + 1 < length) {
+                state.marker = ch;
                 if (buffer[index + 1] == MARK_BRACE_OPEN) {
                     flushText(state, fragments, buffer, start, index);
                     state.inExpression = true;
@@ -115,7 +117,7 @@ public class SntmplEvaluator implements Evaluator<String> {
         while (index < length) {
             if (buffer[index] == MARK_BRACE_CLOSE) {
                 state.exprBuffer.append(buffer, start, index - start);
-                fragments.add(new TemplateFragment(true, state.exprBuffer.toString()));
+                fragments.add(new TemplateFragment(true, state.marker, state.exprBuffer.toString()));
                 state.exprBuffer.setLength(0);
                 state.inExpression = false;
                 return index + 1;
@@ -132,14 +134,14 @@ public class SntmplEvaluator implements Evaluator<String> {
             state.textBuffer.append(buffer, start, end - start);
         }
         if (state.textBuffer.length() > 0) {
-            fragments.add(new TemplateFragment(false, state.textBuffer.toString()));
+            fragments.add(new TemplateFragment(false, 0, state.textBuffer.toString()));
             state.textBuffer.setLength(0);
         }
     }
 
     private void completeParsing(ParserState state, List<TemplateFragment> fragments) {
         if (state.inExpression) {
-            fragments.add(new TemplateFragment(false, "#{" + state.exprBuffer));
+            fragments.add(new TemplateFragment(false, 0, "#{" + state.exprBuffer));
         }
         flushText(state, fragments, new char[0], 0, 0); // 强制刷新剩余文本
     }
@@ -153,6 +155,7 @@ public class SntmplEvaluator implements Evaluator<String> {
         final StringBuilder textBuffer = new StringBuilder(256);
         final StringBuilder exprBuffer = new StringBuilder(64);
         boolean inExpression;
+        int marker;
         final BufferedReader reader;
 
         ParserState(BufferedReader reader) {
