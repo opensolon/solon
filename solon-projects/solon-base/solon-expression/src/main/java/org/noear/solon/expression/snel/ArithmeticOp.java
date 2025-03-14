@@ -24,9 +24,9 @@ package org.noear.solon.expression.snel;
 public enum ArithmeticOp {
     add("+") {
         @Override
-        public Object calculate(Number a, Number b) {
+        public Object calculate(Class<?> inferType, Number a, Number b) {
             // 处理字符串拼接的特殊情况（在 ArithmeticNode 中提前处理）
-            return numericCalculate(a, b,
+            return numericCalculate(inferType, a, b,
                     Double::sum,
                     Float::sum,
                     Long::sum,
@@ -35,8 +35,8 @@ public enum ArithmeticOp {
     },
     sub("-") {
         @Override
-        public Object calculate(Number a, Number b) {
-            return numericCalculate(a, b,
+        public Object calculate(Class<?> inferType, Number a, Number b) {
+            return numericCalculate(inferType, a, b,
                     (x, y) -> x - y,
                     (x, y) -> x - y,
                     (x, y) -> x - y,
@@ -45,8 +45,8 @@ public enum ArithmeticOp {
     },
     mul("*") {
         @Override
-        public Object calculate(Number a, Number b) {
-            return numericCalculate(a, b,
+        public Object calculate(Class<?> inferType, Number a, Number b) {
+            return numericCalculate(inferType, a, b,
                     (x, y) -> x * y,
                     (x, y) -> x * y,
                     (x, y) -> x * y,
@@ -55,8 +55,8 @@ public enum ArithmeticOp {
     },
     div("/") {
         @Override
-        public Object calculate(Number a, Number b) {
-            return numericCalculate(a, b,
+        public Object calculate(Class<?> inferType, Number a, Number b) {
+            return numericCalculate(inferType, a, b,
                     (x, y) -> x / y,
                     (x, y) -> x / y,
                     (x, y) -> x / y,
@@ -65,8 +65,8 @@ public enum ArithmeticOp {
     },
     mod("%") {
         @Override
-        public Object calculate(Number a, Number b) {
-            return numericCalculate(a, b,
+        public Object calculate(Class<?> inferType, Number a, Number b) {
+            return numericCalculate(inferType, a, b,
                     (x, y) -> x % y,
                     (x, y) -> x % y,
                     (x, y) -> x % y,
@@ -90,19 +90,21 @@ public enum ArithmeticOp {
     /**
      * 执行数值计算（自动处理类型提升）
      */
-    protected static Number numericCalculate(Number a, Number b,
+    protected static Number numericCalculate(Class<?> inferType, Number a, Number b,
                                              DoubleBinaryOperator doubleOp,
                                              FloatBinaryOperator floatOp,
                                              LongBinaryOperator longOp,
                                              IntBinaryOperator intOp) {
         // 确定最高优先级类型
-        Class<?> type = getPriorityType(a, b);
+        if (inferType == null) {
+            inferType = getPriorityType(a, b);
+        }
 
-        if (type == Double.class) {
+        if (inferType == Double.class) {
             return doubleOp.applyAsDouble(a.doubleValue(), b.doubleValue());
-        } else if (type == Float.class) {
+        } else if (inferType == Float.class) {
             return floatOp.applyAsFloat(a.floatValue(), b.floatValue());
-        } else if (type == Long.class) {
+        } else if (inferType == Long.class) {
             return longOp.applyAsLong(a.longValue(), b.longValue());
         } else {
             return intOp.applyAsInt(a.intValue(), b.intValue());
@@ -112,7 +114,7 @@ public enum ArithmeticOp {
     /**
      * 获取最高优先级的数值类型
      */
-    private static Class<?> getPriorityType(Number a, Number b) {
+    public static Class<?> getPriorityType(Number a, Number b) {
         for (Class<?> type : NUMERIC_TYPES) {
             if (a.getClass() == type || b.getClass() == type) {
                 return type;
@@ -123,8 +125,10 @@ public enum ArithmeticOp {
 
     /**
      * 抽象计算方法（由枚举实例实现）
+     *
+     * @param inferType 推送类型
      */
-    public abstract Object calculate(Number a, Number b);
+    public abstract Object calculate(Class<?> inferType, Number a, Number b);
 
     @FunctionalInterface
     private interface DoubleBinaryOperator {
@@ -149,11 +153,16 @@ public enum ArithmeticOp {
     // 在 ArithmeticOp 中添加解析方法
     public static ArithmeticOp parse(String op) {
         switch (op) {
-            case "+": return add;
-            case "-": return sub;
-            case "*": return mul;
-            case "/": return div;
-            case "%": return mod;
+            case "+":
+                return add;
+            case "-":
+                return sub;
+            case "*":
+                return mul;
+            case "/":
+                return div;
+            case "%":
+                return mod;
             default:
                 throw new IllegalArgumentException("Invalid operator: " + op);
         }

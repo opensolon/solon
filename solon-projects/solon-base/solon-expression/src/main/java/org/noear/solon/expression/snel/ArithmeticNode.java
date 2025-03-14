@@ -31,11 +31,25 @@ public class ArithmeticNode implements Expression {
     private final ArithmeticOp operator;
     private final Expression left;
     private final Expression right;
+    private final Class<?> inferType;
 
     public ArithmeticNode(ArithmeticOp operator, Expression left, Expression right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
+        this.inferType = getInferType(left, right);
+    }
+
+    private Class<?> getInferType(Expression left, Expression right) {
+        if (left instanceof ConstantNode && right instanceof ConstantNode) {
+            Object lv = ((ConstantNode) left).getValue();
+            Object rv = ((ConstantNode) right).getValue();
+            if (lv instanceof Number && rv instanceof Number) {
+                ArithmeticOp.getPriorityType((Number) lv, (Number) rv);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -59,13 +73,13 @@ public class ArithmeticNode implements Expression {
         }
 
         // 确保操作数类型正确
-        if (!(leftVal instanceof Number && rightVal instanceof Number)) {
+        if (inferType == null && !(leftVal instanceof Number && rightVal instanceof Number)) {
             throw new EvaluationException("Non-numeric operands for arithmetic operation: "
                     + leftVal.getClass() + " and " + rightVal.getClass());
         }
 
         try {
-            return operator.calculate((Number) leftVal, (Number) rightVal);
+            return operator.calculate(inferType, (Number) leftVal, (Number) rightVal);
         } catch (ArithmeticException e) {
             throw new EvaluationException("Arithmetic error: " + e.getMessage(), e);
         }
