@@ -41,6 +41,7 @@
 * redisx 升为 1.6.11
 * snack3 升为 3.2.129
 * socket.d 升为 2.5.18
+* liquor 升为 1.3.13
 
 ### v3.1.0
 * 新增 solon-ai 插件
