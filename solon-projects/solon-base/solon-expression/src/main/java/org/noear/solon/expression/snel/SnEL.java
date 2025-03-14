@@ -98,4 +98,80 @@ public interface SnEL {
     static Object eval(String expr) {
         return eval(expr, Collections.EMPTY_MAP, true);
     }
+
+    /// /////////////////////////////
+
+    /**
+     * 上下文中的属性键（用于支持属性表达式）
+     */
+    static final String CONTEXT_PROPS_KEY = "$PROPS";
+
+    /**
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     */
+    static Expression<String> compileTemplate(Reader reader) {
+        return TemplateEvaluator.getInstance().compile(reader);
+    }
+
+    /**
+     * 编译（将文件编译为一个可评估的表达式结构树，可反向转换）
+     */
+    static Expression<String> compileTemplate(String expr) {
+        return compileTemplate(new StringReader(expr));
+    }
+
+    /// /////////////////
+
+
+    /**
+     * 评估
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     * @param cached  是否带编译缓存
+     */
+    static String evalTemplate(String expr, Function context, boolean cached) {
+        return TemplateEvaluator.getInstance().eval(expr, context, cached);
+    }
+
+    /**
+     * 评估
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     * @param cached  是否带编译缓存
+     */
+    static String evalTemplate(String expr, Map context, boolean cached) {
+        return evalTemplate(expr, context::get, cached);
+    }
+
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     */
+    static String evalTemplate(String expr, Function context) {
+        return evalTemplate(expr, context, true);
+    }
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr    表达式
+     * @param context 上下文
+     */
+    static String evalTemplate(String expr, Map context) {
+        return evalTemplate(expr, context, true);
+    }
+
+    /**
+     * 评估（带编译缓存）
+     *
+     * @param expr 表达式
+     */
+    static String evalTemplate(String expr) {
+        return evalTemplate(expr, Collections.EMPTY_MAP, true);
+    }
 }

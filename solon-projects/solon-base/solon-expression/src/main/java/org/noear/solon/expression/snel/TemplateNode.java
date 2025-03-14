@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.expression.sntmpl;
+package org.noear.solon.expression.snel;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Props;
 import org.noear.solon.expression.Expression;
-import org.noear.solon.expression.snel.SnEL;
 
 import java.util.List;
 import java.util.Properties;
@@ -59,7 +58,7 @@ public class TemplateNode implements Expression<String> {
 
     private Function<String, String> getProps(Function context) {
         //属性，可以传入或者
-        Object props = context.apply(SnTmpl.CONTEXT_PROPS_KEY);
+        Object props = context.apply(SnEL.CONTEXT_PROPS_KEY);
 
         if (props == null) {
             return Solon.cfg()::getByExpr;

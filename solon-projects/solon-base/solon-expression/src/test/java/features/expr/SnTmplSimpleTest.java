@@ -1,7 +1,7 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.sntmpl.SnTmpl;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class SnTmplSimpleTest {
     @Test
     public void testSimpleText() {
         String template = "Hello, World!";
-        String result = SnTmpl.eval(template);
+        String result = SnEL.evalTemplate(template);
         assertEquals("Hello, World!", result);
     }
 
@@ -22,7 +22,7 @@ public class SnTmplSimpleTest {
         String template = "Hello, #{name}!";
         Map<String, String> context = new HashMap<>();
         context.put("name", "John");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, John!", result);
     }
 
@@ -31,7 +31,7 @@ public class SnTmplSimpleTest {
         String template = "#{greeting}, World!";
         Map<String, String> context = new HashMap<>();
         context.put("greeting", "Hi");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hi, World!", result);
     }
 
@@ -40,7 +40,7 @@ public class SnTmplSimpleTest {
         String template = "Hello, #{name}";
         Map<String, String> context = new HashMap<>();
         context.put("name", "Jane");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, Jane", result);
     }
 
@@ -50,7 +50,7 @@ public class SnTmplSimpleTest {
         Map<String, String> context = new HashMap<>();
         context.put("greeting", "Hello");
         context.put("name", "Bob");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, Bob!", result);
     }
 
@@ -59,14 +59,14 @@ public class SnTmplSimpleTest {
         String template = "Hello, #{name}!";
         Map<String, String> context = new HashMap<>();
         context.put("name", "");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, !", result);
     }
 
     @Test
     public void testMissingVariable() {
         String template = "Hello, #{name}!";
-        String result = SnTmpl.eval(template);
+        String result = SnEL.evalTemplate(template);
         assertEquals("Hello, null!", result);
     }
 
@@ -75,21 +75,21 @@ public class SnTmplSimpleTest {
         String template = "Hello, #{  name  }!";
         Map<String, String> context = new HashMap<>();
         context.put("name", "Alice");
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, Alice!", result);
     }
 
     @Test
     public void testTextWithHashButNoBrace() {
         String template = "Hello, #name!";
-        String result = SnTmpl.eval(template);
+        String result = SnEL.evalTemplate(template);
         assertEquals("Hello, #name!", result);
     }
 
     @Test
     public void testTextWithBraceButNoHash() {
         String template = "Hello, {name}!";
-        String result = SnTmpl.eval(template);
+        String result = SnEL.evalTemplate(template);
         assertEquals("Hello, {name}!", result);
     }
 }

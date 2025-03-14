@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.expression.sntmpl;
+package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.exception.CompilationException;
 import org.noear.solon.expression.exception.EvaluationException;
@@ -35,8 +35,8 @@ import java.util.function.Function;
  * @author noear
  * @since 3.1
  */
-public class SntmplEvaluator implements Evaluator<String> {
-    private static final SntmplEvaluator INSTANCE = new SntmplEvaluator();
+public class TemplateEvaluator implements Evaluator<String> {
+    private static final TemplateEvaluator INSTANCE = new TemplateEvaluator();
     private final Map<String, Expression<String>> exprCache = new ConcurrentHashMap<>();
 
     // 配置常量
@@ -46,7 +46,7 @@ public class SntmplEvaluator implements Evaluator<String> {
     private static final char MARK_BRACE_OPEN = '{';
     private static final char MARK_BRACE_CLOSE = '}';
 
-    public static SntmplEvaluator getInstance() {
+    public static TemplateEvaluator getInstance() {
         return INSTANCE;
     }
 

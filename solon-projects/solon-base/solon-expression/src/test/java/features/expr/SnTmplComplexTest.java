@@ -2,7 +2,7 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.Props;
-import org.noear.solon.expression.sntmpl.SnTmpl;
+import org.noear.solon.expression.snel.SnEL;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class SnTmplComplexTest {
         user.put("name", "Tom");
         Map<String, Object> context = new HashMap<>();
         context.put("user", user);
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, Tom!", result);
     }
 
@@ -27,7 +27,7 @@ public class SnTmplComplexTest {
         String template = "Hello, #{names[0]}!";
         Map<String, Object> context = new HashMap<>();
         context.put("names", new String[]{"Eve", "Frank"});
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, Eve!", result);
     }
 
@@ -48,7 +48,7 @@ public class SnTmplComplexTest {
         Map<String, Object> context = new HashMap<>();
         context.put("company", company);
 
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("ABC Corp - HR - Grace", result);
     }
 
@@ -62,7 +62,7 @@ public class SnTmplComplexTest {
         }
         Map<String, Object> context = new HashMap<>();
         context.put("user", new User());
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Hello, David!", result);
     }
 
@@ -72,7 +72,7 @@ public class SnTmplComplexTest {
         Map<String, Integer> context = new HashMap<>();
         context.put("a", 2);
         context.put("b", 3);
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Result: 5", result);
     }
 
@@ -82,7 +82,7 @@ public class SnTmplComplexTest {
         Map<String, Integer> context = new HashMap<>();
         context.put("a", 5);
         context.put("b", 3);
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Is true: true", result);
     }
 
@@ -92,7 +92,7 @@ public class SnTmplComplexTest {
         Map<String, Integer> context = new HashMap<>();
         context.put("a", 5);
         context.put("b", 3);
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Result: Greater", result);
     }
 
@@ -102,7 +102,7 @@ public class SnTmplComplexTest {
         Map<String, Integer> context = new HashMap<>();
         context.put("a", 2);
         context.put("b", 3);
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("2 + 3 = 5", result);
     }
 
@@ -111,7 +111,7 @@ public class SnTmplComplexTest {
         String template = "Value: #{list[0][1]}";
         Map<String, Object> context = new HashMap<>();
         context.put("list", new Object[][]{new Object[]{1, 2}, new Object[]{3, 4}});
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Value: 2", result);
     }
 
@@ -131,7 +131,7 @@ public class SnTmplComplexTest {
         Map<String, Object> context = new HashMap<>();
         context.put("person", new Person());
 
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Info: New York", result);
     }
 
@@ -141,14 +141,14 @@ public class SnTmplComplexTest {
         props.put("v", "1");
 
         Map<String, Object> context = new HashMap<>();
-        context.put(SnTmpl.CONTEXT_PROPS_KEY, props);
+        context.put(SnEL.CONTEXT_PROPS_KEY, props);
 
         String template = "Info: ${v}#{1}";
-        String result = SnTmpl.eval(template, context);
+        String result = SnEL.evalTemplate(template, context);
         assertEquals("Info: 11", result);
 
         template = "Info: ${v2:2}#{1}";
-        result = SnTmpl.eval(template, context);
+        result = SnEL.evalTemplate(template, context);
         assertEquals("Info: 21", result);
     }
 }
