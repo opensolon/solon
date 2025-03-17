@@ -68,6 +68,20 @@ public class SnelTest {
         assertEquals(true, result);
     }
 
+    @Test
+    public void testLogicalNot2() {
+        String expr = "! false";
+        Object result = SnEL.eval(expr);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testLogicalNot3() {
+        String expr = "!false";
+        Object result = SnEL.eval(expr);
+        assertEquals(true, result);
+    }
+
     // 比较运算测试用例
     @Test
     public void testEqualityComparison() {

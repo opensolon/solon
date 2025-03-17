@@ -37,6 +37,30 @@ public class Query3Test {
     }
 
     @Test
+    public void case1_2() {
+        Map<String, Object> context = new HashMap<>();
+        context.put("age", 25);
+        context.put("salary", 4000);
+        context.put("isMarried", false);
+        context.put("label", "aa");
+        context.put("title", "ee");
+        context.put("vip", "l3");
+
+        String expression = "(((age > 18 && salary < 5000) || (!isMarried)) && label IN ['aa','bb'] && title NOT IN ['cc','dd']) || vip=='l3'";
+        Expression root = SnEL.parse(expression);
+
+        // 打印表达式树
+        System.out.println("Expression Tree: " + root);
+
+        // 计算表达式结果
+        Object result = root.eval(context::get);
+        System.out.println("Result: " + result); // Output: Result: true
+        assert result instanceof Boolean;
+
+        PrintUtil.printTree2(root);
+    }
+
+    @Test
     public void case2() {
         Map<String, Object> context = new HashMap();
         context.put("age", 25);

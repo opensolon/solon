@@ -118,7 +118,7 @@ public class SnelEvaluateParser implements Parser {
      * 解析逻辑 NOT（前置 NOT 运算符）
      */
     private Expression parseLogicalNotExpression(ParserState state) {
-        if (eat(state, "NOT")) {
+        if (eat(state, "NOT") || eat(state, "!")) {
             return new LogicalNode(LogicalOp.not, parseComparisonExpression(state), null);
         }
         return parseComparisonExpression(state);

@@ -17,6 +17,13 @@ public class SnelComplexTest {
         assertEquals(true, result);
     }
 
+    @Test
+    public void testComplexNestedLogicalExpression2() {
+        String expr = "(true && (false || true)) || (false && true)";
+        Object result = SnEL.eval(expr);
+        assertEquals(true, result);
+    }
+
     // 嵌套方法调用和属性访问
     public static class User {
         private String name;
