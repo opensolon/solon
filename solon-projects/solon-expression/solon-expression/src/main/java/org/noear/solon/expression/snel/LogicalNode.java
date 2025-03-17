@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.util.function.Function;
 
@@ -60,9 +61,18 @@ public class LogicalNode implements Expression<Boolean> {
     @Override
     public Boolean eval(Function context) {
         Boolean leftValue = (Boolean) left.eval(context);
+
+        if (leftValue == null) {
+            throw new EvaluationException("Logical expression left operand is null");
+        }
+
         Boolean rightValue = null;
         if (right != null) {
             rightValue = (Boolean) right.eval(context);
+
+            if (rightValue == null) {
+                throw new EvaluationException("Logical expression right operand is null");
+            }
         }
 
         if (operator == LogicalOp.and) {
