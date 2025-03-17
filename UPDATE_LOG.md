@@ -22,6 +22,7 @@
 
 ### v3.1.1
 * 新增 solon-expression 插件
+* 新增 solon-security-web 插件
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
 * 添加 solon-ai 对 docx 文档的解析

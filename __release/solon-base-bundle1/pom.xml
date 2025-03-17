@@ -39,6 +39,7 @@
         <module>../../solon-projects/solon-security/solon-security-auth</module>
         <module>../../solon-projects/solon-security/solon-security-vault</module>
         <module>../../solon-projects/solon-security/solon-security-validation</module>
+        <module>../../solon-projects/solon-security/solon-security-web</module>
 
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
