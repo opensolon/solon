@@ -15,10 +15,6 @@
  */
 package org.noear.solon.expression.snel;
 
-import java.io.BufferedReader;
-import java.io.Reader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +51,7 @@ public class SnelEvaluateParser implements Parser {
         return INSTANCE;
     }
 
-    public SnelEvaluateParser(int cahceCapacity){
+    public SnelEvaluateParser(int cahceCapacity) {
         this.exprCached = new LRUCache<>(cahceCapacity);
     }
 
@@ -69,11 +65,7 @@ public class SnelEvaluateParser implements Parser {
     }
 
     protected Expression parseDo(String expr) {
-        return parseDo(new StringReader(expr));
-    }
-
-    protected Expression parseDo(Reader reader) {
-        ParserState state = new ParserState(reader);
+        ParserState state = new ParserState(expr);
         Expression result = parseTernaryExpression(state);
         if (state.getCurrentChar() != -1) {
             throw new CompilationException("Unexpected trailing character: " + (char) state.getCurrentChar());
@@ -469,18 +461,14 @@ public class SnelEvaluateParser implements Parser {
      * 解析器状态跟踪器
      */
     private static class ParserState {
-        private final BufferedReader reader;
+        private final String reader;
         private int ch;      // 当前字符
         private int position = 0;
         private int markedCh = 0;
         private int markedPosition = 0;
 
-        public ParserState(Reader reader) {
-            if (reader instanceof BufferedReader) {
-                this.reader = (BufferedReader) reader;
-            } else {
-                this.reader = new BufferedReader(reader);
-            }
+        public ParserState(String reader) {
+            this.reader = reader;
             nextChar(); // 初始化读取第一个字符
         }
 
@@ -495,11 +483,11 @@ public class SnelEvaluateParser implements Parser {
          * 前进到下一个字符
          */
         public void nextChar() {
-            try {
-                ch = reader.read();
+            if (position < reader.length()) {
+                ch = reader.charAt(position);
                 position++;
-            } catch (IOException e) {
-                throw new CompilationException("Read error at position " + position, e);
+            } else {
+                ch = -1;
             }
         }
 
@@ -542,26 +530,16 @@ public class SnelEvaluateParser implements Parser {
          * 获取当前读取位置
          */
         public void mark() {
-            try {
-                reader.mark(position);
-                markedCh = ch;
-                markedPosition = position;
-            } catch (IOException e) {
-                throw new CompilationException(e);
-            }
+            markedCh = ch;
+            markedPosition = position;
         }
 
         /**
          * 设置读取位置（用于回滚）
          */
         public void reset() {
-            try {
-                reader.reset();
-                ch = markedCh;
-                position = markedPosition;
-            } catch (IOException e) {
-                throw new CompilationException(e);
-            }
+            ch = markedCh;
+            position = markedPosition;
         }
 
         @Override
