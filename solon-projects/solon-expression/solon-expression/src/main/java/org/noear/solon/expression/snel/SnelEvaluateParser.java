@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class SnelEvaluateParser implements Parser {
     }
 
     public SnelEvaluateParser(int cahceCapacity) {
-        this.exprCached = new LRUCache<>(cahceCapacity);
+        this.exprCached = Collections.synchronizedMap(new LRUCache<>(cahceCapacity));
     }
 
     @Override

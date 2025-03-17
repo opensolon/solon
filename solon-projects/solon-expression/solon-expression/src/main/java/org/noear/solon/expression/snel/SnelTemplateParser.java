@@ -20,6 +20,7 @@ import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.util.LRUCache;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class SnelTemplateParser implements Parser<String> {
     private final Map<String, Expression<String>> exprCached;
 
     public SnelTemplateParser(int cahceCapacity) {
-        exprCached = new LRUCache<>(cahceCapacity);
+        exprCached = Collections.synchronizedMap(new LRUCache<>(cahceCapacity));
     }
 
     private static final char MARK_START1 = '#';
