@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.util.function.Function;
 
@@ -40,6 +41,11 @@ public class TernaryNode implements Expression {
     public Object eval(Function context) {
         // 计算条件表达式
         Boolean conditionResult = condition.eval(context);
+
+        if (conditionResult == null) {
+            throw new EvaluationException("Ternary condition is null");
+        }
+
         // 根据条件结果返回对应的表达式值
         return conditionResult ? trueExpression.eval(context) : falseExpression.eval(context);
     }
