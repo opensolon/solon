@@ -31,31 +31,15 @@ public class ArithmeticNode implements Expression {
     private final ArithmeticOp operator;
     private final Expression left;
     private final Expression right;
-    private Object inferResult;
 
     public ArithmeticNode(ArithmeticOp operator, Expression left, Expression right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
-
-        if (left instanceof ConstantNode && right instanceof ConstantNode) {
-            Object leftVal = ((ConstantNode) left).getValue();
-            Object rightVal = ((ConstantNode) right).getValue();
-
-            if (leftVal instanceof Number && rightVal instanceof Number) {
-                inferResult = calculateNumbers((Number) leftVal, (Number) rightVal);
-            } else {
-                inferResult = String.valueOf(leftVal) + leftVal;
-            }
-        }
     }
 
     @Override
     public Object eval(Function context) {
-        if (inferResult != null) {
-            return inferResult;
-        }
-
         Object leftVal = left.eval(context);
         Object rightVal = right.eval(context);
 
