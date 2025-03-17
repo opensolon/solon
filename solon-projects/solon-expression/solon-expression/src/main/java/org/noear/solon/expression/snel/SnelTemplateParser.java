@@ -18,6 +18,7 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Parser;
 import org.noear.solon.expression.exception.CompilationException;
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.util.LRUCache;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +27,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Solon 表达式语言模板解析器
@@ -39,8 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 3.1
  */
 public class SnelTemplateParser implements Parser<String> {
-    private static final SnelTemplateParser INSTANCE = new SnelTemplateParser();
-    private final Map<String, Expression<String>> exprCached = new ConcurrentHashMap<>();
+    private static final SnelTemplateParser INSTANCE = new SnelTemplateParser(10_000);
+    private final Map<String, Expression<String>> exprCached;
 
     // 配置常量
     private static final int BUFFER_SIZE = 1024; // 增大缓冲区
@@ -51,6 +51,10 @@ public class SnelTemplateParser implements Parser<String> {
 
     public static SnelTemplateParser getInstance() {
         return INSTANCE;
+    }
+
+    public SnelTemplateParser(int cahceCapacity){
+        this.exprCached = new LRUCache<>(cahceCapacity);
     }
 
     @Override

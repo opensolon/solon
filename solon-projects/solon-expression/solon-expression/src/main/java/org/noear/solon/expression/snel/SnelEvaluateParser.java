@@ -22,11 +22,11 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.Parser;
 import org.noear.solon.expression.exception.CompilationException;
+import org.noear.solon.expression.util.LRUCache;
 
 
 /**
@@ -48,11 +48,15 @@ import org.noear.solon.expression.exception.CompilationException;
  * @since 3.1
  * */
 public class SnelEvaluateParser implements Parser {
-    private static final SnelEvaluateParser INSTANCE = new SnelEvaluateParser();
-    private final Map<String, Expression> exprCached = new ConcurrentHashMap<>();
+    private static final SnelEvaluateParser INSTANCE = new SnelEvaluateParser(10_000);
+    private final Map<String, Expression> exprCached;
 
     public static SnelEvaluateParser getInstance() {
         return INSTANCE;
+    }
+
+    public SnelEvaluateParser(int cahceCapacity){
+        this.exprCached = new LRUCache<>(cahceCapacity);
     }
 
     @Override
