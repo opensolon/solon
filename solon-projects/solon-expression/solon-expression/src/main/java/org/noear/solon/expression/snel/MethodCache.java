@@ -42,6 +42,11 @@ public class MethodCache {
     }
 
     private final Map<MethodKey, Method> cache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Method[]> methodsCache = new ConcurrentHashMap<>();
+
+    private Method[] getMethods(Class<?> clazz) {
+        return methodsCache.computeIfAbsent(clazz, Class::getMethods);
+    }
 
     public Method getMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
         MethodKey key = new MethodKey(clazz, methodName, argTypes);
@@ -51,7 +56,7 @@ public class MethodCache {
     // 优化参数类型匹配逻辑
     private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
         // 使用流处理并并行查找（如果线程安全）
-        return Arrays.stream(clazz.getMethods())
+        return Arrays.stream(getMethods(clazz))
                 .filter(m -> m.getName().equals(methodName))
                 .filter(m -> isMethodMatch(m, argTypes))
                 .findFirst()
