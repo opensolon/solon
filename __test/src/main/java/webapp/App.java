@@ -31,6 +31,8 @@ import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
+import org.noear.solon.security.web.SecurityFilter;
+import org.noear.solon.security.web.header.XContentTypeOptionsHeaderHandler;
 import org.noear.solon.serialization.properties.PropertiesActionExecutor;
 import org.noear.solon.view.freemarker.FreemarkerRender;
 import org.noear.solon.web.staticfiles.StaticMappings;
@@ -95,6 +97,8 @@ public class App {
 
             //x.onStatus(404, c->c.render("404了"));
 
+            x.filter(new SecurityFilter(new XContentTypeOptionsHeaderHandler()));
+
             x.factoryManager().threadLocalFactory((applyFor, inheritance0) -> {
                 if (inheritance0) {
                     return new InheritableThreadLocal();
@@ -127,6 +131,9 @@ public class App {
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
             StaticMappings.add("/ext/", new ExtendStaticRepository());
             StaticMappings.add("/sa-token/", new FileStaticRepository("/Users/noear/Downloads/"));
+            StaticMappings.add("/down/Solon-0.1.1.zip", new FileStaticRepository("/Users/noear/Movies/"));
+            StaticMappings.add("/down/PdfLoaderTest.pdf", new FileStaticRepository("/Users/noear/Movies/"));
+            StaticMappings.add("/down/Socket.D-JS uniapp demo.mov", new FileStaticRepository("/Users/noear/Movies/"));
         });
 
         initApp(Solon.app());

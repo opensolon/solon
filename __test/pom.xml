@@ -242,6 +242,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon-security-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>socketd-transport-java-tcp</artifactId>
             <version>${socketd.version}</version>
         </dependency>
