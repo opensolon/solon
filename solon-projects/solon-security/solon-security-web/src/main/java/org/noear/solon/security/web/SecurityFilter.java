@@ -15,16 +15,10 @@ import java.util.List;
  * @since 3.1
  */
 public class SecurityFilter implements Filter {
-    private List<Handler> handlers = new ArrayList<>();
+    private Handler[] handlers;
 
-    /**
-     * 注册处理
-     */
-    public SecurityFilter register(Handler handler) {
-        if (handler != null) {
-            handlers.add(handler);
-        }
-        return this;
+    public SecurityFilter(Handler... handlers) {
+        this.handlers = handlers;
     }
 
     /**

@@ -11,8 +11,9 @@ import org.noear.solon.security.web.header.XXssProtectionHeaderHandler;
 public class DemoFilter {
     @Bean(index = -99)
     public SecurityFilter securityFilter() {
-        return new SecurityFilter()
-                .register(new XContentTypeOptionsHeaderHandler())
-                .register(new XXssProtectionHeaderHandler());
+        return new SecurityFilter(
+                new XContentTypeOptionsHeaderHandler(),
+                new XXssProtectionHeaderHandler()
+        );
     }
 }
