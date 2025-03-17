@@ -63,7 +63,7 @@ public class LogicalNode implements Expression<Boolean> {
         Boolean leftValue = (Boolean) left.eval(context);
 
         if (leftValue == null) {
-            throw new EvaluationException("Logical expression left operand is null");
+            throw new EvaluationException("Logical left value is null");
         }
 
         Boolean rightValue = null;
@@ -71,7 +71,7 @@ public class LogicalNode implements Expression<Boolean> {
             rightValue = (Boolean) right.eval(context);
 
             if (rightValue == null) {
-                throw new EvaluationException("Logical expression right operand is null");
+                throw new EvaluationException("Logical right value is null");
             }
         }
 
