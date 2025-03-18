@@ -18,6 +18,8 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.exception.EvaluationException;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -80,19 +82,19 @@ public class MethodNode implements Expression {
             }
 
             // 查找方法
-            Method method = findMethod(targetClass, methodName, argTypes);
-            if (method == null) {
+            MethodHandle methodHandle = findMethod(targetClass, methodName, argTypes);
+            if (methodHandle == null) {
                 throw new EvaluationException("Method not found: " + methodName);
             }
 
             // 调用方法
             if (targetValue instanceof Class<?>) {
                 //静态方法
-                return method.invoke(null, argValues);
+                return methodHandle.invokeWithArguments(argValues);
             } else {
-                return method.invoke(targetValue, argValues);
+                return methodHandle.bindTo(targetValue).invokeWithArguments(argValues);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new EvaluationException("Failed to invoke method: " + methodName, e);
         }
     }
@@ -110,16 +112,19 @@ public class MethodNode implements Expression {
 
     private static final MethodUtil methodUtil = new MethodUtil();
 
-    private Method methodCached;
+    private MethodHandle methodCached;
     private static ReentrantLock locker = new ReentrantLock();
 
-    private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
+    private MethodHandle findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) throws Throwable {
         if (methodCached == null) {
             locker.lock();
             try {
                 if (methodCached == null) {
-                    methodCached = methodUtil.getMethod(clazz, methodName, argTypes);
-                    methodCached.setAccessible(true);
+                    Method method = methodUtil.getMethod(clazz, methodName, argTypes);
+                    if (method != null) {
+                        method.setAccessible(true);
+                        methodCached = MethodHandles.lookup().unreflect(method);
+                    }
                 }
             } finally {
                 locker.unlock();

@@ -135,6 +135,7 @@ public class PropertyNode implements Expression {
         try {
             String name = "get" + capitalize(propName);
             Method method = target.getClass().getMethod(name);
+            method.setAccessible(true);
 
             MethodHandle methodHandle = MethodHandles.lookup().unreflect(method);
             return new PropertyHolder(methodHandle, null);
