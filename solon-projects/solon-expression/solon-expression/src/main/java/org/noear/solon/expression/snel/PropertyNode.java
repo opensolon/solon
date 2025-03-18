@@ -18,9 +18,6 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.exception.EvaluationException;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -137,8 +134,7 @@ public class PropertyNode implements Expression {
             Method method = target.getClass().getMethod(name);
             method.setAccessible(true);
 
-            MethodHandle methodHandle = MethodHandles.lookup().unreflect(method);
-            return new PropertyHolder(methodHandle, null);
+            return new PropertyHolder(method, null);
         } catch (NoSuchMethodException e) {
             try {
                 Field field = target.getClass().getField(propName);
@@ -148,8 +144,6 @@ public class PropertyNode implements Expression {
             } catch (NoSuchFieldException ex) {
                 throw new EvaluationException("Missing property: " + propName, e);
             }
-        } catch (IllegalAccessException e) {
-            throw new EvaluationException("Illegal access property: " + propName);
         }
     }
 

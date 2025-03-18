@@ -15,9 +15,6 @@
  */
 package org.noear.solon.expression.snel;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodType;
-import java.lang.invoke.WrongMethodTypeException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -28,11 +25,11 @@ import java.lang.reflect.Method;
  * @since 3.1
  */
 public class PropertyHolder {
-    private MethodHandle methodHandle;
+    private Method method;
     private Field field;
 
-    public PropertyHolder(MethodHandle methodHandle, Field field) {
-        this.methodHandle = methodHandle;
+    public PropertyHolder(Method method, Field field) {
+        this.method = method;
         this.field = field;
     }
 
@@ -40,10 +37,10 @@ public class PropertyHolder {
      * 获取属性值
      */
     public Object getValue(Object target) throws Throwable {
-        if (methodHandle == null) {
+        if (method == null) {
             return field.get(target);
         } else {
-            return methodHandle.invoke(target);
+            return method.invoke(target);
         }
     }
 }
