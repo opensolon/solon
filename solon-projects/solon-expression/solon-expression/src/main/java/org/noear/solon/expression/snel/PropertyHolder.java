@@ -15,6 +15,7 @@
  */
 package org.noear.solon.expression.snel;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -25,30 +26,22 @@ import java.lang.reflect.Method;
  * @since 3.1
  */
 public class PropertyHolder {
-    private Method method;
+    private MethodHandle methodHandle;
     private Field field;
 
-    public PropertyHolder(Method method, Field field) {
-        this.method = method;
+    public PropertyHolder(MethodHandle methodHandle, Field field) {
+        this.methodHandle = methodHandle;
         this.field = field;
-
-        if (this.method != null) {
-            this.method.setAccessible(true);
-        }
-
-        if (this.field != null) {
-            this.field.setAccessible(true);
-        }
     }
 
     /**
      * 获取属性值
      */
-    public Object getValue(Object target) throws Exception {
-        if (method == null) {
+    public Object getValue(Object target) throws Throwable {
+        if (methodHandle == null) {
             return field.get(target);
         } else {
-            return method.invoke(target);
+            return methodHandle.invoke(target);
         }
     }
 }

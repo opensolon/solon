@@ -18,6 +18,9 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.exception.EvaluationException;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -123,26 +126,30 @@ public class PropertyNode implements Expression {
 
         try {
             return propertyCached.getValue(target);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new EvaluationException("Failed to access property: " + propName, e);
         }
     }
 
     private PropertyHolder getPropertyDo(Object target, String propName) {
         try {
-            String getterName = "get" + capitalize(propName);
-            Method getter = target.getClass().getMethod(getterName);
-            return new PropertyHolder(getter, null);
+            String name = "get" + capitalize(propName);
+            Method method = target.getClass().getMethod(name);
+
+            MethodHandle methodHandle = MethodHandles.lookup().unreflect(method);
+            return new PropertyHolder(methodHandle, null);
         } catch (NoSuchMethodException e) {
             try {
                 Field field = target.getClass().getField(propName);
+                field.setAccessible(true);
+
                 return new PropertyHolder(null, field);
             } catch (NoSuchFieldException ex) {
-
+                throw new EvaluationException("Missing property: " + propName, e);
             }
+        } catch (IllegalAccessException e) {
+            throw new EvaluationException("Illegal access property: " + propName);
         }
-
-        throw new EvaluationException("Missing property: " + propName);
     }
 
     /**
