@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -105,25 +106,43 @@ public class PropertyNode implements Expression {
     /**
      * 获取 Java Bean 属性值
      */
+    private PropertyHolder propertyCached;
+    private static ReentrantLock locker = new ReentrantLock();
+
     private Object getPropertyValue(Object target, String propName) {
-        try {
-            // 尝试通过 getter 方法获取属性值
-            String getterName = "get" + capitalize(propName);
-            Method getter = target.getClass().getMethod(getterName);
-            return getter.invoke(target);
-        } catch (NoSuchMethodException e) {
-            // 尝试访问公共字段
+        if (propertyCached == null) {
+            locker.lock();
             try {
-                Field field = target.getClass().getField(propName);
-                return field.get(target);
-            } catch (NoSuchFieldException ex) {
-                return null; // 属性不存在返回 null
-            } catch (Exception ex) {
-                throw new EvaluationException("Failed to access property: " + propName, ex);
+                if (propertyCached == null) {
+                    propertyCached = getPropertyDo(target, propName);
+                }
+            } finally {
+                locker.unlock();
             }
+        }
+
+        try {
+            return propertyCached.getValue(target);
         } catch (Exception e) {
             throw new EvaluationException("Failed to access property: " + propName, e);
         }
+    }
+
+    private PropertyHolder getPropertyDo(Object target, String propName) {
+        try {
+            String getterName = "get" + capitalize(propName);
+            Method getter = target.getClass().getMethod(getterName);
+            return new PropertyHolder(getter, null);
+        } catch (NoSuchMethodException e) {
+            try {
+                Field field = target.getClass().getField(propName);
+                return new PropertyHolder(null, field);
+            } catch (NoSuchFieldException ex) {
+
+            }
+        }
+
+        throw new EvaluationException("Missing property: " + propName);
     }
 
     /**

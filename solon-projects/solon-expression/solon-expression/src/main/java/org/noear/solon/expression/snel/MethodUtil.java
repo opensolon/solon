@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 3.1
  * */
-public class MethodCache {
+public class MethodUtil {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
 
     static {

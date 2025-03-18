@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -84,8 +85,6 @@ public class MethodNode implements Expression {
                 throw new EvaluationException("Method not found: " + methodName);
             }
 
-            method.setAccessible(true);
-
             // 调用方法
             if (targetValue instanceof Class<?>) {
                 //静态方法
@@ -109,10 +108,25 @@ public class MethodNode implements Expression {
         return clazz;
     }
 
-    private static final MethodCache methodCache = new MethodCache();
+    private static final MethodUtil methodUtil = new MethodUtil();
+
+    private Method methodCached;
+    private static ReentrantLock locker = new ReentrantLock();
 
     private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
-        return methodCache.getMethod(clazz, methodName, argTypes);
+        if (methodCached == null) {
+            locker.lock();
+            try {
+                if (methodCached == null) {
+                    methodCached = methodUtil.getMethod(clazz, methodName, argTypes);
+                    methodCached.setAccessible(true);
+                }
+            } finally {
+                locker.unlock();
+            }
+        }
+
+        return methodCached;
     }
 
     @Override
