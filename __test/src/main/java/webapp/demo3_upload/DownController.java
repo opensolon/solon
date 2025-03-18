@@ -21,6 +21,7 @@ import org.noear.solon.boot.web.OutputUtils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.util.ResourceUtil;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -67,7 +68,6 @@ public class DownController {
     }
 
 
-
     @Mapping("f4")
     public void down4(Context ctx) throws IOException {
         String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
@@ -85,8 +85,8 @@ public class DownController {
     }
 
     @Mapping("f5")
-    public DownloadedFile down5() throws Exception {
+    public Mono<DownloadedFile> down5() throws Exception {
         File file = new File("/Users/noear/Movies/down_test.mp4");
-        return new DownloadedFile(file).asAttachment(false);
+        return Mono.just(new DownloadedFile(file).asAttachment(false));
     }
 }
