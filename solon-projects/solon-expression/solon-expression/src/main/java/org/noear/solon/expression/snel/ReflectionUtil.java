@@ -15,6 +15,9 @@
  */
 package org.noear.solon.expression.snel;
 
+import org.noear.solon.expression.exception.EvaluationException;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,12 +25,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 方法缓存
+ * 反射工具
  *
  * @author noear
  * @since 3.1
  * */
-public class MethodUtil {
+public class ReflectionUtil {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_MAP = new HashMap<>();
 
     static {
@@ -53,14 +56,21 @@ public class MethodUtil {
         return cache.computeIfAbsent(key, k -> findMethod(clazz, methodName, argTypes));
     }
 
+
     // 优化参数类型匹配逻辑
     private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) {
         // 使用流处理并并行查找（如果线程安全）
-        return Arrays.stream(getMethods(clazz))
+        Method method = Arrays.stream(getMethods(clazz))
                 .filter(m -> m.getName().equals(methodName))
                 .filter(m -> isMethodMatch(m, argTypes))
                 .findFirst()
                 .orElse(null);
+
+        if (method != null) {
+            method.setAccessible(true);
+        }
+
+        return method;
     }
 
     private boolean isMethodMatch(Method method, Class<?>[] argTypes) {
@@ -76,9 +86,13 @@ public class MethodUtil {
     }
 
     private boolean isAssignable(Class<?> targetType, Class<?> sourceType) {
+        // 处理原始类型与包装类型的兼容性
         if (targetType.isPrimitive()) {
             Class<?> wrapperType = PRIMITIVE_WRAPPER_MAP.get(targetType);
             return wrapperType != null && wrapperType.isAssignableFrom(sourceType);
+        } else if (sourceType.isPrimitive()) {
+            Class<?> targetWrapper = PRIMITIVE_WRAPPER_MAP.get(sourceType);
+            return targetType.isAssignableFrom(targetWrapper);
         }
 
         if (targetType.isAssignableFrom(sourceType)) {
@@ -91,6 +105,44 @@ public class MethodUtil {
 
         return false;
     }
+
+
+    /// //////////////////////////////
+    private static final Map<String, PropertyHolder> PROPERTY_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * 获取属性
+     */
+    public static PropertyHolder getProperty(Class<?> clazz, String propName) {
+        String key = clazz.getName() + ":" + propName;
+
+        return PROPERTY_CACHE.computeIfAbsent(key, k -> {
+            try {
+                String name = "get" + capitalize(propName);
+                Method method = clazz.getMethod(name);
+                method.setAccessible(true);
+
+                return new PropertyHolder(method, null);
+            } catch (NoSuchMethodException e) {
+                try {
+                    Field field = clazz.getField(propName);
+                    field.setAccessible(true);
+
+                    return new PropertyHolder(null, field);
+                } catch (NoSuchFieldException ex) {
+                    throw new EvaluationException("Missing property: " + propName, e);
+                }
+            }
+        });
+    }
+
+    /**
+     * 将字符串首字母大写
+     */
+    private static String capitalize(String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
 
     private static class MethodKey {
         private final Class<?> clazz;

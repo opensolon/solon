@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -106,27 +105,19 @@ public class MethodNode implements Expression {
         return clazz;
     }
 
-    private static final MethodUtil methodUtil = new MethodUtil();
+    private static final ReflectionUtil methodUtil = new ReflectionUtil();
+
 
     private Method methodCached;
-    private static ReentrantLock locker = new ReentrantLock();
 
     private Method findMethod(Class<?> clazz, String methodName, Object[] argValues) {
         if (methodCached == null) {
-            locker.lock();
-            try {
-                if (methodCached == null) {
-                    Class<?>[] argTypes = new Class<?>[argValues.length];
-                    for (int i = 0; i < argValues.length; i++) {
-                        argTypes[i] = getEffectiveClass(argValues[i]);
-                    }
-
-                    this.methodCached = methodUtil.getMethod(clazz, methodName, argTypes);
-                    this.methodCached.setAccessible(true);
-                }
-            } finally {
-                locker.unlock();
+            Class<?>[] argTypes = new Class<?>[argValues.length];
+            for (int i = 0; i < argValues.length; i++) {
+                argTypes[i] = getEffectiveClass(argValues[i]);
             }
+
+            methodCached = methodUtil.getMethod(clazz, methodName, argTypes);
         }
 
         return methodCached;

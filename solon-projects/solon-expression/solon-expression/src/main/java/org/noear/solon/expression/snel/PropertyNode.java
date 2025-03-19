@@ -18,11 +18,8 @@ package org.noear.solon.expression.snel;
 import org.noear.solon.expression.Expression;
 import org.noear.solon.expression.exception.EvaluationException;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -107,18 +104,10 @@ public class PropertyNode implements Expression {
      * 获取 Java Bean 属性值
      */
     private PropertyHolder propertyCached;
-    private static ReentrantLock locker = new ReentrantLock();
 
     private Object getPropertyValue(Object target, String propName) {
         if (propertyCached == null) {
-            locker.lock();
-            try {
-                if (propertyCached == null) {
-                    propertyCached = getPropertyDo(target, propName);
-                }
-            } finally {
-                locker.unlock();
-            }
+            propertyCached = ReflectionUtil.getProperty(target.getClass(), propName);
         }
 
         try {
@@ -126,32 +115,6 @@ public class PropertyNode implements Expression {
         } catch (Throwable e) {
             throw new EvaluationException("Failed to access property: " + propName, e);
         }
-    }
-
-    private PropertyHolder getPropertyDo(Object target, String propName) {
-        try {
-            String name = "get" + capitalize(propName);
-            Method method = target.getClass().getMethod(name);
-            method.setAccessible(true);
-
-            return new PropertyHolder(method, null);
-        } catch (NoSuchMethodException e) {
-            try {
-                Field field = target.getClass().getField(propName);
-                field.setAccessible(true);
-
-                return new PropertyHolder(null, field);
-            } catch (NoSuchFieldException ex) {
-                throw new EvaluationException("Missing property: " + propName, e);
-            }
-        }
-    }
-
-    /**
-     * 将字符串首字母大写
-     */
-    private String capitalize(String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
     @Override
