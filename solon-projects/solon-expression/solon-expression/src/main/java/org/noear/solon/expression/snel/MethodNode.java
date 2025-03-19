@@ -65,10 +65,8 @@ public class MethodNode implements Expression {
 
         // 获取方法参数值
         Object[] argValues = new Object[args.size()];
-        Class<?>[] argTypes = new Class<?>[args.size()];
         for (int i = 0; i < args.size(); i++) {
             argValues[i] = args.get(i).eval(context);
-            argTypes[i] = getEffectiveClass(argValues[i]);
         }
 
         try {
@@ -80,7 +78,7 @@ public class MethodNode implements Expression {
             }
 
             // 查找方法
-            Method method = findMethod(targetClass, methodName, argTypes);
+            Method method = findMethod(targetClass, methodName, argValues);
             if (method == null) {
                 throw new EvaluationException("Method not found: " + methodName);
             }
@@ -113,11 +111,16 @@ public class MethodNode implements Expression {
     private Method methodCached;
     private static ReentrantLock locker = new ReentrantLock();
 
-    private Method findMethod(Class<?> clazz, String methodName, Class<?>[] argTypes) throws Throwable {
+    private Method findMethod(Class<?> clazz, String methodName, Object[] argValues) {
         if (methodCached == null) {
             locker.lock();
             try {
                 if (methodCached == null) {
+                    Class<?>[] argTypes = new Class<?>[argValues.length];
+                    for (int i = 0; i < argValues.length; i++) {
+                        argTypes[i] = getEffectiveClass(argValues[i]);
+                    }
+
                     this.methodCached = methodUtil.getMethod(clazz, methodName, argTypes);
                     this.methodCached.setAccessible(true);
                 }
