@@ -1,6 +1,6 @@
 {
   "id": "c6",
-  "nodes": [
+  "layout": [
     { "type": "start"},
     { "task":"#c62"},
     { "type": "end"}

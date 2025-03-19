@@ -1,7 +1,7 @@
 {
   "id": "c4",
   "title": "简单计算",
-  "nodes": [
+  "layout": [
     { "type": "start"},
     { "title":"初始化", "task": "context.result=0;"},
     { "type": "inclusive", "link": [

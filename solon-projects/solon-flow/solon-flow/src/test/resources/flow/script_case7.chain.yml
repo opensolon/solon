@@ -3,7 +3,7 @@ title: "简单计算"
 meta:
   scrip1: |
     context.result=((int)context.result)+1;
-nodes:
+layout:
   - { type: "start"}
   - { title: "初始化", task: "context.result=0;"}
   - { id: "g1", type: "inclusive", link: [

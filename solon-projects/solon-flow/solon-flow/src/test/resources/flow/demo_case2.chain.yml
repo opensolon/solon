@@ -1,6 +1,6 @@
 id: "d2"
 title: "风控计算（评分风格）"
-nodes:
+layout:
   - { id: "n1", type: "start", link: "n2"}
   - { id: "n2", title: "基本信息安全分析", link: "n3"}
   - { id: "n3", type: "exclusive", title: "分流", link: [

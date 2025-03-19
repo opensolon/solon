@@ -1,7 +1,7 @@
 {
   "id": "d1",
   "title": "请假审批（审批风格）",
-  "nodes": [
+  "layout": [
     { "id": "n1", "type": "start", "title":"发起人", "meta": {"role": "employee"}, "link": "n2"},
     { "id": "n2", "type": "exclusive", "link": [
       {"nextId": "n3", "title": "3天以上", "condition": "day>=3 && day<7"},

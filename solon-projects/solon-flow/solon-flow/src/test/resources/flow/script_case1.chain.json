@@ -1,6 +1,6 @@
 {
   "id": "c1",
-  "nodes": [
+  "layout": [
     { "task": "context.result=111;"}
   ]
 }

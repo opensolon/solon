@@ -1,6 +1,6 @@
 
 id: "m2"
-nodes:
+layout:
   - { "type": "start" }
   - { "meta": { "a": 1,"b": [ ] }, "task": "@a" }
   - { "task": "@b" }

@@ -1,6 +1,6 @@
 {
   "id": "m1",
-  "nodes": [
+  "layout": [
     { "id": "n1", "type": "start", "link": "n2"},
     { "id": "n2", "type": "execute", "link": "n3", "meta":{"a": 1,"b": []}, "task":"@a"},
     { "id": "n3", "type": "execute", "link": "n4", "task":"@b"},

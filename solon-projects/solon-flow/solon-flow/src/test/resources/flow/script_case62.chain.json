@@ -1,6 +1,6 @@
 {
   "id": "c62",
-  "nodes": [
+  "layout": [
     { "id": "n1", "type": "start", "link": "n2"},
     { "id": "n2", "type": "execute", "link": "n3", "task":"context.result=112;"},
     { "id": "n3", "type": "end"}
