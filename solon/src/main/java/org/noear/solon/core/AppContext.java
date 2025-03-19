@@ -376,6 +376,7 @@ public class AppContext extends BeanContainer {
             }
         } finally {
             if (isStarted()) {
+                //测试或启动之后的注入
                 vh.commit();
             }
         }
@@ -1113,8 +1114,6 @@ public class AppContext extends BeanContainer {
      * 启动（一般在插件启动之后，应用完成扫描，再执行）
      */
     public void start() {
-        started = true;
-
         try {
             //开始执行生命周期bean（侧重做初始化） //支持排序
             startBeanLifecycle();
@@ -1126,6 +1125,8 @@ public class AppContext extends BeanContainer {
             postStartBeanLifecycle();
         } catch (Throwable e) {
             throw new RuntimeException(e);
+        } finally {
+            started = true;
         }
     }
 
@@ -1177,11 +1178,11 @@ public class AppContext extends BeanContainer {
 
 
         if (gatherList.size() > 0) {
-            if (sel > 0) {
-                for (InjectGather gather : gatherList) {
-                    IndexUtil.buildGatherIndex(gather, gatherList);
-                }
+            for (InjectGather gather : gatherList) {
+                IndexUtil.buildGatherIndex(gather, gatherList);
+            }
 
+            if (sel > 0) {
                 Collections.sort(gatherList);
                 for (InjectGather g1 : gatherList) {
                     g1.check();
