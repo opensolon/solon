@@ -24,10 +24,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.runtime.AotCollector;
-import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.core.util.TypeMap;
-import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.*;
 
 import java.io.Closeable;
 import java.lang.annotation.Annotation;
@@ -918,7 +915,7 @@ public abstract class BeanContainer {
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
                 putWrap(t.getTypeName(), bw);
-                bw.genericList().add(t.getTypeName());
+                bw.genericList().add((ParameterizedType) t);
             }
         }
     }
@@ -930,7 +927,7 @@ public abstract class BeanContainer {
         Type[] list2 = clz.getGenericInterfaces(); //有可能跟 getInterfaces() 一样
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
-                bw.genericList().add(t.getTypeName());
+                bw.genericList().add((ParameterizedType) t);
             }
         }
     }

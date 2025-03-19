@@ -65,9 +65,9 @@ public class BeanWrap {
     private final Annotation[] annotations;
 
     private final AppContext context;
-    private Set<String> genericList;
+    private Set<ParameterizedType> genericList;
 
-    protected Set<String> genericList() {
+    protected Set<ParameterizedType> genericList() {
         if (genericList == null) {
             genericList = new HashSet<>();
         }
@@ -78,16 +78,59 @@ public class BeanWrap {
     /**
      * 是否为Null或者自来泛型
      */
-    protected boolean isNullOrGenericFrom(ParameterizedType genericType) {
-        if (genericType == null) {
+    protected boolean isNullOrGenericFrom(ParameterizedType checkType) {
+        if (checkType == null) {
             return true;
         } else {
-            if (genericList == null) {
+            if (Utils.isEmpty(genericList)) {
                 return false;
             }
 
-            return genericList.contains(genericType.getTypeName());
+            for (ParameterizedType pt : genericList) {
+                if (genericEquals(checkType, pt)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
+    }
+
+    private boolean genericEquals(ParameterizedType checkType, ParameterizedType sourceType) {
+        if (sourceType.getActualTypeArguments().length == checkType.getActualTypeArguments().length) {
+            if (sourceType.getTypeName().equals(checkType.getTypeName())) {
+                return true;
+            } else {
+                if (sourceType.getRawType().equals(checkType.getRawType())) {
+                    Type[] typesC = checkType.getActualTypeArguments();
+                    Type[] typesS = sourceType.getActualTypeArguments();
+
+                    boolean isOk = true;
+                    for (int i = 0; i < typesC.length; i++) {
+                        Type c1 = typesC[i];
+                        Type s1 = typesS[i];
+
+                        if (c1 instanceof Class) {
+                            isOk = c1.equals(s1);
+                        } else if (c1 instanceof ParameterizedType) {
+                            if (s1 instanceof ParameterizedType) {
+                                isOk = genericEquals((ParameterizedType) c1, (ParameterizedType) s1);
+                            } else {
+                                isOk = false;
+                            }
+                        } else if (c1 instanceof GenericArrayType) {
+                            isOk = c1.equals(s1);
+                        }
+                    }
+
+                    if (isOk) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
 
