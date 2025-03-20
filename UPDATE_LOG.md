@@ -36,6 +36,7 @@
 * 优化 solon-boot-smarthttp 取消在 core 里使用虚拟线程（影响性能）
 * 优化 solon-cloud-gateway 简化基于 solon-cloud-config 动态更新路由配置的处理支持
 * 调整 solon-configuration-processor 依赖包
+* 调整 solon-flow 添加 AbstractChainDriver，并将 SimpleChainDriver 更名为 SolonChainDriver
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-data-sqlutils `as` 查询没有生效的问题
