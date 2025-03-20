@@ -27,6 +27,7 @@
 * 优化 开源合规性
 * 添加 solon-ai 对 docx 文档的解析
 * 添加 solon-ai 对 ppt 文档的解析
+* 添加 solon-flow `ChainContext:stop()` 停止流动
 * 添加 solon-data Transaction 事务注解（替代 Tran，后者标为弃用）
 * 优化 solon 泛型注入检测兼容处理
 * 优化 solon GenericUtil.reviewType 泛型深度兼容能力

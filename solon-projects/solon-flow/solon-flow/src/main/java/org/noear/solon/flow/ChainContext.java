@@ -37,8 +37,10 @@ public class ChainContext {
 
     //控制过程计数
     private transient final Counter counter = new Counter();
-    //控制过程中断（可选）
+    //控制分支阻断（可选）
     private transient boolean interrupted = false;
+    //控制流程停止（可选）
+    private transient boolean stopped = false;
 
     //当前流程引擎
     protected transient FlowEngine engine;
@@ -77,21 +79,35 @@ public class ChainContext {
     }
 
     /**
-     * 是否已中断
+     * 是否已停止
+     */
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    /**
+     * 停止（整个流程不再后流）
+     */
+    public void stop() {
+        stopped = true;
+    }
+
+    /**
+     * 是否已阻断
      */
     public boolean isInterrupted() {
         return interrupted;
     }
 
     /**
-     * 中断（执行中可中断流）
+     * 阻断（当前分支不再后流）
      */
     public void interrupt() {
         this.interrupted = true;
     }
 
     /**
-     * 中断设置
+     * 阻断重置
      */
     protected void interrupt(boolean interrupted) {
         this.interrupted = interrupted;
