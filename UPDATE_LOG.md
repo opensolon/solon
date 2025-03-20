@@ -28,6 +28,7 @@
 * 添加 solon-ai 对 docx 文档的解析
 * 添加 solon-ai 对 ppt 文档的解析
 * 添加 solon-flow `ChainContext:stop()` 停止流动
+* 添加 solon-flow `FlowEngine:next(Node,ChainContext)` 接口，方便支持异步唤醒
 * 添加 solon-data Transaction 事务注解（替代 Tran，后者标为弃用）
 * 优化 solon 泛型注入检测兼容处理
 * 优化 solon GenericUtil.reviewType 泛型深度兼容能力
@@ -41,6 +42,7 @@
 * 调整 solon-flow 中断策略，只中断当前分支
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
+* 修复 solon-flow 排它网关必会进入默认分支的问题
 * 修复 solon-data-sqlutils `as` 查询没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
 * 修复 solon-cache-redisson RedissonClientSupplier:get 为 null 的问题
