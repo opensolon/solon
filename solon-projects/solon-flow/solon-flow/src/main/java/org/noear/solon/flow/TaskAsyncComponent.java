@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 任务异步组件
+ *
  * @author noear
  * @since 3.1
  */
