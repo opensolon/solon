@@ -17,25 +17,20 @@ package org.noear.solon.flow.driver;
 
 import org.noear.liquor.eval.Exprs;
 import org.noear.liquor.eval.Scripts;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.flow.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 简单的链驱动器
+ * 链驱动器基类（方便定制）
  *
  * @author noear
- * @since 3.0
- * */
-public class SimpleChainDriver implements ChainDriver {
-    private static final Logger log = LoggerFactory.getLogger(SimpleChainDriver.class);
-    private static final SimpleChainDriver instance = new SimpleChainDriver();
+ * @since 3.1
+ */
+public abstract class AbstractChainDriver implements ChainDriver {
+    static final Logger log = LoggerFactory.getLogger(AbstractChainDriver.class);
 
-    public static SimpleChainDriver getInstance() {
-        return instance;
-    }
 
     /**
      * 是否为组件
@@ -124,17 +119,7 @@ public class SimpleChainDriver implements ChainDriver {
     /**
      * 尝试如果是组件则运行
      */
-    protected void tryAsComponentTask(ChainContext context, Task task, String description) throws Throwable {
-        //按组件运行
-        String beanName = description.substring(1);
-        TaskComponent component = Solon.context().getBean(beanName);
-
-        if (component == null) {
-            throw new IllegalStateException("The task component '" + beanName + "' not exist");
-        } else {
-            component.run(context, task.node());
-        }
-    }
+    protected abstract void tryAsComponentTask(ChainContext context, Task task, String description) throws Throwable;
 
     /**
      * 尝试作为脚本运行

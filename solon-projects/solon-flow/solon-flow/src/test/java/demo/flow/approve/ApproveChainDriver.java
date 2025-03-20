@@ -7,7 +7,7 @@ import org.noear.solon.flow.driver.*;
 /**
  * @author noear 2025/1/13 created
  */
-public class ApproveChainDriver extends SimpleChainDriver {
+public class ApproveChainDriver extends SolonChainDriver {
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
         if (isChain(task.description())) {

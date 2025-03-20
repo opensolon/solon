@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.flow.*;
-import org.noear.solon.flow.driver.SimpleChainDriver;
+import org.noear.solon.flow.driver.SolonChainDriver;
 
 /**
  * 手动配装风格
@@ -21,7 +21,7 @@ public class ComJavaTest {
         SimpleSolonApp solonApp = new SimpleSolonApp(ComJavaTest.class);
         solonApp.start(null);
 
-        SimpleChainDriver driver = new SimpleChainDriver() {
+        SolonChainDriver driver = new SolonChainDriver() {
             @Override
             public void handleTask(ChainContext context, Task task) throws Throwable {
                 context.result = task.node().id();

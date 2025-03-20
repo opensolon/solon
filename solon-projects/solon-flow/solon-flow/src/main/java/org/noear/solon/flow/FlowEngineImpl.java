@@ -17,7 +17,7 @@ package org.noear.solon.flow;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.RankEntity;
-import org.noear.solon.flow.driver.SimpleChainDriver;
+import org.noear.solon.flow.driver.SolonChainDriver;
 import org.noear.solon.flow.intercept.ChainInterceptor;
 import org.noear.solon.flow.intercept.ChainInvocation;
 
@@ -37,7 +37,7 @@ class FlowEngineImpl implements FlowEngine {
 
     public FlowEngineImpl() {
         //默认驱动器
-        driverMap.put("", SimpleChainDriver.getInstance());
+        driverMap.put("", SolonChainDriver.getInstance());
     }
 
     @Override

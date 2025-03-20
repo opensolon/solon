@@ -2,12 +2,12 @@ package features.flow.cfg_script;
 
 import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.Task;
-import org.noear.solon.flow.driver.SimpleChainDriver;
+import org.noear.solon.flow.driver.SolonChainDriver;
 
 /**
  * @author noear 2025/1/11 created
  */
-public class Case2FlowDriver extends SimpleChainDriver {
+public class Case2FlowDriver extends SolonChainDriver {
     @Override
     public void handleTask(ChainContext context, Task task) throws Throwable {
         context.result = task.node().id();
