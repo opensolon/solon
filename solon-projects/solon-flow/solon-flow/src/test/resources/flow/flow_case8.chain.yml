@@ -6,7 +6,7 @@ layout:
   - {title: 元数据填充, id: s2, task: '@a'}
   - {title: 排他, id: s3, type: exclusive, link:[
         {nextId: s3_1},
-        {nextId: s3_2, condition: '"type1".equals(dataType)'},
+        {nextId: s3_2, condition: '"type1".equals(dataType)'}
       ]
     }
   - {title: 瞬时数据, id: s3_1, link: s4, task: '@a'}
