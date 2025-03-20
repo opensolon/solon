@@ -25,6 +25,7 @@ import java.util.List;
  * @since 2.9
  */
 public class GatewayProperties {
+    public static final String SOLON_CLOUD_GATEWAY = "solon.cloud.gateway";
     /**
      * 发现配置
      */

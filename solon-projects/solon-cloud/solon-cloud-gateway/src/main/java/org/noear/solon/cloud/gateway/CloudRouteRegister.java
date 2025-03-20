@@ -15,6 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.cloud.gateway.properties.GatewayProperties;
 import org.noear.solon.cloud.gateway.route.RouteSpec;
 
 import java.util.function.Consumer;
@@ -27,7 +28,7 @@ import java.util.function.Consumer;
  */
 public interface CloudRouteRegister {
     /**
-     * 路由登记
+     * 登记路由登记
      *
      * @param id      标识
      * @param builder 路由构建器
@@ -35,14 +36,19 @@ public interface CloudRouteRegister {
     CloudRouteRegister route(String id, Consumer<RouteSpec> builder);
 
     /**
-     * 路由登记
+     * 登记路由
      *
      * @param route 路由
      */
     CloudRouteRegister route(RouteSpec route);
 
     /**
-     * 路由移除
+     * 登记路由
+     */
+    CloudRouteRegister route(GatewayProperties gatewayProperties);
+
+    /**
+     * 移除路由
      *
      * @param id 标识
      */

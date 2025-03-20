@@ -20,13 +20,9 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.gateway.CloudRouteRegister;
 import org.noear.solon.cloud.gateway.properties.DiscoverProperties;
 import org.noear.solon.cloud.gateway.properties.GatewayProperties;
-import org.noear.solon.cloud.gateway.properties.RouteProperties;
-import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
-import org.noear.solon.cloud.gateway.route.RouteSpec;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.bean.LifecycleBean;
 
-import java.net.URI;
 import java.util.Collection;
 
 /**
@@ -97,43 +93,6 @@ public class CloudGatewayLocator implements LifecycleBean {
      * 构建分布式网关
      */
     public void loadRoutesConfig() {
-        if (Utils.isEmpty(gatewayProperties.getRoutes())) {
-            return;
-        }
-
-        //routes
-        for (RouteProperties rm : gatewayProperties.getRoutes()) {
-            RouteSpec route = new RouteSpec(rm.getId());
-
-            route.index(rm.getIndex());
-            route.target(URI.create(rm.getTarget()));
-
-            if (LoadBalance.URI_SCHEME.equals(route.getTarget().getScheme())) {
-                //起到预热加载作用
-                LoadBalance.get(route.getTarget().getHost());
-            }
-
-            if (rm.getPredicates() != null) {
-                //route.predicates
-                for (String predicateStr : rm.getPredicates()) {
-                    route.predicate(RouteFactoryManager.buildPredicate(predicateStr));
-                }
-            }
-
-            if (rm.getFilters() != null) {
-                //route.filters
-                for (String filterStr : rm.getFilters()) {
-                    route.filter(RouteFactoryManager.buildFilter(filterStr));
-                }
-            }
-
-            if (rm.getTimeout() != null) {
-                route.timeout(rm.getTimeout());
-            } else {
-                route.timeout(gatewayProperties.getHttpClient());
-            }
-
-            routeRegister.route(route);
-        }
+        routeRegister.route(gatewayProperties);
     }
 }

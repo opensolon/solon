@@ -15,12 +15,18 @@
  */
 package org.noear.solon.cloud.gateway;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
+import org.noear.solon.cloud.gateway.properties.GatewayProperties;
+import org.noear.solon.cloud.gateway.properties.RouteProperties;
 import org.noear.solon.cloud.gateway.route.Route;
+import org.noear.solon.cloud.gateway.route.RouteFactoryManager;
 import org.noear.solon.cloud.gateway.route.RouteSpec;
+import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.cloud.gateway.exchange.ExFilter;
 
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -90,6 +96,50 @@ public class CloudGatewayConfiguration implements CloudRouteRegister {
     public CloudRouteRegister route(RouteSpec route) {
         if (route != null) {
             routes.put(route.getId(), route.filters(routeDefaultFilters));
+        }
+
+        return this;
+    }
+
+    @Override
+    public CloudRouteRegister route(GatewayProperties gatewayProperties) {
+        if (Utils.isEmpty(gatewayProperties.getRoutes())) {
+            return this;
+        }
+
+        //routes
+        for (RouteProperties rm : gatewayProperties.getRoutes()) {
+            RouteSpec route = new RouteSpec(rm.getId());
+
+            route.index(rm.getIndex());
+            route.target(URI.create(rm.getTarget()));
+
+            if (LoadBalance.URI_SCHEME.equals(route.getTarget().getScheme())) {
+                //起到预热加载作用
+                LoadBalance.get(route.getTarget().getHost());
+            }
+
+            if (rm.getPredicates() != null) {
+                //route.predicates
+                for (String predicateStr : rm.getPredicates()) {
+                    route.predicate(RouteFactoryManager.buildPredicate(predicateStr));
+                }
+            }
+
+            if (rm.getFilters() != null) {
+                //route.filters
+                for (String filterStr : rm.getFilters()) {
+                    route.filter(RouteFactoryManager.buildFilter(filterStr));
+                }
+            }
+
+            if (rm.getTimeout() != null) {
+                route.timeout(rm.getTimeout());
+            } else {
+                route.timeout(gatewayProperties.getHttpClient());
+            }
+
+            this.route(route);
         }
 
         return this;

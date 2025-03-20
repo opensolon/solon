@@ -28,11 +28,9 @@ import org.noear.solon.core.*;
  * @since 2.9
  */
 public class CloudGatewayPlugin implements Plugin {
-    private static final String SOLON_CLOUD_GATEWAY = "solon.cloud.gateway";
-
     @Override
     public void start(AppContext context) throws Throwable {
-        final Props gatewayProps = context.cfg().getProp(SOLON_CLOUD_GATEWAY);
+        final Props gatewayProps = context.cfg().getProp(GatewayProperties.SOLON_CLOUD_GATEWAY);
         final GatewayProperties gatewayProperties;
         if (gatewayProps.size() > 0) {
             gatewayProperties = gatewayProps.toBean(GatewayProperties.class);
