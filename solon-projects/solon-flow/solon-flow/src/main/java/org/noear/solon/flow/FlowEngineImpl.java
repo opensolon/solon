@@ -165,6 +165,7 @@ class FlowEngineImpl implements FlowEngine {
 
         //如果中断，就不再执行了
         if (context.isInterrupted()) {
+            context.interrupt(false);
             return false;
         }
 
@@ -180,6 +181,7 @@ class FlowEngineImpl implements FlowEngine {
 
         //如果中断，就不再执行了（onNodeBefore 可能会触发中断）
         if (context.isInterrupted()) {
+            context.interrupt(false); //只中断当前分支
             return false;
         }
 

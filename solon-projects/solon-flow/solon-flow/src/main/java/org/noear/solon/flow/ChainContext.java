@@ -90,6 +90,13 @@ public class ChainContext {
         this.interrupted = true;
     }
 
+    /**
+     * 中断设置
+     */
+    protected void interrupt(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
+
     /// ////////
 
     /**
