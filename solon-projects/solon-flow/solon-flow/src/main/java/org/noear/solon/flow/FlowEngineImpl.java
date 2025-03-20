@@ -285,7 +285,7 @@ class FlowEngineImpl implements FlowEngine {
      */
     private boolean exclusive_run(ChainDriver driver, ChainContext context, Node node, int depth) throws Throwable {
         //::流出
-        Link def_line = null;
+        Link def_line = null; //默认线
         for (Link l : node.nextLinks()) {
             if (l.condition().isEmpty()) {
                 def_line = l;
@@ -293,6 +293,7 @@ class FlowEngineImpl implements FlowEngine {
                 if (condition_test(driver, context, l.condition(), false)) {
                     //执行第一个满足条件
                     node_run(driver, context, l.nextNode(), depth);
+                    return true; //结束
                 }
             }
         }
