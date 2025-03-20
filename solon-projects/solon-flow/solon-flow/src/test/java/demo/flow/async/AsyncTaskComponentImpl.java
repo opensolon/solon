@@ -1,10 +1,10 @@
 package demo.flow.async;
 
+import org.noear.solon.flow.AsyncTaskComponent;
 import org.noear.solon.flow.ChainContext;
 import org.noear.solon.flow.Node;
-import org.noear.solon.flow.TaskAsyncComponent;
 
-public class AsyncTaskComponent extends TaskAsyncComponent {
+public class AsyncTaskComponentImpl extends AsyncTaskComponent {
     @Override
     protected void asyncRun(ChainContext context, Node node) throws Throwable {
         //做真正的任务

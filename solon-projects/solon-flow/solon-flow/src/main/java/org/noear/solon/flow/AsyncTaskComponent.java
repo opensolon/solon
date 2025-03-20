@@ -20,13 +20,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 任务异步组件
+ * 异步任务组件
  *
  * @author noear
  * @since 3.1
  */
-public abstract class TaskAsyncComponent implements TaskComponent {
-    static Logger log = LoggerFactory.getLogger(TaskAsyncComponent.class);
+public abstract class AsyncTaskComponent implements TaskComponent {
+    static Logger log = LoggerFactory.getLogger(AsyncTaskComponent.class);
 
     @Override
     public void run(ChainContext context, Node node) throws Throwable {

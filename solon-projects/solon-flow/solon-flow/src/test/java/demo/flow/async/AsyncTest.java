@@ -3,8 +3,6 @@ package demo.flow.async;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.flow.Chain;
 import org.noear.solon.flow.FlowEngine;
-import org.noear.solon.flow.NodeDecl;
-import org.noear.solon.flow.NodeType;
 import org.noear.solon.flow.driver.MapChainDriver;
 
 /**
@@ -16,7 +14,7 @@ public class AsyncTest {
         FlowEngine engine = FlowEngine.newInstance();
         engine.register(MapChainDriver.getInstance());
 
-        MapChainDriver.getInstance().putComponent("a", new AsyncTaskComponent());
+        MapChainDriver.getInstance().putComponent("a", new AsyncTaskComponentImpl());
 
         engine.load(Chain.parseByUri("classpath:demo/async/async_case1.chain.yml"));
 
