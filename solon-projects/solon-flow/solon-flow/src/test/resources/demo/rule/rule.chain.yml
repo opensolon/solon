@@ -1,6 +1,6 @@
 id: "d1"
 title: "修改数据"
-nodes:
+layout:
   - { type: "start"}
   - { task: "if(s.amount>=100){s.setScore(0);}"}
   - { task: "if(s.amount > 100 && s.amount <= 500){s.setScore(100);}"}

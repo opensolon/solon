@@ -18,13 +18,9 @@ public class AsyncTest {
 
         MapChainDriver.getInstance().putComponent("a", new AsyncTaskComponent());
 
-        Chain chain = new Chain("c1", "c1");
-        chain.addNode(new NodeDecl("n1", NodeType.execute).task("@a").linkAdd("n2"));
-        chain.addNode(new NodeDecl("n2", NodeType.execute).task("@a").linkAdd("n3"));
-        chain.addNode(new NodeDecl("n3", NodeType.execute).task("@a"));
-        chain.check();
+        engine.load(Chain.parseByUri("classpath:demo/async/async_case1.chain.yml"));
 
-        engine.eval(chain);
+        engine.eval("c1");
 
         //因为是异步，所以要阻一下
         System.in.read();

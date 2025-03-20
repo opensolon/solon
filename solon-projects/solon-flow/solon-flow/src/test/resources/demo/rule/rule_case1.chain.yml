@@ -1,6 +1,6 @@
 id: "r1"
 title: "评分规则"
-nodes:
+layout:
   - { type: "start"}
   - { when: "order.getAmount() >= 100", task: "order.setScore(0);"}
   - { when: "order.getAmount() > 100 && order.getAmount() <= 500", task: "order.setScore(100);"}
