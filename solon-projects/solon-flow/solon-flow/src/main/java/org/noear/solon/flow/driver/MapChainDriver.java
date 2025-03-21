@@ -15,8 +15,6 @@
  */
 package org.noear.solon.flow.driver;
 
-import org.noear.solon.flow.ChainContext;
-import org.noear.solon.flow.Task;
 import org.noear.solon.flow.TaskComponent;
 
 import java.util.Map;
@@ -54,20 +52,8 @@ public class MapChainDriver extends AbstractChainDriver {
     /**
      * 获取组件
      */
-    public TaskComponent getComponent(String key) {
-        return components.get(key);
-    }
-
     @Override
-    protected void tryAsComponentTask(ChainContext context, Task task, String description) throws Throwable {
-        //按组件运行
-        String beanName = description.substring(1);
-        TaskComponent component = getComponent(beanName);
-
-        if (component == null) {
-            throw new IllegalStateException("The task component '" + beanName + "' not exist");
-        } else {
-            component.run(context, task.node());
-        }
+    public Object getComponent(String key) {
+        return components.get(key);
     }
 }

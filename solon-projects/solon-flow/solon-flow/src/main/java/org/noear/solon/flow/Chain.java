@@ -235,6 +235,7 @@ public class Chain {
             nodeDecl.meta(n1.get("meta").toObject(Map.class));
             nodeDecl.when(n1.get("when").getString());
             nodeDecl.task(n1.get("task").getString());
+            nodeDecl.async(n1.get("async").getBoolean());
 
             ONode linkNode = n1.get("link");
             if (linkNode.isArray()) {

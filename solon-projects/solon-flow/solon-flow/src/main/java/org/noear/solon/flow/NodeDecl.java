@@ -34,6 +34,7 @@ public class NodeDecl {
     protected List<LinkDecl> links = new ArrayList<>();
     protected String when;
     protected String task;
+    protected boolean async;
 
 
     /// //////////////
@@ -113,6 +114,14 @@ public class NodeDecl {
      */
     public NodeDecl task(String task) {
         this.task = task;
+        return this;
+    }
+
+    /**
+     * 配置任务条件
+     */
+    public NodeDecl async(boolean async) {
+        this.async = async;
         return this;
     }
 }

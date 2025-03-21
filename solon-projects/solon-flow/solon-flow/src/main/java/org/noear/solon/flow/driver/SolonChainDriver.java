@@ -32,15 +32,7 @@ public class SolonChainDriver extends AbstractChainDriver {
     }
 
     @Override
-    protected void tryAsComponentTask(ChainContext context, Task task, String description) throws Throwable {
-        //按组件运行
-        String beanName = description.substring(1);
-        TaskComponent component = Solon.context().getBean(beanName);
-
-        if (component == null) {
-            throw new IllegalStateException("The task component '" + beanName + "' not exist");
-        } else {
-            component.run(context, task.node());
-        }
+    public Object getComponent(String componentName) {
+        return Solon.context().getBean(componentName);
     }
 }

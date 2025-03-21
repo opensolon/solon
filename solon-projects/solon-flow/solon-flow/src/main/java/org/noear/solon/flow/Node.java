@@ -77,6 +77,13 @@ public class Node {
     }
 
     /**
+     * 是否异步
+     */
+    public boolean async() {
+        return decl.async;
+    }
+
+    /**
      * 元信息
      */
     public Map<String, Object> meta() {

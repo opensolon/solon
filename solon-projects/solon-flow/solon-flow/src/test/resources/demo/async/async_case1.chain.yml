@@ -1,5 +1,5 @@
 id: c1
 layout:
-  - task: "@a"
-  - task: "@a"
-  - task: "@a"
+  - {task: "@a", async: true}
+  - {task: "@a", async: true}
+  - {task: "@a", async: true}
