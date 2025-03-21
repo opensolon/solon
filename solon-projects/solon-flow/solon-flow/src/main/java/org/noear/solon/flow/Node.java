@@ -109,18 +109,20 @@ public class Node {
      */
     public List<Link> prveLinks() {
         if (prveLinks == null) {
-            prveLinks = new ArrayList<>();
+            List<Link> tmp = new ArrayList<>();
 
             if (type() != NodeType.start) {
                 for (Link l : chain.links()) {
                     if (id().equals(l.nextId())) { //by nextID
-                        prveLinks.add(l);
+                        tmp.add(l);
                     }
                 }
 
                 //按优先级排序
-                Collections.reverse(prveLinks);
+                Collections.reverse(tmp);
             }
+
+            prveLinks = Collections.unmodifiableList(tmp);
         }
 
         return prveLinks;
@@ -138,15 +140,16 @@ public class Node {
      */
     public List<Node> prveNodes() {
         if (prveNodes == null) {
-            prveNodes = new ArrayList<>();
+            List<Node> tmp = new ArrayList<>();
 
             if (type() != NodeType.start) {
                 for (Link l : chain.links()) { //要从链处找
                     if (id().equals(l.nextId())) {
-                        nextNodes.add(chain.getNode(l.prveId()));
+                        tmp.add(chain.getNode(l.prveId()));
                     }
                 }
             }
+            prveNodes = Collections.unmodifiableList(tmp);
         }
 
         return prveNodes;
@@ -157,13 +160,14 @@ public class Node {
      */
     public List<Node> nextNodes() {
         if (nextNodes == null) {
-            nextNodes = new ArrayList<>();
+            List<Node> tmp = new ArrayList<>();
 
             if (type() != NodeType.end) {
                 for (Link l : this.nextLinks()) { //从自由处找
-                    nextNodes.add(chain.getNode(l.nextId()));
+                    tmp.add(chain.getNode(l.nextId()));
                 }
             }
+            nextNodes = Collections.unmodifiableList(tmp);
         }
 
         return nextNodes;
