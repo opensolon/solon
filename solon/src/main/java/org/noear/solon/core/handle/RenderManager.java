@@ -142,29 +142,7 @@ public class RenderManager implements Render {
             ModelAndView mv = (ModelAndView) data;
 
             if (Utils.isNotEmpty(mv.view())) {
-                //
-                //如果有视图
-                //
-                int suffix_idx = mv.view().lastIndexOf(".");
-                if (suffix_idx > 0) {
-                    String suffix = mv.view().substring(suffix_idx);
-                    Render render = _mapping.get(suffix);
-
-                    if (render != null) {
-                        //如果找到对应的渲染器
-                        //
-                        //同步上下文特性
-                        ctx.attrMap().forEach((k, v) -> {
-                            mv.putIfAbsent(k, v);
-                        });
-                        //视图渲染
-                        return render.renderAndReturn(mv, ctx);
-                    }
-                }
-
-                //如果没有则用默认渲染器
-                //
-                return _def.renderAndReturn(mv, ctx);
+                return getViewRender(ctx, mv).renderAndReturn(mv, ctx);
             } else {
                 data = mv.model();
             }
@@ -198,31 +176,8 @@ public class RenderManager implements Render {
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
 
-            if (Utils.isEmpty(mv.view()) == false) {
-                //
-                //如果有视图
-                //
-                int suffix_idx = mv.view().lastIndexOf(".");
-                if (suffix_idx > 0) {
-                    String suffix = mv.view().substring(suffix_idx);
-                    Render render = _mapping.get(suffix);
-
-                    if (render != null) {
-                        //如果找到对应的渲染器
-                        //
-                        //同步上下文特性
-                        ctx.attrMap().forEach((k, v) -> {
-                            mv.putIfAbsent(k, v);
-                        });
-                        //视图渲染
-                        render.render(mv, ctx);
-                        return;
-                    }
-                }
-
-                //如果没有则用默认渲染器
-                //
-                _def.render(mv, ctx);
+            if (Utils.isNotEmpty(mv.view())) {
+                getViewRender(ctx, mv).render(mv, ctx);
                 return;
             } else {
                 data = mv.model();
@@ -254,6 +209,36 @@ public class RenderManager implements Render {
             //
             _def.render(data, ctx);
         }
+    }
+
+    private Render getViewRender(Context ctx, ModelAndView mv) {
+        if (mv.view().contains("../") || mv.view().contains("..\\")) {
+            // '../','..\' 不安全
+            throw new IllegalStateException("Invalid view path: '" + mv.view() + "'");
+        }
+
+        //查找渲染器
+        //
+        int suffix_idx = mv.view().lastIndexOf(".");
+        if (suffix_idx > 0) {
+            String suffix = mv.view().substring(suffix_idx);
+            Render render = _mapping.get(suffix);
+
+            if (render != null) {
+                //如果找到对应的渲染器
+                //
+                //同步上下文特性
+                for (Map.Entry<String, Object> kv : ctx.attrMap().entrySet()) {
+                    mv.putIfAbsent(kv.getKey(), kv.getValue());
+                }
+                //视图渲染
+                return render;
+            }
+        }
+
+        //如果没有则用默认渲染器
+        //
+        return _def;
     }
 
     /**

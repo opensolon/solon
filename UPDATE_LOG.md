@@ -41,6 +41,7 @@
 * 调整 solon-configuration-processor 依赖包
 * 调整 solon-flow 添加 AbstractChainDriver，并将 SimpleChainDriver 更名为 SolonChainDriver
 * 调整 solon-flow 中断策略，只中断当前分支
+* 调整 solon-mvc 不允许 ModelAndView:view 带有 `../` 和 `..\` 符号
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-flow 排它网关必会进入默认分支的问题
