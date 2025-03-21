@@ -160,21 +160,4 @@ public interface FlowEngine {
      * @param context 上下文
      */
     void eval(Chain chain, String startId, int depth, ChainContext context) throws Throwable;
-
-
-    /**
-     * 评估
-     *
-     * @param node    节点
-     * @param context 上下文
-     */
-    default void next(Node node, ChainContext context) throws Throwable {
-        if (node.type() != NodeType.execute) {
-            throw new IllegalArgumentException(node.id() + " is not execute");
-        }
-
-        for (Node node1 : node.nextNodes()) {
-            eval(node.chain(), node1.id(), -1, context);
-        }
-    }
 }

@@ -69,7 +69,13 @@ public class ChainContext {
      * @param node 节点
      */
     public void next(Node node) throws Throwable {
-        engine.next(node, this);
+        if (node.type() != NodeType.execute) {
+            throw new IllegalArgumentException(node.id() + " is not execute");
+        }
+
+        for (Node node1 : node.nextNodes()) {
+            engine.eval(node.chain(), node1.id(), -1, this);
+        }
     }
 
     /**
