@@ -14,7 +14,7 @@ public class AsyncTest {
         FlowEngine engine = FlowEngine.newInstance();
         engine.register(MapChainDriver.getInstance());
 
-        MapChainDriver.getInstance().putComponent("a", new TaskComponentImpl());
+        MapChainDriver.getInstance().putComponent("a", new AsyncTaskComponentImpl());
 
         engine.load(Chain.parseByUri("classpath:demo/async/async_case1.chain.yml"));
 
