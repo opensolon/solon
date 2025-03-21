@@ -53,7 +53,7 @@ public class RunHolder {
                         asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
                                 60L, TimeUnit.SECONDS,
                                 new LinkedBlockingQueue<Runnable>(),
-                                new NamedThreadFactory("Solon-executor-"));
+                                new NamedThreadFactory("Solon-executor-").daemon(true));
                     }
                 }
             } finally {
