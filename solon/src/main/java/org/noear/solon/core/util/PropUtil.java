@@ -95,7 +95,7 @@ public class PropUtil {
             //从"主属性"获取
             val = main.getProperty(name);
 
-            if (val == null && (Character.isUpperCase(name.charAt(0)) || name.charAt(0) == '_')) {
+            if (val == null) {
                 //从"环镜变量"获取
                 val = System.getenv(name);
                 if (val == null) {

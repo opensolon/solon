@@ -1131,7 +1131,7 @@ public abstract class BeanContainer {
             //2.然后尝试获取配置（支持默认值获取）
             String val = cfg().getByExpr(name);
 
-            if (val == null && (Character.isUpperCase(name.charAt(0)) || name.charAt(0) == '_')) {
+            if (val == null) {
                 //尝试从"环镜变量"获取
                 val = System.getenv(name);
             }

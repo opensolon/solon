@@ -39,6 +39,7 @@
 * 优化 solon-boot-smarthttp 取消在 core 里使用虚拟线程（影响性能）
 * 优化 solon-cloud-gateway 简化基于 solon-cloud-config 动态更新路由配置的处理支持
 * 调整 solon-configuration-processor 依赖包
+* 调整 solon 对环境变量的配置引用取消限制（之前要求全大写）
 * 调整 solon-flow 添加 AbstractChainDriver，并将 SimpleChainDriver 更名为 SolonChainDriver
 * 调整 solon-flow 中断策略，只中断当前分支
 * 调整 solon-mvc 不允许 ModelAndView:view 带有 `../` 和 `..\` 符号
