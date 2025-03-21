@@ -87,26 +87,7 @@ public abstract class AbstractChainDriver implements ChainDriver {
         }
 
         //如果 task.description 有加密，可以转码后传入
-        if (task.node().async()) {
-            //阻断前进
-            context.interrupt();
-
-            Utils.async(() -> {
-                try {
-                    //异步执行
-                    handleTaskDo(context, task, task.description());
-
-                    //跳到下节点
-                    context.engine().next(task.node(), context);
-                } catch (Throwable ex) {
-                    //如错时
-                    log.warn(ex.getMessage(), ex);
-                    context.stop();
-                }
-            });
-        } else {
-            handleTaskDo(context, task, task.description());
-        }
+        handleTaskDo(context, task, task.description());
     }
 
     protected void handleTaskDo(ChainContext context, Task task, String description) throws Throwable {
