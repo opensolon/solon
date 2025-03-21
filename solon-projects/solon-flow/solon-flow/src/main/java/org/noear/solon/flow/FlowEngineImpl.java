@@ -245,8 +245,10 @@ class FlowEngineImpl implements FlowEngine {
                     return false;
                 }
 
+                //聚合结束，取消这个栈节点
                 inclusive_stack.pop();
             }
+            //如果没有 gt 0，说明之前还没有流出的
         }
 
         //::流出
