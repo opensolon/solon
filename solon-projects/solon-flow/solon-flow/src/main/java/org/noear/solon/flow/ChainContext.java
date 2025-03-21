@@ -64,6 +64,15 @@ public class ChainContext {
     }
 
     /**
+     * 下一步
+     *
+     * @param node 节点
+     */
+    public void next(Node node) throws Throwable {
+        engine.next(node, this);
+    }
+
+    /**
      * 运行脚本
      */
     public Object run(String script) throws InvocationTargetException {
