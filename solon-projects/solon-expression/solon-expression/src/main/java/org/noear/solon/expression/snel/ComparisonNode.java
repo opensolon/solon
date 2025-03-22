@@ -64,37 +64,53 @@ public class ComparisonNode implements Expression<Boolean> {
         Object leftValue = left.eval(context);
         Object rightValue = right.eval(context);
 
-        switch (operator) {
-            case gt:
-                return ((Number) leftValue).doubleValue() > ((Number) rightValue).doubleValue();
-            case gte:
-                return ((Number) leftValue).doubleValue() >= ((Number) rightValue).doubleValue();
-            case lt:
-                return ((Number) leftValue).doubleValue() < ((Number) rightValue).doubleValue();
-            case lte:
-                return ((Number) leftValue).doubleValue() <= ((Number) rightValue).doubleValue();
-            case eq:
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    return ((Number) leftValue).doubleValue() == ((Number) rightValue).doubleValue();
-                } else {
-                    return Objects.equals(leftValue, rightValue);
-                }
-            case neq:
-                if (leftValue instanceof Number && rightValue instanceof Number) {
-                    return ((Number) leftValue).doubleValue() != ((Number) rightValue).doubleValue();
-                } else {
-                    return Objects.equals(leftValue, rightValue) == false;
-                }
-            case lk:
-                return (leftValue.toString()).contains(rightValue.toString());
-            case nlk:
-                return (leftValue.toString()).contains(rightValue.toString()) == false;
-            case in:
+        if (operator == ComparisonOp.eq) {
+            // ==
+            if (leftValue instanceof Number && rightValue instanceof Number) {
+                return ((Number) leftValue).doubleValue() == ((Number) rightValue).doubleValue();
+            } else {
+                return Objects.equals(leftValue, rightValue);
+            }
+        } else if (operator == ComparisonOp.neq) {
+            // !=
+            if (leftValue instanceof Number && rightValue instanceof Number) {
+                return ((Number) leftValue).doubleValue() != ((Number) rightValue).doubleValue();
+            } else {
+                return Objects.equals(leftValue, rightValue) == false;
+            }
+        } else if (operator == ComparisonOp.in) {
+            if (rightValue instanceof Collection) {
                 return ((Collection) rightValue).contains(leftValue);
-            case nin:
+            } else {
+                return false;
+            }
+        } else if (operator == ComparisonOp.nin) {
+            if (rightValue instanceof Collection) {
                 return ((Collection) rightValue).contains(leftValue) == false;
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+            } else {
+                return false;
+            }
+        } else {
+            if (leftValue == null || rightValue == null) {
+                return false;
+            }
+
+            switch (operator) {
+                case gt:
+                    return ((Number) leftValue).doubleValue() > ((Number) rightValue).doubleValue();
+                case gte:
+                    return ((Number) leftValue).doubleValue() >= ((Number) rightValue).doubleValue();
+                case lt:
+                    return ((Number) leftValue).doubleValue() < ((Number) rightValue).doubleValue();
+                case lte:
+                    return ((Number) leftValue).doubleValue() <= ((Number) rightValue).doubleValue();
+                case lk:
+                    return (leftValue.toString()).contains(rightValue.toString());
+                case nlk:
+                    return (leftValue.toString()).contains(rightValue.toString()) == false;
+                default:
+                    throw new IllegalArgumentException("Unknown operator: " + operator);
+            }
         }
     }
 
