@@ -6,10 +6,13 @@ import org.noear.solon.flow.Node;
 /**
  * @author noear 2025/3/21 created
  */
-public class AsyncTaskComponentImpl extends AsyncTaskComponent {
+public class TaskComponentImpl extends TaskComponentPlus {
     @Override
-    protected void asyncRun(ChainContext context, Node node) throws Throwable {
+    protected void doRun(ChainContext context, Node node, boolean async) throws Throwable {
         System.out.println("do...: " + node.id());
-        context.next(node);
+
+        if (async) {
+            context.next(node);
+        }
     }
 }
