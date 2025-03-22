@@ -198,4 +198,17 @@ public class Query3Test {
         Object result = SnEL.eval("user_name", context);
         assert "world".equals(result);
     }
+
+    @Test
+    public void case10() {
+        Object result = SnEL.eval("1 > 1.1D");
+        assert false == (Boolean) result;
+    }
+
+    @Test
+    public void case11() {
+        Object result = SnEL.eval("1 == 1.0D");
+        assert true == (Boolean) result;
+        assert 1 == 1.0D;
+    }
 }

@@ -66,17 +66,25 @@ public class ComparisonNode implements Expression<Boolean> {
 
         switch (operator) {
             case gt:
-                return ((Comparable) leftValue).compareTo(rightValue) > 0;
+                return ((Number) leftValue).doubleValue() > ((Number) rightValue).doubleValue();
             case gte:
-                return ((Comparable) leftValue).compareTo(rightValue) >= 0;
+                return ((Number) leftValue).doubleValue() >= ((Number) rightValue).doubleValue();
             case lt:
-                return ((Comparable) leftValue).compareTo(rightValue) < 0;
+                return ((Number) leftValue).doubleValue() < ((Number) rightValue).doubleValue();
             case lte:
-                return ((Comparable) leftValue).compareTo(rightValue) <= 0;
+                return ((Number) leftValue).doubleValue() <= ((Number) rightValue).doubleValue();
             case eq:
-                return Objects.equals(leftValue, rightValue);
+                if (leftValue instanceof Number && rightValue instanceof Number) {
+                    return ((Number) leftValue).doubleValue() == ((Number) rightValue).doubleValue();
+                } else {
+                    return Objects.equals(leftValue, rightValue);
+                }
             case neq:
-                return Objects.equals(leftValue, rightValue) == false;
+                if (leftValue instanceof Number && rightValue instanceof Number) {
+                    return ((Number) leftValue).doubleValue() != ((Number) rightValue).doubleValue();
+                } else {
+                    return Objects.equals(leftValue, rightValue) == false;
+                }
             case lk:
                 return (leftValue.toString()).contains(rightValue.toString());
             case nlk:
