@@ -16,6 +16,7 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.exception.EvaluationException;
 
 import java.util.Collections;
 import java.util.Map;
@@ -51,7 +52,11 @@ public interface SnEL {
      * @param cached  是否带编译缓存
      */
     static Object eval(String expr, Function context, boolean cached) {
-        return parse(expr, cached).eval(context);
+        try {
+            return parse(expr, cached).eval(context);
+        } catch (Throwable ex) {
+            throw new EvaluationException("Failed to evaluate expression: " + expr, ex);
+        }
     }
 
     /**
