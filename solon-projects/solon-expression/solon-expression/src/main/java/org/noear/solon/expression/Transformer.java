@@ -21,9 +21,9 @@ package org.noear.solon.expression;
  * @author noear
  * @since 3.1
  */
-public interface Transformer<T> {
+public interface Transformer<S,T> {
     /**
      * 转换
      */
-    T transform(Expression source);
+    T transform(Expression<S> source);
 }
