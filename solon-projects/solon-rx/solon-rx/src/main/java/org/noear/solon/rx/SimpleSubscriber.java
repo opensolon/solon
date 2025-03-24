@@ -20,6 +20,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 订阅者-简单实现
@@ -29,7 +30,7 @@ import java.util.function.Consumer;
  */
 public class SimpleSubscriber<T> implements Subscriber<T> {
     private Consumer<Subscription> doOnSubscribe;
-    private Consumer<T> doOnNext;
+    private Function<T, Boolean> doOnNext;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
@@ -38,7 +39,10 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
         return this;
     }
 
-    public SimpleSubscriber<T> doOnNext(Consumer<T> doOnNext) {
+    /**
+     * 往下时（可控制取消）
+     */
+    public SimpleSubscriber<T> doOnNext(Function<T, Boolean> doOnNext) {
         this.doOnNext = doOnNext;
         return this;
     }
@@ -79,7 +83,9 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
     @Override
     public void onNext(T item) {
         if (doOnNext != null) {
-            doOnNext.accept(item);
+            if (doOnNext.apply(item) == false) {
+                cancel();
+            }
         }
     }
 
