@@ -50,6 +50,7 @@ public class TextStreamUtil {
 
                         if (textLine == null) {
                             subscriber.onComplete();
+                            break;
                         } else {
                             subscriber.onNext(textLine);
                         }
@@ -84,6 +85,7 @@ public class TextStreamUtil {
 
                         if (textLine == null) {
                             subscriber.onComplete();
+                            break;
                         } else {
                             if (textLine.isEmpty()) {
                                 if (data.length() > 0) {
