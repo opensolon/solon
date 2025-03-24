@@ -16,9 +16,9 @@
 package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.serialize.Serializer;
-import org.noear.solon.rx.SimpleSubscription;
+import org.noear.solon.net.http.textstream.ServerSseEvent;
+import org.noear.solon.net.http.textstream.TextStreamUtil;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.MultiMap;
@@ -26,7 +26,6 @@ import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.*;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -484,30 +483,28 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 });
     }
 
-    private void parseRespAsTextStream(HttpResponse resp, Subscriber<? super String> subscriber) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resp.body()))) {
-            subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
-                try {
-                    while (l > 0) {
-                        if (subscription.isCancelled()) {
-                            break;
-                        } else {
-                            l--;
+    @Override
+    public Publisher<ServerSseEvent> execAsEventStream(String method) throws IOException {
+        return subscriber -> execAsync(method)
+                .whenComplete((resp, err) -> {
+                    if (err == null) {
+                        try {
+                            parseRespAsEventStream(resp, subscriber);
+                        } catch (IOException e) {
+                            subscriber.onError(e);
                         }
-
-                        String textLine = reader.readLine();
-
-                        if (textLine == null) {
-                            subscriber.onComplete();
-                        } else {
-                            subscriber.onNext(textLine);
-                        }
+                    } else {
+                        subscriber.onError(err);
                     }
-                } catch (Throwable err) {
-                    subscriber.onError(err);
-                }
-            }));
-        }
+                });
+    }
+
+    private void parseRespAsTextStream(HttpResponse resp, Subscriber<? super String> subscriber) throws IOException {
+        TextStreamUtil.parseTextStream(resp.body(), subscriber);
+    }
+
+    private void parseRespAsEventStream(HttpResponse resp, Subscriber<? super ServerSseEvent> subscriber) throws IOException {
+        TextStreamUtil.parseEventStream(resp.body(), subscriber);
     }
 
     /**
