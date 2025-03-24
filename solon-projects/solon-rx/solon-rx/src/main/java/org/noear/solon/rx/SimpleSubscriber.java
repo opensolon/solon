@@ -30,7 +30,8 @@ import java.util.function.Function;
  */
 public class SimpleSubscriber<T> implements Subscriber<T> {
     private Consumer<Subscription> doOnSubscribe;
-    private Function<T, Boolean> doOnNext;
+    private Function<T, Boolean> doOnNextFunc;
+    private Consumer<T> doOnNextCons;
     private Consumer<Throwable> doOnError;
     private Runnable doOnComplete;
 
@@ -43,7 +44,14 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
      * 往下时（可控制取消）
      */
     public SimpleSubscriber<T> doOnNext(Function<T, Boolean> doOnNext) {
-        this.doOnNext = doOnNext;
+        this.doOnNextFunc = doOnNext;
+        this.doOnNextCons = null;
+        return this;
+    }
+
+    public SimpleSubscriber<T> doOnNext(Consumer<T> doOnNext) {
+        this.doOnNextFunc = null;
+        this.doOnNextCons = doOnNext;
         return this;
     }
 
@@ -82,10 +90,12 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onNext(T item) {
-        if (doOnNext != null) {
-            if (doOnNext.apply(item) == false) {
+        if (doOnNextFunc != null) {
+            if (doOnNextFunc.apply(item) == false) {
                 cancel();
             }
+        } else if (doOnNextCons != null) {
+            doOnNextCons.accept(item);
         }
     }
 
