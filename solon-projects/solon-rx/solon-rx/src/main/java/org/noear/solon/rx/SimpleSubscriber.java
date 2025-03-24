@@ -53,9 +53,22 @@ public class SimpleSubscriber<T> implements Subscriber<T> {
         return this;
     }
 
+    private Subscription subscription;
+
+    /**
+     * 取消
+     */
+    public void cancel() {
+        if (subscription != null) {
+            subscription.cancel();
+        }
+    }
+
 
     @Override
     public void onSubscribe(Subscription subscription) {
+        this.subscription = subscription;
+
         if (doOnSubscribe != null) {
             doOnSubscribe.accept(subscription);
         } else {
