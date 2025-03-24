@@ -23,10 +23,12 @@
 ### v3.1.1
 * 新增 solon-expression 插件
 * 新增 solon-security-web 插件
+* 新增 solon-ai-load-ppt 插件，添加对 ppt, pptx 文档的解析
+* 新增 solon-ai-load-word 插件，添加对 doc, docx 文档的解析
+* 新增 solon-ai-repo-qdrant 插件
+* 新增 solon-ai-repo-tcvectordb 插件
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
-* 添加 solon-ai 对 docx 文档的解析
-* 添加 solon-ai 对 ppt 文档的解析
 * 添加 solon-flow `ChainContext:stop()` 停止流动
 * 添加 solon-flow `FlowEngine:next(Node,ChainContext)` 接口，方便支持异步唤醒
 * 添加 solon-data Transaction 事务注解（替代 Tran，后者标为弃用）
