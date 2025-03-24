@@ -427,12 +427,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-repo-milvus</artifactId>
-                <version>${solon-ai.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-ai-repo-redis</artifactId>
+                <artifactId>solon-ai-repo-chroma</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
@@ -442,12 +437,27 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-load-excel</artifactId>
+                <artifactId>solon-ai-repo-milvus</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-load-word</artifactId>
+                <artifactId>solon-ai-repo-qdrant</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-redis</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-tcvectordb</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-excel</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
@@ -463,6 +473,16 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai-load-pdf</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-ppt</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-load-word</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
