@@ -22,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 文本流解析工具
@@ -64,11 +66,11 @@ public class TextStreamUtil {
     /**
      * 解析事件流
      */
-    public static void parseEventStream(InputStream inputStream, Subscriber<? super ServerSseEvent> subscriber) throws IOException {
+    public static void parseEventStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
                 try {
-                    String event = null;
+                    Map<String, String> meta = new HashMap<>();
                     StringBuilder data = new StringBuilder();
 
                     while (l > 0) {
@@ -85,12 +87,10 @@ public class TextStreamUtil {
                         } else {
                             if (textLine.isEmpty()) {
                                 if (data.length() > 0) {
-                                    subscriber.onNext(new ServerSseEvent(event, data.toString()));
-                                    event = null;
+                                    subscriber.onNext(new ServerSentEvent(meta, data.toString()));
+                                    meta = new HashMap<>();
                                     data.setLength(0);
                                 }
-                            } else if (textLine.startsWith("event:")) {
-                                event = textLine.substring("event:".length()).trim();
                             } else if (textLine.startsWith("data:")) {
                                 String content = textLine.substring("data:".length());
                                 if (data.length() > 0) {
@@ -98,6 +98,12 @@ public class TextStreamUtil {
                                 }
 
                                 data.append(content.trim());
+                            } else {
+                                int flagIdx = textLine.indexOf(':');
+                                if (flagIdx > 0) {
+                                    meta.put(textLine.substring(0, flagIdx).trim(),
+                                            textLine.substring(flagIdx + 1).trim());
+                                }
                             }
                         }
                     }

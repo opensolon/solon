@@ -15,23 +15,29 @@
  */
 package org.noear.solon.net.http.textstream;
 
+import java.util.Map;
+
 /**
  * 服务端 Sse 事件文本流
  *
  * @author noear
  * @since 3.1
  */
-public class ServerSseEvent {
-    private String event;
+public class ServerSentEvent {
+    private Map<String, String> meta;
     private String data;
 
-    public ServerSseEvent(String event, String data) {
-        this.event = event;
+    public ServerSentEvent(Map<String, String> meta, String data) {
+        this.meta = meta;
         this.data = data;
     }
 
+    public String id() {
+        return meta.get("id");
+    }
+
     public String event() {
-        return this.event;
+        return meta.get("event");
     }
 
     public String data() {

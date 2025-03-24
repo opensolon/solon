@@ -20,7 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.lang.Preview;
-import org.noear.solon.net.http.textstream.ServerSseEvent;
+import org.noear.solon.net.http.textstream.ServerSentEvent;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -350,7 +350,7 @@ public interface HttpUtils {
     /**
      * 执行请求并返回事件流
      * */
-    Publisher<ServerSseEvent> execAsEventStream(String method) throws IOException;
+    Publisher<ServerSentEvent> execAsEventStream(String method) throws IOException;
 
     /**
      * 执行请求并返回响应

@@ -17,7 +17,7 @@ package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
-import org.noear.solon.net.http.textstream.ServerSseEvent;
+import org.noear.solon.net.http.textstream.ServerSentEvent;
 import org.noear.solon.net.http.textstream.TextStreamUtil;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.core.util.KeyValues;
@@ -484,7 +484,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<ServerSseEvent> execAsEventStream(String method) throws IOException {
+    public Publisher<ServerSentEvent> execAsEventStream(String method) throws IOException {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
@@ -503,7 +503,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         TextStreamUtil.parseTextStream(resp.body(), subscriber);
     }
 
-    private void parseRespAsEventStream(HttpResponse resp, Subscriber<? super ServerSseEvent> subscriber) throws IOException {
+    private void parseRespAsEventStream(HttpResponse resp, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
         TextStreamUtil.parseEventStream(resp.body(), subscriber);
     }
 
