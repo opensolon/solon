@@ -22,9 +22,9 @@ package org.noear.solon.expression.snel;
  * @since 3.1
  */
 public enum LogicalOp {
-    and("AND"),
-    or("OR"),
-    not("NOT"),
+    AND("AND"),
+    OR("OR"),
+    NOT("NOT"),
     ;
 
     LogicalOp(String code) {
@@ -46,11 +46,11 @@ public enum LogicalOp {
     public static LogicalOp parse(String op) {
         switch (op) {
             case "AND":
-                return and;
+                return AND;
             case "OR":
-                return or;
+                return OR;
             case "NOT":
-                return not;
+                return NOT;
             default:
                 throw new IllegalArgumentException("Invalid logical operator: " + op);
         }

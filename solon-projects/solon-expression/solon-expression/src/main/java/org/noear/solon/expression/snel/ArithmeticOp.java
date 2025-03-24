@@ -22,11 +22,11 @@ package org.noear.solon.expression.snel;
  * @since 3.1
  */
 public enum ArithmeticOp {
-    add("+"),
-    sub("-"),
-    mul("*"),
-    div("/"),
-    mod("%"),
+    ADD("+"),
+    SUB("-"),
+    MUL("*"),
+    DIV("/"),
+    MOD("%"),
     ;
 
     ArithmeticOp(String code) {
@@ -45,15 +45,15 @@ public enum ArithmeticOp {
     public static ArithmeticOp parse(String op) {
         switch (op) {
             case "+":
-                return add;
+                return ADD;
             case "-":
-                return sub;
+                return SUB;
             case "*":
-                return mul;
+                return MUL;
             case "/":
-                return div;
+                return DIV;
             case "%":
-                return mod;
+                return MOD;
             default:
                 throw new IllegalArgumentException("Invalid arithmetic operator: " + op);
         }

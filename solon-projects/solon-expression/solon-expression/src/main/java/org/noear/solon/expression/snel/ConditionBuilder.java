@@ -27,15 +27,15 @@ import java.util.Arrays;
  */
 public class ConditionBuilder {
     public LogicalNode and(Expression<Boolean> left, Expression<Boolean> right) {
-        return new LogicalNode(LogicalOp.and, left, right);
+        return new LogicalNode(LogicalOp.AND, left, right);
     }
 
     public LogicalNode or(Expression<Boolean> left, Expression<Boolean> right) {
-        return new LogicalNode(LogicalOp.or, left, right);
+        return new LogicalNode(LogicalOp.OR, left, right);
     }
 
     public LogicalNode not(Expression<Boolean> left) {
-        return new LogicalNode(LogicalOp.not, left, null);
+        return new LogicalNode(LogicalOp.NOT, left, null);
     }
 
     /// /////////

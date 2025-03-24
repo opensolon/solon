@@ -44,7 +44,7 @@ public class ArithmeticNode implements Expression {
         Object rightVal = right.eval(context);
 
         // 处理加法中的非数值类型拼接
-        if (operator == ArithmeticOp.add) {
+        if (operator == ArithmeticOp.ADD) {
             if (leftVal instanceof String || rightVal instanceof String) {
                 return String.valueOf(leftVal) + rightVal;
             }
@@ -95,15 +95,15 @@ public class ArithmeticNode implements Expression {
         double aVal = a.doubleValue();
         double bVal = b.doubleValue();
         switch (operator) {
-            case add:
+            case ADD:
                 return aVal + bVal;
-            case sub:
+            case SUB:
                 return aVal - bVal;
-            case mul:
+            case MUL:
                 return aVal * bVal;
-            case div:
+            case DIV:
                 return aVal / bVal;
-            case mod:
+            case MOD:
                 return aVal % bVal;
             default:
                 throw new IllegalArgumentException("Unknown operator: " + operator);
@@ -114,15 +114,15 @@ public class ArithmeticNode implements Expression {
         float aVal = a.floatValue();
         float bVal = b.floatValue();
         switch (operator) {
-            case add:
+            case ADD:
                 return aVal + bVal;
-            case sub:
+            case SUB:
                 return aVal - bVal;
-            case mul:
+            case MUL:
                 return aVal * bVal;
-            case div:
+            case DIV:
                 return aVal / bVal;
-            case mod:
+            case MOD:
                 return aVal % bVal;
             default:
                 throw new IllegalArgumentException("Unknown operator: " + operator);
@@ -133,15 +133,15 @@ public class ArithmeticNode implements Expression {
         long aVal = a.longValue();
         long bVal = b.longValue();
         switch (operator) {
-            case add:
+            case ADD:
                 return aVal + bVal;
-            case sub:
+            case SUB:
                 return aVal - bVal;
-            case mul:
+            case MUL:
                 return aVal * bVal;
-            case div:
+            case DIV:
                 return aVal / bVal;
-            case mod:
+            case MOD:
                 return aVal % bVal;
             default:
                 throw new IllegalArgumentException("Unknown operator: " + operator);
@@ -152,15 +152,15 @@ public class ArithmeticNode implements Expression {
         int aVal = a.intValue();
         int bVal = b.intValue();
         switch (operator) {
-            case add:
+            case ADD:
                 return aVal + bVal;
-            case sub:
+            case SUB:
                 return aVal - bVal;
-            case mul:
+            case MUL:
                 return aVal * bVal;
-            case div:
+            case DIV:
                 return aVal / bVal;
-            case mod:
+            case MOD:
                 return aVal % bVal;
             default:
                 throw new IllegalArgumentException("Unknown operator: " + operator);

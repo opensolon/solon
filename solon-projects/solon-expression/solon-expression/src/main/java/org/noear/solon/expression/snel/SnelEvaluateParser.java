@@ -97,7 +97,7 @@ public class SnelEvaluateParser implements Parser {
         Expression left = parseLogicalAndExpression(state);
         state.skipWhitespace();
         while (eat(state, "OR") || eat(state, "||")) {
-            left = new LogicalNode(LogicalOp.or, left, parseLogicalAndExpression(state));
+            left = new LogicalNode(LogicalOp.OR, left, parseLogicalAndExpression(state));
         }
         return left;
     }
@@ -109,7 +109,7 @@ public class SnelEvaluateParser implements Parser {
         Expression left = parseLogicalNotExpression(state);
         state.skipWhitespace();
         while (eat(state, "AND") || eat(state, "&&")) {
-            left = new LogicalNode(LogicalOp.and, left, parseLogicalNotExpression(state));
+            left = new LogicalNode(LogicalOp.AND, left, parseLogicalNotExpression(state));
         }
         return left;
     }
@@ -119,7 +119,7 @@ public class SnelEvaluateParser implements Parser {
      */
     private Expression parseLogicalNotExpression(ParserState state) {
         if (eat(state, "NOT") || eat(state, "!")) {
-            return new LogicalNode(LogicalOp.not, parseComparisonExpression(state), null);
+            return new LogicalNode(LogicalOp.NOT, parseComparisonExpression(state), null);
         }
         return parseComparisonExpression(state);
     }
@@ -156,9 +156,9 @@ public class SnelEvaluateParser implements Parser {
         Expression left = parseMultiplicativeExpression(state);
         while (true) {
             if (eat(state, '+')) {
-                left = new ArithmeticNode(ArithmeticOp.add, left, parseMultiplicativeExpression(state));
+                left = new ArithmeticNode(ArithmeticOp.ADD, left, parseMultiplicativeExpression(state));
             } else if (eat(state, '-')) {
-                left = new ArithmeticNode(ArithmeticOp.sub, left, parseMultiplicativeExpression(state));
+                left = new ArithmeticNode(ArithmeticOp.SUB, left, parseMultiplicativeExpression(state));
             } else {
                 break;
             }
@@ -173,11 +173,11 @@ public class SnelEvaluateParser implements Parser {
         Expression left = parsePrimaryExpression(state);
         while (true) {
             if (eat(state, '*')) {
-                left = new ArithmeticNode(ArithmeticOp.mul, left, parsePrimaryExpression(state));
+                left = new ArithmeticNode(ArithmeticOp.MUL, left, parsePrimaryExpression(state));
             } else if (eat(state, '/')) {
-                left = new ArithmeticNode(ArithmeticOp.div, left, parsePrimaryExpression(state));
+                left = new ArithmeticNode(ArithmeticOp.DIV, left, parsePrimaryExpression(state));
             } else if (eat(state, '%')) {
-                left = new ArithmeticNode(ArithmeticOp.mod, left, parsePrimaryExpression(state));
+                left = new ArithmeticNode(ArithmeticOp.MOD, left, parsePrimaryExpression(state));
             } else {
                 break;
             }

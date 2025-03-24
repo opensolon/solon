@@ -75,9 +75,9 @@ public class LogicalNode implements Expression<Boolean> {
             }
         }
 
-        if (operator == LogicalOp.and) {
+        if (operator == LogicalOp.AND) {
             return leftValue && rightValue;
-        } else if (operator == LogicalOp.or) {
+        } else if (operator == LogicalOp.OR) {
             return leftValue || rightValue;
         } else {
             return leftValue == false;

@@ -27,13 +27,13 @@ public class Query1Test {
         ConstantNode salaryValue = new ConstantNode(5000);
         ComparisonNode salaryComparison = new ComparisonNode(ComparisonOp.lt, salaryField, salaryValue);
 
-        LogicalNode andNode = new LogicalNode(LogicalOp.and, ageComparison, salaryComparison);
+        LogicalNode andNode = new LogicalNode(LogicalOp.AND, ageComparison, salaryComparison);
 
         VariableNode notMarriedField = new VariableNode("isMarried");
         ConstantNode notMarriedValue = new ConstantNode(false);
         ComparisonNode notMarriedComparison = new ComparisonNode(ComparisonOp.eq, notMarriedField, notMarriedValue);
 
-        LogicalNode orNode = new LogicalNode(LogicalOp.or, andNode, notMarriedComparison);
+        LogicalNode orNode = new LogicalNode(LogicalOp.OR, andNode, notMarriedComparison);
 
         // 计算条件查询表达式的值
         boolean result = orNode.eval(context::get);
