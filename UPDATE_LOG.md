@@ -56,6 +56,7 @@
 * snack3 升为 3.2.129
 * socket.d 升为 2.5.18
 * liquor 升为 1.4.0
+* beetlsql 升为 3.31-RELEASE
 
 ### v3.1.0
 * 新增 solon-ai 插件
