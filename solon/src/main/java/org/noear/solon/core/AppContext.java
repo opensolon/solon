@@ -436,17 +436,6 @@ public class AppContext extends BeanContainer {
             Mapping mapping = bw.clz().getAnnotation(Mapping.class);
             if (mapping != null) {
                 app().router().add(bw);
-
-//                Handler handler = bw.raw();
-//                Set<MethodType> v0 = app().factoryManager().mvcFactory().findMethodTypes(new HashSet<>(), t -> bw.clz().getAnnotation(t) != null);
-//                if (v0.size() == 0) {
-//                    v0 = new HashSet<>(Arrays.asList(mapping.method()));
-//                }
-//
-//                String path = Utils.annoAlias(mapping.value(), mapping.path());
-//                for (MethodType m1 : v0) {
-//                    app().router().add(path, m1, bw.index(), handler);
-//                }
                 singletonHint = "Handler";
             }
         }
@@ -1093,15 +1082,24 @@ public class AppContext extends BeanContainer {
     public void lifecycle(int index, int priority, Lifecycle lifecycle) {
         lifecycleBeans.add(new RankEntity<>(lifecycle, index, priority));
 
-        if (started) {
+        if (isStarting()) {
             //如果已启动，则执行启动函数
             RunUtil.runOrThrow(lifecycle::start);
         }
     }
 
+    //启动
+    private boolean starting;
 
     //已启动标志
     private boolean started;
+
+    /**
+     * 启动
+     * */
+    public boolean isStarting() {
+        return starting;
+    }
 
     /**
      * 是否已启动
@@ -1114,6 +1112,8 @@ public class AppContext extends BeanContainer {
      * 启动（一般在插件启动之后，应用完成扫描，再执行）
      */
     public void start() {
+        starting = true;
+
         try {
             //开始执行生命周期bean（侧重做初始化） //支持排序
             startBeanLifecycle();
