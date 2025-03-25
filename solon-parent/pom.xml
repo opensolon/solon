@@ -46,7 +46,7 @@
         <socketd.version>2.5.18</socketd.version>
         <liquor.version>1.4.0</liquor.version>
 
-        <folkmq.version>1.7.10</folkmq.version>
+        <folkmq.version>1.7.11</folkmq.version>
         <water.version>2.15.1</water.version>
         <luffy.version>1.9.0</luffy.version>
 
