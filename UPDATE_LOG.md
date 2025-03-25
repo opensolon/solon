@@ -46,6 +46,7 @@
 * 调整 solon-flow 中断策略，只中断当前分支
 * 调整 solon-mvc 不允许 ModelAndView:view 带有 `../` 和 `..\` 符号
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* 修复 solon RunUtil.async 异步套导会卡住的问题
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-flow 排它网关必会进入默认分支的问题
 * 修复 solon-ai 在流式调用时 function call 出错的问题
