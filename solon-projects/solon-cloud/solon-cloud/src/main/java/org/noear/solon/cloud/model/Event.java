@@ -35,6 +35,7 @@ public class Event implements Serializable {
     private Date scheduled;
     private int times;
     private Map<String, String> meta;
+    private long created;
 
     private transient String channel;
     private transient int qos = 1;
@@ -163,6 +164,21 @@ public class Event implements Serializable {
      */
     public Event times(int times) {
         this.times = times;
+        return this;
+    }
+
+    /**
+     * 获取创建时间
+     */
+    public long created() {
+        return created;
+    }
+
+    /**
+     * 设置创建时间
+     */
+    public Event created(long created) {
+        this.created = created;
         return this;
     }
 

@@ -48,6 +48,7 @@
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-flow 排它网关必会进入默认分支的问题
+* 修复 solon-ai 在流式调用时 function call 出错的问题
 * 修复 solon-data-sqlutils `as` 查询没有生效的问题
 * 修复 solon-boot-smarthttp 当引入其它同类插件时，没有自动排除的问题
 * 修复 solon-cache-redisson RedissonClientSupplier:get 为 null 的问题
