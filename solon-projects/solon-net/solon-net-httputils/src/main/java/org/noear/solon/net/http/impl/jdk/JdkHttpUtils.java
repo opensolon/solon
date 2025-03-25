@@ -252,6 +252,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 String data = builder.delete(builder.length() - 1, builder.length()).toString();
 
                 out.write(data.getBytes(charset));
+                out.flush();
             }
         }
     }
