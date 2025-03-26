@@ -26,7 +26,6 @@
         <module>../../solon-projects/solon-expression/solon-expression</module>
 
         <module>../../solon-projects/solon-rx/solon-rx</module>
-        <module>../../solon-projects/solon-flow/solon-flow</module>
 
         <module>../../solon-projects/solon-config/solon-config-banner</module>
         <module>../../solon-projects/solon-config/solon-config-plus</module>

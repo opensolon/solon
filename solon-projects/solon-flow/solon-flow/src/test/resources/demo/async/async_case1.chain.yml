@@ -1,5 +1,0 @@
-id: c1
-layout:
-  - {task: "@a", async: true}
-  - {task: "@a", async: true}
-  - {task: "@a", async: true}

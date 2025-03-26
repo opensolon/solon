@@ -1,8 +1,0 @@
-{
-  "id": "c6",
-  "layout": [
-    { "type": "start"},
-    { "task":"#c62"},
-    { "type": "end"}
-  ]
-}

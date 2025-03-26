@@ -1,8 +1,0 @@
-
-id: "m2"
-layout:
-  - { "type": "start" }
-  - { "meta": { "a": 1,"b": [ ] }, "task": "@a" }
-  - { "task": "@b" }
-  - { "task": "@c" }
-  - { "type": "end" }
