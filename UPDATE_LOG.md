@@ -25,6 +25,7 @@
 * maven-compiler-plugin 升为 3.14.0
 * native-maven-plugin 升为 0.10.6
 * maven-plugin-plugin 升为 3.15.1
+* snakeyaml 升为 2.4
 
 ### v3.1.1
 * 新增 solon-expression 插件
