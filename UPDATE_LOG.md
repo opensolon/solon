@@ -21,13 +21,15 @@
 * 优化 拦截体系与 rx 的兼容？
 
 ### v3.1.2
+
+* 优化 solon-flow 添加 Container 和 Evaluation 接口定义
+* 优化 solon-flow 接口设计，ChainContext 更名为 FlowContext，ChainDriver 更名为 FlowDriver
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * maven-compiler-plugin 升为 3.14.0
 * native-maven-plugin 升为 0.10.6
 * maven-plugin-plugin 升为 3.15.1
 * snakeyaml 升为 2.4
 * slf4j 升为 2.0.17
-* 
 
 ### v3.1.1
 * 新增 solon-expression 插件
