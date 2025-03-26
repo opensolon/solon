@@ -1095,14 +1095,14 @@ public class AppContext extends BeanContainer {
     private boolean started;
 
     /**
-     * 启动
+     * 是否正在启动
      * */
     public boolean isStarting() {
         return starting;
     }
 
     /**
-     * 是否已启动
+     * 是否已启动完成
      */
     public boolean isStarted() {
         return started;

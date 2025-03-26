@@ -20,6 +20,9 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### v3.1.2
+* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+
 ### v3.1.1
 * 新增 solon-expression 插件
 * 新增 solon-security-web 插件
@@ -29,9 +32,15 @@
 * 新增 solon-ai-repo-tcvectordb 插件
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
+* 添加 solon `AppContext::isStarting()` 表示正在启动，之前的 `isStarted()` 表示启动完成
+* 添加 solon-cloud `Event:created` 字段（表示创建时间戳）
 * 添加 solon-flow `ChainContext:stop()` 停止流动
 * 添加 solon-flow `FlowEngine:next(Node,ChainContext)` 接口，方便支持异步唤醒
 * 添加 solon-data Transaction 事务注解（替代 Tran，后者标为弃用）
+* 添加 solon-net-httputils execAsEventStream 流式接收 sse（server-sent-event） 
+* 添加 solon-net-httputils execAsTextStream 流式接收 dnjson 等文本流
+* 添加 solon-rx SimpleSubscriber:doOnNext() 可控制是否自动取消
+* 添加 solon-rx SimpleSubscriber:cancel() 方法
 * 优化 solon 泛型注入检测兼容处理
 * 优化 solon GenericUtil.reviewType 泛型深度兼容能力
 * 优化 solon Props:getListedProp 按配置顺序输出
@@ -45,7 +54,6 @@
 * 调整 solon-flow 添加 AbstractChainDriver，并将 SimpleChainDriver 更名为 SolonChainDriver
 * 调整 solon-flow 中断策略，只中断当前分支
 * 调整 solon-mvc 不允许 ModelAndView:view 带有 `../` 和 `..\` 符号
-* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 修复 solon RunUtil.async 异步套导会卡住的问题
 * 修复 solon-mvc 注入 Object 类型时，产生无法识别的问题
 * 修复 solon-flow 排它网关必会进入默认分支的问题
