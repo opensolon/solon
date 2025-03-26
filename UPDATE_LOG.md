@@ -30,6 +30,7 @@
 * 新增 solon-ai-load-word 插件，添加对 doc, docx 文档的解析
 * 新增 solon-ai-repo-qdrant 插件
 * 新增 solon-ai-repo-tcvectordb 插件
+* 新增 solon-ai-repo-elasticsearch 插件
 * 移除 solon-boot-jlhttp 插件
 * 优化 开源合规性
 * 添加 solon `AppContext::isStarting()` 表示正在启动，之前的 `isStarted()` 表示启动完成
