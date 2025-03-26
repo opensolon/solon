@@ -24,6 +24,7 @@
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * maven-compiler-plugin 升为 3.14.0
 * native-maven-plugin 升为 0.10.6
+* maven-plugin-plugin 升为 3.15.1
 
 ### v3.1.1
 * 新增 solon-expression 插件
