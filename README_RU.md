@@ -72,22 +72,23 @@ Solon v3.1.2-SNAPSHOT
 ## Основной кодовый склад
 
 
-| Кодовый склад                                    | описыва                                             | 
-|--------------------------------------------------|-----------------------------------------------------| 
-| https://gitee.com/opensolon/solon                | Solon ,Главный код пакгауза                         | 
-| https://gitee.com/opensolon/solon-examples       | Solon ,Стандартный набор кодов на официальном сайте |
-|                                                  |                                                     |
-| https://gitee.com/opensolon/solon-ai            | Solon Ai ,Кодовый склад                   | 
-| https://gitee.com/opensolon/solon-cloud          | Solon Cloud ,Кодовый склад                          | 
-| https://gitee.com/opensolon/solon-admin          | Solon Admin ,Кодовый склад                          | 
-| https://gitee.com/opensolon/solon-jakarta        | Solon Jakarta ,Кодовый склад（base java21）           | 
-| https://gitee.com/opensolon/solon-integration    | Solon Integration ,Кодовый склад                    | 
-|                                                  |                                                     |
-| https://gitee.com/opensolon/solon-gradle-plugin  | Solon Gradle ,Код плагина хранилища                 | 
-| https://gitee.com/opensolon/solon-idea-plugin    | Solon Idea ,Код плагина хранилища                   | 
-| https://gitee.com/opensolon/solon-vscode-plugin  | Solon VsCode ,Код плагина хранилища                 | 
-|                                                  |                                                     |
-| https://gitee.com/dromara/solon-plugins          | Solon ,Третья сторона расширяет плагины на складе                                             | 
+| Кодовый склад                                   | описыва                                             | 
+|-------------------------------------------------|-----------------------------------------------------| 
+| https://gitee.com/opensolon/solon               | Solon ,Главный код пакгауза                         | 
+| https://gitee.com/opensolon/solon-examples      | Solon ,Стандартный набор кодов на официальном сайте |
+|                                                 |                                                     |
+| https://gitee.com/opensolon/solon-ai            | Solon Ai ,Кодовый склад                             | 
+| https://gitee.com/opensolon/solon-flow          | Solon Flow ,Кодовый склад                           | 
+| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Кодовый склад                          | 
+| https://gitee.com/opensolon/solon-admin         | Solon Admin ,Кодовый склад                          | 
+| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Кодовый склад（base java21）           | 
+| https://gitee.com/opensolon/solon-integration   | Solon Integration ,Кодовый склад                    | 
+|                                                 |                                                     |
+| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Код плагина хранилища                 | 
+| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Код плагина хранилища                   | 
+| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Код плагина хранилища                 | 
+|                                                 |                                                     |
+| https://gitee.com/dromara/solon-plugins         | Solon ,Третья сторона расширяет плагины на складе   | 
 
 
 

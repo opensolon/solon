@@ -78,6 +78,7 @@ Solon v3.1.2-SNAPSHOT
 | https://gitee.com/opensolon/solon-examples      | Solon ,官网配套示例代码仓库                |
 |                                                 |                                  |
 | https://gitee.com/opensolon/solon-ai            | Solon Ai ,代码仓库                   | 
+| https://gitee.com/opensolon/solon-flow          | Solon Flow ,代码仓库                 | 
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,代码仓库                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,代码仓库                | 
 | https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java21） | 

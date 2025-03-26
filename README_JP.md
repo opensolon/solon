@@ -76,6 +76,7 @@ Solon v3.1.2-SNAPSHOT
 | https://gitee.com/opensolon/solon-examples      | Solon ,公式サイトの例コードリポジトリです               |
 |                                                 |                                        |
 | https://gitee.com/opensolon/solon-ai            | Solon Ai ,コードリポジトリです                   | 
+| https://gitee.com/opensolon/solon-flow          | Solon Flow ,コードリポジトリです                 | 
 | https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,コードリポジトリです                | 
 | https://gitee.com/opensolon/solon-admin         | Solon Admin ,コードリポジトリです                | 
 | https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java21） | 
@@ -85,7 +86,7 @@ Solon v3.1.2-SNAPSHOT
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,プラグインのリポジトリです              | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,プラグインのリポジトリです            | 
 |                                                 |                                        |
-| https://gitee.com/dromara/solon-plugins         | Solon ,サードパーティ拡張プラグイン・コードリポジトリ                                | 
+| https://gitee.com/dromara/solon-plugins         | Solon ,サードパーティ拡張プラグイン・コードリポジトリ         | 
 
 
 
