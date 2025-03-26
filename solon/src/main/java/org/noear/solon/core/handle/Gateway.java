@@ -304,7 +304,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加接口（remoting 的 bean 建议一个个添加，并同时添加前缀 path）
      */
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Solon.context().lifecycle(Constants.LF_IDX_GATEWAY_BEAN_USES, () -> {
+        Solon.context().lifecycle(() -> {
             Solon.context().beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {
