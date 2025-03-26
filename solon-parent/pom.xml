@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.1.1</solon.version>
+        <solon.version>3.1.2-SNAPSHOT</solon.version>
         <solon-ai.version>3.1.2-SNAPSHOT</solon-ai.version>
         <solon-cloud.version>3.1.1</solon-cloud.version>
         <solon-admin.version>3.1.1</solon-admin.version>
@@ -186,7 +186,7 @@
         <seata.version>2.0.0</seata.version>
         <wx-java.version>4.7.2.B</wx-java.version>
         <graphql-java.version>18.7</graphql-java.version>
-        <graphql-java-tools.version>13.1.1</graphql-java-tools.version>
+        <graphql-java-tools.version>13.1.2-SNAPSHOT</graphql-java-tools.version>
 
         <java-websocket.version>1.5.7</java-websocket.version>
         <java-websocket-ns.version>1.2</java-websocket-ns.version>
