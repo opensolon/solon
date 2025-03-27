@@ -22,6 +22,10 @@
 
 ### v3.1.2
 
+* 新增 solon-flow-stateful 插件
+* 新增 solon-flow-eval-aviator 插件
+* 新增 solon-flow-eval-beetl 插件
+* 新增 solon-flow-eval-magic 插件
 * 优化 solon-flow 添加 Container 和 Evaluation 接口定义
 * 优化 solon-flow 接口设计，ChainContext 更名为 FlowContext，ChainDriver 更名为 FlowDriver
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???

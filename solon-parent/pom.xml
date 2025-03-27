@@ -423,6 +423,26 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-flow-stateful</artifactId>
+                <version>${solon-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-aviator</artifactId>
+                <version>${solon-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-beetl</artifactId>
+                <version>${solon-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-flow-eval-magic</artifactId>
+                <version>${solon-flow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
