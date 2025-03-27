@@ -25,6 +25,8 @@ import org.noear.solon.data.util.InvKeys;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.data.util.StringMutexLock;
 
+import java.lang.reflect.Type;
+
 /**
  * 缓存执行器
  *
@@ -66,7 +68,12 @@ public class CacheExecutorImp {
 
             //1.从缓存获取
             //
-            result = cs.get(key, inv.method().getReturnType());
+            Type type = inv.method().getGenericReturnType();
+            if(type == null){
+                type = inv.method().getReturnType();
+            }
+
+            result = cs.get(key, type);
 
             if (result == null) {
                 //2.执行调用，并返回

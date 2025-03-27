@@ -16,9 +16,12 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -43,6 +46,12 @@ public interface MethodHolder {
      * 获取函数反回类型
      */
     Class<?> getReturnType();
+
+    /**
+     * 获取函数泛型反回类型
+     */
+    @Nullable
+    ParameterizedType getGenericReturnType();
 
     /**
      * 获取函数所有注解
