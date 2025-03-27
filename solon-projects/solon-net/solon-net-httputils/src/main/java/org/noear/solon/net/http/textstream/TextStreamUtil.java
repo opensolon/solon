@@ -36,7 +36,7 @@ public class TextStreamUtil {
      * 解析文件流
      */
     public static void parseTextStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
                 try {
                     while (l > 0) {
@@ -68,7 +68,7 @@ public class TextStreamUtil {
      * 解析事件流
      */
     public static void parseEventStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
                 try {
                     Map<String, String> meta = new HashMap<>();

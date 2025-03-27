@@ -29,6 +29,7 @@
 * 优化 solon-flow 添加 Container 和 Evaluation 接口定义
 * 优化 solon-flow 接口设计，ChainContext 更名为 FlowContext，ChainDriver 更名为 FlowDriver
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* 调整 solon-net-httputils TextStreamUtil 缓冲改为 1Kb
 * 修复 solon-data 缓存注解不能还原 strinfiy 到泛型数据的问题
 * maven-compiler-plugin 升为 3.14.0
 * native-maven-plugin 升为 0.10.6
