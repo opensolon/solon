@@ -111,8 +111,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 是否为主应用对象
-     * */
-    protected boolean isMain(){
+     */
+    protected boolean isMain() {
         return true;
     }
 
@@ -334,7 +334,7 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-    //////////////////////////////////
+    /// ///////////////////////////////
 
     private final Map<Integer, Signal> signals = new LinkedHashMap<>();
 
@@ -468,6 +468,21 @@ public class SolonApp extends RouterWrapper {
         PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugins().add(p);
         Collections.sort(cfg().plugins());
+    }
+
+    /**
+     * 获取插件
+     *
+     * @param clazz 插件类
+     */
+    public PluginEntity pluginGet(Class<?> clazz) {
+        for (PluginEntity pe : cfg().plugins()) {
+            if (pe.getClass() == clazz) {
+                return pe;
+            }
+        }
+
+        return null;
     }
 
     /**
