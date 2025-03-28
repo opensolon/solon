@@ -45,7 +45,7 @@
         <wood.version>1.3.16</wood.version>
         <redisx.version>1.6.11</redisx.version>
         <socketd.version>2.5.18</socketd.version>
-        <liquor.version>1.5.0</liquor.version>
+        <liquor.version>1.5.2</liquor.version>
 
         <folkmq.version>1.7.11</folkmq.version>
         <water.version>2.15.1</water.version>
