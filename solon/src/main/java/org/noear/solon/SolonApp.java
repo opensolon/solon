@@ -477,7 +477,7 @@ public class SolonApp extends RouterWrapper {
      */
     public PluginEntity pluginGet(Class<?> clazz) {
         for (PluginEntity pe : cfg().plugins()) {
-            if (pe.getClass() == clazz) {
+            if (clazz.isInstance(pe.getPlugin())) {
                 return pe;
             }
         }
