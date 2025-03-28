@@ -134,11 +134,11 @@ public class SolonAotProcessor {
         //处理 bean（生成配置、代理等...）
         contextNativeProcessor.process(context, settings, metadata);
 
-        List<PluginEntity> plugs = Solon.cfg().plugs();
-        for (PluginEntity plug : plugs) {
-            if (Utils.isNotEmpty(plug.getClassName())) {
+        List<PluginEntity> plugins = Solon.cfg().plugins();
+        for (PluginEntity plugin : plugins) {
+            if (Utils.isNotEmpty(plugin.getClassName())) {
                 //手动注册时，没有字符串类名
-                metadata.registerDefaultConstructor(plug.getClassName());
+                metadata.registerDefaultConstructor(plugin.getClassName());
             }
         }
 

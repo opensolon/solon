@@ -173,7 +173,7 @@ public class SolonApp extends RouterWrapper {
      * 预停止
      */
     protected void prestopDo() {
-        this.cfg().plugs().forEach(p -> p.prestop());
+        this.cfg().plugins().forEach(p -> p.prestop());
         this.context().prestop();
         EventBus.publishTry(new AppPrestopEndEvent(this));
     }
@@ -186,7 +186,7 @@ public class SolonApp extends RouterWrapper {
      * 停止
      */
     protected void stopDo() {
-        this.cfg().plugs().forEach(p -> p.stop());
+        this.cfg().plugins().forEach(p -> p.stop());
         this.context().stop();
         EventBus.publishTry(new AppStopEndEvent(this));
         RunUtil.shutdown();
@@ -247,7 +247,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //3.尝试扫描插件
-        cfg().plugsScan(loaderList);
+        cfg().pluginScan(loaderList);
     }
 
 
@@ -259,7 +259,7 @@ public class SolonApp extends RouterWrapper {
         //event::0.x.推送App init end事件
         EventBus.publish(new AppInitEndEvent(this));
 
-        List<PluginEntity> plugs = cfg().plugs();
+        List<PluginEntity> plugs = cfg().plugins();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
             if (this.cfg().isDebugMode()) {
@@ -455,7 +455,7 @@ public class SolonApp extends RouterWrapper {
         PluginEntity p = new PluginEntity(plugin);
         p.init(context());
         p.start(context());
-        cfg().plugs().add(p);
+        cfg().plugins().add(p);
     }
 
     /**
@@ -466,8 +466,8 @@ public class SolonApp extends RouterWrapper {
      */
     public void pluginAdd(int priority, Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin, priority);
-        cfg().plugs().add(p);
-        cfg().plugsSort();
+        cfg().plugins().add(p);
+        Collections.sort(cfg().plugins());
     }
 
     /**
@@ -485,7 +485,7 @@ public class SolonApp extends RouterWrapper {
      * @since 3.0
      */
     public void pluginExclude(String pluginClzName) {
-        cfg().plugsScanExclude(pluginClzName);
+        cfg().pluginExclude(pluginClzName);
     }
 
 

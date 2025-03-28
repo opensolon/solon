@@ -52,8 +52,8 @@ public final class SolonProps extends Props {
     private final SolonApp app;
     private final NvMap args;
     private final boolean testing;
-    private final List<PluginEntity> plugs = new ArrayList<>();
-    private final List<String> plugsScanExcluded = new ArrayList<>();
+    private final List<PluginEntity> plugins = new ArrayList<>();
+    private final List<String> pluginExcludeds = new ArrayList<>();
 
     private boolean isDebugMode;//是否为调试模式
     private boolean isDriftMode;//是否为漂移模式（如k8s环境下,ip会不断变化）
@@ -213,7 +213,7 @@ public final class SolonProps extends Props {
         }
 
         //9. 插件排除
-        plugsScanExcluded.addAll(getList("solon.plugin.exclude"));
+        pluginExcludeds.addAll(getList("solon.plugin.exclude"));
     }
 
     private void importPropsTry(Class<?> source) {
@@ -370,26 +370,26 @@ public final class SolonProps extends Props {
     /**
      * 插件扫描
      */
-    protected void plugsScan(List<ClassLoader> classLoaders) {
+    protected void pluginScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, plugsScanExcluded, plugs::add);
+            PluginUtil.scanPlugins(classLoader, pluginExcludeds, plugins::add);
         }
 
         //扫描主配置
-        PluginUtil.findPlugins(AppClassLoader.global(), this, plugsScanExcluded, plugs::add);
+        PluginUtil.findPlugins(AppClassLoader.global(), this, pluginExcludeds, plugins::add);
 
         //插件排序
-        plugsSort();
+        Collections.sort(plugins);
     }
 
     /**
-     * 插件扫描排除
+     * 插件排除
      *
      * @since 3.0
      * */
-    protected void plugsScanExclude(String className) {
-        plugsScanExcluded.add(className);
+    protected void pluginExclude(String className) {
+        pluginExcludeds.add(className);
     }
 
     /**
@@ -402,18 +402,32 @@ public final class SolonProps extends Props {
     /**
      * 获取插件列表
      */
+    public List<PluginEntity> plugins() {
+        return plugins;
+    }
+
+
+    /**
+     * 获取插件列表
+     *
+     * @deprecated 3.1 {@link #plugins}
+     */
+    @Deprecated
     public List<PluginEntity> plugs() {
-        return plugs;
+        return plugins();
     }
 
     /**
      * 对插件列表排序
+     *
+     * @deprecated 3.1
      */
+    @Deprecated
     public void plugsSort() {
-        if (plugs.size() > 0) {
+        if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
-            Collections.sort(plugs);
+            Collections.sort(plugins);
         }
     }
 

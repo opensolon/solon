@@ -26,7 +26,7 @@ import java.util.Properties;
 /**
  * 插件实体
  *
- * @see SolonProps#plugsScan(List) 
+ * @see SolonProps#pluginScan(List)
  * @author noear
  * @since 1.0
  * */
