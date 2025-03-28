@@ -48,9 +48,12 @@ public class NettyWsServerHandler extends SimpleChannelInboundHandler<Object> {
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
     public static final AttributeKey<WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
 
-    static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
-
+    private final WebSocketServerProps wsProps;
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+
+    public NettyWsServerHandler(WebSocketServerProps wsProps) {
+        this.wsProps = wsProps;
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {

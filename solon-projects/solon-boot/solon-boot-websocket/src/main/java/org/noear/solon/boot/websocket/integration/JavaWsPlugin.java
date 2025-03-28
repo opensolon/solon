@@ -54,16 +54,16 @@ public class JavaWsPlugin implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        WebSocketServerProps props = WebSocketServerProps.getInstance();
+        WebSocketServerProps props = WebSocketServerProps.getNew();
         final String _host = props.getHost();
         final int _port = props.getPort();
 
         long time_start = System.currentTimeMillis();
 
         if (Utils.isEmpty(_host)) {
-            _server = new JavaWsServer(_port);
+            _server = new JavaWsServer(props, _port);
         } else {
-            _server = new JavaWsServer(Inet4Address.getByName(_host), _port);
+            _server = new JavaWsServer(props, Inet4Address.getByName(_host), _port);
         }
 
         _server.setReuseAddr(true); //重启时，端口可立即复用

@@ -42,16 +42,18 @@ import java.util.Iterator;
 @SuppressWarnings("unchecked")
 public class JavaWsServer extends WebSocketServer {
     static final Logger log = LoggerFactory.getLogger(JavaWsServer.class);
-    static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
 
+    private final WebSocketServerProps wsProps;
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
-    public JavaWsServer(int port) {
+    public JavaWsServer(WebSocketServerProps props, int port) {
         super(new InetSocketAddress(port));
+        this.wsProps = props;
     }
 
-    public JavaWsServer(InetAddress address, int port) {
+    public JavaWsServer(WebSocketServerProps props, InetAddress address, int port) {
         super(new InetSocketAddress(address, port));
+        this.wsProps = props;
     }
 
     @Override

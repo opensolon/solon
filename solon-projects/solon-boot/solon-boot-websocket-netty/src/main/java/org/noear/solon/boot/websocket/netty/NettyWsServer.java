@@ -43,8 +43,8 @@ import javax.net.ssl.SSLEngine;
  * @since 2.3
  */
 public class NettyWsServer implements ServerLifecycle {
-    ChannelFuture _server;
-    WebSocketServerProps _props;
+    private ChannelFuture _server;
+    private final WebSocketServerProps _props;
 
     private ServerSslProps sslProps;
     private SSLContext sslContext;
@@ -92,7 +92,7 @@ public class NettyWsServer implements ServerLifecycle {
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             //向客户端发送HTML5文件，主要用于支持浏览器和服务端进行WebSocket通信
                             pipeline.addLast(new ChunkedWriteHandler());
-                            pipeline.addLast(new NettyWsServerHandler());
+                            pipeline.addLast(new NettyWsServerHandler(_props));
                         }
                     });
             if (Utils.isEmpty(host)) {

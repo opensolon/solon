@@ -58,7 +58,7 @@ public class NettyWsPlugin implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        WebSocketServerProps props = WebSocketServerProps.getInstance();
+        WebSocketServerProps props = WebSocketServerProps.getNew();
         final String _host = props.getHost();
         final int _port = props.getPort();
 

@@ -30,6 +30,10 @@ public class WebSocketServerProps extends BaseServerProps {
         return Solon.context().attachOf(WebSocketServerProps.class, () -> new WebSocketServerProps(10000));
     }
 
+    public static WebSocketServerProps getNew() {
+        return new WebSocketServerProps(10000);
+    }
+
     public WebSocketServerProps(int portBase) {
         super(ServerConstants.SIGNAL_WEBSOCKET, portBase);
     }
