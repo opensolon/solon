@@ -45,12 +45,16 @@ import java.util.concurrent.Executor;
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
     static final Logger log = LoggerFactory.getLogger(UndertowServerBase.class);
 
-    protected HttpServerProps props = HttpServerProps.getInstance();
+    protected final HttpServerProps props;
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
-    private boolean enableHttp2 = false;
+    protected boolean enableHttp2 = false;
+
+    public UndertowServerBase(HttpServerProps props) {
+        this.props = props;
+    }
 
     /**
      * 是否允许Ssl

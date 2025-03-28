@@ -23,6 +23,7 @@ import io.undertow.servlet.api.*;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.undertow.http.UtHttpContextServletHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsProtocolHandshakeHandler;
 import org.noear.solon.core.event.EventBus;
@@ -33,8 +34,12 @@ import org.noear.solon.core.event.EventBus;
  */
 public class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
-    private boolean isSecure;
-    private boolean enableWebSocket;
+    protected boolean isSecure;
+    protected boolean enableWebSocket;
+
+    public UndertowServer(HttpServerProps props) {
+        super(props);
+    }
 
     public boolean isSecure() {
         return isSecure;

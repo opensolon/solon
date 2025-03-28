@@ -73,7 +73,7 @@ public final class JdkHttpPlugin implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpServerProps props = HttpServerProps.getInstance();
+        HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();

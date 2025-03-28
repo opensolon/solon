@@ -21,6 +21,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
 import org.noear.solon.boot.jetty.jsp.JspTldLocator;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 
 import javax.servlet.ServletContext;
 import javax.servlet.descriptor.TaglibDescriptor;
@@ -30,6 +31,10 @@ import java.net.URLClassLoader;
 import java.util.Map;
 
 public class JettyServerAddJsp extends JettyServer {
+
+    public JettyServerAddJsp(HttpServerProps props) {
+        super(props);
+    }
 
     /**
      * 获取Server Handler

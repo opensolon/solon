@@ -17,6 +17,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.handle.Handler;
 
 import javax.net.ssl.SSLContext;
@@ -33,15 +34,20 @@ import java.util.concurrent.Executor;
  * @since 2.2
  */
 public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
-    private int coreThreads;
-    private Executor workExecutor;
-    private boolean enableWebSocket;
-    private Handler handler;
+    protected final HttpServerProps props;
+    protected int coreThreads;
+    protected Executor workExecutor;
+    protected boolean enableWebSocket;
+    protected Handler handler;
     protected boolean enableSsl = true;
     protected SSLContext sslContext;
     protected boolean enableDebug = false;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<SmHttpServer> servers = new ArrayList<>();
+
+    public SmHttpServerComb(HttpServerProps props) {
+        this.props = props;
+    }
 
     /**
      * 是否允许Ssl
@@ -93,7 +99,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     @Override
     public void start(String host, int port) throws Throwable {
         {
-            SmHttpServer s1 = new SmHttpServer();
+            SmHttpServer s1 = new SmHttpServer(props);
             s1.setWorkExecutor(workExecutor);
             s1.setCoreThreads(coreThreads);
             s1.enableWebSocket(enableWebSocket);
@@ -106,7 +112,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         }
 
         for (Integer portAdd : addHttpPorts) {
-            SmHttpServer s2 = new SmHttpServer();
+            SmHttpServer s2 = new SmHttpServer(props);
             s2.setWorkExecutor(workExecutor);
             s2.setCoreThreads(coreThreads);
             s2.enableWebSocket(enableWebSocket);

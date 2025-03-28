@@ -17,6 +17,7 @@ package org.noear.solon.boot.vertx;
 
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 
@@ -32,7 +33,8 @@ import java.util.concurrent.Executor;
  * @since 2.9
  */
 public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
-    private final AppContext context;
+    protected final AppContext context;
+    protected final HttpServerProps props;
 
     private Executor workExecutor;
     private boolean enableWebSocket;
@@ -43,7 +45,8 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private Set<Integer> addHttpPorts = new LinkedHashSet<>();
     private List<VxHttpServer> servers = new ArrayList<>();
 
-    public VxHttpServerComb(AppContext context) {
+    public VxHttpServerComb(HttpServerProps props, AppContext context) {
+        this.props = props;
         this.context = context;
     }
 
@@ -91,7 +94,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         {
             //主端口，支持外部扩展处理器（例，网关）
-            VxHttpServer s1 = new VxHttpServer(context, true);
+            VxHttpServer s1 = new VxHttpServer(props, context, true);
             s1.setWorkExecutor(workExecutor);
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
@@ -104,7 +107,7 @@ public class VxHttpServerComb implements HttpServerConfigure, ServerLifecycle {
 
         //增量端口，不支持外部扩展处理器
         for (Integer portAdd : addHttpPorts) {
-            VxHttpServer s2 = new VxHttpServer(context, false);
+            VxHttpServer s2 = new VxHttpServer(props, context, false);
             s2.setWorkExecutor(workExecutor);
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);

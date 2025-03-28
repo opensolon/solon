@@ -42,8 +42,8 @@ import java.util.concurrent.TimeUnit;
  * @since 2.9
  */
 public class VxHttpServer implements ServerLifecycle {
-    protected final HttpServerProps props = HttpServerProps.getInstance();
-    protected final AppContext context;
+    private final HttpServerProps props;
+    private final AppContext context;
 
     private HttpServer server = null;
     private Handler handler;
@@ -54,7 +54,8 @@ public class VxHttpServer implements ServerLifecycle {
     private boolean isSecure;
     private boolean allowExternalHandler;
 
-    public VxHttpServer(AppContext context, boolean allowExternalHandler) {
+    public VxHttpServer(HttpServerProps props, AppContext context, boolean allowExternalHandler) {
+        this.props = props;
         this.allowExternalHandler = allowExternalHandler;
         this.context = context;
     }

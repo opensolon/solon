@@ -40,15 +40,19 @@ import java.util.concurrent.Executor;
  * @since 2.2
  */
 public class SmHttpServer implements ServerLifecycle {
-    protected HttpServerProps props = HttpServerProps.getInstance();
-    private HttpBootstrap server = null;
-    private Handler handler;
-    private int coreThreads;
-    private Executor workExecutor;
-    private boolean enableWebSocket;
-    private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
-    private boolean enableDebug = false;
-    private boolean isSecure;
+    protected final HttpServerProps props;
+    protected HttpBootstrap server = null;
+    protected Handler handler;
+    protected int coreThreads;
+    protected Executor workExecutor;
+    protected boolean enableWebSocket;
+    protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
+    protected boolean enableDebug = false;
+    protected boolean isSecure;
+
+    public SmHttpServer(HttpServerProps props) {
+        this.props = props;
+    }
 
     public boolean isSecure() {
         return isSecure;

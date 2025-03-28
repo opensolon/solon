@@ -41,12 +41,16 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
+    protected final HttpServerProps props;
     protected Executor executor;
-    protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     protected boolean enableSessionState;
+    protected boolean isSecure;
 
-    private boolean isSecure;
+    public JettyServerBase(HttpServerProps props) {
+        this.props = props;
+    }
+
 
     public boolean isSecure() {
         return isSecure;

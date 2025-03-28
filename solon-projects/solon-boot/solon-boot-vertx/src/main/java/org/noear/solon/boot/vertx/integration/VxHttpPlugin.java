@@ -62,7 +62,7 @@ public class VxHttpPlugin implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpServerProps props = HttpServerProps.getInstance();
+        HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();
@@ -70,7 +70,7 @@ public class VxHttpPlugin implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        _server = new VxHttpServerComb(context);
+        _server = new VxHttpServerComb(props, context);
         _server.enableWebSocket(context.app().enableWebSocket());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池

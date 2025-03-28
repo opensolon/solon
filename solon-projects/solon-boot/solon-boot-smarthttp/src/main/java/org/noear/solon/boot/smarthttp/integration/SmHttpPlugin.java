@@ -73,7 +73,7 @@ public final class SmHttpPlugin implements Plugin {
         ServerProps.init();
         MultipartUtil.init();
 
-        HttpServerProps props = HttpServerProps.getInstance();
+        HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();
@@ -81,7 +81,7 @@ public final class SmHttpPlugin implements Plugin {
         long time_start = System.currentTimeMillis();
 
 
-        _server = new SmHttpServerComb();
+        _server = new SmHttpServerComb(props);
         _server.enableWebSocket(context.app().enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
 

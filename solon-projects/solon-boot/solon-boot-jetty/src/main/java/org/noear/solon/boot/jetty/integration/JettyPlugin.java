@@ -77,19 +77,19 @@ public final class JettyPlugin implements Plugin {
                     String.valueOf(ServerProps.request_maxBodySize));
         }
 
+        HttpServerProps props = new HttpServerProps();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
+
         if (jspClz == null) {
-            _server = new JettyServer();
+            _server = new JettyServer(props);
         } else {
-            _server = new JettyServerAddJsp();
+            _server = new JettyServerAddJsp(props);
         }
 
         _server.enableWebSocket(context.app().enableWebSocket());
         _server.enableSessionState(context.app().enableSessionState());
-
-        HttpServerProps props = _server.getProps();
-        final String _host = props.getHost();
-        final int _port = props.getPort();
-        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 

@@ -17,6 +17,7 @@ package labs.case1;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.smarthttp.SmHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.handle.Context;
@@ -31,7 +32,7 @@ public class ServerDemo implements LifecycleBean , Handler {
 
     @Override
     public void start() throws Throwable {
-        _server = new SmHttpServer();
+        _server = new SmHttpServer(HttpServerProps.getInstance());
         _server.enableWebSocket(false);
         _server.setCoreThreads(Runtime.getRuntime().availableProcessors() * 2);
         _server.setHandler(this); //如果使用 Solon.app()::tryHandle，则转发给 Solon.app()

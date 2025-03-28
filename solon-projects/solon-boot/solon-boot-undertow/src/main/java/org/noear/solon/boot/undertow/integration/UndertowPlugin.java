@@ -72,18 +72,18 @@ public final class UndertowPlugin implements Plugin {
 
         Class<?> jspClz = ClassUtil.loadClass("io.undertow.jsp.JspServletBuilder");
 
-        if (jspClz == null) {
-            _server = new UndertowServer();
-        } else {
-            _server = new UndertowServerAddJsp();
-        }
-
-        _server.enableWebSocket(context.app().enableWebSocket());
-
-        HttpServerProps props = _server.getProps();
+        HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();
+
+        if (jspClz == null) {
+            _server = new UndertowServer(props);
+        } else {
+            _server = new UndertowServerAddJsp(props);
+        }
+
+        _server.enableWebSocket(context.app().enableWebSocket());
 
         EventBus.publish(_server);
         _server.start(_host, _port);
