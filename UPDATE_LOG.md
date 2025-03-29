@@ -26,11 +26,24 @@
 * 新增 solon-flow-eval-aviator 插件
 * 新增 solon-flow-eval-beetl 插件
 * 新增 solon-flow-eval-magic 插件
+* 新增 solon-ai-repo-chroma 插件
+* 添加 solon Entity 类及渲染支持
+* 添加 solon SolonApp::pluginGet 方法，方便获取插件实体
+* 添加 solon Context:returnValue 方法，提供手动模式下响应式支持
+* 添加 solon-net-httputils HttpUtils:contentType,accept 便捷方法
 * 优化 solon-flow 添加 Container 和 Evaluation 接口定义
 * 优化 solon-flow 接口设计，ChainContext 更名为 FlowContext，ChainDriver 更名为 FlowDriver
+* 优化 solon-net-httputils ServerSentEvent 类，可兼容各序列化方案
+* 优化 solon-boot-http* 的 HttpServerProps 都改为实例化（用于支持插件动态重启）
+* 优化 solon-boot-websocket* 的 WebSocketServerProps 都改为实例化（用于支持插件动态重启）
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 调整 solon-net-httputils TextStreamUtil 缓冲改为 1Kb
+* 调整 solon-net-httputils 异常改为弱性
+* 调整 solon ActionReturnHandler 更名为 ReturnValueHandler （更通用）
+* 调整 solon Solon.cfg().plugs() 更名为 plugins （前者标为弃用）
 * 修复 solon-data 缓存注解不能还原 strinfiy 到泛型数据的问题
+* 修复 solon-rx CompletableImpl 会传丢异常的问题
+* 修复 solon Context.outputAsHtml 缺少 body 标记输出的问题
 * maven-compiler-plugin 升为 3.14.0
 * native-maven-plugin 升为 0.10.6
 * maven-plugin-plugin 升为 3.15.1
