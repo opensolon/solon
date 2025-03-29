@@ -896,7 +896,9 @@ public abstract class Context {
             StringBuilder sb = new StringBuilder();
             sb.append("<!doctype html>");
             sb.append("<html>");
+            sb.append("<body>");
             sb.append(html);
+            sb.append("</body>");
             sb.append("</html>");
 
             output(sb.toString());
