@@ -92,7 +92,7 @@ public interface HttpUtils {
     /**
      * 代理配置
      */
-    default HttpUtils proxy(String host, int port){
+    default HttpUtils proxy(String host, int port) {
         return proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
     }
 
@@ -140,6 +140,22 @@ public interface HttpUtils {
      * 头配置（添加）
      */
     HttpUtils headerAdd(String name, String value);
+
+
+    /**
+     * Content-Type 头配置
+     */
+    default HttpUtils contentType(String contentType) {
+        return header("Content-Type", contentType);
+    }
+
+    /**
+     * Accept 头配置
+     */
+    default HttpUtils accept(String accept) {
+        return header("Accept", accept);
+    }
+
 
     /**
      * 小饼配置
@@ -344,12 +360,12 @@ public interface HttpUtils {
 
     /**
      * 执行请求并返回文本流
-     * */
+     */
     Publisher<String> execAsTextStream(String method) throws IOException;
 
     /**
      * 执行请求并返回事件流
-     * */
+     */
     Publisher<ServerSentEvent> execAsEventStream(String method) throws IOException;
 
     /**
