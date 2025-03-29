@@ -491,7 +491,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<String> execAsTextStream(String method) throws HttpException {
+    public Publisher<String> execAsTextStream(String method) {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
@@ -507,7 +507,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<ServerSentEvent> execAsEventStream(String method) throws HttpException {
+    public Publisher<ServerSentEvent> execAsEventStream(String method) {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
@@ -544,13 +544,15 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     @Override
     public CompletableFuture<HttpResponse> execAsync(String method) {
+        CompletableFuture<HttpResponse> future = new CompletableFuture<>();
+
         try {
-            CompletableFuture<HttpResponse> future = new CompletableFuture<>();
             execDo(method, future);
-            return future;
         } catch (Exception e) {
-            throw new HttpException(method + " " + _url + ", request failed", e);
+            future.completeExceptionally(new HttpException(method + " " + _url + ", request failed", e));
         }
+
+        return future;
     }
 
     /// //////////////////

@@ -361,12 +361,12 @@ public interface HttpUtils {
     /**
      * 执行请求并返回文本流
      */
-    Publisher<String> execAsTextStream(String method) throws HttpException;
+    Publisher<String> execAsTextStream(String method);
 
     /**
      * 执行请求并返回事件流
      */
-    Publisher<ServerSentEvent> execAsEventStream(String method) throws HttpException;
+    Publisher<ServerSentEvent> execAsEventStream(String method);
 
     /**
      * 执行请求并返回响应
