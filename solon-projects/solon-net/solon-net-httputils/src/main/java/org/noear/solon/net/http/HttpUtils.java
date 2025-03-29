@@ -226,7 +226,7 @@ public interface HttpUtils {
     /**
      * 主体配置（由序列化器决定内容类型）
      */
-    HttpUtils bodyOfBean(Object obj) throws IOException;
+    HttpUtils bodyOfBean(Object obj) throws HttpException;
 
     /**
      * 主体配置
@@ -261,27 +261,27 @@ public interface HttpUtils {
     /**
      * get 请求并返回 body
      */
-    String get() throws IOException;
+    String get() throws HttpException;
 
     /**
      * get 请求并返回 body
      */
-    <T> T getAs(Type type) throws IOException;
+    <T> T getAs(Type type) throws HttpException;
 
     /**
      * post 请求并返回 body
      */
-    String post() throws IOException;
+    String post() throws HttpException;
 
     /**
      * post 请求并返回 body
      */
-    <T> T postAs(Type type) throws IOException;
+    <T> T postAs(Type type) throws HttpException;
 
     /**
      * post 请求并返回 body
      */
-    default String post(boolean useMultipart) throws IOException {
+    default String post(boolean useMultipart) throws HttpException {
         if (useMultipart) {
             multipart(true);
         }
@@ -292,7 +292,7 @@ public interface HttpUtils {
     /**
      * post 请求并返回 body
      */
-    default <T> T postAs(Type type, boolean useMultipart) throws IOException {
+    default <T> T postAs(Type type, boolean useMultipart) throws HttpException {
         if (useMultipart) {
             multipart(true);
         }
@@ -303,75 +303,75 @@ public interface HttpUtils {
     /**
      * put 请求并返回 body
      */
-    String put() throws IOException;
+    String put() throws HttpException;
 
     /**
      * put 请求并返回 body
      */
-    <T> T putAs(Type type) throws IOException;
+    <T> T putAs(Type type) throws HttpException;
 
     /**
      * patch 请求并返回 body
      */
-    String patch() throws IOException;
+    String patch() throws HttpException;
 
     /**
      * patch 请求并返回 body
      */
-    <T> T patchAs(Type type) throws IOException;
+    <T> T patchAs(Type type) throws HttpException;
 
     /**
      * delete 请求并返回 body
      */
-    String delete() throws IOException;
+    String delete() throws HttpException;
 
     /**
      * delete 请求并返回 body
      */
-    <T> T deleteAs(Type type) throws IOException;
+    <T> T deleteAs(Type type) throws HttpException;
 
 
     /**
      * options 请求并返回 body
      */
-    String options() throws IOException;
+    String options() throws HttpException;
 
     /**
      * head 请求并返回 code
      */
-    int head() throws IOException;
+    int head() throws HttpException;
 
     //////
 
     /**
      * 执行请求并返回响应主体
      */
-    String execAsBody(String method) throws IOException;
+    String execAsBody(String method) throws HttpException;
 
     /**
      * 执行请求并返回响应主体
      */
-    <T> T execAsBody(String method, Type type) throws IOException;
+    <T> T execAsBody(String method, Type type) throws HttpException;
 
     /**
      * 执行请求并返回代码
      */
-    int execAsCode(String method) throws IOException;
+    int execAsCode(String method) throws HttpException;
 
     /**
      * 执行请求并返回文本流
      */
-    Publisher<String> execAsTextStream(String method) throws IOException;
+    Publisher<String> execAsTextStream(String method) throws HttpException;
 
     /**
      * 执行请求并返回事件流
      */
-    Publisher<ServerSentEvent> execAsEventStream(String method) throws IOException;
+    Publisher<ServerSentEvent> execAsEventStream(String method) throws HttpException;
 
     /**
      * 执行请求并返回响应
      */
-    HttpResponse exec(String method) throws IOException;
+    HttpResponse exec(String method) throws HttpException;
 
     /**
      * 异步执行请求

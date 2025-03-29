@@ -341,15 +341,20 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public HttpUtils bodyOfBean(Object obj) throws IOException {
-        Object tmp = serializer().serialize(obj);
+    public HttpUtils bodyOfBean(Object obj) throws HttpException {
+        Object tmp;
+        try {
+            tmp = serializer().serialize(obj);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
 
         if (tmp instanceof String) {
             body((String) tmp, serializer().mimeType());
         } else if (tmp instanceof byte[]) {
             body((byte[]) tmp, serializer().mimeType());
         } else {
-            throw new SolonException("Invalid serializer type!");
+            throw new IllegalArgumentException("Invalid serializer type!");
         }
 
         return this;
@@ -374,107 +379,125 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public String get() throws IOException {
+    public String get() throws HttpException {
         return execAsBody("GET");
     }
 
     @Override
-    public <T> T getAs(Type type) throws IOException {
+    public <T> T getAs(Type type) throws HttpException {
         return execAsBody("GET", type);
     }
 
     @Override
-    public String post() throws IOException {
+    public String post() throws HttpException {
         return execAsBody("POST");
     }
 
     @Override
-    public <T> T postAs(Type type) throws IOException {
+    public <T> T postAs(Type type) throws HttpException {
         return execAsBody("POST", type);
     }
 
     @Override
-    public String put() throws IOException {
+    public String put() throws HttpException {
         return execAsBody("PUT");
     }
 
     @Override
-    public <T> T putAs(Type type) throws IOException {
+    public <T> T putAs(Type type) throws HttpException {
         return execAsBody("PUT", type);
     }
 
     @Override
-    public String patch() throws IOException {
+    public String patch() throws HttpException {
         return execAsBody("PATCH");
     }
 
     @Override
-    public <T> T patchAs(Type type) throws IOException {
+    public <T> T patchAs(Type type) throws HttpException {
         return execAsBody("PATCH", type);
     }
 
     @Override
-    public String delete() throws IOException {
+    public String delete() throws HttpException {
         return execAsBody("DELETE");
     }
 
     @Override
-    public <T> T deleteAs(Type type) throws IOException {
+    public <T> T deleteAs(Type type) throws HttpException {
         return execAsBody("DELETE", type);
     }
 
     @Override
-    public String options() throws IOException {
+    public String options() throws HttpException {
         return execAsBody("OPTIONS");
     }
 
     @Override
-    public int head() throws IOException {
+    public int head() throws HttpException {
         return execAsCode("HEAD");
     }
 
 
     @Override
-    public String execAsBody(String method) throws IOException {
-        try (HttpResponse resp = exec(method)) {
-            String text = resp.bodyAsString();
+    public String execAsBody(String method) throws HttpException {
+        try {
+            try (HttpResponse resp = exec(method)) {
+                String text = resp.bodyAsString();
 
-            if (_enablePrintln) {
-                System.out.println(method + " " + _url + ":: " + text);
+                if (_enablePrintln) {
+                    System.out.println(method + " " + _url + ":: " + text);
+                }
+
+                return text;
             }
-
-            return text;
+        } catch (HttpException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new SolonException(e);
         }
     }
 
     @Override
-    public <T> T execAsBody(String method, Type type) throws IOException {
-        try (HttpResponse resp = exec(method)) {
-            return resp.bodyAsBean(type);
-        }
-    }
-
-    @Override
-    public int execAsCode(String method) throws IOException {
-        try (HttpResponse resp = exec(method)) {
-            int code = resp.code();
-
-            if (_enablePrintln) {
-                System.out.println(method + " " + _url + "::code:: " + code);
+    public <T> T execAsBody(String method, Type type) throws HttpException {
+        try {
+            try (HttpResponse resp = exec(method)) {
+                return resp.bodyAsBean(type);
             }
-
-            return code;
+        } catch (HttpException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new SolonException(e);
         }
     }
 
     @Override
-    public Publisher<String> execAsTextStream(String method) throws IOException {
+    public int execAsCode(String method) throws HttpException {
+        try {
+            try (HttpResponse resp = exec(method)) {
+                int code = resp.code();
+
+                if (_enablePrintln) {
+                    System.out.println(method + " " + _url + "::code:: " + code);
+                }
+
+                return code;
+            }
+        } catch (HttpException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new SolonException(e);
+        }
+    }
+
+    @Override
+    public Publisher<String> execAsTextStream(String method) throws HttpException {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
                             parseRespAsTextStream(resp, subscriber);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     } else {
@@ -484,13 +507,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<ServerSentEvent> execAsEventStream(String method) throws IOException {
+    public Publisher<ServerSentEvent> execAsEventStream(String method) throws HttpException {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
                             parseRespAsEventStream(resp, subscriber);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     } else {
@@ -511,11 +534,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
      * 执行请求，返回响应对象（需要自己做关闭处理）
      */
     @Override
-    public HttpResponse exec(String method) throws IOException {
+    public HttpResponse exec(String method) throws HttpException {
         try {
             return execDo(method, null);
-        } catch (IOException e) {
-            throw new IOException(method + " " + _url + ", request failed", e);
+        } catch (Exception e) {
+            throw new HttpException(method + " " + _url + ", request failed", e);
         }
     }
 
@@ -525,8 +548,8 @@ public abstract class AbstractHttpUtils implements HttpUtils {
             CompletableFuture<HttpResponse> future = new CompletableFuture<>();
             execDo(method, future);
             return future;
-        } catch (IOException e) {
-            throw new RuntimeException(method + " " + _url + ", request failed", e);
+        } catch (Exception e) {
+            throw new HttpException(method + " " + _url + ", request failed", e);
         }
     }
 
