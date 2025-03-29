@@ -893,15 +893,12 @@ public abstract class Context {
     public void outputAsHtml(String html) {
         contentType("text/html;charset=utf-8");
         if (html.startsWith("<") == false) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<!doctype html>");
-            sb.append("<html>");
-            sb.append("<body>");
-            sb.append(html);
-            sb.append("</body>");
-            sb.append("</html>");
-
-            output(sb.toString());
+            output("<!doctype html>");
+            output("<html>");
+            output("<body>");
+            output(html);
+            output("</body>");
+            output("</html>");
         } else {
             output(html);
         }
