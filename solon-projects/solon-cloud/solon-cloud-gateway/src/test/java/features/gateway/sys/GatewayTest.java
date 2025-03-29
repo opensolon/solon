@@ -22,6 +22,16 @@ public class GatewayTest extends HttpTester {
     }
 
     @Test
+    public void gateway_hello_json() throws Exception {
+        assert "hello".equals(path("/test/hello").bodyOfJson("{test:1}").post());
+    }
+
+    @Test
+    public void gateway_hello_form() throws Exception {
+        assert "hello".equals(path("/test/hello").data("test","1").post());
+    }
+
+    @Test
     public void gateway_h5() throws Exception {
         assert path("/www/h5/").get().contains("H5浏览器");
     }
