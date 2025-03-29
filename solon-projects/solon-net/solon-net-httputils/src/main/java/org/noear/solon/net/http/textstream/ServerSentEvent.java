@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http.textstream;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -23,24 +24,68 @@ import java.util.Map;
  * @author noear
  * @since 3.1
  */
-public class ServerSentEvent {
-    private Map<String, String> meta;
+public class ServerSentEvent implements Serializable {
     private String data;
+    private String id;
+    private String event;
+    private String retry;
+
+    public ServerSentEvent(){
+        //用于反序列化
+    }
 
     public ServerSentEvent(Map<String, String> meta, String data) {
-        this.meta = meta;
         this.data = data;
+        this.id = meta.get("id");
+        this.event = meta.get("event");
+        this.retry = meta.get("retry");
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public String getRetry() {
+        return retry;
+    }
+
+    /**
+     * @deprecated 3.1 {@link #getId()}
+     */
+    @Deprecated
     public String id() {
-        return meta.get("id");
+        return id;
     }
 
+    /**
+     * @deprecated 3.1 {@link #getEvent()}
+     */
+    @Deprecated
     public String event() {
-        return meta.get("event");
+        return event;
     }
 
+    /**
+     * @deprecated 3.1 {@link #getData()}
+     */
+    @Deprecated
     public String data() {
         return this.data;
+    }
+
+    /**
+     * @deprecated 3.1 {@link #getRetry()}
+     */
+    @Deprecated
+    public String retry() {
+        return this.retry;
     }
 }
