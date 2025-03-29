@@ -16,6 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
 
@@ -138,6 +139,11 @@ public class RenderManager implements Render {
      */
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
+        //如果是实体
+        if (data instanceof Entity) {
+            data = ((Entity) data).body();
+        }
+
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
 
@@ -170,6 +176,32 @@ public class RenderManager implements Render {
     public void render(Object data, Context ctx) throws Throwable {
         if (data instanceof DataThrowable) {
             return;
+        }
+
+        //如果是实体
+        if (data instanceof Entity) {
+            Entity entity = (Entity) data;
+            data = entity.body();
+
+            if (entity.status() > 0) {
+                ctx.status(entity.status());
+            }
+
+            if (entity.headers().isEmpty() == false) {
+                for (KeyValues<String> kv : entity.headers()) {
+                    if (Utils.isNotEmpty(kv.getValues())) {
+                        if (kv.getValues().size() > 1) {
+                            //多个
+                            for (String val : kv.getValues()) {
+                                ctx.headerAdd(kv.getKey(), val);
+                            }
+                        } else {
+                            //单个
+                            ctx.headerSet(kv.getKey(), kv.getFirstValue());
+                        }
+                    }
+                }
+            }
         }
 
         //如果是模型视图

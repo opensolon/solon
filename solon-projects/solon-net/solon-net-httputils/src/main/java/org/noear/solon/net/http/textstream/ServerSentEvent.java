@@ -30,7 +30,7 @@ public class ServerSentEvent implements Serializable {
     private String event;
     private String retry;
 
-    public ServerSentEvent(){
+    public ServerSentEvent() {
         //用于反序列化
     }
 
@@ -42,6 +42,13 @@ public class ServerSentEvent implements Serializable {
             this.event = meta.get("event");
             this.retry = meta.get("retry");
         }
+    }
+
+    public ServerSentEvent(String id, String event, String data, String retry) {
+        this.id = id;
+        this.event = event;
+        this.data = data;
+        this.retry = retry;
     }
 
     public String getData() {
