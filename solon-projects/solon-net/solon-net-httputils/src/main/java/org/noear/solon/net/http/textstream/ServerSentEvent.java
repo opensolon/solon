@@ -36,9 +36,12 @@ public class ServerSentEvent implements Serializable {
 
     public ServerSentEvent(Map<String, String> meta, String data) {
         this.data = data;
-        this.id = meta.get("id");
-        this.event = meta.get("event");
-        this.retry = meta.get("retry");
+
+        if (meta != null) {
+            this.id = meta.get("id");
+            this.event = meta.get("event");
+            this.retry = meta.get("retry");
+        }
     }
 
     public String getData() {
