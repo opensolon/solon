@@ -1113,6 +1113,33 @@ public abstract class Context {
         return Solon.app().renderManager().renderAndReturn(obj, this);
     }
 
+    /**
+     * 返回值
+     */
+    public final void returnValue(Object obj) throws Throwable {
+        if (obj == null) {
+            return;
+        }
+
+        this.result = obj;
+
+        Solon.app().chainManager().getReturnHandler(this, obj.getClass());
+
+        //结果处理
+        ActionReturnHandler returnHandler = this.attr(Constants.ATTR_RETURN_HANDLER);
+        if (returnHandler == null) {
+            returnHandler = Solon.app().chainManager().getReturnHandler(this, obj.getClass());
+        }
+
+        if (returnHandler != null) {
+            //执行函数
+            returnHandler.returnHandle(this, null, obj);
+        } else {
+            //渲染
+            this.render(obj);
+        }
+    }
+
     private boolean _remoting;
 
     /**
