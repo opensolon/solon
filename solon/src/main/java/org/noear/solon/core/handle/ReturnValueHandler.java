@@ -16,12 +16,12 @@
 package org.noear.solon.core.handle;
 
 /**
- * 动作返回处理器
+ * 返回值处理器
  *
  * @author noear
  * @since 2.3
  */
-public interface ActionReturnHandler {
+public interface ReturnValueHandler {
     /**
      * 是否匹配
      *
@@ -34,8 +34,7 @@ public interface ActionReturnHandler {
      * 返回处理
      *
      * @param ctx         上下文
-     * @param action      动作
      * @param returnValue 返回值
      */
-    void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable;
+    void returnHandle(Context ctx, Object returnValue) throws Throwable;
 }

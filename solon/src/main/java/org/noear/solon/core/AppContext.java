@@ -464,8 +464,8 @@ public class AppContext extends BeanContainer {
             singletonHint = "RouterInterceptor";
         }
 
-        //ActionReturnHandler
-        if (bw.raw() instanceof ActionReturnHandler) {
+        //ReturnValueHandler
+        if (bw.raw() instanceof ReturnValueHandler) {
             app().chainManager().addReturnHandler(bw.raw(), bw.index());
             singletonHint = "ActionReturnHandler";
         }

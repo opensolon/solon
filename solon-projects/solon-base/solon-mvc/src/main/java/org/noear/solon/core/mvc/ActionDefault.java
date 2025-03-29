@@ -340,14 +340,14 @@ public class ActionDefault extends HandlerAide implements Action {
 //                }
 
                 //结果处理
-                ActionReturnHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
+                ReturnValueHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
                 if (returnHandler == null) {
                     returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
                 }
 
                 if (returnHandler != null) {
                     //执行函数
-                    returnHandler.returnHandle(c, this, c.result);
+                    returnHandler.returnHandle(c, c.result);
                 } else {
                     //渲染
                     renderDo(c.result, c);

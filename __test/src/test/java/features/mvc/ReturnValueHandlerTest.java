@@ -12,7 +12,7 @@ import webapp.models.UserModel;
  * @author noear 2024/10/5 created
  */
 @SolonTest(App.class)
-public class ActionReturnHandlerTest {
+public class ReturnValueHandlerTest {
     @Test
     public void case1() throws Throwable {
         UserModel user = new UserModel();
@@ -34,7 +34,7 @@ public class ActionReturnHandlerTest {
             }
         };
 
-        ctx.attrSet(Constants.ATTR_RETURN_HANDLER, new ActionReturnHandlerImpl());
+        ctx.attrSet(Constants.ATTR_RETURN_HANDLER, new ReturnValueHandlerImpl());
 
         Solon.app().handler().handle(ctx);
 
@@ -64,7 +64,7 @@ public class ActionReturnHandlerTest {
             }
         };
 
-        ctx.attrSet(Constants.ATTR_RETURN_HANDLER, new ActionReturnHandlerImpl());
+        ctx.attrSet(Constants.ATTR_RETURN_HANDLER, new ReturnValueHandlerImpl());
 
         //比 Solon.app().handler()，省去2层（HandlerPipeline, RouterInterceptorChain）
         Handler handler = Solon.app().router().matchMain(ctx);
@@ -78,14 +78,14 @@ public class ActionReturnHandlerTest {
         assert ddd == user;
     }
 
-    public static class ActionReturnHandlerImpl implements ActionReturnHandler {
+    public static class ReturnValueHandlerImpl implements ReturnValueHandler {
         @Override
         public boolean matched(Context ctx, Class<?> returnType) {
             return false;
         }
 
         @Override
-        public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
+        public void returnHandle(Context ctx, Object returnValue) throws Throwable {
             ctx.attrSet("ddd", returnValue);
         }
     }

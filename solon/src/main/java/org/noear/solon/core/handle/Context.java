@@ -1116,7 +1116,7 @@ public abstract class Context {
     /**
      * 返回值
      */
-    public final void returnValue(Object obj) throws Throwable {
+    public void returnValue(Object obj) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -1126,17 +1126,17 @@ public abstract class Context {
         Solon.app().chainManager().getReturnHandler(this, obj.getClass());
 
         //结果处理
-        ActionReturnHandler returnHandler = this.attr(Constants.ATTR_RETURN_HANDLER);
+        ReturnValueHandler returnHandler = this.attr(Constants.ATTR_RETURN_HANDLER);
         if (returnHandler == null) {
             returnHandler = Solon.app().chainManager().getReturnHandler(this, obj.getClass());
         }
 
         if (returnHandler != null) {
             //执行函数
-            returnHandler.returnHandle(this, null, obj);
+            returnHandler.returnHandle(this, obj);
         } else {
             //渲染
-            this.render(obj);
+           ReturnValueHandlerDefault.INSTANCE.returnHandle(this, obj);
         }
     }
 

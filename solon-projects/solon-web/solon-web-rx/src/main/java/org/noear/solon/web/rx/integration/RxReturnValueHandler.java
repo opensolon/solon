@@ -20,8 +20,7 @@ import org.noear.solon.rx.handle.RxContext;
 import org.noear.solon.rx.handle.RxContextDefault;
 import org.noear.solon.rx.handle.RxHandler;
 import org.noear.solon.core.util.MimeType;
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.ActionReturnHandler;
+import org.noear.solon.core.handle.ReturnValueHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ClassUtil;
 
@@ -35,11 +34,11 @@ import reactor.core.publisher.Flux;
  * @author noear
  * @since 2.3
  */
-public class ActionReturnRxHandler implements ActionReturnHandler {
+public class RxReturnValueHandler implements ReturnValueHandler {
     private final boolean hasReactor;
     private RxChainManager chainManager;
 
-    public ActionReturnRxHandler() {
+    public RxReturnValueHandler() {
         this.hasReactor = ClassUtil.hasClass(() -> Flux.class);
         this.chainManager = RxChainManager.getInstance();
     }
@@ -50,17 +49,17 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
     }
 
     @Override
-    public void returnHandle(Context ctx, Action action, Object result) throws Throwable {
+    public void returnHandle(Context ctx, Object result) throws Throwable {
         if (result != null) {
             //转为响应式上下文
             RxContext rxCtx = new RxContextDefault(ctx);
 
             //预处理
             boolean isStreaming = isStreaming(ctx);
-            Publisher publisher = postPublisher(ctx, action, result, isStreaming);
+            Publisher publisher = postPublisher(ctx, result, isStreaming);
 
             //处理
-            RxHandler handler = new ActionRxHandler(action, publisher, isStreaming);
+            RxHandler handler = new RxHandlerImpl(publisher, isStreaming);
 
 
             chainManager.doFilter(rxCtx, handler)
@@ -88,7 +87,7 @@ public class ActionReturnRxHandler implements ActionReturnHandler {
     /**
      * 确认发布者
      */
-    protected Publisher postPublisher(Context ctx, Action action, Object result, boolean isStreaming) throws Throwable {
+    protected Publisher postPublisher(Context ctx, Object result, boolean isStreaming) throws Throwable {
         if (hasReactor) {
             //reactor 排除也不会出错
             if (result instanceof Flux) {

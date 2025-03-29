@@ -15,7 +15,6 @@
  */
 package org.noear.solon.web.rx.integration;
 
-import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.rx.CompletableEmitter;
 import org.reactivestreams.Subscriber;
@@ -29,17 +28,15 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 2.3
  */
-public class ActionRxSubscriber implements Subscriber {
-    static final Logger log = LoggerFactory.getLogger(ActionRxSubscriber.class);
+public class RxSubscriberImpl implements Subscriber {
+    static final Logger log = LoggerFactory.getLogger(RxSubscriberImpl.class);
 
     private Context ctx;
-    private Action action;
     private boolean isStreaming;
     private CompletableEmitter completableEmitter;
 
-    public ActionRxSubscriber(Context ctx, Action action, boolean isStreaming, CompletableEmitter completableEmitter) {
+    public RxSubscriberImpl(Context ctx, boolean isStreaming, CompletableEmitter completableEmitter) {
         this.ctx = ctx;
-        this.action = action;
         this.isStreaming = isStreaming;
         this.completableEmitter = completableEmitter;
     }
@@ -64,7 +61,7 @@ public class ActionRxSubscriber implements Subscriber {
     @Override
     public void onNext(Object o) {
         try {
-            action.render(o, ctx, true);
+            ctx.render(o);
 
             if (isStreaming) {
                 ctx.output(CRLF);

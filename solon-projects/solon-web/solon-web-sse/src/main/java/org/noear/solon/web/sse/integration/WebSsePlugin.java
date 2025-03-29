@@ -27,6 +27,6 @@ public class WebSsePlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
         context.app().renderManager().register("@see", SseRender.getInstance());
-        context.app().chainManager().addReturnHandler(new ActionReturnSseHandler());
+        context.app().chainManager().addReturnHandler(new SseReturnValueHandler());
     }
 }
