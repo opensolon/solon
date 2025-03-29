@@ -30,12 +30,12 @@ import java.util.function.Consumer;
  * @since 2.9
  */
 public class CompletableImpl implements Completable, Subscription {
-    private final SimpleSubscriber subscriberBuilder;
+    private final SimpleSubscriber<Object> subscriberBuilder;
     private final Throwable cause;
     private Consumer<CompletableEmitter> emitterConsumer;
 
     public CompletableImpl(Throwable cause, Consumer<CompletableEmitter> emitterConsumer) {
-        this.subscriberBuilder = new SimpleSubscriber();
+        this.subscriberBuilder = new SimpleSubscriber<>();
         this.cause = cause;
         this.emitterConsumer = emitterConsumer;
     }
@@ -86,9 +86,8 @@ public class CompletableImpl implements Completable, Subscription {
     public Completable doOnComplete(Runnable doOnComplete) {
         return Completable.create(emitter -> {
             subscriberBuilder.doOnError(err -> {
-                emitter.onError(cause);
-            });
-            subscriberBuilder.doOnComplete(() -> {
+                emitter.onError(err);
+            }).doOnComplete(() -> {
                 try {
                     doOnComplete.run();
                 } finally {
