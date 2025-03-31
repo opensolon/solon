@@ -53,7 +53,11 @@ import java.util.stream.Collectors;
 public class AppContext extends BeanContainer {
 
     public AppContext() {
-        this(Thread.currentThread().getContextClassLoader(), new Props());
+        this(new Props());
+    }
+
+    public AppContext(Props props) {
+        this(Thread.currentThread().getContextClassLoader(), props);
     }
 
     public AppContext(ClassLoader classLoader, Props props) {
@@ -919,7 +923,7 @@ public class AppContext extends BeanContainer {
         } catch (Throwable ex) {
             Class<?> declClz = mWrap.getDeclaringClz();
             Class<?> fileClz = declClz;
-            if(declClz.isMemberClass()){
+            if (declClz.isMemberClass()) {
                 fileClz = declClz.getEnclosingClass();
             }
 
@@ -1096,7 +1100,7 @@ public class AppContext extends BeanContainer {
 
     /**
      * 是否正在启动
-     * */
+     */
     public boolean isStarting() {
         return starting;
     }

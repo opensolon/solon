@@ -13,7 +13,7 @@ import java.lang.annotation.Annotation;
  */
 public class ConditionUtilText {
     public AppContext getAppContext() {
-        AppContext context = new AppContext(null, null, new Props());
+        AppContext context = new AppContext(new Props());
         context.cfg().setProperty("prop1", "1");
         context.cfg().setProperty("prop2", "2");
         return context;
