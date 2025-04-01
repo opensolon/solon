@@ -183,21 +183,23 @@ public class RenderManager implements Render {
             Entity entity = (Entity) data;
             data = entity.body();
 
-            if (entity.status() > 0) {
-                ctx.status(entity.status());
-            }
+            if(ctx.isHeadersSent() == false) {
+                if (entity.status() > 0) {
+                    ctx.status(entity.status());
+                }
 
-            if (entity.headers().isEmpty() == false) {
-                for (KeyValues<String> kv : entity.headers()) {
-                    if (Utils.isNotEmpty(kv.getValues())) {
-                        if (kv.getValues().size() > 1) {
-                            //多个
-                            for (String val : kv.getValues()) {
-                                ctx.headerAdd(kv.getKey(), val);
+                if (entity.headers().isEmpty() == false) {
+                    for (KeyValues<String> kv : entity.headers()) {
+                        if (Utils.isNotEmpty(kv.getValues())) {
+                            if (kv.getValues().size() > 1) {
+                                //多个
+                                for (String val : kv.getValues()) {
+                                    ctx.headerAdd(kv.getKey(), val);
+                                }
+                            } else {
+                                //单个
+                                ctx.headerSet(kv.getKey(), kv.getFirstValue());
                             }
-                        } else {
-                            //单个
-                            ctx.headerSet(kv.getKey(), kv.getFirstValue());
                         }
                     }
                 }
