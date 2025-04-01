@@ -51,6 +51,7 @@
 * slf4j 升为 2.0.17
 * liquor 升为 1.5.2
 * nacos2 升为 2.5.1
+* sa-token 升为 1.41.0
 
 ### v3.1.1
 * 新增 solon-expression 插件
