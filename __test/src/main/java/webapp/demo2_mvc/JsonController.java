@@ -58,12 +58,17 @@ public class JsonController {
     }
 
     @Mapping("/list")
-    public Object list(List<UserModel> userAry, ModelAndView mv) {
+    public Object list(@Body List<UserModel> userAry, ModelAndView mv) {
         if (userAry == null) {
             return null;
         } else {
             return userAry.get(0).getId();
         }
+    }
+
+    @Mapping("/list_query1")
+    public Object list(@Body List<UserModel> userAry, String query1, Context ctx) {
+        return query1 + ":" + ctx.queryString();
     }
 
     @Mapping("/bean")

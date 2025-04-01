@@ -73,6 +73,23 @@ public class HttpJsonTest extends HttpTester {
     }
 
     @Test
+    public void json_list_query() throws Exception {
+        List<UserModel> list = new ArrayList<>();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        list.add(userModel);
+
+        userModel = new UserModel();
+        userModel.id = 13;
+
+        list.add(userModel);
+
+        assert path("/demo2/json/list_query1?query1=a").bodyOfJson(ONode.stringify(list)).post().equals("a:query1=a");
+    }
+
+    @Test
     public void json_map_r() throws Exception {
         ONode oNode = new ONode();
 
