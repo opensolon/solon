@@ -19,6 +19,7 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.JavaUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -112,6 +113,7 @@ public final class SolonProps extends Props {
             env = getArg("env");
 
             if (Utils.isNotEmpty(env)) {
+                LogUtil.global().info("The following profiles env: " + env);
                 loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
                 loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
             }
