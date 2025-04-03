@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.10
  */
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 @Documented
 public @interface NonNull {
 }
