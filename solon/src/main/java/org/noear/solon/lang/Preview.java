@@ -15,9 +15,7 @@
  */
 package org.noear.solon.lang;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 预览的（只是标识一下）
@@ -26,6 +24,7 @@ import java.lang.annotation.Target;
  * @since 3.0
  */
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+@Retention(RetentionPolicy.CLASS)
 @Documented
 public @interface Preview {
     String value();

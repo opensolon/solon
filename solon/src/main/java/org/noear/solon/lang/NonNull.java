@@ -24,6 +24,7 @@ import java.lang.annotation.*;
  * @since 1.10
  */
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
+@Retention(RetentionPolicy.CLASS)
 @Documented
 public @interface NonNull {
 }
