@@ -27,10 +27,13 @@
 * 新增 solon-flow-eval-beetl 插件
 * 新增 solon-flow-eval-magic 插件
 * 新增 solon-ai-repo-chroma 插件
+* 插件 solon-flow 二次预览
 * 添加 solon Entity 类及渲染支持
 * 添加 solon SolonApp::pluginGet 方法，方便获取插件实体
 * 添加 solon Context:returnValue 方法，提供手动模式下响应式支持
 * 添加 solon-net-httputils HttpUtils:contentType,accept 便捷方法
+* 优化 solon-ai-repo-tcvectordb 插件相似度处理
+* 优化 solon-ai-repo-elasticsearch 插件相似度处理
 * 优化 solon-flow 添加 Container 和 Evaluation 接口定义
 * 优化 solon-flow 接口设计，ChainContext 更名为 FlowContext，ChainDriver 更名为 FlowDriver
 * 优化 solon-net-httputils ServerSentEvent 类，可兼容各序列化方案
