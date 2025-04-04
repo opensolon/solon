@@ -15,7 +15,7 @@
  */
 package webapp;
 
-import cn.dev33.satoken.SaManager;
+//import cn.dev33.satoken.SaManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -142,7 +142,7 @@ public class App {
     static void initApp(SolonApp app){
 
 
-        SaManager.getConfig();
+//        SaManager.getConfig();
 
         //NamiAttachment.put("lang","en_US");
 

@@ -20,6 +20,11 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 3.1.3
+
+* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+
+
 ### v3.1.2
 
 * 新增 solon-flow-stateful 插件
@@ -39,7 +44,6 @@
 * 优化 solon-net-httputils ServerSentEvent 类，可兼容各序列化方案
 * 优化 solon-boot-http* 的 HttpServerProps 都改为实例化（用于支持插件动态重启）
 * 优化 solon-boot-websocket* 的 WebSocketServerProps 都改为实例化（用于支持插件动态重启）
-* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 调整 solon-net-httputils TextStreamUtil 缓冲改为 1Kb
 * 调整 solon-net-httputils 异常改为弱性
 * 调整 solon ActionReturnHandler 更名为 ReturnValueHandler （更通用）
