@@ -52,7 +52,7 @@ Solon v3.1.2
 <hr />
 
 <p align="center">
-700% higher concurrency 50% memory savings Startup is 10 times faster. Packing 90% smaller; It also supports java8 ~ java23, native runtime.
+700% higher concurrency 50% memory savings Startup is 10 times faster. Packing 90% smaller; It also supports java8 ~ java24, native runtime.
 <br/>
 Built from scratch, with more flexible interface specifications and an open ecosystem
 </p>
@@ -61,12 +61,12 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 ## Features:
 
-| Feature                                            | Description                                                                     | 
-|----------------------------------------------------|---------------------------------------------------------------------------------| 
-| Better cost performance for computing resources    | 700% higher concurrency([techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)), 50% memory savings                                   |
-| Faster development productivity                    | Less code; Easy to get started; 10x faster startup (faster debugging)           |
-| Better production and deployment experience        | Pack 90% smaller                                                                |
-| Greater range of compatibility                     | Non-java-ee architecture; It also supports java8 ~ java23, graalvm native image |
+| Feature                                            | Description                                                                                                                               | 
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------| 
+| Better cost performance for computing resources    | 700% higher concurrency([techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)), 50% memory savings |
+| Faster development productivity                    | Less code; Easy to get started; 10x faster startup (faster debugging)                                                                     |
+| Better production and deployment experience        | Pack 90% smaller                                                                                                                          |
+| Greater range of compatibility                     | Non-java-ee architecture; It also supports java8 ~ java24, graalvm native image                                                           |
 
 
 ## Main code repository
