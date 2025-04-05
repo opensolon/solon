@@ -63,7 +63,7 @@ Solon v3.1.2
 
 | 特性         | 描述                                                    | 
 |------------|-------------------------------------------------------| 
-| 更高的计算性价比   | 并发高 700%；内存省 50%                                      |
+| 更高的计算性价比   | 并发高 700%（[techempower](https://www.techempower.com/benchmarks/#hw=ph&test=plaintext&section=data-r23)）；内存省 50%                     |
 | 更快的开发效率    | 代码少；入门简单；启动快 10倍（调试快）                                 |
 | 更好的生产与部署体验 | 打包小 90%                                               |
 | 更大的兼容范围    | 非 java-ee 架构；同时支持 java8 ～ java23，graalvm native image |
