@@ -24,7 +24,7 @@ import java.lang.annotation.Annotation;
  * 事务注解类
  *
  * @author noear
- * @since 1.9
+ * @since 3.1
  */
 public class TransactionAnno implements Transaction {
 
@@ -96,6 +96,6 @@ public class TransactionAnno implements Transaction {
 
     @Override
     public Class<? extends Annotation> annotationType() {
-        return Tran.class;
+        return Transaction.class;
     }
 }
