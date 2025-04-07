@@ -16,7 +16,6 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.Constants;
@@ -130,12 +129,8 @@ public class SolonServletContextListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        // 1.获取SolonApp
-        SolonApp app = Solon.app();
-
-        // 2.阻塞关闭Solon
-        if (app.cfg().stopSafe()) {
-            Solon.stopBlock(false, app.cfg().stopDelay());
+        if (Solon.cfg().stopSafe()) {
+            Solon.stopBlock(false, Solon.cfg().stopDelay());
         } else {
             Solon.stopBlock(false, 0);
         }
