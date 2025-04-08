@@ -17,7 +17,9 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.BindProps;
 import org.noear.solon.annotation.Import;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -257,6 +259,20 @@ public class Props extends Properties {
             PropsConverter.global().convert(this, obj, null, null);
         }
         return obj;
+    }
+
+    /**
+     * 绑定到一个类上
+     * */
+    public <T> T bindTo(Class<T> clz) {
+        BindProps anno = clz.getAnnotation(BindProps.class);
+        T obj = ClassUtil.newInstance(clz);
+
+        if (anno != null) {
+            return getProp(anno.prefix()).bindTo(obj);
+        } else {
+            return bindTo(obj);
+        }
     }
 
     /**
