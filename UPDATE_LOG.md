@@ -23,6 +23,10 @@
 ### 3.1.3
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* 添加 solon Props:bindTo(clz) 方法，支持识别 BindProps 注解
+* 增强 solon DateUtil 工具能力
+* 修复 nami-coder-jackson 部分时间格式反序列化失败的问题
+* snack3 升为 3.2.130
 
 
 ### v3.1.2
