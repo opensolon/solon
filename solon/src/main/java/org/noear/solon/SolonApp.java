@@ -556,14 +556,7 @@ public class SolonApp extends RouterWrapper {
                 //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
                 LogUtil.global().warn("SolonApp tryHandle failed!", ex);
 
-                if (x.getHandled() == false) {
-                    if (x.status() < 400) {
-                        x.status(500);
-                    }
-                    //x.setHandled(true); 不再需要
-                } else {
-                    x.status(500);
-                }
+                x.status(500);
             }
 
             //如果未渲染，尝试渲染
