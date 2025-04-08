@@ -31,11 +31,11 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.1.3-SNAPSHOT</solon.version>
-        <solon-ai.version>3.1.2</solon-ai.version>
+        <solon-ai.version>3.1.3-SNAPSHOT</solon-ai.version>
+        <solon-flow.version>3.1.3-SNAPSHOT</solon-flow.version>
         <solon-cloud.version>3.1.2</solon-cloud.version>
         <solon-admin.version>3.1.2</solon-admin.version>
         <solon-integration.version>3.1.2</solon-integration.version>
-        <solon-flow.version>3.1.3-SNAPSHOT</solon-flow.version>
         <solon-jakarta.version>3.1.2</solon-jakarta.version>
 
         <solonx.version>1.1.3</solonx.version>
@@ -444,6 +444,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-ai</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-ai-mcp</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
