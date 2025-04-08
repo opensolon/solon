@@ -546,6 +546,8 @@ public class SolonApp extends RouterWrapper {
                         x.status(500);
                     }
                     //x.setHandled(true); 不再需要
+                } else {
+                    x.status(500);
                 }
             }
 

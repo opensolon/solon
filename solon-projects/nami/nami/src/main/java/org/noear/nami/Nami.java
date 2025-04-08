@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Nami（Solon rest * rpc client）
@@ -237,12 +238,15 @@ public class Nami {
             return null;
         }
 
+        if (!Objects.equals(this._result.code(), 200)) {
+            throw new NamiException("Nami call failure, http status code: " + _result.code());
+        }
+
         if (Void.TYPE.equals(returnType)) {
             if (_result.body() == null || _result.body().length < 20) {
                 return null;
             }
         }
-
 
         Decoder decoder = _config.getDecoder();
 
