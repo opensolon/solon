@@ -29,6 +29,7 @@ import org.noear.solon.serialization.jackson.impl.TypeReferenceImpl;
 
 import java.time.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,6 +73,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
         addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
         addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
         addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
+        addDeserializer(Date.class, new TimeDeserializer<>(Date.class));
     }
 
     /**
@@ -82,7 +84,6 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     public ObjectMapper newMapper(com.fasterxml.jackson.databind.Module... modules) {
         ObjectMapper mapper = new ObjectMapper();
 
-        mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.activateDefaultTypingAsProperty(

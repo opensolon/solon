@@ -19,17 +19,23 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
 import org.noear.nami.EncoderTyped;
 import org.noear.nami.Result;
+import org.noear.nami.coder.jackson.impl.TimeDeserializer;
 import org.noear.nami.common.ContentTypes;
 import org.noear.solon.Utils;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * @author noear
@@ -38,21 +44,44 @@ import java.lang.reflect.Type;
 public class JacksonDecoder implements Decoder {
     public static final JacksonDecoder instance = new JacksonDecoder();
 
-    private ObjectMapper mapper_type = new ObjectMapper();
+    private ObjectMapper mapper_type;
 
     public JacksonDecoder() {
-        mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper_type.activateDefaultTypingAsProperty(
-                mapper_type.getPolymorphicTypeValidator(),
+        mapper_type = newMapper(new JavaTimeModule());
+
+        addDeserializer(LocalDateTime.class, new TimeDeserializer<>(LocalDateTime.class));
+        addDeserializer(LocalDate.class, new TimeDeserializer<>(LocalDate.class));
+        addDeserializer(LocalTime.class, new TimeDeserializer<>(LocalTime.class));
+        addDeserializer(Date.class, new TimeDeserializer<>(Date.class));
+
+        mapper_type.registerModule(this.configModule);
+    }
+
+    public ObjectMapper newMapper(com.fasterxml.jackson.databind.Module... modules){
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper.activateDefaultTypingAsProperty(
+                mapper.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
-        mapper_type.registerModule(new JavaTimeModule());
+        mapper.registerModules(modules);
         // 允许使用未带引号的字段名
-        mapper_type.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         // 允许使用单引号
-        mapper_type.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
+        return mapper;
+    }
+
+
+    private SimpleModule configModule = new SimpleModule();
+
+    /**
+     * 添加反序列化器
+     * */
+    public <T> void addDeserializer(Class<T> clz, JsonDeserializer<? extends T> deser) {
+        configModule.addDeserializer(clz, deser);
     }
 
     @Override
