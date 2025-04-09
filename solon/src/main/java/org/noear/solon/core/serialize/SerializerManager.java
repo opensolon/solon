@@ -49,10 +49,10 @@ public class SerializerManager {
     /**
      * 查找序列化器
      *
-     * <pre><code>
+     * <pre>{@code
      * Serializer<String> find("@json");
      * Serializer<String> find("fastjson-serializer");
-     * </code></pre>
+     * }</pre>
      *
      * @param name 名字
      * */

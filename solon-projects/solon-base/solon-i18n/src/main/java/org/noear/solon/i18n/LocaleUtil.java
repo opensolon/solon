@@ -22,11 +22,11 @@ import java.util.Locale;
 /**
  * 地区转换工具
  *
- * <pre><code>
+ * <pre>{@code
  * LocaleUtil.toLocale("zh") == new Locale("zh", "")
  * LocaleUtil.toLocale("zh_Hant") == new Locale("zh", "Hant")
  * LocaleUtil.toLocale("zh_Hant_TW") == new Locale("zh", "Hant", "TW")
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.5

@@ -31,7 +31,7 @@ import java.util.function.Predicate;
 /**
  * 应用配置加载器
  *
- * <pre><code>
+ * <pre>{@code
  * //
  * // 手动获取配置模式（容器自动模式可用: @Inject("${water.logger}")）
  * //
@@ -42,7 +42,7 @@ import java.util.function.Predicate;
  * Solon.cfg().isDriftMode()
  * Solon.cfg().get("water.logger")
  * Solon.cfg().getProp("db1")
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

@@ -22,7 +22,7 @@ import java.lang.annotation.*;
  *
  * 绑定类型对应的属性集（配合 @Configuration 使用有效，且用于 APT 生成配置元信息）
  *
- * <pre><code>
+ * <pre>{@code
  * //注解在@Configuration类上
  * @BindProps(prefix="db1")
  * @Configuration
@@ -32,7 +32,7 @@ import java.lang.annotation.*;
  *     public String passwrod;
  *     public String driverClassName;
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 3.0

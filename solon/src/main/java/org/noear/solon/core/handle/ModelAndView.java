@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * mvc:模型与视图
  *
- * <pre><code>
+ * <pre>{@code
  * @Mapping("/")
  * @Controller
  * public class DemoController{
@@ -39,7 +39,7 @@ import java.util.Map;
  *         return new ModelAndView("home.ftl");
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

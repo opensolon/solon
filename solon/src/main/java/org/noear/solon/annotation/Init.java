@@ -25,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化)
  *
- * <pre><code>
+ * <pre>{@code
  * @Component
  * public class DemoBean{
  *     @Inject("${db1}")
@@ -43,7 +43,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *         //此时 props,name !== null
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

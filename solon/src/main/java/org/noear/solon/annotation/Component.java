@@ -20,14 +20,14 @@ import java.lang.annotation.*;
 /**
  * 普通托管组件（一般情况下，不支持代理机制）
  *
- * <pre><code>
+ * <pre>{@code
  * //注解在类上
  * @Component
  * public class DemoBean{
  *     @Inject
  *     DataSource db1;
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.2

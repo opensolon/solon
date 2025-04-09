@@ -22,7 +22,7 @@ import java.io.*;
 /**
  * 上传文件模型（例：通过http上传的文件）
  *
- * <pre><code>
+ * <pre>{@code
  * @Controller
  * public class DemoController{
  *     @Mapping("/update/")
@@ -30,7 +30,7 @@ import java.io.*;
  *         return "我收到文件：" + file.name;
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

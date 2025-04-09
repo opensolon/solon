@@ -30,7 +30,7 @@ import java.util.Properties;
  */
 public class RedissonBuilder {
     /**
-     * <code><pre>
+     * <pre>{@code
      * test.cache1:
      *   server: "localhost:6379"
      *   db: 0 #默认为 0，可不配置

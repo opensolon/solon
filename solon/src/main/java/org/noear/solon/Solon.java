@@ -28,14 +28,14 @@ import java.net.URL;
 /**
  * 应用管理中心
  *
- * <pre><code>
+ * <pre>{@code
  * @SolonMain
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args);
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

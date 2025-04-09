@@ -26,7 +26,7 @@ import org.noear.solon.cloud.model.Event;
 /**
  * 云端事件实体
  *
- * <pre><code>
+ * <pre>{@code
  * //申明事件实体
  * @CloudEvent("user.create.event")
  * public class UserCreatedEvent implements CloudEventEntity{
@@ -47,7 +47,7 @@ import org.noear.solon.cloud.model.Event;
  *     }
  * }
  *
- * </code></pre>
+ * }</pre>
  *
  * @author 颖
  * @since 1.5

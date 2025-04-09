@@ -30,7 +30,7 @@ import java.util.Properties;
  */
 public class RedissonBuilder {
     /**
-     * <code><pre>
+     * <pre>{@code
      * test.cache1:
      *   driverType: "redis"
      *   keyHeader: "demo" #默认为 ${solon.app.name} ，可不配置

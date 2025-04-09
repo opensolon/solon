@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 /**
  * 通用 组件（只能配合 @Configuration 使用）
  *
- * <pre><code>
+ * <pre>{@code
  * //注解在配置器的函数上
  * @Configuration
  * public class Config{
@@ -29,7 +29,7 @@ import java.lang.annotation.*;
  *         return ds;
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 /**
  * Bean 注入器（此类用于扩展 AppContext，为其添加注入器）
  *
- * <pre><code>
+ * <pre>{@code
  * //@Db 注入器添加
  * context.beanInjectorAdd(Db.classs, (vh, anno)->{
  *     ...
@@ -32,7 +32,7 @@ import java.lang.annotation.Annotation;
  *     @Db("db1")
  *     UserMapper userMapper;
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

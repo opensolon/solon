@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 /**
  * 本地网关。提供容器，重新组织'处理器'运行；
  *
- * <pre><code>
+ * <pre>{@code
  * @Mapping("/*")
  * @Controller
  * public class ApiGateway extends Gateway {
@@ -46,7 +46,7 @@ import java.util.function.Predicate;
  *         add(DemoService.class, true); //添加接口
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

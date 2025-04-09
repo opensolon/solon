@@ -24,7 +24,7 @@ import java.lang.annotation.*;
  *
  * 禁止注入在类型上；可避免让非单例bean的注入变复杂，进而避免影响性能
  *
- * <pre><code>
+ * <pre>{@code
  * //注解在bean的字段上
  * @Component
  * public class DemoBean{
@@ -53,7 +53,7 @@ import java.lang.annotation.*;
  *         return ds;
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

@@ -19,7 +19,7 @@ package org.noear.solon.core.aspect;
 /**
  * 方法拦截器
  *
- * <pre><code>
+ * <pre>{@code
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface Cache {
@@ -28,7 +28,7 @@ package org.noear.solon.core.aspect;
  *
  * //或者直接注册
  * context.beanInterceptorAdd(Cache.class, 111, new CacheInterceptor());
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

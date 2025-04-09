@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * 结果（可用于接口开发返回统一结果）
  *
- * <pre><code>
+ * <pre>{@code
  * @Mapping("api")
  * @Controller
  * public class DemoController{
@@ -36,7 +36,7 @@ import java.io.Serializable;
  *         return Result.succeed(12);
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

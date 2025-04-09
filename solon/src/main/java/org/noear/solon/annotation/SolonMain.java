@@ -20,14 +20,14 @@ import java.lang.annotation.*;
 /**
  * Solon 主类（入口类）
  *
- * <pre><code>
+ * <pre>{@code
  * @SolonMain
  * public class App{
  *     public static void main(String[] args){
  *         Solon.start(App.class, args);
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 2.2

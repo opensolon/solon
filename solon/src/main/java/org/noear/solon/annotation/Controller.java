@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 /**
  * mvc::Web 组件（控制器，一般与@Mapping 配合使用）
  *
- * <pre><code>
+ * <pre>{@code
  * @Valid        //增加验证支持
  * @Controller
  * public class DemoController{
@@ -35,7 +35,7 @@ import java.lang.annotation.*;
  *         return "cmd = " + cmd;
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

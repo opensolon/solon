@@ -34,11 +34,11 @@ public class GenericUtil {
     /**
      * 分析类型参数
      *
-     * <pre><code>
+     * <pre>{@code
      * public class DemoEventListener extend EventListener<Demo>{ }
      * Class<?>[] tArgs = GenericUtil.resolveTypeArguments(DemoEventListener.class, EventListener.class);
      * assert tArgs[0] == Demo.class
-     * </code></pre>
+     * }</pre>
      * @param clazz     类型
      * @param genericIfc 泛型接口
      * */

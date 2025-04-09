@@ -36,7 +36,9 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     * <pre>{@code
+     * ${name}_${order.id}_${.type}
+     * }</pre>
      *
      * @param tmpl 模板
      * @param inv  调用
@@ -52,7 +54,9 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     * <pre>{@code
+     * ${name}_${order.id}_${.type}
+     * }</pre>
      *
      * @param tmpl 模板
      * @param inv  调用
@@ -72,7 +76,9 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     * <pre>{@code
+     * ${name}_${order.id}_${.type}
+     * }</pre>
      *
      * @param tmpl  模板
      * @param model 数据模型
@@ -84,7 +90,9 @@ public class TmplUtil {
     /**
      * 解析模板
      *
-     * <pre><code>${name}_${order.id}_${.type}</code></pre>
+     * <pre>{@code
+     * ${name}_${order.id}_${.type}
+     * }</pre>
      *
      * @param tmpl    模板
      * @param checker 检测器（是否存在 key）

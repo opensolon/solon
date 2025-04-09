@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 /**
  * 导入器，通过注解导入类或者包（最终作用在app source 或 config 上有效）
  *
- * <pre><code>
+ * <pre>{@code
  * //注解传导示例
  * @Retention(RetentionPolicy.RUNTIME)
  * @Target(ElementType.TYPE)
@@ -39,7 +39,7 @@ import java.lang.annotation.*;
  * }
  *
  * //::Import 注解在应用上的执行顺位：Plugin -> Import -> Scan bean
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

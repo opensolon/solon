@@ -18,7 +18,7 @@ package org.noear.solon.core.event;
 /**
  * 事件监听者
  *
- * <pre><code>
+ * <pre>{@code
  * //demo1: 在手动添加Listener
  * Solon.app().onEvent(Throwable.class, (err)->{
  *
@@ -38,7 +38,7 @@ package org.noear.solon.core.event;
  *
  * //发布事件
  * EventBus.publish(new ComAdaptor());
- * </code></pre>
+ * }</pre>
  * @author noear
  * @since 1.0
  * */

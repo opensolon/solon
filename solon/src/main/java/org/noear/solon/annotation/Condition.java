@@ -37,11 +37,11 @@ public @interface Condition {
 
     /**
      * 有属性（支持多条件）
-     * <pre><code>
+     * <pre>{@code
      * @Condition(onProperty="${prop1}")
      * @Condition(onProperty="${prop1} == 1")
      * @Condition(onProperty="${prop1} == 1 && ${prop2} == 2")
-     * </code></pre>
+     * }</pre>
      *
      */
     String onProperty() default "";

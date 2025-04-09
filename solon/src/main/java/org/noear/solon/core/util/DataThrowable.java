@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  * 在Solon的mvc处理链中，DataThrowable 会做为普通的数据处理渲染
  *
- * <pre><code>
+ * <pre>{@code
  * //定义个 DataThrowable 的数据结构
  * public class UapiCode extends DataThrowable{
  *     public final int code;
@@ -50,7 +50,7 @@ import java.io.Serializable;
  *         return userMapper.selectById(userId);
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

@@ -24,12 +24,12 @@ import java.util.function.Supplier;
 /**
  * 变量容器（主要在 BeanInjector 中使用）
  *
- * <pre><code>
+ * <pre>{@code
  * //@Db 注入器添加
  * context.beanInjectorAdd(Db.classs, (vh, anno)->{
  *     ...
  * });
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

@@ -39,14 +39,14 @@ import java.util.function.Consumer;
 /**
  * 应用
  *
- * <pre><code>
+ * <pre>{@code
  * @SolonMain
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args);
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

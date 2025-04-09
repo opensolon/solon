@@ -22,7 +22,7 @@ import java.lang.annotation.*;
 /**
  * 环绕拦截处理（针对 Controller、Service、Dao 等所有基于 MethodWrap 运行的目标，附加拦截器）
  *
- * <pre><code>
+ * <pre>{@code
  * @Controller
  * public class DemoController{
  *     @Around(TranInterceptor.class)  //@Tran 注解即通过 @Around 实现
@@ -48,7 +48,7 @@ import java.lang.annotation.*;
  * public @interface Cache {
  *     ...
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

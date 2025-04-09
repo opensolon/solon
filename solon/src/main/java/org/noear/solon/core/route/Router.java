@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * 通用路由器
  *
- * <pre><code>
+ * <pre>{@code
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args,app->{
@@ -45,7 +45,7 @@ import java.util.*;
  *         return "heollo world;";
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

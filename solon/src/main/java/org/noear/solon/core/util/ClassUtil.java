@@ -49,11 +49,11 @@ public class ClassUtil {
     /**
      * 是否存在某个类
      *
-     * <pre><code>
+     * <pre>{@code
      * if(ClassUtil.hasClass(()->DemoTestClass.class)){
      *     ...
      * }
-     * </code></pre>
+     * }</pre>
      *
      * @param test 检测函数
      */

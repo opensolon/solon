@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 /**
  * Bean 构建器（此类用于扩展AppContext，为其添加构建器）
  *
- * <pre><code>
+ * <pre>{@code
  * //@Cron4j 构建器添加
  * context.beanBuilderAdd(Cron4j.classs, (clz, bw, anno)->{
  *     ...
@@ -36,7 +36,7 @@ import java.lang.annotation.Annotation;
  *         ...
  *     }
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0

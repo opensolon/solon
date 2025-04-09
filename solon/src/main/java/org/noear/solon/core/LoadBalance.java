@@ -22,7 +22,7 @@ import java.net.URI;
 /**
  * 负载均衡器（为服务提供一个简单的负载接口；起到适配中介效果）
  *
- * <pre><code>
+ * <pre>{@code
  * //定义 local LoadBalance
  * @Component("local")
  * public class TestLoadBalance implements LoadBalance {
@@ -44,7 +44,7 @@ import java.net.URI;
  * public interface HelloService{
  *     String hello();
  * }
- * </code></pre>
+ * }</pre>
  *
  * @author noear
  * @since 1.0
