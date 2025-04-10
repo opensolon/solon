@@ -1,0 +1,114 @@
+Copyright 2017-2025 noear.org and authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project includes:
+  agrona under The Apache License, Version 2.0
+  asm under BSD-3-Clause
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Byte Buddy agent under Apache License, Version 2.0
+  Checker Qual under The MIT License
+  error-prone annotations under Apache 2.0
+  fastjson under Apache 2
+  fastjson2 under Apache 2
+  FindBugs-jsr305 under The Apache Software License, Version 2.0
+  fury-core under The Apache License, Version 2.0
+  Gson under Apache-2.0
+  Guava InternalFutureFailureAccess and InternalFutures under The Apache Software License, Version 2.0
+  Guava ListenableFuture only under The Apache Software License, Version 2.0
+  Guava: Google Core Libraries for Java under Apache License, Version 2.0
+  Hessian Lite (Dubbo embed version) under Apache License, Version 2.0
+  J2ObjC Annotations under Apache License, Version 2.0
+  Jackson datatype: JSR310 under The Apache Software License, Version 2.0
+  Jackson-annotations under The Apache Software License, Version 2.0
+  Jackson-core under The Apache Software License, Version 2.0
+  jackson-databind under The Apache Software License, Version 2.0
+  Jackson-dataformat-XML under The Apache Software License, Version 2.0
+  Java Native Access under LGPL, version 2.1 or Apache License v2.0
+  Java Native Access Platform under LGPL, version 2.1 or Apache License v2.0
+  JavaPoet under Apache 2.0
+  jffi under The Apache Software License, Version 2.0 or GNU Lesser General Public License version 3
+  jnr-a64asm under The Apache Software License, Version 2.0
+  jnr-constants under The Apache Software License, Version 2.0
+  jnr-ffi under The Apache Software License, Version 2.0
+  jnr-x86asm under MIT License
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  Kryo under 3-Clause BSD License
+  MinLog under 3-Clause BSD License
+  mockito-core under The MIT License
+  mockito-junit-jupiter under The MIT License
+  Objenesis under Apache License, Version 2.0
+  OpenHFT/Chronicle Bytes under Apache License, Version 2.0
+  OpenHFT/Chronicle Core under Apache License, Version 2.0
+  OpenHFT/Chronicle-Analytics under Apache License, Version 2.0
+  OpenHFT/Posix under Apache License, Version 2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
+  Project Lombok under The MIT License
+  protostuff :: api under The Apache Software License, Version 2.0
+  protostuff :: collectionschema under The Apache Software License, Version 2.0
+  protostuff :: core under The Apache Software License, Version 2.0
+  protostuff :: runtime under The Apache Software License, Version 2.0
+  reactive-streams under MIT-0
+  ReflectASM under 3-Clause BSD License
+  SLF4J API Module under MIT License
+  snack3 under The Apache Software License, Version 2.0
+  SnakeYAML under Apache License, Version 2.0
+  solon under The Apache Software License, Version 2.0
+  solon-aot under The Apache Software License, Version 2.0
+  solon-base-bundle5 under The Apache Software License, Version 2.0
+  solon-boot under The Apache Software License, Version 2.0
+  solon-config-plus under The Apache Software License, Version 2.0
+  solon-config-yaml under The Apache Software License, Version 2.0
+  solon-data under The Apache Software License, Version 2.0
+  solon-mvc under The Apache Software License, Version 2.0
+  solon-net under The Apache Software License, Version 2.0
+  solon-net-httputils under The Apache Software License, Version 2.0
+  solon-proxy under The Apache Software License, Version 2.0
+  solon-rx under The Apache Software License, Version 2.0
+  solon-security-vault under The Apache Software License, Version 2.0
+  solon-serialization under The Apache Software License, Version 2.0
+  solon-serialization-abc under The Apache Software License, Version 2.0
+  solon-serialization-fastjson under The Apache Software License, Version 2.0
+  solon-serialization-fastjson2 under The Apache Software License, Version 2.0
+  solon-serialization-fury under The Apache Software License, Version 2.0
+  solon-serialization-gson under The Apache Software License, Version 2.0
+  solon-serialization-hessian under The Apache Software License, Version 2.0
+  solon-serialization-jackson under The Apache Software License, Version 2.0
+  solon-serialization-jackson-xml under The Apache Software License, Version 2.0
+  solon-serialization-kryo under The Apache Software License, Version 2.0
+  solon-serialization-properties under The Apache Software License, Version 2.0
+  solon-serialization-protostuff under The Apache Software License, Version 2.0
+  solon-serialization-snack3 under The Apache Software License, Version 2.0
+  solon-test under The Apache Software License, Version 2.0
+  solon.net under The Apache Software License, Version 2.0
+  solon.net.httputils under The Apache Software License, Version 2.0
+  solon.serialization under The Apache Software License, Version 2.0
+  solon.serialization.fastjson under The Apache Software License, Version 2.0
+  solon.serialization.fastjson2 under The Apache Software License, Version 2.0
+  solon.serialization.fury under The Apache Software License, Version 2.0
+  solon.serialization.gson under The Apache Software License, Version 2.0
+  solon.serialization.hessian under The Apache Software License, Version 2.0
+  solon.serialization.jackson under The Apache Software License, Version 2.0
+  solon.serialization.jackson.xml under The Apache Software License, Version 2.0
+  solon.serialization.properties under The Apache Software License, Version 2.0
+  solon.serialization.protostuff under The Apache Software License, Version 2.0
+  solon.serialization.snack3 under The Apache Software License, Version 2.0
+  Stax2 API under The BSD 2-Clause License
+  Woodstox under The Apache License, Version 2.0
+

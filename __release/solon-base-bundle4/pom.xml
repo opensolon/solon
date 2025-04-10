@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>3.1.2</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-base-bundle4</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-projects/solon-faas/solon-faas-luffy</module>
+
+        <module>../../solon-projects/solon-detector/solon-health</module>
+        <module>../../solon-projects/solon-detector/solon-health-detector</module>
+
+        <module>../../solon-projects/solon-scheduling/solon-scheduling</module>
+        <module>../../solon-projects/solon-scheduling/solon-scheduling-simple</module>
+        <module>../../solon-projects/solon-scheduling/solon-scheduling-quartz</module>
+
+        <module>../../solon-projects/solon-view/solon-view</module>
+        <module>../../solon-projects/solon-view/solon-view-freemarker</module>
+        <module>../../solon-projects/solon-view/solon-view-jsp</module>
+        <module>../../solon-projects/solon-view/solon-view-jsp-jakarta</module>
+        <module>../../solon-projects/solon-view/solon-view-velocity</module>
+        <module>../../solon-projects/solon-view/solon-view-thymeleaf</module>
+        <module>../../solon-projects/solon-view/solon-view-enjoy</module>
+        <module>../../solon-projects/solon-view/solon-view-beetl</module>
+
+        <module>../../solon-projects/solon-detector_old/solon.health</module>
+        <module>../../solon-projects/solon-detector_old/solon.health.detector</module>
+
+        <module>../../solon-projects/solon-faas_old/solon.luffy</module>
+
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling</module>
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.simple</module>
+        <module>../../solon-projects/solon-scheduling_old/solon.scheduling.quartz</module>
+
+        <module>../../solon-projects/solon-view_old/solon.view</module>
+        <module>../../solon-projects/solon-view_old/solon.view.freemarker</module>
+        <module>../../solon-projects/solon-view_old/solon.view.jsp</module>
+        <module>../../solon-projects/solon-view_old/solon.view.velocity</module>
+        <module>../../solon-projects/solon-view_old/solon.view.thymeleaf</module>
+        <module>../../solon-projects/solon-view_old/solon.view.enjoy</module>
+        <module>../../solon-projects/solon-view_old/solon.view.beetl</module>
+    </modules>
+</project>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>3.1.2</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-base-bundle1</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-projects/solon-native/solon-aot</module>
+
+        <module>../../solon-projects/solon-base/solon-proxy</module>
+        <module>../../solon-projects/solon-base/solon-i18n</module>
+        <module>../../solon-projects/solon-base/solon-mvc</module>
+        <module>../../solon-projects/solon-base/solon-hotplug</module>
+
+        <module>../../solon-projects/solon-expression/solon-expression</module>
+
+        <module>../../solon-projects/solon-rx/solon-rx</module>
+
+        <module>../../solon-projects/solon-config/solon-config-banner</module>
+        <module>../../solon-projects/solon-config/solon-config-plus</module>
+        <module>../../solon-projects/solon-config/solon-config-yaml</module>
+
+        <module>../../solon-projects/solon-net/solon-net</module>
+        <module>../../solon-projects/solon-net/solon-net-stomp</module>
+        <module>../../solon-projects/solon-net/solon-net-httputils</module>
+
+        <module>../../solon-projects/solon-security/solon-security-auth</module>
+        <module>../../solon-projects/solon-security/solon-security-vault</module>
+        <module>../../solon-projects/solon-security/solon-security-validation</module>
+        <module>../../solon-projects/solon-security/solon-security-web</module>
+
+        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
+        <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
+
+        <module>../../solon-projects/solon-base_old/solon.proxy</module>
+        <module>../../solon-projects/solon-base_old/solon.config.yaml</module>
+        <module>../../solon-projects/solon-base_old/solon.banner</module>
+        <module>../../solon-projects/solon-base_old/solon.i18n</module>
+        <module>../../solon-projects/solon-base_old/solon.hotplug</module>
+        <module>../../solon-projects/solon-base_old/solon.mvc</module>
+
+        <module>../../solon-projects/solon-native_old/solon.aot</module>
+
+        <module>../../solon-projects/solon-security_old/solon.auth</module>
+        <module>../../solon-projects/solon-security_old/solon.vault</module>
+        <module>../../solon-projects/solon-security_old/solon.validation</module>
+    </modules>
+</project>
