@@ -26,6 +26,7 @@
 * 添加 solon Props:bindTo(clz) 方法，支持识别 BindProps 注解
 * 增强 solon DateUtil 工具能力
 * 修复 nami-coder-jackson 部分时间格式反序列化失败的问题
+* 修复 `@Configuration` 类，有构建注入且没有源时，造成 `@Bean` 函数无法注入的问题
 * snack3 升为 3.2.130
 
 

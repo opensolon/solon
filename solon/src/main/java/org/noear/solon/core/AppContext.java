@@ -1116,21 +1116,28 @@ public class AppContext extends BeanContainer {
      * 启动（一般在插件启动之后，应用完成扫描，再执行）
      */
     public void start() {
+        //标为开始
         starting = true;
 
         try {
             //开始执行生命周期bean（侧重做初始化） //支持排序
             startBeanLifecycle();
 
+            //标为已开始（Bean 生周期已启动）
+            started = true;
+
             //开始注入审查 //支持自动排序
+            startInjectReview(2);
+
+            //再次审查（审查后可能会产生二次处理）
             startInjectReview(2);
 
             //开始之后
             postStartBeanLifecycle();
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
-        } finally {
-            started = true;
         }
     }
 

@@ -6,7 +6,7 @@ import org.noear.solon.core.AppContext;
 /**
  * @author noear 2025/3/19 created
  */
-public class InjectTest {
+public class Inject2Test {
     @Test
     public void case1() {
         AppContext appContext = new AppContext();

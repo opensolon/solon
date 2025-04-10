@@ -7,7 +7,7 @@ import org.noear.solon.core.AppContext;
 /**
  * @author noear 2025/4/10 created
  */
-public class GenericsTest {
+public class Inject3Test {
     @Test
     public void test() {
         AppContext appContext = new AppContext();
