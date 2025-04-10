@@ -18,6 +18,13 @@ public class SnelComplexTest {
     }
 
     @Test
+    public void testComplexNestedLogicalExpression1() {
+        String expr = "(true AND (false OR true)) OR (NOT true)";
+        Object result = SnEL.eval(expr);
+        assertEquals(true, result);
+    }
+
+    @Test
     public void testComplexNestedLogicalExpression2() {
         String expr = "(true && (false || true)) || (false && true)";
         Object result = SnEL.eval(expr);
