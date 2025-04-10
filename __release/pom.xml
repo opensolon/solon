@@ -23,13 +23,6 @@
 
         <module>nami-bundle</module>
 
-        <module>solon-base-bundle1</module>
-        <module>solon-base-bundle2</module>
-        <module>solon-base-bundle3</module>
-        <module>solon-base-bundle4</module>
-        <module>solon-base-bundle5</module>
-        <module>solon-base-bundle6</module>
-
-        <module>solon-shortcuts-bundle</module>
+        <module>solon-main-bundle1</module>
     </modules>
 </project>
