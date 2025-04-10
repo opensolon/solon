@@ -1,4 +1,4 @@
-package features.solon.generic5;
+package features.solon.inject3;
 
 /**
  * @author noear 2025/4/10 created

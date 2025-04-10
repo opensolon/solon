@@ -1,7 +1,8 @@
-package features.solon.generic5;
+package features.solon.inject3;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 
@@ -10,10 +11,19 @@ import java.util.List;
  */
 @Configuration
 public class DemoConfig {
+    private DemoCon con;
     private List<Demo> demos;
 
     public List<Demo> getDemos() {
         return demos;
+    }
+
+    public DemoCon getCon() {
+        return con;
+    }
+
+    public DemoConfig(@Inject(required = false) DemoCon con){
+        this.con = con;
     }
 
     @Bean

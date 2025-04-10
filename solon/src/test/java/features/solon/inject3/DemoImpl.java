@@ -1,4 +1,4 @@
-package features.solon.generic5;
+package features.solon.inject3;
 
 import org.noear.solon.annotation.Component;
 
