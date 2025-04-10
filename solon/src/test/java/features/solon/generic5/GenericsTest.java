@@ -1,0 +1,23 @@
+package features.solon.generic5;
+
+import org.junit.jupiter.api.Test;
+import org.noear.solon.Utils;
+import org.noear.solon.core.AppContext;
+
+/**
+ * @author noear 2025/4/10 created
+ */
+public class GenericsTest {
+    @Test
+    public void test() {
+        AppContext appContext = new AppContext();
+
+        appContext.beanScan(DemoConfig.class);
+        appContext.start();
+
+        DemoConfig demoConfig = appContext.getBean(DemoConfig.class);
+
+        assert Utils.isNotEmpty(demoConfig.getDemos());
+        assert demoConfig.getDemos().size() == 1;
+    }
+}
