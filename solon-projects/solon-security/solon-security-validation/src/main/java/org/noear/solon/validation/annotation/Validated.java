@@ -20,6 +20,8 @@ import org.noear.solon.annotation.Alias;
 import java.lang.annotation.*;
 
 /**
+ * 要校验的
+ *
  * @author noear
  * @since 1.3
  */
@@ -27,6 +29,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Validated {
+    /**
+     * 校验分组
+     */
     @Alias("groups")
     Class<?>[] value() default {};
 }

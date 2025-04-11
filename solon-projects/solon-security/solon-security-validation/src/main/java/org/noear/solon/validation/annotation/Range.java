@@ -21,6 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 整数区间校验（必须在 min 与 max 之间）
  *
  * @author noear
  * @since 1.11
@@ -28,13 +29,23 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Range {
+    /**
+     * 最小
+     */
     long min() default 0L;
+
+    /**
+     * 最大
+     */
     long max() default Long.MAX_VALUE;
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

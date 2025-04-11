@@ -19,6 +19,7 @@ package org.noear.solon.validation.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 字符长度校验注解
  *
  * @author noear
  * @since 1.0
@@ -26,13 +27,23 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Length {
+    /**
+     * 最小
+     */
     int min() default 0;
+
+    /**
+     * 最大
+     */
     int max() default Integer.MAX_VALUE;
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

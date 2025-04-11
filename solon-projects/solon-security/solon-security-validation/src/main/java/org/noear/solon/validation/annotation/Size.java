@@ -21,19 +21,31 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 集合容量大小校验
+ *
  * @author noear
  * @since 1.5
  */
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Size {
+    /**
+     * 最小
+     */
     int min() default 0;
+
+    /**
+     * 最大
+     */
     int max() default Integer.MAX_VALUE;
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

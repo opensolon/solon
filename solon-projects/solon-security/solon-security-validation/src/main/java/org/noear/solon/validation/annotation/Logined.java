@@ -20,7 +20,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 登录注解（可继承）
+ * 登录校验注解（可继承）
  *
  * @author noear
  * @since 1.3
@@ -32,10 +32,13 @@ public @interface Logined {
     @Note("logined by session user key")
     String value() default "";
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

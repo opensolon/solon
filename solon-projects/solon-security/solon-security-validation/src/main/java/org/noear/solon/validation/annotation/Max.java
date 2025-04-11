@@ -18,6 +18,7 @@ package org.noear.solon.validation.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 整数最大值校验注解
  *
  * @author noear
  * @since 1.0
@@ -27,10 +28,13 @@ import java.lang.annotation.*;
 public @interface Max {
     long value();
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

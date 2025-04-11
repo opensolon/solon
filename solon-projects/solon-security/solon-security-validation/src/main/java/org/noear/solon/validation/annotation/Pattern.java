@@ -20,6 +20,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
+ * 模式校验注解（符合正则表达式的）
  *
  * @author noear
  * @since 1.0
@@ -32,11 +33,11 @@ public @interface Pattern {
 
     /**
      * 提示消息
-     * */
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

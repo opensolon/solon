@@ -18,6 +18,7 @@ package org.noear.solon.validation.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 不重复提交校验注解
  *
  * @author noear
  * @since 1.0
@@ -27,12 +28,18 @@ import java.lang.annotation.*;
 public @interface NoRepeatSubmit {
     HttpPart[] value() default {HttpPart.params};
 
+    /**
+     * 秒数
+     */
     int seconds() default 1;
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

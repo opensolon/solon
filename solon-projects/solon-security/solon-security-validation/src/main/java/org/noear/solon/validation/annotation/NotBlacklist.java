@@ -20,7 +20,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 黑名单注解（可继承）
+ * 非黑名单校验注解
  *
  * @author noear
  * @since 1.3
@@ -32,10 +32,13 @@ public @interface NotBlacklist {
     @Note("blacklist name")
     String value() default "";
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

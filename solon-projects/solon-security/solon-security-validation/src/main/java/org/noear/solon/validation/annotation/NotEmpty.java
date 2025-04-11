@@ -21,7 +21,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 不能为空
+ * 非空校验注解（不能为空）
  *
  * @author noear
  * @since 1.0
@@ -31,14 +31,17 @@ import java.lang.annotation.*;
 public @interface NotEmpty {
     /**
      * param names
-     * */
+     */
     @Note("param names")
     String[] value() default {};
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

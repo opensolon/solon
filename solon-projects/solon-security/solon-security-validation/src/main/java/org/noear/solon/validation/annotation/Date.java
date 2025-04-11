@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 日期格式校验注解
  *
  * @author noear
  * @since 1.0
@@ -31,12 +32,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Date {
     @Note("日期表达式, 默认为：ISO格式")
-    String value() default  "";
+    String value() default "";
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }

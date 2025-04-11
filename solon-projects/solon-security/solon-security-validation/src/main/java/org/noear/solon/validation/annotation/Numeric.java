@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 是个数值
+ * 数字校验注解（必须为数字，整数或小数）
  *
  * @author noear
  * @since 1.0
@@ -33,14 +33,17 @@ import java.lang.annotation.Target;
 public @interface Numeric {
     /**
      * param names
-     * */
+     */
     @Note("param names")
     String[] value() default {};
 
+    /**
+     * 提示消息
+     */
     String message() default "";
 
     /**
      * 校验分组
-     * */
+     */
     Class<?>[] groups() default {};
 }
