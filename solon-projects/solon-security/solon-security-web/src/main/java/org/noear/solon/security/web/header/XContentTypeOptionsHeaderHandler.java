@@ -25,9 +25,18 @@ import org.noear.solon.core.handle.Handler;
  * @since 3.1
  */
 public class XContentTypeOptionsHeaderHandler implements Handler {
+    /**
+     * nosniff： 禁止浏览器进行类型猜测。
+     */
+    private final String headerValue;
+
+    public XContentTypeOptionsHeaderHandler() {
+        this.headerValue = "nosniff";
+    }
+
     @Override
     public void handle(Context ctx) throws Throwable {
         //作用： 这个是帮助script 和 styleSheet 元素拒绝包含错误的 MIME 类型的响应。这是一种安全功能，有助于防止基于 MIME 类型混淆的攻击。
-        ctx.headerSet("X-Content-Type-Options", "nosniff");
+        ctx.headerSet("X-Content-Type-Options", headerValue);
     }
 }
