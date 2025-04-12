@@ -25,9 +25,23 @@ import org.noear.solon.core.handle.Handler;
  * @since 3.1
  */
 public class XFrameOptionsHeaderHandler implements Handler {
+    /**
+     * DENY: 表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。
+     * SAMEORIGIN: 表示该页面可以在相同域名页面的 frame 中展示。
+     * ALLOW-FROM uri：只能被嵌入到指定域名的框架中（已弃用）
+     */
+    private final String headerValue;
+
+    public XFrameOptionsHeaderHandler() {
+        this("DENY");
+    }
+
+    public XFrameOptionsHeaderHandler(String headerValue) {
+        this.headerValue = headerValue;
+    }
+
     @Override
     public void handle(Context ctx) throws Throwable {
-        //作用：防止点击劫持，DENY：不能被嵌入到任何iframe或者frame中，SAMEORIGIN：页面只能被本站页面嵌入到iframe或者frame中，ALLOW-FROM uri：只能被嵌入到指定域名的框架中
-        ctx.headerSet("X-Frame-Options", "DENY");
+        ctx.headerSet("X-Frame-Options", headerValue);
     }
 }
