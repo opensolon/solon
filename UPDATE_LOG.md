@@ -24,11 +24,16 @@
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 添加 solon Props:bindTo(clz) 方法，支持识别 BindProps 注解
-* 增强 solon DateUtil 工具能力
+* 优化 solon DateUtil 工具能力
+* 优化 solon 渲染管理器的匹配策略，先匹配 contentTypeNew 再匹配 acceptNew
+* 优化 solon-web-rx 流检测策略，先匹配 contentTypeNew 再匹配 acceptNew
+* 优化 solon-web-sse 头处理，添加 Connection,Keep-Alive,Cache-Control 输出
+* 调整 solon-net-httputils execAsTextStream 标为弃用，新增 execAsLineStream
+* 调整 solon-net-httputils execAsEventStream 标为弃用，新增 execAsSseStream
 * 修复 nami-coder-jackson 部分时间格式反序列化失败的问题
 * 修复 `@Configuration` 类，有构建注入且没有源时，造成 `@Bean` 函数无法注入的问题
 * snack3 升为 3.2.130
-* smarthttp 升为 2.5.6
+* smarthttp 升为 2.5.6（优化 websocket idle处理；优化 http idle 对 Keep-Alive 场景的处理）
 
 
 ### v3.1.2
