@@ -34,11 +34,11 @@ public class SseRender implements Render {
     }
 
     @Override
-    public boolean matched(Context ctx, String accept) {
-        if (accept == null) {
+    public boolean matched(Context ctx, String mime) {
+        if (mime == null) {
             return false;
         } else {
-            return accept.startsWith(MimeType.TEXT_EVENT_STREAM_VALUE);
+            return mime.startsWith(MimeType.TEXT_EVENT_STREAM_VALUE);
         }
     }
 
@@ -59,10 +59,17 @@ public class SseRender implements Render {
         return event.toString();
     }
 
+    public static void pushSseHeaders(Context ctx) {
+        ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+        ctx.headerSet("Connection", "keep-alive");
+        ctx.headerSet("Keep-Alive", "timeout=60");
+        ctx.headerSet("Cache-Control", "no-cache");
+    }
+
     @Override
     public void render(Object data, Context ctx) throws Throwable {
         if (ctx.isHeadersSent() == false) {
-            ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+            pushSseHeaders(ctx);
         }
 
         ctx.output(renderAndReturn(data, ctx));

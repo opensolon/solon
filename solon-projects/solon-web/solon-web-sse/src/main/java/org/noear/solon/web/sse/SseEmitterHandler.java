@@ -43,7 +43,8 @@ public class SseEmitterHandler {
      * 开始
      */
     public void start() throws Throwable {
-        ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
+        SseRender.pushSseHeaders(ctx);
+
         ctx.asyncListener(new AsyncListenerImpl(this));
         ctx.asyncStart(emitter.timeout, null);
 
