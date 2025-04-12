@@ -81,7 +81,8 @@ public class RxReturnValueHandler implements ReturnValueHandler {
     }
 
     protected boolean isStreaming(Context ctx) {
-        return MimeType.isStreaming(ctx.contentTypeNew());
+        return MimeType.isStreaming(ctx.contentTypeNew()) ||
+                MimeType.isStreaming(ctx.acceptNew());
     }
 
     /**
