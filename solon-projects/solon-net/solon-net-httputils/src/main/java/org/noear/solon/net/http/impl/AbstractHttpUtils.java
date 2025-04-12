@@ -496,7 +496,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
-                            parseRespAsTextStream(resp, subscriber);
+                            TextStreamUtil.parseTextStream(resp.body(), subscriber);
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
@@ -507,12 +507,15 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<ServerSentEvent> execAsEventStream(String method) {
+    public Publisher<ServerSentEvent> execAsSseStream(String method) {
+        this.header("Accept", "text/event-stream");
+        this.header("Cache-Control", "no-cache");
+
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
-                            parseRespAsEventStream(resp, subscriber);
+                            TextStreamUtil.parseSseStream(resp.body(), subscriber);
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
@@ -520,14 +523,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                         subscriber.onError(err);
                     }
                 });
-    }
-
-    private void parseRespAsTextStream(HttpResponse resp, Subscriber<? super String> subscriber) throws IOException {
-        TextStreamUtil.parseTextStream(resp.body(), subscriber);
-    }
-
-    private void parseRespAsEventStream(HttpResponse resp, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        TextStreamUtil.parseEventStream(resp.body(), subscriber);
     }
 
     /**

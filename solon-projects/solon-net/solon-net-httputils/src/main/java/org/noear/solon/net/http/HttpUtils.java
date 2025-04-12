@@ -364,9 +364,19 @@ public interface HttpUtils {
     Publisher<String> execAsTextStream(String method);
 
     /**
-     * 执行请求并返回事件流
+     * 执行请求并返回服务端推送事件流
      */
-    Publisher<ServerSentEvent> execAsEventStream(String method);
+    Publisher<ServerSentEvent> execAsSseStream(String method);
+
+    /**
+     * 执行请求并返回服务端推送事件流
+     *
+     * @deprecated 3.1
+     */
+    @Deprecated
+    default Publisher<ServerSentEvent> execAsEventStream(String method) {
+        return execAsSseStream(method);
+    }
 
     /**
      * 执行请求并返回响应
