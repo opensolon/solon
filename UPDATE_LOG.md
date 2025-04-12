@@ -28,7 +28,7 @@
 * 修复 nami-coder-jackson 部分时间格式反序列化失败的问题
 * 修复 `@Configuration` 类，有构建注入且没有源时，造成 `@Bean` 函数无法注入的问题
 * snack3 升为 3.2.130
-* smarthttp 升为 2.5.5
+* smarthttp 升为 2.5.6
 
 
 ### v3.1.2
