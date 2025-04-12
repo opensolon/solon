@@ -359,9 +359,20 @@ public interface HttpUtils {
     int execAsCode(String method) throws HttpException;
 
     /**
-     * 执行请求并返回文本流
+     * 执行请求并返回文本行流
      */
-    Publisher<String> execAsTextStream(String method);
+    Publisher<String> execAsLineStream(String method);
+
+    /**
+     * 执行请求并返回文本流
+     *
+     * @deprecated 3.1 {@link #execAsLineStream(String)}
+     */
+    @Deprecated
+    default Publisher<String> execAsTextStream(String method) {
+        return execAsLineStream(method);
+    }
+
 
     /**
      * 执行请求并返回服务端推送事件流
@@ -371,7 +382,7 @@ public interface HttpUtils {
     /**
      * 执行请求并返回服务端推送事件流
      *
-     * @deprecated 3.1
+     * @deprecated 3.1 {@link #execAsSseStream(String)}
      */
     @Deprecated
     default Publisher<ServerSentEvent> execAsEventStream(String method) {

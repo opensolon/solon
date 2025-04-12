@@ -25,7 +25,6 @@ import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.*;
 import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -491,12 +490,12 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public Publisher<String> execAsTextStream(String method) {
+    public Publisher<String> execAsLineStream(String method) {
         return subscriber -> execAsync(method)
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
-                            TextStreamUtil.parseTextStream(resp.body(), subscriber);
+                            TextStreamUtil.parseLineStream(resp.body(), subscriber);
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }

@@ -15,7 +15,7 @@ public class DemoTest {
         CountDownLatch latch = new CountDownLatch(1);
         HttpUtils.http("http://localhost:8080/test/functioncall/sse")
                 .data("prompt", "今天杭州的天气情况？")
-                .execAsTextStream("GET")
+                .execAsLineStream("GET")
                 .subscribe(new SimpleSubscriber<String>()
                         .doOnSubscribe(subscription -> {
                             System.out.println("开始");

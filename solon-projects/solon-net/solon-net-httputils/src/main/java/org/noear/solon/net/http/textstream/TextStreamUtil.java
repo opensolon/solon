@@ -33,9 +33,24 @@ import java.util.Map;
  */
 public class TextStreamUtil {
     /**
-     * 解析文件流
+     * 解析文件行流
+     *
+     * @param inputStream 输入流
+     * @param subscriber  订阅者
+     * @deprecated 3.1 {@link #parseLineStream(InputStream, Subscriber)}
      */
+    @Deprecated
     public static void parseTextStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
+        parseLineStream(inputStream, subscriber);
+    }
+
+    /**
+     * 解析文件行流
+     *
+     * @param inputStream 输入流
+     * @param subscriber  订阅者
+     */
+    public static void parseLineStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
             subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
                 try {
@@ -67,6 +82,8 @@ public class TextStreamUtil {
     /**
      * 解析服务推送事件流
      *
+     * @param inputStream 输入流
+     * @param subscriber  订阅者
      * @deprecated 3.1 {@link #parseSseStream(InputStream, Subscriber)}
      */
     @Deprecated
@@ -76,6 +93,9 @@ public class TextStreamUtil {
 
     /**
      * 解析服务推送事件流
+     *
+     * @param inputStream 输入流
+     * @param subscriber  订阅者
      */
     public static void parseSseStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
