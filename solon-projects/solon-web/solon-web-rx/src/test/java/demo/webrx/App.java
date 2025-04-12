@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.webrx;
 
 import org.noear.solon.Solon;
 

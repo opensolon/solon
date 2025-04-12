@@ -1,13 +1,13 @@
-package demo;
+package demo.webrx;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
+import org.noear.solon.core.util.MimeType;
 
 /**
  * @author noear 2024/8/30 created

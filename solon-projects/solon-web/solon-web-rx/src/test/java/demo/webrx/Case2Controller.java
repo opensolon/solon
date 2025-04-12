@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.webrx;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Produces;
-import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.handle.Context;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.noear.solon.core.util.MimeType;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,40 +29,41 @@ import java.util.List;
 /**
  * @author noear 2023/6/19 created
  */
-@Mapping("case1")
+@Mapping("case2")
 @Controller
-public class Case1Controller {
+public class Case2Controller {
+
     @Mapping("m1")
-    public Mono<String> m1(String name) {
-        return Mono.just("Hello " + name);
+    public Uni<String> m1(String name) {
+        return Uni.createFrom().item("Hello " + name);
     }
 
     @Mapping("f1")
-    public Flux<String> f1(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name);
+    public Multi<String> f1(String name) {
+        return Multi.createFrom().items("Hello " + name, "hello2 " + name);
     }
 
     @Produces(MimeType.APPLICATION_X_NDJSON_VALUE)
     @Mapping("f2")
-    public Flux<String> f2(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name);
+    public Multi<String> f2(String name) {
+        return Multi.createFrom().items("Hello " + name, "hello2 " + name);
     }
 
     @Mapping("f3")
-    public Mono<List<String>> f3(String name) {
-        return Flux.just("Hello " + name, "hello2 " + name)
-                .collectList();
+    public Uni<List<String>> f3(String name) {
+        return Multi.createFrom().items("Hello " + name, "hello2 " + name)
+                .collect().asList();
     }
 
     @Mapping("t1")
-    public Mono<Long> t1(Context ctx) {
+    public Uni<Long> t1(Context ctx) {
         ctx.asyncStart(100L, null);
-        return Mono.delay(Duration.ofMillis(500));
+        return Uni.createFrom().item(1L).onItem().delayIt().by(Duration.ofMillis(500));
     }
 
     @Mapping("t2")
-    public Mono<Long> t2(Context ctx) {
+    public Uni<Long> t2(Context ctx) {
         ctx.asyncStart(500L, null);
-        return Mono.delay(Duration.ofMillis(100));
+        return Uni.createFrom().item(1L).onItem().delayIt().by(Duration.ofMillis(100));
     }
 }

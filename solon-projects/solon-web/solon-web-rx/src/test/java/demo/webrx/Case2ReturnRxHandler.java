@@ -1,4 +1,4 @@
-package demo;
+package demo.webrx;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
