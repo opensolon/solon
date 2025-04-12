@@ -25,9 +25,25 @@ import org.noear.solon.core.handle.Handler;
  * @since 3.1
  */
 public class XXssProtectionHeaderHandler implements Handler {
+    /**
+     * 0：禁用过滤。
+     * 1：启用过滤（默认行为，浏览器自动修复可疑内容）。
+     * 1; mode=block：启用过滤，并直接阻止页面加载（推荐配置）。
+     * 1; report=（仅部分浏览器支持）：启用过滤并上报违规行为。
+     */
+    private final String headerValue;
+
+    public XXssProtectionHeaderHandler() {
+        this("1; mode=block");
+    }
+
+    public XXssProtectionHeaderHandler(String headerValue) {
+        this.headerValue = headerValue;
+    }
+
     @Override
     public void handle(Context ctx) throws Throwable {
         //作用：防御Xss攻击（跨脚本攻击）
-        ctx.headerSet("X-XSS-Protection", "1; mode=block");
+        ctx.headerSet("X-XSS-Protection", headerValue);
     }
 }
