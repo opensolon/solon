@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 通过 Render 管理员，以此实现多模板引擎处理
@@ -303,12 +304,25 @@ public class RenderManager implements Render {
         }
 
         if (render == null) {
-            //根据接收类型匹配
-            String mime = ctx.contentTypeNew();
+            //根据内容类型匹配
+            String mime1 = ctx.contentTypeNew();
             for (Render r : _mapping.values()) {
-                if (r.matched(ctx, mime)) {
+                if (r.matched(ctx, mime1)) {
                     render = r;
                     break;
+                }
+            }
+
+            if (render == null) {
+                //如果没有，根据接收类型匹配
+                String mime2 = ctx.acceptNew();
+                if (Objects.equals(mime2, mime1) == false) {
+                    for (Render r : _mapping.values()) {
+                        if (r.matched(ctx, mime2)) {
+                            render = r;
+                            break;
+                        }
+                    }
                 }
             }
         }
