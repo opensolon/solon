@@ -304,9 +304,9 @@ public class RenderManager implements Render {
 
         if (render == null) {
             //根据接收类型匹配
-            String at = ctx.acceptNew();
+            String mime = ctx.contentTypeNew();
             for (Render r : _mapping.values()) {
-                if (r.matched(ctx, at)) {
+                if (r.matched(ctx, mime)) {
                     render = r;
                     break;
                 }

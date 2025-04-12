@@ -34,9 +34,9 @@ public interface Render {
      * 是否匹配
      *
      * @param ctx  上下文
-     * @param accept 接收类型
+     * @param mime 媒体类型
      */
-    default boolean matched(Context ctx, String accept) {
+    default boolean matched(Context ctx, String mime) {
         return false;
     }
 

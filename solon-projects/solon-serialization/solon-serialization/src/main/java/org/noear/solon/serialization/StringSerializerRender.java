@@ -62,11 +62,11 @@ public class StringSerializerRender implements Render {
      * 匹配检测
      */
     @Override
-    public boolean matched(Context ctx, String accept) {
+    public boolean matched(Context ctx, String mime) {
         if (typed) {
             return false;
         } else {
-            return serializer.matched(ctx, accept);
+            return serializer.matched(ctx, mime);
         }
     }
 

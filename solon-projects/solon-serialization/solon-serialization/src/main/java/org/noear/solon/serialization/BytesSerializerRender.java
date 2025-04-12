@@ -44,8 +44,8 @@ public abstract class BytesSerializerRender implements Render {
      * 匹配检测
      */
     @Override
-    public boolean matched(Context ctx, String accept) {
-        return getSerializer().matched(ctx, accept);
+    public boolean matched(Context ctx, String mime) {
+        return getSerializer().matched(ctx, mime);
     }
 
     /**
