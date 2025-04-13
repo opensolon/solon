@@ -15,6 +15,7 @@
  */
 package org.noear.solon;
 
+import org.noear.solon.core.Props;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.*;
@@ -491,6 +492,36 @@ public class Utils {
             }
         } else {
             return new Locale(ss[0]);
+        }
+    }
+
+    /**
+     * 根据url加载增强配置集
+     *
+     * @param url 资源地址
+     */
+    public static Props loadProps(String url) {
+        Properties tmp = loadProperties(url);
+
+        if (tmp != null) {
+            return Props.from(tmp);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 根据url加载增强配置集
+     *
+     * @param url 资源地址
+     */
+    public static Props loadProps(URL url) {
+        Properties tmp = loadProperties(url);
+
+        if (tmp != null) {
+            return Props.from(tmp);
+        } else {
+            return null;
         }
     }
 
