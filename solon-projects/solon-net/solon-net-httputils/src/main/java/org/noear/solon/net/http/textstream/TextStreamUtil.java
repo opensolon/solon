@@ -51,29 +51,31 @@ public class TextStreamUtil {
      * @param subscriber  订阅者
      */
     public static void parseLineStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
-            subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
-                try {
-                    while (l > 0) {
-                        if (subscription.isCancelled()) {
-                            return;
-                        }
+        subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
+            onLineStreamRequestDo(inputStream, subscriber, subscription, l);
+        }));
+    }
 
-                        String textLine = reader.readLine();
-
-                        if (textLine == null) {
-                            break;
-                        } else {
-                            subscriber.onNext(textLine);
-                            l--; //提交后再减
-                        }
+    private static void onLineStreamRequestDo(InputStream inputStream, Subscriber<? super String> subscriber, SimpleSubscription subscription, long l) {
+        try {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
+                while (l > 0) {
+                    if (subscription.isCancelled()) {
+                        return;
                     }
-                    //完成需求
-                    subscriber.onComplete();
-                } catch (Throwable err) {
-                    subscriber.onError(err);
+
+                    String textLine = reader.readLine();
+
+                    if (textLine == null) {
+                        break;
+                    } else {
+                        subscriber.onNext(textLine);
+                        l--; //提交后再减
+                    }
                 }
-            }));
+                //完成需求
+                subscriber.onComplete();
+            }
         } catch (Throwable err) {
             subscriber.onError(err);
         }
@@ -98,52 +100,57 @@ public class TextStreamUtil {
      * @param subscriber  订阅者
      */
     public static void parseSseStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
-            subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
-                try {
-                    Map<String, String> meta = new HashMap<>();
-                    StringBuilder data = new StringBuilder();
+        subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
+            onSseStreamRequestDo(inputStream, subscriber, subscription, l);
+        }));
+    }
 
-                    while (l > 0) {
-                        if (subscription.isCancelled()) {
-                            return;
-                        }
+    private static void onSseStreamRequestDo(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber, SimpleSubscription subscription, long l) {
+        try {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024)) {
 
-                        String textLine = reader.readLine();
+                Map<String, String> meta = new HashMap<>();
+                StringBuilder data = new StringBuilder();
 
-                        if (textLine == null) {
-                            break;
+                while (l > 0) {
+                    if (subscription.isCancelled()) {
+                        return;
+                    }
+
+                    String textLine = reader.readLine();
+
+                    if (textLine == null) {
+                        break;
+                    } else {
+                        if (textLine.isEmpty()) {
+                            if (data.length() > 0) {
+                                subscriber.onNext(new ServerSentEvent(meta, data.toString()));
+                                l--; //提交后再减
+                                meta = new HashMap<>();
+                                data.setLength(0);
+                            }
+                        } else if (textLine.startsWith("data:")) {
+                            String content = textLine.substring("data:".length());
+                            if (data.length() > 0) {
+                                data.append("\n");
+                            }
+
+                            data.append(content.trim());
                         } else {
-                            if (textLine.isEmpty()) {
-                                if (data.length() > 0) {
-                                    subscriber.onNext(new ServerSentEvent(meta, data.toString()));
-                                    l--; //提交后再减
-                                    meta = new HashMap<>();
-                                    data.setLength(0);
-                                }
-                            } else if (textLine.startsWith("data:")) {
-                                String content = textLine.substring("data:".length());
-                                if (data.length() > 0) {
-                                    data.append("\n");
-                                }
-
-                                data.append(content.trim());
-                            } else {
-                                int flagIdx = textLine.indexOf(':');
-                                if (flagIdx > 0) {
-                                    meta.put(textLine.substring(0, flagIdx).trim(),
-                                            textLine.substring(flagIdx + 1).trim());
-                                }
+                            int flagIdx = textLine.indexOf(':');
+                            if (flagIdx > 0) {
+                                meta.put(textLine.substring(0, flagIdx).trim(),
+                                        textLine.substring(flagIdx + 1).trim());
                             }
                         }
                     }
-
-                    //完成需求
-                    subscriber.onComplete();
-                } catch (Throwable err) {
-                    subscriber.onError(err);
                 }
-            }));
+
+                //完成需求
+                subscriber.onComplete();
+            }
+        } catch (Throwable err) {
+            subscriber.onError(err);
         }
     }
 }
