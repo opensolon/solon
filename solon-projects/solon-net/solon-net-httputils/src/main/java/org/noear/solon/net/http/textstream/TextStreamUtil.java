@@ -56,7 +56,7 @@ public class TextStreamUtil {
                 try {
                     while (l > 0) {
                         if (subscription.isCancelled()) {
-                            break;
+                            return;
                         }
 
                         String textLine = reader.readLine();
@@ -106,7 +106,7 @@ public class TextStreamUtil {
 
                     while (l > 0) {
                         if (subscription.isCancelled()) {
-                            break;
+                            return;
                         }
 
                         String textLine = reader.readLine();
