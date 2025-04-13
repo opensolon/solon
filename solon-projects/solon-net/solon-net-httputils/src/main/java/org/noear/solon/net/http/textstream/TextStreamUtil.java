@@ -57,19 +57,19 @@ public class TextStreamUtil {
                     while (l > 0) {
                         if (subscription.isCancelled()) {
                             break;
-                        } else {
-                            l--;
                         }
 
                         String textLine = reader.readLine();
 
                         if (textLine == null) {
-                            subscriber.onComplete();
                             break;
                         } else {
                             subscriber.onNext(textLine);
+                            l--; //提交后再减
                         }
                     }
+                    //完成需求
+                    subscriber.onComplete();
                 } catch (Throwable err) {
                     subscriber.onError(err);
                 }
@@ -107,19 +107,17 @@ public class TextStreamUtil {
                     while (l > 0) {
                         if (subscription.isCancelled()) {
                             break;
-                        } else {
-                            l--;
                         }
 
                         String textLine = reader.readLine();
 
                         if (textLine == null) {
-                            subscriber.onComplete();
                             break;
                         } else {
                             if (textLine.isEmpty()) {
                                 if (data.length() > 0) {
                                     subscriber.onNext(new ServerSentEvent(meta, data.toString()));
+                                    l--; //提交后再减
                                     meta = new HashMap<>();
                                     data.setLength(0);
                                 }
@@ -139,6 +137,9 @@ public class TextStreamUtil {
                             }
                         }
                     }
+
+                    //完成需求
+                    subscriber.onComplete();
                 } catch (Throwable err) {
                     subscriber.onError(err);
                 }
