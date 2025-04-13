@@ -107,6 +107,16 @@ public interface HttpUtils {
     HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds);
 
     /**
+     * 超时配置
+     */
+    default HttpUtils timeout(HttpTimeout timeout) {
+        if (timeout != null) {
+            return timeout(timeout.connectTimeout, timeout.writeTimeout, timeout.readTimeout);
+        }
+        return this;
+    }
+
+    /**
      * 是否多部分配置
      */
     HttpUtils multipart(boolean multipart);

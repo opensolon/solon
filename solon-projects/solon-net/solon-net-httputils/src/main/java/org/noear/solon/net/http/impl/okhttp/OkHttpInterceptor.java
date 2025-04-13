@@ -17,7 +17,7 @@ package org.noear.solon.net.http.impl.okhttp;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
-import org.noear.solon.net.http.impl.HttpTimeout;
+import org.noear.solon.net.http.HttpTimeout;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

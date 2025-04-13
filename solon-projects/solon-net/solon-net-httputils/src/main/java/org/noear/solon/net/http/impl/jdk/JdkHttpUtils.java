@@ -24,7 +24,7 @@ import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
 import org.noear.solon.net.http.impl.HttpSsl;
-import org.noear.solon.net.http.impl.HttpTimeout;
+import org.noear.solon.net.http.HttpTimeout;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;

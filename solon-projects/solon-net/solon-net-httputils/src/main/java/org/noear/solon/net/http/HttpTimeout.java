@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.net.http.impl;
+package org.noear.solon.net.http;
 
 /**
  * Http 超时：单位：秒
