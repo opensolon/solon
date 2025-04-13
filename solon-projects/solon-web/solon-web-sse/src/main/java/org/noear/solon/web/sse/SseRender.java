@@ -61,9 +61,8 @@ public class SseRender implements Render {
 
     public static void pushSseHeaders(Context ctx) {
         ctx.contentType(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE);
-        ctx.headerSet("Connection", "keep-alive");
-        ctx.headerSet("Keep-Alive", "timeout=60");
-        ctx.headerSet("Cache-Control", "no-cache");
+        ctx.keepAlive(60);
+        ctx.cacheControl("no-cache");
     }
 
     @Override

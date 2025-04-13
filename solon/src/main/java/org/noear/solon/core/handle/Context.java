@@ -843,6 +843,27 @@ public abstract class Context {
     }
 
     /**
+     * 设置保持连接
+     *
+     * @param timeout 超时（单位：秒）
+     */
+    public void keepAlive(int timeout) {
+        headerSet("Connection", "keep-alive");
+        if (timeout > 0) {
+            headerSet("Keep-Alive", "timeout=" + timeout);
+        }
+    }
+
+    /**
+     * 设置缓存控制
+     *
+     * @param strategy 策略
+     */
+    public void cacheControl(String strategy) {
+        headerSet("Cache-Control", strategy);
+    }
+
+    /**
      * 输出 字节数组
      */
     public abstract void output(byte[] bytes);
@@ -1136,7 +1157,7 @@ public abstract class Context {
             returnHandler.returnHandle(this, obj);
         } else {
             //渲染
-           ReturnValueHandlerDefault.INSTANCE.returnHandle(this, obj);
+            ReturnValueHandlerDefault.INSTANCE.returnHandle(this, obj);
         }
     }
 
