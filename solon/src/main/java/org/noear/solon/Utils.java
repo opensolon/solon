@@ -501,13 +501,7 @@ public class Utils {
      * @param url 资源地址
      */
     public static Props loadProps(String url) {
-        Properties tmp = loadProperties(url);
-
-        if (tmp != null) {
-            return Props.from(tmp);
-        } else {
-            return null;
-        }
+        return Props.from(loadProperties(url));
     }
 
     /**
@@ -516,13 +510,7 @@ public class Utils {
      * @param url 资源地址
      */
     public static Props loadProps(URL url) {
-        Properties tmp = loadProperties(url);
-
-        if (tmp != null) {
-            return Props.from(tmp);
-        } else {
-            return null;
-        }
+        return Props.from(loadProperties(url));
     }
 
 
