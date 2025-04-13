@@ -59,6 +59,17 @@ public class Props extends Properties {
     }
 
     /**
+     * 加载或转换属性
+     * */
+    public static Props from(Properties props) {
+        if (props instanceof Props) {
+            return (Props) props;
+        } else {
+            return new Props().addAll(props);
+        }
+    }
+
+    /**
      * @see Props:addAll
      * @deprecated 3.0 {@link #addAll(Map)}}
      */
