@@ -15,6 +15,8 @@
  */
 package org.noear.solon.net.http.textstream;
 
+import org.noear.solon.Utils;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -97,5 +99,27 @@ public class ServerSentEvent implements Serializable {
     @Deprecated
     public String retry() {
         return this.retry;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        if (Utils.isNotEmpty(id)) {
+            buf.append("id:").append(id).append("\n");
+        }
+
+        if (Utils.isNotEmpty(event)) {
+            buf.append("event:").append(event).append("\n");
+        }
+
+        if (Utils.isNotEmpty(data)) {
+            buf.append("data:").append(data).append("\n");
+        }
+
+        if (Utils.isNotEmpty(retry)) {
+            buf.append("retry:").append(retry).append("\n");
+        }
+
+        return buf.toString();
     }
 }
