@@ -57,7 +57,6 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
     public JdkHttpUtils(String url) {
         super(url);
-        _timeout = new HttpTimeout(60);
     }
 
     @Override
@@ -78,8 +77,13 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         if (_timeout != null) {
             //调整 timeout
-            _builder.setConnectTimeout(_timeout.connectTimeout * 1000);
-            _builder.setReadTimeout(_timeout.readTimeout * 1000);
+            if (_timeout.getConnectTimeout() != null) {
+                _builder.setConnectTimeout((int) _timeout.getConnectTimeout().toMillis());
+            }
+
+            if (_timeout.getReadTimeout() != null) {
+                _builder.setReadTimeout((int) _timeout.getReadTimeout().toMillis());
+            }
         }
 
         if (_headers != null) {

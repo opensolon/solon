@@ -63,6 +63,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     public AbstractHttpUtils(String url) {
         _url = url;
+        _timeout = HttpTimeout.of(10, 60, 60); //默认超时 60s
 
         if (url.contains("://") == false) {
             throw new IllegalArgumentException("No url scheme 'http' or 'https' found: " + url);
@@ -124,14 +125,8 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     }
 
     @Override
-    public HttpUtils timeout(int timeoutSeconds) {
-        _timeout = new HttpTimeout(timeoutSeconds);
-        return this;
-    }
-
-    @Override
-    public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
-        _timeout = new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds);
+    public HttpUtils timeout(HttpTimeout timeout) {
+        _timeout = timeout;
         return this;
     }
 

@@ -15,8 +15,10 @@
  */
 package org.noear.solon.net.http;
 
+import java.time.Duration;
+
 /**
- * Http 超时：单位：秒
+ * Http 超时
  *
  * @author noear
  * @since 1.7
@@ -25,25 +27,65 @@ public class HttpTimeout {
     /**
      * 连接超时
      */
-    public final int connectTimeout;
+    private Duration connectTimeout;
     /**
      * 写超时
      */
-    public final int writeTimeout;
+    private Duration writeTimeout;
     /**
      * 读超时
      */
-    public final int readTimeout;
+    private Duration readTimeout;
 
-    public HttpTimeout(int timeout) {
-        this.connectTimeout = timeout;
-        this.writeTimeout = timeout;
-        this.readTimeout = timeout;
+    public HttpTimeout() {
+        //用于反序列化
     }
 
-    public HttpTimeout(int connectTimeout, int writeTimeout, int readTimeout) {
+    /**
+     * @param timeout 所有超时（单位：秒）
+     */
+    public static HttpTimeout of(int timeout) {
+        HttpTimeout tmp = new HttpTimeout();
+        tmp.connectTimeout = Duration.ofSeconds(timeout);
+        tmp.writeTimeout = Duration.ofSeconds(timeout);
+        tmp.readTimeout = Duration.ofSeconds(timeout);
+        return tmp;
+    }
+
+    /**
+     * @param connectTimeout 连接超时（单位：秒）
+     * @param writeTimeout   写超时（单位：秒）
+     * @param readTimeout    读超时（单位：秒）
+     */
+    public static HttpTimeout of(int connectTimeout, int writeTimeout, int readTimeout) {
+        HttpTimeout tmp = new HttpTimeout();
+        tmp.connectTimeout = Duration.ofSeconds(connectTimeout);
+        tmp.writeTimeout = Duration.ofSeconds(writeTimeout);
+        tmp.readTimeout = Duration.ofSeconds(readTimeout);
+        return tmp;
+    }
+
+    public Duration getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(Duration connectTimeout) {
         this.connectTimeout = connectTimeout;
-        this.writeTimeout = writeTimeout;
+    }
+
+    public Duration getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
+    }
+
+    public Duration getWriteTimeout() {
+        return writeTimeout;
+    }
+
+    public void setWriteTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
     }
 }

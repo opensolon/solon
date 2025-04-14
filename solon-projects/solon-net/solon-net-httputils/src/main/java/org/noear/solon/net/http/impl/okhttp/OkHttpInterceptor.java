@@ -36,16 +36,16 @@ public class OkHttpInterceptor implements Interceptor {
         HttpTimeout timeout = chain.request().tag(HttpTimeout.class);
 
         if (timeout != null) {
-            if (timeout.connectTimeout > 0) {
-                chain = chain.withConnectTimeout(timeout.connectTimeout, TimeUnit.SECONDS);
+            if (timeout.getConnectTimeout() != null) {
+                chain = chain.withConnectTimeout((int) timeout.getConnectTimeout().getSeconds(), TimeUnit.SECONDS);
             }
 
-            if (timeout.writeTimeout > 0) {
-                chain = chain.withWriteTimeout(timeout.writeTimeout, TimeUnit.SECONDS);
+            if (timeout.getWriteTimeout() != null) {
+                chain = chain.withWriteTimeout((int) timeout.getWriteTimeout().getSeconds(), TimeUnit.SECONDS);
             }
 
-            if (timeout.readTimeout > 0) {
-                chain = chain.withReadTimeout(timeout.readTimeout, TimeUnit.SECONDS);
+            if (timeout.getReadTimeout() != null) {
+                chain = chain.withReadTimeout((int) timeout.getReadTimeout().getSeconds(), TimeUnit.SECONDS);
             }
         }
 

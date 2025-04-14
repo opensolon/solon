@@ -76,15 +76,21 @@ public class HttpUtilsBuilder {
      * 设置超时
      */
     public HttpUtilsBuilder timeout(int timeoutSeconds) {
-        timeout = new HttpTimeout(timeoutSeconds);
-        return this;
+        return timeout(HttpTimeout.of(timeoutSeconds));
     }
 
     /**
      * 设置超时
      */
     public HttpUtilsBuilder timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
-        timeout = new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds);
+        return timeout(HttpTimeout.of(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+    }
+
+    /**
+     * 设置超时
+     */
+    public HttpUtilsBuilder timeout(HttpTimeout timeout) {
+        this.timeout = timeout;
         return this;
     }
 

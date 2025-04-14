@@ -99,22 +99,21 @@ public interface HttpUtils {
     /**
      * 超时配置
      */
-    HttpUtils timeout(int timeoutSeconds);
-
-    /**
-     * 超时配置
-     */
-    HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds);
-
-    /**
-     * 超时配置
-     */
-    default HttpUtils timeout(HttpTimeout timeout) {
-        if (timeout != null) {
-            return timeout(timeout.connectTimeout, timeout.writeTimeout, timeout.readTimeout);
-        }
-        return this;
+    default HttpUtils timeout(int timeoutSeconds) {
+        return timeout(HttpTimeout.of(timeoutSeconds));
     }
+
+    /**
+     * 超时配置
+     */
+    default HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
+        return timeout(HttpTimeout.of(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+    }
+
+    /**
+     * 超时配置
+     */
+    HttpUtils timeout(HttpTimeout timeout);
 
     /**
      * 是否多部分配置

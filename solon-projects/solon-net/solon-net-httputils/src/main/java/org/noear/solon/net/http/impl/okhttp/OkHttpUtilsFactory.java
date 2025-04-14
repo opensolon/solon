@@ -44,7 +44,7 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
     private static OkHttpClient createHttpClient(Proxy proxy) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .dispatcher(httpClientDispatcher.get())
                 .addInterceptor(OkHttpInterceptor.instance)
