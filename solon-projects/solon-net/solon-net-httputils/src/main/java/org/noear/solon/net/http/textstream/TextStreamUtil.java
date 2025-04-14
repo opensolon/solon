@@ -62,6 +62,7 @@ public class TextStreamUtil {
         try {
             while (l > 0) {
                 if (subscription.isCancelled()) {
+                    RunUtil.runAndTry(reader::close);
                     return;
                 }
 
@@ -115,6 +116,7 @@ public class TextStreamUtil {
 
             while (l > 0) {
                 if (subscription.isCancelled()) {
+                    RunUtil.runAndTry(reader::close);
                     return;
                 }
 
