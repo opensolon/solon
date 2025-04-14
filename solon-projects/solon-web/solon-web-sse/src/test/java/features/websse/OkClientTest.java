@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.noear.solon.Solon;
 import org.noear.solon.net.http.HttpUtilsFactory;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
 import org.noear.solon.net.http.textstream.ServerSentEvent;
 import org.noear.solon.rx.SimpleSubscriber;
@@ -22,7 +21,7 @@ public class OkClientTest {
     private HttpUtilsFactory httpUtils = new OkHttpUtilsFactory();
 
     @Test
-    public void jdk_case1() throws Exception {
+    public void ok_case1() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
 
         httpUtils.http("http://localhost:" + Solon.cfg().serverPort() + "/test/sse1")
@@ -36,7 +35,7 @@ public class OkClientTest {
     }
 
     @Test
-    public void jdk_case2() throws Exception {
+    public void ok_case2() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
 
         httpUtils.http("http://localhost:" + Solon.cfg().serverPort() + "/test/sse2")
@@ -50,7 +49,7 @@ public class OkClientTest {
     }
 
     @Test
-    public void jdk_case3() throws Exception {
+    public void ok_case3() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
 
         httpUtils.http("http://localhost:" + Solon.cfg().serverPort() + "/test/sse3")
