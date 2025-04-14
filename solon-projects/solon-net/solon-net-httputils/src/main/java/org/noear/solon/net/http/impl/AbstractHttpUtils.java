@@ -126,7 +126,9 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     @Override
     public HttpUtils timeout(HttpTimeout timeout) {
-        _timeout = timeout;
+        if (timeout != null) {
+            _timeout = timeout;
+        }
         return this;
     }
 
