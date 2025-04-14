@@ -15,7 +15,6 @@
  */
 package org.noear.solon.net.http.impl.jdk;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -27,16 +26,12 @@ import java.net.HttpURLConnection;
  * @since 3.0
  */
 public class JdkInputStreamWrapper extends InputStream {
-    private HttpURLConnection http;
-    private InputStream in;
+    private final HttpURLConnection http;
+    private final InputStream in;
 
     public JdkInputStreamWrapper(HttpURLConnection http, InputStream in) {
         this.http = http;
-        if (in == null) {
-            this.in = new ByteArrayInputStream(new byte[0]);
-        } else {
-            this.in = in;
-        }
+        this.in = in;
     }
 
     @Override

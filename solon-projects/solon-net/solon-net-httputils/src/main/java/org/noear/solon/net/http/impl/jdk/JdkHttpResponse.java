@@ -21,6 +21,7 @@ import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -28,6 +29,8 @@ import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 /**
  * Http 响应 JDK HttpURLConnection 实现
@@ -57,12 +60,28 @@ public class JdkHttpResponse implements HttpResponse {
         }
 
         InputStream inputStream = statusCode < 400 ? http.getInputStream() : http.getErrorStream();
-        // 获取响应头是否有Content-Encoding=gzip
-        String gzip = http.getHeaderField("Content-Encoding");
-        if (Utils.isNotEmpty(gzip) && gzip.contains("gzip")) {
-            inputStream = new GZIPInputStream(inputStream);
+
+        if (null == inputStream) {
+            //当流为 null 时（给个空的）
+            body = new ByteArrayInputStream("".getBytes());
+        } else {
+            // 获取响应头是否有 Content-Encoding
+            String encoding = http.getHeaderField("Content-Encoding");
+
+            if (Utils.isNotEmpty(encoding)) {
+                if ("gzip".equalsIgnoreCase(encoding)) {
+                    if (inputStream instanceof GZIPInputStream == false) {
+                        inputStream = new GZIPInputStream(inputStream);
+                    }
+                } else if ("deflate".equalsIgnoreCase(encoding)) {
+                    if (inputStream instanceof InflaterInputStream == false) {
+                        inputStream = new InflaterInputStream(inputStream, new Inflater(true));
+                    }
+                }
+            }
+
+            body = new JdkInputStreamWrapper(http, inputStream);
         }
-        body = new JdkInputStreamWrapper(http, inputStream);
     }
 
     private MultiMap<String> cookiesInit() {
