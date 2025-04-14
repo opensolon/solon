@@ -1,4 +1,4 @@
-package org.noear.solon.web.sse.demo.controller;
+package demo.websse.controller;
 
 /**
  * @author noear 2025/2/13 created
