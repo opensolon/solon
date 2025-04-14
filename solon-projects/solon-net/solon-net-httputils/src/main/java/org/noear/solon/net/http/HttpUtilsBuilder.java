@@ -25,7 +25,7 @@ import org.noear.solon.core.util.MultiMap;
  * @since 3.1
  */
 public class HttpUtilsBuilder {
-    private String baseUrl;
+    private String baseUri;
     private String group;
     private String service;
     private MultiMap<String> headers = new MultiMap<>();
@@ -51,8 +51,8 @@ public class HttpUtilsBuilder {
     /**
      * 基础地址
      */
-    public HttpUtilsBuilder baseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public HttpUtilsBuilder baseUri(String baseUri) {
+        this.baseUri = baseUri;
         return this;
     }
 
@@ -93,11 +93,11 @@ public class HttpUtilsBuilder {
      */
     public HttpUtils build(String url) {
         if (Utils.isNotEmpty(service)) {
-            baseUrl = LoadBalanceUtils.getServer(group, service);
+            baseUri = LoadBalanceUtils.getServer(group, service);
         }
 
-        if (Utils.isNotEmpty(baseUrl)) {
-            return HttpUtils.http(baseUrl + url).headers(headers).timeout(timeout);
+        if (Utils.isNotEmpty(baseUri)) {
+            return HttpUtils.http(baseUri + url).headers(headers).timeout(timeout);
         } else {
             return HttpUtils.http(url).headers(headers).timeout(timeout);
         }
