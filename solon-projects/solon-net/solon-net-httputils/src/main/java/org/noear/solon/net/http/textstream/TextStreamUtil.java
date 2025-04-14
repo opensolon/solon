@@ -129,7 +129,7 @@ public class TextStreamUtil {
                         if (data.length() > 0) {
                             subscriber.onNext(new ServerSentEvent(meta, data.toString()));
                             l--; //提交后再减
-                            meta = new HashMap<>();
+                            meta.clear();
                             data.setLength(0);
                         }
                     } else if (textLine.startsWith("data:")) {

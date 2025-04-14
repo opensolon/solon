@@ -57,6 +57,14 @@ public class SseEvent {
         return this;
     }
 
+    /**
+     * 添加 SSE "comment" 行.
+     */
+    public SseEvent comment(String comment) {
+        append(":").append(comment.replace("\n", "\n:")).append("\n");
+        return this;
+    }
+
 
     /**
      * 构建为事件文本

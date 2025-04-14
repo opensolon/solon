@@ -20,7 +20,9 @@ public class SseTestController {
     public Flux<SseEvent> sse1() throws IOException {
         return Flux.just(
                 new SseEvent().data("hello"),
-                new SseEvent().id(Utils.guid()).name("update").data("test"));
+                new SseEvent().comment("heartbeat"),
+                new SseEvent().id(Utils.guid()).name("update").data("test")
+        );
     }
 
     @Produces(MimeType.TEXT_EVENT_STREAM_UTF8_VALUE)
