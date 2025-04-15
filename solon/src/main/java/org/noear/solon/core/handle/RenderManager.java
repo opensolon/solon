@@ -307,7 +307,7 @@ public class RenderManager implements Render {
         if (render == null) {
             //根据内容类型匹配
             String mime1 = ctx.contentTypeNew();
-            if(mime1 != null && mime1.startsWith(MimeType.TEXT_PLAIN_VALUE) == false) {
+            if (Utils.isNotEmpty(mime1) && mime1.startsWith(MimeType.TEXT_PLAIN_VALUE) == false) {
                 for (Render r : _mapping.values()) {
                     if (r.matched(ctx, mime1)) {
                         render = r;
@@ -319,7 +319,7 @@ public class RenderManager implements Render {
             if (render == null) {
                 //如果没有，根据接收类型匹配
                 String mime2 = ctx.acceptNew();
-                if (Objects.equals(mime2, mime1) == false) {
+                if (Utils.isNotEmpty(mime2) && Objects.equals(mime2, mime1) == false) {
                     for (Render r : _mapping.values()) {
                         if (r.matched(ctx, mime2)) {
                             render = r;
