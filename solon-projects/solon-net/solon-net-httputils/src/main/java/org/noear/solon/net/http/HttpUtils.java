@@ -19,6 +19,7 @@ package org.noear.solon.net.http;
 import org.noear.solon.Solon;
 import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.KeyValues;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Preview;
 import org.noear.solon.net.http.textstream.ServerSentEvent;
 import org.reactivestreams.Publisher;
@@ -222,14 +223,14 @@ public interface HttpUtils {
      * 主体配置
      */
     default HttpUtils bodyOfTxt(String txt) {
-        return body(txt, "text/plain");
+        return body(txt, MimeType.TEXT_PLAIN_VALUE);
     }
 
     /**
      * 主体配置
      */
     default HttpUtils bodyOfJson(String txt) {
-        return body(txt, "application/json");
+        return body(txt, MimeType.APPLICATION_JSON_VALUE);
     }
 
     /**

@@ -70,7 +70,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
 
     protected ByteBuf applyDo(HttpServerRequest request, HttpServerResponse response, HttpRequestParser parser) {
         RnHttpContext ctx = new RnHttpContext(request, response, parser);
-        ctx.contentType("text/plain;charset=UTF-8");//默认
+        ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);//默认
 
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());

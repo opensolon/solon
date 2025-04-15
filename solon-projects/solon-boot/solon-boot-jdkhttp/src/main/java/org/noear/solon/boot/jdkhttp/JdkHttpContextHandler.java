@@ -20,6 +20,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jdkhttp.integration.JdkHttpPlugin;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.util.MimeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         try {
             //初始化好后，再处理；异常时，可以获取上下文
             //
-            ctx.contentType("text/plain;charset=UTF-8");
+            ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Boot", JdkHttpPlugin.solon_boot_ver());

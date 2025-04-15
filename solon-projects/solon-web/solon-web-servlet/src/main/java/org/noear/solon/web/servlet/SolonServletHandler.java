@@ -17,6 +17,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.MimeType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +40,7 @@ public class SolonServletHandler extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SolonServletContext ctx = new SolonServletContext(request, response);
-        ctx.contentType("text/plain;charset=UTF-8");
+        ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
         preHandle(ctx);
 

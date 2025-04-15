@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core;
 
+import org.noear.solon.core.util.MimeType;
+
 /**
  * 内部常量（禁止外部引用）
  *
@@ -28,7 +30,7 @@ public interface Constants {
      * @deprecated 3.1 {@link org.noear.solon.core.util.MimeType}
      * */
     @Deprecated
-    String HEADER_CONTENT_TYPE_DEF = "text/plain;charset=UTF-8";
+    String HEADER_CONTENT_TYPE_DEF = MimeType.TEXT_PLAIN_UTF8_VALUE;
 
     //@since: 2.5
     String ATTR_CONTROLLER = "ATTR_CONTROLLER";

@@ -15,6 +15,8 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.MimeType;
+
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
  *
@@ -25,7 +27,7 @@ package org.noear.solon.core.handle;
 @Deprecated
 public class ContextUtil {
 
-    public static final String contentTypeDef = "text/plain;charset=UTF-8";
+    public static final String contentTypeDef = MimeType.TEXT_PLAIN_UTF8_VALUE;
 
     /**
      * 设置当前线程的上下文

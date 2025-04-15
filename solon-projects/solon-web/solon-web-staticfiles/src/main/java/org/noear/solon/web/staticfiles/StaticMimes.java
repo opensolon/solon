@@ -15,6 +15,8 @@
  */
 package org.noear.solon.web.staticfiles;
 
+import org.noear.solon.core.util.MimeType;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,9 +83,9 @@ public class StaticMimes {
         mimeMap.put(".jpeg", "image/jpeg");
         mimeMap.put(".jpg", "image/jpeg");
         mimeMap.put(".js", "application/javascript");
-        mimeMap.put(".jsf", "text/plain");
-        mimeMap.put(".json", "application/json");
-        mimeMap.put(".jspf", "text/plain");
+        mimeMap.put(".jsf", MimeType.TEXT_PLAIN_VALUE);
+        mimeMap.put(".json", MimeType.APPLICATION_JSON_VALUE);
+        mimeMap.put(".jspf", MimeType.TEXT_PLAIN_VALUE);
         mimeMap.put(".kar", "audio/midi");
         mimeMap.put(".latex", "application/x-latex");
         mimeMap.put(".m3u", "audio/x-mpegurl");
@@ -187,7 +189,7 @@ public class StaticMimes {
         mimeMap.put(".tr", "text/troff");
         mimeMap.put(".tsv", "text/tab-separated-values");
         mimeMap.put(".ttf", "application/x-font-ttf");
-        mimeMap.put(".txt", "text/plain");
+        mimeMap.put(".txt", MimeType.TEXT_PLAIN_VALUE);
         mimeMap.put(".ulw", "audio/basic");
         mimeMap.put(".ustar", "application/x-ustar");
         mimeMap.put(".vxml", "application/voicexml+xml");

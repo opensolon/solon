@@ -21,6 +21,7 @@ import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public class VxWebHandler implements VxHandler {
 
     private void handle0(VxWebContext ctx) {
         try {
-            ctx.contentType("text/plain;charset=UTF-8");
+            ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             preHandle(ctx);
 

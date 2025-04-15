@@ -18,6 +18,7 @@ package org.noear.solon.boot.prop;
 import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.MimeType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class GzipProps {
     static {
         mimeTypes.add("text/html");
         mimeTypes.add("text/xml");
-        mimeTypes.add("text/plain");
+        mimeTypes.add(MimeType.TEXT_PLAIN_VALUE);
         mimeTypes.add("text/css");
         mimeTypes.add("text/javascript");
         mimeTypes.add("application/javascript");

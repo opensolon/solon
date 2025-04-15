@@ -19,6 +19,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.web.webdav.FileInfo;
 import org.noear.solon.web.webdav.FileSystem;
 
@@ -97,7 +98,7 @@ public class LocalFileSystem implements FileSystem {
 
     @Override
     public String fileMime(FileInfo fi) {
-        return fi.isDir() ? "httpd/unix-directory" : "text/plain";
+        return fi.isDir() ? "httpd/unix-directory" : MimeType.TEXT_PLAIN_VALUE;
     }
 
     @Override
