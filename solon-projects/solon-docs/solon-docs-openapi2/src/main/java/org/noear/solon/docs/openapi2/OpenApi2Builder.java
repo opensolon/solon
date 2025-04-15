@@ -85,7 +85,7 @@ public class OpenApi2Builder {
         ApiLicense apiLicense = docket.info().license();
         ApiContact apiContact = docket.info().contact();
 
-        if(Utils.isEmpty(description)){
+        if (Utils.isEmpty(description)) {
             description = docket.info().description();
         }
 
@@ -121,6 +121,13 @@ public class OpenApi2Builder {
         if (docket.schemes() != null) {
             for (ApiScheme scheme : docket.schemes()) {
                 swagger.scheme(Scheme.forValue(scheme.toValue()));
+            }
+        }
+
+        for (Object parameter : docket.globalParams()) {
+            if (parameter instanceof Parameter) {
+                Parameter p1 = (Parameter) parameter;
+                swagger.addParameter(p1.getName(), p1);
             }
         }
 
@@ -331,13 +338,6 @@ public class OpenApi2Builder {
             operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
             operation.setVendorExtension("controllerKey", controllerKey);
             operation.setVendorExtension("actionName", actionName);
-
-            //添加全局参数
-            for (Object p1 : docket.globalParams()) {
-                if (p1 instanceof Parameter) {
-                    operation.addParameter((Parameter) p1);
-                }
-            }
 
             if (Utils.isEmpty(operationConsumes)) {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
