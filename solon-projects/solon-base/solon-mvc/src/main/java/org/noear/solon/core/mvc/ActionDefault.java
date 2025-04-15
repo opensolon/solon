@@ -330,18 +330,14 @@ public class ActionDefault extends HandlerAide implements Action {
                 if (Utils.isNotEmpty(mProduces)) {
                     c.contentType(mProduces);
                 }
-//                else { //v3.1.1
-//                    String tmp = c.accept();
-//                    if (c.contentTypeNew() == null && tmp != null && tmp.indexOf(',') < 0) {
-//                        //如果未设过；且是单个内容类型
-//                        c.contentType(tmp);
-//                    }
-//                }
 
                 //结果处理
                 ReturnValueHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
+
                 if (returnHandler == null) {
-                    returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, method().getReturnType());
+                    if (c.result != null) {
+                        returnHandler = bWrap.context().app().chainManager().getReturnHandler(c, c.result.getClass());
+                    }
                 }
 
                 if (returnHandler != null) {
