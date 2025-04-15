@@ -20,23 +20,57 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### 3.1.3
+### 3.1.4
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+
+### 3.1.3
+
+* 新增 solon-ai-mcp 插件
+* 插件 solon-flow 三次预览
+* 插件 solon-ai 二次预览（原 FunctionCall 概念，升级为 ToolCall 概念）
 * 添加 solon Props:bindTo(clz) 方法，支持识别 BindProps 注解
-* 添加 solon-net-httputils HttpUtilsBuilder 类（用于预构造）
+* 添加 solon Utils.loadProps(uri) 方法，简化加载与转换属性集
+* 添加 solon Context.keepAlive, cacheControl 方法
 * 添加 solon Props:from 方法，用于识别或转换属性集合
+* 添加 solon-web-sse SseEvent:comment 支持
+* 添加 solon-net-httputils HttpUtilsBuilder 类（用于预构造支持）
+* 添加 solon-flow FlowContext:eventBus 事件总线支持
+* 添加 solon-flow 终止处理（现分为：阻断当前分支和终止流）
+* 添加 solon-flow StatefulFlowEngine:postActivityStateIfWaiting 提交活动状态（如果当前节点为等待介入）
+* 添加 solon-flow StatefulFlowEngine:getActivityNodes （获取多个活动节点）方法
+* 添加 solon-ai Tool 接口定义
+* 添加 solon-ai ToolProvider 接口定义
+* 添加 solon-ai-repo-chrome ChromaClient 新的构建函数，方便注入
+* 添加 solon-ai 批量函数添加方式
+* 添加 solon-ai embeddingModel.batchSize 配置支持（用于管控 embed 的批量限数）
 * 优化 solon DateUtil 工具能力
 * 优化 solon 渲染管理器的匹配策略，先匹配 contentTypeNew 再匹配 acceptNew
 * 优化 solon-web-rx 流检测策略，先匹配 contentTypeNew 再匹配 acceptNew
 * 优化 solon-web-sse 头处理，添加 Connection,Keep-Alive,Cache-Control 输出
-* 优化 solon-net-httputils  TextStreamUtil rx-item 计数处理
+* 优化 solon-security-web 优化头信息处理
+* 优化 solon-net-httputils TextStreamUtil 的读取与计数处理（支持背压控制）
+* 优化 solon-net-httputils 超时设计
 * 优化 solon-net-httputils ServerSentEvent 添加 toString
+* 优化 solon-security-validation 注释
+* 优化 solon-ai 工具添加模式（可支持支持 ToolProvider 对象）
+* 优化 solon-ai 配置提示（配合 solon-idea-plugin 插件）
+* 优化 solon-ai 包依赖（直接添加 solon-web-rx 和 solon-web-sse，几乎是必须的
+* 优化 solon-flow 改为容器驱动配置
+* 调整 solon-flow NodeState 更名为 StateType （更中性些；不一定与节点有关）
+* 调整 solon-flow StateOperator 更名为 StateController （意为状态控制器）
+* 调整 solon-flow NodeState 改为 enum （约束性更强，int 约束太弱了）
+* 调整 solon-flow StateRepository 设计，取消 StateRecord （太业务了，交给应用侧处理）
+* 调整 solon-flow FlowContext:interrupt(boo) 改为 public
 * 调整 solon-net-httputils execAsTextStream 标为弃用，新增 execAsLineStream
 * 调整 solon-net-httputils execAsEventStream 标为弃用，新增 execAsSseStream
+* 调整 solon ActionDefault 的ReturnValueHandler 匹配，改为 result 的实例类型 （之前为 method 的返回类型
+* 调整 solon-flow-stateful 代码合并到 solon-flow
+* 调整 solon-flow-stateful StatefulFlowEngine 拆分为接口与实现
 * 修复 nami-coder-jackson 部分时间格式反序列化失败的问题
-* 修复 `@Configuration` 类，有构建注入且没有源时，造成 `@Bean` 函数无法注入的问题
+* 修复 solon `@Configuration` 类，有构建注入且没有源时，造成 `@Bean` 函数无法注入的问题
 * 修复 solon-net-httputils 流式半刷时，jdk 的适配实现会卡的问题
+* 修复 solon-flow StatefulSimpleFlowDriver 有状态执行时，任务可能会重复执行的问题
 * snack3 升为 3.2.130
 * smarthttp 升为 2.5.7（优化 websocket idle处理；优化 http idle 对 Keep-Alive 场景的处理）
 
