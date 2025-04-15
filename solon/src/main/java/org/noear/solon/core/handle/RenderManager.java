@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
+import org.noear.solon.core.util.MimeType;
 
 import java.io.File;
 import java.io.InputStream;
@@ -306,10 +307,12 @@ public class RenderManager implements Render {
         if (render == null) {
             //根据内容类型匹配
             String mime1 = ctx.contentTypeNew();
-            for (Render r : _mapping.values()) {
-                if (r.matched(ctx, mime1)) {
-                    render = r;
-                    break;
+            if(mime1 != null && mime1.startsWith(MimeType.TEXT_PLAIN_VALUE) == false) {
+                for (Render r : _mapping.values()) {
+                    if (r.matched(ctx, mime1)) {
+                        render = r;
+                        break;
+                    }
                 }
             }
 
