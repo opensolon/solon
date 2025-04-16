@@ -339,6 +339,13 @@ public class OpenApi2Builder {
             operation.setVendorExtension("controllerKey", controllerKey);
             operation.setVendorExtension("actionName", actionName);
 
+            //添加全局参数
+            for (Object p1 : docket.globalParams()) {
+                if (p1 instanceof Parameter) {
+                    operation.addParameter((Parameter) p1);
+                }
+            }
+
             if (Utils.isEmpty(operationConsumes)) {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type //ApiEnum.CONSUMES_URLENCODED

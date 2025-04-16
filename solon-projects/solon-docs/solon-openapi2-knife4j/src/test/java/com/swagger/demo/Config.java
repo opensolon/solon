@@ -87,8 +87,8 @@ public class Config {
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
                 .globalResponseInData(true)
-                .securityExtensions("TOKEN", new ApiKeyAuthDefinition().in(In.HEADER))
-                .vendorExtensions("TOKEN", "xxx")
+                //.securityExtensions("TOKEN", new ApiKeyAuthDefinition().in(In.HEADER))
+                //.vendorExtensions("TOKEN", "xxx")
                 .globalParams(new HeaderParameter().name("token").required(true))
                 .apis("com.swagger.demo.controller.api2");
         //.securityDefinitionInHeader("token");
