@@ -53,6 +53,8 @@
 * 优化 solon-net-httputils 超时设计
 * 优化 solon-net-httputils ServerSentEvent 添加 toString
 * 优化 solon-security-validation 注释
+* 优化 solon-boot-jetty 不输出默认 server header
+* 优化 solon-boot-smarthttp 不输出默认 server header
 * 优化 solon-ai 工具添加模式（可支持支持 ToolProvider 对象）
 * 优化 solon-ai 配置提示（配合 solon-idea-plugin 插件）
 * 优化 solon-ai 包依赖（直接添加 solon-web-rx 和 solon-web-sse，几乎是必须的
@@ -72,7 +74,7 @@
 * 修复 solon-net-httputils 流式半刷时，jdk 的适配实现会卡的问题
 * 修复 solon-flow StatefulSimpleFlowDriver 有状态执行时，任务可能会重复执行的问题
 * snack3 升为 3.2.130
-* smarthttp 升为 2.5.7（优化 websocket idle处理；优化 http idle 对 Keep-Alive 场景的处理）
+* smarthttp 升为 2.5.8（优化 websocket idle处理；优化 http idle 对 Keep-Alive 场景的处理）
 * liquor 升为 1.5.3
 
 
