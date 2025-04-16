@@ -56,4 +56,11 @@ public class HeaderController {
     public String header_ct(Context ctx, String name) throws Exception {
         return ctx.method() + "::" + ctx.contentType() + "::" + name;
     }
+
+    @Mapping("/demo2/header/server")
+    public void header_server(Context ctx, String out) throws Exception {
+        if ("1".equals(out)) {
+            ctx.headerSet("Server", "solon");
+        }
+    }
 }

@@ -132,4 +132,13 @@ public class HeaderTest extends HttpTester {
         String rst = path("/demo2/header/ct?name=solon").get();
         assert rst.equals("GET::null::solon");
     }
+
+    @Test
+    public void testServer_get() throws Exception {
+        String rst = path("/demo2/header/server").exec("GET").header("Server");
+        assert rst == null;
+
+        rst = path("/demo2/header/server?out=1").exec("GET").header("Server");
+        assert "solon".equals(rst);
+    }
 }
