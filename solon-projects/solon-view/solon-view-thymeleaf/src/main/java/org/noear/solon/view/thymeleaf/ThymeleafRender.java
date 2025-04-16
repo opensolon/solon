@@ -93,6 +93,10 @@ public class ThymeleafRender implements Render {
             return;
         }
 
+        if (ResourceUtil.hasFile(viewPrefix)) {
+            return;
+        }
+
         //添加调试模式
         File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 

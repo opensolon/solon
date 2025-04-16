@@ -100,6 +100,10 @@ public class EnjoyRender implements Render {
             return;
         }
 
+        if (ResourceUtil.hasFile(viewPrefix)) {
+            return;
+        }
+
         if (providerOfDebug != null) {
             return;
         }

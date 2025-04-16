@@ -61,21 +61,21 @@ public class BeetlRender implements Render {
 
     /**
      * 引擎提供者
-     * */
+     */
     public GroupTemplate getProvider() {
         return provider;
     }
 
     /**
      * 引擎提供者（调试模式）
-     * */
+     */
     public GroupTemplate getProviderOfDebug() {
         return providerOfDebug;
     }
 
     /**
      * 获取配置
-     * */
+     */
     public Configuration getConfig() {
         return config;
     }
@@ -92,9 +92,9 @@ public class BeetlRender implements Render {
 
     public BeetlRender(ClassLoader classLoader, String viewPrefix) {
         this.classLoader = classLoader;
-        if(viewPrefix == null){
+        if (viewPrefix == null) {
             this.viewPrefix = ViewConfig.getViewPrefix();
-        }else {
+        } else {
             this.viewPrefix = viewPrefix;
         }
 
@@ -120,6 +120,10 @@ public class BeetlRender implements Render {
             return;
         }
 
+        if (ResourceUtil.hasFile(viewPrefix)) {
+            return;
+        }
+
         if (providerOfDebug != null) {
             return;
         }
@@ -127,7 +131,7 @@ public class BeetlRender implements Render {
         //添加调试模式
         File dir = DebugUtils.getDebugLocation(classLoader, viewPrefix);
 
-        if(dir == null){
+        if (dir == null) {
             return;
         }
 
@@ -152,7 +156,7 @@ public class BeetlRender implements Render {
                 //file:...
                 URL dir = ResourceUtil.findResource(classLoader, viewPrefix, false);
                 FileResourceLoader loader = new FileResourceLoader(dir.getFile(), Solon.encoding());
-                providerOfDebug = new GroupTemplate(loader, config);
+                provider = new GroupTemplate(loader, config);
             } else {
                 ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, viewPrefix);
                 provider = new GroupTemplate(loader, config);
@@ -256,7 +260,7 @@ public class BeetlRender implements Render {
                 if (template != null && template.program instanceof ErrorGrammarProgram) {
                     template = null;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 //忽略不计
             }
         }
