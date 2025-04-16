@@ -30,4 +30,9 @@ public class DemoTest {
     public void demo(Context ctx, HttpServletRequest request) {
         request = new HttpServletRequestWrapperImpl(ctx, request);
     }
+
+    @Mapping("/")
+    public String hello(){
+        return "hello";
+    }
 }

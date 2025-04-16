@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.boot.jdkhttp;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.boot.jdkhttp.JdkHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.handle.Context;
@@ -26,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * @author noear 2023/4/6 created
  */
-@Component
+//@Component
 public class ServerDemo implements LifecycleBean , Handler {
     JdkHttpServer _server;
 

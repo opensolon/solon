@@ -100,6 +100,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         if (ServerProps.request_maxHeaderSize > 0) {
             config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
         }
+        config.setSendServerVersion(false);
 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
         ServerConnector serverConnector;
