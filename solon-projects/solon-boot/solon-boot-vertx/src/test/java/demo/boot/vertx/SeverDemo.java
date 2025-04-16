@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo;
+package demo.boot.vertx;
 
 import org.noear.solon.Solon;
 import org.noear.solon.boot.http.HttpServerConfigure;
@@ -24,12 +24,9 @@ import org.noear.solon.boot.http.HttpServerConfigure;
 public class SeverDemo {
     public static void main(String[] args) {
         Solon.start(SeverDemo.class, args, app -> {
-            if(app.cfg().argx().containsKey("ssl")) {
-                //如果有 https ，就再加个 http
-                app.onEvent(HttpServerConfigure.class, e -> {
-                    e.addHttpPort(8082);
-                });
-            }
+            app.get("/", ctx -> {
+                ctx.output("Hello World");
+            });
         });
     }
 }
