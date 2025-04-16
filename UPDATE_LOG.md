@@ -74,6 +74,7 @@
 * 修复 solon-net-httputils 流式半刷时，jdk 的适配实现会卡的问题
 * 修复 solon-flow StatefulSimpleFlowDriver 有状态执行时，任务可能会重复执行的问题
 * snack3 升为 3.2.130
+* fastjson2 升为 2.0.57
 * smarthttp 升为 2.5.8（优化 websocket idle处理；优化 http idle 对 Keep-Alive 场景的处理）
 * liquor 升为 1.5.3
 
