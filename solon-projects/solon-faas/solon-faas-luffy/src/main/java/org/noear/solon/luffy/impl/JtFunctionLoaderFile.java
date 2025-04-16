@@ -57,6 +57,11 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
+        if (path.contains("../") || path.contains("..\\")) {
+            // '../','..\' 不安全，禁止进入资料库
+            return null;
+        }
+
         File file = fileBuildDo(path);
 
         if (file == null) {
