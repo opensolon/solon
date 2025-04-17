@@ -20,11 +20,11 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
-### 3.1.4
+### 3.2.1
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 
-### 3.1.3
+### 3.2.0
 
 * 新增 solon-ai-mcp 插件（支持多端点）
 * 插件 solon-flow 三次预览
