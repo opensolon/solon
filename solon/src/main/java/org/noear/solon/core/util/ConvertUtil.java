@@ -43,8 +43,8 @@ public class ConvertUtil {
      * 转换 context 的值
      *
      * @param spec 目标申明
-     * @param val        值
-     * @param ctx        通用上下文
+     * @param val  值
+     * @param ctx  通用上下文
      */
     public static Object to(VarSpec spec, String val, Context ctx) throws ClassCastException {
         if (String.class == spec.getType() || Object.class == spec.getType()) {
@@ -351,16 +351,7 @@ public class ConvertUtil {
         }
 
         if (Duration.class == type) {
-            String tmp = val.toUpperCase();
-            if (tmp.indexOf('P') != 0) {
-                if (tmp.indexOf('D') > 0) {
-                    tmp = "P" + tmp;
-                } else {
-                    tmp = "PT" + tmp;
-                }
-            }
-
-            return Duration.parse(tmp);
+            return durationOf(val);
         }
 
         if (String.class == type || Object.class == type) {
@@ -370,7 +361,26 @@ public class ConvertUtil {
         return null;
     }
 
-    private static Date dateOf(String val) {
+    /**
+     * 获取时长
+     */
+    public static Duration durationOf(String val) {
+        String tmp = val.toUpperCase();
+        if (tmp.indexOf('P') != 0) {
+            if (tmp.indexOf('D') > 0) {
+                tmp = "P" + tmp;
+            } else {
+                tmp = "PT" + tmp;
+            }
+        }
+
+        return Duration.parse(tmp);
+    }
+
+    /**
+     * 获取日期
+     */
+    public static Date dateOf(String val) {
         try {
             return DateAnalyzer.global().parse(val);
         } catch (ParseException e) {
@@ -381,7 +391,7 @@ public class ConvertUtil {
     /**
      * 获取枚举
      */
-    private static <T extends Enum<T>> T enumOf(Class<T> enumType, String name) {
+    public static <T extends Enum<T>> T enumOf(Class<T> enumType, String name) {
         for (T each : enumType.getEnumConstants()) {
             if (each.name().compareToIgnoreCase(name) == 0) {
                 return each;
