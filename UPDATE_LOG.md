@@ -26,7 +26,7 @@
 
 ### 3.1.3
 
-* 新增 solon-ai-mcp 插件
+* 新增 solon-ai-mcp 插件（支持多端点）
 * 插件 solon-flow 三次预览
 * 插件 solon-ai 二次预览（原 FunctionCall 概念，升级为 ToolCall 概念）
 * 添加 solon Props:bindTo(clz) 方法，支持识别 BindProps 注解
