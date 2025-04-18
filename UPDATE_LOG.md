@@ -66,7 +66,7 @@
 * 调整 solon-flow StateOperator 更名为 StateController （意为状态控制器）
 * 调整 solon-flow NodeState 改为 enum （约束性更强，int 约束太弱了）
 * 调整 solon-flow StateRepository 设计，取消 StateRecord （太业务了，交给应用侧处理）
-* 调整 solon-flow FlowContext:interrupt(boo) 改为 public
+* 调整 solon-flow FlowContext:interrupt(bool) 改为 public
 * 调整 solon-net-httputils execAsTextStream 标为弃用，新增 execAsLineStream
 * 调整 solon-net-httputils execAsEventStream 标为弃用，新增 execAsSseStream
 * 调整 solon ActionDefault 的ReturnValueHandler 匹配，改为 result 的实例类型 （之前为 method 的返回类型
