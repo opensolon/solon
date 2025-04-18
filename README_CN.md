@@ -87,8 +87,6 @@ Solon v3.2.0
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,插件代码仓库               | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,插件代码仓库             | 
-|                                                 |                                  |
-| https://gitee.com/dromara/solon-plugins         | Solon 第三方扩展插件代码仓库                | 
 
 
 ## 生态架构图：

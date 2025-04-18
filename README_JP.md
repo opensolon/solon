@@ -85,10 +85,6 @@ Solon v3.2.0
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,プラグインのリポジトリです            | 
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,プラグインのリポジトリです              | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,プラグインのリポジトリです            | 
-|                                                 |                                        |
-| https://gitee.com/dromara/solon-plugins         | Solon ,サードパーティ拡張プラグイン・コードリポジトリ         | 
-
-
 
 
 ## エコシステム：

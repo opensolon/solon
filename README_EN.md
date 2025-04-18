@@ -87,9 +87,6 @@ Built from scratch, with more flexible interface specifications and an open ecos
 | https://github.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 
 | https://github.com/opensolon/solon-idea-plugin   | Solon Idea ,Plugin code repository                        | 
 | https://github.com/opensolon/solon-vscode-plugin | Solon VsCode ,Plugin code repository                      | 
-|                                                 |                                                           |
-| https://github.com/dromara/solon-plugins         | Solon ,Third-party extension code repository              | 
-
 
 
 
