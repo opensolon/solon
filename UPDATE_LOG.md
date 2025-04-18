@@ -23,6 +23,8 @@
 ### 3.2.1
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
+* 修复 solon-net-httputils 流式返回的状态码没有传递的问题
 * lombok 升为 1.18.38
 
 ### 3.2.0
