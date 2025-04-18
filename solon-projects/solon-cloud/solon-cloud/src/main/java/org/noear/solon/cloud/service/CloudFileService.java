@@ -21,8 +21,8 @@ import org.noear.solon.core.handle.Result;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 云端文件服务（分布式文件服务服务）
@@ -145,16 +145,16 @@ public interface CloudFileService {
      * 批量删除文件
      *
      * @param bucket 存储桶
-     * @param keyList 存储键集合
+     * @param keys   存储键集合
      */
-    Result deleteList(String bucket, List<String> keyList) throws CloudFileException;
+    Result deleteBatch(String bucket, Collection<String> keys) throws CloudFileException;
 
     /**
      * 批量删除文件
      *
-     * @param keyList 存储键集合
+     * @param keys 存储键集合
      */
-    default Result deleteList(List<String> keyList) throws CloudFileException {
-        return deleteList(null, keyList);
+    default Result deleteBatch(Collection<String> keys) throws CloudFileException {
+        return deleteBatch(null, keys);
     }
 }
