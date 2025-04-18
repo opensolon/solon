@@ -23,6 +23,7 @@
 ### 3.2.1
 
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* lombok 升为 1.18.38
 
 ### 3.2.0
 
