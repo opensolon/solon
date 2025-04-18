@@ -492,7 +492,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
-                            TextStreamUtil.parseLineStream(resp.body(), subscriber);
+                            if (resp.code() < 400) {
+                                TextStreamUtil.parseLineStream(resp.body(), subscriber);
+                            } else {
+                                subscriber.onError(new HttpException("Error code: " + resp.code()));
+                            }
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
@@ -511,7 +515,11 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                 .whenComplete((resp, err) -> {
                     if (err == null) {
                         try {
-                            TextStreamUtil.parseSseStream(resp.body(), subscriber);
+                            if (resp.code() < 400) {
+                                TextStreamUtil.parseSseStream(resp.body(), subscriber);
+                            } else {
+                                subscriber.onError(new HttpException("Error code: " + resp.code()));
+                            }
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
