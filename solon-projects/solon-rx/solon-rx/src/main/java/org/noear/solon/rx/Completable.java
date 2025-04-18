@@ -38,6 +38,11 @@ public interface Completable extends Publisher<Void> {
     Completable doOnComplete(Runnable doOnComplete);
 
     /**
+     * 然后
+     */
+    Completable then(Completable completable);
+
+    /**
      * 订阅
      */
     void subscribe();

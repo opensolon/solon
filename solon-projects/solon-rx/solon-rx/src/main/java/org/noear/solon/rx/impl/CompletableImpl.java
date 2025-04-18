@@ -99,6 +99,21 @@ public class CompletableImpl implements Completable, Subscription {
     }
 
     @Override
+    public Completable then(Completable completable) {
+        return Completable.create(emitter -> {
+            subscribe(subscriberBuilder.doOnError(err -> {
+                emitter.onError(err);
+            }).doOnComplete(() -> {
+                completable.doOnComplete(() -> {
+                    emitter.onComplete();
+                }).doOnError(err -> {
+                    emitter.onError(err);
+                }).subscribe();
+            }));
+        });
+    }
+
+    @Override
     public void subscribe() {
         subscribe(subscriberBuilder);
     }
