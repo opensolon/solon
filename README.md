@@ -74,21 +74,21 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 | Code repository                                 | Description                                               | 
 |-------------------------------------------------|-----------------------------------------------------------| 
-| https://gitee.com/opensolon/solon               | Solon ,Main code repository                               | 
-| https://gitee.com/opensolon/solon-examples      | Solon ,Official website supporting sample code repository |
+| https://github.com/opensolon/solon               | Solon ,Main code repository                               | 
+| https://github.com/opensolon/solon-examples      | Solon ,Official website supporting sample code repository |
 |                                                 |                                                           |
-| https://gitee.com/opensolon/solon-ai            | Solon Ai ,Code repository                                 |
-| https://gitee.com/opensolon/solon-flow          | Solon Flow ,Code repository                               | 
-| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Code repository                              | 
-| https://gitee.com/opensolon/solon-admin         | Solon Admin ,Code repository                              | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java21）               | 
-| https://gitee.com/opensolon/solon-integration   | Solon Integration ,Code repository                        | 
+| https://github.com/opensolon/solon-ai            | Solon Ai ,Code repository                                 |
+| https://github.com/opensolon/solon-flow          | Solon Flow ,Code repository                               | 
+| https://github.com/opensolon/solon-cloud         | Solon Cloud ,Code repository                              | 
+| https://github.com/opensolon/solon-admin         | Solon Admin ,Code repository                              | 
+| https://github.com/opensolon/solon-jakarta       | Solon Jakarta ,Code repository（base java21）               | 
+| https://github.com/opensolon/solon-integration   | Solon Integration ,Code repository                        | 
 |                                                 |                                                           |
-| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 
-| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Plugin code repository                        | 
-| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Plugin code repository                      | 
+| https://github.com/opensolon/solon-gradle-plugin | Solon Gradle ,Plugin code repository                      | 
+| https://github.com/opensolon/solon-idea-plugin   | Solon Idea ,Plugin code repository                        | 
+| https://github.com/opensolon/solon-vscode-plugin | Solon VsCode ,Plugin code repository                      | 
 |                                                 |                                                           |
-| https://gitee.com/dromara/solon-plugins         | Solon ,Third-party extension code repository              | 
+| https://github.com/dromara/solon-plugins         | Solon ,Third-party extension code repository              | 
 
 
 
