@@ -87,9 +87,6 @@ Solon v3.2.1-SNAPSHOT
 | https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Код плагина хранилища                 | 
 | https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Код плагина хранилища                   | 
 | https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Код плагина хранилища                 | 
-|                                                 |                                                     |
-| https://gitee.com/dromara/solon-plugins         | Solon ,Третья сторона расширяет плагины на складе   | 
-
 
 
 ## Экологическая архитектура：
