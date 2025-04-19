@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * 可完成的发布者（complete | error）
+ * 可完成发布者（complete | error）
  *
  * @author noear
  * @since 2.0

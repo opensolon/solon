@@ -16,7 +16,7 @@
 package org.noear.solon.rx;
 
 /**
- * 可完成的发射器
+ * 可完成发射器
  *
  * @author noear
  * @since 2.9

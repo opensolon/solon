@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * 可完成的发布者实现
+ * 可完成发布者实现
  *
  * @author noear
  * @since 2.9

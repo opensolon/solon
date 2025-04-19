@@ -19,7 +19,7 @@ import org.noear.solon.rx.CompletableEmitter;
 import org.reactivestreams.Subscriber;
 
 /**
- * 可完成的发射器实现
+ * 可完成发射器实现
  *
  * @author noear
  * @since 2.9
