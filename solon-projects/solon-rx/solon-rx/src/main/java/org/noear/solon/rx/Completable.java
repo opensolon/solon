@@ -55,6 +55,9 @@ public interface Completable extends Publisher<Void> {
      */
     void subscribe();
 
+    /**
+     * 创建
+     */
     static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
         return new CompletableImpl(null, emitterConsumer);
     }
