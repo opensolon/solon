@@ -62,8 +62,10 @@ public class CloudGatewayHandler implements VxHandler {
         ctx.bind(configuration.routeFind(ctx));
 
         if (ctx.route() == null) {
+            //没有路由，采用经典接口处理
             webHandler.handle(request);
         } else {
+            //有路由，采服网关响应式接口处理（不使用二级线程池）
             CloudGatewayCompletion completion = new CloudGatewayCompletion(ctx, request);
 
             //开始执行

@@ -28,6 +28,7 @@
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
 * 修复 solon-net-httputils 流式返回的状态码没有传递的问题
 * lombok 升为 1.18.38
+* vertx 升为 4.5.14
 
 ### 3.2.0
 
