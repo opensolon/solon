@@ -85,6 +85,16 @@ public interface ExContext {
      */
     boolean isSecure();
 
+    /**
+     * 暂停请求流接收
+     */
+    void pause();
+
+    /**
+     * 恢复请求流接收
+     */
+    void resume();
+
     ////////////////////////////////////////////////////
 
     /**

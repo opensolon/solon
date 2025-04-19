@@ -73,6 +73,16 @@ public class ExContextEmpty implements ExContext {
     }
 
     @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
     public String rawMethod() {
         return "";
     }

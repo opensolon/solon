@@ -184,6 +184,22 @@ public class ExContextImpl implements ExContext {
         return rawRequest.isSSL();
     }
 
+    /**
+     * 暂停
+     */
+    @Override
+    public void pause() {
+        rawRequest.pause();
+    }
+
+    /**
+     * 恢复
+     */
+    @Override
+    public void resume() {
+        rawRequest.resume();
+    }
+
     ////////////////////////////////////////////////////
 
     /**
