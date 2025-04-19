@@ -22,6 +22,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 可完成的发布者实现
@@ -99,12 +100,12 @@ public class CompletableImpl implements Completable, Subscription {
     }
 
     @Override
-    public Completable then(Completable completable) {
+    public Completable then(Supplier<Completable> otherSupplier) {
         return Completable.create(emitter -> {
             subscribe(subscriberBuilder.doOnError(err -> {
                 emitter.onError(err);
             }).doOnComplete(() -> {
-                completable.doOnComplete(() -> {
+                otherSupplier.get().doOnComplete(() -> {
                     emitter.onComplete();
                 }).doOnError(err -> {
                     emitter.onError(err);

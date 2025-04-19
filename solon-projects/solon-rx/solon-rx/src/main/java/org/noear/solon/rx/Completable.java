@@ -19,6 +19,7 @@ import org.noear.solon.rx.impl.CompletableImpl;
 import org.reactivestreams.Publisher;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 可完成的发布者（complete | error）
@@ -40,7 +41,14 @@ public interface Completable extends Publisher<Void> {
     /**
      * 然后
      */
-    Completable then(Completable completable);
+    Completable then(Supplier<Completable> otherSupplier);
+
+    /**
+     * 然后
+     */
+    default Completable then(Completable other) {
+        return then(() -> other);
+    }
 
     /**
      * 订阅
