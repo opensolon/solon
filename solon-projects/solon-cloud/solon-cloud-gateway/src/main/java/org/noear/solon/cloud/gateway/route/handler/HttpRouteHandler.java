@@ -22,7 +22,6 @@ import io.vertx.solon.VertxHolder;
 import org.noear.solon.cloud.gateway.exchange.ExBody;
 import org.noear.solon.cloud.gateway.exchange.ExConstants;
 import org.noear.solon.cloud.gateway.exchange.ExContext;
-import org.noear.solon.cloud.gateway.exchange.ExContextImpl;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
 import org.noear.solon.cloud.gateway.route.RouteHandler;
@@ -62,10 +61,9 @@ public class HttpRouteHandler implements RouteHandler {
      * 处理
      */
     @Override
-    public Completable handle(ExContext x) {
+    public Completable handle(ExContext ctx) {
         try {
-            ExContextImpl ctx = (ExContextImpl)x;
-            ctx.rawRequest().pause();
+            ctx.pause();
 
             //构建请求
             Future<HttpClientRequest> req1 = buildHttpRequest(ctx);

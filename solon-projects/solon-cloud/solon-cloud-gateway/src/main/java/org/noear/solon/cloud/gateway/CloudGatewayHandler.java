@@ -95,6 +95,7 @@ public class CloudGatewayHandler implements VxHandler {
         ExContextImpl ctx2 = (ExContextImpl) ctx;
 
         if (ctx2.route() == null) {
+            //说明没有路由配置
             ctx.newResponse().status(404);
             return Completable.complete();
         } else {
