@@ -8,6 +8,7 @@ import org.noear.solon.cloud.gateway.exchange.ExContext;
 import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfBuffer;
 import org.noear.solon.cloud.gateway.exchange.impl.ExBodyOfStream;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.rx.Completable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,16 +22,26 @@ public class AppLogFilter implements CloudGatewayFilter {
 
     @Override
     public Completable doFilter(ExContext ctx, ExFilterChain chain) {
-        //记录请求日志
-        reqLog(ctx);
-
-        return chain.doFilter(ctx).doOnComplete(() -> {
+        return Completable.create(emitter -> {
+            //转异步前暂停流接收（如果鉴权没通过，都不用收了）
+            ctx.pause();
+            //测试同步转异步
+            RunUtil.delay(() -> {
+                try {
+                    //记录请求日志
+                    reqLog(ctx);
+                    emitter.onComplete();
+                } catch (Throwable ex) {
+                    emitter.onError(ex);
+                }
+            }, 1000);
+        }).then(() -> chain.doFilter(ctx).doOnComplete(() -> {
             //正确响应，记录日志
             respLog(ctx);
         }).doOnError(err -> {
             //接收响应出错
             log.warn("resp - err:{}", err);
-        });
+        }));
     }
 
     private void reqLog(ExContext ctx) {
