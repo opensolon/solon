@@ -56,16 +56,29 @@ public interface Completable extends Publisher<Void> {
     void subscribe();
 
     /**
+     * 订阅
+     *
+     * @param emitter 发射器
+     */
+    void subscribe(CompletableEmitter emitter);
+
+    /**
      * 创建
      */
     static Completable create(Consumer<CompletableEmitter> emitterConsumer) {
         return new CompletableImpl(null, emitterConsumer);
     }
 
+    /**
+     * 完成
+     */
     static Completable complete() {
         return new CompletableImpl(null, null);
     }
 
+    /**
+     * 出错的完成
+     */
     static Completable error(Throwable cause) {
         return new CompletableImpl(cause, null);
     }

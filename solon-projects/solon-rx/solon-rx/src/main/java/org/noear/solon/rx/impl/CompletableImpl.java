@@ -118,4 +118,11 @@ public class CompletableImpl implements Completable, Subscription {
     public void subscribe() {
         subscribe(subscriberBuilder);
     }
+
+    @Override
+    public void subscribe(CompletableEmitter emitter) {
+        subscriberBuilder.doOnError(emitter::onError);
+        subscriberBuilder.doOnComplete(emitter::onComplete);
+        subscribe();
+    }
 }
