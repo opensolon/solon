@@ -15,10 +15,7 @@
  */
 package org.noear.solon.cloud.gateway;
 
-import org.noear.solon.cloud.gateway.exchange.ExContext;
-import org.noear.solon.cloud.gateway.exchange.ExFilterChain;
-import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.rx.Completable;
+import org.noear.solon.cloud.gateway.exchange.ExFilterSync;
 
 /**
  * 分布式网关过滤器同步形态（用于对接同步 io）
@@ -27,38 +24,6 @@ import org.noear.solon.rx.Completable;
  * @since 3.1
  */
 @FunctionalInterface
-public interface CloudGatewayFilterSync extends CloudGatewayFilter {
-    @Override
-    default Completable doFilter(ExContext ctx, ExFilterChain chain) {
-        return Completable.create(emitter -> {
-            //暂停接收流
-            ctx.pause();
+public interface CloudGatewayFilterSync extends CloudGatewayFilter, ExFilterSync {
 
-            //开始异步
-            RunUtil.async(() -> {
-                try {
-                    //开始同步处理
-                    boolean isContinue = doFilterSync(ctx);
-
-                    if (isContinue) {
-                        //继续
-                        chain.doFilter(ctx).subscribe(emitter);
-                    } else {
-                        //结束
-                        emitter.onComplete();
-                    }
-                } catch (Throwable ex) {
-                    emitter.onError(ex);
-                }
-            });
-        });
-    }
-
-    /**
-     * 执行过滤同步处理（一般用于同步 io）
-     *
-     * @param ctx 上下文
-     * @return 是否继续
-     */
-    boolean doFilterSync(ExContext ctx) throws Throwable;
 }
