@@ -17,24 +17,45 @@ package org.noear.solon.cloud.gateway.exchange;
 
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.rx.Completable;
-import org.noear.solon.rx.CompletableEmitter;
 
 /**
- * 交换过滤器异步形态（对接同步 io）
+ * 交换过滤器同步形态（用于对接同步 io）
  *
  * @author noear
  * @since  3.1
  */
-public abstract class ExFilterAsync implements ExFilter {
+public interface ExFilterSync extends ExFilter {
     @Override
-    public Completable doFilter(ExContext ctx, ExFilterChain chain) {
+    default Completable doFilter(ExContext ctx, ExFilterChain chain) {
         return Completable.create(emitter -> {
+            //暂停接收流
             ctx.pause();
+
+            //开始异步
             RunUtil.async(() -> {
-                doFilterAsync(ctx, chain, emitter);
+                try {
+                    //开始同步处理
+                    boolean isContinue = doFilterSync(ctx);
+
+                    if (isContinue) {
+                        //继续
+                        chain.doFilter(ctx).subscribe(emitter);
+                    } else {
+                        //结束
+                        emitter.onComplete();
+                    }
+                } catch (Throwable ex) {
+                    emitter.onError(ex);
+                }
             });
         });
     }
 
-    protected abstract void doFilterAsync(ExContext ctx, ExFilterChain chain, CompletableEmitter emitter);
+    /**
+     * 执行过滤同步处理（一般用于同步 io）
+     *
+     * @param ctx 上下文
+     * @return 是否继续
+     */
+    boolean doFilterSync(ExContext ctx) throws Throwable;
 }
