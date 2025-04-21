@@ -45,8 +45,11 @@ public class RxSubscriberImpl implements Subscriber {
         subscription.request(Long.MAX_VALUE);
     }
 
+    private Subscription subscription;
     @Override
     public void onSubscribe(Subscription subscription) {
+        this.subscription = subscription;
+
         if (ctx.asyncStarted()) {
             //如果已是异步
             request(subscription);
@@ -75,6 +78,10 @@ public class RxSubscriberImpl implements Subscriber {
     @Override
     public void onError(Throwable e) {
         completableEmitter.onError(e);
+
+        if(subscription != null) {
+            subscription.cancel();
+        }
     }
 
     @Override
