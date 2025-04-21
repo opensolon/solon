@@ -68,7 +68,7 @@ public class RxSubscriberImpl implements Subscriber {
                 ctx.flush(); //流式输出，每次都要刷一下（避免缓存未输出）
             }
         } catch (Throwable e) {
-            log.warn(e.getMessage(), e);
+            onError(e);
         }
     }
 

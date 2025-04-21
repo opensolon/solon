@@ -27,6 +27,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.reactivestreams.Publisher;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Action 响应式返回处理
@@ -65,6 +66,7 @@ public class RxReturnValueHandler implements ReturnValueHandler {
             chainManager.doFilter(rxCtx, handler)
                     .doOnError(err -> {
                         try {
+                            ctx.errors = err;
                             ctx.status(500);
                         } finally {
                             //onComplete();
