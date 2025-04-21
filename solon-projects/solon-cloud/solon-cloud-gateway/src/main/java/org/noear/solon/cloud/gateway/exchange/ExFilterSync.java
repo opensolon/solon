@@ -24,6 +24,7 @@ import org.noear.solon.rx.Completable;
  * @author noear
  * @since  3.1
  */
+@FunctionalInterface
 public interface ExFilterSync extends ExFilter {
     @Override
     default Completable doFilter(ExContext ctx, ExFilterChain chain) {

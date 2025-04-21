@@ -26,6 +26,7 @@ import org.noear.solon.rx.Completable;
  * @author noear
  * @since 3.1
  */
+@FunctionalInterface
 public interface CloudGatewayFilterSync extends CloudGatewayFilter {
     @Override
     default Completable doFilter(ExContext ctx, ExFilterChain chain) {
