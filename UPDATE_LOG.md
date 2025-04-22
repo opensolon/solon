@@ -16,15 +16,18 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
+* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
 ### 3.2.1
 
-* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
 * 添加 solon-cloud CloudFileService:deleteBatch 批量删除方法
 * 添加 solon-ai ChatRequestDefault http 状态异常处理
+* 添加 solon-ai-mcp McpChannel 通道（stdio, sse），实现不通道的支持
+* 添加 solon-ai-mcp stdio 通道交换流支持
+* 优化 solon-net-httputils 异步的异常传递
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
 * 修复 solon-net-httputils 流式返回的状态码没有传递的问题
 * 修复 solon-web-rx next 出错时，没有取消 subscription 的问题。
