@@ -108,7 +108,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 try {
                     HttpResponse resp = request(_builder, method);
                     future.complete(resp);
-                } catch (IOException e) {
+                } catch (IOException | RuntimeException e) {
                     future.completeExceptionally(e);
                 }
             });
@@ -155,7 +155,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             }
 
             return new JdkHttpResponse(this, _builder);
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             _builder.disconnect();
             throw e;
         }
