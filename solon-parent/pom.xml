@@ -32,7 +32,7 @@
 
         <solon.version>3.2.1-SNAPSHOT</solon.version>
         <solon-ai.version>3.2.1-SNAPSHOT</solon-ai.version>
-        <solon-flow.version>3.2.0</solon-flow.version>
+        <solon-flow.version>3.2.1-SNAPSHOT</solon-flow.version>
         <solon-cloud.version>3.2.1-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.2.0</solon-admin.version>
         <solon-integration.version>3.2.0</solon-integration.version>
