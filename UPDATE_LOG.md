@@ -28,6 +28,10 @@
 * 添加 solon-ai-mcp McpChannel 通道（stdio, sse），实现不同通道的配置切换支持
 * 添加 solon-ai-mcp stdio 通道（也可能叫方式）交换流支持
 * 添加 solon-ai-mcp McpClientToolProvider 断线重连机制（对生产很重要）
+* 添加 solon-rx Completable:then(other) 方法
+* 添加 solon-rx Completable:then(()->other) 方法
+* 添加 solon-rx Completable:subscribe(emitter) 方法
+* 添加 solon-cloud-gateway ExFilterSync、CloudGatewayFilterSync 接口，用于简化同步接口对接
 * 优化 solon-net-httputils 异步的异常传递
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
 * 修复 solon-net-httputils 流式返回的状态码没有传递的问题
