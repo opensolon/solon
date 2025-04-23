@@ -122,6 +122,10 @@ public interface Router {
      */
     Handler matchMain(Context ctx);
 
+
+    /// /////////////////////////
+
+
     /**
      * 获取某个处理点的所有路由记录（管理用）
      *
@@ -132,11 +136,11 @@ public interface Router {
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
      *
-     * @param path 路径
+     * @param pathPrefix 路径前缀
      * @return 路径处理点的路由记录
      * @since 2.6
      */
-    Collection<Routing<Handler>> getBy(String path);
+    Collection<Routing<Handler>> getBy(String pathPrefix);
 
     /**
      * 获取某个控制器的路由记录（管理用）

@@ -117,13 +117,13 @@ public class RouterDefault implements Router, HandlerSlots {
     /**
      * 获取某个路径的某个处理点的路由记录（管理用）
      *
-     * @param path 路径
+     * @param pathPrefix 路径前缀
      * @return 路径处理点的路由记录
      * @since 2.6
      */
     @Override
-    public Collection<Routing<Handler>> getBy(String path) {
-        return table.getBy(path);
+    public Collection<Routing<Handler>> getBy(String pathPrefix) {
+        return table.getBy(pathPrefix);
     }
 
     @Override

@@ -100,9 +100,9 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     }
 
     @Override
-    public Collection<Routing<T>> getBy(String path) {
+    public Collection<Routing<T>> getBy(String pathPrefix) {
         return table.stream()
-                .filter(l -> l.target.test(path))
+                .filter(l -> l.target.path().startsWith(pathPrefix))
                 .map(l -> l.target)
                 .collect(Collectors.toList());
     }
