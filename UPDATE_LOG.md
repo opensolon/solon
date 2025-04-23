@@ -25,13 +25,13 @@
 
 * 添加 solon-cloud CloudFileService:deleteBatch 批量删除方法
 * 添加 solon-ai ChatRequestDefault http 状态异常处理
-* 添加 solon-ai-mcp McpChannel 通道（stdio, sse），实现不通道的支持
-* 添加 solon-ai-mcp stdio 通道交换流支持
-* 添加 solon-ai-mcp McpClientToolProvider 断线重连机制
+* 添加 solon-ai-mcp McpChannel 通道（stdio, sse），实现不同通道的配置切换支持
+* 添加 solon-ai-mcp stdio 通道（也可能叫方式）交换流支持
+* 添加 solon-ai-mcp McpClientToolProvider 断线重连机制（对生产很重要）
 * 优化 solon-net-httputils 异步的异常传递
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
 * 修复 solon-net-httputils 流式返回的状态码没有传递的问题
-* 修复 solon-web-rx next 出错时，没有取消 subscription 的问题。
+* 修复 solon-web-rx next 异常时，没有取消 subscription 的问题。
 * lombok 升为 1.18.38
 * vertx 升为 4.5.14
 
