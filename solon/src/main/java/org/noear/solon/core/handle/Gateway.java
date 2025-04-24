@@ -51,9 +51,7 @@ import java.util.function.Predicate;
  * @author noear
  * @since 1.0
  * @since 3.0
- * @deprecated 3.1 {@link org.noear.solon.web.gateway.LocalGateway}
  * */
-@Deprecated
 public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     //主处理缺省
