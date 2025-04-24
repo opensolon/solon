@@ -1,6 +1,7 @@
 package features.testing.app;
 
 import org.junit.jupiter.api.Test;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 
 /**
@@ -8,11 +9,8 @@ import org.noear.solon.test.SolonTest;
  */
 @SolonTest
 public class AppTest {
-    private final DemoCom demoCom;
-
-    public AppTest(DemoCom demoCom){
-        this.demoCom = demoCom;
-    }
+    @Inject
+    private DemoCom demoCom;
 
     @Test
     public void test(){

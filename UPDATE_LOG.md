@@ -33,6 +33,7 @@
 * 添加 solon-rx Completable:then(()->other) 方法
 * 添加 solon-rx Completable:subscribe(emitter) 方法
 * 优化 solon-net-httputils 异步的异常传递
+* 调整 solon-test `@SolonTest` 改为实例化后再处理，之前为容器能力会触发旁类扫描（影响：测试类不再支持构造注入）
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
 * 修复 solon-net-httputils 流式返回的状态码没有传递的问题
 * 修复 solon-web-rx next 异常时，没有取消 subscription 的问题。

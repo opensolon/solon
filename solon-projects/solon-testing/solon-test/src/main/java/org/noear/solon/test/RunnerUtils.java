@@ -89,6 +89,10 @@ public class RunnerUtils {
             if (testWrap == null) {
                 testWrap = appContext.wrapAndPut(klass);
             }
+
+            if (testWrap != null) {
+                appContext.beanExtractOrProxy(testWrap);
+            }
         }
 
         if (testWrap.proxy() != null) {
