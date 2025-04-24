@@ -38,6 +38,7 @@
         <module>../../solon-projects/solon-web/solon-web-sse</module>
         <module>../../solon-projects/solon-web/solon-web-vertx</module>
         <module>../../solon-projects/solon-web/solon-web-webservices</module>
+        <module>../../solon-projects/solon-web/solon-web-gateway</module>
 
         <module>../../solon-projects/solon-cloud_old/solon.cloud</module>
         <module>../../solon-projects/solon-cloud_old/solon.cloud.eventplus</module>

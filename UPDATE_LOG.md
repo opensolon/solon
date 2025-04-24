@@ -23,6 +23,7 @@
 
 ### 3.2.1
 
+* 新增 solon-web-gateway 插件
 * 添加 solon-cloud CloudFileService:deleteBatch 批量删除方法
 * 添加 solon-cloud-gateway ExFilterSync、CloudGatewayFilterSync 接口，用于简化同步接口对接
 * 添加 solon-ai ChatRequestDefault http 状态异常处理

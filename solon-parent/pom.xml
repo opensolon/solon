@@ -632,6 +632,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-web-gateway</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-web-rx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
