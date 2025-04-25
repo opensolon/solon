@@ -35,8 +35,6 @@ public class PermissionsInterceptor extends AbstractInterceptor<AuthPermissions>
 
     @Override
     public Result verify(AuthPermissions anno, Invocation inv) throws Exception {
-
-
         if (AuthUtil.verifyPermissions(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {
