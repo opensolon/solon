@@ -66,4 +66,9 @@ public @interface Mapping {
      * 是否申明为多分片（否则为自动识别）
      */
     boolean multipart() default false;
+
+    /**
+     * 描述
+     */
+    String description() default "";
 }
