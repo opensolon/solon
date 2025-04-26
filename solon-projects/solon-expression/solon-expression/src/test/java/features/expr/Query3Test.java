@@ -211,4 +211,22 @@ public class Query3Test {
         assert true == (Boolean) result;
         assert 1 == 1.0D;
     }
+
+    @Test
+    public void case12() {
+        Object rst = SnEL.eval("'Hello'.concat(' World')");
+        System.out.println(rst);
+
+        assert "Hello World".equals(rst);
+    }
+
+    @Test
+    public void case13() {
+        Map<String, Object> context = new HashMap();
+        context.put("end", "!");
+        Object rst = SnEL.eval("('Hello' + ' World').concat(end)", context);
+        System.out.println(rst);
+
+        assert "Hello World!".equals(rst);
+    }
 }

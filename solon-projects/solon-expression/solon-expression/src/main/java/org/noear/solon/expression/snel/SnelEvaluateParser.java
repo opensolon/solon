@@ -196,25 +196,61 @@ public class SnelEvaluateParser implements Parser {
      */
     private Expression parsePrimaryExpression(ParserState state) {
         state.skipWhitespace();
+        Expression expr;
+
         if (eat(state, '(')) {
-            Expression expr = parseTernaryExpression(state);
-            eat(state, ')');
-            return expr;
+            expr = parseTernaryExpression(state);
+            require(state, ')', "Expected ')' after expression");
         } else if (state.isNumber()) {
-            return new ConstantNode(parseNumber(state));
+            expr = new ConstantNode(parseNumber(state));
         } else if (state.isString()) {
-            return new ConstantNode(parseString(state));
+            expr = new ConstantNode(parseString(state));
         } else if (state.isArray()) {
-            return parseListExpression(state);
+            expr = parseListExpression(state);
         } else if (checkKeyword(state, "true")) {
-            return new ConstantNode(true);
+            expr = new ConstantNode(true);
         } else if (checkKeyword(state, "false")) {
-            return new ConstantNode(false);
+            expr = new ConstantNode(false);
         } else if (checkKeyword(state, "null")) {
-            return new ConstantNode(null);
+            expr = new ConstantNode(null);
         } else {
-            return parseVariableOrMethodCall(state);
+            String identifier = parseIdentifier(state);
+            expr = new VariableNode(identifier);
         }
+
+        return parsePostfix(state, expr);
+    }
+
+    /**
+     * 处理表达式后的点、方括号和方法调用
+     * */
+    private Expression parsePostfix(ParserState state, Expression expr) {
+        while (true) {
+            state.skipWhitespace();
+            if (eat(state, '.')) {
+                String prop = parseIdentifier(state);
+                expr = new PropertyNode(expr, prop);
+            } else if (eat(state, '[')) {
+                Expression indexExpr = parseLogicalOrExpression(state);
+                require(state, ']', "Expected ']' after index");
+                expr = new PropertyNode(expr, indexExpr);
+            } else if (eat(state, '(')) {
+                List<Expression> args = parseMethodArguments(state);
+                require(state, ')', "Expected ')' after arguments");
+                if (expr instanceof PropertyNode) {
+                    PropertyNode propNode = (PropertyNode) expr;
+                    expr = new MethodNode(propNode.getTarget(), propNode.getPropertyName(), args);
+                } else if (expr instanceof VariableNode) {
+                    VariableNode varNode = (VariableNode) expr;
+                    expr = new MethodNode(varNode, varNode.getName(), args);
+                } else {
+                    throw new CompilationException("Invalid method call target: " + expr);
+                }
+            } else {
+                break;
+            }
+        }
+        return expr;
     }
 
     /**
