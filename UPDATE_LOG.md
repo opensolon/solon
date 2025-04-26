@@ -27,6 +27,8 @@
 * 添加 solon-cloud-gateway ExFilterSync、CloudGatewayFilterSync 接口，用于简化同步接口对接
 * 添加 solon-ai ChatRequestDefault http 状态异常处理
 * 添加 solon-ai ToolCallResultConverter 接口（工具调用结果转换器）
+* 添加 solon-ai ToolCall 添加 Mapping 和 Param 注解（支持与 web api 打通）
+* 添加 solon-ai Tool.returnDirect 属性，用于直接返回给调用者（mcp 目前无法传导此属性，只能地本地用）
 * 添加 solon-ai-mcp McpChannel 通道（stdio, sse），实现不同通道的配置切换支持
 * 添加 solon-ai-mcp stdio 通道（也可能叫方式）交换流支持
 * 添加 solon-ai-mcp McpClientToolProvider 断线重连机制（对生产很重要）
@@ -38,6 +40,7 @@
 * 优化 solon-net-httputils 异步的异常传递
 * 调整 solon-test `@SolonTest` 改为实例化后再处理，之前为容器能力会触发旁类扫描（影响：测试类不再支持构造注入）
 * 调整 solon-ai-mcp McpClientToolProvider.Builder:header 更名为 headerSet。保持与 ChatModel:Builder 相同风格
+* 调整 solon-ai ToolCallResultConverter 申明不再扩展自 Converter，避免冲突
 * 修复 solon-ai ollama 方言，在多工具调用时产生 index 混乱的问题
 * 修复 solon-ai-load-word WordLoader 流使用错误问题
 * 修复 solon-ai-mcp McpClientToolProvider 会丢失 queryString 的问题
