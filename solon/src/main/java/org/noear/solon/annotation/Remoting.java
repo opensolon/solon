@@ -25,4 +25,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Remoting {
+    /**
+     * 描述
+     */
+    String description() default "";
 }

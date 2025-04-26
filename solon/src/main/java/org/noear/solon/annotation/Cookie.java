@@ -34,17 +34,25 @@ public @interface Cookie {
      * */
     @Alias("name")
     String value() default "";
+
     /**
      * 名字
      * */
     @Alias("value")
     String name() default "";
+
     /**
      * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;
+
     /**
      * 默认值
      * */
     String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
+
+    /**
+     * 描述
+     */
+    String description() default "";
 }

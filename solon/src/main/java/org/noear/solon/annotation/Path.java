@@ -32,9 +32,15 @@ public @interface Path {
      * */
     @Alias("name")
     String value() default "";
+
     /**
      * 名字
      * */
     @Alias("value")
     String name() default "";
+
+    /**
+     * 描述
+     */
+    String description() default "";
 }

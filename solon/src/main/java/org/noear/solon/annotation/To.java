@@ -27,5 +27,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface To {
+    /**
+     * 目标
+     * */
     String[] value() default {};
 }
