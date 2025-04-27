@@ -21,6 +21,10 @@
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
 
+### 3.2.2
+
+* 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
+
 ### 3.2.1
 
 * 添加 solon-cloud CloudFileService:deleteBatch 批量删除方法

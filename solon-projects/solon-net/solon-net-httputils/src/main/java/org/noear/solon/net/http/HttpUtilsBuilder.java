@@ -18,6 +18,9 @@ package org.noear.solon.net.http;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.MultiMap;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 /**
  * Http 工具构建器（提供预处理支持）
  *
@@ -30,6 +33,7 @@ public class HttpUtilsBuilder {
     private String service;
     private MultiMap<String> headers = new MultiMap<>();
     private HttpTimeout timeout;
+    private Proxy proxy;
 
     /**
      * 服务名
@@ -95,6 +99,21 @@ public class HttpUtilsBuilder {
     }
 
     /**
+     * 设置代理
+     */
+    public HttpUtilsBuilder proxy(Proxy proxy) {
+        this.proxy = proxy;
+        return this;
+    }
+
+    /**
+     * 设置代理
+     */
+    public HttpUtilsBuilder proxy(String host, int port) {
+        return proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
+    }
+
+    /**
      * 构建 Http 工具
      */
     public HttpUtils build(String url) {
@@ -103,9 +122,9 @@ public class HttpUtilsBuilder {
         }
 
         if (Utils.isNotEmpty(baseUri)) {
-            return HttpUtils.http(baseUri + url).headers(headers).timeout(timeout);
+            return HttpUtils.http(baseUri + url).headers(headers).timeout(timeout).proxy(proxy);
         } else {
-            return HttpUtils.http(url).headers(headers).timeout(timeout);
+            return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy);
         }
     }
 }
