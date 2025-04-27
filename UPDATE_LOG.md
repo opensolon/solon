@@ -24,6 +24,7 @@
 ### 3.2.2
 
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
+* 添加 solon-net-httputils HttpProxy 类
 
 ### 3.2.1
 
