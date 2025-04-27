@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http;
 
+import java.io.Serializable;
 import java.time.Duration;
 
 /**
@@ -23,7 +24,7 @@ import java.time.Duration;
  * @author noear
  * @since 1.7
  */
-public class HttpTimeout {
+public class HttpTimeout implements Serializable {
     /**
      * 连接超时
      */

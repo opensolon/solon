@@ -15,13 +15,15 @@
  */
 package org.noear.solon.net.http;
 
+import java.io.Serializable;
+
 /**
  * Http 代理
  *
  * @author noear
  * @since 3.1
  */
-public class HttpProxy {
+public class HttpProxy implements Serializable {
     private String host;
     private int port;
 
