@@ -1,9 +1,0 @@
-
-
-# 这个配置不需要，只是尝试
-solon.cloud.metrics:
-  token: ""
-  endpoints:
-    web:
-      exposure:
-        include: registrys, meters, meter, prometheus

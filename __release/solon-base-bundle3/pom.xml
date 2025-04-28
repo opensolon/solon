@@ -16,13 +16,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects/solon-cloud/solon-cloud</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-eventplus</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-gateway</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-telemetry</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-metrics</module>
-        <module>../../solon-projects/solon-cloud/solon-cloud-tracing</module>
-
         <module>../../solon-projects/solon-web/solon-sessionstate-jedis</module>
         <module>../../solon-projects/solon-web/solon-sessionstate-local</module>
         <module>../../solon-projects/solon-web/solon-sessionstate-jwt</module>
@@ -39,10 +32,16 @@
         <module>../../solon-projects/solon-web/solon-web-vertx</module>
         <module>../../solon-projects/solon-web/solon-web-webservices</module>
 
-        <module>../../solon-projects/solon-cloud_old/solon.cloud</module>
-        <module>../../solon-projects/solon-cloud_old/solon.cloud.eventplus</module>
-        <module>../../solon-projects/solon-cloud_old/solon.cloud.gateway</module>
-        <module>../../solon-projects/solon-cloud_old/solon.cloud.tracing</module>
-        <module>../../solon-projects/solon-cloud_old/solon.cloud.metrics</module>
+
+        <module>../../solon-projects/solon-base_old/solon.proxy</module>
+        <module>../../solon-projects/solon-base_old/solon.config.yaml</module>
+        <module>../../solon-projects/solon-base_old/solon.banner</module>
+        <module>../../solon-projects/solon-base_old/solon.i18n</module>
+        <module>../../solon-projects/solon-base_old/solon.hotplug</module>
+        <module>../../solon-projects/solon-base_old/solon.mvc</module>
+
+        <module>../../solon-projects/solon-security_old/solon.auth</module>
+        <module>../../solon-projects/solon-security_old/solon.vault</module>
+        <module>../../solon-projects/solon-security_old/solon.validation</module>
     </modules>
 </project>

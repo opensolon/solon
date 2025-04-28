@@ -45,17 +45,8 @@
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-configuration-processor</module>
 
-        <module>../../solon-projects/solon-base_old/solon.proxy</module>
-        <module>../../solon-projects/solon-base_old/solon.config.yaml</module>
-        <module>../../solon-projects/solon-base_old/solon.banner</module>
-        <module>../../solon-projects/solon-base_old/solon.i18n</module>
-        <module>../../solon-projects/solon-base_old/solon.hotplug</module>
-        <module>../../solon-projects/solon-base_old/solon.mvc</module>
 
         <module>../../solon-projects/solon-native_old/solon.aot</module>
 
-        <module>../../solon-projects/solon-security_old/solon.auth</module>
-        <module>../../solon-projects/solon-security_old/solon.vault</module>
-        <module>../../solon-projects/solon-security_old/solon.validation</module>
     </modules>
 </project>

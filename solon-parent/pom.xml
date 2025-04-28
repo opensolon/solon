@@ -930,31 +930,31 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud-gateway</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud-eventplus</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud-tracing</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud-metrics</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <dependency>
@@ -1885,27 +1885,27 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.eventplus</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.gateway</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.metrics</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.tracing</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-cloud.version}</version>
             </dependency>
 
             <!-- old::data -->
