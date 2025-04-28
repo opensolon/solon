@@ -37,7 +37,9 @@ public class ServerSentEvent implements Serializable {
     }
 
     public ServerSentEvent(Map<String, String> meta, String data) {
-        this.data = data;
+        if (data != null) {
+            this.data = data.trim();
+        }
 
         if (meta != null) {
             this.id = meta.get("id");
@@ -49,8 +51,11 @@ public class ServerSentEvent implements Serializable {
     public ServerSentEvent(String id, String event, String data, String retry) {
         this.id = id;
         this.event = event;
-        this.data = data;
         this.retry = retry;
+
+        if (data != null) {
+            this.data = data.trim();
+        }
     }
 
     public String getData() {
