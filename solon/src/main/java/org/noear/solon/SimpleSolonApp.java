@@ -40,14 +40,25 @@ public class SimpleSolonApp extends SolonApp {
     }
 
     private SolonApp bakApp;
+    private boolean globalize = true;
+
+    /**
+     * 是否全局化（默认为 true）
+     */
+    public SimpleSolonApp globalize(boolean globalize) {
+        this.globalize = globalize;
+        return this;
+    }
 
     /**
      * 简单开始
      */
     public SimpleSolonApp start(ConsumerEx<SolonApp> initialize) throws Throwable {
-        //切换全局 app
-        bakApp = Solon.app();
-        Solon.appSet(this);
+        if (globalize) {
+            //切换全局 app
+            bakApp = Solon.app();
+            Solon.appSet(this);
+        }
 
         super.startDo(initialize);
         return this;
@@ -62,8 +73,10 @@ public class SimpleSolonApp extends SolonApp {
             super.stoppingDo();
             super.stopDo();
         } finally {
-            //恢复全局 app
-            Solon.appSet(bakApp);
+            if (globalize) {
+                //恢复全局 app
+                Solon.appSet(bakApp);
+            }
         }
     }
 }
