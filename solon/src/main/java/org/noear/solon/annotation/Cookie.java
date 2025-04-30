@@ -44,7 +44,7 @@ public @interface Cookie {
     /**
      * 必须的(只做标识，不做检查)
      * */
-    boolean required() default false;
+    boolean required() default true;
 
     /**
      * 默认值
