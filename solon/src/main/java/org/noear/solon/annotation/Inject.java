@@ -66,7 +66,6 @@ public @interface Inject {
     /**
      * 必需的
      * */
-    @Note("配置注入时有效")
     boolean required() default true;
     /**
      * 自动刷新

@@ -42,7 +42,7 @@ public @interface Header {
     String name() default "";
 
     /**
-     * 必须的(只做标识，不做检查)
+     * 必须的
      * */
     boolean required() default true;
 
