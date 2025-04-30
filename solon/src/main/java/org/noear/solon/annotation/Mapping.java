@@ -68,6 +68,11 @@ public @interface Mapping {
     boolean multipart() default false;
 
     /**
+     * 名字
+     */
+    String name() default "";
+
+    /**
      * 描述
      */
     String description() default "";
