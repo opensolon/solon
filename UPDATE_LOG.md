@@ -23,6 +23,7 @@
 
 ### 3.2.2
 
+* 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
 * 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）

@@ -36,7 +36,7 @@ public class App {
     }
 
     @Mapping("session")
-    public Object session(Context ctx, @Param("name") String name) {
+    public Object session(Context ctx, @Param(value = "name", required = false) String name) {
         if (name == null) {
             return ctx.session("name");
         } else {
