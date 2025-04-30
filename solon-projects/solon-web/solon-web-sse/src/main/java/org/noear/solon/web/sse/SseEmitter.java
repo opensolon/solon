@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -123,12 +124,26 @@ public class SseEmitter {
         }
     }
 
+    private final AtomicBoolean completed = new AtomicBoolean(false);
+
+    /**
+     * 是否已完成
+     */
+    public boolean isCompleted() {
+        return completed.get();
+    }
+
     /**
      * 完成（用于手动控制）
      */
     public void complete() {
         try {
-            eventHandler.complete();
+            completed.set(true);
+
+            if (eventHandler != null) {
+                eventHandler.complete();
+                eventHandler = null; //避免再次调用
+            }
         } catch (IOException e) {
             log.warn(e.getMessage(), e);
         }
@@ -149,6 +164,11 @@ public class SseEmitter {
         //2.开始初始化（一般也是发消息）
         if (onInited != null) {
             onInited.accept(this);
+        }
+
+        if (completed.get()) {
+            //如果已完成（初始化之前就意外完成了）
+            complete();
         }
     }
 }
