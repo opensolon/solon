@@ -460,7 +460,9 @@ public class BeanWrap {
             Object bean = ClassUtil.newInstance(rawCtor, rawCtorArgs);
 
             //2.完成注入动作
-            context.beanInject(bean);
+            if(context != null) {
+                context.beanInject(bean);
+            }
 
             //4.返回
             return bean;
@@ -479,7 +481,7 @@ public class BeanWrap {
      * @since 2.3
      */
     protected void tryInit(String initMethodName, String destroyMethodName) {
-        if (lifecycle == null) {
+        if (context != null && lifecycle == null) {
             lifecycle = new BeanWrapLifecycle(this, initMethodName, destroyMethodName);
             if (lifecycle.check()) {
                 context.lifecycle(lifecycle.index() + 1, lifecycle);
