@@ -24,6 +24,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.2
  * */
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -43,6 +44,8 @@ public @interface Param {
 
     /**
      * 必须的
+     *
+     * @since 3.2
      * */
     boolean required() default true;
 

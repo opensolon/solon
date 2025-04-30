@@ -33,6 +33,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.2
  * */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -69,6 +70,8 @@ public @interface Mapping {
 
     /**
      * 名字
+     *
+     * @since 3.2
      */
     String name() default "";
 
