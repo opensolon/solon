@@ -20,10 +20,7 @@ import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
 
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -166,10 +163,10 @@ public class NamiHandler implements InvocationHandler {
         //构建 args
         Map<String, Object> args = new LinkedHashMap<>();
         Object body = null;
-        Parameter[] names = methodWrap.getParameters();
-        for (int i = 0, len = names.length; i < len; i++) {
+        List<ParameterWrap> params = methodWrap.getParameters();
+        for (int i = 0, len = params.size(); i < len; i++) {
             if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i]);
+                args.put(params.get(i).getName(), vals[i]);
             }
         }
 

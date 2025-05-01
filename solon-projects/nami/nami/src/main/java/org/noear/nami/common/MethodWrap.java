@@ -19,8 +19,7 @@ import org.noear.nami.annotation.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -48,10 +47,11 @@ public class MethodWrap {
 
     protected MethodWrap(Method m) {
         this.method = m;
-        this.parameters = m.getParameters();
+        this.parameters = new ArrayList<>(m.getParameterCount());
         resolveMappingAnno(m);
 
-        for (Parameter p1 : parameters) {
+        for (Parameter p1 : m.getParameters()) {
+            parameters.add(new ParameterWrap(p1));
             resolveBodyAnno(p1);
             if (bodyAnno != null) {
                 bodyName = p1.getName();
@@ -88,7 +88,7 @@ public class MethodWrap {
     }
 
     private Method method;
-    private Parameter[] parameters;
+    private List<ParameterWrap> parameters;
     private String bodyName;
     private NamiBody bodyAnno;
     private NamiMapping mappingAnno;
@@ -100,7 +100,7 @@ public class MethodWrap {
         return method;
     }
 
-    public Parameter[] getParameters() {
+    public List<ParameterWrap> getParameters() {
         return parameters;
     }
 

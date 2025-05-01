@@ -15,22 +15,20 @@
  */
 package org.noear.nami.annotation;
 
-import org.noear.nami.common.ContentTypes;
-
 import java.lang.annotation.*;
 
 /**
- * 指定参数转为Body
+ * 请求参数
  *
  * @author noear
- * @since 1.2
+ * @since 3.2
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface NamiBody {
+public @interface NamiParam {
     /**
-     * 内容类型
+     * 参数名
      */
-    String contentType() default ContentTypes.JSON_VALUE;
+    String value();
 }
