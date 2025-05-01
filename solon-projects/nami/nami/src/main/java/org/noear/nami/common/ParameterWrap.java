@@ -38,7 +38,7 @@ public class ParameterWrap {
             name = anno.value();
         }
 
-        if (name == null || name.length() == 0) {
+        if (TextUtils.isEmpty(name)) {
             name = parameter.getName();
         }
     }
