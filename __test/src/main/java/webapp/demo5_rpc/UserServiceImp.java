@@ -27,6 +27,7 @@ import webapp.demo5_rpc.protocol.UserService;
 @Mapping("/demo5/user/")
 @Remoting
 public class UserServiceImp implements UserService {
+    @Get
     @Post
     @Override
     public UserModel getUser(Integer userId) {
