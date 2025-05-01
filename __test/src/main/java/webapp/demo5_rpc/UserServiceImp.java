@@ -15,8 +15,10 @@
  */
 package webapp.demo5_rpc;
 
+import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 
+import org.noear.solon.annotation.Post;
 import org.noear.solon.annotation.Remoting;
 import webapp.demo5_rpc.protocol.UserModel;
 import webapp.demo5_rpc.protocol.UserService;
@@ -25,6 +27,7 @@ import webapp.demo5_rpc.protocol.UserService;
 @Mapping("/demo5/user/")
 @Remoting
 public class UserServiceImp implements UserService {
+    @Post
     @Override
     public UserModel getUser(Integer userId) {
         UserModel model = new UserModel();
@@ -32,6 +35,11 @@ public class UserServiceImp implements UserService {
         model.setName("user-" + userId);
 
         return model;
+    }
+
+    @Override
+    public UserModel getUserPut(Integer userId) {
+        return null;
     }
 
     @Override

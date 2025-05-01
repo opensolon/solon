@@ -39,12 +39,12 @@ public class NamiAndRpcTest {
     UserService userService;
 
     //使用负载
-    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/json"}, timeout = 20)
+    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type=application/json"}, timeout = 20)
     UserService userService2;
 
 
     //使用负载
-    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/hessian"})
+    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type=application/hessian"})
     UserService userService3;
 
     @Test
@@ -185,5 +185,19 @@ public class NamiAndRpcTest {
             e.printStackTrace();
             assert false;
         }
+    }
+
+    @Test
+    public void test7_405(){
+        Exception ee = null;
+        try {
+            userService.getUserPut(1);
+        }catch (Exception e){
+            ee = e;
+            e.printStackTrace();
+        }
+
+        assert ee != null;
+        assert ee.getMessage().contains("405");
     }
 }

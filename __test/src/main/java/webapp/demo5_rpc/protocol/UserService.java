@@ -15,8 +15,13 @@
  */
 package webapp.demo5_rpc.protocol;
 
+import org.noear.nami.annotation.NamiMapping;
+
 public interface UserService {
     UserModel getUser(Integer userId);
+
+    @NamiMapping("PUT getUser")
+    UserModel getUserPut(Integer userId);
 
     UserModel addUser(UserModel user);
 
