@@ -28,6 +28,7 @@
 * 调整 solon-ai 模型方言改为插件扩展方式
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类
+* snack3 升为 3.2.132
 
 ### 3.2.1
 
