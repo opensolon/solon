@@ -24,10 +24,18 @@
 ### 3.2.2
 
 * 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
+* 调整 solon Param 注解，添加字段支持
+* 调整 solon-ai ToolMapping,ToolParam 注解移到 org.noear.solon.ai.annotation
 * 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
+* 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类
+* 添加 solon-ai-mcp McpClientProperties:httpProxy 配置
+* 添加 solon-ai-mcp McpClientToolProvider isStarted 状态位（把心跳开始，转为第一次调用这后）
+* 添加 solon-ai-mcp McpServerEndpointProvider:getVersion,getChannel,getSseEndpoint,getTools,getServer 方法
+* 添加 solon-ai-mcp McpServerEndpointProvider:Builder:channel 方法
+* 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
 * snack3 升为 3.2.132
 
 ### 3.2.1
