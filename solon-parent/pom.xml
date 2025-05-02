@@ -176,7 +176,7 @@
         <sqltoy.version>5.6.37.jre8</sqltoy.version>
         <mybatis-flex.version>1.10.7</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
-        <dbvisitor.version>5.4.3</dbvisitor.version>
+        <dbvisitor.version>6.0.0</dbvisitor.version>
         <bean-searcher.version>4.3.2</bean-searcher.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
 

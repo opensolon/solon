@@ -38,6 +38,7 @@
 * 添加 solon-ai-mcp McpServerEndpointProvider:Builder:channel 方法
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
 * snack3 升为 3.2.132
+* dbvisitor 升为 6.0.0
 
 ### 3.2.1
 
