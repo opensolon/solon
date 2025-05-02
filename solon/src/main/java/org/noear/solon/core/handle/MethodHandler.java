@@ -49,11 +49,14 @@ public class MethodHandler implements Handler {
      */
     @Override
     public void handle(Context c) throws Throwable {
-        Object tmp = Solon.app().chainManager().getExecuteHandlerDefault()
-                .executeHandle(c, bw.get(true), mw);
+        Object target = bw.get(true);
+        Object[] args = Solon.app().chainManager().getExecuteHandlerDefault()
+                .resolveArguments(c, target, mw);
+
+        Object rst = mw.invokeByAspect(target, args);
 
         if (allowResult) {
-            c.result = tmp;
+            c.result = rst;
         }
     }
 }
