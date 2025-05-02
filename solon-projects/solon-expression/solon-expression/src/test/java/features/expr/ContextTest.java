@@ -51,6 +51,18 @@ public class ContextTest {
         //支持 root 变量
         result = SnEL.eval("root.age == 20 ? true : false", new ObjectContext(user));
         assert true == (Boolean) result;
+
+        result = SnEL.eval("root['age'] == 20 ? true : false", new ObjectContext(user));
+        assert true == (Boolean) result;
+    }
+
+    @Test
+    public void case3() {
+        Object result = SnEL.eval("root == true", new ObjectContext(true));
+        assert true == (Boolean) result;
+
+        result = SnEL.eval("root == true", new ObjectContext(false));
+        assert false == (Boolean) result;
     }
 
 
