@@ -39,6 +39,7 @@
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
 * snack3 升为 3.2.132
 * dbvisitor 升为 6.0.0
+* sa-token 升为 1.42.0
 
 ### 3.2.1
 
