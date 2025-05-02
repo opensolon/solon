@@ -28,11 +28,11 @@ import java.util.function.Function;
  * @author noear
  * @since 3.2
  */
-public class ObjectContext implements Function<String, Object> {
+public class StandardContext implements Function<String, Object> {
     private final Object target;
     private final boolean isMap;
 
-    public ObjectContext(Object target) {
+    public StandardContext(Object target) {
         this.target = target;
         this.isMap = target instanceof Map;
     }
