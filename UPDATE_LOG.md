@@ -23,6 +23,7 @@
 
 ### 3.2.2
 
+* 新增 solon-data Ds 注解（为统一数据源注入作准备）
 * 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
 * 调整 solon Param 注解，添加字段支持
 * 调整 solon-ai ToolMapping,ToolParam 注解移到 org.noear.solon.ai.annotation
@@ -40,6 +41,7 @@
 * snack3 升为 3.2.132
 * dbvisitor 升为 6.0.0
 * sa-token 升为 1.42.0
+* mybatis-flex 升为 1.10.9
 
 ### 3.2.1
 
