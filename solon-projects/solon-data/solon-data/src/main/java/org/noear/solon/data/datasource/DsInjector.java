@@ -23,9 +23,9 @@ import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -35,25 +35,25 @@ import java.util.function.Function;
  * @since 3.2
  */
 @Preview("3.2")
-public class DsInterceptor<T extends Annotation> implements BeanInjector<T> {
-    private static final DsInterceptor<Ds> _default = new DsInterceptor<>(Ds::value);
+public class DsInjector<T extends Annotation> implements BeanInjector<T> {
+    private static final DsInjector<Ds> _default = new DsInjector<>(Ds::value);
 
-    public static DsInterceptor<Ds> getDefault() {
+    public static DsInjector<Ds> getDefault() {
         return _default;
     }
 
-    protected final Map<Class<?>, BiConsumer<VarHolder, BeanWrap>> handlers = new ConcurrentHashMap<>();
+    protected final List<BiFunction<VarHolder, BeanWrap, Boolean>> handlers = new ArrayList<>();
     protected final Function<T, String> nameMapper;
 
-    public DsInterceptor(Function<T, String> nameMapper) {
+    public DsInjector(Function<T, String> nameMapper) {
         this.nameMapper = nameMapper;
     }
 
     /**
-     * 添加类型处理器
+     * 添加类型注入处理器
      */
-    public void addHandler(Class<?> type, BiConsumer<VarHolder, BeanWrap> handler) {
-        handlers.put(type, handler);
+    public void addHandler(BiFunction<VarHolder, BeanWrap, Boolean> handler) {
+        handlers.add(handler);
     }
 
     /**
@@ -64,32 +64,25 @@ public class DsInterceptor<T extends Annotation> implements BeanInjector<T> {
         vh.required(true);
 
         DsUtils.observeDs(vh.context(), nameMapper.apply(anno), dsWrap -> {
-            doInject0(vh, dsWrap);
+            doInjectHandle(vh, dsWrap);
         });
     }
 
     /**
      * 注入处理
      */
-    protected void doInject0(VarHolder vh, BeanWrap dsWrap) {
-        //先按类型处理
-        for (Map.Entry<Class<?>, BiConsumer<VarHolder, BeanWrap>> entry : handlers.entrySet()) {
-            if (entry.getKey().isAssignableFrom(vh.getType())) {
-                entry.getValue().accept(vh, dsWrap);
+    protected void doInjectHandle(VarHolder vh, BeanWrap dsWrap) {
+        //注册处理优先
+        for (BiFunction<VarHolder, BeanWrap, Boolean> handler : handlers) {
+            if (handler.apply(vh, dsWrap)) {
                 return;
             }
         }
 
+        //默认处理
         if (DataSource.class.isAssignableFrom(vh.getType())) {
             vh.setValue(dsWrap.get());
             return;
-        }
-
-        //如果没有，尝试默认
-        BiConsumer<VarHolder, BeanWrap> defHandler = handlers.get(Void.class);
-
-        if (defHandler != null) {
-            defHandler.accept(vh, dsWrap);
         }
     }
 }
