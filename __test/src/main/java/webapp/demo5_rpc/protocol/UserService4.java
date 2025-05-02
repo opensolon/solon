@@ -16,8 +16,9 @@
 package webapp.demo5_rpc.protocol;
 
 import org.noear.nami.annotation.NamiMapping;
+import org.noear.nami.annotation.NamiParam;
 
 public interface UserService4 {
     @NamiMapping("GET getUser")
-    UserModel xxx(Integer userId);
+    UserModel xxx(@NamiParam("userId") Integer id);
 }
