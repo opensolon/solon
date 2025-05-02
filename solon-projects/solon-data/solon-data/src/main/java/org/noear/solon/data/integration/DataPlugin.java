@@ -62,7 +62,7 @@ public class DataPlugin implements Plugin {
         }
 
         //@since 3.2
-        context.beanInjectorAdd(Ds.class, DsInterceptor.getInstance());
+        context.beanInjectorAdd(Ds.class, DsInterceptor.getDefault());
 
         //自动构建数据源
         context.app().onEvent(AppPluginLoadEndEvent.class, new DataSourcesBuilder());

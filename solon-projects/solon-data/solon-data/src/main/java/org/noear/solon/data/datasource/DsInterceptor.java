@@ -22,9 +22,11 @@ import org.noear.solon.data.annotation.Ds;
 import org.noear.solon.lang.Preview;
 
 import javax.sql.DataSource;
+import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Ds 注入器
@@ -33,14 +35,19 @@ import java.util.function.BiConsumer;
  * @since 3.2
  */
 @Preview("3.2")
-public class DsInterceptor implements BeanInjector<Ds> {
-    private static final DsInterceptor instance = new DsInterceptor();
+public class DsInterceptor<T extends Annotation> implements BeanInjector<T> {
+    private static final DsInterceptor<Ds> _default = new DsInterceptor<>(Ds::value);
 
-    public static DsInterceptor getInstance() {
-        return instance;
+    public static DsInterceptor<Ds> getDefault() {
+        return _default;
     }
 
     protected final Map<Class<?>, BiConsumer<VarHolder, BeanWrap>> handlers = new ConcurrentHashMap<>();
+    protected final Function<T, String> nameMapper;
+
+    public DsInterceptor(Function<T, String> nameMapper) {
+        this.nameMapper = nameMapper;
+    }
 
     /**
      * 添加类型处理器
@@ -53,8 +60,10 @@ public class DsInterceptor implements BeanInjector<Ds> {
      * 注入
      */
     @Override
-    public void doInject(VarHolder vh, Ds anno) {
-        DsUtils.observeDs(vh.context(), anno.value(), dsWrap -> {
+    public void doInject(VarHolder vh, T anno) {
+        vh.required(true);
+
+        DsUtils.observeDs(vh.context(), nameMapper.apply(anno), dsWrap -> {
             doInject0(vh, dsWrap);
         });
     }
