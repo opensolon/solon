@@ -19,19 +19,22 @@ import org.noear.solon.expression.exception.EvaluationException;
 import org.noear.solon.expression.snel.PropertyHolder;
 import org.noear.solon.expression.snel.ReflectionUtil;
 
+import java.util.Map;
 import java.util.function.Function;
 
 /**
- * 对象上下文
+ * 标准上下文
  *
  * @author noear
  * @since 3.2
  */
 public class ObjectContext implements Function<String, Object> {
     private final Object target;
+    private final boolean isMap;
 
     public ObjectContext(Object target) {
         this.target = target;
+        this.isMap = target instanceof Map;
     }
 
     @Override
@@ -40,12 +43,16 @@ public class ObjectContext implements Function<String, Object> {
             return target;
         }
 
-        PropertyHolder tmp = ReflectionUtil.getProperty(target.getClass(), name);
+        if (isMap) {
+            return ((Map) target).get(name);
+        } else {
+            PropertyHolder tmp = ReflectionUtil.getProperty(target.getClass(), name);
 
-        try {
-            return tmp.getValue(target);
-        } catch (Throwable e) {
-            throw new EvaluationException("Failed to access property: " + name, e);
+            try {
+                return tmp.getValue(target);
+            } catch (Throwable e) {
+                throw new EvaluationException("Failed to access property: " + name, e);
+            }
         }
     }
 }

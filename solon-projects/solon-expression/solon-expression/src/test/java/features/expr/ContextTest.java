@@ -1,7 +1,6 @@
 package features.expr;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.expression.context.MapContext;
 import org.noear.solon.expression.context.ObjectContext;
 import org.noear.solon.expression.snel.SnEL;
 
@@ -26,16 +25,16 @@ public class ContextTest {
         Map<String, Object> context = new HashMap();
         context.put("order", order);
 
-        Object result = SnEL.eval("order.user.age == 20 ? true : false", new MapContext(context));
+        Object result = SnEL.eval("order.user.age == 20 ? true : false", new ObjectContext(context));
         assert true == (Boolean) result;
 
 
-        result = SnEL.eval("order.user.age == order.user.age2 ? true : false", new MapContext(context));
+        result = SnEL.eval("order.user.age == order.user.age2 ? true : false", new ObjectContext(context));
         assert false == (Boolean) result;
 
 
         //支持 root 变量
-        result = SnEL.eval("root.order.user.age == order.user.age2 ? true : false", new MapContext(context));
+        result = SnEL.eval("root.order.user.age == order.user.age2 ? true : false", new ObjectContext(context));
         assert false == (Boolean) result;
     }
 
