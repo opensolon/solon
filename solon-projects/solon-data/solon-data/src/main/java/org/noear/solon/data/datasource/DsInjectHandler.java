@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.noear.solon.core.handle;
+package org.noear.solon.data.datasource;
+
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.VarHolder;
 
 /**
- * 通用处理接口（实现：Context + Handler 架构）
+ * 数据源注入处理器
  *
  * @author noear
- * @since 1.0
- * */
-@FunctionalInterface
-public interface Handler {
+ * @since 3.2
+ */
+public interface DsInjectHandler {
     /**
-     * 处理
-     *
-     * @param ctx 上下文
+     * 执行处理
      */
-    void handle(Context ctx) throws Throwable;
+    void doHandle(VarHolder vh, BeanWrap dsWrap);
 }

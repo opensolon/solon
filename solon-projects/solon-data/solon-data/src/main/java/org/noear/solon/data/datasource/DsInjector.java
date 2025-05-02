@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -42,7 +41,7 @@ public class DsInjector<T extends Annotation> implements BeanInjector<T> {
         return _default;
     }
 
-    protected final List<BiConsumer<VarHolder, BeanWrap>> handlers = new ArrayList<>();
+    protected final List<DsInjectHandler> handlers = new ArrayList<>();
     protected final Function<T, String> nameMapper;
 
     public DsInjector(Function<T, String> nameMapper) {
@@ -52,7 +51,7 @@ public class DsInjector<T extends Annotation> implements BeanInjector<T> {
     /**
      * 添加类型注入处理器
      */
-    public void addHandler(BiConsumer<VarHolder, BeanWrap> handler) {
+    public void addHandler(DsInjectHandler handler) {
         handlers.add(handler);
     }
 
@@ -73,8 +72,8 @@ public class DsInjector<T extends Annotation> implements BeanInjector<T> {
      */
     protected void doInjectHandle(VarHolder vh, BeanWrap dsWrap) {
         //注册处理优先
-        for (BiConsumer<VarHolder, BeanWrap> handler : handlers) {
-            handler.accept(vh, dsWrap);
+        for (DsInjectHandler handler : handlers) {
+            handler.doHandle(vh, dsWrap);
             if (vh.isDone()) {
                 return;
             }
