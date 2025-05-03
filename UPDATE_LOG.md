@@ -38,6 +38,7 @@
 * 添加 solon-ai-mcp McpServerEndpointProvider:getVersion,getChannel,getSseEndpoint,getTools,getServer 方法
 * 添加 solon-ai-mcp McpServerEndpointProvider:Builder:channel 方法
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
+* 修复 solon 由泛型桥接方法引起的泛型失真问题
 * snack3 升为 3.2.132
 * dbvisitor 升为 6.0.0
 * sa-token 升为 1.42.0

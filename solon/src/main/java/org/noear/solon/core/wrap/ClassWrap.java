@@ -63,7 +63,7 @@ public class ClassWrap {
         return cw;
     }
 
-    ///////////////////////////////
+    /// ////////////////////////////
 
     //本类
     private final Class<?> _clz;
@@ -88,8 +88,8 @@ public class ClassWrap {
         _recordable = true;
 
         //自己申明的函数
-        declaredMethods = ReflectUtil.getDeclaredMethods(clz);
-        methods = ReflectUtil.getMethods(clz);
+        declaredMethods = getDeclaredMethods(clz);
+        methods = getMethods(clz);
 
         //所有字段的包装（自己的 + 父类的）
 
@@ -118,6 +118,65 @@ public class ClassWrap {
             //取最后一个构造器进行包装（有选参数默认值时；会产生多个构造器；最后一个为全参）
             _recordConstructorWrap = new ConstructorWrap(clz, tmp[tmp.length - 1]);
         }
+    }
+
+    /**
+     * 获取自己的申明方法
+     */
+    private Method[] getDeclaredMethods(Class<?> clz) {
+        //过滤掉桥接方法
+        List<Method> tmp = new ArrayList<>();
+        for (Method m1 : ReflectUtil.getDeclaredMethods(clz)) {
+            if (m1.isBridge() == false) {
+                tmp.add(m1);
+            }
+        }
+
+        return tmp.toArray(new Method[tmp.size()]);
+    }
+
+    /**
+     * 获取所有的公有方法
+     */
+    private Method[] getMethods(Class<?> clz) {
+        List<Method> tmp = new ArrayList<>();
+
+        for (Method m1 : ReflectUtil.getMethods(clz)) {
+            if (m1.isBridge() == false) {
+                tmp.add(m1);
+            } else {
+                m1 = getRealMethod(clz.getSuperclass(), m1);
+
+                if (m1 != null && m1.isBridge() == false) {
+                    tmp.add(m1);
+                }
+            }
+        }
+
+        return tmp.toArray(new Method[tmp.size()]);
+    }
+
+    /**
+     * 获取申明的公有方法
+     */
+    private Method getRealMethod(Class<?> clz, Method m1) {
+        try {
+            m1 = clz.getMethod(m1.getName(), m1.getParameterTypes());
+
+            if (m1 != null) {
+                //如果有找到
+                if (m1.isBridge()) {
+                    //如果还是桥接方法
+                    return getRealMethod(clz.getSuperclass(), m1);
+                } else {
+                    //如果不是桥接方法
+                    return m1;
+                }
+            }
+        } catch (NoSuchMethodException ignore) {
+        }
+
+        return null;
     }
 
     public Class<?> clz() {
@@ -158,6 +217,7 @@ public class ClassWrap {
     }
 
     private List<Method> publicMethods;
+
     public Collection<Method> findPublicMethods() {
         if (publicMethods == null) {
             publicMethods = new ArrayList<>();
