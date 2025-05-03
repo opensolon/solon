@@ -12,11 +12,6 @@ import org.noear.solon.lang.Preview;
 @Preview("3.2")
 public interface EntityConverter {
     /**
-     * 是否可读
-     */
-    boolean canRead(String mime, Context ctx);
-
-    /**
      * 是否可写
      */
     boolean canWrite(String mime, Context ctx);
@@ -38,11 +33,16 @@ public interface EntityConverter {
 
 
     /**
+     * 是否可读
+     */
+    boolean canRead(Context ctx, String mime);
+
+    /**
      * 读取（参数分析）
      *
+     * @param ctx    上下文
      * @param target 控制器
      * @param mWrap  函数包装器
-     * @param ctx    上下文
      */
-    Object[] read(Object target, MethodWrap mWrap, Context ctx) throws Throwable;
+    Object[] read(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
 }
