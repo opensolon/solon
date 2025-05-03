@@ -32,6 +32,7 @@ public class ContentTypes {
     public static final String JSON_VALUE = "application/json";
     public static final String JSON_TYPE_VALUE = "application/json-type";
     public static final String FORM_URLENCODED_VALUE = "application/x-www-form-urlencoded";
+    public static final String FORM_DATA_VALUE = "multipart/form-data";
 
     //完整的 Content-Type 申明
 
@@ -41,6 +42,8 @@ public class ContentTypes {
     public static final String ABC = "Content-Type=application/abc";
     public static final String JSON = "Content-Type=application/json";
     public static final String JSON_TYPE = "Content-Type=application/json-type";
+    public static final String FORM_URLENCODED = "Content-Type=application/x-www-form-urlencoded";
+    public static final String FORM_DATA = "Content-Type=multipart/form-data";
 
     public static final String HESSIAN_ACCEPT = "Accept=application/hessian";
     public static final String FURY_ACCEPT = "Accept=application/fury";

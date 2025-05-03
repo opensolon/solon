@@ -17,9 +17,11 @@ package org.noear.nami.channel.http;
 
 import org.noear.nami.*;
 import org.noear.nami.common.ContentTypes;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -83,8 +85,8 @@ public class HttpChannel extends ChannelBase implements Channel {
                 }
             }
 
-            if(encoder != null){
-                if(encoder.bodyRequired() && ctx.body == null){
+            if (encoder != null) {
+                if (encoder.bodyRequired() && ctx.body == null) {
                     throw new NamiException("The encoder requires parameters with '@NamiBody'");
                 }
             }
@@ -106,7 +108,18 @@ public class HttpChannel extends ChannelBase implements Channel {
                     response = http.body(bytes, encoder.enctype()).exec(ctx.action);
                 }
             } else {
-                response = http.data(ctx.args).exec(ctx.action);
+                for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
+                    if (kv.getValue() instanceof File) {
+                        http.data(kv.getKey(), (File) kv.getValue());
+                    } else if (kv.getValue() instanceof UploadedFile) {
+                        UploadedFile uploadedFile = (UploadedFile) kv.getValue();
+                        http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
+                    } else {
+                        http.data(kv.getKey(), String.valueOf(kv.getValue()));
+                    }
+                }
+
+                response = http.exec(ctx.action);
             }
         }
 

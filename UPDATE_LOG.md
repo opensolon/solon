@@ -31,7 +31,8 @@
 * 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
-* 添加 nami NamiParam 注解
+* 添加 nami NamiParam 注解支持
+* 添加 nami 文件（UploadedFile 或 File）上传支持
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类
 * 添加 solon-ai-mcp McpClientProperties:httpProxy 配置

@@ -24,6 +24,8 @@ import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.nami.coder.snack3.SnackTypeEncoder;
+import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.MimeType;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -31,6 +33,8 @@ import webapp.demo5_rpc.protocol.UserService;
 import webapp.demo5_rpc.protocol.UserService4;
 import webapp.demo5_rpc.protocol.UserService5;
 import webapp.utils.Datetime;
+
+import java.io.ByteArrayInputStream;
 
 @SolonTest(App.class)
 public class NamiAndRpcTest {
@@ -188,16 +192,27 @@ public class NamiAndRpcTest {
     }
 
     @Test
-    public void test7_405(){
+    public void test7_405() {
         Exception ee = null;
         try {
             userService.getUserPut(1);
-        }catch (Exception e){
+        } catch (Exception e) {
             ee = e;
             e.printStackTrace();
         }
 
         assert ee != null;
         assert ee.getMessage().contains("405");
+    }
+
+    @Test
+    public void test8_file() {
+        String fileName = userService.uploadFile(new UploadedFile(
+                MimeType.APPLICATION_JSON_VALUE,
+                new ByteArrayInputStream("{}".getBytes()),
+                "demo.json"));
+
+        System.out.println(fileName);
+        assert "demo.json".equals(fileName);
     }
 }

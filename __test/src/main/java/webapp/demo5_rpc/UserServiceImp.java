@@ -20,8 +20,11 @@ import org.noear.solon.annotation.Mapping;
 
 import org.noear.solon.annotation.Post;
 import org.noear.solon.annotation.Remoting;
+import org.noear.solon.core.handle.UploadedFile;
 import webapp.demo5_rpc.protocol.UserModel;
 import webapp.demo5_rpc.protocol.UserService;
+
+import java.io.File;
 
 //开启bean的远程服务
 @Mapping("/demo5/user/")
@@ -46,6 +49,11 @@ public class UserServiceImp implements UserService {
     @Override
     public UserModel addUser(UserModel user) {
         return user;
+    }
+
+    @Override
+    public String uploadFile(UploadedFile file) {
+        return file.getName();
     }
 
     @Override
