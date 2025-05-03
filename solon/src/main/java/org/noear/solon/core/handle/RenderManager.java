@@ -16,6 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
@@ -293,7 +294,7 @@ public class RenderManager implements Render {
         String mode = ctx.header("X-Serialization");
 
         if (Utils.isEmpty(mode)) {
-            mode = ctx.attr("@render");
+            mode = ctx.attr(Constants.ATTR_RENDER);
         }
 
         if (Utils.isEmpty(mode) == false) {
