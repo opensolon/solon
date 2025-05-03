@@ -12,6 +12,21 @@ import org.noear.solon.lang.Preview;
 @Preview("3.2")
 public interface EntityConverter {
     /**
+     * 名字
+     */
+    default String name() {
+        return this.getClass().getSimpleName();
+    }
+
+    /**
+     * 映射
+     */
+    default String[] mappings() {
+        return null;
+    }
+
+
+    /**
      * 是否可写
      */
     boolean canWrite(String mime, Context ctx);
@@ -19,9 +34,7 @@ public interface EntityConverter {
     /**
      * 写入并返回（渲染并返回（默认不实现））
      */
-    default String writeAndReturn(Object data, Context ctx) throws Throwable {
-        return null;
-    }
+    String writeAndReturn(Object data, Context ctx) throws Throwable;
 
     /**
      * 写入（渲染）
