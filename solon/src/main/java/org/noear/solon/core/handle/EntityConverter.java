@@ -7,10 +7,9 @@ import org.noear.solon.lang.Preview;
  * 实体转换器（预览，未启用）
  *
  * @author noear
- * @since 3.1
+ * @since 3.2
  */
-@Deprecated
-@Preview("3.1")
+@Preview("3.2")
 public interface EntityConverter {
     /**
      * 是否可读
