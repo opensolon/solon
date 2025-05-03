@@ -18,7 +18,7 @@ package org.noear.solon.core.convert;
 import org.noear.solon.core.exception.ConvertException;
 
 /**
- * 转换器
+ * 转换器（主要用于配置或网络的单值转换）
  *
  * @author noear
  * @since 2.4
