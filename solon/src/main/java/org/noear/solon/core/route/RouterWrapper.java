@@ -20,6 +20,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
 
 /**
@@ -150,7 +151,7 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 获取 Json 渲染器
      */
     public Render renderOfJson() {
-        return render("@json");
+        return render(Constants.RENDER_JSON);
     }
 
     /**

@@ -186,7 +186,7 @@ public class RenderManager implements Render {
             Entity entity = (Entity) data;
             data = entity.body();
 
-            if(ctx.isHeadersSent() == false) {
+            if (ctx.isHeadersSent() == false) {
                 if (entity.status() > 0) {
                     ctx.status(entity.status());
                 }
@@ -333,9 +333,9 @@ public class RenderManager implements Render {
 
         if (render == null) {
             if (ctx.remoting()) {
-                render = _mapping.get("@type_json");
+                render = _mapping.get(Constants.RENDER_TYPE_JSON);
             } else {
-                render = _mapping.get("@json");
+                render = _mapping.get(Constants.RENDER_JSON);
             }
         }
 

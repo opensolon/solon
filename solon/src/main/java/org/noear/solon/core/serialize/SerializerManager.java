@@ -50,8 +50,8 @@ public class SerializerManager {
      * 查找序列化器
      *
      * <pre>{@code
-     * Serializer<String> find("@json");
-     * Serializer<String> find("fastjson-serializer");
+     * Serializer<String> get("@json");
+     * Serializer<String> get("fastjson-serializer");
      * }</pre>
      *
      * @param name 名字

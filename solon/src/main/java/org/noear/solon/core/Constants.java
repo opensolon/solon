@@ -28,7 +28,7 @@ public interface Constants {
 
     /**
      * @deprecated 3.1 {@link org.noear.solon.core.util.MimeType}
-     * */
+     */
     @Deprecated
     String HEADER_CONTENT_TYPE_DEF = MimeType.TEXT_PLAIN_UTF8_VALUE;
 
@@ -41,6 +41,9 @@ public interface Constants {
     String ATTR_TO = "ATTR_TO";
     //@since: 3.2
     String ATTR_RENDER = "@render";
+
+    String RENDER_JSON = "@json";
+    String RENDER_TYPE_JSON = "@type_json";
 
     //@since: 3.0
     int FT_IDX_CONTEXT_PATH = -990;
