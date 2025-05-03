@@ -20,6 +20,13 @@ import org.noear.solon.core.util.MultiMap;
 /**
  * 处理实体
  *
+ * <pre>{@code
+ *  ctx.render(new Entity());
+ *
+ *  ctx.rerturnValue(new Entity());
+ *  ctx.rerturnValue(Mono.just(new Entity().status(500))); //main case
+ * }</pre>
+ *
  * @author noear
  * @since 3.1
  */
