@@ -16,10 +16,9 @@
 package webapp.demo5_rpc.protocol;
 
 import org.noear.nami.annotation.NamiMapping;
+import org.noear.nami.annotation.NamiParam;
 import org.noear.nami.common.ContentTypes;
 import org.noear.solon.core.handle.UploadedFile;
-
-import java.io.File;
 
 public interface UserService {
     UserModel getUser(Integer userId);
@@ -27,7 +26,7 @@ public interface UserService {
     @NamiMapping("PUT getUser")
     UserModel getUserPut(Integer userId);
 
-    UserModel addUser(UserModel user);
+    UserModel addUser(@NamiParam("user") UserModel user);
 
     @NamiMapping(headers = ContentTypes.FORM_DATA)
     String uploadFile(UploadedFile file);
