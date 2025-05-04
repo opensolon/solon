@@ -56,6 +56,12 @@ public class UserServiceImp implements UserService {
         return file.getName();
     }
 
+    @Post
+    @Override
+    public String postEmpty() {
+        return "ok";
+    }
+
     @Override
     public void showError() {
         throw new RuntimeException("我要出错");

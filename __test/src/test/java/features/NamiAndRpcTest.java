@@ -215,4 +215,12 @@ public class NamiAndRpcTest {
         System.out.println(fileName);
         assert "demo.json".equals(fileName);
     }
+
+    @Test
+    public void test9_postEmpty() {
+        String rst = userService.postEmpty();
+
+        System.out.println(rst);
+        assert "ok".equals(rst);
+    }
 }

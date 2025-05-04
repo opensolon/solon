@@ -31,6 +31,9 @@ public interface UserService {
     @NamiMapping(headers = ContentTypes.FORM_DATA)
     String uploadFile(UploadedFile file);
 
+    @NamiMapping("POST")
+    String postEmpty();
+
     //@NamiMapping(headers = ContentTypes.FORM_DATA)
     //String addFile(File file);
 
