@@ -37,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
  * */
 public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
     private final OkHttpUtilsFactory factory;
+
     public OkHttpUtils(OkHttpUtilsFactory factory, String url) {
         super(url);
         this.factory = factory;
@@ -105,6 +106,10 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             } else {
                 //HEAD 可以为空
             }
+        }
+
+        if (_body == null) {
+            _body = new FormBody.Builder(_charset).build();
         }
 
 

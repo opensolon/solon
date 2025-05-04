@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
 
 /**
@@ -23,6 +24,12 @@ public class App {
     @Mapping("body")
     public String body(String tag, @Body String body) {
         return tag + ":" + body;
+    }
+
+    @Post
+    @Mapping("post")
+    public String post() {
+        return "ok";
     }
 
     @Mapping("async")

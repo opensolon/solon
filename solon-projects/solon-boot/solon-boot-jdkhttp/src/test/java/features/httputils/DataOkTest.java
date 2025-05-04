@@ -51,4 +51,12 @@ public class DataOkTest {
 
         assert rst.equals("hello noear");
     }
+
+    @Test
+    public void postEmpty() throws Exception {
+        String rst = http("http://localhost:8080/post")
+                .post();
+
+        assert rst.equals("ok");
+    }
 }
