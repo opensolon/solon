@@ -23,6 +23,7 @@ import org.noear.solon.net.http.HttpUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -111,6 +112,11 @@ public class HttpChannel extends ChannelBase implements Channel {
                     } else if (kv.getValue() instanceof UploadedFile) {
                         UploadedFile uploadedFile = (UploadedFile) kv.getValue();
                         http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
+                    } else if (kv.getValue() instanceof Collection) {
+                        Collection col = (Collection) kv.getValue();
+                        for (Object val : col) {
+                            http.data(kv.getKey(), String.valueOf(val));
+                        }
                     } else {
                         http.data(kv.getKey(), String.valueOf(kv.getValue()));
                     }
