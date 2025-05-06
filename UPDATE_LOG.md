@@ -32,6 +32,7 @@
 * 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
+* 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
 * 添加 nami NamiParam 注解支持
 * 添加 nami 文件（UploadedFile 或 File）上传支持
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
@@ -44,6 +45,7 @@
 * 修复 solon 由泛型桥接方法引起的泛型失真问题
 * 修复 solon-net-httputils OkHttpUtils 不支持 post 空提交的问题
 * 修复 nami-channel-http 不支持 post 空提交的问题
+* 修复 solon-serialization-fastjson2 在配置全局时间格式化后，个人注解格式化会失效的问题
 * snack3 升为 3.2.132
 * dbvisitor 升为 6.0.0
 * sa-token 升为 1.42.0

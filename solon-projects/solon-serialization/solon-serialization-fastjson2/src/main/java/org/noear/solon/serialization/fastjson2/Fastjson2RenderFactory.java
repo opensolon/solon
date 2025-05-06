@@ -16,6 +16,7 @@
 package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.JSONWriter;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.SerializerNames;
 import org.noear.solon.serialization.StringSerializerRender;
@@ -81,7 +82,12 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
         }
 
         if (jsonProps != null) {
-            JsonPropsUtil.dateAsFormat(this, jsonProps);
+            if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
+                //这个文案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
+                serializer.getSerializeConfig().setDateFormat(jsonProps.dateAsFormat);
+            }
+
+            //JsonPropsUtil.dateAsFormat(this, jsonProps);
             JsonPropsUtil.dateAsTicks(this, jsonProps);
             JsonPropsUtil.boolAsInt(this, jsonProps);
 
