@@ -43,6 +43,7 @@
 * 添加 solon-ai-mcp McpServerEndpointProvider:Builder:channel 方法
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
 * 修复 solon 由泛型桥接方法引起的泛型失真问题
+* 修复 solon Utils.getFile 在 window 下绝对位置失效的问题
 * 修复 solon-net-httputils OkHttpUtils 不支持 post 空提交的问题
 * 修复 nami-channel-http 不支持 post 空提交的问题
 * 修复 solon-serialization-fastjson2 在配置全局时间格式化后，个人注解格式化会失效的问题
