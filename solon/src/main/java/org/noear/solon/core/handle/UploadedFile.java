@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
@@ -34,6 +35,7 @@ import java.io.*;
  *
  * @author noear
  * @since 1.0
+ * @since 3.2
  * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile extends FileBase {
@@ -100,6 +102,40 @@ public class UploadedFile extends FileBase {
      */
     public UploadedFile() {
         super();
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file 文件
+     * @throws FileNotFoundException
+     */
+    public UploadedFile(File file) throws FileNotFoundException {
+        this(file, file.getName());
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file 文件
+     * @param name 名字
+     * @throws FileNotFoundException
+     * @since 3.2
+     */
+    public UploadedFile(File file, String name) throws FileNotFoundException {
+        this(file, name, Utils.mime(file.getName()));
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file 文件
+     * @param name 名字
+     * @throws FileNotFoundException
+     * @since 3.2
+     */
+    public UploadedFile(File file, String name, String contentType) throws FileNotFoundException {
+        super(contentType, file.length(), new FileInputStream(file), name);
     }
 
     /**
