@@ -95,10 +95,10 @@ public class HttpChannel extends ChannelBase implements Channel {
                     encoder = ctx.config.getEncoder();
                 }
 
-                if (encoder == null) {
-                    //默认最后
-                    encoder = ctx.config.getEncoderOrDefault();
-                }
+//                if (encoder == null) { // http 不搞默认，由申明决定；否则走表单
+//                    //默认最后
+//                    encoder = ctx.config.getEncoderOrDefault();
+//                }
 
                 if (encoder != null) {
                     if (encoder.bodyRequired() && ctx.body == null) {
