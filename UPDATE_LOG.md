@@ -26,6 +26,7 @@
 * 新增 solon-data Ds 注解（为统一数据源注入作准备）
 * 新增 solon EntityConverter 接口（用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
+* 移除 solon-ai ToolParam 注解，改用 Param （通用参数注解）
 * 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
 * 调整 solon Param 注解，添加字段支持
 * 调整 solon-ai ToolMapping,ToolParam 注解移到 org.noear.solon.ai.annotation
@@ -35,6 +36,7 @@
 * 优化 nami-channel-http HttpChannel 表单提交时增加集合参数支持（自动拆解为多参数）
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
+* 优化 solon-ai-repo-redis metadataIndexFields 更名为 metadataFields （原名标为弃用）
 * 添加 nami NamiParam 注解支持
 * 添加 nami 文件（UploadedFile 或 File）上传支持
 * 添加 solon UploadedFile 基于 File 构造方法
@@ -42,9 +44,13 @@
 * 添加 solon-net-httputils HttpProxy 类
 * 添加 solon-ai-mcp McpClientProperties:httpProxy 配置
 * 添加 solon-ai-mcp McpClientToolProvider isStarted 状态位（把心跳开始，转为第一次调用这后）
+* 添加 solon-ai-mcp McpClientToolProvider:readResourceAsText,readResource,getPromptAsMessages,getPrompt 方法
 * 添加 solon-ai-mcp McpServerEndpointProvider:getVersion,getChannel,getSseEndpoint,getTools,getServer 方法
+* 添加 solon-ai-mcp McpServerEndpointProvider:addResource,addPrompt 方法
 * 添加 solon-ai-mcp McpServerEndpointProvider:Builder:channel 方法
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
+* 添加 solon-ai-mcp McpServerEndpoint AOP 支持（可支持 solono auth 注解鉴权）
+* 添加 solon-ai-mcp McpServerEndpoint 实体参数支持（可支持 solon web 的实体参数、注解相通）
 * 修复 solon 由泛型桥接方法引起的泛型失真问题
 * 修复 solon Utils.getFile 在 window 下绝对位置失效的问题
 * 修复 solon-net-httputils OkHttpUtils 不支持 post 空提交的问题
