@@ -30,9 +30,48 @@ import java.util.TimeZone;
  * @since 1.12
  */
 public class JsonPropsUtil {
-    public static boolean apply(JsonRenderFactory factory, JsonProps jsonProps) {
+    public static void boolAsInt(JsonRenderFactory factory, JsonProps jsonProps) {
         if (jsonProps == null) {
-            return false;
+            return;
+        }
+
+        if (jsonProps.boolAsInt) {
+            factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
+            factory.addConvertor(boolean.class, e -> (e ? 1 : 0));
+        }
+    }
+
+    public static void longAsString(JsonRenderFactory factory, JsonProps jsonProps) {
+        if (jsonProps == null) {
+            return;
+        }
+
+        if (jsonProps.longAsString) {
+            factory.addConvertor(Long.class, String::valueOf);
+            factory.addConvertor(long.class, String::valueOf);
+        }
+    }
+
+
+    public static void dateAsTicks(JsonRenderFactory factory, JsonProps jsonProps) {
+        if (jsonProps == null) {
+            return;
+        }
+
+        if (jsonProps.dateAsTicks) {
+            factory.addConvertor(Date.class, d -> {
+                if (jsonProps.longAsString) {
+                    return String.valueOf(d.getTime());
+                } else {
+                    return d.getTime();
+                }
+            });
+        }
+    }
+
+    public static void dateAsFormat(JsonRenderFactory factory, JsonProps jsonProps) {
+        if (jsonProps == null) {
+            return;
         }
 
         if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
@@ -68,24 +107,9 @@ public class JsonPropsUtil {
 
             factory.addConvertor(LocalDate.class, e -> formatLocalDateTime(e.atStartOfDay(), jsonProps));
         }
-
-        if (jsonProps.dateAsTicks) {
-            factory.addConvertor(Date.class, d -> {
-                if (jsonProps.longAsString) {
-                    return String.valueOf(d.getTime());
-                } else {
-                    return d.getTime();
-                }
-            });
-        }
-
-        if (jsonProps.boolAsInt) {
-            factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
-            factory.addConvertor(boolean.class, e -> (e ? 1 : 0));
-        }
-
-        return true;
     }
+
+    /// //////
 
     /**
      * 格式化 LocalDateTime

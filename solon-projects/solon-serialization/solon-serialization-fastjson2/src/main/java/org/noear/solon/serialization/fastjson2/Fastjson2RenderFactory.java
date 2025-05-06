@@ -80,7 +80,11 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
                     .setDateFormat("millis");
         }
 
-        if (JsonPropsUtil.apply(this, jsonProps)) {
+        if (jsonProps != null) {
+            JsonPropsUtil.dateAsFormat(this, jsonProps);
+            JsonPropsUtil.dateAsTicks(this, jsonProps);
+            JsonPropsUtil.boolAsInt(this, jsonProps);
+
             boolean writeNulls = jsonProps.nullAsWriteable ||
                     jsonProps.nullNumberAsZero ||
                     jsonProps.nullArrayAsEmpty ||

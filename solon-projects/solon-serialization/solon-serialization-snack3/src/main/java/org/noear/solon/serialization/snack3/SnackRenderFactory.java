@@ -75,11 +75,11 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     }
 
     protected void applyProps(JsonProps jsonProps) {
-        if (JsonPropsUtil.apply(this, jsonProps)) {
-            if (jsonProps.longAsString) {
-                this.addConvertor(Long.class, String::valueOf);
-                this.addConvertor(long.class, String::valueOf);
-            }
+        if (jsonProps != null) {
+            JsonPropsUtil.dateAsFormat(this, jsonProps);
+            JsonPropsUtil.dateAsTicks(this, jsonProps);
+            JsonPropsUtil.boolAsInt(this, jsonProps);
+            JsonPropsUtil.longAsString(this, jsonProps);
 
             if (jsonProps.nullStringAsEmpty) {
                 this.addFeatures(Feature.StringNullAsEmpty);
