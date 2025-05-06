@@ -79,4 +79,9 @@ public @interface Mapping {
      * 描述
      */
     String description() default "";
+
+    /**
+     * 请求头（作为客户端时使用）
+     */
+    String[] headers() default {};
 }
