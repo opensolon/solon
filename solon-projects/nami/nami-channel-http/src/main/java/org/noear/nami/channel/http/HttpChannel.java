@@ -69,60 +69,49 @@ public class HttpChannel extends ChannelBase implements Channel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(ctx.headers).timeout(ctx.config.getTimeout());
         HttpResponse response = null;
-        Encoder encoder = ctx.config.getEncoder();
+
 
         //1.执行并返回
         if (is_get) {
             response = http.exec(ContentTypes.METHOD_GET);
         } else {
-            if (encoder == null) {
-                String ct0 = ctx.headers.getOrDefault(ContentTypes.HEADER_CONTENT_TYPE, "");
+            String contentType = ctx.headers.getOrDefault(ContentTypes.HEADER_CONTENT_TYPE, "");
 
-                if (ct0.length() > 0) {
-                    encoder = NamiManager.getEncoder(ct0);
+            if (contentType.length() > 0 &&
+                    (contentType.startsWith(ContentTypes.FORM_DATA_VALUE) ||
+                            contentType.startsWith(ContentTypes.FORM_URLENCODED_VALUE))) {
+                //明确申明用表单模式
+                response = formRequest(ctx, http);
+            } else {
+                //尝试编码模式
+                Encoder encoder = null;
+                if (contentType.length() > 0) {
+                    //动态的最优先
+                    encoder = NamiManager.getEncoder(contentType);
                 }
-            }
 
-            if (encoder != null) {
-                if (encoder.bodyRequired() && ctx.body == null) {
-                    throw new NamiException("The encoder requires parameters with '@NamiBody'");
-                }
-            }
-
-            //有 body 或者有 encoder；则用编码方式
-            if (ctx.body != null || encoder != null) {
                 if (encoder == null) {
+                    //配置的初始化的第二优先
+                    encoder = ctx.config.getEncoder();
+                }
+
+                if (encoder == null) {
+                    //默认最后
                     encoder = ctx.config.getEncoderOrDefault();
                 }
 
-                if (encoder == null) {
-                    //有 body 的话，必须要有编译
-                    throw new IllegalArgumentException("There is no suitable decoder");
-                }
-
-                byte[] bytes = encoder.encode(ctx.bodyOrArgs());
-
-                if (bytes != null) {
-                    response = http.body(bytes, encoder.enctype()).exec(ctx.action);
-                }
-            } else {
-                for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
-                    if (kv.getValue() instanceof File) {
-                        http.data(kv.getKey(), (File) kv.getValue());
-                    } else if (kv.getValue() instanceof UploadedFile) {
-                        UploadedFile uploadedFile = (UploadedFile) kv.getValue();
-                        http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
-                    } else if (kv.getValue() instanceof Collection) {
-                        Collection col = (Collection) kv.getValue();
-                        for (Object val : col) {
-                            http.data(kv.getKey(), String.valueOf(val));
-                        }
-                    } else {
-                        http.data(kv.getKey(), String.valueOf(kv.getValue()));
+                if (encoder != null) {
+                    if (encoder.bodyRequired() && ctx.body == null) {
+                        throw new NamiException("The encoder requires parameters with '@NamiBody'");
                     }
                 }
 
-                response = http.exec(ctx.action);
+                //有 body 且有 encoder；则用编码方式
+                if (ctx.body != null || encoder != null) {
+                    response = bodyRequest(ctx, http, encoder);
+                } else {
+                    response = formRequest(ctx, http);
+                }
             }
         }
 
@@ -148,5 +137,40 @@ public class HttpChannel extends ChannelBase implements Channel {
 
         //3.返回结果
         return result;
+    }
+
+    protected HttpResponse bodyRequest(Context ctx, HttpUtils http, Encoder encoder) throws Throwable {
+        if (encoder == null) {
+            //有 body 的话，必须要有编译
+            throw new IllegalArgumentException("There is no suitable decoder");
+        }
+
+        byte[] bytes = encoder.encode(ctx.bodyOrArgs());
+
+        if (bytes != null) {
+            return http.body(bytes, encoder.enctype()).exec(ctx.action);
+        } else {
+            return null;
+        }
+    }
+
+    protected HttpResponse formRequest(Context ctx, HttpUtils http) throws Throwable {
+        for (Map.Entry<String, Object> kv : ctx.args.entrySet()) {
+            if (kv.getValue() instanceof File) {
+                http.data(kv.getKey(), (File) kv.getValue());
+            } else if (kv.getValue() instanceof UploadedFile) {
+                UploadedFile uploadedFile = (UploadedFile) kv.getValue();
+                http.data(kv.getKey(), uploadedFile.getName(), uploadedFile.getContent(), uploadedFile.getContentType());
+            } else if (kv.getValue() instanceof Collection) {
+                Collection col = (Collection) kv.getValue();
+                for (Object val : col) {
+                    http.data(kv.getKey(), String.valueOf(val));
+                }
+            } else {
+                http.data(kv.getKey(), String.valueOf(kv.getValue()));
+            }
+        }
+
+        return http.exec(ctx.action);
     }
 }

@@ -78,6 +78,10 @@ public class HttpChannel extends ChannelBase implements Channel {
                 }
             }
 
+            if (encoder == null) {
+                encoder = ctx.config.getEncoderOrDefault();
+            }
+
             if(encoder != null){
                 if(encoder.bodyRequired() && ctx.body == null){
                     throw new NamiException("The encoder requires parameters with '@NamiBody'");
@@ -86,10 +90,6 @@ public class HttpChannel extends ChannelBase implements Channel {
 
             //有 body 或者有 encoder；则用编码方式
             if (ctx.body != null || encoder != null) {
-                if (encoder == null) {
-                    encoder = ctx.config.getEncoderOrDefault();
-                }
-
                 if (encoder == null) {
                     //有 body 的话，必须要有编译
                     throw new IllegalArgumentException("There is no suitable decoder");

@@ -56,7 +56,12 @@ public class SocketdChannel extends ChannelBase implements Channel {
         ctx.config.getDecoder().pretreatment(ctx);
 
         //1.确定编码器
-        Encoder encoder = ctx.config.getEncoderOrDefault();
+        Encoder encoder = ctx.config.getEncoder();
+
+        if (encoder == null) {
+            encoder = ctx.config.getEncoderOrDefault();
+        }
+
         if (encoder == null) {
             encoder = NamiManager.getEncoder(ContentTypes.JSON_VALUE);
         }
