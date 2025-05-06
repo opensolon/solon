@@ -30,6 +30,28 @@ import java.util.TimeZone;
  * @since 1.12
  */
 public class JsonPropsUtil {
+    /**
+     * 尝试应用 Json 全局配置
+     *
+     * @deprecated 3.2 {@link #dateAsFormat(JsonRenderFactory, JsonProps),#dateAsTicks(JsonRenderFactory, JsonProps),#boolAsInt(JsonRenderFactory, JsonProps)}
+     */
+    @Deprecated
+    public static boolean apply(JsonRenderFactory factory, JsonProps jsonProps) {
+        if (jsonProps == null) {
+            return false;
+        }
+
+        dateAsFormat(factory, jsonProps);
+        dateAsTicks(factory, jsonProps);
+        boolAsInt(factory, jsonProps);
+
+        return true;
+    }
+
+
+    /**
+     * 尝试把 bool 转为 int
+     */
     public static void boolAsInt(JsonRenderFactory factory, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
@@ -41,6 +63,9 @@ public class JsonPropsUtil {
         }
     }
 
+    /**
+     * 尝试把 long 转为 string
+     */
     public static void longAsString(JsonRenderFactory factory, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
@@ -52,7 +77,9 @@ public class JsonPropsUtil {
         }
     }
 
-
+    /**
+     * 尝试把 date 转为 ticks(long)
+     */
     public static void dateAsTicks(JsonRenderFactory factory, JsonProps jsonProps) {
         if (jsonProps == null) {
             return;
