@@ -644,7 +644,7 @@ public class Utils {
         if (appDir != null) {
             if (uri.startsWith("./") || uri.startsWith(".\\")) {
                 file = new File(appDir, uri.substring(2));
-            } else if (uri.contains("/") == false && uri.contains("\\") == false) {
+            } else if (uri.contains("/") == false && uri.contains(":") == false) {
                 file = new File(appDir, uri);
             }
         }
