@@ -51,6 +51,6 @@ public class TestQuickConfig {
         System.out.println(output);
 
         //err: long 型 null 的没有转成字符串 "0"
-        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16 17:39:53\"}".equals(output);
+        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16\"}".equals(output);
     }
 }

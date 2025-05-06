@@ -29,6 +29,6 @@ import java.util.Date;
 public class CustomDateDo {
     private Date date;
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd")
     private Date date2;
 }

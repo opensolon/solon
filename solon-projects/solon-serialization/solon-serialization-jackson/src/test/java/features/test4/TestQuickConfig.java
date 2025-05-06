@@ -15,6 +15,7 @@
  */
 package features.test4;
 
+import features.model.CustomDateDo;
 import features.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.Import;
@@ -56,5 +57,21 @@ public class TestQuickConfig {
 
         //完美
         assert "{\"b0\":0,\"b1\":1,\"d0\":0.0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":\"0\",\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\"}".equals(output);
+    }
+
+    @Test
+    public void date2() throws Throwable {
+        CustomDateDo customDateDo2 = new CustomDateDo();
+        customDateDo2.setDate(new Date(1673861993477L));
+        customDateDo2.setDate2(new Date(1673861993477L));
+
+        ContextEmpty ctx = new ContextEmpty();
+        renderFactory.create().render(customDateDo2, ctx);
+        String output = ctx.attr("output");
+
+        System.out.println(output);
+
+        //完美
+        assert "{\"date\":\"2023-01-16 17:39:53\",\"date2\":\"2023-01-16\",\"val_1\":null}".equals(output);
     }
 }

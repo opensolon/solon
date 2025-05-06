@@ -50,6 +50,6 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16 17:39:53\",\"val_1\":\"1\"}".equals(output);
+        assert "{\"date\":1673861993477,\"date2\":\"2023-01-16\",\"val_1\":\"1\"}".equals(output);
     }
 }

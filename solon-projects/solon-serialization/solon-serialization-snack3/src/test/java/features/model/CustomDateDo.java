@@ -14,6 +14,6 @@ import java.util.Date;
 public class CustomDateDo {
     private Date date;
 
-    @ONodeAttr(format = "yyyy-MM-dd HH:mm:ss")
+    @ONodeAttr(format = "yyyy-MM-dd")
     private Date date2;
 }
