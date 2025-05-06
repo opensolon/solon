@@ -16,6 +16,8 @@
 package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
  * 动态数据源 Key 管理
@@ -49,6 +51,24 @@ public class DynamicDsKey {
             targetThreadLocal.remove();
         } else {
             targetThreadLocal.set(name);
+        }
+    }
+
+    public static void use(String name, RunnableEx runnable) throws Throwable {
+        try {
+            targetThreadLocal.set(name);
+            runnable.run();
+        } finally {
+            targetThreadLocal.remove();
+        }
+    }
+
+    public static <T> T use(String name, SupplierEx<T> supplier) throws Throwable {
+        try {
+            targetThreadLocal.set(name);
+            return supplier.get();
+        } finally {
+            targetThreadLocal.remove();
         }
     }
 
