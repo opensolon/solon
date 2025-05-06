@@ -51,6 +51,7 @@
 * dbvisitor 升为 6.0.0
 * sa-token 升为 1.42.0
 * mybatis-flex 升为 1.10.9
+* smart-http 升为 2.5.9
 
 ### 3.2.1
 
