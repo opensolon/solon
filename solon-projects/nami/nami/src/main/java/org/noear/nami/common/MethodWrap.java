@@ -16,6 +16,9 @@
 package org.noear.nami.common;
 
 import org.noear.nami.annotation.*;
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.MethodType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -36,65 +39,14 @@ public class MethodWrap {
         return mw;
     }
 
-    protected void resolveMappingAnno(Method m) {
-        mappingAnno = m.getAnnotation(NamiMapping.class);
-    }
+    /// ////////////////
 
-    protected void resolveBodyAnno(Parameter p1) {
-        bodyAnno = p1.getAnnotation(NamiBody.class);
-    }
-
-
-    protected MethodWrap(Method m) {
-        this.method = m;
-        this.parameters = new ArrayList<>(m.getParameterCount());
-        resolveMappingAnno(m);
-
-        for (Parameter p1 : m.getParameters()) {
-            parameters.add(new ParameterWrap(p1));
-            resolveBodyAnno(p1);
-            if (bodyAnno != null) {
-                bodyName = p1.getName();
-                break;
-            }
-        }
-
-        if (mappingAnno != null) {
-            //格式1: GET
-            //格式2: GET user/a.0.1
-            if (mappingAnno.value().length() > 0) {
-                String val = mappingAnno.value().trim();
-                int idx = val.indexOf(" ");
-
-                if (idx > 0) {
-                    act = val.substring(0, idx);
-                    fun = val.substring(idx + 1);
-                } else {
-                    act = val;
-                }
-            }
-
-            if (mappingAnno.headers().length > 0) {
-                mappingHeaders = new HashMap<>();
-
-                for (String h : mappingAnno.headers()) {
-                    String[] ss = h.split("=");
-                    if (ss.length == 2) {
-                        mappingHeaders.put(ss[0].trim(), ss[1].trim());
-                    }
-                }
-            }
-        }
-    }
-
-    private Method method;
-    private List<ParameterWrap> parameters;
+    private final Method method;
+    private final List<ParameterWrap> parameters;
+    private final Map<String, String> mappingHeaders;
     private String bodyName;
-    private NamiBody bodyAnno;
-    private NamiMapping mappingAnno;
-    private Map<String, String> mappingHeaders;
-    private String act;
-    private String fun;
+    private String action; //method
+    private String path;
 
     public Method getMethod() {
         return method;
@@ -108,23 +60,124 @@ public class MethodWrap {
         return bodyName;
     }
 
-    public NamiBody getBodyAnno() {
-        return bodyAnno;
-    }
-
-    public NamiMapping getMappingAnno() {
-        return mappingAnno;
-    }
 
     public Map<String, String> getMappingHeaders() {
         return mappingHeaders;
     }
 
     public String getAct() {
-        return act;
+        return action;
     }
 
     public String getFun() {
-        return fun;
+        return path;
+    }
+
+    protected MethodWrap(Method m) {
+        this.method = m;
+        this.parameters = new ArrayList<>(m.getParameterCount());
+        this.mappingHeaders = new HashMap<>();
+
+        if (resolveMethodAnnoByNamiMapping(m) == false) {
+            resolveMethodAnnoByMapping(m);
+        }
+
+        resolveParamAnno(m);
+    }
+
+    protected boolean resolveMethodAnnoByNamiMapping(Method m) {
+        NamiMapping mappingAnno = m.getAnnotation(NamiMapping.class);
+
+        if (mappingAnno != null) {
+            //格式1: GET
+            //格式2: GET user/a.0.1
+            if (mappingAnno.value().length() > 0) {
+                String val = mappingAnno.value().trim();
+                int idx = val.indexOf(" ");
+
+                if (idx > 0) {
+                    action = val.substring(0, idx);
+                    path = val.substring(idx + 1);
+                } else {
+                    action = val;
+                }
+            }
+
+            if (mappingAnno.headers().length > 0) {
+                for (String h : mappingAnno.headers()) {
+                    String[] ss = h.split("=");
+                    if (ss.length == 2) {
+                        mappingHeaders.put(ss[0].trim(), ss[1].trim());
+                    }
+                }
+            }
+        }
+
+        return mappingAnno != null;
+    }
+
+    protected void resolveMethodAnnoByMapping(Method m) {
+        Mapping mappingAnno = m.getAnnotation(Mapping.class);
+
+        if (mappingAnno != null) {
+            //格式1: GET
+            //格式2: GET user/a.0.1
+            if (mappingAnno.value().length() > 0) {
+                if (mappingAnno.method().length > 0) {
+                    action = mappingAnno.method()[0].name();
+                }
+                path = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
+            }
+
+            if (mappingAnno.headers().length > 0) {
+                for (String h : mappingAnno.headers()) {
+                    String[] ss = h.split("=");
+                    if (ss.length == 2) {
+                        mappingHeaders.put(ss[0].trim(), ss[1].trim());
+                    }
+                }
+            }
+        }
+
+        if (m.isAnnotationPresent(Post.class)) {
+            action = MethodType.POST.name();
+        }
+
+        if (m.isAnnotationPresent(Get.class)) {
+            action = MethodType.GET.name();
+        }
+
+        if (m.isAnnotationPresent(Put.class)) {
+            action = MethodType.PUT.name();
+        }
+
+        if (m.isAnnotationPresent(Delete.class)) {
+            action = MethodType.DELETE.name();
+        }
+
+        if (m.isAnnotationPresent(Patch.class)) {
+            action = MethodType.PATCH.name();
+        }
+    }
+
+    protected void resolveParamAnno(Method m) {
+        for (Parameter p1 : m.getParameters()) {
+            parameters.add(new ParameterWrap(p1));
+            NamiBody namiBodyAnno = p1.getAnnotation(NamiBody.class);
+
+            if (namiBodyAnno != null) {
+                bodyName = p1.getName();
+                if (namiBodyAnno.contentType().length() > 0) {
+                    mappingHeaders.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, namiBodyAnno.contentType());
+                }
+                break;
+            } else {
+                Body bodyAnno = p1.getAnnotation(Body.class);
+                if (bodyAnno != null) {
+                    bodyName = p1.getName();
+                    break;
+                }
+            }
+        }
     }
 }

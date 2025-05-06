@@ -16,6 +16,8 @@
 package org.noear.nami.common;
 
 import org.noear.nami.annotation.NamiParam;
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Param;
 
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
@@ -33,9 +35,14 @@ public class ParameterWrap {
     public ParameterWrap(Parameter parameter) {
         this.parameter = parameter;
 
-        NamiParam anno = parameter.getAnnotation(NamiParam.class);
-        if (anno != null) {
-            name = anno.value();
+        NamiParam namiParamAnno = parameter.getAnnotation(NamiParam.class);
+        if (namiParamAnno != null) {
+            name = namiParamAnno.value();
+        } else {
+            Param paramAnno = parameter.getAnnotation(Param.class);
+            if (paramAnno != null) {
+                name = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+            }
         }
 
         if (TextUtils.isEmpty(name)) {

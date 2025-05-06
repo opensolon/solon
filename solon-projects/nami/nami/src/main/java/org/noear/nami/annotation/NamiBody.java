@@ -31,6 +31,9 @@ import java.lang.annotation.*;
 public @interface NamiBody {
     /**
      * 内容类型
+     *
+     * @deprecated 3.2 {@link NamiMapping:headers()}
      */
+    @Deprecated
     String contentType() default ContentTypes.JSON_VALUE;
 }

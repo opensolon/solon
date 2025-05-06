@@ -175,10 +175,6 @@ public class NamiHandler implements InvocationHandler {
             body = args.get(methodWrap.getBodyName());
             // body 已经单独处理了，从 args 中删除
             args.remove(methodWrap.getBodyName());
-
-            if (config.getEncoder() == null) {
-                headers.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, methodWrap.getBodyAnno().contentType());
-            }
         }
 
         //构建 fun
@@ -186,20 +182,18 @@ public class NamiHandler implements InvocationHandler {
         String act = null;
 
         //处理mapping
-        NamiMapping mapping = methodWrap.getMappingAnno();
-        if (mapping != null) {
-            if (methodWrap.getAct() != null) {
-                act = methodWrap.getAct();
-            }
-
-            if (methodWrap.getFun() != null) {
-                fun = methodWrap.getFun();
-            }
-
-            if (methodWrap.getMappingHeaders() != null) {
-                headers.putAll(methodWrap.getMappingHeaders());
-            }
+        if (methodWrap.getAct() != null) {
+            act = methodWrap.getAct();
         }
+
+        if (methodWrap.getFun() != null) {
+            fun = methodWrap.getFun();
+        }
+
+        if (methodWrap.getMappingHeaders() != null) {
+            headers.putAll(methodWrap.getMappingHeaders());
+        }
+
 
         //处理附加信息
         Map<String, String> contextMap = NamiAttachment.getData();
