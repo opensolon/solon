@@ -95,19 +95,14 @@ public class HttpChannel extends ChannelBase implements Channel {
                     encoder = ctx.config.getEncoder();
                 }
 
-//                if (encoder == null) { // http 不搞默认，由申明决定；否则走表单
-//                    //默认最后
-//                    encoder = ctx.config.getEncoderOrDefault();
-//                }
-
                 if (encoder != null) {
                     if (encoder.bodyRequired() && ctx.body == null) {
                         throw new NamiException("The encoder requires parameters with '@NamiBody'");
                     }
                 }
 
-                //有 body 且有 encoder；则用编码方式
-                if (ctx.body != null || encoder != null) {
+                //必须 body 或有 encoder；则用编码方式
+                if (encoder.bodyRequired() || encoder != null) {
                     response = bodyRequest(ctx, http, encoder);
                 } else {
                     response = formRequest(ctx, http);
@@ -140,6 +135,10 @@ public class HttpChannel extends ChannelBase implements Channel {
     }
 
     protected HttpResponse bodyRequest(Context ctx, HttpUtils http, Encoder encoder) throws Throwable {
+        if (encoder == null) {
+            encoder = ctx.config.getEncoderOrDefault();
+        }
+
         if (encoder == null) {
             //有 body 的话，必须要有编译
             throw new IllegalArgumentException("There is no suitable decoder");
