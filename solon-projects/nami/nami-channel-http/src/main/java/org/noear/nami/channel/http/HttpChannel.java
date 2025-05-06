@@ -101,8 +101,8 @@ public class HttpChannel extends ChannelBase implements Channel {
                     }
                 }
 
-                //有 body ；则用编码方式
-                if (ctx.body != null) {
+                //有 body 或者 encoder；则用编码方式
+                if (ctx.body != null || encoder != null) {
                     response = bodyRequest(ctx, http, encoder);
                 } else {
                     response = formRequest(ctx, http);
