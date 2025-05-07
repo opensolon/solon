@@ -28,57 +28,66 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 函数包装器（预处理并缓存）
+ * 方法描述（预处理并缓存）
  *
  * @author noear
  * @since 1.2
  */
-public class MethodWrap {
-    private static final Map<Method, MethodWrap> cached = new ConcurrentHashMap<>();
+public class MethodDesc {
+    private static final Map<Method, MethodDesc> cached = new ConcurrentHashMap<>();
 
-    public static MethodWrap get(Method method) {
-        MethodWrap mw = cached.computeIfAbsent(method, k -> new MethodWrap(method));
+    public static MethodDesc get(Method method) {
+        MethodDesc mw = cached.computeIfAbsent(method, k -> new MethodDesc(method));
         return mw;
     }
 
     /// ////////////////
 
     private final Method method;
-    private final List<ParameterWrap> parameters;
-    private final Map<String, String> mappingHeaders;
-    private String bodyName;
+    private final List<ParameterDesc> parameters;
+    private final Map<String, String> headers;
     private String action; //method
     private String path;
 
+    /**
+     * 方法
+     */
     public Method getMethod() {
         return method;
     }
 
-    public List<ParameterWrap> getParameters() {
+    /**
+     * 参数
+     */
+    public List<ParameterDesc> getParameters() {
         return parameters;
     }
 
-    public String getBodyName() {
-        return bodyName;
+    /**
+     * 头信息
+     */
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
-
-    public Map<String, String> getMappingHeaders() {
-        return mappingHeaders;
-    }
-
-    public String getAct() {
+    /**
+     * 动作
+     */
+    public String getAction() {
         return action;
     }
 
-    public String getFun() {
+    /**
+     * 路径
+     */
+    public String getPath() {
         return path;
     }
 
-    protected MethodWrap(Method m) {
+    protected MethodDesc(Method m) {
         this.method = m;
         this.parameters = new ArrayList<>(m.getParameterCount());
-        this.mappingHeaders = new HashMap<>();
+        this.headers = new HashMap<>();
 
         if (resolveMethodAnnoByNamiMapping(m) == false) {
             resolveMethodAnnoByMapping(m);
@@ -109,7 +118,7 @@ public class MethodWrap {
                 for (String h : mappingAnno.headers()) {
                     String[] ss = h.split("=");
                     if (ss.length == 2) {
-                        mappingHeaders.put(ss[0].trim(), ss[1].trim());
+                        headers.put(ss[0].trim(), ss[1].trim());
                     }
                 }
             }
@@ -135,7 +144,7 @@ public class MethodWrap {
                 for (String h : mappingAnno.headers()) {
                     String[] ss = h.split("=");
                     if (ss.length == 2) {
-                        mappingHeaders.put(ss[0].trim(), ss[1].trim());
+                        headers.put(ss[0].trim(), ss[1].trim());
                     }
                 }
             }
@@ -163,31 +172,28 @@ public class MethodWrap {
 
         Consumes anno = m.getAnnotation(Consumes.class);
         if (anno != null) {
-            mappingHeaders.put(ContentTypes.HEADER_CONTENT_TYPE, anno.value());
+            headers.put(ContentTypes.HEADER_CONTENT_TYPE, anno.value());
         }
     }
 
+    /**
+     * 分析参数数注解
+     */
     protected void resolveParamAnno(Method m) {
         for (Parameter p1 : m.getParameters()) {
-            parameters.add(new ParameterWrap(p1));
-            NamiBody namiBodyAnno = p1.getAnnotation(NamiBody.class);
+            ParameterDesc p1w = new ParameterDesc(p1);
 
-            if (namiBodyAnno != null) {
-                bodyName = p1.getName();
+            parameters.add(p1w);
+
+            if (p1w.isBody()) {
+                NamiBody namiBodyAnno = p1.getAnnotation(NamiBody.class);
                 if (namiBodyAnno.contentType().length() > 0) {
-                    mappingHeaders.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, namiBodyAnno.contentType());
-                }
-                break;
-            } else {
-                Body bodyAnno = p1.getAnnotation(Body.class);
-                if (bodyAnno != null) {
-                    bodyName = p1.getName();
-                    break;
+                    headers.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, namiBodyAnno.contentType());
                 }
             }
 
             if (File.class.isAssignableFrom(p1.getType()) || UploadedFile.class.isAssignableFrom(p1.getType())) {
-                mappingHeaders.put(ContentTypes.HEADER_CONTENT_TYPE, ContentTypes.FORM_DATA_VALUE);
+                headers.put(ContentTypes.HEADER_CONTENT_TYPE, ContentTypes.FORM_DATA_VALUE);
             }
         }
     }

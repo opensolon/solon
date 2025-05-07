@@ -15,7 +15,6 @@
  */
 package org.noear.nami;
 
-import org.noear.nami.annotation.NamiMapping;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
 
@@ -155,26 +154,38 @@ public class NamiHandler implements InvocationHandler {
             return MethodHandlerUtils.invokeObject(clz0, proxy, method, vals);
         }
 
-        MethodWrap methodWrap = MethodWrap.get(method);
+        MethodDesc methodWrap = MethodDesc.get(method);
 
         //构建 headers
         Map<String, String> headers = new HashMap<>(headers0);
 
+        //mapping headers 优先1
+        if (methodWrap.getHeaders() != null) {
+            headers.putAll(methodWrap.getHeaders());
+        }
+
+        //attachment headers 优先2（处理附加信息）
+        Map<String, String> contextMap = NamiAttachment.getData();
+        if (contextMap.size() > 0) {
+            headers.putAll(contextMap);
+        }
+
         //构建 args
         Map<String, Object> args = new LinkedHashMap<>();
         Object body = null;
-        List<ParameterWrap> params = methodWrap.getParameters();
+        List<ParameterDesc> params = methodWrap.getParameters();
         for (int i = 0, len = params.size(); i < len; i++) {
             if (vals[i] != null) {
-                args.put(params.get(i).getName(), vals[i]);
-            }
-        }
+                ParameterDesc pw = params.get(i);
 
-        //确定body及默认编码
-        if (methodWrap.getBodyName() != null) {
-            body = args.get(methodWrap.getBodyName());
-            // body 已经单独处理了，从 args 中删除
-            args.remove(methodWrap.getBodyName());
+                if (pw.isBody()) {
+                    body = vals[i];
+                } else if (pw.isHeader()) {
+                    headers.put(pw.getName(), String.valueOf(vals[i]));
+                } else {
+                    args.put(pw.getName(), vals[i]);
+                }
+            }
         }
 
         //构建 fun
@@ -182,23 +193,12 @@ public class NamiHandler implements InvocationHandler {
         String act = null;
 
         //处理mapping
-        if (methodWrap.getAct() != null) {
-            act = methodWrap.getAct();
+        if (methodWrap.getAction() != null) {
+            act = methodWrap.getAction();
         }
 
-        if (methodWrap.getFun() != null) {
-            fun = methodWrap.getFun();
-        }
-
-        if (methodWrap.getMappingHeaders() != null) {
-            headers.putAll(methodWrap.getMappingHeaders());
-        }
-
-
-        //处理附加信息
-        Map<String, String> contextMap = NamiAttachment.getData();
-        if (contextMap.size() > 0) {
-            headers.putAll(contextMap);
+        if (methodWrap.getPath() != null) {
+            fun = methodWrap.getPath();
         }
 
 
