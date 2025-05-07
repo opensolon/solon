@@ -59,14 +59,15 @@ public class TextStreamUtil {
 
     private static void onLineStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super String> subscriber, SimpleSubscription subscription, long l) {
         try {
-            if (reader.isClosed()) {
-                subscriber.onComplete();
-                return;
-            }
-
             while (l > 0) {
                 if (subscription.isCancelled()) {
                     RunUtil.runAndTry(reader::close);
+                    return;
+                }
+
+                if (reader.isClosed()) {
+                    //并发信号时；有些线程关闭了，但有些线程还在读（这里要挡一下）
+                    subscriber.onComplete();
                     return;
                 }
 
@@ -74,12 +75,9 @@ public class TextStreamUtil {
 
                 if (textLine == null) {
                     //完成需求
-                    try {
-                        subscriber.onComplete();
-                    } finally {
-                        RunUtil.runAndTry(reader::close);
-                        return;
-                    }
+                    RunUtil.runAndTry(reader::close);
+                    subscriber.onComplete(); //可能会再次触发信号（所以，要先关）
+                    return;
                 } else {
                     subscriber.onNext(textLine);
                     l--; //提交后再减
@@ -118,11 +116,6 @@ public class TextStreamUtil {
 
     private static void onSseStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super ServerSentEvent> subscriber, SimpleSubscription subscription, long l) {
         try {
-            if (reader.isClosed()) {
-                subscriber.onComplete();
-                return;
-            }
-
             Map<String, String> meta = new HashMap<>();
             StringBuilder data = new StringBuilder();
 
@@ -132,16 +125,19 @@ public class TextStreamUtil {
                     return;
                 }
 
+                if (reader.isClosed()) {
+                    //并发信号时；有些线程关闭了，但有些线程还在读（这里要挡一下）
+                    subscriber.onComplete();
+                    return;
+                }
+
                 String textLine = reader.readLine();
 
                 if (textLine == null) {
                     //完成需求
-                    try {
-                        subscriber.onComplete();
-                    } finally {
-                        RunUtil.runAndTry(reader::close);
-                        return;
-                    }
+                    RunUtil.runAndTry(reader::close);
+                    subscriber.onComplete(); //可能会再次触发信号（所以，要先关）
+                    return;
                 } else {
                     if (textLine.isEmpty()) {
                         if (data.length() > 0) {
