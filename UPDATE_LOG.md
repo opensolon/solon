@@ -49,6 +49,7 @@
 * 添加 solon UploadedFile 基于 File 构造方法
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类
+* 添加 solon-ai-core ChatSubscriberProxy 用于控制外部订阅者，只触发一次 onSubscribe
 * 添加 solon-ai-mcp McpClientProperties:httpProxy 配置
 * 添加 solon-ai-mcp McpClientToolProvider isStarted 状态位（把心跳开始，转为第一次调用这后）
 * 添加 solon-ai-mcp McpClientToolProvider:readResourceAsText,readResource,getPromptAsMessages,getPrompt 方法
