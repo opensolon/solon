@@ -478,6 +478,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-ai-repo-dashvector</artifactId>
+                <version>${solon-ai.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-ai-repo-elasticsearch</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
