@@ -19,7 +19,9 @@ import org.noear.nami.annotation.*;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.handle.UploadedFile;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
@@ -158,6 +160,11 @@ public class MethodWrap {
         if (m.isAnnotationPresent(Patch.class)) {
             action = MethodType.PATCH.name();
         }
+
+        Consumes anno = m.getAnnotation(Consumes.class);
+        if (anno != null) {
+            mappingHeaders.put(ContentTypes.HEADER_CONTENT_TYPE, anno.value());
+        }
     }
 
     protected void resolveParamAnno(Method m) {
@@ -177,6 +184,10 @@ public class MethodWrap {
                     bodyName = p1.getName();
                     break;
                 }
+            }
+
+            if (File.class.isAssignableFrom(p1.getType()) || UploadedFile.class.isAssignableFrom(p1.getType())) {
+                mappingHeaders.put(ContentTypes.HEADER_CONTENT_TYPE, ContentTypes.FORM_DATA_VALUE);
             }
         }
     }
