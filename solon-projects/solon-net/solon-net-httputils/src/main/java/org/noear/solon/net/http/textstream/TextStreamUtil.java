@@ -77,9 +77,9 @@ public class TextStreamUtil {
                     try {
                         subscriber.onComplete();
                     } finally {
-                        reader.close();
+                        RunUtil.runAndTry(reader::close);
+                        return;
                     }
-                    break;
                 } else {
                     subscriber.onNext(textLine);
                     l--; //提交后再减
@@ -139,9 +139,9 @@ public class TextStreamUtil {
                     try {
                         subscriber.onComplete();
                     } finally {
-                        reader.close();
+                        RunUtil.runAndTry(reader::close);
+                        return;
                     }
-                    break;
                 } else {
                     if (textLine.isEmpty()) {
                         if (data.length() > 0) {

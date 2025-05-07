@@ -38,8 +38,11 @@ public class CloseTrackableBufferedReader extends BufferedReader {
 
     @Override
     public void close() throws IOException {
-        super.close();
-        isClosed = true;
+        try {
+            super.close();
+        } finally {
+            isClosed = true;
+        }
     }
 
     public boolean isClosed() {
