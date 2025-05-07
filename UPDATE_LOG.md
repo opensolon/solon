@@ -26,6 +26,7 @@
 * 新增 solon-data Ds 注解（为统一数据源注入作准备）
 * 新增 solon EntityConverter 接口（用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
+* 插件 solon-ai-mcp 二次预览
 * 移除 solon-ai ToolParam 注解，改用 Param （通用参数注解）
 * 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
 * 调整 solon Param 注解，添加字段支持
