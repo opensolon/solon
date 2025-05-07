@@ -23,23 +23,26 @@
 
 ### 3.2.2
 
+* 新增 solon-ai-repo-dashvector 插件
 * 新增 solon-data Ds 注解（为统一数据源注入作准备）
 * 新增 solon EntityConverter 接口（用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
 * 插件 solon-ai-mcp 二次预览
 * 移除 solon-ai ToolParam 注解，改用 Param （通用参数注解）
-* 调整 solon Cookie,Header,Param 的 required 默认改为 true (便与 mcp 复用)
+* 调整 solon Cookie,Header,Param 的 `required` 默认改为 true (便与 mcp 复用)
 * 调整 solon Param 注解，添加字段支持
-* 调整 solon-ai ToolMapping,ToolParam 注解移到 org.noear.solon.ai.annotation
+* 调整 solon-ai ToolMapping,ToolParam 注解移到 `org.noear.solon.ai.annotation`
 * 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
+* 调整 solon-ai-mcp McpClientToolProvider 更名为 McpClientProvider（实现的接口变多了）
 * 优化 nami 的编码处理
 * 优化 nami-channel-http HttpChannel 表单提交时增加集合参数支持（自动拆解为多参数）
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
+* 优化 solon-ai-mcp McpClientProvider 同时实现 ResourceProvider, PromptProvider 接口
 * 优化 solon-ai-repo-redis metadataIndexFields 更名为 metadataFields （原名标为弃用）
 * 添加 nami NamiParam 注解支持
-* 添加 nami 文件（UploadedFile 或 File）上传支持
+* 添加 nami 文件（`UploadedFile` 或 `File`）上传支持
 * 添加 nami 对 solon Mapping 相关注解的支持
 * 添加 nami 自动识别 File 或 UploadedFile 参数类型，并自动转为 FORM_DATA 提交
 * 添加 solon Mapping:headers 属性（用于支持 Nami 用况）
