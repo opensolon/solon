@@ -24,8 +24,8 @@ public class NamiAndHttpTest {
 
     @Test
     public void hello() {
-        assert helloService.hello("world", "1").contains("world:1");
-        assert helloService.hello("solon", "2").contains("solon:2");
+        assert helloService.hello("world", "1", "a").contains("world:1:a");
+        assert helloService.hello("solon", "2", "b").contains("solon:2:b");
     }
 
     @Test

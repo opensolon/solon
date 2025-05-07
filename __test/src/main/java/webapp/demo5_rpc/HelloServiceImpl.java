@@ -11,8 +11,8 @@ public class HelloServiceImpl implements HelloService {
     @Override
     @Post
     @Mapping("hello")
-    public String hello(String name, @Header("H1") String h1) {
-        return name + ":" + h1;
+    public String hello(String name, @Header("H1") String h1, @Cookie("C1") String c1) {
+        return name + ":" + h1 + ":" + c1;
     }
 
     @Override

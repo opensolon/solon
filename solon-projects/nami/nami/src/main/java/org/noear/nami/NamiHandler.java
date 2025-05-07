@@ -174,18 +174,31 @@ public class NamiHandler implements InvocationHandler {
         Map<String, Object> args = new LinkedHashMap<>();
         Object body = null;
         List<ParameterDesc> params = methodWrap.getParameters();
+        StringBuilder cookies = new StringBuilder();
         for (int i = 0, len = params.size(); i < len; i++) {
             if (vals[i] != null) {
                 ParameterDesc pw = params.get(i);
 
                 if (pw.isBody()) {
+                    //body
                     body = vals[i];
                 } else if (pw.isHeader()) {
+                    //header
                     headers.put(pw.getName(), String.valueOf(vals[i]));
+                } else if (pw.isCookie()) {
+                    //cookie
+                    if (cookies.length() > 0) {
+                        cookies.append("; ");
+                    }
+                    cookies.append(pw.getName()).append("=").append(vals[i]);
                 } else {
                     args.put(pw.getName(), vals[i]);
                 }
             }
+        }
+
+        if(cookies.length() > 0) {
+            headers.put("Cookie", cookies.toString());
         }
 
         //构建 fun

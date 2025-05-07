@@ -1,10 +1,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.nami.annotation.NamiClient;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.List;
 public interface HelloService {
     @Post
     @Mapping("hello")
-    String hello(String name, @Header("H1") String h1);
+    String hello(String name, @Header("H1") String h1, @Cookie("C1") String c1);
 
     @Mapping("/test01")
     @Post
