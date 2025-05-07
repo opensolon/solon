@@ -39,6 +39,9 @@
 * 优化 solon-ai-repo-redis metadataIndexFields 更名为 metadataFields （原名标为弃用）
 * 添加 nami NamiParam 注解支持
 * 添加 nami 文件（UploadedFile 或 File）上传支持
+* 添加 nami 对 solon Mapping 相关注解的支持
+* 添加 nami 自动识别 File 或 UploadedFile 参数类型，并自动转为 FORM_DATA 提交
+* 添加 solon Mapping:headers 属性（用于支持 Nami 用况）
 * 添加 solon UploadedFile 基于 File 构造方法
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类
