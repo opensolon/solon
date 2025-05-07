@@ -19,7 +19,6 @@ import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.rx.SimpleSubscription;
 import org.reactivestreams.Subscriber;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,14 +51,19 @@ public class TextStreamUtil {
      * @param subscriber  订阅者
      */
     public static void parseLineStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024);
+        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream), 1024);
         subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
             onLineStreamRequestDo(reader, subscriber, subscription, l);
         }));
     }
 
-    private static void onLineStreamRequestDo(BufferedReader reader, Subscriber<? super String> subscriber, SimpleSubscription subscription, long l) {
+    private static void onLineStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super String> subscriber, SimpleSubscription subscription, long l) {
         try {
+            if (reader.isClosed()) {
+                subscriber.onComplete();
+                return;
+            }
+
             while (l > 0) {
                 if (subscription.isCancelled()) {
                     RunUtil.runAndTry(reader::close);
@@ -69,15 +73,18 @@ public class TextStreamUtil {
                 String textLine = reader.readLine();
 
                 if (textLine == null) {
+                    //完成需求
+                    try {
+                        subscriber.onComplete();
+                    } finally {
+                        reader.close();
+                    }
                     break;
                 } else {
                     subscriber.onNext(textLine);
                     l--; //提交后再减
                 }
             }
-            //完成需求
-            subscriber.onComplete();
-            reader.close();
         } catch (Throwable err) {
             RunUtil.runAndTry(reader::close);
             subscriber.onError(err);
@@ -103,14 +110,19 @@ public class TextStreamUtil {
      * @param subscriber  订阅者
      */
     public static void parseSseStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream), 1024);
+        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream), 1024);
         subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
             onSseStreamRequestDo(reader, subscriber, subscription, l);
         }));
     }
 
-    private static void onSseStreamRequestDo(BufferedReader reader, Subscriber<? super ServerSentEvent> subscriber, SimpleSubscription subscription, long l) {
+    private static void onSseStreamRequestDo(CloseTrackableBufferedReader reader, Subscriber<? super ServerSentEvent> subscriber, SimpleSubscription subscription, long l) {
         try {
+            if (reader.isClosed()) {
+                subscriber.onComplete();
+                return;
+            }
+
             Map<String, String> meta = new HashMap<>();
             StringBuilder data = new StringBuilder();
 
@@ -123,6 +135,12 @@ public class TextStreamUtil {
                 String textLine = reader.readLine();
 
                 if (textLine == null) {
+                    //完成需求
+                    try {
+                        subscriber.onComplete();
+                    } finally {
+                        reader.close();
+                    }
                     break;
                 } else {
                     if (textLine.isEmpty()) {
@@ -148,10 +166,6 @@ public class TextStreamUtil {
                     }
                 }
             }
-
-            //完成需求
-            subscriber.onComplete();
-            reader.close();
         } catch (Throwable err) {
             RunUtil.runAndTry(reader::close);
             subscriber.onError(err);
