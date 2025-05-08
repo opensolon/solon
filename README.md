@@ -74,8 +74,8 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 | Code repository                                                  | Description                                               | 
 |------------------------------------------------------------------|-----------------------------------------------------------| 
-| <a href="/opensolon/solon">/opensolon/solon</a>                             | Solon ,Main code repository                               | 
-| [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,Official website supporting sample code repository |
+| <a href="/opensolon/solon">/opensolon/solon</a>                  | Solon ,Main code repository                               | 
+| [/opensolon/solon-examples](../../../opensolon/solon-examples)   | Solon ,Official website supporting sample code repository |
 |                                                                  |                                                           |
 | [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,Code repository                                 |
 | [/opensolon/solon-flow](/opensolon/solon-flow)                   | Solon Flow ,Code repository                               | 
