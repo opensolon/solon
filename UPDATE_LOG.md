@@ -28,21 +28,24 @@
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
 * 插件 solon-ai-mcp 二次预览
-* 移除 solon-ai ToolParam 注解，改用 Param （通用参数注解）
 * 调整 solon Cookie,Header,Param 的 `required` 默认改为 true (便与 mcp 复用)
 * 调整 solon Param 注解，添加字段支持
-* 调整 solon-ai ToolMapping,ToolParam 注解移到 `org.noear.solon.ai.annotation`
-* 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便第三方适配与扩展）
+* 调整 solon-ai 移除 ToolParam 注解，改用 `Param` 注解（通用参数注解）
+* 调整 solon-ai ToolMapping 注解移到 `org.noear.solon.ai.annotation`
+* 调整 solon-ai FunctionToolDesc:param 改为 `paramAdd` 风格
+* 调整 solon-ai MethodToolProvider 取消对 Mapping 注解的支持（利于跨生态体验的统一性）
+* 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便适配与扩展）
 * 调整 solon-ai 模型方言改为插件扩展方式
-* 调整 solon-ai-mcp McpClientToolProvider 更名为 McpClientProvider（实现的接口变多了）
+* 调整 solon-ai-mcp McpClientToolProvider 更名为 McpClientProvider（实现的接口变多了））
 * 优化 nami 的编码处理
 * 优化 nami-channel-http HttpChannel 表单提交时增加集合参数支持（自动拆解为多参数）
 * 优化 solon 允许 MethodWrap 没有上下文的用况
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
 * 优化 solon-ai 允许 MethodFunctionTool,MethodFunctionPrompt,MethodFunctionResource 没有 solon 上下文的用况
+* 优化 solon-ai-core `model.options(o->{})` 可多次调用
 * 优化 solon-ai-mcp McpClientProvider 同时实现 ResourceProvider, PromptProvider 接口
-* 优化 solon-ai-repo-redis metadataIndexFields 更名为 metadataFields （原名标为弃用）
+* 优化 solon-ai-repo-redis metadataIndexFields 更名为 `metadataFields` （原名标为弃用）
 * 添加 nami NamiParam 注解支持
 * 添加 nami 文件（`UploadedFile` 或 `File`）上传支持
 * 添加 nami 对 solon Mapping 相关注解的支持
@@ -62,6 +65,7 @@
 * 添加 solon-ai-mcp ResourceMapping 和 PromptMapping 注解（支持资源与提示语服务）
 * 添加 solon-ai-mcp McpServerEndpoint AOP 支持（可支持 solono auth 注解鉴权）
 * 添加 solon-ai-mcp McpServerEndpoint 实体参数支持（可支持 solon web 的实体参数、注解相通）
+* 添加 solon-ai-mpc `Tool.returnDirect` 属性透传（前后端都有 solon-ai 时有效，目前还不是规范）
 * 修复 solon 由泛型桥接方法引起的泛型失真问题
 * 修复 solon Utils.getFile 在 window 下绝对位置失效的问题
 * 修复 solon-net-httputils OkHttpUtils 不支持 post 空提交的问题
