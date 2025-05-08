@@ -23,22 +23,23 @@
 
 ### 3.2.2
 
+
 * 新增 solon-ai-repo-dashvector 插件
 * 新增 solon-data Ds 注解（为统一数据源注入作准备）
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
 * 插件 solon-ai-mcp 二次预览
 * 调整 solon Cookie,Header,Param 的 `required` 默认改为 true (便与 mcp 复用)
-* 调整 solon Param 注解，添加字段支持
 * 调整 solon-ai 移除 ToolParam 注解，改用 `Param` 注解（通用参数注解）
 * 调整 solon-ai ToolMapping 注解移到 `org.noear.solon.ai.annotation`
 * 调整 solon-ai FunctionToolDesc:param 改为 `paramAdd` 风格
 * 调整 solon-ai MethodToolProvider 取消对 Mapping 注解的支持（利于跨生态体验的统一性）
-* 调整 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便适配与扩展）
-* 调整 solon-ai 模型方言改为插件扩展方式
 * 调整 solon-ai-mcp McpClientToolProvider 更名为 McpClientProvider（实现的接口变多了））
+* 优化 solon-ai 拆分为 solon-ai-core 和 solon-ai-model-dialects（方便适配与扩展）
+* 优化 solon-ai 模型方言改为插件扩展方式
 * 优化 nami 的编码处理
 * 优化 nami-channel-http HttpChannel 表单提交时增加集合参数支持（自动拆解为多参数）
+* 优化 solon Param 注解，添加字段支持
 * 优化 solon 允许 MethodWrap 没有上下文的用况
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
