@@ -72,21 +72,21 @@ Solon v3.2.2-SNAPSHOT
 ## 主要代码仓库
 
 
-| 代码仓库                                            | 描述                               | 
-|-------------------------------------------------|----------------------------------| 
-| https://gitee.com/opensolon/solon               | Solon ,主代码仓库                     | 
-| https://gitee.com/opensolon/solon-examples      | Solon ,官网配套示例代码仓库                |
-|                                                 |                                  |
-| https://gitee.com/opensolon/solon-ai            | Solon Ai ,代码仓库                   | 
-| https://gitee.com/opensolon/solon-flow          | Solon Flow ,代码仓库                 | 
-| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,代码仓库                | 
-| https://gitee.com/opensolon/solon-admin         | Solon Admin ,代码仓库                | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,代码仓库（base java21） | 
-| https://gitee.com/opensolon/solon-integration   | Solon Integration ,代码仓库          | 
-|                                                 |                                  |
-| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,插件代码仓库             | 
-| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,插件代码仓库               | 
-| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,插件代码仓库             | 
+| 代码仓库                                                             | 描述                               | 
+|------------------------------------------------------------------|----------------------------------| 
+| [/opensolon/solon](/opensolon/solon)                             | Solon ,主代码仓库                     | 
+| [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,官网配套示例代码仓库                |
+|                                                                  |                                  |
+| [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,代码仓库                   | 
+| [/opensolon/solon-flow](/opensolon/solon-flow)                   | Solon Flow ,代码仓库                 | 
+| [/opensolon/solon-cloud](/opensolon/solon-cloud)                 | Solon Cloud ,代码仓库                | 
+| [/opensolon/solon-admin](/opensolon/solon-admin)                 | Solon Admin ,代码仓库                | 
+| [/opensolon/solon-jakarta](/opensolon/solon-jakarta)             | Solon Jakarta ,代码仓库（base java21） | 
+| [/opensolon/solon-integration](/opensolon/solon-integration)     | Solon Integration ,代码仓库          | 
+|                                                                  |                                  |
+| [/opensolon/solon-gradle-plugin](/opensolon/solon-gradle-plugin) | Solon Gradle ,插件代码仓库             | 
+| [/opensolon/solon-idea-plugin](/opensolon/solon-idea-plugin)     | Solon Idea ,插件代码仓库               | 
+| [/opensolon/solon-vscode-plugin](/opensolon/solon-vscode-plugin) | Solon VsCode ,插件代码仓库             | 
 
 
 ## 生态架构图：

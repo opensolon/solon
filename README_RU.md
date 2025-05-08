@@ -72,21 +72,21 @@ Solon v3.2.2-SNAPSHOT
 ## Основной кодовый склад
 
 
-| Кодовый склад                                   | описыва                                             | 
-|-------------------------------------------------|-----------------------------------------------------| 
-| https://gitee.com/opensolon/solon               | Solon ,Главный код пакгауза                         | 
-| https://gitee.com/opensolon/solon-examples      | Solon ,Стандартный набор кодов на официальном сайте |
-|                                                 |                                                     |
-| https://gitee.com/opensolon/solon-ai            | Solon Ai ,Кодовый склад                             | 
-| https://gitee.com/opensolon/solon-flow          | Solon Flow ,Кодовый склад                           | 
-| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,Кодовый склад                          | 
-| https://gitee.com/opensolon/solon-admin         | Solon Admin ,Кодовый склад                          | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,Кодовый склад（base java21）           | 
-| https://gitee.com/opensolon/solon-integration   | Solon Integration ,Кодовый склад                    | 
-|                                                 |                                                     |
-| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,Код плагина хранилища                 | 
-| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,Код плагина хранилища                   | 
-| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,Код плагина хранилища                 | 
+| Кодовый склад                                                    | описыва                                             | 
+|------------------------------------------------------------------|-----------------------------------------------------| 
+| [/opensolon/solon](/opensolon/solon)                             | Solon ,Главный код пакгауза                         | 
+| [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,Стандартный набор кодов на официальном сайте |
+|                                                                  |                                                     |
+| [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
+| [/opensolon/solon-flow](/opensolon/solon-flow)                   | Solon Flow ,Кодовый склад                           | 
+| [/opensolon/solon-cloud](/opensolon/solon-cloud)                 | Solon Cloud ,Кодовый склад                          | 
+| [/opensolon/solon-admin](/opensolon/solon-admin)                 | Solon Admin ,Кодовый склад                          | 
+| [/opensolon/solon-jakarta](/opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java21）           | 
+| [/opensolon/solon-integration](/opensolon/solon-integration)     | Solon Integration ,Кодовый склад                    | 
+|                                                                  |                                                     |
+| [/opensolon/solon-gradle-plugin](/opensolon/solon-gradle-plugin) | Solon Gradle ,Код плагина хранилища                 | 
+| [/opensolon/solon-idea-plugin](/opensolon/solon-idea-plugin)     | Solon Idea ,Код плагина хранилища                   | 
+| [/opensolon/solon-vscode-plugin](/opensolon/solon-vscode-plugin) | Solon VsCode ,Код плагина хранилища                 | 
 
 
 ## Экологическая архитектура：

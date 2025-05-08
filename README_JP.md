@@ -70,21 +70,21 @@ Solon v3.2.2-SNAPSHOT
 ## 主要なコードリポジトリです
 
 
-| コードリポジトリです                                      | 記述します                                  | 
-|-------------------------------------------------|----------------------------------------| 
-| https://gitee.com/opensolon/solon               | Solon ,メインコードのリポジトリです                  | 
-| https://gitee.com/opensolon/solon-examples      | Solon ,公式サイトの例コードリポジトリです               |
-|                                                 |                                        |
-| https://gitee.com/opensolon/solon-ai            | Solon Ai ,コードリポジトリです                   | 
-| https://gitee.com/opensolon/solon-flow          | Solon Flow ,コードリポジトリです                 | 
-| https://gitee.com/opensolon/solon-cloud         | Solon Cloud ,コードリポジトリです                | 
-| https://gitee.com/opensolon/solon-admin         | Solon Admin ,コードリポジトリです                | 
-| https://gitee.com/opensolon/solon-jakarta       | Solon Jakarta ,コードリポジトリです（base java21） | 
-| https://gitee.com/opensolon/solon-integration   | Solon Integration ,コードリポジトリです          | 
-|                                                 |                                        |
-| https://gitee.com/opensolon/solon-gradle-plugin | Solon Gradle ,プラグインのリポジトリです            | 
-| https://gitee.com/opensolon/solon-idea-plugin   | Solon Idea ,プラグインのリポジトリです              | 
-| https://gitee.com/opensolon/solon-vscode-plugin | Solon VsCode ,プラグインのリポジトリです            | 
+| コードリポジトリです                                                       | 記述します                                  | 
+|------------------------------------------------------------------|----------------------------------------| 
+| [/opensolon/solon](/opensolon/solon)                             | Solon ,メインコードのリポジトリです                  | 
+| [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,公式サイトの例コードリポジトリです               |
+|                                                                  |                                        |
+| [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                   | 
+| [/opensolon/solon-flow](/opensolon/solon-flow)                   | Solon Flow ,コードリポジトリです                 | 
+| [/opensolon/solon-cloud](/opensolon/solon-cloud)                 | Solon Cloud ,コードリポジトリです                | 
+| [/opensolon/solon-admin](/opensolon/solon-admin)                 | Solon Admin ,コードリポジトリです                | 
+| [/opensolon/solon-jakarta](/opensolon/solon-jakarta)             | Solon Jakarta ,コードリポジトリです（base java21） | 
+| [/opensolon/solon-integration](/opensolon/solon-integration)     | Solon Integration ,コードリポジトリです          | 
+|                                                                  |                                        |
+| [/opensolon/solon-gradle-plugin](/opensolon/solon-gradle-plugin) | Solon Gradle ,プラグインのリポジトリです            | 
+| [/opensolon/solon-idea-plugin](/opensolon/solon-idea-plugin)     | Solon Idea ,プラグインのリポジトリです              | 
+| [/opensolon/solon-vscode-plugin](/opensolon/solon-vscode-plugin) | Solon VsCode ,プラグインのリポジトリです            | 
 
 
 ## エコシステム：
