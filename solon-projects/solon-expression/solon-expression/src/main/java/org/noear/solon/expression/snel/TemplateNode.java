@@ -15,8 +15,8 @@
  */
 package org.noear.solon.expression.snel;
 
-import org.noear.solon.Solon;
 import org.noear.solon.expression.Expression;
+import org.noear.solon.expression.context.StandardContext;
 
 import java.util.List;
 import java.util.Properties;
@@ -60,10 +60,8 @@ public class TemplateNode implements Expression<String> {
         Object props = context.apply(SnEL.CONTEXT_PROPS_KEY);
 
         if (props == null) {
-            try {
-                props = Solon.cfg();
-            } catch (Throwable ignore) {
-
+            if (context instanceof StandardContext) {
+                props = ((StandardContext) context).properties();
             }
 
             if (props == null) {

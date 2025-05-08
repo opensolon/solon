@@ -19,7 +19,10 @@ import org.noear.solon.expression.exception.EvaluationException;
 import org.noear.solon.expression.snel.PropertyHolder;
 import org.noear.solon.expression.snel.ReflectionUtil;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.Function;
 
 /**
@@ -31,10 +34,31 @@ import java.util.function.Function;
 public class StandardContext implements Function<String, Object> {
     private final Object target;
     private final boolean isMap;
+    private Properties properties;
 
     public StandardContext(Object target) {
         this.target = target;
         this.isMap = target instanceof Map;
+    }
+
+    public StandardContext() {
+        this.target = Collections.emptyMap();
+        this.isMap = true;
+    }
+
+    /**
+     * 属性设置（用于模板表达式）
+     */
+    public StandardContext properties(Properties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * 属性获取（用于模板表达式）
+     */
+    public Properties properties() {
+        return properties;
     }
 
     @Override

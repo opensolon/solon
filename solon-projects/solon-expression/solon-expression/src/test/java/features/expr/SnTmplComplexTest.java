@@ -2,6 +2,7 @@ package features.expr;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.Props;
+import org.noear.solon.expression.context.StandardContext;
 import org.noear.solon.expression.snel.SnEL;
 
 import java.util.HashMap;
@@ -155,6 +156,23 @@ public class SnTmplComplexTest {
 
         Map<String, Object> context = new HashMap<>();
         context.put(SnEL.CONTEXT_PROPS_KEY, props);
+
+        String template = "Info: ${v2:2}#{1}";
+        String result = SnEL.evalTmpl(template, context);
+        assertEquals("Info: 21", result);
+
+        template = "Info: ${v2}#{1}";
+        result = SnEL.evalTmpl(template, context);
+        assertEquals("Info: 1", result);
+    }
+
+    @Test
+    public void case2_2() {
+        Props props = new Props();
+        props.put("v", "1");
+
+        StandardContext context = new StandardContext()
+                .properties(props);
 
         String template = "Info: ${v2:2}#{1}";
         String result = SnEL.evalTmpl(template, context);
