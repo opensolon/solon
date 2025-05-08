@@ -74,7 +74,7 @@ Solon v3.2.2-SNAPSHOT
 
 | 代码仓库                                                             | 描述                               | 
 |------------------------------------------------------------------|----------------------------------| 
-| [/opensolon/solon](/opensolon/solon)                             | Solon ,主代码仓库                     | 
+| <a href="/opensolon/solon">/opensolon/solon</a>                             | Solon ,主代码仓库                     | 
 | [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,官网配套示例代码仓库                |
 |                                                                  |                                  |
 | [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,代码仓库                   | 

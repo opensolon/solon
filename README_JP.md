@@ -72,7 +72,7 @@ Solon v3.2.2-SNAPSHOT
 
 | コードリポジトリです                                                       | 記述します                                  | 
 |------------------------------------------------------------------|----------------------------------------| 
-| [/opensolon/solon](/opensolon/solon)                             | Solon ,メインコードのリポジトリです                  | 
+| <a href="/opensolon/solon">/opensolon/solon</a>                             | Solon ,メインコードのリポジトリです                  | 
 | [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,公式サイトの例コードリポジトリです               |
 |                                                                  |                                        |
 | [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                   | 

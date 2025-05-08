@@ -74,7 +74,7 @@ Solon v3.2.2-SNAPSHOT
 
 | Кодовый склад                                                    | описыва                                             | 
 |------------------------------------------------------------------|-----------------------------------------------------| 
-| [/opensolon/solon](/opensolon/solon)                             | Solon ,Главный код пакгауза                         | 
+| <a href="/opensolon/solon">/opensolon/solon</a>                             | Solon ,Главный код пакгауза                         | 
 | [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,Стандартный набор кодов на официальном сайте |
 |                                                                  |                                                     |
 | [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
