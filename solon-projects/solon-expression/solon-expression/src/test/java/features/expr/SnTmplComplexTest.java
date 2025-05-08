@@ -146,9 +146,22 @@ public class SnTmplComplexTest {
         String template = "Info: ${v}#{1}";
         String result = SnEL.evalTmpl(template, context);
         assertEquals("Info: 11", result);
+    }
 
-        template = "Info: ${v2:2}#{1}";
-        result = SnEL.evalTmpl(template, context);
+    @Test
+    public void case2() {
+        Props props = new Props();
+        props.put("v", "1");
+
+        Map<String, Object> context = new HashMap<>();
+        context.put(SnEL.CONTEXT_PROPS_KEY, props);
+
+        String template = "Info: ${v2:2}#{1}";
+        String result = SnEL.evalTmpl(template, context);
         assertEquals("Info: 21", result);
+
+        template = "Info: ${v2}#{1}";
+        result = SnEL.evalTmpl(template, context);
+        assertEquals("Info: 1", result);
     }
 }

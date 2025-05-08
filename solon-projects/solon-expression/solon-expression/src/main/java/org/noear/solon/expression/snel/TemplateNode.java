@@ -73,7 +73,7 @@ public class TemplateNode implements Expression<String> {
 
         int colonIdx = expr.lastIndexOf(':');
         String key = (colonIdx < 0) ? expr : expr.substring(0, colonIdx);
-        String def = (colonIdx < 0) ? null : expr.substring(colonIdx + 1);
+        String def = (colonIdx < 0) ? "" : expr.substring(colonIdx + 1);
 
         String value = null;
         if (props instanceof Properties) {
