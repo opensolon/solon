@@ -67,29 +67,31 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptorsIdx = new HashSet<>();
 
         //scan method @Around （优先）
-        for (Annotation anno : annotations) {
-            if (anno instanceof Around) {
-                doInterceptorAdd((Around) anno);
-            } else {
-                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
-                if (ie != null) {
-                    doInterceptorAdd(ie);
+        if (context != null) {
+            for (Annotation anno : annotations) {
+                if (anno instanceof Around) {
+                    doInterceptorAdd((Around) anno);
                 } else {
-                    doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
+                    InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
+                    if (ie != null) {
+                        doInterceptorAdd(ie);
+                    } else {
+                        doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
+                    }
                 }
             }
-        }
 
-        //scan class @Around
-        for (Annotation anno : ownerClz.getAnnotations()) {
-            if (anno instanceof Around) {
-                doInterceptorAdd((Around) anno);
-            } else {
-                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
-                if (ie != null) {
-                    doInterceptorAdd(ie);
+            //scan class @Around
+            for (Annotation anno : ownerClz.getAnnotations()) {
+                if (anno instanceof Around) {
+                    doInterceptorAdd((Around) anno);
                 } else {
-                    doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
+                    InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
+                    if (ie != null) {
+                        doInterceptorAdd(ie);
+                    } else {
+                        doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
+                    }
                 }
             }
         }
