@@ -75,19 +75,19 @@ Built from scratch, with more flexible interface specifications and an open ecos
 
 | Code repository                                                  | Description                                               | 
 |------------------------------------------------------------------|-----------------------------------------------------------| 
-| <a href="/opensolon/solon">/opensolon/solon</a>                             | Solon ,Main code repository                               | 
-| [/opensolon/solon-examples](/opensolon/solon-examples)           | Solon ,Official website supporting sample code repository |
+| [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,Main code repository                               | 
+| [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,Official website supporting sample code repository |
 |                                                                  |                                                           |
-| [/opensolon/solon-ai](/opensolon/solon-ai)                       | Solon Ai ,Code repository                                 |
-| [/opensolon/solon-flow](/opensolon/solon-flow)                   | Solon Flow ,Code repository                               | 
-| [/opensolon/solon-cloud](/opensolon/solon-cloud)                 | Solon Cloud ,Code repository                              | 
-| [/opensolon/solon-admin](/opensolon/solon-admin)                 | Solon Admin ,Code repository                              | 
-| [/opensolon/solon-jakarta](/opensolon/solon-jakarta)             | Solon Jakarta ,Code repository（base java21）               | 
-| [/opensolon/solon-integration](/opensolon/solon-integration)     | Solon Integration ,Code repository                        | 
+| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Code repository                                 |
+| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,Code repository                               | 
+| [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Code repository                              | 
+| [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Code repository                              | 
+| [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Code repository（base java21）               | 
+| [/opensolon/solon-integration](../../../../opensolon/solon-integration)     | Solon Integration ,Code repository                        | 
 |                                                                  |                                                           |
-| [/opensolon/solon-gradle-plugin](/opensolon/solon-gradle-plugin) | Solon Gradle ,Plugin code repository                      | 
-| [/opensolon/solon-idea-plugin](/opensolon/solon-idea-plugin)     | Solon Idea ,Plugin code repository                        | 
-| [/opensolon/solon-vscode-plugin](/opensolon/solon-vscode-plugin) | Solon VsCode ,Plugin code repository                      | 
+| [/opensolon/solon-gradle-plugin](../../../../opensolon/solon-gradle-plugin) | Solon Gradle ,Plugin code repository                      | 
+| [/opensolon/solon-idea-plugin](../../../../opensolon/solon-idea-plugin)     | Solon Idea ,Plugin code repository                        | 
+| [/opensolon/solon-vscode-plugin](../../../../opensolon/solon-vscode-plugin) | Solon VsCode ,Plugin code repository                      | 
 
 
 
