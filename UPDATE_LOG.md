@@ -37,8 +37,10 @@
 * 调整 solon-ai-mcp McpClientToolProvider 更名为 McpClientProvider（实现的接口变多了）
 * 优化 nami 的编码处理
 * 优化 nami-channel-http HttpChannel 表单提交时增加集合参数支持（自动拆解为多参数）
+* 优化 solon 允许 MethodWrap 没有上下文的用况
 * 优化 solon-web-sse 边界，允许 SseEmitter 未提交之前就可 complete
 * 优化 solon-serialization JsonPropsUtil.apply 分解成本个方法，按需选择
+* 优化 solon-ai 允许 MethodFunctionTool,MethodFunctionPrompt,MethodFunctionResource 没有 solon 上下文的用况
 * 优化 solon-ai-mcp McpClientProvider 同时实现 ResourceProvider, PromptProvider 接口
 * 优化 solon-ai-repo-redis metadataIndexFields 更名为 metadataFields （原名标为弃用）
 * 添加 nami NamiParam 注解支持
