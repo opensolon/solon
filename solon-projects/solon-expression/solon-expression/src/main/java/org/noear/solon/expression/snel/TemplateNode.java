@@ -16,7 +16,6 @@
 package org.noear.solon.expression.snel;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.Props;
 import org.noear.solon.expression.Expression;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class TemplateNode implements Expression<String> {
                 // 如果是变量片段，从上下文中获取值
                 Object value;
                 if (fragment.getMarker() == '$') {
-                    value = getProps(context).apply(fragment.getContent());
+                    value = getProps(fragment.getContent(), context);
                 } else {
                     value = SnEL.eval(fragment.getContent(), context);
                 }
@@ -56,20 +55,39 @@ public class TemplateNode implements Expression<String> {
         return result.toString();
     }
 
-    private Function<String, String> getProps(Function context) {
+    private String getProps(String expr, Function context) {
         //属性，可以传入或者
         Object props = context.apply(SnEL.CONTEXT_PROPS_KEY);
 
         if (props == null) {
-            return Solon.cfg()::getByExpr;
-        } else if (props instanceof Props) {
-            return ((Props) props)::getByExpr;
-        } else if (props instanceof Properties) {
-            return ((Properties) props)::getProperty;
+            try {
+                props = Solon.cfg();
+            } catch (Throwable ignore) {
+
+            }
+
+            if (props == null) {
+                throw new IllegalArgumentException("Missing property '" + SnEL.CONTEXT_PROPS_KEY + "'");
+            }
+        }
+
+        int colonIdx = expr.lastIndexOf(':');
+        String key = (colonIdx < 0) ? expr : expr.substring(0, colonIdx);
+        String def = (colonIdx < 0) ? null : expr.substring(colonIdx + 1);
+
+        String value = null;
+        if (props instanceof Properties) {
+            value = ((Properties) props).getProperty(key);
         } else if (props instanceof Function) {
-            return (Function) props;
+            value = String.valueOf(((Function) props).apply(key));
         } else {
             throw new IllegalArgumentException("Unsupported props type: " + props.getClass());
+        }
+
+        if (value == null) {
+            return def;
+        } else {
+            return value;
         }
     }
 }
