@@ -38,4 +38,9 @@ public @interface Body {
      * 默认值
      * */
     String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
+
+    /**
+     * 描述
+     */
+    String description() default "";
 }

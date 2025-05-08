@@ -48,6 +48,7 @@
 * 添加 nami 对 solon Mapping 相关注解的支持
 * 添加 nami 自动识别 File 或 UploadedFile 参数类型，并自动转为 FORM_DATA 提交
 * 添加 solon Mapping:headers 属性（用于支持 Nami 用况）
+* 添加 solon Body:description,Param:description,Header:description,Cookie:description 属性（用于支持 MCP 用况）
 * 添加 solon UploadedFile 基于 File 构造方法
 * 添加 solon-net-httputils HttpUtilsBuilder:proxy 方法（设置代理）
 * 添加 solon-net-httputils HttpProxy 类

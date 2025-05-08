@@ -44,8 +44,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Controller {
-    /**
-     * 描述
-     */
-    String description() default "";
+
 }
