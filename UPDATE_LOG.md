@@ -73,7 +73,7 @@
 * 修复 nami-channel-http 不支持 post 空提交的问题
 * 修复 solon-serialization-fastjson2 在配置全局时间格式化后，个人注解格式化会失效的问题
 * 修复 solon Utils.getFile 在 window 下绝对位置失效的问题
-* snack3 升为 3.2.132
+* snack3 升为 3.2.133
 * dbvisitor 升为 6.0.0
 * sa-token 升为 1.42.0
 * mybatis-flex 升为 1.10.9
