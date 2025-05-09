@@ -77,9 +77,9 @@ Solon v3.2.2-SNAPSHOT
 | [/opensolon/solon](../../../../opensolon/solon)                             | Solon ,Главный код пакгауза                         | 
 | [/opensolon/solon-examples](../../../../opensolon/solon-examples)           | Solon ,Стандартный набор кодов на официальном сайте |
 |                                                                  |                                                     |
-| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
-| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,Кодовый склад                           | 
 | [/opensolon/solon-expression](../../../../opensolon/solon-expression)                   | Solon Expression ,Кодовый склад                     | 
+| [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,Кодовый склад                           | 
+| [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Кодовый склад                          | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Кодовый склад                          | 
 | [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java21）           | 
