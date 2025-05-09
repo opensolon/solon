@@ -79,6 +79,7 @@ Solon v3.2.2-SNAPSHOT
 |                                                                  |                                                     |
 | [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,Кодовый склад                             | 
 | [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,Кодовый склад                           | 
+| [/opensolon/solon-expression](../../../../opensolon/solon-expression)                   | Solon Expression ,Кодовый склад                     | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,Кодовый склад                          | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,Кодовый склад                          | 
 | [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,Кодовый склад（base java21）           | 

@@ -23,8 +23,6 @@
         <module>../../solon-projects/solon-base/solon-mvc</module>
         <module>../../solon-projects/solon-base/solon-hotplug</module>
 
-        <module>../../solon-projects/solon-expression/solon-expression</module>
-
         <module>../../solon-projects/solon-rx/solon-rx</module>
         <module>../../solon-projects/solon-rx/solon-web-rx</module>
         <module>../../solon-projects/solon-rx/solon-data-rx-sqlutils</module>

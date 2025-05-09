@@ -77,6 +77,7 @@ Solon v3.2.2-SNAPSHOT
 |                                                                  |                                        |
 | [/opensolon/solon-ai](../../../../opensolon/solon-ai)                       | Solon Ai ,コードリポジトリです                   | 
 | [/opensolon/solon-flow](../../../../opensolon/solon-flow)                   | Solon Flow ,コードリポジトリです                 | 
+| [/opensolon/solon-expression](../../../../opensolon/solon-expression)                   | Solon Expression ,コードリポジトリです           | 
 | [/opensolon/solon-cloud](../../../../opensolon/solon-cloud)                 | Solon Cloud ,コードリポジトリです                | 
 | [/opensolon/solon-admin](../../../../opensolon/solon-admin)                 | Solon Admin ,コードリポジトリです                | 
 | [/opensolon/solon-jakarta](../../../../opensolon/solon-jakarta)             | Solon Jakarta ,コードリポジトリです（base java21） | 
