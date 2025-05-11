@@ -201,26 +201,26 @@ public class NamiHandler implements InvocationHandler {
             headers.put("Cookie", cookies.toString());
         }
 
-        //构建 fun
-        String fun = method.getName();
-        String act = null;
+        //构建 path
+        String path = method.getName();
+        String action = null;
 
         //处理mapping
         if (methodWrap.getAction() != null) {
-            act = methodWrap.getAction();
+            action = methodWrap.getAction();
         }
 
         if (methodWrap.getPath() != null) {
-            fun = methodWrap.getPath();
+            path = methodWrap.getPath();
         }
 
 
-        //构建 url
-        String url = null;
+        //构建 baseUrl
+        String baseUrl = null;
         if (TextUtils.isEmpty(config.getUrl())) {
-            url = config.getUpstream().get();
+            baseUrl = config.getUpstream().get();
 
-            if (url == null) {
+            if (baseUrl == null) {
                 StringBuilder buf = new StringBuilder();
                 buf.append("NamiClient: Upstream not found server instance: ").append(clz0.getName());
 
@@ -231,32 +231,32 @@ public class NamiHandler implements InvocationHandler {
                 throw new NamiException(buf.toString());
             }
 
-            if (url.indexOf("://") < 0) {
-                url = "http://" + url;
+            if (baseUrl.indexOf("://") < 0) {
+                baseUrl = "http://" + baseUrl;
             }
 
             if (TextUtils.isNotEmpty(config.getPath())) {
-                int idx = url.indexOf("/", 9);//https://a
+                int idx = baseUrl.indexOf("/", 9);//https://a
                 if (idx > 0) {
-                    url = url.substring(0, idx);
+                    baseUrl = baseUrl.substring(0, idx);
                 }
 
                 if (config.getPath().endsWith("/")) {
-                    fun = config.getPath() + fun;
+                    path = config.getPath() + path;
                 } else {
-                    fun = config.getPath() + "/" + fun;
+                    path = config.getPath() + "/" + path;
                 }
             }
 
         } else {
-            url = config.getUrl();
+            baseUrl = config.getUrl();
         }
 
-        if (fun != null && fun.indexOf("{") > 0) {
+        if (path != null && path.indexOf("{") > 0) {
             //
             //处理Path参数
             //
-            Map<String, String> pathKeys = buildPathKeys(fun);
+            Map<String, String> pathKeys = buildPathKeys(path);
 
             for (Map.Entry<String, String> kv : pathKeys.entrySet()) {
                 //
@@ -267,7 +267,7 @@ public class NamiHandler implements InvocationHandler {
 
                 if (arg != null) {
                     String val = arg.toString();
-                    fun = fun.replace(kv.getKey(), val);
+                    path = path.replace(kv.getKey(), val);
                     args.remove(kv.getValue());
                 }
             }
@@ -279,15 +279,15 @@ public class NamiHandler implements InvocationHandler {
             type = method.getReturnType();
         }
 
-        if (url.startsWith("sd:")) {
-            url = url.substring(3);
+        if (baseUrl.startsWith("sd:")) {
+            baseUrl = baseUrl.substring(3);
         }
 
         //执行调用
         Object rst = new Nami(config)
                 .method(proxy, method)
-                .action(act)
-                .url(url, fun)
+                .action(action)
+                .url(baseUrl, path)
                 .callOrThrow(headers, args, body) //使用 OrThrow，可减少异常包装
                 .getObjectOrThrow(type);
 

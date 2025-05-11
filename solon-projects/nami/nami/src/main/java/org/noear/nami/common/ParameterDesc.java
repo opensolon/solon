@@ -18,10 +18,7 @@ package org.noear.nami.common;
 import org.noear.nami.annotation.NamiBody;
 import org.noear.nami.annotation.NamiParam;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Cookie;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Param;
+import org.noear.solon.annotation.*;
 
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
@@ -38,6 +35,7 @@ public class ParameterDesc {
     private boolean isHeader;
     private boolean isCookie;
     private boolean isBody;
+    private boolean isPath;
 
     public ParameterDesc(Parameter parameter) {
         this.parameter = parameter;
@@ -91,6 +89,13 @@ public class ParameterDesc {
             name = Utils.annoAlias(cookieAnno.value(), cookieAnno.name());
             return;
         }
+
+        Path pathAnno = parameter.getAnnotation(Path.class);
+        if (pathAnno != null) {
+            isPath = true;
+            name = Utils.annoAlias(pathAnno.value(), pathAnno.name());
+            return;
+        }
     }
 
     /**
@@ -112,6 +117,13 @@ public class ParameterDesc {
      */
     public boolean isCookie() {
         return isCookie;
+    }
+
+    /**
+     * 是否为路径
+     */
+    public boolean isPath() {
+        return isPath;
     }
 
     /**

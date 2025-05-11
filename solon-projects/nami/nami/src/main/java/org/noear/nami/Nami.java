@@ -95,27 +95,27 @@ public class Nami {
     /**
      * 设置请求地址
      */
-    public Nami url(String url, String fun) {
-        if (url.indexOf("{fun}") > 0) {
-            _url = url.replace("{fun}", fun);
+    public Nami url(String baseUrl, String path) {
+        if (baseUrl.indexOf("{fun}") > 0) {
+            _url = baseUrl.replace("{fun}", path);
         } else {
-            if (fun == null) {
-                _url = url;
+            if (path == null) {
+                _url = baseUrl;
             } else {
                 StringBuilder sb = new StringBuilder(200);
 
-                sb.append(url);
-                if (url.endsWith("/")) {
-                    if (fun.startsWith("/")) {
-                        sb.append(fun.substring(1));
+                sb.append(baseUrl);
+                if (baseUrl.endsWith("/")) {
+                    if (path.startsWith("/")) {
+                        sb.append(path.substring(1));
                     } else {
-                        sb.append(fun);
+                        sb.append(path);
                     }
                 } else {
-                    if (fun.startsWith("/")) {
-                        sb.append(fun);
+                    if (path.startsWith("/")) {
+                        sb.append(path);
                     } else {
-                        sb.append("/").append(fun);
+                        sb.append("/").append(path);
                     }
                 }
 
