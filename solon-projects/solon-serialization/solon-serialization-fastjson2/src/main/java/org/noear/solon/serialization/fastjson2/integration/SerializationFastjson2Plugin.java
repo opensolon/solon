@@ -30,7 +30,6 @@ public class SerializationFastjson2Plugin implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::renderFactory
-        //绑定属性
         Fastjson2RenderFactory renderFactory = new Fastjson2RenderFactory(jsonProps);
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory); //用于扩展
         context.app().renderManager().register(renderFactory);

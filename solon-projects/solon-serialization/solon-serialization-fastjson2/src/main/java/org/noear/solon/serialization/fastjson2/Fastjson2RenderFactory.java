@@ -83,7 +83,7 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
 
         if (jsonProps != null) {
             if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
-                //这个文案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
+                //这个方案，可以支持全局配置，且个性注解不会失效；//用编码器会让个性注解失效
                 serializer.getSerializeConfig().setDateFormat(jsonProps.dateAsFormat);
             }
 
