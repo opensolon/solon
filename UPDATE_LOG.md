@@ -24,6 +24,8 @@
 
 ### 3.3.1
 
+* 新增 solon-ai-flow 插件
+* 添加 solon-data Ds 注解 ElementType.TYPE 支持???
 * 添加 solon-ai-mcp ToolMapping,ResourceMapping 注解方法对 Produces 注解的支持（用它可指定结果转换处理）
 * 添加 solon-ai-mcp ToolCallResultConverter:matched 方法
 * 添加 solon-ai-mcp 资源模板的响应适配
@@ -32,6 +34,7 @@
 * 优化 solon-ai MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）
 * 优化 solon-ai-mcp 取消 MethodFunctionResource 对反回类型的限制（增加了 resultConverter 转换处理）
 * 修复 solon-ai ChatRequestDefault:stream 请求 r1 时，可能会产生两次 tink 消息发射
+* 修复 ContextPathFilter 无效地址没有出现 404 的问题（并添加单测）
 
 
 ### 3.3.0
