@@ -74,6 +74,7 @@ public class ContextPathFilter implements Filter {
                 ctx.pathNew(ctx.pathNew().substring(contextPath1.length() - 1));
             } else {
                 if (forced) {
+                    ctx.status(404);
                     return;
                 }
             }
