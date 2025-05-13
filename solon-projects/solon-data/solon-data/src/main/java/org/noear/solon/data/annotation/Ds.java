@@ -29,7 +29,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 3.2
  * */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Preview("3.2")
