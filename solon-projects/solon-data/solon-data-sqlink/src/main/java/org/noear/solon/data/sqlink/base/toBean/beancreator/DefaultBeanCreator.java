@@ -36,7 +36,7 @@ public class DefaultBeanCreator<T> extends AbsBeanCreator<T> {
     static {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            field.setAccessible(true);
+            ClassUtil.accessibleAsTrue(field);
             unsafe = (Unsafe) field.get(null);
         }
         catch (IllegalAccessException | NoSuchFieldException e) {

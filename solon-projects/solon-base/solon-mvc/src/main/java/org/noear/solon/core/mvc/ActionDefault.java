@@ -25,10 +25,7 @@ import org.noear.solon.core.Constants;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.DataThrowable;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.PathMatcher;
-import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
@@ -79,7 +76,7 @@ public class ActionDefault extends HandlerAide implements Action {
         this.bWrap = bWrap;
         this.bAide = bAide;
 
-        method.setAccessible(true);
+        ClassUtil.accessibleAsTrue(method);
 
         if (NativeDetector.isAotRuntime()) {
             bWrap.context().methodGet(bWrap.rawClz(), method);

@@ -47,6 +47,19 @@ public class ClassUtil {
     }
 
     /**
+     * 尝试设置访问权限
+     */
+    public static void accessibleAsTrue(AccessibleObject target) {
+        try {
+            if (target.isAccessible() == false) {
+                target.setAccessible(true);
+            }
+        } catch (Throwable ignore) {
+            //略过
+        }
+    }
+
+    /**
      * 是否存在某个类
      *
      * <pre>{@code

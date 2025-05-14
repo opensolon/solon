@@ -16,15 +16,11 @@
 package org.noear.solon.net.http.impl.jdk;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.IoUtil;
-import org.noear.solon.core.util.KeyValues;
-import org.noear.solon.core.util.MultiMap;
-import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.core.util.*;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
 import org.noear.solon.net.http.impl.HttpSsl;
-import org.noear.solon.net.http.HttpTimeout;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -331,10 +327,10 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
 
             Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
+            ClassUtil.accessibleAsTrue(modifiersField);
             modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
 
-            methodsField.setAccessible(true);
+            ClassUtil.accessibleAsTrue(methodsField);
 
             String[] oldMethods = (String[]) methodsField.get(null);
             Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));

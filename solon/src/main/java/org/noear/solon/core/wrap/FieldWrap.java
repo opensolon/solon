@@ -18,6 +18,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NameUtil;
 import org.noear.solon.lang.Nullable;
@@ -177,9 +178,7 @@ public class FieldWrap {
 
         try {
             if (_getter == null || disFun) {
-                if (!field.isAccessible()) {
-                    field.setAccessible(true);
-                }
+                ClassUtil.accessibleAsTrue(field);
 
                 return field.get(tObj);
             } else {
@@ -214,9 +213,7 @@ public class FieldWrap {
             }
 
             if (_setter == null || disFun) {
-                if (!field.isAccessible()) {
-                    field.setAccessible(true);
-                }
+                ClassUtil.accessibleAsTrue(field);
                 field.set(tObj, val);
             } else {
                 _setter.invoke(tObj, new Object[]{val});

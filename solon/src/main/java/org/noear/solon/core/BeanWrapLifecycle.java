@@ -19,6 +19,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Destroy;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -95,7 +96,7 @@ class BeanWrapLifecycle implements LifecycleBean {
                         if (m.getParameters().length == 0) {
                             //只接收没有参数的，支持非公有函数
                             initMethod = m;
-                            initMethod.setAccessible(true);
+                            ClassUtil.accessibleAsTrue(initMethod);
                             initIndex = initAnno.index();
                         }
                     } else {
@@ -103,7 +104,7 @@ class BeanWrapLifecycle implements LifecycleBean {
                         if (destroyAnno != null) {
                             if (m.getParameters().length == 0) {
                                 destroyMethod = m;
-                                destroyMethod.setAccessible(true);
+                                ClassUtil.accessibleAsTrue(destroyMethod);
                             }
                         }
                     }

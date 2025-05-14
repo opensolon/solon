@@ -804,9 +804,7 @@ public class AppContext extends BeanContainer {
         }
 
         //支持非公有函数
-        if (m.isAccessible() == false) {
-            m.setAccessible(true);
-        }
+        ClassUtil.accessibleAsTrue(m);
 
         MethodWrap mWrap = methodGet(bw.rawClz(), m);
 

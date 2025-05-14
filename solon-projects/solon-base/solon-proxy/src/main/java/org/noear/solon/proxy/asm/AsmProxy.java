@@ -120,7 +120,9 @@ public class AsmProxy {
         Constructor<?> constructor = proxyClass.getConstructor(parameterTypes);
         Object instance = constructor.newInstance(targetParam);
         Method setterMethod = proxyClass.getDeclaredMethod(METHOD_SETTER, InvocationHandler.class);
-        setterMethod.setAccessible(true);
+
+        ClassUtil.accessibleAsTrue(setterMethod);
+
         setterMethod.invoke(instance, invocationHandler);
 
         return instance;

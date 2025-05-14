@@ -15,6 +15,8 @@
  */
 package org.noear.nami.common;
 
+import org.noear.solon.core.util.ClassUtil;
+
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -62,7 +64,8 @@ public class MethodHandlerUtils {
         if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                     .getDeclaredConstructor(Class.class);
-            constructor.setAccessible(true);
+
+            ClassUtil.accessibleAsTrue(constructor);
 
             final Class<?> clazz = method.getDeclaringClass();
             return constructor.newInstance(clazz)

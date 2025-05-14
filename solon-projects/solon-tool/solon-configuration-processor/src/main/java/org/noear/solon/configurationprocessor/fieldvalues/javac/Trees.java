@@ -18,6 +18,8 @@
 
 package org.noear.solon.configurationprocessor.fieldvalues.javac;
 
+import org.noear.solon.core.util.ClassUtil;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import java.lang.reflect.Field;
@@ -53,7 +55,7 @@ final class Trees extends ReflectionWrapper {
 
 	private static ProcessingEnvironment unwrap(ProcessingEnvironment wrapper) throws Exception {
 		Field delegateField = wrapper.getClass().getDeclaredField("delegate");
-		delegateField.setAccessible(true);
+        ClassUtil.accessibleAsTrue(delegateField);
 		return (ProcessingEnvironment) delegateField.get(wrapper);
 	}
 
