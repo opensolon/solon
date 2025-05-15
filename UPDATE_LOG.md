@@ -24,8 +24,10 @@
 ### 3.3.1
 
 * 新增 solon-ai-flow 插件
+* 添加 solon BeanWrap:annotationHas 方法
 * 添加 solon-data DsBuilder 公用处理类
 * 添加 solon-data Ds 注解 ElementType.TYPE 支持
+* 添加 solon-security-auth AuthIgnore 注解
 * 添加 solon-ai-core ChatMessage:ofUser(media) 方法
 * 添加 solon-ai-core ChatSession:addMessage(ChatPrompt) 方法
 * 添加 solon-ai-core ChatSession:addMessage(Collection) 方法
