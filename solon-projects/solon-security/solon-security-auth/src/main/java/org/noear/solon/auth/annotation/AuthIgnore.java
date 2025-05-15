@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 认证乎略
+ * 认证忽略
  *
  * @author noear
  * @since 3.3
