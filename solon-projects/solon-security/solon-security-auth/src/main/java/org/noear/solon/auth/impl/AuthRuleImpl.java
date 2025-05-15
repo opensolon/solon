@@ -16,6 +16,8 @@
 package org.noear.solon.auth.impl;
 
 import org.noear.solon.auth.AuthStatus;
+import org.noear.solon.auth.annotation.AuthIgnore;
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.auth.AuthFailureHandler;
@@ -32,7 +34,7 @@ import org.noear.solon.core.route.PathRule;
 public class AuthRuleImpl implements AuthRule {
     /**
      * 路径规则
-     * */
+     */
     private PathRule pathRule = new PathRule();
 
     private boolean verifyIp;
@@ -119,6 +121,14 @@ public class AuthRuleImpl implements AuthRule {
 
         if (pathRule.test(path) == false) {
             return;
+        }
+
+        Action action = ctx.action();
+        if (action != null) {
+            if (action.method().isAnnotationPresent(AuthIgnore.class) ||
+                    action.controller().rawClz().isAnnotationPresent(AuthIgnore.class)) {
+                return;
+            }
         }
 
         //
