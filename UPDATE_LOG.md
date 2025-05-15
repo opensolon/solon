@@ -24,15 +24,26 @@
 ### 3.3.1
 
 * 新增 solon-ai-flow 插件
-* 添加 solon-data Ds 注解 ElementType.TYPE 支持???
+* 添加 solon-data DsBuilder 公用处理类
+* 添加 solon-data Ds 注解 ElementType.TYPE 支持
+* 添加 solon-ai-core ChatMessage:ofUser(media) 方法
+* 添加 solon-ai-core ChatSession:addMessage(ChatPrompt) 方法
+* 添加 solon-ai-core ChatSession:addMessage(Collection) 方法
+* 添加 solon-ai-core RerankingConfig,RerankingModel toString 方法
 * 添加 solon-ai-mcp ToolMapping,ResourceMapping 注解方法对 Produces 注解的支持（用它可指定结果转换处理）
 * 添加 solon-ai-mcp ToolCallResultConverter:matched 方法
 * 添加 solon-ai-mcp 资源模板的响应适配
 * 添加 solon-ai-mcp McpClientProvider:getResourceTemplates 方法
+* 添加 solon-ai-mcp 检查原语是否存在的方法（hasTool, hasPrompt, hasResource）
+* 添加 solon-ai-mcp 提示语支持 UserMessage 拆解成多条 mcp 内容（如果，同时有媒体和文本的话）
 * 优化 nami 增加 `@Path` 主解支持
 * 优化 solon setAccessible 异常控制
-* 优化 solon-ai MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）
+* 优化 solon-ai-core tool 空参数时的不同大模型兼容性
+* 优化 solon-ai-core ChatSession 的作用，为限数提供支持
+* 优化 solon-ai-core MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）
 * 优化 solon-ai-mcp 取消 MethodFunctionResource 对反回类型的限制（增加了 resultConverter 转换处理）
+* 优化 solon-ai-mcp McpServerEndpointProvider 支持零添加原语，postStart 后，可添加原语
+* 优化 solon-ai-core EmbeddingRequest，ImageRequest，RerankingRequest 当 resp.getError() 非 null 时，直接出抛异常
 * 修复 solon-ai ChatRequestDefault:stream 请求 r1 时，可能会产生两次 tink 消息发射
 * 修复 ContextPathFilter 无效地址没有出现 404 的问题（并添加单测）
 
