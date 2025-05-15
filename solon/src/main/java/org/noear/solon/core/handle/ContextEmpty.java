@@ -84,7 +84,11 @@ public class ContextEmpty extends Context {
 
     @Override
     public String path() {
-        return null;
+        if (uri() == null) {
+            return null;
+        } else {
+            return uri().getPath();
+        }
     }
 
     @Override
@@ -94,7 +98,11 @@ public class ContextEmpty extends Context {
 
     @Override
     public String url() {
-        return null;
+        if (uri() == null) {
+            return null;
+        } else {
+            return uri().toString();
+        }
     }
 
     @Override
@@ -271,6 +279,7 @@ public class ContextEmpty extends Context {
     }
 
     private boolean _headers_sent;
+
     protected void sendHandlers() {
         if (_headers_sent == false) {
             _headers_sent = true;
