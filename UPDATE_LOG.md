@@ -12,7 +12,6 @@
 
 
 ### 待议
-* 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
@@ -31,6 +30,7 @@
 * 添加 solon-ai-mcp 资源模板的响应适配
 * 添加 solon-ai-mcp McpClientProvider:getResourceTemplates 方法
 * 优化 nami 增加 `@Path` 主解支持
+* 优化 solon setAccessible 异常控制
 * 优化 solon-ai MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）
 * 优化 solon-ai-mcp 取消 MethodFunctionResource 对反回类型的限制（增加了 resultConverter 转换处理）
 * 修复 solon-ai ChatRequestDefault:stream 请求 r1 时，可能会产生两次 tink 消息发射
