@@ -48,6 +48,7 @@
 * 优化 solon-ai-core EmbeddingRequest，ImageRequest，RerankingRequest 当 resp.getError() 非 null 时，直接出抛异常
 * 修复 solon-ai ChatRequestDefault:stream 请求 r1 时，可能会产生两次 tink 消息发射
 * 修复 ContextPathFilter 无效地址没有出现 404 的问题（并添加单测）
+* smart-http 升为 2.5.11
 
 
 ### 3.3.0
