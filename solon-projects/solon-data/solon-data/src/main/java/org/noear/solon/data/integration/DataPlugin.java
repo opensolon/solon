@@ -22,6 +22,7 @@ import org.noear.solon.data.cache.*;
 import org.noear.solon.data.cache.interceptor.CacheInterceptor;
 import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
 import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
+import org.noear.solon.data.datasource.DsBuilder;
 import org.noear.solon.data.datasource.DsInjector;
 import org.noear.solon.data.datasource.RoutingDataSource;
 import org.noear.solon.data.tran.TranManager;
@@ -63,6 +64,7 @@ public class DataPlugin implements Plugin {
 
         //@since 3.2
         context.beanInjectorAdd(Ds.class, DsInjector.getDefault());
+        context.beanBuilderAdd(Ds.class, DsBuilder.getDefault());
 
         //自动构建数据源
         context.app().onEvent(AppPluginLoadEndEvent.class, new DataSourcesBuilder());

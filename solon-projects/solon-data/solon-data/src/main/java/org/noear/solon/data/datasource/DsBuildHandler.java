@@ -16,19 +16,18 @@
 package org.noear.solon.data.datasource;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.VarHolder;
 import org.noear.solon.lang.Preview;
 
 /**
- * 数据源注入处理器
+ * 数据源构建处理器
  *
  * @author noear
- * @since 3.2
+ * @since 3.3
  */
-@Preview("3.2")
-public interface DsInjectHandler {
+@Preview("3.3")
+public interface DsBuildHandler {
     /**
      * 执行处理
      */
-    void doHandle(VarHolder vh, BeanWrap dsWrap);
+    boolean doHandle(Class<?> clz, BeanWrap dsWrap);
 }
