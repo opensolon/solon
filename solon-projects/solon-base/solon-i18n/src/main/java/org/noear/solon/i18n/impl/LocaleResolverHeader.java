@@ -51,7 +51,7 @@ public class LocaleResolverHeader implements LocaleResolver {
         if (ctx.getLocale() == null) {
             String lang = null;
 
-            if (Utils.isEmpty(headerName1)) {
+            if (Utils.isNotEmpty(headerName1)) {
                 lang = ctx.header(headerName1);
             }
 

@@ -36,7 +36,9 @@ public class LocaleResolverCookie implements LocaleResolver {
      * 设置cookie name
      * */
     public void setCookieName(String cookieName) {
-        this.cookieName = cookieName;
+        if (Utils.isNotEmpty(cookieName)) {
+            this.cookieName = cookieName;
+        }
     }
 
     /**

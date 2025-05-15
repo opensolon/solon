@@ -36,7 +36,9 @@ public class LocaleResolverSession implements LocaleResolver {
      * 设置会话属性名
      * */
     public void setAttrName(String attrName) {
-        this.attrName = attrName;
+        if (Utils.isNotEmpty(attrName)) {
+            this.attrName = attrName;
+        }
     }
 
     /**
