@@ -32,7 +32,7 @@ import java.util.List;
  * @since 3.0
  * @since 3.1
  */
-public class AuthRuleHandler implements Handler {
+public class AuthRuleHandler {
     private String pathPrefix;
 
     /**
@@ -51,8 +51,7 @@ public class AuthRuleHandler implements Handler {
     /**
      * @since 3.1
      */
-    @Override
-    public void handle(Context ctx) throws Throwable {
+    public void handle(Context ctx, Handler mainHandler) throws Throwable {
         //尝试前缀过滤
         if (Utils.isNotEmpty(pathPrefix)) {
             if (ctx.pathNew().startsWith(pathPrefix) == false) {
@@ -61,8 +60,8 @@ public class AuthRuleHandler implements Handler {
         }
 
         //尝试乎略处理 @since 3.3
-        Action action = ctx.action();
-        if (action != null) {
+        if (mainHandler instanceof Action) {
+            Action action = (Action) mainHandler;
             if (action.method().isAnnotationPresent(AuthIgnore.class) ||
                     action.controller().annotationHas(AuthIgnore.class)) {
                 return;

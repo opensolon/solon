@@ -15,10 +15,12 @@
  */
 package org.noear.solon.auth;
 
+import org.noear.solon.Solon;
 import org.noear.solon.auth.impl.AuthRuleImpl;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
+import org.noear.solon.core.handle.Handler;
 
 import java.util.Collection;
 import java.util.concurrent.locks.ReentrantLock;
@@ -164,11 +166,12 @@ public class AuthAdapter implements Filter {
 
     /**
      * @since 3.1
-     * */
+     */
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         if (authRuleHandler != null) {
-            authRuleHandler.handle(ctx);
+            Handler mainHandler = Solon.app().router().matchMain(ctx);
+            authRuleHandler.handle(ctx, mainHandler);
         }
 
         chain.doFilter(ctx);
