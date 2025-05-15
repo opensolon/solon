@@ -400,6 +400,10 @@ public class BeanWrap {
         return clz.getAnnotation(annClz);
     }
 
+    public boolean annotationHas(Class<? extends Annotation> annClz) {
+        return clz.isAnnotationPresent(annClz);
+    }
+
     /**
      * bean 获取对象（可能被代理的）
      */
@@ -460,7 +464,7 @@ public class BeanWrap {
             Object bean = ClassUtil.newInstance(rawCtor, rawCtorArgs);
 
             //2.完成注入动作
-            if(context != null) {
+            if (context != null) {
                 context.beanInject(bean);
             }
 
