@@ -64,7 +64,7 @@ public class AuthRuleHandler implements Handler {
         Action action = ctx.action();
         if (action != null) {
             if (action.method().isAnnotationPresent(AuthIgnore.class) ||
-                    action.controller().rawClz().isAnnotationPresent(AuthIgnore.class)) {
+                    action.controller().annotationHas(AuthIgnore.class)) {
                 return;
             }
         }
