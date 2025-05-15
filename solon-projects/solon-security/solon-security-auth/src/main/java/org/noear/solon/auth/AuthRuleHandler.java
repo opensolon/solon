@@ -16,6 +16,8 @@
 package org.noear.solon.auth;
 
 import org.noear.solon.Utils;
+import org.noear.solon.auth.annotation.AuthIgnore;
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -48,12 +50,21 @@ public class AuthRuleHandler implements Handler {
 
     /**
      * @since 3.1
-     * */
+     */
     @Override
     public void handle(Context ctx) throws Throwable {
         //尝试前缀过滤
         if (Utils.isNotEmpty(pathPrefix)) {
             if (ctx.pathNew().startsWith(pathPrefix) == false) {
+                return;
+            }
+        }
+
+        //尝试乎略处理 @since 3.3
+        Action action = ctx.action();
+        if (action != null) {
+            if (action.method().isAnnotationPresent(AuthIgnore.class) ||
+                    action.controller().rawClz().isAnnotationPresent(AuthIgnore.class)) {
                 return;
             }
         }
