@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.bean;
 
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Lifecycle;
 
 /**
@@ -24,6 +25,13 @@ import org.noear.solon.core.Lifecycle;
  * @since 2.2
  */
 public interface LifecycleBean extends Lifecycle {
+    /**
+     * 感知 AppContext
+     */
+    default void setAppContext(AppContext appContext) {
+
+    }
+
     /**
      * 开始
      */

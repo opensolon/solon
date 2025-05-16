@@ -1053,6 +1053,8 @@ public class AppContext extends BeanContainer {
      * 添加生命周期 bean（保持向下兼容）
      */
     public void lifecycle(int index, LifecycleBean lifecycle) {
+        lifecycle.setAppContext(this);
+
         lifecycle(index, (Lifecycle) lifecycle);
     }
 
