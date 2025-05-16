@@ -18,6 +18,9 @@ package org.noear.solon.i18n.integration;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.i18n.I18nBundleFactory;
+import org.noear.solon.i18n.I18nUtil;
+import org.noear.solon.i18n.LocaleResolver;
 import org.noear.solon.i18n.annotation.I18n;
 
 /**
@@ -27,6 +30,10 @@ public class I18nPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
         context.beanInterceptorAdd(I18n.class, I18nInterceptor.instance);
+
+        context.getBeanAsync(I18nBundleFactory.class, I18nUtil::setBundleFactory);
+
+        context.getBeanAsync(LocaleResolver.class, I18nUtil::setLocaleResolver);
 
         context.app().filter(Constants.FT_IDX_I18N, new I18nFilter());
     }

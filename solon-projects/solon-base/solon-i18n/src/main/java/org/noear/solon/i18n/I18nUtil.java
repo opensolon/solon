@@ -52,6 +52,24 @@ public class I18nUtil {
     }
 
     /**
+     * 设置 地区解析器
+     */
+    public static void setLocaleResolver(LocaleResolver localeResolver) {
+        if (localeResolver != null) {
+            I18nUtil.localeResolver = localeResolver;
+        }
+    }
+
+    /**
+     * 设置内容包工厂
+     */
+    public static void setBundleFactory(I18nBundleFactory bundleFactory) {
+        if (bundleFactory != null) {
+            I18nUtil.bundleFactory = bundleFactory;
+        }
+    }
+
+    /**
      * 消息国际化内容包名
      */
     private static final String messageBundleName = "i18n.messages";
@@ -63,16 +81,6 @@ public class I18nUtil {
         return messageBundleName;
     }
 
-    static {
-        Solon.context().getBeanAsync(I18nBundleFactory.class, bean -> {
-            bundleFactory = bean;
-        });
-
-        Solon.context().getBeanAsync(LocaleResolver.class, bean -> {
-            localeResolver = bean;
-        });
-    }
-
 
     /**
      * 获取国际化内容包
@@ -80,8 +88,8 @@ public class I18nUtil {
     public static I18nBundle getBundle(String bundleName, Locale locale) {
         String cacheKey = bundleName + "#" + locale.hashCode();
 
-        I18nBundle bundle = bundleCached.computeIfAbsent(cacheKey,k->{
-            return  bundleFactory.create(bundleName, locale);
+        I18nBundle bundle = bundleCached.computeIfAbsent(cacheKey, k -> {
+            return bundleFactory.create(bundleName, locale);
         });
 
         return bundle;
