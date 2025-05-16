@@ -46,4 +46,15 @@ public class App {
     public void async_timeout(Context ctx) {
         ctx.asyncStart(100L, null);
     }
+
+
+    @Mapping("/redirect/jump")
+    public void jump(Context ctx, int code) throws Exception {
+        ctx.redirect("target", code);
+    }
+
+    @Mapping("/redirect/target")
+    public String target() throws Exception {
+        return "ok";
+    }
 }

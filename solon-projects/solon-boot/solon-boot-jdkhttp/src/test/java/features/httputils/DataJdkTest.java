@@ -58,4 +58,19 @@ public class DataJdkTest {
 
         assert rst.equals("ok");
     }
+
+    @Test
+    public void redirect_case301() throws Exception {
+        assert http("http://localhost:8080/redirect/jump?code=301").get().equals("ok");
+    }
+
+    @Test
+    public void redirect_case302() throws Exception {
+        assert http("http://localhost:8080/redirect/jump?code=302").get().equals("ok");
+    }
+
+    @Test
+    public void redirect_case307() throws Exception {
+        assert http("http://localhost:8080/redirect/jump?code=307").get().equals("ok");
+    }
 }
