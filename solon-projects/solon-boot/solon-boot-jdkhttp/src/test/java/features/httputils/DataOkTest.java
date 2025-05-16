@@ -2,6 +2,7 @@ package features.httputils;
 
 import features.jdkhttp.App;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
 import org.noear.solon.test.SolonTest;
@@ -112,6 +113,81 @@ public class DataOkTest {
         AtomicInteger codeHolder = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         http("http://localhost:8080/redirect/jump?code=307").execAsync("GET")
+                .thenAccept(resp -> {
+                    codeHolder.set(resp.code());
+                    countDownLatch.countDown();
+                });
+        countDownLatch.await();
+
+        assert codeHolder.get() == 200;
+    }
+
+    /// ////////////////////
+
+    @Test
+    public void redirect_h5_case301() throws Exception {
+        HttpResponse resp = http("http://localhost:8080/redirect/h5?code=301").exec("GET");
+
+        System.out.println("code:" + resp.code());
+        String html = resp.bodyAsString();
+        System.out.println(html);
+        assert html.contains("html");
+    }
+
+    @Test
+    public void redirect_h5_case302() throws Exception {
+        HttpResponse resp = http("http://localhost:8080/redirect/h5?code=302").exec("GET");
+
+        System.out.println("code:" + resp.code());
+        String html = resp.bodyAsString();
+        System.out.println(html);
+        assert html.contains("html");
+    }
+
+    @Test
+    public void redirect_h5_case307() throws Exception {
+        HttpResponse resp = http("http://localhost:8080/redirect/h5?code=307").exec("GET");
+
+        System.out.println("code:" + resp.code());
+        String html = resp.bodyAsString();
+        System.out.println(html);
+        assert html.contains("html");
+    }
+
+
+    @Test
+    public void redirect_h5_case301b() throws Exception {
+        AtomicInteger codeHolder = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        http("http://localhost:8080/redirect/h5?code=301").execAsync("GET")
+                .thenAccept(resp -> {
+                    codeHolder.set(resp.code());
+                    countDownLatch.countDown();
+                });
+        countDownLatch.await();
+
+        assert codeHolder.get() == 200;
+    }
+
+    @Test
+    public void redirect_h5_case302b() throws Exception {
+        AtomicInteger codeHolder = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        http("http://localhost:8080/redirect/h5?code=302").execAsync("GET")
+                .thenAccept(resp -> {
+                    codeHolder.set(resp.code());
+                    countDownLatch.countDown();
+                });
+        countDownLatch.await();
+
+        assert codeHolder.get() == 200;
+    }
+
+    @Test
+    public void redirect_h5_case307b() throws Exception {
+        AtomicInteger codeHolder = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        http("http://localhost:8080/redirect/h5?code=307").execAsync("GET")
                 .thenAccept(resp -> {
                     codeHolder.set(resp.code());
                     countDownLatch.countDown();

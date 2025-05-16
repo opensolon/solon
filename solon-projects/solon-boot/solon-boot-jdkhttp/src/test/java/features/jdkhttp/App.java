@@ -47,6 +47,10 @@ public class App {
         ctx.asyncStart(100L, null);
     }
 
+    @Mapping("/redirect/h5")
+    public void h5(Context ctx, int code) throws Exception {
+        ctx.redirect("https://h5.noear.org/", code);
+    }
 
     @Mapping("/redirect/jump")
     public void jump(Context ctx, int code) throws Exception {
