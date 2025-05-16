@@ -49,7 +49,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
 
     protected Proxy _proxy = null;
 
-    protected final String _url;
+    protected String _url;
     protected Charset _charset = StandardCharsets.UTF_8;
     protected MultiMap<String> _headers;
     protected MultiMap<String> _cookies;
@@ -603,5 +603,14 @@ public abstract class AbstractHttpUtils implements HttpUtils {
             _headers = new MultiMap<>();
         }
         return _headers;
+    }
+
+    protected static boolean isRedirected(int responseCode) {
+        return responseCode == 301
+                || responseCode == 302
+                || responseCode == 303
+                || responseCode == 307
+                || responseCode == 308;
+
     }
 }

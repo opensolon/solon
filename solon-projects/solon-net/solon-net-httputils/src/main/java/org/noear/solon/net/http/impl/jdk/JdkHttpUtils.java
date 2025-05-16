@@ -150,7 +150,14 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            return new JdkHttpResponse(this, _builder);
+            int statusCode = _builder.getResponseCode();
+
+            if (isRedirected(statusCode)) {
+                _url = _builder.getHeaderField("Location");
+                return execDo(method, null);
+            } else {
+                return new JdkHttpResponse(this, statusCode, _builder);
+            }
         } catch (IOException | RuntimeException e) {
             _builder.disconnect();
             throw e;

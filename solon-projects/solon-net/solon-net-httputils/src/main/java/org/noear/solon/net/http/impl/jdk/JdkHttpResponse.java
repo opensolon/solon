@@ -46,11 +46,11 @@ public class JdkHttpResponse implements HttpResponse {
     private MultiMap<String> cookies;
     private final InputStream body;
 
-    public JdkHttpResponse(JdkHttpUtils utils, HttpURLConnection http) throws IOException {
+    public JdkHttpResponse(JdkHttpUtils utils, int statusCode, HttpURLConnection http) throws IOException {
         this.utils = utils;
         this.http = http;
 
-        this.statusCode = http.getResponseCode();
+        this.statusCode = statusCode;
         this.headers = new MultiMap<>();
 
         for (Map.Entry<String, List<String>> kv : http.getHeaderFields().entrySet()) {
