@@ -41,6 +41,7 @@
 * 添加 solon-ai-mcp 提示语支持 UserMessage 拆解成多条 mcp 内容（如果，同时有媒体和文本的话）
 * 优化 nami 增加 `@Path` 主解支持
 * 优化 solon setAccessible 异常控制
+* 优化 solon-net-httputils 3xx 跳转处理
 * 优化 solon-ai-core tool 空参数时的不同大模型兼容性
 * 优化 solon-ai-core ChatSession 的作用，为限数提供支持
 * 优化 solon-ai-core MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）

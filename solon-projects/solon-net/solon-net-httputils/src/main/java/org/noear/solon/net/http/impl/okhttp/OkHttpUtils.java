@@ -24,6 +24,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.KeyValues;
 import org.noear.solon.net.http.*;
 import org.noear.solon.net.http.impl.*;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -148,7 +149,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());
-            return new OkHttpResponse(this, call.execute());
+            return getResponse(call.execute(), method);
         } else {
             _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
@@ -159,12 +160,23 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    future.complete(new OkHttpResponse(self, response));
+                    future.complete(getResponse(response, method));
                     //call.cancel();
                 }
             });
 
             return null;
+        }
+    }
+
+    protected HttpResponse getResponse(Response response, String method) throws IOException {
+        int statusCode = response.code();
+
+        if (isRedirected(statusCode)) {
+            _url = response.header("Location");
+            return execDo(method, null);
+        } else {
+            return new OkHttpResponse(this, statusCode, response);
         }
     }
 

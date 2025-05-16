@@ -113,7 +113,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    private HttpURLConnection openConnection(String newUrl) throws IOException {
+    protected HttpURLConnection openConnection(String newUrl) throws IOException {
         if (_proxy == null) {
             return (HttpURLConnection) new URL(newUrl).openConnection();
         } else {
@@ -121,7 +121,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         }
     }
 
-    private HttpResponse request(HttpURLConnection _builder, String method) throws IOException {
+    protected HttpResponse request(HttpURLConnection _builder, String method) throws IOException {
         try {
             if (METHODS_NOBODY.contains(method) == false) {
                 if (_bodyRaw != null) {
@@ -150,17 +150,21 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 }
             }
 
-            int statusCode = _builder.getResponseCode();
-
-            if (isRedirected(statusCode)) {
-                _url = _builder.getHeaderField("Location");
-                return execDo(method, null);
-            } else {
-                return new JdkHttpResponse(this, statusCode, _builder);
-            }
+            return getResponse(_builder, method);
         } catch (IOException | RuntimeException e) {
             _builder.disconnect();
             throw e;
+        }
+    }
+
+    protected HttpResponse getResponse(HttpURLConnection _builder, String method) throws IOException {
+        int statusCode = _builder.getResponseCode();
+
+        if (isRedirected(statusCode)) {
+            _url = _builder.getHeaderField("Location");
+            return execDo(method, null);
+        } else {
+            return new JdkHttpResponse(this, statusCode, _builder);
         }
     }
 

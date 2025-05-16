@@ -38,10 +38,12 @@ public class OkHttpResponse implements HttpResponse {
     private final OkHttpUtils utils;
     private final Response response;
     private MultiMap<String> cookies;
+    private final int statusCode;
 
-    public OkHttpResponse(OkHttpUtils utils, Response response) {
+    public OkHttpResponse(OkHttpUtils utils, int statusCode, Response response) {
         this.utils = utils;
         this.response = response;
+        this.statusCode = statusCode;
     }
 
     private MultiMap<String> cookiesInit() {
@@ -125,7 +127,7 @@ public class OkHttpResponse implements HttpResponse {
 
     @Override
     public int code() {
-        return response.code();
+        return statusCode;
     }
 
     @Override
