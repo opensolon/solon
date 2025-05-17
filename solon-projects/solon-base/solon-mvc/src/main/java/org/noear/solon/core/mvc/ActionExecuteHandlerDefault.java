@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * ActionExecutor 默认实现
  *
- * @see Action#callDo(Context, Object, MethodWrap)
+ * @see ActionDefault#executeDo(Context, Object)
  * @author noear
  * @since 1.0
  * */
@@ -86,6 +86,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
         ParamWrap[] pSet = mWrap.getParamWraps();
         List<Object> args = new ArrayList<>(pSet.length);
 
+        //懒引用
         LazyReference bodyRef = new LazyReference(() -> changeBody(ctx, mWrap));
 
         //p 参数
@@ -206,7 +207,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      * @param pt      参数类型
      * @param bodyRef 主体对象
      */
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
         String pn = p.spec().getName();        //参数名
         String pv = p.spec().getValue(ctx);    //参数值
         Object tv = null;               //目标值
