@@ -173,9 +173,22 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         int statusCode = response.code();
 
         if (isRedirected(statusCode)) {
-            _url = response.header("Location");
+            String location = response.header("Location");
+            if (Utils.isEmpty(location)) {
+                //如果没有，则异常
+                throw new IOException("Redirect location header unfound, original url: " + _url);
+            }
+
+            _url = location;
+
             return execDo(method, null);
         } else if (statusCode == 202) {
+            String location = response.header("Location");
+            if (Utils.isNotEmpty(location)) {
+                //如果有，则替换
+                _url = location;
+            }
+
             return execDo(method, null);
         } else {
             return new OkHttpResponse(this, statusCode, response);
