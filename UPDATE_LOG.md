@@ -40,7 +40,7 @@
 * 添加 solon-ai-mcp McpClientProvider:getResourceTemplates 方法
 * 添加 solon-ai-mcp 检查原语是否存在的方法（hasTool, hasPrompt, hasResource）
 * 添加 solon-ai-mcp 提示语支持 UserMessage 拆解成多条 mcp 内容（如果，同时有媒体和文本的话）
-* 优化 nami 增加 `@Path` 主解支持
+* 优化 nami 增加 `@Path` 注解支持
 * 优化 solon setAccessible 异常控制
 * 优化 solon MethodHandler 的 MethodWrap 实例化（取消对 solon.app 的依赖），支持非容器运行
 * 优化 solon-net-httputils 202 重试处理
@@ -53,7 +53,7 @@
 * 优化 solon-ai-mcp McpServerEndpointProvider 支持零添加原语，postStart 后，可添加原语
 * 优化 solon-ai-core EmbeddingRequest，ImageRequest，RerankingRequest 当 resp.getError() 非 null 时，直接出抛异常
 * 修复 solon-ai ChatRequestDefault:stream 请求 r1 时，可能会产生两次 tink 消息发射
-* 修复 ContextPathFilter 无效地址没有出现 404 的问题（并添加单测）
+* 修复 solon ContextPathFilter 无效地址没有出现 404 的问题（并添加单测）
 * smart-http 升为 2.5.12
 
 
