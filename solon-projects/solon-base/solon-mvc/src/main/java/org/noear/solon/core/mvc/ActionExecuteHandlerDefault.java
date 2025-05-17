@@ -19,6 +19,7 @@ import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -81,11 +82,11 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      * @param target 控制器
      * @param mWrap  函数包装器
      */
-    protected List<Object> buildArgs(Context ctx, Object target, MethodWrap mWrap) throws Exception {
+    protected List<Object> buildArgs(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
         ParamWrap[] pSet = mWrap.getParamWraps();
         List<Object> args = new ArrayList<>(pSet.length);
 
-        Object bodyObj = changeBody(ctx, mWrap);
+        LazyReference bodyRef = new LazyReference(() -> changeBody(ctx, mWrap));
 
         //p 参数
         //pt 参数原类型
@@ -127,8 +128,8 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                             tv = ctx.bodyNew();
                         } else if (InputStream.class.equals(pt)) {
                             tv = ctx.bodyAsStream();
-                        } else if (Map.class.equals(pt) && bodyObj instanceof MultiMap) {
-                            tv = ((MultiMap) bodyObj).toValueMap();
+                        } else if (Map.class.equals(pt) && bodyRef.get() instanceof MultiMap) {
+                            tv = ((MultiMap) bodyRef.get()).toValueMap();
                         }
                     }
                 }
@@ -136,7 +137,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                 if (tv == null) {
                     //尝试数据转换
                     try {
-                        tv = changeValue(ctx, p, i, pt, bodyObj);
+                        tv = changeValue(ctx, p, i, pt, bodyRef);
                     } catch (ConstructionException e) {
                         throw e;
                     } catch (Exception e) {
@@ -203,9 +204,9 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      * @param p       参数包装
      * @param pi      参数序位
      * @param pt      参数类型
-     * @param bodyObj 主体对象
+     * @param bodyRef 主体对象
      */
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Exception {
         String pn = p.spec().getName();        //参数名
         String pv = p.spec().getValue(ctx);    //参数值
         Object tv = null;               //目标值
