@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.serialization.jackson.impl.TimeDeserializer;
@@ -128,23 +129,25 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
      * @param p       参数包装器
      * @param pi      参数序位
      * @param pt      参数类型
-     * @param bodyObj 主体对象
+     * @param bodyRef 主体对象
      * @since 1.11 增加 requireBody 支持
      */
     @Override
-    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, LazyReference bodyRef) throws Throwable {
         if (p.spec().isRequiredPath() || p.spec().isRequiredCookie() || p.spec().isRequiredHeader()) {
             //如果是 path、cookie, header
-            return super.changeValue(ctx, p, pi, pt, bodyObj);
+            return super.changeValue(ctx, p, pi, pt, bodyRef);
         }
 
         if (p.spec().isRequiredBody() == false && ctx.paramMap().containsKey(p.spec().getName())) {
             //有可能是path、queryString变量
-            return super.changeValue(ctx, p, pi, pt, bodyObj);
+            return super.changeValue(ctx, p, pi, pt, bodyRef);
         }
 
+        Object bodyObj = bodyRef.get();
+
         if (bodyObj == null) {
-            return super.changeValue(ctx, p, pi, pt, bodyObj);
+            return super.changeValue(ctx, p, pi, pt, bodyRef);
         }
 
         JsonNode tmp = (JsonNode) bodyObj;
@@ -163,7 +166,7 @@ public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
 
             //尝试 body 转换
             if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
-                return super.changeValue(ctx, p, pi, pt, bodyObj);
+                return super.changeValue(ctx, p, pi, pt, bodyRef);
             } else {
                 if (List.class.isAssignableFrom(pt)) {
                     return null;
