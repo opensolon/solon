@@ -15,8 +15,8 @@
  */
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
@@ -39,7 +39,7 @@ public class MethodHandler implements Handler {
      */
     public MethodHandler(BeanWrap beanWrap, Method method, boolean allowResult) {
         this.bw = beanWrap;
-        this.mw = beanWrap.context().methodGet(beanWrap.rawClz(), method).ofHandler();
+        this.mw = new MethodWrap(beanWrap.context(), beanWrap.rawClz(), method).ofHandler();
         this.allowResult = allowResult;
     }
 
@@ -50,7 +50,9 @@ public class MethodHandler implements Handler {
     @Override
     public void handle(Context c) throws Throwable {
         Object target = bw.get(true);
-        Object[] args = Solon.app().chainManager().getExecuteHandlerDefault()
+        //Solon.app().chainManager().getExecuteHandlerDefault()
+        Object[] args = FactoryManager.getGlobal().mvcFactory()
+                .getExecuteHandlerDefault()
                 .resolveArguments(c, target, mw);
 
         Object rst = mw.invokeByAspect(target, args);
