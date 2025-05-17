@@ -26,6 +26,7 @@
 * 新增 solon-ai-flow 插件
 * 添加 solon BeanWrap:annotationHas 方法
 * 添加 solon LifecycleBean:setAppContext 方法
+* 添加 solon LazyReference 类（懒引用）
 * 添加 solon-data DsBuilder 公用处理类
 * 添加 solon-data Ds 注解 ElementType.TYPE 支持
 * 添加 solon-security-auth AuthIgnore 注解
@@ -41,7 +42,10 @@
 * 添加 solon-ai-mcp 提示语支持 UserMessage 拆解成多条 mcp 内容（如果，同时有媒体和文本的话）
 * 优化 nami 增加 `@Path` 主解支持
 * 优化 solon setAccessible 异常控制
+* 优化 solon MethodHandler 的 MethodWrap 实例化（取消对 solon.app 的依赖），支持非容器运行
+* 优化 solon-net-httputils 202 重试处理
 * 优化 solon-net-httputils 3xx 跳转处理
+* 优化 solon-mvc ActionExecuteHandler 使用 LazyReference，延迟表单解析（可支持流的原始读取）
 * 优化 solon-ai-core tool 空参数时的不同大模型兼容性
 * 优化 solon-ai-core ChatSession 的作用，为限数提供支持
 * 优化 solon-ai-core MethodFunctionTool 移除对 Mapping 注解的支持（语意更清楚，之前 MethodToolProvider 已经移除，这个落了）
