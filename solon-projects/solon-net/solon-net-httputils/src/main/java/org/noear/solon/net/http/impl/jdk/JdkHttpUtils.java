@@ -163,6 +163,8 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         if (isRedirected(statusCode)) {
             _url = _builder.getHeaderField("Location");
             return execDo(method, null);
+        } else if (statusCode == 202) {
+            return execDo(method, null);
         } else {
             return new JdkHttpResponse(this, statusCode, _builder);
         }

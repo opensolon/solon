@@ -175,6 +175,8 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         if (isRedirected(statusCode)) {
             _url = response.header("Location");
             return execDo(method, null);
+        } else if (statusCode == 202) {
+            return execDo(method, null);
         } else {
             return new OkHttpResponse(this, statusCode, response);
         }
