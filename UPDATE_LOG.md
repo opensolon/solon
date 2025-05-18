@@ -40,6 +40,7 @@
 * 添加 solon-ai-mcp McpClientProvider:getResourceTemplates 方法
 * 添加 solon-ai-mcp 检查原语是否存在的方法（hasTool, hasPrompt, hasResource）
 * 添加 solon-ai-mcp 提示语支持 UserMessage 拆解成多条 mcp 内容（如果，同时有媒体和文本的话）
+* 添加 grpc-solon-cloud-plugin 流式存根，支持Grpc流式消息收发
 * 优化 nami 增加 `@Path` 注解支持
 * 优化 solon setAccessible 异常控制
 * 优化 solon MethodHandler 的 MethodWrap 实例化（取消对 solon.app 的依赖），支持非容器运行
