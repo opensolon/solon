@@ -47,6 +47,7 @@
 * 优化 solon MethodHandler 的 MethodWrap 实例化（取消对 solon.app 的依赖），支持非容器运行
 * 优化 solon-net-httputils 202 重试处理
 * 优化 solon-net-httputils 3xx 跳转处理
+* 优化 solon-net-httputils execAsSseStream，execAsLineStream 增加 error message 显示支持
 * 优化 solon-mvc ActionExecuteHandler 使用 LazyReference，延迟表单解析（可支持流的原始读取）
 * 优化 solon-ai-core tool 空参数时的不同大模型兼容性
 * 优化 solon-ai-core ChatSession 的作用，为限数提供支持

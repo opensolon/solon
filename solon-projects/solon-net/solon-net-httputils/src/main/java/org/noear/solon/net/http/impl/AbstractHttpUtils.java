@@ -16,7 +16,9 @@
 package org.noear.solon.net.http.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.serialize.Serializer;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.textstream.ServerSentEvent;
 import org.noear.solon.net.http.textstream.TextStreamUtil;
 import org.noear.solon.serialization.SerializerNames;
@@ -495,7 +497,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                             if (resp.code() < 400) {
                                 TextStreamUtil.parseLineStream(resp.body(), subscriber);
                             } else {
-                                subscriber.onError(new HttpException("Error code: " + resp.code()));
+                                String message = RunUtil.callAndTry(resp::bodyAsString);
+
+                                if (Utils.isEmpty(message)) {
+                                    subscriber.onError(new HttpException("Error code: " + resp.code()));
+                                } else {
+                                    subscriber.onError(new HttpException("Error code: " + resp.code() + ", message: " + message));
+                                }
                             }
                         } catch (Exception e) {
                             subscriber.onError(e);
@@ -518,7 +526,13 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                             if (resp.code() < 400) {
                                 TextStreamUtil.parseSseStream(resp.body(), subscriber);
                             } else {
-                                subscriber.onError(new HttpException("Error code: " + resp.code()));
+                                String message = RunUtil.callAndTry(resp::bodyAsString);
+
+                                if (Utils.isEmpty(message)) {
+                                    subscriber.onError(new HttpException("Error code: " + resp.code()));
+                                } else {
+                                    subscriber.onError(new HttpException("Error code: " + resp.code() + ", message: " + message));
+                                }
                             }
                         } catch (Exception e) {
                             subscriber.onError(e);
