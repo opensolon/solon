@@ -82,7 +82,19 @@ public class RunUtil {
     public static void runAndTry(RunnableEx task) {
         try {
             task.run();
-        } catch (Throwable e) {
+        } catch (Throwable ignore) {
+            //略过
+        }
+    }
+
+    /**
+     * 调用并吃掉异常
+     */
+    public static <T> T callAndTry(Callable<T> task) {
+        try {
+            return task.call();
+        } catch (Throwable ignore) {
+            return null;
             //略过
         }
     }
