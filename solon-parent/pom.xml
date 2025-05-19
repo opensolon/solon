@@ -524,7 +524,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-ai-load-jdbc</artifactId>
+                <artifactId>solon-ai-load-ddl</artifactId>
                 <version>${solon-ai.version}</version>
             </dependency>
             <dependency>
