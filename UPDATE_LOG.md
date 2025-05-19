@@ -24,6 +24,7 @@
 ### 3.3.1
 
 * 新增 solon-ai-flow 插件
+* 新增 solon-ai-load-jdbc 插件
 * 添加 solon BeanWrap:annotationHas 方法
 * 添加 solon LifecycleBean:setAppContext 方法
 * 添加 solon LazyReference 类（懒引用）
@@ -35,6 +36,9 @@
 * 添加 solon-ai-core ChatSession:addMessage(ChatPrompt) 方法
 * 添加 solon-ai-core ChatSession:addMessage(Collection) 方法
 * 添加 solon-ai-core RerankingConfig,RerankingModel toString 方法
+* 添加 solon-ai-core 模型的网络代理支持（支持简单配置，和复杂构建）
+* 添加 solon-ai-mcp 客户端的网络代理简单配置支持
+* 添加 solon-ai-mcp messageEndpoint 端点配置支持（应对特殊需求，一般自动更好）
 * 添加 solon-ai-mcp ToolMapping,ResourceMapping 注解方法对 Produces 注解的支持（用它可指定结果转换处理）
 * 添加 solon-ai-mcp ToolCallResultConverter:matched 方法
 * 添加 solon-ai-mcp 资源模板的响应适配
