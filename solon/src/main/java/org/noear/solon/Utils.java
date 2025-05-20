@@ -58,7 +58,10 @@ public class Utils {
 
     /**
      * 异步执行
+     *
+     * @deprecated 3.3 {@link RunUtil#async(Runnable)}
      */
+    @Deprecated
     public static Future<?> async(Runnable task) {
         return RunUtil.async(task);
     }
@@ -98,6 +101,22 @@ public class Utils {
         }
     }
 
+
+    /**
+     * 转为一个可变 Map
+     */
+    public static Map asMap(Object... keyValues) {
+        if (keyValues.length % 2 != 0) {
+            throw new IllegalArgumentException("keyValues.length % 2 != 0");
+        }
+
+        Map map = new LinkedHashMap(keyValues.length / 2);
+        for (int i = 0; i < keyValues.length; i += 2) {
+            map.put(keyValues[i], keyValues[i + 1]);
+        }
+
+        return map;
+    }
 
     /**
      * 获取MIME
