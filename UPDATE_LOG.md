@@ -25,6 +25,7 @@
 
 * 新增 solon-ai-flow 插件
 * 新增 solon-ai-load-ddl 插件
+* 新增 solon-flow-designer (设计器)
 * 添加 solon BeanWrap:annotationHas 方法
 * 添加 solon LifecycleBean:setAppContext 方法
 * 添加 solon LazyReference 类（懒引用）
