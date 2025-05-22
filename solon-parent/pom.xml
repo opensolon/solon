@@ -33,7 +33,7 @@
         <solon.version>3.3.1</solon.version>
         <solon-ai.version>3.3.2-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.3.1</solon-expression.version>
-        <solon-flow.version>3.3.1</solon-flow.version>
+        <solon-flow.version>3.3.2-SNAPSHOT</solon-flow.version>
         <solon-cloud.version>3.3.1</solon-cloud.version>
         <solon-admin.version>3.3.1</solon-admin.version>
         <solon-integration.version>3.3.1</solon-integration.version>
