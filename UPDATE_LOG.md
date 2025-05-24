@@ -21,6 +21,10 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### 3.4.0
+
+* 调整 solon-boot-* 更名为 solon-server-* 
+
 ### 3.3.1
 
 * 新增 solon-ai-flow 插件

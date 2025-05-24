@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.3.1</solon.version>
+        <solon.version>3.3.2-SNAPSHOT</solon.version>
         <solon-ai.version>3.3.2-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.3.1</solon-expression.version>
         <solon-flow.version>3.3.2-SNAPSHOT</solon-flow.version>
@@ -2260,7 +2260,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>3.3.2-SNAPSHOT</version>
                         <configuration>
                             <attach>true</attach>
                         </configuration>
