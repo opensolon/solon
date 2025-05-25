@@ -116,7 +116,7 @@ public class ResourceUtil {
      * @param name 内部资源名称
      */
     public static URL getResource(String name) {
-        return getResource(null, name); //Utils.class.getResource(name);
+        return getResource(null, name);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ResourceUtil {
         if (classLoader == null) {
             return AppClassLoader.global().getResource(name);
         } else {
-            return classLoader.getResource(name); //Utils.class.getResource(name);
+            return classLoader.getResource(name);
         }
     }
 

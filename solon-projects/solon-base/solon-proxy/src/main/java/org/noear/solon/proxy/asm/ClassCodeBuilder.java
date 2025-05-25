@@ -37,10 +37,10 @@ public class ClassCodeBuilder {
             return Opcodes.V11;
         } else if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
             return Opcodes.V17;
-        } else if (JavaUtil.JAVA_MAJOR_VERSION < 23) {
+        } else if (JavaUtil.JAVA_MAJOR_VERSION < 24) {
             return Opcodes.V21;
         } else {
-            return Opcodes.V23;
+            return Opcodes.V24;
         }
     }
 
