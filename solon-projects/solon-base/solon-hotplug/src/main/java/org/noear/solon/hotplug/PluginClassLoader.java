@@ -38,9 +38,10 @@ public class PluginClassLoader extends AppClassLoader {
         return findResources(name);
     }
 
-    @Override
-    public URL getResource(String name) {
-        //只获取本级资源
-        return findResource(name);
-    }
+// 具体查找不限，否则不能查找类资源文件
+//    @Override
+//    public URL getResource(String name) {
+//        //只获取本级资源
+//        return findResource(name);
+//    }
 }
