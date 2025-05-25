@@ -2260,7 +2260,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.2-SNAPSHOT</version>
+                        <version>3.3.1</version>
                         <configuration>
                             <attach>true</attach>
                         </configuration>
