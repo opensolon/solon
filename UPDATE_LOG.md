@@ -24,6 +24,7 @@
 ### 3.4.0
 
 * 调整 solon-boot-* 更名为 solon-server-* 
+* sa-token 升为 1.43.0
 
 ### 3.3.1
 
