@@ -24,11 +24,12 @@
 ### 3.4.0
 
 * 调整 solon-boot-* 更名为 solon-server-* 
-* sa-token 升为 1.43.0
 
 ### 3.3.2
 
+* 添加 solon 接口版本 version 支持？？？
 * 优化 solon 属性默认值处理策略
+* sa-token 升为 1.43.0
 
 ### 3.3.1
 
