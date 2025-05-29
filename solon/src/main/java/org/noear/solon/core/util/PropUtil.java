@@ -98,10 +98,6 @@ public class PropUtil {
             if (val == null) {
                 //从"环镜变量"获取
                 val = System.getenv(name);
-                if (val == null) {
-                    //如果是环境变量，直接使用默认值；认定后面没得变了
-                    return nameAndDef[1];
-                }
             }
         }
 

@@ -1,0 +1,11 @@
+demo2:
+  datasource:
+    driverClassName1: 123
+
+app2.db:
+  #从nacos取
+  driverClassName1: ${demo2.datasource.driverClassName}
+  #从nacos取加默认值
+  driverClassName2: ${demo2.datasource.driverClassName:}
+  #从本地取，且加默认值
+  driverClassName: ${demo2.datasource.driverClassName1:}
