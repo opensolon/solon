@@ -1041,6 +1041,14 @@ public abstract class Context {
         statusDoSet(status);
     }
 
+    /**
+     * 设置输出状态与消息
+     */
+    public void status(int status, String message) {
+        statusDoSet(status);
+        output(message);
+    }
+
 
     protected abstract void statusDoSet(int status);
 
