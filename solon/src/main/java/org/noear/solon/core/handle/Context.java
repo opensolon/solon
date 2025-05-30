@@ -1043,6 +1043,10 @@ public abstract class Context {
 
     /**
      * 设置输出状态与消息
+     *
+     * @param status  状态
+     * @param message 消息
+     * @since 3.3
      */
     public void status(int status, String message) {
         statusDoSet(status);
