@@ -67,8 +67,9 @@ public class RouterHandler implements Handler {
             if (x.getHandled() == false) { //保留这个，过滤器可以有两种控制方式（软控，硬控）
                 //（仅支持唯一代理）
                 //（设定处理状态，便于 after 获取状态）
-                Handler mainHandler = x.mainHandler();
-                x.setHandled(handleMain(mainHandler, x));
+                Handler mainHandler = x.attr(Constants.ATTR_MAIN_HANDLER);
+                boolean handled = handleMain(mainHandler, x);
+                x.setHandled(handled);
             }
         } catch (Throwable e) {
             if (x.errors == null) {
