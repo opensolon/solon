@@ -71,6 +71,8 @@ public class SseRender implements Render {
             pushSseHeaders(ctx);
         }
 
-        ctx.output(renderAndReturn(data, ctx));
+        if (data != null) {
+            ctx.output(renderAndReturn(data, ctx));
+        }
     }
 }
