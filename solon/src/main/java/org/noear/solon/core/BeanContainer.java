@@ -620,10 +620,22 @@ public abstract class BeanContainer {
      *
      * @param type 类型
      */
+    public <T> T getBean(ParameterizedType type) {
+        return getBean(type.getTypeName());
+    }
+
+    /**
+     * 获取 Bean
+     *
+     * @param type 类型
+     */
     public <T> T getBean(Class<T> type) {
         BeanWrap bw = getWrap(type);
         return bw == null ? null : bw.get();
     }
+
+
+
 
     /**
      * 获取 Bean 或默认
