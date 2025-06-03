@@ -187,7 +187,7 @@ public class MethodDesc {
 
             if (p1w.isBody()) {
                 NamiBody namiBodyAnno = p1.getAnnotation(NamiBody.class);
-                if (namiBodyAnno.contentType().length() > 0) {
+                if (namiBodyAnno != null && namiBodyAnno.contentType().length() > 0) {
                     headers.putIfAbsent(ContentTypes.HEADER_CONTENT_TYPE, namiBodyAnno.contentType());
                 }
             }
