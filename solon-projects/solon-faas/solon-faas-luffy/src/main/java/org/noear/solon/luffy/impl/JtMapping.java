@@ -41,7 +41,7 @@ public class JtMapping {
         fileMapping.put("rb","ruby");
     }
 
-    public static void addMaping(String suffix, String actuator) {
+    public static void addMapping(String suffix, String actuator) {
         fileMapping.put(suffix, actuator);
     }
 

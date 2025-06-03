@@ -25,26 +25,26 @@ import java.util.List;
  * @since 2.6
  */
 public class JtFunctionLoaderManager implements JtFunctionLoader {
-    private final List<JtFunctionLoader> resouceLoaders = new ArrayList<>();
+    private final List<JtFunctionLoader> resourceLoaders = new ArrayList<>();
 
     /**
      * 添加
      */
-    public void add(int index, JtFunctionLoader resouceLoader) {
-        resouceLoaders.add(index, resouceLoader);
+    public void add(int index, JtFunctionLoader resourceLoader) {
+        resourceLoaders.add(index, resourceLoader);
     }
 
     /**
      * 清空
      */
     public void clear() {
-        resouceLoaders.clear();
+        resourceLoaders.clear();
     }
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
         AFileModel aFile = null;
-        for (JtFunctionLoader rl : resouceLoaders) {
+        for (JtFunctionLoader rl : resourceLoaders) {
             aFile = rl.fileGet(path);
 
             if (aFile != null && aFile.content != null) {

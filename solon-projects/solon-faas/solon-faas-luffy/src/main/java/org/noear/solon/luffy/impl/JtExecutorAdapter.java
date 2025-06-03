@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author noear
  * @since 1.3
- * */
+ */
 public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
 
     static Logger log = LoggerFactory.getLogger(JtExecutorAdapter.class);
@@ -45,14 +45,14 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
 
     private JtFunctionLoader forDebug;
     private JtFunctionLoader forRelease;
+    private String _nodeId;
 
-
-    public JtExecutorAdapter(JtFunctionLoader resouceLoader) {
+    public JtExecutorAdapter(JtFunctionLoader resourceLoader) {
         _defaultExecutor = JtMapping.getActuator("");
         _defLogTag = "luffy";
 
         forDebug = new JtFunctionLoaderDebug();
-        forRelease = resouceLoader;
+        forRelease = resourceLoader;
     }
 
     @Override
@@ -90,7 +90,6 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         }
     }
 
-
     @Override
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = null;
@@ -110,8 +109,6 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
     public List<AFileModel> fileFind(String tag, String label, boolean isCache) throws Exception {
         return Collections.emptyList();
     }
-
-    private String _nodeId;
 
     @Override
     public String nodeId() {
