@@ -629,11 +629,11 @@ public abstract class BeanContainer {
      *
      * @param typeReference 类型引用
      */
-    public <T> T getBean(TypeReference typeReference) {
+    public <T> T getBean(TypeReference<T> typeReference) {
         Type type = typeReference.getType();
 
         if (type instanceof Class) {
-            return getBean((Class<? extends T>) type);
+            return getBean((Class<T>) type);
         } else if (type instanceof ParameterizedType) {
             return getBean((ParameterizedType) type);
         } else {
@@ -652,8 +652,6 @@ public abstract class BeanContainer {
     }
 
 
-
-
     /**
      * 获取 Bean 或默认
      *
@@ -667,9 +665,9 @@ public abstract class BeanContainer {
     /**
      * 获取 Bean 或默认
      *
-     * @param nameOrType 名字或类型
+     * @param nameOrType      名字或类型
      * @param defaultSupplier defaultSupplier
-     * @param <T> 泛型标记
+     * @param <T>             泛型标记
      */
     public <T> T getBeanOrDefault(Object nameOrType, Supplier<T> defaultSupplier) {
         BeanWrap bw = getWrap(nameOrType);
@@ -703,6 +701,24 @@ public abstract class BeanContainer {
     }
 
     /**
+     * 获取某类型的 bean list
+     *
+     * @param typeReference 类型引用
+     */
+    public <T> List<T> getBeansOfType(TypeReference<T> typeReference) {
+        Type type = typeReference.getType();
+
+        if (type instanceof Class) {
+            return getBeansOfType((Class<T>) type);
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType type1 = (ParameterizedType) type;
+            return getBeansOfType((Class<T>) type1.getRawType(), type1);
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + type);
+        }
+    }
+
+    /**
      * 获取某类型的 bean map
      *
      * @param baseType 基类
@@ -729,6 +745,24 @@ public abstract class BeanContainer {
         });
 
         return beanMap;
+    }
+
+    /**
+     * 获取某类型的 bean map
+     *
+     * @param typeReference 类型引用
+     */
+    public <T> Map<String, T> getBeansMapOfType(TypeReference<T> typeReference) {
+        Type type = typeReference.getType();
+
+        if (type instanceof Class) {
+            return getBeansMapOfType((Class<T>) type);
+        } else if (type instanceof ParameterizedType) {
+            ParameterizedType type1 = (ParameterizedType) type;
+            return getBeansMapOfType((Class<T>) type1.getRawType(), type1);
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + type);
+        }
     }
 
     /**
