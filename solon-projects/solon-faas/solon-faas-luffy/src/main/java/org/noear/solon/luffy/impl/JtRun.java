@@ -34,19 +34,19 @@ import java.util.concurrent.CompletableFuture;
 public class JtRun {
     private static CompletableFuture<Integer> initFuture = new CompletableFuture<>();
 
-    private static final JtFunctionLoaderManager resouceLoader = new JtFunctionLoaderManager();
+    private static final JtFunctionLoaderManager resourceLoader = new JtFunctionLoaderManager();
     private static JtExecutorAdapter jtAdapter;
 
     public static void init() {
         if (jtAdapter == null) {
-            resouceLoader.add(0, new JtFunctionLoaderClasspath());
+            resourceLoader.add(0, new JtFunctionLoaderClasspath());
 
             //添加外部扩展的资源加载器
             Solon.context().subBeansOfType(JtFunctionLoader.class, bean -> {
-                resouceLoader.add(0, bean);
+                resourceLoader.add(0, bean);
             });
 
-            jtAdapter = new JtExecutorAdapter(resouceLoader);
+            jtAdapter = new JtExecutorAdapter(resourceLoader);
             JtBridge.executorAdapterSet(jtAdapter);
             JtBridge.configAdapterSet(jtAdapter);
         }
@@ -55,8 +55,8 @@ public class JtRun {
     /**
      * 获取资源加载器（可以清空并替换为数据库的）
      */
-    public static JtFunctionLoaderManager getResouceLoader() {
-        return resouceLoader;
+    public static JtFunctionLoaderManager getResourceLoader() {
+        return resourceLoader;
     }
 
     public static AFileModel fileGet(String path) throws Exception {
