@@ -628,6 +628,7 @@ public abstract class BeanContainer {
      * 获取 Bean
      *
      * @param typeReference 类型引用
+     * @since 3.3
      */
     public <T> T getBean(TypeReference<T> typeReference) {
         Type type = typeReference.getType();
@@ -704,6 +705,7 @@ public abstract class BeanContainer {
      * 获取某类型的 bean list
      *
      * @param typeReference 类型引用
+     * @since 3.3
      */
     public <T> List<T> getBeansOfType(TypeReference<T> typeReference) {
         Type type = typeReference.getType();
@@ -751,6 +753,7 @@ public abstract class BeanContainer {
      * 获取某类型的 bean map
      *
      * @param typeReference 类型引用
+     * @since 3.3
      */
     public <T> Map<String, T> getBeansMapOfType(TypeReference<T> typeReference) {
         Type type = typeReference.getType();
