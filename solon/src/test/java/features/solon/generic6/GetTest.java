@@ -7,12 +7,14 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.core.util.TypeReference;
 
+import java.util.List;
+
 /**
  * @author noear 2025/6/3 created
  */
 public class GetTest {
     @Test
-    public void case1() {
+    public void case11() {
         AppContext context = new AppContext();
 
         BeanWrap bw = context.wrap(UserDataService.class);
@@ -24,15 +26,30 @@ public class GetTest {
     }
 
     @Test
-    public void case2() {
+    public void case12() {
         AppContext context = new AppContext();
 
         BeanWrap bw = context.wrap(UserDataService.class);
         context.beanRegister(bw, null, true);
-        DataService<User> bean = context.getBean(new TypeReference<DataService<User>>(){});
+        DataService<User> bean = context.getBean(new TypeReference<DataService<User>>() {
+        });
 
         assert bean != null;
         assert bean instanceof UserDataService;
+    }
+
+    @Test
+    public void case21() {
+        AppContext context = new AppContext();
+
+        BeanWrap bw = context.wrap(UserDataService.class);
+        context.beanRegister(bw, null, true);
+        List<DataService<User>> beanList = context.getBeansOfType(new TypeReference<DataService<User>>() {
+        });
+
+        assert beanList != null;
+        assert beanList.size() == 1;
+        assert beanList.get(0) instanceof UserDataService;
     }
 
     public static class UserDataService implements DataService<User> {
