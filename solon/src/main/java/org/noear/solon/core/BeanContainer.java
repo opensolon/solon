@@ -627,6 +627,23 @@ public abstract class BeanContainer {
     /**
      * 获取 Bean
      *
+     * @param typeReference 类型引用
+     */
+    public <T> T getBean(TypeReference typeReference) {
+        Type type = typeReference.getType();
+
+        if (type instanceof Class) {
+            return getBean((Class<? extends T>) type);
+        } else if (type instanceof ParameterizedType) {
+            return getBean((ParameterizedType) type);
+        } else {
+            throw new IllegalArgumentException("Unsupported type: " + type);
+        }
+    }
+
+    /**
+     * 获取 Bean
+     *
      * @param type 类型
      */
     public <T> T getBean(Class<T> type) {
