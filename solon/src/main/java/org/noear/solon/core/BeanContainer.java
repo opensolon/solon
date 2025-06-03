@@ -1004,6 +1004,7 @@ public abstract class BeanContainer {
         Type[] list2 = clz.getGenericInterfaces(); //有可能跟 getInterfaces() 一样
         for (Type t : list2) {
             if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
+                putWrap(t.getTypeName(), bw);
                 bw.genericList().add((ParameterizedType) t);
             }
         }

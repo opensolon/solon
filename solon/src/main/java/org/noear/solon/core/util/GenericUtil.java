@@ -17,9 +17,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -289,5 +287,92 @@ public class GenericUtil {
         } else {
             return type;
         }
+    }
+
+    /// ////////////////
+
+    /**
+     * 参数类型（泛型）匹配
+     *
+     * @param checkType 检测类型
+     * @param sourceType 源类型
+     * */
+    public static boolean genericMatched(ParameterizedType checkType, ParameterizedType sourceType) {
+        if (sourceType.getActualTypeArguments().length == checkType.getActualTypeArguments().length) {
+            if (sourceType.getTypeName().equals(checkType.getTypeName())) {
+                return true;
+            } else {
+                if (sourceType.getRawType().equals(checkType.getRawType())) {
+                    Type[] typesC = checkType.getActualTypeArguments();
+                    Type[] typesS = sourceType.getActualTypeArguments();
+
+                    boolean isOk = true;
+                    for (int i = 0; i < typesC.length; i++) {
+                        Type c1 = typesC[i];
+                        Type s1 = typesS[i];
+
+                        if (c1 instanceof Class) {
+                            isOk = c1.equals(s1);
+                        } else if (c1 instanceof ParameterizedType) {
+                            if (s1 instanceof ParameterizedType) {
+                                isOk = genericMatched((ParameterizedType) c1, (ParameterizedType) s1);
+                            } else {
+                                isOk = false;
+                            }
+                        } else if (c1 instanceof GenericArrayType) {
+                            isOk = c1.equals(s1);
+                        } else if (c1 instanceof WildcardType) {
+                            if (s1 instanceof Class) {
+                                isOk = wildcardMatched((WildcardType) c1, (Class<?>) s1);
+                            } else if (s1 instanceof ParameterizedType) {
+                                Type s2 = ((ParameterizedType) s1).getRawType();
+                                if (s2 instanceof Class) {
+                                    isOk = wildcardMatched((WildcardType) c1, (Class<?>) s2);
+                                } else {
+                                    isOk = false;
+                                }
+                            } else {
+                                isOk = false;
+                            }
+                        } else {
+                            isOk = false;
+                        }
+
+                        if (isOk == false) {
+                            break;
+                        }
+                    }
+
+                    if (isOk) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 通配类型匹配
+     * */
+    public static boolean wildcardMatched(WildcardType w1, Class<?> s1) {
+        for (Type b1 : w1.getUpperBounds()) {
+            if (b1 instanceof Class) {
+                if (((Class<?>) b1).isAssignableFrom(s1) == false) {
+                    return false;
+                }
+            }
+        }
+
+        for (Type b1 : w1.getLowerBounds()) {
+            if (b1 instanceof Class) {
+                if ((s1).isAssignableFrom((Class<?>) b1) == false) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

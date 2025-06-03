@@ -913,6 +913,7 @@ public class AppContext extends BeanContainer {
                 //尝试泛型注册(通过 name 实现)
                 if (beanGtp instanceof ParameterizedType) {
                     putWrap(beanGtp.getTypeName(), m_bw);
+                    m_bw.genericList().add((ParameterizedType)beanGtp);
                 }
 
                 //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知

@@ -24,6 +24,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
 
 /**
@@ -87,7 +88,7 @@ public class BeanWrap {
             }
 
             for (ParameterizedType pt : genericList) {
-                if (genericEquals(checkType, pt)) {
+                if (GenericUtil.genericMatched(checkType, pt)) {
                     return true;
                 }
             }
@@ -95,44 +96,6 @@ public class BeanWrap {
             return false;
         }
     }
-
-    private boolean genericEquals(ParameterizedType checkType, ParameterizedType sourceType) {
-        if (sourceType.getActualTypeArguments().length == checkType.getActualTypeArguments().length) {
-            if (sourceType.getTypeName().equals(checkType.getTypeName())) {
-                return true;
-            } else {
-                if (sourceType.getRawType().equals(checkType.getRawType())) {
-                    Type[] typesC = checkType.getActualTypeArguments();
-                    Type[] typesS = sourceType.getActualTypeArguments();
-
-                    boolean isOk = true;
-                    for (int i = 0; i < typesC.length; i++) {
-                        Type c1 = typesC[i];
-                        Type s1 = typesS[i];
-
-                        if (c1 instanceof Class) {
-                            isOk = c1.equals(s1);
-                        } else if (c1 instanceof ParameterizedType) {
-                            if (s1 instanceof ParameterizedType) {
-                                isOk = genericEquals((ParameterizedType) c1, (ParameterizedType) s1);
-                            } else {
-                                isOk = false;
-                            }
-                        } else if (c1 instanceof GenericArrayType) {
-                            isOk = c1.equals(s1);
-                        }
-                    }
-
-                    if (isOk) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
 
     public BeanWrap(AppContext context, Class<?> clz) {
         this(context, clz, null);

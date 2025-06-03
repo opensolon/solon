@@ -1,7 +1,6 @@
 package features.solon.generic6;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
