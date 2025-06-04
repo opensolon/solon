@@ -16,7 +16,6 @@
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
-    <name>${project.artifactId}</name>
     <description>java project for solon test</description>
 
     <properties>
