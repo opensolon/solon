@@ -328,12 +328,10 @@ public class GenericUtil {
                                 Type s2 = ((ParameterizedType) s1).getRawType();
                                 if (s2 instanceof Class) {
                                     isOk = wildcardMatched((WildcardType) c1, (Class<?>) s2);
-                                } else {
-                                    isOk = false;
                                 }
-                            } else {
-                                isOk = false;
                             }
+
+                            //其它情况算 ok
                         } else {
                             isOk = false;
                         }
