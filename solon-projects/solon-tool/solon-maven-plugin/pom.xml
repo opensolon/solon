@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-maven-plugin</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>maven-plugin</packaging>
 
     <developers>
