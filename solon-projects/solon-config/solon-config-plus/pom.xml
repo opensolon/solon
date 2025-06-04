@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-config-plus</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

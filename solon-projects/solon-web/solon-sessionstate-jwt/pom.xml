@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-sessionstate-jwt</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <properties>

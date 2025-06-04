@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>nami-coder-fastjson2</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

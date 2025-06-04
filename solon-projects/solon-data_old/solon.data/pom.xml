@@ -13,6 +13,7 @@
 
     <!-- 添加事务支持和缓存支持 -->
     <artifactId>solon.data</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

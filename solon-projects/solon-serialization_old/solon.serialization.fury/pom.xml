@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.serialization.fury</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

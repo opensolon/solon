@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-logging-log4j2</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

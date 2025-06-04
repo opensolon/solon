@@ -13,6 +13,7 @@
 
     <groupId>org.noear.hatch</groupId>
     <artifactId>solon-serialization-thrift</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

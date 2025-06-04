@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.sessionstate.jedis</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

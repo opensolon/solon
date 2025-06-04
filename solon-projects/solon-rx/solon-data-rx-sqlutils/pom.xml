@@ -12,6 +12,7 @@
     </parent>
     
     <artifactId>solon-data-rx-sqlutils</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

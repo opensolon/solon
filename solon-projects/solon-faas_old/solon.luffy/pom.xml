@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.luffy</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

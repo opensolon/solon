@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-boot-smarthttp</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

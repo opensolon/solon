@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-serialization-protostuff</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

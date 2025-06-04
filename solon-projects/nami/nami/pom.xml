@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>nami</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <description>Java project for nami</description>

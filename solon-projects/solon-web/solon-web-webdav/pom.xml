@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-web-webdav</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

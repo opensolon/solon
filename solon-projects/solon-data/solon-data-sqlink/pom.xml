@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-data-sqlink</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <properties>

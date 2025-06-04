@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-logging-logback</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

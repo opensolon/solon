@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>solon.health</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

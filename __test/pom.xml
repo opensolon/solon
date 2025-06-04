@@ -13,6 +13,7 @@
 
     <groupId>org.noear.solon</groupId>
     <artifactId>__test</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>

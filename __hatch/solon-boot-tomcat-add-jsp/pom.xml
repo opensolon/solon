@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-boot-tomcat-add-jsp</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

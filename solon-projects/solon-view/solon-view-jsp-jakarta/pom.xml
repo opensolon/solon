@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-view-jsp-jakarta</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

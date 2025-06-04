@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-boot-websocket</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

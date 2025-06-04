@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-serialization-abc</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

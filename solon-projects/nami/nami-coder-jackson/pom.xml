@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>nami-coder-jackson</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

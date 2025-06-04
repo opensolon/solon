@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>nami-channel-http-hutool</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

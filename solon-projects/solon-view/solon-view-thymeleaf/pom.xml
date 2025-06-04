@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-view-thymeleaf</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

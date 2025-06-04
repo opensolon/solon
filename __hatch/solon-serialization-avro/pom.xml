@@ -13,6 +13,7 @@
 
     <groupId>org.noear.hatch</groupId>
     <artifactId>solon-serialization-avro</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

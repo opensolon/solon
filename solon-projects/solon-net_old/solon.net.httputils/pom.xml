@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.net.httputils</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-docs-openapi2-javadoc</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

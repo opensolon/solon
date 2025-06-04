@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.sessionstate.local</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-cache-jedis</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

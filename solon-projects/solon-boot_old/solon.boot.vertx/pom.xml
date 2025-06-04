@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.boot.vertx</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

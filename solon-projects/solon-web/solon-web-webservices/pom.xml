@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon-web-webservices</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <properties>

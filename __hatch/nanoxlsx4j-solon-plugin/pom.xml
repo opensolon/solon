@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>nanoxlsx4j-solon-plugin</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
 

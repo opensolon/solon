@@ -12,6 +12,7 @@
     </parent>
     
     <artifactId>solon-hotplug</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

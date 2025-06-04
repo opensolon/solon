@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>solon.view.velocity</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>

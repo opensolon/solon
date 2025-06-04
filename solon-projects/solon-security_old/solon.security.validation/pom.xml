@@ -12,6 +12,7 @@
     </parent>
     
     <artifactId>solon.security.validation</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>
