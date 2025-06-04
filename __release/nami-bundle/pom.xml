@@ -13,6 +13,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>nami-bundle</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
     <modules>

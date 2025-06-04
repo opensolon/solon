@@ -13,6 +13,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-base-bundle6</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
     <modules>
