@@ -17,6 +17,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
+import org.noear.solon.core.util.PathUtil;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -241,11 +242,7 @@ public class NamiHandler implements InvocationHandler {
                     baseUrl = baseUrl.substring(0, idx);
                 }
 
-                if (config.getPath().endsWith("/")) {
-                    path = config.getPath() + path;
-                } else {
-                    path = config.getPath() + "/" + path;
-                }
+                path = PathUtil.joinUri(config.getPath(), path);
             }
 
         } else {

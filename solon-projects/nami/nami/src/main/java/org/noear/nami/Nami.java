@@ -17,6 +17,7 @@ package org.noear.nami;
 
 import org.noear.nami.common.ContentTypes;
 import org.noear.nami.common.TextUtils;
+import org.noear.solon.core.util.PathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,26 +103,10 @@ public class Nami {
             if (path == null) {
                 _url = baseUrl;
             } else {
-                StringBuilder sb = new StringBuilder(200);
-
-                sb.append(baseUrl);
-                if (baseUrl.endsWith("/")) {
-                    if (path.startsWith("/")) {
-                        sb.append(path.substring(1));
-                    } else {
-                        sb.append(path);
-                    }
-                } else {
-                    if (path.startsWith("/")) {
-                        sb.append(path);
-                    } else {
-                        sb.append("/").append(path);
-                    }
-                }
-
-                _url = sb.toString();
+                _url = PathUtil.joinUri(baseUrl, path);
             }
         }
+
         return this;
     }
 

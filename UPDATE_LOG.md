@@ -41,6 +41,7 @@
 * 优化 solon BeanWrap 泛型匹配
 * 优化 solon-web-sse SseRender:render 对 null 的过滤
 * 优化 solon-flow-luffy JtExecutorAdapter 的几个拼写错误
+* 优化 nami 内部路径合并处理
 * 修复 nami 使用 @Body 注解时会出现 npe 问题
 * sa-token 升为 1.43.0
 
