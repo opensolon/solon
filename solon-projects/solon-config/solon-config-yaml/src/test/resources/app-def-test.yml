@@ -1,0 +1,3 @@
+
+solon.config.nacos:
+  server: ${NACOS_SERVER:172.12.12.1:8090}

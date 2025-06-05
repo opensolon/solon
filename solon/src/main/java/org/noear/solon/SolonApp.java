@@ -165,6 +165,9 @@ public class SolonApp extends RouterWrapper {
         //2.1.内部初始化（如配置等，顺序不能乱）
         init(initialize);
 
+        //2.2.配置表达式修订
+        cfg().revise();
+
         //3.运行应用（运行插件、扫描Bean等）
         run();
     }

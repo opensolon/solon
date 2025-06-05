@@ -604,9 +604,9 @@ public class Props extends Properties {
 
     protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
         //加载配置
-        this.loadAddDo(props, toSystem, addIfAbsent, false);
+        this.loadAddDo(props, toSystem, addIfAbsent, false, false);
         //校正配置
-        this.reviseDo(false);
+        this.reviseDo(false, false);
     }
 
     /**
@@ -614,7 +614,7 @@ public class Props extends Properties {
      *
      * @param props 配置地址
      */
-    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean isEnd) {
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean isEnd, boolean useDef) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
                 Object k1 = kv.getKey();
@@ -642,7 +642,7 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
                         String valExp = (String) v1;
-                        v1 = getByTmpl(valExp, props, key, isEnd);
+                        v1 = getByTmpl(valExp, props, key, useDef);
 
                         if (v1 == null) {
                             if (!isEnd) {
@@ -650,7 +650,9 @@ public class Props extends Properties {
                             }
                         } else {
                             //如果加载成功且存在于列表中，从变量中移除
-                            tempPropMap.remove(key);
+                            if (isEnd) {
+                                tempPropMap.remove(key); //最后才移除，可不断重构表达式
+                            }
                         }
                     }
 
@@ -680,13 +682,20 @@ public class Props extends Properties {
      * 完成
      */
     public void complete() {
-        reviseDo(true);
+        reviseDo(true, true);
+    }
+
+    /**
+     * 修订
+     */
+    public void revise() {
+        reviseDo(false, true);
     }
 
     /**
      * 校正（多文件加载后）
      */
-    protected void reviseDo(boolean isEnd) {
+    protected void reviseDo(boolean isEnd, boolean useDef) {
         //如果加载完成还存在变量，则特殊处理
         if (tempPropMap.size() == 0) {
             return;
@@ -694,7 +703,7 @@ public class Props extends Properties {
 
         Properties tempProps = new Properties();
         tempProps.putAll(tempPropMap);
-        this.loadAddDo(tempProps, false, isEnd, isEnd); //中间可能会有 put 进来，不能再盖掉
+        this.loadAddDo(tempProps, false, isEnd, isEnd, useDef); //中间可能会有 put 进来，不能再盖掉
 
         //如果还存在遗留项则抛出异常
         if (isEnd && tempPropMap.size() > 0) {
