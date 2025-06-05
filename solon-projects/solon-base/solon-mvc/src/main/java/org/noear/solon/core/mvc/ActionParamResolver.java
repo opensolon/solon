@@ -93,19 +93,23 @@ public class ActionParamResolver {
     }
 
     private static boolean resolvePath(ActionParam vo, AnnotatedElement element) {
-        Path paramAnno = element.getAnnotation(Path.class);
+        Path pathAnno = element.getAnnotation(Path.class);
 
-        if (paramAnno == null) {
+        if (pathAnno == null) {
             return false;
         }
 
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+        String name2 = Utils.annoAlias(pathAnno.value(), pathAnno.name());
         if (Utils.isNotEmpty(name2)) {
             vo.name = name2;
         }
 
+        if (Constants.PARM_UNDEFINED_VALUE.equals(pathAnno.defaultValue()) == false) {
+            vo.defaultValue = pathAnno.defaultValue();
+        }
+
+        vo.isRequiredInput = pathAnno.required();
         vo.isRequiredPath = true;
-        vo.isRequiredInput = true;
         return true;
     }
 

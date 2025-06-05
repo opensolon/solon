@@ -15,6 +15,8 @@
  */
 package org.noear.solon.annotation;
 
+import org.noear.solon.core.Constants;
+
 import java.lang.annotation.*;
 
 /**
@@ -29,15 +31,29 @@ import java.lang.annotation.*;
 public @interface Path {
     /**
      * 名字
-     * */
+     */
     @Alias("name")
     String value() default "";
 
     /**
      * 名字
-     * */
+     */
     @Alias("value")
     String name() default "";
+
+    /**
+     * 必须的
+     *
+     * @since 3.3
+     */
+    boolean required() default true;
+
+    /**
+     * 默认值
+     *
+     * @since 3.3
+     */
+    String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
 
     /**
      * 描述
