@@ -241,6 +241,11 @@ public class ActionDefault extends HandlerAide implements Action {
             x.autoMultipart(true);
         }
 
+        //设定输出产品（放在这个位置正好）
+        if (Utils.isNotEmpty(mProduces)) {
+            x.contentType(mProduces);
+        }
+
         invoke(x, null);
     }
 
@@ -319,11 +324,6 @@ public class ActionDefault extends HandlerAide implements Action {
 
                 //获取path var
                 bindPathVarDo(c);
-
-                //设定输出产品（放在这个位置正好）
-                if (Utils.isNotEmpty(mProduces)) {
-                    c.contentType(mProduces);
-                }
 
                 //执行
                 c.result = executeDo(c, obj);
