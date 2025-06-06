@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.core.util.PathUtil;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -122,9 +123,9 @@ public class HttpUtilsBuilder {
         }
 
         if (Utils.isNotEmpty(baseUri)) {
-            return HttpUtils.http(baseUri + url).headers(headers).timeout(timeout).proxy(proxy);
-        } else {
-            return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy);
+            url = PathUtil.joinUri(baseUri, url);
         }
+
+        return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy);
     }
 }
