@@ -44,6 +44,14 @@
             <optional>true</optional>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.github.mrmike</groupId>
+            <artifactId>ok2curl</artifactId>
+            <version>0.8.0</version>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

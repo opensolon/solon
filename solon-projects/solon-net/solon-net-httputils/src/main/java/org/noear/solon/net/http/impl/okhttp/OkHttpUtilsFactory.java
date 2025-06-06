@@ -15,11 +15,15 @@
  */
 package org.noear.solon.net.http.impl.okhttp;
 
+import com.moczul.ok2curl.CurlInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.HttpUtilsFactory;
 import org.noear.solon.net.http.impl.HttpSsl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.Proxy;
 import java.util.Map;
@@ -34,6 +38,8 @@ import java.util.function.Supplier;
  * @since 3.0
  */
 public class OkHttpUtilsFactory implements HttpUtilsFactory {
+    static final Logger log = LoggerFactory.getLogger(OkHttpUtilsFactory.class);
+
     private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
@@ -50,6 +56,14 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
                 .addInterceptor(OkHttpInterceptor.instance)
                 .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
                 .hostnameVerifier(HttpSsl.defaultHostnameVerifier);
+
+
+        if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
+            builder.addInterceptor(new CurlInterceptor(msg -> {
+                log.debug(msg);
+            }));
+        }
+
 
         if (proxy != null) {
             builder.proxy(proxy);
