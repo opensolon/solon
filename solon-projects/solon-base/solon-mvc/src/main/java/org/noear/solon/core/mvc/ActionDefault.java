@@ -320,13 +320,14 @@ public class ActionDefault extends HandlerAide implements Action {
                 //获取path var
                 bindPathVarDo(c);
 
-                //执行
-                c.result = executeDo(c, obj);
-
                 //设定输出产品（放在这个位置正好）
                 if (Utils.isNotEmpty(mProduces)) {
                     c.contentType(mProduces);
                 }
+
+                //执行
+                c.result = executeDo(c, obj);
+
 
                 //结果处理
                 ReturnValueHandler returnHandler = c.attr(Constants.ATTR_RETURN_HANDLER);
