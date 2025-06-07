@@ -47,7 +47,7 @@
 * 优化 solon-net-httputils HttpUtilsBuilder:build 路径合并处理
 * 优化 nami 内部路径合并处理
 * 修复 nami 使用 @Body 注解时会出现 npe 问题
-* sa-token 升为 1.43.0
+* sa-token 升为 1.44.0
 
 ### 3.3.1
 
