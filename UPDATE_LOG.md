@@ -28,6 +28,8 @@
 
 ### 3.3.2
 
+* 强化 solon-flow-designer 设计器
+* 强化 solon-ai-flow 插件
 * 添加 solon StatusException 状态码表
 * 添加 solon AppContext::getBeansMapOfType(TypeReference) 泛型获取方法
 * 添加 solon AppContext::getBeansOfType(TypeReference) 泛型获取方法
@@ -37,6 +39,20 @@
 * 添加 solon-mvc @Path.required 注解属性支持
 * 添加 solon-net-httputils TextStreamUtil:parseLineStream,parseSseStream->Publisher 方法
 * 添加 solon-net-httputils curl 打印支持
+* 添加 solon-flow FlowContext:runScript 替代 run（旧名，标为弃用）
+* 添加 solon-flow FlowContext:runTask(node, description)方法
+* 添加 solon-flow link 支持 when 统一条件（替代 condition）
+* 添加 solon-flow activity 多分支流出时支持（逻辑与排他网关相同）
+* 添加 solon-flow Counter:incr(key, delta) 方法
+* 添加 solon-ai-core ChatInterceptor 聊天拦截机制
+* 添加 solon-ai-core ChatMessage:ofUserAugment 替代 augment（后者标为弃用）
+* 添加 solon-ai-core ProxyDesc 的 Serializable 接口实现
+* 添加 solon-ai-core ChatOptions:response_format 方法
+* 添加 solon-ai-core AssistantMessage:getSearchResultsRaw 方法
+* 添加 solon-ai-mcp McpServerEndpointProvider:getMessageEndpoint 方法
+* 添加 solon-ai-mcp McpServerParameters http 参数支持
+* 添加 solon-ai-mcp McpClientProvider 本地缓存支持（默认 30秒）
+* 添加 solon-ai-mcp 原语处理异常日志
 * 优化 solon 属性默认值处理策略
 * 优化 solon BeanWrap 泛型匹配
 * 优化 solon-mvc mProduces 设定调到 invoke 之前（执行中产生输出，也可以产生效果）
@@ -46,6 +62,15 @@
 * 优化 solon-flow-luffy JtExecutorAdapter 的几个拼写错误
 * 优化 solon-net-httputils HttpUtilsBuilder:build 路径合并处理
 * 优化 nami 内部路径合并处理
+* 优化 solon-ai-core ChatConfig.toString （增加 proxy）
+* 优化 solon-ai-core Tool:outputSchema 改为必出
+* 优化 solon-ai-core 添加 ToolCallException 异常类型，用于 tool call 异常传递（之前为 ChatException）
+* 优化 solon-ai OpenaiChatDialect 方言，tool 消息也附带所有的 tools 元信息（之前被过滤了）
+* 优化 solon-ai-mcp McpServerContext 同步连接时的请求参数，方便在 Tool 方法里获取
+* 优化 solon-ai-mcp McpProviders 在 sse 时，支持 env 也作为 header 处理（有些服务方的配置，是用 env 的）
+* 优化 solon-ai-mcp 取消 RefererFunctionTool（由 FunctionToolDesc 替代）
+* 优化 solon-ai-mcp 基于 McpServerParameters 的构建能力
+* 调整 solon-flow 取消 `type: "@Com"` 的快捷配置模式（示例调整）
 * 修复 nami 使用 @Body 注解时会出现 npe 问题
 * sa-token 升为 1.44.0
 
