@@ -23,24 +23,28 @@
 
 ### 3.4.0
 
-* 调整 solon-boot-* 更名为 solon-server-* 
+* 调整 solon-boot-* 更名为 solon-server-*
+* 添加 solon 接口版本 version 支持？？？
 
 ### 3.3.2
 
-* 添加 solon 接口版本 version 支持？？？
 * 添加 solon StatusException 状态码表
 * 添加 solon AppContext::getBeansMapOfType(TypeReference) 泛型获取方法
 * 添加 solon AppContext::getBeansOfType(TypeReference) 泛型获取方法
 * 添加 solon AppContext::getBean(TypeReference) 泛型获取方法
 * 添加 solon AppContext::getBean(ParameterizedType) 泛型获取方法
 * 添加 solon Context:status(code, message) 方法
+* 添加 solon-mvc @Path.required 注解属性支持
 * 添加 solon-net-httputils TextStreamUtil:parseLineStream,parseSseStream->Publisher 方法
-* 优化 solon-proxy ClassCodeBuilder v23 改为 v24
-* 优化 solon-hotplug PluginClassLoader 的代理兼容性
+* 添加 solon-net-httputils curl 打印支持
 * 优化 solon 属性默认值处理策略
 * 优化 solon BeanWrap 泛型匹配
+* 优化 solon-mvc mProduces 设定调到 invoke 之前（执行中产生输出，也可以产生效果）
+* 优化 solon-proxy ClassCodeBuilder v23 改为 v24
+* 优化 solon-hotplug PluginClassLoader 的代理兼容性
 * 优化 solon-web-sse SseRender:render 对 null 的过滤
 * 优化 solon-flow-luffy JtExecutorAdapter 的几个拼写错误
+* 优化 solon-net-httputils HttpUtilsBuilder:build 路径合并处理
 * 优化 nami 内部路径合并处理
 * 修复 nami 使用 @Body 注解时会出现 npe 问题
 * sa-token 升为 1.43.0
