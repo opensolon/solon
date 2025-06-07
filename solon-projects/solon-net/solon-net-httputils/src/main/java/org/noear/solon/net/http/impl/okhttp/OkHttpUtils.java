@@ -182,14 +182,6 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             _url = location;
 
             return execDo(method, null);
-        } else if (statusCode == 202) {
-            String location = response.header("Location");
-            if (Utils.isNotEmpty(location)) {
-                //如果有，则替换
-                _url = location;
-            }
-
-            return execDo(method, null);
         } else {
             return new OkHttpResponse(this, statusCode, response);
         }

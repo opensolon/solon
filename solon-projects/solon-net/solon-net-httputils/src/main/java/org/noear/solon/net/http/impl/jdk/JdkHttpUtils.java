@@ -170,14 +170,6 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             _url = location;
 
             return execDo(method, null);
-        } else if (statusCode == 202) {
-            String location = _builder.getHeaderField("Location");
-            if (Utils.isNotEmpty(location)) {
-                //如果有，则替换
-                _url = location;
-            }
-
-            return execDo(method, null);
         } else {
             return new JdkHttpResponse(this, statusCode, _builder);
         }
