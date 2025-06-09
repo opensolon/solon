@@ -24,6 +24,7 @@
 ### 3.4.0
 
 * 调整 solon-boot-* 更名为 solon-server-*
+* 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 添加 solon 接口版本 version 支持？？？
 
 ### 3.3.2
@@ -123,7 +124,6 @@
 * 新增 solon-ai-repo-dashvector 插件
 * 新增 seata-solon-plugin 插件
 * 新增 solon-data Ds 注解（为统一数据源注入作准备）
-* 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 插件 solon-ai 三次预览
 * 插件 solon-ai-mcp 二次预览
 * 调整 solon Cookie,Header,Param 的 `required` 默认改为 true (便与 mcp 复用)
