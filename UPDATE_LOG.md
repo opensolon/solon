@@ -27,6 +27,11 @@
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 添加 solon 接口版本 version 支持？？？
 
+
+### 3.3.3
+
+* snack3 升为 3.2.134
+
 ### 3.3.2
 
 * 强化 solon-flow-designer 设计器
