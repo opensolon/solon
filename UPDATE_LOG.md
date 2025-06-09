@@ -74,6 +74,7 @@
 * 调整 solon-flow 取消 `type: "@Com"` 的快捷配置模式（示例调整）
 * 修复 nami 使用 @Body 注解时会出现 npe 问题
 * sa-token 升为 1.44.0
+* wood 升为 1.3.19
 
 ### 3.3.1
 
