@@ -34,7 +34,7 @@
         <solon-ai.version>3.3.3-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.3.2</solon-expression.version>
         <solon-flow.version>3.3.3-SNAPSHOT</solon-flow.version>
-        <solon-cloud.version>3.3.2</solon-cloud.version>
+        <solon-cloud.version>3.3.3-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.3.2</solon-admin.version>
         <solon-integration.version>3.3.2</solon-integration.version>
         <solon-jakarta.version>3.3.2</solon-jakarta.version>
@@ -150,6 +150,7 @@
 
         <nacos1.version>1.4.8</nacos1.version>
         <nacos2.version>2.5.1</nacos2.version>
+        <nacos3.version>3.0.1</nacos3.version>
         <zookeeper.version>3.9.2</zookeeper.version>
         <jetcd.version>0.7.7</jetcd.version>
         <polaris.version>1.14.1</polaris.version>
