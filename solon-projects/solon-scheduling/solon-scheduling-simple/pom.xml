@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>java-cron</artifactId>
-            <version>1.0.2</version>
+            <version>${java-cron.version}</version>
         </dependency>
 
         <dependency>
