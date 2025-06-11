@@ -30,6 +30,13 @@
 
 ### 3.3.3
 
+* 新增 nacos3-solon-cloud-plugin 插件
+* 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
+* 优化 solon-admin-client 服务注册、心跳逻辑
+* 优化 solon-flow when 属性全面替代 condition 属性
+* 优化 solon-ai-core ToolSchemaUtil 对 Map 的处理（有些框架，太细不支持）
+* 优化 solon-ai-core ToolSchemaUtil 对 Collection 的处理（有些框架，太细不支持）
+* 修复 solon-scheduling-simple 运行 `0 0 10-20 * * ?` 会出错的问题
 * snack3 升为 3.2.134
 * wood 升为 1.3.20
 * java-cron 升为 1.0.3
