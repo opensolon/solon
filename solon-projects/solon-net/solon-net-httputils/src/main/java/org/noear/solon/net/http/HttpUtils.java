@@ -36,6 +36,7 @@ import java.net.Proxy;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * Http 工具类
@@ -408,6 +409,14 @@ public interface HttpUtils {
      * 异步执行请求
      */
     CompletableFuture<HttpResponse> execAsync(String method);
+
+    /**
+     * 填充自己
+     */
+    default HttpUtils fill(Consumer<HttpUtils> consumer) {
+        consumer.accept(this);
+        return this;
+    }
 
 
     /////////////
