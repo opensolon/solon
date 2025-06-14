@@ -16,6 +16,7 @@
 package org.noear.solon.net.http.textstream;
 
 import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.rx.SimpleSubscription;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -55,6 +56,22 @@ public class TextStreamUtil {
         return subscriber -> {
             try {
                 TextStreamUtil.parseLineStream(inputStream, subscriber);
+            } catch (Exception e) {
+                subscriber.onError(e);
+            }
+        };
+    }
+
+    /**
+     * 解析文件行流
+     *
+     * @param response 响应
+     * @return 发布者
+     */
+    public static Publisher<String> parseLineStream(HttpResponse response) {
+        return subscriber -> {
+            try {
+                TextStreamUtil.parseLineStream(response.body(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -128,6 +145,22 @@ public class TextStreamUtil {
         return subscriber -> {
             try {
                 TextStreamUtil.parseSseStream(inputStream, subscriber);
+            } catch (Exception e) {
+                subscriber.onError(e);
+            }
+        };
+    }
+
+    /**
+     * 解析服务推送事件流
+     *
+     * @param response 响应
+     * @return 发布者
+     */
+    public static Publisher<ServerSentEvent> parseSseStream(HttpResponse response) {
+        return subscriber -> {
+            try {
+                TextStreamUtil.parseSseStream(response.body(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
