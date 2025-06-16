@@ -3,10 +3,7 @@ package features.solon.generic3;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.AppContext;
 
 import java.util.List;
@@ -56,19 +53,19 @@ public class GenericsTest {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Component("WxUserCallback")
+    @Managed("WxUserCallback")
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component("WxDeptCallback")
+    @Managed("WxDeptCallback")
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component("FsUserCallback")
+    @Managed("FsUserCallback")
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Component("FsDeptCallback")
+    @Managed("FsDeptCallback")
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -89,11 +86,11 @@ public class GenericsTest {
         }
     }
 
-    @Component
+    @Managed
     public static class WxCallbackContext extends AbstractCallbackContext<WxEvent, String> {
     }
 
-    @Component
+    @Managed
     public static class FsCallbackContext extends AbstractCallbackContext<FsEvent, Integer> {
     }
 

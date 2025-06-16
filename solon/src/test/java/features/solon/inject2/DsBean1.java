@@ -15,11 +15,11 @@
  */
 package features.solon.inject2;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/8/2 created
  */
-@Component
+@Managed
 public class DsBean1 implements DsBean {
 }

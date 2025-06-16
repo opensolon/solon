@@ -30,7 +30,9 @@
 
 ### 3.3.3
 
+* 添加 HttpUtils 异步线程池
 * 新增 nacos3-solon-cloud-plugin 插件
+* 添加 solon `@Managed` 注解
 * 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
 * 优化 solon-admin-client 服务注册、心跳逻辑
 * 优化 solon-flow when 属性全面替代 condition 属性
