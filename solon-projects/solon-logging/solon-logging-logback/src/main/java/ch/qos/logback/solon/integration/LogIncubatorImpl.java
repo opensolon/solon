@@ -47,7 +47,7 @@ import java.util.List;
 public class LogIncubatorImpl implements LogIncubator {
 
     @Override
-    public void incubate() throws Throwable{
+    public void incubate() throws Throwable {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
             //只在 window 用 jar 模式下才启用
             if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
@@ -98,11 +98,11 @@ public class LogIncubatorImpl implements LogIncubator {
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
 
-            if(url == null){
+            if (url == null) {
                 //::尝试默认加载
                 DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
                 configuration.apply(new LogbackConfigurator(loggerContext));
-            }else {
+            } else {
                 //::加载url
                 configurator.doConfigure(url);
             }
@@ -125,7 +125,7 @@ public class LogIncubatorImpl implements LogIncubator {
 
     /**
      * 报告配置错误（原生运行时）
-     * */
+     */
     private void reportConfigurationErrorsIfNecessary(LoggerContext loggerContext) {
         List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
         StringBuilder errors = new StringBuilder();
@@ -152,12 +152,12 @@ public class LogIncubatorImpl implements LogIncubator {
         String logConfig = Solon.cfg().get("solon.logging.config");
 
         if (Utils.isNotEmpty(logConfig)) {
-            File logConfigFile = new File(logConfig);
-            if (logConfigFile.exists()) {
-                return logConfigFile.toURI().toURL();
+            URL logConfigUrl = ResourceUtil.findResource(logConfig);
+            if (logConfigUrl != null) {
+                return logConfigUrl;
             } else {
                 //改成异步，不然 LogUtil.global() 初始化未完成
-                RunUtil.async(()->{
+                RunUtil.async(() -> {
                     LogUtil.global().warn("Props: No log config file: " + logConfig);
                 });
             }
@@ -165,5 +165,4 @@ public class LogIncubatorImpl implements LogIncubator {
 
         return null;
     }
-
 }
