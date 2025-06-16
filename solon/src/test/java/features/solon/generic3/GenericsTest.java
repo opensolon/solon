@@ -53,19 +53,19 @@ public class GenericsTest {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Managed("WxUserCallback")
+    @Component("WxUserCallback")
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Managed("WxDeptCallback")
+    @Component("WxDeptCallback")
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Managed("FsUserCallback")
+    @Component("FsUserCallback")
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Managed("FsDeptCallback")
+    @Component("FsDeptCallback")
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -86,11 +86,11 @@ public class GenericsTest {
         }
     }
 
-    @Managed
+    @Component
     public static class WxCallbackContext extends AbstractCallbackContext<WxEvent, String> {
     }
 
-    @Managed
+    @Component
     public static class FsCallbackContext extends AbstractCallbackContext<FsEvent, Integer> {
     }
 

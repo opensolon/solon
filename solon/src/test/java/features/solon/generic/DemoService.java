@@ -1,10 +1,10 @@
 package features.solon.generic;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2024/10/29 created
  */
-@Managed
+@Component
 public class DemoService extends ServiceImplEx<DemoMapper, Demo> {
 }

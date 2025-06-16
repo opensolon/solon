@@ -2,12 +2,12 @@ package labs.injectTest;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2024/11/27 created
  */
-@Managed
+@Component
 public class Case1 {
     @Inject("${demo.p1}")
     static int p1;
