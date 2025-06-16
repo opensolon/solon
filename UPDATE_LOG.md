@@ -42,7 +42,7 @@
 * 修复 solon-scheduling-simple 运行 `0 0 10-20 * * ?` 会出错的问题
 * snack3 升为 3.2.134
 * redisx 升为 1.7.0
-* wood 升为 1.3.20
+* wood 升为 1.3.21
 * java-cron 升为 1.0.3
 
 ### 3.3.2
