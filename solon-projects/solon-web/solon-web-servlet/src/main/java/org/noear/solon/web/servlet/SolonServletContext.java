@@ -29,6 +29,7 @@ import javax.servlet.AsyncContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -83,7 +84,7 @@ public class SolonServletContext extends WebContextBase {
         Object tmp = super.pull(clz);
 
         if (tmp == null) {
-            if (clz.isInstance(_request.getSession())) {
+            if (HttpSession.class.isAssignableFrom(clz)) {
                 return _request.getSession();
             }
         }

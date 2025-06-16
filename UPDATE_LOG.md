@@ -40,6 +40,7 @@
 * 优化 solon-ai-core ToolSchemaUtil 对 Map 的处理（有些框架，太细不支持）
 * 优化 solon-ai-core ToolSchemaUtil 对 Collection 的处理（有些框架，太细不支持）
 * 修复 solon-scheduling-simple 运行 `0 0 10-20 * * ?` 会出错的问题
+* 修复 solon-web-servlet war 部署时 Servlet 容器未启用 Session 导致参数注入出错（No SessionManager）
 * snack3 升为 3.2.134
 * redisx 升为 1.7.0
 * wood 升为 1.3.21

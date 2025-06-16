@@ -15,6 +15,7 @@
  */
 package org.noear.solon.web.servlet;
 
+import jakarta.servlet.http.HttpSession;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.*;
@@ -84,7 +85,7 @@ public class SolonServletContext extends WebContextBase {
         Object tmp = super.pull(clz);
 
         if (tmp == null) {
-            if (clz.isInstance(_request.getSession())) {
+            if (HttpSession.class.isAssignableFrom(clz)) {
                 return _request.getSession();
             }
         }

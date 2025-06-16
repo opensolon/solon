@@ -6,6 +6,8 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author noear 2024/10/1 created
  */
@@ -16,7 +18,8 @@ public class App {
     }
 
     @Mapping("hello")
-    public String hello() {
+    public String hello(HttpSession session) {
+        assert session != null;
         return "hello";
     }
 
