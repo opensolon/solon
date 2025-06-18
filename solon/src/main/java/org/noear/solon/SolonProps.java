@@ -118,7 +118,7 @@ public final class SolonProps extends Props {
                 loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
             }
         } else{
-            loadInit(ResourceUtil.getResource(config), sysPropOrg);
+            loadInit(ResourceUtil.findResourceOrFile(null, config), sysPropOrg);
 
             //4.1.加载环境变量（支持弹性容器设置的环境变量）
             //loadEnv(k -> k.indexOf('.') > 0);
