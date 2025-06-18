@@ -31,8 +31,18 @@ public class JdkHttpUtilsFactory implements HttpUtilsFactory {
         return instance;
     }
 
+    /// ////////
+
+    private static JdkHttpDispatcher dispatcher = new JdkHttpDispatcher();
+
+    public JdkHttpDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
+    /// ////////
+
     @Override
     public HttpUtils http(String url) {
-        return new JdkHttpUtils(url);
+        return new JdkHttpUtils(this, url);
     }
 }

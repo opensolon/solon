@@ -4,7 +4,7 @@ import features.jdkhttp.App;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtils;
+import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
 import org.noear.solon.test.SolonTest;
 
 import java.util.concurrent.CountDownLatch;
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SolonTest(App.class)
 public class DataJdkTest {
     public static HttpUtils http(String url) {
-        return new JdkHttpUtils(url);
+        return JdkHttpUtilsFactory.getInstance().http(url);
     }
 
     @Test

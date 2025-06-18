@@ -36,6 +36,7 @@
 * 优化 solon-admin-client 服务注册、心跳逻辑
 * 优化 solon-flow when 属性全面替代 condition 属性
 * 优化 solon-logging `solon.logging.config` 配置的加载处理（使用 ResourceUtil）
+* 优化 solon-net-httputils 添加 JdkHttpDispatcher 类，异步改用自带线程池
 * 优化 solon-ai-core ToolSchemaUtil 对 Map 的处理（有些框架，太细不支持）
 * 优化 solon-ai-core ToolSchemaUtil 对 Collection 的处理（有些框架，太细不支持）
 * 修复 solon-scheduling-simple 运行 `0 0 10-20 * * ?` 会出错的问题

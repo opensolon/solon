@@ -51,8 +51,11 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("OPTIONS");
     }
 
-    public JdkHttpUtils(String url) {
+    private JdkHttpDispatcher dispatcher;
+
+    public JdkHttpUtils(JdkHttpUtilsFactory factory, String url) {
         super(url);
+        this.dispatcher = factory.getDispatcher();
     }
 
     @Override
@@ -100,7 +103,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         if (future == null) {
             return request(_builder, method);
         } else {
-            RunUtil.async(() -> {
+            dispatcher.getExecutorService().submit(() -> {
                 try {
                     HttpResponse resp = request(_builder, method);
                     future.complete(resp);

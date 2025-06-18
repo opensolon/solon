@@ -80,6 +80,8 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
         return instance;
     }
 
+    /// ////////
+
     private Map<Proxy, OkHttpClient> proxyClients = new ConcurrentHashMap<>();
     private OkHttpClient defaultClient = createHttpClient(null);
 
@@ -90,6 +92,8 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
             return proxyClients.computeIfAbsent(proxy, k -> createHttpClient(proxy));
         }
     }
+
+    /// ////////
 
     @Override
     public HttpUtils http(String url) {

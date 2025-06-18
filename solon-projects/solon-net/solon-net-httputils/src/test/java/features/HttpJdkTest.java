@@ -2,7 +2,7 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtils;
+import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
 
 /**
  * @author noear 2024/10/6 created
@@ -12,7 +12,7 @@ public class HttpJdkTest {
     static final String url404 = "http://solon.noear.org/_test/_demo";
 
     public static HttpUtils http(String url){
-        return new JdkHttpUtils(url);
+        return JdkHttpUtilsFactory.getInstance().http(url);
     }
 
     @Test

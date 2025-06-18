@@ -3,7 +3,7 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
-import org.noear.solon.net.http.impl.jdk.JdkHttpUtils;
+import org.noear.solon.net.http.impl.jdk.JdkHttpUtilsFactory;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class AsyncJdkTest {
     static HttpUtils http(String url) {
-        return new JdkHttpUtils(url);
+        return JdkHttpUtilsFactory.getInstance().http(url);
     }
 
     @Test
