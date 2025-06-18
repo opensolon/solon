@@ -32,19 +32,32 @@
 
 * 添加 HttpUtils 异步线程池
 * 新增 nacos3-solon-cloud-plugin 插件
+* 添加 solon-flow LinkDecl:when 方法用于替代 :condition（后者标为弃用）
 * 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
+* 优化 solon --cfg 配置支持体外文件
 * 优化 solon-admin-client 服务注册、心跳逻辑
 * 优化 solon-flow when 属性全面替代 condition 属性
 * 优化 solon-logging `solon.logging.config` 配置的加载处理（使用 ResourceUtil）
 * 优化 solon-net-httputils 添加 JdkHttpDispatcher 类，异步改用自带线程池
 * 优化 solon-ai-core ToolSchemaUtil 对 Map 的处理（有些框架，太细不支持）
 * 优化 solon-ai-core ToolSchemaUtil 对 Collection 的处理（有些框架，太细不支持）
+* 优化 solon-ai-core MethodToolProvider 改用 clz 构建(兼容外部代理情况)
+* 优化 solon-ai-mcp MethodPromptProvider,MethodResourceProvider 改用 clz 构建(兼容外部代理情况)
+* 优化 solon-ai-mcp 优化 WebRxSseClientTransport 连接等待处理（异常时立即结束）
 * 修复 solon-scheduling-simple 运行 `0 0 10-20 * * ?` 会出错的问题
 * 修复 solon-web-servlet war 部署时 Servlet 容器未启用 Session 导致参数注入出错（No SessionManager）
+* 调整 solon-flow FlowDriver:handleTest 更名为 handleCondition （跟 handleTask 容易混）
+* 调整 solon-ai-core ToolCallResultConverter 接口定义（增加返回类型参数）
+* 调整 solon-ai-mcp tool,resource 结果默认处理改为 ToolCallResultJsonConverter
+* 调整 solon-ai-repo-elasticsearch 搜索类型，默认改为相似搜索（之前为精准，需要脚本权限）
 * snack3 升为 3.2.134
 * redisx 升为 1.7.0
 * wood 升为 1.3.21
+* liquor 升为 1.5.5
 * java-cron 升为 1.0.3
+* elasticsearch-rest-high-level-client 升为 7.17.28
+* milvus-sdk-java 升为 2.5.10
+* vectordatabase-sdk-java 升为 2.4.5
 
 ### 3.3.2
 
