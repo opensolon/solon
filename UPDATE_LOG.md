@@ -30,16 +30,17 @@
 
 ### 3.3.3
 
-* 添加 HttpUtils 异步线程池
 * 新增 nacos3-solon-cloud-plugin 插件
 * 添加 solon Utils.asSet 方法
 * 添加 solon-flow LinkDecl:when 方法用于替代 :condition（后者标为弃用）
+* 添加 solon-flow parallel 网关多线程并行支持（通过 context.executor 决定）
 * 添加 solon-ai-core RepositoryStorable:insert(Doc...) 方法
 * 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
 * 优化 solon --cfg 配置支持体外文件
 * 优化 solon-hotplug stop 时将插件上下文置为 null（再次启动后可以有新的生命周）
 * 优化 solon-admin-client 服务注册、心跳逻辑
 * 优化 solon-flow when 属性全面替代 condition 属性
+* 优化 solon-flow FlowContext 变量的线程可见
 * 优化 solon-logging `solon.logging.config` 配置的加载处理（使用 ResourceUtil）
 * 优化 solon-net-httputils 添加 JdkHttpDispatcher 类，异步改用自带线程池
 * 优化 solon-ai-core ToolSchemaUtil 对 Map 的处理（有些框架，太细不支持）
