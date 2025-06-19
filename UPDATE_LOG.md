@@ -32,7 +32,9 @@
 
 * 添加 HttpUtils 异步线程池
 * 新增 nacos3-solon-cloud-plugin 插件
+* 添加 solon Utils.asSet 方法
 * 添加 solon-flow LinkDecl:when 方法用于替代 :condition（后者标为弃用）
+* 添加 solon-ai-core RepositoryStorable:insert(Doc...) 方法
 * 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
 * 优化 solon --cfg 配置支持体外文件
 * 优化 solon-hotplug stop 时将插件上下文置为 null（再次启动后可以有新的生命周）
@@ -49,6 +51,7 @@
 * 修复 solon-web-servlet war 部署时 Servlet 容器未启用 Session 导致参数注入出错（No SessionManager）
 * 调整 solon-flow FlowDriver:handleTest 更名为 handleCondition （跟 handleTask 容易混）
 * 调整 solon-ai-core ToolCallResultConverter 接口定义（增加返回类型参数）
+* 调整 solon-ai-core 移除 QueryCondition:doFilter 方法（避免误解）
 * 调整 solon-ai-mcp tool,resource 结果默认处理改为 ToolCallResultJsonConverter
 * 调整 solon-ai-repo-elasticsearch 搜索类型，默认改为相似搜索（之前为精准，需要脚本权限）
 * snack3 升为 3.2.134

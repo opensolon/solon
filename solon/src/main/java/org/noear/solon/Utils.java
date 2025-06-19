@@ -89,13 +89,25 @@ public class Utils {
     }
 
     /**
-     * 转为一个可变 List（Arrays.asList 不可变）
+     * 转为一个可变 List
      */
-    public static <T> List<T> asList(T[] ary) {
+    public static <T> List<T> asList(T... ary) {
         if (ary == null) {
             return null;
         } else {
             List<T> list = new ArrayList<>(ary.length);
+            Collections.addAll(list, ary);
+            return list;
+        }
+    }
+    /**
+     * 转为一个可变 Set
+     */
+    public static <T> Set<T> asSet(T... ary) {
+        if (ary == null) {
+            return null;
+        } else {
+            Set<T> list = new HashSet<>(ary.length);
             Collections.addAll(list, ary);
             return list;
         }
