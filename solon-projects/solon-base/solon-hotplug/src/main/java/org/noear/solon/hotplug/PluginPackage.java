@@ -54,10 +54,6 @@ public class PluginPackage {
      * 开始状态
      */
     private boolean started;
-    /**
-     * Aop 上下文
-     */
-    private AppContext context;
 
     private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
@@ -65,15 +61,27 @@ public class PluginPackage {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
-        this.context = new AppContext(classLoader, new Props(classLoader));
-
-        Solon.context().copyTo(this.context);
 
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
             plugins.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
         }
+    }
+
+
+    /**
+     * 插件上下文
+     */
+    private AppContext context;
+
+    private AppContext getContext() {
+        if (context == null) {
+            this.context = new AppContext(classLoader, new Props(classLoader));
+            Solon.context().copyTo(this.context);
+        }
+
+        return context;
     }
 
     public File getFile() {
@@ -116,14 +124,14 @@ public class PluginPackage {
         SYNC_LOCK.lock();
         try {
             for (PluginEntity p1 : plugins) {
-                p1.init(context);
+                p1.init(getContext());
             }
 
             for (PluginEntity p1 : plugins) {
-                p1.start(context);
+                p1.start(getContext());
             }
 
-            context.start();
+            getContext().start();
             started = true;
 
             return this;
@@ -142,7 +150,11 @@ public class PluginPackage {
             for (PluginEntity p1 : plugins) {
                 p1.prestop();
             }
-            context.prestop();
+
+            if (context != null) {
+                getContext().prestop();
+            }
+
         } finally {
             SYNC_LOCK.unlock();
         }
@@ -158,8 +170,12 @@ public class PluginPackage {
             for (PluginEntity p1 : plugins) {
                 p1.stop();
             }
-            context.stop();
-            context.clear();
+
+            if (context != null) {
+                getContext().stop();
+                getContext().clear();
+                context = null;
+            }
         } finally {
             SYNC_LOCK.unlock();
         }
