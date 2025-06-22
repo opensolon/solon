@@ -26,6 +26,7 @@
 * 调整 solon-boot-* 更名为 solon-server-*
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 添加 solon 接口版本 version 支持？？？
+* 优化 solon --cfg 配置支持体外文件 xxx
 
 
 ### 3.3.3
@@ -36,7 +37,6 @@
 * 添加 solon-flow parallel 网关多线程并行支持（通过 context.executor 决定）
 * 添加 solon-ai-core RepositoryStorable:insert(Doc...) 方法
 * 添加 solon-ai-mcp McpServerEndpoint:enableOutputSchema 支持（默认为 false）
-* 优化 solon --cfg 配置支持体外文件
 * 优化 solon-hotplug stop 时将插件上下文置为 null（再次启动后可以有新的生命周）
 * 优化 solon-admin-client 服务注册、心跳逻辑
 * 优化 solon-flow when 属性全面替代 condition 属性

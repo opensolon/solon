@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.3.3</version>
+    <version>3.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -31,9 +31,9 @@
         <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.3.3</solon.version>
-        <solon-ai.version>3.3.3</solon-ai.version>
+        <solon-ai.version>3.4.0-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.3.3</solon-expression.version>
-        <solon-flow.version>3.3.3</solon-flow.version>
+        <solon-flow.version>3.4.0-SNAPSHOT</solon-flow.version>
         <solon-cloud.version>3.3.3</solon-cloud.version>
         <solon-admin.version>3.3.3</solon-admin.version>
         <solon-integration.version>3.3.3</solon-integration.version>
