@@ -217,9 +217,9 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
             }
         } else {
             if (size > 0) {
-                return new HashMap<>(size);
+                return new LinkedHashMap<>(size);
             } else {
-                return new HashMap<>();
+                return new LinkedHashMap<>();
             }
         }
     }
