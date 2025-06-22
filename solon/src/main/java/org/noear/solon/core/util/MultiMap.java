@@ -27,7 +27,18 @@ import java.util.*;
  * @since 2.9
  */
 public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
-    protected final IgnoreCaseMap<KeyValues<T>> innerMap = new IgnoreCaseMap<>();
+    protected final Map<String, KeyValues<T>> innerMap;
+    protected final boolean ignoreCase;
+
+    public MultiMap() {
+        this(true);
+    }
+
+    public MultiMap(boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
+        this.innerMap = createMap(0);
+    }
+
 
     @Override
     public Iterator<KeyValues<T>> iterator() {
@@ -177,7 +188,7 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
      * 转为单值 Map
      */
     public Map<String, T> toValueMap() {
-        Map<String, T> tmp = new IgnoreCaseMap<>(size());
+        Map<String, T> tmp = createMap(size());
         for (KeyValues<T> kv : innerMap.values()) {
             tmp.put(kv.getKey(), kv.getFirstValue());
         }
@@ -189,12 +200,28 @@ public class MultiMap<T> implements Iterable<KeyValues<T>>, Serializable {
      * 转为多值 Map
      */
     public Map<String, List<T>> toValuesMap() {
-        Map<String, List<T>> tmp = new IgnoreCaseMap<>(size());
+        Map<String, List<T>> tmp = createMap(size());
         for (KeyValues<T> kv : innerMap.values()) {
             tmp.put(kv.getKey(), kv.getValues());
         }
 
         return tmp;
+    }
+
+    protected <V> Map<String, V> createMap(int size) {
+        if (ignoreCase) {
+            if (size > 0) {
+                return new IgnoreCaseMap<>(size);
+            } else {
+                return new IgnoreCaseMap<>();
+            }
+        } else {
+            if (size > 0) {
+                return new HashMap<>(size);
+            } else {
+                return new HashMap<>();
+            }
+        }
     }
 
     @Override

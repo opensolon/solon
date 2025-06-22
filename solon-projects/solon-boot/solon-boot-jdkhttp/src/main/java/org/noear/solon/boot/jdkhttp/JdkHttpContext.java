@@ -241,7 +241,7 @@ public class JdkHttpContext extends WebContextBase {
     @Override
     public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new MultiMap<>();
+            _cookieMap = new MultiMap<>(false);
 
             DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }

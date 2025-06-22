@@ -217,7 +217,7 @@ public class SmHttpContext extends WebContextBase {
     @Override
     public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new MultiMap<String>();
+            _cookieMap = new MultiMap<>(false);
 
             DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
         }

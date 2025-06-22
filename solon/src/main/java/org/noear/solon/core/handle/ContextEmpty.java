@@ -163,7 +163,7 @@ public class ContextEmpty extends Context {
     @Override
     public MultiMap<String> cookieMap() {
         if (cookieMap == null) {
-            cookieMap = new MultiMap<>();
+            cookieMap = new MultiMap<>(false);
         }
         return cookieMap;
     }

@@ -226,7 +226,7 @@ public class SolonServletContext extends WebContextBase {
     @Override
     public MultiMap<String> cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new MultiMap<String>();
+            _cookieMap = new MultiMap<>(false);
 
             //_request.cookies() 可能不支持多个同名 cookie
             DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
