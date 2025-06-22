@@ -26,7 +26,7 @@
 * 调整 solon-boot-* 更名为 solon-server-*
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 添加 solon 接口版本 version 支持？？？
-* 优化 solon --cfg 配置支持体外文件 xxx
+* 调整 solon 取消 --cfg 对体外文件的支持（如有需要通过 solon.config.load 加载）
 
 
 ### 3.3.3
