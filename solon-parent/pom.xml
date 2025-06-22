@@ -30,7 +30,7 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.3.3</solon.version>
+        <solon.version>3.4.0-SNAPSHOT</solon.version>
         <solon-ai.version>3.4.0-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.3.3</solon-expression.version>
         <solon-flow.version>3.4.0-SNAPSHOT</solon-flow.version>
@@ -163,7 +163,7 @@
         <powerjob.version>5.1.0</powerjob.version>
 
         <sa-token.version>1.44.0</sa-token.version>
-        <sms4j.version>3.3.3</sms4j.version>
+        <sms4j.version>3.4.0-SNAPSHOT</sms4j.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <native.version>0.10.6</native.version>
