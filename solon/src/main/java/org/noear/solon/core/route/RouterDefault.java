@@ -54,7 +54,7 @@ public class RouterDefault implements Router, HandlerSlots {
      */
     @Override
     public void add(String path, MethodType method, int index, Handler handler) {
-        RoutingDefault routing = new RoutingDefault<>(path, method, index, handler);
+        RoutingDefault routing = new RoutingDefault<>(path, handler.version(), method, index, handler);
 
         table.add(routing);
     }
@@ -91,7 +91,7 @@ public class RouterDefault implements Router, HandlerSlots {
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
-        return table.matchOneAndStatus(pathNew, method);
+        return table.matchOneAndStatus(pathNew, ctx.getVersion(), method);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class RouterDefault implements Router, HandlerSlots {
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
-        return table.matchOne(pathNew, method);
+        return table.matchOne(pathNew, ctx.getVersion(), method);
     }
 
 

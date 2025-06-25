@@ -69,6 +69,11 @@ public @interface Mapping {
     boolean multipart() default false;
 
     /**
+     * 版本号
+     */
+    String version() default "";
+
+    /**
      * 名字
      *
      * @since 3.2

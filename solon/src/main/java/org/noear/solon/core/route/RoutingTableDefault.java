@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  *
  * @author noear
  * @since 1.0
+ * @since 3.4
  * */
 public class RoutingTableDefault<T> implements RoutingTable<T> {
     private LinkedList<RankEntity<Routing<T>>> table = new LinkedList<>();
@@ -130,9 +131,9 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @param method 方法
      * @return 一个区配的目标
      */
-    public T matchOne(String path, MethodType method) {
+    public T matchOne(String path, String version, MethodType method) {
         for (RankEntity<Routing<T>> l : table) {
-            if (l.target.matches(method, path)) {
+            if (l.target.matches(method, path, version)) {
                 return l.target.target();
             }
         }
@@ -148,10 +149,10 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @return 一个区配的目标
      */
     @Override
-    public Result<T> matchOneAndStatus(String path, MethodType method) {
+    public Result<T> matchOneAndStatus(String path, String version, MethodType method) {
         int degrees = 0;
         for (RankEntity<Routing<T>> l : table) {
-            int tmp = l.target.degrees(method, path);
+            int tmp = l.target.degrees(method, path, version);
             if (tmp == 2) {
                 return Result.succeed(l.target.target());
             } else {
@@ -175,9 +176,10 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
      * @param method 方法
      * @return 一批区配的目标
      */
-    public List<T> matchMore(String path, MethodType method) {
+    @Override
+    public List<T> matchMore(String path, String version, MethodType method) {
         return table.stream()
-                .filter(l -> l.target.matches(method, path))
+                .filter(l -> l.target.matches(method, path, version))
                 .map(l -> l.target.target())
                 .collect(Collectors.toList());
     }

@@ -24,6 +24,13 @@ package org.noear.solon.core.handle;
 @FunctionalInterface
 public interface Handler {
     /**
+     * 版本
+     */
+    default String version() {
+        return null;
+    }
+
+    /**
      * 处理
      *
      * @param ctx 上下文

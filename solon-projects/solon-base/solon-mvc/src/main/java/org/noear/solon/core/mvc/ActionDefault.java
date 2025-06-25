@@ -60,6 +60,7 @@ public class ActionDefault extends HandlerAide implements Action {
     //action remoting
     private final boolean mRemoting;
     private final Mapping mMapping;
+    private final String mVersion;
 
     private boolean mMultipart;
 
@@ -69,10 +70,10 @@ public class ActionDefault extends HandlerAide implements Action {
     private List<String> pathKeys;
 
     public ActionDefault(BeanWrap bWrap, Method method) {
-        this(bWrap, null, method, null, null, false, null);
+        this(bWrap, null, null, method, null, null, false, null);
     }
 
-    public ActionDefault(BeanWrap bWrap, HandlerAide bAide, Method method, Mapping mapping, String path, boolean remoting, Render render) {
+    public ActionDefault(BeanWrap bWrap, HandlerAide bAide, String bVersion, Method method, Mapping mapping, String path, boolean remoting, Render render) {
         this.bWrap = bWrap;
         this.bAide = bAide;
 
@@ -97,6 +98,7 @@ public class ActionDefault extends HandlerAide implements Action {
 
         if (mapping == null) {
             mName = method.getName();
+            mVersion = bVersion;
         } else {
             //of method
             Produces producesAnno = method.getAnnotation(Produces.class);
@@ -143,6 +145,7 @@ public class ActionDefault extends HandlerAide implements Action {
             }
 
             mName = Utils.annoAlias(mapping.value(), mapping.path());
+            mVersion = Utils.annoAlias(mapping.version(), bVersion);
         }
 
         if (Utils.isEmpty(path)) {
@@ -228,6 +231,13 @@ public class ActionDefault extends HandlerAide implements Action {
         return mConsumes;
     }
 
+    /**
+     * 版本
+     */
+    @Override
+    public String version() {
+        return mVersion;
+    }
 
     @Override
     public void handle(Context x) throws Throwable {

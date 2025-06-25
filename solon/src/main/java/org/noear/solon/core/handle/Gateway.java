@@ -438,9 +438,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //addPath 已处理 path1= null 的情况
         if (allowPathMerging()) {
             String path2 = PathUtil.mergePath(mapping, path);
-            mainRouting.add(new RoutingDefault<>(path2, method, index, handler));
+            mainRouting.add(new RoutingDefault<>(path2, handler.version(), method, index, handler));
         } else {
-            mainRouting.add(new RoutingDefault<>(path, method, index, handler));
+            mainRouting.add(new RoutingDefault<>(path, handler.version(), method, index, handler));
         }
     }
 
@@ -483,7 +483,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return null;
         } else {
             MethodType method = MethodTypeUtil.valueOf(c.method());
-            return mainRouting.matchOne(path, method);
+            return mainRouting.matchOne(path, c.getVersion(), method);
         }
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.route;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathMatcher;
@@ -24,18 +25,26 @@ import org.noear.solon.core.util.PathMatcher;
  *
  * @author noear
  * @since 1.3
+ * @since 3.4
  */
 public class RoutingDefault<T> implements Routing<T> {
 
-    public RoutingDefault(String path, MethodType method, T target) {
-        this(path, method, 0, target);
+    public RoutingDefault(String path, String version, MethodType method, T target) {
+        this(path, version, method, 0, target);
     }
 
-    public RoutingDefault(String path, MethodType method, int index, T target) {
+    public RoutingDefault(String path, String version, MethodType method, int index, T target) {
         this.rule = PathMatcher.get(path);
 
         this.method = method;
         this.path = path;
+
+        if (Utils.isEmpty(version)) {
+            this.version = null;
+        } else {
+            this.version = version;
+        }
+
         this.index = index;
         this.target = target;
     }
@@ -44,6 +53,7 @@ public class RoutingDefault<T> implements Routing<T> {
 
     private final int index; //顺序
     private final String path; //path
+    private final String version;
     private final T target;//代理
     private final MethodType method; //方式
 
@@ -55,6 +65,11 @@ public class RoutingDefault<T> implements Routing<T> {
     @Override
     public String path() {
         return path;
+    }
+
+    @Override
+    public String version() {
+        return version;
     }
 
     @Override
@@ -71,15 +86,15 @@ public class RoutingDefault<T> implements Routing<T> {
      * 是否匹配
      */
     @Override
-    public boolean matches(MethodType method2, String path2) {
+    public boolean matches(MethodType method2, String path2, String version2) {
         if (MethodType.ALL == method) {
-            return matches0(path2);
+            return matches0(path2, version2);
         } else if (MethodType.HTTP == method) { //不是null时，不能用==
             if (method2.signal == SignalType.HTTP) {
-                return matches0(path2);
+                return matches0(path2, version2);
             }
         } else if (method2 == method) {
-            return matches0(path2);
+            return matches0(path2, version2);
         }
 
         return false;
@@ -89,10 +104,10 @@ public class RoutingDefault<T> implements Routing<T> {
      * 匹配程度
      *
      * @since 2.5
-     * */
+     */
     @Override
-    public int degrees(MethodType method2, String path2) {
-        if (matches0(path2)) {
+    public int degrees(MethodType method2, String path2, String version2) {
+        if (matches0(path2, version2)) {
             if (MethodType.ALL == method) {
                 return 2;
             } else if (MethodType.HTTP == method) { //不是null时，不能用==
@@ -110,11 +125,32 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     @Override
-    public boolean test(String path2) {
-        return matches0(path2);
+    public boolean test(String path2, String version2) {
+        return matches0(path2, version2);
     }
 
-    private boolean matches0(String path2) {
+    private boolean matches0(String path2, String version2) {
+        if (version != null) {
+            if (version.equals(version2) == false) {
+                return false;
+            }
+        }
+
+        //1.如果当前为**，任何路径都可命中
+        if ("**".equals(path) || "/**".equals(path)) {
+            return true;
+        }
+
+        //2.如果与当前路径相关
+        if (path.equals(path2)) {
+            return true;
+        }
+
+        //3.正则检测
+        return rule.matches(path2);
+    }
+
+    private boolean matchesPath0(String path2) {
         //1.如果当前为**，任何路径都可命中
         if ("**".equals(path) || "/**".equals(path)) {
             return true;

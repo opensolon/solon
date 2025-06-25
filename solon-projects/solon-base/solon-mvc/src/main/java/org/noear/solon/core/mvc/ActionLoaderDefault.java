@@ -45,6 +45,7 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     protected final Render bRender;
     protected final Mapping bMapping;
     protected final String bPath;
+    protected final String bVersion;
     protected final boolean bRemoting;
 
     protected final boolean allowMapping;
@@ -76,6 +77,16 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
 
         this.bPath = Utils.annoAlias(mapping, "");
         this.bRemoting = remoting;
+
+        if (bMapping == null) {
+            bVersion = null;
+        } else {
+            if (Utils.isNotEmpty(bMapping.version())) {
+                bVersion = bMapping.version();
+            } else {
+                bVersion = null;
+            }
+        }
     }
 
     /**
@@ -329,9 +340,9 @@ public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
      */
     protected ActionDefault createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
-            return new ActionDefault(bw, this, method, mp, path, remoting, bRender);
+            return new ActionDefault(bw, this, bVersion, method, mp, path, remoting, bRender);
         } else {
-            return new ActionDefault(bw, this, method, null, path, remoting, bRender);
+            return new ActionDefault(bw, this, bVersion, method, null, path, remoting, bRender);
         }
     }
 

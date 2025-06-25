@@ -22,6 +22,7 @@ import org.noear.solon.core.handle.MethodType;
  *
  * @author noear
  * @since 1.3
+ * @since 3.4
  */
 public interface Routing<T> {
     /**
@@ -33,6 +34,11 @@ public interface Routing<T> {
      * 路径
      */
     String path();
+
+    /**
+     * 版本号
+     */
+    String version();
 
     /**
      * 方法
@@ -47,20 +53,22 @@ public interface Routing<T> {
     /**
      * 是否匹配
      */
-    boolean matches(MethodType method2, String path2);
+    boolean matches(MethodType method2, String path2, String version2);
 
     /**
      * 匹配程度（0,不匹配；1,匹配路径；2,完全匹配）
      *
      * @since 2.5
+     * @since 3.4
      */
-    int degrees(MethodType method2, String path2);
+    int degrees(MethodType method2, String path2, String version2);
 
 
     /**
      * 测试路径
      *
      * @since 2.6
+     * @since 3.4
      */
-    boolean test(String path2);
+    boolean test(String path2, String version2);
 }

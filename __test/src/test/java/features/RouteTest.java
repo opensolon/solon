@@ -34,13 +34,13 @@ public class RouteTest {
     @Test
     public void routingDefault() {
         //Mvc 里用的 Mapping 路由记录
-        RoutingDefault routingDefault = new RoutingDefault("/captchaImage", MethodType.GET, null);
-        assert routingDefault.matches(MethodType.GET, "/captchaImage");
-        assert routingDefault.matches(MethodType.GET, "/captchaimage") == false;
+        RoutingDefault routingDefault = new RoutingDefault("/captchaImage", null, MethodType.GET, null);
+        assert routingDefault.matches(MethodType.GET, "/captchaImage", null);
+        assert routingDefault.matches(MethodType.GET, "/captchaimage", null) == false;
 
-        routingDefault = new RoutingDefault("/captchaimage", MethodType.GET, null);
-        assert routingDefault.matches(MethodType.GET, "/captchaImage") == false;
-        assert routingDefault.matches(MethodType.GET, "/captchaimage");
+        routingDefault = new RoutingDefault("/captchaimage", null, MethodType.GET, null);
+        assert routingDefault.matches(MethodType.GET, "/captchaImage", null) == false;
+        assert routingDefault.matches(MethodType.GET, "/captchaimage", null);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class RouteTest {
         assert (mainHandler instanceof Gateway);
 
         Gateway gateway = (Gateway) mainHandler;
-        Handler handler = gateway.getMainRouting().matchOne(path, MethodType.GET);
+        Handler handler = gateway.getMainRouting().matchOne(path, null, MethodType.GET);
 
         assert handler instanceof Handler;
     }

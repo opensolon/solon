@@ -62,6 +62,22 @@ public abstract class Context {
         this.locale = locale;
     }
 
+    private String version;
+
+    /**
+     * 获取版本
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * 设置版本
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     /**
      * 是否已处理（用于控制处理链）
      */
