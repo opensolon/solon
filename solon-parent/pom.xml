@@ -34,7 +34,7 @@
         <solon-ai.version>3.4.0-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.4.0-SNAPSHOT</solon-expression.version>
         <solon-flow.version>3.4.0-SNAPSHOT</solon-flow.version>
-        <solon-cloud.version>3.3.3</solon-cloud.version>
+        <solon-cloud.version>3.4.0-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.3.3</solon-admin.version>
         <solon-integration.version>3.3.3</solon-integration.version>
         <solon-jakarta.version>3.3.3</solon-jakarta.version>
