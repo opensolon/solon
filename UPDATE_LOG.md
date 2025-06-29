@@ -26,6 +26,7 @@
 * 调整 solon-boot-* 更名为 solon-server-*
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 添加 solon 接口版本 version 支持？？？
+* 增强 solon ``@Inject` 注解目标增加 METHOD 支持
 * 调整 solon 取消 --cfg 对体外文件的支持（如有需要通过 solon.config.load 加载）
 * 修复 solon cookieMap 名字未区分大小写的问题（调整为与其它框架一至）
 * 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
