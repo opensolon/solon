@@ -46,8 +46,12 @@ public class JtModelUtils {
         int headIdx = fileModel.content.indexOf('\n');
         if (headIdx > 0) {
             String headLine = fileModel.content.substring(0, headIdx);
-            if (headLine.startsWith("//@{")) {
+            if (headLine.startsWith("//@{")) { //经典注释风格
                 String metaJson = headLine.substring(3);
+                ONode metaNode = ONode.loadStr(metaJson);
+                fileModel.method = metaNode.get("method").getString();
+            } else if (headLine.startsWith("#@{")) { //像 py、rb 注释风格
+                String metaJson = headLine.substring(2);
                 ONode metaNode = ONode.loadStr(metaJson);
                 fileModel.method = metaNode.get("method").getString();
             }
