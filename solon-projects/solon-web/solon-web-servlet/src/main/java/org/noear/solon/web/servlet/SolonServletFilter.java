@@ -65,7 +65,7 @@ public class SolonServletFilter implements Filter {
                 //重新设置当前上下文（上面会清掉）
                 ContextHolder.currentSet(ctx);
 
-                if (ctx.getHandled() == false) {
+                if (ctx.getHandled() == false && ctx.status() == 200) { //说明未处理，且状态未变
                     //如果未处理，则传递过滤链
                     filterChain.doFilter(request, response);
                 }
