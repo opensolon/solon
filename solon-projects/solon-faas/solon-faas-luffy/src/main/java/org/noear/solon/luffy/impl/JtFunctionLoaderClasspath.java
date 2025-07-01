@@ -63,31 +63,16 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
     }
 
     protected AFileModel fileGet0(String path) throws Exception {
-        AFileModel file = new AFileModel();
+        AFileModel fileModel = new AFileModel();
 
-        file.content = fileContentGet(path);
+        fileModel.content = fileContentGet(path);
 
-        if (Utils.isNotEmpty(file.content)) {
+        if (Utils.isNotEmpty(fileModel.content)) {
             //如果有找到文件内容，则完善信息
-            //
-            File file1 = new File(path);
-            String fileName = file1.getName();
-
-            file.path = path;
-            file.tag = "luffy";
-
-            if (fileName.indexOf('.') > 0) {
-                String suffix = fileName.substring(fileName.indexOf('.') + 1);
-                file.edit_mode = JtMapping.getActuator(suffix);
-            } else {
-                file.edit_mode = JtMapping.getActuator("");
-            }
-
-            //有些场景需要id
-            file.file_id = Math.abs(path.hashCode());
+            JtModelUtils.buildFileModel(fileModel, path);
         }
 
-        return file;
+        return fileModel;
     }
 
     protected String fileContentGet(String path) throws IOException {

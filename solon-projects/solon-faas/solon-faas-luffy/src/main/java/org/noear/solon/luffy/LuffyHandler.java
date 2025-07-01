@@ -19,6 +19,7 @@ import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
 import org.noear.luffy.utils.TextUtils;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.luffy.impl.JtRun;
@@ -59,6 +60,13 @@ public class LuffyHandler implements Handler {
         if (file.content_type != null && file.content_type.startsWith("code/")) {
             ctx.status(403);
             return;
+        }
+
+        if (Utils.isNotEmpty(file.method)) {
+            if(file.method.contains(ctx.method()) == false) {
+                ctx.status(405);
+                return;
+            }
         }
 
         //如果有跳转，则跳转

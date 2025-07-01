@@ -1,3 +1,5 @@
+#@{method:"GET"}
+
 name = ctx.param('name')
 
 if(!name)

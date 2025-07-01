@@ -51,7 +51,7 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         _defaultExecutor = JtMapping.getActuator("");
         _defLogTag = "luffy";
 
-        forDebug = new JtFunctionLoaderDebug();
+        forDebug = JtFunctionLoaderFile.ofDebug();
         forRelease = resourceLoader;
     }
 

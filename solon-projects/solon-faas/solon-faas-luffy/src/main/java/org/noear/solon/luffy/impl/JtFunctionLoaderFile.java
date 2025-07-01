@@ -16,7 +16,10 @@
 package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
+import org.noear.snack.ONode;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.web.DebugUtils;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.IoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +41,19 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class JtFunctionLoaderFile implements JtFunctionLoader {
     static final Logger log = LoggerFactory.getLogger(JtFunctionLoaderFile.class);
+    static final String debug_dir = "/luffy/";
+
+    static JtFunctionLoaderFile ofDebug() {
+        //调试模式（直接连接源码资源目录）
+        File dir = DebugUtils.getDebugLocation(AppClassLoader.global(), debug_dir);
+        return new JtFunctionLoaderFile(dir, false);
+    }
 
     private final Map<String, AFileModel> fileCached = new LinkedHashMap<>();
     private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
     private File _baseDir;
+    private boolean _useCache = true;
 
     public JtFunctionLoaderFile() {
         this("./luffy/");
@@ -53,6 +64,11 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
         if (!_baseDir.exists()) {
             _baseDir.mkdir();
         }
+    }
+
+    public JtFunctionLoaderFile(File baseDir, boolean useCache) {
+        _baseDir = baseDir;
+        _useCache = useCache;
     }
 
     @Override
@@ -68,69 +84,61 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
             return null;
         }
 
-        AFileModel fileModel = fileCached.get(path);
+        if (_useCache == false) {
+            return fileFillDo(new AFileModel(), file, path);
+        } else {
 
-        if (fileModel == null) {
-            SYNC_LOCK.lock();
-            try {
-                fileModel = fileCached.get(path);
+            AFileModel fileModel = fileCached.get(path);
 
-                if (fileModel == null) {
-                    fileModel = new AFileModel();
-                    fileFillDo(fileModel, file, path);
+            if (fileModel == null) {
+                SYNC_LOCK.lock();
+                try {
+                    fileModel = fileCached.get(path);
 
-                    fileCached.put(path, fileModel);
+                    if (fileModel == null) {
+                        fileModel = new AFileModel();
+                        fileFillDo(fileModel, file, path);
+
+                        fileCached.put(path, fileModel);
+                    }
+                } finally {
+                    SYNC_LOCK.unlock();
                 }
-            } finally {
-                SYNC_LOCK.unlock();
             }
-        }
 
-        if (fileModel.update_fulltime.getTime() != file.lastModified()) {
-            SYNC_LOCK.lock();
-            try {
-                if (fileModel.update_fulltime.getTime() != file.lastModified()) {
-                    fileFillDo(fileModel, file, path);
-                }
+            if (fileModel.update_fulltime.getTime() != file.lastModified()) {
+                SYNC_LOCK.lock();
+                try {
+                    if (fileModel.update_fulltime.getTime() != file.lastModified()) {
+                        fileFillDo(fileModel, file, path);
+                    }
 
-                if (fileModel.content != null) {
-                    //如果有更新，移除缓存
-                    JtRun.dele(path);
+                    if (fileModel.content != null) {
+                        //如果有更新，移除缓存
+                        JtRun.dele(path);
+                    }
+                } finally {
+                    SYNC_LOCK.unlock();
                 }
-            } finally {
-                SYNC_LOCK.unlock();
             }
-        }
 
-        return fileModel;
+            return fileModel;
+        }
     }
 
-    protected void fileFillDo(AFileModel fileModel, File file, String path) throws Exception {
+    protected AFileModel fileFillDo(AFileModel fileModel, File file, String path) throws Exception {
         fileModel.content = fileContentGet(file);
 
         if (fileModel.content != null) {
             //如果有找到文件内容，则完善信息
-            //
-            String fileName = file.getName();
-
             if (fileModel.file_id == 0) {
-                //如果还没有 id 说明是第一次加载
-                fileModel.path = path;
-                fileModel.tag = "luffy";
-
-                if (fileName.indexOf('.') > 0) {
-                    String suffix = fileName.substring(fileName.indexOf('.') + 1);
-                    fileModel.edit_mode = JtMapping.getActuator(suffix);
-                } else {
-                    fileModel.edit_mode = JtMapping.getActuator("");
-                }
-
-                //有些场景需要id
-                fileModel.file_id = Math.abs(path.hashCode());
+                JtModelUtils.buildFileModel(fileModel, path);
             }
 
             fileModel.update_fulltime = new Date(file.lastModified());
         }
+
+        return fileModel;
     }
 
     protected File fileBuildDo(String path) {
