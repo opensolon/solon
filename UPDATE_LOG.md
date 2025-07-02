@@ -31,7 +31,7 @@
 * 修复 solon cookieMap 名字未区分大小写的问题（调整为与其它框架一至）
 * 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
 * 修复 solon-web-servlet SolonServletFilter 链的传递处理问题（未处理且200才传递，说明未变）
-* luffy 升为 1.9.4
+* luffy 升为 1.9.5
 
 
 ### 3.3.3
