@@ -32,6 +32,7 @@
 * 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
 * 修复 solon-web-servlet SolonServletFilter 链的传递处理问题（未处理且200才传递，说明未变）
 * luffy 升为 1.9.5
+* liquor 升为 1.5.7
 
 
 ### 3.3.3
