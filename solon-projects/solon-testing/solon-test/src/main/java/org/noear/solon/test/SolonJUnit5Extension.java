@@ -15,25 +15,24 @@
  */
 package org.noear.solon.test;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestInstanceFactory;
-import org.junit.jupiter.api.extension.TestInstanceFactoryContext;
-import org.junit.jupiter.api.extension.TestInstantiationException;
+import org.junit.jupiter.api.extension.*;
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 
 /**
  * @author noear
  * @since 1.10
  */
-public class SolonJUnit5Extension implements TestInstanceFactory {
+public class SolonJUnit5Extension implements TestInstanceFactory, AfterAllCallback {
     private AppContext appContext;
+    private Class<?> klass;
 
     @Override
     public Object createTestInstance(TestInstanceFactoryContext factory, ExtensionContext extensionContext) throws TestInstantiationException {
 
         try {
             //init
-            Class<?> klass = factory.getTestClass();
+            klass = factory.getTestClass();
             if (appContext == null) {
                 appContext = RunnerUtils.initRunner(klass);
             }
@@ -42,6 +41,19 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
             return RunnerUtils.initTestTarget(appContext, klass);
         } catch (Throwable e) {
             throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName(), e);
+        }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        afterAllDo();
+    }
+
+    protected void afterAllDo() {
+        if (klass != null && Solon.app() != null) {
+            if (klass.equals(Solon.app().source())) {
+                Solon.stopBlock();
+            }
         }
     }
 }

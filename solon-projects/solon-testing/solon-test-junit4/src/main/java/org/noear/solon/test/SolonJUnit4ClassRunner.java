@@ -17,10 +17,13 @@ package org.noear.solon.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     private AppContext appContext;
+    private Class<?> klass;
 
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
@@ -30,7 +33,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     protected Object createTest() throws Exception {
         try {
             //init
-            Class<?> klass = super.getTestClass().getJavaClass();
+            klass = super.getTestClass().getJavaClass();
             if (appContext == null) {
                 appContext = RunnerUtils.initRunner(klass);
             }
@@ -41,6 +44,28 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected Statement withAfterClasses(Statement statement) {
+        Statement original = super.withAfterClasses(statement);
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                original.evaluate();
+
+                //afterAll
+                afterAllDo();
+            }
+        };
+    }
+
+    protected void afterAllDo() {
+        if (klass != null && Solon.app() != null) {
+            if (klass.equals(Solon.app().source())) {
+                Solon.stopBlock();
+            }
         }
     }
 }
