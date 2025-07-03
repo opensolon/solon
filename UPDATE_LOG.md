@@ -15,7 +15,8 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
-* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc???
+* 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc ???
+* 调整 solon-boot-* 更名为 solon-server-* ???
 * 
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
@@ -23,11 +24,11 @@
 
 ### 3.4.0
 
-* 调整 solon-boot-* 更名为 solon-server-*
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 新增 solon 接口版本 version 支持
 * 优化 solon-test RunnerUtils 的缓存处理，原 appCached 改为 klassCached（根据测试类缓存）
 * 优化 solon `@Inject` 注解目标范围增加 METHOD 支持
+* 添加 solon-test SolonJUnit5Extension,SolonJUnit4ClassRunner afterAllDo 方法（如果是当前启动类，则停止 solonapp 实例）
 * 调整 solon 取消 --cfg 对体外文件的支持（如有需要通过 solon.config.load 加载）
 * 修复 solon cookieMap 名字未区分大小写的问题（调整为与其它框架一至）
 * 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
