@@ -12,6 +12,6 @@ import org.noear.solon.web.version.VersionFilter;
 public class VersonConfig {
     @Bean
     public Filter filter() {
-        return new VersionFilter().useHeader("version");
+        return new VersionFilter().useHeader("Api-Version");
     }
 }
