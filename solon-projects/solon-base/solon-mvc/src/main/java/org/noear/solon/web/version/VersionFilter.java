@@ -15,10 +15,12 @@
  */
 package org.noear.solon.web.version;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,16 +31,48 @@ import java.util.List;
  * @since 3.4
  */
 public class VersionFilter implements Filter {
-    private final List<VersionResolver> resolverList;
+    private final List<VersionResolver> resolverList = new ArrayList<>();
 
-    public VersionFilter(VersionResolver... resolvers) {
-        resolverList = Arrays.asList(resolvers);
+    /**
+     * 使用头
+     */
+    public VersionFilter useHeader(String headerName) {
+        this.resolverList.add((ctx) -> ctx.header(headerName));
+        return this;
+    }
+
+    /**
+     * 使用参数
+     */
+    public VersionFilter useParam(String paramName) {
+        this.resolverList.add((ctx) -> ctx.param(paramName));
+        return this;
+    }
+
+    /**
+     * 使用路径段（从0开始）
+     */
+    public VersionFilter usePathSegment(int index) {
+        this.resolverList.add(new PathVersionResolver(index));
+        return this;
+    }
+
+    /**
+     * 使用定制版本分析器
+     */
+    public VersionFilter useVersionResolver(VersionResolver... resolvers) {
+        this.resolverList.addAll(Arrays.asList(resolvers));
+        return this;
     }
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         for (VersionResolver resolver : resolverList) {
-            resolver.versionResolve(ctx);
+            if (Utils.isEmpty(ctx.getVersion())) {
+                ctx.setVersion(resolver.versionResolve(ctx));
+            } else {
+                break;
+            }
         }
 
         chain.doFilter(ctx);

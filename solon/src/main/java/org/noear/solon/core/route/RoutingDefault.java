@@ -130,10 +130,14 @@ public class RoutingDefault<T> implements Routing<T> {
     }
 
     private boolean matches0(String path2, String version2) {
-        if (version != null) {
+        if (Utils.isNotEmpty(version)) {
+            //如果有版本申明
             if (version.equals(version2) == false) {
                 return false;
             }
+        } else if (Utils.isNotEmpty(version2)) {
+            //如果有版本要求
+            return false;
         }
 
         //1.如果当前为**，任何路径都可命中

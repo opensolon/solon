@@ -18,26 +18,30 @@ package org.noear.solon.web.version;
 import org.noear.solon.core.handle.Context;
 
 /**
- * 版本解析器，基于 header 处理
+ * 版本解析器，基于 path 处理
  *
  * @author noear
  * @since 3.4
  */
-public class VersionResolverHeader implements VersionResolver {
-    private final String headerName;
+public class PathVersionResolver implements VersionResolver {
+    private final int segmentIndex;
 
-    public VersionResolverHeader() {
-        this("Api-Version");
-    }
-
-    public VersionResolverHeader(String headerName) {
-        this.headerName = headerName;
+    /**
+     * @param segmentIndex 片段顺位（/0/1/2/3）
+     */
+    public PathVersionResolver(int segmentIndex) {
+        this.segmentIndex = segmentIndex;
     }
 
     @Override
-    public void versionResolve(Context ctx) {
-        if (ctx.getVersion() == null) {
-            ctx.setVersion(ctx.header(headerName));
+    public String versionResolve(Context ctx) {
+        if (ctx.pathNew() != null) {
+            String[] segments = ctx.pathNew().split("/");
+            if (segments.length > segmentIndex) {
+                return segments[segmentIndex];
+            }
         }
+
+        return null;
     }
 }

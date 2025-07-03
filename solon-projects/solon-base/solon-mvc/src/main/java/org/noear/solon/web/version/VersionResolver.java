@@ -16,6 +16,7 @@
 package org.noear.solon.web.version;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.lang.Nullable;
 
 /**
  * 版本解析器
@@ -23,11 +24,13 @@ import org.noear.solon.core.handle.Context;
  * @author noear
  * @since 3.4
  */
+@FunctionalInterface
 public interface VersionResolver {
     /**
      * 版本分析
      *
      * @param ctx 上下文
      */
-    void versionResolve(Context ctx);
+    @Nullable
+    String versionResolve(Context ctx);
 }
