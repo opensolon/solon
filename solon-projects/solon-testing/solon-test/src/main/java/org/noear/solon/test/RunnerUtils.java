@@ -33,14 +33,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author noear
  * @since 1.11
  */
 public class RunnerUtils {
-    private static Map<Class<?>, AppContext> klassCached = new ConcurrentHashMap<>();
+    private static Map<Class<?>, AppContext> appCached = new HashMap<>();
 
     private static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
         if (anno == null) {
@@ -150,8 +149,8 @@ public class RunnerUtils {
 
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            if (klassCached.containsKey(klass)) {
-                return klassCached.get(klass);
+            if (appCached.containsKey(mainClz)) {
+                return appCached.get(mainClz);
             }
 
             try {
@@ -165,7 +164,7 @@ public class RunnerUtils {
                     new SolonAotTestProcessor(mainClz).process(appContext);
                 }
 
-                klassCached.put(klass, appContext);
+                appCached.put(mainClz, appContext);
                 //延迟秒数
                 if (anno.delay() > 0) {
                     try {
