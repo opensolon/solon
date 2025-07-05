@@ -24,6 +24,7 @@
 
 ### 3.4.0
 
+* 新增 solon-ai-repo-opensearch 插件
 * 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 新增 solon 接口版本 version 支持
 * 优化 solon-test RunnerUtils 的缓存处理，原 appCached 改为 klassCached（根据测试类缓存）
