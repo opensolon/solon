@@ -16,6 +16,7 @@
 package org.noear.solon.test;
 
 import org.junit.jupiter.api.extension.*;
+import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 
@@ -52,7 +53,9 @@ public class SolonJUnit5Extension implements TestInstanceFactory, AfterAllCallba
     protected void afterAllDo() {
         if (klass != null && Solon.app() != null) {
             if (klass.equals(Solon.app().source())) {
-                Solon.stopBlock();
+                if (Solon.app() instanceof SimpleSolonApp) {
+                    ((SimpleSolonApp) Solon.app()).stop();
+                }
             }
         }
     }

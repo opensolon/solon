@@ -39,7 +39,7 @@ import java.util.*;
  * @since 1.11
  */
 public class RunnerUtils {
-    private static Map<Class<?>, AppContext> appCached = new HashMap<>();
+    private static Map<Class<?>, AppContext> contextCached = new HashMap<>();
 
     private static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
         if (anno == null) {
@@ -149,8 +149,8 @@ public class RunnerUtils {
 
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            if (appCached.containsKey(mainClz)) {
-                return appCached.get(mainClz);
+            if (contextCached.containsKey(klass)) {
+                return contextCached.get(klass);
             }
 
             try {
@@ -164,7 +164,7 @@ public class RunnerUtils {
                     new SolonAotTestProcessor(mainClz).process(appContext);
                 }
 
-                appCached.put(mainClz, appContext);
+                contextCached.put(klass, appContext);
                 //延迟秒数
                 if (anno.delay() > 0) {
                     try {

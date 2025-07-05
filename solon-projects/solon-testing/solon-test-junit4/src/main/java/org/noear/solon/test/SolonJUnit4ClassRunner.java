@@ -18,6 +18,7 @@ package org.noear.solon.test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
+import org.noear.solon.SimpleSolonApp;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 
@@ -64,7 +65,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     protected void afterAllDo() {
         if (klass != null && Solon.app() != null) {
             if (klass.equals(Solon.app().source())) {
-                Solon.stopBlock();
+                if (Solon.app() instanceof SimpleSolonApp) {
+                    ((SimpleSolonApp) Solon.app()).stop();
+                }
             }
         }
     }
