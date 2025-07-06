@@ -17,6 +17,7 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 调整 solon-docs-openapi2 合并 solon-docs-openapi2-javadoc ???
 * 调整 solon-boot-* 更名为 solon-server-* ???
+* 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 
 * 添加 序列化安全名单接口?
 * 优化 拦截体系与 rx 的兼容？
@@ -24,14 +25,31 @@
 
 ### 3.4.0
 
+* 插件 solon-flow stateful 二次预览
 * 新增 solon-ai-repo-opensearch 插件
-* 新增 solon EntityConverter 接口（将用于替代 Render 和 ActionExecuteHandler 接口）???
 * 新增 solon 接口版本 version 支持
 * 优化 solon-test RunnerUtils 的缓存处理，原 appCached 改为 klassCached（根据测试类缓存）
 * 优化 solon `@Inject` 注解目标范围增加 METHOD 支持
+* 优化 solon-expression StandardContext 添加 target = null 检测
+* 优化 solon-cloud DiscoveryUtils:tryLoadAgent 兼容性
+* 优化 solon-cloud Config pull 方法，确保不输出 null
 * 添加 solon-test SolonJUnit5Extension,SolonJUnit4ClassRunner afterAllDo 方法（如果是当前启动类，则停止 solonapp 实例）
+* 添加 solon-ai Options:toolsContext 方法
+* 添加 solon-flow stateful FlowStatefulService 接口，替换 StatefulFlowEngine（确保引擎的单一性）
+* 添加 hibernate-solon-plugin 对 PersistenceContext、PersistenceUnit 注解的支持
 * 调整 solon 取消 --cfg 对体外文件的支持（如有需要通过 solon.config.load 加载）
+* 调整 solon-flow stateful 相关概念（提交活动状态，改为提交操作）
+* 调整 solon-flow stateful StateType 拆分为：StateType 和 StateOperation
+* 调整 solon-flow stateful StatefulFlowEngine:postActivityState 更名为 postOperation
+* 调整 solon-flow stateful StatefulFlowEngine:postActivityStateIfWaiting 更名为 postOperationIfWaiting
+* 调整 solon-flow stateful StatefulFlowEngine:getActivity 更名为 getTask
+* 调整 solon-flow stateful StatefulFlowEngine:getActivitys 更名为 getTasks
+* 调整 solon-flow stateful StatefulFlowEngine 更名为 FlowStatefulService（确保引擎的单一性）
+* 调整 solon-ai-core ToolCallResultJsonConverter 更名为 ToolCallResultConverterDefault 并添加序列化插件支持
+* 调整 solon-ai-mcp PromptMapping，ResourceMapping 取消 resultConverter 属性（没必要了）
+* 移除 mybatis-solon（与 mybatis-solon-plugin 重复）
 * 修复 solon cookieMap 名字未区分大小写的问题（调整为与其它框架一至）
+* 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
 * 修复 solon-ai-core ChatModel:stream:doOnNext 可能无法获取 isFinished=true 情况
 * 修复 solon-web-servlet SolonServletFilter 链的传递处理问题（未处理且200才传递，说明未变）
 * luffy 升为 1.9.5
