@@ -27,6 +27,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.serialize.Serializer;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.lang.Nullable;
@@ -442,6 +443,12 @@ public class AppContext extends BeanContainer {
                 app().router().add(bw);
                 singletonHint = "Handler";
             }
+        }
+
+        //Render
+        if (bw.raw() instanceof Serializer) {
+            app().serializerManager().register(bw.name(), bw.raw());
+            singletonHint = "Serializer";
         }
 
         //Render
