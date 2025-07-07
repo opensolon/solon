@@ -28,7 +28,7 @@
 * 插件 solon-flow stateful 二次预览
 * 新增 solon-ai-repo-opensearch 插件
 * 新增 solon 接口版本 version 支持
-* 优化 solon-test RunnerUtils 的缓存处理，原 appCached 改为 klassCached（根据测试类缓存）
+* 优化 solon-test RunnerUtils 的缓存处理，原根据“启动类”改为根据”测试类“缓存
 * 优化 solon `@Inject` 注解目标范围增加 METHOD 支持
 * 优化 solon-expression StandardContext 添加 target = null 检测
 * 优化 solon-cloud DiscoveryUtils:tryLoadAgent 兼容性
