@@ -36,10 +36,12 @@
 * 添加 solon-test SolonJUnit5Extension,SolonJUnit4ClassRunner afterAllDo 方法（如果是当前启动类，则停止 solonapp 实例）
 * 添加 solon-ai Options:toolsContext 方法
 * 添加 solon-flow stateful FlowStatefulService 接口，替换 StatefulFlowEngine（确保引擎的单一性）
+* 添加 solon-flow `FlowEngine:statefulService()` 方法
+* 添加 solon-flow `FlowEngine:getDriverAs()` 方法
 * 添加 hibernate-solon-plugin 对 PersistenceContext、PersistenceUnit 注解的支持
 * 调整 solon 取消 --cfg 对体外文件的支持（如有需要通过 solon.config.load 加载）
 * 调整 solon-flow stateful 相关概念（提交活动状态，改为提交操作）
-* 调整 solon-flow stateful StateType 拆分为：StateType 和 StateOperation
+* 调整 solon-flow stateful StateType 拆分为：StateType 和 Operation
 * 调整 solon-flow stateful StatefulFlowEngine:postActivityState 更名为 postOperation
 * 调整 solon-flow stateful StatefulFlowEngine:postActivityStateIfWaiting 更名为 postOperationIfWaiting
 * 调整 solon-flow stateful StatefulFlowEngine:getActivity 更名为 getTask
