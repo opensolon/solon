@@ -580,6 +580,9 @@ public class AppContext extends BeanContainer {
             //是否需要提取
             if (be != null) {
                 try {
+                    //起到 aot 注册效果
+                    methodGet(m);
+
                     be.doExtract(bw, m, a);
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);

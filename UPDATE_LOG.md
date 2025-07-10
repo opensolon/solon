@@ -23,6 +23,10 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### 3.4.1
+
+* 修复 solon aot 时 extract method 未注册的问题
+
 ### 3.4.0
 
 * 插件 solon-flow stateful 二次预览
