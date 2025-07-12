@@ -11,7 +11,7 @@
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
-    <url>https://github.com/noear/solon</url>
+    <url>https://github.com/opensolon/solon</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,7 +33,7 @@
         <solon.version>3.4.1-SNAPSHOT</solon.version>
         <solon-ai.version>3.4.1-SNAPSHOT</solon-ai.version>
         <solon-expression.version>3.4.0</solon-expression.version>
-        <solon-flow.version>3.4.0</solon-flow.version>
+        <solon-flow.version>3.4.1-SNAPSHOT</solon-flow.version>
         <solon-cloud.version>3.4.1-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.4.0</solon-admin.version>
         <solon-integration.version>3.4.0</solon-integration.version>
@@ -215,7 +215,7 @@
     <scm>
         <connection>scm:git:git@github.com:noear/solon.git</connection>
         <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
-        <url>https://github.com/noear/solon</url>
+        <url>https://github.com/opensolon/solon</url>
     </scm>
 
     <repositories>
