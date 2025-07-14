@@ -50,10 +50,10 @@ public class RunHolder {
                         asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
                     } else {
                         int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-                        asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,
+                        asyncExecutor = new ThreadPoolExecutor(0, asyncPoolSize,
                                 60L, TimeUnit.SECONDS,
                                 new LinkedBlockingQueue<Runnable>(),
-                                new NamedThreadFactory("Solon-executor-").daemon(true));
+                                new NamedThreadFactory("Solon-executor-"));
                     }
                 }
             } finally {
