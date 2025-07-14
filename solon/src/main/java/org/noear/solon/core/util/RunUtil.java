@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  */
 public class RunUtil {
 
-    //////////
+    /// ///////
     private static RunHolder runHolder = new RunHolder();
 
     /**
@@ -36,6 +36,15 @@ public class RunUtil {
      */
     public static void shutdown() {
         runHolder.shutdown();
+    }
+
+
+    /**
+     * 预热（初始化线程池）
+     */
+    public static void preheat() {
+        runHolder.getAsyncExecutor();
+        runHolder.getScheduledExecutor();
     }
 
     /**

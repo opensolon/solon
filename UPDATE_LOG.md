@@ -26,6 +26,7 @@
 ### 3.4.1
 
 * 修复 solon aot 时 extract method 未注册的问题
+* 修复 solon-scheduling-simple 可能启动后就退出的问题（有些任务触发时间晚，调试线程池未启动）
 
 ### 3.4.0
 

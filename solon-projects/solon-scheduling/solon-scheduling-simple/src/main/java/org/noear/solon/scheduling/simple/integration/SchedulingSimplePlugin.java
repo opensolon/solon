@@ -17,6 +17,7 @@ package org.noear.solon.scheduling.simple.integration;
 
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.manager.IJobManager;
@@ -33,6 +34,9 @@ public class SchedulingSimplePlugin implements Plugin {
         if (context.app().source().getAnnotation(EnableScheduling.class) == null) {
             return;
         }
+
+        //预热线程池
+        RunUtil.preheat();
 
         //注册 IJobManager
         context.wrapAndPut(IJobManager.class, JobManager.getInstance());
