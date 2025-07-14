@@ -54,13 +54,6 @@ public class SchedulingQuartzPlugin implements Plugin {
         context.beanExtractorAdd(Scheduled.class, jobExtractor);
 
         //容器加载完后，再启动任务
-        context.lifecycle(Integer.MAX_VALUE, () -> {
-            JobManager.getInstance().start();
-        });
-    }
-
-    @Override
-    public void stop() throws Throwable {
-        JobManager.getInstance().stop();
+        context.lifecycle(Integer.MAX_VALUE, JobManager.getInstance());
     }
 }

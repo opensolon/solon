@@ -21,6 +21,8 @@ import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.noear.solon.scheduling.scheduled.manager.AbstractJobManager;
 import org.quartz.Scheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -31,6 +33,7 @@ import java.util.Map;
  * @since 2.2
  */
 public class JobManager extends AbstractJobManager {
+    private static final Logger log = LoggerFactory.getLogger(JobManager.class);
     private static JobManager instance = new JobManager();
 
     /**
@@ -114,15 +117,21 @@ public class JobManager extends AbstractJobManager {
 
     @Override
     public void start() throws Throwable {
+
+    }
+
+    @Override
+    public void postStart() throws Throwable {
         for (JobHolder holder : jobMap.values()) {
             if (holder.getScheduled().enable()) {
                 //只启动启用的（如果有需要，手动启用）
                 schedulerProxy.register(holder);
             }
         }
-        schedulerProxy.start();
 
+        schedulerProxy.start();
         isStarted = true;
+        log.info("JobManager started, job.size={}", jobMap.size());
     }
 
     @Override
@@ -133,5 +142,7 @@ public class JobManager extends AbstractJobManager {
             schedulerProxy.stop();
             schedulerProxy = null;
         }
+
+        log.info("JobManager stopped");
     }
 }
