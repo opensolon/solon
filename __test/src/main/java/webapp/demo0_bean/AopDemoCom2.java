@@ -17,12 +17,13 @@ package webapp.demo0_bean;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.annotation.Tran;
 
 /**
  * @author noear 2023/10/14 created
  */
-@Component
+@Managed
 public class AopDemoCom2 {
     @Inject
     AopDemoCom1 demoCom1;

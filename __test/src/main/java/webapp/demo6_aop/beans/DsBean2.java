@@ -16,10 +16,11 @@
 package webapp.demo6_aop.beans;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/8/2 created
  */
-@Component
+@Managed
 public class DsBean2 implements DsBean{
 }

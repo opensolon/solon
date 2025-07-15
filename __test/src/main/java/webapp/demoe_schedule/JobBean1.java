@@ -21,7 +21,7 @@ import org.noear.solon.scheduling.annotation.Scheduled;
 /**
  * @author noear 2023/3/20 created
  */
-//@Component
+//@Managed
 public class JobBean1 {
     @CloudJob
     public void job1(){

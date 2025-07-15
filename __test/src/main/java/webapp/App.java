@@ -19,10 +19,7 @@ package webapp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Import;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.SolonMain;
+import org.noear.solon.annotation.*;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
@@ -50,7 +47,7 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Properties;
 
-@Component
+@Managed
 @EnableAsync
 @EnableRetry
 //@EnableScheduling

@@ -16,11 +16,12 @@
 package webapp.demo6_aop.beans;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/10/10 created
  */
-@Component
+@Managed
 public class GtBeanImpl1 extends GtBeanBase implements GtBean<Integer> {
     @Override
     public void save(Integer i) {

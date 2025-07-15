@@ -16,11 +16,12 @@
 package webapp.demo6_aop;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import webapp.models.UserD;
 
 /**
  * @author noear 2023/10/8 created
  */
-@Component
+@Managed
 public class DaoUser extends DaoBase<UserD> {
 }

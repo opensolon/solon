@@ -16,6 +16,7 @@
 package webapp.demo1_handler;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Gateway;
 
@@ -23,7 +24,7 @@ import org.noear.solon.core.handle.Gateway;
  * 简单的http处理(带简单的内部导航 + 前后置处理)
  * */
 @Mapping("/demo1/b1/*")
-@Component(index = 1)
+@Managed(index = 1)
 public class GatewayB12 extends Gateway {
     @Override
     protected void register() {

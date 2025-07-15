@@ -15,6 +15,8 @@
  */
 package org.noear.solon.annotation;
 
+import org.noear.solon.lang.Preview;
+
 import java.lang.annotation.*;
 
 /**
@@ -35,6 +37,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Preview("3.4")
 public @interface Managed {
     @Alias("name")
     String value() default ""; //as bean.name

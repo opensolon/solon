@@ -17,13 +17,14 @@ package webapp.demoy_event;
 
 import lombok.Getter;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 
 /**
  * @author noear 2022/5/18 created
  */
-@Component
+@Managed
 public class DemoService {
     public void hello(String name){
         //发布事件
@@ -40,7 +41,7 @@ public class DemoService {
     }
 
     //监听事件并处理
-    @Component
+    @Managed
     public static class HelloEventListener implements EventListener<HelloEvent> {
         @Override
         public void onEvent(HelloEvent event) throws Throwable {

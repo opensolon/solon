@@ -17,8 +17,9 @@ package webapp.demo6_aop;
 
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
-@Component
+@Managed
 public class Rockservice3 implements Rockapi {
 
     @Override
