@@ -35,11 +35,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 1.12
  */
 public class ChainManager {
-    private final SolonApp app;
-    public ChainManager(SolonApp app) {
-        this.app = app;
-    }
-
     /**
      * 类型集合（用于重复检测）
      */
@@ -278,10 +273,7 @@ public class ChainManager {
     public void addExecuteHandler(ActionExecuteHandler e, int index) {
         if (e != null) {
             executeHandlers.add(new RankEntity<>(e, index));
-
-            if (index != 0) {
-                executeHandlers.sort(Comparator.comparingInt(f -> f.index));
-            }
+            Collections.sort(executeHandlers);
         }
     }
 
@@ -289,7 +281,7 @@ public class ChainManager {
      * 移除Action执行器
      */
     public void removeExecuteHandler(Class<?> clz) {
-        executeHandlers.remove(clz);
+        executeHandlers.removeIf(e -> clz.isInstance(e.target));
     }
 
     public ActionExecuteHandler getExecuteHandler(Context c, int paramSize) {
@@ -311,12 +303,54 @@ public class ChainManager {
 
     public ActionExecuteHandler getExecuteHandlerDefault() {
         if (executeHandlerDefault == null) {
-            return app.factoryManager().mvcFactory().getExecuteHandlerDefault();
+            return FactoryManager.getGlobal().mvcFactory().getExecuteHandlerDefault();
         } else {
             return executeHandlerDefault;
         }
     }
 
+    /// ////
+
+    private List<RankEntity<ActionArgumentResolver>> argumentResolvers = new ArrayList<>();
+
+    /**
+     * 添加 Action 参数分析器
+     */
+    public void addArgumentResolver(ActionArgumentResolver e) {
+        addArgumentResolver(e, 0);
+    }
+
+    /**
+     * 添加 Action 参数分析器
+     *
+     * @param index 顺序位
+     */
+    public void addArgumentResolver(ActionArgumentResolver e, int index) {
+        if (e != null) {
+            argumentResolvers.add(new RankEntity<>(e, index));
+            Collections.sort(argumentResolvers);
+        }
+    }
+
+    /**
+     * 移除 Action 参数分析器
+     */
+    public void removeArgumentResolver(Class<?> clz) {
+        argumentResolvers.removeIf(e -> clz.isInstance(e.target));
+    }
+
+    /**
+     * 获取参数分析器
+     */
+    public ActionArgumentResolver getArgumentResolver(Context ctx, ParamWrap pWrap) {
+        for (RankEntity<ActionArgumentResolver> me : argumentResolvers) {
+            if (me.target.matched(ctx, pWrap)) {
+                return me.target;
+            }
+        }
+
+        return null;
+    }
 
     //
     // SessionState 对接 //与函数同名，_开头
@@ -345,7 +379,7 @@ public class ChainManager {
      * 刷新Session状态
      *
      * @since 3.0
-     * */
+     */
     public void refreshSessionState(Context c) throws IOException {
         if (_sessionStateUpdated) {
             //替代 bef("**", MethodType.HTTP, ...)

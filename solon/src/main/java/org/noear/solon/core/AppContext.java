@@ -478,13 +478,19 @@ public class AppContext extends BeanContainer {
         //ReturnValueHandler
         if (bw.raw() instanceof ReturnValueHandler) {
             app().chainManager().addReturnHandler(bw.raw(), bw.index());
-            singletonHint = "ActionReturnHandler";
+            singletonHint = "ReturnValueHandler";
         }
 
         //ActionExecuteHandler
         if (bw.raw() instanceof ActionExecuteHandler) {
-            app().chainManager().addExecuteHandler(bw.raw());
+            app().chainManager().addExecuteHandler(bw.raw(), bw.index());
             singletonHint = "ActionExecuteHandler";
+        }
+
+        //ActionArgumentResolver
+        if (bw.raw() instanceof ActionArgumentResolver) {
+            app().chainManager().addArgumentResolver(bw.raw(), bw.index());
+            singletonHint = "ActionArgumentResolver";
         }
 
         //Converter

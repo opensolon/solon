@@ -15,41 +15,34 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.LazyReference;
 import org.noear.solon.core.wrap.MethodWrap;
+import org.noear.solon.core.wrap.ParamWrap;
 
 /**
- * 动作执行处理。用于支持多种消息体执行
+ * 动作参数分析器
  *
- * @see Action#invoke(Context, Object)
  * @author noear
- * @since 1.0
- * */
-public interface ActionExecuteHandler {
+ * @since 3.4
+ */
+public interface ActionArgumentResolver {
     /**
      * 是否匹配
      *
-     * @param ctx  请求上下文
-     * @param mime 内容类型
+     * @param ctx   请求上下文
+     * @param pWrap 参数包装器
      */
-    boolean matched(Context ctx, String mime);
+    boolean matched(Context ctx, ParamWrap pWrap);
 
     /**
      * 参数分析
      *
-     * @param ctx    请求上下文
-     * @param target 控制器
-     * @param mWrap  函数包装器
+     * @param ctx     请求上下文
+     * @param target  控制器
+     * @param mWrap   函数包装器
+     * @param pWrap   参数包装器
+     * @param pIndex  参数序位
+     * @param bodyRef 主体引用
      */
-    Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
-
-    /**
-     * 执行
-     *
-     * @param ctx    请求上下文
-     * @param target 控制器
-     * @param mWrap  函数包装器
-     * @deprecated 3.4
-     */
-    @Deprecated
-    Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
+    Object resolveArgument(Context ctx, Object target, MethodWrap mWrap, ParamWrap pWrap, int pIndex, LazyReference bodyRef) throws Throwable;
 }

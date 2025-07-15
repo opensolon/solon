@@ -15,6 +15,7 @@
  */
 package org.noear.solon.core.mvc;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.exception.ConstructionException;
 import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.core.handle.*;
@@ -26,8 +27,6 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -72,19 +71,8 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      */
     @Override
     public Object[] resolveArguments(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
-        return buildArgs(ctx, target, mWrap).toArray();
-    }
-
-    /**
-     * 构建执行参数
-     *
-     * @param ctx    请求上下文
-     * @param target 控制器
-     * @param mWrap  函数包装器
-     */
-    protected List<Object> buildArgs(Context ctx, Object target, MethodWrap mWrap) throws Throwable {
         ParamWrap[] pSet = mWrap.getParamWraps();
-        List<Object> args = new ArrayList<>(pSet.length);
+        Object[] args = new Object[pSet.length];
 
         //懒引用
         LazyReference bodyRef = new LazyReference(() -> changeBody(ctx, mWrap));
@@ -93,100 +81,126 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
         //pt 参数原类型
         for (int i = 0, len = pSet.length; i < len; i++) {
             ParamWrap p = pSet[i];
-            Class<?> pt = p.getType();
-
-            if (Context.class.isAssignableFrom(pt)) {
-                //如果是 Context 类型，直接加入参数
-                //
-                args.add(ctx);
-            } else if (ModelAndView.class.isAssignableFrom(pt)) {
-                //如果是 ModelAndView 类型，直接加入参数
-                //
-                args.add(new ModelAndView());
-            } else if (Locale.class.isAssignableFrom(pt)) {
-                //如果是 Locale 类型，直接加入参数
-                //
-                args.add(ctx.getLocale());
-            } else if (UploadedFile.class == pt) {
-                //如果是 UploadedFile
-                //
-                args.add(ctx.file(p.spec().getName()));
-            } else if (UploadedFile[].class == pt) {
-                //如果是 UploadedFile
-                //
-                args.add(ctx.fileValues(p.spec().getName()));
-            } else {
-                Object tv = null;
-
-                if (Object.class != pt) { //object 是所在基类，不能用它拉取
-                    tv = ctx.pull(pt);
-                }
-
-                if (tv == null) {
-                    if (p.spec().isRequiredBody()) {
-                        //需要 body 数据
-                        if (String.class.equals(pt)) {
-                            tv = ctx.bodyNew();
-                        } else if (InputStream.class.equals(pt)) {
-                            tv = ctx.bodyAsStream();
-                        } else if (Map.class.equals(pt) && bodyRef.get() instanceof MultiMap) {
-                            tv = ((MultiMap) bodyRef.get()).toValueMap();
-                        }
-                    }
-                }
-
-                if (tv == null) {
-                    //尝试数据转换
-                    try {
-                        tv = changeValue(ctx, p, i, pt, bodyRef);
-                    } catch (ConstructionException e) {
-                        throw e;
-                    } catch (Exception e) {
-                        String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.spec().getName();
-                        throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);
-                    }
-                }
-
-                if (tv == null) {
-                    //
-                    // 如果是基类类型（int,long...），则抛出异常
-                    //
-                    if (pt.isPrimitive()) {
-                        //如果是基本类型，则为给个默认值
-                        //
-                        if (pt == short.class) {
-                            tv = (short) 0;
-                        } else if (pt == int.class) {
-                            tv = 0;
-                        } else if (pt == long.class) {
-                            tv = 0L;
-                        } else if (pt == double.class) {
-                            tv = 0d;
-                        } else if (pt == float.class) {
-                            tv = 0f;
-                        } else if (pt == boolean.class) {
-                            tv = false;
-                        } else {
-                            //
-                            //其它类型不支持
-                            //
-                            throw new IllegalArgumentException("Please enter a valid parameter @" + p.spec().getName());
-                        }
-                    }
-                }
-
-                if (tv == null) {
-                    if (p.spec().isRequiredInput()) {
-                        throw new StatusException(p.spec().getRequiredHint(), 400);
-                    }
-                }
-
-                args.add(tv);
-            }
+            args[i] = resolveArgumentDo(ctx, target, mWrap, p, i, bodyRef);
         }
 
         return args;
     }
+
+    /**
+     * 参数分析
+     *
+     * @param ctx     请求上下文
+     * @param target  控制器
+     * @param mWrap   函数包装器
+     * @param pWrap   参数包装器
+     * @param pIndex  参数序位
+     * @param bodyRef 主体引用
+     */
+    protected Object resolveArgumentDo(Context ctx, Object target, MethodWrap mWrap, ParamWrap pWrap, int pIndex, LazyReference bodyRef) throws Throwable {
+        Class<?> pt = pWrap.getType();
+
+        if (Context.class.isAssignableFrom(pt)) {
+            //如果是 Context 类型，直接加入参数
+            //
+            return ctx;
+        } else if (ModelAndView.class.isAssignableFrom(pt)) {
+            //如果是 ModelAndView 类型，直接加入参数
+            //
+            return new ModelAndView();
+        } else if (Locale.class.isAssignableFrom(pt)) {
+            //如果是 Locale 类型，直接加入参数
+            //
+            return ctx.getLocale();
+        } else if (UploadedFile.class == pt) {
+            //如果是 UploadedFile
+            //
+            return ctx.file(pWrap.spec().getName());
+        } else if (UploadedFile[].class == pt) {
+            //如果是 UploadedFile
+            //
+            return ctx.fileValues(pWrap.spec().getName());
+        }
+
+        /// /////////////
+
+        Object tv = null;
+
+        if (Object.class != pt) { //object 是所在基类，不能用它拉取
+            tv = ctx.pull(pt);
+        }
+
+        if (tv == null) {
+            if (pWrap.spec().isRequiredBody()) {
+                //需要 body 数据
+                if (String.class.equals(pt)) {
+                    tv = ctx.bodyNew();
+                } else if (InputStream.class.equals(pt)) {
+                    tv = ctx.bodyAsStream();
+                } else if (Map.class.equals(pt) && bodyRef.get() instanceof MultiMap) {
+                    tv = ((MultiMap) bodyRef.get()).toValueMap();
+                }
+            }
+        }
+
+        if (tv == null) {
+            if (Solon.app() != null) {
+                ActionArgumentResolver argumentResolver = Solon.app().chainManager().getArgumentResolver(ctx, pWrap);
+                if (argumentResolver != null) {
+                    tv = argumentResolver.resolveArgument(ctx, target, mWrap, pWrap, pIndex, bodyRef);
+                }
+            }
+        }
+
+        if (tv == null) {
+            //尝试数据转换
+            try {
+                tv = changeValue(ctx, pWrap, pIndex, pt, bodyRef);
+            } catch (ConstructionException e) {
+                throw e;
+            } catch (Exception e) {
+                String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + pWrap.spec().getName();
+                throw new StatusException("Action parameter change failed: " + methodFullName, e, 400);
+            }
+        }
+
+        if (tv == null) {
+            //
+            // 如果是基类类型（int,long...），则抛出异常
+            //
+            if (pt.isPrimitive()) {
+                //如果是基本类型，则为给个默认值
+                //
+                if (pt == short.class) {
+                    tv = (short) 0;
+                } else if (pt == int.class) {
+                    tv = 0;
+                } else if (pt == long.class) {
+                    tv = 0L;
+                } else if (pt == double.class) {
+                    tv = 0d;
+                } else if (pt == float.class) {
+                    tv = 0f;
+                } else if (pt == boolean.class) {
+                    tv = false;
+                } else {
+                    //
+                    //其它类型不支持
+                    //
+                    throw new IllegalArgumentException("Please enter a valid parameter @" + pWrap.spec().getName());
+                }
+            }
+        }
+
+        if (tv == null) {
+            if (pWrap.spec().isRequiredInput()) {
+                throw new StatusException(pWrap.spec().getRequiredHint(), 400);
+            }
+        }
+
+        return tv;
+    }
+
 
     /**
      * 尝试将body转换为特定对象

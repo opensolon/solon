@@ -39,7 +39,7 @@ public abstract class RouterWrapper implements HandlerSlots {
 
     protected void initRouter(SolonApp app) {
         //顺序不能换
-        _chainManager = new ChainManager(app);
+        _chainManager = new ChainManager();
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router, _chainManager);
     }
