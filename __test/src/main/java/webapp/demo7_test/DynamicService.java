@@ -16,6 +16,7 @@
 package webapp.demo7_test;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.data.dynamicds.DynamicDs;
 import org.noear.solon.data.dynamicds.DynamicDsKey;
@@ -23,7 +24,7 @@ import org.noear.solon.data.dynamicds.DynamicDsKey;
 /**
  * @author noear 2023/9/1 created
  */
-@Component
+@Managed
 public class DynamicService {
     @DynamicDs("db_rock1")
     public String test1() throws Exception {

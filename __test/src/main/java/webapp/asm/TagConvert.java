@@ -16,10 +16,11 @@
 package webapp.asm;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/9/30 created
  */
-@Component
+@Managed
 public class TagConvert implements BasicConvert {
 }

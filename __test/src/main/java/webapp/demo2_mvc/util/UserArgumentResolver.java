@@ -1,6 +1,7 @@
 package webapp.demo2_mvc.util;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.ActionArgumentResolver;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.LazyReference;
@@ -10,7 +11,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 /**
  * @author noear 2025/7/15 created
  */
-@Component
+@Managed
 public class UserArgumentResolver implements ActionArgumentResolver {
     @Override
     public boolean matched(Context ctx, ParamWrap pWrap) {

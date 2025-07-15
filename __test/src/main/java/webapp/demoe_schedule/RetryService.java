@@ -16,9 +16,10 @@
 package webapp.demoe_schedule;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.scheduling.annotation.Retry;
 
-@Component
+@Managed
 public class RetryService {
     @Retry(
             maxAttempts = 5,
