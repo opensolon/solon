@@ -18,11 +18,11 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 普通托管组件（支持动态代理机制）
+ * 托管类（支持动态代理机制）
  *
  * <pre>{@code
  * //注解在类上
- * @Component
+ * @Managed
  * public class DemoBean{
  *     @Inject
  *     DataSource db1;
@@ -30,12 +30,12 @@ import java.lang.annotation.*;
  * }</pre>
  *
  * @author noear
- * @since 1.2
+ * @since 3.4
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Component {
+public @interface Managed {
     @Alias("name")
     String value() default ""; //as bean.name
 

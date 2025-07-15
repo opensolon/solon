@@ -229,6 +229,20 @@ public class AppContext extends BeanContainer {
             beanComponentized(bw, anno.delivered());
         });
 
+        //注册 @Managed 构建器
+        beanBuilderAdd(Managed.class, (clz, bw, anno) -> {
+            String beanName = Utils.annoAlias(anno.value(), anno.name());
+
+            bw.nameSet(beanName);
+            bw.tagSet(anno.tag());
+            bw.typedSet(anno.typed());
+
+            //确定顺序位
+            bw.indexSet(anno.index());
+
+            beanComponentized(bw, anno.delivered());
+        });
+
         //注册 @Remoting 构建器
         beanBuilderAdd(Remoting.class, (clz, bw, anno) -> {
             //设置remoting状态
