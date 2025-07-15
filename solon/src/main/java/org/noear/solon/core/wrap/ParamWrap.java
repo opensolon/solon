@@ -78,6 +78,13 @@ public class ParamWrap {
     }
 
     /**
+     * 获取参数注解
+     */
+    public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+        return parameter.getAnnotation(annotationClass);
+    }
+
+    /**
      * 获取所有注解
      */
     public Annotation[] getAnnoS() {
