@@ -28,7 +28,7 @@
         <maven-assembly.version>3.7.1</maven-assembly.version>
         <maven-resources.version>3.3.1</maven-resources.version>
 
-        <maven-war.version>3.4.1-SNAPSHOT</maven-war.version>
+        <maven-war.version>3.4.0</maven-war.version>
 
         <solon.version>3.4.1-SNAPSHOT</solon.version>
         <solon-ai.version>3.4.1-SNAPSHOT</solon-ai.version>
