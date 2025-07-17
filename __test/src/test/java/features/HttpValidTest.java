@@ -68,6 +68,7 @@ public class HttpValidTest extends HttpTester {
     @Test
     public void test2v_email() throws IOException {
         assert path("/demo2/valid/email?val1=noear@live.cn").get().equals("OK");
+        assert path("/demo2/valid/email?val1=ja.yan@163.com").get().equals("OK");
         assert path("/demo2/valid/email?val1=noe0ar@li-ve.com.cn").get().equals("OK");
         assert path("/demo2/valid/email?val1=noearlive.cn").get().equals("OK") == false;
         assert path("/demo2/valid/email?val1=").get().equals("OK");
