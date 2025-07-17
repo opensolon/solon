@@ -29,12 +29,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0
  * */
 public class EmailValidator implements Validator<Email> {
+    public static final String DEFAULT_PATTERN = "^[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();
 
     public static final EmailValidator instance = new EmailValidator();
 
     public EmailValidator() {
-        cached.putIfAbsent("", java.util.regex.Pattern.compile("^[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"));
+        cached.putIfAbsent("", java.util.regex.Pattern.compile(DEFAULT_PATTERN));
     }
 
     @Override
