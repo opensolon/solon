@@ -25,8 +25,8 @@
 
 ### 3.4.1
 
-* 添加 solon Managed 注解（替代 Component）
-* 添加 solon ActionArgumentResolver 接口
+* 新增 solon Managed 注解（替代 Component）
+* 新增 solon ActionArgumentResolver 接口
 * 添加 solon-flow FlowContext:incrGet, incrAdd
 * 添加 solon-flow aot 配置
 * 添加 solon-ai-core `TextLoader(byte[])(SupplierEx<InputStream>)` 构造方法
