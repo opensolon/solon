@@ -23,6 +23,11 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### 3.5.0
+
+* 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
+* Plugin 添加 postStart 事件
+
 ### 3.4.1
 
 * 新增 solon `@Managed` 注解（未来替代 `@Component`）
