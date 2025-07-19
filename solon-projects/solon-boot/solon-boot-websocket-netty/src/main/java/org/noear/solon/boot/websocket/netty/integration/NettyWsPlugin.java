@@ -22,6 +22,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.boot.websocket.netty.NettyWsServer;
 import org.noear.solon.core.*;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.util.LogUtil;
 
 /**
@@ -49,8 +50,11 @@ public class NettyWsPlugin implements Plugin {
             return;
         }
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(context);
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+            @Override
+            public void postStart() throws Throwable {
+                start0(context);
+            }
         });
     }
 

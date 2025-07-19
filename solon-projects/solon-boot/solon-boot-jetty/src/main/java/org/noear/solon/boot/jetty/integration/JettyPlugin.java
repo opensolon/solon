@@ -25,6 +25,7 @@ import org.noear.solon.boot.jetty.JettyServerAddJsp;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -61,8 +62,11 @@ public final class JettyPlugin implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
-            start0(context);
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+            @Override
+            public void postStart() throws Throwable {
+                start0(context);
+            }
         });
     }
 
