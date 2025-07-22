@@ -30,7 +30,7 @@
 
 ### 3.4.1
 
-
+* 新增 solon-ai-search-baidu 插件
 * 新增 solon-ai-repo-pgvector 插件
 * 新增 solon `@Managed` 注解（未来替代 `@Component`）
 * 新增 solon ActionArgumentResolver 接口
