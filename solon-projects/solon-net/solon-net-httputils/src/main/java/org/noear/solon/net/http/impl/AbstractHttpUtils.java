@@ -495,7 +495,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                     if (err == null) {
                         try {
                             if (resp.code() < 400) {
-                                TextStreamUtil.parseLineStream(resp.body(), subscriber);
+                                TextStreamUtil.parseLineStream(resp.body(), resp.contentEncoding(), subscriber);
                             } else {
                                 String message = RunUtil.callAndTry(resp::bodyAsString);
 
@@ -524,7 +524,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
                     if (err == null) {
                         try {
                             if (resp.code() < 400) {
-                                TextStreamUtil.parseSseStream(resp.body(), subscriber);
+                                TextStreamUtil.parseSseStream(resp.body(), resp.contentEncoding(), subscriber);
                             } else {
                                 String message = RunUtil.callAndTry(resp::bodyAsString);
 

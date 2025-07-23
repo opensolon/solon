@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http.textstream;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.rx.SimpleSubscription;
@@ -24,6 +25,7 @@ import org.reactivestreams.Subscriber;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,11 +41,11 @@ public class TextStreamUtil {
      *
      * @param inputStream 输入流
      * @param subscriber  订阅者
-     * @deprecated 3.1 {@link #parseLineStream(InputStream, Subscriber)}
+     * @deprecated 3.1 {@link #parseLineStream(InputStream, Charset, Subscriber)}
      */
     @Deprecated
     public static void parseTextStream(InputStream inputStream, Subscriber<? super String> subscriber) throws IOException {
-        parseLineStream(inputStream, subscriber);
+        parseLineStream(inputStream, null, subscriber);
     }
 
     /**
@@ -55,7 +57,7 @@ public class TextStreamUtil {
     public static Publisher<String> parseLineStream(InputStream inputStream) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseLineStream(inputStream, subscriber);
+                TextStreamUtil.parseLineStream(inputStream, null, subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -71,7 +73,7 @@ public class TextStreamUtil {
     public static Publisher<String> parseLineStream(HttpResponse response) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseLineStream(response.body(), subscriber);
+                TextStreamUtil.parseLineStream(response.body(), response.contentEncoding(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -84,8 +86,12 @@ public class TextStreamUtil {
      * @param inputStream 输入流
      * @param subscriber  订阅者
      */
-    public static void parseLineStream(InputStream inputStream, Subscriber<? super String> subscriber) {
-        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream), 1024);
+    public static void parseLineStream(InputStream inputStream, Charset charset, Subscriber<? super String> subscriber) {
+        if (charset == null) {
+            charset = Charset.forName(Solon.encoding());
+        }
+
+        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, charset), 1024);
         subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
             onLineStreamRequestDo(reader, subscriber, subscription, l);
         }));
@@ -128,11 +134,11 @@ public class TextStreamUtil {
      *
      * @param inputStream 输入流
      * @param subscriber  订阅者
-     * @deprecated 3.1 {@link #parseSseStream(InputStream, Subscriber)}
+     * @deprecated 3.1 {@link #parseSseStream(InputStream, Charset, Subscriber)}
      */
     @Deprecated
     public static void parseEventStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) throws IOException {
-        parseSseStream(inputStream, subscriber);
+        parseSseStream(inputStream, null, subscriber);
     }
 
     /**
@@ -144,7 +150,7 @@ public class TextStreamUtil {
     public static Publisher<ServerSentEvent> parseSseStream(InputStream inputStream) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseSseStream(inputStream, subscriber);
+                TextStreamUtil.parseSseStream(inputStream, null, subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -160,7 +166,7 @@ public class TextStreamUtil {
     public static Publisher<ServerSentEvent> parseSseStream(HttpResponse response) {
         return subscriber -> {
             try {
-                TextStreamUtil.parseSseStream(response.body(), subscriber);
+                TextStreamUtil.parseSseStream(response.body(), response.contentEncoding(), subscriber);
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -173,8 +179,12 @@ public class TextStreamUtil {
      * @param inputStream 输入流
      * @param subscriber  订阅者
      */
-    public static void parseSseStream(InputStream inputStream, Subscriber<? super ServerSentEvent> subscriber) {
-        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream), 1024);
+    public static void parseSseStream(InputStream inputStream, Charset charset, Subscriber<? super ServerSentEvent> subscriber) {
+        if (charset == null) {
+            charset = Charset.forName(Solon.encoding());
+        }
+
+        CloseTrackableBufferedReader reader = new CloseTrackableBufferedReader(new InputStreamReader(inputStream, charset), 1024);
         subscriber.onSubscribe(new SimpleSubscription().onRequest((subscription, l) -> {
             onSseStreamRequestDo(reader, subscriber, subscription, l);
         }));
