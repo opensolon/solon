@@ -83,6 +83,16 @@ public class TextStreamUtil {
     /**
      * 解析文件行流
      *
+     * @param response 响应
+     * @return 发布者
+     */
+    public static void parseLineStream(HttpResponse response, Subscriber<? super String> subscriber) {
+        TextStreamUtil.parseLineStream(response.body(), response.contentEncoding(), subscriber);
+    }
+
+    /**
+     * 解析文件行流
+     *
      * @param inputStream 输入流
      * @param subscriber  订阅者
      */
@@ -171,6 +181,16 @@ public class TextStreamUtil {
                 subscriber.onError(e);
             }
         };
+    }
+
+    /**
+     * 解析服务推送事件流
+     *
+     * @param response 响应
+     * @return 发布者
+     */
+    public static void parseSseStream(HttpResponse response, Subscriber<? super ServerSentEvent> subscriber) {
+        TextStreamUtil.parseSseStream(response.body(), response.contentEncoding(), subscriber);
     }
 
     /**
