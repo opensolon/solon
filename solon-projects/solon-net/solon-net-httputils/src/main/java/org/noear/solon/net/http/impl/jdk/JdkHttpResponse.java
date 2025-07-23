@@ -15,6 +15,7 @@
  */
 package org.noear.solon.net.http.impl.jdk;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
@@ -180,7 +181,11 @@ public class JdkHttpResponse implements HttpResponse {
     @Override
     public String bodyAsString() throws IOException {
         try {
-            return IoUtil.transferToString(body(), http.getContentEncoding());
+            if (Utils.isEmpty(http.getContentEncoding())) {
+                return IoUtil.transferToString(body(), Solon.encoding());
+            } else {
+                return IoUtil.transferToString(body(), http.getContentEncoding());
+            }
         } finally {
             body().close();
         }
