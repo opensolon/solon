@@ -50,6 +50,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     protected boolean _enablePrintln = false;
 
     protected Proxy _proxy = null;
+    protected HttpSslSupplier _sslSupplier = null;
 
     protected String _url;
     protected Charset _charset = StandardCharsets.UTF_8;
@@ -123,6 +124,12 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     @Override
     public HttpUtils proxy(Proxy proxy) {
         _proxy = proxy;
+        return this;
+    }
+
+    @Override
+    public HttpUtils ssl(HttpSslSupplier sslProvider) {
+        _sslSupplier = sslProvider;
         return this;
     }
 

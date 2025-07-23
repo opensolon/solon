@@ -145,7 +145,11 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
         final OkHttpUtils self = this;
 
-        OkHttpClient _client = factory.getClient(_proxy);
+        if (_sslSupplier == null) {
+            _sslSupplier = HttpSslSupplierDefault.getInstance();
+        }
+
+        OkHttpClient _client = factory.getClient(_proxy, _sslSupplier);
 
         if (future == null) {
             Call call = _client.newCall(_builder.build());

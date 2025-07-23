@@ -20,7 +20,7 @@ import org.noear.solon.core.util.*;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
-import org.noear.solon.net.http.impl.HttpSsl;
+import org.noear.solon.net.http.impl.HttpSslSupplierDefault;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -68,10 +68,15 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
+
+            if (_sslSupplier == null) {
+                _sslSupplier = HttpSslSupplierDefault.getInstance();
+            }
+
             //调整 ssl
             HttpsURLConnection tmp = ((HttpsURLConnection) _builder);
-            tmp.setSSLSocketFactory(HttpSsl.getSSLSocketFactory());
-            tmp.setHostnameVerifier(HttpSsl.defaultHostnameVerifier);
+            tmp.setSSLSocketFactory(_sslSupplier.getSslContext().getSocketFactory());
+            tmp.setHostnameVerifier(_sslSupplier.getHostnameVerifier());
         }
 
         if (_timeout != null) {

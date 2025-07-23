@@ -92,6 +92,11 @@ public interface HttpUtils {
     HttpUtils proxy(Proxy proxy);
 
     /**
+     * ssl
+     */
+    HttpUtils ssl(HttpSslSupplier sslProvider);
+
+    /**
      * 代理配置
      */
     default HttpUtils proxy(String host, int port) {

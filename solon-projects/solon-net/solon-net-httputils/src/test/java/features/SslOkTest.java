@@ -30,4 +30,22 @@ public class SslOkTest {
         assert html != null;
         assert html.contains("bilibili");
     }
+
+    @Test
+    public void case13() throws Exception {
+        String html = http("https://www.taobao.com/").get();
+        System.out.println(html);
+
+        assert html != null;
+        assert html.contains("taobao");
+    }
+
+    @Test
+    public void case14() throws Exception {
+        String html = http("https://www.csdn.net/").get();
+        System.out.println(html);
+
+        assert html != null;
+        assert html.contains("csdn");
+    }
 }
