@@ -45,6 +45,7 @@
 * 修复 solon aot 时 extract method 未注册的问题
 * 修复 solon-scheduling-simple 可能启动后就退出的问题（有些任务触发时间晚，调试线程池未启动）
 * 修复 solon-security-validation 的 `@Email` 验校注解兼容性问题（之前 name 有点会出错）
+* liquor 升为 1.5.8
 
 ### 3.4.0
 
