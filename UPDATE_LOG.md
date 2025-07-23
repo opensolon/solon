@@ -38,6 +38,7 @@
 * 添加 solon-flow aot 配置
 * 添加 solon-ai-core `TextLoader(byte[])(SupplierEx<InputStream>)` 构造方法
 * 添加 aliyun-oss-solon-cloud-plugin 阿里云oss获取临时文件url逻辑
+* 优化 solon-net-httputils 流接收的编码处理
 * 优化 solon-ai 方言思考字段的兼容性处理
 * 优化 solon-ai-mcp McpServerContext 增加 stdio 代理支持（环境变量自动转为 ctx:header）
 * 优化 local-solon-cloud-plugin 在启动时，预热 RunUtil
