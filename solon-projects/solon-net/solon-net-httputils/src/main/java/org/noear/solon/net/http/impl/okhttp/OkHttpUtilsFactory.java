@@ -19,9 +19,10 @@ import com.moczul.ok2curl.CurlInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.net.http.HttpSslSupplier;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.HttpUtilsFactory;
-import org.noear.solon.net.http.impl.HttpSsl;
+import org.noear.solon.net.http.impl.HttpSslSupplierDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,15 +48,15 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
         return temp;
     };
 
-    private static OkHttpClient createHttpClient(Proxy proxy) {
+    private static OkHttpClient createHttpClient(Proxy proxy, HttpSslSupplier sslProvider) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .dispatcher(httpClientDispatcher.get())
                 .addInterceptor(OkHttpInterceptor.instance)
-                .sslSocketFactory(HttpSsl.getSSLSocketFactory(), HttpSsl.getX509TrustManager())
-                .hostnameVerifier(HttpSsl.defaultHostnameVerifier);
+                .sslSocketFactory(sslProvider.getSslContext().getSocketFactory())
+                .hostnameVerifier(sslProvider.getHostnameVerifier());
 
 
         if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
@@ -83,13 +84,13 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
     /// ////////
 
     private Map<Proxy, OkHttpClient> proxyClients = new ConcurrentHashMap<>();
-    private OkHttpClient defaultClient = createHttpClient(null);
+    private OkHttpClient defaultClient = createHttpClient(null, HttpSslSupplierDefault.getInstance());
 
-    protected OkHttpClient getClient(Proxy proxy) {
+    protected OkHttpClient getClient(Proxy proxy, HttpSslSupplier sslProvider) {
         if (proxy == null) {
             return defaultClient;
         } else {
-            return proxyClients.computeIfAbsent(proxy, k -> createHttpClient(proxy));
+            return proxyClients.computeIfAbsent(proxy, k -> createHttpClient(proxy, sslProvider));
         }
     }
 
