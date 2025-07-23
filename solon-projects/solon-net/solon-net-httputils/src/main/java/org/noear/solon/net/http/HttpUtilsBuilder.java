@@ -35,6 +35,7 @@ public class HttpUtilsBuilder {
     private MultiMap<String> headers = new MultiMap<>();
     private HttpTimeout timeout;
     private Proxy proxy;
+    private HttpSslSupplier sslSupplier;
 
     /**
      * 服务名
@@ -115,6 +116,14 @@ public class HttpUtilsBuilder {
     }
 
     /**
+     * 设置 ssl 提供者
+     */
+    public HttpUtilsBuilder ssl(HttpSslSupplier sslSupplier) {
+        this.sslSupplier = sslSupplier;
+        return this;
+    }
+
+    /**
      * 构建 Http 工具
      */
     public HttpUtils build(String url) {
@@ -126,6 +135,6 @@ public class HttpUtilsBuilder {
             url = PathUtil.joinUri(baseUri, url);
         }
 
-        return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy);
+        return HttpUtils.http(url).headers(headers).timeout(timeout).proxy(proxy).ssl(sslSupplier);
     }
 }
