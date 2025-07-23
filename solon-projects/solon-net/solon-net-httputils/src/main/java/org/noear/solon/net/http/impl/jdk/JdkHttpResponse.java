@@ -180,7 +180,7 @@ public class JdkHttpResponse implements HttpResponse {
     @Override
     public String bodyAsString() throws IOException {
         try {
-            return IoUtil.transferToString(body());
+            return IoUtil.transferToString(body(), http.getContentEncoding());
         } finally {
             body().close();
         }
