@@ -46,6 +46,11 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
+        if (_sslSupplier == null) {
+            _sslSupplier = HttpSslSupplierDefault.getInstance();
+        }
+
+
         String method = _method.toUpperCase();
         String newUrl = urlRebuild(method, _url, _charset);
 
@@ -141,12 +146,6 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 break;
             default:
                 throw new IllegalArgumentException("This method is not supported");
-        }
-
-        final OkHttpUtils self = this;
-
-        if (_sslSupplier == null) {
-            _sslSupplier = HttpSslSupplierDefault.getInstance();
         }
 
         OkHttpClient _client = factory.getClient(_proxy, _sslSupplier);

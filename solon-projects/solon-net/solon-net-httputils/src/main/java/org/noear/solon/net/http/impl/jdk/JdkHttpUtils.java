@@ -60,6 +60,11 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
+        if (_sslSupplier == null) {
+            _sslSupplier = HttpSslSupplierDefault.getInstance();
+        }
+
+
         final String method = _method.toUpperCase();
         final String newUrl = urlRebuild(method, _url, _charset);
 
@@ -68,11 +73,6 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
-
-            if (_sslSupplier == null) {
-                _sslSupplier = HttpSslSupplierDefault.getInstance();
-            }
-
             //调整 ssl
             HttpsURLConnection tmp = ((HttpsURLConnection) _builder);
             tmp.setSSLSocketFactory(_sslSupplier.getSslContext().getSocketFactory());
