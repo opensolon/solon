@@ -30,19 +30,35 @@
 
 ### 3.4.1
 
-* 新增 solon-ai-search-baidu 插件
 * 新增 solon-ai-repo-pgvector 插件
+* 新增 solon-ai-search-baidu 插件
 * 新增 solon `@Managed` 注解（未来替代 `@Component`）
 * 新增 solon ActionArgumentResolver 接口
+* 添加 solon-net-httputils ssl 定制支持
 * 添加 solon-flow FlowContext:incrGet, incrAdd
 * 添加 solon-flow aot 配置
 * 添加 solon-ai-core `TextLoader(byte[])(SupplierEx<InputStream>)` 构造方法
+* 添加 solon-ai-core `ChatConfig:defaultToolsContext`（默认工具上下文）, `defaultOptions`（默认选项） 属性
+* 添加 solon-ai-core `RepositoryStorable:insert(list,progressCallback)` 和 `asyncInsert(list,progressCallback)` 方法，支持进度获取
+* 添加 solon-ai-mcp 客户端 ssl 定制支持
 * 添加 aliyun-oss-solon-cloud-plugin 阿里云oss获取临时文件url逻辑
+* 优化 solon-boot server 启动时机（转到 postStart 时）
 * 优化 solon-net-httputils 流接收的编码处理
-* 优化 solon-ai 方言思考字段的兼容性处理
+* 优化 solon-flow Chain:parseByDom 节点解析后的添加顺序
+* 优化 solon-flow Chain 解析统改为 Yaml 处理，并添加 toYaml 方法
+* 优化 solon-flow Chain:toJson 输出（压缩大小，去掉空输出）
+* 优化 solon-ai 方言 think 思考内容和字段的兼容性处理
+* 优化 solon-ai 方言处理与 modelscope（魔搭社区）的兼容性
+* 优化 solon-ai 方言处理与 siliconflow（硅基流动）的兼容性
+* 优化 solon-ai 方言处理的流式节点识别兼容性
+* 优化 solon-ai 用户消息的请求构建（当内容为空时，不添加 text）
+* 优化 solon-ai-mcp McpClientProvider 心跳间隔控制（5s 以下忽略）
 * 优化 solon-ai-mcp McpServerContext 增加 stdio 代理支持（环境变量自动转为 ctx:header）
+* 优化 solon-ai-mcp WebRxSseClientTransport 添加 debug 日志打印
 * 优化 local-solon-cloud-plugin 在启动时，预热 RunUtil
 * 修复 solon aot 时 extract method 未注册的问题
+* 修复 solon-net-httputils JdkHttpResponse:bodyAsString 不能使用指定编码的问题
+* 修复 solon-net-httputils TextStreamUtil 不能使用指定编码的问题
 * 修复 solon-scheduling-simple 可能启动后就退出的问题（有些任务触发时间晚，调试线程池未启动）
 * 修复 solon-security-validation 的 `@Email` 验校注解兼容性问题（之前 name 有点会出错）
 * liquor 升为 1.5.8
