@@ -48,6 +48,8 @@ public interface ActionExecuteHandler {
      * @param ctx    请求上下文
      * @param target 控制器
      * @param mWrap  函数包装器
+     * @deprecated 3.4
      */
+    @Deprecated
     Object executeHandle(Context ctx, Object target, MethodWrap mWrap) throws Throwable;
 }
