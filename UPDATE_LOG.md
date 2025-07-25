@@ -62,6 +62,7 @@
 * 修复 solon-scheduling-simple 可能启动后就退出的问题（有些任务触发时间晚，调试线程池未启动）
 * 修复 solon-security-validation 的 `@Email` 验校注解兼容性问题（之前 name 有点会出错）
 * liquor 升为 1.5.8
+* wood 升为 1.3.24
 
 ### 3.4.0
 
