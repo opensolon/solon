@@ -1,10 +1,10 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.4.1-SNAPSHOT
+Solon v3.4.1
 </h1>
 <p align="center">
-	<strong>面向全场景的 Java 企业级应用开发框架：克制、高效、开放、生态</strong>
+	<strong>面向全场景的 Java 企业级应用开发框架：克制、高效、开放</strong>
     <br/>
     <strong>【开放原子开源基金会，孵化项目】</strong>
 </p>

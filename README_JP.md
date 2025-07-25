@@ -1,10 +1,10 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v3.4.1-SNAPSHOT
+Solon v3.4.1
 </h1>
 <p align="center">
-	<strong>全シーンに向けたJava企業向けアプリケーション開発フレームワーク:抑制、効率、オープン、エコ</strong>
+	<strong>全シーンに向けたJava企業向けアプリケーション開発フレームワーク:抑制、効率、オープン</strong>
     <br/>
     <strong>【オープン・アトム・オープンソース財団インキュベーション・プログラムです】</strong>
 </p>
