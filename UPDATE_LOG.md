@@ -31,6 +31,7 @@
 ### 3.4.2
 
 * 优化 solon-net-http HttpSslSupplier 接口定义（以适与 okhttp 的接口变化）
+* 优化 solon-docs-openapi2 body 动态模型的 key 添加 method（避免冲突）
 
 ### 3.4.1
 
