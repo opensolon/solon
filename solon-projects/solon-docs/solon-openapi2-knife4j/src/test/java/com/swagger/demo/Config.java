@@ -54,6 +54,19 @@ public class Config {
     /**
      * 基于代码构建
      */
+    @Bean("restapi")
+    public DocDocket restapi() {
+        return new DocDocket()
+                .groupName("restapi接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .apis("com.swagger.demo.controller.restapi");
+        //.securityDefinitionInHeader("token");
+
+    }
+
+    /**
+     * 基于代码构建
+     */
     @Bean("appApi")
     public DocDocket appApi() {
         return new DocDocket()
@@ -65,6 +78,8 @@ public class Config {
         //.securityDefinitionInHeader("token");
 
     }
+
+
 
     /**
      * 基于代码构建
