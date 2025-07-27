@@ -561,9 +561,9 @@ public class OpenApi2Builder {
                     parameters.add(parameter);
                 }
             }
-            //String key = "Map[" + actionHolder.action().fullName() + "]";
+            //String key = "Map[" + actionHolder.action().fullName() + ":" + method + "]";
             // 避免其他平台数据导入错误
-            String key = String.format("Map[%s]", actionHolder.action().fullName().replace("/", "_").replace("${", "").replace("}", ""));
+            String key = String.format("Map[%s]", actionHolder.action().fullName().replace("/", "_").replace("${", "").replace("}", "") + ":" + actionHolder.routing().method().name());
             this.swagger.addDefinition(key, model);
             finalBodyParameter.setSchema(new RefModel(key));
             parameters.add(finalBodyParameter);
