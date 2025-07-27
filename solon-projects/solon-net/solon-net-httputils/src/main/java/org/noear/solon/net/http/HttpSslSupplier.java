@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Http Ssl 提供者
@@ -34,4 +35,9 @@ public interface HttpSslSupplier {
      * 获取域名的核对机
      */
     HostnameVerifier getHostnameVerifier();
+
+    /**
+     * 获取信任管理器
+     */
+    X509TrustManager getX509TrustManager();
 }

@@ -55,7 +55,7 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .dispatcher(httpClientDispatcher.get())
                 .addInterceptor(OkHttpInterceptor.instance)
-                .sslSocketFactory(sslProvider.getSslContext().getSocketFactory())
+                .sslSocketFactory(sslProvider.getSslContext().getSocketFactory(), sslProvider.getX509TrustManager())
                 .hostnameVerifier(sslProvider.getHostnameVerifier());
 
 

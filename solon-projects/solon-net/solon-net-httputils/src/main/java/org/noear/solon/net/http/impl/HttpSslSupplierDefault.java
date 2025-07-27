@@ -23,6 +23,7 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
 
     private SSLContext sslContext;
     private HostnameVerifier hostnameVerifier;
+    private X509TrustManager x509TrustManager;
 
     @Override
     public SSLContext getSslContext() {
@@ -31,7 +32,7 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
             try {
                 if (sslContext == null) {
                     sslContext = SSLContext.getInstance("SSL");
-                    sslContext.init(null, new TrustManager[]{new DefaultX509TrustManager()}, new SecureRandom());
+                    sslContext.init(null, new TrustManager[]{getX509TrustManager()}, new SecureRandom());
                 }
             } catch (Exception e) {
                 throw new IllegalStateException(e);
@@ -57,6 +58,22 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
         }
 
         return hostnameVerifier;
+    }
+
+    @Override
+    public X509TrustManager getX509TrustManager() {
+        if (x509TrustManager == null) {
+            Utils.locker().lock();
+            try {
+                if (x509TrustManager == null) {
+                    x509TrustManager = new DefaultX509TrustManager();
+                }
+            } finally {
+                Utils.locker().unlock();
+            }
+        }
+
+        return x509TrustManager;
     }
 
     public static class DefaultX509TrustManager implements X509TrustManager {
