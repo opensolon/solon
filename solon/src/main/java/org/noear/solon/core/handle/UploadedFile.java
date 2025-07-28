@@ -60,7 +60,7 @@ public class UploadedFile extends FileBase {
      * 内容流
      */
     public InputStream getContent() {
-        return content;
+        return super.getContent();
     }
 
     /**
@@ -69,12 +69,7 @@ public class UploadedFile extends FileBase {
      * @since 2.8
      */
     public byte[] getContentAsBytes() throws IOException {
-        if (content == null) {
-            //如果为空，则为空字节数组
-            return new byte[0];
-        }
-
-        return IoUtil.transferToBytes(content);
+        return IoUtil.transferToBytes(getContent());
     }
 
     /**
@@ -85,11 +80,7 @@ public class UploadedFile extends FileBase {
             return contentSize;
         } else {
             try {
-                if (content == null) {
-                    return 0;
-                } else {
-                    return content.available();
-                }
+                return getContent().available();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -135,7 +126,7 @@ public class UploadedFile extends FileBase {
      * @since 3.2
      */
     public UploadedFile(File file, String name, String contentType) throws FileNotFoundException {
-        super(contentType, file.length(), new FileInputStream(file), name);
+        super(contentType, file.length(), () -> new FileInputStream(file), name);
     }
 
     /**
@@ -146,7 +137,7 @@ public class UploadedFile extends FileBase {
      * @param name        文件名
      */
     public UploadedFile(String contentType, InputStream content, String name) {
-        super(contentType, 0, content, name);
+        super(contentType, 0, () -> content, name);
     }
 
     /**
@@ -172,7 +163,7 @@ public class UploadedFile extends FileBase {
      * @param extension   文件后缀名
      */
     public UploadedFile(Closeable deleteAction, String contentType, long contentSize, InputStream content, String name, String extension) {
-        super(contentType, contentSize, content, name);
+        super(contentType, contentSize, () -> content, name);
         this.extension = extension;
         this.deleteAction = deleteAction;
     }
