@@ -34,7 +34,6 @@ public class DownloadedFile extends FileBase implements Closeable {
     private int maxAgeSeconds = 0;
     private String eTag = null;
     private Date lastModified;
-    private File file;
 
     /**
      * 是否附件输出
@@ -101,14 +100,10 @@ public class DownloadedFile extends FileBase implements Closeable {
     }
 
     /**
-     * 内容
+     * 内容流
      */
-    public InputStream getContent() throws IOException {
-        if (content == null) {
-            content = new FileInputStream(file);
-        }
-
-        return content;
+    public InputStream getContent() {
+        return super.getContent();
     }
 
     /**
@@ -124,9 +119,7 @@ public class DownloadedFile extends FileBase implements Closeable {
 
     @Override
     public void close() throws IOException {
-        if (content != null) {
-            content.close();
-        }
+        super.close();
     }
 
     /**
@@ -138,7 +131,7 @@ public class DownloadedFile extends FileBase implements Closeable {
      * @param name        文件名
      */
     public DownloadedFile(String contentType, long contentSize, InputStream content, String name) {
-        super(contentType, contentSize, content, name);
+        super(contentType, contentSize, () -> content, name);
     }
 
     /**
@@ -149,7 +142,7 @@ public class DownloadedFile extends FileBase implements Closeable {
      * @param name        文件名
      */
     public DownloadedFile(String contentType, InputStream content, String name) {
-        super(contentType, 0, content, name);
+        super(contentType, 0, () -> content, name);
     }
 
     /**
@@ -160,7 +153,7 @@ public class DownloadedFile extends FileBase implements Closeable {
      * @param name        文件名
      */
     public DownloadedFile(String contentType, byte[] content, String name) {
-        super(contentType, content.length, new ByteArrayInputStream(content), name);
+        super(contentType, content.length, () -> new ByteArrayInputStream(content), name);
     }
 
     /**
@@ -194,9 +187,7 @@ public class DownloadedFile extends FileBase implements Closeable {
      * @since 2.5
      */
     public DownloadedFile(File file, String name, String contentType) throws FileNotFoundException {
-        super(contentType, file.length(), null, name);
-
-        this.file = file;
+        super(contentType, file.length(), () -> new FileInputStream(file), name);
         //记录更新时间
         lastModified(new Date(file.lastModified()));
     }

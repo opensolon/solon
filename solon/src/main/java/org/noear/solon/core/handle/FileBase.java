@@ -15,7 +15,10 @@
  */
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.util.SupplierEx;
+
 import java.io.*;
+import java.util.Objects;
 
 /**
  * 文件基类
@@ -23,11 +26,12 @@ import java.io.*;
  * @author noear
  * @since 2.8
  */
-public abstract class FileBase {
+public abstract class FileBase implements Closeable {
     /**
-     * 内容流
+     * 内容流提供者
      */
-    protected InputStream content;
+    private SupplierEx<InputStream> contentSupplier;
+    private InputStream content;
     /**
      * 内容类型（有些地方会动态构建，所以不能只读）
      */
@@ -41,6 +45,12 @@ public abstract class FileBase {
      */
     protected String name;
 
+    /**
+     * 文件名（带扩展名，例：demo.jpg）
+     */
+    public String getName() {
+        return name;
+    }
 
     /**
      * 内容类型
@@ -49,12 +59,28 @@ public abstract class FileBase {
         return contentType;
     }
 
-
     /**
-     * 文件名（带扩展名，例：demo.jpg）
+     * 内容流
      */
-    public String getName() {
-        return name;
+    public InputStream getContent() {
+        try {
+            if (content == null) {
+                content = contentSupplier.get();
+            }
+
+            return content;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (content != null) {
+            content.close();
+        }
     }
 
     public FileBase() {
@@ -64,15 +90,17 @@ public abstract class FileBase {
     /**
      * 构造函数
      *
-     * @param contentType 内容类型
-     * @param contentSize 内容大小
-     * @param content     内容流
-     * @param name        文件名
+     * @param contentType     内容类型
+     * @param contentSize     内容大小
+     * @param contentSupplier 内容提供者
+     * @param name            文件名
      */
-    public FileBase(String contentType, long contentSize, InputStream content, String name) {
+    public FileBase(String contentType, long contentSize, SupplierEx<InputStream> contentSupplier, String name) {
         this.contentType = contentType;
         this.contentSize = contentSize;
-        this.content = content;
+        this.contentSupplier = contentSupplier;
         this.name = name;
+
+        Objects.requireNonNull(contentSupplier, "The content supplier cannot be null");
     }
 }
