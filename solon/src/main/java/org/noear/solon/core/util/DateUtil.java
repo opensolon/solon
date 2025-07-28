@@ -96,7 +96,7 @@ public class DateUtil {
             if (val.charAt(10) == 'T') {
                 ft = FORMAT_24_ISO08601;
             }
-        } else if (len == 23 && val.charAt(4) == '-') {
+        } else if (len <= 23 && len >= 20 && val.charAt(4) == '-') {
             if (val.charAt(10) == 'T') {
                 ft = FORMAT_23_t;
             } else if (val.charAt(19) == ',') {
