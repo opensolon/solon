@@ -16,6 +16,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.SupplierEx;
 
 import java.io.*;
 import java.util.Date;
@@ -120,6 +121,18 @@ public class DownloadedFile extends FileBase implements Closeable {
     @Override
     public void close() throws IOException {
         super.close();
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param contentType     内容类型
+     * @param contentSize     内容大小
+     * @param contentSupplier 内容流提供者
+     * @param name            文件名
+     */
+    public DownloadedFile(String contentType, long contentSize, SupplierEx<InputStream> contentSupplier, String name) {
+        super(contentType, contentSize, contentSupplier, name);
     }
 
     /**
