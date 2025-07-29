@@ -1502,6 +1502,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nacos3-solon-cloud-plugin</artifactId>
+                <version>${solon-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>polaris-solon-cloud-plugin</artifactId>
                 <version>${solon-cloud.version}</version>
             </dependency>
