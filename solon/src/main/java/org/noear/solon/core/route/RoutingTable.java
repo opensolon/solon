@@ -117,4 +117,38 @@ public interface RoutingTable<T> {
      * @since 3.4
      */
     List<T> matchMore(String path, String version, MethodType method);
+
+
+    /**
+     * 区配一个目标
+     *
+     * @since 1.0
+     * @deprecated 3.4
+     */
+    @Deprecated
+    default T matchOne(String path, MethodType method) {
+        return matchOne(path, null, method);
+    }
+
+    /**
+     * 区配一个目标并给出状态
+     *
+     * @since 2.5
+     * @deprecated 3.4
+     */
+    @Deprecated
+    default Result<T> matchOneAndStatus(String path, MethodType method) {
+        return matchOneAndStatus(path, null, method);
+    }
+
+    /**
+     * 区配多个目标
+     *
+     * @since 2.5
+     * @deprecated 3.4
+     */
+    @Deprecated
+    default List<T> matchMore(String path, MethodType method) {
+        return matchMore(path, null, method);
+    }
 }
