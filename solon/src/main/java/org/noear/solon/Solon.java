@@ -24,6 +24,7 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Preview;
 
 import java.net.URL;
+import java.util.function.Function;
 
 /**
  * 应用管理中心
@@ -62,6 +63,13 @@ public class Solon {
      */
     public static SolonApp app() {
         return app;
+    }
+
+    /**
+     * 应用检测
+     */
+    public static boolean appIf(Function<SolonApp, Boolean> condition) {
+        return app != null && condition.apply(app);
     }
 
     /**

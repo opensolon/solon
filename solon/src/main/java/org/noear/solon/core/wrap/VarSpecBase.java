@@ -84,7 +84,7 @@ public abstract class VarSpecBase implements VarSpec {
 
     protected void initAction() {
         //没有时，不处理
-        if (Solon.app().factoryManager().hasMvcFactory()) {
+        if (Solon.appIf(app -> app.factoryManager().hasMvcFactory())) {
             Solon.app().factoryManager().mvcFactory().resolveActionParam(vo, element);
         }
     }

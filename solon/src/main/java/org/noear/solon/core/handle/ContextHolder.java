@@ -32,25 +32,25 @@ public class ContextHolder {
 
     /**
      * 设置当前线程的上下文
-     * */
-    public static void currentSet(Context context){
+     */
+    public static void currentSet(Context context) {
         threadLocal.set(context);
     }
 
     /**
      * 移除当前线程的上下文
-     * */
-    public static void currentRemove(){
+     */
+    public static void currentRemove() {
         threadLocal.remove();
     }
 
     /**
      * 获取当前线程的上下文
-     * */
-    public static Context current(){
+     */
+    public static Context current() {
         Context tmp = threadLocal.get();
 
-        if (tmp == null && Solon.cfg().testing()) {
+        if (tmp == null && Solon.appIf(app -> app.cfg().testing())) {
             tmp = new ContextEmpty();
             threadLocal.set(tmp);
         }

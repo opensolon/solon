@@ -46,7 +46,7 @@ public class RunHolder {
             Utils.locker().lock();
             try {
                 if (asyncExecutor == null) {
-                    if (Solon.app() != null && Solon.cfg().isEnabledVirtualThreads()) {
+                    if (Solon.appIf(app -> app.cfg().isEnabledVirtualThreads())) {
                         asyncExecutor = ThreadsUtil.newVirtualThreadPerTaskExecutor();
                     } else {
                         int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;

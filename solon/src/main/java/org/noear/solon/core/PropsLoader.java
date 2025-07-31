@@ -85,7 +85,7 @@ public class PropsLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
-            if (Solon.app() != null && Solon.cfg().isDebugMode()) {
+            if (Solon.appIf(app -> app.cfg().isDebugMode())) {
                 LogUtil.global().trace(fileName);
             }
 
