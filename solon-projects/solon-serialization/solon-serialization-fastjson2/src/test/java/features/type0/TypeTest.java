@@ -30,7 +30,7 @@ public class TypeTest {
         Bean data = new Bean();
         data.value = 12L;
 
-        String output = JSON.toJSONString(data, JSONWriter.Feature.WriteClassName);
+        String output = JSON.toJSONString(data, JSONWriter.Feature.WriteClassName, JSONWriter.Feature.NotWriteNumberClassName);
 
         System.out.println(output); //{"@type":"features.type0.TypeTest$Bean","value":12L}
         assertEquals("{\"@type\":\"features.type0.TypeTest$Bean\",\"value\":12}", output);

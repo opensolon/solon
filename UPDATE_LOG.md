@@ -39,6 +39,7 @@
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
 * snack3 升为 3.2.136
+* fastjson2 升为 2.0.58
 
 ### 3.4.2
 
