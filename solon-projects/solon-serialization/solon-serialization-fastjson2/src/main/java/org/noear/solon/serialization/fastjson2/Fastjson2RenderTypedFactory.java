@@ -34,7 +34,8 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
                 JSONWriter.Feature.BrowserCompatible,
                 JSONWriter.Feature.WriteClassName,
                 JSONWriter.Feature.ReferenceDetection,
-                JSONWriter.Feature.WriteLongAsString
+                JSONWriter.Feature.WriteLongAsString,
+                JSONWriter.Feature.NotWriteNumberClassName
         );
     }
 
