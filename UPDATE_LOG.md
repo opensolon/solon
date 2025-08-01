@@ -40,6 +40,7 @@
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
 * snack3 升为 3.2.136
 * fastjson2 升为 2.0.58
+* wood 升为 1.3.25
 
 ### 3.4.2
 
