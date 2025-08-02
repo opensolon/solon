@@ -38,7 +38,7 @@
 * 优化 solon-ai-core ChatRequestDescDefault http 异常转换描述
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
-* snack3 升为 3.2.136
+* snack3 升为 3.2.137
 * fastjson2 升为 2.0.58
 * wood 升为 1.3.25
 
