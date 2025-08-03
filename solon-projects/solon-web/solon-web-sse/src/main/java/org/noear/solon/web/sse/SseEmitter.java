@@ -96,6 +96,22 @@ public class SseEmitter {
     }
 
     /**
+     * 出错
+     */
+    public void error(Throwable err) {
+        if (eventHandler != null) {
+            try {
+                eventHandler.error(err);
+                eventHandler.stopOnError(err);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
      * 发送事件内容
      *
      * @param data 事件数据
