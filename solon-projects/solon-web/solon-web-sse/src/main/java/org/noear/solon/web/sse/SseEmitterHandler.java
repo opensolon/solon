@@ -54,6 +54,15 @@ public class SseEmitterHandler {
     private static final byte[] CRLF = "\n".getBytes();
 
     /**
+     * 出错
+     */
+    public void error(Throwable t) {
+        if (t != null) {
+            ctx.status(500, t.getMessage());
+        }
+    }
+
+    /**
      * 发送事件内容
      *
      * @param event 事件数据
