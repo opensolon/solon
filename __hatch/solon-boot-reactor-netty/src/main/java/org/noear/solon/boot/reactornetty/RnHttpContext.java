@@ -220,8 +220,8 @@ public class RnHttpContext extends WebContextBase {
 
     @Override
     protected void contentTypeDoSet(String contentType) {
-        if (charset != null) {
-            if (contentType.indexOf(";") < 0) {
+        if (charset != null && contentType != null) {
+            if (contentType.length() > 0 && contentType.indexOf(";") < 0) {
                 headerSet("Content-Type", contentType + ";charset=" + charset);
                 return;
             }

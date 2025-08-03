@@ -305,8 +305,8 @@ public class NettyHttpContext extends WebContextBase {
 
     @Override
     protected void contentTypeDoSet(String contentType) {
-        if (charset != null) {
-            if (contentType.indexOf(";") < 0) {
+        if (charset != null && contentType != null) {
+            if (contentType.length() > 0 && contentType.indexOf(";") < 0) {
                 headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
                 return;
             }
