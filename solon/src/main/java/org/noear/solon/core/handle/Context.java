@@ -1172,8 +1172,6 @@ public abstract class Context {
 
         this.result = obj;
 
-        Solon.app().chainManager().getReturnHandler(this, obj.getClass());
-
         //结果处理
         ReturnValueHandler returnHandler = this.attr(Constants.ATTR_RETURN_HANDLER);
         if (returnHandler == null) {
