@@ -54,15 +54,6 @@ public class SseEmitterHandler {
     private static final byte[] CRLF = "\n".getBytes();
 
     /**
-     * 出错
-     */
-    public void error(Throwable t) {
-        if (t != null) {
-            ctx.status(500, t.getMessage());
-        }
-    }
-
-    /**
      * 发送事件内容
      *
      * @param event 事件数据
@@ -109,11 +100,13 @@ public class SseEmitterHandler {
      * 因出错停目
      */
     protected void stopOnError(Throwable e) throws IOException {
-        if (emitter.onError != null) {
-            emitter.onError.accept(e);
+        try {
+            if (emitter.onError != null) {
+                emitter.onError.accept(e);
+            }
+        } finally {
+            stop();
         }
-
-        stop();
     }
 
     /**

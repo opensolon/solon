@@ -101,7 +101,6 @@ public class SseEmitter {
     public void error(Throwable err) {
         if (eventHandler != null) {
             try {
-                eventHandler.error(err);
                 eventHandler.stopOnError(err);
             } catch (RuntimeException e) {
                 throw e;
