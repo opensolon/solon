@@ -16,7 +16,6 @@
 package org.noear.solon.net.http;
 
 import org.noear.solon.Utils;
-import org.noear.solon.exception.SolonException;
 
 import java.net.URL;
 
@@ -26,30 +25,30 @@ import java.net.URL;
  * @author noear
  * @since 3.1
  */
-public class HttpResponseException extends SolonException {
+public class HttpResponseException extends HttpException {
     private final int statusCode;
     private final String statusMessage;
     private byte[] bodyBytes;
     private final String requestMethod;
     private final URL requestUrl;
 
-    public int getStatusCode() {
+    public int code() {
         return statusCode;
     }
 
-    public String getStatusMessage() {
+    public String message() {
         return statusMessage;
     }
 
-    public byte[] getBodyBytes() {
+    public byte[] bodyBytes() {
         return bodyBytes;
     }
 
-    public String getRequestMethod() {
+    public String requestMethod() {
         return requestMethod;
     }
 
-    public URL getRequestUrl() {
+    public URL requestUrl() {
         return requestUrl;
     }
 
