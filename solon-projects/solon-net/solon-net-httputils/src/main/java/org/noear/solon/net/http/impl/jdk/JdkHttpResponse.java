@@ -21,6 +21,7 @@ import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
+import org.noear.solon.net.http.HttpResponseException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class JdkHttpResponse implements HttpResponse {
     private final JdkHttpUtils utils;
     private final HttpURLConnection http;
     private final int statusCode;
+    private final String statusMessage;
     private final MultiMap<String> headers;
     private MultiMap<String> cookies;
     private final InputStream body;
@@ -52,6 +54,7 @@ public class JdkHttpResponse implements HttpResponse {
         this.http = http;
 
         this.statusCode = statusCode;
+        this.statusMessage = http.getResponseMessage();
         this.headers = new MultiMap<>();
 
         for (Map.Entry<String, List<String>> kv : http.getHeaderFields().entrySet()) {
@@ -165,6 +168,11 @@ public class JdkHttpResponse implements HttpResponse {
     }
 
     @Override
+    public String message() {
+        return statusMessage;
+    }
+
+    @Override
     public InputStream body() {
         return body;
     }
@@ -200,6 +208,11 @@ public class JdkHttpResponse implements HttpResponse {
         } else {
             throw new SolonException("Invalid serializer type!");
         }
+    }
+
+    @Override
+    public HttpResponseException createError() {
+        return new HttpResponseException(this, http.getRequestMethod(), http.getURL());
     }
 
     @Override

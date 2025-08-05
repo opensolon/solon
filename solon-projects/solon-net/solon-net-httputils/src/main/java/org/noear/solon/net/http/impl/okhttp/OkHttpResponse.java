@@ -20,6 +20,7 @@ import okhttp3.Response;
 import org.noear.solon.core.util.MultiMap;
 import org.noear.solon.exception.SolonException;
 import org.noear.solon.net.http.HttpResponse;
+import org.noear.solon.net.http.HttpResponseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,11 +40,13 @@ public class OkHttpResponse implements HttpResponse {
     private final Response response;
     private MultiMap<String> cookies;
     private final int statusCode;
+    private final String statusMessage;
 
     public OkHttpResponse(OkHttpUtils utils, int statusCode, Response response) {
         this.utils = utils;
         this.response = response;
         this.statusCode = statusCode;
+        this.statusMessage = response.message();
     }
 
     private MultiMap<String> cookiesInit() {
@@ -131,6 +134,11 @@ public class OkHttpResponse implements HttpResponse {
     }
 
     @Override
+    public String message() {
+        return statusMessage;
+    }
+
+    @Override
     public InputStream body() {
         return response.body().byteStream();
     }
@@ -154,6 +162,11 @@ public class OkHttpResponse implements HttpResponse {
         } else {
             throw new SolonException("Invalid serializer type!");
         }
+    }
+
+    @Override
+    public HttpResponseException createError() {
+        return new HttpResponseException(this, response.request().method(), response.request().url().url());
     }
 
     @Override

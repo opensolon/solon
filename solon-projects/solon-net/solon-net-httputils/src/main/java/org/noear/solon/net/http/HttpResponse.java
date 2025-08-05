@@ -81,9 +81,14 @@ public interface HttpResponse extends Closeable {
     List<String> cookies();
 
     /**
-     * 获取响应代码
+     * 获取状态代码
      */
     int code();
+
+    /**
+     * 获取状态消息
+     */
+    String message();
 
     /**
      * 获取响应主体
@@ -104,4 +109,9 @@ public interface HttpResponse extends Closeable {
      * 获取响应主体并转为对象
      */
     <T> T bodyAsBean(Type type) throws IOException;
+
+    /**
+     * 创建响应异常
+     */
+    HttpResponseException createError();
 }
