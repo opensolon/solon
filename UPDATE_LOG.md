@@ -33,9 +33,13 @@
 
 * 新增 solon-cache 插件（从 solon-data 分离出来，方便更小单位的依赖）
 * 新增 solon-ai-repo-mysql 插件
+* 添加 solon-net-httputils HttpResponse:createError() 方法
+* 添加 solon-web-sse SseEmitter:error 方法
 * 添加 solon-flow ChainInterceptor:onNodeStart, onNodeEnd 方法（扩展拦截的能力）
 * 优化 solon DateUtil 的兼容性，兼容 `2025-07-23 08:12:33.0`
 * 优化 solon 在非容器模式下的兼容性
+* 优化 solon Context:returnValue 返回值处理查找
+* 优化 solon web contentTypeDoSet 处理（当 contentType 为空时，不加编码）
 * 优化 solon-ai-core ChatRequestDescDefault http 异常转换描述
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
