@@ -36,7 +36,7 @@
         <solon-expression.version>3.4.2</solon-expression.version>
         <solon-cloud.version>3.4.3-SNAPSHOT</solon-cloud.version>
         <solon-admin.version>3.4.2</solon-admin.version>
-        <solon-integration.version>3.4.2</solon-integration.version>
+        <solon-integration.version>3.4.3-SNAPSHOT</solon-integration.version>
         <solon-jakarta.version>3.4.2</solon-jakarta.version>
 
         <solonx.version>1.1.4</solonx.version>
@@ -140,7 +140,7 @@
         <grpc.version>1.69.1</grpc.version>
         <thrift.version>0.20.0</thrift.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.2.11</dubbo3.version>
+        <dubbo3.version>3.3.5</dubbo3.version>
 
         <rocketmq4.version>4.9.7</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>
