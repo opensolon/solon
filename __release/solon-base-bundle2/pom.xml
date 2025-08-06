@@ -23,6 +23,7 @@
 <!--        <module>../../solon-projects/solon-data/solon-data-sqlink</module>-->
         <module>../../solon-projects/solon-data/solon-data-sqlutils</module>
 
+        <module>../../solon-projects/solon-data/solon-cache</module>
         <module>../../solon-projects/solon-data/solon-cache-caffeine</module>
         <module>../../solon-projects/solon-data/solon-cache-jedis</module>
         <module>../../solon-projects/solon-data/solon-cache-spymemcached</module>

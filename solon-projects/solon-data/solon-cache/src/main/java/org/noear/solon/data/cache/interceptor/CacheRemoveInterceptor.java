@@ -16,10 +16,10 @@
 package org.noear.solon.data.cache.interceptor;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.cache.CacheExecutorImp;
-import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.data.annotation.CacheRemove;
+import org.noear.solon.data.cache.CacheExecutorImp;
 
 /**
  * 缓存移除拦截器

@@ -15,7 +15,8 @@
  */
 package org.noear.solon.data.annotation;
 
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**

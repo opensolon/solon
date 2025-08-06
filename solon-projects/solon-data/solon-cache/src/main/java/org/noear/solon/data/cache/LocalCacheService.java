@@ -21,7 +21,8 @@ import org.noear.solon.core.util.RunUtil;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
