@@ -219,6 +219,10 @@
             <artifactId>solon-proxy</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-cache</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>

@@ -15,9 +15,12 @@
  */
 package org.noear.solon.data.annotation;
 
-import java.lang.annotation.*;
+import org.noear.solon.annotation.Note;
 
-import org.noear.solon.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 缓存注解器

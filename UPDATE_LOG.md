@@ -31,6 +31,7 @@
 
 ### 3.4.3
 
+* 新增 solon-cache 插件（从 solon-data 分离出来，方便更小单位的依赖）
 * 新增 solon-ai-repo-mysql 插件
 * 添加 solon-flow ChainInterceptor:onNodeStart, onNodeEnd 方法（扩展拦截的能力）
 * 优化 solon DateUtil 的兼容性，兼容 `2025-07-23 08:12:33.0`

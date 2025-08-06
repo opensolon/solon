@@ -17,12 +17,12 @@ package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.core.util.TmplUtil;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.solon.data.util.InvKeys;
-import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.data.util.StringMutexLock;
 
 import java.lang.reflect.Type;

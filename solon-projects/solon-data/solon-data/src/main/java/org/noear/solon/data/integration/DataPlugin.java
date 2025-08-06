@@ -18,10 +18,6 @@ package org.noear.solon.data.integration;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.AppPluginLoadEndEvent;
 import org.noear.solon.data.annotation.*;
-import org.noear.solon.data.cache.*;
-import org.noear.solon.data.cache.interceptor.CacheInterceptor;
-import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
-import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
 import org.noear.solon.data.datasource.DsBuilder;
 import org.noear.solon.data.datasource.DsInjector;
 import org.noear.solon.data.datasource.RoutingDataSource;
@@ -29,11 +25,12 @@ import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.interceptor.TranInterceptor;
 import org.noear.solon.data.tran.interceptor.TransactionInterceptor;
 
+/**
+ * @author noear
+ */
 public class DataPlugin implements Plugin {
     @Override
     public void start(AppContext context) {
-        //注册缓存工厂
-        CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
 
         //添加事务控制支持
         if (context.app().enableTransaction()) {
@@ -43,23 +40,6 @@ public class DataPlugin implements Plugin {
             //添加注解支持
             context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
             context.beanInterceptorAdd(Transaction.class, TransactionInterceptor.instance, 120);
-        }
-
-        //添加缓存控制支持
-        if (context.app().enableCaching()) {
-            CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
-
-            context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
-
-            context.lifecycle(Constants.LF_IDX_PLUGIN_BEAN_USES, () -> {
-                if (context.hasWrap(CacheService.class) == false) {
-                    context.wrapAndPut(CacheService.class, LocalCacheService.instance);
-                }
-            });
-
-            context.beanInterceptorAdd(CachePut.class, new CachePutInterceptor(), 110);
-            context.beanInterceptorAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-            context.beanInterceptorAdd(Cache.class, new CacheInterceptor(), 111);
         }
 
         //@since 3.2

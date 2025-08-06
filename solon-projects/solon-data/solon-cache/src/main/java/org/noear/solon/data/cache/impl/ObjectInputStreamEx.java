@@ -17,7 +17,10 @@ package org.noear.solon.data.cache.impl;
 
 import org.noear.solon.core.AppClassLoader;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 
 /**
  * ObjectInputStream 增加类加载控制
