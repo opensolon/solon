@@ -640,6 +640,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-statemachine</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-expression</artifactId>
                 <version>${solon-expression.version}</version>
             </dependency>

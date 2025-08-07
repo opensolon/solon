@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test1;
+package features.statemachine;
 
 
+import features.statemachine.enums.OrderEvent;
+import features.statemachine.enums.OrderState;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.statemachine.StateMachine;
 import org.noear.solon.statemachine.StateTransition;
-import test1.enums.OrderEvent;
-import test1.enums.OrderState;
 
-public class App {
+public class StatemachineTest {
     @Test
     public void test() {
         // 创建状态机实例
