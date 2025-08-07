@@ -1,4 +1,4 @@
-package test1.enums;
+package features.statemachine.enums;
 
 
 import org.noear.solon.statemachine.State;

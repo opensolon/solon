@@ -1,4 +1,4 @@
-package test1;
+package features.statemachine;
 
 public class Order {
     private String id;
