@@ -31,7 +31,7 @@ public class HttpSslSupplierDefault implements HttpSslSupplier {
             Utils.locker().lock();
             try {
                 if (sslContext == null) {
-                    sslContext = SSLContext.getInstance("SSL");
+                    sslContext = SSLContext.getInstance("TLS");
                     sslContext.init(null, new TrustManager[]{getX509TrustManager()}, new SecureRandom());
                 }
             } catch (Exception e) {
