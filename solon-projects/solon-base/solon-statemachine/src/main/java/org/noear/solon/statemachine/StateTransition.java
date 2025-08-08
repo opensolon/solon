@@ -51,26 +51,34 @@ public class StateTransition<S extends State, E extends Event, T> {
     private final Consumer<StateContext<S, E, T>> action;
 
     public StateTransition(S from, S to, E event) {
-        this(from, to, event, (ctx, payload) -> true, (ctx) -> {
-        });
+        this(from, to, event, null, null);
     }
 
     public StateTransition(S from, S to, E event, Consumer<StateContext<S, E, T>> action) {
-        this(from, to, event, (ctx, payload) -> true, action);
+        this(from, to, event, null, action);
     }
 
-    public StateTransition(S from, S to, E event, BiPredicate<StateContext<S, E, T>, T> condition,Consumer<StateContext<S, E, T>> action) {
-        Assert.notNull(from, "new StateTransition时form不能为null");
-        Assert.notNull(to, "new StateTransition时to不能为null");
-        Assert.notNull(event, "new StateTransition时event不能为null");
-        Assert.notNull(condition, "new StateTransition时condition不能为null");
-        Assert.notNull(action, "new StateTransition时action不能为null");
+    public StateTransition(S from, S to, E event, BiPredicate<StateContext<S, E, T>, T> condition, Consumer<StateContext<S, E, T>> action) {
+        Assert.notNull(from, "The from cannot be null");
+        Assert.notNull(to, "The to cannot be null");
+        Assert.notNull(event, "The event cannot be null");
 
         this.from = from;
         this.to = to;
         this.event = event;
-        this.condition = condition;
-        this.action = action;
+
+        if (condition == null) {
+            this.condition = (ctx, payload) -> true;
+        } else {
+            this.condition = condition;
+        }
+
+        if (action == null) {
+            this.action = (c) -> {
+            };
+        } else {
+            this.action = action;
+        }
     }
 
 
@@ -89,8 +97,8 @@ public class StateTransition<S extends State, E extends Event, T> {
     /**
      * 判断状态机定义是否满足条件
      *
-     * @param state 当前状态
-     * @param event 当前时间
+     * @param state   当前状态
+     * @param event   当前时间
      * @param payload 负载
      * @return 是否
      */
@@ -105,76 +113,5 @@ public class StateTransition<S extends State, E extends Event, T> {
      */
     public void execute(StateContext<S, E, T> context) {
         action.accept(context);
-    }
-
-
-    public static <S extends State, E extends Event, T> Builder<S, E, T> builder() {
-        return new Builder<>();
-    }
-
-    /**
-     * 构建器
-     */
-    public static class Builder<S extends State, E extends Event, T> {
-        /**
-         * 起始状态。即从来哪里来
-         */
-        private S from;
-
-        /**
-         * 下一步状态。即到哪里去
-         */
-        private S to;
-
-        /**
-         * 从起始状态到下一步状态的过程中执行的事件。逻辑事件，非具体执行内容
-         */
-        private E event;
-
-        /**
-         * 条件判断，满足条件时才执行
-         */
-        private BiPredicate<StateContext<S, E, T>, T> condition = (ctx, p) -> true;
-
-        /**
-         * 具体执行的内容
-         */
-        private  Consumer<StateContext<S, E, T>> action;
-
-
-        public Builder<S, E, T> from(S state) {
-            Assert.notNull(state, "StateTransition.Builder时form不能为null");
-            this.from = state;
-            return this;
-        }
-
-        public Builder<S, E, T> to(S state) {
-            Assert.notNull(state, "StateTransition.Builder时to不能为null");
-            this.to = state;
-            return this;
-        }
-
-        public Builder<S, E, T> event(E event) {
-            Assert.notNull(event, "StateTransition.Builder时event不能为null");
-            this.event = event;
-            return this;
-        }
-
-
-        public Builder<S, E, T> condition(BiPredicate<StateContext<S, E, T>, T> condition) {
-            Assert.notNull(condition, "StateTransition.Builder时condition不能为null");
-            this.condition = condition;
-            return this;
-        }
-
-        public Builder<S, E, T> action(Consumer<StateContext<S, E, T>> action) {
-            Assert.notNull(action, "StateTransition.Builder时action不能为null");
-            this.action = action;
-            return this;
-        }
-
-        public StateTransition<S, E, T> build() {
-            return new StateTransition<>(from,to,event,condition,action);
-        }
     }
 }

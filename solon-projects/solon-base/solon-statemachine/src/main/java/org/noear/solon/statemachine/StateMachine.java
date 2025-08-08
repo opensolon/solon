@@ -47,7 +47,7 @@ public class StateMachine<S extends State, E extends Event, T> {
      * 添加状态转换规则
      */
     public void addTransition(StateTransition<S, E, T> transition) {
-        Assert.notNull(transition,"StateMachine.addTransition时transition不能为null");
+        Assert.notNull(transition, "The transition cannot be null");
         transitions.add(transition);
     }
 
@@ -55,8 +55,10 @@ public class StateMachine<S extends State, E extends Event, T> {
      * 执行
      */
     public S execute(S currentState, E event, T payload) {
-        Assert.notNull(currentState,"StateMachine.execute时currentState不能为null");
-        Assert.notNull(event,"StateMachine.execute时event不能为null");
+        Assert.notNull(currentState, "The currentState cannot be null");
+        Assert.notNull(event, "The currentState cannot be null");
+        Assert.notNull(event, "The payload cannot be null");
+
         LOCKER.lock();
 
         try {
@@ -64,10 +66,10 @@ public class StateMachine<S extends State, E extends Event, T> {
                 if (transition.matches(currentState, event, payload)) {
                     S to = transition.getTo();
                     transition.execute(new StateContext<>(currentState, to, event, payload));
-                    return currentState;
+                    return to;
                 }
             }
-            throw new IllegalStateException("无法从状态[" + currentState + "] 通过事件[" + event + "] 找到有效的状态机");
+            throw new IllegalStateException("Unable to transition from state '" + currentState + "' and event '" + event + "' to a valid new state");
         } finally {
             LOCKER.unlock();
         }
