@@ -15,6 +15,7 @@
  */
 package org.noear.solon.statemachine;
 
+import org.noear.solon.core.util.Assert;
 import org.noear.solon.lang.Preview;
 
 import java.util.ArrayList;
@@ -30,51 +31,43 @@ import java.util.concurrent.locks.ReentrantLock;
 @Preview("3.4")
 public class StateMachine<S extends State, E extends Event, T> {
     /**
-     * 当前状态
-     */
-    private S currentState;
-
-    /**
      * 转换器
-     *
      */
     private final List<StateTransition<S, E, T>> transitions = new ArrayList<>();
 
     /**
      * 同步锁
-     *
      */
     private final ReentrantLock LOCKER = new ReentrantLock();
 
-    public StateMachine(S initState) {
-        this.currentState = initState;
+    public StateMachine() {
     }
 
     /**
      * 添加状态转换规则
      */
     public void addTransition(StateTransition<S, E, T> transition) {
+        Assert.notNull(transition,"StateMachine.addTransition时transition不能为null");
         transitions.add(transition);
     }
 
     /**
      * 执行
-     *
      */
-    public boolean execute(E event, T payload) {
+    public S execute(S currentState, E event, T payload) {
+        Assert.notNull(currentState,"StateMachine.execute时currentState不能为null");
+        Assert.notNull(event,"StateMachine.execute时event不能为null");
         LOCKER.lock();
 
         try {
             for (StateTransition<S, E, T> transition : transitions) {
                 if (transition.matches(currentState, event, payload)) {
-                    S from = currentState;
                     S to = transition.getTo();
-                    currentState = to;
-                    transition.execute(new StateContext<>(from, to, event, payload));
-                    return true;
+                    transition.execute(new StateContext<>(currentState, to, event, payload));
+                    return currentState;
                 }
             }
-            return false;
+            throw new IllegalStateException("无法从状态[" + currentState + "] 通过事件[" + event + "] 找到有效的状态机");
         } finally {
             LOCKER.unlock();
         }
@@ -83,24 +76,7 @@ public class StateMachine<S extends State, E extends Event, T> {
     /**
      * 执行
      */
-    public boolean execute(E event) {
-        return execute(event, null);
-
-    }
-
-    /**
-     * 获取当前状态
-     *
-     */
-    public S getCurrentState() {
-        return currentState;
-    }
-
-    /**
-     * 重置状态
-     *
-     */
-    public void restore(S state) {
-        this.currentState = state;
+    public S execute(S currentState, E event) {
+        return execute(currentState, event, null);
     }
 }
