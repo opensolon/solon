@@ -46,6 +46,7 @@ public class RxSubscriberImpl implements Subscriber {
     }
 
     private Subscription subscription;
+
     @Override
     public void onSubscribe(Subscription subscription) {
         this.subscription = subscription;
@@ -77,10 +78,12 @@ public class RxSubscriberImpl implements Subscriber {
 
     @Override
     public void onError(Throwable e) {
-        completableEmitter.onError(e);
-
-        if(subscription != null) {
-            subscription.cancel();
+        try {
+            completableEmitter.onError(e);
+        } finally {
+            if (subscription != null) {
+                subscription.cancel();
+            }
         }
     }
 
