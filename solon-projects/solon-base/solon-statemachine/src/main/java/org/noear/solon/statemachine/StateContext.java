@@ -15,7 +15,6 @@
  */
 package org.noear.solon.statemachine;
 
-import org.noear.solon.core.util.Assert;
 import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Preview;
 
@@ -45,10 +44,6 @@ public class StateContext<S extends State, E extends Event, T> {
     private final T payload;
 
     public StateContext(S from, S to, @NonNull E event, T payload) {
-        Assert.notNull(from, "new StateContext时form不能为null");
-        Assert.notNull(to, "new StateContext时to不能为null");
-        Assert.notNull(event, "new StateContext时event不能为null");
-
         this.from = from;
         this.to = to;
         this.event = event;

@@ -18,6 +18,7 @@ package features.statemachine;
 
 import features.statemachine.enums.OrderEvent;
 import features.statemachine.enums.OrderState;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.Assert;
 import org.noear.solon.statemachine.StateMachine;
@@ -34,8 +35,8 @@ public class StatemachineTest {
 
         // 无 -> 创建订单
         stateMachine.addTransition(new StateTransition<>(OrderState.NONE, OrderState.CREATED, OrderEvent.CREATE,
-                (order) -> {
-                    Order payload = order.getPayload();
+                (ctx) -> {
+                    Order payload = ctx.getPayload();
                     payload.setStatus("已创建");
                     payload.setState(OrderState.CREATED);
                     System.out.println(payload);
@@ -44,8 +45,8 @@ public class StatemachineTest {
 
         // 创建 -> 支付
         stateMachine.addTransition(new StateTransition<>(OrderState.CREATED, OrderState.PAID, OrderEvent.PAY,
-                (order) -> {
-                    Order payload = order.getPayload();
+                (ctx) -> {
+                    Order payload = ctx.getPayload();
                     payload.setStatus("已支付");
                     payload.setState(OrderState.PAID);
                     System.out.println(payload);
@@ -54,8 +55,8 @@ public class StatemachineTest {
 
         // 支付 -> 发货
         stateMachine.addTransition(new StateTransition<>(OrderState.PAID, OrderState.SHIPPED, OrderEvent.SHIP,
-                (order) -> {
-                    Order payload = order.getPayload();
+                (ctx) -> {
+                    Order payload = ctx.getPayload();
                     payload.setStatus("已发货");
                     payload.setState(OrderState.SHIPPED);
                     System.out.println(payload);
@@ -65,8 +66,8 @@ public class StatemachineTest {
 
         // 发货 -> 送达
         stateMachine.addTransition(new StateTransition<>(OrderState.SHIPPED, OrderState.DELIVERED, OrderEvent.DELIVER,
-                (order) -> {
-                    Order payload = order.getPayload();
+                (ctx) -> {
+                    Order payload = ctx.getPayload();
                     payload.setStatus("已送达");
                     payload.setState(OrderState.DELIVERED);
                     System.out.println(payload);
@@ -84,90 +85,6 @@ public class StatemachineTest {
         stateMachine.execute(order2.getState(), OrderEvent.CREATE, order2);
         stateMachine.execute(order2.getState(), OrderEvent.PAY, order2);
         stateMachine.execute(order2.getState(), OrderEvent.SHIP, order2);
-        stateMachine.execute(order2.getState(), OrderEvent.DELIVER, order2);
-
-    }
-
-    /**
-     * 链式调用测试
-     */
-    @Test
-    public void dslTest() {
-        // 创建状态机实例
-        StateMachine<OrderState, OrderEvent, Order> stateMachine = new StateMachine<>();
-
-        // 无 -> 创建订单
-        stateMachine.addTransition(
-                StateTransition.<OrderState, OrderEvent, Order>builder()
-                        .from(OrderState.NONE)
-                        .to(OrderState.CREATED)
-                        .event(OrderEvent.CREATE)
-                        .action((order) -> {
-                            Order payload = order.getPayload();
-                            payload.setStatus("已创建");
-                            payload.setState(OrderState.CREATED);
-                            System.out.println(payload);
-                        })
-                        .build()
-        );
-
-        // 创建 -> 支付
-        stateMachine.addTransition(
-                StateTransition.<OrderState, OrderEvent, Order>builder()
-                        .from(OrderState.CREATED)
-                        .to(OrderState.PAID)
-                        .event(OrderEvent.PAY)
-                        .action((order) -> {
-                            Order payload = order.getPayload();
-                            payload.setStatus("已支付");
-                            payload.setState(OrderState.PAID);
-                            System.out.println(payload);
-                        })
-                        .build()
-        );
-
-        // 支付 -> 发货
-        stateMachine.addTransition(
-                StateTransition.<OrderState, OrderEvent, Order>builder()
-                        .from(OrderState.PAID)
-                        .to(OrderState.SHIPPED)
-                        .event(OrderEvent.SHIP)
-                        .action((order) -> {
-                            Order payload = order.getPayload();
-                            payload.setStatus("已发货");
-                            payload.setState(OrderState.SHIPPED);
-                            System.out.println(payload);
-                        })
-                        .build()
-        );
-
-
-        // 发货 -> 送达
-        stateMachine.addTransition(
-                StateTransition.<OrderState, OrderEvent, Order>builder()
-                        .from(OrderState.SHIPPED)
-                        .to(OrderState.DELIVERED)
-                        .event(OrderEvent.DELIVER)
-                        .action((order) -> {
-                            Order payload = order.getPayload();
-                            payload.setStatus("已送达");
-                            payload.setState(OrderState.DELIVERED);
-                            System.out.println(payload);
-                        })
-                        .build()
-        );
-
-        Order order = new Order("1", "iphone16 pro max", null, OrderState.NONE);
-        Order order2 = new Order("2", "iphone12 pro max", null, OrderState.NONE);
-
-        stateMachine.execute(order.getState(), OrderEvent.CREATE, order);
-        stateMachine.execute(order2.getState(), OrderEvent.CREATE, order2);
-        stateMachine.execute(order2.getState(), OrderEvent.PAY, order2);
-        stateMachine.execute(order.getState(), OrderEvent.PAY, order);
-        stateMachine.execute(order2.getState(), OrderEvent.SHIP, order2);
-        stateMachine.execute(order.getState(), OrderEvent.SHIP, order);
-        stateMachine.execute(order.getState(), OrderEvent.DELIVER, order);
-
         stateMachine.execute(order2.getState(), OrderEvent.DELIVER, order2);
 
     }
@@ -338,15 +255,17 @@ public class StatemachineTest {
     @Test
     public void normalNullFieldTest() {
         StateMachine<OrderState, OrderEvent, Order> stateMachine = new StateMachine<>();
-        stateMachine.addTransition(new StateTransition<>(null, OrderState.CREATED, OrderEvent.CREATE,
-                (order) -> {
-                    Order payload = order.getPayload();
-                    payload.setStatus("已创建");
-                    payload.setState(OrderState.CREATED);
-                    System.out.println(payload);
-                }
-        ));
 
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            stateMachine.addTransition(new StateTransition<>(null, OrderState.CREATED, OrderEvent.CREATE,
+                    (order) -> {
+                        Order payload = order.getPayload();
+                        payload.setStatus("已创建");
+                        payload.setState(OrderState.CREATED);
+                        System.out.println(payload);
+                    }
+            ));
+        });
     }
 
     /**
@@ -355,19 +274,15 @@ public class StatemachineTest {
     @Test
     public void dslNullFieldTest() {
         StateMachine<OrderState, OrderEvent, Order> stateMachine = new StateMachine<>();
-        stateMachine.addTransition(
-                StateTransition.<OrderState, OrderEvent, Order>builder()
-                        .from(OrderState.NONE)
-                        .to(null)
-                        .event(OrderEvent.CREATE)
-                        .action((order) -> {
-                            Order payload = order.getPayload();
-                            payload.setStatus("已创建");
-                            payload.setState(OrderState.CREATED);
-                            System.out.println(payload);
-                        })
-                        .build()
-        );
 
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            stateMachine.addTransition(new StateTransition<>(OrderState.NONE, null, OrderEvent.CREATE,
+                    ctx -> {
+                        Order payload = ctx.getPayload();
+                        payload.setStatus("已创建");
+                        payload.setState(OrderState.CREATED);
+                        System.out.println(payload);
+                    }));
+        });
     }
 }
