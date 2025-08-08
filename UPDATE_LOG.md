@@ -41,6 +41,8 @@
 * 优化 solon 在非容器模式下的兼容性
 * 优化 solon Context:returnValue 返回值处理查找
 * 优化 solon web contentTypeDoSet 处理（当 contentType 为空时，不加编码）
+* 优化 solon-net-httptuils 证书上下文改用 TLS （之前为 SSL）
+* 优化 solon-web-rx RxSubscriberImpl:onError 确保 subscription.cancel 有执行
 * 优化 solon-ai-core ChatRequestDescDefault http 异常转换描述
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
