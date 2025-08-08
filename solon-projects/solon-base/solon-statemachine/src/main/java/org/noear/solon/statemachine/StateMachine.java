@@ -21,11 +21,13 @@ import org.noear.solon.lang.Preview;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 /**
  * 状态机
  *
  * @author 王奇奇
+ * @author noear
  * @serial 3.4
  */
 @Preview("3.4")
@@ -46,39 +48,39 @@ public class StateMachine<S extends State, E extends Event, T> {
     /**
      * 添加状态转换规则
      */
-    public void addTransition(StateTransition<S, E, T> transition) {
-        Assert.notNull(transition, "The transition cannot be null");
-        transitions.add(transition);
+    public void addTransition(Consumer<StateTransitionDecl<S, E, T>> declaration) {
+        Assert.notNull(declaration, "The declaration cannot be null");
+
+        StateTransitionDecl<S, E, T> decl = new StateTransitionDecl<>();
+        declaration.accept(decl);
+        decl.check();
+
+        transitions.add(new StateTransition<>(decl));
     }
 
     /**
-     * 执行
+     * 发送事件
+     *
+     * @param event        事件
+     * @param eventContext 事件上下文
      */
-    public S execute(S currentState, E event, T payload) {
-        Assert.notNull(currentState, "The currentState cannot be null");
-        Assert.notNull(event, "The currentState cannot be null");
-        Assert.notNull(event, "The payload cannot be null");
+    public S sendEvent(E event, EventContext<S, T> eventContext) {
+        Assert.notNull(event, "The event cannot be null");
+        Assert.notNull(eventContext, "The eventContext cannot be null");
 
         LOCKER.lock();
 
         try {
             for (StateTransition<S, E, T> transition : transitions) {
-                if (transition.matches(currentState, event, payload)) {
+                if (transition.matches(event, eventContext)) {
                     S to = transition.getTo();
-                    transition.execute(new StateContext<>(currentState, to, event, payload));
+                    transition.execute(new StateTransitionContext<>(eventContext.getCurrentState(), to, event, eventContext.getPayload()));
                     return to;
                 }
             }
-            throw new IllegalStateException("Unable to transition from state '" + currentState + "' and event '" + event + "' to a valid new state");
+            throw new IllegalStateException("Unable to transition from state '" + eventContext.getCurrentState() + "' and event '" + event + "' to a valid new state");
         } finally {
             LOCKER.unlock();
         }
-    }
-
-    /**
-     * 执行
-     */
-    public S execute(S currentState, E event) {
-        return execute(currentState, event, null);
     }
 }

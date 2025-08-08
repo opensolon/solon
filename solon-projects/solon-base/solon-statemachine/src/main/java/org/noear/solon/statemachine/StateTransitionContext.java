@@ -19,13 +19,13 @@ import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Preview;
 
 /**
- * 状态机上下文，保存状态转换相关信息
+ * 状态转换上下文（保存状态转换相关信息）
  *
  * @author 王奇奇
  * @serial 3.4
  */
 @Preview("3.4")
-public class StateContext<S extends State, E extends Event, T> {
+public class StateTransitionContext<S extends State, E extends Event, T> {
     /**
      * 起始状态。即从来哪里来
      */
@@ -43,7 +43,7 @@ public class StateContext<S extends State, E extends Event, T> {
      */
     private final T payload;
 
-    public StateContext(S from, S to, @NonNull E event, T payload) {
+    public StateTransitionContext(S from, S to, @NonNull E event, T payload) {
         this.from = from;
         this.to = to;
         this.event = event;

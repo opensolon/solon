@@ -1,8 +1,9 @@
 package features.statemachine;
 
 import features.statemachine.enums.OrderState;
+import org.noear.solon.statemachine.EventContext;
 
-public class Order {
+public class Order implements EventContext<OrderState, Order> {
     private String id;
     private String productName;
     private String status;
@@ -48,6 +49,16 @@ public class Order {
 
     public void setState(OrderState state) {
         this.state = state;
+    }
+
+    @Override
+    public OrderState getCurrentState() {
+        return getState();
+    }
+
+    @Override
+    public Order getPayload() {
+        return this;
     }
 
     @Override
