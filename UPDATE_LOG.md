@@ -31,7 +31,7 @@
 
 ### 3.4.3
 
-* 新增 solon-statemachine 插件
+* 新增 solon-statemachine （状态机）插件与 solon-flow 互补（不同场景，按需选择）
 * 新增 solon-cache 插件（从 solon-data 分离出来，方便更小单位的依赖）
 * 新增 solon-ai-repo-mysql 插件
 * 添加 solon-net-httputils HttpResponse:createError() 方法
@@ -41,7 +41,7 @@
 * 优化 solon 在非容器模式下的兼容性
 * 优化 solon Context:returnValue 返回值处理查找
 * 优化 solon web contentTypeDoSet 处理（当 contentType 为空时，不加编码）
-* 优化 solon-net-httptuils 证书上下文改用 TLS （之前为 SSL）
+* 优化 solon-net-httputils HttpSslSupplierDefault 改用 SSLContext.getDefault 作为默认
 * 优化 solon-web-rx RxSubscriberImpl:onError 确保 subscription.cancel 有执行
 * 优化 solon-ai-core ChatRequestDescDefault http 异常转换描述
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
