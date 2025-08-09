@@ -108,7 +108,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         if (future == null) {
             return request(_builder, method);
         } else {
-            dispatcher.getExecutorService().submit(() -> {
+            dispatcher.getDispatcher().submit(() -> {
                 try {
                     HttpResponse resp = request(_builder, method);
                     future.complete(resp);

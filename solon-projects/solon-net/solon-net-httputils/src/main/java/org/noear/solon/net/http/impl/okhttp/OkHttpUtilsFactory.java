@@ -16,7 +16,6 @@
 package org.noear.solon.net.http.impl.okhttp;
 
 import com.moczul.ok2curl.CurlInterceptor;
-import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.net.http.HttpSslSupplier;
@@ -27,10 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.Proxy;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 /**
  * Http 工具工厂 OkHttp 实现
@@ -41,19 +37,18 @@ import java.util.function.Supplier;
 public class OkHttpUtilsFactory implements HttpUtilsFactory {
     static final Logger log = LoggerFactory.getLogger(OkHttpUtilsFactory.class);
 
-    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
-        Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(20000);
-        temp.setMaxRequestsPerHost(10000);
-        return temp;
-    };
+    private static OkHttpDispatcher dispatcher = new OkHttpDispatcher();
 
     private static OkHttpClient createHttpClient(Proxy proxy, HttpSslSupplier sslProvider) {
+        if (sslProvider == null) {
+            sslProvider = HttpSslSupplierDefault.getInstance();
+        }
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
-                .dispatcher(httpClientDispatcher.get())
+                .dispatcher(dispatcher.getDispatcher())
                 .addInterceptor(OkHttpInterceptor.instance)
                 .sslSocketFactory(sslProvider.getSslContext().getSocketFactory(), sslProvider.getX509TrustManager())
                 .hostnameVerifier(sslProvider.getHostnameVerifier());
@@ -82,15 +77,13 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
     }
 
     /// ////////
-
-    private Map<Proxy, OkHttpClient> proxyClients = new ConcurrentHashMap<>();
-    private OkHttpClient defaultClient = createHttpClient(null, HttpSslSupplierDefault.getInstance());
+    private OkHttpClient defaultClient = createHttpClient(null, null);
 
     protected OkHttpClient getClient(Proxy proxy, HttpSslSupplier sslProvider) {
-        if (proxy == null) {
+        if (proxy == null && sslProvider == null) {
             return defaultClient;
         } else {
-            return proxyClients.computeIfAbsent(proxy, k -> createHttpClient(proxy, sslProvider));
+            return createHttpClient(proxy, sslProvider);
         }
     }
 
