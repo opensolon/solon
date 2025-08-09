@@ -17,6 +17,7 @@ package org.noear.solon.net.http.impl.okhttp;
 
 import com.moczul.ok2curl.CurlInterceptor;
 import okhttp3.OkHttpClient;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.net.http.HttpSslSupplier;
 import org.noear.solon.net.http.HttpUtils;
@@ -35,11 +36,18 @@ import java.util.concurrent.TimeUnit;
  * @since 3.0
  */
 public class OkHttpUtilsFactory implements HttpUtilsFactory {
-    static final Logger log = LoggerFactory.getLogger(OkHttpUtilsFactory.class);
+    private static final OkHttpUtilsFactory instance = new OkHttpUtilsFactory();
 
-    private static OkHttpDispatcher dispatcher = new OkHttpDispatcher();
+    public static OkHttpUtilsFactory getInstance() {
+        return instance;
+    }
 
-    private static OkHttpClient createHttpClient(Proxy proxy, HttpSslSupplier sslProvider) {
+    /// ////////
+
+    protected static final Logger log = LoggerFactory.getLogger(OkHttpUtilsFactory.class);
+    protected static OkHttpDispatcher dispatcher = new OkHttpDispatcher();
+
+    protected OkHttpClient createHttpClient(Proxy proxy, HttpSslSupplier sslProvider) {
         if (sslProvider == null) {
             sslProvider = HttpSslSupplierDefault.getInstance();
         }
@@ -69,18 +77,21 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
     }
 
     /// ////////
-
-    private static final OkHttpUtilsFactory instance = new OkHttpUtilsFactory();
-
-    public static OkHttpUtilsFactory getInstance() {
-        return instance;
-    }
-
-    /// ////////
-    private OkHttpClient defaultClient = createHttpClient(null, null);
+    protected OkHttpClient defaultClient;
 
     protected OkHttpClient getClient(Proxy proxy, HttpSslSupplier sslProvider) {
         if (proxy == null && sslProvider == null) {
+            if (defaultClient == null) {
+                Utils.locker().lock();
+                try {
+                    if (defaultClient == null) {
+                        defaultClient = createHttpClient(null, null);
+                    }
+                } finally {
+                    Utils.locker().unlock();
+                }
+            }
+
             return defaultClient;
         } else {
             return createHttpClient(proxy, sslProvider);
