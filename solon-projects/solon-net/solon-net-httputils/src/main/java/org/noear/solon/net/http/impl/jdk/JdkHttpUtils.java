@@ -75,7 +75,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         if (_builder instanceof HttpsURLConnection) {
             //调整 ssl
             HttpsURLConnection tmp = ((HttpsURLConnection) _builder);
-            tmp.setSSLSocketFactory(_sslSupplier.getSslContext().getSocketFactory());
+            tmp.setSSLSocketFactory(_sslSupplier.getSocketFactory());
             tmp.setHostnameVerifier(_sslSupplier.getHostnameVerifier());
         }
 

@@ -17,6 +17,7 @@ package org.noear.solon.net.http;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
@@ -30,6 +31,13 @@ public interface HttpSslSupplier {
      * 获取证书上下文
      */
     SSLContext getSslContext();
+
+    /**
+     * 获取证书套接字工厂
+     */
+    default SSLSocketFactory getSocketFactory() {
+        return getSslContext().getSocketFactory();
+    }
 
     /**
      * 获取域名的核对机
