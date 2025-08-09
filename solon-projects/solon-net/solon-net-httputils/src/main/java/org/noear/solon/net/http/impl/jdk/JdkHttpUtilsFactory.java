@@ -33,7 +33,7 @@ public class JdkHttpUtilsFactory implements HttpUtilsFactory {
 
     /// ////////
 
-    private static JdkHttpDispatcher dispatcher = new JdkHttpDispatcher();
+    protected static JdkHttpDispatcher dispatcher = new JdkHttpDispatcher();
 
     public JdkHttpDispatcher getDispatcher() {
         return dispatcher;
