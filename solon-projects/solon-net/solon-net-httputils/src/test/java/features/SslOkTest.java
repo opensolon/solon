@@ -1,8 +1,12 @@
 package features;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.net.http.HttpException;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.okhttp.OkHttpUtilsFactory;
+
+import java.io.IOException;
 
 /**
  * @author noear 2024/10/4 created
@@ -12,6 +16,16 @@ public class SslOkTest {
         return OkHttpUtilsFactory.getInstance().http(url);
     }
 
+    @Test
+    public void caseSslError() {
+        HttpException exception = Assertions.assertThrows(HttpException.class, () -> {
+            http("https://www.baidu.com").ssl(new SslErrorSupplier()).get();
+        });
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            throw exception.getCause();
+        });
+    }
 
     @Test
     public void case11() throws Exception {
