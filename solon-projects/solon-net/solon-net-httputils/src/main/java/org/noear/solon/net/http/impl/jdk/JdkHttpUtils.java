@@ -51,26 +51,57 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         METHODS_NOBODY.add("OPTIONS");
     }
 
-    private JdkHttpDispatcher dispatcher;
+    protected static final JdkHttpDispatcherLoader dispatcherLoader = new JdkHttpDispatcherLoader(); //这是连接池定义
 
-    public JdkHttpUtils(JdkHttpUtilsFactory factory, String url) {
+    public JdkHttpUtils(String url) {
         super(url);
-        this.dispatcher = factory.getDispatcher();
     }
 
     @Override
     protected HttpResponse execDo(String _method, CompletableFuture<HttpResponse> future) throws IOException {
+        String method = _method.toUpperCase();
+        String newUrl = urlRebuild(method, _url, _charset);
+
+        HttpURLConnection _client =  getClient(newUrl);
+
+        if (_headers != null) {
+            for (KeyValues<String> kv : _headers) {
+                for (String val : kv.getValues()) {
+                    _client.addRequestProperty(kv.getKey(), val);
+                }
+            }
+        }
+
+        if (_cookies != null) {
+            _client.setRequestProperty("Cookie", getRequestCookieString(_cookies));
+        }
+
+        _client.setRequestMethod(method);
+        _client.setUseCaches(false);
+        _client.setDoInput(true);
+
+        if (future == null) {
+            return request(_client, method);
+        } else {
+            dispatcherLoader.getDispatcher().submit(() -> {
+                try {
+                    HttpResponse resp = request(_client, method);
+                    future.complete(resp);
+                } catch (IOException | RuntimeException e) {
+                    future.completeExceptionally(e);
+                }
+            });
+
+            return null;
+        }
+    }
+
+    protected HttpURLConnection getClient(String newUrl) throws IOException {
         if (_sslSupplier == null) {
             _sslSupplier = HttpSslSupplierDefault.getInstance();
         }
 
-
-        final String method = _method.toUpperCase();
-        final String newUrl = urlRebuild(method, _url, _charset);
-
         HttpURLConnection _builder = openConnection(newUrl);
-
-        _builder.setUseCaches(false);
 
         if (_builder instanceof HttpsURLConnection) {
             //调整 ssl
@@ -90,35 +121,7 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
             }
         }
 
-        if (_headers != null) {
-            for (KeyValues<String> kv : _headers) {
-                for (String val : kv.getValues()) {
-                    _builder.addRequestProperty(kv.getKey(), val);
-                }
-            }
-        }
-
-        if (_cookies != null) {
-            _builder.setRequestProperty("Cookie", getRequestCookieString(_cookies));
-        }
-
-        _builder.setRequestMethod(method);
-        _builder.setDoInput(true);
-
-        if (future == null) {
-            return request(_builder, method);
-        } else {
-            dispatcher.getDispatcher().submit(() -> {
-                try {
-                    HttpResponse resp = request(_builder, method);
-                    future.complete(resp);
-                } catch (IOException | RuntimeException e) {
-                    future.completeExceptionally(e);
-                }
-            });
-
-            return null;
-        }
+        return _builder;
     }
 
     protected HttpURLConnection openConnection(String newUrl) throws IOException {

@@ -27,6 +27,8 @@
 
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
+* 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
+* 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
 
 
 ### 3.4.3
