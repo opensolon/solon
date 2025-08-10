@@ -1,6 +1,5 @@
 package demo.httputils;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.net.http.HttpExtension;
 import org.noear.solon.net.http.HttpSslSupplier;
@@ -23,7 +22,7 @@ public class HttpSslExtensionDemo extends HttpSslSupplierDefault implements Http
     }
 
     @Override
-    public SSLSocketFactory getSocketFactory() {
-        return (SSLSocketFactory) SSLSocketFactory.getDefault();
+    public SSLContext getSslContext() {
+        return getAnySslContext();
     }
 }
