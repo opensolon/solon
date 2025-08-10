@@ -30,7 +30,7 @@
 * 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
 * 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
 * 调整 solon 启动后 Lifecycle:postStart 可在加入时直接执行
-* liquor 升为 1.5.9
+* liquor 升为 1.6.0 （兼容 arm jdk）
 
 
 ### 3.4.3
