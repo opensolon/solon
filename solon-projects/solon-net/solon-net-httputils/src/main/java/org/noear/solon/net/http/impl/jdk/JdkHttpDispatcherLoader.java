@@ -21,12 +21,12 @@ import org.noear.solon.core.util.NamedThreadFactory;
 import java.util.concurrent.*;
 
 /**
- * Http 调度器
+ * Http 调度加载器（用于懒加载）
  *
  * @author noear
  * @since 3.3
  */
-public class JdkHttpDispatcher {
+public class JdkHttpDispatcherLoader {
     private ExecutorService dispatcher;
 
     public ExecutorService getDispatcher() {

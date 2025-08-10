@@ -19,11 +19,12 @@ import okhttp3.Dispatcher;
 import org.noear.solon.Utils;
 
 /**
- * Http 调度器
- * @author noear 2025/8/9 created
+ * Http 调度加载器（用于懒加载）
+ *
+ * @author noear
  * @since 3.4
  */
-public class OkHttpDispatcher {
+public class OkHttpDispatcherLoader {
     private Dispatcher dispatcher;
 
     public Dispatcher getDispatcher() {

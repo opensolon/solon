@@ -15,19 +15,8 @@
  */
 package org.noear.solon.net.http.impl.okhttp;
 
-import com.moczul.ok2curl.CurlInterceptor;
-import okhttp3.OkHttpClient;
-import org.noear.solon.Utils;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.net.http.HttpSslSupplier;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.HttpUtilsFactory;
-import org.noear.solon.net.http.impl.HttpSslSupplierDefault;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.Proxy;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Http 工具工厂 OkHttp 实现
@@ -42,66 +31,8 @@ public class OkHttpUtilsFactory implements HttpUtilsFactory {
         return instance;
     }
 
-    /// ////////
-
-    protected static final Logger log = LoggerFactory.getLogger(OkHttpUtilsFactory.class);
-    protected static OkHttpDispatcher dispatcher = new OkHttpDispatcher();
-
-    protected OkHttpClient createHttpClient(Proxy proxy, HttpSslSupplier sslProvider) {
-        if (sslProvider == null) {
-            sslProvider = HttpSslSupplierDefault.getInstance();
-        }
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .dispatcher(dispatcher.getDispatcher())
-                .addInterceptor(OkHttpInterceptor.instance)
-                .sslSocketFactory(sslProvider.getSocketFactory(), sslProvider.getX509TrustManager())
-                .hostnameVerifier(sslProvider.getHostnameVerifier());
-
-
-        if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
-            builder.addInterceptor(new CurlInterceptor(msg -> {
-                log.debug(msg);
-            }));
-        }
-
-
-        if (proxy != null) {
-            builder.proxy(proxy);
-        }
-
-        return builder.build();
-    }
-
-    /// ////////
-    protected OkHttpClient defaultClient;
-
-    protected OkHttpClient getClient(Proxy proxy, HttpSslSupplier sslProvider) {
-        if (proxy == null && sslProvider == null) {
-            if (defaultClient == null) {
-                Utils.locker().lock();
-                try {
-                    if (defaultClient == null) {
-                        defaultClient = createHttpClient(null, null);
-                    }
-                } finally {
-                    Utils.locker().unlock();
-                }
-            }
-
-            return defaultClient;
-        } else {
-            return createHttpClient(proxy, sslProvider);
-        }
-    }
-
-    /// ////////
-
     @Override
     public HttpUtils http(String url) {
-        return new OkHttpUtils(this, url);
+        return new OkHttpUtils(url);
     }
 }
