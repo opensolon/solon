@@ -41,17 +41,21 @@ public class JavaWsPlugin implements Plugin {
     }
 
     @Override
-    public void start(AppContext context) {
+    public void start(AppContext context) throws Throwable {
         if (context.app().enableWebSocket() == false) {
             return;
         }
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
-            @Override
-            public void postStart() throws Throwable {
-                start0(context);
-            }
-        });
+        if (context.isStarted()) {
+            start0(context);
+        } else {
+            context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+                @Override
+                public void postStart() throws Throwable {
+                    start0(context);
+                }
+            });
+        }
     }
 
     private void start0(AppContext context) throws Throwable {

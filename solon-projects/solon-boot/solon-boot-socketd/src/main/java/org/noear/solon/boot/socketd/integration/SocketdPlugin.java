@@ -50,12 +50,16 @@ public class SocketdPlugin implements Plugin {
             return;
         }
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
-            @Override
-            public void postStart() throws Throwable {
-                start0(context);
-            }
-        });
+        if (context.isStarted()) {
+            start0(context);
+        } else {
+            context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+                @Override
+                public void postStart() throws Throwable {
+                    start0(context);
+                }
+            });
+        }
     }
 
     private void start0(AppContext context) throws Throwable {
