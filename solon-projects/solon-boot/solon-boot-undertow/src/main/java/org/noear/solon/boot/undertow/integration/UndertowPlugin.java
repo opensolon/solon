@@ -47,7 +47,7 @@ public final class UndertowPlugin implements Plugin {
     }
 
     @Override
-    public void start(AppContext context) {
+    public void start(AppContext context) throws Throwable {
         if (context.app().enableHttp() == false) {
             return;
         }
@@ -59,12 +59,16 @@ public final class UndertowPlugin implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
-            @Override
-            public void postStart() throws Throwable {
-                start0(context);
-            }
-        });
+        if (context.isStarted()) {
+            start0(context);
+        } else {
+            context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, new LifecycleBean() {
+                @Override
+                public void postStart() throws Throwable {
+                    start0(context);
+                }
+            });
+        }
     }
 
     private void start0(AppContext context) throws Throwable {
