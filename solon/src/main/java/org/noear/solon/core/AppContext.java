@@ -1118,8 +1118,13 @@ public class AppContext extends BeanContainer {
         lifecycleBeans.add(new RankEntity<>(lifecycle, index, priority));
 
         if (isStarting()) {
-            //如果已启动，则执行启动函数
+            //如果开始启动了，则执行启动函数
             RunUtil.runOrThrow(lifecycle::start);
+        }
+
+        if (isStarted()) {
+            //如果启动完成了，则执行启动提交函数
+            RunUtil.runOrThrow(lifecycle::postStart);
         }
     }
 
