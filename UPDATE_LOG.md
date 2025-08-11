@@ -27,6 +27,8 @@
 
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
+* 调整 solon-boot-* 更名为 solon-server-* ???
+* 
 * 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
 * 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
 * 调整 solon 启动后 Lifecycle:postStart 可在加入时直接执行
@@ -38,9 +40,13 @@
 * 新增 solon-statemachine （状态机）插件与 solon-flow 互补（不同场景，按需选择）
 * 新增 solon-cache 插件（从 solon-data 分离出来，方便更小单位的依赖）
 * 新增 solon-ai-repo-mysql 插件
+* 新增 solon-flow iterator 循环网关（`$for`,`$in`）
+* 新增 solon-flow activity 节点流入流出模式（`$imode`,`$omode`），且于二次定制开发
 * 添加 solon-net-httputils HttpResponse:createError() 方法
 * 添加 solon-web-sse SseEmitter:error 方法
 * 添加 solon-flow ChainInterceptor:onNodeStart, onNodeEnd 方法（扩展拦截的能力）
+* 添加 solon-flow 操作：Operation.BACK_JUMP, FORWARD_JUMP
+* 添加 solon-ai-core InMemoryChatSession（语义清晰） 替代 ChatSessionDefault（标为弃用）
 * 优化 solon DateUtil 的兼容性，兼容 `2025-07-23 08:12:33.0`
 * 优化 solon 在非容器模式下的兼容性
 * 优化 solon Context:returnValue 返回值处理查找
@@ -48,8 +54,12 @@
 * 优化 solon-net-httputils HttpSslSupplierDefault 改用 SSLContext.getDefault 作为默认
 * 优化 solon-web-rx RxSubscriberImpl:onError 确保 subscription.cancel 有执行
 * 优化 solon-ai-core ChatRequestDescDefault http 异常转换描述
+* 优化 solon-ai-core 方言的 tool_calls 消息的构建（更好的兼容 vllm）
 * 优化 solon-ai-mcp JsonSchema.additionalProperties 兼容性（兼容 bool, map）
 * 优化 solon-ai-mcp McpClientProvider 改为 McpAsyncClient（为异常需求提供支持）
+* 优化 solon-ai-mcp 初始化控制（禁用 connectOnInit），增加连接打印
+* 优化 file-s3-solon-cloud-plugin 文件分隔符处理（兼容 window 分隔符）
+* 优化 local-solon-cloud-plugin 文件分隔符处理（兼容 window 分隔符）
 * snack3 升为 3.2.137
 * fastjson2 升为 2.0.58
 * wood 升为 1.3.25
@@ -97,7 +107,7 @@
 * liquor 升为 1.5.8
 * wood 升为 1.3.24
 
-### 3.4.0
+### 3.4.0 (2025-07-07)
 
 * 插件 solon-flow stateful 二次预览
 * 新增 solon-ai-repo-opensearch 插件
@@ -265,7 +275,7 @@
 * smart-http 升为 2.5.12
 
 
-### 3.3.0
+### 3.3.0 (2025-05-10)
 
 * 新增 solon-ai-repo-dashvector 插件
 * 新增 seata-solon-plugin 插件
@@ -350,7 +360,7 @@
 * lombok 升为 1.18.38
 * vertx 升为 4.5.14
 
-### 3.2.0
+### 3.2.0 (2025-04-17)
 
 * 新增 solon-ai-mcp 插件（支持多端点）
 * 插件 solon-flow 三次预览
@@ -487,7 +497,7 @@
 * folkmq 升为 1.7.11
 * beetlsql 升为 3.31-RELEASE
 
-### v3.1.0
+### v3.1.0 (2025-03-05)
 * 新增 solon-ai 插件
 * 新增 solon-ai-repo-milvus 插件
 * 新增 solon-ai-repo-redis 插件
