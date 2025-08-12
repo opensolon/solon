@@ -18,18 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-net</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>socketd</artifactId>
-            <version>${socketd.version}</version>
+            <artifactId>solon-server-socketd</artifactId>
         </dependency>
     </dependencies>
 
