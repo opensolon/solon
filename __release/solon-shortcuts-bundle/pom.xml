@@ -36,7 +36,6 @@
 
         <module>../../solon-projects/solon-web_old/solon.web.staticfiles</module>
         <module>../../solon-projects/solon-web_old/solon.web.servlet</module>
-        <module>../../solon-projects/solon-web_old/solon.web.servlet.jakarta</module>
         <module>../../solon-projects/solon-web_old/solon.web.cors</module>
         <module>../../solon-projects/solon-web_old/solon.web.stop</module>
         <module>../../solon-projects/solon-web_old/solon.web.sdl</module>
