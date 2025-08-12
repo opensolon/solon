@@ -43,10 +43,6 @@
         <module>../../solon-projects/solon-server/solon-server-jetty-add-websocket</module>
         <module>../../solon-projects/solon-server/solon-server-socketd</module>
 
-        <module>../../solon-projects/solon-testing/solon-test</module>
-        <module>../../solon-projects/solon-testing/solon-test-junit4</module>
-        <module>../../solon-projects/solon-testing/solon-test-junit5</module>
-
         <module>../../solon-projects/solon-boot_old/solon.boot</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.jdkhttp</module>
         <module>../../solon-projects/solon-boot_old/solon.boot.smarthttp</module>
