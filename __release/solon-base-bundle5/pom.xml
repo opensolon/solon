@@ -46,5 +46,9 @@
 
         <module>../../solon-projects/solon-net_old/solon.net</module>
         <module>../../solon-projects/solon-net_old/solon.net.httputils</module>
+
+        <module>../../solon-projects/solon-testing/solon-test</module>
+        <module>../../solon-projects/solon-testing/solon-test-junit4</module>
+        <module>../../solon-projects/solon-testing/solon-test-junit5</module>
     </modules>
 </project>
