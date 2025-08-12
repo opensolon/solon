@@ -275,62 +275,62 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-socketd</artifactId>
+            <artifactId>solon-server-socketd</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-websocket</artifactId>
+            <artifactId>solon-server-websocket</artifactId>
         </dependency>
 
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon-boot-websocket-netty</artifactId>-->
+        <!--            <artifactId>solon-server-websocket-netty</artifactId>-->
         <!--        </dependency>-->
 
 
         <!--                    <dependency>-->
         <!--                        <groupId>org.noear</groupId>-->
-        <!--                        <artifactId>solon-boot-jdkhttp</artifactId>-->
+        <!--                        <artifactId>solon-server-jdkhttp</artifactId>-->
         <!--                    </dependency>-->
 
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-smarthttp</artifactId>
+            <artifactId>solon-server-smarthttp</artifactId>
         </dependency>
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon-boot-vertx</artifactId>-->
+        <!--            <artifactId>solon-server-vertx</artifactId>-->
         <!--        </dependency>-->
 
 
         <!--                <dependency>-->
         <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-boot-undertow</artifactId>-->
+        <!--                    <artifactId>solon-server-undertow</artifactId>-->
         <!--                </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-boot-undertow-add-jsp</artifactId>-->
+        <!--                    <artifactId>solon-server-undertow-add-jsp</artifactId>-->
         <!--                </dependency>-->
 
 
         <!--                <dependency>-->
         <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-boot-jetty</artifactId>-->
+        <!--                    <artifactId>solon-server-jetty</artifactId>-->
         <!--                </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-boot-jetty-add-websocket</artifactId>-->
+        <!--                    <artifactId>solon-server-jetty-add-websocket</artifactId>-->
         <!--                </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.noear</groupId>-->
-        <!--                    <artifactId>solon-boot-jetty-add-jsp</artifactId>-->
+        <!--                    <artifactId>solon-server-jetty-add-jsp</artifactId>-->
         <!--                </dependency>-->
 
 

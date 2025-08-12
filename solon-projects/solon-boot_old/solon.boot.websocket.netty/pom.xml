@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-websocket-netty</artifactId>
+            <artifactId>solon-server-websocket-netty</artifactId>
         </dependency>
     </dependencies>
 

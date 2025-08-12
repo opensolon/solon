@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
+            <artifactId>solon-server</artifactId>
         </dependency>
     </dependencies>
 

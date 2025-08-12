@@ -11,37 +11,40 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-boot-tomcat</artifactId>
+    <artifactId>solon-server-tomcat-add-jsp</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.web.servlet</artifactId>
-        </dependency>
-
-        <!-- server core begin -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <!-- server core end -->
-
-        <!--jsp started-->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>${tomcat.version}</version>
-            <scope>provided</scope>
         </dependency>
-        <!--jsp ended -->
+
+      <!--  <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper-el</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
     </dependencies>
 
 

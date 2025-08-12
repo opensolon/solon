@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-jetty-add-jsp</artifactId>
+            <artifactId>solon-server-jetty-add-jsp</artifactId>
         </dependency>
     </dependencies>
 

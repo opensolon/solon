@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot-smarthttp</artifactId>
+            <artifactId>solon-server-smarthttp</artifactId>
         </dependency>
     </dependencies>
 </project>

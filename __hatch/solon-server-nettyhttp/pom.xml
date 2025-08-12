@@ -11,8 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.hatch</groupId>
-    <artifactId>solon-boot-reactor-netty</artifactId>
+    <artifactId>solon-server-nettyhttp</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
@@ -23,9 +22,17 @@
         </dependency>
 
         <dependency>
-            <groupId>io.projectreactor.netty</groupId>
-            <artifactId>reactor-netty-http</artifactId>
-            <version>${reactor-netty-http.version}</version>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
+
 </project>
