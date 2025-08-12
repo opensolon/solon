@@ -178,19 +178,10 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 throw new IOException("Redirect location header unfound, original url: " + _url);
             }
 
-            _url = location;
+            _url = getLocationUrl(_url, location);
 
             return execDo(method, null);
         } else {
-            if (statusCode == 404) {
-                //增加 404 跳转
-                String location = _builder.getHeaderField("Location");
-                if (Utils.isNotEmpty(location)) {
-                    _url = location;
-
-                    return execDo(method, null);
-                }
-            }
 
             return new JdkHttpResponse(this, statusCode, _builder);
         }
