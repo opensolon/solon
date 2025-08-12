@@ -757,19 +757,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-web-servlet-jakarta</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon-web-webservices</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-web-webservices-jakarta</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -868,11 +856,6 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon-logging-logback</artifactId>
                 <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-logging-logback-jakarta</artifactId>
-                <version>${solon-jakarta.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
@@ -2252,11 +2235,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.servlet.jakarta</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.web.sse</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -2272,6 +2250,35 @@
             </dependency>
 
             <!-- old plugins:: end -->
+
+
+            <!-- jakarta plugins:: start -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-servlet-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-web-webservices-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-logging-logback-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.servlet.jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <!-- jakarta plugins:: end -->
         </dependencies>
     </dependencyManagement>
 
