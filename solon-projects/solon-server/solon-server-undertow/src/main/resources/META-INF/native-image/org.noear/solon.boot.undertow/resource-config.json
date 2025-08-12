@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "javax/servlet/LocalStrings.*\\.properties"
+      },
+      {
+        "pattern": "javax/servlet/http/LocalStrings.*\\.properties"
+      }
+    ]
+  }
+}

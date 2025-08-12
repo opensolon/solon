@@ -341,73 +341,73 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot</artifactId>
+                <artifactId>solon-server</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-jdkhttp</artifactId>
+                <artifactId>solon-server-jdkhttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-smarthttp</artifactId>
+                <artifactId>solon-server-smarthttp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-vertx</artifactId>
+                <artifactId>solon-server-vertx</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-jetty</artifactId>
+                <artifactId>solon-server-jetty</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-jetty-add-jsp</artifactId>
+                <artifactId>solon-server-jetty-add-jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-jetty-add-websocket</artifactId>
+                <artifactId>solon-server-jetty-add-websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-undertow</artifactId>
+                <artifactId>solon-server-undertow</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-undertow-add-jsp</artifactId>
+                <artifactId>solon-server-undertow-add-jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-websocket</artifactId>
+                <artifactId>solon-server-websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-websocket-netty</artifactId>
+                <artifactId>solon-server-websocket-netty</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-boot-socketd</artifactId>
+                <artifactId>solon-server-socketd</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -1780,6 +1780,78 @@
 
 
             <!-- old plugins:: start -->
+            <!-- old::boot -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jdkhttp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-smarthttp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-vertx</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty-add-jsp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-jetty-add-websocket</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-undertow</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-undertow-add-jsp</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-websocket</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-websocket-netty</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-boot-socketd</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
 
             <!-- old::nami -->
             <dependency>
