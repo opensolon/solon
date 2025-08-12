@@ -222,7 +222,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 throw new IOException("Redirect location header unfound, original url: " + _url);
             }
 
-            _url = location;
+            _url = getLocationUrl(_url, location);
 
             return execDo(method, null);
         } else {

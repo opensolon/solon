@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Proxy;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -630,8 +631,39 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return responseCode == 301
                 || responseCode == 302
                 || responseCode == 303
-                || responseCode == 307
+                || responseCode == 307 //307和308是RFC 7538中http 1.1定义的规范
                 || responseCode == 308;
 
+    }
+
+    /**
+     * 获取转发的新地址
+     *
+     * @param refererUrl 参考URL
+     * @param location   定位地址
+     */
+    public static String getLocationUrl(final String refererUrl, String location) {
+        final String redirectUrl;
+        if (location.contains("://") == false) {
+            URI refererUri = URI.create(refererUrl);
+
+            if (location.startsWith("/") == false) {
+                // 可能是相对路径
+                String refererPath = refererUri.getPath();
+                if (refererPath.endsWith("/") == false) {
+                    //定位到目录
+                    int tmp = refererPath.lastIndexOf('/');
+                    refererPath = refererPath.substring(0, tmp + 1);
+                }
+
+                location = refererPath + location;
+            }
+
+            redirectUrl = refererUri.getScheme() + "://" + refererUri.getAuthority() + location;
+        } else {
+            redirectUrl = location;
+        }
+
+        return redirectUrl;
     }
 }
