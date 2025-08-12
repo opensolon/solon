@@ -1,0 +1,96 @@
+{
+  "properties": [
+    {
+      "name": "server.http.name",
+      "type": "java.lang.String",
+      "description": "服务 http 信号名称"
+    },
+    {
+      "name": "server.http.port",
+      "type": "java.lang.Integer",
+      "description": "服务 http 信号端口"
+    },
+    {
+      "name": "server.http.host",
+      "type": "java.lang.String",
+      "description": "服务 http 信号主机"
+    },
+    {
+      "name": "server.http.wrapPort",
+      "type": "java.lang.Integer",
+      "description": "服务 http 信号包装端口"
+    },
+    {
+      "name": "server.http.wrapHost",
+      "type": "java.lang.String",
+      "description": "服务 http 信号包装主机"
+    },
+    {
+      "name": "server.http.coreThreads",
+      "type": "java.lang.Object",
+      "description": "服务 http 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.http.maxThreads",
+      "type": "java.lang.Object",
+      "description": "服务 http 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.http.idleTimeout",
+      "type": "java.lang.Object",
+      "description": "服务 http 闲置线程超时（0表示自动，单位毫秒）"
+    },
+    {
+      "name": "server.http.ioBound",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "服务 http 是否为IO密集型"
+    },
+    {
+      "name": "server.websocket.name",
+      "type": "java.lang.String",
+      "description": "服务 websocket 信号名称"
+    },
+    {
+      "name": "server.websocket.port",
+      "type": "java.lang.Integer",
+      "description": "服务 websocket 信号端口"
+    },
+    {
+      "name": "server.htwebsockettp.host",
+      "type": "java.lang.String",
+      "description": "服务 websocket 信号主机"
+    },
+    {
+      "name": "server.websocket.wrapPort",
+      "type": "java.lang.Integer",
+      "description": "服务 websocket 信号包装端口"
+    },
+    {
+      "name": "server.websocket.wrapHost",
+      "type": "java.lang.String",
+      "description": "服务 websocket 信号包装主机"
+    },
+    {
+      "name": "server.websocket.coreThreads",
+      "type": "java.lang.Object",
+      "description": "服务 websocket 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.websocket.maxThreads",
+      "type": "java.lang.Object",
+      "description": "服务 websocket 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
+    },
+    {
+      "name": "server.websocket.idleTimeout",
+      "type": "java.lang.Object",
+      "description": "服务 websocket 闲置线程超时（0表示自动，单位毫秒）"
+    },
+    {
+      "name": "server.websocket.ioBound",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "服务 websocket 是否为IO密集型"
+    }
+  ]
+}

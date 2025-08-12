@@ -1,0 +1,4 @@
+solon:
+  threads:
+    virtual:
+      enabled: true
