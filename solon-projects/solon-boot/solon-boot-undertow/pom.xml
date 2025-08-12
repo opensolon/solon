@@ -15,93 +15,10 @@
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-net</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-web-servlet</artifactId>
-        </dependency>
-
-        <!-- server core begin -->
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-servlet</artifactId>
-            <version>${undertow.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.spec.javax.servlet</groupId>
-                    <artifactId>jboss-servlet-api_4.0_spec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <!-- server core end -->
-
-        <!--jsp try start-->
-        <dependency>
-            <groupId>io.undertow.jastow</groupId>
-            <artifactId>jastow</artifactId>
-            <version>${undertow.jastow.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-servlet</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.metadata</groupId>
-            <artifactId>jboss-metadata-common</artifactId>
-            <version>${undertow.jboss-metadata.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.metadata</groupId>
-            <artifactId>jboss-metadata-web</artifactId>
-            <version>${undertow.jboss-metadata.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
-            <artifactId>jboss-jsp-api_2.3_spec</artifactId>
-            <version>${undertow.jboss-jsp.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!--jsp try end-->
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-logging-simple</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-server-undertow</artifactId>
         </dependency>
     </dependencies>
 

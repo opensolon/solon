@@ -11,7 +11,6 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
     <artifactId>solon-server-jdkhttp</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>

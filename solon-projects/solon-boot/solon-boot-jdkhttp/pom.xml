@@ -11,7 +11,6 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
     <artifactId>solon-boot-jdkhttp</artifactId>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
@@ -19,20 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-server-jdkhttp</artifactId>
         </dependency>
     </dependencies>
 

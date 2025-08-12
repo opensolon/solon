@@ -18,52 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-net</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>smart-http-server</artifactId>
-            <version>${smarthttp.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.smartboot.socket</groupId>
-                    <artifactId>aio-pro</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.smartboot.socket</groupId>
-            <artifactId>aio-pro</artifactId>
-            <version>${smartsocket.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-logging-simple</artifactId>
-            <scope>test</scope>
+            <artifactId>solon-server-smarthttp</artifactId>
         </dependency>
     </dependencies>
 </project>
