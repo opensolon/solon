@@ -15,7 +15,6 @@
  */
 package webapp.democ_cloud.evnet;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;

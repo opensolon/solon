@@ -16,7 +16,7 @@
 package labs.test2.genericity1;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 
 public class DemoApp {
@@ -44,23 +44,23 @@ public class DemoApp {
         }
     }
 
-    @Component
+    @Managed
     public static class Service1 implements Service {
         public void hello() {
             System.out.println(1);
         }
     }
 
-    @Component
+    @Managed
     public static class Service2 implements Service {
         public void hello() {
             System.out.println(2);
         }
     }
 
-    @Component
+    @Managed
     public static class S1 extends Parent<Service1> {}
 
-    @Component
+    @Managed
     public static class S2 extends Parent<Service2> {}
 }

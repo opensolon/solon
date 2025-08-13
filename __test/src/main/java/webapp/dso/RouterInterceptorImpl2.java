@@ -15,7 +15,7 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;

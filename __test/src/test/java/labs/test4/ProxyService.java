@@ -15,14 +15,14 @@
  */
 package labs.test4;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @Author kevin
  * @Date 2022-10-02 20:55
  * @Description
  */
-@Component
+@Managed
 public class ProxyService extends AbstractProxyService{
 
   public void init(){

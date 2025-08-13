@@ -15,7 +15,6 @@
  */
 package webapp.demo7_test;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.data.dynamicds.DynamicDs;

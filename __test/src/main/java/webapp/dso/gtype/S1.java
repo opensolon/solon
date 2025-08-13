@@ -15,11 +15,11 @@
  */
 package webapp.dso.gtype;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/1/17 created
  */
-@Component
+@Managed
 public class S1 extends Parent<Service1> {
 }

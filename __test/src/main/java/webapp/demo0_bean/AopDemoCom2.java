@@ -15,7 +15,6 @@
  */
 package webapp.demo0_bean;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.annotation.Tran;

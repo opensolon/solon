@@ -17,14 +17,14 @@ package webapp.dso.cache;
 
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 import java.time.LocalDateTime;
 
 /**
  * @author noear 2022/1/15 created
  */
-@Component
+@Managed
 public class OathServer {
     @Cache(key = "oath_test_${code}", seconds = 2592000)
     public Oauth queryInfoByCode(String code) {

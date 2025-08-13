@@ -16,7 +16,6 @@
 package webapp.demox_log_breaker;
 
 //import org.noear.solon.cloud.annotation.CloudBreaker;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 
 /**
