@@ -20,7 +20,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.server.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;

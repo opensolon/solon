@@ -19,7 +19,7 @@ import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.DecodeUtils;
+import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.net.websocket.SubProtocolCapable;
 import org.noear.solon.net.websocket.WebSocketRouter;
 

@@ -16,14 +16,14 @@
 package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.ServerProps;
+import org.noear.solon.server.prop.impl.HttpServerProps;
+import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImpl;
-import org.noear.solon.boot.ssl.SslConfig;
+import org.noear.solon.server.ssl.SslConfig;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;

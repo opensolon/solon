@@ -16,7 +16,7 @@
 package org.noear.solon.sessionstate.local;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.SessionStateBase;
+import org.noear.solon.server.handle.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;

@@ -18,8 +18,8 @@ package org.noear.solon.boot.jetty;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 

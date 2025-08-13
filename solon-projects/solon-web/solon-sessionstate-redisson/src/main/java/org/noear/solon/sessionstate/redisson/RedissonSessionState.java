@@ -16,8 +16,8 @@
 package org.noear.solon.sessionstate.redisson;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.web.SessionStateBase;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.handle.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;

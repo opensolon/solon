@@ -17,9 +17,9 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.*;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.ssl.SslConfig;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.ssl.SslConfig;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;

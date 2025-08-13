@@ -17,7 +17,7 @@ package features;
 
 import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
-import org.noear.solon.boot.web.Constants;
+import org.noear.solon.server.handle.HeaderNames;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
@@ -100,7 +100,7 @@ public class HeaderTest extends HttpTester {
     public void testContentLength() throws Exception {
         HttpResponse res = path("/demo1/header/hello").exec("GET");
 
-        List<String> tmp = res.headers(Constants.HEADER_CONTENT_LENGTH);
+        List<String> tmp = res.headers(HeaderNames.HEADER_CONTENT_LENGTH);
         assert tmp != null;
         assert tmp.size() == 1;
         long size = Long.parseLong(tmp.get(0));

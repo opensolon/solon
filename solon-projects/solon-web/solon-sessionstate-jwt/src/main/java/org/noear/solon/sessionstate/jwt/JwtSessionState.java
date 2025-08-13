@@ -18,8 +18,8 @@ package org.noear.solon.sessionstate.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.web.SessionStateBase;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.handle.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
 import java.util.Collection;

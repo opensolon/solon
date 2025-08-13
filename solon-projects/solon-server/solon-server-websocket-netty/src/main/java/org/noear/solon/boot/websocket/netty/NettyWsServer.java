@@ -29,11 +29,11 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.prop.ServerSslProps;
-import org.noear.solon.boot.prop.impl.WebSocketServerProps;
-import org.noear.solon.boot.ssl.SslContextFactory;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.prop.ServerSslProps;
+import org.noear.solon.server.prop.impl.WebSocketServerProps;
+import org.noear.solon.server.ssl.SslContextFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;

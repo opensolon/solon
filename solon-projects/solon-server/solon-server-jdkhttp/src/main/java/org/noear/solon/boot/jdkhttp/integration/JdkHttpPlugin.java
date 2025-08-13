@@ -16,10 +16,10 @@
 package org.noear.solon.boot.jdkhttp.integration;
 
 import org.noear.solon.Solon;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.boot.jdkhttp.JdkHttpServerComb;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;

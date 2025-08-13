@@ -17,9 +17,9 @@ package org.noear.solon.boot.websocket.netty.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.ServerProps;
+import org.noear.solon.server.prop.impl.WebSocketServerProps;
 import org.noear.solon.boot.websocket.netty.NettyWsServer;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.LifecycleBean;

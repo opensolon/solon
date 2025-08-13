@@ -16,7 +16,7 @@
 package org.noear.solon.web.staticfiles.repository;
 
 import org.noear.solon.Solon;
-import org.noear.solon.boot.web.DebugUtils;
+import org.noear.solon.server.util.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticRepository;

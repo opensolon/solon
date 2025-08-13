@@ -17,7 +17,7 @@ package webapp.demo3_upload;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.boot.web.OutputUtils;
+import org.noear.solon.server.util.OutputUtils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.util.ResourceUtil;

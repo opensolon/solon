@@ -17,7 +17,7 @@ package labs.case1;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.SolonMain;
-import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.server.http.HttpServerConfigure;
 
 /**
  * @author noear 2023/5/13 created
