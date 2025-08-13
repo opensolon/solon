@@ -17,7 +17,7 @@ package org.noear.solon.web.vertx;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import org.noear.solon.boot.io.LimitedInputStream;
+import org.noear.solon.server.io.LimitedInputStream;
 
 /**
  * 请求输流

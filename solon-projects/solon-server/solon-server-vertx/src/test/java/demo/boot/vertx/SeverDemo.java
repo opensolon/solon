@@ -16,7 +16,6 @@
 package demo.boot.vertx;
 
 import org.noear.solon.Solon;
-import org.noear.solon.boot.http.HttpServerConfigure;
 
 /**
  * @author noear 2023/5/11 created

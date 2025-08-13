@@ -16,7 +16,7 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.DecodeUtils;
+import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.smartboot.http.server.WebSocketRequest;

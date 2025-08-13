@@ -15,9 +15,9 @@
  */
 package org.noear.solon.boot.vertx;
 
-import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.http.HttpServerConfigure;
-import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.server.ServerLifecycle;
+import org.noear.solon.server.http.HttpServerConfigure;
+import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 

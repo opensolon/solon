@@ -15,7 +15,7 @@
  */
 package org.noear.solon.boot.undertow.http;
 
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.boot.undertow.integration.UndertowPlugin;
 import org.noear.solon.core.handle.Context;

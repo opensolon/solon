@@ -15,7 +15,7 @@
  */
 package org.noear.solon.boot.vertx.http;
 
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.boot.vertx.integration.VxHttpPlugin;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.vertx.VxWebHandler;

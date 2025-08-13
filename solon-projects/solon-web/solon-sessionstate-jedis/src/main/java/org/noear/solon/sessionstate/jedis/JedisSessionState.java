@@ -17,8 +17,8 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.web.SessionStateBase;
+import org.noear.solon.server.ServerConstants;
+import org.noear.solon.server.handle.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.serialize.Serializer;
 

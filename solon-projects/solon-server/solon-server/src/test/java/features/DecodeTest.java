@@ -1,7 +1,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.boot.web.DecodeUtils;
+import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.core.handle.ContextEmpty;
 
 /**

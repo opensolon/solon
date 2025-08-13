@@ -16,8 +16,8 @@
 package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpExchange;
-import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.io.LimitedInputStream;
+import org.noear.solon.server.ServerProps;
+import org.noear.solon.server.io.LimitedInputStream;
 
 import java.io.BufferedReader;
 import java.io.IOException;

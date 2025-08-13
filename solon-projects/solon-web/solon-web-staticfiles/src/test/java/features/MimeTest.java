@@ -16,7 +16,7 @@
 package features;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.boot.prop.GzipProps;
+import org.noear.solon.server.prop.GzipProps;
 
 /**
  * @author noear 2023/9/27 created

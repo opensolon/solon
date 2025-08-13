@@ -16,7 +16,7 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
-import org.noear.solon.boot.web.DecodeUtils;
+import org.noear.solon.server.util.DecodeUtils;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.websocket.WebSocketBase;
 

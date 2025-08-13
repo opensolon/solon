@@ -16,7 +16,7 @@
 package org.noear.solon.boot.jetty.http;
 
 import org.eclipse.jetty.http.MultiPartFormInputStream;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.boot.jetty.integration.JettyPlugin;
 import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.core.handle.Context;

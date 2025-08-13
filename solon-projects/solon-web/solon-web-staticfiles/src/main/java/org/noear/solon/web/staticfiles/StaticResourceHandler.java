@@ -16,11 +16,11 @@
 package org.noear.solon.web.staticfiles;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.prop.GzipProps;
+import org.noear.solon.server.prop.GzipProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.boot.web.OutputUtils;
+import org.noear.solon.server.util.OutputUtils;
 import org.noear.solon.core.util.DateUtil;
 
 import java.io.InputStream;

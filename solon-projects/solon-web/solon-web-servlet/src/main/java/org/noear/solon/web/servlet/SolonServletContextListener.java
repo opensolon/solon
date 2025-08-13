@@ -17,7 +17,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.AppLoadEndEvent;

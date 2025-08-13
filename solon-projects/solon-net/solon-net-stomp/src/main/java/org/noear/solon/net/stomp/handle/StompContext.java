@@ -16,7 +16,7 @@
 package org.noear.solon.net.stomp.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.AsyncContextState;
+import org.noear.solon.server.handle.AsyncContextState;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;

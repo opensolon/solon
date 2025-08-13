@@ -22,7 +22,7 @@ import org.noear.socketd.transport.core.entity.EntityDefault;
 import org.noear.socketd.transport.core.entity.FileEntity;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.AsyncContextState;
+import org.noear.solon.server.handle.AsyncContextState;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.DownloadedFile;

@@ -18,14 +18,18 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.io.LimitedInputStream;
-import org.noear.solon.boot.web.*;
+import org.noear.solon.server.ServerProps;
+import org.noear.solon.server.handle.AsyncContextState;
+import org.noear.solon.server.handle.ContextBase;
+import org.noear.solon.server.io.LimitedInputStream;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Cookie;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.MultiMap;
+import org.noear.solon.server.handle.HeaderNames;
+import org.noear.solon.server.util.DecodeUtils;
+import org.noear.solon.server.util.RedirectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +42,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class JdkHttpContext extends WebContextBase {
+public class JdkHttpContext extends ContextBase {
     static final Logger log = LoggerFactory.getLogger(JdkHttpContext.class);
 
     private HttpExchange _exchange;
@@ -118,7 +122,7 @@ public class JdkHttpContext extends WebContextBase {
 
             if (_url != null) {
                 if (_url.startsWith("/")) {
-                    String host = header(Constants.HEADER_HOST);
+                    String host = header(HeaderNames.HEADER_HOST);
 
                     if (host == null) {
                         host = header(":authority");
@@ -243,7 +247,7 @@ public class JdkHttpContext extends WebContextBase {
         if (_cookieMap == null) {
             _cookieMap = new MultiMap<>(false);
 
-            DecodeUtils.decodeCookies(this, header(Constants.HEADER_COOKIE));
+            DecodeUtils.decodeCookies(this, header(HeaderNames.HEADER_COOKIE));
         }
 
         return _cookieMap;
@@ -279,12 +283,12 @@ public class JdkHttpContext extends WebContextBase {
     protected void contentTypeDoSet(String contentType) {
         if (charset != null && contentType != null) {
             if (contentType.length() > 0 && contentType.indexOf(";") < 0) {
-                headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
+                headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
                 return;
             }
         }
 
-        headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
+        headerSet(HeaderNames.HEADER_CONTENT_TYPE, contentType);
     }
 
 
@@ -389,14 +393,14 @@ public class JdkHttpContext extends WebContextBase {
             buf.append("httponly").append(";");
         }
 
-        headerAdd(Constants.HEADER_SET_COOKIE, buf.toString());
+        headerAdd(HeaderNames.HEADER_SET_COOKIE, buf.toString());
     }
 
     @Override
     public void redirect(String url, int code) {
         url = RedirectUtils.getRedirectPath(url);
 
-        headerSet(Constants.HEADER_LOCATION, url);
+        headerSet(HeaderNames.HEADER_LOCATION, url);
         statusDoSet(code);
     }
 
@@ -458,7 +462,7 @@ public class JdkHttpContext extends WebContextBase {
             if (isCommit || _allows_write == false) {
                 _exchange.sendResponseHeaders(status(), -1L);
             } else {
-                List<String> tmp = _exchange.getResponseHeaders().get(Constants.HEADER_CONTENT_LENGTH);
+                List<String> tmp = _exchange.getResponseHeaders().get(HeaderNames.HEADER_CONTENT_LENGTH);
 
                 if (tmp != null && tmp.size() > 0) {
                     _exchange.sendResponseHeaders(status(), Long.parseLong(tmp.get(0)));

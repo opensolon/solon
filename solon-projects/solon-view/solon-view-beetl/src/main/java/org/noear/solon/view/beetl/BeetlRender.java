@@ -24,7 +24,7 @@ import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.beetl.core.tag.TagFactory;
 import org.noear.solon.Solon;
-import org.noear.solon.boot.web.DebugUtils;
+import org.noear.solon.server.util.DebugUtils;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
@@ -33,7 +33,7 @@ import org.noear.solon.core.util.MimeType;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
-import org.noear.solon.boot.ServerProps;
+import org.noear.solon.server.ServerProps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
