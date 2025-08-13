@@ -26,6 +26,7 @@ import java.util.concurrent.*;
  *
  * @author noear
  * @since 1.10
+ * @since 3.5
  */
 public interface ServerExecutorProps {
     /**

@@ -23,6 +23,7 @@ import org.noear.solon.Utils;
  *
  * @author noear
  * @since 1.10
+ * @since 3.5
  */
 public class SessionProps {
     public final static int session_timeout;

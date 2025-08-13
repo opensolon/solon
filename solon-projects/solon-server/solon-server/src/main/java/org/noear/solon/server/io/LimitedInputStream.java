@@ -23,6 +23,7 @@ import java.io.InputStream;
 /**
  * @author noear
  * @since 1.6
+ * @since 3.5
  */
 public class LimitedInputStream extends FilterInputStream implements Closeable {
 

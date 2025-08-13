@@ -21,6 +21,7 @@ package org.noear.solon.server.prop;
  * @author noear
  * @since 1.8
  * @since 1.12
+ * @since 3.5
  */
 public interface ServerSignalProps {
     /**

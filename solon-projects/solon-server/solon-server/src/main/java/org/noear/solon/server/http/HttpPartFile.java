@@ -28,6 +28,7 @@ import java.nio.file.Path;
  *
  * @author noear
  * @since 2.7
+ * @since 3.5
  */
 public class HttpPartFile {
     private static Path tempdir;

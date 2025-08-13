@@ -28,6 +28,7 @@ import java.util.Set;
  *
  * @author noear
  * @since 2.5
+ * @since 3.5
  */
 public class GzipProps {
     private static boolean enable = false;

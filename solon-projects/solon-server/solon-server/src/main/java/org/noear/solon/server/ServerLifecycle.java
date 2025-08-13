@@ -20,8 +20,9 @@ package org.noear.solon.server;
  *
  * @author noear
  * @since 1.8
+ * @since 3.5
  */
-public interface ServerLifecycle {
+public interface ServerLifecycle extends org.noear.solon.boot.ServerLifecycle{
     /**
      * 启动
      *

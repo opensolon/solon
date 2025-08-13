@@ -23,6 +23,7 @@ import org.noear.solon.Utils;
  *
  * @author noear
  * @since 1.11
+ * @since 3.5
  */
 public class RedirectUtils {
     /**

@@ -20,6 +20,7 @@ package org.noear.solon.server.prop;
  *
  * @author noear
  * @since 2.3
+ * @since 3.5
  */
 public interface ServerSslProps {
     static ServerSslProps of(String signalName){

@@ -36,6 +36,7 @@ import java.io.IOException;
  *
  * @author noear
  * @since 2.9
+ * @since 3.5
  */
 public class DecodeUtils {
     /**
