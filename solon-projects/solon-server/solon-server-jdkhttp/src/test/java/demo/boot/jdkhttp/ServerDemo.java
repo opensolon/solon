@@ -15,7 +15,7 @@
  */
 package demo.boot.jdkhttp;
 
-import org.noear.solon.boot.jdkhttp.JdkHttpServer;
+import org.noear.solon.server.jdkhttp.JdkHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;

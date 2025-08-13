@@ -18,7 +18,7 @@ package labs.case1;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.server.prop.impl.HttpServerProps;
-import org.noear.solon.boot.smarthttp.SmHttpServer;
+import org.noear.solon.server.smarthttp.SmHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
