@@ -18,6 +18,14 @@ package org.noear.solon.data.tran;
 /**
  * 事务监听器
  *
+ * <pre>
+ * //执行顺序
+ * beforeCommit(meta.readOnly());
+ * beforeCompletion();
+ * afterCommit();
+ * afterCompletion();
+ * </pre>
+ *
  * @author noear
  * @see 2.5
  */
@@ -48,26 +56,26 @@ public interface TranListener {
 
 
     /**
-     * 提交之前（可以出异常触发回滚）
+     * 提交之前（可以出异常触发回滚）（1顺位）
      */
     default void beforeCommit(boolean readOnly) throws Throwable{
     }
 
     /**
-     * 完成之前
+     * 完成之前（2顺位）
      */
     default void beforeCompletion() {
     }
 
 
     /**
-     * 提交之后
+     * 提交之后（3顺位）
      */
     default void afterCommit() {
     }
 
     /**
-     * 完成之后
+     * 完成之后（4顺位）
      *
      * @param status 状态
      */
