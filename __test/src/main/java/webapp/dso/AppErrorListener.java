@@ -15,14 +15,14 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Context;
 
 /**
  * @author noear 2020/12/17 created
  */
-@Component
+@Managed
 public class AppErrorListener implements EventListener<Throwable> {
     @Override
     public void onEvent(Throwable throwable) {

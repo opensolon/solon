@@ -15,7 +15,6 @@
  */
 package webapp.demo5_rpc;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.LoadBalance;
 

@@ -15,14 +15,14 @@
  */
 package labs.initTest.test3;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 /**
  * @author noear 2022/9/21 created
  */
-@Component
+@Managed
 public class ClassD {
 
     @Init

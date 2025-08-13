@@ -15,7 +15,6 @@
  */
 package webapp.asm;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 
 /**

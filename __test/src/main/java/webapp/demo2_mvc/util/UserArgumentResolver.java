@@ -1,6 +1,5 @@
 package webapp.demo2_mvc.util;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.ActionArgumentResolver;
 import org.noear.solon.core.handle.Context;

@@ -16,7 +16,6 @@
 package webapp.demoy_event;
 
 import lombok.Getter;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
