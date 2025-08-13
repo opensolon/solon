@@ -2328,6 +2328,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-view-jsp-jakarta</artifactId>
+                <version>${solon-jakarta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-web-servlet-jakarta</artifactId>
                 <version>${solon-jakarta.version}</version>
             </dependency>
