@@ -1,10 +1,10 @@
 [
   {
-    "name": "org.noear.solon.boot.undertow.http.UtContainerInitializer",
+    "name": "org.noear.solon.server.undertow.http.UtContainerInitializer",
     "allDeclaredConstructors": true
   },
   {
-    "name": "org.noear.solon.boot.undertow.http.UtHttpContextServletHandler",
+    "name": "org.noear.solon.server.undertow.http.UtHttpContextServletHandler",
     "allDeclaredConstructors": true
   },
   {
