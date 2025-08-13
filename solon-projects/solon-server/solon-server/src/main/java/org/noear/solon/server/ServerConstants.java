@@ -18,6 +18,7 @@ package org.noear.solon.server;
 /**
  * @author noear
  * @since 1.6
+ * @since 3.5
  */
 public interface ServerConstants {
     String SESSION_LAST_ACCESS_TIME = "SESSION_LAST_ACCESS_TIME";

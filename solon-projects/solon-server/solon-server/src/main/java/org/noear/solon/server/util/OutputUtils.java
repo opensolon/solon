@@ -37,6 +37,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author noear
  * @since 2.4
+ * @since 3.5
  */
 public class OutputUtils {
     static final Logger log = LoggerFactory.getLogger(OutputUtils.class);

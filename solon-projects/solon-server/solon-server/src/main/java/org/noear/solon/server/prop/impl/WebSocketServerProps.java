@@ -24,6 +24,7 @@ import org.noear.solon.server.ServerConstants;
  *
  * @author noear
  * @since 1.8
+ * @since 3.5
  */
 public class WebSocketServerProps extends BaseServerProps {
     public static WebSocketServerProps getInstance() {

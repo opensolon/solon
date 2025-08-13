@@ -23,6 +23,7 @@ import org.noear.solon.server.ServerConstants;
  *
  * @author noear
  * @since 1.8
+ * @since 3.5
  */
 public class SocketServerProps extends BaseServerProps {
     public static SocketServerProps getInstance() {

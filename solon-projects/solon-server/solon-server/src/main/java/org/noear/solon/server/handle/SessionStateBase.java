@@ -24,6 +24,7 @@ import org.noear.solon.core.handle.SessionState;
  *
  * @author noear
  * @since 1.7
+ * @since 3.5
  */
 public abstract class SessionStateBase implements SessionState {
 

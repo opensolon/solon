@@ -23,6 +23,7 @@ import java.io.IOException;
 /**
  * @author noear
  * @since 2.5
+ * @since 3.5
  */
 public class SslConfig {
     /**
