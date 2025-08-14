@@ -190,7 +190,11 @@ public class JdkHttpResponse implements HttpResponse {
     public String bodyAsString() throws IOException {
         try {
             if (Utils.isEmpty(http.getContentEncoding())) {
-                return IoUtil.transferToString(body(), Solon.encoding());
+                if (utils.charset() == null) {
+                    return IoUtil.transferToString(body(), Solon.encoding());
+                } else {
+                    return IoUtil.transferToString(body(), utils.charset().name());
+                }
             } else {
                 return IoUtil.transferToString(body(), http.getContentEncoding());
             }
