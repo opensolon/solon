@@ -31,12 +31,14 @@
 
 
 * 新增 solon-ai-mcp MCP_2025-03-26 版本协议支持
-* 调整 solon-boot-*（标为弃用） 更名为 solon-server-* 
-* 调整 solon.boot（标为弃用） 更名为 solon.server
+* 调整 `solon-boot-*` 插件（标为弃用） 更名为 `solon-server-*` 
+* 调整 solon.boot 包名（相关工具标为弃用） 更名为 solon.server
+* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 * 调整 solon-ai-mcp 默认传递，由 sse 改为 streamable
 * 
 * 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
 * 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
+* 优化 solon-net-httputils JdkHttpResponse:bodyAsString 的编码处理（没有 ContentEncoding 时，优先用 charset 配置）
 * 优化 solon 启动后 Lifecycle:postStart 可在加入时直接执行
 * liquor 升为 1.6.0 （兼容 arm jdk）
 

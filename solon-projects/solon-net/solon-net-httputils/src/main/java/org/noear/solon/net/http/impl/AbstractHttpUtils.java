@@ -160,6 +160,10 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return this;
     }
 
+    public Charset charset() {
+        return _charset;
+    }
+
     /**
      * 设置请求头
      */
