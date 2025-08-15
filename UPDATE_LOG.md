@@ -26,6 +26,7 @@
 
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
+* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 
 ### 3.5.0
 
@@ -45,7 +46,6 @@
 * 调整 solon-flow StateRepository 接口的方法命名，与 StatefulSupporter 保持一致性
 * 调整 `solon-boot-*` 插件（标为弃用） 更名为 `solon-server-*` 
 * 调整 `solon.boot` 包名（相关工具标为弃用） 更名为 `solon.server`
-* 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 * 调整 solon-ai-mcp mcp 协议升为 MCP_2025-03-26（支持 streamable、annotation、outputSchema 等特性）
 * 调整 solon-ai-mcp channel 取消默认值（之前为 sse），且为必填（利于协议升级过度，有明确的开发时、启动时提醒）
 * 
