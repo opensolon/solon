@@ -31,6 +31,16 @@
 
 
 * 新增 solon-ai-mcp MCP_2025-03-26 版本协议支持
+* 插件 solon-flow 第四次预览
+* 添加 solon-flow FlowDriver:postHandleTask 方法
+* 调整 solon-flow FlowContext 拆分为：FlowContext（对外） 和 FlowExchanger（对内）
+* 调整 solon-flow FlowContext 移除 result 字段（所有数据基于 model 交换）
+* 调整 solon-flow FlowContext get 改为返回 Object（之前为 T），新增 getAs 返回 T（解决 get 不能直接打印的问题）
+* 调整 solon-flow 移除 StatefulSimpleFlowDriver 功能合并到 SimpleFlowDriver（简化）
+* 调整 solon-flow 新增 stateless 包，明确有状态与无状态这两个概念（StatelessFlowContext 更名为 StatefulFlowContext）
+* 调整 solon-flow FlowStatefulService 接口，每个方法的 context 参数移到最后位（保持一致性）
+* 调整 solon-flow 新增 StatefulSupporter 接口，方便 FlowContext 完整的状态控制
+* 调整 solon-flow StateRepository 接口的方法命名，与 StatefulSupporter 保持一致性
 * 调整 `solon-boot-*` 插件（标为弃用） 更名为 `solon-server-*` 
 * 调整 solon.boot 包名（相关工具标为弃用） 更名为 solon.server
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
