@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Proxy;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +50,58 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
     public OkHttpUtils(String url) {
         super(url);
+    }
+
+    private RequestBody _bodyRaw;
+
+    /**
+     * 设置 BODY txt 及内容类型
+     */
+    @Override
+    public HttpUtils body(String txt, String contentType) {
+        if (txt != null) {
+            _bodyRaw = RequestBody.create(txt, contentType == null ? null : MediaType.parse(contentType));
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils bodyOfBean(Object obj) throws HttpException {
+        Object tmp;
+        try {
+            tmp = serializer().serialize(obj);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        if (tmp instanceof String) {
+            body((String) tmp, serializer().mimeType());
+        } else if (tmp instanceof byte[]) {
+            body((byte[]) tmp, serializer().mimeType());
+        } else {
+            throw new IllegalArgumentException("Invalid serializer type!");
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(byte[] bytes, String contentType) {
+        if (bytes != null) {
+            _bodyRaw = RequestBody.create(bytes, contentType == null ? null : MediaType.parse(contentType));
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(InputStream raw, String contentType) {
+        if (raw != null) {
+            _bodyRaw = new StreamBody(new HttpStream(raw, contentType));
+        }
+
+        return this;
     }
 
     @Override
@@ -73,7 +125,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         RequestBody _body = null;
 
         if (_bodyRaw != null) {
-            _body = new StreamBody(_bodyRaw);
+            _body = _bodyRaw;
         } else {
             if (_multipart) {
                 MultipartBody.Builder _part_builer = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -259,7 +311,7 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
         private MediaType _contentType = null;
         private HttpStream _httpStream = null;
 
-        public StreamBody(HttpStream stream) {
+        public StreamBody(HttpStream stream)  {
             if (stream.getContentType() != null) {
                 _contentType = MediaType.parse(stream.getContentType());
             }

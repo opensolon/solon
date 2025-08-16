@@ -59,7 +59,6 @@ public abstract class AbstractHttpUtils implements HttpUtils {
     protected MultiMap<String> _cookies;
     protected MultiMap<String> _params;
     protected MultiMap<HttpUploadFile> _files;
-    protected HttpStream _bodyRaw;
 
     protected boolean _multipart = false;
     protected HttpTimeout _timeout;
@@ -338,55 +337,7 @@ public abstract class AbstractHttpUtils implements HttpUtils {
         return this;
     }
 
-    /**
-     * 设置 BODY txt 及内容类型
-     */
-    @Override
-    public HttpUtils body(String txt, String contentType) {
-        if (txt != null) {
-            body(txt.getBytes(_charset), contentType);
-        }
 
-        return this;
-    }
-
-    @Override
-    public HttpUtils bodyOfBean(Object obj) throws HttpException {
-        Object tmp;
-        try {
-            tmp = serializer().serialize(obj);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        if (tmp instanceof String) {
-            body((String) tmp, serializer().mimeType());
-        } else if (tmp instanceof byte[]) {
-            body((byte[]) tmp, serializer().mimeType());
-        } else {
-            throw new IllegalArgumentException("Invalid serializer type!");
-        }
-
-        return this;
-    }
-
-    @Override
-    public HttpUtils body(byte[] bytes, String contentType) {
-        if (bytes == null) {
-            return this;
-        }
-
-        return body(new ByteArrayInputStream(bytes), contentType);
-    }
-
-    @Override
-    public HttpUtils body(InputStream raw, String contentType) {
-        if (raw != null) {
-            _bodyRaw = new HttpStream(raw, contentType);
-        }
-
-        return this;
-    }
 
     @Override
     public String get() throws HttpException {
