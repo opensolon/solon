@@ -36,6 +36,12 @@
 * 插件 solon-flow stateful 第三次预览
 * 
 * 添加 solon-flow FlowDriver:postHandleTask 方法
+* 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
+* 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
+* 优化 solon-net-httputils JdkHttpResponse:bodyAsString 的编码处理（没有 ContentEncoding 时，优先用 charset 配置）
+* 优化 solon-expression SnelEvaluateParser:parseNumber 增强识别 "4.56e-3"（科学表示法）和 "1-3"（算数）
+* 优化 solon 启动后 Lifecycle:postStart 可在加入时直接执行
+* 
 * 调整 solon-flow FlowContext 拆分为：FlowContext（对外） 和 FlowExchanger（对内）
 * 调整 solon-flow FlowContext 移除 result 字段（所有数据基于 model 交换）
 * 调整 solon-flow FlowContext get 改为返回 Object（之前为 T），新增 getAs 返回 T（解决 get 不能直接打印的问题）
@@ -49,11 +55,7 @@
 * 调整 solon-ai-mcp mcp 协议升为 MCP_2025-03-26（支持 streamable、annotation、outputSchema 等特性）
 * 调整 solon-ai-mcp channel 取消默认值（之前为 sse），且为必填（利于协议升级过度，有明确的开发时、启动时提醒）
 * 
-* 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
-* 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
-* 优化 solon-net-httputils JdkHttpResponse:bodyAsString 的编码处理（没有 ContentEncoding 时，优先用 charset 配置）
-* 优化 solon-expression SnelEvaluateParser:parseNumber 增强识别 "4.56e-3"（科学表示法）和 "1-3"（算数）
-* 优化 solon 启动后 Lifecycle:postStart 可在加入时直接执行
+* 修复 solon-net-httputils OkHttpResponse:contentType 获取错误的问题
 * liquor 升为 1.6.2 （兼容 arm jdk）
 
 
