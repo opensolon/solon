@@ -54,7 +54,7 @@
 * 优化 solon-net-httputils JdkHttpResponse:bodyAsString 的编码处理（没有 ContentEncoding 时，优先用 charset 配置）
 * 优化 solon-expression SnelEvaluateParser:parseNumber 增强识别 "4.56e-3"（科学表示法）和 "1-3"（算数）
 * 优化 solon 启动后 Lifecycle:postStart 可在加入时直接执行
-* liquor 升为 1.6.0 （兼容 arm jdk）
+* liquor 升为 1.6.2 （兼容 arm jdk）
 
 
 ### 3.4.3
