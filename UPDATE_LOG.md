@@ -56,6 +56,7 @@
 * 调整 solon-ai-mcp channel 取消默认值（之前为 sse），且为必填（利于协议升级过度，有明确的开发时、启动时提醒）
 * 
 * 修复 solon-net-httputils OkHttpResponse:contentType 获取错误的问题
+* 修复 solon-net-httputils OkHttpUtils 适配重定位后 req-body 数据不能重读的问题
 * liquor 升为 1.6.2 （兼容 arm jdk）
 
 
