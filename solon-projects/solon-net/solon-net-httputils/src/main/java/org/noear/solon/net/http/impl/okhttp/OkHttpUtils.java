@@ -193,6 +193,8 @@ public class OkHttpUtils extends AbstractHttpUtils implements HttpUtils {
                 .hostnameVerifier(_sslSupplier.getHostnameVerifier())
                 .connectionSpecs(getConnectionSpecs());
 
+        builder.followRedirects(true).followSslRedirects(true);
+
 
         if (log.isDebugEnabled() && ClassUtil.hasClass(() -> CurlInterceptor.class)) {
             builder.addInterceptor(new CurlInterceptor(msg -> {
