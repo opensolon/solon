@@ -17,10 +17,12 @@ package org.noear.solon.net.http.impl.jdk;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.*;
+import org.noear.solon.net.http.HttpException;
 import org.noear.solon.net.http.HttpResponse;
 import org.noear.solon.net.http.HttpUtils;
 import org.noear.solon.net.http.impl.AbstractHttpUtils;
 import org.noear.solon.net.http.impl.HttpSslSupplierDefault;
+import org.noear.solon.net.http.impl.HttpStream;
 import org.noear.solon.net.http.impl.HttpUploadFile;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -55,6 +57,58 @@ public class JdkHttpUtils extends AbstractHttpUtils implements HttpUtils {
 
     public JdkHttpUtils(String url) {
         super(url);
+    }
+
+    private HttpStream _bodyRaw;
+
+    /**
+     * 设置 BODY txt 及内容类型
+     */
+    @Override
+    public HttpUtils body(String txt, String contentType) {
+        if (txt != null) {
+            body(txt.getBytes(_charset), contentType);
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils bodyOfBean(Object obj) throws HttpException {
+        Object tmp;
+        try {
+            tmp = serializer().serialize(obj);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        if (tmp instanceof String) {
+            body((String) tmp, serializer().mimeType());
+        } else if (tmp instanceof byte[]) {
+            body((byte[]) tmp, serializer().mimeType());
+        } else {
+            throw new IllegalArgumentException("Invalid serializer type!");
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(byte[] bytes, String contentType) {
+        if (bytes != null) {
+            body(new ByteArrayInputStream(bytes), contentType);
+        }
+
+        return this;
+    }
+
+    @Override
+    public HttpUtils body(InputStream raw, String contentType) {
+        if (raw != null) {
+            _bodyRaw = new HttpStream(raw, contentType);
+        }
+
+        return this;
     }
 
     @Override
