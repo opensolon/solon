@@ -40,7 +40,7 @@ public class NettyWsPlugin implements Plugin {
 
     NettyWsServer _server;
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "netty-webscoket 4.1.75/" + Solon.version();
     }
 
@@ -91,7 +91,7 @@ public class NettyWsPlugin implements Plugin {
 
         String wsServerUrl = props.buildWsServerUrl(false);
         LogUtil.global().info("Connector:main: netty-websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
-        LogUtil.global().info("Server:main: netty-websocket: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: netty-websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -103,6 +103,6 @@ public class NettyWsPlugin implements Plugin {
         _server.stop();
         _server = null;
 
-        LogUtil.global().info("Server:main: netty-webscoket: Has Stopped (" + solon_boot_ver() + ")");
+        LogUtil.global().info("Server:main: netty-webscoket: Has Stopped (" + solon_server_ver() + ")");
     }
 }

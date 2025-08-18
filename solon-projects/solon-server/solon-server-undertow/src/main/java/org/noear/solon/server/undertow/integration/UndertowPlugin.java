@@ -42,7 +42,7 @@ public final class UndertowPlugin implements Plugin {
 
     private UndertowServer _server = null;
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "undertow 2.2/" + Solon.version();
     }
 
@@ -123,7 +123,7 @@ public final class UndertowPlugin implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info(connectorInfo + "}{"+httpServerUrl+"}");
-        LogUtil.global().info("Server:main: undertow: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: undertow: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -132,7 +132,7 @@ public final class UndertowPlugin implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: undertow: Has Stopped (" + solon_boot_ver() + ")");
+            LogUtil.global().info("Server:main: undertow: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

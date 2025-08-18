@@ -36,7 +36,7 @@ public class JavaWsPlugin implements Plugin {
 
     private JavaWsServer _server = null;
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "org.java_websocket 1.5/" + Solon.version();
     }
 
@@ -87,7 +87,7 @@ public class JavaWsPlugin implements Plugin {
 
         String wsServerUrl = props.buildWsServerUrl(false);
         LogUtil.global().info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
-        LogUtil.global().info("Server:main: websocket: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: websocket: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -96,7 +96,7 @@ public class JavaWsPlugin implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: websocket: Has Stopped (" + solon_boot_ver() + ")");
+            LogUtil.global().info("Server:main: websocket: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

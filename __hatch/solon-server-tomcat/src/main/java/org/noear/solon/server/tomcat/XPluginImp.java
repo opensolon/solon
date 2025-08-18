@@ -39,7 +39,7 @@ public final class XPluginImp implements Plugin {
 
     private ServerLifecycle _server = null;
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
     	return ServerInfo.getServerInfo() + "/" + Solon.version();
     }
 
@@ -98,7 +98,7 @@ public final class XPluginImp implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(false);
         LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: tomcat: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: tomcat: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -107,7 +107,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: tomcat: Has Stopped (" + solon_boot_ver() + ")");
+            LogUtil.global().info("Server:main: tomcat: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

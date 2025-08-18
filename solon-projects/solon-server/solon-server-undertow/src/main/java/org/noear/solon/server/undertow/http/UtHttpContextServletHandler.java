@@ -27,7 +27,7 @@ public class UtHttpContextServletHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", UndertowPlugin.solon_boot_ver());
+            ctx.headerSet("Solon-Server", UndertowPlugin.solon_server_ver());
         }
     }
 }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.5.0-SNAPSHOT</version>
+        <version>3.5.0</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 

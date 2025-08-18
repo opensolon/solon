@@ -44,7 +44,7 @@ public final class JettyPlugin implements Plugin {
     private JettyServer _server = null;
 
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "jetty 9.4/" + Solon.version();
     }
 
@@ -128,7 +128,7 @@ public final class JettyPlugin implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: jetty: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jetty: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class JettyPlugin implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: jetty: Has Stopped (" + solon_boot_ver() + ")");
+            LogUtil.global().info("Server:main: jetty: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

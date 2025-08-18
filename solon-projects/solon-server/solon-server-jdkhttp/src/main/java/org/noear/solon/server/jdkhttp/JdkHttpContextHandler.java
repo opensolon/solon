@@ -57,7 +57,7 @@ public class JdkHttpContextHandler implements HttpHandler {
             ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             if (ServerProps.output_meta) {
-                ctx.headerSet("Solon-Boot", JdkHttpPlugin.solon_boot_ver());
+                ctx.headerSet("Solon-Server", JdkHttpPlugin.solon_server_ver());
             }
 
             handler.handle(ctx);

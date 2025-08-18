@@ -37,7 +37,7 @@ public final class SmHttpPlugin implements Plugin {
     }
 
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "smart http 2.5/" + Solon.version();
     }
 
@@ -127,7 +127,7 @@ public final class SmHttpPlugin implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: smarthttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: smarthttp: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class SmHttpPlugin implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: smarthttp: Has Stopped (" + solon_boot_ver() + ")");
+            LogUtil.global().info("Server:main: smarthttp: Has Stopped (" + solon_server_ver() + ")");
         }
     }
 }

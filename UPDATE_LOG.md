@@ -58,6 +58,7 @@
 * 修复 solon-net-httputils OkHttpResponse:contentType 获取错误的问题
 * 修复 solon-net-httputils OkHttpUtils 适配重定位后 req-body 数据不能重读的问题
 * liquor 升为 1.6.2 （兼容 arm jdk）
+* jetty 升为 9.4.58.v20250814
 
 
 ### 3.4.3
