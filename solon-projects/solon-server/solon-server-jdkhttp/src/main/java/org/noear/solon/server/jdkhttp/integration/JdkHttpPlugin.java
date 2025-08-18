@@ -33,7 +33,7 @@ public final class JdkHttpPlugin implements Plugin {
         return _signal;
     }
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "jdk http/" + Solon.version();
     }
 
@@ -107,7 +107,7 @@ public final class JdkHttpPlugin implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: jdkhttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jdkhttp: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
 
@@ -119,6 +119,6 @@ public final class JdkHttpPlugin implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_boot_ver() + ")");
+        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_server_ver() + ")");
     }
 }

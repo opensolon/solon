@@ -37,7 +37,7 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "netty http/" + Solon.version();
     }
 
@@ -87,7 +87,7 @@ public final class XPluginImp implements Plugin {
                 .info("Connector:main: nettyhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{"
                         + httpServerUrl + "}");
         LogUtil.global()
-                .info("Server:main: nettyhttp: Started (" + solon_boot_ver() + ") @" + (time_end
+                .info("Server:main: nettyhttp: Started (" + solon_server_ver() + ") @" + (time_end
                         - time_start) + "ms");
     }
 
@@ -100,6 +100,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: nettyhttp: Has Stopped (" + solon_boot_ver() + ")");
+        LogUtil.global().info("Server:main: nettyhttp: Has Stopped (" + solon_server_ver() + ")");
     }
 }

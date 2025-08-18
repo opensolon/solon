@@ -40,7 +40,7 @@ public class VxHttpPlugin implements Plugin {
         return _signal;
     }
 
-    public static String solon_boot_ver() {
+    public static String solon_server_ver() {
         return "vertx-http/" + Solon.version();
     }
 
@@ -116,7 +116,7 @@ public class VxHttpPlugin implements Plugin {
 
         String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
         LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
-        LogUtil.global().info("Server:main: vertx-http: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: vertx-http: Started (" + solon_server_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override

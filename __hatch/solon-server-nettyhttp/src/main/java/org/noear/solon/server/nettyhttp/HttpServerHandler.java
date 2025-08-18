@@ -50,7 +50,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
             context.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);
 
             if (ServerProps.output_meta) {
-                context.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+                context.headerSet("Solon-Server", XPluginImp.solon_server_ver());
             }
 
             _handler.handle(context);

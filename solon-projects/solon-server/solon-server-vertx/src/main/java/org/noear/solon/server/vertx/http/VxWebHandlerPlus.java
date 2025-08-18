@@ -30,7 +30,7 @@ public class VxWebHandlerPlus extends VxWebHandler {
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", VxHttpPlugin.solon_boot_ver());
+            ctx.headerSet("Solon-Server", VxHttpPlugin.solon_server_ver());
         }
     }
 }

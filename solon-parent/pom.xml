@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>3.5.0-SNAPSHOT</version>
+    <version>3.5.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -30,14 +30,14 @@
 
         <maven-war.version>3.4.0</maven-war.version>
 
-        <solon.version>3.5.0-SNAPSHOT</solon.version>
-        <solon-ai.version>3.5.0-SNAPSHOT</solon-ai.version>
-        <solon-flow.version>3.5.0-SNAPSHOT</solon-flow.version>
-        <solon-expression.version>3.5.0-SNAPSHOT</solon-expression.version>
-        <solon-cloud.version>3.5.0-SNAPSHOT</solon-cloud.version>
-        <solon-admin.version>3.5.0-SNAPSHOT</solon-admin.version>
-        <solon-integration.version>3.5.0-SNAPSHOT</solon-integration.version>
-        <solon-jakarta.version>3.5.0-SNAPSHOT</solon-jakarta.version>
+        <solon.version>3.5.0</solon.version>
+        <solon-ai.version>3.5.0</solon-ai.version>
+        <solon-flow.version>3.5.0</solon-flow.version>
+        <solon-expression.version>3.5.0</solon-expression.version>
+        <solon-cloud.version>3.5.0</solon-cloud.version>
+        <solon-admin.version>3.5.0</solon-admin.version>
+        <solon-integration.version>3.5.0</solon-integration.version>
+        <solon-jakarta.version>3.5.0</solon-jakarta.version>
 
         <solonx.version>1.1.4</solonx.version>
 
@@ -71,7 +71,7 @@
 
         <smartsocket.version>1.5.55</smartsocket.version>
         <smarthttp.version>2.5.12</smarthttp.version>
-        <jetty.version>9.4.57.v20241219</jetty.version>
+        <jetty.version>9.4.58.v20250814</jetty.version>
         <undertow.version>2.2.37.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>

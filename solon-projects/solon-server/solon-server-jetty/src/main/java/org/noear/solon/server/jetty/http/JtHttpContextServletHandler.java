@@ -53,7 +53,7 @@ public class JtHttpContextServletHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) throws IOException {
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", JettyPlugin.solon_boot_ver());
+            ctx.headerSet("Solon-Server", JettyPlugin.solon_server_ver());
         }
     }
 

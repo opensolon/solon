@@ -73,7 +73,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
         ctx.contentType(MimeType.TEXT_PLAIN_UTF8_VALUE);//默认
 
         if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Server", XPluginImp.solon_server_ver());
         }
 
         Solon.app().tryHandle(ctx);
