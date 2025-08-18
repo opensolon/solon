@@ -50,6 +50,7 @@
 * 调整 solon-flow FlowStatefulService 接口，每个方法的 context 参数移到最后位（保持一致性）
 * 调整 solon-flow 新增 StatefulSupporter 接口，方便 FlowContext 完整的状态控制
 * 调整 solon-flow StateRepository 接口的方法命名，与 StatefulSupporter 保持一致性
+* 调整 solon-flow Chain 拆分为：Chain 和 ChainDecl。Chain 为运行态（不可修改）；ChainDecl 为配置态（可以随时修改）。
 * 调整 `solon-boot-*` 插件（标为弃用） 更名为 `solon-server-*` 
 * 调整 `solon.boot` 包名（相关工具标为弃用） 更名为 `solon.server`
 * 调整 solon-ai-mcp mcp 协议升为 MCP_2025-03-26（支持 streamable、annotation、outputSchema 等特性）
