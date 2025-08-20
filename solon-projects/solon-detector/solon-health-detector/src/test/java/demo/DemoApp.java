@@ -16,7 +16,7 @@
 package demo;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.health.detector.Detector;
 
 import java.util.LinkedHashMap;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author noear 2021/12/21 created
  */
-@Component
+@Managed
 public class DemoApp implements Detector {
     public static void main(String[] args) {
         Solon.start(DemoApp.class, args, app -> {

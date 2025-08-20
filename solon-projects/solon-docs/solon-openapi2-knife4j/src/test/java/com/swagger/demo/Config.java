@@ -25,7 +25,7 @@ import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Result;
@@ -38,7 +38,7 @@ public class Config {
     /**
      * 基于配置构建
      */
-    @Bean("adminApi")
+    @Managed("adminApi")
     public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
         //docket.globalResult(SwaggerRes.class);
         docket.globalResponseCodes(new HttpCodes());
@@ -54,7 +54,7 @@ public class Config {
     /**
      * 基于代码构建
      */
-    @Bean("restapi")
+    @Managed("restapi")
     public DocDocket restapi() {
         return new DocDocket()
                 .groupName("restapi接口")
@@ -67,7 +67,7 @@ public class Config {
     /**
      * 基于代码构建
      */
-    @Bean("appApi")
+    @Managed("appApi")
     public DocDocket appApi() {
         return new DocDocket()
                 .groupName("app端接口")
@@ -84,7 +84,7 @@ public class Config {
     /**
      * 基于代码构建
      */
-    @Bean("appApi2")
+    @Managed("appApi2")
     public DocDocket appApi2() {
         return new DocDocket()
                 .groupName("app2端接口")
@@ -95,7 +95,7 @@ public class Config {
     /**
      * 基于代码构建
      */
-    @Bean("gatewayApi")
+    @Managed("gatewayApi")
     public DocDocket gatewayApi() {
         return new DocDocket()
                 .groupName("gateway端接口")
@@ -113,7 +113,7 @@ public class Config {
     /**
      * 基于代码构建
      */
-//    @Bean("removeApi")
+//    @Managed("removeApi")
     public DocDocket removeApi() {
         return new DocDocket()
                 .groupName("removeApi端接口")
@@ -123,7 +123,7 @@ public class Config {
 
     }
 
-    //    @Bean("appApi")
+    //    @Managed("appApi")
     public DocDocket appApi_2() {
         return new DocDocket()
                 .groupName("app端接口")

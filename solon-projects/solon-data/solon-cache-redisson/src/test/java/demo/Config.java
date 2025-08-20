@@ -15,7 +15,7 @@
  */
 package demo;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.cache.redisson.RedissonBuilder;
@@ -33,7 +33,7 @@ import java.util.Properties;
 @Configuration
 public class Config {
     //构建 CacheService
-    @Bean
+    @Managed
     public CacheService cache1(@Inject("${test.rd1}") RedissonCacheService cache) {
         //可以拿到内部的 client
         //cache.client();
@@ -42,19 +42,19 @@ public class Config {
     }
 
     //构建 CacheService
-    @Bean
+    @Managed
     public CacheService cache2(@Inject("${test.rd1}") CacheServiceSupplier cacheSupplier) {
         return cacheSupplier.get();
     }
 
     //构建 RedissonClient
-    @Bean
+    @Managed
     public RedissonClient cache3(@Inject("${test.rd1}") RedissonClientSupplier clientSupplier) {
         return clientSupplier.get();
     }
 
 
-    @Bean
+    @Managed
     public RedissonClient demo4(@Inject("${test.rd1}") Properties prop) {
         return RedissonBuilder.build(prop);
     }

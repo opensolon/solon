@@ -20,7 +20,7 @@ public interface IComplexModelService {
 ##### 接口使用示例1（直接注入，需要 LoadBalance 适配）
 
 ```java
-@Component
+@Managed
 public class Demo1{
     @NamiClient(name="test", path="/ComplexModelService/")
     IComplexModelService service;
@@ -32,7 +32,7 @@ public class Demo1{
 }
 
 //构建一个test负载均衡组件
-@Component("test")
+@Managed("test")
 public class TestUpstream implements LoadBalance {
     @Override
     public String getServer() {

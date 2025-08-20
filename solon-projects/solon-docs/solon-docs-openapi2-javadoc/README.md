@@ -7,7 +7,7 @@ public class DocConfig {
     /**
      * 简单点的
      */
-    @Bean("appApi")
+    @Managed("appApi")
     public DocDocket appApi() {
         //根据情况增加 "knife4j.setting" （可选）
         return new DocDocket()
@@ -20,7 +20,7 @@ public class DocConfig {
     /**
      * 丰富点的
      */
-    @Bean("adminApi")
+    @Managed("adminApi")
     public DocDocket adminApi() {
         //根据情况增加 "knife4j.setting" （可选）
         return new DocDocket()

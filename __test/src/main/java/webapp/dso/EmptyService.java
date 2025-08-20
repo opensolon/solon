@@ -15,11 +15,11 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/2/28 created
  */
-@Component
+@Managed
 public class EmptyService {
 }

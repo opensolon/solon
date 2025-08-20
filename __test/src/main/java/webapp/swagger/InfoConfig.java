@@ -19,7 +19,7 @@ import org.noear.solon.annotation.Configuration;
 
 @Configuration
 public class InfoConfig {
-//    @Bean
+//    @Managed
 //    public Info build() {
 //        return new Info()
 //                .contact(new Contact().name("noear").email("noear@live.cn"))

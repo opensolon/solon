@@ -15,7 +15,7 @@
  */
 package labs.initTest.test3;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 
@@ -23,7 +23,7 @@ import org.noear.solon.annotation.Singleton;
  * @author noear 2022/9/21 created
  */
 @Singleton(false)
-@Component
+@Managed
 public class ClassE {
 
     @Init

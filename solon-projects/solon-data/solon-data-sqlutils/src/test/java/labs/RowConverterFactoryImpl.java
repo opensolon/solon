@@ -1,7 +1,7 @@
 package labs;
 
 import org.noear.snack.ONode;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.sql.bound.RowConverter;
 import org.noear.solon.data.sql.bound.RowConverterFactory;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author noear 2024/12/5 created
  */
-@Component
+@Managed
 public class RowConverterFactoryImpl implements RowConverterFactory<Object> {
     @Override
     public RowConverter<Object> create(Class<?> tClass) {

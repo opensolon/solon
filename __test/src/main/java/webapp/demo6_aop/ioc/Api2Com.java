@@ -15,11 +15,11 @@
  */
 package webapp.demo6_aop.ioc;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/9/24 created
  */
-@Component
+@Managed
 public class Api2Com implements Api2{
 }

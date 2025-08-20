@@ -16,7 +16,7 @@
 package webapp.demo8_config;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.BindProps;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -54,7 +54,7 @@ public class ConfigDemo {
     }
 
     @BindProps(prefix = "demo8.test")
-    @Bean
+    @Managed
     public DsModel2 buildDsModel(){
         return new DsModel2();
     }

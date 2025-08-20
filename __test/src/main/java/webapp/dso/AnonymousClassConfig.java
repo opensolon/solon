@@ -15,7 +15,7 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -25,7 +25,7 @@ import org.noear.solon.core.handle.Handler;
  */
 @Configuration
 public class AnonymousClassConfig {
-    @Bean("test_AnonymousClass_Handler")
+    @Managed("test_AnonymousClass_Handler")
     public Handler newHandler() {
         return new Handler() {
             @Override
@@ -35,7 +35,7 @@ public class AnonymousClassConfig {
         };
     }
 
-    @Bean("test_AnonymousClass_Handler2")
+    @Managed("test_AnonymousClass_Handler2")
     public Handler newHandler2() {
         return context -> {};
     }

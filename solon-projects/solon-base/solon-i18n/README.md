@@ -31,7 +31,7 @@ resources/i18n/login_zh_CN.properties
 ```java
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public LocaleResolver localeResolver() {
         //或者自己定义一个
         return new LocaleResolverHeader();

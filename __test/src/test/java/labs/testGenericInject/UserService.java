@@ -15,11 +15,11 @@
  */
 package labs.testGenericInject;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/10/27 created
  */
-@Component
+@Managed
 public class UserService {
 }

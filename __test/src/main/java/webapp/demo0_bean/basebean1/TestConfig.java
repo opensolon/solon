@@ -15,7 +15,7 @@
  */
 package webapp.demo0_bean.basebean1;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
@@ -25,7 +25,7 @@ import org.noear.solon.annotation.Inject;
  */
 @Configuration
 public class TestConfig {
-    @Bean(name = "a", typed = true)
+    @Managed(name = "a", typed = true)
     public A a() { //只注册实例和返回类型的，一级上层接口
         return new A() {
             @Override

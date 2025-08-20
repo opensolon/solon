@@ -34,7 +34,7 @@ public class DemoApp {
 
     public interface Base<T, K> {}
 
-    @Component
+    @Managed
     public static class CommonBaseImpl implements Base<Bean1, Integer> {}
 
     @Configuration
@@ -45,10 +45,10 @@ public class DemoApp {
         @Inject
         private Base<Entity, Integer> defaultBase3;
 
-        @Bean
+        @Managed
         public Base<Bean1, Long> base1() { return new Base<Bean1, Long>() {}; }
 
-        @Bean
+        @Managed
         public Base<Bean2, Long> base2() { return new Base<Bean2, Long>() {}; }
     }
 
@@ -59,7 +59,7 @@ public class DemoApp {
 
     public static abstract class IntBaseController<T> extends BaseController<T, Integer> {}
 
-    @Component
+    @Managed
     public static class DefaultController extends IntBaseController<Entity> {
         @Inject
         private DefaultBaseImpl defaultBase;

@@ -15,12 +15,12 @@
  */
 package demo;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/2/23 created
  */
-@Component
+@Managed
 public class UserService extends UserServiceBase<String>{
     private String userName;
     public UserService(){

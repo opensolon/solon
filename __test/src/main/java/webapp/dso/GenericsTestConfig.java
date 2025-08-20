@@ -15,8 +15,8 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
@@ -45,19 +45,19 @@ public class GenericsTestConfig {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Component
+    @Managed
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component
+    @Managed
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component
+    @Managed
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Component
+    @Managed
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -86,11 +86,11 @@ public class GenericsTestConfig {
         }
     }
 
-    @Component
+    @Managed
     public static class WxCallbackContext extends AbstractCallbackContext<WxEvent, String> {
     }
 
-    @Component
+    @Managed
     public static class FsCallbackContext extends AbstractCallbackContext<FsEvent, Integer> {
     }
 
@@ -107,14 +107,14 @@ public class GenericsTestConfig {
             assert v2.size() == 0; //为 0, 因为都没有名字
         }
 
-        @Bean
+        @Managed
         public void test1(List<SocialEventCallback<WxEvent, String>> v1) {
             this.v1 = v1;
             System.out.println("v1: 2, " + v1.size());
             assert v1.size() == 2; //为 2
         }
 
-        @Bean
+        @Managed
         public void test2(@Inject(required = false) Map<String, SocialEventCallback<WxEvent, String>> v2) {
             this.v2 = v2;
             assert v2.size() ==0; //因为都没有名字

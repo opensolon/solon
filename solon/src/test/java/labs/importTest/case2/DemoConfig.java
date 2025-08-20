@@ -16,12 +16,12 @@
 package labs.importTest.case2;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/10/18 created
  */
-@Component
+@Managed
 public class DemoConfig {
     @Inject("${demo.name}")
     String demoName;

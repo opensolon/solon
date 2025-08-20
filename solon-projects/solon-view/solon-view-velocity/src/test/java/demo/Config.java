@@ -1,6 +1,6 @@
 package demo;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.view.velocity.VelocityRender;
 
@@ -9,7 +9,7 @@ import org.noear.solon.view.velocity.VelocityRender;
  */
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public void configure(VelocityRender render){
         render.getProvider();
         render.getProviderOfDebug();

@@ -17,7 +17,7 @@ package demo.sqlink;
 
 import demo.sqlink.model.User;
 import demo.sqlink.vo.UserVo;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.Result;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import static org.noear.solon.data.sqlink.core.SubQuery.subQuery;
 
-@Component
+@Managed
 public class SelectDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;

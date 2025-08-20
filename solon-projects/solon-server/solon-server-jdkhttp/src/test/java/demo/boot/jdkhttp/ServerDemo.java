@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * @author noear 2023/4/6 created
  */
-//@Component
+//@Managed
 public class ServerDemo implements LifecycleBean , Handler {
     JdkHttpServer _server;
 

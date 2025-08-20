@@ -15,7 +15,7 @@
  */
 package org.noear.solon.web.sdl.demo;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.validation.annotation.LoginedChecker;
 import org.noear.solon.web.sdl.SdlLoginedChecker;
@@ -30,12 +30,12 @@ import org.noear.solon.web.sdl.impl.SdlStorageOfLocal;
 @Configuration
 public class Config {
     // 用本地内存存储，一般用于临时测试
-    @Bean
+    @Managed
     public SdlStorage sdlStorage1() {
         return new SdlStorageOfLocal();
     }
 
-    @Bean
+    @Managed
     public LoginedChecker sdlLoginedChecker() {
         return new SdlLoginedChecker();
     }

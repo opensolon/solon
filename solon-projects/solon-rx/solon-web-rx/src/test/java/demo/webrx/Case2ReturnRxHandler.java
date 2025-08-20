@@ -2,7 +2,7 @@ package demo.webrx;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.rx.integration.RxReturnValueHandler;
 import org.reactivestreams.Publisher;
@@ -10,7 +10,7 @@ import org.reactivestreams.Publisher;
 /**
  * @author noear 2025/1/29 created
  */
-@Component(index = -1)
+@Managed(index = -1)
 public class Case2ReturnRxHandler extends RxReturnValueHandler {
     @Override
     public boolean matched(Context ctx, Class<?> returnType) {

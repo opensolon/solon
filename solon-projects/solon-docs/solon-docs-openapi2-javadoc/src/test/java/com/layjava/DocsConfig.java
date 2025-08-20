@@ -16,7 +16,7 @@
 package com.layjava;
 
 import io.swagger.models.Scheme;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.docs.DocDocket;
 
@@ -26,7 +26,7 @@ public class DocsConfig {
     /**
      * 简单点的
      */
-    @Bean("appApi")
+    @Managed("appApi")
     public DocDocket appApi() {
         return new DocDocket()
                 .groupName("app端接口")

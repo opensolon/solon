@@ -29,7 +29,7 @@ Author noear，iYarnFog
 ```java
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public void initHealthCheckPoint() {
         //test...
         HealthChecker.addIndicator("preflight", Result::succeed);

@@ -16,7 +16,7 @@
 package labs.case1;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.server.prop.impl.HttpServerProps;
 import org.noear.solon.server.smarthttp.SmHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
@@ -26,7 +26,7 @@ import org.noear.solon.core.handle.Handler;
 /**
  * @author noear 2023/4/6 created
  */
-@Component
+@Managed
 public class ServerDemo implements LifecycleBean , Handler {
     SmHttpServer _server;
 

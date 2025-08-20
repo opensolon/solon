@@ -16,11 +16,11 @@
 package demo.sqlink;
 
 import demo.sqlink.model.User;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 
-@Component
+@Managed
 public class DeleteDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;

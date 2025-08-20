@@ -17,13 +17,13 @@ package features;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2021/12/17 created
  */
 @Slf4j
-@Component
+@Managed
 public class App {
     public static void main(String[] args){
         Solon.start(App.class, args);

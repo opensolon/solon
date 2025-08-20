@@ -15,7 +15,7 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -74,56 +74,56 @@ public class ConditionConfig {
     }
 
     @Condition(onProperty = "${username}")
-    @Bean
+    @Managed
     public void setUsername(@Inject("${username}") String u1){
         username = u1;
     }
 
     @Condition(onProperty = "${username2}")
-    @Bean
+    @Managed
     public void setUsername2(@Inject("${username2}") String u2){
         username2 = u2;
     }
 
     @Condition(onProperty = "${username} == noear")
-    @Bean
+    @Managed
     public void setUsername3(@Inject("${username}") String u1){
         username3 = u1;
     }
 
     @Condition(onProperty = "username != noear") //语法错误
-    @Bean
+    @Managed
     public void setUsername4(@Inject("${username}") String u1){
         username4 = u1;
     }
 
     @Condition(onProperty = "username = noear")
-    @Bean
+    @Managed
     public void setUsername5(@Inject("${username}") String u1){
         username5 = u1;
     }
 
     @Condition(onMissingBean = BeanClass1.class)
-    @Bean
+    @Managed
     public void setUsername11(@Inject("${username}") String u1){
         username11 = u1;
     }
 
     @Condition(onMissingBean = DemoService.class)
-    @Bean
+    @Managed
     public void setUsername12(@Inject("${username}") String u1){
         username12 = u1;
     }
 
 
     @Condition(onMissingBeanName = "map1_xxx")
-    @Bean
+    @Managed
     public void setUsername21(@Inject("${username}") String u1){
         username21 = u1;
     }
 
     @Condition(onMissingBeanName = "map1")
-    @Bean
+    @Managed
     public void setUsername22(@Inject("${username}") String u1){
         username22 = u1;
     }

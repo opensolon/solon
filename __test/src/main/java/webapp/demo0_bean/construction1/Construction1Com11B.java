@@ -16,12 +16,12 @@
 package webapp.demo0_bean.construction1;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2024/8/11 created
  */
-@Component
+@Managed
 public class Construction1Com11B {
     private Condition1B condition1B;
 

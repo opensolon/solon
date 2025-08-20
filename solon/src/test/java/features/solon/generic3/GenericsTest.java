@@ -53,19 +53,19 @@ public class GenericsTest {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Component("WxUserCallback")
+    @Managed("WxUserCallback")
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component("WxDeptCallback")
+    @Managed("WxDeptCallback")
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Component("FsUserCallback")
+    @Managed("FsUserCallback")
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Component("FsDeptCallback")
+    @Managed("FsDeptCallback")
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -86,23 +86,23 @@ public class GenericsTest {
         }
     }
 
-    @Component
+    @Managed
     public static class WxCallbackContext extends AbstractCallbackContext<WxEvent, String> {
     }
 
-    @Component
+    @Managed
     public static class FsCallbackContext extends AbstractCallbackContext<FsEvent, Integer> {
     }
 
     @Configuration
     public static class TestConfig {
-        @Bean
+        @Managed
         public void test1(List<SocialEventCallback<WxEvent, String>> v1) {
             System.out.println("v1: 2, " + v1.size());
             assert v1.size() == 2; //为 2
         }
 
-        @Bean
+        @Managed
         public void test2(Map<String, SocialEventCallback<WxEvent, String>> v2) {
             System.out.println("v2: 2, " + v2.size());
             assert v2.size() == 2; //为 2

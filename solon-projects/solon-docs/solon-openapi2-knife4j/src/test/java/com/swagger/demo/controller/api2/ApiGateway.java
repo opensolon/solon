@@ -15,7 +15,7 @@
  */
 package com.swagger.demo.controller.api2;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Gateway;
 
@@ -23,7 +23,7 @@ import org.noear.solon.core.handle.Gateway;
  * @author noear 2023/6/30 created
  */
 @Mapping("/api2/v2/**")
-@Component
+@Managed
 public class ApiGateway extends Gateway {
     @Override
     protected void register() {

@@ -26,13 +26,13 @@ demo.redis:
 ```java
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public SdlStorage ssoStorage(@Inject("${demo.redis}") RedisClient redisClient) {
         //或者使用 SdlStorageOfLocal 作临时测试
         return new SdlStorageOfRedis(redisClient);
     }
 
-    @Bean
+    @Managed
     public LoginedChecker ssoLoginedChecker() {
         return new SdlLoginedChecker();
     }

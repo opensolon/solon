@@ -16,12 +16,12 @@
 package webapp.dso;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/10/2 created
  */
-@Component
+@Managed
 public class TestServiceImpl implements TestService{
 
     @Inject

@@ -2,14 +2,14 @@ package features.statemachine;
 
 import features.statemachine.enums.OrderEvent;
 import features.statemachine.enums.OrderState;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.statemachine.StateMachine;
 
 /**
  *
  * @author noear 2025/8/8 created
  * <pre>{@code
- * @Component
+ * @Managed
  * public class Demo {
  *     @Inject
  *     OrderStateMachine orderStateMachine;
@@ -20,7 +20,7 @@ import org.noear.solon.statemachine.StateMachine;
  * }
  * }</pre>
  */
-@Component
+@Managed
 public class OrderStateMachine extends StateMachine<OrderState, OrderEvent, Order> {
     public OrderStateMachine() {
         // 无 -> 创建订单
