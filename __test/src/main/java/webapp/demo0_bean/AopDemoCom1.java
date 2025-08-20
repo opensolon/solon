@@ -15,12 +15,12 @@
  */
 package webapp.demo0_bean;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2023/10/14 created
  */
-@Managed
+@Component
 public class AopDemoCom1 {
     public String hello(){
         return "hello";

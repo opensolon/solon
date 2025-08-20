@@ -16,10 +16,10 @@
 package webapp.demo6_aop;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 
-@Managed
+@Component
 public class Bean2 {
     @Inject
     Bean1 bean1;

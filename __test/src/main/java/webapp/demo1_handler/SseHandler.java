@@ -15,7 +15,7 @@
  */
 package webapp.demo1_handler;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Context;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author noear 2023/4/19 created
  */
 @Mapping("/sse")
-@Managed
+@Component
 public class SseHandler implements Handler , EventListener<SseHandler.SseEvent> {
     private List<SseEvent> sseEvents = new ArrayList<>();
 

@@ -15,14 +15,14 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 /**
  * @author noear 2021/4/20 created
  */
-@Managed
+@Component
 public class DemoService {
     public DemoService() {
         System.out.println("DemoService: " + System.currentTimeMillis());

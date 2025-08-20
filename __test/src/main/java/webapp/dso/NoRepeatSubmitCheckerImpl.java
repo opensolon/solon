@@ -15,7 +15,7 @@
  */
 package webapp.dso;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.data.cache.CacheService;
@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author noear 2021/6/12 created
  */
-@Managed
+@Component
 public class NoRepeatSubmitCheckerImpl implements NoRepeatSubmitChecker {
 
     @Inject

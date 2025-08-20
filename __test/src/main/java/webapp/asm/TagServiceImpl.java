@@ -15,12 +15,12 @@
  */
 package webapp.asm;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2022/9/30 created
  */
-@Managed
+@Component
 public class TagServiceImpl extends CrudServiceImpl<TagDao, Tag, TagDTO, TagConvert> implements TagService {
 
     @Override

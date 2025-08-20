@@ -16,7 +16,7 @@
 package webapp.dso;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.solon.scheduling.scheduled.Job;
 import org.noear.solon.scheduling.scheduled.JobHandler;
@@ -26,7 +26,7 @@ import org.noear.solon.scheduling.scheduled.JobInterceptor;
  * @author noear 2024/2/28 created
  */
 @Slf4j
-@Managed
+@Component
 public class JobInterceptorImpl implements JobInterceptor {
     @Override
     public void doIntercept(Job job, JobHandler handler) throws Throwable {

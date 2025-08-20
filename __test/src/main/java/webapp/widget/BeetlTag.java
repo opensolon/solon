@@ -16,7 +16,7 @@
 package webapp.widget;
 
 import org.beetl.core.tag.Tag;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Singleton;
 import webapp.dso.EmptyService;
@@ -25,7 +25,7 @@ import webapp.dso.EmptyService;
  * @author noear 2024/6/2 created
  */
 @Singleton(false)
-@Managed("view:beetlTag")
+@Component("view:beetlTag")
 public class BeetlTag extends Tag {
     @Inject
     EmptyService emptyService;

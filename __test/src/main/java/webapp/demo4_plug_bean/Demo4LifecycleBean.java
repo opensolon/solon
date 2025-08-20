@@ -16,10 +16,10 @@
 package webapp.demo4_plug_bean;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.core.bean.LifecycleBean;
 
-@Managed
+@Component
 public class Demo4LifecycleBean implements LifecycleBean {
     @Override
     public void start() throws Throwable {

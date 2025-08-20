@@ -15,12 +15,12 @@
  */
 package webapp.demo4_plug_bean;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2021/1/10 created
  */
-@Managed
+@Component
 public class Demo4Service {
     public void hello(){
 
