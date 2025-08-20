@@ -22,6 +22,11 @@
 * 优化 拦截体系与 rx 的兼容？
 
 
+### 3.6.0
+
+* 支持 solon 非依赖关系的 bean 异步初始化（`@Init(async=true)`）???
+* 支持 solon web 请求异步响应（`@Mapping(async=true)`）???
+
 ### 3.5.1
 
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
@@ -29,6 +34,7 @@
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 * 调整 solon `@Managed` 增加方法注入支持（可用于替换 `@Component`,`@Bean`）
 * 添加 solon `@Condition:priority` 替换 `@Bean:priority` （标为弃用）
+* 添加 solon `@Managed:allowInject` 对应 `@Bean:injected` 属性
 
 ### 3.5.0
 
