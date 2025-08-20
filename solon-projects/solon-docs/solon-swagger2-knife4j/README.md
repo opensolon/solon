@@ -45,7 +45,7 @@ public class DocConfig {
     /**
      * 基于配置构建
      */
-    @Bean("adminApi")
+    @Managed("adminApi")
     public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
         docket.globalResult(Result.class);
         docket.securityDefinitionInHeader("token");
@@ -66,7 +66,7 @@ public class DocConfig {
     /**
      * 基于代码构建
      */
-    @Bean("appApi")
+    @Managed("appApi")
     public DocDocket appApi() {
         //根据情况增加 "knife4j.setting" （可选）
         return new DocDocket()
@@ -80,7 +80,7 @@ public class DocConfig {
 
     }
 
-    @Bean("adminApi")
+    @Managed("adminApi")
     public DocDocket adminApi() {
         return new DocDocket()
                 .groupName("admin端接口")

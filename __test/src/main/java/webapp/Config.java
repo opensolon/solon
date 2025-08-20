@@ -15,7 +15,7 @@
  */
 package webapp;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
@@ -75,12 +75,12 @@ public class Config {
     @Inject("${load1.title}")
     String load1Title;
 
-//    @Bean
+//    @Managed
 //    public void error(@Inject("${xxxyyyzzz}") String tmp){
 //
 //    }
 
-    @Bean(value = "map1", typed = true)
+    @Managed(value = "map1", typed = true)
     public Map<String, Object> map() {
         Map<String, Object> map = new HashMap<>();
         map.put("1", 1);
@@ -89,18 +89,18 @@ public class Config {
         return map;
     }
 
-    @Bean
+    @Managed
     public void test1(@Inject("map1") BeanWrap bw) {
         Map map = bw.get();
         System.out.println("map::" + map.toString());
     }
 
-    @Bean
+    @Managed
     public void test2(@Inject("${username}") String name) {
         System.out.println("cfg::" + name);
     }
 
-    @Bean
+    @Managed
     public void test3(@Inject("${cache1}") CacheServiceSupplier supplier) {
         supplier.get();
         System.out.println("cache::");
@@ -108,7 +108,7 @@ public class Config {
 
 
 
-//    @Bean
+//    @Managed
 //    public Filter test4() {
 //        return new SaTokenPathFilter()
 //                // 指定 [拦截路由] 与 [放行路由]

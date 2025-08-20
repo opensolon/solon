@@ -15,7 +15,7 @@
  */
 package org.noear.solon.scheduling.quartz.test.features2;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -27,7 +27,7 @@ import org.quartz.impl.StdSchedulerFactory;
  */
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public Scheduler initQuartz() throws SchedulerException {
         SchedulerFactory factory = new StdSchedulerFactory();
         return factory.getScheduler();

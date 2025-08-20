@@ -29,7 +29,7 @@ demo.ds.db_user:
 //配置数据源 bean
 @Configuration
 public class Config {
-    @Bean("db_user")
+    @Managed("db_user")
     public DataSource dsUser(@Inject("$demo.ds.db_user}") DynamicDataSource dataSource) {
         return dataSource;
     }

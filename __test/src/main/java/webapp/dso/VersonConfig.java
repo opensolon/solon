@@ -1,6 +1,6 @@
 package webapp.dso;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.web.version.VersionFilter;
@@ -10,7 +10,7 @@ import org.noear.solon.web.version.VersionFilter;
  */
 @Configuration
 public class VersonConfig {
-    @Bean
+    @Managed
     public Filter filter() {
         return new VersionFilter().useHeader("Api-Version");
     }

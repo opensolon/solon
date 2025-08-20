@@ -16,12 +16,12 @@
 package webapp.demox_log_breaker;
 
 //import org.noear.solon.cloud.annotation.CloudBreaker;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2021/3/14 created
  */
-@Component
+@Managed
 public class BreakerServiceDemo {
 //    @CloudBreaker("test")
     public String test() throws Exception{

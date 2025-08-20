@@ -15,7 +15,7 @@
  */
 package webapp.demof_websocket;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.net.websocket.WebSocket;
@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 @Configuration
 public class WebSocketRouterConfig0 {
-    @Bean
+    @Managed
     public void init(@Inject WebSocketRouter webSocketRouter){
         //添加前置监听
         webSocketRouter.before(new SimpleWebSocketListener(){

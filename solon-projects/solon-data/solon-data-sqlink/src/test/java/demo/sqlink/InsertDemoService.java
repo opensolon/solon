@@ -16,13 +16,13 @@
 package demo.sqlink;
 
 import demo.sqlink.model.User;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 
 import java.util.Arrays;
 
-@Component
+@Managed
 public class InsertDemoService {
     @Inject // or @Inject("main")
     SqLink sqLink;

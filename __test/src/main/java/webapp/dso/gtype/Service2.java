@@ -15,12 +15,12 @@
  */
 package webapp.dso.gtype;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/1/17 created
  */
-@Component
+@Managed
 public class Service2 implements Service {
     public int hello() {
        return 2;

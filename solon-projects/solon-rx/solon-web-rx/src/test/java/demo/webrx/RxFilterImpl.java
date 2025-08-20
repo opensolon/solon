@@ -1,6 +1,6 @@
 package demo.webrx;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -12,7 +12,7 @@ import org.noear.solon.rx.handle.RxFilterChain;
 /**
  * @author noear 2025/2/16 created
  */
-@Component
+@Managed
 public class RxFilterImpl implements Filter, RxFilter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {

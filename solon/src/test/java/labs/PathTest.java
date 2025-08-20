@@ -15,7 +15,7 @@
  */
 package labs;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.AppContext;
@@ -37,12 +37,12 @@ public class PathTest {
         appContext.start();
     }
 
-    @Bean("str1")
+    @Managed("str1")
     public String str1() {
         return "1";
     }
 
-    @Bean("str2")
+    @Managed("str2")
     public String str2() {
         return "2";
     }

@@ -15,12 +15,12 @@
  */
 package demo;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/5/26 created
  */
-@Component
+@Managed
 public class HelloService {
     public HelloService(){
         System.out.println("service init");

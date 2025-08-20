@@ -18,7 +18,7 @@ package demo.demo1;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.serialization.jackson.xml.JacksonXmlActionExecutor;
@@ -44,7 +44,7 @@ public class Config {
      * @param factory
      * @param executor
      */
-    @Bean
+    @Managed
     public void jsonInit(@Inject JacksonXmlRenderFactory factory, @Inject JacksonXmlActionExecutor executor){
         //通过转换器，做简单类型的定制
         factory.addConvertor(Date.class, s -> s.getTime());

@@ -18,7 +18,7 @@ package webapp.demo0_bean.construction1;
 /**
  * @author noear 2024/8/11 created
  */
-//@Component
+//@Managed
 public class Construction1Com11A {
     private final Condition1A condition1A;
 

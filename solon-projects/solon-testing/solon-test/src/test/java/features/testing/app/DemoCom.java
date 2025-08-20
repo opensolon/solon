@@ -1,11 +1,11 @@
 package features.testing.app;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2025/1/8 created
  */
-@Component
+@Managed
 public class DemoCom {
     public String hello() {
         return "hello";

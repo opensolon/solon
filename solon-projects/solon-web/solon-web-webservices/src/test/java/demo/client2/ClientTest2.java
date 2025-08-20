@@ -2,7 +2,7 @@ package demo.client2;
 
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.web.webservices.WebServiceReference;
 
@@ -14,7 +14,7 @@ public class ClientTest2 {
         Solon.start(ClientTest2.class, args, app -> app.enableHttp(false));
     }
 
-    @Component
+    @Managed
     public static class DemoCom implements LifecycleBean {
         @WebServiceReference("http://localhost:8080/ws/HelloService")
         private HelloService helloService;

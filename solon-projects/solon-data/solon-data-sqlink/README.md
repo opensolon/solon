@@ -86,7 +86,7 @@ solon.data.sqlink:
 ```java
 import org.noear.solon.data.sqlink.SqLink;
 
-@Component
+@Managed
 public class DemoService {
     @Inject //默认数据源
     SqLink sqLink1;
@@ -159,7 +159,7 @@ public class DemoService {
 定义一个用来处理List<String>的类型处理器
 
 ```java
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.sqlink.base.toBean.handler.ITypeHandler;
 
 import java.lang.reflect.Type;
@@ -170,9 +170,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// 加上@Component注解可以注册到容器里，这意味着全局的同类型字段都会调用这个类型处理器
+// 加上@Managed注解可以注册到容器里，这意味着全局的同类型字段都会调用这个类型处理器
 // 如果是用来给UseTypeHandler的话就不需要注册
-@Component
+@Managed
 public class ListStringTypeHandler implements ITypeHandler<List<String>> {
 
     // 实现从ResultSet取出数据的逻辑
@@ -329,13 +329,13 @@ public class User {
 
 ```java
 import demo.sqlink.model.User;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 
 import java.util.Arrays;
 
-@Component
+@Managed
 public class InsertDemoService {
     @Inject
     SqLink sqLink;
@@ -369,11 +369,11 @@ public class InsertDemoService {
 
 ```java
 import demo.sqlink.model.User;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 
-@Component
+@Managed
 public class UpdateDemoService {
     @Inject
     SqLink sqLink;
@@ -403,11 +403,11 @@ public class UpdateDemoService {
 
 ```java
 import demo.sqlink.model.User;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 
-@Component
+@Managed
 public class DeleteDemoService {
     @Inject
     SqLink sqLink;
@@ -441,7 +441,7 @@ public class DeleteDemoService {
 ```java
 import demo.sqlink.model.User;
 import demo.sqlink.vo.UserVo;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.sqlink.SqLink;
 import org.noear.solon.data.sqlink.api.Result;
@@ -449,7 +449,7 @@ import org.noear.solon.data.sqlink.core.sqlExt.SqlFunctions;
 
 import java.util.List;
 
-@Component
+@Managed
 public class SelectDemoService {
     @Inject
     SqLink sqLink;

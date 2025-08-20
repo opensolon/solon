@@ -15,7 +15,7 @@
  */
 package features;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.cache.redisson.RedissonCacheService;
@@ -27,7 +27,7 @@ import org.noear.solon.data.cache.impl.JsonSerializer;
  */
 @Configuration
 public class CacheConfig {
-    @Bean
+    @Managed
     public CacheService cache1(@Inject("${test.rd1}") RedissonCacheService cache) {
         cache.serializer(JsonSerializer.instance);
         return cache;

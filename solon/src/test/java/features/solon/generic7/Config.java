@@ -1,6 +1,6 @@
 package features.solon.generic7;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
@@ -9,12 +9,12 @@ import org.noear.solon.annotation.Inject;
  */
 @Configuration
 public class Config {
-    @Bean(name = "loginKit", typed = true)
+    @Managed(name = "loginKit", typed = true)
     public LoginKit<LoginUser> loginKit(@Inject ILoginUserFactory<LoginUser> loginUserFactory) {
         return new LoginKit<>(loginUserFactory);
     }
 
-    @Bean
+    @Managed
     public ILoginUserFactory<LoginUser> loginUserFactory() {
         return new ILoginUserFactory<LoginUser>() {
             @Override

@@ -15,12 +15,12 @@
  */
 package demo2;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2022/9/30 created
  */
-@Component
+@Managed
 public class TagServiceImpl extends CrudServiceImpl<TagDao, Tag, TagDTO, TagConvert> implements TagService {
 
     @Override

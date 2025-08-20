@@ -41,7 +41,7 @@ test.db1:
 ```java
 @Configuration
 public class TestConfig {
-    @Bean("db2")
+    @Managed("db2")
     private DataSource db2(@VaultInject("${test.db1}") HikariDataSource ds){
         return ds;
     }

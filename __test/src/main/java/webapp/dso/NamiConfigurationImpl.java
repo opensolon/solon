@@ -18,7 +18,7 @@ package webapp.dso;
 /**
  * @author noear 2021/4/27 created
  */
-//@Component
+//@Managed
 //public class NamiConfigurationImpl implements NamiConfiguration {
 //    @Override
 //    public void config(NamiClient client, Nami.Builder builder) {

@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 2023/09/22
  */
 @Api("用户接口2")
-@Component
+@Managed
 public class UserApiApplicationJson {
     @ApiOperation(value = "添加用户11")
     @Mapping(value = "user/add111", consumes = "application/json")

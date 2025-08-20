@@ -1,6 +1,6 @@
 package features.solon.inject4;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
@@ -19,7 +19,7 @@ public class DemoConfig {
         this.con = con;
     }
 
-    @Bean
+    @Managed
     public void setDemo(Demo demo) {
         this.demo = demo;
     }

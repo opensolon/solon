@@ -15,7 +15,7 @@
  */
 package features;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.health.HealthChecker;
 
@@ -24,7 +24,7 @@ import org.noear.solon.health.HealthChecker;
  */
 //@Configuration
 public class Config {
-    @Bean
+    @Managed
     public void healthInit(){
         HealthChecker.addIndicator("preflight", Result::succeed);
         HealthChecker.addIndicator("test", Result::failure);

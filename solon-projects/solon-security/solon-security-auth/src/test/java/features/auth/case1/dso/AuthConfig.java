@@ -1,6 +1,6 @@
 package features.auth.case1.dso;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.auth.AuthAdapter;
 
@@ -9,7 +9,7 @@ import org.noear.solon.auth.AuthAdapter;
  */
 @Configuration
 public class AuthConfig {
-    @Bean
+    @Managed
     public AuthAdapter admin() {
         return new AuthAdapter()
                 .pathPrefix("/admin/")
@@ -20,7 +20,7 @@ public class AuthConfig {
 
     }
 
-    @Bean
+    @Managed
     public AuthAdapter user() {
         return new AuthAdapter()
                 .pathPrefix("/user/")

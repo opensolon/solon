@@ -1,6 +1,6 @@
 package demo;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.view.thymeleaf.ThymeleafRender;
 
@@ -9,7 +9,7 @@ import org.noear.solon.view.thymeleaf.ThymeleafRender;
  */
 @Configuration
 public class Config {
-    @Bean
+    @Managed
     public void configure(ThymeleafRender render){
         render.getProvider();
     }

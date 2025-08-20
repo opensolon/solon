@@ -15,11 +15,11 @@
  */
 package labs.importTest;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 
 /**
  * @author noear 2023/10/18 created
  */
-@Component
+@Managed
 public class DemoCom1 {
 }

@@ -20,14 +20,14 @@ import com.swagger.demo.model.PageImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Mapping;
 
 /**
  * @author noear 2023/6/30 created
  */
 @Api("用户接口")
-@Component
+@Managed
 public class UserApi {
     @ApiOperation("添加用户")
     @Mapping("user/add")

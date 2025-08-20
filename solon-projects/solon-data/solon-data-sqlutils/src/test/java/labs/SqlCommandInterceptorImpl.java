@@ -1,12 +1,12 @@
 package labs;
 
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.sql.intercept.SqlCommandInterceptor;
 import org.noear.solon.data.sql.intercept.SqlCommandInvocation;
 
 import java.sql.SQLException;
 
-@Component
+@Managed
 public class SqlCommandInterceptorImpl implements SqlCommandInterceptor {
 
 

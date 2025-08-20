@@ -16,7 +16,7 @@
 package demo;
 
 import demo.dso.AuthProcessorImpl;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.auth.AuthAdapter;
 
@@ -28,7 +28,7 @@ public class Config {
     /**
      * 单验证体系
      */
-    @Bean
+    @Managed
     public AuthAdapter authAdapter1() {
         return new AuthAdapter()
                 .loginUrl("/login") //设定登录地址，未登录时自动跳转

@@ -1,7 +1,7 @@
 package features.solon.injectcoll;
 
 import org.junit.jupiter.api.Test;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.AppContext;
 
@@ -28,7 +28,7 @@ public class AppTest {
 
     @Configuration
     public static class Config {
-        @Bean("n1")
+        @Managed("n1")
         public LogAdapter logAdapter() {
             return new LogAdapter() {
                 @Override
@@ -47,12 +47,12 @@ public class AppTest {
             };
         }
 
-        @Bean
+        @Managed
         public void logAdapterAry(List<LogAdapter> adapters) {
             count_l++;
         }
 
-        @Bean
+        @Managed
         public void logAdapterMap(Map<String, LogAdapter> adapters) {
             count_m++;
         }

@@ -16,13 +16,13 @@
 package demo;
 
 import demo.dso.UserMapper;
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
 import org.noear.solon.data.dynamicds.DynamicDs;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Managed;
 import org.noear.solon.data.dynamicds.DynamicDsKey;
 
 import javax.sql.DataSource;
@@ -36,12 +36,12 @@ import java.util.Properties;
 public class DemoDsTest {
     @Configuration
     public class Config {
-        @Bean("db_user")
+        @Managed("db_user")
         public DataSource dsUser(@Inject("$demo.ds.db_user}") DynamicDataSource dataSource) {
             return dataSource;
         }
 
-        //@Bean("db_user")
+        //@Managed("db_user")
         public DataSource dsUser2(@Inject("$demo.ds.db_user}") Properties props) {
             //手动构建，可以不用配置：type, strict
             Map<String, DataSource> dsMap = DsUtils.buildDsMap(props, DataSource.class);
@@ -56,7 +56,7 @@ public class DemoDsTest {
         }
     }
 
-    @Component
+    @Managed
     public class UserService {
         @Db("db_user")
         UserMapper userMapper;
