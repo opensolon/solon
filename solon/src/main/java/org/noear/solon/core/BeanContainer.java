@@ -416,7 +416,7 @@ public abstract class BeanContainer {
     }
 
     /**
-     * bean 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
+     * bean 发布，触发基类订阅 （自动支持 @Managed, @Bean, @Component 的 wrap）
      *
      * @since 3.0
      */
@@ -425,7 +425,7 @@ public abstract class BeanContainer {
     }
 
     /**
-     * wrap 发布，触发基类订阅 （自动支持 @Bean 和 @Component 的 wrap）
+     * wrap 发布，触发基类订阅 （自动支持 @Managed, @Bean, @Component 的 wrap）
      *
      * @deprecated 3.0 {@link #beanPublish(BeanWrap)}
      */
@@ -1304,7 +1304,7 @@ public abstract class BeanContainer {
             }
         });
 
-        //支持 @Bean(index), @Component(index) 排序
+        //支持 @Managed(index), @Bean(index), @Component(index) 排序
         if (list.size() > 0) {
             list.sort(Comparator.comparingInt(bw -> bw.index()));
         }
@@ -1323,7 +1323,7 @@ public abstract class BeanContainer {
             }
         });
 
-        //支持 @Bean(index), @Component(index) 排序
+        //支持 @Managed(index), @Bean(index), @Component(index) 排序
         if (list.size() > 0) {
             list.sort(Comparator.comparingInt(bw -> bw.index()));
         }

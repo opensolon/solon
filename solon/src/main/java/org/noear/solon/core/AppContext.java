@@ -458,7 +458,7 @@ public class AppContext extends BeanContainer {
 
         //Handler
         if (bw.raw() instanceof Handler) {
-            //不再支持 @Bean @Mapping fun() //v3.0
+            //不再支持 @Bean, @Managed @Mapping fun() //v3.0
             Mapping mapping = bw.clz().getAnnotation(Mapping.class);
             if (mapping != null) {
                 app().router().add(bw);
@@ -923,7 +923,7 @@ public class AppContext extends BeanContainer {
                         beanInject(raw);
                     }
 
-                    //@Bean 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
+                    //@Bean,@Managed 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
                     //EventBus.publish(raw);//@deprecated
 
                     //动态构建的bean，都用新生成wrap（否则会类型混乱）
@@ -954,7 +954,7 @@ public class AppContext extends BeanContainer {
                     m_bw.genericList().add((ParameterizedType)beanGtp);
                 }
 
-                //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
+                //@Bean,@Managed 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
                 beanPublish(m_bw);
             }
         } catch (Throwable ex) {

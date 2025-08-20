@@ -48,7 +48,7 @@ import java.lang.annotation.*;
  * //注解在@Configuration的Bean构建参数上
  * @Configuration
  * public class Config{
- *     @Bean
+ *     @Managed
  *     public DataSource db1(@Inject("${db1}") HikariDataSource ds){
  *         return ds;
  *     }
