@@ -84,6 +84,6 @@ public class ManagedToBeanAnno implements Bean {
 
     @Override
     public boolean injected() {
-        return true;
+        return anno.allowInject();
     }
 }

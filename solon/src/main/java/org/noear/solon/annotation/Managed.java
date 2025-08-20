@@ -20,10 +20,10 @@ import org.noear.solon.lang.Preview;
 import java.lang.annotation.*;
 
 /**
- * 托管（支持动态代理机制）
+ * 托管
  *
  * <pre>{@code
- * //注解在类上（生产托管 Bean）
+ * //注解在类上（生产托管 Bean，支持动态代理机制）
  * @Managed
  * public class DemoBean{
  *     @Inject
@@ -41,7 +41,6 @@ import java.lang.annotation.*;
  * }</pre>
  *
  * @author noear
- * @implSpec 托管类或方法
  * @since 3.4
  * @since 3.5
  * */
@@ -80,16 +79,17 @@ public @interface Managed {
 
 
     /**
-     * 初始化方法
-     *
-     * @implSpec 用于托管方法时
+     * 初始化方法（用于托管方法时）
      */
     String initMethod() default "";
 
     /**
-     * 注销方法
-     *
-     * @implSpec 用于托管方法时
+     * 注销方法（用于托管方法时）
      */
     String destroyMethod() default "";
+
+    /**
+     * 允许注入（用于托管方法时）
+     */
+    boolean allowInject() default false;
 }
