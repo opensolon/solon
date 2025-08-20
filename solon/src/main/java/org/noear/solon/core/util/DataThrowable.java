@@ -36,7 +36,7 @@ import java.io.Serializable;
  *     }
  * }
  *
- * @Bean
+ * @Managed
  * public class DemoService{
  *     @Inject
  *     UserMapper userMapper;

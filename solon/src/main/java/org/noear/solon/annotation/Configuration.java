@@ -24,7 +24,7 @@ import java.lang.annotation.*;
  * //或构建一些组件
  * @Configuration
  * public class Config{
- *     @Bean
+ *     @Managed
  *     public DataSource db1(@Inject("${db1}") HikariDataSource ds){
  *         return ds;
  *     }
