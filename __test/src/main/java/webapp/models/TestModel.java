@@ -15,11 +15,11 @@
  */
 package webapp.models;
 
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2022/7/8 created
  */
-@Managed
+@Component
 public class TestModel extends TestModelBase{
 }

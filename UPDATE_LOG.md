@@ -27,6 +27,7 @@
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
+* 调整 solon Managed 注解标为弃用
 * 添加 solon Condition:priority 替换 Bean:priority （标为弃用）
 
 ### 3.5.0
@@ -103,7 +104,7 @@
 
 * 新增 solon-ai-repo-pgvector 插件
 * 新增 solon-ai-search-baidu 插件
-* 新增 solon `@Managed` 注解（未来替代 `@Component`）
+* 新增 solon `@Managed` 预览注解（未来可能替代 `@Component`）
 * 新增 solon ActionArgumentResolver 接口
 * 添加 solon-net-httputils ssl 定制支持
 * 添加 solon-flow FlowContext:incrGet, incrAdd

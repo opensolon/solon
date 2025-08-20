@@ -16,7 +16,7 @@
 package webapp.dso;
 
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Managed;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
@@ -45,19 +45,19 @@ public class GenericsTestConfig {
     public static class FsEvent implements SocialEventAware<FsEvent> {
     }
 
-    @Managed
+    @Component
     public static class WxUserCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Managed
+    @Component
     public static class WxDeptCallback implements SocialEventCallback<WxEvent, String> {
     }
 
-    @Managed
+    @Component
     public static class FsUserCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
-    @Managed
+    @Component
     public static class FsDeptCallback implements SocialEventCallback<FsEvent, Integer> {
     }
 
@@ -86,11 +86,11 @@ public class GenericsTestConfig {
         }
     }
 
-    @Managed
+    @Component
     public static class WxCallbackContext extends AbstractCallbackContext<WxEvent, String> {
     }
 
-    @Managed
+    @Component
     public static class FsCallbackContext extends AbstractCallbackContext<FsEvent, Integer> {
     }
 

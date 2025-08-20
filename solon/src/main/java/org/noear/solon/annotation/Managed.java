@@ -33,6 +33,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 3.4
+ * @deprecated 3.5 {@link Component}
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
