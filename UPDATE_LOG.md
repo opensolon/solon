@@ -27,8 +27,8 @@
 * 把 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）
 * Plugin 添加 postStart 事件
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
-* 调整 solon Managed 注解标为弃用
-* 添加 solon Condition:priority 替换 Bean:priority （标为弃用）
+* 调整 solon `@Managed` 增加方法注入支持（可用于替换 `@Component`,`@Bean`）
+* 添加 solon `@Condition:priority` 替换 `@Bean:priority` （标为弃用）
 
 ### 3.5.0
 
