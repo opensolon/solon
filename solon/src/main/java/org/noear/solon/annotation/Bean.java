@@ -61,7 +61,10 @@ public @interface Bean {
 
     /**
      * 优先（产生之前的运行优先级；越大越优）
+     *
+     * @deprecated 3.5 {@link Condition#priority()}
      */
+    @Deprecated
     int priority() default 0;
 
     /**

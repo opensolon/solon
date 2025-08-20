@@ -42,27 +42,33 @@ public @interface Condition {
      * @Condition(onProperty="${prop1} == 1")
      * @Condition(onProperty="${prop1} == 1 && ${prop2} == 2")
      * }</pre>
-     *
      */
     String onProperty() default "";
 
     /**
      * 缺少 bean type
-     * */
+     */
     Class<?> onMissingBean() default Void.class;
 
     /**
      * 缺少 bean name
-     * */
+     */
     String onMissingBeanName() default "";
 
     /**
      * 存在 bean type
-     * */
+     */
     Class<?> onBean() default Void.class;
 
     /**
      * 存在 bean name
-     * */
+     */
     String onBeanName() default "";
+
+    /**
+     * 优先级（满足 onMissing 条件后的运行优先级；越大越优）
+     *
+     * @since 3.5
+     */
+    int priority() default 0;
 }

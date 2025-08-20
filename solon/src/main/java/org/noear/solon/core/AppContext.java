@@ -821,7 +821,8 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(mc)) {
-            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, ma.priority(), () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
+            int priority = (mc.priority() > 0 ? mc.priority() : ma.priority());
+            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, priority, () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryBuildBeanOfMethod0(bw, m, ma, mc);
         }
@@ -977,7 +978,7 @@ public class AppContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(cc)) {
-            lifecycle(Constants.LF_IDX_CLASS_CONDITION_IF_MISSING, () -> tryBuildBeanOfClass0(clz, cc));
+            lifecycle(Constants.LF_IDX_CLASS_CONDITION_IF_MISSING, cc.priority(), () -> tryBuildBeanOfClass0(clz, cc));
             return build_bean_ofclass_state1;
         } else {
             return tryBuildBeanOfClass0(clz, cc);

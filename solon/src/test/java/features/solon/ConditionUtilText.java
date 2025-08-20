@@ -99,6 +99,11 @@ public class ConditionUtilText {
         }
 
         @Override
+        public int priority() {
+            return 0;
+        }
+
+        @Override
         public Class<? extends Annotation> annotationType() {
             return null;
         }
