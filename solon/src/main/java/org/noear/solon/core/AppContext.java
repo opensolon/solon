@@ -195,12 +195,19 @@ public class AppContext extends BeanContainer {
             for (Method m : ClassUtil.findPublicMethods(bw.clz())) {
                 Bean ma = m.getAnnotation(Bean.class);
 
+                if (ma == null) {
+                    Managed tmp = m.getAnnotation(Managed.class);
+                    if (tmp != null) {
+                        ma = new ManagedToBeanAnno(tmp);
+                    }
+                }
+
                 if (ma != null) {
                     tryBuildBeanOfMethod(bw, m, ma);
 
                     //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
                     if (Modifier.isPublic(m.getModifiers()) == false) {
-                        LogUtil.global().warn("This @Bean method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+                        LogUtil.global().warn("This @" + ma.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
                     }
                 }
             }

@@ -20,22 +20,32 @@ import org.noear.solon.lang.Preview;
 import java.lang.annotation.*;
 
 /**
- * 托管类（支持动态代理机制）
+ * 托管（支持动态代理机制）
  *
  * <pre>{@code
- * //注解在类上
+ * //注解在类上（生产托管 Bean）
  * @Managed
  * public class DemoBean{
  *     @Inject
  *     DataSource db1;
  * }
+ *
+ * @Configuration
+ * public class Config{
+ *     //注解在方法上（构建托管 Bean）
+ *     @Managed
+ *     public DataSource db1(@Inject("${db1}") HikariDataSource ds){
+ *         return ds;
+ *     }
+ * }
  * }</pre>
  *
  * @author noear
+ * @implSpec 托管类或方法
  * @since 3.4
- * @deprecated 3.5 {@link Component}
+ * @since 3.5
  * */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Preview("3.4")
@@ -65,4 +75,21 @@ public @interface Managed {
      * 要交付的（特定能力接口交付）
      */
     boolean delivered() default true;
+
+    /// ///////////////
+
+
+    /**
+     * 初始化方法
+     *
+     * @implSpec 用于托管方法时
+     */
+    String initMethod() default "";
+
+    /**
+     * 注销方法
+     *
+     * @implSpec 用于托管方法时
+     */
+    String destroyMethod() default "";
 }
