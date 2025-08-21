@@ -26,7 +26,7 @@ public class DemoConfig {
         this.con = con;
     }
 
-    @Managed(allowInject = true)
+    @Managed(autoInject = true)
     public void setDemo(List<Demo> demos) {
         this.demos = demos;
     }

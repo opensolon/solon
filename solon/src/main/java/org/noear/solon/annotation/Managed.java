@@ -89,7 +89,10 @@ public @interface Managed {
     String destroyMethod() default "";
 
     /**
-     * 允许注入（用于托管方法时）
+     * 自动注入（用于托管方法时）
+     *
+     * @since 3.5
      */
-    boolean allowInject() default false;
+    @Preview("3.5")
+    boolean autoInject() default false;
 }
