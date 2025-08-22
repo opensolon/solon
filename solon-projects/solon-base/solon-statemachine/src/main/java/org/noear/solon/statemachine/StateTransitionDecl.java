@@ -27,8 +27,11 @@ import java.util.function.Predicate;
  *
  * @author noear
  * @since 3.4
+ * @param <S> 状态
+ * @param <E> 事件
+ * @param <T> 装载
  */
-public class StateTransitionDecl<S extends State, E extends Event, T> {
+public class StateTransitionDecl<S, E, T> {
     /**
      * 来源状态（即从来哪里来）
      */

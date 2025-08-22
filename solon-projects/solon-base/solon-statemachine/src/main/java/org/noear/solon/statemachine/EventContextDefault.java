@@ -22,8 +22,10 @@ import org.noear.solon.core.util.Assert;
  *
  * @author noear
  * @since 3.4
+ * @param <S> 状态
+ * @param <T> 装载
  */
-public class EventContextDefault<S extends State, T> implements EventContext<S,T> {
+public class EventContextDefault<S, T> implements EventContext<S,T> {
     private S currentState;
     private T payload;
 

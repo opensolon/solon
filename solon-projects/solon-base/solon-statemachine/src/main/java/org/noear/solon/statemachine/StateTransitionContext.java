@@ -23,9 +23,12 @@ import org.noear.solon.lang.Preview;
  *
  * @author 王奇奇
  * @serial 3.4
+ * @param <S> 状态
+ * @param <E> 事件
+ * @param <T> 装载
  */
 @Preview("3.4")
-public class StateTransitionContext<S extends State, E extends Event, T> {
+public class StateTransitionContext<S, E, T> {
     /**
      * 起始状态。即从来哪里来
      */

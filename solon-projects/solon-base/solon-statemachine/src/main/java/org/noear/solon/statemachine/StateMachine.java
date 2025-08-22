@@ -29,9 +29,12 @@ import java.util.function.Consumer;
  * @author 王奇奇
  * @author noear
  * @serial 3.4
+ * @param <S> 状态
+ * @param <E> 事件
+ * @param <T> 装载
  */
 @Preview("3.4")
-public class StateMachine<S extends State, E extends Event, T> {
+public class StateMachine<S, E, T> {
     /**
      * 转换器
      */
