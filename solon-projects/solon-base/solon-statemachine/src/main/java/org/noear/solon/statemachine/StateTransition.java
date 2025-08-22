@@ -22,9 +22,12 @@ import org.noear.solon.lang.Preview;
  *
  * @author 王奇奇
  * @serial 3.4
+ * @param <S> 状态
+ * @param <E> 事件
+ * @param <T> 装载
  */
 @Preview("3.4")
-public class StateTransition<S extends State, E extends Event, T> {
+public class StateTransition<S, E, T> {
     private StateTransitionDecl<S, E, T> decl;
 
     public StateTransition(StateTransitionDecl<S, E, T> decl) {

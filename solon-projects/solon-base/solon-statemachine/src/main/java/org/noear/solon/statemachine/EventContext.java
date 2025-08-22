@@ -20,9 +20,11 @@ package org.noear.solon.statemachine;
  *
  * @author noear
  * @since 3.4
+ * @param <S> 状态
+ * @param <T> 装载
  */
-public interface EventContext<S extends State, T> {
-    static <S extends State, T> EventContext<S, T> of(S state, T payload) {
+public interface EventContext<S, T> {
+    static <S, T> EventContext<S, T> of(S state, T payload) {
         return new EventContextDefault<>(state, payload);
     }
 
