@@ -21,4 +21,8 @@ public class OrderEntity {
     public OrderStatusEnum getStatus() {
         return status;
     }
+
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
+    }
 }

@@ -15,18 +15,21 @@ public class OrderStateMachine extends StateMachine<OrderStatusEnum,OrderStatusE
         addTransition(t -> t.
                 from(OrderStatusEnum.WAIT_PAY)
                 .to(OrderStatusEnum.WAIT_DELIVER)
-                .on(OrderStatusEventEnum.PAY));
+                .on(OrderStatusEventEnum.PAY)
+                .then(c -> c.getPayload().setStatus(c.getTo())));
 
         // 已支付待发货 -> 已发货待收货（仓库已发货）
         addTransition(t -> t.
                 from(OrderStatusEnum.WAIT_DELIVER)
                 .to(OrderStatusEnum.WAIT_RECEIVE)
-                .on(OrderStatusEventEnum.DELIVER));
+                .on(OrderStatusEventEnum.DELIVER)
+                .then(c -> c.getPayload().setStatus(c.getTo())));
 
         // 已发货待收货 -> 已收货（用户收货）
         addTransition(t -> t.
                 from(OrderStatusEnum.WAIT_RECEIVE)
                 .to(OrderStatusEnum.RECEIVED)
-                .on(OrderStatusEventEnum.RECEIVE));
+                .on(OrderStatusEventEnum.RECEIVE)
+                .then(c -> c.getPayload().setStatus(c.getTo())));
     }
 }
