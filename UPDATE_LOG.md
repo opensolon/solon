@@ -34,6 +34,7 @@
 * 添加 solon `@Managed` 增加方法注入支持（可用于替换 `@Component`,`@Bean`）
 * 添加 solon `@Condition:priority` 替换 `@Bean:priority` （标为弃用）
 * 添加 solon `@Managed:autoInject` 对应 `@Bean:injected` 属性
+* 调整 solon-statemachine 移除 Event,State. 使用更自由
 
 ### 3.5.0
 

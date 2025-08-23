@@ -16,6 +16,7 @@
 package org.noear.solon.statemachine;
 
 import org.noear.solon.core.util.Assert;
+import org.noear.solon.lang.Preview;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.function.Predicate;
  * @param <E> 事件
  * @param <T> 装载
  */
+@Preview("3.4")
 public class StateTransitionDecl<S, E, T> {
     /**
      * 来源状态（即从来哪里来）

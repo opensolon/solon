@@ -15,6 +15,8 @@
  */
 package org.noear.solon.statemachine;
 
+import org.noear.solon.lang.Preview;
+
 /**
  * 事件上下文
  *
@@ -23,6 +25,7 @@ package org.noear.solon.statemachine;
  * @param <S> 状态
  * @param <T> 装载
  */
+@Preview("3.4")
 public interface EventContext<S, T> {
     static <S, T> EventContext<S, T> of(S state, T payload) {
         return new EventContextDefault<>(state, payload);
