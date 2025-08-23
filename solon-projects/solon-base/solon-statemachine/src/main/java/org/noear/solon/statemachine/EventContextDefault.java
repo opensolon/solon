@@ -16,6 +16,7 @@
 package org.noear.solon.statemachine;
 
 import org.noear.solon.core.util.Assert;
+import org.noear.solon.lang.Preview;
 
 /**
  * 事件上下文默认实现
@@ -25,6 +26,7 @@ import org.noear.solon.core.util.Assert;
  * @param <S> 状态
  * @param <T> 装载
  */
+@Preview("3.4")
 public class EventContextDefault<S, T> implements EventContext<S,T> {
     private S currentState;
     private T payload;
