@@ -26,7 +26,7 @@
 * 调整 `solon-serialization-*` 弱化 ActionExecuteHandler, Render 的定制，强化 ContextSerializer???
 * 添加 Plugin postStart 事件???
 * 调整 Plugin 统一交给 AppContext 管理（之前由 SolonApp 或 PluginPackage 管理）？？
-
+* 使用 solon-expression 替代其它临时的表达式处理
 
 
 ### 3.5.1
