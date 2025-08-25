@@ -63,12 +63,13 @@ public class LoggingPlugin implements Plugin {
         LogOptions.getLoggerLevelInit();
 
         Solon.app().filter(Integer.MIN_VALUE, (ctx, chain) -> {
+            chain.doFilter(ctx);
+
+            //清附 mdc
             if (ctx.path() != null && ctx.path().equals(ctx.pathNew())) {
                 //避免 forward 时清掉 mdc
                 MDC.clear();
             }
-
-            chain.doFilter(ctx);
         });
     }
 
