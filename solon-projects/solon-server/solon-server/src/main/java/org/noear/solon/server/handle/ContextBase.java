@@ -17,6 +17,7 @@ package org.noear.solon.server.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.exception.StatusException;
 import org.noear.solon.server.ServerProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
@@ -29,6 +30,7 @@ import org.noear.solon.server.util.OutputUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -317,5 +319,13 @@ public abstract class ContextBase extends Context {
 
     //一些特殊的boot才有效
     protected void innerCommit() throws IOException {
+    }
+
+    protected URI parseURI(String uri) {
+        try {
+            return URI.create(uri);
+        } catch (Exception ex) {
+            throw new StatusException("Invalid request uri", ex, 400);
+        }
     }
 }

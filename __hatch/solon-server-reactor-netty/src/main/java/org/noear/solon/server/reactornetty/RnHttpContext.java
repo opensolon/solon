@@ -85,7 +85,7 @@ public class RnHttpContext extends WebContextBase {
     @Override
     public URI uri() {
         if(_uri == null){
-            _uri = URI.create(url());
+            _uri = this.createURI(url());
         }
         return _uri;
     }
