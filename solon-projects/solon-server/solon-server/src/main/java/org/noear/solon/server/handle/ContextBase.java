@@ -325,7 +325,7 @@ public abstract class ContextBase extends Context {
         try {
             return URI.create(uri);
         } catch (Exception ex) {
-            throw new StatusException("Invalid request uri", ex, 400);
+            throw new StatusException("Invalid request uri: " + uri, ex, 400);
         }
     }
 }
