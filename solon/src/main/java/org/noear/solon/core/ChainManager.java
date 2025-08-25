@@ -44,6 +44,7 @@ public class ChainManager {
      * 过滤器 节点
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
+    private ContextPathFilter contextPathFilter;
 
     private final ReentrantLock SYNC_LOCK = new ReentrantLock();
 
@@ -61,6 +62,11 @@ public class ChainManager {
      * 添加过滤器
      */
     public void addFilter(Filter filter, int index) {
+        if (filter instanceof ContextPathFilter) {
+            contextPathFilter = (ContextPathFilter) filter;
+            return;
+        }
+
         SYNC_LOCK.lock();
 
         try {
@@ -77,6 +83,11 @@ public class ChainManager {
      * 添加过滤器，如果有相同类的则不加
      */
     public void addFilterIfAbsent(Filter filter, int index) {
+        if (filter instanceof ContextPathFilter) {
+            contextPathFilter = (ContextPathFilter) filter;
+            return;
+        }
+
         SYNC_LOCK.lock();
 
         try {
@@ -98,7 +109,11 @@ public class ChainManager {
      * 执行过滤
      */
     public void doFilter(Context x, Handler lastHandler) throws Throwable {
-        new FilterChainImpl(filterNodes, lastHandler).doFilter(x);
+        if (contextPathFilter == null) {
+            new FilterChainImpl(filterNodes, lastHandler).doFilter(x);
+        } else {
+            contextPathFilter.doFilter(x, new FilterChainImpl(filterNodes, lastHandler));
+        }
     }
 
     //=======================
