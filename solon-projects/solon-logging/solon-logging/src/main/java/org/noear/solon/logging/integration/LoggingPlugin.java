@@ -22,7 +22,6 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Appender;
-import org.slf4j.MDC;
 
 import java.util.Properties;
 
@@ -62,15 +61,7 @@ public class LoggingPlugin implements Plugin {
         //init
         LogOptions.getLoggerLevelInit();
 
-        Solon.app().filter(Integer.MIN_VALUE, (ctx, chain) -> {
-            chain.doFilter(ctx);
-
-            //清附 mdc
-            if (ctx.path() != null && ctx.path().equals(ctx.pathNew())) {
-                //避免 forward 时清掉 mdc
-                MDC.clear();
-            }
-        });
+        Solon.app().filter(Integer.MIN_VALUE,new MdcClearFilter());
     }
 
     @Override
