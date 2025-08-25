@@ -102,7 +102,7 @@ public class JdkHttpContext extends ContextBase {
     @Override
     public URI uri() {
         if (_uri == null) {
-            _uri = URI.create(url());
+            _uri = this.parseURI(url());
         }
 
         return _uri;
