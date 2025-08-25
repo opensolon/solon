@@ -62,6 +62,16 @@ public class StateMachine<S, E, T> {
     }
 
     /**
+     * 添加状态转换规则
+     */
+    protected StateTransitionDecl<S, E, T> from(S... source) {
+        StateTransitionDecl<S, E, T> decl = new StateTransitionDecl<>();
+        decl.from(source);
+        transitions.add(new StateTransition<>(decl));
+        return  decl;
+    }
+
+    /**
      * 发送事件
      *
      * @param event        事件
