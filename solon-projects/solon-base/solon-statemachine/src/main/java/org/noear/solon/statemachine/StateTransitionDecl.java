@@ -49,30 +49,22 @@ public class StateTransitionDecl<S, E, T> {
     /**
      * 额外条件，触发后的进一步条件需求
      */
-    protected Predicate<StateTransitionContext<S, E, T>> condition;
+    protected Predicate<StateTransitionContext<S, E, T>> condition =  (c) -> true;
 
     /**
      * 具体执行的内容
      */
-    protected Consumer<StateTransitionContext<S, E, T>> action;
+    protected Consumer<StateTransitionContext<S, E, T>> action = (c) -> {
+    };
 
     /**
      * 检测
      *
      */
-    protected void check() {
+    public void check() {
         Assert.notNull(source, "The source state(from) cannot be null");
         Assert.notNull(target, "The target state(to) cannot be null");
         Assert.notNull(event, "The on(event) cannot be null");
-
-        if (condition == null) {
-            this.condition = (c) -> true;
-        }
-
-        if (action == null) {
-            this.action = (c) -> {
-            };
-        }
     }
 
     /**
