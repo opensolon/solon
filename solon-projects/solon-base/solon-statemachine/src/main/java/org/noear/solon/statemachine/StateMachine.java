@@ -56,7 +56,7 @@ public class StateMachine<S, E, T> {
 
         StateTransitionDecl<S, E, T> decl = new StateTransitionDecl<>();
         declaration.accept(decl);
-        decl.check();
+        decl.check();//检测
 
         transitions.add(new StateTransition<>(decl));
     }

@@ -58,8 +58,7 @@ public class StateTransitionDecl<S, E, T> {
     };
 
     /**
-     * 检测
-     *
+     * 检测完整度
      */
     public void check() {
         Assert.notNull(source, "The source state(from) cannot be null");
