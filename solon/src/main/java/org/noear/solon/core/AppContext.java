@@ -192,25 +192,7 @@ public class AppContext extends BeanContainer {
             tryFill(bw.raw(), clz.getAnnotations());
 
             //构建小饼
-            for (Method m : ClassUtil.findPublicMethods(bw.clz())) {
-                Bean ma = m.getAnnotation(Bean.class);
-
-                if (ma == null) {
-                    Managed tmp = m.getAnnotation(Managed.class);
-                    if (tmp != null) {
-                        ma = new ManagedToBeanAnno(tmp);
-                    }
-                }
-
-                if (ma != null) {
-                    tryBuildBeanOfMethod(bw, m, ma);
-
-                    //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
-                    if (Modifier.isPublic(m.getModifiers()) == false) {
-                        LogUtil.global().warn("This @" + ma.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
-                    }
-                }
-            }
+            beanExtractOrProxy(bw, true, false);
 
             //特定能力接口交付
             beanDeliver(bw);
@@ -220,6 +202,25 @@ public class AppContext extends BeanContainer {
 
             //支持基类注册
             beanRegisterSupI(clz, bw);
+        });
+
+        beanExtractorAdd(Bean.class, (bw, m, anno) -> {
+            tryBuildBeanOfMethod(bw, m, anno);
+
+            //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
+            if (Modifier.isPublic(m.getModifiers()) == false) {
+                LogUtil.global().warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+            }
+        });
+
+        beanExtractorAdd(Managed.class, (bw, m, mm) -> {
+            ManagedToBeanAnno anno = new ManagedToBeanAnno(mm);
+            tryBuildBeanOfMethod(bw, m, anno);
+
+            //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
+            if (Modifier.isPublic(m.getModifiers()) == false) {
+                LogUtil.global().warn("This @" + anno.annotationType().getSimpleName() + " method is not public: " + m.getDeclaringClass().getName() + ":" + m.getName());
+            }
         });
 
         //注册 @Component 构建器
@@ -570,7 +571,7 @@ public class AppContext extends BeanContainer {
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
-            for (Method m : clzWrap.getMethods()) { //只支持公有函数检查
+            for (Method m : clzWrap.findPublicMethods()) { //只支持公有或自有函数检查
                 for (Annotation a : m.getAnnotations()) {
                     if (tryExtract) {
                         if (beanExtractors.containsKey(a.annotationType())) {
@@ -625,6 +626,26 @@ public class AppContext extends BeanContainer {
 
 
     //::注入
+
+    /**
+     * 为方法注入参数
+     *
+     */
+    public void methodInject(BeanWrap bw, Method m, Consumer<Object[]> consumer) {
+        //支持非公有函数
+        ClassUtil.accessibleAsTrue(m);
+
+        MethodWrap mWrap = methodGet(bw.rawClz(), m);
+
+        if (mWrap.getParamWraps().length == 0) {
+            //0.没有参数
+            consumer.accept(new Object[]{});
+        } else {
+            tryMethodParamsGather(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
+                consumer.accept(args2);
+            });
+        }
+    }
 
     /**
      * 为一个对象注入（可以重写）
@@ -769,7 +790,6 @@ public class AppContext extends BeanContainer {
             return wrapAndPut(clz);
         }
     }
-
 
     ////////////////////////////////////////////////////
     //
@@ -951,7 +971,7 @@ public class AppContext extends BeanContainer {
                 //尝试泛型注册(通过 name 实现)
                 if (beanGtp instanceof ParameterizedType) {
                     putWrap(beanGtp.getTypeName(), m_bw);
-                    m_bw.genericList().add((ParameterizedType)beanGtp);
+                    m_bw.genericList().add((ParameterizedType) beanGtp);
                 }
 
                 //@Bean,@Managed 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
