@@ -354,37 +354,37 @@ public class GenericUtil {
     }
 
     private static Type getGenericSuperclass(Class<?> clazz) throws RuntimeException{
-        try {
+//        try {
             return clazz.getGenericSuperclass();
-        } catch (Throwable e) {
-            if (e instanceof TypeNotPresentException) {
-                return null;
-            } else if (e instanceof ClassNotFoundException) {
-                return null;
-            } else if (e instanceof RuntimeException) {
-                throw e;
-            } else {
-                throw new RuntimeException(e);
-            }
-        }
+//        } catch (Throwable e) {
+//            if (e instanceof TypeNotPresentException) {
+//                return null;
+//            } else if (e instanceof ClassNotFoundException) {
+//                return null;
+//            } else if (e instanceof RuntimeException) {
+//                throw e;
+//            } else {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
-    private static final Type[] GENERIC_INTERFACES_EMPTY = new  Type[0];
+    //private static final Type[] GENERIC_INTERFACES_EMPTY = new  Type[0];
 
     private static Type[] getGenericInterfaces(Class<?> clazz) {
-        try {
+//        try {
             return clazz.getGenericInterfaces();
-        } catch (Throwable e) {
-            if (e instanceof TypeNotPresentException) {
-                return GENERIC_INTERFACES_EMPTY;
-            } else if (e instanceof ClassNotFoundException) {
-                return GENERIC_INTERFACES_EMPTY;
-            } else if (e instanceof RuntimeException) {
-                throw e;
-            } else {
-                throw new RuntimeException(e);
-            }
-        }
+//        } catch (Throwable e) {
+//            if (e instanceof TypeNotPresentException) {
+//                return GENERIC_INTERFACES_EMPTY;
+//            } else if (e instanceof ClassNotFoundException) {
+//                return GENERIC_INTERFACES_EMPTY;
+//            } else if (e instanceof RuntimeException) {
+//                throw e;
+//            } else {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
     /**
