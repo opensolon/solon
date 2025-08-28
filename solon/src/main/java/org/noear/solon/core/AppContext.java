@@ -205,7 +205,9 @@ public class AppContext extends BeanContainer {
         });
 
         beanExtractorAdd(Bean.class, (bw, m, anno) -> {
-            tryBuildBeanOfMethod(bw, m, anno);
+            tryBuildBeanOfMethod(m, bw, anno.priority(), (mw, raw) -> {
+                tryBuildBeanOfMethod3(mw, bw, raw, anno);
+            });
 
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
             if (Modifier.isPublic(m.getModifiers()) == false) {
@@ -215,7 +217,10 @@ public class AppContext extends BeanContainer {
 
         beanExtractorAdd(Managed.class, (bw, m, mm) -> {
             ManagedToBeanAnno anno = new ManagedToBeanAnno(mm);
-            tryBuildBeanOfMethod(bw, m, anno);
+
+            tryBuildBeanOfMethod(m, bw, (mw, raw) -> {
+                tryBuildBeanOfMethod3(mw, bw, raw, anno);
+            });
 
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v3.0
             if (Modifier.isPublic(m.getModifiers()) == false) {
@@ -628,26 +633,6 @@ public class AppContext extends BeanContainer {
     //::注入
 
     /**
-     * 为方法注入参数
-     *
-     */
-    public void methodInject(BeanWrap bw, Method m, Consumer<Object[]> consumer) {
-        //支持非公有函数
-        ClassUtil.accessibleAsTrue(m);
-
-        MethodWrap mWrap = methodGet(bw.rawClz(), m);
-
-        if (mWrap.getParamWraps().length == 0) {
-            //0.没有参数
-            consumer.accept(new Object[]{});
-        } else {
-            tryMethodParamsGather(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
-                consumer.accept(args2);
-            });
-        }
-    }
-
-    /**
      * 为一个对象注入（可以重写）
      */
     public void beanInject(Object obj) {
@@ -837,9 +822,16 @@ public class AppContext extends BeanContainer {
     }
 
     /**
-     * 根据方法尝试生成 bean（用 protected，方便扩展时复用）
+     * 尝试托管方法调用
      */
-    protected void tryBuildBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Throwable {
+    public void tryBuildBeanOfMethod(Method m, BeanWrap bw, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
+        tryBuildBeanOfMethod(m, bw, 0, completionConsumer);
+    }
+
+    /**
+     * 尝试托管方法调用
+     */
+    private void tryBuildBeanOfMethod(Method m, BeanWrap bw, int priority, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
         if (NativeDetector.isAotRuntime()) {
             //如果是 aot 则注册函数
             methodGet(bw.rawClz(), m);
@@ -848,14 +840,14 @@ public class AppContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissingBean(mc)) {
-            int priority = (mc.priority() > 0 ? mc.priority() : ma.priority());
-            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, priority, () -> tryBuildBeanOfMethod0(bw, m, ma, mc));
+            priority = (mc.priority() > 0 ? mc.priority() : priority);
+            lifecycle(Constants.LF_IDX_METHOD_CONDITION_IF_MISSING, priority, () -> tryBuildBeanOfMethod0(bw, m, mc, completionConsumer));
         } else {
-            tryBuildBeanOfMethod0(bw, m, ma, mc);
+            tryBuildBeanOfMethod0(bw, m, mc, completionConsumer);
         }
     }
 
-    private void tryBuildBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Throwable {
+    private void tryBuildBeanOfMethod0(BeanWrap bw, Method m, Condition mc, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
         //增加条件检测
         if (ConditionUtil.test(this, mc) == false) {
             return;
@@ -869,35 +861,28 @@ public class AppContext extends BeanContainer {
         //开始执行
         if (ConditionUtil.ifBean(mc)) {
             //如果有 onBean 条件
-            ConditionUtil.onBeanRun(mc, this, () -> tryBuildBeanOfMethod1(ma, mWrap, bw));
+            ConditionUtil.onBeanRun(mc, this, () -> tryBuildBeanOfMethod1(mWrap, bw, completionConsumer));
         } else {
             //没有 onBean 条件
-            tryBuildBeanOfMethod1(ma, mWrap, bw);
+            tryBuildBeanOfMethod1(mWrap, bw, completionConsumer);
         }
     }
 
-    /**
-     * 尝试构建 bean
-     *
-     * @param anno  bean 注解
-     * @param mWrap 方法包装器
-     * @param bw    bean 包装器
-     */
-    private void tryBuildBeanOfMethod1(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
+    private void tryBuildBeanOfMethod1(MethodWrap mWrap, BeanWrap bw, BiConsumerEx<MethodWrap, Object> completionConsumer) throws Throwable {
         if (mWrap.getParamWraps().length == 0) {
             //0.没有参数
-            tryBuildBeanOfMethod2(anno, mWrap, bw, new Object[]{});
+            tryBuildBeanOfMethod2(mWrap, bw, new Object[]{}, completionConsumer);
         } else {
-            tryMethodParamsGather(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
-                RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(anno, mWrap, bw, args2));
+            tryBuildArgsOfMethod(bw.context(), 1, mWrap.getReturnType(), mWrap.getParamWraps(), (args2) -> {
+                RunUtil.runOrThrow(() -> tryBuildBeanOfMethod2(mWrap, bw, args2, completionConsumer));
             });
         }
     }
 
     /**
-     * 尝试方法参数收集
+     * 尝试托管方法参数收集
      */
-    protected void tryMethodParamsGather(AppContext context, int label, Class<?> outType, ParamWrap[] paramAry, ConsumerEx<Object[]> completionConsumer) {
+    protected void tryBuildArgsOfMethod(AppContext context, int label, Class<?> outType, ParamWrap[] paramAry, ConsumerEx<Object[]> completionConsumer) {
         //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
         InjectGather gather = new InjectGather(label, outType, true, paramAry.length, (args2) -> {
             //变量收集完成后，会回调此处
@@ -921,7 +906,7 @@ public class AppContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanOfMethod2(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) {
+    private void tryBuildBeanOfMethod2(MethodWrap mWrap, BeanWrap bw, Object[] args, BiConsumerEx<MethodWrap, Object> completionConsumer) {
         try {
             Object raw = mWrap.invoke(bw.raw(), args);
 
@@ -929,53 +914,7 @@ public class AppContext extends BeanContainer {
                 //尝试填充属性 //v3.1
                 tryFill(raw, mWrap.getAnnotations());
 
-                Class<?> beanClz = mWrap.getReturnType();
-                Type beanGtp = mWrap.getGenericReturnType();
-
-                //产生的bean，不再支持二次注入
-
-                BeanWrap m_bw = null;
-                if (raw instanceof BeanWrap) {
-                    m_bw = (BeanWrap) raw;
-                } else {
-                    if (anno.injected()) {
-                        //执行注入
-                        beanInject(raw);
-                    }
-
-                    //@Bean,@Managed 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
-                    //EventBus.publish(raw);//@deprecated
-
-                    //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                    m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
-                }
-
-                String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-                m_bw.nameSet(beanName);
-                m_bw.tagSet(anno.tag());
-                m_bw.typedSet(anno.typed());
-
-                //确定顺序位
-                m_bw.indexSet(anno.index());
-                m_bw.done();
-
-                //特定能力接口交付
-                if (anno.delivered()) {
-                    beanDeliver(m_bw);
-                }
-
-                //注册到容器
-                beanRegister(m_bw, beanName, anno.typed());
-
-                //尝试泛型注册(通过 name 实现)
-                if (beanGtp instanceof ParameterizedType) {
-                    putWrap(beanGtp.getTypeName(), m_bw);
-                    m_bw.genericList().add((ParameterizedType) beanGtp);
-                }
-
-                //@Bean,@Managed 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-                beanPublish(m_bw);
+                completionConsumer.accept(mWrap, raw);
             }
         } catch (Throwable ex) {
             Class<?> declClz = mWrap.getDeclaringClz();
@@ -991,6 +930,60 @@ public class AppContext extends BeanContainer {
 
             throw new IllegalStateException(buf.toString(), ex);
         }
+    }
+
+    /**
+     * 尝试托管方法 bean 注册
+     *
+     */
+    protected void tryBuildBeanOfMethod3(MethodWrap mWrap, BeanWrap bw, Object raw, Bean anno) {
+        Class<?> beanClz = mWrap.getReturnType();
+        Type beanGtp = mWrap.getGenericReturnType();
+
+        //产生的bean，不再支持二次注入
+
+        BeanWrap m_bw = null;
+        if (raw instanceof BeanWrap) {
+            m_bw = (BeanWrap) raw;
+        } else {
+            if (anno.injected()) {
+                //执行注入
+                beanInject(raw);
+            }
+
+            //@Bean,@Managed 动态构建的bean, 可通过事件广播进行扩展 //后面不用再发布了
+            //EventBus.publish(raw);//@deprecated
+
+            //动态构建的bean，都用新生成wrap（否则会类型混乱）
+            m_bw = new BeanWrap(this, beanClz, raw, null, false, anno.initMethod(), anno.destroyMethod());
+        }
+
+        String beanName = Utils.annoAlias(anno.value(), anno.name());
+
+        m_bw.nameSet(beanName);
+        m_bw.tagSet(anno.tag());
+        m_bw.typedSet(anno.typed());
+
+        //确定顺序位
+        m_bw.indexSet(anno.index());
+        m_bw.done();
+
+        //特定能力接口交付
+        if (anno.delivered()) {
+            beanDeliver(m_bw);
+        }
+
+        //注册到容器
+        beanRegister(m_bw, beanName, anno.typed());
+
+        //尝试泛型注册(通过 name 实现)
+        if (beanGtp instanceof ParameterizedType) {
+            putWrap(beanGtp.getTypeName(), m_bw);
+            m_bw.genericList().add((ParameterizedType) beanGtp);
+        }
+
+        //@Bean,@Managed 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
+        beanPublish(m_bw);
     }
 
     private static final int build_bean_ofclass_state0 = 0; //没有处理
@@ -1078,7 +1071,7 @@ public class AppContext extends BeanContainer {
             //包装（处理泛型参数）
             ConstructorWrap cw = new ConstructorWrap(clz, c1);
 
-            tryMethodParamsGather(this, 2, clz, cw.getParamWraps(), (args2) -> {
+            tryBuildArgsOfMethod(this, 2, clz, cw.getParamWraps(), (args2) -> {
                 tryBuildBeanOfClass3(clz, builder, anno, c1, args2);
             });
         }
