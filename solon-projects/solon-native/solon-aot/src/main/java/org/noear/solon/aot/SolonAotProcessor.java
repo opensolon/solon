@@ -93,28 +93,30 @@ public class SolonAotProcessor {
 
     protected void doProcess() throws Exception {
         // aot 执行 solon 应用主类报错时，应将异常抛出去，中断 maven 打包流程
-        Method mainMethod = applicationClass.getMethod("main", String[].class);
-        mainMethod.invoke(null, new Object[]{this.applicationArgs});
+        try {
+            Method mainMethod = applicationClass.getMethod("main", String[].class);
+            mainMethod.invoke(null, new Object[]{this.applicationArgs});
 
-        AppContext context = Solon.context();
+            AppContext context = Solon.context();
 
-        RuntimeNativeMetadata metadata = genRuntimeNativeMetadata(context);
+            RuntimeNativeMetadata metadata = genRuntimeNativeMetadata(context);
 
-        addNativeImage(metadata);
+            addNativeImage(metadata);
 
-        // 添加 resource-config.json
-        addResourceConfig(metadata);
-        // 添加 reflect-config.json
-        addReflectConfig(metadata);
-        // 添加 serialization-config.json
-        addSerializationConfig(metadata);
-        // 添加 proxy-config.json
-        addJdkProxyConfig(metadata);
+            // 添加 resource-config.json
+            addResourceConfig(metadata);
+            // 添加 reflect-config.json
+            addReflectConfig(metadata);
+            // 添加 serialization-config.json
+            addSerializationConfig(metadata);
+            // 添加 proxy-config.json
+            addJdkProxyConfig(metadata);
 
-        LogUtil.global().info("Aot processor end.");
-
-        // 正常退出
-        Solon.stopBlock(true, -1, 0);
+            LogUtil.global().info("Aot processor end.");
+        } finally {
+            // 确保正常退出（异常时也不影响）
+            Solon.stopBlock(true, -1, 0);
+        }
     }
 
     /**

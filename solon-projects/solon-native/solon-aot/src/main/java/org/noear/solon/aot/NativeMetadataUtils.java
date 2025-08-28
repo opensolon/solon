@@ -35,30 +35,34 @@ public class NativeMetadataUtils {
      * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
      */
     public static void registerMethodAndParamAndReturnType(RuntimeNativeMetadata metadata, MethodWrap methodWrap) {
-        metadata.registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
+        try {
+            metadata.registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
 
-        ParamWrap[] paramWraps = methodWrap.getParamWraps();
-        for (ParamWrap paramWrap : paramWraps) {
-            Class<?> paramType = paramWrap.getType();
-            metadata.registerReflection(paramType, MemberCategory.PUBLIC_FIELDS, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-            if (!paramType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(paramType)) {
-                metadata.registerSerialization(paramType);
+            ParamWrap[] paramWraps = methodWrap.getParamWraps();
+            for (ParamWrap paramWrap : paramWraps) {
+                Class<?> paramType = paramWrap.getType();
+                metadata.registerReflection(paramType, MemberCategory.PUBLIC_FIELDS, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+                if (!paramType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(paramType)) {
+                    metadata.registerSerialization(paramType);
+                }
+
+                // 参数的泛型
+                Type genericType = paramWrap.getGenericType();
+                processGenericType(metadata, genericType);
             }
 
-            // 参数的泛型
-            Type genericType = paramWrap.getGenericType();
-            processGenericType(metadata, genericType);
-        }
+            Class<?> returnType = methodWrap.getReturnType();
+            metadata.registerReflection(returnType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+            if (!returnType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnType)) {
+                metadata.registerSerialization(returnType);
+            }
 
-        Class<?> returnType = methodWrap.getReturnType();
-        metadata.registerReflection(returnType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-        if (!returnType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnType)) {
-            metadata.registerSerialization(returnType);
+            // 返回值的泛型
+            Type genericReturnType = methodWrap.getGenericReturnType();
+            processGenericType(metadata, genericReturnType);
+        } catch (RuntimeException ex) {
+            throw new IllegalStateException("Can't register method: " + methodWrap.getMethod(), ex);
         }
-
-        // 返回值的泛型
-        Type genericReturnType = methodWrap.getGenericReturnType();
-        processGenericType(metadata, genericReturnType);
     }
 
     private static void processGenericType(RuntimeNativeMetadata metadata, Type genericType) {
