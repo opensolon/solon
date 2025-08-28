@@ -31,11 +31,28 @@
 
 ### 3.5.1
 
+* 新增 solon-ai-core GenerateModel 接口，替代 ImageModel
+* 添加 solon-ai-core ChatModel 增加多媒体内容输出（增强感知型模型的兼容，比如输出图片或视频）
+* 添加 solon-ai-core ImageModel 增加结构体提示语输入（比如图片编辑模型）
+* 添加 solon-ai-core AbstractChatDialect 对多媒体内容输出的支持
+* 添加 solon-ai-core AssistantMessage:contentRaw 原生内容（可能是 String、Map、List、null）
+* 添加 solon-ai-dialect-dashscope 通过接口地址识别方言
+* 添加 solon-ai-mcp McpServerEndpointProvider:Builder 添加 context-path 配置
 * 添加 solon `@Managed` 增加方法注入支持（可用于替换 `@Component`,`@Bean`）
 * 添加 solon `@Condition:priority` 替换 `@Bean:priority` （标为弃用）
 * 添加 solon `@Managed:autoInject` 对应 `@Bean:injected` 属性
+* 添加 solon AppContext:tryBuildBeanOfMethod 方法，方便外部扩展
+* 优化 solon GenericUtil:createTypeGenericMap 处理失败异常提示
+* 优化 solon-aot NativeMetadataUtils:registerMethodAndParamAndReturnType 元数据注册失败时的提示异常
+* 优化 solon-aot SolonAotProcessor:doProcess 确保异常时正常退出
 * 优化 solon-web uri 解析异常时改为 400 StatusException 异常
-* 调整 solon-statemachine 移除 Event,State 接口 使用更自由
+* 优化 solon `@Bean` 注解，改用 beanExtractorAdd 实现
+* 优化 solon-ai-mcp McpClientProvider 配置向 McpServers json 格式上靠
+* 优化 solon-statemachine 将 Event,State 接口标为弃用，不再强制需要。使用更自由
+* 修复 solon-ai-core `think-> tool -> think` 时，工具调用的内容无法加入到对话的问题
+* 修复 solon-ai-mcp 服务端传输层的会话长连会超时的问题
+* 修复 solon-ai-mcp 客户端提供者心跳失效的问题
+* 修复 solon-ai-mcp SSE 传输时 message 端点未附加 context-path 的问题
 * asm 升为 9.8
 
 ### 3.5.0
