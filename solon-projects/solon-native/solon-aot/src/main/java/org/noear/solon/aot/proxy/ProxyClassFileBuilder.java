@@ -20,6 +20,7 @@ import org.noear.solon.core.util.GenericUtil;
 
 import javax.lang.model.element.Modifier;
 import java.lang.reflect.*;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -43,9 +44,6 @@ public class ProxyClassFileBuilder {
         ClassName supperClassName = ClassName.get(packageName, className);
         String proxyClassName = className + PROXY_CLASSNAME_SUFFIX;
 
-        //获取所有函数
-        Map<String, Method> methodAll = MethodFinder.findMethodAll(typeElement);
-
         //::2.开始
         //生成的类
         TypeSpec.Builder proxyTypeBuilder = TypeSpec
@@ -56,6 +54,10 @@ public class ProxyClassFileBuilder {
 
         //添加构造函数
         addConstructor(proxyTypeBuilder, typeElement, proxyClassName);
+
+
+        //获取所有函数
+        Collection<Method> methodAll = MethodFinder.findMethodAll(typeElement);
 
         if(methodAll.size() > 0) {
             //添加代理函数
@@ -109,7 +111,7 @@ public class ProxyClassFileBuilder {
     /**
      * 添加静态代码块
      */
-    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Map<String, Method> methodAll) {
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Collection<Method> methodAll) {
         int methodIndex = 0;
 
         StringBuilder codeBuilder = new StringBuilder(150);
@@ -117,7 +119,7 @@ public class ProxyClassFileBuilder {
         codeBuilder.append("try {\n");
         codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
 
-        for (Method methodElement : methodAll.values()) {
+        for (Method methodElement : methodAll) {
             //添加函数
             if (MethodFinder.allowMethod(methodElement) == false) {
                 //静态 或 只读 或 私有；不需要重写
@@ -179,11 +181,11 @@ public class ProxyClassFileBuilder {
     /**
      * 添加所有函数
      */
-    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder,Class<?> typeElement, Map<String, Method> methodAll) {
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder,Class<?> typeElement, Collection<Method> methodAll) {
         int methodIndex = 0;
         Map<String,Type> typeGenericMap = GenericUtil.getGenericInfo(typeElement);
 
-        for (Method e : methodAll.values()) {
+        for (Method e : methodAll) {
             //添加函数
             methodIndex = addMethod(proxyTypeBuilder, typeGenericMap, e, methodIndex);
         }
