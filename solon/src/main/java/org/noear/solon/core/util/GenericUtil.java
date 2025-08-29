@@ -255,7 +255,9 @@ public class GenericUtil {
                 if (type1 instanceof TypeVariable) {
                     return reviewType(type1, genericInfo);
                 }
-            } else if (typeTmp.getLowerBounds().length > 0) {
+            }
+
+            if (typeTmp.getLowerBounds().length > 0) {
                 //? sup T
                 Type type1 = typeTmp.getLowerBounds()[0];
 
