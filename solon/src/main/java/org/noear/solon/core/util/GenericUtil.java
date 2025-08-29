@@ -245,6 +245,26 @@ public class GenericUtil {
             }else{
                 return reviewType(typeTmp, genericInfo);
             }
+        }  else if(type instanceof WildcardType) {
+            WildcardType typeTmp = (WildcardType) type;
+
+            if (typeTmp.getUpperBounds().length > 0) {
+                //? ext T
+                Type type1 = typeTmp.getUpperBounds()[0];
+
+                if (type1 instanceof TypeVariable) {
+                    return reviewType(type1, genericInfo);
+                }
+            } else if (typeTmp.getLowerBounds().length > 0) {
+                //? sup T
+                Type type1 = typeTmp.getLowerBounds()[0];
+
+                if (type1 instanceof TypeVariable) {
+                    return reviewType(type1, genericInfo);
+                }
+            }
+
+            return type;
         } else if (type instanceof ParameterizedType) {
             ParameterizedType typeTmp = (ParameterizedType) type;
             Type[] typeArgs = typeTmp.getActualTypeArguments();
