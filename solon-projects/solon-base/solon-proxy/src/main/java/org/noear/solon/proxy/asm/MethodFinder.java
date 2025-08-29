@@ -29,6 +29,7 @@ public class MethodFinder {
         if ((access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC ||
                 (access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL ||
                 (access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT ||
+                (access & Opcodes.ACC_VOLATILE) == Opcodes.ACC_VOLATILE || //桥接方法
                 (access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE ||
                 (access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
             //静态 或 只读 或 私有 或 虚拟；不需要重写
