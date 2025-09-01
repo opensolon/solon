@@ -55,7 +55,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "3.5.1";
+        return "3.5.2-SNAPSHOT";
     }
 
     /**
