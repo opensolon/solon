@@ -29,6 +29,11 @@
 * 使用 solon-expression 替代其它临时的表达式处理
 
 
+### 3.5.2
+
+* snack3 升为 3.2.139
+
+
 ### 3.5.1
 
 * 新增 solon-ai-core GenerateModel 接口，替代 ImageModel
