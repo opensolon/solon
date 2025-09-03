@@ -31,8 +31,13 @@
 
 ### 3.4.4
 
-* 修复 solon-net-httputils TextStreamUtil 服务端 sse 不关流，客户端无法结束的问题
+* 优化 solon-net-httputils HttpUtils 与 HttpUtilsFactory（部分功能迁到 HttpUtils） 关系简化
+* 优化 solon-net-httputils OkHttpUtils 适配与 tlsv1 的兼容性
+* 优化 solon-net-httputils JdkHttpResponse:bodyAsString 的编码处理（没有 ContentEncoding 时，优先用 charset 配置）
 * 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
+* 修复 solon-net-httputils 当服务端不结束流时 sse 解析不能结束的问题
+* 修复 solon-net-httputils OkHttpResponse:contentType 获取错误的问题
+* 修复 solon-net-httputils OkHttpUtils 适配重定位后 req-body 数据不能重读的问题
 
 ### 3.4.3
 
