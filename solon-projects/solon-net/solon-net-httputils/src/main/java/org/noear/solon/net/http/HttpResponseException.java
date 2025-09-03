@@ -92,9 +92,14 @@ public class HttpResponseException extends HttpException {
         }
         buf.append(" from ").append(requestMethod).append(" ");
 
-        buf.append(requestUrl.getProtocol()).append("://")
-                .append(requestUrl.getHost()).append(":")
-                .append(requestUrl.getPort()).append(requestUrl.getPath());
+        buf.append(requestUrl.getProtocol()).append("://").append(requestUrl.getHost());
+
+        //有可能是-1
+        if (requestUrl.getPort() > 0) {
+            buf.append(":").append(requestUrl.getPort());
+        }
+
+        buf.append(requestUrl.getPath());
 
         return buf.toString();
     }

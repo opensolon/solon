@@ -29,6 +29,10 @@
 * Plugin 添加 postStart 事件
 
 
+### 3.4.4
+
+* 修复 solon-net-httpurils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
+
 ### 3.4.3
 
 * 新增 solon-statemachine （状态机）插件与 solon-flow 互补（不同场景，按需选择）
