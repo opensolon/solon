@@ -237,10 +237,19 @@ public class TextStreamUtil {
                 } else {
                     if (textLine.isEmpty()) {
                         if (data.length() > 0) {
-                            subscriber.onNext(new ServerSentEvent(meta, data.toString()));
+                            String dataStr = data.toString();
+
+                            subscriber.onNext(new ServerSentEvent(meta, dataStr));
                             l--; //提交后再减
                             meta.clear();
                             data.setLength(0);
+
+                            if(dataStr.length() == 6 && dataStr.equals("[DONE]")) {
+                                //完成需求
+                                RunUtil.runAndTry(reader::close);
+                                subscriber.onComplete(); //可能会再次触发信号（所以，要先关）
+                                return;
+                            }
                         }
                     } else if (textLine.startsWith("data:")) {
                         String content = textLine.substring("data:".length());
