@@ -31,7 +31,8 @@
 
 ### 3.4.4
 
-* 修复 solon-net-httpurils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
+* 修复 solon-net-httputils TextStreamUtil 服务端 sse 不关流，客户端无法结束的问题
+* 修复 solon-net-httputils HttpResponseException 在构建日志消息时，会出现'-1'端口的情况
 
 ### 3.4.3
 
