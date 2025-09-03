@@ -4,9 +4,9 @@
 Solon v3.5.2-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>Java enterprise application development framework for full scenario: Restrained, Efficient, Open</strong>
+	<strong>Java enterprise application development framework for full scenario</strong>
     <br/>
-    <strong>[OpenAtom foundation, incubation project]</strong>
+    <strong>Restrained, Efficient, Open</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
