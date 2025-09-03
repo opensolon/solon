@@ -31,6 +31,11 @@
 
 ### 3.5.2
 
+
+* 添加 solon-ai-mcp McpClientProperties:timeout 属性，方便简化超时配置（可省略 httpTimeout, requestTimeout, initializationTimeout）
+* 添加 solon-ai-mcp McpClientProvider:toolsChangeConsumer,resourcesChangeConsumer,resourcesUpdateConsumer,promptsChangeConsumer 配置支持
+* 添加 solon-ai-mcp McpClientProvider 缓存锁和变更刷新控制
+* 调整 solon-ai-core FunctionToolDesc:doHandle 改用 ToolHandler 参数类型（之前为 Function），方便传递异常
 * snack3 升为 3.2.139
 
 
