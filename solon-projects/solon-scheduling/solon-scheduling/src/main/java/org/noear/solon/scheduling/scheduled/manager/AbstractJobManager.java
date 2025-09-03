@@ -85,7 +85,7 @@ public abstract class AbstractJobManager implements IJobManager {
         }
 
         if (isStarted()) {
-            //如果启动，则直接运行
+            //如果已启动，则直接运行
             jobStart(name, null);
         }
 
