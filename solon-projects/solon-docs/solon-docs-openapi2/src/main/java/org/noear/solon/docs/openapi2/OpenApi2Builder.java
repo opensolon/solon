@@ -480,8 +480,10 @@ public class OpenApi2Builder {
                     }
 
                 } else if ("file".equals(dataType)) {
-                    //array file
+                    //file
                     FormParameter formParameter = new FormParameter();
+                    //设置参数类型 解决导入到apifox后，参数类型变为string的问题
+                    formParameter.type("file");
                     formParameter.items(new FileProperty());
 
                     parameter = formParameter;
